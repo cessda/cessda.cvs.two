@@ -24,6 +24,7 @@
 		<java.version>1.8</java.version>
 		<vaadin.version>8.1.3</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+		<ddiflatdb.server.uri>http://localhost:8080/stardat-ddiflatdb</ddiflatdb.server.uri>
 	</properties>
 
 	<repositories>

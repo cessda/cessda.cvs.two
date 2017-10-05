@@ -108,6 +108,29 @@ public class DetailView extends MVerticalLayout implements View {
 		List<DDIStore> ddiSchemes = client.getElementList("thesoz", DDIElement.CVSCHEME);
 		if (ddiSchemes != null && !ddiSchemes.isEmpty())
 			cvScheme = new CVScheme(ddiSchemes.get(0));
+		
+		List<DDIStore> ddiConcepts = client.getElementList("thesoz", DDIElement.CVCONCEPT);
+
+		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
+
+		Set<String> languages = new LinkedHashSet<>();
+		concepts.forEach(concept -> {
+			languages.addAll(concept.getLanguagesByPrefLabel());
+
+		});
+
+		languages.forEach(item ->
+		{
+			MButton langBUtton = new MButton(item);
+			langBUtton.withStyleName("langbutton").addClickListener(e -> {
+				setSelectedLang(e.getButton().getCaption());
+				if (formMode.equals(FormMode.view))
+					initTopViewSection();
+				else
+					initTopEditSection();
+			});
+			languageLayout.add(langBUtton);
+		});
 
 		setFormMode(FormMode.view);
 		// cvItem = addDummyData1();
@@ -140,8 +163,8 @@ public class DetailView extends MVerticalLayout implements View {
 
 		MLabel topTitle = new MLabel();
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
-				.withValue( /* cvScheme.getOwnerAgency().get(0).getName() */ "DDI" + " Controlled Vocabulary for "
-						+ cvScheme.getTitleByLanguage("EN") + "</strong>");
+				.withValue( cvScheme.getOwnerAgency().get(0).getName() + " Controlled Vocabulary for "
+						+ cvScheme.getTitleByLanguage("en") + "</strong>");
 
 		Resource res = new ThemeResource("img/ddi-logo-r.png");
 		Image logo = new Image(null, res);
@@ -160,7 +183,7 @@ public class DetailView extends MVerticalLayout implements View {
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(new MLabel(ITEM_CODE + ":").withWidth("120px").withStyleName("leftPart"),
-				new MLabel("CODE_TEST").withStyleName("rightPart"));
+				new MLabel(cvScheme.getCode()).withStyleName("rightPart"));
 
 		MCssLayout langSec = new MCssLayout();
 		langSec.withFullWidth()
@@ -169,10 +192,10 @@ public class DetailView extends MVerticalLayout implements View {
 						new MLabel(selectedLang).withStyleName("rightPart")),
 						new MCssLayout().withWidth("33%").add(
 								new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
-								new MLabel("1.0-" + selectedLang).withStyleName("rightPart")),
+								new MLabel( cvScheme.getVersion().getPublicationVersion() + (selectedLang.equals( "en" ) ? "": "-" + selectedLang )).withStyleName("rightPart")),
 						new MCssLayout().withWidth("33%").add(
 								new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
-								new MLabel("10.10.2017").withStyleName("rightPart")));
+								new MLabel( cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
 		topViewSection.add(topHead, titleSmall, description, code, langSec);
 	}
@@ -182,8 +205,8 @@ public class DetailView extends MVerticalLayout implements View {
 
 		MLabel topTitle = new MLabel();
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
-				.withValue( /* cvScheme.getOwnerAgency().get(0).getName() */ "DDI" + " Controlled Vocabulary for "
-						+ cvScheme.getTitleByLanguage("EN") + "</strong>");
+				.withValue( cvScheme.getOwnerAgency().get(0).getName()  + " Controlled Vocabulary for "
+						+ cvScheme.getTitleByLanguage("en") + "</strong>");
 
 		Resource res = new ThemeResource("img/ddi-logo-r.png");
 		Image logo = new Image(null, res);
@@ -193,42 +216,41 @@ public class DetailView extends MVerticalLayout implements View {
 		topHead.withFullWidth().add(logo, topTitle);
 
 		MTextField titleField = new MTextField();
-		titleField.withStyleName("editField").withValue(cvScheme.getTitleByLanguage("EN"));
+		titleField.withStyleName("editField").withValue(cvScheme.getTitleByLanguage("en"));
 
 		MCssLayout titleSmall = new MCssLayout();
 		titleSmall.withFullWidth().add(new MLabel(ITEM_TITLE + ":").withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals("EN") ? titleField
-						: new MLabel(cvScheme.getTitleByLanguage("EN")).withStyleName("rightPart"));
+				selectedLang.equals("en") ? titleField
+						: new MLabel(cvScheme.getTitleByLanguage("en")).withStyleName("rightPart"));
 
 		TextArea descField = new TextArea();
 		descField.setStyleName("editField");
-		descField.setValue(cvScheme.getDescriptionByLanguage("EN"));
+		descField.setValue(cvScheme.getDescriptionByLanguage("en"));
 
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(new MLabel(ITEM_DEF + ":").withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals("EN") ? descField
-						: new MLabel(cvScheme.getDescriptionByLanguage("EN")).withStyleName("rightPart"));
+				selectedLang.equals("en") ? descField
+						: new MLabel(cvScheme.getDescriptionByLanguage("en")).withStyleName("rightPart"));
 
 		MTextField codeField = new MTextField();
 		codeField.withStyleName("editField").withValue("CODE_TEST");
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(new MLabel(ITEM_CODE + ":").withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals("EN") ? codeField
-						: new MLabel(cvScheme.getTitleByLanguage("EN")).withStyleName("rightPart"));
+				selectedLang.equals("en") ? codeField
+						: new MLabel(cvScheme.getCode()).withStyleName("rightPart"));
 
 		MCssLayout langSec = new MCssLayout();
 		langSec.withFullWidth().add(
 				new MCssLayout().withWidth("33%")
 						.add(new MLabel(ITEM_LANG + ":").withWidth("120px").withStyleName("leftPart"),
-								new MLabel("EN").withStyleName("rightPart")),
+								new MLabel("en").withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
-						new MLabel("1.0_" + "EN").withStyleName("rightPart")),
+						new MLabel( cvScheme.getVersion().getPublicationVersion() + (selectedLang.equals( "en" ) ? "": "-" + selectedLang )).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
-						new MLabel("10.10.2017").withStyleName("rightPart")));
-
+						new MLabel( cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 		MTextField titleFieldOl = new MTextField();
 		titleFieldOl.withStyleName("editField").withValue(cvScheme.getTitleByLanguage(selectedLang));
 
@@ -253,12 +275,12 @@ public class DetailView extends MVerticalLayout implements View {
 						new MLabel(selectedLang).withStyleName("rightPart")),
 						new MCssLayout().withWidth("33%").add(
 								new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
-								new MLabel("1.0_" + selectedLang).withStyleName("rightPart")),
+								new MLabel( cvScheme.getVersion().getPublicationVersion() + (selectedLang.equals( "en" ) ? "": "-" + selectedLang )).withStyleName("rightPart")),
 						new MCssLayout().withWidth("33%").add(
 								new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
-								new MLabel("10.10.2017").withStyleName("rightPart")));
+								new MLabel( cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
-		if (selectedLang.equals("EN")) {
+		if (selectedLang.equals("en")) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 			langSecOl.setVisible(false);
@@ -269,30 +291,6 @@ public class DetailView extends MVerticalLayout implements View {
 
 	private void initBottomViewSection() {
 		bottomViewSection.removeAllComponents();
-
-		List<DDIStore> ddiConcepts = client.getElementList("thesoz", DDIElement.CVCONCEPT);
-
-		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
-
-		Set<String> languages = new LinkedHashSet<>();
-		concepts.forEach(concept -> {
-			languages.addAll(concept.getLanguagesByPrefLabel());
-
-		});
-
-		languages.forEach(item ->
-
-		{
-			MButton langBUtton = new MButton(item);
-			langBUtton.withStyleName("langbutton").addClickListener(e -> {
-				setSelectedLang(e.getButton().getCaption());
-				if (formMode.equals(FormMode.view))
-					initTopViewSection();
-				else
-					initTopEditSection();
-			});
-			languageLayout.add(langBUtton);
-		});
 
 		TabSheet detailTab = new TabSheet();
 		VerticalLayout detailLayout = new VerticalLayout();
@@ -373,63 +371,6 @@ public class DetailView extends MVerticalLayout implements View {
 		// TODO Auto-generated method stub
 
 	}
-
-	// private CvItem addDummyData1(){
-	// List<CvElement> cvElements = new ArrayList<>();
-	// cvElements.add( new CvElement( "FR" , "Méthode d'agrégation", "Identifie
-	// le type d'agrégation utilisé pour combiner les catégories liées,
-	// généralement dans une branche commune d'une hiérarchie, pour fournir des
-	// informations à un niveau plus large que le niveau auquel des observations
-	// détaillées sont prises. (À partir du: Glossaire statistique de l'OCDE)",
-	// "1.0","10 April 2017"));
-	// cvElements.add( new CvElement( "ES" , "Método de agregación", "Identifica
-	// el tipo de agregación utilizada para combinar categorías relacionadas,
-	// normalmente dentro de una rama común de una jerarquía, para proporcionar
-	// información a un nivel más amplio que el nivel en el que se toman
-	// observaciones detalladas. (De: El Glosario de términos estadísticos de la
-	// OCDE)", "1.0","10 August 2017"));
-	// cvElements.add( new CvElement( "DE" , "Aggregationsmethode",
-	// "Identifiziert die Art der Aggregation, die verwendet wird, um verwandte
-	// Kategorien zu kombinieren, in der Regel innerhalb eines gemeinsamen
-	// Zweiges einer Hierarchie, um Informationen auf einer breiteren Ebene als
-	// die Ebene, auf der detaillierte Beobachtungen getroffen werden. (Aus: Das
-	// OECD-Glossar der statistischen Begriffe)", "1.0","15 August 2017"));
-	// cvElements.add( new CvElement( "EN" , "AggregationMethod", "Identifies
-	// the type of aggregation used to combine related categories, usually
-	// within a common branch of a hierarchy, to provide information at a
-	// broader level than the level at which detailed observations are taken.
-	// (From: The OECD Glossary of Statistical Terms)", "1.0", "18 August
-	// 2016"));
-	//
-	// return new CvItem("img/ddi-logo-r.png", cvElements);
-	// }
-	//
-	// private CvItem addDummyData2(){
-	// List<CvElement> cvElements = new ArrayList<>();
-	// cvElements.add( new CvElement( "ES" , "Unidad de Análisis", "Unidad de
-	// Análisis Identifica el tipo de agregación utilizada para combinar
-	// categorías relacionadas, normalmente dentro de una rama común de una
-	// jerarquía, para proporcionar información a un nivel más amplio que el
-	// nivel en el que se toman observaciones detalladas. (De: El Glosario de
-	// términos estadísticos de la OCDE)", "1.0"));
-	// cvElements.add( new CvElement( "DE" , "Analyseeinheit", "Analyseeinheit
-	// Identifiziert die Art der Aggregation, die verwendet wird, um verwandte
-	// Kategorien zu kombinieren, in der Regel innerhalb eines gemeinsamen
-	// Zweiges einer Hierarchie, um Informationen auf einer breiteren Ebene als
-	// die Ebene, auf der detaillierte Beobachtungen getroffen werden. (Aus: Das
-	// OECD-Glossar der statistischen Begriffe)", "1.0"));
-	// cvElements.add( new CvElement( "EN" , "Analysis Unit", "Analysis Unit
-	// Identifies the type of aggregation used to combine related categories,
-	// usually within a common branch of a hierarchy, to provide information at
-	// a broader level than the level at which detailed observations are taken.
-	// (From: The OECD Glossary of Statistical Terms)", "1.0"));
-	//
-	// Resource res = new ThemeResource( "img/ddi-logo-r.png" );
-	// Image image = new Image( null, res );
-	// image.setWidth( "100" );
-	//
-	// return new CvItem("img/ddi-logo-r.png", cvElements);
-	// }
 
 	public FormMode getFormMode() {
 		return formMode;
