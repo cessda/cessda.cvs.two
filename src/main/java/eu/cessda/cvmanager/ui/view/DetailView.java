@@ -114,20 +114,21 @@ public class DetailView extends MVerticalLayout implements View {
 		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
 
 		Set<String> languages = new LinkedHashSet<>();
-		concepts.forEach(concept -> {
-			languages.addAll(concept.getLanguagesByPrefLabel());
-
-		});
+		concepts.forEach(concept -> languages.addAll(concept.getLanguagesByPrefLabel()));
 
 		languages.forEach(item ->
 		{
-			MButton langBUtton = new MButton(item);
+			MButton langBUtton = new MButton(item.toUpperCase());
 			langBUtton.withStyleName("langbutton").addClickListener(e -> {
-				setSelectedLang(e.getButton().getCaption());
-				if (formMode.equals(FormMode.view))
+				setSelectedLang(e.getButton().getCaption().toLowerCase());
+				if (formMode.equals(FormMode.view)) {
 					initTopViewSection();
-				else
+					initBottomViewSection();
+				}
+				else {
 					initTopEditSection();
+					initBottomEditSection();
+				}
 			});
 			languageLayout.add(langBUtton);
 		});
@@ -175,15 +176,30 @@ public class DetailView extends MVerticalLayout implements View {
 
 		MCssLayout titleSmall = new MCssLayout();
 		titleSmall.withFullWidth().add(new MLabel(ITEM_TITLE + ":").withWidth("120px").withStyleName("leftPart"),
-				new MLabel(cvScheme.getTitleByLanguage(selectedLang)).withStyleName("rightPart"));
+				new MLabel(cvScheme.getTitleByLanguage("en")).withStyleName("rightPart"));
 
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(new MLabel(ITEM_DEF + ":").withWidth("120px").withStyleName("leftPart"),
-				new MLabel(cvScheme.getDescriptionByLanguage(selectedLang)).withStyleName("rightPart"));
+				new MLabel(cvScheme.getDescriptionByLanguage("en")).withStyleName("rightPart"));
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(new MLabel(ITEM_CODE + ":").withWidth("120px").withStyleName("leftPart"),
 				new MLabel(cvScheme.getCode()).withStyleName("rightPart"));
+
+		MCssLayout titleSmallOl = new MCssLayout();
+		titleSmallOl.withFullWidth().add(
+				new MLabel(selectedLang + " " + ITEM_TITLE + ":").withWidth("120px").withStyleName("leftPart"),
+				new MLabel(cvScheme.getTitleByLanguage(selectedLang)).withStyleName("rightPart"));
+
+		MCssLayout descriptionOl = new MCssLayout();
+		descriptionOl.withFullWidth().add(
+				new MLabel(selectedLang + " " + ITEM_DEF + ":").withWidth("120px").withStyleName("leftPart"),
+				new MLabel(cvScheme.getDescriptionByLanguage(selectedLang)).withStyleName("rightPart"));
+
+		if (selectedLang.equals("en")) {
+			titleSmallOl.setVisible(false);
+			descriptionOl.setVisible(false);
+		}
 
 		MCssLayout langSec = new MCssLayout();
 		langSec.withFullWidth()
@@ -197,7 +213,7 @@ public class DetailView extends MVerticalLayout implements View {
 								new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
 								new MLabel( cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
-		topViewSection.add(topHead, titleSmall, description, code, langSec);
+		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langSec);
 	}
 
 	private void initTopEditSection() {
@@ -247,10 +263,11 @@ public class DetailView extends MVerticalLayout implements View {
 								new MLabel("en").withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
-						new MLabel( cvScheme.getVersion().getPublicationVersion() + (selectedLang.equals( "en" ) ? "": "-" + selectedLang )).withStyleName("rightPart")),
+						new MLabel( cvScheme.getVersion().getPublicationVersion()).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
 						new MLabel( cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
+		
 		MTextField titleFieldOl = new MTextField();
 		titleFieldOl.withStyleName("editField").withValue(cvScheme.getTitleByLanguage(selectedLang));
 
