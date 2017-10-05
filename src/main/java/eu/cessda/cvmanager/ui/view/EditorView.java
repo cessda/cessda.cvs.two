@@ -16,6 +16,7 @@ import org.gesis.security.db.User;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,6 +43,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import eu.cessda.cvmanager.ui.view.window.EditCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.EditCodeWindow;
 
 /**
@@ -82,6 +84,8 @@ public class EditorView extends VerticalLayout implements View {
 
 	List<CVConcept> concepts = new ArrayList<CVConcept>();
 
+	private Button addCVScheme = new Button("Add a new CV");
+
 	private Button addCode = new Button("Add new Code");
 
 	private Button editCode = new Button("Edit Code");
@@ -94,7 +98,9 @@ public class EditorView extends VerticalLayout implements View {
 
 	String userName = "peter";
 
-	final GridLayout gridLayout = new GridLayout(3, 3);
+	final GridLayout gridLayout = new GridLayout(4, 3);
+
+	private String containerId = "thesoz";
 
 	/*
 	 * (non-Javadoc)
@@ -107,7 +113,7 @@ public class EditorView extends VerticalLayout implements View {
 	public void enter(ViewChangeEvent event) {
 
 		log.info("");
-		ddiConcepts = client.getElementList("thesoz", DDIElement.CVCONCEPT);
+		ddiConcepts = client.getElementList(getContainerId(), DDIElement.CVCONCEPT);
 		concepts.clear();
 		for (DDIStore store : ddiConcepts) {
 			CVConcept con = new CVConcept(store);
@@ -150,15 +156,32 @@ public class EditorView extends VerticalLayout implements View {
 		gridLayout.addComponent(languages, 0, 0);
 		gridLayout.addComponent(addCode, 1, 0);
 		gridLayout.addComponent(editCode, 2, 0);
+		gridLayout.addComponent(addCVScheme, 3, 0);
 		gridLayout.addComponent(conceptGrid, 0, 1, 2, 1);
 
 		addCode.addClickListener(event -> {
+			CVConcept con = new CVConcept();
+			con.loadSkeleton(con.getDefaultDialect());
+			con.createId();
+			con.setContainerId(getContainerId());
 
+			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage());
+			getUI().addWindow(window);
 		});
 
 		editCode.addClickListener(event -> {
 			CVConcept con = conceptGrid.getSelectedItems().iterator().next();
 			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage());
+			getUI().addWindow(window);
+		});
+
+		addCVScheme.addClickListener(event -> {
+			CVScheme cvScheme = new CVScheme();
+			cvScheme.loadSkeleton(cvScheme.getDefaultDialect());
+			cvScheme.createId();
+			cvScheme.setContainerId(cvScheme.getId());
+
+			Window window = new EditCVSchemeWindow(client, cvScheme, getOriginalLanguage(), getLanguage());
 			getUI().addWindow(window);
 		});
 
@@ -239,6 +262,14 @@ public class EditorView extends VerticalLayout implements View {
 	public void setOriginalLanguage(String originalLanguage) {
 
 		this.originalLanguage = originalLanguage;
+	}
+
+	public String getContainerId() {
+		return containerId;
+	}
+
+	public void setContainerId(String containerId) {
+		this.containerId = containerId;
 	}
 
 }

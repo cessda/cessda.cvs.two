@@ -1,7 +1,7 @@
 package eu.cessda.cvmanager.ui.view.window;
 
 import org.gesis.stardat.ddiflatdb.client.RestClient;
-import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVScheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,18 +12,18 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 
-public class EditCodeWindow extends Window {
-
-	private static final Logger log = LoggerFactory.getLogger(EditCodeWindow.class);
+public class EditCVSchemeWindow extends Window {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 8118228014482059473L;
+	private static final long serialVersionUID = -8116725336044618619L;
 
-	Binder<CVConcept> binder = new Binder<CVConcept>();
+	private static final Logger log = LoggerFactory.getLogger(EditCVSchemeWindow.class);
 
-	private TextField preferedLabel = new TextField("Code");
+	Binder<CVScheme> binder = new Binder<CVScheme>();
+
+	private TextField tfTitle = new TextField("Title");
 
 	private TextArea description = new TextArea("Description");
 
@@ -33,28 +33,28 @@ public class EditCodeWindow extends Window {
 
 	private Button storeCode = new Button("Save");
 
-	private CVConcept theCode;
+	private CVScheme cvScheme;
 
-	public EditCodeWindow(RestClient client, CVConcept code, String orignalLanguage, String language) {
-		super("Edit Code");
+	public EditCVSchemeWindow(RestClient client, CVScheme cvScheme, String orignalLanguage, String language) {
+		super("Edit CVScheme");
 		setWidth("600px");
 		setHeight("500px");
 
 		setModal(true);
 		setOrginalLanguage(orignalLanguage);
 		setLanguage(language);
-		setTheCode(code);
+		setCvScheme(cvScheme);
 
 		FormLayout layout = new FormLayout();
 
-		layout.addComponent(preferedLabel);
+		layout.addComponent(tfTitle);
 
 		layout.addComponent(description);
 
-		binder.setBean(getTheCode());
+		binder.setBean(getCvScheme());
 
-		binder.bind(preferedLabel, concept -> getPrefLabelByLanguage(concept),
-				(concept, value) -> setPrefLabelByLanguage(concept, value));
+		binder.bind(tfTitle, concept -> getTitleByLanguage(concept),
+				(concept, value) -> setTitleByLanguage(concept, value));
 
 		binder.bind(description, concept -> getDescriptionByLanguage(concept),
 				(concept, value) -> setDescriptionByLanguage(concept, value));
@@ -63,9 +63,9 @@ public class EditCodeWindow extends Window {
 
 		storeCode.addClickListener(event -> {
 			// CVConcept cv = binder.getBean();
-			log.trace(getTheCode().getPrefLabelByLanguage(getLanguage()));
-			getTheCode().save();
-			client.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
+			log.trace(getCvScheme().getTitleByLanguage(getLanguage()));
+			getCvScheme().save();
+			client.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
 			close();
 
 		});
@@ -73,26 +73,26 @@ public class EditCodeWindow extends Window {
 		setContent(layout);
 	}
 
-	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {
+	private CVScheme setTitleByLanguage(CVScheme concept, String value) {
 
-		concept.setPrefLabelByLanguage(getOrginalLanguage(), value);
+		concept.setTitleByLanguage(getOrginalLanguage(), value);
 		return concept;
 	}
 
-	private String getPrefLabelByLanguage(CVConcept concept) {
+	private String getTitleByLanguage(CVScheme concept) {
 
-		return concept.getPrefLabelByLanguage(getOrginalLanguage());
+		return concept.getTitleByLanguage(getOrginalLanguage());
 
 	}
 
-	private Object setDescriptionByLanguage(CVConcept concept, String value) {
+	private Object setDescriptionByLanguage(CVScheme concept, String value) {
 
 		System.out.println("FooBar");
 		concept.setDescriptionByLanguage(getOrginalLanguage(), value);
 		return null;
 	}
 
-	private String getDescriptionByLanguage(CVConcept concept) {
+	private String getDescriptionByLanguage(CVScheme concept) {
 
 		return concept.getDescriptionByLanguage(getLanguage());
 
@@ -118,12 +118,12 @@ public class EditCodeWindow extends Window {
 		this.language = language;
 	}
 
-	public CVConcept getTheCode() {
-		return theCode;
+	public CVScheme getCvScheme() {
+		return cvScheme;
 	}
 
-	public void setTheCode(CVConcept theCode) {
-		this.theCode = theCode;
+	public void setCvScheme(CVScheme cvScheme) {
+		this.cvScheme = cvScheme;
 	}
 
 }

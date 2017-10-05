@@ -134,12 +134,12 @@ public class SearchView extends VerticalLayout implements View {
 		this.resultsContainer.setSpacing(false);
 		this.resultsContainer.setMargin(false);
 		this.resultsContainer.setSizeFull();
-		//this.resultsContainer.addComponent(this.initResultsContainer(new ArrayList<>()));
+		this.resultsContainer.addComponent(this.initResultsContainer(new ArrayList<>()));
 		
-		cvItems.add(addDummyData1());
-		cvItems.add(addDummyData2());
-		resultsContainer.addComponent( cvItems.get(0));
-		resultsContainer.addComponent( cvItems.get(1));
+		//cvItems.add(addDummyData1());
+		//cvItems.add(addDummyData2());
+		//resultsContainer.addComponent( cvItems.get(0));
+		//resultsContainer.addComponent( cvItems.get(1));
 		
 		this.searchGlobalContainer.addComponents(searchBoxContainer, resultsContainer);
 		this.searchGlobalContainer.setExpandRatio(resultsContainer, 1);
