@@ -34,6 +34,7 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.GridLayout;
@@ -102,6 +103,20 @@ public class EditorView extends VerticalLayout implements View {
 
 	private String containerId = "thesoz";
 
+	private EditorView theView;
+
+	public EditorView() {
+		super();
+		// TODO Auto-generated constructor stub
+		theView = this;
+	}
+
+	public EditorView(Component... children) {
+		super(children);
+		// TODO Auto-generated constructor stub
+		theView = this;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -165,13 +180,13 @@ public class EditorView extends VerticalLayout implements View {
 			con.createId();
 			con.setContainerId(getContainerId());
 
-			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage());
+			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage(), this.theView);
 			getUI().addWindow(window);
 		});
 
 		editCode.addClickListener(event -> {
 			CVConcept con = conceptGrid.getSelectedItems().iterator().next();
-			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage());
+			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage(), this.theView);
 			getUI().addWindow(window);
 		});
 
@@ -181,35 +196,36 @@ public class EditorView extends VerticalLayout implements View {
 			cvScheme.createId();
 			cvScheme.setContainerId(cvScheme.getId());
 
-			Window window = new EditCVSchemeWindow(client, cvScheme, getOriginalLanguage(), getLanguage());
+			Window window = new EditCVSchemeWindow(client, cvScheme, getOriginalLanguage(), getLanguage(),
+					this.theView);
 			getUI().addWindow(window);
 		});
 
 		addComponents(new Label("Thesoz"), gridLayout);
 	}
 
-	private void updateGrid(String language) {
+	public void updateGrid(String language) {
 
 		log.info("" + language);
 		conceptGrid.removeAllColumns();
-		conceptGrid.addColumn(CVConcept::getId).setCaption("URI").setExpandRatio(1);
+		// conceptGrid.addColumn(CVConcept::getId).setCaption("URI").setExpandRatio(1);
 
 		conceptGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en")).setCaption("en")
 				.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
-				.setWidth(100);
+				.setExpandRatio(1);
 
 		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
 				concept -> concept.getPrefLabelByLanguage(language),
 				(concept, label) -> concept.setPrefLabelByLanguage(language, label));
 
 		conceptGrid.addColumn(concept -> concept.getPrefLabelByLanguage(language)).setCaption(language)
-				.setEditorBinding(prefLabelBinding).setWidth(100);// Component(prefLanguageEditor,
+				.setEditorBinding(prefLabelBinding).setExpandRatio(1);// Component(prefLanguageEditor,
 		// (concept, value) ->
 		// updateConcept(concept,
 		// value, "en"));
 
 		conceptGrid.addColumn(concept -> concept.getDescriptionByLanguage(language)).setCaption("Definition")
-				.setExpandRatio(1);
+				.setExpandRatio(2);
 		gridLayout.removeComponent(0, 1);
 		gridLayout.addComponent(conceptGrid, 0, 1, 2, 1);
 

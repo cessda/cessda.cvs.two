@@ -31,7 +31,7 @@ import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Notification;
@@ -40,7 +40,6 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
 @UIScope
@@ -106,19 +105,16 @@ public class DetailView extends MVerticalLayout implements View {
 
 	@PostConstruct
 	public void init() {
-		
-		MButton backToResults = new MButton( FontAwesome.BACKWARD, this::back );
-		backToResults.setCaption( "Back" );
-		backToResults.withStyleName(ValoTheme.BUTTON_FRIENDLY, ValoTheme.BUTTON_SMALL,
-				"pull-right", "marginleft20");
+
+		MButton backToResults = new MButton(FontAwesome.BACKWARD, this::back);
+		backToResults.setCaption("Back");
+		backToResults.withStyleName(ValoTheme.BUTTON_FRIENDLY, ValoTheme.BUTTON_SMALL, "pull-right", "marginleft20");
 
 		editButton.addClickListener(e -> setFormMode(FormMode.edit));
 		cancelButton.addClickListener(e -> setFormMode(FormMode.view));
 
-		buttonLayout
-			.withFullWidth()
-			.withStyleName("alignTextRight")
-			.add(backToResults, editButton, cancelButton, saveButton );
+		buttonLayout.withFullWidth().withStyleName("alignTextRight").add(backToResults, editButton, cancelButton,
+				saveButton);
 
 		languageLayout.withFullWidth();
 
@@ -127,42 +123,40 @@ public class DetailView extends MVerticalLayout implements View {
 		bottomSection.add(bottomViewSection, bottomEditSection);
 
 		// the layout that contains all
-		mainLayout.setWidth( "1170px" );
-		mainLayout.setStyleName( "mainlayout" );
+		mainLayout.setWidth("1170px");
+		mainLayout.setStyleName("mainlayout");
 
-		mainLayout.setMargin( new MarginInfo( false, false, false, false ) );
-		mainLayout.setSpacing( true );
-		mainLayout.withSpacing(true)
-			.add(buttonLayout, 
-					topSection, 
-					languageLayout,
-				bottomSection);
+		mainLayout.setMargin(new MarginInfo(false, false, false, false));
+		mainLayout.setSpacing(true);
+		mainLayout.withSpacing(true).add(buttonLayout, topSection, languageLayout, bottomSection);
 
 		this.withHeightUndefined().add(mainLayout);
 	}
-	
+
 	private void setDetails(String itemId) {
+		concepts.clear();
 		List<DDIStore> ddiSchemes = client.getElementList(itemId, DDIElement.CVSCHEME);
 		if (ddiSchemes != null && !ddiSchemes.isEmpty())
 			cvScheme = new CVScheme(ddiSchemes.get(0));
-		
+
 		List<DDIStore> ddiConcepts = client.getElementList(itemId, DDIElement.CVCONCEPT);
 
 		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
 
 		Set<String> languages = new LinkedHashSet<>();
+
 		concepts.forEach(concept -> languages.addAll(concept.getLanguagesByPrefLabel()));
 
-		languages.forEach(item ->
-		{
+		languageLayout.removeAllComponents();
+
+		languages.forEach(item -> {
 			MButton langBUtton = new MButton(item.toUpperCase());
 			langBUtton.withStyleName("langbutton").addClickListener(e -> {
 				setSelectedLang(e.getButton().getCaption().toLowerCase());
 				if (formMode.equals(FormMode.view)) {
 					initTopViewSection();
 					initBottomViewSection();
-				}
-				else {
+				} else {
 					initTopEditSection();
 					initBottomEditSection();
 				}
@@ -184,7 +178,7 @@ public class DetailView extends MVerticalLayout implements View {
 
 		MLabel topTitle = new MLabel();
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
-				.withValue( cvScheme.getOwnerAgency().get(0).getName() + " Controlled Vocabulary for "
+				.withValue(cvScheme.getOwnerAgency().get(0).getName() + " Controlled Vocabulary for "
 						+ cvScheme.getTitleByLanguage("en") + "</strong>");
 
 		Resource res = new ThemeResource("img/ddi-logo-r.png");
@@ -222,16 +216,17 @@ public class DetailView extends MVerticalLayout implements View {
 		}
 
 		MCssLayout langSec = new MCssLayout();
-		langSec.withFullWidth()
-				.add(new MCssLayout().withWidth("33%").add(
-						new MLabel(ITEM_LANG + ":").withWidth("120px").withStyleName("leftPart"),
-						new MLabel(selectedLang).withStyleName("rightPart")),
-						new MCssLayout().withWidth("33%").add(
-								new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
-								new MLabel( cvScheme.getVersion().getPublicationVersion() + (selectedLang.equals( "en" ) ? "": "-" + selectedLang )).withStyleName("rightPart")),
-						new MCssLayout().withWidth("33%").add(
-								new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
-								new MLabel( cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
+		langSec.withFullWidth().add(
+				new MCssLayout().withWidth("33%")
+						.add(new MLabel(ITEM_LANG + ":").withWidth("120px").withStyleName("leftPart"),
+								new MLabel(selectedLang).withStyleName("rightPart")),
+				new MCssLayout().withWidth("33%").add(
+						new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
+						new MLabel(cvScheme.getVersion().getPublicationVersion() + (selectedLang.equals("en") ? ""
+								: "-" + selectedLang)).withStyleName("rightPart")),
+				new MCssLayout().withWidth("33%").add(
+						new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
+						new MLabel(cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
 		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langSec);
 	}
@@ -241,7 +236,7 @@ public class DetailView extends MVerticalLayout implements View {
 
 		MLabel topTitle = new MLabel();
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
-				.withValue( cvScheme.getOwnerAgency().get(0).getName()  + " Controlled Vocabulary for "
+				.withValue(cvScheme.getOwnerAgency().get(0).getName() + " Controlled Vocabulary for "
 						+ cvScheme.getTitleByLanguage("en") + "</strong>");
 
 		Resource res = new ThemeResource("img/ddi-logo-r.png");
@@ -273,21 +268,21 @@ public class DetailView extends MVerticalLayout implements View {
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(new MLabel(ITEM_CODE + ":").withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals("en") ? codeField
-						: new MLabel(cvScheme.getCode()).withStyleName("rightPart"));
+				selectedLang.equals("en") ? codeField : new MLabel(cvScheme.getCode()).withStyleName("rightPart"));
 
 		MCssLayout langSec = new MCssLayout();
-		langSec.withFullWidth().add(
-				new MCssLayout().withWidth("33%")
-						.add(new MLabel(ITEM_LANG + ":").withWidth("120px").withStyleName("leftPart"),
-								new MLabel("en").withStyleName("rightPart")),
-				new MCssLayout().withWidth("33%").add(
-						new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
-						new MLabel( cvScheme.getVersion().getPublicationVersion()).withStyleName("rightPart")),
-				new MCssLayout().withWidth("33%").add(
-						new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
-						new MLabel( cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
-		
+		langSec.withFullWidth()
+				.add(new MCssLayout().withWidth("33%").add(
+						new MLabel(ITEM_LANG + ":").withWidth("120px").withStyleName("leftPart"),
+						new MLabel("en").withStyleName("rightPart")),
+						new MCssLayout().withWidth("33%").add(
+								new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
+								new MLabel(cvScheme.getVersion().getPublicationVersion()).withStyleName("rightPart")),
+						new MCssLayout().withWidth("33%").add(
+								new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
+								new MLabel(cvScheme.getVersion().getPublicationDate().toString())
+										.withStyleName("rightPart")));
+
 		MTextField titleFieldOl = new MTextField();
 		titleFieldOl.withStyleName("editField").withValue(cvScheme.getTitleByLanguage(selectedLang));
 
@@ -306,16 +301,17 @@ public class DetailView extends MVerticalLayout implements View {
 				descFieldOl);
 
 		MCssLayout langSecOl = new MCssLayout();
-		langSecOl.withFullWidth()
-				.add(new MCssLayout().withWidth("33%").add(
-						new MLabel(ITEM_LANG + ":").withWidth("120px").withStyleName("leftPart"),
-						new MLabel(selectedLang).withStyleName("rightPart")),
-						new MCssLayout().withWidth("33%").add(
-								new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
-								new MLabel( cvScheme.getVersion().getPublicationVersion() + (selectedLang.equals( "en" ) ? "": "-" + selectedLang )).withStyleName("rightPart")),
-						new MCssLayout().withWidth("33%").add(
-								new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
-								new MLabel( cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
+		langSecOl.withFullWidth().add(
+				new MCssLayout().withWidth("33%")
+						.add(new MLabel(ITEM_LANG + ":").withWidth("120px").withStyleName("leftPart"),
+								new MLabel(selectedLang).withStyleName("rightPart")),
+				new MCssLayout().withWidth("33%").add(
+						new MLabel(ITEM_VERSION + ":").withWidth("180px").withStyleName("leftPart"),
+						new MLabel(cvScheme.getVersion().getPublicationVersion() + (selectedLang.equals("en") ? ""
+								: "-" + selectedLang)).withStyleName("rightPart")),
+				new MCssLayout().withWidth("33%").add(
+						new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
+						new MLabel(cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
 		if (selectedLang.equals("en")) {
 			titleSmallOl.setVisible(false);
@@ -354,24 +350,24 @@ public class DetailView extends MVerticalLayout implements View {
 		// results.addColumn(SearchHit::getSourceAsString).setCaption("Study").setId("study");
 
 		detailGrid.removeAllColumns();
-		detailGrid.addColumn(CVConcept::getId).setCaption("URI").setExpandRatio(1);
+		// detailGrid.addColumn(CVConcept::getId).setCaption("URI").setExpandRatio(1);
 
 		detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en")).setCaption("en")
 				.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
-				.setWidth(100);
+				.setExpandRatio(1);
 
 		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
 				concept -> concept.getPrefLabelByLanguage(selectedLang),
 				(concept, label) -> concept.setPrefLabelByLanguage(selectedLang, label));
 
 		detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang)).setCaption(selectedLang)
-				.setEditorBinding(prefLabelBinding).setWidth(100);// Component(prefLanguageEditor,
+				.setEditorBinding(prefLabelBinding).setExpandRatio(1);// Component(prefLanguageEditor,
 		// (concept, value) ->
 		// updateConcept(concept,
 		// value, "en"));
 
 		detailGrid.addColumn(concept -> concept.getDescriptionByLanguage(selectedLang)).setCaption("Definition")
-				.setExpandRatio(1);
+				.setExpandRatio(2);
 
 		detailGrid.setSizeFull();
 
@@ -405,18 +401,15 @@ public class DetailView extends MVerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		setOldView( event.getOldView() );
-		
-		if ( event.getParameters() != null )
-		{
-			try
-			{
+		setOldView(event.getOldView());
+
+		if (event.getParameters() != null) {
+			try {
 				String itemId = event.getParameters();
-				setDetails( itemId );
-			}
-			catch (Exception e)
-			{
-				// UI.getCurrent().getNavigator().navigateTo( ErrorView.VIEW_NAME );
+				setDetails(itemId);
+			} catch (Exception e) {
+				// UI.getCurrent().getNavigator().navigateTo(
+				// ErrorView.VIEW_NAME );
 				e.printStackTrace();
 			}
 
@@ -463,27 +456,21 @@ public class DetailView extends MVerticalLayout implements View {
 		this.selectedLang = selectedLang;
 	}
 
-	private void setOldView( View oldView )
-	{
+	private void setOldView(View oldView) {
 		this.oldView = oldView;
 	}
-	
-	private View getOldView()
-	{
+
+	private View getOldView() {
 		return this.oldView;
 	}
-	
-	private void back( ClickEvent clickEvent )
-	{
 
-		UI.getCurrent().getNavigator().navigateTo( SearchView.VIEW_NAME );
-		if ( getOldView().getClass().getSimpleName().equals( "HomeView" ) )
-		{
-			UI.getCurrent().getNavigator().navigateTo( SearchView.VIEW_NAME );
-		}
-		else
-		{
-			UI.getCurrent().getNavigator().navigateTo( SearchView.VIEW_NAME );
+	private void back(ClickEvent clickEvent) {
+
+		UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
+		if (getOldView().getClass().getSimpleName().equals("HomeView")) {
+			UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
+		} else {
+			UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
 		}
 
 	}

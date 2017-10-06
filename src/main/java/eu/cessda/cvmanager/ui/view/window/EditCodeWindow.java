@@ -12,6 +12,8 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 
+import eu.cessda.cvmanager.ui.view.EditorView;
+
 public class EditCodeWindow extends Window {
 
 	private static final Logger log = LoggerFactory.getLogger(EditCodeWindow.class);
@@ -35,7 +37,10 @@ public class EditCodeWindow extends Window {
 
 	private CVConcept theCode;
 
-	public EditCodeWindow(RestClient client, CVConcept code, String orignalLanguage, String language) {
+	private EditorView theView;
+
+	public EditCodeWindow(RestClient client, CVConcept code, String orignalLanguage, String language,
+			EditorView theView) {
 		super("Edit Code");
 		setWidth("600px");
 		setHeight("500px");
@@ -44,6 +49,7 @@ public class EditCodeWindow extends Window {
 		setOrginalLanguage(orignalLanguage);
 		setLanguage(language);
 		setTheCode(code);
+		setTheView(theView);
 
 		FormLayout layout = new FormLayout();
 
@@ -66,6 +72,7 @@ public class EditCodeWindow extends Window {
 			log.trace(getTheCode().getPrefLabelByLanguage(getLanguage()));
 			getTheCode().save();
 			client.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
+			getTheView().updateGrid(getLanguage());
 			close();
 
 		});
@@ -124,6 +131,14 @@ public class EditCodeWindow extends Window {
 
 	public void setTheCode(CVConcept theCode) {
 		this.theCode = theCode;
+	}
+
+	public EditorView getTheView() {
+		return theView;
+	}
+
+	public void setTheView(EditorView theView) {
+		this.theView = theView;
 	}
 
 }
