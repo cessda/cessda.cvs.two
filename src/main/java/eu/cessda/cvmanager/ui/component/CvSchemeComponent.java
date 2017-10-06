@@ -1,7 +1,10 @@
-package eu.cessda.cvmanager.model;
+package eu.cessda.cvmanager.ui.component;
 
 import java.util.List;
 
+import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVEditor;
+import org.gesis.stardat.entity.CVScheme;
 import org.objectweb.asm.Label;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
@@ -16,12 +19,15 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.UI;
 
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
-public class CvItem  extends CustomComponent{
+public class CvSchemeComponent  extends CustomComponent{
+	private CVScheme cvScheme;
+	private List<CVConcept> cvConcepts;
+	
 	private static final long serialVersionUID = 4932510587869607326L;
-	private String imagePath;
-	private List<CvElement> cvElements;
+	
 	private MCssLayout container = new MCssLayout();
 	private MHorizontalLayout hLayout = new MHorizontalLayout();
 	private MVerticalLayout vLayout = new MVerticalLayout();
@@ -32,10 +38,12 @@ public class CvItem  extends CustomComponent{
 	private MLabel desc = new MLabel();
 	private MLabel version = new MLabel();
 	private Image logo;
+	private ConfigurationService configService;
 	
-	public CvItem(String imagePath, List<CvElement> cvElements) {
-		this.imagePath = imagePath;
-		this.cvElements = cvElements;
+	public CvSchemeComponent(CVScheme cvScheme, ConfigurationService configService) {
+		this.cvScheme = cvScheme;
+		this.configService = configService;
+		
 		setCompositionRoot(container);
 		initLayout();
 	}
@@ -43,21 +51,21 @@ public class CvItem  extends CustomComponent{
 	private void initLayout() {
 		enTitle
 			.withStyleName( "marginright20" )
-			.withContentMode( ContentMode.HTML )
-			.addContextClickListener( e-> UI.getCurrent().getNavigator().navigateTo(DetailView.VIEW_NAME) );
-		olTitle.withContentMode( ContentMode.HTML )
-		.addContextClickListener( e-> UI.getCurrent().getNavigator().navigateTo(DetailView.VIEW_NAME) );
+			.withContentMode( ContentMode.HTML );
+			//.addContextClickListener( e-> UI.getCurrent().getNavigator().navigateTo(DetailView.VIEW_NAME) );
+		olTitle.withContentMode( ContentMode.HTML );
+		//.addContextClickListener( e-> UI.getCurrent().getNavigator().navigateTo(DetailView.VIEW_NAME) );
 		desc
 			.withContentMode( ContentMode.HTML )
 			.withFullWidth();
 		version.withContentMode( ContentMode.HTML );
 		
 		languageLayout.withFullWidth();
-		cvElements.forEach( item -> {
-			MButton langBUtton = new MButton( item.getLanguageIso() );
+		cvScheme.getLanguagesByTitle().forEach( item -> {
+			MButton langBUtton = new MButton( item.toUpperCase() );
 			langBUtton
 				.withStyleName( "langbutton" )
-				.addClickListener( e -> setContent( e.getButton().getCaption() ));
+				.addClickListener( e -> setContent( e.getButton().getCaption().toLowerCase() ));
 			languageLayout.add(
 				langBUtton
 			);
@@ -80,7 +88,13 @@ public class CvItem  extends CustomComponent{
 				version
 			);
 		
-		Resource res = new ThemeResource( imagePath );
+		Resource res =  new ThemeResource( "img/ddi-logo-r.png");
+		if( cvScheme.getOwnerAgency() != null && !cvScheme.getOwnerAgency().isEmpty()) {
+			CVEditor agency = cvScheme.getOwnerAgency().get(0);
+			if( agency.getLogoPath() != null)
+				res = new ThemeResource( agency.getLogoPath() );
+		}
+
 		logo = new Image( null, res );
 		logo.setWidth( "100" );
 		
@@ -99,7 +113,7 @@ public class CvItem  extends CustomComponent{
 			.withFullWidth()
 			.add( hLayout );
 		//Initial
-		setContent( "EN" );
+		setContent( "en" );
 	}
 	
 	public Image getLogo() {
@@ -110,25 +124,11 @@ public class CvItem  extends CustomComponent{
 		this.logo = logo;
 	}
 
-	public String getImagePath() {
-		return imagePath;
+	public List<CVConcept> getCvElements() {
+		return cvConcepts;
 	}
-
-	public void setImagePath(String imagePath) {
-		this.imagePath = imagePath;
-	}
-
-	public List<CvElement> getCvElements() {
-		return cvElements;
-	}
-	public void setCvElements(List<CvElement> cvElements) {
-		this.cvElements = cvElements;
-	}
-	
-	public CvElement getCvElementByLanguage( String langIso ) {
-		return cvElements.stream()
-			.filter( item -> item.getLanguageIso().equals(langIso) )
-			.findFirst().get();
+	public void setCvElements(List<CVConcept> cvElements) {
+		this.cvConcepts = cvElements;
 	}
 	
 	public MCssLayout getContainer() {
@@ -139,11 +139,12 @@ public class CvItem  extends CustomComponent{
 	}
 	
 	private void setContent( String language ) {
-		enTitle.setValue( "<a href='#'>" + getCvElementByLanguage("EN").getTitle() + "</a>");
-		CvElement cvElem = getCvElementByLanguage( language );
-		olTitle.setValue(  "<a href='#'>" + cvElem.getTitle() + "</a>" );
-		desc.setValue( cvElem.getDescription() );
-		version.setValue( "Version: " +cvElem.getVersion() +(language.equals("EN")? "": "_"+language) + " <a href='#'>Download</a>");
+		enTitle.setValue( "<a href='" + configService.getServerContextPath()
+				+ "/#!" + DetailView.VIEW_NAME+ "/" + cvScheme.getContainerId() + "'>" + cvScheme.getCode() + "</a>");
+		olTitle.setValue(  "<a href='" + configService.getServerContextPath()
+		+ "/#!" + DetailView.VIEW_NAME+ "/" + cvScheme.getContainerId() + "'>"  + cvScheme.getTitleByLanguage( language )  + "</a>" );
+		desc.setValue( cvScheme.getDescriptionByLanguage( language ) );
+		version.setValue( "Version: " + cvScheme.getVersion().getPublicationVersion() +(language.equals("en")? "": "_"+language) + " <a href='#'>Download</a>");
 	}
 	
 }

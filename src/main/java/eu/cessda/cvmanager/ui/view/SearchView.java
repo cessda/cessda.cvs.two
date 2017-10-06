@@ -5,10 +5,14 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.springframework.scheduling.support.ScheduledMethodRunnable;
+import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -21,24 +25,27 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.v7.ui.themes.Reindeer;
 
-import eu.cessda.cvmanager.model.CvElement;
-import eu.cessda.cvmanager.model.CvItem;
+import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 
 @UIScope
 @SpringView(name = SearchView.VIEW_NAME)
@@ -48,7 +55,9 @@ public class SearchView extends VerticalLayout implements View {
 	 * 
 	 */
 	private static final long serialVersionUID = 6904286186508174249L;
-	public static final String VIEW_NAME = "";
+	public static final String VIEW_NAME = "Browse";
+	
+	private final ConfigurationService configService;
 
 	// graphical components
 	private VerticalLayout mainLayout = new VerticalLayout();
@@ -81,17 +90,25 @@ public class SearchView extends VerticalLayout implements View {
 	// private SearchHit selectedItem = null;
 
 	private RestClient client = new RestClient("http://localhost:8080/stardat-ddiflatdb");
-	private List<CvItem> cvItems = new ArrayList<>();
-
+	
+	public SearchView(ConfigurationService configService) {
+		this.configService = configService;
+	}
+	
 	@PostConstruct
 	public void init() {
 
 		this.setHeightUndefined();
 
 		// the layout that contains all
-		this.mainLayout.setSpacing(true);
-		this.mainLayout.setMargin(true);
-		this.mainLayout.setSizeFull();
+//		this.mainLayout.setSpacing(true);
+//		this.mainLayout.setMargin(true);
+//		this.mainLayout.setSizeFull();
+		mainLayout.setWidth( "1170px" );
+		mainLayout.setStyleName( "mainlayout" );
+
+		mainLayout.setMargin( new MarginInfo( false, false, false, false ) );
+		mainLayout.setSpacing( true );
 
 		// // header image
 		// this.headerImage = new Image(null,
@@ -136,11 +153,6 @@ public class SearchView extends VerticalLayout implements View {
 		this.resultsContainer.setSizeFull();
 		this.resultsContainer.addComponent(this.initResultsContainer(new ArrayList<>()));
 		
-		//cvItems.add(addDummyData1());
-		//cvItems.add(addDummyData2());
-		//resultsContainer.addComponent( cvItems.get(0));
-		//resultsContainer.addComponent( cvItems.get(1));
-		
 		this.searchGlobalContainer.addComponents(searchBoxContainer, resultsContainer);
 		this.searchGlobalContainer.setExpandRatio(resultsContainer, 1);
 
@@ -150,6 +162,8 @@ public class SearchView extends VerticalLayout implements View {
 		this.mainLayout.addComponents(globalContainer, footerImage);
 		this.mainLayout.setExpandRatio(globalContainer, 1);
 		addComponent(this.mainLayout);
+		
+		resetSearch();
 	}
 
 	@Override
@@ -158,25 +172,6 @@ public class SearchView extends VerticalLayout implements View {
 
 	}
 	
-	private CvItem addDummyData1(){
-		List<CvElement> cvElements = new ArrayList<>();
-		cvElements.add( new CvElement( "FR" , "Méthode d'agrégation", "Identifie le type d'agrégation utilisé pour combiner les catégories liées, généralement dans une branche commune d'une hiérarchie, pour fournir des informations à un niveau plus large que le niveau auquel des observations détaillées sont prises. (À partir du: Glossaire statistique de l'OCDE)", "1.0"));
-		cvElements.add( new CvElement( "ES" , "Método de agregación", "Identifica el tipo de agregación utilizada para combinar categorías relacionadas, normalmente dentro de una rama común de una jerarquía, para proporcionar información a un nivel más amplio que el nivel en el que se toman observaciones detalladas. (De: El Glosario de términos estadísticos de la OCDE)", "1.0"));
-		cvElements.add( new CvElement( "DE" , "Aggregationsmethode", "Identifiziert die Art der Aggregation, die verwendet wird, um verwandte Kategorien zu kombinieren, in der Regel innerhalb eines gemeinsamen Zweiges einer Hierarchie, um Informationen auf einer breiteren Ebene als die Ebene, auf der detaillierte Beobachtungen getroffen werden. (Aus: Das OECD-Glossar der statistischen Begriffe)", "1.0"));
-		cvElements.add( new CvElement( "EN" , "AggregationMethod", "Identifies the type of aggregation used to combine related categories, usually within a common branch of a hierarchy, to provide information at a broader level than the level at which detailed observations are taken. (From: The OECD Glossary of Statistical Terms)", "1.0"));
-		
-		return new CvItem("img/ddi-logo-r.png", cvElements);
-	}
-	
-	private CvItem addDummyData2(){
-		List<CvElement> cvElements = new ArrayList<>();
-		cvElements.add( new CvElement( "ES" , "Unidad de Análisis", "Unidad de Análisis Identifica el tipo de agregación utilizada para combinar categorías relacionadas, normalmente dentro de una rama común de una jerarquía, para proporcionar información a un nivel más amplio que el nivel en el que se toman observaciones detalladas. (De: El Glosario de términos estadísticos de la OCDE)", "1.0"));
-		cvElements.add( new CvElement( "DE" , "Analyseeinheit", "Analyseeinheit Identifiziert die Art der Aggregation, die verwendet wird, um verwandte Kategorien zu kombinieren, in der Regel innerhalb eines gemeinsamen Zweiges einer Hierarchie, um Informationen auf einer breiteren Ebene als die Ebene, auf der detaillierte Beobachtungen getroffen werden. (Aus: Das OECD-Glossar der statistischen Begriffe)", "1.0"));
-		cvElements.add( new CvElement( "EN" , "Analysis Unit", "Analysis Unit Identifies the type of aggregation used to combine related categories, usually within a common branch of a hierarchy, to provide information at a broader level than the level at which detailed observations are taken. (From: The OECD Glossary of Statistical Terms)", "1.0"));
-		return new CvItem("img/ddi-logo-r.png", cvElements);
-	}
-	
-
 	/**
 	 * Initialize the search box zone, with all necessary components and
 	 * listeners
@@ -211,7 +206,8 @@ public class SearchView extends VerticalLayout implements View {
 					hits.add(scheme);
 				}
 				updateResultsContainer(hits);
-			}
+			} else
+				resetSearch();
 
 		});
 
@@ -227,7 +223,7 @@ public class SearchView extends VerticalLayout implements View {
 			.withCaption("Clear search")
 			.withStyleName(ValoTheme.BUTTON_LINK)
 			.addClickListener( e -> {
-				System.out.println( "Clear search" );
+				resetSearch();
 			 });
 
 		searchHelpButton
@@ -239,6 +235,7 @@ public class SearchView extends VerticalLayout implements View {
 			 });
 		
 		searchOption
+			.withStyleName( "searchoption" )
 			.withMargin( false )
 			.add(
 				clearButton,
@@ -256,9 +253,7 @@ public class SearchView extends VerticalLayout implements View {
 		sortComboBox.setEmptySelectionAllowed( false );
 		sortComboBox.setWidth("120px");
 		sortComboBox.setValue("A-Z");
-		
-		infoResult.setValue( "Showing 1 - 2 of 2" );
-		
+				
 		filterOption
 			.withFullWidth()
 			.add(
@@ -283,6 +278,19 @@ public class SearchView extends VerticalLayout implements View {
 		return container;
 
 	}
+	
+	private void resetSearch() {
+		searchBox.setValue( "" );
+		List<DDIStore> searchResult = client.getStudyList(DDIElement.CVSCHEME);
+
+		ArrayList<CVScheme> hits = new ArrayList<CVScheme>();
+		for (DDIStore store : searchResult) {
+			CVScheme scheme = new CVScheme(store);
+
+			hits.add(scheme);
+		}
+		updateResultsContainer(hits);
+	}
 
 	/**
 	 * Initialize the results zone, with all necessary components and listeners.
@@ -295,6 +303,11 @@ public class SearchView extends VerticalLayout implements View {
 	private com.vaadin.ui.Component initResultsContainer(ArrayList<CVScheme> hits) {
 
 		VerticalLayout layout = new VerticalLayout();
+		
+		if( hits.isEmpty())
+			infoResult.setValue( "Showing 0 of 0" );
+		else
+			infoResult.setValue( "Showing 1 - " + hits.size()+ " of " + hits.size());
 
 		Label header = new Label("<b>" + hits.size() + " CVs retrieved</b>", ContentMode.HTML);
 
@@ -302,46 +315,60 @@ public class SearchView extends VerticalLayout implements View {
 		Grid<CVScheme> results = new Grid<>(CVScheme.class);
 		results.setItems(hits);
 		results.addStyleName(ValoTheme.TABLE_BORDERLESS);
-
+		
+//		results.addComponentColumn( scheme -> {
+//			return cvItems.get(0);
+//		} );
+		results.removeAllColumns();
+		results.setHeaderVisible( false );
+		results.addColumn( cvscheme -> {
+		      return new CvSchemeComponent( cvscheme, configService );
+		      }, new ComponentRenderer())
+			.setId("cvScemeComp");
+		results.setRowHeight( 135.0 );
+		results.getColumn("cvScemeComp").setExpandRatio( 1 );
+		
+		results.setSelectionMode(SelectionMode.NONE);
+		
 		// SourceAsString column
 		// results.addColumn(SearchHit::getSourceAsString).setCaption("Study").setId("study");
 
-		// add study title column to the grid
-		results.addColumn(new ValueProvider<CVScheme, String>() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String apply(CVScheme source) {
-				return source.getTitleByLanguage("en");
-			}
-		}).setCaption("Title").setId("titleS");
-
-		// add study rank column to the grid
-		results.addColumn(new ValueProvider<CVScheme, String>() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String apply(CVScheme source) {
-				return source.getDescriptionByLanguage("en");
-			}
-		}).setCaption("Description").setId("descriptionS");
-
-		// add study rank column to the grid
-		results.addColumn(new ValueProvider<CVScheme, String>() {
-
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String apply(CVScheme source) {
-				return source.getOwnerAgency().get(0).getName();
-			}
-		}).setCaption("Owner Agency").setId("ownerS");
-
-		results.setColumns("ownerS", "titleS", "descriptionS");
+//		// add study title column to the grid
+//		results.addColumn(new ValueProvider<CVScheme, String>() {
+//
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public String apply(CVScheme source) {
+//				return source.getTitleByLanguage("en");
+//			}
+//		}).setCaption("Title").setId("titleS");
+//
+//		// add study rank column to the grid
+//		results.addColumn(new ValueProvider<CVScheme, String>() {
+//
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public String apply(CVScheme source) {
+//				return source.getDescriptionByLanguage("en");
+//			}
+//		}).setCaption("Description").setId("descriptionS");
+//
+//		// add study rank column to the grid
+//		results.addColumn(new ValueProvider<CVScheme, String>() {
+//
+//			private static final long serialVersionUID = 1L;
+//
+//			@Override
+//			public String apply(CVScheme source) {
+//				return source.getOwnerAgency().get(0).getName();
+//			}
+//		}).setCaption("Owner Agency").setId("ownerS");
+//
+//		results.setColumns("ownerS", "titleS", "descriptionS");
 		results.setSizeFull();
-		results.getColumn("titleS").setExpandRatio(1);
+//		results.getColumn("titleS").setExpandRatio(1);
 
 		// define the panel that should be opened when clicking on a row of the
 		// grid

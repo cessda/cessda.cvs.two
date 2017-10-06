@@ -24,18 +24,23 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.Binder.Binding;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
 @UIScope
@@ -79,10 +84,7 @@ public class DetailView extends MVerticalLayout implements View {
 	private TextField prefLanguageEditor = new TextField();
 	private TextField prefLabelEditor = new TextField();
 
-	// private Image headerImage = new Image();
-	private Image footerImage = new Image();
-
-	// CvItem cvItem;
+	private View oldView;
 
 	private CVScheme cvScheme;
 	private Binder<CVConcept> binder;
@@ -104,12 +106,47 @@ public class DetailView extends MVerticalLayout implements View {
 
 	@PostConstruct
 	public void init() {
+		
+		MButton backToResults = new MButton( FontAwesome.BACKWARD, this::back );
+		backToResults.setCaption( "Back" );
+		backToResults.withStyleName(ValoTheme.BUTTON_FRIENDLY, ValoTheme.BUTTON_SMALL,
+				"pull-right", "marginleft20");
 
-		List<DDIStore> ddiSchemes = client.getElementList("thesoz", DDIElement.CVSCHEME);
+		editButton.addClickListener(e -> setFormMode(FormMode.edit));
+		cancelButton.addClickListener(e -> setFormMode(FormMode.view));
+
+		buttonLayout
+			.withFullWidth()
+			.withStyleName("alignTextRight")
+			.add(backToResults, editButton, cancelButton, saveButton );
+
+		languageLayout.withFullWidth();
+
+		topSection.add(topViewSection, topEditSection);
+
+		bottomSection.add(bottomViewSection, bottomEditSection);
+
+		// the layout that contains all
+		mainLayout.setWidth( "1170px" );
+		mainLayout.setStyleName( "mainlayout" );
+
+		mainLayout.setMargin( new MarginInfo( false, false, false, false ) );
+		mainLayout.setSpacing( true );
+		mainLayout.withSpacing(true)
+			.add(buttonLayout, 
+					topSection, 
+					languageLayout,
+				bottomSection);
+
+		this.withHeightUndefined().add(mainLayout);
+	}
+	
+	private void setDetails(String itemId) {
+		List<DDIStore> ddiSchemes = client.getElementList(itemId, DDIElement.CVSCHEME);
 		if (ddiSchemes != null && !ddiSchemes.isEmpty())
 			cvScheme = new CVScheme(ddiSchemes.get(0));
 		
-		List<DDIStore> ddiConcepts = client.getElementList("thesoz", DDIElement.CVCONCEPT);
+		List<DDIStore> ddiConcepts = client.getElementList(itemId, DDIElement.CVCONCEPT);
 
 		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
 
@@ -140,23 +177,6 @@ public class DetailView extends MVerticalLayout implements View {
 		initTopEditSection();
 		initBottomViewSection();
 		initBottomEditSection();
-
-		editButton.addClickListener(e -> setFormMode(FormMode.edit));
-		cancelButton.addClickListener(e -> setFormMode(FormMode.view));
-
-		buttonLayout.withFullWidth().withStyleName("alignTextRight").add(editButton, cancelButton, saveButton);
-
-		languageLayout.withFullWidth();
-
-		topSection.add(topViewSection, topEditSection);
-
-		bottomSection.add(bottomViewSection, bottomEditSection);
-
-		// the layout that contains all
-		mainLayout.withSpacing(true).withMargin(true).withFullWidth().add(buttonLayout, topSection, languageLayout,
-				bottomSection);
-
-		this.withHeightUndefined().add(mainLayout);
 	}
 
 	private void initTopViewSection() {
@@ -385,8 +405,22 @@ public class DetailView extends MVerticalLayout implements View {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
+		setOldView( event.getOldView() );
+		
+		if ( event.getParameters() != null )
+		{
+			try
+			{
+				String itemId = event.getParameters();
+				setDetails( itemId );
+			}
+			catch (Exception e)
+			{
+				// UI.getCurrent().getNavigator().navigateTo( ErrorView.VIEW_NAME );
+				e.printStackTrace();
+			}
 
+		}
 	}
 
 	public FormMode getFormMode() {
@@ -429,4 +463,28 @@ public class DetailView extends MVerticalLayout implements View {
 		this.selectedLang = selectedLang;
 	}
 
+	private void setOldView( View oldView )
+	{
+		this.oldView = oldView;
+	}
+	
+	private View getOldView()
+	{
+		return this.oldView;
+	}
+	
+	private void back( ClickEvent clickEvent )
+	{
+
+		UI.getCurrent().getNavigator().navigateTo( SearchView.VIEW_NAME );
+		if ( getOldView().getClass().getSimpleName().equals( "HomeView" ) )
+		{
+			UI.getCurrent().getNavigator().navigateTo( SearchView.VIEW_NAME );
+		}
+		else
+		{
+			UI.getCurrent().getNavigator().navigateTo( SearchView.VIEW_NAME );
+		}
+
+	}
 }

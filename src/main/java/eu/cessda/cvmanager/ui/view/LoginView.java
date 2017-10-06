@@ -159,7 +159,7 @@ public class LoginView extends VerticalLayout implements View {
 		infoUserDeleted.addComponent(userDeleteLabel);
 		infoUserDeleted.setComponentAlignment(userDeleteLabel, Alignment.MIDDLE_CENTER);
 
-		this.addComponents(this.loginFormLayout, infoUserDeleted);
+		this.addComponents(this.loginFormLayout/*, infoUserDeleted*/);
 		this.setSizeFull();
 		this.loginFormLayout.setSizeUndefined();
 		// this.setHeight("100%");
