@@ -34,10 +34,7 @@
     		<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}</url>
   		</repository>
 	
-		<repository>
-			<id>gesis-private</id>
-			<url>https://maven.gesis.org/repositories/gesis-private</url>
-		</repository>
+		
 		<repository>
 			<id>svkowts-ci</id>
 			<url>http://svkowts-ci:8081/nexus/content/groups/public/</url>
