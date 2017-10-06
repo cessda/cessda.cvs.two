@@ -35,10 +35,7 @@
   		</repository>
 	
 		
-		<repository>
-			<id>svkowts-ci</id>
-			<url>http://svkowts-ci:8081/nexus/content/groups/public/</url>
-		</repository>
+		
 		<repository>
 			<id>vaadin-addons</id>
 			<url>http://maven.vaadin.com/vaadin-addons</url>
