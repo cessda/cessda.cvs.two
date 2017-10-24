@@ -10,6 +10,9 @@ public class ConfigurationService {
 
 	@Value("${server.contextPath}")
 	private String serverContextPath;
+	
+	@Value("${ddiflatdb.rest.url}")
+	private String ddiflatdbRestUrl;
 
 	public String getServerContextPath() {
 		return serverContextPath;
@@ -20,6 +23,14 @@ public class ConfigurationService {
 		int port = UI.getCurrent().getPage().getLocation().getPort();
 
 		return port > 0 ? baseUrl + ":" + port : baseUrl;
+	}
+
+	public String getDdiflatdbRestUrl() {
+		return ddiflatdbRestUrl;
+	}
+
+	public void setDdiflatdbRestUrl(String ddiflatdbRestUrl) {
+		this.ddiflatdbRestUrl = ddiflatdbRestUrl;
 	}
 
 }

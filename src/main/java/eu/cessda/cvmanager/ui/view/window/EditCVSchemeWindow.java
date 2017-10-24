@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 
+import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 
 public class EditCVSchemeWindow extends Window {
@@ -37,10 +39,10 @@ public class EditCVSchemeWindow extends Window {
 
 	private CVScheme cvScheme;
 
-	private EditorView theView;
+	//private EditorView theView;
 
 	public EditCVSchemeWindow(RestClient client, CVScheme cvScheme, String orignalLanguage, String language,
-			EditorView theView) {
+			DetailView theView) {
 		super("Edit CVScheme");
 		setWidth("600px");
 		setHeight("500px");
@@ -49,7 +51,7 @@ public class EditCVSchemeWindow extends Window {
 		setOrginalLanguage(orignalLanguage);
 		setLanguage(language);
 		setCvScheme(cvScheme);
-		this.setTheView(theView);
+		//this.setTheView(theView);
 
 		FormLayout layout = new FormLayout();
 
@@ -72,7 +74,7 @@ public class EditCVSchemeWindow extends Window {
 			log.trace(getCvScheme().getTitleByLanguage(getLanguage()));
 			getCvScheme().save();
 			client.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
-			getTheView().updateGrid(getLanguage());
+			theView.updateDetailGrid();
 			close();
 
 		});
@@ -133,12 +135,12 @@ public class EditCVSchemeWindow extends Window {
 		this.cvScheme = cvScheme;
 	}
 
-	public EditorView getTheView() {
-		return theView;
-	}
-
-	public void setTheView(EditorView theView) {
-		this.theView = theView;
-	}
+//	public EditorView getTheView() {
+//		return theView;
+//	}
+//
+//	public void setTheView(EditorView theView) {
+//		this.theView = theView;
+//	}
 
 }

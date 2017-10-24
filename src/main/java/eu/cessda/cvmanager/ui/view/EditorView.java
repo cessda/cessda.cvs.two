@@ -44,6 +44,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.ui.view.window.EditCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.EditCodeWindow;
 
@@ -64,6 +65,9 @@ public class EditorView extends VerticalLayout implements View {
 	private static final long serialVersionUID = -4522689928221256955L;
 
 	public static final String VIEW_NAME = "Editor";
+	
+	@Autowired
+	ConfigurationService configService;
 
 	@Autowired
 	SecurityService securityService;
@@ -79,8 +83,7 @@ public class EditorView extends VerticalLayout implements View {
 
 	private String originalLanguage = "en";
 
-	private RestClient client = new RestClient("http://localhost:8080/stardat-ddiflatdb");
-
+	private RestClient client;
 	List<DDIStore> ddiConcepts;
 
 	List<CVConcept> concepts = new ArrayList<CVConcept>();
@@ -109,12 +112,14 @@ public class EditorView extends VerticalLayout implements View {
 		super();
 		// TODO Auto-generated constructor stub
 		theView = this;
+		client = new RestClient( configService.getDdiflatdbRestUrl() );
 	}
 
 	public EditorView(Component... children) {
 		super(children);
 		// TODO Auto-generated constructor stub
 		theView = this;
+		client = new RestClient( configService.getDdiflatdbRestUrl() );
 	}
 
 	/*
@@ -195,10 +200,10 @@ public class EditorView extends VerticalLayout implements View {
 			cvScheme.loadSkeleton(cvScheme.getDefaultDialect());
 			cvScheme.createId();
 			cvScheme.setContainerId(cvScheme.getId());
-
-			Window window = new EditCVSchemeWindow(client, cvScheme, getOriginalLanguage(), getLanguage(),
-					this.theView);
-			getUI().addWindow(window);
+//
+//			Window window = new EditCVSchemeWindow(client, cvScheme, getOriginalLanguage(), getLanguage(),
+//					this.theView);
+//			getUI().addWindow(window);
 		});
 
 		addComponents(new Label("Thesoz"), gridLayout);

@@ -15,6 +15,7 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
+import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
@@ -60,6 +61,7 @@ public class SearchView extends VerticalLayout implements View {
 	private final ConfigurationService configService;
 
 	// graphical components
+	private MCssLayout mainLayoutContainer = new MCssLayout();
 	private VerticalLayout mainLayout = new VerticalLayout();
 	// private Image headerImage = new Image();
 	private Image footerImage = new Image();
@@ -89,10 +91,11 @@ public class SearchView extends VerticalLayout implements View {
 	// The opened search hit at the results grid (null at the begining)
 	// private SearchHit selectedItem = null;
 
-	private RestClient client = new RestClient("http://localhost:8080/stardat-ddiflatdb");
+	private RestClient client;
 	
 	public SearchView(ConfigurationService configService) {
 		this.configService = configService;
+		client = new RestClient( configService.getDdiflatdbRestUrl() );
 	}
 	
 	@PostConstruct
@@ -104,9 +107,11 @@ public class SearchView extends VerticalLayout implements View {
 //		this.mainLayout.setSpacing(true);
 //		this.mainLayout.setMargin(true);
 //		this.mainLayout.setSizeFull();
-		mainLayout.setWidth( "1170px" );
-		mainLayout.setStyleName( "mainlayout" );
+		mainLayoutContainer.setWidth( "1170px" );
+		mainLayoutContainer.setStyleName( "mainlayout" );
 
+		//mainLayout.setSizeFull();
+		mainLayout.setStyleName( "mainlayout" );
 		mainLayout.setMargin( new MarginInfo( false, false, false, false ) );
 		mainLayout.setSpacing( true );
 
@@ -161,7 +166,10 @@ public class SearchView extends VerticalLayout implements View {
 
 		this.mainLayout.addComponents(globalContainer, footerImage);
 		this.mainLayout.setExpandRatio(globalContainer, 1);
-		addComponent(this.mainLayout);
+		
+		mainLayoutContainer
+			.add( mainLayout );
+		addComponent( mainLayoutContainer );
 		
 		resetSearch();
 	}

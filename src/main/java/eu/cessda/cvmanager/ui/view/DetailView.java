@@ -29,6 +29,10 @@ import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.dnd.DropEffect;
+import com.vaadin.shared.ui.dnd.EffectAllowed;
+import com.vaadin.shared.ui.grid.DropLocation;
+import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
@@ -40,7 +44,11 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.components.grid.GridDragSource;
+import com.vaadin.ui.components.grid.GridDropTarget;
 import com.vaadin.ui.themes.ValoTheme;
+
+import eu.cessda.cvmanager.service.ConfigurationService;
 
 @UIScope
 @SpringView(name = DetailView.VIEW_NAME)
@@ -50,6 +58,7 @@ public class DetailView extends MVerticalLayout implements View {
 	public static final String VIEW_NAME = "Detail";
 
 	private final EventBus.UIEventBus eventBus;
+	private final ConfigurationService configService;
 
 	private final String ITEM_TITLE = "Title";
 	private final String ITEM_DEF = "Definition";
@@ -58,7 +67,6 @@ public class DetailView extends MVerticalLayout implements View {
 	private final String ITEM_VERSION = "Latest published version";
 	private final String ITEM_PUBLICATION = "Date of publication";
 
-	private RestClient client = new RestClient("http://localhost:8080/stardat-ddiflatdb");
 
 	private String selectedLang = "en";
 	private FormMode formMode;
@@ -72,6 +80,7 @@ public class DetailView extends MVerticalLayout implements View {
 
 	// graphical components
 	private MVerticalLayout mainLayout = new MVerticalLayout();
+	private MHorizontalLayout detailLayout = new MHorizontalLayout();
 
 	private MCssLayout topSection = new MCssLayout().withFullWidth();
 	private MCssLayout topViewSection = new MCssLayout().withFullWidth();
@@ -82,29 +91,45 @@ public class DetailView extends MVerticalLayout implements View {
 
 	private TextField prefLanguageEditor = new TextField();
 	private TextField prefLabelEditor = new TextField();
+	private TextField definitionEditor = new TextField();
 
 	private View oldView;
+	
+	private Grid<CVConcept> detailGrid;
 
 	private CVScheme cvScheme;
 	private Binder<CVConcept> binder;
 	private List<CVConcept> concepts = new ArrayList<CVConcept>();
 	private MCssLayout languageLayout = new MCssLayout();
+	
+	private ActionPanel actionPanel;
+	
+	private Set<CVConcept> draggedItems;
+	private Grid<CVConcept> draggedGrid;
 
 	// The opened search hit at the results grid (null at the begining)
 	// private SearchHit selectedItem = null;
 
 	// private List<CvItem> cvItems = new ArrayList<>();
+	
+	private RestClient client;
 
 	private MHorizontalLayout titleLayout = new MHorizontalLayout();
 	private Image logoImage;
 
-	public DetailView(EventBus.UIEventBus eventBus) {
+	public DetailView(EventBus.UIEventBus eventBus, ConfigurationService configService) {
 		this.eventBus = eventBus;
+		this.configService = configService;
+		
+		client = new RestClient( configService.getDdiflatdbRestUrl() );
+		
+		this.eventBus.subscribe( this );
 	}
 	// private
 
 	@PostConstruct
 	public void init() {
+		actionPanel = new ActionPanel( this );
 
 		MButton backToResults = new MButton(FontAwesome.BACKWARD, this::back);
 		backToResults.setCaption("Back");
@@ -121,14 +146,31 @@ public class DetailView extends MVerticalLayout implements View {
 		topSection.add(topViewSection, topEditSection);
 
 		bottomSection.add(bottomViewSection, bottomEditSection);
+		
+		detailLayout.add( 
+				actionPanel,
+				new MVerticalLayout( 
+						buttonLayout, 
+						topSection, 
+						languageLayout, 
+						bottomSection )
+				.withMargin( false )
+				.withSpacing( false ) 
+				)
+			.withFullWidth()
+			.withExpand( actionPanel, 0.15f )
+			.withSpacing( false )
+			.withMargin( false )
+			.withExpand( detailLayout.getComponent( 1 ), 0.85f );
 
-		// the layout that contains all
-		mainLayout.setWidth("1170px");
-		mainLayout.setStyleName("mainlayout");
-
-		mainLayout.setMargin(new MarginInfo(false, false, false, false));
-		mainLayout.setSpacing(true);
-		mainLayout.withSpacing(true).add(buttonLayout, topSection, languageLayout, bottomSection);
+		mainLayout
+			.withWidth( "1170px" )
+			.withStyleName( "mainlayout" )
+			.withSpacing( true )
+			.withMargin( new MarginInfo( false, false, false, false ) )
+			.add(
+				detailLayout
+		);
 
 		this.withHeightUndefined().add(mainLayout);
 	}
@@ -337,11 +379,11 @@ public class DetailView extends MVerticalLayout implements View {
 		detailTab.addTab(ddiLayout, "DDI usage");
 		detailTab.addTab(licenseLayout, "License and copyright");
 		detailTab.addTab(exportLayout, "Export/download");
-
+		
 		// initialize the results grid
-		Grid<CVConcept> detailGrid = new Grid<>(CVConcept.class);
+		detailGrid = new Grid<>(CVConcept.class);
 		binder = detailGrid.getEditor().getBinder();
-		binder.addValueChangeListener(event -> Notification.show("Binder Event"));
+		//binder.addValueChangeListener(event -> Notification.show("Binder Event"));
 		detailGrid.setItems(concepts);
 		// detailGrid.setItems( cvItem.getCvElements() );
 		// detailGrid.addStyleName(ValoTheme.TABLE_BORDERLESS);
@@ -349,6 +391,19 @@ public class DetailView extends MVerticalLayout implements View {
 		// SourceAsString column
 		// results.addColumn(SearchHit::getSourceAsString).setCaption("Study").setId("study");
 
+		updateDetailGrid();
+
+		detailLayout.addComponents(detailGrid);
+		detailLayout.setMargin(true);
+		detailLayout.setSpacing(true);
+		detailLayout.setSizeFull();
+		detailLayout.setExpandRatio(detailGrid, 1);
+
+		bottomViewSection.add(detailTab);
+	}
+	
+	
+	public void updateDetailGrid() {
 		detailGrid.removeAllColumns();
 		// detailGrid.addColumn(CVConcept::getId).setCaption("URI").setExpandRatio(1);
 
@@ -367,17 +422,14 @@ public class DetailView extends MVerticalLayout implements View {
 		// value, "en"));
 
 		detailGrid.addColumn(concept -> concept.getDescriptionByLanguage(selectedLang)).setCaption("Definition")
+				.setEditorComponent(definitionEditor, (concept, value) -> concept.setDescriptionByLanguage( selectedLang, value))
 				.setExpandRatio(2);
 
 		detailGrid.setSizeFull();
-
-		detailLayout.addComponents(detailGrid);
-		detailLayout.setMargin(true);
-		detailLayout.setSpacing(true);
-		detailLayout.setSizeFull();
-		detailLayout.setExpandRatio(detailGrid, 1);
-
-		bottomViewSection.add(detailTab);
+		detailGrid.getEditor().setEnabled(true);
+		
+		addDragSourceExtension(detailGrid, concepts);
+		addDropTargetExtension(detailGrid, DropMode.BETWEEN, concepts);
 	}
 
 	private void initBottomEditSection() {
@@ -398,6 +450,80 @@ public class DetailView extends MVerticalLayout implements View {
 
 		bottomEditSection.add(detailTab);
 	}
+	
+    private GridDragSource<CVConcept> addDragSourceExtension(Grid<CVConcept> source,
+            List<CVConcept> items) {
+        // Create and attach extension
+        GridDragSource<CVConcept> dragSource = new GridDragSource<>(source);
+        dragSource.setEffectAllowed(EffectAllowed.MOVE);
+ 
+		// Add drag start listener
+        dragSource.addGridDragStartListener(event -> {
+            // Keep reference to the dragged items,
+            // note that there can be only one drag at a time
+            draggedItems = event.getDraggedItems();
+            draggedGrid = source;
+        });
+ 
+        // Add drag end listener
+        dragSource.addGridDragEndListener(event -> {
+            // verify that drop effect was the desired -> drop happened
+            if (event.getDropEffect() == DropEffect.MOVE) {
+                // inside grid reordering is handled on drop event listener,
+                // which is always fired before drag end
+                if (draggedGrid == null) {
+                    return;
+                }
+                // remove items from this grid
+                items.removeAll(draggedItems);
+                source.getDataProvider().refreshAll();
+ 
+                // Remove reference to dragged items
+                draggedItems = null;
+                draggedGrid = null;
+            }
+        });
+ 
+        return dragSource;
+    }
+ 
+    private GridDropTarget<CVConcept> addDropTargetExtension(Grid<CVConcept> target,
+            DropMode dropMode, List<CVConcept> items) {
+        // Create and attach extension
+        GridDropTarget<CVConcept> dropTarget = new GridDropTarget<>(target,
+                dropMode);
+        dropTarget.setDropEffect(DropEffect.MOVE);
+ 
+        // Add listener
+        dropTarget.addGridDropListener(event -> {
+            // Calculate the target row's index
+            int index = items.size();
+            if (event.getDropTargetRow().isPresent()) {
+                index = items.indexOf(event.getDropTargetRow().get())
+                        + (event.getDropLocation() == DropLocation.BELOW ? 1
+                                : 0);
+            }
+            if (draggedGrid == target) {
+                // The index needs to be offset by the number of dragged items
+                // above the drop location
+                final int finalIndex = index;
+                int offset = (int) draggedItems.stream()
+                        .filter(d -> items.indexOf(d) < finalIndex).count();
+ 
+                // Reordering rows in this grid, first remove and then add
+                items.removeAll(draggedItems);
+                items.addAll(index - offset, draggedItems);
+                draggedItems = null;
+                draggedGrid = null;
+            } else {
+                // Add dragged items to this Grid
+                items.addAll(index, draggedItems);
+            }
+            target.getDataProvider().refreshAll();
+        });
+ 
+        return dropTarget;
+    }
 
 	@Override
 	public void enter(ViewChangeEvent event) {
@@ -473,5 +599,21 @@ public class DetailView extends MVerticalLayout implements View {
 			UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
 		}
 
+	}
+
+	public Grid<CVConcept> getDetailGrid() {
+		return detailGrid;
+	}
+
+	public List<CVConcept> getConcepts() {
+		return concepts;
+	}
+
+	public EventBus.UIEventBus getEventBus() {
+		return eventBus;
+	}
+
+	public RestClient getClient() {
+		return client;
 	}
 }
