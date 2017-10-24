@@ -26,16 +26,16 @@ public class CvGuiApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(CvGuiApplication.class);
 	}
-
-	@Bean(name = "dataSource")
-	public DriverManagerDataSource securityDataSource() {
-		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-
-		driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		driverManagerDataSource.setUrl("jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false");
-		driverManagerDataSource.setUsername("root");
-		driverManagerDataSource.setPassword("GVM8Sj8FUxBf4gk");
-		return driverManagerDataSource;
-	}
+//
+//	@Bean(name = "dataSource")
+//	public DriverManagerDataSource securityDataSource() {
+//		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
+//
+//		driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
+//		driverManagerDataSource.setUrl("jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false");
+//		driverManagerDataSource.setUsername("root");
+//		driverManagerDataSource.setPassword("GVM8Sj8FUxBf4gk");
+//		return driverManagerDataSource;
+//	}
 
 }

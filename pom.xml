@@ -220,9 +220,9 @@
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <server.contextPath>/cvmanager-test</server.contextPath>
 				<ddiflatdb.rest.url>http://localhost:8080/stardat-ddiflatdb</ddiflatdb.rest.url>
-				<db.mysql.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</db.mysql.url>
-				<db.mysql.username>root</db.mysql.username>
-				<db.mysql.password>GVM8Sj8FUxBf4gk</db.mysql.password>
+				<db.mysql.url>jdbc:mysql://localhost:3306/cvmanager-security?useSSL=false</db.mysql.url>
+				<db.mysql.username>cessda</db.mysql.username>
+				<db.mysql.password>cessda01</db.mysql.password>
             </properties>
             <build>
           		<plugins>
