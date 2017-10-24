@@ -5,7 +5,6 @@ import java.util.List;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
-import org.objectweb.asm.Label;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -17,7 +16,6 @@ import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.ui.view.DetailView;
