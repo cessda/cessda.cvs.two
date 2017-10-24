@@ -61,6 +61,9 @@ $v-selection-item-border-radius: 0;
 
 @mixin mytheme {
   @include valo;
+  	.mainlayoutContainer{
+  		text-align:inherit;
+	}
   
   	.v-slot-mainlayout{
   		text-align: center;
@@ -1715,4 +1718,7 @@ $v-selection-item-border-radius: 0;
 		    text-decoration: none;
 	    }
     }
+   .aligncenter{
+   		text-align:center;
+   	}
 }

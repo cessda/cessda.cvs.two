@@ -138,7 +138,7 @@ public class CvSchemeComponent  extends CustomComponent{
 	
 	private void setContent( String language ) {
 		enTitle.setValue( "<a href='" + configService.getServerContextPath()
-				+ "/#!" + DetailView.VIEW_NAME+ "/" + cvScheme.getContainerId() + "'>" + cvScheme.getCode() + "</a>");
+				+ "/#!" + DetailView.VIEW_NAME+ "/" + cvScheme.getContainerId() + "'>" + cvScheme.getTitleByLanguage( "en" )+ "</a>");
 		olTitle.setValue(  "<a href='" + configService.getServerContextPath()
 		+ "/#!" + DetailView.VIEW_NAME+ "/" + cvScheme.getContainerId() + "'>"  + cvScheme.getTitleByLanguage( language )  + "</a>" );
 		desc.setValue( cvScheme.getDescriptionByLanguage( language ) );

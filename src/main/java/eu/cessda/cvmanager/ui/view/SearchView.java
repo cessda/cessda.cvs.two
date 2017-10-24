@@ -5,12 +5,15 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
+import org.gesis.security.SecurityService;
 import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.springframework.scheduling.support.ScheduledMethodRunnable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.viritin.button.MButton;
@@ -50,7 +53,7 @@ import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 
 @UIScope
 @SpringView(name = SearchView.VIEW_NAME)
-public class SearchView extends VerticalLayout implements View {
+public class SearchView extends MVerticalLayout implements View {
 
 	/**
 	 * 
@@ -58,11 +61,14 @@ public class SearchView extends VerticalLayout implements View {
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "Browse";
 	
+	private final EventBus.UIEventBus eventBus;
 	private final ConfigurationService configService;
 
 	// graphical components
 	private MCssLayout mainLayoutContainer = new MCssLayout();
-	private VerticalLayout mainLayout = new VerticalLayout();
+	private MVerticalLayout mainLayout = new MVerticalLayout();
+	private MHorizontalLayout searchLayout = new MHorizontalLayout();
+	
 	// private Image headerImage = new Image();
 	private Image footerImage = new Image();
 	// main container
@@ -87,45 +93,28 @@ public class SearchView extends VerticalLayout implements View {
 	private ComboBox sortComboBox = new ComboBox();
 	// results area
 	private VerticalLayout resultsContainer = new VerticalLayout();
+	
+	private ActionSearchPanel actionSearchPanel;
 
 	// The opened search hit at the results grid (null at the begining)
 	// private SearchHit selectedItem = null;
 
 	private RestClient client;
 	
-	public SearchView(ConfigurationService configService) {
+	public SearchView(EventBus.UIEventBus eventBus, ConfigurationService configService) {
+		this.eventBus = eventBus;
 		this.configService = configService;
+		
 		client = new RestClient( configService.getDdiflatdbRestUrl() );
+		
+		this.eventBus.subscribe( this );
 	}
 	
 	@PostConstruct
 	public void init() {
-
-		this.setHeightUndefined();
-
-		// the layout that contains all
-//		this.mainLayout.setSpacing(true);
-//		this.mainLayout.setMargin(true);
-//		this.mainLayout.setSizeFull();
-		mainLayoutContainer.setWidth( "1170px" );
-		mainLayoutContainer.setStyleName( "mainlayout" );
-
-		//mainLayout.setSizeFull();
-		mainLayout.setStyleName( "mainlayout" );
-		mainLayout.setMargin( new MarginInfo( false, false, false, false ) );
-		mainLayout.setSpacing( true );
-
-		// // header image
-		// this.headerImage = new Image(null,
-		// new
-		// ExternalResource("http://www.gesis.org/fileadmin/styles/img/gs_home_logo_de.svg"));
-		// this.headerImage.setHeight(50, Unit.PIXELS);
-		//
-		// // footer image
-		// this.footerImage = new Image(null,
-		// new
-		// ExternalResource("http://www.gesis.org/fileadmin/styles/img/leibniz_logo_de_white.svg"));
-		// this.footerImage.setHeight(50, Unit.PIXELS);
+		actionSearchPanel = new ActionSearchPanel( this );
+		
+		LoginView.NAVIGATETO_VIEWNAME = SearchView.VIEW_NAME;
 
 		// the layout that contains the three zones: filters, search box, and
 		// results
@@ -164,14 +153,61 @@ public class SearchView extends VerticalLayout implements View {
 		this.globalContainer.addComponents(filtersContainer, searchGlobalContainer);
 		this.globalContainer.setExpandRatio(searchGlobalContainer, 1);
 
-		this.mainLayout.addComponents(globalContainer, footerImage);
-		this.mainLayout.setExpandRatio(globalContainer, 1);
+		
+		searchLayout.add( 
+				actionSearchPanel,
+				new MVerticalLayout( 
+						globalContainer, footerImage)
+				.withExpand(globalContainer, 1)
+				.withMargin( false )
+				.withSpacing( false ) 
+				)
+			.withFullWidth()
+			.withSpacing( false )
+			.withMargin( false )
+			.withExpand( actionSearchPanel, 0.15f )
+			.withExpand( searchLayout.getComponent( 1 ), 0.85f );
+		
+		if( SecurityContextHolder.getContext().getAuthentication() == null ) {
+			actionSearchPanel.setVisible( false );
+			searchLayout
+				.withExpand( actionSearchPanel, 0f )
+				.withExpand( searchLayout.getComponent( 1 ), 1f );
+		} else {
+			actionSearchPanel.setVisible( true );
+			searchLayout
+				.withExpand( actionSearchPanel, 0.15f )
+				.withExpand( searchLayout.getComponent( 1 ), 0.85f );
+		}
+		
+		mainLayout
+			.withWidth( "1170px" )
+			.withStyleName( "mainlayout" )
+			.withSpacing( true )
+			.withMargin( new MarginInfo( false, false, false, false ) )
+			.add(
+				searchLayout
+		);
 		
 		mainLayoutContainer
+			.withStyleName( "mainlayoutContainer" )
 			.add( mainLayout );
-		addComponent( mainLayoutContainer );
+		
+		this
+			.withHeightUndefined()
+			.withStyleName( "aligncenter" )
+			.add( mainLayoutContainer );
 		
 		resetSearch();
+	}
+	
+	@EventBusListenerMethod( scope = EventScope.UI )
+	public void onAuthenticate( LoginSucceedEvent event )
+	{
+		actionSearchPanel.setVisible( true );
+		searchLayout
+			.withExpand( actionSearchPanel, 0.15f )
+			.withExpand( searchLayout.getComponent( 1 ), 0.85f );
 	}
 
 	@Override
@@ -285,6 +321,11 @@ public class SearchView extends VerticalLayout implements View {
 
 		return container;
 
+	}
+	
+	@EventBusListenerMethod( scope = EventScope.UI )
+	public void resetSearch( DDIStore ddiStore ) {
+		resetSearch();
 	}
 	
 	private void resetSearch() {
@@ -427,6 +468,7 @@ public class SearchView extends VerticalLayout implements View {
 	 * @param hits:
 	 *            a hit list to be showen (the results list)
 	 */
+	
 	public void updateResultsContainer(ArrayList<CVScheme> hits) {
 
 		// remove outdated results
@@ -434,6 +476,14 @@ public class SearchView extends VerticalLayout implements View {
 
 		this.resultsContainer.addComponent(this.initResultsContainer(hits));
 
+	}
+	
+	public EventBus.UIEventBus getEventBus() {
+		return eventBus;
+	}
+
+	public RestClient getClient() {
+		return client;
 	}
 
 }

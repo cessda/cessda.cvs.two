@@ -19,13 +19,12 @@ import com.vaadin.ui.themes.ValoTheme;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 import eu.cessda.cvmanager.ui.view.window.EditCVSchemeWindow;
 
-public class ActionPanel extends CustomComponent{
+public class ActionSearchPanel extends CustomComponent{
 
 	private static final long serialVersionUID = -6349100242468318473L;
 
 	private final EventBus.UIEventBus eventBus;
 	private final RestClient client;
-	private final Grid<CVConcept> detailGrid;
 	
 	private MVerticalLayout actionLayout = new MVerticalLayout();
 
@@ -43,13 +42,12 @@ public class ActionPanel extends CustomComponent{
 	private MButton buttonPublishCv = new MButton( "Publish CV" );
 	private MButton buttonUnpublishCv = new MButton( "Unpublish CV" );
 	
-	private DetailView detailView;
+	private SearchView searchView;
 	
-	public ActionPanel(DetailView detailView) {
-		this.detailView = detailView;
-		this.eventBus = detailView.getEventBus();
-		this.client = detailView.getClient();
-		this.detailGrid = detailView.getDetailGrid();
+	public ActionSearchPanel(SearchView searchView) {
+		this.searchView = searchView;
+		this.eventBus = searchView.getEventBus();
+		this.client = searchView.getClient();
 		
 		
 		buttonAddCv
@@ -90,32 +88,32 @@ public class ActionPanel extends CustomComponent{
 		buttonChangeAgency.addClickListener( this::doChangeAgency );
 		buttonChangeLanguage.addClickListener( this::doChangeLanguage );
 		
-		buttonAddCode.addClickListener( this::doAddCode );
-		buttonDeleteCode.addClickListener( this::doDeleteCode );
-		buttonSortCode.addClickListener( this::doSortCode );
-		
-		buttonValidateCv.addClickListener( this::doValidateCv );
-		buttonFinaliseReview.addClickListener( this::doFinaliseReview );
-		buttonPublishCv.addClickListener( this::doPublishCv );
-		buttonUnpublishCv.addClickListener( this::doUnpublishCv );
+//		buttonAddCode.addClickListener( this::doAddCode );
+//		buttonDeleteCode.addClickListener( this::doDeleteCode );
+//		buttonSortCode.addClickListener( this::doSortCode );
+//		
+//		buttonValidateCv.addClickListener( this::doValidateCv );
+//		buttonFinaliseReview.addClickListener( this::doFinaliseReview );
+//		buttonPublishCv.addClickListener( this::doPublishCv );
+//		buttonUnpublishCv.addClickListener( this::doUnpublishCv );
 		
 		actionLayout
 			.withFullWidth()
 			.add(
 					panelHeader,
 					
-					buttonAddCv,
-					buttonChangeAgency,
-					buttonChangeLanguage,
-					
-					buttonAddCode,
-					buttonDeleteCode,
-					buttonSortCode,
-					
-					buttonValidateCv,
-					buttonFinaliseReview,
-					buttonPublishCv,
-					buttonUnpublishCv
+					buttonAddCv//,
+//					buttonChangeAgency,
+//					buttonChangeLanguage,
+//					
+//					buttonAddCode,
+//					buttonDeleteCode,
+//					buttonSortCode,
+//					
+//					buttonValidateCv,
+//					buttonFinaliseReview,
+//					buttonPublishCv,
+//					buttonUnpublishCv
 			);
 		
 		setCompositionRoot(actionLayout);
@@ -127,7 +125,7 @@ public class ActionPanel extends CustomComponent{
 		cvScheme.createId();
 		cvScheme.setContainerId(cvScheme.getId());
 
-		Window window = new EditCVSchemeWindow(eventBus, client, cvScheme, "en", detailView.getSelectedLang());
+		Window window = new EditCVSchemeWindow(eventBus, client, cvScheme, "en", "en");
 		getUI().addWindow(window);
 	}
 	
@@ -139,49 +137,6 @@ public class ActionPanel extends CustomComponent{
 		
 	}
 	
-	private void doAddCode() {
-		
-	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void doDeleteCode() {
-		if( detailGrid.getColumn("cvConceptRemove") == null ) {		
-			detailView
-				.getDetailGrid()
-					.addColumn( cvconcept -> "x",
-						new ButtonRenderer(clickEvent -> {
-							detailView.getConcepts().remove(clickEvent.getItem());
-							detailGrid.setItems( detailView.getConcepts() );
-				    })).setId("cvConceptRemove");
-			
-			if( !detailGrid.getColumn("cvConceptRemove").isHidden()) {
-				detailGrid.getColumn("cvConceptRemove").setHidden( true );
-			} else {
-				detailGrid.getColumn("cvConceptRemove").setHidden( false );
-			}
-			
-		}
-	}
-	
-	private void doSortCode() {
-		
-	}
-	
-	private void doValidateCv() {
-		
-	}
-	
-	private void doFinaliseReview() {
-		
-	}
-	
-	private void doPublishCv() {
-		
-	}
-	
-	private void doUnpublishCv() {
-		
-	}
 	
 	
 }

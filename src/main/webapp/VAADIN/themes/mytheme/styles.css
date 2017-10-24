@@ -1723,7 +1723,7 @@ div.v-layout.v-horizontal.v-widget {
 	text-align: center;
 	left: 0;
 	right: 0;
-	content: "Facebook Valo";
+	content: "CESSDA CV Manager";
 }
 
 .mytheme .v-loading-indicator {
@@ -14826,6 +14826,10 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: hidden;
 }
 
+.mytheme .mainlayoutContainer {
+	text-align: inherit;
+}
+
 .mytheme .v-slot-mainlayout {
 	text-align: center;
 }
@@ -16396,4 +16400,8 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .searchoption .v-button-link {
 	color: #656565;
 	text-decoration: none;
+}
+
+.mytheme .aligncenter {
+	text-align: center;
 }
