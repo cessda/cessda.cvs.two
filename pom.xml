@@ -230,7 +230,7 @@
                 		<groupId>org.apache.tomcat.maven</groupId>
                 		<artifactId>tomcat7-maven-plugin</artifactId>
                 		<configuration>
-                    		<path>/csaw-test</path>
+                    		<path>/cvmanager-test</path>
                     		<url>${tomcat.url}</url>
                     		<username>${tomcat.username}</username>
                     		<password>${tomcat.password}</password>
@@ -258,7 +258,7 @@
                 		<artifactId>tomcat7-maven-plugin</artifactId>
                 		<version>2.1</version>
                 		<configuration>
-                    		<path>/csaw-test</path>
+                    		<path>/cvmanager-test</path>
                     		<url>${tomcat.url}</url>
                     		<username>${tomcat.username}</username>
                     		<password>${tomcat.password}</password>
@@ -286,7 +286,7 @@
                 		<artifactId>tomcat7-maven-plugin</artifactId>
                 		<version>2.1</version>
                 		<configuration>
-                    		<path>/csaw</path>
+                    		<path>/cvmanager</path>
                     		<url>${tomcat.url}</url>
                     		<username>${tomcat.username}</username>
                     		<password>${tomcat.password}</password>
