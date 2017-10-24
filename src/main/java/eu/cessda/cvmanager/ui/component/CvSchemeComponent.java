@@ -89,7 +89,7 @@ public class CvSchemeComponent  extends CustomComponent{
 		Resource res =  new ThemeResource( "img/ddi-logo-r.png");
 		if( cvScheme.getOwnerAgency() != null && !cvScheme.getOwnerAgency().isEmpty()) {
 			CVEditor agency = cvScheme.getOwnerAgency().get(0);
-			if( agency.getLogoPath() != null)
+			if( agency.getLogoPath() != null && !agency.getLogoPath().isEmpty())
 				res = new ThemeResource( agency.getLogoPath() );
 		}
 
