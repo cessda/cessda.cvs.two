@@ -7,12 +7,16 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
@@ -95,7 +99,7 @@ public class DetailView extends MVerticalLayout implements View {
 
 	private View oldView;
 	
-	private Grid<CVConcept> detailGrid;
+	private Grid<CVConcept> detailGrid = new Grid<>(CVConcept.class);
 
 	private CVScheme cvScheme;
 	private Binder<CVConcept> binder;
@@ -130,6 +134,8 @@ public class DetailView extends MVerticalLayout implements View {
 	@PostConstruct
 	public void init() {
 		actionPanel = new ActionPanel( this );
+		
+		LoginView.NAVIGATETO_VIEWNAME = SearchView.VIEW_NAME;
 
 		MButton backToResults = new MButton(FontAwesome.BACKWARD, this::back);
 		backToResults.setCaption("Back");
@@ -158,10 +164,20 @@ public class DetailView extends MVerticalLayout implements View {
 				.withSpacing( false ) 
 				)
 			.withFullWidth()
-			.withExpand( actionPanel, 0.15f )
 			.withSpacing( false )
-			.withMargin( false )
-			.withExpand( detailLayout.getComponent( 1 ), 0.85f );
+			.withMargin( false );
+		
+		if( SecurityContextHolder.getContext().getAuthentication() == null ) {
+			actionPanel.setVisible( false );
+			detailLayout
+				.withExpand( actionPanel, 0f )
+				.withExpand( detailLayout.getComponent( 1 ), 1f );
+		} else {
+			actionPanel.setVisible( true );
+			detailLayout
+				.withExpand( actionPanel, 0.15f )
+				.withExpand( detailLayout.getComponent( 1 ), 0.85f );
+		}
 
 		mainLayout
 			.withWidth( "1170px" )
@@ -173,6 +189,20 @@ public class DetailView extends MVerticalLayout implements View {
 		);
 
 		this.withHeightUndefined().add(mainLayout);
+	}
+	
+	@EventBusListenerMethod( scope = EventScope.UI )
+	public void onAuthenticate( LoginSucceedEvent event )
+	{
+		actionPanel.setVisible( true );
+		detailLayout
+			.withExpand( actionPanel, 0.15f )
+			.withExpand( detailLayout.getComponent( 1 ), 0.85f );
+		
+		initTopViewSection();
+		initTopEditSection();
+		initBottomViewSection();
+		initBottomEditSection();
 	}
 
 	private void setDetails(String itemId) {
@@ -379,9 +409,7 @@ public class DetailView extends MVerticalLayout implements View {
 		detailTab.addTab(ddiLayout, "DDI usage");
 		detailTab.addTab(licenseLayout, "License and copyright");
 		detailTab.addTab(exportLayout, "Export/download");
-		
-		// initialize the results grid
-		detailGrid = new Grid<>(CVConcept.class);
+				
 		binder = detailGrid.getEditor().getBinder();
 		//binder.addValueChangeListener(event -> Notification.show("Binder Event"));
 		detailGrid.setItems(concepts);
@@ -517,7 +545,8 @@ public class DetailView extends MVerticalLayout implements View {
                 draggedGrid = null;
             } else {
                 // Add dragged items to this Grid
-                items.addAll(index, draggedItems);
+            	if( draggedItems != null)
+            		items.addAll(index, draggedItems);
             }
             target.getDataProvider().refreshAll();
         });
@@ -615,5 +644,9 @@ public class DetailView extends MVerticalLayout implements View {
 
 	public RestClient getClient() {
 		return client;
+	}
+	
+	public CVScheme getCvScheme() {
+		return cvScheme;
 	}
 }

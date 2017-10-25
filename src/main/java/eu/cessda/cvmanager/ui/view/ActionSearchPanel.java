@@ -99,6 +99,7 @@ public class ActionSearchPanel extends CustomComponent{
 		
 		actionLayout
 			.withFullWidth()
+			.withStyleName( "action-panel" )
 			.add(
 					panelHeader,
 					

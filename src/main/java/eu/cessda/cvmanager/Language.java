@@ -2,12 +2,15 @@ package eu.cessda.cvmanager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public enum Language {
 	ENGLISH("en"),
-	FINNISH("es"),
+	FINNISH("fi"),
 	FRENCH("fr"),
-	GERMAN("de");
+	GERMAN("de"),
+	SPANISH("es"),
+	RUSSIAN("ru");
 	
 	private final String resourceType;
 	
@@ -32,7 +35,24 @@ public enum Language {
 	public static List<String> getAllEnumCapitalized(){
 		List<String> languages = new ArrayList<>();
 		for(Language v : values()) {
-			languages.add( v.name().substring(0, 1).toUpperCase() + v.name().substring(1));
+			languages.add( v.name().substring(0, 1) + v.name().substring(1).toLowerCase());
+		}
+		return languages;
+	}
+	
+	public static List<String> getFilteredEnumCapitalized( Set<String> enumValue ){
+		List<String> languages = new ArrayList<>();
+		for(Language v : values()) {
+			if( enumValue.contains( v.toString()))
+			languages.add( v.name().substring(0, 1) + v.name().substring(1).toLowerCase());
+		}
+		return languages;
+	}
+	
+	public static List<String> getAllEnumValue(){
+		List<String> languages = new ArrayList<>();
+		for(Language v : values()) {
+			languages.add( v.toString());
 		}
 		return languages;
 	}
