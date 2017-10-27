@@ -185,14 +185,14 @@ public class EditorView extends VerticalLayout implements View {
 			con.createId();
 			con.setContainerId(getContainerId());
 
-			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage(), this.theView);
-			getUI().addWindow(window);
+//			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage(), this.theView);
+//			getUI().addWindow(window);
 		});
 
 		editCode.addClickListener(event -> {
 			CVConcept con = conceptGrid.getSelectedItems().iterator().next();
-			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage(), this.theView);
-			getUI().addWindow(window);
+//			Window window = new EditCodeWindow(client, con, getOriginalLanguage(), getLanguage(), this.theView);
+//			getUI().addWindow(window);
 		});
 
 		addCVScheme.addClickListener(event -> {

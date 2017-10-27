@@ -1,9 +1,11 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.vaadin.spring.events.EventBus;
 
 import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
@@ -22,6 +24,7 @@ public class EditCodeWindow extends Window {
 	 * 
 	 */
 	private static final long serialVersionUID = 8118228014482059473L;
+	private final EventBus.UIEventBus eventBus;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 
@@ -37,11 +40,11 @@ public class EditCodeWindow extends Window {
 
 	private CVConcept theCode;
 
-	private EditorView theView;
 
-	public EditCodeWindow(RestClient client, CVConcept code, String orignalLanguage, String language,
-			EditorView theView) {
-		super("Edit Code");
+	public EditCodeWindow(EventBus.UIEventBus eventBus, RestClient client, CVConcept code, String orignalLanguage, String language) {
+		super("Add Code");
+		
+		this.eventBus = eventBus;
 		setWidth("600px");
 		setHeight("500px");
 
@@ -49,7 +52,6 @@ public class EditCodeWindow extends Window {
 		setOrginalLanguage(orignalLanguage);
 		setLanguage(language);
 		setTheCode(code);
-		setTheView(theView);
 
 		FormLayout layout = new FormLayout();
 
@@ -71,8 +73,10 @@ public class EditCodeWindow extends Window {
 			// CVConcept cv = binder.getBean();
 			log.trace(getTheCode().getPrefLabelByLanguage(getLanguage()));
 			getTheCode().save();
-			client.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
-			getTheView().updateGrid(getLanguage());
+			DDIStore ddiStore = client.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
+			
+			eventBus.publish( this, ddiStore);
+			
 			close();
 
 		});
@@ -133,12 +137,5 @@ public class EditCodeWindow extends Window {
 		this.theCode = theCode;
 	}
 
-	public EditorView getTheView() {
-		return theView;
-	}
-
-	public void setTheView(EditorView theView) {
-		this.theView = theView;
-	}
 
 }

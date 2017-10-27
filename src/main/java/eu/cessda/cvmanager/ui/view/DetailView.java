@@ -56,13 +56,10 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 
 @UIScope
 @SpringView(name = DetailView.VIEW_NAME)
-public class DetailView extends MVerticalLayout implements View {
+public class DetailView extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "Detail";
-
-	private final EventBus.UIEventBus eventBus;
-	private final ConfigurationService configService;
 
 	private final String ITEM_TITLE = "Title";
 	private final String ITEM_DEF = "Definition";
@@ -81,10 +78,6 @@ public class DetailView extends MVerticalLayout implements View {
 	private MButton saveButton = new MButton("Save").withStyleName(ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL,
 			"pull-right");
 	private MButton cancelButton = new MButton("Cancel").withStyleName(ValoTheme.BUTTON_SMALL, "pull-right");
-
-	// graphical components
-	private MVerticalLayout mainLayout = new MVerticalLayout();
-	private MHorizontalLayout detailLayout = new MHorizontalLayout();
 
 	private MCssLayout topSection = new MCssLayout().withFullWidth();
 	private MCssLayout topViewSection = new MCssLayout().withFullWidth();
@@ -116,20 +109,12 @@ public class DetailView extends MVerticalLayout implements View {
 
 	// private List<CvItem> cvItems = new ArrayList<>();
 	
-	private RestClient client;
-
 	private MHorizontalLayout titleLayout = new MHorizontalLayout();
 	private Image logoImage;
 
-	public DetailView(EventBus.UIEventBus eventBus, ConfigurationService configService) {
-		this.eventBus = eventBus;
-		this.configService = configService;
-		
-		client = new RestClient( configService.getDdiflatdbRestUrl() );
-		
-		this.eventBus.subscribe( this );
+	public DetailView( EventBus.UIEventBus eventBus, ConfigurationService configService) {
+		super(eventBus, configService, DetailView.VIEW_NAME);
 	}
-	// private
 
 	@PostConstruct
 	public void init() {
@@ -153,65 +138,23 @@ public class DetailView extends MVerticalLayout implements View {
 
 		bottomSection.add(bottomViewSection, bottomEditSection);
 		
-		detailLayout.add( 
-				actionPanel,
-				new MVerticalLayout( 
-						buttonLayout, 
-						topSection, 
-						languageLayout, 
-						bottomSection )
-				.withMargin( false )
-				.withSpacing( false ) 
-				)
-			.withFullWidth()
-			.withSpacing( false )
-			.withMargin( false );
-		
-		if( SecurityContextHolder.getContext().getAuthentication() == null ) {
-			actionPanel.setVisible( false );
-			detailLayout
-				.withExpand( actionPanel, 0f )
-				.withExpand( detailLayout.getComponent( 1 ), 1f );
-		} else {
-			actionPanel.setVisible( true );
-			detailLayout
-				.withExpand( actionPanel, 0.15f )
-				.withExpand( detailLayout.getComponent( 1 ), 0.85f );
-		}
-
-		mainLayout
-			.withWidth( "1170px" )
-			.withStyleName( "mainlayout" )
-			.withSpacing( true )
-			.withMargin( new MarginInfo( false, false, false, false ) )
+		rightContainer
 			.add(
-				detailLayout
-		);
+				buttonLayout, 
+				topSection, 
+				languageLayout, 
+				bottomSection 
+			);
 
-		this.withHeightUndefined().add(mainLayout);
-	}
-	
-	@EventBusListenerMethod( scope = EventScope.UI )
-	public void onAuthenticate( LoginSucceedEvent event )
-	{
-		actionPanel.setVisible( true );
-		detailLayout
-			.withExpand( actionPanel, 0.15f )
-			.withExpand( detailLayout.getComponent( 1 ), 0.85f );
-		
-		initTopViewSection();
-		initTopEditSection();
-		initBottomViewSection();
-		initBottomEditSection();
 	}
 
 	private void setDetails(String itemId) {
 		concepts.clear();
-		List<DDIStore> ddiSchemes = client.getElementList(itemId, DDIElement.CVSCHEME);
+		List<DDIStore> ddiSchemes = restClient.getElementList(itemId, DDIElement.CVSCHEME);
 		if (ddiSchemes != null && !ddiSchemes.isEmpty())
 			cvScheme = new CVScheme(ddiSchemes.get(0));
 
-		List<DDIStore> ddiConcepts = client.getElementList(itemId, DDIElement.CVCONCEPT);
+		List<DDIStore> ddiConcepts = restClient.getElementList(itemId, DDIElement.CVCONCEPT);
 
 		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
 
@@ -629,6 +572,11 @@ public class DetailView extends MVerticalLayout implements View {
 		}
 
 	}
+	
+	@EventBusListenerMethod( scope = EventScope.UI )
+	public void resetGrid( DDIStore ddiStore ) {
+		setDetails( ddiStore.getParentIdentifier());
+	}
 
 	public Grid<CVConcept> getDetailGrid() {
 		return detailGrid;
@@ -638,12 +586,8 @@ public class DetailView extends MVerticalLayout implements View {
 		return concepts;
 	}
 
-	public EventBus.UIEventBus getEventBus() {
-		return eventBus;
-	}
-
 	public RestClient getClient() {
-		return client;
+		return restClient;
 	}
 	
 	public CVScheme getCvScheme() {

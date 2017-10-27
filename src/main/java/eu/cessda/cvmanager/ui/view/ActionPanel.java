@@ -28,14 +28,14 @@ import com.vaadin.ui.themes.ValoTheme;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 import eu.cessda.cvmanager.ui.view.window.AddLanguageCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.EditCVSchemeWindow;
+import eu.cessda.cvmanager.ui.view.window.EditCodeWindow;
 
 public class ActionPanel extends CustomComponent{
 
 	private static final long serialVersionUID = -6349100242468318473L;
 
 	private final EventBus.UIEventBus eventBus;
-	private final RestClient client;
-	private final Grid<CVConcept> detailGrid;
+	private final RestClient restClient;
 	
 	private MVerticalLayout actionLayout = new MVerticalLayout();
 
@@ -53,15 +53,15 @@ public class ActionPanel extends CustomComponent{
 	private MButton buttonPublishCv = new MButton( "Publish CV" );
 	private MButton buttonUnpublishCv = new MButton( "Unpublish CV" );
 	
-	private DetailView detailView;
+	private CvManagerView cvManagerView;
 	private CVScheme cvScheme;
 	
-	public ActionPanel(DetailView detailView) {
-		this.detailView = detailView;
-		this.eventBus = detailView.getEventBus();
-		this.client = detailView.getClient();
-		this.detailGrid = detailView.getDetailGrid();
-		this.cvScheme = detailView.getCvScheme();
+	public ActionPanel( CvManagerView cvManagerView) {
+		this.cvManagerView = cvManagerView;
+		this.eventBus = cvManagerView.getEventBus();
+		this.restClient = cvManagerView.getRestClient();
+//		this.detailGrid = detailView.getDetailGrid();
+		this.cvScheme = cvManagerView.getCvScheme();
 		
 		buttonAddCv
 //			.withStyleName( ValoTheme.BUTTON_LINK )
@@ -135,12 +135,12 @@ public class ActionPanel extends CustomComponent{
 	private void doAddCv( ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
-		CVScheme cvScheme = new CVScheme();
-		cvScheme.loadSkeleton(cvScheme.getDefaultDialect());
-		cvScheme.createId();
-		cvScheme.setContainerId(cvScheme.getId());
+		CVScheme newCvScheme = new CVScheme();
+		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
+		newCvScheme.createId();
+		newCvScheme.setContainerId(newCvScheme.getId());
 
-		Window window = new EditCVSchemeWindow(eventBus, client, cvScheme, "en", "en");
+		Window window = new EditCVSchemeWindow(eventBus, restClient, newCvScheme, "en", "en");
 		getUI().addWindow(window);
 	}
 	
@@ -154,13 +154,21 @@ public class ActionPanel extends CustomComponent{
 	private void doChangeLanguage(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
-		Window window = new AddLanguageCVSchemeWindow(eventBus, client, cvScheme, detailView);
-		getUI().addWindow(window);
+//		Window window = new AddLanguageCVSchemeWindow(eventBus, restClient, cvScheme, cvManagerView);
+//		getUI().addWindow(window);
 	}
 	
 	private void doAddCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
+		
+		CVConcept con = new CVConcept();
+		con.loadSkeleton(con.getDefaultDialect());
+		con.createId();
+		con.setContainerId(cvManagerView.getCvScheme().getContainerId());
+
+		Window window = new EditCodeWindow(eventBus, restClient, con, "en", "en");
+		getUI().addWindow(window);
 	}
 	
 	private void applyButtonStyle(Button pressedButton) {
@@ -178,21 +186,21 @@ public class ActionPanel extends CustomComponent{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void doDeleteCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
-		if( detailGrid.getColumn("cvConceptRemove") == null ) {		
-			detailView
-				.getDetailGrid()
-					.addColumn( cvconcept -> "x",
-						new ButtonRenderer(clickEvent -> {
-							detailView.getConcepts().remove(clickEvent.getItem());
-							detailGrid.setItems( detailView.getConcepts() );
-				    })).setId("cvConceptRemove");
-		} else {
-			if( !detailGrid.getColumn("cvConceptRemove").isHidden()) {
-				detailGrid.getColumn("cvConceptRemove").setHidden( true );
-			} else {
-				detailGrid.getColumn("cvConceptRemove").setHidden( false );
-			}
-		}
+//		if( detailGrid.getColumn("cvConceptRemove") == null ) {		
+//			detailView
+//				.getDetailGrid()
+//					.addColumn( cvconcept -> "x",
+//						new ButtonRenderer(clickEvent -> {
+//							detailView.getConcepts().remove(clickEvent.getItem());
+//							detailGrid.setItems( detailView.getConcepts() );
+//				    })).setId("cvConceptRemove");
+//		} else {
+//			if( !detailGrid.getColumn("cvConceptRemove").isHidden()) {
+//				detailGrid.getColumn("cvConceptRemove").setHidden( true );
+//			} else {
+//				detailGrid.getColumn("cvConceptRemove").setHidden( false );
+//			}
+//		}
 	}
 	
 	private void doSortCode(ClickEvent event ) {
