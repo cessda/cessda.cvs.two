@@ -46,7 +46,7 @@ import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.ui.view.window.EditCVSchemeWindow;
-import eu.cessda.cvmanager.ui.view.window.EditCodeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
 
 /**
  * @author klascr

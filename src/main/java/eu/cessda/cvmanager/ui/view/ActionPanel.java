@@ -4,10 +4,13 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 
 import java.util.Iterator;
 
+import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -25,10 +28,12 @@ import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 import eu.cessda.cvmanager.ui.view.window.AddLanguageCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.EditCVSchemeWindow;
-import eu.cessda.cvmanager.ui.view.window.EditCodeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
 
 public class ActionPanel extends CustomComponent{
 
@@ -129,6 +134,24 @@ public class ActionPanel extends CustomComponent{
 //					buttonUnpublishCv
 			);
 		
+		switch( this.cvManagerView.getActionType()) {
+			case SEARCH:
+			case BROWSE:
+				buttonChangeAgency.setVisible( false );
+				buttonChangeLanguage.setVisible( false );
+				buttonAddCode.setVisible( false );
+				buttonDeleteCode.setVisible( false );
+				buttonSortCode.setVisible( false );
+				buttonValidateCv.setVisible( false );
+				buttonFinaliseReview.setVisible( false );
+				buttonPublishCv.setVisible( false );
+				buttonUnpublishCv.setVisible( false );
+				break;
+			case DETAIL:
+				
+				break;
+		}
+		
 		setCompositionRoot(actionLayout);
 	}
 	
@@ -160,15 +183,7 @@ public class ActionPanel extends CustomComponent{
 	
 	private void doAddCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
-		
-		
-		CVConcept con = new CVConcept();
-		con.loadSkeleton(con.getDefaultDialect());
-		con.createId();
-		con.setContainerId(cvManagerView.getCvScheme().getContainerId());
-
-		Window window = new EditCodeWindow(eventBus, restClient, con, "en", "en");
-		getUI().addWindow(window);
+		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADD_DIALOG, null) );
 	}
 	
 	private void applyButtonStyle(Button pressedButton) {
@@ -186,6 +201,7 @@ public class ActionPanel extends CustomComponent{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void doDeleteCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
+		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_EDIT_MODE, null) );
 //		if( detailGrid.getColumn("cvConceptRemove") == null ) {		
 //			detailView
 //				.getDetailGrid()

@@ -6,6 +6,7 @@ import org.gesis.stardat.entity.CVConcept;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventScope;
 
 import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
@@ -14,11 +15,14 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 
+import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 
-public class EditCodeWindow extends Window {
+public class DialogCodeWindow extends Window {
 
-	private static final Logger log = LoggerFactory.getLogger(EditCodeWindow.class);
+	private static final Logger log = LoggerFactory.getLogger(DialogCodeWindow.class);
 
 	/**
 	 * 
@@ -41,7 +45,7 @@ public class EditCodeWindow extends Window {
 	private CVConcept theCode;
 
 
-	public EditCodeWindow(EventBus.UIEventBus eventBus, RestClient client, CVConcept code, String orignalLanguage, String language) {
+	public DialogCodeWindow(EventBus.UIEventBus eventBus, RestClient client, CVConcept code, String orignalLanguage, String language) {
 		super("Add Code");
 		
 		this.eventBus = eventBus;
@@ -75,7 +79,7 @@ public class EditCodeWindow extends Window {
 			getTheCode().save();
 			DDIStore ddiStore = client.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
 			
-			eventBus.publish( this, ddiStore);
+			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 			
 			close();
 

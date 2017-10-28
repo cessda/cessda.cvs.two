@@ -48,11 +48,15 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.components.grid.GridDragSource;
 import com.vaadin.ui.components.grid.GridDropTarget;
+import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
 
 @UIScope
 @SpringView(name = DetailView.VIEW_NAME)
@@ -114,6 +118,7 @@ public class DetailView extends CvManagerView {
 
 	public DetailView( EventBus.UIEventBus eventBus, ConfigurationService configService) {
 		super(eventBus, configService, DetailView.VIEW_NAME);
+		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
 	@PostConstruct
@@ -129,8 +134,15 @@ public class DetailView extends CvManagerView {
 		editButton.addClickListener(e -> setFormMode(FormMode.edit));
 		cancelButton.addClickListener(e -> setFormMode(FormMode.view));
 
-		buttonLayout.withFullWidth().withStyleName("alignTextRight").add(backToResults, editButton, cancelButton,
-				saveButton);
+		buttonLayout
+			.withFullWidth()
+			.withStyleName("alignTextRight")
+			.add(
+				backToResults, 
+				editButton, 
+				cancelButton,
+				saveButton
+			);
 
 		languageLayout.withFullWidth();
 
@@ -149,20 +161,27 @@ public class DetailView extends CvManagerView {
 	}
 
 	private void setDetails(String itemId) {
-		concepts.clear();
+		refreshCvScheme(itemId);
+		refreshCvConcepts();
+		
+		setFormMode(FormMode.view);
+
+		initTopViewSection();
+		initTopEditSection();
+		initBottomViewSection();
+		initBottomEditSection();
+	}
+
+
+
+	private void refreshCvScheme(String itemId) {
+		languageLayout.removeAllComponents();
+		
 		List<DDIStore> ddiSchemes = restClient.getElementList(itemId, DDIElement.CVSCHEME);
 		if (ddiSchemes != null && !ddiSchemes.isEmpty())
 			cvScheme = new CVScheme(ddiSchemes.get(0));
 
-		List<DDIStore> ddiConcepts = restClient.getElementList(itemId, DDIElement.CVCONCEPT);
-
-		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
-
-		Set<String> languages = new LinkedHashSet<>();
-
-		concepts.forEach(concept -> languages.addAll(concept.getLanguagesByPrefLabel()));
-
-		languageLayout.removeAllComponents();
+		Set<String> languages = cvScheme.getLanguagesByTitle();
 
 		languages.forEach(item -> {
 			MButton langBUtton = new MButton(item.toUpperCase());
@@ -178,14 +197,12 @@ public class DetailView extends CvManagerView {
 			});
 			languageLayout.add(langBUtton);
 		});
-
-		setFormMode(FormMode.view);
-		// cvItem = addDummyData1();
-
-		initTopViewSection();
-		initTopEditSection();
-		initBottomViewSection();
-		initBottomEditSection();
+	}
+	
+	private void refreshCvConcepts() {
+		concepts.clear();
+		List<DDIStore> ddiConcepts = restClient.getElementList(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
+		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
 	}
 
 	private void initTopViewSection() {
@@ -353,15 +370,6 @@ public class DetailView extends CvManagerView {
 		detailTab.addTab(licenseLayout, "License and copyright");
 		detailTab.addTab(exportLayout, "Export/download");
 				
-		binder = detailGrid.getEditor().getBinder();
-		//binder.addValueChangeListener(event -> Notification.show("Binder Event"));
-		detailGrid.setItems(concepts);
-		// detailGrid.setItems( cvItem.getCvElements() );
-		// detailGrid.addStyleName(ValoTheme.TABLE_BORDERLESS);
-
-		// SourceAsString column
-		// results.addColumn(SearchHit::getSourceAsString).setCaption("Study").setId("study");
-
 		updateDetailGrid();
 
 		detailLayout.addComponents(detailGrid);
@@ -373,10 +381,20 @@ public class DetailView extends CvManagerView {
 		bottomViewSection.add(detailTab);
 	}
 	
-	
+
 	public void updateDetailGrid() {
 		detailGrid.removeAllColumns();
 		// detailGrid.addColumn(CVConcept::getId).setCaption("URI").setExpandRatio(1);
+		
+		binder = detailGrid.getEditor().getBinder();
+		//binder.addValueChangeListener(event -> Notification.show("Binder Event"));
+		detailGrid.setItems(concepts);
+		// detailGrid.setItems( cvItem.getCvElements() );
+		// detailGrid.addStyleName(ValoTheme.TABLE_BORDERLESS);
+
+		// SourceAsString column
+		// results.addColumn(SearchHit::getSourceAsString).setCaption("Study").setId("study");
+
 
 		detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en")).setCaption("en")
 				.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
@@ -592,5 +610,46 @@ public class DetailView extends CvManagerView {
 	
 	public CVScheme getCvScheme() {
 		return cvScheme;
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@EventBusListenerMethod( scope = EventScope.UI )
+	public void eventHandle( CvManagerEvent.Event event)
+	{
+		switch(event.getType()) {
+			case CVCONCEPT_CREATED:
+				refreshCvConcepts();
+				updateDetailGrid();
+				
+				break;
+			case CVCONCEPT_ADD_DIALOG:
+				CVConcept con = new CVConcept();
+				con.loadSkeleton(con.getDefaultDialect());
+				con.createId();
+				con.setContainerId( cvScheme.getContainerId());
+
+				Window window = new DialogCodeWindow(eventBus, restClient, con, "en", "en");
+				getUI().addWindow(window);
+				
+				break;
+			case CVCONCEPT_EDIT_MODE:
+				if( detailGrid.getColumn("cvConceptRemove") == null ) {		
+					detailGrid
+							.addColumn( cvconcept -> "x",
+								new ButtonRenderer(clickEvent -> {
+									concepts.remove(clickEvent.getItem());
+									detailGrid.setItems( concepts );
+						    })).setId("cvConceptRemove");
+				} else {
+					if( !detailGrid.getColumn("cvConceptRemove").isHidden()) {
+						detailGrid.getColumn("cvConceptRemove").setHidden( true );
+					} else {
+						detailGrid.getColumn("cvConceptRemove").setHidden( false );
+					}
+				}
+				break;
+			default:
+				break;
+		}
 	}
 }

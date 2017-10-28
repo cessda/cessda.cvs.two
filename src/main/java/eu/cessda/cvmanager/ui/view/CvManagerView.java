@@ -28,7 +28,7 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	public final ConfigurationService configService;
 	
 	protected final RestClient restClient;
-	protected final ActionType actionType;
+	private final ActionType actionType;
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
 	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
@@ -110,5 +110,11 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	public void setCvScheme(CVScheme cvScheme) {
 		this.cvScheme = cvScheme;
 	}
+
+
+	public ActionType getActionType() {
+		return actionType;
+	}
+	
 	
 }

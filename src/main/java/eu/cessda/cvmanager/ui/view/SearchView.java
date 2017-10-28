@@ -58,8 +58,6 @@ public class SearchView extends CvManagerView {
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "Browse";
 	
-	// private Image headerImage = new Image();
-	private Image footerImage = new Image();
 	// main container
 	private HorizontalLayout globalContainer = new HorizontalLayout();
 	private VerticalLayout filtersContainer = new VerticalLayout();
@@ -88,6 +86,7 @@ public class SearchView extends CvManagerView {
 	
 	public SearchView(EventBus.UIEventBus eventBus, ConfigurationService configService) {
 		super(eventBus, configService, SearchView.VIEW_NAME);
+		eventBus.subscribe( this, SearchView.VIEW_NAME );
 	}
 	
 	@PostConstruct
@@ -133,7 +132,7 @@ public class SearchView extends CvManagerView {
 		
 		rightContainer
 		.add(
-			globalContainer, footerImage
+			globalContainer
 		).withExpand(globalContainer, 1);
 
 		resetSearch();
@@ -295,9 +294,6 @@ public class SearchView extends CvManagerView {
 		results.setItems(hits);
 		results.addStyleName(ValoTheme.TABLE_BORDERLESS);
 		
-//		results.addComponentColumn( scheme -> {
-//			return cvItems.get(0);
-//		} );
 		results.removeAllColumns();
 		results.setHeaderVisible( false );
 		results.addColumn( cvscheme -> {
@@ -308,77 +304,11 @@ public class SearchView extends CvManagerView {
 		results.getColumn("cvScemeComp").setExpandRatio( 1 );
 		
 		results.setSelectionMode(SelectionMode.NONE);
-		
-		// SourceAsString column
-		// results.addColumn(SearchHit::getSourceAsString).setCaption("Study").setId("study");
-
-//		// add study title column to the grid
-//		results.addColumn(new ValueProvider<CVScheme, String>() {
-//
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public String apply(CVScheme source) {
-//				return source.getTitleByLanguage("en");
-//			}
-//		}).setCaption("Title").setId("titleS");
-//
-//		// add study rank column to the grid
-//		results.addColumn(new ValueProvider<CVScheme, String>() {
-//
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public String apply(CVScheme source) {
-//				return source.getDescriptionByLanguage("en");
-//			}
-//		}).setCaption("Description").setId("descriptionS");
-//
-//		// add study rank column to the grid
-//		results.addColumn(new ValueProvider<CVScheme, String>() {
-//
-//			private static final long serialVersionUID = 1L;
-//
-//			@Override
-//			public String apply(CVScheme source) {
-//				return source.getOwnerAgency().get(0).getName();
-//			}
-//		}).setCaption("Owner Agency").setId("ownerS");
-//
-//		results.setColumns("ownerS", "titleS", "descriptionS");
 		results.setSizeFull();
-//		results.getColumn("titleS").setExpandRatio(1);
-
-		// define the panel that should be opened when clicking on a row of the
-		// grid
-		// results.setDetailsGenerator(new DetailsGenerator<SearchHit>() {
-		//
-		// private static final long serialVersionUID = 1L;
-		//
-		// @Override
-		// public com.vaadin.ui.Component apply(SearchHit arg0) {
-		//
-		// return new DetailsPanel(arg0);
-		// }
-		// });
 
 		// add clicking listener to show or hide the detail window of a
 		// particular row of the grid
 		results.addItemClickListener(e -> {
-
-			// close the previously opened item if it is not the same as the
-			// currently selected item
-			// if ((this.selectedItem != null) && (this.selectedItem !=
-			// e.getItem()))
-			// results.setDetailsVisible(this.selectedItem, false);
-			//
-			// boolean opened = results.isDetailsVisible(e.getItem());
-			// if (opened)
-			// this.selectedItem = null;
-			// else
-			// this.selectedItem = e.getItem();
-			//
-			// results.setDetailsVisible(e.getItem(), !opened);
 
 		});
 
@@ -396,7 +326,7 @@ public class SearchView extends CvManagerView {
 	 * Update the results list
 	 * 
 	 * @param hits:
-	 *            a hit list to be showen (the results list)
+	 *            a hit list to be shown (the results list)
 	 */
 	
 	public void updateResultsContainer(ArrayList<CVScheme> hits) {

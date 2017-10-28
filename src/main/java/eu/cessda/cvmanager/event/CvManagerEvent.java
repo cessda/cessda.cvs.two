@@ -6,7 +6,10 @@ public class CvManagerEvent {
 		
 		CVSCHEME_CREATED(1),
 		CVSCHEME_UPDATED(2),
-		CVSCHEME_REMOVED(3);
+		CVSCHEME_REMOVED(3),
+		CVCONCEPT_ADD_DIALOG(10),
+		CVCONCEPT_CREATED(11),
+		CVCONCEPT_EDIT_MODE(12);
 		
 		private final int value;
 		
