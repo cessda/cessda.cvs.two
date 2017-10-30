@@ -10,7 +10,7 @@ import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -18,7 +18,6 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.Binder.Binding;
@@ -37,6 +36,7 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
@@ -114,6 +114,7 @@ public class DetailView extends CvManagerView {
 
 		editButton.addClickListener(e -> setFormMode(FormMode.edit));
 		cancelButton.addClickListener(e -> setFormMode(FormMode.view));
+		saveButton.addClickListener( this::doSaveConcept );
 
 		buttonLayout
 			.withFullWidth()
@@ -202,6 +203,13 @@ public class DetailView extends CvManagerView {
 		List<DDIStore> ddiConcepts = cvManagerService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
 		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
 	}
+	
+	private void doSaveConcept() {
+		DDIStore ddiStore = cvManagerService.saveElement(cvScheme.ddiStore, "Peter", "minor edit");
+		Notification.show("All changes saved");
+		setFormMode(FormMode.view);
+		initTopViewSection();
+	}
 
 	private void initTopViewSection() {
 		topViewSection.removeAllComponents();
@@ -277,7 +285,7 @@ public class DetailView extends CvManagerView {
 		topHead.withFullWidth().add(logo, topTitle);
 
 		MTextField titleField = new MTextField();
-		titleField.withStyleName("editField").withValue(cvScheme.getTitleByLanguage("en"));
+		titleField.withStyleName("editField");//.withValue(cvScheme.getTitleByLanguage("en"));
 
 		MCssLayout titleSmall = new MCssLayout();
 		titleSmall.withFullWidth().add(new MLabel(ITEM_TITLE + ":").withWidth("120px").withStyleName("leftPart"),
@@ -286,7 +294,7 @@ public class DetailView extends CvManagerView {
 
 		TextArea descField = new TextArea();
 		descField.setStyleName("editField");
-		descField.setValue(cvScheme.getDescriptionByLanguage("en"));
+		//descField.setValue(cvScheme.getDescriptionByLanguage("en"));
 
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(new MLabel(ITEM_DEF + ":").withWidth("120px").withStyleName("leftPart"),
@@ -294,11 +302,28 @@ public class DetailView extends CvManagerView {
 						: new MLabel(cvScheme.getDescriptionByLanguage("en")).withStyleName("rightPart"));
 
 		MTextField codeField = new MTextField();
-		codeField.withStyleName("editField").withValue("CODE_TEST");
+		codeField.withStyleName("editField");
+		//.withValue("CODE_TEST");
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(new MLabel(ITEM_CODE + ":").withWidth("120px").withStyleName("leftPart"),
 				selectedLang.equals("en") ? codeField : new MLabel(cvScheme.getCode()).withStyleName("rightPart"));
+		
+		Binder<CVScheme> cvSchemeBinder = new Binder<>();
+		cvSchemeBinder.setBean(cvScheme);
+		
+		// Binder original language
+		cvSchemeBinder.bind( titleField, 
+				cScheme -> cScheme.getTitleByLanguage("en"),
+				(cScheme, value) -> cScheme.setTitleByLanguage( "en" , value) );
+		
+		cvSchemeBinder.bind( descField, 
+				cScheme -> cScheme.getDescriptionByLanguage("en"),
+				(cScheme, value) -> cScheme.setDescriptionByLanguage( "en" , value) );
+
+		cvSchemeBinder.bind( codeField, 
+				cScheme -> cScheme.getCode(),
+				(cScheme, value) -> cScheme.setCode( value) );
 
 		MCssLayout langSec = new MCssLayout();
 		langSec.withFullWidth()
@@ -329,6 +354,15 @@ public class DetailView extends CvManagerView {
 		descriptionOl.withFullWidth().add(
 				new MLabel(selectedLang + " " + ITEM_DEF + ":").withWidth("120px").withStyleName("leftPart"),
 				descFieldOl);
+		
+		// Binder other language
+		cvSchemeBinder.bind( titleFieldOl, 
+				cScheme -> cScheme.getTitleByLanguage( getSelectedLang()),
+				(cScheme, value) -> cScheme.setTitleByLanguage( getSelectedLang() , value) );
+		
+		cvSchemeBinder.bind( descFieldOl, 
+				cScheme -> cScheme.getDescriptionByLanguage( getSelectedLang() ),
+				(cScheme, value) -> cScheme.setDescriptionByLanguage( getSelectedLang() , value) );
 
 		MCssLayout langSecOl = new MCssLayout();
 		langSecOl.withFullWidth().add(
@@ -614,7 +648,33 @@ public class DetailView extends CvManagerView {
 					detailGrid
 							.addColumn( cvconcept -> "x",
 								new ButtonRenderer(clickEvent -> {
-									concepts.remove(clickEvent.getItem());
+									CVConcept targetConcept = (CVConcept) clickEvent.getItem();
+//									ConfirmDialog.show( this.getUI(), "Confirm",
+//											"Are you sure you want to delete the concept \"" + targetConcept.getDescriptionByLanguage( configService.getOriginalLanguage() ) + "\"?", "yes",
+//											"cancel",
+//											new ConfirmDialog.Listener() {
+//												private static final long serialVersionUID = 4111198501798071357L;
+//
+//												@Override
+//												public void onClose( ConfirmDialog dialog )
+//												{
+//													if ( dialog.isConfirmed() ) {
+//														cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
+//														concepts.remove( targetConcept );
+//													}
+//												}
+//											}
+									
+//											dialog -> {
+//												if( dialog.isConfirmed() ) {
+//													cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
+//													concepts.remove( targetConcept );
+//												}
+//											}
+
+//									);
+									cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
+									concepts.remove( targetConcept );
 									detailGrid.setItems( concepts );
 						    })).setId("cvConceptRemove");
 				} else {

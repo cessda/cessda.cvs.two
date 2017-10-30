@@ -33,4 +33,12 @@ public class CvManagerService {
 	public DDIStore saveElement(DDIStore ddiStore, String username, String comment) {
 		return restClient.saveElement( ddiStore, username, comment);
 	}
+	
+	public Long deleteById(Long id, String username, String comment){
+		return restClient.deleteElement(id, username, comment);
+	}
+	
+	public Long deleteById(final String studyId, final String elementType, String userName, String comment){
+		return restClient.deleteElementList(studyId, elementType, userName, comment);
+	}
 }

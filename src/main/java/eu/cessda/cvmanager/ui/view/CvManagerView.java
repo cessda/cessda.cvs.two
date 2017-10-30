@@ -36,8 +36,6 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	protected ActionPanel actionPanel;
 	protected MVerticalLayout rightContainer = new MVerticalLayout();
 	
-	protected CVScheme cvScheme;
-	
 	public CvManagerView(EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			CvManagerService cvManagerService, String actionType) {
 		
@@ -101,14 +99,6 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 
 	public CvManagerService getCvManagerService() {
 		return cvManagerService;
-	}
-
-	public CVScheme getCvScheme() {
-		return cvScheme;
-	}
-
-	public void setCvScheme(CVScheme cvScheme) {
-		this.cvScheme = cvScheme;
 	}
 
 	public ActionType getActionType() {

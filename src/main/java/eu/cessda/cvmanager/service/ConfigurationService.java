@@ -7,6 +7,7 @@ import com.vaadin.ui.UI;
 
 @Service
 public class ConfigurationService {
+	private final String ORIGINAL_LANGUAGE = "en";
 
 	@Value("${server.contextPath}")
 	private String serverContextPath;
@@ -33,4 +34,9 @@ public class ConfigurationService {
 		this.ddiflatdbRestUrl = ddiflatdbRestUrl;
 	}
 
+	public String getOriginalLanguage() {
+		return ORIGINAL_LANGUAGE;
+	}
+
+	
 }

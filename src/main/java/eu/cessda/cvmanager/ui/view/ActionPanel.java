@@ -67,7 +67,7 @@ public class ActionPanel extends CustomComponent{
 		this.eventBus = cvManagerView.getEventBus();
 		this.cvManagerService = cvManagerView.getCvManagerService();
 //		this.detailGrid = detailView.getDetailGrid();
-		this.cvScheme = cvManagerView.getCvScheme();
+//		this.cvScheme = cvManagerView.getCvScheme();
 		
 		buttonAddCv
 //			.withStyleName( ValoTheme.BUTTON_LINK )
