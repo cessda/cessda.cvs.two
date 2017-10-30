@@ -49,6 +49,7 @@ import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 
 @UIScope
@@ -84,8 +85,8 @@ public class SearchView extends CvManagerView {
 	// The opened search hit at the results grid (null at the begining)
 	// private SearchHit selectedItem = null;
 	
-	public SearchView(EventBus.UIEventBus eventBus, ConfigurationService configService) {
-		super(eventBus, configService, SearchView.VIEW_NAME);
+	public SearchView(EventBus.UIEventBus eventBus, ConfigurationService configService, CvManagerService cvManagerService) {
+		super(eventBus, configService, cvManagerService, SearchView.VIEW_NAME);
 		eventBus.subscribe( this, SearchView.VIEW_NAME );
 	}
 	
@@ -169,8 +170,8 @@ public class SearchView extends CvManagerView {
 
 			if (!searchBox.getValue().trim().equalsIgnoreCase("")) {
 				// initialize the new query
-				List<DDIStore> searchResult = restClient.getElementListByContent(DDIElement.CVSCHEME,
-						this.searchBox.getValue());
+				List<DDIStore> searchResult = cvManagerService.findByContentAndElementType(
+						this.searchBox.getValue(), DDIElement.CVSCHEME );
 
 				ArrayList<CVScheme> hits = new ArrayList<CVScheme>();
 				for (DDIStore store : searchResult) {
@@ -259,7 +260,7 @@ public class SearchView extends CvManagerView {
 	
 	private void resetSearch() {
 		searchBox.setValue( "" );
-		List<DDIStore> searchResult = restClient.getStudyList(DDIElement.CVSCHEME);
+		List<DDIStore> searchResult = cvManagerService.findStudyByElementType(DDIElement.CVSCHEME);
 
 		ArrayList<CVScheme> hits = new ArrayList<CVScheme>();
 		for (DDIStore store : searchResult) {
@@ -340,10 +341,6 @@ public class SearchView extends CvManagerView {
 	
 	public EventBus.UIEventBus getEventBus() {
 		return eventBus;
-	}
-
-	public RestClient getClient() {
-		return restClient;
 	}
 
 }

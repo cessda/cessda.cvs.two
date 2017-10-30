@@ -30,6 +30,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 import eu.cessda.cvmanager.ui.view.window.AddLanguageCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.EditCVSchemeWindow;
@@ -40,7 +41,7 @@ public class ActionPanel extends CustomComponent{
 	private static final long serialVersionUID = -6349100242468318473L;
 
 	private final EventBus.UIEventBus eventBus;
-	private final RestClient restClient;
+	private final CvManagerService cvManagerService;
 	
 	private MVerticalLayout actionLayout = new MVerticalLayout();
 
@@ -64,7 +65,7 @@ public class ActionPanel extends CustomComponent{
 	public ActionPanel( CvManagerView cvManagerView) {
 		this.cvManagerView = cvManagerView;
 		this.eventBus = cvManagerView.getEventBus();
-		this.restClient = cvManagerView.getRestClient();
+		this.cvManagerService = cvManagerView.getCvManagerService();
 //		this.detailGrid = detailView.getDetailGrid();
 		this.cvScheme = cvManagerView.getCvScheme();
 		
@@ -163,7 +164,7 @@ public class ActionPanel extends CustomComponent{
 		newCvScheme.createId();
 		newCvScheme.setContainerId(newCvScheme.getId());
 
-		Window window = new EditCVSchemeWindow(eventBus, restClient, newCvScheme, "en", "en");
+		Window window = new EditCVSchemeWindow(eventBus, cvManagerService, newCvScheme, "en", "en");
 		getUI().addWindow(window);
 	}
 	

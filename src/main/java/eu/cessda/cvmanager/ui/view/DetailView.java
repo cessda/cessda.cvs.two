@@ -1,19 +1,15 @@
 package eu.cessda.cvmanager.ui.view;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -22,7 +18,6 @@ import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.Binder.Binding;
@@ -32,7 +27,6 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
 import com.vaadin.shared.ui.grid.DropLocation;
@@ -42,7 +36,6 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
@@ -56,6 +49,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
 
 @UIScope
@@ -102,30 +96,18 @@ public class DetailView extends CvManagerView {
 	private Binder<CVConcept> binder;
 	private List<CVConcept> concepts = new ArrayList<CVConcept>();
 	private MCssLayout languageLayout = new MCssLayout();
-	
-	private ActionPanel actionPanel;
-	
+		
 	private Set<CVConcept> draggedItems;
 	private Grid<CVConcept> draggedGrid;
 
-	// The opened search hit at the results grid (null at the begining)
-	// private SearchHit selectedItem = null;
-
-	// private List<CvItem> cvItems = new ArrayList<>();
-	
-	private MHorizontalLayout titleLayout = new MHorizontalLayout();
-	private Image logoImage;
-
-	public DetailView( EventBus.UIEventBus eventBus, ConfigurationService configService) {
-		super(eventBus, configService, DetailView.VIEW_NAME);
+	public DetailView( EventBus.UIEventBus eventBus, ConfigurationService configService, CvManagerService cvManagerService) {
+		super(eventBus, configService, cvManagerService, DetailView.VIEW_NAME);
 		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
 	@PostConstruct
 	public void init() {
 		actionPanel = new ActionPanel( this );
-		
-		LoginView.NAVIGATETO_VIEWNAME = SearchView.VIEW_NAME;
 
 		MButton backToResults = new MButton(FontAwesome.BACKWARD, this::back);
 		backToResults.setCaption("Back");
@@ -159,6 +141,24 @@ public class DetailView extends CvManagerView {
 			);
 
 	}
+	
+	@Override
+	public void enter(ViewChangeEvent event) {
+		setOldView(event.getOldView());
+
+		if (event.getParameters() != null) {
+			try {
+				String itemId = event.getParameters();
+				LoginView.NAVIGATETO_VIEWNAME = DetailView.VIEW_NAME + "/" + itemId;
+				setDetails(itemId);
+			} catch (Exception e) {
+				// UI.getCurrent().getNavigator().navigateTo(
+				// ErrorView.VIEW_NAME );
+				e.printStackTrace();
+			}
+
+		}
+	}
 
 	private void setDetails(String itemId) {
 		refreshCvScheme(itemId);
@@ -177,7 +177,7 @@ public class DetailView extends CvManagerView {
 	private void refreshCvScheme(String itemId) {
 		languageLayout.removeAllComponents();
 		
-		List<DDIStore> ddiSchemes = restClient.getElementList(itemId, DDIElement.CVSCHEME);
+		List<DDIStore> ddiSchemes = cvManagerService.findByIdAndElementType(itemId, DDIElement.CVSCHEME);
 		if (ddiSchemes != null && !ddiSchemes.isEmpty())
 			cvScheme = new CVScheme(ddiSchemes.get(0));
 
@@ -201,7 +201,7 @@ public class DetailView extends CvManagerView {
 	
 	private void refreshCvConcepts() {
 		concepts.clear();
-		List<DDIStore> ddiConcepts = restClient.getElementList(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
+		List<DDIStore> ddiConcepts = cvManagerService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
 		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
 	}
 
@@ -515,23 +515,6 @@ public class DetailView extends CvManagerView {
         return dropTarget;
     }
 
-	@Override
-	public void enter(ViewChangeEvent event) {
-		setOldView(event.getOldView());
-
-		if (event.getParameters() != null) {
-			try {
-				String itemId = event.getParameters();
-				setDetails(itemId);
-			} catch (Exception e) {
-				// UI.getCurrent().getNavigator().navigateTo(
-				// ErrorView.VIEW_NAME );
-				e.printStackTrace();
-			}
-
-		}
-	}
-
 	public FormMode getFormMode() {
 		return formMode;
 	}
@@ -604,10 +587,6 @@ public class DetailView extends CvManagerView {
 		return concepts;
 	}
 
-	public RestClient getClient() {
-		return restClient;
-	}
-	
 	public CVScheme getCvScheme() {
 		return cvScheme;
 	}
@@ -623,12 +602,12 @@ public class DetailView extends CvManagerView {
 				
 				break;
 			case CVCONCEPT_ADD_DIALOG:
-				CVConcept con = new CVConcept();
-				con.loadSkeleton(con.getDefaultDialect());
-				con.createId();
-				con.setContainerId( cvScheme.getContainerId());
+				CVConcept newCVConcept = new CVConcept();
+				newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
+				newCVConcept.createId();
+				newCVConcept.setContainerId( cvScheme.getContainerId());
 
-				Window window = new DialogCodeWindow(eventBus, restClient, con, "en", "en");
+				Window window = new DialogCodeWindow(eventBus, cvManagerService, newCVConcept, "en", "en");
 				getUI().addWindow(window);
 				
 				break;

@@ -19,6 +19,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.Language;
+import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
 public class EditCVSchemeWindow extends Window {
@@ -53,7 +54,7 @@ public class EditCVSchemeWindow extends Window {
 
 	//private EditorView theView;
 
-	public EditCVSchemeWindow(EventBus.UIEventBus eventBus, RestClient client, CVScheme cvScheme, String orignalLanguage, String language) {
+	public EditCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, String orignalLanguage, String language) {
 		super("Add CVScheme");
 		
 		this.eventBus = eventBus;
@@ -105,7 +106,7 @@ public class EditCVSchemeWindow extends Window {
 			log.trace(getCvScheme().getTitleByLanguage(getLanguage()));
 			getCvScheme().addEditor( editorCb.getValue());
 			getCvScheme().save();
-			DDIStore ddiStore = client.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
+			DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
 			eventBus.publish( this, ddiStore);
 			close();
 			UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());

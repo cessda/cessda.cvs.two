@@ -16,6 +16,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.MarginInfo;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.CvManagerService;
 
 public abstract class CvManagerView extends MVerticalLayout implements View {
 
@@ -26,8 +27,8 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	
 	public final EventBus.UIEventBus eventBus;
 	public final ConfigurationService configService;
+	public final CvManagerService cvManagerService;
 	
-	protected final RestClient restClient;
 	private final ActionType actionType;
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
@@ -37,12 +38,14 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	
 	protected CVScheme cvScheme;
 	
-	public CvManagerView(EventBus.UIEventBus eventBus, ConfigurationService configService, String actionType) {
+	public CvManagerView(EventBus.UIEventBus eventBus, ConfigurationService configService, 
+			CvManagerService cvManagerService, String actionType) {
 		
 		this.eventBus = eventBus;
 		this.configService = configService;
+		this.cvManagerService = cvManagerService;
+		
 		this.actionType = ActionType.valueOf(actionType.toUpperCase());
-		this.restClient = new RestClient( configService.getDdiflatdbRestUrl() );
 		
 		actionPanel = new ActionPanel( this );
 		
@@ -96,21 +99,17 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 		return eventBus;
 	}
 
-
-	public RestClient getRestClient() {
-		return restClient;
+	public CvManagerService getCvManagerService() {
+		return cvManagerService;
 	}
-
 
 	public CVScheme getCvScheme() {
 		return cvScheme;
 	}
 
-
 	public void setCvScheme(CVScheme cvScheme) {
 		this.cvScheme = cvScheme;
 	}
-
 
 	public ActionType getActionType() {
 		return actionType;

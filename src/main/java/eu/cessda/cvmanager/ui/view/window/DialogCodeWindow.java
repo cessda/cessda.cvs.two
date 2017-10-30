@@ -17,6 +17,7 @@ import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 
@@ -45,7 +46,7 @@ public class DialogCodeWindow extends Window {
 	private CVConcept theCode;
 
 
-	public DialogCodeWindow(EventBus.UIEventBus eventBus, RestClient client, CVConcept code, String orignalLanguage, String language) {
+	public DialogCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVConcept code, String orignalLanguage, String language) {
 		super("Add Code");
 		
 		this.eventBus = eventBus;
@@ -77,7 +78,7 @@ public class DialogCodeWindow extends Window {
 			// CVConcept cv = binder.getBean();
 			log.trace(getTheCode().getPrefLabelByLanguage(getLanguage()));
 			getTheCode().save();
-			DDIStore ddiStore = client.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
+			DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
 			
 			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 			
