@@ -10,6 +10,7 @@ import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -107,8 +108,6 @@ public class DetailView extends CvManagerView {
 
 	@PostConstruct
 	public void init() {
-		actionPanel = new ActionPanel( this );
-
 		MButton backToResults = new MButton(FontAwesome.BACKWARD, this::back);
 		backToResults.setCaption("Back");
 		backToResults.withStyleName(ValoTheme.BUTTON_FRIENDLY, ValoTheme.BUTTON_SMALL, "pull-right", "marginleft20");
@@ -139,7 +138,6 @@ public class DetailView extends CvManagerView {
 				languageLayout, 
 				bottomSection 
 			);
-
 	}
 	
 	@Override
