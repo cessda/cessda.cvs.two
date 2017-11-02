@@ -447,7 +447,14 @@ public class DetailView extends CvManagerView {
 				.setExpandRatio(2);
 
 		detailGrid.setSizeFull();
-		detailGrid.getEditor().setEnabled(true);
+		//detailGrid.getEditor().setEnabled(true);
+		detailGrid.addItemClickListener( event -> {
+			if( event.getMouseEventDetails().isDoubleClick() ) {
+				CVConcept selectedRow = event.getItem();
+				Window window = new DialogCodeWindow(eventBus, cvManagerService, selectedRow, "en", selectedLang);
+				getUI().addWindow(window);
+			}
+		});
 		
 		addDragSourceExtension(detailGrid, concepts);
 		addDropTargetExtension(detailGrid, DropMode.BETWEEN, concepts);

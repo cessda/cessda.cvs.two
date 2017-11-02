@@ -338,9 +338,5 @@ public class SearchView extends CvManagerView {
 		this.resultsContainer.addComponent(this.initResultsContainer(hits));
 
 	}
-	
-	public EventBus.UIEventBus getEventBus() {
-		return eventBus;
-	}
 
 }

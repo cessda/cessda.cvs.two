@@ -203,21 +203,6 @@ public class ActionPanel extends CustomComponent{
 	private void doDeleteCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_EDIT_MODE, null) );
-//		if( detailGrid.getColumn("cvConceptRemove") == null ) {		
-//			detailView
-//				.getDetailGrid()
-//					.addColumn( cvconcept -> "x",
-//						new ButtonRenderer(clickEvent -> {
-//							detailView.getConcepts().remove(clickEvent.getItem());
-//							detailGrid.setItems( detailView.getConcepts() );
-//				    })).setId("cvConceptRemove");
-//		} else {
-//			if( !detailGrid.getColumn("cvConceptRemove").isHidden()) {
-//				detailGrid.getColumn("cvConceptRemove").setHidden( true );
-//			} else {
-//				detailGrid.getColumn("cvConceptRemove").setHidden( false );
-//			}
-//		}
 	}
 	
 	private void doSortCode(ClickEvent event ) {

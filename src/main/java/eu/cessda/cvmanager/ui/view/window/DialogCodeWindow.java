@@ -47,7 +47,7 @@ public class DialogCodeWindow extends Window {
 
 
 	public DialogCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVConcept code, String orignalLanguage, String language) {
-		super("Add Code");
+		super( code.getId() == null ? "Add Code":"Edit Code");
 		
 		this.eventBus = eventBus;
 		setWidth("600px");
@@ -82,7 +82,7 @@ public class DialogCodeWindow extends Window {
 			
 			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 			
-			close();
+			this.close();
 
 		});
 
