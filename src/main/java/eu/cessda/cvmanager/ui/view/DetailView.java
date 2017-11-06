@@ -6,10 +6,12 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
@@ -49,6 +51,7 @@ import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
@@ -139,6 +142,14 @@ public class DetailView extends CvManagerView {
 				languageLayout, 
 				bottomSection 
 			);
+
+	}
+	
+	@EventBusListenerMethod( scope = EventScope.UI )
+	public void onAuthenticate( LoginSucceedEvent event )
+	{
+		editButton.setVisible( true );
+		actionPanel.setVisible( true );
 	}
 	
 	@Override
@@ -205,10 +216,13 @@ public class DetailView extends CvManagerView {
 	}
 	
 	private void doSaveConcept() {
+		cvScheme.save();
 		DDIStore ddiStore = cvManagerService.saveElement(cvScheme.ddiStore, "Peter", "minor edit");
 		Notification.show("All changes saved");
 		setFormMode(FormMode.view);
 		initTopViewSection();
+		// emit Event for searchView
+		eventBus.publish(EventScope.UI, SearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, ddiStore) );
 	}
 
 	private void initTopViewSection() {
@@ -569,7 +583,11 @@ public class DetailView extends CvManagerView {
 			bottomEditSection.setVisible(false);
 			saveButton.setVisible(false);
 			cancelButton.setVisible(false);
-			editButton.setVisible(true);
+			if( SecurityContextHolder.getContext().getAuthentication() == null ) {
+				editButton.setVisible( false );
+			} else {
+				editButton.setVisible( true );
+			}
 			break;
 		case edit:
 			topEditSection.setVisible(true);
@@ -680,7 +698,7 @@ public class DetailView extends CvManagerView {
 //											}
 
 //									);
-									cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
+									cvManagerService.deleteById(targetConcept.ddiStore.getPrimaryKey(), "peter", "delete concept");
 									concepts.remove( targetConcept );
 									detailGrid.setItems( concepts );
 						    })).setId("cvConceptRemove");

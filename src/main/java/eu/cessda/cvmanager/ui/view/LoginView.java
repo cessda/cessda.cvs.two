@@ -7,6 +7,7 @@ import org.gesis.security.util.LoginSucceedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.viritin.label.MLabel;
 
 import com.vaadin.annotations.Title;
 import com.vaadin.event.ShortcutAction;
@@ -72,6 +73,9 @@ public class LoginView extends VerticalLayout implements View {
 
 	@Autowired
 	private ConfigurationService configService;
+	
+	private MLabel headerTitle = new MLabel();
+	private MLabel subHeaderTitle = new MLabel();
 
 	public LoginView() {
 	}
@@ -95,6 +99,13 @@ public class LoginView extends VerticalLayout implements View {
 		infoUserDisabled.setComponentAlignment(userDisabledLabel, Alignment.MIDDLE_CENTER);
 
 		infoUserDisabled.setVisible(false);
+		
+		headerTitle.withStyleName( "headertitle" );
+		headerTitle.withValue("Log in");
+		
+		subHeaderTitle.withValue("Please log in to manage controlled vocabularies in the CESSDA CV-Manager.");
+		
+		this.addComponents( headerTitle, subHeaderTitle );
 
 		this.addComponents(this.loginFormLayout, infoUserDisabled);
 

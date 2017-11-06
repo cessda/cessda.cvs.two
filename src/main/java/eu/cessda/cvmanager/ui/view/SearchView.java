@@ -9,6 +9,7 @@ import org.gesis.security.SecurityService;
 import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
+import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.springframework.scheduling.support.ScheduledMethodRunnable;
@@ -45,12 +46,16 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
+import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
 
 @UIScope
 @SpringView(name = SearchView.VIEW_NAME)
@@ -337,6 +342,19 @@ public class SearchView extends CvManagerView {
 
 		this.resultsContainer.addComponent(this.initResultsContainer(hits));
 
+	}
+	
+	@EventBusListenerMethod( scope = EventScope.UI )
+	public void eventHandle( CvManagerEvent.Event event)
+	{
+		switch(event.getType()) {
+			case CVSCHEME_UPDATED:
+				resetSearch();
+				
+				break;
+			default:
+				break;
+		}
 	}
 
 }
