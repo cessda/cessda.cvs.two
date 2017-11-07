@@ -472,7 +472,7 @@ public class DetailView extends CvManagerView {
 		detailGrid.addItemClickListener( event -> {
 			if( event.getMouseEventDetails().isDoubleClick() ) {
 				CVConcept selectedRow = event.getItem();
-				Window window = new DialogCodeWindow(eventBus, cvManagerService, selectedRow, "en", selectedLang);
+				Window window = new DialogCodeWindow(eventBus, cvManagerService, selectedRow, selectedLang, selectedLang);
 				getUI().addWindow(window);
 			}
 		});
