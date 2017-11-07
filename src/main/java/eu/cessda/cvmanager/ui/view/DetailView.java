@@ -37,6 +37,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.ItemClick;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
@@ -47,6 +48,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.components.grid.GridDragSource;
 import com.vaadin.ui.components.grid.GridDropTarget;
+import com.vaadin.ui.components.grid.ItemClickListener;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -179,7 +181,7 @@ public class DetailView extends CvManagerView {
 		initTopViewSection();
 		initTopEditSection();
 		initBottomViewSection();
-		initBottomEditSection();
+		//initBottomEditSection();
 	}
 
 
@@ -202,7 +204,8 @@ public class DetailView extends CvManagerView {
 					initBottomViewSection();
 				} else {
 					initTopEditSection();
-					initBottomEditSection();
+					//initBottomEditSection();
+					initBottomViewSection();
 				}
 			});
 			languageLayout.add(langBUtton);
@@ -429,6 +432,10 @@ public class DetailView extends CvManagerView {
 	
 
 	public void updateDetailGrid() {
+
+		for(Object listener : detailGrid.getListeners( ItemClick.class)) {
+			detailGrid.removeListener(ItemClick.class, listener);
+		}
 		detailGrid.removeAllColumns();
 		// detailGrid.addColumn(CVConcept::getId).setCaption("URI").setExpandRatio(1);
 		
@@ -578,9 +585,9 @@ public class DetailView extends CvManagerView {
 		switch (formMode) {
 		case view:
 			topViewSection.setVisible(true);
-			bottomViewSection.setVisible(true);
+			//bottomViewSection.setVisible(true);
 			topEditSection.setVisible(false);
-			bottomEditSection.setVisible(false);
+			//bottomEditSection.setVisible(false);
 			saveButton.setVisible(false);
 			cancelButton.setVisible(false);
 			if( SecurityContextHolder.getContext().getAuthentication() == null ) {
@@ -591,9 +598,9 @@ public class DetailView extends CvManagerView {
 			break;
 		case edit:
 			topEditSection.setVisible(true);
-			bottomEditSection.setVisible(true);
+			//bottomEditSection.setVisible(true);
 			topViewSection.setVisible(false);
-			bottomViewSection.setVisible(false);
+			//bottomViewSection.setVisible(false);
 			saveButton.setVisible(true);
 			cancelButton.setVisible(true);
 			editButton.setVisible(false);
