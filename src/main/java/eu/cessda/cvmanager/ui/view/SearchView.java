@@ -1,53 +1,38 @@
 package eu.cessda.cvmanager.ui.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.security.SecurityService;
-import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
-import org.springframework.scheduling.support.ScheduledMethodRunnable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
-import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.data.ValueProvider;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.Resource;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -55,7 +40,6 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
-import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
 
 @UIScope
 @SpringView(name = SearchView.VIEW_NAME)
@@ -63,7 +47,7 @@ public class SearchView extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "Browse";
-	
+
 	// main container
 	private HorizontalLayout globalContainer = new HorizontalLayout();
 	private VerticalLayout filtersContainer = new VerticalLayout();
@@ -73,11 +57,11 @@ public class SearchView extends CvManagerView {
 	private TextField searchBox;
 	private Button searchButton;
 	private Button showAllStudiesButton;
-	
+
 	private MHorizontalLayout searchOption = new MHorizontalLayout();
 	private MButton clearButton = new MButton();
 	private MButton searchHelpButton = new MButton();
-	
+
 	private MHorizontalLayout filterOption = new MHorizontalLayout();
 	private MHorizontalLayout perPageResult = new MHorizontalLayout();
 	private ComboBox perPageComboBox = new ComboBox();
@@ -89,14 +73,15 @@ public class SearchView extends CvManagerView {
 
 	// The opened search hit at the results grid (null at the begining)
 	// private SearchHit selectedItem = null;
-	
-	public SearchView(EventBus.UIEventBus eventBus, ConfigurationService configService, CvManagerService cvManagerService) {
+
+	public SearchView(EventBus.UIEventBus eventBus, ConfigurationService configService,
+			CvManagerService cvManagerService) {
 		super(eventBus, configService, cvManagerService, SearchView.VIEW_NAME);
-		eventBus.subscribe( this, SearchView.VIEW_NAME );
+		eventBus.subscribe(this, SearchView.VIEW_NAME);
 	}
-	
+
 	@PostConstruct
-	public void init() {		
+	public void init() {
 		LoginView.NAVIGATETO_VIEWNAME = SearchView.VIEW_NAME;
 
 		// the layout that contains the three zones: filters, search box, and
@@ -129,17 +114,14 @@ public class SearchView extends CvManagerView {
 		this.resultsContainer.setMargin(false);
 		this.resultsContainer.setSizeFull();
 		this.resultsContainer.addComponent(this.initResultsContainer(new ArrayList<>()));
-		
+
 		this.searchGlobalContainer.addComponents(searchBoxContainer, resultsContainer);
 		this.searchGlobalContainer.setExpandRatio(resultsContainer, 1);
 
 		this.globalContainer.addComponents(filtersContainer, searchGlobalContainer);
 		this.globalContainer.setExpandRatio(searchGlobalContainer, 1);
-		
-		rightContainer
-		.add(
-			globalContainer
-		).withExpand(globalContainer, 1);
+
+		rightContainer.add(globalContainer).withExpand(globalContainer, 1);
 
 		resetSearch();
 	}
@@ -150,10 +132,8 @@ public class SearchView extends CvManagerView {
 
 	}
 
-	
 	/**
-	 * Initialize the search box zone, with all necessary components and
-	 * listeners
+	 * Initialize the search box zone, with all necessary components and listeners
 	 * 
 	 * @return a horizontal layout containing all components of this zone
 	 */
@@ -174,82 +154,88 @@ public class SearchView extends CvManagerView {
 		this.searchButton.addClickListener(e -> {
 
 			if (!searchBox.getValue().trim().equalsIgnoreCase("")) {
+
+				Map<String, CVScheme> mapHits = new HashMap<String, CVScheme>();
+
 				// initialize the new query
-				List<DDIStore> searchResult = cvManagerService.findByContentAndElementType(
-						this.searchBox.getValue(), DDIElement.CVSCHEME );
+				List<DDIStore> searchResult = cvManagerService.findByContentAndElementType(this.searchBox.getValue(),
+						DDIElement.CVSCHEME);
 
-				ArrayList<CVScheme> hits = new ArrayList<CVScheme>();
-				for (DDIStore store : searchResult) {
-					CVScheme scheme = new CVScheme(store);
+				List<DDIStore> searchResult2 = cvManagerService.findByContentAndElementType(this.searchBox.getValue(),
+						DDIElement.CVCONCEPT);
 
-					hits.add(scheme);
+				for (DDIStore store : searchResult2) {
+					CVConcept concept = new CVConcept(store);
+
+					List<DDIStore> ddiStoreScheme = cvManagerService
+							.findByContentAndElementType(concept.getContainerId(), DDIElement.CVSCHEME);
+
+					if (ddiStoreScheme.size() == 1) {
+
+						if (mapHits.containsKey(ddiStoreScheme.get(0).getElementId())) {
+							CVScheme scheme = mapHits.get(ddiStoreScheme.get(0).getElementId());
+							scheme.addConcept(concept);
+						} else {
+							CVScheme scheme = new CVScheme(ddiStoreScheme.get(0));
+							scheme.addConcept(concept);
+							mapHits.put(scheme.ddiStore.getElementId(), scheme);
+						}
+
+					}
 				}
+
+				for (DDIStore store : searchResult) {
+
+					if (!mapHits.containsKey(store.getElementId())) {
+
+						CVScheme scheme = new CVScheme(store);
+
+						mapHits.put(scheme.ddiStore.getElementId(), scheme);
+					}
+
+				}
+
+				ArrayList<CVScheme> hits = new ArrayList<CVScheme>(mapHits.values());
+
 				updateResultsContainer(hits);
 			} else
 				resetSearch();
 
 		});
 
-		
 		this.showAllStudiesButton = new Button("View all CVs");
 		this.showAllStudiesButton.setStyleName(ValoTheme.BUTTON_LINK);
 		this.showAllStudiesButton.addClickListener(e -> {
 
 			// reinitialize saved query
 		});
-		
-		clearButton
-			.withCaption("Clear search")
-			.withStyleName(ValoTheme.BUTTON_LINK)
-			.addClickListener( e -> {
-				resetSearch();
-			 });
 
-		searchHelpButton
-			.withCaption("Help")
-			.withStyleName(ValoTheme.BUTTON_LINK)
-			.addClickListener( e -> {
-				HelpWindow help = new HelpWindow();
-				UI.getCurrent().addWindow(help);
-			 });
-		
-		searchOption
-			.withStyleName( "searchoption" )
-			.withMargin( false )
-			.add(
-				clearButton,
-				new Label("|"),
-				searchHelpButton
-			);
-		
+		clearButton.withCaption("Clear search").withStyleName(ValoTheme.BUTTON_LINK).addClickListener(e -> {
+			resetSearch();
+		});
+
+		searchHelpButton.withCaption("Help").withStyleName(ValoTheme.BUTTON_LINK).addClickListener(e -> {
+			HelpWindow help = new HelpWindow();
+			UI.getCurrent().addWindow(help);
+		});
+
+		searchOption.withStyleName("searchoption").withMargin(false).add(clearButton, new Label("|"), searchHelpButton);
+
 		// filter option
-		perPageComboBox.setItems("10","20","50","100","200");
-		perPageComboBox.setEmptySelectionAllowed( false );
+		perPageComboBox.setItems("10", "20", "50", "100", "200");
+		perPageComboBox.setEmptySelectionAllowed(false);
 		perPageComboBox.setWidth("100px");
 		perPageComboBox.setValue("10");
-		
-		sortComboBox.setItems("Relevance","A-Z");
-		sortComboBox.setEmptySelectionAllowed( false );
+
+		sortComboBox.setItems("Relevance", "A-Z");
+		sortComboBox.setEmptySelectionAllowed(false);
 		sortComboBox.setWidth("120px");
 		sortComboBox.setValue("A-Z");
-				
-		filterOption
-			.withFullWidth()
-			.add(
-				perPageResult
-					.add( 
-						new MLabel("Result per page"),
-						perPageComboBox
-					),
-				infoResult,
-				sortResult
-				.add( 
-						new MLabel("Result per page"),
-						sortComboBox
-					)
-			);
 
-		layout.addComponents(this.searchBox, this.searchButton /*, this.showAllStudiesButton*/);
+		filterOption.withFullWidth().add(perPageResult.add(new MLabel("Result per page"), perPageComboBox), infoResult,
+				sortResult.add(new MLabel("Result per page"), sortComboBox));
+
+		layout.addComponents(this.searchBox, this.searchButton /* , this.showAllStudiesButton */);
 		layout.setExpandRatio(this.searchBox, 1);
 
 		container.addComponents(layout, searchOption, filterOption);
@@ -257,14 +243,14 @@ public class SearchView extends CvManagerView {
 		return container;
 
 	}
-	
-	@EventBusListenerMethod( scope = EventScope.UI )
-	public void resetSearch( DDIStore ddiStore ) {
+
+	@EventBusListenerMethod(scope = EventScope.UI)
+	public void resetSearch(DDIStore ddiStore) {
 		resetSearch();
 	}
-	
+
 	private void resetSearch() {
-		searchBox.setValue( "" );
+		searchBox.setValue("");
 		List<DDIStore> searchResult = cvManagerService.findStudyByElementType(DDIElement.CVSCHEME);
 
 		ArrayList<CVScheme> hits = new ArrayList<CVScheme>();
@@ -287,11 +273,11 @@ public class SearchView extends CvManagerView {
 	private com.vaadin.ui.Component initResultsContainer(ArrayList<CVScheme> hits) {
 
 		VerticalLayout layout = new VerticalLayout();
-		
-		if( hits.isEmpty())
-			infoResult.setValue( "Showing 0 of 0" );
+
+		if (hits.isEmpty())
+			infoResult.setValue("Showing 0 of 0");
 		else
-			infoResult.setValue( "Showing 1 - " + hits.size()+ " of " + hits.size());
+			infoResult.setValue("Showing 1 - " + hits.size() + " of " + hits.size());
 
 		Label header = new Label("<b>" + hits.size() + " CVs retrieved</b>", ContentMode.HTML);
 
@@ -299,16 +285,15 @@ public class SearchView extends CvManagerView {
 		Grid<CVScheme> results = new Grid<>(CVScheme.class);
 		results.setItems(hits);
 		results.addStyleName(ValoTheme.TABLE_BORDERLESS);
-		
+
 		results.removeAllColumns();
-		results.setHeaderVisible( false );
-		results.addColumn( cvscheme -> {
-		      return new CvSchemeComponent( cvscheme, configService );
-		      }, new ComponentRenderer())
-			.setId("cvScemeComp");
-		results.setRowHeight( 135.0 );
-		results.getColumn("cvScemeComp").setExpandRatio( 1 );
-		
+		results.setHeaderVisible(false);
+		results.addColumn(cvscheme -> {
+			return new CvSchemeComponent(cvscheme, configService);
+		}, new ComponentRenderer()).setId("cvScemeComp");
+		results.setRowHeight(135.0);
+		results.getColumn("cvScemeComp").setExpandRatio(1);
+
 		results.setSelectionMode(SelectionMode.NONE);
 		results.setSizeFull();
 
@@ -334,7 +319,7 @@ public class SearchView extends CvManagerView {
 	 * @param hits:
 	 *            a hit list to be shown (the results list)
 	 */
-	
+
 	public void updateResultsContainer(ArrayList<CVScheme> hits) {
 
 		// remove outdated results
@@ -343,17 +328,16 @@ public class SearchView extends CvManagerView {
 		this.resultsContainer.addComponent(this.initResultsContainer(hits));
 
 	}
-	
-	@EventBusListenerMethod( scope = EventScope.UI )
-	public void eventHandle( CvManagerEvent.Event event)
-	{
-		switch(event.getType()) {
-			case CVSCHEME_UPDATED:
-				resetSearch();
-				
-				break;
-			default:
-				break;
+
+	@EventBusListenerMethod(scope = EventScope.UI)
+	public void eventHandle(CvManagerEvent.Event event) {
+		switch (event.getType()) {
+		case CVSCHEME_UPDATED:
+			resetSearch();
+
+			break;
+		default:
+			break;
 		}
 	}
 
