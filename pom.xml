@@ -246,7 +246,7 @@
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <server.contextPath>/cvmanager-test</server.contextPath>
-                <ddiflatdb.rest.url>http://10.6.13.200:8080</ddiflatdb.rest.url>
+                <ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
 				<db.mysql.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</db.mysql.url>
 				<db.mysql.username>root</db.mysql.username>
 				<db.mysql.password>GVM8Sj8FUxBf4gk</db.mysql.password>
@@ -274,7 +274,7 @@
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <server.contextPath>/cvmanager</server.contextPath>
-				<ddiflatdb.rest.url>http://10.6.13.200:8080</ddiflatdb.rest.url>
+				<ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
                 <db.mysql.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</db.mysql.url>
 				<db.mysql.username>root</db.mysql.username>
 				<db.mysql.password>GVM8Sj8FUxBf4gk</db.mysql.password>
