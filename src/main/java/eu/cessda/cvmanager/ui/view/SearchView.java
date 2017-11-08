@@ -64,10 +64,10 @@ public class SearchView extends CvManagerView {
 
 	private MHorizontalLayout filterOption = new MHorizontalLayout();
 	private MHorizontalLayout perPageResult = new MHorizontalLayout();
-	private ComboBox perPageComboBox = new ComboBox();
+	private ComboBox<String> perPageComboBox = new ComboBox<>();
 	private MLabel infoResult = new MLabel();
 	private MHorizontalLayout sortResult = new MHorizontalLayout();
-	private ComboBox sortComboBox = new ComboBox();
+	private ComboBox<String> sortComboBox = new ComboBox<>();
 	// results area
 	private VerticalLayout resultsContainer = new VerticalLayout();
 
@@ -284,14 +284,15 @@ public class SearchView extends CvManagerView {
 		// initialize the results grid
 		Grid<CVScheme> results = new Grid<>(CVScheme.class);
 		results.setItems(hits);
-		results.addStyleName(ValoTheme.TABLE_BORDERLESS);
+
+		results.addStyleNames(ValoTheme.TABLE_BORDERLESS, "undefined-height");
 
 		results.removeAllColumns();
 		results.setHeaderVisible(false);
 		results.addColumn(cvscheme -> {
 			return new CvSchemeComponent(cvscheme, configService);
 		}, new ComponentRenderer()).setId("cvScemeComp");
-		results.setRowHeight(135.0);
+		// results.setRowHeight( 135.0 );
 		results.getColumn("cvScemeComp").setExpandRatio(1);
 
 		results.setSelectionMode(SelectionMode.NONE);

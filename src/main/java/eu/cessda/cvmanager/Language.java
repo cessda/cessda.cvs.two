@@ -5,13 +5,17 @@ import java.util.List;
 import java.util.Set;
 
 public enum Language {
+	DEUTCH("nl"),
 	ENGLISH("en"),
 	FINNISH("fi"),
 	FRENCH("fr"),
 	GERMAN("de"),
+	GREEK("el"),
+	NORWEGIAN("no"),
+	RUSSIAN("ru"),
 	SPANISH("es"),
-	RUSSIAN("ru");
-	
+	SWEDISH("sv");
+		
 	private final String resourceType;
 	
 	private Language(String s){
