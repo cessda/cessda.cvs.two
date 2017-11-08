@@ -5,49 +5,31 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.security.SecurityService;
-import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.ddiflatdb.client.RestClient;
-import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
-import org.springframework.scheduling.support.ScheduledMethodRunnable;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
-import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.data.ValueProvider;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.Resource;
-import com.vaadin.server.ThemeResource;
-import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -55,7 +37,6 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
-import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
 
 @UIScope
 @SpringView(name = SearchView.VIEW_NAME)
@@ -80,10 +61,10 @@ public class SearchView extends CvManagerView {
 	
 	private MHorizontalLayout filterOption = new MHorizontalLayout();
 	private MHorizontalLayout perPageResult = new MHorizontalLayout();
-	private ComboBox perPageComboBox = new ComboBox();
+	private ComboBox<String> perPageComboBox = new ComboBox<>();
 	private MLabel infoResult = new MLabel();
 	private MHorizontalLayout sortResult = new MHorizontalLayout();
-	private ComboBox sortComboBox = new ComboBox();
+	private ComboBox<String> sortComboBox = new ComboBox<>();
 	// results area
 	private VerticalLayout resultsContainer = new VerticalLayout();
 
@@ -298,7 +279,7 @@ public class SearchView extends CvManagerView {
 		// initialize the results grid
 		Grid<CVScheme> results = new Grid<>(CVScheme.class);
 		results.setItems(hits);
-		results.addStyleName(ValoTheme.TABLE_BORDERLESS);
+		results.addStyleNames(ValoTheme.TABLE_BORDERLESS, "undefined-height");
 		
 		results.removeAllColumns();
 		results.setHeaderVisible( false );
@@ -306,7 +287,7 @@ public class SearchView extends CvManagerView {
 		      return new CvSchemeComponent( cvscheme, configService );
 		      }, new ComponentRenderer())
 			.setId("cvScemeComp");
-		results.setRowHeight( 135.0 );
+		//results.setRowHeight( 135.0 );
 		results.getColumn("cvScemeComp").setExpandRatio( 1 );
 		
 		results.setSelectionMode(SelectionMode.NONE);

@@ -1730,4 +1730,13 @@ $v-selection-item-border-radius: 0;
 		outline: -webkit-focus-ring-color auto 10px;
 		outline-color:rgb(25, 25, 25);
    	}
+   .undefined-height>.v-grid-tablewrapper>table{
+   		tr{
+   			transform: none !important;
+   			position: relative !important;
+		   	td{
+		   		height:auto !important;
+		   	}
+	   }
+   }
 }

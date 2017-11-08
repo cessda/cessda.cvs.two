@@ -1057,7 +1057,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "8.1.3";
+	content: "8.1.6";
 }
 
 .v-widget {
@@ -9824,6 +9824,19 @@ div.v-layout.v-horizontal.v-widget {
 	box-shadow: inset 0 0 0 1px #c9d1e1;
 }
 
+.mytheme .v-tree8-scroller-vertical {
+	border: none;
+}
+
+.mytheme .v-tree8-scroller-horizontal {
+	border: none;
+}
+
+.mytheme .v-tree8-header-deco, .mytheme .v-tree8-footer-deco, .mytheme .v-tree8-horizontal-scrollbar-deco {
+	border: none;
+	background: transparent;
+}
+
 .mytheme .v-treegrid {
 	position: relative;
 }
@@ -16415,4 +16428,13 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .button-pressed {
 	outline: -webkit-focus-ring-color auto 10px;
 	outline-color: #191919;
+}
+
+.mytheme .undefined-height > .v-grid-tablewrapper > table tr {
+	transform: none !important;
+	position: relative !important;
+}
+
+.mytheme .undefined-height > .v-grid-tablewrapper > table tr td {
+	height: auto !important;
 }
