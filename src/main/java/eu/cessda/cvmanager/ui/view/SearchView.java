@@ -168,7 +168,7 @@ public class SearchView extends CvManagerView {
 					CVConcept concept = new CVConcept(store);
 
 					List<DDIStore> ddiStoreScheme = cvManagerService
-							.findByContentAndElementType(concept.getContainerId(), DDIElement.CVSCHEME);
+							.findByIdAndElementType(concept.getContainerId(), DDIElement.CVSCHEME);
 
 					if (ddiStoreScheme.size() == 1) {
 
