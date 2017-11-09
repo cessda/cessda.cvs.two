@@ -416,6 +416,7 @@ public class DetailView extends CvManagerView {
 		MCssLayout licenseLayout = new MCssLayout().withFullWidth();
 		MCssLayout exportLayout = new MCssLayout().withFullWidth();
 
+		detailTab.setStyleName("detail-tab");
 		detailTab.addTab(detailLayout, "Details");
 		detailTab.addTab(identifyLayout, "Identity, versions and general");
 		detailTab.addTab(ddiLayout, "DDI usage");
@@ -425,8 +426,8 @@ public class DetailView extends CvManagerView {
 		updateDetailGrid();
 
 		detailLayout.addComponents(detailGrid);
-		detailLayout.setMargin(true);
-		detailLayout.setSpacing(true);
+		detailLayout.setMargin(false);
+		detailLayout.setSpacing(false);
 		detailLayout.setSizeFull();
 		detailLayout.setExpandRatio(detailGrid, 1);
 

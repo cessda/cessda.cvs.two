@@ -1756,4 +1756,16 @@ $v-selection-item-border-radius: 0;
        	padding-left: 15px;
     	padding-right: 15px;
     }
+   .detail-tab{
+   		height:500px;
+   		.v-tabsheet-content{
+	   		tbody{
+	   			position:absolute;
+	   			display: block;
+			    height: 370px;
+			    overflow-y: scroll;
+			    overflow-x: hidden;
+			}
+		}
+   	}
 }
