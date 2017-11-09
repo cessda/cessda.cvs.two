@@ -34,7 +34,7 @@ public class ConfigurationService {
 		this.ddiflatdbRestUrl = ddiflatdbRestUrl;
 	}
 
-	public String getSourceLanguage() {
+	public String getDefaultSourceLanguage() {
 		return SOURCE_LANGUAGE;
 	}
 

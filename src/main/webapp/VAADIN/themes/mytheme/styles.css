@@ -16470,3 +16470,13 @@ div.v-layout.v-horizontal.v-widget {
 	overflow-y: scroll;
 	overflow-x: hidden;
 }
+
+.mytheme .font-bold {
+	font-weight: 700;
+}
+
+.mytheme .v-tooltip {
+	background-color: transparent;
+	box-shadow: none;
+	padding: 0 8px;
+}

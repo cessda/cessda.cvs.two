@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.ui.component;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.gesis.stardat.entity.CVConcept;
@@ -14,6 +15,8 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
 
@@ -60,11 +63,21 @@ public class CvSchemeComponent extends CustomComponent {
 		conceptList.withContentMode(ContentMode.HTML);
 
 		languageLayout.withFullWidth();
+		String sourceLanguage = configService.getDefaultSourceLanguage();//cvScheme.getSourceLanguage();
+		
 		cvScheme.getLanguagesByTitle().forEach(item -> {
-			MButton langBUtton = new MButton(item.toUpperCase());
-			langBUtton.withStyleName("langbutton")
-					.addClickListener(e -> setContent(e.getButton().getCaption().toLowerCase()));
-			languageLayout.add(langBUtton);
+			MButton langButton = new MButton(item.toUpperCase());
+			langButton.withStyleName("langbutton")
+					.addClickListener(e -> {
+						applyButtonStyle(e.getButton());
+						setContent(e.getButton().getCaption().toLowerCase());
+					});
+			languageLayout.add(langButton);
+			if( item.equals(sourceLanguage)) {
+				langButton.addStyleName("font-bold");
+				langButton.setDescription( "source language" );
+				langButton.click();
+			}
 		});
 
 		titleLayout.withFullWidth().add(enTitle, olTitle);
@@ -130,6 +143,18 @@ public class CvSchemeComponent extends CustomComponent {
 			}
 			conceptList.setValue(sConcepts);
 		}
+	}
+	
+	private void applyButtonStyle(Button pressedButton) {
+
+		Iterator<Component> iterate = languageLayout.iterator();
+		while (iterate.hasNext()) {
+			Component c = (Component) iterate.next();
+			if( c instanceof  Button) {
+				((Button) c).removeStyleName( "button-pressed" );
+			}
+		}
+		pressedButton.addStyleName( "button-pressed" );
 	}
 
 }

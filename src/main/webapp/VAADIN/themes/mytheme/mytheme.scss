@@ -1768,4 +1768,12 @@ $v-selection-item-border-radius: 0;
 			}
 		}
    	}
+    .font-bold{
+    	font-weight:700;
+	}
+	.v-tooltip{
+	    background-color:transparent;
+		box-shadow:none;
+		padding:0 8px;
+	}
 }

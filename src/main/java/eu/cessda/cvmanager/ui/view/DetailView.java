@@ -1,6 +1,7 @@
 package eu.cessda.cvmanager.ui.view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -36,6 +37,8 @@ import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.ItemClick;
 import com.vaadin.ui.Image;
@@ -176,10 +179,10 @@ public class DetailView extends CvManagerView {
 	}
 
 	private void setDetails(String itemId) {
+		setFormMode(FormMode.view);
+		
 		refreshCvScheme(itemId);
 		refreshCvConcepts();
-		
-		setFormMode(FormMode.view);
 
 		initTopViewSection();
 		initTopEditSection();
@@ -197,10 +200,12 @@ public class DetailView extends CvManagerView {
 			cvScheme = new CVScheme(ddiSchemes.get(0));
 
 		Set<String> languages = cvScheme.getLanguagesByTitle();
+		String sourceLanguage = configService.getDefaultSourceLanguage();//cvScheme.getSourceLanguage();
 
 		languages.forEach(item -> {
-			MButton langBUtton = new MButton(item.toUpperCase());
-			langBUtton.withStyleName("langbutton").addClickListener(e -> {
+			MButton langButton = new MButton(item.toUpperCase());
+			langButton.withStyleName("langbutton").addClickListener(e -> {
+				applyButtonStyle(e.getButton());
 				setSelectedLang(e.getButton().getCaption().toLowerCase());
 				if (formMode.equals(FormMode.view)) {
 					initTopViewSection();
@@ -211,7 +216,13 @@ public class DetailView extends CvManagerView {
 					initBottomViewSection();
 				}
 			});
-			languageLayout.add(langBUtton);
+			languageLayout.add(langButton);
+			if( item.equals(sourceLanguage)) {
+				langButton.addStyleName("font-bold");
+				langButton.setDescription( "source language" );
+				langButton.click();
+			}
+			
 		});
 	}
 	
@@ -268,7 +279,7 @@ public class DetailView extends CvManagerView {
 				new MLabel(selectedLang + " " + ITEM_DEF + ":").withWidth("120px").withStyleName("leftPart"),
 				new MLabel(cvScheme.getDescriptionByLanguage(selectedLang)).withStyleName("rightPart"));
 
-		if (selectedLang.equals("en")) {
+		if (selectedLang.equals(selectedLang.equals( configService.getDefaultSourceLanguage()))) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 		}
@@ -397,7 +408,7 @@ public class DetailView extends CvManagerView {
 						new MLabel(ITEM_PUBLICATION + ":").withWidth("140px").withStyleName("leftPart"),
 						new MLabel(cvScheme.getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
-		if (selectedLang.equals("en")) {
+		if (selectedLang.equals( configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 			langSecOl.setVisible(false);
@@ -477,7 +488,7 @@ public class DetailView extends CvManagerView {
 		detailGrid.setSizeFull();
 		//detailGrid.getEditor().setEnabled(true);
 		detailGrid.addItemClickListener( event -> {
-			if( event.getMouseEventDetails().isDoubleClick() ) {
+			if( SecurityContextHolder.getContext().getAuthentication() != null && event.getMouseEventDetails().isDoubleClick() ) {
 				CVConcept selectedRow = event.getItem();
 				Window window = new DialogCodeWindow(eventBus, cvManagerService, selectedRow, selectedLang, selectedLang);
 				getUI().addWindow(window);
@@ -727,5 +738,17 @@ public class DetailView extends CvManagerView {
 			default:
 				break;
 		}
+	}
+	
+	private void applyButtonStyle(Button pressedButton) {
+
+		Iterator<Component> iterate = languageLayout.iterator();
+		while (iterate.hasNext()) {
+			Component c = (Component) iterate.next();
+			if( c instanceof  Button) {
+				((Button) c).removeStyleName( "button-pressed" );
+			}
+		}
+		pressedButton.addStyleName( "button-pressed" );
 	}
 }
