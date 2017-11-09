@@ -178,7 +178,7 @@ public class ActionPanel extends CustomComponent{
 	private void doChangeLanguage(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
-		Window window = new DialogAddLanguageWindow(eventBus, cvManagerView.getCvScheme());
+		Window window = new DialogAddLanguageWindow(eventBus, cvManagerService, cvManagerView.getCvScheme());
 		getUI().addWindow(window);
 	}
 	

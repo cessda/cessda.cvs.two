@@ -52,6 +52,9 @@ public class DialogCodeWindow extends Window {
 		this.eventBus = eventBus;
 		setWidth("600px");
 		setHeight("500px");
+		
+		preferedLabel.setSizeFull();
+		description.setSizeFull();
 
 		setModal(true);
 		setOrginalLanguage(orignalLanguage);

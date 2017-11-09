@@ -25,6 +25,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.Language;
+import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
 public class DialogAddLanguageWindow extends Window {
@@ -59,7 +60,7 @@ public class DialogAddLanguageWindow extends Window {
 
 	//private EditorView theView;
 
-	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, CVScheme cS) {
+	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService,  CVScheme cS) {
 		super("Add Language");
 		this.eventBus = eventBus;
 		this.cvScheme = cS;
@@ -130,19 +131,23 @@ public class DialogAddLanguageWindow extends Window {
 
 		storeCode.addClickListener(event -> {
 			// CVConcept cv = binder.getBean();
-			LanguageLabel titleLangLabel = new LanguageLabel();
-			titleLangLabel.setLanguage(selectedLanguage);
-			titleLangLabel.setContent( tfTitle.getValue());
-			getCvScheme().addTitle( titleLangLabel);
+//			LanguageLabel titleLangLabel = new LanguageLabel();
+//			titleLangLabel.setLanguage(selectedLanguage);
+//			titleLangLabel.setContent( tfTitle.getValue());
+//			getCvScheme().addTitle( titleLangLabel);
+//			
+//			LanguageLabel descLangLabel = new LanguageLabel();
+//			descLangLabel.setLanguage(selectedLanguage);
+//			descLangLabel.setContent( description.getValue());
+//			getCvScheme().addDescription( descLangLabel );
+//
+//			getCvScheme().save();
+//			//DDIStore ddiStore = client.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
+//			//eventBus.publish( this, ddiStore);
 			
-			LanguageLabel descLangLabel = new LanguageLabel();
-			descLangLabel.setLanguage(selectedLanguage);
-			descLangLabel.setContent( description.getValue());
-			getCvScheme().addDescription( descLangLabel );
-
 			getCvScheme().save();
-			//DDIStore ddiStore = client.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
-			//eventBus.publish( this, ddiStore);
+			DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
+			eventBus.publish( this, ddiStore);
 			close();
 			UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
 		});
