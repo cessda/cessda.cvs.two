@@ -16425,16 +16425,36 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 2px;
 }
 
+.mytheme .right-container {
+	margin-left: 15px;
+}
+
 .mytheme .button-pressed {
 	outline: -webkit-focus-ring-color auto 10px;
 	outline-color: #191919;
+	background-color: rgba(125, 125, 125, 0.2);
+	background-image: none;
 }
 
 .mytheme .undefined-height > .v-grid-tablewrapper > table tr {
 	transform: none !important;
+	float: left;
 	position: relative !important;
 }
 
 .mytheme .undefined-height > .v-grid-tablewrapper > table tr td {
 	height: auto !important;
+	display: table-cell;
+	float: none;
+	vertical-align: top;
+}
+
+.mytheme .v-window-header {
+	color: #505050;
+	font-weight: 700;
+}
+
+.mytheme .v-window-contents {
+	padding-left: 15px;
+	padding-right: 15px;
 }

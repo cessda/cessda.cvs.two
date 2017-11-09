@@ -32,8 +32,8 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
-import eu.cessda.cvmanager.ui.view.window.AddLanguageCVSchemeWindow;
-import eu.cessda.cvmanager.ui.view.window.EditCVSchemeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
 
 public class ActionPanel extends CustomComponent{
@@ -126,8 +126,8 @@ public class ActionPanel extends CustomComponent{
 					buttonChangeLanguage,
 					new Label("<div style=\"width:100%\">&nbsp;</div>", ContentMode.HTML),
 					buttonAddCode,
-					buttonDeleteCode,
-					buttonSortCode//,
+					buttonDeleteCode//,
+//					buttonSortCode//,
 					
 //					buttonValidateCv,
 //					buttonFinaliseReview,
@@ -164,7 +164,7 @@ public class ActionPanel extends CustomComponent{
 		newCvScheme.createId();
 		newCvScheme.setContainerId(newCvScheme.getId());
 
-		Window window = new EditCVSchemeWindow(eventBus, cvManagerService, newCvScheme, "en", "en");
+		Window window = new DialogCVSchemeWindow(eventBus, cvManagerService, newCvScheme, "en", "en");
 		getUI().addWindow(window);
 	}
 	
@@ -178,8 +178,8 @@ public class ActionPanel extends CustomComponent{
 	private void doChangeLanguage(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
-//		Window window = new AddLanguageCVSchemeWindow(eventBus, restClient, cvScheme, cvManagerView);
-//		getUI().addWindow(window);
+		Window window = new DialogAddLanguageWindow(eventBus, cvManagerView.getCvScheme());
+		getUI().addWindow(window);
 	}
 	
 	private void doAddCode(ClickEvent event ) {

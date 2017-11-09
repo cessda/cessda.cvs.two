@@ -45,7 +45,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.ui.view.window.EditCVSchemeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
 
 /**

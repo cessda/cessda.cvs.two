@@ -16,23 +16,23 @@ public enum Language {
 	SPANISH("es"),
 	SWEDISH("sv");
 		
-	private final String resourceType;
+	private final String language;
 	
 	private Language(String s){
-		resourceType = s;
+		language = s;
 	}
 		
 	public String toString() {
-       return this.resourceType;
+       return this.language;
     }
 	
-    public String getResourceType() {
-        return resourceType;
+    public String getLanguage() {
+        return language;
     }
 	
 	public static Language getEnum(String resourceTypeString) {
         for(Language v : values())
-            if(v.getResourceType().equalsIgnoreCase(resourceTypeString)) return v;
+            if(v.getLanguage().equalsIgnoreCase(resourceTypeString)) return v;
         throw new IllegalArgumentException();
     }
 	

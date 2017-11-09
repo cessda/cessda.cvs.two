@@ -12,6 +12,7 @@ import org.gesis.stardat.entity.LanguageLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.viritin.fields.MTextField;
 
 import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
@@ -26,22 +27,25 @@ import com.vaadin.ui.Window;
 import eu.cessda.cvmanager.Language;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
-public class AddLanguageCVSchemeWindow extends Window {
+public class DialogAddLanguageWindow extends Window {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8116725336044618619L;
 
-	private static final Logger log = LoggerFactory.getLogger(AddLanguageCVSchemeWindow.class);
+	private static final Logger log = LoggerFactory.getLogger(DialogAddLanguageWindow.class);
 	
 	private final EventBus.UIEventBus eventBus;
 
 	Binder<CVScheme> binder = new Binder<CVScheme>();
+	
+	private MTextField sourceTitle = new MTextField("Title (source)");
+	private TextArea sourceDescription = new TextArea("Definition (source)");
 
-	private TextField tfTitle = new TextField("Title*");
+	private MTextField tfTitle = new MTextField("Title*");
 
-	private TextArea description = new TextArea("Description*");
+	private TextArea description = new TextArea("Definition*");
 	
 	private ComboBox<String> languageCb = new ComboBox<>("Language*");
 	
@@ -50,13 +54,15 @@ public class AddLanguageCVSchemeWindow extends Window {
 	private Button storeCode = new Button("Save");
 
 	private CVScheme cvScheme;
+	
+	private String selectedLanguage;
 
 	//private EditorView theView;
 
-	public AddLanguageCVSchemeWindow(EventBus.UIEventBus eventBus, RestClient client, CVScheme cS, DetailView detailView) {
+	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, CVScheme cS) {
 		super("Add Language");
-		this.cvScheme = detailView.getCvScheme();
 		this.eventBus = eventBus;
+		this.cvScheme = cS;
 		setWidth("600px");
 		setHeight("500px");
 		
@@ -69,12 +75,35 @@ public class AddLanguageCVSchemeWindow extends Window {
 		
 		List<String> availableLanguage = Language.getFilteredEnumCapitalized( allLanguages );
 		
+		sourceTitle
+			.withFullWidth()
+			.setReadOnly( true );
+		sourceTitle.setValue( cvScheme.getTitleByLanguage( "en" ) );
+		sourceDescription.setSizeFull();
+		sourceDescription.setReadOnly( true );
+		sourceDescription.setValue( cvScheme.getDescriptionByLanguage( "en" ) );
+		
+		tfTitle.withFullWidth();
+		description.setSizeFull();
 		
 		languageCb.setItems( availableLanguage );
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
-		if( !availableLanguage.isEmpty());
+		if( !availableLanguage.isEmpty()) {
 			languageCb.setValue(availableLanguage.get(0));
+			selectedLanguage = Language.valueOf( availableLanguage.get(0).toUpperCase()).getLanguage();
+			tfTitle.setCaption( "Title (" + selectedLanguage + ")*");
+			description.setCaption( "Definition ("+ selectedLanguage +")*");
+		} else {
+			tfTitle.setVisible( false );
+			description.setVisible( false );
+			storeCode.setVisible( false );
+		}
+		languageCb.addValueChangeListener( e -> {
+			selectedLanguage = Language.valueOf( e.getValue().toString().toUpperCase()).getLanguage();
+			tfTitle.setCaption( "Title (" + selectedLanguage + ")*");
+			description.setCaption( "Definition ("+ selectedLanguage +")*");
+		});
 
 		setModal(true);
 //		setOrginalLanguage(orignalLanguage);
@@ -83,42 +112,69 @@ public class AddLanguageCVSchemeWindow extends Window {
 		//this.setTheView(theView);
 
 		FormLayout layout = new FormLayout();
+		layout.addComponents( sourceTitle, sourceDescription);
 		layout.addComponent(tfTitle);
 
 		layout.addComponent(description);
 		layout.addComponent(languageCb);
 
-//		binder.setBean(getCvScheme());
-//
-//		binder.bind(tfTitle, concept -> getTitleByLanguage(concept),
-//				(concept, value) -> setTitleByLanguage(concept, value));
-//
-//		binder.bind(description, concept -> getDescriptionByLanguage(concept),
-//				(concept, value) -> setDescriptionByLanguage(concept, value));
+		binder.setBean(getCvScheme());
+
+		binder.bind(tfTitle, concept -> getTitleByLanguage(concept),
+				(concept, value) -> setTitleByLanguage(concept, value));
+
+		binder.bind(description, concept -> getDescriptionByLanguage(concept),
+				(concept, value) -> setDescriptionByLanguage(concept, value));
 
 		layout.addComponent(storeCode);
 
 		storeCode.addClickListener(event -> {
-			Language lang =  Language.valueOf( languageCb.getValue().toString().toUpperCase());
 			// CVConcept cv = binder.getBean();
 			LanguageLabel titleLangLabel = new LanguageLabel();
-			titleLangLabel.setLanguage(lang.toString());
+			titleLangLabel.setLanguage(selectedLanguage);
 			titleLangLabel.setContent( tfTitle.getValue());
 			getCvScheme().addTitle( titleLangLabel);
 			
 			LanguageLabel descLangLabel = new LanguageLabel();
-			descLangLabel.setLanguage(lang.toString());
+			descLangLabel.setLanguage(selectedLanguage);
 			descLangLabel.setContent( description.getValue());
-			getCvScheme().addTitle( descLangLabel );
+			getCvScheme().addDescription( descLangLabel );
 
 			getCvScheme().save();
-			DDIStore ddiStore = client.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
-			eventBus.publish( this, ddiStore);
+			//DDIStore ddiStore = client.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
+			//eventBus.publish( this, ddiStore);
 			close();
 			UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
 		});
 
 		setContent(layout);
+	}
+	
+	private CVScheme setTitleByLanguage(CVScheme concept, String value) {
+
+		concept.setTitleByLanguage(getSelectedLanguage(), value);
+		return concept;
+	}
+
+	private String getTitleByLanguage(CVScheme concept) {
+
+		return concept.getTitleByLanguage(getSelectedLanguage());
+
+	}
+	
+	private Object setDescriptionByLanguage(CVScheme concept, String value) {
+		concept.setDescriptionByLanguage(getSelectedLanguage(), value);
+		return null;
+	}
+
+	private String getDescriptionByLanguage(CVScheme concept) {
+
+		return concept.getDescriptionByLanguage(getSelectedLanguage());
+
+	}
+	
+	public String getSelectedLanguage() {
+		return selectedLanguage;
 	}
 
 	public CVScheme getCvScheme() {

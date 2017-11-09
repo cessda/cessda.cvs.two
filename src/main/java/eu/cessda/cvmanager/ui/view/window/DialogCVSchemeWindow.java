@@ -7,6 +7,8 @@ import org.gesis.stardat.entity.CVScheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.v7.fields.MTextArea;
 
 import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
@@ -22,21 +24,21 @@ import eu.cessda.cvmanager.Language;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
-public class EditCVSchemeWindow extends Window {
+public class DialogCVSchemeWindow extends Window {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8116725336044618619L;
 
-	private static final Logger log = LoggerFactory.getLogger(EditCVSchemeWindow.class);
+	private static final Logger log = LoggerFactory.getLogger(DialogCVSchemeWindow.class);
 	
 	private static final CVEditor[] cvEditors = new CVEditor[2];
 	private final EventBus.UIEventBus eventBus;
 
 	Binder<CVScheme> binder = new Binder<CVScheme>();
 
-	private TextField tfTitle = new TextField("Title*");
+	private MTextField tfTitle = new MTextField("Title*");
 
 	private TextArea description = new TextArea("Description*");
 
@@ -54,12 +56,16 @@ public class EditCVSchemeWindow extends Window {
 
 	//private EditorView theView;
 
-	public EditCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, String orignalLanguage, String language) {
+	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, String orignalLanguage, String language) {
 		super("Add CVScheme");
 		
 		this.eventBus = eventBus;
 		setWidth("600px");
 		setHeight("500px");
+		
+		tfTitle.withFullWidth();
+		
+		description.setSizeFull();
 		
 		cvEditors[0] = new CVEditor("DDI", "DDI");
 		cvEditors[0].setLogoPath("img/ddi-logo-r.png");
@@ -76,7 +82,8 @@ public class EditCVSchemeWindow extends Window {
 		languageCb.setItems( Language.getAllEnumCapitalized());
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
-		languageCb.setValue(Language.getAllEnumCapitalized().get(0));
+		languageCb.setValue("English");
+		languageCb.setReadOnly( true );
 
 		setModal(true);
 		setOrginalLanguage(orignalLanguage);
@@ -128,16 +135,13 @@ public class EditCVSchemeWindow extends Window {
 	}
 
 	private Object setDescriptionByLanguage(CVScheme concept, String value) {
-
-		System.out.println("FooBar");
 		concept.setDescriptionByLanguage(getOrginalLanguage(), value);
 		return null;
 	}
 
 	private String getDescriptionByLanguage(CVScheme concept) {
 
-		return concept.getDescriptionByLanguage(getLanguage());
-
+		return concept.getDescriptionByLanguage(getOrginalLanguage());
 	}
 
 	public String getOrginalLanguage() {

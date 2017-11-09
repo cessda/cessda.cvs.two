@@ -39,6 +39,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.ItemClick;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
@@ -50,6 +51,7 @@ import com.vaadin.ui.components.grid.GridDragSource;
 import com.vaadin.ui.components.grid.GridDropTarget;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import com.vaadin.ui.renderers.ButtonRenderer;
+import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
@@ -98,7 +100,6 @@ public class DetailView extends CvManagerView {
 	
 	private Grid<CVConcept> detailGrid = new Grid<>(CVConcept.class);
 
-	private CVScheme cvScheme;
 	private Binder<CVConcept> binder;
 	private List<CVConcept> concepts = new ArrayList<CVConcept>();
 	private MCssLayout languageLayout = new MCssLayout();
@@ -120,6 +121,8 @@ public class DetailView extends CvManagerView {
 		editButton.addClickListener(e -> setFormMode(FormMode.edit));
 		cancelButton.addClickListener(e -> setFormMode(FormMode.view));
 		saveButton.addClickListener( this::doSaveConcept );
+		
+		detailGrid.addStyleNames("undefined-height");
 
 		buttonLayout
 			.withFullWidth()
@@ -463,8 +466,11 @@ public class DetailView extends CvManagerView {
 		// updateConcept(concept,
 		// value, "en"));
 
-		detailGrid.addColumn(concept -> concept.getDescriptionByLanguage(selectedLang)).setCaption("Definition")
-				.setEditorComponent(definitionEditor, (concept, value) -> concept.setDescriptionByLanguage( selectedLang, value))
+		detailGrid.addColumn(concept -> {
+					return new Label( concept.getDescriptionByLanguage(selectedLang));
+				}, new ComponentRenderer())
+				.setCaption("Definition")
+				//.setEditorComponent(definitionEditor, (concept, value) -> concept.setDescriptionByLanguage( selectedLang, value))
 				.setExpandRatio(2);
 
 		detailGrid.setSizeFull();

@@ -1726,17 +1726,34 @@ $v-selection-item-border-radius: 0;
 	    box-shadow: 0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08);
 	    border-radius: 2px;
    	}
+   .right-container{
+   		margin-left:15px;
+   	}
    .button-pressed{
-		outline: -webkit-focus-ring-color auto 10px;
+		outline:-webkit-focus-ring-color auto 10px;
 		outline-color:rgb(25, 25, 25);
+		background-color:rgba(125, 125, 125, 0.2);
+		background-image:none;
    	}
    .undefined-height>.v-grid-tablewrapper>table{
    		tr{
    			transform: none !important;
+   			float:left;
    			position: relative !important;
 		   	td{
 		   		height:auto !important;
+    			display:table-cell;
+    			float:none;
+    			vertical-align: top;
 		   	}
 	   }
    }
+   .v-window-header{
+	   	color: #505050;
+	    font-weight: 700;
+   	}
+   .v-window-contents{
+       	padding-left: 15px;
+    	padding-right: 15px;
+    }
 }

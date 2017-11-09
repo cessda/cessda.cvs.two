@@ -30,6 +30,7 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	public final CvManagerService cvManagerService;
 	
 	private final ActionType actionType;
+	public CVScheme cvScheme;
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
 	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
@@ -56,8 +57,8 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 		
 		rightContainer
 			.withMargin( false )
-			.withSpacing( false ) ;
-		
+			.withSpacing( false )
+			.withStyleName( "right-container" );
 
 		columnContainer
 			.withFullWidth()
@@ -104,6 +105,12 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	public ActionType getActionType() {
 		return actionType;
 	}
-	
-	
+
+	public CVScheme getCvScheme() {
+		return cvScheme;
+	}
+
+	public void setCvScheme(CVScheme cvScheme) {
+		this.cvScheme = cvScheme;
+	}
 }
