@@ -7,23 +7,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 
+import eu.cessda.cvmanager.Language;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 
-public class DialogCodeWindow extends Window {
+public class DialogAddCodeWindow extends Window {
 
-	private static final Logger log = LoggerFactory.getLogger(DialogCodeWindow.class);
+	private static final Logger log = LoggerFactory.getLogger(DialogAddCodeWindow.class);
 
 	/**
 	 * 
@@ -33,9 +36,11 @@ public class DialogCodeWindow extends Window {
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 
-	private TextField preferedLabel = new TextField("Code");
+	private TextField preferedLabel = new TextField("Code*");
 
-	private TextArea description = new TextArea("Description");
+	private TextArea description = new TextArea("Definition*");
+	
+	private ComboBox<String> languageCb = new ComboBox<>("Language (source)");
 
 	private String orginalLanguage;
 
@@ -46,12 +51,18 @@ public class DialogCodeWindow extends Window {
 	private CVConcept theCode;
 
 
-	public DialogCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVConcept code, String orignalLanguage, String language) {
-		super( code.getId() == null ? "Add Code":"Edit Code");
+	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVConcept code, String orignalLanguage, String language) {
+		super( "Add Code");
 		
 		this.eventBus = eventBus;
 		setWidth("600px");
 		setHeight("500px");
+		
+		languageCb.setItems( Language.getAllEnumCapitalized());
+		languageCb.setEmptySelectionAllowed( false );
+		languageCb.setTextInputAllowed( false );
+		languageCb.setValue("English");
+		languageCb.setReadOnly( true );
 		
 		preferedLabel.setSizeFull();
 		description.setSizeFull();
@@ -66,6 +77,7 @@ public class DialogCodeWindow extends Window {
 		layout.addComponent(preferedLabel);
 
 		layout.addComponent(description);
+		layout.addComponent(languageCb);
 
 		binder.setBean(getTheCode());
 
@@ -75,7 +87,10 @@ public class DialogCodeWindow extends Window {
 		binder.bind(description, concept -> getDescriptionByLanguage(concept),
 				(concept, value) -> setDescriptionByLanguage(concept, value));
 
-		layout.addComponent(storeCode);
+		layout.addComponent( new MHorizontalLayout().add(
+				storeCode,
+				new Button("Cancel", e -> this.close())
+			));
 
 		storeCode.addClickListener(event -> {
 			// CVConcept cv = binder.getBean();

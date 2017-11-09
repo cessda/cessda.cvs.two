@@ -34,7 +34,7 @@ import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 
 public class ActionPanel extends CustomComponent{
 

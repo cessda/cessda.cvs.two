@@ -61,7 +61,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
-import eu.cessda.cvmanager.ui.view.window.DialogCodeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 
 @UIScope
 @SpringView(name = DetailView.VIEW_NAME)
@@ -490,7 +490,7 @@ public class DetailView extends CvManagerView {
 		detailGrid.addItemClickListener( event -> {
 			if( SecurityContextHolder.getContext().getAuthentication() != null && event.getMouseEventDetails().isDoubleClick() ) {
 				CVConcept selectedRow = event.getItem();
-				Window window = new DialogCodeWindow(eventBus, cvManagerService, selectedRow, selectedLang, selectedLang);
+				Window window = new DialogAddCodeWindow(eventBus, cvManagerService, selectedRow, selectedLang, selectedLang);
 				getUI().addWindow(window);
 			}
 		});
@@ -689,7 +689,7 @@ public class DetailView extends CvManagerView {
 				newCVConcept.createId();
 				newCVConcept.setContainerId( cvScheme.getContainerId());
 
-				Window window = new DialogCodeWindow(eventBus, cvManagerService, newCVConcept, "en", "en");
+				Window window = new DialogAddCodeWindow(eventBus, cvManagerService, newCVConcept, "en", "en");
 				getUI().addWindow(window);
 				
 				break;

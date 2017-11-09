@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import com.vaadin.data.Binder;
 import com.vaadin.ui.Button;
@@ -127,7 +128,10 @@ public class DialogAddLanguageWindow extends Window {
 		binder.bind(description, concept -> getDescriptionByLanguage(concept),
 				(concept, value) -> setDescriptionByLanguage(concept, value));
 
-		layout.addComponent(storeCode);
+		layout.addComponent( new MHorizontalLayout().add(
+				storeCode,
+				new Button("Cancel", e -> this.close())
+			));
 
 		storeCode.addClickListener(event -> {
 			// CVConcept cv = binder.getBean();
