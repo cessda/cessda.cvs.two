@@ -122,7 +122,7 @@ public class ActionPanel extends CustomComponent{
 			.add(
 					panelHeader,
 					buttonAddCv,
-					buttonChangeAgency,
+					//buttonChangeAgency,
 					buttonChangeLanguage,
 					new Label("<div style=\"width:100%\">&nbsp;</div>", ContentMode.HTML),
 					buttonAddCode,
