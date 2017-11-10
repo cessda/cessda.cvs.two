@@ -30,9 +30,17 @@ public enum Language {
         return language;
     }
 	
-	public static Language getEnum(String resourceTypeString) {
+	public static Language getEnum(String languageString) {
         for(Language v : values())
-            if(v.getLanguage().equalsIgnoreCase(resourceTypeString)) return v;
+            if(v.getLanguage().equalsIgnoreCase(languageString)) return v;
+        throw new IllegalArgumentException();
+    }
+	
+	public static String getEnumCapitalized(String languageString) {
+        for(Language v : values())
+            if(v.getLanguage().equalsIgnoreCase(languageString)) {
+            	return v.name().substring(0, 1) + v.name().substring(1).toLowerCase();
+            }
         throw new IllegalArgumentException();
     }
 	

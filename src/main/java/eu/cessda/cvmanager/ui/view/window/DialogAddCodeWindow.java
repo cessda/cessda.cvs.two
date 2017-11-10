@@ -69,7 +69,6 @@ public class DialogAddCodeWindow extends Window {
 
 		setModal(true);
 		setOrginalLanguage(orignalLanguage);
-		setLanguage(language);
 		setTheCode(code);
 
 		FormLayout layout = new FormLayout();
@@ -94,7 +93,7 @@ public class DialogAddCodeWindow extends Window {
 
 		storeCode.addClickListener(event -> {
 			// CVConcept cv = binder.getBean();
-			log.trace(getTheCode().getPrefLabelByLanguage(getLanguage()));
+			log.trace(getTheCode().getPrefLabelByLanguage(getOrginalLanguage()));
 			getTheCode().save();
 			DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
 			
@@ -128,7 +127,7 @@ public class DialogAddCodeWindow extends Window {
 
 	private String getDescriptionByLanguage(CVConcept concept) {
 
-		return concept.getDescriptionByLanguage(getLanguage());
+		return concept.getDescriptionByLanguage(getOrginalLanguage());
 
 	}
 
@@ -140,16 +139,6 @@ public class DialogAddCodeWindow extends Window {
 	public void setOrginalLanguage(String orginalLanguage) {
 
 		this.orginalLanguage = orginalLanguage;
-	}
-
-	public String getLanguage() {
-
-		return language;
-	}
-
-	public void setLanguage(String language) {
-
-		this.language = language;
 	}
 
 	public CVConcept getTheCode() {
