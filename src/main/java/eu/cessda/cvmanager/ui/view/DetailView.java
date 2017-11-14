@@ -714,33 +714,21 @@ public class DetailView extends CvManagerView {
 							.addColumn( cvconcept -> "x",
 								new ButtonRenderer(clickEvent -> {
 									CVConcept targetConcept = (CVConcept) clickEvent.getItem();
-//									ConfirmDialog.show( this.getUI(), "Confirm",
-//											"Are you sure you want to delete the concept \"" + targetConcept.getDescriptionByLanguage( configService.getDefaultSourceLanguage() ) + "\"?", "yes",
-//											"cancel",
-//											new ConfirmDialog.Listener() {
-//												private static final long serialVersionUID = 4111198501798071357L;
-//
-//												@Override
-//												public void onClose( ConfirmDialog dialog )
-//												{
-//													if ( dialog.isConfirmed() ) {
-//														cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
-//														concepts.remove( targetConcept );
-//													}
-//												}
-//											}
+									ConfirmDialog.show( this.getUI(), "Confirm",
+											"Are you sure you want to delete the concept \"" + targetConcept.getPrefLabelByLanguage( configService.getDefaultSourceLanguage() ) + "\"?", "yes",
+											"cancel",
 									
-//											dialog -> {
-//												if( dialog.isConfirmed() ) {
-//													cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
-//													concepts.remove( targetConcept );
-//												}
-//											}
-//
-//									);
-									cvManagerService.deleteById(targetConcept.ddiStore.getPrimaryKey(), "peter", "delete concept");
-									concepts.remove( targetConcept );
-									detailGrid.setItems( concepts );
+											dialog -> {
+												if( dialog.isConfirmed() ) {
+													cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
+													concepts.remove( targetConcept );
+													detailGrid.setItems( concepts );
+												}
+											}
+
+									);
+									
+
 						    })).setId("cvConceptRemove");
 				} else {
 					if( !detailGrid.getColumn("cvConceptRemove").isHidden()) {
