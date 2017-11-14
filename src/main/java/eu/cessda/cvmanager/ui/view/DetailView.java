@@ -698,9 +698,15 @@ public class DetailView extends CvManagerView {
 				
 				break;
 			case CVCONCEPT_TRANSLATION_DIALOG:
-				Window windowTranslate = new DialogTranslateCodeWindow(eventBus, cvManagerService, cvScheme, concepts , selectedLang);
-				getUI().addWindow( windowTranslate );
-				
+				if( concepts.isEmpty()) {
+					Notification.show("Please add code first");
+				} else if( cvScheme.getLanguagesByTitle().size() == 1) {
+					Notification.show("Please add CV translation first");
+				}
+				else {
+					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, cvManagerService, cvScheme, concepts , selectedLang);
+					getUI().addWindow( windowTranslate );
+				}
 				break;
 			case CVCONCEPT_EDIT_MODE:
 				if( detailGrid.getColumn("cvConceptRemove") == null ) {		
@@ -709,7 +715,7 @@ public class DetailView extends CvManagerView {
 								new ButtonRenderer(clickEvent -> {
 									CVConcept targetConcept = (CVConcept) clickEvent.getItem();
 //									ConfirmDialog.show( this.getUI(), "Confirm",
-//											"Are you sure you want to delete the concept \"" + targetConcept.getDescriptionByLanguage( configService.getOriginalLanguage() ) + "\"?", "yes",
+//											"Are you sure you want to delete the concept \"" + targetConcept.getDescriptionByLanguage( configService.getDefaultSourceLanguage() ) + "\"?", "yes",
 //											"cancel",
 //											new ConfirmDialog.Listener() {
 //												private static final long serialVersionUID = 4111198501798071357L;
@@ -730,7 +736,7 @@ public class DetailView extends CvManagerView {
 //													concepts.remove( targetConcept );
 //												}
 //											}
-
+//
 //									);
 									cvManagerService.deleteById(targetConcept.ddiStore.getPrimaryKey(), "peter", "delete concept");
 									concepts.remove( targetConcept );
