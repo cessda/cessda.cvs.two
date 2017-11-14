@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.view;
 
 import javax.annotation.PostConstruct;
 
+import org.gesis.security.SecurityService;
 import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVScheme;
@@ -28,6 +29,7 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	public final EventBus.UIEventBus eventBus;
 	public final ConfigurationService configService;
 	public final CvManagerService cvManagerService;
+	public final SecurityService securityService;
 	
 	private final ActionType actionType;
 	public CVScheme cvScheme;
@@ -38,11 +40,12 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	protected MVerticalLayout rightContainer = new MVerticalLayout();
 	
 	public CvManagerView(EventBus.UIEventBus eventBus, ConfigurationService configService, 
-			CvManagerService cvManagerService, String actionType) {
+			CvManagerService cvManagerService, SecurityService securityService, String actionType) {
 		
 		this.eventBus = eventBus;
 		this.configService = configService;
 		this.cvManagerService = cvManagerService;
+		this.securityService = securityService;
 		
 		this.actionType = ActionType.valueOf(actionType.toUpperCase());
 		
@@ -81,7 +84,7 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 			.withHeightUndefined()
 			.add( mainContainer );
 		
-		if( SecurityContextHolder.getContext().getAuthentication() == null ) {
+		if( SecurityContextHolder.getContext().getAuthentication() == null && !securityService.rememberMeLogin()) {
 			actionPanel.setVisible( false );
 		} else {
 			actionPanel.setVisible( true );

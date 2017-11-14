@@ -48,9 +48,10 @@ public class ActionPanel extends CustomComponent{
 	private MLabel panelHeader = new MLabel( "ACTIONS" );
 	private MButton buttonAddCv = new MButton( "Add new CV" );
 	private MButton buttonChangeAgency = new MButton( "Change agency" );
-	private MButton buttonChangeLanguage = new MButton( "Add Language" );
+	private MButton buttonChangeLanguage = new MButton( "Add Translation" );
 	
 	private MButton buttonAddCode = new MButton( "Add Code" );
+	private MButton buttonAddCodeTranslation = new MButton( "Code Translation" );
 	private MButton buttonDeleteCode = new MButton( "Delete Code" );
 	private MButton buttonSortCode = new MButton( "Sort Code" );
 	
@@ -108,6 +109,7 @@ public class ActionPanel extends CustomComponent{
 		buttonChangeLanguage.addClickListener( this::doChangeLanguage );
 		
 		buttonAddCode.addClickListener( this::doAddCode );
+		buttonAddCodeTranslation.addClickListener( this::doAddCodeTranslation );
 		buttonDeleteCode.addClickListener( this::doDeleteCode );
 		buttonSortCode.addClickListener( this::doSortCode );
 		
@@ -126,6 +128,7 @@ public class ActionPanel extends CustomComponent{
 					buttonChangeLanguage,
 					new Label("<div style=\"width:100%\">&nbsp;</div>", ContentMode.HTML),
 					buttonAddCode,
+//					buttonAddCodeTranslation,
 					buttonDeleteCode//,
 //					buttonSortCode//,
 					
@@ -141,6 +144,7 @@ public class ActionPanel extends CustomComponent{
 				buttonChangeAgency.setVisible( false );
 				buttonChangeLanguage.setVisible( false );
 				buttonAddCode.setVisible( false );
+				buttonAddCodeTranslation.setVisible( false );
 				buttonDeleteCode.setVisible( false );
 				buttonSortCode.setVisible( false );
 				buttonValidateCv.setVisible( false );
@@ -170,9 +174,7 @@ public class ActionPanel extends CustomComponent{
 	
 	private void doChangeAgency(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
-		
-		
-		
+
 	}
 	
 	private void doChangeLanguage(ClickEvent event ) {
@@ -185,6 +187,11 @@ public class ActionPanel extends CustomComponent{
 	private void doAddCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADD_DIALOG, null) );
+	}
+	
+	private void doAddCodeTranslation(ClickEvent event ) {
+		applyButtonStyle( event.getButton());
+		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_TRANSLATION_DIALOG, null) );
 	}
 	
 	private void applyButtonStyle(Button pressedButton) {

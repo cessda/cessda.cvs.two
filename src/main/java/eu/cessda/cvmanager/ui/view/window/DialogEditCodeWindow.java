@@ -11,9 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
@@ -28,7 +32,7 @@ import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 
-public class DialogEditCodeWindow extends Window {
+public class DialogEditCodeWindow extends MWindow {
 
 	private static final Logger log = LoggerFactory.getLogger(DialogEditCodeWindow.class);
 
@@ -39,14 +43,21 @@ public class DialogEditCodeWindow extends Window {
 	private final EventBus.UIEventBus eventBus;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
+	private MVerticalLayout layout = new MVerticalLayout();
+	
+	private MLabel lTitle = new MLabel( "Title" );
+	private MLabel lDescription = new MLabel( "Definition" );
+	private MLabel lLanguage = new MLabel( "Language" );
+	private MLabel lSourceTitle = new MLabel( "Title (source)" );
+	private MLabel lSourceDescription = new MLabel( "Definition (source)" );
+	private MLabel lSourceLanguage = new MLabel( "Language (source)" );
 	
 	private MTextField sourceTitle = new MTextField("Code en (source)");
+	private MTextField sourceLanguage = new MTextField("Language (source)");
 	private TextArea sourceDescription = new TextArea("Definition en (source)");
 
 	private TextField preferedLabel = new TextField("Code*");
-
 	private TextArea description = new TextArea("Definition*");
-	
 	private ComboBox<String> languageCb = new ComboBox<>("Language*");
 
 	private String selectedLanguage;
@@ -55,7 +66,9 @@ public class DialogEditCodeWindow extends Window {
 
 	private CVScheme cvScheme;
 	private CVConcept code;
-
+	
+	MHorizontalLayout sourceRowA = new MHorizontalLayout();
+	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
 	public DialogEditCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, CVConcept code, String sLanguage) {
 		super( "Edit Code");
@@ -64,9 +77,6 @@ public class DialogEditCodeWindow extends Window {
 		this.selectedLanguage = sLanguage;
 		
 		this.eventBus = eventBus;
-		setWidth("600px");
-		setHeight("500px");
-		setModal(true);
 		
 		sourceTitle.withFullWidth();
 		sourceTitle.setValue( code.getPrefLabelByLanguage( "en" ) );
@@ -78,6 +88,14 @@ public class DialogEditCodeWindow extends Window {
 		
 		preferedLabel.setSizeFull();
 		description.setSizeFull();
+		
+		sourceLanguage
+			.withReadOnly( true)
+			.setValue( "English" );
+		
+		lTitle.withStyleName( "required" );
+		lLanguage.withStyleName( "required" );
+		lDescription.withStyleName( "required" );
 		
 		preferedLabel.setCaption( "Code (" + selectedLanguage + ")*");
 		description.setCaption( "Definition ("+ selectedLanguage +")*");
@@ -98,29 +116,21 @@ public class DialogEditCodeWindow extends Window {
 			description.setValue( code.getDescriptionByLanguage(selectedLanguage) );
 			
 			if( e.getValue().equals( "en" )) {
-				sourceTitle.setVisible( false );
-				sourceDescription.setVisible( false );
+				sourceRowA.setVisible( false );
+				sourceRowB.setVisible( false );
 			} else {
-				sourceTitle.setVisible( true );
-				sourceDescription.setVisible( true );
+				sourceRowA.setVisible( true );
+				sourceRowB.setVisible( true );
 			}
 		});
 		
 		if( selectedLanguage.equals( "en" )) {
-			sourceTitle.setVisible( false );
-			sourceDescription.setVisible( false );
+			sourceRowA.setVisible( false );
+			sourceRowB.setVisible( false );
 		} else {
-			sourceTitle.setVisible( true );
-			sourceDescription.setVisible( true );
+			sourceRowA.setVisible( true );
+			sourceRowB.setVisible( true );
 		}
-
-		FormLayout layout = new FormLayout();
-
-		layout.addComponent(sourceTitle);
-		layout.addComponent(sourceDescription);
-		layout.addComponent(preferedLabel);
-		layout.addComponent(description);
-		layout.addComponent(languageCb);
 
 		binder.setBean(code);
 
@@ -129,11 +139,6 @@ public class DialogEditCodeWindow extends Window {
 
 		binder.bind(description, concept -> getDescriptionByLanguage(concept),
 				(concept, value) -> setDescriptionByLanguage(concept, value));
-
-		layout.addComponent( new MHorizontalLayout().add(
-				storeCode,
-				new Button("Cancel", e -> this.close())
-			));
 
 		storeCode.addClickListener(event -> {
 			// CVConcept cv = binder.getBean();
@@ -147,7 +152,70 @@ public class DialogEditCodeWindow extends Window {
 
 		});
 
-		setContent(layout);
+		Button cancelButton = new Button("Cancel", e -> this.close());
+		
+		layout
+			.withHeight("98%")
+			.withStyleName("dialog-content")
+			.add( 
+				sourceRowA
+					.withFullWidth()
+					.add(
+						new MHorizontalLayout()
+						.withFullWidth()
+						.add(
+								lSourceTitle, sourceTitle
+						).withExpand(lSourceTitle, 0.31f).withExpand(sourceTitle, 0.69f),
+						new MHorizontalLayout().add(
+								lSourceLanguage, sourceLanguage
+						)
+				),
+				sourceRowB
+					.withFullWidth()
+					.withHeight("133px")
+					.add(
+						lSourceDescription, sourceDescription
+					).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+						new MHorizontalLayout()
+						.withFullWidth()
+						.add(
+								lTitle, preferedLabel
+						).withExpand(lTitle, 0.31f).withExpand(preferedLabel, 0.69f),
+						new MHorizontalLayout().add(
+								lLanguage, languageCb
+						)
+				),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.withHeight("250px")
+					.add(
+						lDescription, description
+					).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add( storeCode,
+						cancelButton
+					)
+					.withExpand(storeCode, 0.8f)
+					.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
+					.withExpand(cancelButton, 0.1f)
+					.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
+			)
+			.withExpand(layout.getComponent(0), 0.06f)
+			.withExpand(layout.getComponent(1), 0.25f)
+			.withExpand(layout.getComponent(2), 0.06f)
+			.withExpand(layout.getComponent(3), 0.5f)
+			.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
+
+		
+		this
+			.withHeight("600px")
+			.withWidth("700px")
+			.withModal( true )
+			.withContent(layout);
 	}
 
 	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {

@@ -1687,6 +1687,28 @@ div.v-layout.v-horizontal.v-widget {
 	font-style: italic;
 }
 
+.font-bold {
+	font-weight: 700;
+}
+
+.v-tooltip {
+	background-color: transparent;
+	box-shadow: none;
+	padding: 0 8px;
+}
+
+.dialog-content {
+	margin-top: 10px;
+}
+
+.dialog-content .v-caption {
+	display: none;
+}
+
+.dialog-content .v-label {
+	padding: 6px 0;
+}
+
 .mytheme.v-app, .mytheme.v-app-loading {
 	font: 400 14px/1.55 Helvetica, Arial, "lucida grande", tahoma, verdana, arial, sans-serif;
 	color: #37404E;
@@ -16457,26 +16479,13 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-window-contents {
 	padding-left: 15px;
 	padding-right: 15px;
+	margin-top: -10px !important;
 }
 
-.mytheme .detail-tab {
-	height: 500px;
-}
-
-.mytheme .detail-tab .v-tabsheet-content tbody {
+.mytheme .v-tabsheet-content tbody {
 	position: absolute;
 	display: block;
 	height: 370px;
 	overflow-y: scroll;
 	overflow-x: hidden;
-}
-
-.mytheme .font-bold {
-	font-weight: 700;
-}
-
-.mytheme .v-tooltip {
-	background-color: transparent;
-	box-shadow: none;
-	padding: 0 8px;
 }

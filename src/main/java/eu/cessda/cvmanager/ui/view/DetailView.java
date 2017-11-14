@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.gesis.security.SecurityService;
 import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
@@ -111,8 +112,9 @@ public class DetailView extends CvManagerView {
 	private Set<CVConcept> draggedItems;
 	private Grid<CVConcept> draggedGrid;
 
-	public DetailView( EventBus.UIEventBus eventBus, ConfigurationService configService, CvManagerService cvManagerService) {
-		super(eventBus, configService, cvManagerService, DetailView.VIEW_NAME);
+	public DetailView( EventBus.UIEventBus eventBus, ConfigurationService configService, 
+			CvManagerService cvManagerService, SecurityService securityService) {
+		super(eventBus, configService, cvManagerService, securityService, DetailView.VIEW_NAME);
 		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
@@ -692,6 +694,12 @@ public class DetailView extends CvManagerView {
 
 				Window window = new DialogAddCodeWindow(eventBus, cvManagerService, newCVConcept, "en", "en");
 				getUI().addWindow(window);
+				
+				break;
+			case CVCONCEPT_TRANSLATION_DIALOG:
+//				CVConcept selectedRow = event.getItem();
+//				Window window = new DialogEditCodeWindow(eventBus, cvManagerService, cvScheme, selectedRow, selectedLang);
+//				getUI().addWindow(window);
 				
 				break;
 			case CVCONCEPT_EDIT_MODE:

@@ -1753,10 +1753,11 @@ $v-selection-item-border-radius: 0;
 	    font-weight: 700;
    	}
    .v-window-contents{
-       	padding-left: 15px;
-    	padding-right: 15px;
+       	padding-left:15px;
+    	padding-right:15px;
+    	margin-top:-10px !important;
     }
-   .detail-tab{
+   .detail-tab
    		height:500px;
    		.v-tabsheet-content{
 	   		tbody{
@@ -1775,5 +1776,14 @@ $v-selection-item-border-radius: 0;
 	    background-color:transparent;
 		box-shadow:none;
 		padding:0 8px;
+	}
+	.dialog-content{
+		margin-top:10px;
+		.v-caption{
+			display:none;
+		}
+		.v-label{
+			padding: 6px 0;
+		}
 	}
 }

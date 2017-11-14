@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.gesis.security.SecurityService;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
@@ -75,8 +76,8 @@ public class SearchView extends CvManagerView {
 	// private SearchHit selectedItem = null;
 
 	public SearchView(EventBus.UIEventBus eventBus, ConfigurationService configService,
-			CvManagerService cvManagerService) {
-		super(eventBus, configService, cvManagerService, SearchView.VIEW_NAME);
+			CvManagerService cvManagerService, SecurityService securityService) {
+		super(eventBus, configService, cvManagerService, securityService, SearchView.VIEW_NAME);
 		eventBus.subscribe(this, SearchView.VIEW_NAME);
 	}
 
