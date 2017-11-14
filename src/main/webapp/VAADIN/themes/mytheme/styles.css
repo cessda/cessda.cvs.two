@@ -16458,6 +16458,20 @@ div.v-layout.v-horizontal.v-widget {
 	background-image: none;
 }
 
+.mytheme .search-grid {
+	float: left;
+	height: auto !important;
+}
+
+.mytheme .search-grid .v-grid-tablewrapper {
+	position: relative;
+	height: auto !important;
+}
+
+.mytheme .search-grid .v-grid-tablewrapper table > tbody {
+	position: relative;
+}
+
 .mytheme .undefined-height > .v-grid-tablewrapper > table tr {
 	transform: none !important;
 	float: left;

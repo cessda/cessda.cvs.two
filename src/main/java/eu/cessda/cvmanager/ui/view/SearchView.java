@@ -286,7 +286,7 @@ public class SearchView extends CvManagerView {
 		Grid<CVScheme> results = new Grid<>(CVScheme.class);
 		results.setItems(hits);
 
-		results.addStyleNames(ValoTheme.TABLE_BORDERLESS, "undefined-height");
+		results.addStyleNames(ValoTheme.TABLE_BORDERLESS, "undefined-height", "search-grid");
 
 		results.removeAllColumns();
 		results.setHeaderVisible(false);

@@ -1735,6 +1735,17 @@ $v-selection-item-border-radius: 0;
 		background-color:rgba(125, 125, 125, 0.2);
 		background-image:none;
    	}
+   .search-grid{
+   		float:left;
+   		height: auto !important;
+   		.v-grid-tablewrapper{
+   			position: relative;
+   			height: auto !important;
+	   		table>tbody{
+	   		    position: relative;
+	   		}
+	   	}
+   	}
    .undefined-height>.v-grid-tablewrapper>table{
    		tr{
    			transform: none !important;
