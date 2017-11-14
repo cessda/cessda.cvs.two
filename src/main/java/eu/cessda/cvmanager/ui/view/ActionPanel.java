@@ -128,7 +128,7 @@ public class ActionPanel extends CustomComponent{
 					buttonChangeLanguage,
 					new Label("<div style=\"width:100%\">&nbsp;</div>", ContentMode.HTML),
 					buttonAddCode,
-//					buttonAddCodeTranslation,
+					buttonAddCodeTranslation,
 					buttonDeleteCode//,
 //					buttonSortCode//,
 					

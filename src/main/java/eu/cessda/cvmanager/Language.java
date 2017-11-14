@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 public enum Language {
-	DEUTCH("nl"),
+	DUTCH("nl"),
 	ENGLISH("en"),
 	FINNISH("fi"),
 	FRENCH("fr"),

@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.List;
 import java.util.Set;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -32,9 +33,9 @@ import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 
-public class DialogEditCodeWindow extends MWindow {
+public class DialogTranslateCodeWindow extends MWindow {
 
-	private static final Logger log = LoggerFactory.getLogger(DialogEditCodeWindow.class);
+	private static final Logger log = LoggerFactory.getLogger(DialogTranslateCodeWindow.class);
 
 	/**
 	 * 
@@ -55,28 +56,55 @@ public class DialogEditCodeWindow extends MWindow {
 	private MTextField sourceTitle = new MTextField("Code en (source)");
 	private MTextField sourceLanguage = new MTextField("Language (source)");
 	private TextArea sourceDescription = new TextArea("Definition en (source)");
+	
+	private MLabel lCode = new MLabel( "Code" );
+	private ComboBox<CVConcept> codeCb = new ComboBox<>("Code");
 
-	private TextField preferedLabel = new TextField("Code*");
-	private TextArea description = new TextArea("Definition*");
-	private ComboBox<String> languageCb = new ComboBox<>("Language*");
+	private TextField preferedLabel = new TextField("Code");
+	private TextArea description = new TextArea("Definition");
+	private ComboBox<String> languageCb = new ComboBox<>("Language");
 
 	private String selectedLanguage;
 
 	private Button storeCode = new Button("Save");
 
 	private CVScheme cvScheme;
+	private List<CVConcept> codes;
 	private CVConcept code;
 	
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
-	public DialogEditCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, CVConcept code, String sLanguage) {
-		super( "Edit Code");
+	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, List<CVConcept> concepts, String sLanguage) {
+		super( "Add Code Translation");
 		this.cvScheme = cvScheme;
-		this.code = code;
-		this.selectedLanguage = sLanguage;
+		this.codes = concepts;
+		this.code = codes.get(0);
 		
 		this.eventBus = eventBus;
+		
+		codeCb.setItems(codes);
+		codeCb.setEmptySelectionAllowed( false );
+		codeCb.setTextInputAllowed( false );
+		codeCb.setValue(codes.get(0));
+		codeCb.setItemCaptionGenerator( c -> c.getPrefLabelByLanguage( "en" ));
+		codeCb.setWidth("100%");
+		codeCb.addValueChangeListener( e -> {
+			this.code = e.getValue();
+			sourceTitle.setValue( code.getPrefLabelByLanguage( "en" ) );
+			sourceDescription.setValue( code.getDescriptionByLanguage( "en" ) );
+			System.out.println( "test" + code.getPrefLabelByLanguage(selectedLanguage) );
+			preferedLabel.setValue( code.getPrefLabelByLanguage(selectedLanguage));
+			description.setValue( code.getDescriptionByLanguage(selectedLanguage) );
+			
+			binder.setBean(code);
+
+			binder.bind(preferedLabel, concept -> getPrefLabelByLanguage(concept),
+					(concept, value) -> setPrefLabelByLanguage(concept, value));
+
+			binder.bind(description, concept -> getDescriptionByLanguage(concept),
+					(concept, value) -> setDescriptionByLanguage(concept, value));
+		});
 		
 		sourceTitle.withFullWidth();
 		sourceTitle.setValue( code.getPrefLabelByLanguage( "en" ) );
@@ -97,16 +125,17 @@ public class DialogEditCodeWindow extends MWindow {
 		lLanguage.withStyleName( "required" );
 		lDescription.withStyleName( "required" );
 		
-		preferedLabel.setCaption( "Code (" + selectedLanguage + ")*");
-		description.setCaption( "Definition ("+ selectedLanguage +")*");
-		
 		Set<String> currentCvLanguage = cvScheme.getLanguagesByTitle();
 		
-		languageCb.setItems( Language.getFilteredEnumCapitalized( currentCvLanguage ));
+		List<String> languages = Language.getFilteredEnumCapitalized( currentCvLanguage );
+		languages.remove( "English" );
+		
+		
+		
+		languageCb.setItems( languages );
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
-		languageCb.setValue( Language.getEnumCapitalized( selectedLanguage ));
-		languageCb.setReadOnly( true );
+		languageCb.setValue(  languages.get(0));
 		languageCb.addValueChangeListener( e -> {
 			setSelectedLanguage( Language.valueOf( e.getValue().toString().toUpperCase()).getLanguage());
 			
@@ -124,6 +153,10 @@ public class DialogEditCodeWindow extends MWindow {
 				sourceRowB.setVisible( true );
 			}
 		});
+		
+		this.selectedLanguage = Language.valueOf( languageCb.getValue().toString().toUpperCase()).getLanguage();
+		preferedLabel.setCaption( "Code (" + selectedLanguage + ")*");
+		description.setCaption( "Definition ("+ selectedLanguage +")*");
 		
 		if( selectedLanguage.equals( "en" )) {
 			sourceRowA.setVisible( false );
@@ -159,6 +192,12 @@ public class DialogEditCodeWindow extends MWindow {
 			.withHeight("98%")
 			.withStyleName("dialog-content")
 			.add( 
+				new MHorizontalLayout()
+					.withFullWidth()
+					.withHeight("133px")
+					.add(
+						lCode, codeCb
+					).withExpand( lCode, 0.15f).withExpand( codeCb, 0.85f),
 				sourceRowA
 					.withFullWidth()
 					.add(
@@ -173,7 +212,7 @@ public class DialogEditCodeWindow extends MWindow {
 				),
 				sourceRowB
 					.withFullWidth()
-					.withHeight("133px")
+					.withHeight("126px")
 					.add(
 						lSourceDescription, sourceDescription
 					).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
@@ -191,7 +230,7 @@ public class DialogEditCodeWindow extends MWindow {
 				),
 				new MHorizontalLayout()
 					.withFullWidth()
-					.withHeight("250px")
+					.withHeight("245px")
 					.add(
 						lDescription, description
 					).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
@@ -206,10 +245,11 @@ public class DialogEditCodeWindow extends MWindow {
 					.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 			)
 			.withExpand(layout.getComponent(0), 0.06f)
-			.withExpand(layout.getComponent(1), 0.25f)
-			.withExpand(layout.getComponent(2), 0.06f)
-			.withExpand(layout.getComponent(3), 0.5f)
-			.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
+			.withExpand(layout.getComponent(1), 0.06f)
+			.withExpand(layout.getComponent(2), 0.25f)
+			.withExpand(layout.getComponent(3), 0.06f)
+			.withExpand(layout.getComponent(4), 0.5f)
+			.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
 
 		
 		this
