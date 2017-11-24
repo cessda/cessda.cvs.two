@@ -26,6 +26,7 @@
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<gesis.repository.visibility>public</gesis.repository.visibility>
 		<ddiflatdb.server.uri>http://localhost:8080/stardat-ddiflatdb</ddiflatdb.server.uri>
+		<version.dockerfile-maven>1.2.2</version.dockerfile-maven>
 	</properties>
 
 	<repositories>
@@ -76,6 +77,18 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring-boot-starter</artifactId>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
 
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -127,7 +140,7 @@
 		<dependency>
 			<groupId>org.gesis.stardat</groupId>
 			<artifactId>stardat-ddiflatdb-rest</artifactId>
-			<version>0.5.0-SNAPSHOT</version>
+			<version>0.8.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.gesis.stardat</groupId>
@@ -167,10 +180,185 @@
 	</dependencyManagement>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat7-maven-plugin</artifactId>
+					<version>2.1</version>
+				</plugin>
+				<!-- 
+				<plugin>
+					<groupId>io.fabric8</groupId>
+					<artifactId>docker-maven-plugin</artifactId>
+					<version>0.22.1</version>
+				</plugin>
+				-->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.8</version>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>2.7</version>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<!-- This plugin's configuration is used to store Eclipse m2e settings only.
+					     It has no influence on the Maven build itself. -->
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.apache.maven.plugins</groupId>
+										<artifactId>maven-antrun-plugin</artifactId>
+										<versionRange>[1.8,)</versionRange>
+										<goals><goal>run</goal></goals>
+									</pluginExecutionFilter>
+									<action><ignore></ignore></action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<!-- 
+			<plugin>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>copy-resources</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${basedir}/target</outputDirectory>
+							<resources>
+								<resource>
+									<directory>src/main/resources/docker</directory>
+									<includes>
+										<include>Dockerfile</include>
+									</includes>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+			<!-- 
+			<plugin>
+				<groupId>com.google.code.maven-replacer-plugin</groupId>
+				<artifactId>replacer</artifactId>
+				<version>1.5.3</version>
+				<executions>
+					<execution>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>replace</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<file>${basedir}/target/Dockerfile</file>
+					<replacements>
+						<replacement>
+							<token>IMAGE_VERSION</token>
+							<value>${project.version}</value>
+						</replacement>
+					</replacements>
+				</configuration>
+			</plugin>
+			-->
+			<!-- 
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>${version.dockerfile-maven}</version>
+				<executions>
+					<execution>
+						<id>default</id>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<contextDirectory>${project.build.directory}</contextDirectory>
+					<tag>${project.version}</tag>
+				</configuration>
+			</plugin>
+			-->
+			<!-- 
+			<plugin>
+				<groupId>io.fabric8</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<images>
+						<image>
+							<name>${project.artifactId}:${project.version}</name>
+							<build>
+								<dockerFileDir>${project.basedir}/target/docker/generated</dockerFileDir>
+								<assembly>
+									<descriptorRef>artifact</descriptorRef>
+								</assembly>
+							</build>
+						</image>
+					</images>
+				</configuration>
+			</plugin>
+			-->
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<imageName>gesis/${project.artifactId}</imageName>
+					<dockerDirectory>src/main/resources/docker</dockerDirectory>
+					<dockerHost>http://172.17.0.1:2375</dockerHost>
+					
+					<!-- overwrite tags -->
+					<forceTags>true</forceTags>
+					<imageTags>
+						<imageTag>${project.version}</imageTag>
+						<imageTag>latest</imageTag>
+					</imageTags>
+					
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.war</include>
+						</resource>
+					</resources>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>com.vaadin</groupId>
@@ -207,6 +395,21 @@
 			<resource>
 				<directory>src/main/resources</directory>
 				<filtering>true</filtering>
+				<includes>
+					<include>**/*.js</include>
+		         	<include>**/*.xml</include>
+		         	<include>**/*.json</include>
+		            <include>**/*.java</include>
+		            <include>**/*.gwt.xml</include>
+		            <include>**/*.properties</include>
+		            <include>application.properties</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources/docker</directory>
+				<filtering>true</filtering>
+				<targetPath>${project.basedir}/target/docker/generated</targetPath>
+				<includes><include>*</include></includes>
 			</resource>
 		</resources>
 	</build>
@@ -224,9 +427,9 @@
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <server.contextPath>/cvmanager-test</server.contextPath>
 				<ddiflatdb.rest.url>http://localhost:8080/stardat-ddiflatdb</ddiflatdb.rest.url>
-				<db.mysql.url>jdbc:mysql://localhost:3306/cvmanager-security?useSSL=false</db.mysql.url>
-				<db.mysql.username>cessda</db.mysql.username>
-				<db.mysql.password>cessda01</db.mysql.password>
+				<spring.datasource.url>jdbc:mysql://localhost:3306/cvmanager-security?useSSL=false</spring.datasource.url>
+				<spring.datasource.username>cessda</spring.datasource.username>
+				<spring.datasource.password>cessda01</spring.datasource.password>
             </properties>
             <build>
           		<plugins>
@@ -251,9 +454,9 @@
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <server.contextPath>/cvmanager-test</server.contextPath>
                 <ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
-				<db.mysql.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</db.mysql.url>
-				<db.mysql.username>root</db.mysql.username>
-				<db.mysql.password>GVM8Sj8FUxBf4gk</db.mysql.password>
+				<spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</spring.datasource.url>
+				<spring.datasource.username>root</spring.datasource.username>
+				<spring.datasource.password>GVM8Sj8FUxBf4gk</spring.datasource.password>
             </properties>
             <build>
           		<plugins>
@@ -279,9 +482,9 @@
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <server.contextPath>/cvmanager</server.contextPath>
 				<ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
-                <db.mysql.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</db.mysql.url>
-				<db.mysql.username>root</db.mysql.username>
-				<db.mysql.password>GVM8Sj8FUxBf4gk</db.mysql.password>
+                <spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</spring.datasource.url>
+				<spring.datasource.username>root</spring.datasource.username>
+				<spring.datasource.password>GVM8Sj8FUxBf4gk</spring.datasource.password>
             </properties>
             <build>
           		<plugins>

@@ -1,0 +1,19 @@
+#
+# @code-generation-comment@
+#
+
+FROM openjdk:8-jre-alpine
+
+RUN addgroup user && adduser -D -G user user
+WORKDIR /@project.artifactId@
+
+COPY maven/@project.build.finalName@.war ./application.war
+RUN sh -c 'echo "exec java -jar ./application.war --spring.datasource.password=\$DATASOURCE_PASSWORD" > ./entrypoint.sh'
+
+RUN chmod 400 ./application.war && chmod 500 ./entrypoint.sh && chown -R user:user ./
+USER user:user
+
+EXPOSE 8585
+HEALTHCHECK CMD exit $(echo $(echo $(wget http://localhost:@server.port@@server.contextPath@/health -q -O -) | grep -cv UP))
+ENTRYPOINT ["/bin/sh", "./entrypoint.sh"]
+
