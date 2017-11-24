@@ -45,18 +45,18 @@ public class DialogEditCodeWindow extends MWindow {
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
-	private MLabel lTitle = new MLabel( "Title" );
+	private MLabel lTitle = new MLabel( "Descriptive term" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language" );
-	private MLabel lSourceTitle = new MLabel( "Title (source)" );
+	private MLabel lSourceTitle = new MLabel( "Descriptive term (source)" );
 	private MLabel lSourceDescription = new MLabel( "Definition (source)" );
 	private MLabel lSourceLanguage = new MLabel( "Language (source)" );
 	
-	private MTextField sourceTitle = new MTextField("Code en (source)");
+	private MTextField sourceTitle = new MTextField("Descriptive term (source)");
 	private MTextField sourceLanguage = new MTextField("Language (source)");
 	private TextArea sourceDescription = new TextArea("Definition en (source)");
 
-	private TextField preferedLabel = new TextField("Code*");
+	private TextField preferedLabel = new TextField("Descriptive term*");
 	private TextArea description = new TextArea("Definition*");
 	private ComboBox<String> languageCb = new ComboBox<>("Language*");
 
@@ -86,7 +86,7 @@ public class DialogEditCodeWindow extends MWindow {
 		sourceDescription.setReadOnly( true );
 		sourceTitle.setReadOnly( true );
 		
-		preferedLabel.setSizeFull();
+		preferedLabel.setWidth("100%");
 		description.setSizeFull();
 		
 		sourceLanguage
@@ -97,7 +97,7 @@ public class DialogEditCodeWindow extends MWindow {
 		lLanguage.withStyleName( "required" );
 		lDescription.withStyleName( "required" );
 		
-		preferedLabel.setCaption( "Code (" + selectedLanguage + ")*");
+		preferedLabel.setCaption( "Descriptive term (" + selectedLanguage + ")*");
 		description.setCaption( "Definition ("+ selectedLanguage +")*");
 		
 		Set<String> currentCvLanguage = cvScheme.getLanguagesByTitle();
@@ -110,7 +110,7 @@ public class DialogEditCodeWindow extends MWindow {
 		languageCb.addValueChangeListener( e -> {
 			setSelectedLanguage( Language.valueOf( e.getValue().toString().toUpperCase()).getLanguage());
 			
-			preferedLabel.setCaption( "Code (" + selectedLanguage + ")*");
+			preferedLabel.setCaption( "Descriptive term (" + selectedLanguage + ")*");
 			description.setCaption( "Definition ("+ selectedLanguage +")*");
 			
 			preferedLabel.setValue( code.getPrefLabelByLanguage(selectedLanguage));

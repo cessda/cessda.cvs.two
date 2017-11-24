@@ -46,18 +46,18 @@ public class DialogTranslateCodeWindow extends MWindow {
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
-	private MLabel lTitle = new MLabel( "Title" );
+	private MLabel lTitle = new MLabel( "Descriptive term" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language" );
-	private MLabel lSourceTitle = new MLabel( "Title (source)" );
+	private MLabel lSourceTitle = new MLabel( "Descriptive term (source)" );
 	private MLabel lSourceDescription = new MLabel( "Definition (source)" );
 	private MLabel lSourceLanguage = new MLabel( "Language (source)" );
 	
-	private MTextField sourceTitle = new MTextField("Code en (source)");
+	private MTextField sourceTitle = new MTextField("Descriptive term (source)");
 	private MTextField sourceLanguage = new MTextField("Language (source)");
 	private TextArea sourceDescription = new TextArea("Definition en (source)");
 	
-	private MLabel lCode = new MLabel( "Code" );
+	private MLabel lCode = new MLabel( "Descriptive terms" );
 	private ComboBox<CVConcept> codeCb = new ComboBox<>("Code");
 
 	private TextField preferedLabel = new TextField("Code");
@@ -114,7 +114,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 		sourceDescription.setReadOnly( true );
 		sourceTitle.setReadOnly( true );
 		
-		preferedLabel.setSizeFull();
+		preferedLabel.setWidth("100%");
 		description.setSizeFull();
 		
 		sourceLanguage
@@ -192,20 +192,14 @@ public class DialogTranslateCodeWindow extends MWindow {
 			.withHeight("98%")
 			.withStyleName("dialog-content")
 			.add( 
-				new MHorizontalLayout()
-					.withFullWidth()
-					.withHeight("133px")
-					.add(
-						lCode, codeCb
-					).withExpand( lCode, 0.15f).withExpand( codeCb, 0.85f),
 				sourceRowA
 					.withFullWidth()
 					.add(
 						new MHorizontalLayout()
 						.withFullWidth()
 						.add(
-								lSourceTitle, sourceTitle
-						).withExpand(lSourceTitle, 0.31f).withExpand(sourceTitle, 0.69f),
+								lCode, codeCb
+						).withExpand(lCode, 0.31f).withExpand(codeCb, 0.69f),
 						new MHorizontalLayout().add(
 								lSourceLanguage, sourceLanguage
 						)
@@ -245,11 +239,10 @@ public class DialogTranslateCodeWindow extends MWindow {
 					.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 			)
 			.withExpand(layout.getComponent(0), 0.06f)
-			.withExpand(layout.getComponent(1), 0.06f)
-			.withExpand(layout.getComponent(2), 0.25f)
-			.withExpand(layout.getComponent(3), 0.06f)
-			.withExpand(layout.getComponent(4), 0.5f)
-			.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
+			.withExpand(layout.getComponent(1), 0.25f)
+			.withExpand(layout.getComponent(2), 0.06f)
+			.withExpand(layout.getComponent(3), 0.5f)
+			.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
 
 		
 		this

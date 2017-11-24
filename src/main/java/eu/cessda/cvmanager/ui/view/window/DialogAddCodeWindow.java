@@ -33,12 +33,12 @@ public class DialogAddCodeWindow extends MWindow {
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	
-	private MLabel lTitle = new MLabel( "Code" );
+	private MLabel lTitle = new MLabel( "Descriptive term" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language (source)" );
 
 	private MVerticalLayout layout = new MVerticalLayout();
-	private TextField preferedLabel = new TextField("Code");
+	private TextField preferedLabel = new TextField("Descriptive term");
 	private TextArea description = new TextArea("Definition*");
 	private ComboBox<String> languageCb = new ComboBox<>("Language (source)");
 	private String orginalLanguage;
@@ -48,7 +48,7 @@ public class DialogAddCodeWindow extends MWindow {
 
 
 	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVConcept code, String orignalLanguage, String language) {
-		super( "Add Code");
+		super( "Add Code (Source Language)");
 		
 		this.eventBus = eventBus;
 		setWidth("700px");
@@ -60,7 +60,7 @@ public class DialogAddCodeWindow extends MWindow {
 		languageCb.setValue("English");
 		languageCb.setReadOnly( true );
 		
-		preferedLabel.setSizeFull();
+		preferedLabel.setWidth("100%");
 		description.setSizeFull();
 		
 		lTitle.withStyleName( "required" );

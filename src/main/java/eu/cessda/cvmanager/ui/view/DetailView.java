@@ -468,7 +468,8 @@ public class DetailView extends CvManagerView {
 		// results.addColumn(SearchHit::getSourceAsString).setCaption("Study").setId("study");
 
 
-		detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en")).setCaption("en")
+		detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en"))
+				.setCaption("Descriptive term")
 				.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
 				.setExpandRatio(1);
 
@@ -476,18 +477,28 @@ public class DetailView extends CvManagerView {
 				concept -> concept.getPrefLabelByLanguage(selectedLang),
 				(concept, label) -> concept.setPrefLabelByLanguage(selectedLang, label));
 
-		detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang)).setCaption(selectedLang)
+		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
+			detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang))
+				.setCaption("Descriptive term (" + selectedLang + ")")
 				.setEditorBinding(prefLabelBinding).setExpandRatio(1);// Component(prefLanguageEditor,
 		// (concept, value) ->
 		// updateConcept(concept,
 		// value, "en"));
 
 		detailGrid.addColumn(concept -> {
-					return new Label( concept.getDescriptionByLanguage(selectedLang));
+					return new Label( concept.getDescriptionByLanguage( "en" ));
 				}, new ComponentRenderer())
 				.setCaption("Definition")
 				//.setEditorComponent(definitionEditor, (concept, value) -> concept.setDescriptionByLanguage( selectedLang, value))
-				.setExpandRatio(2);
+				.setExpandRatio(3);
+		
+		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
+			detailGrid.addColumn(concept -> {
+				return new Label( concept.getDescriptionByLanguage(selectedLang));
+			}, new ComponentRenderer())
+			.setCaption("Definition (" + selectedLang + ")")
+			//.setEditorComponent(definitionEditor, (concept, value) -> concept.setDescriptionByLanguage( selectedLang, value))
+			.setExpandRatio(3);
 
 		detailGrid.setSizeFull();
 		//detailGrid.getEditor().setEnabled(true);
