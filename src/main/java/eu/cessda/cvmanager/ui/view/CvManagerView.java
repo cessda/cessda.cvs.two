@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.view;
 
+import java.util.Locale;
+
 import javax.annotation.PostConstruct;
 
 import org.gesis.security.SecurityService;
@@ -10,22 +12,28 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.viritin.navigator.MView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 
-public abstract class CvManagerView extends MVerticalLayout implements View {
+public abstract class CvManagerView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -8769292972079523949L;
 	public static enum ActionType{
 		SEARCH, BROWSE, DETAIL // this should be similar to view names
 	}
+	public Locale locale = UI.getCurrent().getLocale();
 	
+	public final I18N i18n;
 	public final EventBus.UIEventBus eventBus;
 	public final ConfigurationService configService;
 	public final CvManagerService cvManagerService;
@@ -39,9 +47,9 @@ public abstract class CvManagerView extends MVerticalLayout implements View {
 	protected ActionPanel actionPanel;
 	protected MVerticalLayout rightContainer = new MVerticalLayout();
 	
-	public CvManagerView(EventBus.UIEventBus eventBus, ConfigurationService configService, 
+	public CvManagerView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			CvManagerService cvManagerService, SecurityService securityService, String actionType) {
-		
+		this.i18n = i;
 		this.eventBus = eventBus;
 		this.configService = configService;
 		this.cvManagerService = cvManagerService;

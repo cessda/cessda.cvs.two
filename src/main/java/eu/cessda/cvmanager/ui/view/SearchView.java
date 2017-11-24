@@ -3,6 +3,7 @@ package eu.cessda.cvmanager.ui.view;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +16,7 @@ import org.gesis.stardat.entity.DDIElement;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -75,9 +77,9 @@ public class SearchView extends CvManagerView {
 	// The opened search hit at the results grid (null at the begining)
 	// private SearchHit selectedItem = null;
 
-	public SearchView(EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public SearchView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			CvManagerService cvManagerService, SecurityService securityService) {
-		super(eventBus, configService, cvManagerService, securityService, SearchView.VIEW_NAME);
+		super(i18n, eventBus, configService, cvManagerService, securityService, SearchView.VIEW_NAME);
 		eventBus.subscribe(this, SearchView.VIEW_NAME);
 	}
 
@@ -341,6 +343,24 @@ public class SearchView extends CvManagerView {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void afterViewChange(ViewChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean beforeViewChange(ViewChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void updateMessageStrings(Locale locale) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

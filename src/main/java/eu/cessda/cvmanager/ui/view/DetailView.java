@@ -3,6 +3,7 @@ package eu.cessda.cvmanager.ui.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -18,6 +19,7 @@ import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
@@ -113,9 +115,9 @@ public class DetailView extends CvManagerView {
 	private Set<CVConcept> draggedItems;
 	private Grid<CVConcept> draggedGrid;
 
-	public DetailView( EventBus.UIEventBus eventBus, ConfigurationService configService, 
+	public DetailView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			CvManagerService cvManagerService, SecurityService securityService) {
-		super(eventBus, configService, cvManagerService, securityService, DetailView.VIEW_NAME);
+		super(i18n, eventBus, configService, cvManagerService, securityService, DetailView.VIEW_NAME);
 		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
@@ -283,7 +285,7 @@ public class DetailView extends CvManagerView {
 				new MLabel(selectedLang + " " + ITEM_DEF + ":").withWidth("120px").withStyleName("leftPart"),
 				new MLabel(cvScheme.getDescriptionByLanguage(selectedLang)).withStyleName("rightPart"));
 
-		if (selectedLang.equals(selectedLang.equals( configService.getDefaultSourceLanguage()))) {
+		if (selectedLang.equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 		}
@@ -764,5 +766,23 @@ public class DetailView extends CvManagerView {
 			}
 		}
 		pressedButton.addStyleName( "button-pressed" );
+	}
+
+	@Override
+	public void afterViewChange(ViewChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean beforeViewChange(ViewChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void updateMessageStrings(Locale locale) {
+		// TODO Auto-generated method stub
+		
 	}
 }

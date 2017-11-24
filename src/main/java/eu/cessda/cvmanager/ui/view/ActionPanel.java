@@ -1,8 +1,7 @@
 package eu.cessda.cvmanager.ui.view;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.util.Iterator;
+import java.util.Locale;
 
 import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
@@ -11,6 +10,7 @@ import org.gesis.stardat.entity.CVScheme;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -23,6 +23,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ComponentRenderer;
@@ -40,13 +41,15 @@ public class ActionPanel extends CustomComponent{
 
 	private static final long serialVersionUID = -6349100242468318473L;
 
+	private I18N i18n;
+	private Locale locale = UI.getCurrent().getLocale();
 	private final EventBus.UIEventBus eventBus;
 	private final CvManagerService cvManagerService;
 	
 	private MVerticalLayout actionLayout = new MVerticalLayout();
 
 	private MLabel panelHeader = new MLabel( "ACTIONS" );
-	private MButton buttonAddCv = new MButton( "Add new CV" );
+	private MButton buttonAddCv = new MButton();
 	private MButton buttonChangeAgency = new MButton( "Change agency" );
 	private MButton buttonChangeLanguage = new MButton( "Add Translation" );
 	
@@ -67,10 +70,12 @@ public class ActionPanel extends CustomComponent{
 		this.cvManagerView = cvManagerView;
 		this.eventBus = cvManagerView.getEventBus();
 		this.cvManagerService = cvManagerView.getCvManagerService();
+		this.i18n = cvManagerView.i18n;
 //		this.detailGrid = detailView.getDetailGrid();
 //		this.cvScheme = cvManagerView.getCvScheme();
 		
 		buttonAddCv
+			.withCaption( i18n.get("view.action.newcv", locale))
 //			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
 		buttonChangeAgency

@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.vaadin.spring.i18n.MessageProvider;
+import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = { "org.gesis", "eu.cessda" })
@@ -26,6 +28,11 @@ public class CvGuiApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(CvGuiApplication.class);
 	}
+	
+    @Bean
+    MessageProvider messageProvider() {
+        return new ResourceBundleMessageProvider("org.vaadin.spring.i18n.messages");
+    }
 //
 //	@Bean(name = "dataSource")
 //	public DriverManagerDataSource securityDataSource() {
