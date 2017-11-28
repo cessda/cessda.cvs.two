@@ -28,3 +28,16 @@ This README would normally document whatever steps are necessary to get your app
 
 * Repo owner or admin
 * Other community or team contact
+
+### How to run docker locally? ###
+
+1. Run Maven and docker build command in the project directory,
+`$ mvn clean -U package docker:build -Pdocker-compose -Dmaven.test.skip=true`
+
+2. Change working directory to target/docker/generated directory  
+`$ cd target/docker/generated/`
+
+3. Run docker-compose  
+`$ docker-compose up`
+
+4. Finally access the CVManager from `http://localhost:2002/cvmanager-test/#!Browse`

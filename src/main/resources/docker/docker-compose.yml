@@ -5,39 +5,14 @@
 version: '3.2'
 
 services:
-
-  # mysql:
-    # image: mysql
-    # container_name: flatdb-mysql
-    # environment:
-      # MYSQL_DATABASE: stardat-ddiflatdb
-      # MYSQL_ROOT_PASSWORD: ${mysql_password}
-    # ports:
-      # - ${host_mysql_port}:3306
-
-  # microservice:
-    # image: @docker.registry.uri@/gesis/@project.artifactId@:@project.version@
-    # container_name: flatdb-microservice
-    # environment:
-      # DATASOURCE_PASSWORD: ${mysql_password}
-    # ports:
-     # - ${host_ddiflatdb_port}:@server.port@
-    # volumes:
-     # - ${host_ddiflatdb_ddistore_ddiDirectory}:@ddistore.ddiDirectory@
-     # - ${host_ddiflatdb_splitconfigurations_directory}:@ddiflatdb.splitconfigurations.directory@
-    # depends_on:
-     # - mysql
-
-  web:
-    # image: @docker.registry.uri@/gesis/@project.artifactId@:@project.version@
-    container_name: cvmanager
-	build: .
-    # environment:
-      # DATASOURCE_PASSWORD: ${mysql_password}
+  cvmanager-app:
+    image: @docker.registry.uri@/cessda/@project.artifactId@:@project.version@
+    container_name: cvmanager-app
     ports:
-     - ${host_cvmanager_port}:@server.port@
-    # volumes:
-     # - ${host_ddiflatdb_ddistore_ddiDirectory}:@ddistore.ddiDirectory@
-     # - ${host_ddiflatdb_splitconfigurations_directory}:@ddiflatdb.splitconfigurations.directory@
-    # depends_on:
-     # - mysql
+     - 2002:@server.port@
+    networks:
+     - cessda-cvmanager
+
+networks:
+  cessda-cvmanager:
+    driver: bridge
