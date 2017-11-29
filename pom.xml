@@ -372,9 +372,6 @@
         </profile>
         <profile>
             <id>docker-compose</id>
-            <activation>
-					<activeByDefault>true</activeByDefault>
-			</activation>
             <properties>
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
@@ -382,9 +379,9 @@
                 <server.contextPath>/</server.contextPath>
 				<server.port>8080</server.port>
 				<ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
-                <spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</spring.datasource.url>
+                <spring.datasource.url>jdbc:mysql://104.155.73.84:3306/cvmanager-security?useSSL=false</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
-				<spring.datasource.password>GVM8Sj8FUxBf4gk</spring.datasource.password>
+				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
             </properties>
         </profile>
         <profile>

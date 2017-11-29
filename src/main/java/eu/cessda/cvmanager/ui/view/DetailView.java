@@ -1,10 +1,15 @@
 package eu.cessda.cvmanager.ui.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -110,6 +115,7 @@ public class DetailView extends CvManagerView {
 
 	private Binder<CVConcept> binder;
 	private List<CVConcept> concepts = new ArrayList<CVConcept>();
+	private List<CVConcept> topConcepts = new ArrayList<CVConcept>();
 	private MCssLayout languageLayout = new MCssLayout();
 		
 	private Set<CVConcept> draggedItems;
@@ -234,8 +240,21 @@ public class DetailView extends CvManagerView {
 	
 	private void refreshCvConcepts() {
 		concepts.clear();
+		Map<String, CVConcept> cvconsMap = new HashMap<>();
+		
 		List<DDIStore> ddiConcepts = cvManagerService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
-		ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
+		//ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
+		ddiConcepts.forEach(ddiConcept -> {
+			CVConcept concept = new CVConcept(ddiConcept);
+			cvconsMap.put(concept.getId(), concept);
+			concepts.add(concept);
+		});
+		topConcepts = concepts;
+//
+//		cvScheme.getOrderedMemberList().forEach( item -> {
+//			System.out.println( item );
+//			topConcepts.add( cvconsMap.get(item));
+//		});
 	}
 	
 	private void doSaveConcept() {
@@ -462,7 +481,7 @@ public class DetailView extends CvManagerView {
 		
 		binder = detailGrid.getEditor().getBinder();
 		//binder.addValueChangeListener(event -> Notification.show("Binder Event"));
-		detailGrid.setItems(concepts);
+		detailGrid.setItems(topConcepts);
 		// detailGrid.setItems( cvItem.getCvElements() );
 		// detailGrid.addStyleName(ValoTheme.TABLE_BORDERLESS);
 
