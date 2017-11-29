@@ -11,4 +11,4 @@ pipelines:
         caches:
           - maven
         script: # Modify the commands below to build your repository.
-          - mvn clean clean package -DskipTests
+          - mvn clean -U package package docker:build -Pdocker-compose -DskipTests
