@@ -379,7 +379,7 @@
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <server.contextPath>/cvmanager-test</server.contextPath>
+                <server.contextPath>/</server.contextPath>
 				<server.port>8080</server.port>
 				<ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
                 <spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</spring.datasource.url>
