@@ -13,7 +13,6 @@ pipelines:
           - maven
         script: # Modify the commands below to build your repository.
           - mvn clean package docker:build sonar:sonar -Pdocker-compose -DskipTests
-          - mvn docker:login
           - mvn docker:push 
         services:
           - docker
