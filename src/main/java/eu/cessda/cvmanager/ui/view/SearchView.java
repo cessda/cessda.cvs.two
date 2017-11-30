@@ -127,6 +127,7 @@ public class SearchView extends CvManagerView {
 		rightContainer.add(globalContainer).withExpand(globalContainer, 1);
 
 		resetSearch();
+		updateMessageStrings(locale);
 	}
 
 	@Override
@@ -149,7 +150,6 @@ public class SearchView extends CvManagerView {
 
 		this.searchBox = new TextField();
 		this.searchBox.setSizeFull();
-		this.searchBox.setPlaceholder("Enter your query here ...");
 
 		this.searchButton = new Button(VaadinIcons.SEARCH);
 		this.searchButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -235,8 +235,9 @@ public class SearchView extends CvManagerView {
 		sortComboBox.setWidth("120px");
 		sortComboBox.setValue("A-Z");
 
-		filterOption.withFullWidth().add(perPageResult.add(new MLabel("Result per page"), perPageComboBox), infoResult,
-				sortResult.add(new MLabel("Result per page"), sortComboBox));
+		filterOption.withFullWidth().add(perPageResult.add(new MLabel(i18n.get("view.search.query.label.perpage", locale)), 
+				perPageComboBox), infoResult,
+				sortResult.add(new MLabel(i18n.get("view.search.query.label.sort", locale)), sortComboBox));
 
 		layout.addComponents(this.searchBox, this.searchButton /* , this.showAllStudiesButton */);
 		layout.setExpandRatio(this.searchBox, 1);
@@ -359,7 +360,7 @@ public class SearchView extends CvManagerView {
 
 	@Override
 	public void updateMessageStrings(Locale locale) {
-		// TODO Auto-generated method stub
+		searchBox.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
 		
 	}
 
