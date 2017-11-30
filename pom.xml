@@ -25,6 +25,18 @@
 		<vaadin.version>8.1.6</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<gesis.repository.visibility>public</gesis.repository.visibility>
+		<!--Sonar Prop config: starts-->
+		<!-- Ops: Replace the next three lines if you prefer the cred configurations in code else pass via commandline-->
+		<!--<sonar.host.url>replace-me</sonar.host.url>-->
+		<!--<sonar.login>replace-me</sonar.login>-->
+		<!--<sonar.password>replace-me</sonar.password>-->
+		<sonar.projectName>dsn harvester</sonar.projectName>
+		<sonar-maven-plugin.version>3.0.2</sonar-maven-plugin.version>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
+		<sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
+		<jacoco-maven-plugin.version>0.7.8</jacoco-maven-plugin.version>
+		<!--Sonar Pros: ends-->
 	</properties>
 
 	<repositories>
@@ -313,6 +325,28 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- Sonar Start -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sonar-maven-plugin</artifactId>
+				<version>${sonar-maven-plugin.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+				</configuration>
+			</plugin>
+			<!-- Sonar End -->
 		</plugins>
 		<resources>
 			<resource>
