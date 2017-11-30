@@ -27,7 +27,7 @@
 		<gesis.repository.visibility>public</gesis.repository.visibility>
 		<!--Sonar Prop config: starts-->
 		<!-- Ops: Replace the next three lines if you prefer the cred configurations in code else pass via commandline-->
-		<!--<sonar.host.url>replace-me</sonar.host.url>-->
+		<sonar.host.url>http://104.155.63.80:9000/</sonar.host.url>
 		<!--<sonar.login>replace-me</sonar.login>-->
 		<!--<sonar.password>replace-me</sonar.password>-->
 		<sonar.projectName>dsn harvester</sonar.projectName>
