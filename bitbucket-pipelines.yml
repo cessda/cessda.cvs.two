@@ -17,8 +17,13 @@ pipelines:
           - /tmp/google-cloud-sdk/install.sh -q
           - source /tmp/google-cloud-sdk/path.bash.inc
           - gcloud -v
+          # Authenticating with the service account key file
+          - echo $GCLOUD_API_KEYFILE | base64 --decode --ignore-garbage > ./gcloud-api-key.json
+          - gcloud auth activate-service-account --key-file gcloud-api-key.json
+          # Linking to the Google Cloud project
+          - gcloud config set project $GCLOUD_PROJECT
           - mvn clean package docker:build sonar:sonar -Pdocker-compose -DskipTests
-          #- mvn docker:push 
-          - gcloud docker -- push
+          # Try to push 
+          - gcloud docker -- push eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
         services:
           - docker
