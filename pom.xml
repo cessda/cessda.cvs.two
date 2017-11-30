@@ -269,7 +269,7 @@
 				<configuration>
 					<images>
 						<image>
-							<name>${docker.registry.uri}/cessda/${project.artifactId}:${project.version}</name>
+							<name>${docker.registry.uri}/cessda/${project.artifactId}</name>
 							<build>
 								<dockerFileDir>${project.basedir}/target/docker/generated</dockerFileDir>
 								<assembly>
