@@ -292,10 +292,10 @@
 								<condition property="isSnapshot">
 									<contains string="${project.version}" substring="SNAPSHOT" />
 									</condition>
-								<condition property="docker.registry.uri" value="docker-private-snapshots.gesis.intra">
+								<condition property="docker.registry.uri" value="eu.gcr.io/cessda-development/">
 									<isset property="isSnapshot"/>
 								</condition>
-								<property name="docker.registry.uri" value="docker-private-releases.gesis.intra" />
+								<property name="docker.registry.uri" value="eu.gcr.io/cessda-development/" />
 							</target>
 						</configuration>
 						<goals><goal>run</goal></goals>
