@@ -36,6 +36,7 @@
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
 		<jacoco-maven-plugin.version>0.7.8</jacoco-maven-plugin.version>
+		<docker.registry.uri>eu.gcr.io/cessda-development</docker.registry.uri>
 		<!--Sonar Pros: ends-->
 	</properties>
 
@@ -120,10 +121,7 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-themes</artifactId>
-		</dependency>
+		
 		<dependency>
    			<groupId>org.vaadin.addon</groupId>
    			<artifactId>confirmdialog</artifactId>
@@ -222,12 +220,9 @@
 					<source>${java.version}</source>
 					<target>${java.version}</target>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.6.1</version>
 			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -280,28 +275,28 @@
 					</images>
 				</configuration>
 			</plugin>
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>initialize</phase>
-						<configuration>
-							<!-- https://stackoverflow.com/a/44033580 -->
-							<exportAntProperties>true</exportAntProperties>
-							<target>
-								<condition property="isSnapshot">
-									<contains string="${project.version}" substring="SNAPSHOT" />
-									</condition>
-								<condition property="docker.registry.uri" value="eu.gcr.io/cessda-development">
-									<isset property="isSnapshot"/>
-								</condition>
-								<property name="docker.registry.uri" value="eu.gcr.io/cessda-development" />
-							</target>
-						</configuration>
-						<goals><goal>run</goal></goals>
-					</execution>
-				</executions>
-			</plugin>
+<!-- 			<plugin> -->
+<!-- 				<artifactId>maven-antrun-plugin</artifactId> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<phase>initialize</phase> -->
+<!-- 						<configuration> -->
+<!-- 							https://stackoverflow.com/a/44033580 -->
+<!-- 							<exportAntProperties>true</exportAntProperties> -->
+<!-- 							<target> -->
+<!-- 								<condition property="isSnapshot"> -->
+<!-- 									<contains string="${project.version}" substring="SNAPSHOT" /> -->
+<!-- 									</condition> -->
+<!-- 								<condition property="docker.registry.uri" value="eu.gcr.io/cessda-development"> -->
+<!-- 									<isset property="isSnapshot"/> -->
+<!-- 								</condition> -->
+<!-- 								<property name="docker.registry.uri" value="eu.gcr.io/cessda-development" /> -->
+<!-- 							</target> -->
+<!-- 						</configuration> -->
+<!-- 						<goals><goal>run</goal></goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 			<plugin>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-maven-plugin</artifactId>
