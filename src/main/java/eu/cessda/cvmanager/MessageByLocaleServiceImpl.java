@@ -2,6 +2,8 @@ package eu.cessda.cvmanager;
 
 import java.util.Locale;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
@@ -10,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MessageByLocaleServiceImpl implements MessageByLocaleService {
+
+	final static Logger log = LoggerFactory.getLogger(MessageByLocaleServiceImpl.class);
 
 	@Autowired
 	private MessageSource messageSource;
@@ -22,7 +26,7 @@ public class MessageByLocaleServiceImpl implements MessageByLocaleService {
 		try {
 			message = messageSource.getMessage(id, null, locale);
 		} catch (NoSuchMessageException nsme) {
-			nsme.printStackTrace();
+			log.error("No such message found", nsme);
 		}
 		return message;
 	}
@@ -30,7 +34,7 @@ public class MessageByLocaleServiceImpl implements MessageByLocaleService {
 	@Override
 	public void setLocal(Locale locale) {
 		LocaleContextHolder.setLocale(locale);
-		System.out.println("Activated:LOCAL");
+		log.info("Activated:LOCAL");
 	}
 
 	@Override
