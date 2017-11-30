@@ -28,9 +28,9 @@
 		<!--Sonar Prop config: starts-->
 		<!-- Ops: Replace the next three lines if you prefer the cred configurations in code else pass via commandline-->
 		<sonar.host.url>http://104.155.63.80:9000/</sonar.host.url>
-		<!--<sonar.login>replace-me</sonar.login>-->
+		<sonar.login>2f2cc09e66386ee2bbb36f0579d064e42e5d02fb</sonar.login>
 		<!--<sonar.password>replace-me</sonar.password>-->
-		<sonar.projectName>dsn harvester</sonar.projectName>
+		<sonar.projectName>cessda.cvmanager.alpha</sonar.projectName>
 		<sonar-maven-plugin.version>3.0.2</sonar-maven-plugin.version>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
