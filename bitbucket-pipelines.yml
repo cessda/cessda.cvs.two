@@ -12,7 +12,7 @@ pipelines:
         caches:
           - maven
         script: # Modify the commands below to build your repository.
-          - mvn clean package sonar:sonar
+          - mvn clean package sonar:sonar -DskipTests
           - mvn clean package docker:build -Pdocker-compose -DskipTests
         services:
           - docker
