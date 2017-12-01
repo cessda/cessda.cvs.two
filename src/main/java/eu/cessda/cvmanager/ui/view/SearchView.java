@@ -362,6 +362,7 @@ public class SearchView extends CvManagerView {
 	public void updateMessageStrings(Locale locale) {
 		searchBox.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
 		
+		actionPanel.updateMessageStrings(locale);
 	}
 
 }

@@ -3,6 +3,7 @@
  */
 package eu.cessda.cvmanager.ui;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.gesis.security.SecurityService;
@@ -20,6 +21,7 @@ import org.vaadin.spring.events.annotation.EnableEventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
+import org.vaadin.spring.i18n.support.TranslatableUI;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -44,6 +46,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.MessageByLocaleService;
@@ -66,7 +69,7 @@ import eu.cessda.cvmanager.utils.FileUtils;
 @SpringUI
 @PreserveOnRefresh
 @EnableEventBus
-public class CVManagerUI extends UI implements Translatable{
+public class CVManagerUI extends TranslatableUI implements Translatable{
 
 	private static final long serialVersionUID = -6435583434844959571L;
 
@@ -93,6 +96,7 @@ public class CVManagerUI extends UI implements Translatable{
 //	private Menu menu;
 	private RestClient ddiFlatDBRestClient;
 	private String webLanguage = "de";
+	private ComboBox countryBox = new ComboBox();
 	
 	public CVManagerUI(MessageByLocaleService messageByLocaleService, SpringViewProvider viewProvider,
 			SecurityService securityService,UIEventBus eventBus, I18N i18n) {
@@ -104,13 +108,11 @@ public class CVManagerUI extends UI implements Translatable{
 	}
 
 	@Override
-	protected void init(VaadinRequest request) {
+	protected void initUI(VaadinRequest request) {
 
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
 	
-		setLocale( Locale.ENGLISH );
-
 //		menu = new Menu(navigator, securityService);
 //		menu.addView(new SearchView(), SearchView.VIEW_NAME, "CV Search", VaadinIcons.EDIT);
 //		menu.addView(new EditorView(), EditorView.VIEW_NAME, "CV Editor", VaadinIcons.EDIT);
@@ -166,10 +168,21 @@ public class CVManagerUI extends UI implements Translatable{
 		}
 		
 		eventBus.subscribe(this);
-		updateMessageStrings(UI.getCurrent().getLocale());
+		//updateMessageStrings(UI.getCurrent().getLocale());
 	}
 
 	private void addHeader() {
+		
+      countryBox.setTextInputAllowed( false );
+      countryBox.setItems(Arrays.asList("en","de","fi"));
+      countryBox.setEmptySelectionAllowed(false);
+      countryBox.setWidth("80px");
+      countryBox.setValue("en");
+      countryBox.addValueChangeListener( e -> {
+      	setLocale(new Locale( e.getValue().toString().toLowerCase()));
+	});
+		
+		
 		headerToplinks.setSizeFull();
 		MLabel logo = new MLabel();
 		logo
@@ -203,6 +216,7 @@ public class CVManagerUI extends UI implements Translatable{
 			.withStyleName( "menuLayout" )
 			.withMargin( new MarginInfo( true , true, true, false))
 			.add( 
+				countryBox,
 				home,
 //				signUp,
 //				listAllCv,
@@ -216,7 +230,7 @@ public class CVManagerUI extends UI implements Translatable{
 		.withResponsive(true)
 		.withStyleName("headerbar")
 		.add(
-			//countryBox,
+			
 			headerToplinks,
 			new MHorizontalLayout()
 				.withStyleName("mid_search")
@@ -343,5 +357,6 @@ public class CVManagerUI extends UI implements Translatable{
 		logIn.withCaption( i18n.get("view.home.menu.login", locale));
 		logout.withCaption( i18n.get("view.home.menu.logout", locale));
 	}
+
 
 }
