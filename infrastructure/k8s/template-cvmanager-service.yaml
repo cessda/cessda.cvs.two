@@ -5,6 +5,7 @@ metadata:
   namespace: cvmanager-alpha
 spec:
   type: LoadBalancer
+  loadBalancerIP: 35.195.121.125
   ports:
   - name: frontend-webui
     port: 80
