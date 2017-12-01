@@ -48,20 +48,20 @@ public class ActionPanel extends CustomComponent{
 	
 	private MVerticalLayout actionLayout = new MVerticalLayout();
 
-	private MLabel panelHeader = new MLabel( "ACTIONS" );
+	private MLabel panelHeader = new MLabel();
 	private MButton buttonAddCv = new MButton();
-	private MButton buttonChangeAgency = new MButton( "Change agency" );
-	private MButton buttonChangeLanguage = new MButton( "Add Translation" );
+	private MButton buttonChangeAgency = new MButton();
+	private MButton buttonChangeLanguage = new MButton();
 	
-	private MButton buttonAddCode = new MButton( "Add Code" );
-	private MButton buttonAddCodeTranslation = new MButton( "Code Translation" );
-	private MButton buttonDeleteCode = new MButton( "Delete Code" );
-	private MButton buttonSortCode = new MButton( "Sort Code" );
+	private MButton buttonAddCode = new MButton();
+	private MButton buttonAddCodeTranslation = new MButton();
+	private MButton buttonDeleteCode = new MButton();
+	private MButton buttonSortCode = new MButton();
 	
-	private MButton buttonValidateCv= new MButton( "Validate CV" );
-	private MButton buttonFinaliseReview = new MButton( "Finalise review" );
-	private MButton buttonPublishCv = new MButton( "Publish CV" );
-	private MButton buttonUnpublishCv = new MButton( "Unpublish CV" );
+	private MButton buttonValidateCv= new MButton();
+	private MButton buttonFinaliseReview = new MButton();
+	private MButton buttonPublishCv = new MButton();
+	private MButton buttonUnpublishCv = new MButton();
 	
 	private CvManagerView cvManagerView;
 	private CVScheme cvScheme;
@@ -71,41 +71,29 @@ public class ActionPanel extends CustomComponent{
 		this.eventBus = cvManagerView.getEventBus();
 		this.cvManagerService = cvManagerView.getCvManagerService();
 		this.i18n = cvManagerView.i18n;
-//		this.detailGrid = detailView.getDetailGrid();
-//		this.cvScheme = cvManagerView.getCvScheme();
+		updateMessageStrings(locale);
 		
 		buttonAddCv
-			.withCaption( i18n.get("view.action.newcv", locale))
-//			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
 		buttonChangeAgency
-//			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
 		buttonChangeLanguage
-//			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
-		
 		buttonAddCode
-//			.withStyleName( ValoTheme.BUTTON_LINK )
+			.withFullWidth();
+		buttonAddCodeTranslation
 			.withFullWidth();
 		buttonDeleteCode
-//			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
 		buttonSortCode
-//			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
-		
 		buttonValidateCv
-//			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
 		buttonFinaliseReview
-//			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
 		buttonPublishCv
-//			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
 		buttonUnpublishCv
-//			.withStyleName( ValoTheme.BUTTON_LINK )
 			.withFullWidth();
 		
 		
@@ -238,5 +226,19 @@ public class ActionPanel extends CustomComponent{
 		
 	}
 	
+	public void updateMessageStrings(Locale locale) {
+		panelHeader.setValue(i18n.get("view.action.panel", locale));
+		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));
+		buttonChangeAgency.withCaption( i18n.get("view.action.button.cvscheme.editor", locale));
+		buttonChangeLanguage.withCaption( i18n.get("view.action.button.cvscheme.translation", locale));
+		buttonAddCode.withCaption( i18n.get("view.action.button.cvconcept.new", locale));
+		buttonAddCodeTranslation.withCaption( i18n.get("view.action.button.cvconcept.translation", locale));
+		buttonDeleteCode.withCaption( i18n.get("view.action.button.cvconcept.delete", locale));
+		buttonSortCode.withCaption( i18n.get("view.action.button.cvconcept.order", locale));
+		buttonValidateCv.withCaption( i18n.get("view.action.button.cvconcept.validate", locale));
+		buttonFinaliseReview.withCaption( i18n.get("view.action.button.cvconcept.finalize", locale));
+		buttonPublishCv.withCaption( i18n.get("view.action.button.cvconcept.publish", locale));
+		buttonUnpublishCv.withCaption( i18n.get("view.action.button.cvconcept.unpublish", locale));
+	}
 	
 }

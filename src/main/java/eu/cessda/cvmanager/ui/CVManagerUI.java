@@ -18,6 +18,8 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.annotation.EnableEventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
+import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -64,7 +66,7 @@ import eu.cessda.cvmanager.utils.FileUtils;
 @SpringUI
 @PreserveOnRefresh
 @EnableEventBus
-public class CVManagerUI extends UI {
+public class CVManagerUI extends UI implements Translatable{
 
 	private static final long serialVersionUID = -6435583434844959571L;
 
@@ -72,6 +74,7 @@ public class CVManagerUI extends UI {
 	private final SpringViewProvider viewProvider;
 	private final SecurityService securityService;
 	private final UIEventBus eventBus;
+	private final I18N i18n;
 	
 	private MVerticalLayout root = new MVerticalLayout();
 	private MCssLayout headerBar = new MCssLayout();
@@ -80,9 +83,9 @@ public class CVManagerUI extends UI {
 	private CustomLayout footer = new CustomLayout("footer");
 	
 	private MButton home = new MButton( "Home" , this::gotoHome );
-	private MButton listAllCv = new MButton( "List all CVs" , this::gotoListAllCvs );
+//	private MButton listAllCv = new MButton( "List all CVs" , this::gotoListAllCvs );
 	private MButton searchCVs = new MButton( "Search CVs" , this::gotoSearchCvs );
-	private MButton editorCVs = new MButton( "Editor CVs" , this::gotoEditorCvs);
+//	private MButton editorCVs = new MButton( "Editor CVs" , this::gotoEditorCvs);
 	private MButton logIn = new MButton( "Login", this::doLogin );
 	private MButton logout = new MButton( "Logout", this::doLogout);
 	
@@ -92,11 +95,12 @@ public class CVManagerUI extends UI {
 	private String webLanguage = "de";
 	
 	public CVManagerUI(MessageByLocaleService messageByLocaleService, SpringViewProvider viewProvider,
-			SecurityService securityService,UIEventBus eventBus) {
+			SecurityService securityService,UIEventBus eventBus, I18N i18n) {
 		this.messageByLocaleService = messageByLocaleService;
 		this.viewProvider = viewProvider;
 		this.securityService = securityService;
 		this.eventBus = eventBus;
+		this.i18n = i18n;
 	}
 
 	@Override
@@ -162,6 +166,7 @@ public class CVManagerUI extends UI {
 		}
 		
 		eventBus.subscribe(this);
+		updateMessageStrings(UI.getCurrent().getLocale());
 	}
 
 	private void addHeader() {
@@ -173,9 +178,9 @@ public class CVManagerUI extends UI {
 			.withFullWidth();
 		
 		home.withStyleName( ValoTheme.BUTTON_LINK );
-		listAllCv.withStyleName( ValoTheme.BUTTON_LINK );
+//		listAllCv.withStyleName( ValoTheme.BUTTON_LINK );
 		searchCVs.withStyleName( ValoTheme.BUTTON_LINK );
-		editorCVs.withStyleName( ValoTheme.BUTTON_LINK );
+//		editorCVs.withStyleName( ValoTheme.BUTTON_LINK );
 		logIn.withStyleName( ValoTheme.BUTTON_LINK );
 		logout.withStyleName( ValoTheme.BUTTON_LINK );
 		
@@ -200,9 +205,9 @@ public class CVManagerUI extends UI {
 			.add( 
 				home,
 //				signUp,
-				listAllCv,
+//				listAllCv,
 				searchCVs,
-				editorCVs,
+//				editorCVs,
 				logIn,
 				logout
 			);
@@ -329,6 +334,14 @@ public class CVManagerUI extends UI {
 	public MessageByLocaleService getMessageByLocaleService() {
 
 		return messageByLocaleService;
+	}
+
+	@Override
+	public void updateMessageStrings(Locale locale) {
+		home.withCaption( i18n.get("view.home.menu.home", locale));
+		searchCVs.withCaption( i18n.get("view.home.menu.browse", locale));
+		logIn.withCaption( i18n.get("view.home.menu.login", locale));
+		logout.withCaption( i18n.get("view.home.menu.logout", locale));
 	}
 
 }

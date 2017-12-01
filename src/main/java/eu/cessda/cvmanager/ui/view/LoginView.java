@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.view;
 
+import java.util.Locale;
+
 import org.gesis.security.SecurityService;
 import org.gesis.security.db.DBservices;
 import org.gesis.security.db.User;
@@ -7,13 +9,18 @@ import org.gesis.security.util.LoginSucceedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.label.MLabel;
+import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.vaadin.viritin.navigator.MView;
 
 import com.vaadin.annotations.Title;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.ViewScope;
@@ -25,6 +32,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
@@ -39,7 +47,7 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 @SpringView(name = LoginView.NAME)
 @ViewScope
 @Component(value = LoginView.NAME)
-public class LoginView extends VerticalLayout implements View {
+public class LoginView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -6564339199938804743L;
 
@@ -74,8 +82,13 @@ public class LoginView extends VerticalLayout implements View {
 	@Autowired
 	private ConfigurationService configService;
 	
+	@Autowired
+	private I18N i18n;
+	
 	private MLabel headerTitle = new MLabel();
 	private MLabel subHeaderTitle = new MLabel();
+	protected MVerticalLayout mainContainer = new MVerticalLayout();
+
 
 	public LoginView() {
 	}
@@ -101,28 +114,22 @@ public class LoginView extends VerticalLayout implements View {
 		infoUserDisabled.setVisible(false);
 		
 		headerTitle.withStyleName( "headertitle" );
-		headerTitle.withValue("Log in");
 		
-		subHeaderTitle.withValue("Please log in to manage controlled vocabularies in the CESSDA CV-Manager.");
-		
-		this.addComponents( headerTitle, subHeaderTitle );
-
-		this.addComponents(this.loginFormLayout, infoUserDisabled);
 
 		// user name
 		this.username = new TextField();
-		this.username.setCaption("User name:");
+
 
 		this.username.focus();
 		this.loginFormLayout.addComponent(this.username);
 		// password
 		this.password = new PasswordField();
-		this.password.setCaption("Password:");
+
 
 		this.loginFormLayout.addComponent(this.password);
 
 		// login
-		this.login = new Button("Login");
+		this.login = new Button();
 		this.login.addClickListener(e -> {
 
 			// check for disabled user
@@ -154,7 +161,7 @@ public class LoginView extends VerticalLayout implements View {
 
 		// remember me check box
 		this.rememberMe = new CheckBox();
-		this.rememberMe.setCaption("Remember me");
+
 		this.loginFormLayout.addComponent(this.rememberMe);
 
 		HorizontalLayout infoUserDeleted = new HorizontalLayout();
@@ -169,14 +176,23 @@ public class LoginView extends VerticalLayout implements View {
 		infoUserDeleted.setSizeFull();
 		infoUserDeleted.addComponent(userDeleteLabel);
 		infoUserDeleted.setComponentAlignment(userDeleteLabel, Alignment.MIDDLE_CENTER);
-
-		this.addComponents(this.loginFormLayout/*, infoUserDeleted*/);
-		this.setSizeFull();
+		
 		this.loginFormLayout.setSizeUndefined();
-		// this.setHeight("100%");
-		this.setComponentAlignment(this.loginFormLayout, Alignment.MIDDLE_CENTER);
-		this.setMargin(true);
-		this.setSpacing(true);
+
+
+		mainContainer
+			.withWidth( "1170px" )
+			.withStyleName( "mainlayout" )
+			.withSpacing( true )
+			.withMargin( new MarginInfo( false, false, false, false ) )
+			.add( headerTitle, 
+				subHeaderTitle, 
+				this.loginFormLayout
+			);
+		
+		this
+			.withHeightUndefined()
+			.add( mainContainer );
 
 		// remember me login
 		if (sec.rememberMeLogin()) {
@@ -192,6 +208,28 @@ public class LoginView extends VerticalLayout implements View {
 			this.getUI().getNavigator().navigateTo(LoginView.NAVIGATETO_VIEWNAME);
 
 		}
+		updateMessageStrings(UI.getCurrent().getLocale());
+	}
 
+	@Override
+	public void updateMessageStrings(Locale locale) {
+		headerTitle.withValue(i18n.get("view.login.title", locale));
+		subHeaderTitle.withValue(i18n.get("view.login.content", locale));
+		username.setCaption(i18n.get("view.login.label.username", locale) + ":");
+		password.setCaption(i18n.get("view.login.label.password", locale) + ":");
+		rememberMe.setCaption(i18n.get("view.login.label.remmeberme", locale));
+		login.setCaption(i18n.get("view.login.button.login", locale));
+	}
+
+	@Override
+	public void afterViewChange(ViewChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean beforeViewChange(ViewChangeEvent arg0) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

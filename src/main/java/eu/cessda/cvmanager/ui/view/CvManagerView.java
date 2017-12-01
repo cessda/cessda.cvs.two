@@ -33,11 +33,11 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	}
 	public Locale locale = UI.getCurrent().getLocale();
 	
-	public final I18N i18n;
-	public final EventBus.UIEventBus eventBus;
-	public final ConfigurationService configService;
-	public final CvManagerService cvManagerService;
-	public final SecurityService securityService;
+	protected final I18N i18n;
+	protected final EventBus.UIEventBus eventBus;
+	protected final ConfigurationService configService;
+	protected final CvManagerService cvManagerService;
+	protected final SecurityService securityService;
 	
 	private final ActionType actionType;
 	public CVScheme cvScheme;

@@ -453,11 +453,11 @@ public class DetailView extends CvManagerView {
 		MCssLayout exportLayout = new MCssLayout().withFullWidth();
 
 		detailTab.setStyleName("detail-tab");
-		detailTab.addTab(detailLayout, "Details");
-		detailTab.addTab(identifyLayout, "Identity, versions and general");
-		detailTab.addTab(ddiLayout, "DDI usage");
-		detailTab.addTab(licenseLayout, "License and copyright");
-		detailTab.addTab(exportLayout, "Export/download");
+		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale));
+		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale));
+		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale));
+		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale));
+		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale));
 				
 		updateDetailGrid();
 
@@ -490,7 +490,7 @@ public class DetailView extends CvManagerView {
 
 
 		detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en"))
-				.setCaption("Descriptive term")
+				.setCaption(i18n.get("view.detail.cvconcept.column.sl.title", locale))
 				.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
 				.setExpandRatio(1);
 
@@ -500,7 +500,7 @@ public class DetailView extends CvManagerView {
 
 		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
 			detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang))
-				.setCaption("Descriptive term (" + selectedLang + ")")
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang ))
 				.setEditorBinding(prefLabelBinding).setExpandRatio(1);// Component(prefLanguageEditor,
 		// (concept, value) ->
 		// updateConcept(concept,
@@ -509,7 +509,7 @@ public class DetailView extends CvManagerView {
 		detailGrid.addColumn(concept -> {
 					return new Label( concept.getDescriptionByLanguage( "en" ));
 				}, new ComponentRenderer())
-				.setCaption("Definition")
+				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
 				//.setEditorComponent(definitionEditor, (concept, value) -> concept.setDescriptionByLanguage( selectedLang, value))
 				.setExpandRatio(3);
 		
@@ -517,7 +517,7 @@ public class DetailView extends CvManagerView {
 			detailGrid.addColumn(concept -> {
 				return new Label( concept.getDescriptionByLanguage(selectedLang));
 			}, new ComponentRenderer())
-			.setCaption("Definition (" + selectedLang + ")")
+			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang ))
 			//.setEditorComponent(definitionEditor, (concept, value) -> concept.setDescriptionByLanguage( selectedLang, value))
 			.setExpandRatio(3);
 
