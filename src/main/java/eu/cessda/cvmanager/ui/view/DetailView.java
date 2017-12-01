@@ -259,14 +259,13 @@ public class DetailView extends CvManagerView {
 			cvconsMap.put(concept.getId(), concept);
 			concepts.add(concept);
 		});
-		cvScheme.getOrderedMemberList().forEach( item -> {
-			System.out.println( item );
-			CVConcept concept = cvconsMap.get(item);
-			if( concept != null ) {
-				topConcepts.add( concept );
-			}
-		});
-		System.out.print( topConcepts );
+		topConcepts = concepts;
+//		cvScheme.getOrderedMemberList().forEach( item -> {
+//			CVConcept concept = cvconsMap.get(item);
+//			if( concept != null ) {
+//				topConcepts.add( concept );
+//			}
+//		});
 	}
 	
 	private void doSaveConcept() {
