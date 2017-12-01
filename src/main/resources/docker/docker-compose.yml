@@ -9,7 +9,7 @@ services:
     image: @docker.registry.uri@/cessda/@project.artifactId@:@project.version@
     container_name: cvmanager-app
     ports:
-     - 2002:@server.port@
+     - 8080:@server.port@
     networks:
      - cessda-cvmanager
 

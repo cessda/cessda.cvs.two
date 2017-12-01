@@ -6,6 +6,8 @@ import java.util.List;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -24,6 +26,9 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
 public class CvSchemeComponent extends CustomComponent {
+
+	final static Logger log = LoggerFactory.getLogger(CvSchemeComponent.class);
+
 	private CVScheme cvScheme;
 	private List<CVConcept> cvConcepts;
 
@@ -41,7 +46,8 @@ public class CvSchemeComponent extends CustomComponent {
 
 	private MLabel conceptList = new MLabel();
 	private Image logo;
-	private ConfigurationService configService;
+
+	private transient ConfigurationService configService;
 
 	public CvSchemeComponent(CVScheme cvScheme, ConfigurationService configService) {
 		this.cvScheme = cvScheme;
@@ -53,29 +59,26 @@ public class CvSchemeComponent extends CustomComponent {
 
 	private void initLayout() {
 		enTitle.withStyleName("marginright20").withContentMode(ContentMode.HTML);
-		// .addContextClickListener( e->
-		// UI.getCurrent().getNavigator().navigateTo(DetailView.VIEW_NAME) );
+
 		olTitle.withContentMode(ContentMode.HTML);
-		// .addContextClickListener( e->
-		// UI.getCurrent().getNavigator().navigateTo(DetailView.VIEW_NAME) );
+
 		desc.withContentMode(ContentMode.HTML).withFullWidth();
 		version.withContentMode(ContentMode.HTML);
 		conceptList.withContentMode(ContentMode.HTML);
 
 		languageLayout.withFullWidth();
-		String sourceLanguage = configService.getDefaultSourceLanguage();//cvScheme.getSourceLanguage();
-		
+		String sourceLanguage = configService.getDefaultSourceLanguage();
+
 		cvScheme.getLanguagesByTitle().forEach(item -> {
 			MButton langButton = new MButton(item.toUpperCase());
-			langButton.withStyleName("langbutton")
-					.addClickListener(e -> {
-						applyButtonStyle(e.getButton());
-						setContent(e.getButton().getCaption().toLowerCase());
-					});
+			langButton.withStyleName("langbutton").addClickListener(e -> {
+				applyButtonStyle(e.getButton());
+				setContent(e.getButton().getCaption().toLowerCase());
+			});
 			languageLayout.add(langButton);
-			if( item.equals(sourceLanguage)) {
+			if (item.equals(sourceLanguage)) {
 				langButton.addStyleName("font-bold");
-				langButton.setDescription( "source language" );
+				langButton.setDescription("source language");
 				langButton.click();
 			}
 		});
@@ -128,6 +131,8 @@ public class CvSchemeComponent extends CustomComponent {
 	private void setContent(String language) {
 		enTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
 				+ cvScheme.getContainerId() + "'>" + cvScheme.getTitleByLanguage("en") + "</a>");
+		log.info("URL is: " + enTitle.getValue());
+
 		olTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
 				+ cvScheme.getContainerId() + "'>" + cvScheme.getTitleByLanguage(language) + "</a>");
 		desc.setValue(cvScheme.getDescriptionByLanguage(language));
@@ -136,25 +141,27 @@ public class CvSchemeComponent extends CustomComponent {
 
 		List<CVConcept> theConceptList = cvScheme.getConceptList();
 
-		if (theConceptList.size() > 0) {
-			String sConcepts = "Found in code(s): ";
+		if (!theConceptList.isEmpty()) {
+			StringBuilder sConcepts = new StringBuilder();
+			sConcepts.append("Found in code(s): ");
+
 			for (CVConcept concept : theConceptList) {
-				sConcepts += concept.getPrefLabelByLanguage(language);
+				sConcepts.append(concept.getPrefLabelByLanguage(language));
 			}
-			conceptList.setValue(sConcepts);
+			conceptList.setValue(sConcepts.toString());
 		}
 	}
-	
+
 	private void applyButtonStyle(Button pressedButton) {
 
 		Iterator<Component> iterate = languageLayout.iterator();
 		while (iterate.hasNext()) {
-			Component c = (Component) iterate.next();
-			if( c instanceof  Button) {
-				((Button) c).removeStyleName( "button-pressed" );
+			Component c = iterate.next();
+			if (c instanceof Button) {
+				((Button) c).removeStyleName("button-pressed");
 			}
 		}
-		pressedButton.addStyleName( "button-pressed" );
+		pressedButton.addStyleName("button-pressed");
 	}
 
 }

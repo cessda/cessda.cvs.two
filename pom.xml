@@ -407,11 +407,12 @@
         </profile>
         <profile>
             <id>docker-compose</id>
+            
             <properties>
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <server.contextPath>/</server.contextPath>
+                <server.contextPath>/cvmanager</server.contextPath>
 				<server.port>8080</server.port>
 				<ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
                 <spring.datasource.url>jdbc:mysql://104.155.73.84:3306/cvmanager-security?useSSL=false</spring.datasource.url>
