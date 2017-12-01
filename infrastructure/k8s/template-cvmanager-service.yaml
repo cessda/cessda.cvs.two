@@ -1,0 +1,14 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: cvmanager-alpha
+  namespace: cvmanager-alpha
+spec:
+  type: LoadBalancer
+  ports:
+  - name: frontend-webui
+    port: 80
+    targetPort: frontend-cport
+    protocol: TCP
+  selector:
+    app: cvmanager-alpha

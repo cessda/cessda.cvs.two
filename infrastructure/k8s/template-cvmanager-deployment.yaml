@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cvmanager-alpha
+  labels:
+    app: cvmanager-alpha
+  namespace: cvmanager-alpha
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: cvmanager-alpha
+    spec:
+      containers:
+      - name: cvmanager-alpha
+        image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
+        ports:
+        - containerPort: 8080
+          name: frontend-cport
