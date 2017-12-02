@@ -3,6 +3,7 @@
  */
 package eu.cessda.cvmanager.ui;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 import org.gesis.security.SecurityService;
@@ -17,6 +18,7 @@ import org.vaadin.spring.events.annotation.EnableEventBus;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
+import org.vaadin.spring.i18n.support.TranslatableUI;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -36,7 +38,9 @@ import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomLayout;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.UI;<<<<<<<HEAD=======
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.ComboBox;>>>>>>>e705784ca9939f587f8d6f3cfd5ef88bfb4643fd
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.MessageByLocaleService;
@@ -56,7 +60,8 @@ import eu.cessda.cvmanager.utils.FileUtils;
 @SpringUI
 @PreserveOnRefresh
 @EnableEventBus
-public class CVManagerUI extends UI implements Translatable {
+
+public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private static final long serialVersionUID = -6435583434844959571L;
 
@@ -83,6 +88,8 @@ public class CVManagerUI extends UI implements Translatable {
 
 	private String webLanguage = "de";
 
+	private ComboBox countryBox = new ComboBox();
+
 	public CVManagerUI(MessageByLocaleService messageByLocaleService, SpringViewProvider viewProvider,
 			SecurityService securityService, UIEventBus eventBus, I18N i18n) {
 		this.messageByLocaleService = messageByLocaleService;
@@ -93,12 +100,21 @@ public class CVManagerUI extends UI implements Translatable {
 	}
 
 	@Override
-	protected void init(VaadinRequest request) {
+	protected void initUI(VaadinRequest request) {
 
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
+<<<<<<< HEAD
 
 		setLocale(Locale.ENGLISH);
+=======
+	
+//		menu = new Menu(navigator, securityService);
+//		menu.addView(new SearchView(), SearchView.VIEW_NAME, "CV Search", VaadinIcons.EDIT);
+//		menu.addView(new EditorView(), EditorView.VIEW_NAME, "CV Editor", VaadinIcons.EDIT);
+//
+//		menu.addView(new AboutView(), AboutView.VIEW_NAME, AboutView.VIEW_NAME, VaadinIcons.INFO_CIRCLE);
+>>>>>>> e705784ca9939f587f8d6f3cfd5ef88bfb4643fd
 
 		addHeader();
 
@@ -138,10 +154,21 @@ public class CVManagerUI extends UI implements Translatable {
 		}
 
 		eventBus.subscribe(this);
-		updateMessageStrings(UI.getCurrent().getLocale());
+		//updateMessageStrings(UI.getCurrent().getLocale());
 	}
 
 	private void addHeader() {
+		
+      countryBox.setTextInputAllowed( false );
+      countryBox.setItems(Arrays.asList("en","de","fi"));
+      countryBox.setEmptySelectionAllowed(false);
+      countryBox.setWidth("80px");
+      countryBox.setValue("en");
+      countryBox.addValueChangeListener( e -> {
+      	setLocale(new Locale( e.getValue().toString().toLowerCase()));
+	});
+		
+		
 		headerToplinks.setSizeFull();
 		MLabel logo = new MLabel();
 		logo.withContent(FileUtils.getSiteLogo()).withContentMode(ContentMode.HTML).withFullWidth();
@@ -158,11 +185,21 @@ public class CVManagerUI extends UI implements Translatable {
 				new MLabel("CV Manager").withFullWidth().withContentMode(ContentMode.HTML).withStyleName("sublogo"));
 
 		MHorizontalLayout menuLayout = new MHorizontalLayout();
+<<<<<<< HEAD
 		menuLayout.withFullWidth().withStyleName("menuLayout").withMargin(new MarginInfo(true, true, true, false)).add(
+=======
+		menuLayout
+			.withFullWidth()
+			.withStyleName( "menuLayout" )
+			.withMargin( new MarginInfo( true , true, true, false))
+			.add( 
+				countryBox,
+>>>>>>> e705784ca9939f587f8d6f3cfd5ef88bfb4643fd
 				home,
 				// signUp,
 				// listAllCv,
 				searchCVs,
+<<<<<<< HEAD
 				// editorCVs,
 				logIn, logout);
 
@@ -173,6 +210,34 @@ public class CVManagerUI extends UI implements Translatable {
 						.add(new MHorizontalLayout().withStyleName("container").add(logoLayout, menuLayout)
 								.withExpand(logoLayout, 0.4f).withExpand(menuLayout, 0.6f))
 
+=======
+//				editorCVs,
+				logIn,
+				logout
+			);
+		
+		headerBar
+		.withResponsive(true)
+		.withStyleName("headerbar")
+		.add(
+			
+			headerToplinks,
+			new MHorizontalLayout()
+				.withStyleName("mid_search")
+				.withFullWidth()
+				.withMargin(false)
+				.add(
+					new MHorizontalLayout()
+					.withStyleName("container")
+					.add(
+						logoLayout,
+						menuLayout
+					 )
+					.withExpand(logoLayout, 0.4f)
+					.withExpand(menuLayout, 0.6f)
+				 )
+			
+>>>>>>> e705784ca9939f587f8d6f3cfd5ef88bfb4643fd
 		);
 	}
 
@@ -210,24 +275,21 @@ public class CVManagerUI extends UI implements Translatable {
 
 	// notify the view menu about view changes so that it can display which view
 	// is currently active
-	ViewChangeListener viewChangeListener = new ViewChangeListener() {
+	ViewChangeListener viewChangeListener=new ViewChangeListener(){
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID=1L;
 
-		@Override
-		public boolean beforeViewChange(ViewChangeEvent event) {
+	@Override public boolean beforeViewChange(ViewChangeEvent event){
 
-			return true;
-		}
+	return true;}
 
-		@Override
-		public void afterViewChange(ViewChangeEvent event) {
+	@Override public void afterViewChange(ViewChangeEvent event){
 
-			// menu.setActiveView(event.getViewName());
-		}
+	// menu.setActiveView(event.getViewName());
+	}
 
 	};
 
