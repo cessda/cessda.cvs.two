@@ -31,7 +31,6 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	public static enum ActionType{
 		SEARCH, BROWSE, DETAIL // this should be similar to view names
 	}
-	public Locale locale = UI.getCurrent().getLocale();
 	
 	protected final I18N i18n;
 	protected final EventBus.UIEventBus eventBus;

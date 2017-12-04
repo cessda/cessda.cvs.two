@@ -80,6 +80,7 @@ public class DetailView extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "Detail";
+	private Locale locale = UI.getCurrent().getLocale();
 
 	private String selectedLang = "en";
 	private FormMode formMode;
@@ -180,6 +181,7 @@ public class DetailView extends CvManagerView {
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
+		locale = UI.getCurrent().getLocale();
 		setOldView(event.getOldView());
 
 		if (event.getParameters() != null) {
@@ -206,7 +208,7 @@ public class DetailView extends CvManagerView {
 		initTopEditSection();
 		initBottomViewSection();
 		//initBottomEditSection();
-		updateMessageStrings(locale);
+		updateMessageStrings(UI.getCurrent().getLocale());
 		
 		// TODO: Workaround so that the translation label viible ~ not efficient need correct solution
 		initTopViewSection();
