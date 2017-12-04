@@ -543,8 +543,6 @@ public class DetailView extends CvManagerView {
 			}
 		});
 		
-		addDragSourceExtension(detailGrid, concepts);
-		addDropTargetExtension(detailGrid, DropMode.BETWEEN, concepts);
 	}
 
 	private void initBottomEditSection() {
@@ -566,81 +564,6 @@ public class DetailView extends CvManagerView {
 		bottomEditSection.add(detailTab);
 	}
 	
-    private GridDragSource<CVConcept> addDragSourceExtension(Grid<CVConcept> source,
-            List<CVConcept> items) {
-        // Create and attach extension
-        GridDragSource<CVConcept> dragSource = new GridDragSource<>(source);
-        dragSource.setEffectAllowed(EffectAllowed.MOVE);
- 
-		// Add drag start listener
-        dragSource.addGridDragStartListener(event -> {
-            // Keep reference to the dragged items,
-            // note that there can be only one drag at a time
-            draggedItems = event.getDraggedItems();
-            draggedGrid = source;
-        });
- 
-        // Add drag end listener
-        dragSource.addGridDragEndListener(event -> {
-            // verify that drop effect was the desired -> drop happened
-            if (event.getDropEffect() == DropEffect.MOVE) {
-                // inside grid reordering is handled on drop event listener,
-                // which is always fired before drag end
-                if (draggedGrid == null) {
-                    return;
-                }
-                // remove items from this grid
-                items.removeAll(draggedItems);
-                source.getDataProvider().refreshAll();
- 
-                // Remove reference to dragged items
-                draggedItems = null;
-                draggedGrid = null;
-            }
-        });
- 
-        return dragSource;
-    }
- 
-    private GridDropTarget<CVConcept> addDropTargetExtension(Grid<CVConcept> target,
-            DropMode dropMode, List<CVConcept> items) {
-        // Create and attach extension
-        GridDropTarget<CVConcept> dropTarget = new GridDropTarget<>(target,
-                dropMode);
-        dropTarget.setDropEffect(DropEffect.MOVE);
- 
-        // Add listener
-        dropTarget.addGridDropListener(event -> {
-            // Calculate the target row's index
-            int index = items.size();
-            if (event.getDropTargetRow().isPresent()) {
-                index = items.indexOf(event.getDropTargetRow().get())
-                        + (event.getDropLocation() == DropLocation.BELOW ? 1
-                                : 0);
-            }
-            if (draggedGrid == target) {
-                // The index needs to be offset by the number of dragged items
-                // above the drop location
-                final int finalIndex = index;
-                int offset = (int) draggedItems.stream()
-                        .filter(d -> items.indexOf(d) < finalIndex).count();
- 
-                // Reordering rows in this grid, first remove and then add
-                items.removeAll(draggedItems);
-                items.addAll(index - offset, draggedItems);
-                draggedItems = null;
-                draggedGrid = null;
-            } else {
-                // Add dragged items to this Grid
-            	if( draggedItems != null)
-            		items.addAll(index, draggedItems);
-            }
-            target.getDataProvider().refreshAll();
-        });
- 
-        return dropTarget;
-    }
-
 	public FormMode getFormMode() {
 		return formMode;
 	}
