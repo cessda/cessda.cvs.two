@@ -1746,7 +1746,8 @@ $v-selection-item-border-radius: 0;
 	   		}
 	   	}
    	}
-   .undefined-height>.v-grid-tablewrapper>table{
+   .v-treegrid-tablewrapper>table{
+   		color:#f00;
    		tr{
    			transform: none !important;
    			float:left;

@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.view.window;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVScheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -47,7 +48,7 @@ public class DialogAddCodeWindow extends MWindow {
 	private CVConcept theCode;
 
 
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVConcept code, String orignalLanguage, String language) {
+	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, CVConcept code, String orignalLanguage, String language) {
 		super( "Add Code (Source Language)");
 		
 		this.eventBus = eventBus;
@@ -81,7 +82,10 @@ public class DialogAddCodeWindow extends MWindow {
 			// CVConcept cv = binder.getBean();
 			log.trace(getTheCode().getPrefLabelByLanguage(getOrginalLanguage()));
 			getTheCode().save();
-			DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
+			DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, "User", "Add Code");
+			cvScheme.addOrderedMemberList(ddiStore.getElementId());
+			cvScheme.save();
+			DDIStore ddiStoreCv = cvManagerService.saveElement(cvScheme.ddiStore, "User", "Update Top Concept");
 			
 			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 			this.close();

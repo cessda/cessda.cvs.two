@@ -1,19 +1,15 @@
 package eu.cessda.cvmanager.ui.view;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.poi.ss.formula.functions.Vlookup;
 import org.gesis.security.SecurityService;
 import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -33,16 +29,14 @@ import org.vaadin.viritin.layouts.MCssLayout;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.Binder.Binding;
+import com.vaadin.data.TreeData;
+import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.dnd.DropEffect;
-import com.vaadin.shared.ui.dnd.EffectAllowed;
-import com.vaadin.shared.ui.grid.DropLocation;
-import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
@@ -56,12 +50,10 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.TreeGrid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.components.grid.GridDragSource;
-import com.vaadin.ui.components.grid.GridDropTarget;
-import com.vaadin.ui.components.grid.ItemClickListener;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -73,6 +65,7 @@ import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
+import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @UIScope
 @SpringView(name = DetailView.VIEW_NAME)
@@ -98,10 +91,15 @@ public class DetailView extends CvManagerView {
 	private MCssLayout bottomSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomViewSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomEditSection = new MCssLayout().withFullWidth();
+	
+	private VerticalLayout detailLayout = new VerticalLayout();
+	private MCssLayout identifyLayout = new MCssLayout().withFullWidth();
+	private MCssLayout ddiLayout = new MCssLayout().withFullWidth();
+	private MCssLayout licenseLayout = new MCssLayout().withFullWidth();
+	private MCssLayout exportLayout = new MCssLayout().withFullWidth();
 
 	private TextField prefLanguageEditor = new TextField();
 	private TextField prefLabelEditor = new TextField();
-	private TextField definitionEditor = new TextField();
 	
 	private TabSheet detailTab = new TabSheet();
 	
@@ -118,15 +116,13 @@ public class DetailView extends CvManagerView {
 
 	private View oldView;
 	
-	private Grid<CVConcept> detailGrid = new Grid<>(CVConcept.class);
+	private TreeGrid<CVConcept> detailTreeGrid = new TreeGrid<>(CVConcept.class);
 
 	private Binder<CVConcept> binder;
-	private List<CVConcept> concepts = new ArrayList<CVConcept>();
-	private List<CVConcept> topConcepts = new ArrayList<CVConcept>();
+//	private List<CVConcept> concepts = new ArrayList<CVConcept>();
+//	private List<CVConcept> topConcepts = new ArrayList<CVConcept>();
+	private TreeData<CVConcept> cvCodeTreeData;
 	private MCssLayout languageLayout = new MCssLayout();
-		
-	private Set<CVConcept> draggedItems;
-	private Grid<CVConcept> draggedGrid;
 
 	public DetailView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			CvManagerService cvManagerService, SecurityService securityService) {
@@ -144,8 +140,6 @@ public class DetailView extends CvManagerView {
 		cancelButton.addClickListener(e -> setFormMode(FormMode.view));
 		saveButton.addClickListener( this::doSaveConcept );
 		
-		detailGrid.addStyleNames("undefined-height");
-
 		buttonLayout
 			.withFullWidth()
 			.withStyleName("alignTextRight")
@@ -167,7 +161,8 @@ public class DetailView extends CvManagerView {
 				buttonLayout, 
 				topSection, 
 				languageLayout, 
-				bottomSection 
+				bottomSection,
+				new Button("Test", e -> updateDetailGrid())
 			);
 
 	}
@@ -202,7 +197,7 @@ public class DetailView extends CvManagerView {
 		setFormMode(FormMode.view);
 		
 		refreshCvScheme(itemId);
-		refreshCvConcepts();
+//		refreshCvConcepts();
 
 		initTopViewSection();
 		initTopEditSection();
@@ -250,25 +245,9 @@ public class DetailView extends CvManagerView {
 		});
 	}
 	
-	private void refreshCvConcepts() {
-		concepts.clear();
-		Map<String, CVConcept> cvconsMap = new HashMap<>();
-		
-		List<DDIStore> ddiConcepts = cvManagerService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
-		//ddiConcepts.forEach(ddiConcept -> concepts.add(new CVConcept(ddiConcept)));
-		ddiConcepts.forEach(ddiConcept -> {
-			CVConcept concept = new CVConcept(ddiConcept);
-			cvconsMap.put(concept.getId(), concept);
-			concepts.add(concept);
-		});
-		topConcepts = concepts;
-//		cvScheme.getOrderedMemberList().forEach( item -> {
-//			CVConcept concept = cvconsMap.get(item);
-//			if( concept != null ) {
-//				topConcepts.add( concept );
-//			}
-//		});
-	}
+//	private void refreshCvConcepts() {
+//		CvCodeTree cvCodeTree = new CvCodeTree(cvManagerService, cvScheme);
+//	}
 	
 	private void doSaveConcept() {
 		cvScheme.save();
@@ -457,13 +436,7 @@ public class DetailView extends CvManagerView {
 
 	private void initBottomViewSection() {
 		bottomViewSection.removeAllComponents();
-
-		
-		VerticalLayout detailLayout = new VerticalLayout();
-		MCssLayout identifyLayout = new MCssLayout().withFullWidth();
-		MCssLayout ddiLayout = new MCssLayout().withFullWidth();
-		MCssLayout licenseLayout = new MCssLayout().withFullWidth();
-		MCssLayout exportLayout = new MCssLayout().withFullWidth();
+		detailLayout.removeAllComponents();
 
 		detailTab = new TabSheet();
 		detailTab.setStyleName("detail-tab");
@@ -472,14 +445,56 @@ public class DetailView extends CvManagerView {
 		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale));
 		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale));
 		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale));
-				
+		
+		detailTreeGrid = new TreeGrid<>(CVConcept.class);
+		detailTreeGrid.addStyleNames("undefined-height");
+		detailTreeGrid.removeAllColumns();
 		updateDetailGrid();
+		
+		binder = detailTreeGrid.getEditor().getBinder();
+		detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en"))
+			.setCaption(i18n.get("view.detail.cvconcept.column.sl.title", locale))
+			.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
+			.setExpandRatio(1);
 
-		detailLayout.addComponents(detailGrid);
+		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
+				concept -> concept.getPrefLabelByLanguage(selectedLang),
+				(concept, label) -> concept.setPrefLabelByLanguage(selectedLang, label));
+		
+		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
+			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang))
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang ))
+				.setEditorBinding(prefLabelBinding).setExpandRatio(1);// Component(prefLanguageEditor,
+		
+		detailTreeGrid.addColumn(concept -> {
+					return new Label( concept.getDescriptionByLanguage( "en" ));
+				}, new ComponentRenderer())
+				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
+				.setExpandRatio(3);
+		
+		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
+			detailTreeGrid.addColumn(concept -> {
+				return new Label( concept.getDescriptionByLanguage(selectedLang));
+			}, new ComponentRenderer())
+			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang ))
+			.setExpandRatio(3);
+		
+		detailTreeGrid.setSizeFull();
+		detailTreeGrid.addItemClickListener( event -> {
+			if( SecurityContextHolder.getContext().getAuthentication() != null && event.getMouseEventDetails().isDoubleClick() ) {
+				CVConcept selectedRow = event.getItem();
+				Window window = new DialogEditCodeWindow(eventBus, cvManagerService, cvScheme, selectedRow, selectedLang);
+				getUI().addWindow(window);
+			}
+		});
+				
+		
+
+		detailLayout.addComponents(detailTreeGrid);
 		detailLayout.setMargin(false);
 		detailLayout.setSpacing(false);
 		detailLayout.setSizeFull();
-		detailLayout.setExpandRatio(detailGrid, 1);
+		detailLayout.setExpandRatio(detailTreeGrid, 1);
 
 		bottomViewSection.add(detailTab);
 	}
@@ -487,83 +502,19 @@ public class DetailView extends CvManagerView {
 
 	public void updateDetailGrid() {
 
-		for(Object listener : detailGrid.getListeners( ItemClick.class)) {
-			detailGrid.removeListener(ItemClick.class, listener);
-		}
-		detailGrid.removeAllColumns();
-		// detailGrid.addColumn(CVConcept::getId).setCaption("URI").setExpandRatio(1);
+//		for(Object listener : detailTreeGrid.getListeners( ItemClick.class)) {
+//			detailTreeGrid.removeListener(ItemClick.class, listener);
+//		}
 		
-		binder = detailGrid.getEditor().getBinder();
-		//binder.addValueChangeListener(event -> Notification.show("Binder Event"));
-		detailGrid.setItems(topConcepts);
-		// detailGrid.setItems( cvItem.getCvElements() );
-		// detailGrid.addStyleName(ValoTheme.TABLE_BORDERLESS);
-
-		// SourceAsString column
-		// results.addColumn(SearchHit::getSourceAsString).setCaption("Study").setId("study");
-
-
-		detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en"))
-				.setCaption(i18n.get("view.detail.cvconcept.column.sl.title", locale))
-				.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
-				.setExpandRatio(1);
-
-		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
-				concept -> concept.getPrefLabelByLanguage(selectedLang),
-				(concept, label) -> concept.setPrefLabelByLanguage(selectedLang, label));
-
-		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
-			detailGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang))
-				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang ))
-				.setEditorBinding(prefLabelBinding).setExpandRatio(1);// Component(prefLanguageEditor,
-		// (concept, value) ->
-		// updateConcept(concept,
-		// value, "en"));
-
-		detailGrid.addColumn(concept -> {
-					return new Label( concept.getDescriptionByLanguage( "en" ));
-				}, new ComponentRenderer())
-				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
-				//.setEditorComponent(definitionEditor, (concept, value) -> concept.setDescriptionByLanguage( selectedLang, value))
-				.setExpandRatio(3);
+		TreeDataProvider<CVConcept> dataProvider = (TreeDataProvider<CVConcept>) detailTreeGrid.getDataProvider();
+		cvCodeTreeData = dataProvider.getTreeData();
+		cvCodeTreeData.clear();
+		// assign the tree structure
+		CvCodeTreeUtils.buildCvConceptTree(cvManagerService, cvScheme, cvCodeTreeData);
+		dataProvider.refreshAll();
 		
-		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
-			detailGrid.addColumn(concept -> {
-				return new Label( concept.getDescriptionByLanguage(selectedLang));
-			}, new ComponentRenderer())
-			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang ))
-			//.setEditorComponent(definitionEditor, (concept, value) -> concept.setDescriptionByLanguage( selectedLang, value))
-			.setExpandRatio(3);
-
-		detailGrid.setSizeFull();
-		//detailGrid.getEditor().setEnabled(true);
-		detailGrid.addItemClickListener( event -> {
-			if( SecurityContextHolder.getContext().getAuthentication() != null && event.getMouseEventDetails().isDoubleClick() ) {
-				CVConcept selectedRow = event.getItem();
-				Window window = new DialogEditCodeWindow(eventBus, cvManagerService, cvScheme, selectedRow, selectedLang);
-				getUI().addWindow(window);
-			}
-		});
 		
-	}
-
-	private void initBottomEditSection() {
-		bottomEditSection.removeAllComponents();
-
-		TabSheet detailTab = new TabSheet();
-		MCssLayout detailLayout = new MCssLayout().withFullWidth();
-		MCssLayout identifyLayout = new MCssLayout().withFullWidth();
-		MCssLayout ddiLayout = new MCssLayout().withFullWidth();
-		MCssLayout licenseLayout = new MCssLayout().withFullWidth();
-		MCssLayout exportLayout = new MCssLayout().withFullWidth();
-
-		detailTab.addTab(detailLayout, "Details");
-		detailTab.addTab(identifyLayout, "Identity, versions and general");
-		detailTab.addTab(ddiLayout, "DDI usage");
-		detailTab.addTab(licenseLayout, "License and copyright");
-		detailTab.addTab(exportLayout, "Export/download");
-
-		bottomEditSection.add(detailTab);
+		
 	}
 	
 	public FormMode getFormMode() {
@@ -635,11 +586,7 @@ public class DetailView extends CvManagerView {
 	}
 
 	public Grid<CVConcept> getDetailGrid() {
-		return detailGrid;
-	}
-
-	public List<CVConcept> getConcepts() {
-		return concepts;
+		return detailTreeGrid;
 	}
 
 	public CVScheme getCvScheme() {
@@ -652,7 +599,6 @@ public class DetailView extends CvManagerView {
 	{
 		switch(event.getType()) {
 			case CVCONCEPT_CREATED:
-				refreshCvConcepts();
 				updateDetailGrid();
 				
 				break;
@@ -662,48 +608,48 @@ public class DetailView extends CvManagerView {
 				newCVConcept.createId();
 				newCVConcept.setContainerId( cvScheme.getContainerId());
 
-				Window window = new DialogAddCodeWindow(eventBus, cvManagerService, newCVConcept, "en", "en");
+				Window window = new DialogAddCodeWindow(eventBus, cvManagerService, cvScheme, newCVConcept, "en", "en");
 				getUI().addWindow(window);
 				
 				break;
 			case CVCONCEPT_TRANSLATION_DIALOG:
-				if( concepts.isEmpty()) {
-					Notification.show("Please add code first");
-				} else if( cvScheme.getLanguagesByTitle().size() == 1) {
-					Notification.show("Please add CV translation first");
-				}
-				else {
-					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, cvManagerService, cvScheme, concepts , selectedLang);
-					getUI().addWindow( windowTranslate );
-				}
+//				if( concepts.isEmpty()) {
+//					Notification.show("Please add code first");
+//				} else if( cvScheme.getLanguagesByTitle().size() == 1) {
+//					Notification.show("Please add CV translation first");
+//				}
+//				else {
+//					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, cvManagerService, cvScheme, concepts , selectedLang);
+//					getUI().addWindow( windowTranslate );
+//				}
 				break;
 			case CVCONCEPT_EDIT_MODE:
-				if( detailGrid.getColumn("cvConceptRemove") == null ) {		
-					detailGrid
-							.addColumn( cvconcept -> "x",
-								new ButtonRenderer(clickEvent -> {
-									CVConcept targetConcept = (CVConcept) clickEvent.getItem();
-									ConfirmDialog.show( this.getUI(), "Confirm",
-											"Are you sure you want to delete the concept \"" + targetConcept.getPrefLabelByLanguage( configService.getDefaultSourceLanguage() ) + "\"?", "yes",
-											"cancel",
-									
-											dialog -> {
-												if( dialog.isConfirmed() ) {
-													cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
-													concepts.remove( targetConcept );
-													detailGrid.setItems( concepts );
-												}
-											}
-
-									);
-									
-
-						    })).setId("cvConceptRemove");
+				if( detailTreeGrid.getColumn("cvConceptRemove") == null ) {		
+//					detailTreeGrid
+//							.addColumn( cvconcept -> "x",
+//								new ButtonRenderer(clickEvent -> {
+//									CVConcept targetConcept = (CVConcept) clickEvent.getItem();
+//									ConfirmDialog.show( this.getUI(), "Confirm",
+//											"Are you sure you want to delete the concept \"" + targetConcept.getPrefLabelByLanguage( configService.getDefaultSourceLanguage() ) + "\"?", "yes",
+//											"cancel",
+//									
+//											dialog -> {
+//												if( dialog.isConfirmed() ) {
+//													cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
+//													concepts.remove( targetConcept );
+//													detailTreeGrid.setItems( concepts );
+//												}
+//											}
+//
+//									);
+//									
+//
+//						    })).setId("cvConceptRemove");
 				} else {
-					if( !detailGrid.getColumn("cvConceptRemove").isHidden()) {
-						detailGrid.getColumn("cvConceptRemove").setHidden( true );
+					if( !detailTreeGrid.getColumn("cvConceptRemove").isHidden()) {
+						detailTreeGrid.getColumn("cvConceptRemove").setHidden( true );
 					} else {
-						detailGrid.getColumn("cvConceptRemove").setHidden( false );
+						detailTreeGrid.getColumn("cvConceptRemove").setHidden( false );
 					}
 				}
 				break;
