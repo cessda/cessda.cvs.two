@@ -98,6 +98,7 @@ public class DetailView extends CvManagerView {
 	private MCssLayout licenseLayout = new MCssLayout().withFullWidth();
 	private MCssLayout exportLayout = new MCssLayout().withFullWidth();
 
+	private TextField codeEditor = new TextField();
 	private TextField prefLanguageEditor = new TextField();
 	private TextField prefLabelEditor = new TextField();
 	
@@ -118,7 +119,6 @@ public class DetailView extends CvManagerView {
 	
 	private TreeGrid<CVConcept> detailTreeGrid = new TreeGrid<>(CVConcept.class);
 
-	private Binder<CVConcept> binder;
 //	private List<CVConcept> concepts = new ArrayList<CVConcept>();
 //	private List<CVConcept> topConcepts = new ArrayList<CVConcept>();
 	private TreeData<CVConcept> cvCodeTreeData;
@@ -450,21 +450,35 @@ public class DetailView extends CvManagerView {
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
 		updateDetailGrid();
+				
 		
-		binder = detailTreeGrid.getEditor().getBinder();
+		
+		detailTreeGrid.addColumn(concept -> concept.getNotation())
+			.setCaption("Code")
+			.setEditorComponent(codeEditor, (concept, value) -> concept.setNotation(value))
+			.setExpandRatio(1);
+
+//		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
+//			concept -> concept.getPrefLabelByLanguage(selectedLang),
+//			(concept, label) -> concept.setPrefLabelByLanguage(selectedLang, label));
+//	
+		
+	
 		detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en"))
 			.setCaption(i18n.get("view.detail.cvconcept.column.sl.title", locale))
 			.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
 			.setExpandRatio(1);
 
-		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
-				concept -> concept.getPrefLabelByLanguage(selectedLang),
-				(concept, label) -> concept.setPrefLabelByLanguage(selectedLang, label));
-		
+//		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
+//				concept -> concept.getPrefLabelByLanguage(selectedLang),
+//				(concept, label) -> concept.setPrefLabelByLanguage(selectedLang, label));
+//		
 		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
 			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang ))
-				.setEditorBinding(prefLabelBinding).setExpandRatio(1);// Component(prefLanguageEditor,
+				//.setEditorBinding(prefLabelBinding)
+				.setEditorComponent(prefLanguageEditor, (concept, value) -> concept.setPrefLabelByLanguage( selectedLang, value))
+				.setExpandRatio(1);// Component(prefLanguageEditor,
 		
 		detailTreeGrid.addColumn(concept -> {
 					return new Label( concept.getDescriptionByLanguage( "en" ));

@@ -34,11 +34,13 @@ public class DialogAddCodeWindow extends MWindow {
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	
+	private MLabel lNotation = new MLabel( "Code" );
 	private MLabel lTitle = new MLabel( "Descriptive term" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language (source)" );
 
 	private MVerticalLayout layout = new MVerticalLayout();
+	private TextField notation = new TextField("Code");
 	private TextField preferedLabel = new TextField("Descriptive term");
 	private TextArea description = new TextArea("Definition*");
 	private ComboBox<String> languageCb = new ComboBox<>("Language (source)");
@@ -71,6 +73,9 @@ public class DialogAddCodeWindow extends MWindow {
 		setTheCode(code);
 
 		binder.setBean(getTheCode());
+		
+		binder.bind(notation, concept -> concept.getNotation(),
+				(concept, value) -> concept.setNotation(value));
 
 		binder.bind(preferedLabel, concept -> getPrefLabelByLanguage(concept),
 				(concept, value) -> setPrefLabelByLanguage(concept, value));
@@ -103,12 +108,17 @@ public class DialogAddCodeWindow extends MWindow {
 						new MHorizontalLayout()
 						.withFullWidth()
 						.add(
-								lTitle, preferedLabel
-						).withExpand(lTitle, 0.31f).withExpand(preferedLabel, 0.69f),
+								lNotation, notation
+						).withExpand(lNotation, 0.31f).withExpand(notation, 0.69f),
 						new MHorizontalLayout().add(
 								lLanguage, languageCb
 						)
 				),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+						lTitle, preferedLabel
+					).withExpand(lTitle, 0.15f).withExpand( preferedLabel, 0.85f),
 				new MHorizontalLayout()
 				.withFullWidth()
 				.withHeight("300px")
@@ -126,9 +136,10 @@ public class DialogAddCodeWindow extends MWindow {
 				.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 			)
 			.withExpand(layout.getComponent(0), 0.06f)
-			.withExpand(layout.getComponent(1), 0.4f)
+			.withExpand(layout.getComponent(1), 0.06f)
 			.withExpand(layout.getComponent(2), 0.4f)
-			.withAlign(layout.getComponent(2), Alignment.BOTTOM_RIGHT);
+			.withExpand(layout.getComponent(3), 0.4f)
+			.withAlign(layout.getComponent(3), Alignment.BOTTOM_RIGHT);
 
 		
 		this
