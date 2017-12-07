@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.view.window;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVScheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -33,11 +34,13 @@ public class DialogAddCodeWindow extends MWindow {
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	
+	private MLabel lNotation = new MLabel( "Code" );
 	private MLabel lTitle = new MLabel( "Descriptive term" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language (source)" );
 
 	private MVerticalLayout layout = new MVerticalLayout();
+	private TextField notation = new TextField("Code");
 	private TextField preferedLabel = new TextField("Descriptive term");
 	private TextArea description = new TextArea("Definition*");
 	private ComboBox<String> languageCb = new ComboBox<>("Language (source)");
@@ -47,7 +50,7 @@ public class DialogAddCodeWindow extends MWindow {
 	private CVConcept theCode;
 
 
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVConcept code, String orignalLanguage, String language) {
+	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, CVConcept code, String orignalLanguage, String language) {
 		super( "Add Code (Source Language)");
 		
 		this.eventBus = eventBus;
@@ -70,6 +73,9 @@ public class DialogAddCodeWindow extends MWindow {
 		setTheCode(code);
 
 		binder.setBean(getTheCode());
+		
+		binder.bind(notation, concept -> concept.getNotation(),
+				(concept, value) -> concept.setNotation(value));
 
 		binder.bind(preferedLabel, concept -> getPrefLabelByLanguage(concept),
 				(concept, value) -> setPrefLabelByLanguage(concept, value));
@@ -81,7 +87,10 @@ public class DialogAddCodeWindow extends MWindow {
 			// CVConcept cv = binder.getBean();
 			log.trace(getTheCode().getPrefLabelByLanguage(getOrginalLanguage()));
 			getTheCode().save();
-			DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, "Peter", "minor edit");
+			DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, "User", "Add Code");
+			cvScheme.addOrderedMemberList(ddiStore.getElementId());
+			cvScheme.save();
+			DDIStore ddiStoreCv = cvManagerService.saveElement(cvScheme.ddiStore, "User", "Update Top Concept");
 			
 			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 			this.close();
@@ -99,12 +108,17 @@ public class DialogAddCodeWindow extends MWindow {
 						new MHorizontalLayout()
 						.withFullWidth()
 						.add(
-								lTitle, preferedLabel
-						).withExpand(lTitle, 0.31f).withExpand(preferedLabel, 0.69f),
+								lNotation, notation
+						).withExpand(lNotation, 0.31f).withExpand(notation, 0.69f),
 						new MHorizontalLayout().add(
 								lLanguage, languageCb
 						)
 				),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+						lTitle, preferedLabel
+					).withExpand(lTitle, 0.15f).withExpand( preferedLabel, 0.85f),
 				new MHorizontalLayout()
 				.withFullWidth()
 				.withHeight("300px")
@@ -122,9 +136,10 @@ public class DialogAddCodeWindow extends MWindow {
 				.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 			)
 			.withExpand(layout.getComponent(0), 0.06f)
-			.withExpand(layout.getComponent(1), 0.4f)
+			.withExpand(layout.getComponent(1), 0.06f)
 			.withExpand(layout.getComponent(2), 0.4f)
-			.withAlign(layout.getComponent(2), Alignment.BOTTOM_RIGHT);
+			.withExpand(layout.getComponent(3), 0.4f)
+			.withAlign(layout.getComponent(3), Alignment.BOTTOM_RIGHT);
 
 		
 		this

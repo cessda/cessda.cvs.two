@@ -103,8 +103,6 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
 
-		setLocale(Locale.ENGLISH);
-
 		addHeader();
 
 		footer.setStyleName("footer");
@@ -194,23 +192,23 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 
 	public void gotoHome(ClickEvent event) {
-		getNavigator().navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(SearchView.VIEW_NAME);
 	}
 
 	public void gotoListAllCvs(ClickEvent event) {
-		getNavigator().navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(SearchView.VIEW_NAME);
 	}
 
 	public void gotoSearchCvs(ClickEvent event) {
-		getNavigator().navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(SearchView.VIEW_NAME);
 	}
 
 	public void gotoEditorCvs(ClickEvent event) {
-		getNavigator().navigateTo(EditorView.VIEW_NAME);
+		navigator.navigateTo(EditorView.VIEW_NAME);
 	}
 
 	public void gotoBrowse(ClickEvent event) {
-		getNavigator().navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(SearchView.VIEW_NAME);
 	}
 
 	public void gotoProfile(ClickEvent event) {
@@ -264,28 +262,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		// signUp.setVisible( false );
 		// }
 	}
-
-	/**
-	 * Accesses language of the passed event class --> EventBus transmits or
-	 * publishes the LanguageSwitchedEvent-object. Review EventBus instructions for
-	 * more information
-	 * 
-	 * @param event
-	 */
-
-	public Locale accessLang(LanguageSwitchedEvent event) {
-
-		System.out.println(" MainView Lang:" + getWebLanguage());
-		if (event.getWebLanguage().equals("de")) {
-			LocaleContextHolder.setLocale(Locale.GERMAN);
-			return LocaleContextHolder.getLocale();
-		} else {
-			LocaleContextHolder.setLocale(Locale.ENGLISH);
-			return LocaleContextHolder.getLocale();
-		}
-
-	}
-
+	
 	public MessageByLocaleService getMessageByLocaleService() {
 
 		return messageByLocaleService;

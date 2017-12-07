@@ -50,6 +50,7 @@ public class SearchView extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "Browse";
+	private Locale locale = UI.getCurrent().getLocale();
 
 	// main container
 	private HorizontalLayout globalContainer = new HorizontalLayout();
@@ -127,13 +128,12 @@ public class SearchView extends CvManagerView {
 		rightContainer.add(globalContainer).withExpand(globalContainer, 1);
 
 		resetSearch();
-		updateMessageStrings(locale);
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
-		// TODO Auto-generated method stub
-
+		locale = UI.getCurrent().getLocale();
+		updateMessageStrings(locale);
 	}
 
 	/**

@@ -45,17 +45,21 @@ public class DialogEditCodeWindow extends MWindow {
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
+	private MLabel lSourceNotation = new MLabel( "Code" );
 	private MLabel lTitle = new MLabel( "Descriptive term" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language" );
+	private MLabel lNotation = new MLabel( "Code" );
 	private MLabel lSourceTitle = new MLabel( "Descriptive term (source)" );
 	private MLabel lSourceDescription = new MLabel( "Definition (source)" );
 	private MLabel lSourceLanguage = new MLabel( "Language (source)" );
 	
+	private MTextField sourceNotation = new MTextField("Code");
 	private MTextField sourceTitle = new MTextField("Descriptive term (source)");
 	private MTextField sourceLanguage = new MTextField("Language (source)");
 	private TextArea sourceDescription = new TextArea("Definition en (source)");
 
+	private MTextField notation = new MTextField("Code");
 	private TextField preferedLabel = new TextField("Descriptive term*");
 	private TextArea description = new TextArea("Definition*");
 	private ComboBox<String> languageCb = new ComboBox<>("Language*");
@@ -67,6 +71,7 @@ public class DialogEditCodeWindow extends MWindow {
 	private CVScheme cvScheme;
 	private CVConcept code;
 	
+	MHorizontalLayout sourceRow = new MHorizontalLayout();
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
@@ -77,6 +82,10 @@ public class DialogEditCodeWindow extends MWindow {
 		this.selectedLanguage = sLanguage;
 		
 		this.eventBus = eventBus;
+		
+		sourceNotation.withFullWidth();
+		sourceNotation.setValue( code.getNotation() == null ? "" : code.getNotation() );
+		sourceNotation.setReadOnly( true );
 		
 		sourceTitle.withFullWidth();
 		sourceTitle.setValue( code.getPrefLabelByLanguage( "en" ) );
@@ -117,23 +126,30 @@ public class DialogEditCodeWindow extends MWindow {
 			description.setValue( code.getDescriptionByLanguage(selectedLanguage) );
 			
 			if( e.getValue().equals( "en" )) {
+				sourceRow.setVisible( false );
 				sourceRowA.setVisible( false );
 				sourceRowB.setVisible( false );
 			} else {
+				sourceRow.setVisible( false );
 				sourceRowA.setVisible( true );
 				sourceRowB.setVisible( true );
 			}
 		});
 		
-		if( selectedLanguage.equals( "en" )) {
-			sourceRowA.setVisible( false );
-			sourceRowB.setVisible( false );
-		} else {
-			sourceRowA.setVisible( true );
-			sourceRowB.setVisible( true );
-		}
+//		if( selectedLanguage.equals( "en" )) {
+//			sourceRow.setVisible( false );
+//			sourceRowA.setVisible( false );
+//			sourceRowB.setVisible( false );
+//		} else {
+//			sourceRow.setVisible( true );
+//			sourceRowA.setVisible( true );
+//			sourceRowB.setVisible( true );
+//		}
 
 		binder.setBean(code);
+		
+		binder.bind(notation, concept -> concept.getNotation(),
+				(concept, value) ->  concept.setNotation(value));
 
 		binder.bind(preferedLabel, concept -> getPrefLabelByLanguage(concept),
 				(concept, value) -> setPrefLabelByLanguage(concept, value));
@@ -155,62 +171,112 @@ public class DialogEditCodeWindow extends MWindow {
 
 		Button cancelButton = new Button("Cancel", e -> this.close());
 		
-		layout
-			.withHeight("98%")
-			.withStyleName("dialog-content")
-			.add( 
-				sourceRowA
-					.withFullWidth()
-					.add(
-						new MHorizontalLayout()
+		if( !selectedLanguage.equals( "en" )) {
+			layout
+				.withHeight("98%")
+				.withStyleName("dialog-content")
+				.add( 
+					sourceRowA
+						.withFullWidth()
+						.add(
+							new MHorizontalLayout()
+							.withFullWidth()
+							.add(
+									lSourceNotation, sourceNotation
+							).withExpand(lSourceNotation, 0.31f).withExpand(sourceNotation, 0.69f),
+							new MHorizontalLayout().add(
+									lSourceLanguage, sourceLanguage
+							)
+					),
+					sourceRow
 						.withFullWidth()
 						.add(
 								lSourceTitle, sourceTitle
-						).withExpand(lSourceTitle, 0.31f).withExpand(sourceTitle, 0.69f),
-						new MHorizontalLayout().add(
-								lSourceLanguage, sourceLanguage
+							).withExpand(lSourceTitle, 0.15f).withExpand( sourceTitle, 0.85f),
+					sourceRowB
+						.withFullWidth()
+						.withHeight("133px")
+						.add(
+							lSourceDescription, sourceDescription
+						).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
+					new MHorizontalLayout()
+						.withFullWidth()
+						.add(
+							new MHorizontalLayout()
+							.withFullWidth()
+							.add(
+									lTitle, preferedLabel
+							).withExpand(lTitle, 0.31f).withExpand(preferedLabel, 0.69f),
+							new MHorizontalLayout().add(
+									lLanguage, languageCb
+							)
+					),
+					new MHorizontalLayout()
+						.withFullWidth()
+						.withHeight("250px")
+						.add(
+							lDescription, description
+						).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
+					new MHorizontalLayout()
+						.withFullWidth()
+						.add( storeCode,
+							cancelButton
 						)
-				),
-				sourceRowB
-					.withFullWidth()
-					.withHeight("133px")
-					.add(
-						lSourceDescription, sourceDescription
-					).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
+						.withExpand(storeCode, 0.8f)
+						.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
+						.withExpand(cancelButton, 0.1f)
+						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
+				)
+				.withExpand(layout.getComponent(0), 0.06f)
+				.withExpand(layout.getComponent(1), 0.06f)
+				.withExpand(layout.getComponent(2), 0.25f)
+				.withExpand(layout.getComponent(3), 0.06f)
+				.withExpand(layout.getComponent(4), 0.5f)
+				.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
+		} else {
+			layout
+			.withHeight("98%")
+			.withStyleName("dialog-content")
+			.add( 
 				new MHorizontalLayout()
 					.withFullWidth()
 					.add(
 						new MHorizontalLayout()
 						.withFullWidth()
 						.add(
-								lTitle, preferedLabel
-						).withExpand(lTitle, 0.31f).withExpand(preferedLabel, 0.69f),
+								lNotation, notation
+						).withExpand(lNotation, 0.31f).withExpand(notation, 0.69f),
 						new MHorizontalLayout().add(
 								lLanguage, languageCb
 						)
 				),
 				new MHorizontalLayout()
 					.withFullWidth()
-					.withHeight("250px")
 					.add(
-						lDescription, description
-					).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
+						lTitle, preferedLabel
+					).withExpand(lTitle, 0.15f).withExpand( preferedLabel, 0.85f),
 				new MHorizontalLayout()
-					.withFullWidth()
-					.add( storeCode,
-						cancelButton
-					)
-					.withExpand(storeCode, 0.8f)
-					.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
-					.withExpand(cancelButton, 0.1f)
-					.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
+				.withFullWidth()
+				.withHeight("300px")
+				.add(
+					lDescription, description
+				).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
+				new MHorizontalLayout()
+				.withFullWidth()
+				.add( storeCode,
+					cancelButton
+				)
+				.withExpand(storeCode, 0.8f)
+				.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
+				.withExpand(cancelButton, 0.1f)
+				.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 			)
 			.withExpand(layout.getComponent(0), 0.06f)
-			.withExpand(layout.getComponent(1), 0.25f)
-			.withExpand(layout.getComponent(2), 0.06f)
-			.withExpand(layout.getComponent(3), 0.5f)
-			.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
-
+			.withExpand(layout.getComponent(1), 0.06f)
+			.withExpand(layout.getComponent(2), 0.4f)
+			.withExpand(layout.getComponent(3), 0.4f)
+			.withAlign(layout.getComponent(3), Alignment.BOTTOM_RIGHT);
+		}
 		
 		this
 			.withHeight("600px")

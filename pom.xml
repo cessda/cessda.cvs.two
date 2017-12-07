@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<vaadin.version>8.1.6</vaadin.version>
+		<vaadin.version>8.2.0.beta1</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<gesis.repository.visibility>public</gesis.repository.visibility>
 		<!--Sonar Prop config: starts-->
@@ -47,15 +47,25 @@
     		<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}</url>
   		</repository>
 		<repository>
-			<id>vaadin-addons</id>
+			<id>vaadin-adpdons</id>
 			<url>http://maven.vaadin.com/vaadin-addons</url>
 		</repository>
+		<repository>
+			  <id>vaadin-prereleases</id>
+			  <name>Vaadin Pre-releases</name>
+			  <url>https://maven.vaadin.com/vaadin-prereleases</url>
+		 </repository>
 	</repositories>
 	<pluginRepositories>
   		<pluginRepository>
     		<id>gesis-${gesis.repository.visibility}</id>
     		<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}</url>
   		</pluginRepository>
+  		 <pluginRepository>
+			  <id>vaadin-prereleases</id>
+			  <name>Vaadin Pre-releases</name>
+			  <url>https://maven.vaadin.com/vaadin-prereleases</url>
+		 </pluginRepository>
 	</pluginRepositories>
 
 	<distributionManagement>
