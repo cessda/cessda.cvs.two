@@ -5,64 +5,71 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Code {
 
-	private String url;
+	private ContentType url;
 
-	private String code;
+	private ContentType code;
 
-	private String prefLabel;
+	private ContentType prefLabel;
 
-	private String languagePrefLabel;
+	private ContentType languagePrefLabel;
 
-	private String language;
+	private ContentType language;
 
-	private String description;
+	private ContentType description;
 
-	public String getUrl() {
+	public ContentType getUrl() {
 		return url;
 	}
 
 	public void setUrl(String url) {
-		this.url = url;
+		this.url = new ContentType(ContentType.TYPE_URI);
+		this.url.setValue(url);
+
 	}
 
-	public String getCode() {
+	public ContentType getCode() {
 		return code;
 	}
 
 	public void setCode(String code) {
-		this.code = code;
+		this.code = new ContentType(ContentType.TYPE_LITERAL);
+		this.code.setValue(code);
 	}
 
-	public String getPrefLabel() {
+	public ContentType getPrefLabel() {
 		return prefLabel;
 	}
 
 	public void setPrefLabel(String prefLabel) {
-		this.prefLabel = prefLabel;
+		this.prefLabel = new ContentType(ContentType.TYPE_LITERAL);
+		this.prefLabel.setValue(prefLabel);
 	}
 
-	public String getLanguagePrefLabel() {
+	public ContentType getLanguagePrefLabel() {
 		return languagePrefLabel;
 	}
 
 	public void setLanguagePrefLabel(String languagePrefLabel) {
-		this.languagePrefLabel = languagePrefLabel;
+		this.languagePrefLabel = new ContentType(ContentType.TYPE_LITERAL);
+		this.languagePrefLabel.setValue(languagePrefLabel);
 	}
 
-	public String getLanguage() {
+	public ContentType getLanguage() {
 		return language;
 	}
 
 	public void setLanguage(String language) {
-		this.language = language;
+		this.language = new ContentType(ContentType.TYPE_LITERAL);
+		this.language.setValue(language);
 	}
 
-	public String getDescription() {
+	public ContentType getDescription() {
 		return description;
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = new ContentType(ContentType.TYPE_LITERAL);
+		this.description.setValue(description);
 	}
 
 }

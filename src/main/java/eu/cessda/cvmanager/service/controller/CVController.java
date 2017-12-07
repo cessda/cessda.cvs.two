@@ -2,7 +2,6 @@ package eu.cessda.cvmanager.service.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -42,31 +41,31 @@ public class CVController {
 		List<DDIStore> searchResult = restClient.getElementListByContent(DDIElement.CVCONCEPT, query);
 
 		int count = limit;
-		List<Code> list = new ArrayList<Code>();
+		CodeList codeList = new CodeList();
+
 		for (DDIStore store : searchResult) {
 			if (count <= 0)
 				break;
 
 			CVConcept concept = new CVConcept(store);
 
+			// TODO needs to be code?
 			if (concept.getPrefLabelByLanguage("en").contains(query)) {
 				Code code = new Code();
 
 				code.setLanguage(language);
-				code.setCode(concept.getPrefLabelByLanguage("en"));
+				code.setUrl("http://lod.cessda.eu/" + store.getElementId());
+				code.setCode(concept.getNotation());
 				code.setPrefLabel(concept.getPrefLabelByLanguage("en"));
 				code.setLanguagePrefLabel(concept.getPrefLabelByLanguage(language));
 				code.setDescription(concept.getDescriptionByLanguage("en"));
-				list.add(code);
+				codeList.add(code);
 				count--;
 			}
 		}
 
-		return list;
-		// } else {
-		// throw new RestRepsonseException(HttpStatus.NOT_FOUND,
-		// "No suggestions found in dataset: " + dataset + " wrt query: " + query);
-		// }
+		return codeList;
+
 	}
 
 }
