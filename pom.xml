@@ -188,6 +188,17 @@
 		    <version>2.0</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		
 		
 	</dependencies>
 
@@ -386,9 +397,7 @@
 	<profiles>
 		 <profile>
             <id>local</id>
-            <activation>
-					<activeByDefault>true</activeByDefault>
-			</activation>
+            
             <properties>
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
@@ -417,7 +426,9 @@
         </profile>
         <profile>
             <id>docker-compose</id>
-            
+            <activation>
+					<activeByDefault>true</activeByDefault>
+			</activation>
             <properties>
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>

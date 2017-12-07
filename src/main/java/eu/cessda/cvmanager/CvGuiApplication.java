@@ -9,7 +9,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.vaadin.spring.i18n.MessageProvider;
 import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 
@@ -28,21 +27,10 @@ public class CvGuiApplication extends SpringBootServletInitializer {
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(CvGuiApplication.class);
 	}
-	
-    @Bean
-    MessageProvider messageProvider() {
-        return new ResourceBundleMessageProvider("org.vaadin.spring.i18n.messages", "UTF-8");
-    }
-//
-//	@Bean(name = "dataSource")
-//	public DriverManagerDataSource securityDataSource() {
-//		DriverManagerDataSource driverManagerDataSource = new DriverManagerDataSource();
-//
-//		driverManagerDataSource.setDriverClassName("com.mysql.jdbc.Driver");
-//		driverManagerDataSource.setUrl("jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false");
-//		driverManagerDataSource.setUsername("root");
-//		driverManagerDataSource.setPassword("GVM8Sj8FUxBf4gk");
-//		return driverManagerDataSource;
-//	}
+
+	@Bean
+	MessageProvider messageProvider() {
+		return new ResourceBundleMessageProvider("org.vaadin.spring.i18n.messages", "UTF-8");
+	}
 
 }
