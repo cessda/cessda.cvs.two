@@ -4,7 +4,11 @@ import java.util.List;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
+import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.DDIElement;
 import org.springframework.stereotype.Service;
+
+import com.vaadin.data.TreeData;
 
 @Service
 public class CvManagerService {
@@ -40,5 +44,12 @@ public class CvManagerService {
 	
 	public Long deleteById(final String studyId, final String elementType, String userName, String comment){
 		return restClient.deleteElementList(studyId, elementType, userName, comment);
+	}
+	
+	public void deleteConceptTree(TreeData<CVConcept> treeData, CVConcept targetConcept) {
+		deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
+		treeData.getChildren(targetConcept).forEach( childConcept -> {
+			deleteConceptTree(treeData, childConcept);
+		});
 	}
 }

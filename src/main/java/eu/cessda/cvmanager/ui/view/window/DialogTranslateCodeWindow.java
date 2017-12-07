@@ -58,7 +58,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private TextArea sourceDescription = new TextArea("Definition en (source)");
 	
 	private MLabel lCode = new MLabel( "Descriptive terms" );
-	private ComboBox<CVConcept> codeCb = new ComboBox<>("Code");
+	private MTextField codeText = new MTextField("Code");
 
 	private TextField preferedLabel = new TextField("Code");
 	private TextArea description = new TextArea("Definition");
@@ -69,42 +69,21 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private Button storeCode = new Button("Save");
 
 	private CVScheme cvScheme;
-	private List<CVConcept> codes;
 	private CVConcept code;
 	
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
-	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, List<CVConcept> concepts, String sLanguage) {
+	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, CVConcept cvConcept, String sLanguage) {
 		super( "Add Code Translation");
 		this.cvScheme = cvScheme;
-		this.codes = concepts;
-		this.code = codes.get(0);
+		this.code = cvConcept;
 		
 		this.eventBus = eventBus;
 		
-		codeCb.setItems(codes);
-		codeCb.setEmptySelectionAllowed( false );
-		codeCb.setTextInputAllowed( false );
-		codeCb.setValue(codes.get(0));
-		codeCb.setItemCaptionGenerator( c -> c.getPrefLabelByLanguage( "en" ));
-		codeCb.setWidth("100%");
-		codeCb.addValueChangeListener( e -> {
-			this.code = e.getValue();
-			sourceTitle.setValue( code.getPrefLabelByLanguage( "en" ) );
-			sourceDescription.setValue( code.getDescriptionByLanguage( "en" ) );
-			System.out.println( "test" + code.getPrefLabelByLanguage(selectedLanguage) );
-			preferedLabel.setValue( code.getPrefLabelByLanguage(selectedLanguage));
-			description.setValue( code.getDescriptionByLanguage(selectedLanguage) );
-			
-			binder.setBean(code);
-
-			binder.bind(preferedLabel, concept -> getPrefLabelByLanguage(concept),
-					(concept, value) -> setPrefLabelByLanguage(concept, value));
-
-			binder.bind(description, concept -> getDescriptionByLanguage(concept),
-					(concept, value) -> setDescriptionByLanguage(concept, value));
-		});
+		codeText.setValue( code.getPrefLabelByLanguage( "en" ));
+		codeText.withFullWidth()
+			.withReadOnly( true );
 		
 		sourceTitle.withFullWidth();
 		sourceTitle.setValue( code.getPrefLabelByLanguage( "en" ) );
@@ -198,8 +177,8 @@ public class DialogTranslateCodeWindow extends MWindow {
 						new MHorizontalLayout()
 						.withFullWidth()
 						.add(
-								lCode, codeCb
-						).withExpand(lCode, 0.31f).withExpand(codeCb, 0.69f),
+								lCode, codeText
+						).withExpand(lCode, 0.31f).withExpand(codeText, 0.69f),
 						new MHorizontalLayout().add(
 								lSourceLanguage, sourceLanguage
 						)

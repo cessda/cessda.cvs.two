@@ -3,8 +3,6 @@ package eu.cessda.cvmanager.ui.view;
 import java.util.Iterator;
 import java.util.Locale;
 
-import org.gesis.security.util.LoginSucceedEvent;
-import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.vaadin.spring.events.EventBus;
@@ -13,7 +11,6 @@ import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
-import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.shared.ui.ContentMode;
@@ -21,25 +18,20 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Grid;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.renderers.ButtonRenderer;
-import com.vaadin.ui.renderers.ComponentRenderer;
-import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CvManagerService;
-import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 
 public class ActionPanel extends CustomComponent{
 
 	private static final long serialVersionUID = -6349100242468318473L;
+	public static String CLASS_NAME="action";
 
 	private I18N i18n;
 	private Locale locale = UI.getCurrent().getLocale();
@@ -53,10 +45,11 @@ public class ActionPanel extends CustomComponent{
 	private MButton buttonChangeAgency = new MButton();
 	private MButton buttonChangeLanguage = new MButton();
 	
-	private MButton buttonAddCode = new MButton();
-	private MButton buttonAddCodeTranslation = new MButton();
-	private MButton buttonDeleteCode = new MButton();
-	private MButton buttonSortCode = new MButton();
+	private MButton buttonCodeAdd = new MButton();
+	private MButton buttonCodeAddTranslation = new MButton();
+	private MButton buttonCodeAddChild = new MButton();
+	private MButton buttonCodeDelete = new MButton();
+	private MButton buttonCodeSort = new MButton();
 	
 	private MButton buttonValidateCv= new MButton();
 	private MButton buttonFinaliseReview = new MButton();
@@ -65,6 +58,7 @@ public class ActionPanel extends CustomComponent{
 	
 	private CvManagerView cvManagerView;
 	private CVScheme cvScheme;
+	private CVConcept cvConcept;
 	
 	public ActionPanel( CvManagerView cvManagerView) {
 		this.cvManagerView = cvManagerView;
@@ -79,13 +73,15 @@ public class ActionPanel extends CustomComponent{
 			.withFullWidth();
 		buttonChangeLanguage
 			.withFullWidth();
-		buttonAddCode
+		buttonCodeAdd
 			.withFullWidth();
-		buttonAddCodeTranslation
+		buttonCodeAddChild
 			.withFullWidth();
-		buttonDeleteCode
+		buttonCodeAddTranslation
 			.withFullWidth();
-		buttonSortCode
+		buttonCodeDelete
+			.withFullWidth();
+		buttonCodeSort
 			.withFullWidth();
 		buttonValidateCv
 			.withFullWidth();
@@ -97,14 +93,15 @@ public class ActionPanel extends CustomComponent{
 			.withFullWidth();
 		
 		
-		buttonAddCv.addClickListener( this::doAddCv );
-		buttonChangeAgency.addClickListener( this::doChangeAgency );
-		buttonChangeLanguage.addClickListener( this::doChangeLanguage );
+		buttonAddCv.addClickListener( this::doCvAdd );
+		buttonChangeAgency.addClickListener( this::doCvSelectAgency );
+		buttonChangeLanguage.addClickListener( this::doCvAddTranslation );
 		
-		buttonAddCode.addClickListener( this::doAddCode );
-		buttonAddCodeTranslation.addClickListener( this::doAddCodeTranslation );
-		buttonDeleteCode.addClickListener( this::doDeleteCode );
-		buttonSortCode.addClickListener( this::doSortCode );
+		buttonCodeAdd.addClickListener( this::doAddCode );
+		buttonCodeAddTranslation.addClickListener( this::doCodeAddTranslation );
+		buttonCodeAddChild.addClickListener( this::doCodeAddChild );
+		buttonCodeDelete.addClickListener( this::doDeleteCode );
+		buttonCodeSort.addClickListener( this::doSortCode );
 		
 		buttonValidateCv.addClickListener( this::doValidateCv );
 		buttonFinaliseReview.addClickListener( this::doFinaliseReview );
@@ -120,9 +117,10 @@ public class ActionPanel extends CustomComponent{
 					//buttonChangeAgency,
 					buttonChangeLanguage,
 					new Label("<div style=\"width:100%\">&nbsp;</div>", ContentMode.HTML),
-					buttonAddCode,
-					buttonAddCodeTranslation,
-					buttonDeleteCode//,
+					buttonCodeAdd,
+					buttonCodeAddTranslation,
+					buttonCodeAddChild,
+					buttonCodeDelete//,
 //					buttonSortCode//,
 					
 //					buttonValidateCv,
@@ -136,24 +134,27 @@ public class ActionPanel extends CustomComponent{
 			case BROWSE:
 				buttonChangeAgency.setVisible( false );
 				buttonChangeLanguage.setVisible( false );
-				buttonAddCode.setVisible( false );
-				buttonAddCodeTranslation.setVisible( false );
-				buttonDeleteCode.setVisible( false );
-				buttonSortCode.setVisible( false );
+				buttonCodeAdd.setVisible( false );
+				buttonCodeAddTranslation.setVisible( false );
+				buttonCodeAddChild.setVisible( false );
+				buttonCodeDelete.setVisible( false );
+				buttonCodeSort.setVisible( false );
 				buttonValidateCv.setVisible( false );
 				buttonFinaliseReview.setVisible( false );
 				buttonPublishCv.setVisible( false );
 				buttonUnpublishCv.setVisible( false );
 				break;
 			case DETAIL:
-				
+				buttonCodeAddTranslation.setVisible( false );
+				buttonCodeAddChild.setVisible( false );
+				buttonCodeDelete.setVisible( false );
 				break;
 		}
 		
 		setCompositionRoot(actionLayout);
 	}
 	
-	private void doAddCv( ClickEvent event ) {
+	private void doCvAdd( ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
 		CVScheme newCvScheme = new CVScheme();
@@ -165,12 +166,12 @@ public class ActionPanel extends CustomComponent{
 		getUI().addWindow(window);
 	}
 	
-	private void doChangeAgency(ClickEvent event ) {
+	private void doCvSelectAgency(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 
 	}
 	
-	private void doChangeLanguage(ClickEvent event ) {
+	private void doCvAddTranslation(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
 		Window window = new DialogAddLanguageWindow(eventBus, cvManagerService, cvManagerView.getCvScheme());
@@ -182,9 +183,14 @@ public class ActionPanel extends CustomComponent{
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADD_DIALOG, null) );
 	}
 	
-	private void doAddCodeTranslation(ClickEvent event ) {
+	private void doCodeAddTranslation(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_TRANSLATION_DIALOG, null) );
+	}
+	
+	private void doCodeAddChild(ClickEvent event ) {
+		applyButtonStyle( event.getButton());
+		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADDCHILD_DIALOG, null) );
 	}
 	
 	private void applyButtonStyle(Button pressedButton) {
@@ -202,7 +208,20 @@ public class ActionPanel extends CustomComponent{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void doDeleteCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_EDIT_MODE, null) );
+		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_DELETED, null) );
+	}
+	
+	public void conceptSelectedChange( CVConcept cvCode) {
+		this.cvConcept = cvCode;
+		if( cvConcept != null ) {
+			buttonCodeAddTranslation.setVisible( true );
+			buttonCodeAddChild.setVisible( true );
+			buttonCodeDelete.setVisible( true );
+		} else {
+			buttonCodeAddTranslation.setVisible( false );
+			buttonCodeAddChild.setVisible( false );
+			buttonCodeDelete.setVisible( false );
+		}
 	}
 	
 	private void doSortCode(ClickEvent event ) {
@@ -231,10 +250,11 @@ public class ActionPanel extends CustomComponent{
 		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));
 		buttonChangeAgency.withCaption( i18n.get("view.action.button.cvscheme.editor", locale));
 		buttonChangeLanguage.withCaption( i18n.get("view.action.button.cvscheme.translation", locale));
-		buttonAddCode.withCaption( i18n.get("view.action.button.cvconcept.new", locale));
-		buttonAddCodeTranslation.withCaption( i18n.get("view.action.button.cvconcept.translation", locale));
-		buttonDeleteCode.withCaption( i18n.get("view.action.button.cvconcept.delete", locale));
-		buttonSortCode.withCaption( i18n.get("view.action.button.cvconcept.order", locale));
+		buttonCodeAdd.withCaption( i18n.get("view.action.button.cvconcept.new", locale));
+		buttonCodeAddTranslation.withCaption( i18n.get("view.action.button.cvconcept.translation", locale));
+		buttonCodeAddChild.withCaption( "Add Child" );
+		buttonCodeDelete.withCaption( i18n.get("view.action.button.cvconcept.delete", locale));
+		buttonCodeSort.withCaption( i18n.get("view.action.button.cvconcept.order", locale));
 		buttonValidateCv.withCaption( i18n.get("view.action.button.cvconcept.validate", locale));
 		buttonFinaliseReview.withCaption( i18n.get("view.action.button.cvconcept.finalize", locale));
 		buttonPublishCv.withCaption( i18n.get("view.action.button.cvconcept.publish", locale));

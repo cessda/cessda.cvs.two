@@ -48,12 +48,16 @@ public class DialogAddCodeWindow extends MWindow {
 
 	private Button storeCode = new Button("Save");
 	private CVConcept theCode;
+	private CVConcept parentCode;
+	private CVScheme cvScheme;
 
-
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, CVConcept code, String orignalLanguage, String language) {
-		super( "Add Code (Source Language)");
+	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvSch, CVConcept newCode, CVConcept parent, String orignalLanguage) {
+		super( parent == null ? "Add Code (Source Language)":"Add Child Code of \"" + parent.getNotation() + "\"");
 		
 		this.eventBus = eventBus;
+		this.cvScheme = cvSch;
+		this.parentCode = parent;
+		
 		setWidth("700px");
 		setHeight("500px");
 		
@@ -70,7 +74,7 @@ public class DialogAddCodeWindow extends MWindow {
 		lDescription.withStyleName( "required" );
 
 		setOrginalLanguage(orignalLanguage);
-		setTheCode(code);
+		setTheCode(newCode);
 
 		binder.setBean(getTheCode());
 		
@@ -88,9 +92,19 @@ public class DialogAddCodeWindow extends MWindow {
 			log.trace(getTheCode().getPrefLabelByLanguage(getOrginalLanguage()));
 			getTheCode().save();
 			DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, "User", "Add Code");
-			cvScheme.addOrderedMemberList(ddiStore.getElementId());
-			cvScheme.save();
-			DDIStore ddiStoreCv = cvManagerService.saveElement(cvScheme.ddiStore, "User", "Update Top Concept");
+			if(parentCode == null ) // root concept
+			{
+				cvScheme.addOrderedMemberList(ddiStore.getElementId());
+				cvScheme.save();
+				DDIStore ddiStoreCv = cvManagerService.saveElement(cvScheme.ddiStore, "User", "Update Top Concept");
+			}
+			else // child code, add narrower data in parent
+			{
+				//parentCode.addOrderedNarrowerList("http://lod.gesis.org/thesoz/concept_" + ddiStore.getElementId());
+				parentCode.addOrderedNarrowerList( ddiStore.getElementId());
+				parentCode.save();
+				cvManagerService.saveElement(parentCode.ddiStore, "User", "Add Code");
+			}
 			
 			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 			this.close();

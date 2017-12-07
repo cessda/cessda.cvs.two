@@ -1,11 +1,8 @@
 package eu.cessda.cvmanager.ui.view;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -119,8 +116,6 @@ public class DetailView extends CvManagerView {
 	
 	private TreeGrid<CVConcept> detailTreeGrid = new TreeGrid<>(CVConcept.class);
 
-//	private List<CVConcept> concepts = new ArrayList<CVConcept>();
-//	private List<CVConcept> topConcepts = new ArrayList<CVConcept>();
 	private TreeData<CVConcept> cvCodeTreeData;
 	private MCssLayout languageLayout = new MCssLayout();
 
@@ -449,30 +444,18 @@ public class DetailView extends CvManagerView {
 		detailTreeGrid = new TreeGrid<>(CVConcept.class);
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
-		updateDetailGrid();
-				
-		
+		updateDetailGrid();	
 		
 		detailTreeGrid.addColumn(concept -> concept.getNotation())
 			.setCaption("Code")
 			.setEditorComponent(codeEditor, (concept, value) -> concept.setNotation(value))
 			.setExpandRatio(1);
-
-//		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
-//			concept -> concept.getPrefLabelByLanguage(selectedLang),
-//			(concept, label) -> concept.setPrefLabelByLanguage(selectedLang, label));
-//	
-		
 	
 		detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en"))
 			.setCaption(i18n.get("view.detail.cvconcept.column.sl.title", locale))
 			.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
 			.setExpandRatio(1);
 
-//		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
-//				concept -> concept.getPrefLabelByLanguage(selectedLang),
-//				(concept, label) -> concept.setPrefLabelByLanguage(selectedLang, label));
-//		
 		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
 			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang ))
@@ -501,6 +484,11 @@ public class DetailView extends CvManagerView {
 				getUI().addWindow(window);
 			}
 		});
+		
+		detailTreeGrid.addSelectionListener( event -> {
+			cvConcept = event.getAllSelectedItems().size() > 0 ? event.getAllSelectedItems().iterator().next() : null;
+			actionPanel.conceptSelectedChange( cvConcept );
+		});
 				
 		
 
@@ -514,21 +502,13 @@ public class DetailView extends CvManagerView {
 	}
 	
 
-	public void updateDetailGrid() {
-
-//		for(Object listener : detailTreeGrid.getListeners( ItemClick.class)) {
-//			detailTreeGrid.removeListener(ItemClick.class, listener);
-//		}
-		
+	public void updateDetailGrid() {		
 		TreeDataProvider<CVConcept> dataProvider = (TreeDataProvider<CVConcept>) detailTreeGrid.getDataProvider();
 		cvCodeTreeData = dataProvider.getTreeData();
 		cvCodeTreeData.clear();
 		// assign the tree structure
 		CvCodeTreeUtils.buildCvConceptTree(cvManagerService, cvScheme, cvCodeTreeData);
 		dataProvider.refreshAll();
-		
-		
-		
 	}
 	
 	public FormMode getFormMode() {
@@ -622,50 +602,46 @@ public class DetailView extends CvManagerView {
 				newCVConcept.createId();
 				newCVConcept.setContainerId( cvScheme.getContainerId());
 
-				Window window = new DialogAddCodeWindow(eventBus, cvManagerService, cvScheme, newCVConcept, "en", "en");
+				Window window = new DialogAddCodeWindow(eventBus, cvManagerService, cvScheme, newCVConcept,null, "en");
 				getUI().addWindow(window);
 				
 				break;
 			case CVCONCEPT_TRANSLATION_DIALOG:
-//				if( concepts.isEmpty()) {
-//					Notification.show("Please add code first");
-//				} else if( cvScheme.getLanguagesByTitle().size() == 1) {
-//					Notification.show("Please add CV translation first");
-//				}
-//				else {
-//					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, cvManagerService, cvScheme, concepts , selectedLang);
-//					getUI().addWindow( windowTranslate );
-//				}
-				break;
-			case CVCONCEPT_EDIT_MODE:
-				if( detailTreeGrid.getColumn("cvConceptRemove") == null ) {		
-//					detailTreeGrid
-//							.addColumn( cvconcept -> "x",
-//								new ButtonRenderer(clickEvent -> {
-//									CVConcept targetConcept = (CVConcept) clickEvent.getItem();
-//									ConfirmDialog.show( this.getUI(), "Confirm",
-//											"Are you sure you want to delete the concept \"" + targetConcept.getPrefLabelByLanguage( configService.getDefaultSourceLanguage() ) + "\"?", "yes",
-//											"cancel",
-//									
-//											dialog -> {
-//												if( dialog.isConfirmed() ) {
-//													cvManagerService.deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
-//													concepts.remove( targetConcept );
-//													detailTreeGrid.setItems( concepts );
-//												}
-//											}
-//
-//									);
-//									
-//
-//						    })).setId("cvConceptRemove");
-				} else {
-					if( !detailTreeGrid.getColumn("cvConceptRemove").isHidden()) {
-						detailTreeGrid.getColumn("cvConceptRemove").setHidden( true );
-					} else {
-						detailTreeGrid.getColumn("cvConceptRemove").setHidden( false );
-					}
+				if( cvCodeTreeData == null || cvCodeTreeData.getRootItems().isEmpty()) {
+					Notification.show("Please add code first");
+				} else if( cvScheme.getLanguagesByTitle().size() == 1) {
+					Notification.show("Please add CV translation first");
 				}
+				else {
+					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, cvManagerService, cvScheme, cvConcept , selectedLang);
+					getUI().addWindow( windowTranslate );
+				}
+				break;
+			case CVCONCEPT_ADDCHILD_DIALOG:
+				CVConcept childConcept = new CVConcept();
+				childConcept.loadSkeleton(childConcept.getDefaultDialect());
+				childConcept.createId();
+				childConcept.setContainerId( cvScheme.getContainerId());
+
+				getUI().addWindow(
+					new DialogAddCodeWindow(eventBus, cvManagerService, cvScheme, childConcept, cvConcept, "en")
+				);
+				break;
+			case CVCONCEPT_DELETED:
+				
+				ConfirmDialog.show( this.getUI(), "Confirm",
+				"Are you sure you want to delete the concept \"" + cvConcept.getPrefLabelByLanguage( configService.getDefaultSourceLanguage() ) + "\"?", "yes",
+				"cancel",
+		
+					dialog -> {
+						if( dialog.isConfirmed() ) {
+							cvManagerService.deleteConceptTree(cvCodeTreeData, cvConcept);
+							cvCodeTreeData.removeItem( cvConcept );
+							detailTreeGrid.getDataProvider().refreshAll();
+						}
+					}
+
+				);
 				break;
 			default:
 				break;

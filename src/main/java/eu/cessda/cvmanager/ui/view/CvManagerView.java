@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import org.gesis.security.SecurityService;
 import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
+import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus;
@@ -22,6 +23,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.UI;
 
+import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 
@@ -40,6 +42,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	
 	private final ActionType actionType;
 	public CVScheme cvScheme;
+	public CVConcept cvConcept;
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
 	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
@@ -122,5 +125,13 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 
 	public void setCvScheme(CVScheme cvScheme) {
 		this.cvScheme = cvScheme;
+	}
+
+	public CVConcept getCvConcept() {
+		return cvConcept;
+	}
+
+	public void setCvConcept(CVConcept cvConcept) {
+		this.cvConcept = cvConcept;
 	}
 }
