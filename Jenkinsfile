@@ -11,15 +11,11 @@ pipeline {
   agent any
 
   stages {
-    stage('Check environment') {
+    stage('Prepare Application') {
       steps {
-	echo "Check environment"
-        echo "project_name = ${project_name}"
-        echo "app_name = ${app_name}"
-        echo "feSvc_name = ${feSvc_name}"
-        echo "JOB_NAME = ${JOB_NAME}"
-        echo "image_tag = ${image_tag}"
-        echo "Kubernetes Cluster = ${cluster}"
+        dir('./infrastructure/gcp/') {
+          sh("bash cvmanager-gui-registration.sh")
+        }
       }
     }
     stage('Build Project and start Sonar scan') {
