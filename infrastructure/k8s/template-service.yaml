@@ -5,7 +5,7 @@ metadata:
   namespace: NAMESPACE
 spec:
   type: LoadBalancer
-  loadBalancerIP: 35.195.121.125
+  loadBalancerIP: PUBLIC_IP
   ports:
   - name: frontend-webui
     port: 80

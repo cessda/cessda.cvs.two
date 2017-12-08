@@ -38,7 +38,7 @@ fi;
 
 ### Kubernetes configuration generation ###
 sed "s/DEPLOYMENTNAME/$PRODUCT-$MODULE-$ENVIRONMENT/g; s/NAMESPACE/$PRODUCT-$ENVIRONMENT/g; s/ENVIRONMENT/$ENVIRONMENT/g" ../k8s/template-deployment.yaml > ../k8s/$PRODUCT-$MODULE-$ENVIRONMENT-deployment.yaml
-sed "s/SERVICENAME/$PRODUCT-$MODULE-$ENVIRONMENT/g; s/NAMESPACE/$PRODUCT-$ENVIRONMENT/g" ../k8s/template-service.yaml > ../k8s/$PRODUCT-$MODULE-$ENVIRONMENT-service.yaml
+sed "s/SERVICENAME/$PRODUCT-$MODULE-$ENVIRONMENT/g; s/NAMESPACE/$PRODUCT-$ENVIRONMENT/g; s/PUBLIC_IP/$PUBLIC_IP/g" ../k8s/template-service.yaml > ../k8s/$PRODUCT-$MODULE-$ENVIRONMENT-service.yaml
 
 ### Kubernetes Deployment ###
 
