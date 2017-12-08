@@ -17,7 +17,6 @@ pipeline {
         echo "project_name = ${project_name}"
         echo "app_name = ${app_name}"
         echo "feSvc_name = ${feSvc_name}"
-        echo "namespace = ${namespace}"
         echo "JOB_NAME = ${JOB_NAME}"
         echo "image_tag = ${image_tag}"
         echo "Kubernetes Cluster = ${cluster}"
