@@ -1,8 +1,8 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: cvmanager-alpha
-  namespace: cvmanager-alpha
+  name: SERVICENAME
+  namespace: NAMESPACE
 spec:
   type: LoadBalancer
   loadBalancerIP: 35.195.121.125
@@ -12,4 +12,4 @@ spec:
     targetPort: frontend-cport
     protocol: TCP
   selector:
-    app: cvmanager-alpha
+    app: SERVICENAME
