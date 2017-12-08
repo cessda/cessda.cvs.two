@@ -25,7 +25,7 @@ pipeline {
     stage('Build Project and start Sonar scan') {
 		  steps {
         withSonarQubeEnv('cessda-sonar') {
-          sh 'mvn clean install sonar:sonar -Dsonar.projectName=$JOB_NAME -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN} -DskipTests'
+          sh 'mvn clean install docker:build sonar:sonar -Dsonar.projectName=$JOB_NAME -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN} -DskipTests'
           sleep 5
         }
       }
@@ -47,10 +47,10 @@ pipeline {
         }
       }
     }
-	  stage('Build Docker image') {
-   		steps {
-		  echo "Build Docker image"
-                  sh("docker build -t ${image_tag} .")
+    stage('Build Docker image') {
+      steps {
+        echo "Build Docker image"
+        sh("docker build -t ${image_tag} .")
       }
     }
     stage('Push Docker image') {
