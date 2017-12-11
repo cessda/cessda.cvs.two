@@ -465,32 +465,37 @@ public class DetailView extends CvManagerView {
 		detailTreeGrid.addColumn(concept -> concept.getNotation())
 			.setCaption("Code")
 			.setEditorComponent(codeEditor, (concept, value) -> concept.setNotation(value))
-			.setExpandRatio(1);
+			.setExpandRatio(1)
+			.setId("code");
 	
 		detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en"))
 			.setCaption(i18n.get("view.detail.cvconcept.column.sl.title", locale))
 			.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
-			.setExpandRatio(1);
+			.setExpandRatio(1)
+			.setId("prefLabelSl");
 
 		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
 			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang ))
 				//.setEditorBinding(prefLabelBinding)
 				.setEditorComponent(prefLanguageEditor, (concept, value) -> concept.setPrefLabelByLanguage( selectedLang, value))
-				.setExpandRatio(1);// Component(prefLanguageEditor,
+				.setExpandRatio(1)
+				.setId("prefLabelTl");// Component(prefLanguageEditor,
 		
 		detailTreeGrid.addColumn(concept -> {
 					return new Label( concept.getDescriptionByLanguage( "en" ));
 				}, new ComponentRenderer())
 				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
-				.setExpandRatio(3);
+				.setExpandRatio(3)
+				.setId("definitionSl");
 		
 		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
 			detailTreeGrid.addColumn(concept -> {
 				return new Label( concept.getDescriptionByLanguage(selectedLang));
 			}, new ComponentRenderer())
 			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang ))
-			.setExpandRatio(3);
+			.setExpandRatio(3)
+			.setId("definitionTl");
 		
 		detailTreeGrid.setSizeFull();
 		detailTreeGrid.addItemClickListener( event -> {
@@ -778,6 +783,14 @@ public class DetailView extends CvManagerView {
 		detailTab.getTab(2).setCaption( i18n.get("view.detail.cvconcept.tab.ddi", locale));
 		detailTab.getTab(3).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
 		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
+		
+		detailTreeGrid.getColumn("code").setCaption( "Code" );
+		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
+		if( detailTreeGrid.getColumn("prefLabelTl") != null )
+			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale) );
+		detailTreeGrid.getColumn("definitionSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.definition", locale) );
+		if( detailTreeGrid.getColumn("definitionTl") != null )
+			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale) );
 		
 		actionPanel.updateMessageStrings(locale);
 	}
