@@ -30,11 +30,11 @@ public class CVController {
 	private RestClient restClient;
 
 	@ResponseStatus(code = HttpStatus.OK)
-	@RequestMapping(value = "/suggest/{dataset}/{language}/{query}/{limit}", produces = APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
+	@RequestMapping(value = "/suggest/dataset/{dataset}/language/{language}/limit/{limit}/query/{query}", produces = APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
 	@ApiOperation(value = "Get list of suggestions by query")
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "No code found") })
 
-	public List<Code> getSuggestionByQuery(@PathVariable String dataset, @PathVariable String language,
+	public CodeList getSuggestionByQuery(@PathVariable String dataset, @PathVariable String language,
 			@PathVariable String query, @PathVariable Integer limit) {
 
 		restClient = new RestClient(configService.getDdiflatdbRestUrl());
@@ -50,16 +50,34 @@ public class CVController {
 			CVConcept concept = new CVConcept(store);
 
 			// TODO needs to be code?
-			if (concept.getPrefLabelByLanguage("en").contains(query)) {
+			if (concept.getPrefLabelByLanguage("en").toLowerCase().contains(query.toLowerCase())) {
 				Code code = new Code();
 
-				code.setLanguage(language);
-				code.setUrl("http://lod.cessda.eu/" + store.getElementId());
-				code.setCode(concept.getNotation());
-				code.setPrefLabel(concept.getPrefLabelByLanguage("en"));
-				code.setLanguagePrefLabel(concept.getPrefLabelByLanguage(language));
-				code.setDescription(concept.getDescriptionByLanguage("en"));
-				codeList.add(code);
+				ContentType url = new ContentType(ContentType.TYPE_URI);
+				url.setValue("http://lod.cessda.eu/" + store.getElementId());
+				code.setUrl(url);
+
+				ContentType theCode = new ContentType(ContentType.TYPE_LITERAL);
+				theCode.setValue(concept.getNotation());
+				code.setCode(theCode);
+
+				theCode = new ContentType(ContentType.TYPE_LITERAL);
+				theCode.setValue(concept.getPrefLabelByLanguage("en"));
+				code.setPrefLabel(theCode);
+
+				theCode = new ContentType(ContentType.TYPE_LITERAL);
+				theCode.setValue(concept.getPrefLabelByLanguage(language));
+				code.setLanguagePrefLabel(theCode);
+
+				theCode = new ContentType(ContentType.TYPE_LITERAL);
+				theCode.setValue(concept.getDescriptionByLanguage("en"));
+				code.setDescription(theCode);
+
+				theCode = new ContentType(ContentType.TYPE_LITERAL);
+				theCode.setValue(language);
+				code.setLanguage(theCode);
+
+				codeList.getListOfCodes().add(code);
 				count--;
 			}
 		}

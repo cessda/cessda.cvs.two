@@ -17,59 +17,56 @@ public class Code {
 
 	private ContentType description;
 
+	public Code() {
+
+	}
+
 	public ContentType getUrl() {
 		return url;
 	}
 
-	public void setUrl(String url) {
-		this.url = new ContentType(ContentType.TYPE_URI);
-		this.url.setValue(url);
-
+	public void setUrl(ContentType url) {
+		this.url = url;
 	}
 
 	public ContentType getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
-		this.code = new ContentType(ContentType.TYPE_LITERAL);
-		this.code.setValue(code);
+	public void setCode(ContentType code) {
+		this.code = code;
 	}
 
 	public ContentType getPrefLabel() {
 		return prefLabel;
 	}
 
-	public void setPrefLabel(String prefLabel) {
-		this.prefLabel = new ContentType(ContentType.TYPE_LITERAL);
-		this.prefLabel.setValue(prefLabel);
+	public void setPrefLabel(ContentType prefLabel) {
+		this.prefLabel = prefLabel;
 	}
 
 	public ContentType getLanguagePrefLabel() {
 		return languagePrefLabel;
 	}
 
-	public void setLanguagePrefLabel(String languagePrefLabel) {
-		this.languagePrefLabel = new ContentType(ContentType.TYPE_LITERAL);
-		this.languagePrefLabel.setValue(languagePrefLabel);
+	public void setLanguagePrefLabel(ContentType languagePrefLabel) {
+		this.languagePrefLabel = languagePrefLabel;
 	}
 
 	public ContentType getLanguage() {
 		return language;
 	}
 
-	public void setLanguage(String language) {
-		this.language = new ContentType(ContentType.TYPE_LITERAL);
-		this.language.setValue(language);
+	public void setLanguage(ContentType language) {
+		this.language = language;
 	}
 
 	public ContentType getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = new ContentType(ContentType.TYPE_LITERAL);
-		this.description.setValue(description);
+	public void setDescription(ContentType description) {
+		this.description = description;
 	}
 
 }

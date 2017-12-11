@@ -8,6 +8,10 @@ public class ContentType {
 	private String type;
 	private String value;
 
+	public ContentType() {
+
+	}
+
 	public ContentType(String type) {
 		super();
 		this.type = type;
