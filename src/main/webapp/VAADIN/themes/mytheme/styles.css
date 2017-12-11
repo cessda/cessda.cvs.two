@@ -1057,7 +1057,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "8.2.0";
+	content: "8.1.7";
 }
 
 .v-widget {
@@ -1148,7 +1148,7 @@
 	overflow: auto;
 }
 
-.v-assistive-device-only {
+.v-assistive-device-only, .v-assistive-device-only-label label {
 	position: absolute;
 	top: -2000px;
 	left: -2000px;
@@ -1685,28 +1685,6 @@ div.v-layout.v-horizontal.v-widget {
 	src: url(../valo/fonts/open-sans/OpenSans-ExtraBoldItalic-webfont.eot?#iefix) format("embedded-opentype"), url(../valo/fonts/open-sans/OpenSans-ExtraBoldItalic-webfont.woff) format("woff"), url(../valo/fonts/open-sans/OpenSans-ExtraBoldItalic-webfont.ttf) format("truetype");
 	font-weight: 900;
 	font-style: italic;
-}
-
-.font-bold {
-	font-weight: 700;
-}
-
-.v-tooltip {
-	background-color: transparent;
-	box-shadow: none;
-	padding: 0 8px;
-}
-
-.dialog-content {
-	margin-top: 10px;
-}
-
-.dialog-content .v-caption {
-	display: none;
-}
-
-.dialog-content .v-label {
-	padding: 6px 0;
 }
 
 .mytheme.v-app, .mytheme.v-app-loading {
@@ -16485,6 +16463,19 @@ div.v-layout.v-horizontal.v-widget {
 	vertical-align: top;
 }
 
+.mytheme .v-treegrid-tablewrapper > table tr {
+	transform: none !important;
+	float: left;
+	position: relative !important;
+}
+
+.mytheme .v-treegrid-tablewrapper > table tr td {
+	height: auto !important;
+	display: table-cell;
+	float: none;
+	vertical-align: top;
+}
+
 .mytheme .v-window-header {
 	color: #505050;
 	font-weight: 700;
@@ -16496,10 +16487,36 @@ div.v-layout.v-horizontal.v-widget {
 	margin-top: -10px !important;
 }
 
-.mytheme .v-tabsheet-content tbody {
+.mytheme .detail-tab {
+	height: 500px;
+}
+
+.mytheme .detail-tab .v-tabsheet-content tbody {
 	position: absolute;
 	display: block;
 	height: 370px;
 	overflow-y: scroll;
 	overflow-x: hidden;
+}
+
+.mytheme .font-bold {
+	font-weight: 700;
+}
+
+.mytheme .v-tooltip {
+	background-color: transparent;
+	box-shadow: none;
+	padding: 0 8px;
+}
+
+.mytheme .dialog-content {
+	margin-top: 10px;
+}
+
+.mytheme .dialog-content .v-caption {
+	display: none;
+}
+
+.mytheme .dialog-content .v-label {
+	padding: 6px 0;
 }

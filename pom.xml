@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-		<vaadin.version>8.2.0.beta1</vaadin.version>
+		<vaadin.version>8.1.7</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<gesis.repository.visibility>public</gesis.repository.visibility>
 		<!--Sonar Prop config: starts-->
@@ -50,22 +50,26 @@
 			<id>vaadin-adpdons</id>
 			<url>http://maven.vaadin.com/vaadin-addons</url>
 		</repository>
+		<!-- 
 		<repository>
 			  <id>vaadin-prereleases</id>
 			  <name>Vaadin Pre-releases</name>
 			  <url>https://maven.vaadin.com/vaadin-prereleases</url>
 		 </repository>
+		 -->
 	</repositories>
 	<pluginRepositories>
   		<pluginRepository>
     		<id>gesis-${gesis.repository.visibility}</id>
     		<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}</url>
   		</pluginRepository>
+  		<!-- 
   		 <pluginRepository>
 			  <id>vaadin-prereleases</id>
 			  <name>Vaadin Pre-releases</name>
 			  <url>https://maven.vaadin.com/vaadin-prereleases</url>
 		 </pluginRepository>
+		 -->
 	</pluginRepositories>
 
 	<distributionManagement>
@@ -116,12 +120,15 @@
             <artifactId>spring-boot-starter-tomcat</artifactId>
             <scope>provided</scope>
         </dependency>
-
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-themes</artifactId>
-			</dependency>
-
+		</dependency>
+		<dependency>
+		    <groupId>com.vaadin</groupId>
+		    <artifactId>vaadin-sass-compiler</artifactId>
+		    <version>0.9.13</version>
+		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -232,6 +239,36 @@
 					<artifactId>git-commit-id-plugin</artifactId>
 					<version>2.2.2</version>
 				</plugin>
+				
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.vaadin</groupId>
+										<artifactId>
+											vaadin-maven-plugin
+										</artifactId>
+										<versionRange>[7.1.11,)</versionRange>
+										<goals>
+											<goal>resources</goal>
+											<goal>update-widgetset</goal>
+											<!-- <goal>compile</goal> -->
+											<!-- <goal>compile-theme</goal> -->
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -339,9 +376,18 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>update-theme</goal>
 							<goal>update-widgetset</goal>
 							<goal>compile</goal>
+						 <!--
+							<goal>clean</goal>
+          					<goal>resources</goal>
+							<goal>update-theme</goal>
+							<goal>update-widgetset</goal>
+							-->
+							<!-- 
+							<goal>compile-theme</goal>
+							<goal>compile</goal>
+							-->
 							<!-- <goal>compile-theme</goal> -->
 						</goals>
 					</execution>
@@ -397,7 +443,9 @@
 	<profiles>
 		 <profile>
             <id>local</id>
-            
+            <activation>
+					<activeByDefault>true</activeByDefault>
+			</activation>
             <properties>
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
@@ -426,9 +474,7 @@
         </profile>
         <profile>
             <id>docker-compose</id>
-            <activation>
-					<activeByDefault>true</activeByDefault>
-			</activation>
+
             <properties>
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>

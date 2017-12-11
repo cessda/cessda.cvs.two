@@ -47,7 +47,7 @@ public class CvManagerService {
 	}
 	
 	public void deleteConceptTree(TreeData<CVConcept> treeData, CVConcept targetConcept) {
-		deleteById(targetConcept.getId(), DDIElement.CVCONCEPT, "peter", "delete concept");
+		deleteById(targetConcept.ddiStore.getPrimaryKey(), "peter", "delete concept");
 		treeData.getChildren(targetConcept).forEach( childConcept -> {
 			deleteConceptTree(treeData, childConcept);
 		});

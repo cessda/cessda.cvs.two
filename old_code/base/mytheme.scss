@@ -1746,7 +1746,8 @@ $v-selection-item-border-radius: 0;
 	   		}
 	   	}
    	}
-   	.undefined-height>.v-grid-tablewrapper>table{
+   .v-treegrid-tablewrapper>table{
+   		color:#f00;
    		tr{
    			transform: none !important;
    			float:left;
@@ -1759,18 +1760,8 @@ $v-selection-item-border-radius: 0;
 		   	}
 	   }
    }
-   .v-treegrid-tablewrapper>table{
-   		tr{
-   			transform: none !important;
-   			float:left;
-   			position: relative !important;
-		   	td{
-		   		height:auto !important;
-    			display:table-cell;
-    			float:none;
-    			vertical-align: top;
-		   	}
-	   }
+   .test-class{
+   		color:#f00;
    }
    .v-window-header{
 	   	color: #505050;

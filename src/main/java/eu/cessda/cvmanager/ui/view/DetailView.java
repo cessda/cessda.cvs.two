@@ -3,6 +3,7 @@ package eu.cessda.cvmanager.ui.view;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -15,6 +16,7 @@ import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.dialogs.DefaultConfirmDialogFactory;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -27,6 +29,7 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import com.vaadin.data.Binder;
 import com.vaadin.data.Binder.Binding;
 import com.vaadin.data.TreeData;
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -34,13 +37,19 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.shared.ui.dnd.DropEffect;
+import com.vaadin.shared.ui.dnd.EffectAllowed;
+import com.vaadin.shared.ui.grid.DropLocation;
+import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.ItemClick;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -51,6 +60,8 @@ import com.vaadin.ui.TreeGrid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.components.grid.TreeGridDragSource;
+import com.vaadin.ui.components.grid.TreeGridDropTarget;
 import com.vaadin.ui.renderers.ButtonRenderer;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -115,9 +126,13 @@ public class DetailView extends CvManagerView {
 	private View oldView;
 	
 	private TreeGrid<CVConcept> detailTreeGrid = new TreeGrid<>(CVConcept.class);
+	private TreeGridDragSource<CVConcept> dragSource;
+	private TreeGridDropTarget<CVConcept> dropTarget;
 
 	private TreeData<CVConcept> cvCodeTreeData;
 	private MCssLayout languageLayout = new MCssLayout();
+	private Set<CVConcept> draggedItems;
+	private TreeDataProvider<CVConcept> dataProvider;
 
 	public DetailView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			CvManagerService cvManagerService, SecurityService securityService) {
@@ -156,8 +171,7 @@ public class DetailView extends CvManagerView {
 				buttonLayout, 
 				topSection, 
 				languageLayout, 
-				bottomSection,
-				new Button("Test", e -> updateDetailGrid())
+				bottomSection
 			);
 
 	}
@@ -429,6 +443,7 @@ public class DetailView extends CvManagerView {
 		topEditSection.add(topHead, titleSmall, description, code, langSec, titleSmallOl, descriptionOl, langSecOl);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void initBottomViewSection() {
 		bottomViewSection.removeAllComponents();
 		detailLayout.removeAllComponents();
@@ -444,6 +459,7 @@ public class DetailView extends CvManagerView {
 		detailTreeGrid = new TreeGrid<>(CVConcept.class);
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
+		
 		updateDetailGrid();	
 		
 		detailTreeGrid.addColumn(concept -> concept.getNotation())
@@ -489,8 +505,10 @@ public class DetailView extends CvManagerView {
 			cvConcept = event.getAllSelectedItems().size() > 0 ? event.getAllSelectedItems().iterator().next() : null;
 			actionPanel.conceptSelectedChange( cvConcept );
 		});
-				
 		
+		detailTreeGrid.getColumns().stream().forEach( column -> column.setSortable( false ));
+				
+		enableTreeGridDragAndDropSort();
 
 		detailLayout.addComponents(detailTreeGrid);
 		detailLayout.setMargin(false);
@@ -501,9 +519,71 @@ public class DetailView extends CvManagerView {
 		bottomViewSection.add(detailTab);
 	}
 	
+	private void enableTreeGridDragAndDropSort() {
+		dragSource = new TreeGridDragSource<>(detailTreeGrid);
+		
+		// set allowed effects
+		dragSource.setEffectAllowed(EffectAllowed.MOVE);
+	     // add a drag data generator
+//	     dragSource.setDragDataGenerator("text", menu -> {
+//	         return menu.getName();
+//	     });
+	     
+		dragSource.addGridDragStartListener(event ->
+			// Keep reference to the dragged items
+			draggedItems = event.getDraggedItems()
+		);
+	  
+	     // Add drag end listener  
+	     dragSource.addGridDragEndListener(event -> {
+	         // If drop was successful, remove dragged items from source Grid
+	         if (event.getDropEffect() == DropEffect.MOVE) {
+	         }
+	     });
+	     
+	     dropTarget = new TreeGridDropTarget<>(detailTreeGrid, DropMode.BETWEEN);
+	     dropTarget.setDropEffect(DropEffect.MOVE);
+	     
+	     dropTarget.addTreeGridDropListener(event -> {
+	        // Accepting dragged items from another Grid in the same UI
+	        event.getDragSourceExtension().ifPresent(source -> {
+	            if (source instanceof TreeGridDragSource) {
+	                if (event.getDropTargetRow().isPresent()) {
+	                	CVConcept targetRow = event.getDropTargetRow().get();
+	                	CVConcept draggedRow = draggedItems.iterator().next();
+	                	Integer targetDepth = event.getDropTargetRowDepth().get();
+	                	
+	                	ConfirmDialog.show( this.getUI(), "Code move option",
+	            				"Move \"" + (draggedRow.getNotation() == null ? draggedRow.getPrefLabelByLanguage("en"): draggedRow.getNotation()) + "\" as sibling or as a child of \"" + 
+        						(targetRow.getNotation() == null ? targetRow.getPrefLabelByLanguage("en"): targetRow.getNotation())+ "\"?", 
+        						"As next sibling", "As child",
+	            		
+	            					dialog -> {
+	            						if( dialog.isConfirmed() ) {
+	            							cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
+	            							dataProvider.refreshAll();
+	            							draggedItems = null;
+	            						} else {
+	            							cvCodeTreeData.setParent(draggedRow, targetRow);
+	            							dataProvider.refreshAll();
+	            							draggedItems = null;
+	            						}
+	            					}
+
+	            				);
+	                }
+	            }
+	        });
+	     });
+	}
+	
+	private void disableTreeGridDragAndDropSort() {
+		dragSource = null;
+		dropTarget = null;
+	}
 
 	public void updateDetailGrid() {		
-		TreeDataProvider<CVConcept> dataProvider = (TreeDataProvider<CVConcept>) detailTreeGrid.getDataProvider();
+		dataProvider = (TreeDataProvider<CVConcept>) detailTreeGrid.getDataProvider();
 		cvCodeTreeData = dataProvider.getTreeData();
 		cvCodeTreeData.clear();
 		// assign the tree structure
@@ -642,6 +722,14 @@ public class DetailView extends CvManagerView {
 					}
 
 				);
+				break;
+			case CVCONCEPT_SORT:
+//				if( (boolean)event.getPayload() == true ) {
+//					enableTreeGridDragAndDropSort();
+//				} else {
+//					disableTreeGridDragAndDropSort();
+//				}
+				
 				break;
 			default:
 				break;

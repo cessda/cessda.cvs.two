@@ -56,6 +56,8 @@ public class ActionPanel extends CustomComponent{
 	private MButton buttonPublishCv = new MButton();
 	private MButton buttonUnpublishCv = new MButton();
 	
+	private boolean enableSort=false;
+	
 	private CvManagerView cvManagerView;
 	private CVScheme cvScheme;
 	private CVConcept cvConcept;
@@ -108,6 +110,8 @@ public class ActionPanel extends CustomComponent{
 		buttonPublishCv.addClickListener( this::doPublishCv );
 		buttonUnpublishCv.addClickListener( this::doUnpublishCv );
 		
+		conceptSelectedChange(null);
+		
 		actionLayout
 			.withFullWidth()
 			.withStyleName( "action-panel" )
@@ -120,8 +124,8 @@ public class ActionPanel extends CustomComponent{
 					buttonCodeAdd,
 					buttonCodeAddTranslation,
 					buttonCodeAddChild,
-					buttonCodeDelete//,
-//					buttonSortCode//,
+					buttonCodeDelete,
+					buttonCodeSort//,
 					
 //					buttonValidateCv,
 //					buttonFinaliseReview,
@@ -226,7 +230,8 @@ public class ActionPanel extends CustomComponent{
 	
 	private void doSortCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
-		
+		enableSort = !enableSort;
+		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_SORT, enableSort) );
 	}
 	
 	private void doValidateCv() {

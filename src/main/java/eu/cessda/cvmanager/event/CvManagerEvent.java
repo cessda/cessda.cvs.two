@@ -12,7 +12,8 @@ public class CvManagerEvent {
 		CVCONCEPT_CREATED(12),
 		CVCONCEPT_EDIT_MODE(13), 
 		CVCONCEPT_ADDCHILD_DIALOG(14), 
-		CVCONCEPT_DELETED(15);
+		CVCONCEPT_DELETED(15),
+		CVCONCEPT_SORT(16);
 		
 		private final int value;
 		
