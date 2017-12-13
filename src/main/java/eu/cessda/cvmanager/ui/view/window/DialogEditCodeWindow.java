@@ -83,9 +83,11 @@ public class DialogEditCodeWindow extends MWindow {
 		
 		this.eventBus = eventBus;
 		
-		sourceNotation.withFullWidth();
+		sourceNotation.withWidth("85%");
 		sourceNotation.setValue( code.getNotation() == null ? "" : code.getNotation() );
 		sourceNotation.setReadOnly( true );
+		
+		notation.withWidth("85%");
 		
 		sourceTitle.withFullWidth();
 		sourceTitle.setValue( code.getPrefLabelByLanguage( "en" ) );
@@ -171,6 +173,8 @@ public class DialogEditCodeWindow extends MWindow {
 
 		Button cancelButton = new Button("Cancel", e -> this.close());
 		
+		MHorizontalLayout row1 = new MHorizontalLayout();
+		
 		if( !selectedLanguage.equals( "en" )) {
 			layout
 				.withHeight("98%")
@@ -183,11 +187,12 @@ public class DialogEditCodeWindow extends MWindow {
 							.withFullWidth()
 							.add(
 									lSourceNotation, sourceNotation
-							).withExpand(lSourceNotation, 0.31f).withExpand(sourceNotation, 0.69f),
+							).withExpand(lSourceNotation, 0.215f).withExpand(sourceNotation, 0.785f),
 							new MHorizontalLayout().add(
 									lSourceLanguage, sourceLanguage
 							)
-					),
+					).withExpand( sourceRowA.getComponent(0), 0.7f)
+					 .withExpand( sourceRowA.getComponent(1), 0.3f),
 					sourceRow
 						.withFullWidth()
 						.add(
@@ -195,7 +200,7 @@ public class DialogEditCodeWindow extends MWindow {
 							).withExpand(lSourceTitle, 0.15f).withExpand( sourceTitle, 0.85f),
 					sourceRowB
 						.withFullWidth()
-						.withHeight("133px")
+						.withHeight("290px")
 						.add(
 							lSourceDescription, sourceDescription
 						).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
@@ -213,7 +218,7 @@ public class DialogEditCodeWindow extends MWindow {
 					),
 					new MHorizontalLayout()
 						.withFullWidth()
-						.withHeight("250px")
+						.withHeight("290px")
 						.add(
 							lDescription, description
 						).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
@@ -238,18 +243,19 @@ public class DialogEditCodeWindow extends MWindow {
 			.withHeight("98%")
 			.withStyleName("dialog-content")
 			.add( 
-				new MHorizontalLayout()
+				row1
 					.withFullWidth()
 					.add(
 						new MHorizontalLayout()
 						.withFullWidth()
 						.add(
 								lNotation, notation
-						).withExpand(lNotation, 0.31f).withExpand(notation, 0.69f),
+						).withExpand(lNotation, 0.215f).withExpand(notation, 0.785f),
 						new MHorizontalLayout().add(
 								lLanguage, languageCb
 						)
-				),
+				).withExpand( row1.getComponent(0), 0.7f)
+				 .withExpand( row1.getComponent(1), 0.3f),
 				new MHorizontalLayout()
 					.withFullWidth()
 					.add(
@@ -279,8 +285,8 @@ public class DialogEditCodeWindow extends MWindow {
 		}
 		
 		this
-			.withHeight("600px")
-			.withWidth("700px")
+			.withHeight("800px")
+			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
 	}

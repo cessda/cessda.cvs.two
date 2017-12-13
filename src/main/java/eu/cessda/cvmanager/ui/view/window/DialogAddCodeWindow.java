@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
@@ -40,7 +41,7 @@ public class DialogAddCodeWindow extends MWindow {
 	private MLabel lLanguage = new MLabel( "Language (source)" );
 
 	private MVerticalLayout layout = new MVerticalLayout();
-	private TextField notation = new TextField("Code");
+	private MTextField notation = new MTextField("Code");
 	private TextField preferedLabel = new TextField("Descriptive term");
 	private TextArea description = new TextArea("Definition*");
 	private ComboBox<String> languageCb = new ComboBox<>("Language (source)");
@@ -52,15 +53,12 @@ public class DialogAddCodeWindow extends MWindow {
 	private CVScheme cvScheme;
 
 	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvSch, CVConcept newCode, CVConcept parent, String orignalLanguage) {
-		super( parent == null ? "Add Code (Source Language)":"Add Child Code of \"" + parent.getNotation() + "\"");
+		super( parent == null ? "Add Code (Source Language)":"Add Child Code of \"" + ( parent.getNotation() == null? parent.getPrefLabelByLanguage("en") : parent.getNotation() )+ "\"");
 		
 		this.eventBus = eventBus;
 		this.cvScheme = cvSch;
 		this.parentCode = parent;
-		
-		setWidth("700px");
-		setHeight("500px");
-		
+
 		languageCb.setItems( Language.getAllEnumCapitalized());
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
@@ -69,6 +67,7 @@ public class DialogAddCodeWindow extends MWindow {
 		
 		preferedLabel.setWidth("100%");
 		description.setSizeFull();
+		notation.withWidth("85%");
 		
 		lTitle.withStyleName( "required" );
 		lDescription.withStyleName( "required" );
@@ -111,23 +110,25 @@ public class DialogAddCodeWindow extends MWindow {
 		});
 		
 		Button cancelButton = new Button("Cancel", e -> this.close());
+		MHorizontalLayout row1 = new MHorizontalLayout();
 		
 		layout
 			.withHeight("98%")
 			.withStyleName("dialog-content")
 			.add( 
-				new MHorizontalLayout()
+				row1
 					.withFullWidth()
 					.add(
 						new MHorizontalLayout()
 						.withFullWidth()
 						.add(
 								lNotation, notation
-						).withExpand(lNotation, 0.31f).withExpand(notation, 0.69f),
+						).withExpand(lNotation, 0.215f).withExpand(notation, 0.785f),
 						new MHorizontalLayout().add(
 								lLanguage, languageCb
 						)
-				),
+				).withExpand( row1.getComponent(0), 0.7f)
+				 .withExpand( row1.getComponent(1), 0.3f),
 				new MHorizontalLayout()
 					.withFullWidth()
 					.add(
@@ -135,7 +136,7 @@ public class DialogAddCodeWindow extends MWindow {
 					).withExpand(lTitle, 0.15f).withExpand( preferedLabel, 0.85f),
 				new MHorizontalLayout()
 				.withFullWidth()
-				.withHeight("300px")
+				.withHeight("400px")
 				.add(
 					lDescription, description
 				).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
@@ -149,16 +150,16 @@ public class DialogAddCodeWindow extends MWindow {
 				.withExpand(cancelButton, 0.1f)
 				.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 			)
-			.withExpand(layout.getComponent(0), 0.06f)
-			.withExpand(layout.getComponent(1), 0.06f)
-			.withExpand(layout.getComponent(2), 0.4f)
-			.withExpand(layout.getComponent(3), 0.4f)
+			.withExpand(layout.getComponent(0), 0.07f)
+			.withExpand(layout.getComponent(1), 0.07f)
+			.withExpand(layout.getComponent(2), 0.5f)
+			.withExpand(layout.getComponent(3), 0.3f)
 			.withAlign(layout.getComponent(3), Alignment.BOTTOM_RIGHT);
 
 		
 		this
-			.withHeight("600px")
-			.withWidth("700px")
+			.withHeight("650px")
+			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
 

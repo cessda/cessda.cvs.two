@@ -133,7 +133,7 @@ public class DialogCVSchemeWindow extends MWindow {
 					).withExpand( lTitle, 0.15f).withExpand( tfTitle, 0.85f),
 				new MHorizontalLayout()
 				.withFullWidth()
-				.withHeight("300px")
+				.withHeight("400px")
 				.add(
 					lDescription, description
 				).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
@@ -147,16 +147,16 @@ public class DialogCVSchemeWindow extends MWindow {
 				.withExpand(cancelButton, 0.1f)
 				.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 			)
-			.withExpand(layout.getComponent(0), 0.06f)
-			.withExpand(layout.getComponent(1), 0.06f)
-			.withExpand(layout.getComponent(2), 0.4f)
-			.withExpand(layout.getComponent(3), 0.4f)
+			.withExpand(layout.getComponent(0), 0.07f)
+			.withExpand(layout.getComponent(1), 0.07f)
+			.withExpand(layout.getComponent(2), 0.5f)
+			.withExpand(layout.getComponent(3), 0.3f)
 			.withAlign(layout.getComponent(3), Alignment.BOTTOM_RIGHT);
 
 		
 		this
-			.withHeight("600px")
-			.withWidth("700px")
+			.withHeight("650px")
+			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
 	}

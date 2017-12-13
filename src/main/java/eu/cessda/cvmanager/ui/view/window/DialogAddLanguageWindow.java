@@ -148,7 +148,7 @@ public class DialogAddLanguageWindow extends MWindow {
 				),
 				new MHorizontalLayout()
 					.withFullWidth()
-					.withHeight("133px")
+					.withHeight("290px")
 					.add(
 						lSourceDescription, sourceDescription
 					).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
@@ -166,7 +166,7 @@ public class DialogAddLanguageWindow extends MWindow {
 				),
 				new MHorizontalLayout()
 					.withFullWidth()
-					.withHeight("250px")
+					.withHeight("290px")
 					.add(
 						lDescription, description
 					).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
@@ -181,15 +181,15 @@ public class DialogAddLanguageWindow extends MWindow {
 					.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 			)
 			.withExpand(layout.getComponent(0), 0.06f)
-			.withExpand(layout.getComponent(1), 0.25f)
+			.withExpand(layout.getComponent(1), 0.5f)
 			.withExpand(layout.getComponent(2), 0.06f)
 			.withExpand(layout.getComponent(3), 0.5f)
 			.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
 
 		
 		this
-			.withHeight("600px")
-			.withWidth("700px")
+			.withHeight("800px")
+			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
 	}
