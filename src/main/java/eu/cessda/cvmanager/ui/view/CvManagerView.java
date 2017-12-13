@@ -80,8 +80,8 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 			.add( actionPanel,
 				rightContainer
 			)
-			.withExpand( actionPanel, 0.15f )
-			.withExpand( rightContainer, 0.85f );
+			.withExpand( actionPanel, 0.2f )
+			.withExpand( rightContainer, 0.8f );
 		
 		mainContainer
 			.withWidth( "1170px" )

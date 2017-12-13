@@ -231,6 +231,7 @@ public class ActionPanel extends CustomComponent{
 	private void doSortCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		enableSort = !enableSort;
+		buttonCodeSort.withCaption( enableSort ? "Disable order code" : "Enable order code" );
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_SORT, enableSort) );
 	}
 	
@@ -259,7 +260,7 @@ public class ActionPanel extends CustomComponent{
 		buttonCodeAddTranslation.withCaption( i18n.get("view.action.button.cvconcept.translation", locale));
 		buttonCodeAddChild.withCaption( "Add Child" );
 		buttonCodeDelete.withCaption( i18n.get("view.action.button.cvconcept.delete", locale));
-		buttonCodeSort.withCaption( i18n.get("view.action.button.cvconcept.order", locale));
+		buttonCodeSort.withCaption( enableSort ? "Disable order code" : "Enable order code" );
 		buttonValidateCv.withCaption( i18n.get("view.action.button.cvconcept.validate", locale));
 		buttonFinaliseReview.withCaption( i18n.get("view.action.button.cvconcept.finalize", locale));
 		buttonPublishCv.withCaption( i18n.get("view.action.button.cvconcept.publish", locale));
