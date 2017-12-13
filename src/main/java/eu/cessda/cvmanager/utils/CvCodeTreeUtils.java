@@ -15,6 +15,7 @@ import com.vaadin.data.TreeData;
 import eu.cessda.cvmanager.service.CvManagerService;
 
 public class CvCodeTreeUtils{
+	private static List<String> conceptToBeRemoved = null;
 	
 	public static void buildCvConceptTree(CvManagerService cvManagerService, CVScheme cvScheme, TreeData<CVConcept> cvConceptTree ) {
 		cvConceptTree.clear();
@@ -25,26 +26,48 @@ public class CvCodeTreeUtils{
 			CVConcept concept = new CVConcept(ddiConcept);
 			cvConceptMap.put(concept.getId(), concept);
 		});
-		// get root concepts
+		// set root concepts - tree level 0
 		cvScheme.getOrderedMemberList().forEach( item -> {
 			CVConcept concept = cvConceptMap.get(item);
 			if( concept != null ) {
 				rootCvConcepts.add( concept );
+				// assign Narrower if exist
+				assignNarrower(cvConceptTree, cvConceptMap, concept, null);
+				cvConceptMap.remove( item ); // remove map item
 			}
 		});
 		cvConceptTree.addRootItems(rootCvConcepts);
 		
-		// TODO: add broader in each concept if needed
+		// set root concept child - tree level 1 
+		rootCvConcepts.forEach( concept -> assignNarrower(cvConceptTree, cvConceptMap, concept, null) );
 
-		// add narrower in each concept if exist
-		cvConceptMap.forEach( (k, v) -> {
-			if( v.getOrderedNarrowerList() != null && !v.getOrderedNarrowerList().isEmpty() ) {
-				v.getOrderedNarrowerList().forEach( i -> {
-					CVConcept narrowerCode = cvConceptMap.get(i);
-					if( narrowerCode != null )
-						cvConceptTree.addItem(v, narrowerCode);
-				});
-			}
-		});
+		// add narrower for level 2 and the rest
+		do {
+			conceptToBeRemoved = new ArrayList<>();
+			cvConceptMap.forEach( (k, v) -> {
+				assignNarrower(cvConceptTree, cvConceptMap, v, conceptToBeRemoved);
+			});
+			conceptToBeRemoved.forEach( i -> cvConceptMap.remove( i ));
+		} while( conceptToBeRemoved.size() > 0 );
 	}
+
+	private static void assignNarrower(TreeData<CVConcept> cvConceptTree, Map<String, CVConcept> cvConceptMap,
+			CVConcept concept, List<String> conceptToBeRemoved) {
+		if( concept.getOrderedNarrowerList() != null && !concept.getOrderedNarrowerList().isEmpty() ) {
+			concept.getOrderedNarrowerList().forEach( i -> {
+				if(i == null || i.isEmpty())
+					return;
+				// check if parent node has a parent
+				if( !cvConceptTree.contains(concept) )
+					return;
+				CVConcept narrowerCode = cvConceptMap.get(i);
+				if( narrowerCode != null ) {
+					cvConceptTree.addItem(concept, narrowerCode);
+					if( conceptToBeRemoved != null)
+						conceptToBeRemoved.add(concept.getId());
+				}
+			});
+		}
+	}
+	
 }

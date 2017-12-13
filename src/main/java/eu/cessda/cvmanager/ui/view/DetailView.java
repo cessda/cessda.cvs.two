@@ -596,17 +596,24 @@ public class DetailView extends CvManagerView {
 		                						cvManagerService.storeTopConcept(cvScheme, cvCodeTreeData.getRootItems());
 		                					}
 	                					}
-	                					
-	                					
-	        							
-	        							draggedItems = null;
-	                				} else if (selectedOptionNumber == 1) { //move as child
+	                				} 
+	                				else if (selectedOptionNumber == 1) { //move as child
+	                					// Possibility
+	                					// as topconcept to child from root/leaf concept
+	                					// as child child to  child from root/leaf concept (only concept narrower affected)
             							cvCodeTreeData.setParent(draggedRow, targetRow);
             							dataProvider.refreshAll();
             							
-            							
-            							draggedItems = null;
+            							// update topconcept, if dragged top concept is null
+            							if( draggedNodeParent == null ) { // dragged node was topconcept
+            								cvManagerService.storeTopConcept(cvScheme, cvCodeTreeData.getRootItems());
+            							} else {
+            								cvManagerService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeData.getChildren( draggedNodeParent ));
+            							}
+            							// update new parent child order
+            							cvManagerService.storeNarrowerConcept( targetRow, cvCodeTreeData.getChildren( targetRow ));
 	                				}
+	                				draggedItems = null;
 	                			})
 	                	);
 	                }
