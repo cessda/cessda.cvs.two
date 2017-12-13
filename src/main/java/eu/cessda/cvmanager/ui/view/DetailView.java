@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
@@ -116,6 +117,7 @@ public class DetailView extends CvManagerView {
 	private MLabel lDefinitionOl = new MLabel();
 	private MLabel lVersionOl = new MLabel();
 	private MLabel lDateOl = new MLabel();
+	private boolean enableTreeDragAndDrop;
 
 	private View oldView;
 	
@@ -246,10 +248,6 @@ public class DetailView extends CvManagerView {
 			
 		});
 	}
-	
-//	private void refreshCvConcepts() {
-//		CvCodeTree cvCodeTree = new CvCodeTree(cvManagerService, cvScheme);
-//	}
 	
 	private void doSaveConcept() {
 		cvScheme.save();
@@ -500,6 +498,14 @@ public class DetailView extends CvManagerView {
 			}
 		});
 		
+		detailTreeGrid.addSelectionListener( event -> {
+			cvConcept = event.getAllSelectedItems().size() > 0 ? event.getAllSelectedItems().iterator().next() : null;
+			actionPanel.conceptSelectedChange( cvConcept );
+		});
+		
+		if(enableTreeDragAndDrop)
+			enableTreeGridDragAndDropSort();
+		
 		detailTreeGrid.getColumns().stream().forEach( column -> column.setSortable( false ));
 				
 		detailLayout.addComponents(detailTreeGrid);
@@ -511,12 +517,7 @@ public class DetailView extends CvManagerView {
 		bottomViewSection.add(detailTab);
 	}
 	
-	private void enableTreeGridDragAndDropSort() {
-		detailTreeGrid.addSelectionListener( event -> {
-			cvConcept = event.getAllSelectedItems().size() > 0 ? event.getAllSelectedItems().iterator().next() : null;
-			actionPanel.conceptSelectedChange( cvConcept );
-		});
-		
+	private void enableTreeGridDragAndDropSort() {		
 		dragSource = new TreeGridDragSource<>(detailTreeGrid);
 		
 		// set allowed effects
@@ -551,13 +552,59 @@ public class DetailView extends CvManagerView {
 	                				Integer selectedOptionNumber = windowoption.getSelectedOptionNumber();
 	                				if(selectedOptionNumber == null )
 	                					return;
-	                				if( selectedOptionNumber == 0 ) { // next sibling
-	        							cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
-	        							dataProvider.refreshAll();
+	                				
+                					CVConcept draggedNodeParent = cvCodeTreeData.getParent(draggedRow);
+                					CVConcept targetNodeParent = cvCodeTreeData.getParent(targetRow);
+                					boolean parentSame = true;
+                					
+	                				if( selectedOptionNumber == 0 ) { // move as next sibling
+	                					// Possibility
+	                					// -- within same parent
+	                					// move between siblings in root node (top concepts level)  - checked Ok
+	                					// move between siblings in x-parent node (parent as child concept level) - checked Ok
+	                					// -- different parent
+	                					// move from child concept to top concept  - checked Ok
+	                					// move from top concept to child concept  - checked Ok
+	                					
+	                					
+	                					// in order to be able to move as next sibling 
+	                					// the nodes need to be from the same parent
+	                					if( !Objects.equals( draggedNodeParent, targetNodeParent)){
+	                						//add code as target parent node first
+	                						cvCodeTreeData.setParent(draggedRow, targetNodeParent);
+	                						parentSame=false;
+	                					}
+
+	                					// update tree in vaadin UI
+	                					cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
+	                					dataProvider.refreshAll();
+	                					
+	                					Integer targetNodeLevel = event.getDropTargetRowDepth().get();
+	                					
+	                					if( targetNodeLevel == 0 ) { // root concept, reorder
+	                						cvManagerService.storeTopConcept(cvScheme, cvCodeTreeData.getRootItems());
+	                					} else { // reorder narrower
+	                						cvManagerService.storeNarrowerConcept( targetNodeParent, cvCodeTreeData.getChildren( targetNodeParent ));
+	                					}
+	                					  
+	                					// dragged node not from topConcepts, need to reorder the narrower list
+	                					// from previous parent
+	                					if( !parentSame ) {
+		                					if( draggedNodeParent != null ) {
+		                						cvManagerService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeData.getChildren( draggedNodeParent ));
+		                					} else {
+		                						cvManagerService.storeTopConcept(cvScheme, cvCodeTreeData.getRootItems());
+		                					}
+	                					}
+	                					
+	                					
+	        							
 	        							draggedItems = null;
-	                				} else if (selectedOptionNumber == 1) { //child
+	                				} else if (selectedOptionNumber == 1) { //move as child
             							cvCodeTreeData.setParent(draggedRow, targetRow);
             							dataProvider.refreshAll();
+            							
+            							
             							draggedItems = null;
 	                				}
 	                			})
@@ -706,12 +753,8 @@ public class DetailView extends CvManagerView {
 				);
 				break;
 			case CVCONCEPT_SORT:
-				if( (boolean)event.getPayload() == true ) {
-					initBottomViewSection();
-					enableTreeGridDragAndDropSort();
-				} else {
-					initBottomViewSection();
-				}
+				enableTreeDragAndDrop = (boolean)event.getPayload();
+				initBottomViewSection();
 				break;
 			default:
 				break;

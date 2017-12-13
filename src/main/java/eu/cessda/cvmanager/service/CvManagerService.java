@@ -5,6 +5,7 @@ import java.util.List;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +52,21 @@ public class CvManagerService {
 		treeData.getChildren(targetConcept).forEach( childConcept -> {
 			deleteConceptTree(treeData, childConcept);
 		});
+	}
+	
+	public DDIStore storeTopConcept( CVScheme cvScheme, List<CVConcept> topConcepts ) {
+		List<String> topConceptIds = cvScheme.getOrderedMemberList();
+		topConceptIds.clear();
+		topConcepts.forEach( item -> topConceptIds.add( item.ddiStore.getElementId() ));
+		cvScheme.save();
+		return saveElement(cvScheme.ddiStore, "Peter", "store top concept");
+	}
+
+	public DDIStore storeNarrowerConcept(CVConcept cvConcept, List<CVConcept> narrowerConcepts) {
+		List<String> narrowerConceptIds = cvConcept.getOrderedNarrowerList();
+		narrowerConceptIds.clear();
+		narrowerConcepts.forEach( item -> narrowerConceptIds.add( item.ddiStore.getElementId() ));
+		cvConcept.save();
+		return saveElement(cvConcept.ddiStore, "Peter", "store narrower concept");
 	}
 }
