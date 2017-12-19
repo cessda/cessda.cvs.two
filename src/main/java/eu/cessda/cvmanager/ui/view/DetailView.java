@@ -718,8 +718,8 @@ public class DetailView extends CvManagerView {
 				newCVConcept.createId();
 				newCVConcept.setContainerId( cvScheme.getContainerId());
 
-				Window window = new DialogAddCodeWindow(eventBus, cvManagerService, cvScheme, newCVConcept,null, "en");
-				getUI().addWindow(window);
+				DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, cvManagerService, cvScheme, newCVConcept,null, "en", i18n, UI.getCurrent().getLocale());
+				getUI().addWindow(dialogAddCodeWindow1);
 				
 				break;
 			case CVCONCEPT_TRANSLATION_DIALOG:
@@ -739,9 +739,8 @@ public class DetailView extends CvManagerView {
 				childConcept.createId();
 				childConcept.setContainerId( cvScheme.getContainerId());
 
-				getUI().addWindow(
-					new DialogAddCodeWindow(eventBus, cvManagerService, cvScheme, childConcept, cvConcept, "en")
-				);
+				DialogAddCodeWindow dialogAddCodeWindow2 = new DialogAddCodeWindow(eventBus, cvManagerService, cvScheme, childConcept, cvConcept, "en", i18n, UI.getCurrent().getLocale());
+				getUI().addWindow( dialogAddCodeWindow2 );
 				break;
 			case CVCONCEPT_DELETED:
 				

@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.Locale;
+
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
@@ -7,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -26,12 +30,13 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
-public class DialogAddCodeWindow extends MWindow {
+public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 	private static final long serialVersionUID = -2960064213533383226L;
 	private static final Logger log = LoggerFactory.getLogger(DialogAddCodeWindow.class);
 
 	private final EventBus.UIEventBus eventBus;
+	private final I18N i18n;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	
@@ -41,10 +46,10 @@ public class DialogAddCodeWindow extends MWindow {
 	private MLabel lLanguage = new MLabel( "Language (source)" );
 
 	private MVerticalLayout layout = new MVerticalLayout();
-	private MTextField notation = new MTextField("Code");
-	private TextField preferedLabel = new TextField("Descriptive term");
-	private TextArea description = new TextArea("Definition*");
-	private ComboBox<String> languageCb = new ComboBox<>("Language (source)");
+	private MTextField notation = new MTextField();
+	private TextField preferedLabel = new TextField();
+	private TextArea description = new TextArea();
+	private ComboBox<String> languageCb = new ComboBox<>();
 	private String orginalLanguage;
 
 	private Button storeCode = new Button("Save");
@@ -52,12 +57,13 @@ public class DialogAddCodeWindow extends MWindow {
 	private CVConcept parentCode;
 	private CVScheme cvScheme;
 
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvSch, CVConcept newCode, CVConcept parent, String orignalLanguage) {
-		super( parent == null ? "Add Code (Source Language)":"Add Child Code of \"" + ( parent.getNotation() == null? parent.getPrefLabelByLanguage("en") : parent.getNotation() )+ "\"");
+	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvSch, CVConcept newCode, CVConcept parent, String orignalLanguage, I18N i18n, Locale locale) {
+		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage("en") : parent.getNotation() )));
 		
 		this.eventBus = eventBus;
 		this.cvScheme = cvSch;
 		this.parentCode = parent;
+		this.i18n = i18n;
 
 		languageCb.setItems( Language.getAllEnumCapitalized());
 		languageCb.setEmptySelectionAllowed( false );
@@ -68,9 +74,6 @@ public class DialogAddCodeWindow extends MWindow {
 		preferedLabel.setWidth("100%");
 		description.setSizeFull();
 		notation.withWidth("85%");
-		
-		lTitle.withStyleName( "required" );
-		lDescription.withStyleName( "required" );
 
 		setOrginalLanguage(orignalLanguage);
 		setTheCode(newCode);
@@ -163,6 +166,7 @@ public class DialogAddCodeWindow extends MWindow {
 			.withModal( true )
 			.withContent(layout);
 
+		updateMessageStrings(locale);
 	}
 
 	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {
@@ -208,5 +212,11 @@ public class DialogAddCodeWindow extends MWindow {
 		this.theCode = theCode;
 	}
 
-
+	@Override
+	public void updateMessageStrings(Locale locale) {
+		lNotation.withValue( i18n.get( "dialog.detail.code.add.form.notation" , locale)).withStyleName( "required" );
+		lTitle.withValue( i18n.get( "dialog.detail.code.add.form.title" , locale)).withStyleName( "required" );
+		lDescription.withValue( i18n.get( "dialog.detail.code.add.form.definition" , locale)).withStyleName( "required" );
+		lLanguage.withValue( i18n.get( "dialog.detail.code.add.form.language" , locale));
+	}
 }

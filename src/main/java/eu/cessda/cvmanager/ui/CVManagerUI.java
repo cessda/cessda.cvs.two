@@ -154,6 +154,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		countryBox.addValueChangeListener(e -> {
 			setLocale(new Locale(e.getValue().toString().toLowerCase()));
 		});
+		setLocale(new Locale(countryBox.getValue().toString().toLowerCase()));
 
 		headerToplinks.setSizeFull();
 		MLabel logo = new MLabel();
