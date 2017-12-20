@@ -43,17 +43,17 @@ pipeline {
         }
       }
     }
-    stage('Build Docker image') {
-      steps {
-        echo "Build Docker image"
-        sh("docker build -t ${image_tag} . --no-cache")
-      }
-    }
+    #stage('Build Docker image') {
+    #  steps {
+    #    echo "Build Docker image"
+    #    sh("docker build -t ${image_tag} . --no-cache")
+    #  }
+    #}
     stage('Push Docker image') {
       steps {
 	echo "Push Docker image"
         sh("gcloud docker -- push ${image_tag}")
-        sh("gcloud container images add-tag ${image_tag} eu.gcr.io/${project_name}/${app_name}:latest")
+        sh("gcloud container images add-tag ${image_tag} eu.gcr.io/${project_name}/cessda/${app_name}:latest")
       }
     }
     stage('Check Requirements and Deployments') {
