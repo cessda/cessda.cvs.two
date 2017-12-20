@@ -21,7 +21,7 @@ pipeline {
     stage('Build Project and start Sonar scan') {
 		  steps {
         withSonarQubeEnv('cessda-sonar') {
-          sh 'mvn clean install -U sonar:sonar -Dsonar.projectName=$JOB_NAME -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN} -DskipTests -Pdocker-compose'
+          sh 'mvn clean install -U docker:build sonar:sonar -Dsonar.projectName=$JOB_NAME -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN} -DskipTests -Pdocker-compose'
           sleep 5
         }
       }
