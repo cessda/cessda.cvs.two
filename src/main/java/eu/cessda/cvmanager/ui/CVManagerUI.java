@@ -99,6 +99,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	@Override
 	protected void initUI(VaadinRequest request) {
+		setLocale(Locale.ENGLISH);
 
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
