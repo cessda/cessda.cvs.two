@@ -43,12 +43,6 @@ pipeline {
         }
       }
     }
-    #stage('Build Docker image') {
-    #  steps {
-    #    echo "Build Docker image"
-    #    sh("docker build -t ${image_tag} . --no-cache")
-    #  }
-    #}
     stage('Push Docker image') {
       steps {
 	echo "Push Docker image"
