@@ -53,7 +53,7 @@ pipeline {
       steps {
 	echo "Push Docker image"
         sh("gcloud docker -- push ${image_tag}")
-        sh("gcloud container images add-tag ${image_tag} eu.gcr.io/${project_name}/${app_name}:${env_name}")
+        sh("gcloud container images add-tag ${image_tag} eu.gcr.io/${project_name}/${app_name}:latest")
       }
     }
     stage('Check Requirements and Deployments') {
