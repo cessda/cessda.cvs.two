@@ -4,7 +4,7 @@ pipeline {
     app_name = "cessda.cvmanager"
     env_name = "dev"
     feSvc_name = "${app_name}-service"
-    image_tag = "eu.gcr.io/${project_name}/cessda/${app_name}:v${env.BUILD_NUMBER}"
+    image_tag = "eu.gcr.io/${project_name}/cessda/${app_name}:latest"
     cluster = "cessda-cvmanager-dev-cc"
   }
 
@@ -47,7 +47,6 @@ pipeline {
       steps {
 	echo "Push Docker image"
         sh("gcloud docker -- push ${image_tag}")
-        sh("gcloud container images add-tag ${image_tag} eu.gcr.io/${project_name}/cessda/${app_name}:latest")
       }
     }
     stage('Check Requirements and Deployments') {
