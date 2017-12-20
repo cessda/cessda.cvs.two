@@ -1,10 +1,10 @@
 pipeline {
   environment {
     project_name = "cessda-development"
-    app_name = "cessda-cvmanager"
+    app_name = "cessda.cvmanager"
     env_name = "dev"
     feSvc_name = "${app_name}-service"
-    image_tag = "eu.gcr.io/${project_name}/${app_name}:v${env.BUILD_NUMBER}"
+    image_tag = "eu.gcr.io/${project_name}/cessda/${app_name}:v${env.BUILD_NUMBER}"
     cluster = "cessda-cvmanager-dev-cc"
   }
 
