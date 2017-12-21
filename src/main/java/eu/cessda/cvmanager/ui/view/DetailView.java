@@ -62,8 +62,10 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.ui.layout.ExportLayout;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogMultipleOption;
@@ -129,6 +131,8 @@ public class DetailView extends CvManagerView {
 	private MCssLayout languageLayout = new MCssLayout();
 	private Set<CVConcept> draggedItems;
 	private TreeDataProvider<CVConcept> dataProvider;
+	
+	private ExportLayout exportLayoutContent;
 
 	public DetailView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			CvManagerService cvManagerService, SecurityService securityService) {
@@ -219,9 +223,11 @@ public class DetailView extends CvManagerView {
 		languageLayout.removeAllComponents();
 		
 		List<DDIStore> ddiSchemes = cvManagerService.findByIdAndElementType(itemId, DDIElement.CVSCHEME);
-		if (ddiSchemes != null && !ddiSchemes.isEmpty())
+		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
 			cvScheme = new CVScheme(ddiSchemes.get(0));
-
+			cvItem.setCvScheme(cvScheme);
+		}
+		
 		Set<String> languages = cvScheme.getLanguagesByTitle();
 		String sourceLanguage = configService.getDefaultSourceLanguage();//cvScheme.getSourceLanguage();
 
@@ -513,6 +519,10 @@ public class DetailView extends CvManagerView {
 		detailLayout.setSpacing(false);
 		detailLayout.setSizeFull();
 		detailLayout.setExpandRatio(detailTreeGrid, 1);
+		
+		if(exportLayoutContent == null )
+			exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem);
+		exportLayout.add(exportLayoutContent);
 
 		bottomViewSection.add(detailTab);
 	}
@@ -628,7 +638,11 @@ public class DetailView extends CvManagerView {
 		cvCodeTreeData = dataProvider.getTreeData();
 		cvCodeTreeData.clear();
 		// assign the tree structure
-		CvCodeTreeUtils.buildCvConceptTree(cvManagerService, cvScheme, cvCodeTreeData);
+		List<DDIStore> ddiConcepts = cvManagerService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
+		CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvScheme, cvCodeTreeData);
+		
+		cvItem.setCvCodeTreeData(cvCodeTreeData);
+		
 		dataProvider.refreshAll();
 	}
 	

@@ -24,6 +24,7 @@ import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 
@@ -41,8 +42,9 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	protected final SecurityService securityService;
 	
 	private final ActionType actionType;
-	public CVScheme cvScheme;
-	public CVConcept cvConcept;
+	protected CVScheme cvScheme;
+	protected CVConcept cvConcept;
+	protected CvItem cvItem = new CvItem();
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
 	protected MHorizontalLayout columnContainer = new MHorizontalLayout();

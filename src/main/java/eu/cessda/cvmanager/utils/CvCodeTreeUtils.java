@@ -17,11 +17,10 @@ import eu.cessda.cvmanager.service.CvManagerService;
 public class CvCodeTreeUtils{
 	private static List<String> conceptToBeRemoved = null;
 	
-	public static void buildCvConceptTree(CvManagerService cvManagerService, CVScheme cvScheme, TreeData<CVConcept> cvConceptTree ) {
+	public static void buildCvConceptTree(List<DDIStore> ddiConcepts, CVScheme cvScheme, TreeData<CVConcept> cvConceptTree ) {
 		cvConceptTree.clear();
 		Map<String, CVConcept> cvConceptMap = new HashMap<>();
 		List<CVConcept> rootCvConcepts = new ArrayList<>();
-		List<DDIStore> ddiConcepts = cvManagerService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
 		ddiConcepts.forEach(ddiConcept -> {
 			CVConcept concept = new CVConcept(ddiConcept);
 			cvConceptMap.put(concept.getId(), concept);
