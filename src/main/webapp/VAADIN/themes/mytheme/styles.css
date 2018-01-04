@@ -16495,11 +16495,18 @@ div.v-layout.v-horizontal.v-widget {
 	height: 500px;
 }
 
-.mytheme .detail-tab .v-tabsheet-content tbody {
+.mytheme .detail-tab .v-tabsheet-content tbody.v-treegrid-body {
 	position: absolute;
 	display: block;
 	height: 370px;
 	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.mytheme .detail-tab .v-tabsheet-content tbody.v-grid-body {
+	position: absolute;
+	display: block;
+	overflow-y: hidden;
 	overflow-x: hidden;
 }
 

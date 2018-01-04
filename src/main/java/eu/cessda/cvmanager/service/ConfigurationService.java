@@ -1,11 +1,12 @@
 package eu.cessda.cvmanager.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,21 +51,20 @@ public class ConfigurationService {
 		return SOURCE_LANGUAGE;
 	}
 
-	public String getPropertyByKey(String key) {
-		return env.getProperty(key);
+	public Optional<String> getPropertyByKey(String key) {
+		return Optional.of(env.getProperty(key));
 	}
 	
-	public List<String> getPropertyByKeyAsList(String key, String splitBy) {
-		List<String> valueList = new ArrayList<>();
-		String values = env.getProperty(key);
-		if( values == null ) 
-			return Collections.emptyList();
-		
-		valueList.addAll(  Arrays.asList(values.split(splitBy)) );
-		return valueList;
+	public Optional<List<String>> getPropertyByKeyAsList(String key, String splitBy) {
+		if (getPropertyByKey(key).isPresent())
+			return Optional.of(
+					Stream.of( getPropertyByKey(key).get().split(splitBy))
+				    .collect(Collectors.toList()));
+		else
+			return Optional.empty();
 	}
 	
-	public Set<String> getPropertyByKeyAsSet(String key, String splitBy) {
-		return new LinkedHashSet<>( getPropertyByKeyAsList(key, splitBy));
+	public Optional<Set<String>> getPropertyByKeyAsSet(String key, String splitBy) {
+		return Optional.of( new LinkedHashSet<>( getPropertyByKeyAsList(key, splitBy).isPresent() ? getPropertyByKeyAsList(key, splitBy).get() : Collections.emptyList()));
 	}
 }

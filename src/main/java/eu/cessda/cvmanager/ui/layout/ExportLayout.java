@@ -1,39 +1,72 @@
 package eu.cessda.cvmanager.ui.layout;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
+import javax.imageio.ImageIO;
+
+import org.gesis.stardat.entity.CVConcept;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
+import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MCssLayout;
+import org.vaadin.viritin.layouts.MVerticalLayout;
 
+import com.vaadin.server.FileDownloader;
+import com.vaadin.server.StreamResource;
+import com.vaadin.server.StreamResource.StreamSource;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.Column;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
 
+import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader;
+import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamResource;
+import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.model.CvItem;
+import eu.cessda.cvmanager.service.ConfigurationService;
 
 public class ExportLayout  extends MCssLayout implements Translatable {
 	
+	private static final long serialVersionUID = -2461005203070668382L;
 	private final I18N i18n;
 	private final Locale locale;
 	private final UIEventBus eventBus;
 	private final CvItem cvItem;
+	private final ConfigurationService configurationService;
 	
+	private Set<String> filteredTag = new HashSet<>();
 	private Grid<ExportCV> exportGrid;
 	private List<ExportCV> exportCvItems;
+	private MCssLayout sectionLayout = new MCssLayout();
+	private MVerticalLayout gridLayout = new MVerticalLayout();
+	private MButton exportSkos = new MButton("Export Skos");
 	
-	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem) {
+	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, ConfigurationService configurationService) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
 		this.eventBus = eventBus;
 		this.cvItem = cvItem;
+		this.configurationService = configurationService;
 		
 		initLayout();
 	}
@@ -47,6 +80,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			exportCvItems.add( new ExportCV(lang, lang + "-latest"));
 		});
 		exportGrid.setItems(exportCvItems);
+		exportGrid.addStyleNames(ValoTheme.TABLE_BORDERLESS, "undefined-height");
 		
 		exportGrid
 			.addComponentColumn(item -> new Label(item.getLanguage()))
@@ -82,10 +116,86 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		});
 		htmlColumn.setCaption("Html");
 		
-		this.add( exportGrid );
+		gridLayout
+			.withFullSize()
+			.withComponent(exportGrid)
+			.withExpand(exportGrid, 1);
+		
+		sectionLayout
+			.withFullSize()
+			.add( gridLayout, exportSkos );
+		
+		this.add( sectionLayout);
+		
+		StreamResource skosStreamSource = createResource();
+		OnDemandStreamResource onDemandStreamResource = new OnDemandStreamResource() {
+			
+			@Override
+			public InputStream getStream() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+			
+			@Override
+			public String getFilename() {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+//		OnDemandFileDownloader onDemandFileDownloader = new OnDemandFileDownloader((OnDemandStreamResource) skosStreamSource);
+//		onDemandFileDownloader.extend(exportSkos);
+		FileDownloader fileDownloader = new FileDownloader(skosStreamSource);
+		fileDownloader.extend(exportSkos);
 		
 	}
 	
+
+	private StreamResource createResource() {
+		return new StreamResource(new StreamSource() {
+			private static final long serialVersionUID = 8813958914144335166L;
+
+			@Override
+            public InputStream getStream() {
+
+                try {
+                	Set<String> filteredLanguage = exportCvItems.stream()
+                									.filter( f -> !f.exportSkos )
+                									.map( x -> x.language )
+                									.collect( Collectors.toSet());
+                	
+                	if(filteredLanguage.size() == cvItem.getCvScheme().getLanguagesByTitle().size()){
+                		Notification.show( "No language selected!" );
+                		return null;
+                	}
+                	
+        			configurationService.getPropertyByKeyAsSet("cvmanager.export.filterTag", ",").ifPresent( c -> filteredTag = c );
+                	
+        			StringJoiner skosXml = new StringJoiner("\n\n");
+        			skosXml.add( 
+        					SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguage, cvItem.getCvScheme().getContent())
+        						.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\" xmlns:dct=\"http://purl.org/dc/terms/\" xmlns:foaf=\"http://xmlns.com/foaf/spec/\" xmlns:void=\"http://rdfs.org/ns/void#\" xmlns:iqvoc=\"http://try.iqvoc.net/schema#\" xmlns:skosxl=\"http://www.w3.org/2008/05/skos-xl#\" xmlns=\"http://lod.gesis.org/thesoz/\" xmlns:schema=\"http://lod.gesis.org/thesoz/schema#\" id=\"thesoz\">\n\n" )
+        					);
+        			skosXml.add( cvItem
+        							.getFlattenedCvConceptStreams()
+        							.map( x -> SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguage, x.getContent()).replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "") )
+        							.collect( Collectors.joining("\n\n"))
+							);
+        			
+        			skosXml.add( "\n</rdf:RDF>");
+        			        			
+                    return new ByteArrayInputStream(skosXml.toString().getBytes(StandardCharsets.UTF_8.name()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+
+            }
+        }, "test.rdf");
+	}
+	
+	private String setFileName() {
+		return cvItem.getCvScheme().getCode() + "_en_.rdf";
+	}
 
 	@Override
 	public void updateMessageStrings(Locale locale) {
@@ -93,6 +203,14 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		
 	}
 	
+//	private void exportSkos(ClickEvent event) {
+//		StreamResource myResource = createResource();
+//		FileDownloader fileDownloader = new FileDownloader(myResource);
+//		fileDownloader.extend(downloadButton);
+//	
+//		setContent(downloadButton);
+//	}
+//	
 	class ExportCV{
 		private String language;
 		private String version;

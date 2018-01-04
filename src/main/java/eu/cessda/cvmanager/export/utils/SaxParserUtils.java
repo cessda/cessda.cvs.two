@@ -1,6 +1,7 @@
 package eu.cessda.cvmanager.export.utils;
 
 import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.Set;
 
 import javax.xml.transform.Result;
@@ -20,7 +21,7 @@ import org.xml.sax.helpers.XMLFilterImpl;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 public class SaxParserUtils {
-	public static void FilterSkosDoc(Set<String> filteredTag, Set<String> filteredLanguage, String xmlString){
+	public static String filterSkosDoc(Set<String> filteredTag, Set<String> filteredLanguage, String xmlString){
 		XMLReader xr;
 		try {
 			xr = new XMLFilterImpl(XMLReaderFactory.createXMLReader()) {
@@ -65,9 +66,11 @@ public class SaxParserUtils {
 			    }
 			};
 			Source src = new SAXSource(xr, new InputSource( new StringReader(xmlString)));
-		    Result res = new StreamResult(System.out);
+			StringWriter sw  =new StringWriter();
+		    Result res = new StreamResult( sw );
 		    try {
 				TransformerFactory.newInstance().newTransformer().transform(src, res);
+				return sw.toString();
 			} catch (TransformerException | TransformerFactoryConfigurationError e) {
 				e.printStackTrace();
 			}
@@ -75,6 +78,6 @@ public class SaxParserUtils {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	    
+	    return null;
 	}
 }

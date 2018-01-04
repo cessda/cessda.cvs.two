@@ -35,7 +35,7 @@ public class CVManagerSkosExportTest {
 		Set<String> filterTag = new HashSet<>( Arrays.asList("skos:canonicalUri","skos:publishedVersionsURI","skos:versionNotes"));
 		Set<String> filterLanguage = new HashSet<>( Arrays.asList("fr","ru"));
 		
-		SaxParserUtils.FilterSkosDoc(filterTag, filterLanguage, cvScheme.getContent());
+		System.out.println(SaxParserUtils.filterSkosDoc(filterTag, filterLanguage, cvScheme.getContent()));
 	}
 
 }
