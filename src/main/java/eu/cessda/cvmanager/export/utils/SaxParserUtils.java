@@ -49,13 +49,12 @@ public class SaxParserUtils {
 			    }
 
 			    public void endElement(String uri, String localName, String qName) throws SAXException {
-			    	if ( filteredTag != null && filteredTag.contains( qName )) {
+			    	if ( filteredTag != null && filteredTag.contains( qName ))
 			        	skip = true;
-			        } 
 			    	
-			       if (!skip) {
+			       if (!skip)
 			            super.endElement(uri, localName, qName);
-			       }
+			       skip=false;
 			    }
 
 			    @Override

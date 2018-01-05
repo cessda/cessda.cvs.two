@@ -1,11 +1,10 @@
 package eu.cessda.cvmanager.ui.layout;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -13,10 +12,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import javax.imageio.ImageIO;
-
-import org.gesis.stardat.entity.CVConcept;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
@@ -24,11 +21,6 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.server.FileDownloader;
-import com.vaadin.server.StreamResource;
-import com.vaadin.server.StreamResource.StreamSource;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
@@ -36,7 +28,6 @@ import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
 
 import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader;
 import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamResource;
@@ -45,6 +36,26 @@ import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.ConfigurationService;
 
 public class ExportLayout  extends MCssLayout implements Translatable {
+	
+	public enum DownloadType{ 
+		SKOS("rdf"), 
+		PDF("pdf"), 
+		HTML("html");
+		
+		private final String type;       
+
+	    private DownloadType(String s) {
+	        type = s;
+	    }
+
+	    public boolean equalsType(String otherType) {
+	        return type.equals(otherType);
+	    }
+
+	    public String toString() {
+	       return this.type;
+	    }
+	}
 	
 	private static final long serialVersionUID = -2461005203070668382L;
 	private final I18N i18n;
@@ -127,41 +138,19 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		
 		this.add( sectionLayout);
 		
-		StreamResource skosStreamSource = createResource();
-		OnDemandStreamResource onDemandStreamResource = new OnDemandStreamResource() {
-			
-			@Override
-			public InputStream getStream() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-			
-			@Override
-			public String getFilename() {
-				// TODO Auto-generated method stub
-				return null;
-			}
-		};
-//		OnDemandFileDownloader onDemandFileDownloader = new OnDemandFileDownloader((OnDemandStreamResource) skosStreamSource);
-//		onDemandFileDownloader.extend(exportSkos);
-		FileDownloader fileDownloader = new FileDownloader(skosStreamSource);
-		fileDownloader.extend(exportSkos);
+		OnDemandFileDownloader onDemandSkosFileDownloader = new OnDemandFileDownloader( createOnDemandResource());
+		onDemandSkosFileDownloader.extend(exportSkos);
+		
 		
 	}
 	
-
-	private StreamResource createResource() {
-		return new StreamResource(new StreamSource() {
-			private static final long serialVersionUID = 8813958914144335166L;
-
+	private OnDemandStreamResource createOnDemandResource() {
+		return new OnDemandStreamResource() {
+			private static final long serialVersionUID = 3421089012275806929L;
 			@Override
-            public InputStream getStream() {
-
+			public InputStream getStream() {
                 try {
-                	Set<String> filteredLanguage = exportCvItems.stream()
-                									.filter( f -> !f.exportSkos )
-                									.map( x -> x.language )
-                									.collect( Collectors.toSet());
+                	Set<String> filteredLanguage = getFilteredLanguages( DownloadType.SKOS , false);
                 	
                 	if(filteredLanguage.size() == cvItem.getCvScheme().getLanguagesByTitle().size()){
                 		Notification.show( "No language selected!" );
@@ -173,7 +162,10 @@ public class ExportLayout  extends MCssLayout implements Translatable {
         			StringJoiner skosXml = new StringJoiner("\n\n");
         			skosXml.add( 
         					SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguage, cvItem.getCvScheme().getContent())
-        						.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\" xmlns:dct=\"http://purl.org/dc/terms/\" xmlns:foaf=\"http://xmlns.com/foaf/spec/\" xmlns:void=\"http://rdfs.org/ns/void#\" xmlns:iqvoc=\"http://try.iqvoc.net/schema#\" xmlns:skosxl=\"http://www.w3.org/2008/05/skos-xl#\" xmlns=\"http://lod.gesis.org/thesoz/\" xmlns:schema=\"http://lod.gesis.org/thesoz/schema#\" id=\"thesoz\">\n\n" )
+        						.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" "
+        								+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\" xmlns:dct=\"http://purl.org/dc/terms/\" xmlns:foaf=\"http://xmlns.com/foaf/spec/\" "
+        								+ "xmlns:void=\"http://rdfs.org/ns/void#\" xmlns:iqvoc=\"http://try.iqvoc.net/schema#\" xmlns:skosxl=\"http://www.w3.org/2008/05/skos-xl#\" "
+        								+ "xmlns=\"http://lod.gesis.org/thesoz/\" xmlns:schema=\"http://lod.gesis.org/thesoz/schema#\" id=\""+ cvItem.getCvScheme().getContainerId()+ "\">\n\n" )
         					);
         			skosXml.add( cvItem
         							.getFlattenedCvConceptStreams()
@@ -188,29 +180,41 @@ public class ExportLayout  extends MCssLayout implements Translatable {
                     e.printStackTrace();
                     return null;
                 }
-
-            }
-        }, "test.rdf");
+			}
+			
+			@Override
+			public String getFilename() {
+				return generateOnDemandFileName( DownloadType.SKOS );
+			}
+		};
 	}
 	
-	private String setFileName() {
-		return cvItem.getCvScheme().getCode() + "_en_.rdf";
+
+	private Set<String> getFilteredLanguages( DownloadType type, boolean checked) {
+		Stream<ExportCV> exportCvStream = null;
+		
+		if( type == DownloadType.PDF)
+			exportCvStream = exportCvItems.stream().filter( f -> checked ? f.exportPdf : !f.exportPdf );
+		else if( type == DownloadType.HTML )
+			exportCvStream = exportCvItems.stream().filter( f -> checked ? f.exportHtlm : !f.exportHtlm );
+		else
+			exportCvStream = exportCvItems.stream().filter( f -> checked ? f.exportSkos : !f.exportSkos );
+		return exportCvStream
+			.map( x -> x.language )
+			.collect( Collectors.toSet());
+	}
+
+	
+	private String generateOnDemandFileName(DownloadType type) {
+		String title = !cvItem.getCvScheme().getCode().isEmpty() ? cvItem.getCvScheme().getCode() : cvItem.getCvScheme().getTitleByLanguage("en");		
+		return title + "_" + String.join("-", getFilteredLanguages( type , true)) + "_" + LocalDateTime.now() +"." + type.toString();
 	}
 
 	@Override
 	public void updateMessageStrings(Locale locale) {
-		// TODO Auto-generated method stub
 		
 	}
 	
-//	private void exportSkos(ClickEvent event) {
-//		StreamResource myResource = createResource();
-//		FileDownloader fileDownloader = new FileDownloader(myResource);
-//		fileDownloader.extend(downloadButton);
-//	
-//		setContent(downloadButton);
-//	}
-//	
 	class ExportCV{
 		private String language;
 		private String version;
