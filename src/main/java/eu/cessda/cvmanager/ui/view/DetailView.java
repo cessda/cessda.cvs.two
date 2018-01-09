@@ -16,6 +16,7 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.thymeleaf.TemplateEngine;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
@@ -79,6 +80,7 @@ public class DetailView extends CvManagerView {
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "Detail";
 	private Locale locale = UI.getCurrent().getLocale();
+	private final TemplateEngine templateEngine;
 
 	private String selectedLang = "en";
 	private FormMode formMode;
@@ -135,8 +137,9 @@ public class DetailView extends CvManagerView {
 	private ExportLayout exportLayoutContent;
 
 	public DetailView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
-			CvManagerService cvManagerService, SecurityService securityService) {
+			CvManagerService cvManagerService, SecurityService securityService, TemplateEngine templateEngine) {
 		super(i18n, eventBus, configService, cvManagerService, securityService, DetailView.VIEW_NAME);
+		this.templateEngine = templateEngine;
 		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
@@ -523,7 +526,7 @@ public class DetailView extends CvManagerView {
 		detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
 		if(exportLayoutContent == null )
-			exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService);
+			exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
 		exportLayout.add(exportLayoutContent);
 
 		bottomViewSection.add(detailTab);

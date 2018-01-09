@@ -1,25 +1,34 @@
 package eu.cessda.cvmanager.ui.layout;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
+import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
@@ -63,6 +72,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private final UIEventBus eventBus;
 	private final CvItem cvItem;
 	private final ConfigurationService configurationService;
+	private final TemplateEngine templateEngine;
 	
 	private Set<String> filteredTag = new HashSet<>();
 	private Grid<ExportCV> exportGrid;
@@ -70,14 +80,18 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private MCssLayout sectionLayout = new MCssLayout();
 	private MVerticalLayout gridLayout = new MVerticalLayout();
 	private MButton exportSkos = new MButton("Export Skos");
+	private MButton exportPdf = new MButton("Export Pdf");
+	private MButton exportHtml = new MButton("Export Html");
 	
-	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, ConfigurationService configurationService) {
+	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, 
+			ConfigurationService configurationService, TemplateEngine templateEngine) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
 		this.eventBus = eventBus;
 		this.cvItem = cvItem;
 		this.configurationService = configurationService;
+		this.templateEngine = templateEngine;
 		
 		initLayout();
 	}
@@ -134,48 +148,38 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		
 		sectionLayout
 			.withFullSize()
-			.add( gridLayout, exportSkos );
+			.add( gridLayout, exportSkos, exportPdf , exportHtml);
 		
 		this.add( sectionLayout);
 		
-		OnDemandFileDownloader onDemandSkosFileDownloader = new OnDemandFileDownloader( createOnDemandResource());
+		OnDemandFileDownloader onDemandSkosFileDownloader = new OnDemandFileDownloader( createOnDemandResource( DownloadType.SKOS ));
 		onDemandSkosFileDownloader.extend(exportSkos);
 		
+		OnDemandFileDownloader onDemandSkosFileDownloaderPdf = new OnDemandFileDownloader( createOnDemandResource( DownloadType.PDF ));
+		onDemandSkosFileDownloaderPdf.extend(exportPdf);
 		
+		OnDemandFileDownloader onDemandSkosFileDownloaderHtml = new OnDemandFileDownloader( createOnDemandResource( DownloadType.HTML ));
+		onDemandSkosFileDownloaderHtml.extend(exportHtml);
 	}
 	
-	private OnDemandStreamResource createOnDemandResource() {
+	private OnDemandStreamResource createOnDemandResource( DownloadType downloadType) {
 		return new OnDemandStreamResource() {
 			private static final long serialVersionUID = 3421089012275806929L;
 			@Override
 			public InputStream getStream() {
-                try {
-                	Set<String> filteredLanguage = getFilteredLanguages( DownloadType.SKOS , false);
-                	
-                	if(filteredLanguage.size() == cvItem.getCvScheme().getLanguagesByTitle().size()){
-                		Notification.show( "No language selected!" );
-                		return null;
-                	}
-                	
-        			configurationService.getPropertyByKeyAsSet("cvmanager.export.filterTag", ",").ifPresent( c -> filteredTag = c );
-                	
-        			StringJoiner skosXml = new StringJoiner("\n\n");
-        			skosXml.add( 
-        					SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguage, cvItem.getCvScheme().getContent())
-        						.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" "
-        								+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\" xmlns:dct=\"http://purl.org/dc/terms/\" xmlns:foaf=\"http://xmlns.com/foaf/spec/\" "
-        								+ "xmlns:void=\"http://rdfs.org/ns/void#\" xmlns:iqvoc=\"http://try.iqvoc.net/schema#\" xmlns:skosxl=\"http://www.w3.org/2008/05/skos-xl#\" "
-        								+ "xmlns=\"http://lod.gesis.org/thesoz/\" xmlns:schema=\"http://lod.gesis.org/thesoz/schema#\" id=\""+ cvItem.getCvScheme().getContainerId()+ "\">\n\n" )
-        					);
-        			skosXml.add( cvItem
-        							.getFlattenedCvConceptStreams()
-        							.map( x -> SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguage, x.getContent()).replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "") )
-        							.collect( Collectors.joining("\n\n"))
-							);
-        			
-        			skosXml.add( "\n</rdf:RDF>");
-        			        			
-                    return new ByteArrayInputStream(skosXml.toString().getBytes(StandardCharsets.UTF_8.name()));
+                try { 
+                	switch (downloadType) {
+                	case HTML:
+					case PDF:
+						try {
+							return new FileInputStream( generateExportFile(downloadType));
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					default:
+						return new ByteArrayInputStream( generateSKOSxml( downloadType ).toString().getBytes(StandardCharsets.UTF_8.name()));
+					}
+                    
                 } catch (IOException e) {
                     e.printStackTrace();
                     return null;
@@ -184,11 +188,47 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			
 			@Override
 			public String getFilename() {
-				return generateOnDemandFileName( DownloadType.SKOS );
+				return generateOnDemandFileName( downloadType );
 			}
 		};
 	}
 	
+	private StringJoiner generateSKOSxml( DownloadType type) {
+		Set<String> filteredLanguage = getFilteredLanguages( type , false);
+		
+		if(filteredLanguage.size() == cvItem.getCvScheme().getLanguagesByTitle().size()){
+			Notification.show( "No language selected!" );
+			return null;
+		}
+		
+		configurationService.getPropertyByKeyAsSet("cvmanager.export.filterTag", ",").ifPresent( c -> filteredTag = c );
+		
+		StringJoiner skosXml = new StringJoiner("\n\n");
+		skosXml.add( 
+				SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguage, cvItem.getCvScheme().getContent())
+					.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" "
+							+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\" xmlns:dct=\"http://purl.org/dc/terms/\" xmlns:foaf=\"http://xmlns.com/foaf/spec/\" "
+							+ "xmlns:void=\"http://rdfs.org/ns/void#\" xmlns:iqvoc=\"http://try.iqvoc.net/schema#\" xmlns:skosxl=\"http://www.w3.org/2008/05/skos-xl#\" "
+							+ "xmlns=\"http://lod.gesis.org/thesoz/\" xmlns:schema=\"http://lod.gesis.org/thesoz/schema#\" id=\""+ cvItem.getCvScheme().getContainerId()+ "\">\n\n" )
+				);
+		skosXml.add( cvItem
+						.getFlattenedCvConceptStreams()
+						.map( x -> SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguage, x.getContent()).replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "") )
+						.collect( Collectors.joining("\n\n"))
+				);
+		
+		skosXml.add( "\n</rdf:RDF>");
+		return skosXml;
+	}
+	
+	private File generateExportFile( DownloadType type) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		map.put("content", generateSKOSxml( type ).toString());
+		map.put("preflabelOl", cvItem.getCvScheme().getTitleByLanguage("en"));
+		map.put("definitionOl", cvItem.getCvScheme().getDescriptionByLanguage("en"));
+		
+		return generateFileByThymeleafTemplate(generateOnDemandFileName( type ), "export", map, type);
+	}
 
 	private Set<String> getFilteredLanguages( DownloadType type, boolean checked) {
 		Stream<ExportCV> exportCvStream = null;
@@ -202,6 +242,55 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		return exportCvStream
 			.map( x -> x.language )
 			.collect( Collectors.toSet());
+	}
+
+	
+	private File generateFileByThymeleafTemplate(String fileName, String templateName, Map<String, Object> map, DownloadType type) throws Exception {
+		File outputFile = File.createTempFile( fileName , ".pdf");
+		Context ctx = new Context();
+		if (map != null) {
+		     Iterator<?> itMap = map.entrySet().iterator();
+		     while (itMap.hasNext()) {
+		    	 @SuppressWarnings("rawtypes")
+		    	 Map.Entry pair = (Map.Entry) itMap.next();
+		    	 ctx.setVariable(pair.getKey().toString(), pair.getValue());
+			}
+		}
+		String processedTemplate = templateEngine.process(templateName + "_" + type.toString() , ctx);
+		
+		switch ( type ) {
+		case PDF:
+			return createPdf(outputFile, processedTemplate);
+		default:
+			break;
+		}
+
+		
+		return null;
+	}
+	
+	public File createPdf(File outputFile, String processedHtml) throws Exception {
+		
+		  FileOutputStream os = null;
+	        try {
+	            
+	        	os = new FileOutputStream(outputFile);
+
+	            ITextRenderer renderer = new ITextRenderer();
+	            renderer.setDocumentFromString(processedHtml);
+	            renderer.layout();
+	            renderer.createPDF(os, false);
+	            renderer.finishPDF();
+	            
+	        }
+	        finally {
+	            if (os != null) {
+	                try {
+	                    os.close();
+	                } catch (IOException e) { /*ignore*/ }
+	            }
+	        }
+	    return outputFile;
 	}
 
 	
