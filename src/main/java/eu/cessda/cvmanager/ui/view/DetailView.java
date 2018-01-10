@@ -446,6 +446,7 @@ public class DetailView extends CvManagerView {
 	private void initBottomViewSection() {
 		bottomViewSection.removeAllComponents();
 		detailLayout.removeAllComponents();
+		exportLayout.removeAllComponents();
 		
 		exportLayout.withHeight("450px");
 
@@ -525,8 +526,7 @@ public class DetailView extends CvManagerView {
 		detailLayout.setSizeFull();
 		detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		if(exportLayoutContent == null )
-			exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
 		exportLayout.add(exportLayoutContent);
 
 		bottomViewSection.add(detailTab);
