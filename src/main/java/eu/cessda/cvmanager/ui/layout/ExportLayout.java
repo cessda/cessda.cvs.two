@@ -1,13 +1,16 @@
 package eu.cessda.cvmanager.ui.layout;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -73,15 +76,16 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private final CvItem cvItem;
 	private final ConfigurationService configurationService;
 	private final TemplateEngine templateEngine;
+	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
 	
 	private Set<String> filteredTag = new HashSet<>();
 	private Grid<ExportCV> exportGrid;
 	private List<ExportCV> exportCvItems;
 	private MCssLayout sectionLayout = new MCssLayout();
 	private MVerticalLayout gridLayout = new MVerticalLayout();
-	private MButton exportSkos = new MButton("Export Skos");
-	private MButton exportPdf = new MButton("Export Pdf");
-	private MButton exportHtml = new MButton("Export Html");
+	private MButton exportSkos = new MButton("Export Skos").withStyleName("marginleft20");
+	private MButton exportPdf = new MButton("Export Pdf").withStyleName("marginleft20");
+	private MButton exportHtml = new MButton("Export Html").withStyleName("marginleft20");
 	
 	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, 
 			ConfigurationService configurationService, TemplateEngine templateEngine) {
@@ -106,6 +110,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		});
 		exportGrid.setItems(exportCvItems);
 		exportGrid.addStyleNames(ValoTheme.TABLE_BORDERLESS, "undefined-height");
+		exportGrid.setHeight("300px");
 		
 		exportGrid
 			.addComponentColumn(item -> new Label(item.getLanguage()))
@@ -169,15 +174,15 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			public InputStream getStream() {
                 try { 
                 	switch (downloadType) {
-                	case HTML:
-					case PDF:
-						try {
-							return new FileInputStream( generateExportFile(downloadType));
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					default:
-						return new ByteArrayInputStream( generateSKOSxml( downloadType ).toString().getBytes(StandardCharsets.UTF_8.name()));
+	                	case HTML:
+						case PDF:
+							try {
+								return new FileInputStream( generateExportFile(downloadType));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						default:
+							return new ByteArrayInputStream( generateSKOSxml( downloadType ).getBytes(StandardCharsets.UTF_8.name()));
 					}
                     
                 } catch (IOException e) {
@@ -188,12 +193,12 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			
 			@Override
 			public String getFilename() {
-				return generateOnDemandFileName( downloadType );
+				return generateOnDemandFileName( downloadType , true);
 			}
 		};
 	}
 	
-	private StringJoiner generateSKOSxml( DownloadType type) {
+	private String generateSKOSxml( DownloadType type) {
 		Set<String> filteredLanguage = getFilteredLanguages( type , false);
 		
 		if(filteredLanguage.size() == cvItem.getCvScheme().getLanguagesByTitle().size()){
@@ -218,16 +223,18 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 				);
 		
 		skosXml.add( "\n</rdf:RDF>");
-		return skosXml;
+		
+		// return string and remove any blank lines
+		return skosXml.toString().replaceAll("(?m)^[ \t]*\r?\n", "");
 	}
 	
 	private File generateExportFile( DownloadType type) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		map.put("content", generateSKOSxml( type ).toString());
+		map.put("content", generateSKOSxml( type ));
 		map.put("preflabelOl", cvItem.getCvScheme().getTitleByLanguage("en"));
 		map.put("definitionOl", cvItem.getCvScheme().getDescriptionByLanguage("en"));
 		
-		return generateFileByThymeleafTemplate(generateOnDemandFileName( type ), "export", map, type);
+		return generateFileByThymeleafTemplate(generateOnDemandFileName( type , false), "export", map, type);
 	}
 
 	private Set<String> getFilteredLanguages( DownloadType type, boolean checked) {
@@ -246,7 +253,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 
 	
 	private File generateFileByThymeleafTemplate(String fileName, String templateName, Map<String, Object> map, DownloadType type) throws Exception {
-		File outputFile = File.createTempFile( fileName , ".pdf");
+		File outputFile = File.createTempFile( fileName ,"." + type.toString());
 		Context ctx = new Context();
 		if (map != null) {
 		     Iterator<?> itMap = map.entrySet().iterator();
@@ -260,7 +267,9 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		
 		switch ( type ) {
 		case PDF:
-			return createPdf(outputFile, processedTemplate);
+			return createPdfFile(outputFile, processedTemplate);
+		case HTML:
+			return createTextFile(outputFile, processedTemplate);
 		default:
 			break;
 		}
@@ -268,8 +277,15 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		
 		return null;
 	}
+
+	private File createTextFile(File outputFile, String contents) throws IOException {
+		BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
+		bw.write(contents);
+		bw.close();
+		return outputFile;
+	}
 	
-	public File createPdf(File outputFile, String processedHtml) throws Exception {
+	public File createPdfFile(File outputFile, String contents) throws Exception {
 		
 		  FileOutputStream os = null;
 	        try {
@@ -277,7 +293,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	        	os = new FileOutputStream(outputFile);
 
 	            ITextRenderer renderer = new ITextRenderer();
-	            renderer.setDocumentFromString(processedHtml);
+	            renderer.setDocumentFromString(contents);
 	            renderer.layout();
 	            renderer.createPDF(os, false);
 	            renderer.finishPDF();
@@ -287,16 +303,16 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	            if (os != null) {
 	                try {
 	                    os.close();
-	                } catch (IOException e) { /*ignore*/ }
+	                } catch (IOException e) {}
 	            }
 	        }
 	    return outputFile;
 	}
 
 	
-	private String generateOnDemandFileName(DownloadType type) {
+	private String generateOnDemandFileName(DownloadType type, boolean withFileFormat) {
 		String title = !cvItem.getCvScheme().getCode().isEmpty() ? cvItem.getCvScheme().getCode() : cvItem.getCvScheme().getTitleByLanguage("en");		
-		return title + "_" + String.join("-", getFilteredLanguages( type , true)) + "_" + LocalDateTime.now() +"." + type.toString();
+		return title + "_" + String.join("-", getFilteredLanguages( type , true)) + "_" + LocalDateTime.now().format(dateFormatter) + (withFileFormat ? "." + type.toString() : "");
 	}
 
 	@Override
@@ -311,7 +327,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		private boolean exportPdf;
 		private boolean exportHtlm;
 		public ExportCV(String language, String version) {
-			this(language, version, true,false,false);
+			this(language, version, true,true,true);
 		}
 		public ExportCV(String language, String version, boolean exportSkos, boolean exportPdf, boolean exportHtlm) {
 			this.language = language;
