@@ -86,7 +86,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 			.withExpand( rightContainer, 0.8f );
 		
 		mainContainer
-			.withWidth( "1170px" )
+			//.withWidth( "1170px" )
 			.withStyleName( "mainlayout" )
 			.withSpacing( true )
 			.withMargin( new MarginInfo( false, false, false, false ) )
