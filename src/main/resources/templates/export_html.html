@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<body>
+		<h2 th:text="${'CV'}"></h2>
+		<div>
+			<span th:text="${'Label (EN):'}" style="font-weight:bold"></span>
+			<span th:text="${preflabelOl}"></span>
+		</div>
+		<div>
+			<span th:text="${'Definition (EN):'}" style="font-weight:bold"></span>
+			<span th:text="${definitionOl}"></span>
+		</div>
+		<br/>
+		<h2 th:text="${'SKOS'}"></h2>
+		<div>
+			<pre class="xml" style="font-size:10px">
+				<code th:text="${content}"></code>
+			</pre>
+		</div>
+    </body>
+</html>

@@ -211,14 +211,25 @@
    			<version>3.0-alpha-2</version>
 		</dependency>
 		<dependency>
-    <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpclient</artifactId>
-    </dependency>
+    		<groupId>org.apache.httpcomponents</groupId>
+    		<artifactId>httpclient</artifactId>
+   		</dependency>
 		<dependency>
 	        <groupId>org.asynchttpclient</groupId>
 	        <artifactId>async-http-client</artifactId>
 	        <version>2.0.19</version>
 	    </dependency>
+	    <!-- template engine -->
+	    <dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!-- pdf creator -->
+		<dependency>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>flying-saucer-pdf</artifactId>
+            <version>9.1.4</version>
+        </dependency>
 		
 	</dependencies>
 
@@ -431,11 +442,20 @@
 		</plugins>
 		<resources>
 			<resource>
-				<directory>src/main/resources</directory>
+				<directory>src/main/resources/</directory>
 				<filtering>true</filtering>
 				<includes>
+					<include>**/*.yml</include>
 		            <include>**/*.properties</include>
 				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources/</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/*.yml</exclude>
+					<exclude>**/*.properties</exclude>
+				</excludes>
 			</resource>
 			<resource>
 				<directory>src/main/webapp</directory>

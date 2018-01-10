@@ -1787,11 +1787,17 @@ $v-selection-item-border-radius: 0;
    .detail-tab{
    		height:500px;
    		.v-tabsheet-content{
-	   		tbody{
+	   		tbody.v-treegrid-body{
 	   			position:absolute;
 	   			display: block;
 			    height: 370px;
 			    overflow-y: scroll;
+			    overflow-x: hidden;
+			}
+			tbody.v-grid-body{
+	   			position:absolute;
+	   			display: block;
+			    overflow-y: hidden;
 			    overflow-x: hidden;
 			}
 		}
