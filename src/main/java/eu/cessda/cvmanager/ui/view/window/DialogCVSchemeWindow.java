@@ -35,11 +35,13 @@ public class DialogCVSchemeWindow extends MWindow {
 	private final EventBus.UIEventBus eventBus;
 	
 	private MLabel lAgency = new MLabel( "Agency" );
+	private MLabel lCode = new MLabel( "Code" );
 	private MLabel lTitle = new MLabel( "Title" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language (source)" );
 
 	private MVerticalLayout layout = new MVerticalLayout();
+	private MTextField tfCode = new MTextField("Code");
 	private MTextField tfTitle = new MTextField("Title*");
 	private TextArea description = new TextArea("Description*");
 	private ComboBox<CVEditor> editorCb = new ComboBox<>("Agency*");
@@ -59,6 +61,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		this.eventBus = eventBus;
 				
 		lAgency.withStyleName( "required" );
+		lCode.withStyleName( "required" );
 		lTitle.withStyleName( "required" );
 		lDescription.withStyleName( "required" );
 		
@@ -88,9 +91,15 @@ public class DialogCVSchemeWindow extends MWindow {
 		binder.bind(tfTitle, concept -> getTitleByLanguage(concept),
 				(concept, value) -> setTitleByLanguage(concept, value));
 
+		binder.bind(tfCode, concept -> concept.getCode(),
+				(concept, value) -> concept.setCode(value));
+		
 		binder.bind(description, concept -> getDescriptionByLanguage(concept),
 				(concept, value) -> setDescriptionByLanguage(concept, value));
 		
+		tfCode
+			.withFullWidth()
+			.withValue( "" );
 		tfTitle
 			.withFullWidth()
 			.withValue( "" );
@@ -129,6 +138,11 @@ public class DialogCVSchemeWindow extends MWindow {
 				new MHorizontalLayout()
 					.withFullWidth()
 					.add(
+						lCode, tfCode
+					).withExpand( lCode, 0.15f).withExpand( tfCode, 0.85f),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
 						lTitle, tfTitle
 					).withExpand( lTitle, 0.15f).withExpand( tfTitle, 0.85f),
 				new MHorizontalLayout()
@@ -149,9 +163,10 @@ public class DialogCVSchemeWindow extends MWindow {
 			)
 			.withExpand(layout.getComponent(0), 0.07f)
 			.withExpand(layout.getComponent(1), 0.07f)
-			.withExpand(layout.getComponent(2), 0.5f)
-			.withExpand(layout.getComponent(3), 0.3f)
-			.withAlign(layout.getComponent(3), Alignment.BOTTOM_RIGHT);
+			.withExpand(layout.getComponent(2), 0.07f)
+			.withExpand(layout.getComponent(3), 0.5f)
+			.withExpand(layout.getComponent(4), 0.3f)
+			.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
 
 		
 		this

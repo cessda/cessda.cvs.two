@@ -172,17 +172,24 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			private static final long serialVersionUID = 3421089012275806929L;
 			@Override
 			public InputStream getStream() {
+				Set<String> filteredOutLanguage = getFilteredLanguages( downloadType , false);
+				
+				if(filteredOutLanguage.size() == cvItem.getCvScheme().getLanguagesByTitle().size()){
+					Notification.show( "No language selected!" );
+					return null;
+				}
+				
                 try { 
                 	switch (downloadType) {
 	                	case HTML:
 						case PDF:
 							try {
-								return new FileInputStream( generateExportFile(downloadType));
+								return new FileInputStream( generateExportFile(downloadType, filteredOutLanguage));
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 						default:
-							return new ByteArrayInputStream( generateSKOSxml( downloadType ).getBytes(StandardCharsets.UTF_8.name()));
+							return new ByteArrayInputStream( generateSKOSxml( downloadType, filteredOutLanguage ).getBytes(StandardCharsets.UTF_8.name()));
 					}
                     
                 } catch (IOException e) {
@@ -198,19 +205,13 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		};
 	}
 	
-	private String generateSKOSxml( DownloadType type) {
-		Set<String> filteredLanguage = getFilteredLanguages( type , false);
-		
-		if(filteredLanguage.size() == cvItem.getCvScheme().getLanguagesByTitle().size()){
-			Notification.show( "No language selected!" );
-			return null;
-		}
-		
+	private String generateSKOSxml( DownloadType type, Set<String> filteredOutLanguage) {
+
 		configurationService.getPropertyByKeyAsSet("cvmanager.export.filterTag", ",").ifPresent( c -> filteredTag = c );
 		
 		StringJoiner skosXml = new StringJoiner("\n\n");
 		skosXml.add( 
-				SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguage, cvItem.getCvScheme().getContent())
+				SaxParserUtils.filterSkosDoc(filteredTag, filteredOutLanguage, cvItem.getCvScheme().getContent())
 					.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" "
 							+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\" xmlns:dct=\"http://purl.org/dc/terms/\" xmlns:foaf=\"http://xmlns.com/foaf/spec/\" "
 							+ "xmlns:void=\"http://rdfs.org/ns/void#\" xmlns:iqvoc=\"http://try.iqvoc.net/schema#\" xmlns:skosxl=\"http://www.w3.org/2008/05/skos-xl#\" "
@@ -218,7 +219,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 				);
 		skosXml.add( cvItem
 						.getFlattenedCvConceptStreams()
-						.map( x -> SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguage, x.getContent()).replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "") )
+						.map( x -> SaxParserUtils.filterSkosDoc(filteredTag, filteredOutLanguage, x.getContent()).replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "") )
 						.collect( Collectors.joining("\n\n"))
 				);
 		
@@ -228,9 +229,12 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		return skosXml.toString().replaceAll("(?m)^[ \t]*\r?\n", "");
 	}
 	
-	private File generateExportFile( DownloadType type) throws Exception {
+	private File generateExportFile( DownloadType type, Set<String> filteredOutLanguage) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		map.put("content", generateSKOSxml( type ));
+		map.put("content", generateSKOSxml( type, filteredOutLanguage ));
+		map.put("filterOutLanguage", filteredOutLanguage);
+		map.put("scheme", cvItem.getCvScheme());
+		map.put("concepts", cvItem.getFlattenedCvConceptStreams().collect(Collectors.toList()));
 		map.put("preflabelOl", cvItem.getCvScheme().getTitleByLanguage("en"));
 		map.put("definitionOl", cvItem.getCvScheme().getDescriptionByLanguage("en"));
 		
@@ -273,8 +277,6 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		default:
 			break;
 		}
-
-		
 		return null;
 	}
 
@@ -289,7 +291,6 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		
 		  FileOutputStream os = null;
 	        try {
-	            
 	        	os = new FileOutputStream(outputFile);
 
 	            ITextRenderer renderer = new ITextRenderer();
@@ -297,7 +298,6 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	            renderer.layout();
 	            renderer.createPDF(os, false);
 	            renderer.finishPDF();
-	            
 	        }
 	        finally {
 	            if (os != null) {
