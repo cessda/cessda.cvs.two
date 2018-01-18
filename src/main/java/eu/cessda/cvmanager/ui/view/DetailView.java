@@ -105,7 +105,7 @@ public class DetailView extends CvManagerView {
 	private MCssLayout bottomViewSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomEditSection = new MCssLayout().withFullWidth();
 	
-	private VerticalLayout detailLayout = new VerticalLayout();
+	private MCssLayout detailLayout = new MCssLayout().withFullWidth();
 	private MCssLayout identifyLayout = new MCssLayout().withFullWidth();
 	private MCssLayout ddiLayout = new MCssLayout().withFullWidth();
 	private MCssLayout licenseLayout = new MCssLayout().withFullWidth();
@@ -137,7 +137,7 @@ public class DetailView extends CvManagerView {
 
 	private TreeData<CVConcept> cvCodeTreeData;
 	private MCssLayout languageLayout = new MCssLayout();
-	private Set<CVConcept> draggedItems;
+	private List<CVConcept> draggedItems;
 	private TreeDataProvider<CVConcept> dataProvider;
 	
 	private ExportLayout exportLayoutContent;
@@ -473,9 +473,12 @@ public class DetailView extends CvManagerView {
 		exportLayout.removeAllComponents();
 		
 		exportLayout.withHeight("450px");
+		detailLayout.setHeight("800px");
 
 		detailTab = new TabSheet();
 		detailTab.setStyleName("detail-tab");
+		detailTab.setHeightUndefined();
+	
 		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale));
 		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale));
 		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale));
@@ -485,6 +488,7 @@ public class DetailView extends CvManagerView {
 		detailTreeGrid = new TreeGrid<>(CVConcept.class);
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
+		detailTreeGrid.setHeight("800px");
 		
 		updateDetailGrid();	
 		
@@ -546,16 +550,16 @@ public class DetailView extends CvManagerView {
 		// select row programatically
 		if(cvItem.getCvConcept() != null ) {
 			detailTreeGrid.select( cvItem.getCvConcept());
-			detailTreeGrid.scrollTo( 5 );
+			//detailTreeGrid.scrollTo( 13 );
 		}
 		
 		detailTreeGrid.getColumns().stream().forEach( column -> column.setSortable( false ));
 				
 		detailLayout.addComponents(detailTreeGrid);
-		detailLayout.setMargin(false);
-		detailLayout.setSpacing(false);
+		//detailLayout.setMargin(false);
+		//detailLayout.setSpacing(false);
 		detailLayout.setSizeFull();
-		detailLayout.setExpandRatio(detailTreeGrid, 1);
+		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
 		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
 		exportLayout.add(exportLayoutContent);
@@ -867,10 +871,10 @@ public class DetailView extends CvManagerView {
 		detailTreeGrid.getColumn("code").setCaption( "Code" );
 		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
 		if( detailTreeGrid.getColumn("prefLabelTl") != null )
-			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale) );
+			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang) );
 		detailTreeGrid.getColumn("definitionSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.definition", locale) );
 		if( detailTreeGrid.getColumn("definitionTl") != null )
-			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale) );
+			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
 		
 		actionPanel.updateMessageStrings(locale);
 	}
