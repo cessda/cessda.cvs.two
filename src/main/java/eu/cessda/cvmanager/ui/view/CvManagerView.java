@@ -42,8 +42,6 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	protected final SecurityService securityService;
 	
 	private final ActionType actionType;
-	protected CVScheme cvScheme;
-	protected CVConcept cvConcept;
 	protected CvItem cvItem = new CvItem();
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
@@ -121,19 +119,11 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 		return actionType;
 	}
 
-	public CVScheme getCvScheme() {
-		return cvScheme;
+	public CvItem getCvItem() {
+		return cvItem;
 	}
 
-	public void setCvScheme(CVScheme cvScheme) {
-		this.cvScheme = cvScheme;
-	}
-
-	public CVConcept getCvConcept() {
-		return cvConcept;
-	}
-
-	public void setCvConcept(CVConcept cvConcept) {
-		this.cvConcept = cvConcept;
+	public void setCvItem(CvItem cvItem) {
+		this.cvItem = cvItem;
 	}
 }

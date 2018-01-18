@@ -236,7 +236,7 @@ public class DialogEditCodeWindow extends MWindow {
 				.withExpand(layout.getComponent(1), 0.06f)
 				.withExpand(layout.getComponent(2), 0.25f)
 				.withExpand(layout.getComponent(3), 0.06f)
-				.withExpand(layout.getComponent(4), 0.5f)
+				.withExpand(layout.getComponent(4), 0.25f)
 				.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
 		} else {
 			layout

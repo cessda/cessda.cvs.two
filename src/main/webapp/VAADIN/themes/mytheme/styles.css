@@ -16531,3 +16531,7 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .dialog-content .v-label {
 	padding: 6px 0;
 }
+
+.mytheme .v-treegrid-cell-content {
+	vertical-align: top;
+}

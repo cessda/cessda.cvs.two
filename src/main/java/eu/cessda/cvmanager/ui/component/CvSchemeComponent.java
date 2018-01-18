@@ -6,6 +6,7 @@ import java.util.List;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.stardat.entity.LanguageLabel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.button.MButton;
@@ -31,6 +32,7 @@ public class CvSchemeComponent extends CustomComponent {
 
 	private CVScheme cvScheme;
 	private List<CVConcept> cvConcepts;
+	private String keyword;
 
 	private static final long serialVersionUID = 4932510587869607326L;
 
@@ -49,9 +51,10 @@ public class CvSchemeComponent extends CustomComponent {
 
 	private transient ConfigurationService configService;
 
-	public CvSchemeComponent(CVScheme cvScheme, ConfigurationService configService) {
+	public CvSchemeComponent(CVScheme cvScheme, ConfigurationService configService, String keyword) {
 		this.cvScheme = cvScheme;
 		this.configService = configService;
+		this.keyword = keyword;
 
 		setCompositionRoot(container);
 		initLayout();
@@ -145,11 +148,27 @@ public class CvSchemeComponent extends CustomComponent {
 			StringBuilder sConcepts = new StringBuilder();
 			sConcepts.append("Found in code(s): ");
 
+			int index= 0;
 			for (CVConcept concept : theConceptList) {
-				sConcepts.append(concept.getPrefLabelByLanguage(language));
+				if( index > 0)
+					sConcepts.append( ", ");
+				sConcepts.append( getMatchesConceptFromKeyword(concept, language));
+				index++;
 			}
 			conceptList.setValue(sConcepts.toString());
 		}
+	}
+	
+	private String getMatchesConceptFromKeyword(CVConcept concept, String language) {
+		String conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
+				+ cvScheme.getContainerId() + "/" + concept.getNotation() + "'>" + concept.getPrefLabelByLanguage(language) + "</a>";
+		for (LanguageLabel languagelabel : concept.getPrefLabel()) {
+			if( languagelabel.getLabel().toLowerCase().contains(keyword)) {
+				conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
+						+ cvScheme.getContainerId() + "/" + concept.getNotation() + "?lang=" + languagelabel.getLanguage() + "'>" +languagelabel.getLabel() + "</a>";
+			}
+		};
+		return conceptLink;
 	}
 
 	private void applyButtonStyle(Button pressedButton) {

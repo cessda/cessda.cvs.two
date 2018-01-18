@@ -59,8 +59,6 @@ public class ActionPanel extends CustomComponent{
 	private boolean enableSort=false;
 	
 	private CvManagerView cvManagerView;
-	private CVScheme cvScheme;
-	private CVConcept cvConcept;
 	
 	public ActionPanel( CvManagerView cvManagerView) {
 		this.cvManagerView = cvManagerView;
@@ -178,7 +176,7 @@ public class ActionPanel extends CustomComponent{
 	private void doCvAddTranslation(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
-		Window window = new DialogAddLanguageWindow(eventBus, cvManagerService, cvManagerView.getCvScheme());
+		Window window = new DialogAddLanguageWindow(eventBus, cvManagerService, cvManagerView.getCvItem().getCvScheme());
 		getUI().addWindow(window);
 	}
 	
@@ -216,8 +214,8 @@ public class ActionPanel extends CustomComponent{
 	}
 	
 	public void conceptSelectedChange( CVConcept cvCode) {
-		this.cvConcept = cvCode;
-		if( cvConcept != null ) {
+		cvManagerView.getCvItem().setCvConcept(cvCode);
+		if( cvCode != null ) {
 			buttonCodeAddTranslation.setVisible( true );
 			buttonCodeAddChild.setVisible( true );
 			buttonCodeDelete.setVisible( true );

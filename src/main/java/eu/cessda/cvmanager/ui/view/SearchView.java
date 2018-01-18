@@ -36,6 +36,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -59,7 +60,7 @@ public class SearchView extends CvManagerView {
 	// search box area
 	private VerticalLayout searchBoxContainer = new VerticalLayout();
 	private TextField searchBox;
-	private Button searchButton;
+	private MButton searchButton = new MButton(VaadinIcons.SEARCH, this::doSearchCv);
 	private Button showAllStudiesButton;
 
 	private MHorizontalLayout searchOption = new MHorizontalLayout();
@@ -151,60 +152,8 @@ public class SearchView extends CvManagerView {
 		this.searchBox = new TextField();
 		this.searchBox.setSizeFull();
 
-		this.searchButton = new Button(VaadinIcons.SEARCH);
 		this.searchButton.setStyleName(ValoTheme.BUTTON_PRIMARY);
 		this.searchButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-		this.searchButton.addClickListener(e -> {
-
-			if (!searchBox.getValue().trim().equalsIgnoreCase("")) {
-
-				Map<String, CVScheme> mapHits = new HashMap<String, CVScheme>();
-
-				// initialize the new query
-				List<DDIStore> searchResult = cvManagerService.findByContentAndElementType(this.searchBox.getValue(),
-						DDIElement.CVSCHEME);
-
-				List<DDIStore> searchResult2 = cvManagerService.findByContentAndElementType(this.searchBox.getValue(),
-						DDIElement.CVCONCEPT);
-
-				for (DDIStore store : searchResult2) {
-					CVConcept concept = new CVConcept(store);
-
-					List<DDIStore> ddiStoreScheme = cvManagerService
-							.findByIdAndElementType(concept.getContainerId(), DDIElement.CVSCHEME);
-
-					if (ddiStoreScheme.size() == 1) {
-
-						if (mapHits.containsKey(ddiStoreScheme.get(0).getElementId())) {
-							CVScheme scheme = mapHits.get(ddiStoreScheme.get(0).getElementId());
-							scheme.addConcept(concept);
-						} else {
-							CVScheme scheme = new CVScheme(ddiStoreScheme.get(0));
-							scheme.addConcept(concept);
-							mapHits.put(scheme.ddiStore.getElementId(), scheme);
-						}
-
-					}
-				}
-
-				for (DDIStore store : searchResult) {
-
-					if (!mapHits.containsKey(store.getElementId())) {
-
-						CVScheme scheme = new CVScheme(store);
-
-						mapHits.put(scheme.ddiStore.getElementId(), scheme);
-					}
-
-				}
-
-				ArrayList<CVScheme> hits = new ArrayList<CVScheme>(mapHits.values());
-
-				updateResultsContainer(hits);
-			} else
-				resetSearch();
-
-		});
 
 		this.showAllStudiesButton = new Button("View all CVs");
 		this.showAllStudiesButton.setStyleName(ValoTheme.BUTTON_LINK);
@@ -246,6 +195,56 @@ public class SearchView extends CvManagerView {
 
 		return container;
 
+	}
+
+	private void doSearchCv( ClickEvent event ) {
+		if (!searchBox.getValue().trim().equalsIgnoreCase("")) {
+
+			Map<String, CVScheme> mapHits = new HashMap<String, CVScheme>();
+
+			// initialize the new query
+			List<DDIStore> searchResult = cvManagerService.findByContentAndElementType(this.searchBox.getValue(),
+					DDIElement.CVSCHEME);
+
+			List<DDIStore> searchResult2 = cvManagerService.findByContentAndElementType(this.searchBox.getValue(),
+					DDIElement.CVCONCEPT);
+
+			for (DDIStore store : searchResult2) {
+				CVConcept concept = new CVConcept(store);
+
+				List<DDIStore> ddiStoreScheme = cvManagerService
+						.findByIdAndElementType(concept.getContainerId(), DDIElement.CVSCHEME);
+
+				if (ddiStoreScheme.size() == 1) {
+
+					if (mapHits.containsKey(ddiStoreScheme.get(0).getElementId())) {
+						CVScheme scheme = mapHits.get(ddiStoreScheme.get(0).getElementId());
+						scheme.addConcept(concept);
+					} else {
+						CVScheme scheme = new CVScheme(ddiStoreScheme.get(0));
+						scheme.addConcept(concept);
+						mapHits.put(scheme.ddiStore.getElementId(), scheme);
+					}
+
+				}
+			}
+
+			for (DDIStore store : searchResult) {
+
+				if (!mapHits.containsKey(store.getElementId())) {
+
+					CVScheme scheme = new CVScheme(store);
+
+					mapHits.put(scheme.ddiStore.getElementId(), scheme);
+				}
+
+			}
+
+			ArrayList<CVScheme> hits = new ArrayList<CVScheme>(mapHits.values());
+
+			updateResultsContainer(hits);
+		} else
+			resetSearch();
 	}
 
 	@EventBusListenerMethod(scope = EventScope.UI)
@@ -294,7 +293,7 @@ public class SearchView extends CvManagerView {
 		results.removeAllColumns();
 		results.setHeaderVisible(false);
 		results.addColumn(cvscheme -> {
-			return new CvSchemeComponent(cvscheme, configService);
+			return new CvSchemeComponent(cvscheme, configService, this.searchBox.getValue());
 		}, new ComponentRenderer()).setId("cvScemeComp");
 		// results.setRowHeight( 135.0 );
 		results.getColumn("cvScemeComp").setExpandRatio(1);
