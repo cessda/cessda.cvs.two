@@ -200,7 +200,7 @@ public class DialogEditCodeWindow extends MWindow {
 							).withExpand(lSourceTitle, 0.15f).withExpand( sourceTitle, 0.85f),
 					sourceRowB
 						.withFullWidth()
-						.withHeight("290px")
+						.withHeight("270px")
 						.add(
 							lSourceDescription, sourceDescription
 						).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
@@ -232,10 +232,10 @@ public class DialogEditCodeWindow extends MWindow {
 						.withExpand(cancelButton, 0.1f)
 						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 				)
-				.withExpand(layout.getComponent(0), 0.06f)
-				.withExpand(layout.getComponent(1), 0.06f)
+				.withExpand(layout.getComponent(0), 0.03f)
+				.withExpand(layout.getComponent(1), 0.03f)
 				.withExpand(layout.getComponent(2), 0.25f)
-				.withExpand(layout.getComponent(3), 0.06f)
+				.withExpand(layout.getComponent(3), 0.03f)
 				.withExpand(layout.getComponent(4), 0.25f)
 				.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
 		} else {
