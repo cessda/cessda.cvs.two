@@ -226,6 +226,15 @@ public class ActionPanel extends CustomComponent{
 		}
 	}
 	
+	public void languageSelectionChange(String sourceLanguage, String currentLanguage) {
+		enableSort = false;
+		buttonCodeSort.withCaption( "Enable order code" );
+		if( sourceLanguage.equals(currentLanguage)) {
+			buttonCodeSort.setVisible( true );
+		} else
+			buttonCodeSort.setVisible( false );
+	}
+	
 	private void doSortCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		enableSort = !enableSort;
@@ -249,6 +258,14 @@ public class ActionPanel extends CustomComponent{
 		
 	}
 	
+	public boolean isEnableSort() {
+		return enableSort;
+	}
+
+	public void setEnableSort(boolean enableSort) {
+		this.enableSort = enableSort;
+	}
+
 	public void updateMessageStrings(Locale locale) {
 		panelHeader.setValue(i18n.get("view.action.panel", locale));
 		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));

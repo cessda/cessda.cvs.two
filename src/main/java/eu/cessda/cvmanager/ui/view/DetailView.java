@@ -276,7 +276,11 @@ public class DetailView extends CvManagerView {
 			MButton langButton = new MButton(item.toUpperCase());
 			langButton.withStyleName("langbutton").addClickListener(e -> {
 				applyButtonStyle(e.getButton());
+				
+				cvItem.setCurrentLanguage(e.getButton().getCaption().toLowerCase());
 				setSelectedLang(e.getButton().getCaption().toLowerCase());
+				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
+				
 				if (formMode.equals(FormMode.view)) {
 					initTopViewSection();
 					initTopEditSection();
@@ -568,7 +572,7 @@ public class DetailView extends CvManagerView {
 			actionPanel.conceptSelectedChange( cvItem.getCvConcept() );
 		});
 		
-		if(enableTreeDragAndDrop)
+		if(enableTreeDragAndDrop && actionPanel.isEnableSort())
 			enableTreeGridDragAndDropSort();
 		
 		// select row programatically
@@ -677,6 +681,7 @@ public class DetailView extends CvManagerView {
 	                					// as child child to  child from root/leaf concept (only concept narrower affected)
             							cvCodeTreeData.setParent(draggedRow, targetRow);
             							dataProvider.refreshAll();
+            							detailTreeGrid.expand(draggedRow, targetRow);
             							
             							// update topconcept, if dragged top concept is null
             							if( draggedNodeParent == null ) { // dragged node was topconcept
