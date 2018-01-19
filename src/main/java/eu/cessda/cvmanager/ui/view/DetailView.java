@@ -127,6 +127,22 @@ public class DetailView extends CvManagerView {
 	private MLabel lDefinitionOl = new MLabel();
 	private MLabel lVersionOl = new MLabel();
 	private MLabel lDateOl = new MLabel();
+	
+	private MLabel lTitle2 = new MLabel();
+	private MLabel lDefinition2 = new MLabel();
+	private MLabel lCode2 = new MLabel();
+	private MLabel lLang2 = new MLabel();
+	private MLabel lVersion2 = new MLabel();
+	private MLabel lDate2 = new MLabel();
+	private MLabel lTitleOl2 = new MLabel();
+	private MLabel lDefinitionOl2 = new MLabel();
+	private MLabel lVersionOl2 = new MLabel();
+	private MLabel lDateOl2 = new MLabel();
+	
+	private MLabel lLang3 = new MLabel();
+	private MLabel lVersion3 = new MLabel();
+	private MLabel lDate3 = new MLabel();
+	
 	private boolean enableTreeDragAndDrop;
 
 	private View oldView;
@@ -263,10 +279,11 @@ public class DetailView extends CvManagerView {
 				setSelectedLang(e.getButton().getCaption().toLowerCase());
 				if (formMode.equals(FormMode.view)) {
 					initTopViewSection();
+					initTopEditSection();
 					initBottomViewSection();
 				} else {
+					initTopViewSection();
 					initTopEditSection();
-					//initBottomEditSection();
 					initBottomViewSection();
 				}
 				updateMessageStrings(getLocale());
@@ -369,7 +386,7 @@ public class DetailView extends CvManagerView {
 		titleField.withStyleName("editField");//.withValue(cvItem.getCvScheme().getTitleByLanguage("en"));
 
 		MCssLayout titleSmall = new MCssLayout();
-		titleSmall.withFullWidth().add( lTitle.withWidth("120px").withStyleName("leftPart"),
+		titleSmall.withFullWidth().add( lTitle2.withWidth("120px").withStyleName("leftPart"),
 				selectedLang.equals("en") ? titleField
 						: new MLabel(cvItem.getCvScheme().getTitleByLanguage("en")).withStyleName("rightPart"));
 
@@ -378,7 +395,7 @@ public class DetailView extends CvManagerView {
 		//descField.setValue(cvScheme.getDescriptionByLanguage("en"));
 
 		MCssLayout description = new MCssLayout();
-		description.withFullWidth().add(lDefinition.withWidth("120px").withStyleName("leftPart"),
+		description.withFullWidth().add(lDefinition2.withWidth("120px").withStyleName("leftPart"),
 				selectedLang.equals("en") ? descField
 						: new MLabel(cvItem.getCvScheme().getDescriptionByLanguage("en")).withStyleName("rightPart"));
 
@@ -387,7 +404,7 @@ public class DetailView extends CvManagerView {
 		//.withValue("CODE_TEST");
 
 		MCssLayout code = new MCssLayout();
-		code.withFullWidth().add(lCode.withWidth("120px").withStyleName("leftPart"),
+		code.withFullWidth().add(lCode2.withWidth("120px").withStyleName("leftPart"),
 				selectedLang.equals("en") ? codeField : new MLabel(cvItem.getCvScheme().getCode()).withStyleName("rightPart"));
 		
 		Binder<CVScheme> cvSchemeBinder = new Binder<>();
@@ -409,13 +426,13 @@ public class DetailView extends CvManagerView {
 		MCssLayout langSec = new MCssLayout();
 		langSec.withFullWidth()
 				.add(new MCssLayout().withWidth("33%").add(
-						lLang.withWidth("120px").withStyleName("leftPart"),
+						lLang2.withWidth("120px").withStyleName("leftPart"),
 						new MLabel("en").withStyleName("rightPart")),
 						new MCssLayout().withWidth("33%").add(
-								lVersion.withWidth("180px").withStyleName("leftPart"),
+								lVersion2.withWidth("180px").withStyleName("leftPart"),
 								new MLabel(cvItem.getCvScheme().getVersion().getPublicationVersion()).withStyleName("rightPart")),
 						new MCssLayout().withWidth("33%").add(
-								lDate.withWidth("140px").withStyleName("leftPart"),
+								lDate2.withWidth("140px").withStyleName("leftPart"),
 								new MLabel(cvItem.getCvScheme().getVersion().getPublicationDate().toString())
 										.withStyleName("rightPart")));
 
@@ -424,7 +441,7 @@ public class DetailView extends CvManagerView {
 
 		MCssLayout titleSmallOl = new MCssLayout();
 		titleSmallOl.withFullWidth().add(
-				lTitleOl.withWidth("120px").withStyleName("leftPart"),
+				lTitleOl2.withWidth("120px").withStyleName("leftPart"),
 				titleFieldOl);
 
 		TextArea descFieldOl = new TextArea();
@@ -433,7 +450,7 @@ public class DetailView extends CvManagerView {
 
 		MCssLayout descriptionOl = new MCssLayout();
 		descriptionOl.withFullWidth().add(
-				lDefinitionOl.withWidth("120px").withStyleName("leftPart"),
+				lDefinitionOl2.withWidth("120px").withStyleName("leftPart"),
 				descFieldOl);
 		
 		// Binder other language
@@ -448,21 +465,28 @@ public class DetailView extends CvManagerView {
 		MCssLayout langSecOl = new MCssLayout();
 		langSecOl.withFullWidth().add(
 				new MCssLayout().withWidth("33%")
-						.add(lLang.withWidth("120px").withStyleName("leftPart"),
+						.add(lLang3.withWidth("120px").withStyleName("leftPart"),
 								new MLabel(selectedLang).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
-						lVersion.withWidth("180px").withStyleName("leftPart"),
+						lVersion3.withWidth("180px").withStyleName("leftPart"),
 						new MLabel(cvItem.getCvScheme().getVersion().getPublicationVersion() + (selectedLang.equals("en") ? ""
 								: "-" + selectedLang)).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
-						lDate.withWidth("140px").withStyleName("leftPart"),
+						lDate3.withWidth("140px").withStyleName("leftPart"),
 						new MLabel(cvItem.getCvScheme().getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
 		if (selectedLang.equals( configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 			langSecOl.setVisible(false);
+			langSec.setVisible(true);
+		} else {
+			titleSmallOl.setVisible(true);
+			descriptionOl.setVisible(true);
+			langSecOl.setVisible(true);
+			langSec.setVisible(false);
 		}
+			
 
 		topEditSection.add(topHead, titleSmall, description, code, langSec, titleSmallOl, descriptionOl, langSecOl);
 	}
@@ -861,6 +885,21 @@ public class DetailView extends CvManagerView {
 		lDefinitionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
 		lVersionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
 		lDateOl.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
+		
+		lTitle2.setValue( i18n.get("view.detail.cvscheme.label.sl.title", locale));
+		lDefinition2.setValue( i18n.get("view.detail.cvscheme.label.sl.definition", locale));
+		lCode2.setValue( i18n.get("view.detail.cvscheme.label.sl.code", locale));
+		lLang2.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
+		lVersion2.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
+		lDate2.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
+		lTitleOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.title", locale, selectedLang));
+		lDefinitionOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
+		lVersionOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
+		lDateOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
+		
+		lLang3.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
+		lVersion3.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
+		lDate3.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
 		
 		detailTab.getTab(0).setCaption( i18n.get("view.detail.cvconcept.tab.detail", locale));
 		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.identity", locale));
