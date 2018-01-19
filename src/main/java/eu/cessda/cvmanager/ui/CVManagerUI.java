@@ -30,6 +30,7 @@ import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.MarginInfo;
@@ -43,6 +44,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.MessageByLocaleService;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
+import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 import eu.cessda.cvmanager.ui.view.ErrorView;
 import eu.cessda.cvmanager.ui.view.LoginView;
@@ -130,7 +132,9 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		navigator.setErrorView(ErrorView.class);
 		this.viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
 
-		navigator.navigateTo(SearchView.VIEW_NAME);
+		String uriQuery = Page.getCurrent().getLocation().toString();
+		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ))
+			navigator.navigateTo(SearchView.VIEW_NAME);
 		navigator.addViewChangeListener(viewChangeListener);
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
