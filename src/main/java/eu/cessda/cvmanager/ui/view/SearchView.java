@@ -1,6 +1,8 @@
 package eu.cessda.cvmanager.ui.view;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -75,6 +77,8 @@ public class SearchView extends CvManagerView {
 	private ComboBox<String> sortComboBox = new ComboBox<>();
 	// results area
 	private VerticalLayout resultsContainer = new VerticalLayout();
+	
+	private ArrayList<CVScheme> hits = new ArrayList<>();
 
 	// The opened search hit at the results grid (null at the begining)
 	// private SearchHit selectedItem = null;
@@ -118,7 +122,7 @@ public class SearchView extends CvManagerView {
 		this.resultsContainer.setSpacing(false);
 		this.resultsContainer.setMargin(false);
 		this.resultsContainer.setSizeFull();
-		this.resultsContainer.addComponent(this.initResultsContainer(new ArrayList<>()));
+		this.resultsContainer.addComponent(this.initResultsContainer());
 
 		this.searchGlobalContainer.addComponents(searchBoxContainer, resultsContainer);
 		this.searchGlobalContainer.setExpandRatio(resultsContainer, 1);
@@ -179,14 +183,25 @@ public class SearchView extends CvManagerView {
 		perPageComboBox.setWidth("100px");
 		perPageComboBox.setValue("10");
 
-		sortComboBox.setItems("Relevance", "A-Z");
+		sortComboBox.setItems("Latest", "Relevance", "A-Z");
 		sortComboBox.setEmptySelectionAllowed(false);
 		sortComboBox.setWidth("120px");
-		sortComboBox.setValue("A-Z");
+		sortComboBox.setValue("Latest");
+		sortComboBox.addValueChangeListener( e -> {
+			if( e.getValue().equals("A-Z")) {
+				hits.sort(new Comparator<CVScheme>() {
+					@Override
+					public int compare(CVScheme c1, CVScheme c2) {
+						return c1.getCode().compareTo(c2.getCode());
+					}
+				});
+				updateResultsContainer();
+			}
+		});
 
-		filterOption.withFullWidth().add(perPageResult.add(new MLabel(i18n.get("view.search.query.label.perpage", locale)), 
-				perPageComboBox), infoResult,
-				sortResult.add(new MLabel(i18n.get("view.search.query.label.sort", locale)), sortComboBox));
+		filterOption.withFullWidth().add(
+				perPageResult.add(new MLabel(i18n.get("view.search.query.label.perpage", locale)), perPageComboBox),
+				infoResult, sortResult.add(new MLabel(i18n.get("view.search.query.label.sort", locale)), sortComboBox));
 
 		layout.addComponents(this.searchBox, this.searchButton /* , this.showAllStudiesButton */);
 		layout.setExpandRatio(this.searchBox, 1);
@@ -197,7 +212,7 @@ public class SearchView extends CvManagerView {
 
 	}
 
-	private void doSearchCv( ClickEvent event ) {
+	private void doSearchCv(ClickEvent event) {
 		if (!searchBox.getValue().trim().equalsIgnoreCase("")) {
 
 			Map<String, CVScheme> mapHits = new HashMap<String, CVScheme>();
@@ -212,8 +227,8 @@ public class SearchView extends CvManagerView {
 			for (DDIStore store : searchResult2) {
 				CVConcept concept = new CVConcept(store);
 
-				List<DDIStore> ddiStoreScheme = cvManagerService
-						.findByIdAndElementType(concept.getContainerId(), DDIElement.CVSCHEME);
+				List<DDIStore> ddiStoreScheme = cvManagerService.findByIdAndElementType(concept.getContainerId(),
+						DDIElement.CVSCHEME);
 
 				if (ddiStoreScheme.size() == 1) {
 
@@ -240,9 +255,9 @@ public class SearchView extends CvManagerView {
 
 			}
 
-			ArrayList<CVScheme> hits = new ArrayList<CVScheme>(mapHits.values());
+			hits = new ArrayList<CVScheme>(mapHits.values());
 
-			updateResultsContainer(hits);
+			updateResultsContainer();
 		} else
 			resetSearch();
 	}
@@ -256,13 +271,13 @@ public class SearchView extends CvManagerView {
 		searchBox.setValue("");
 		List<DDIStore> searchResult = cvManagerService.findStudyByElementType(DDIElement.CVSCHEME);
 
-		ArrayList<CVScheme> hits = new ArrayList<CVScheme>();
+		hits = new ArrayList<CVScheme>();
 		for (DDIStore store : searchResult) {
 			CVScheme scheme = new CVScheme(store);
 
 			hits.add(scheme);
 		}
-		updateResultsContainer(hits);
+		updateResultsContainer();
 	}
 
 	/**
@@ -273,7 +288,7 @@ public class SearchView extends CvManagerView {
 	 *            a list of results
 	 * @return a vertical layout containing all components of this zone
 	 */
-	private com.vaadin.ui.Component initResultsContainer(ArrayList<CVScheme> hits) {
+	private com.vaadin.ui.Component initResultsContainer() {
 
 		VerticalLayout layout = new VerticalLayout();
 
@@ -324,12 +339,12 @@ public class SearchView extends CvManagerView {
 	 *            a hit list to be shown (the results list)
 	 */
 
-	public void updateResultsContainer(ArrayList<CVScheme> hits) {
+	public void updateResultsContainer() {
 
 		// remove outdated results
 		this.resultsContainer.removeAllComponents();
 
-		this.resultsContainer.addComponent(this.initResultsContainer(hits));
+		this.resultsContainer.addComponent(this.initResultsContainer());
 
 	}
 
@@ -348,7 +363,7 @@ public class SearchView extends CvManagerView {
 	@Override
 	public void afterViewChange(ViewChangeEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -360,8 +375,16 @@ public class SearchView extends CvManagerView {
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		searchBox.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
-		
+
 		actionPanel.updateMessageStrings(locale);
 	}
 
+	public ArrayList<CVScheme> getHits() {
+		return hits;
+	}
+
+	public void setHits(ArrayList<CVScheme> hits) {
+		this.hits = hits;
+	}
+	
 }
