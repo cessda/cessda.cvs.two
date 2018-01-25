@@ -2,6 +2,8 @@ package eu.cessda.cvmanager.ui.view;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +21,7 @@ import org.gesis.security.SecurityService;
 import org.gesis.security.util.LoginSucceedEvent;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,6 +52,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
@@ -114,9 +118,12 @@ public class DetailView extends CvManagerView {
 	private TextField codeEditor = new TextField();
 	private TextField prefLanguageEditor = new TextField();
 	private TextField prefLabelEditor = new TextField();
+	private ComboBox<CVEditor> editorCb = new ComboBox<>();
+	private static final CVEditor[] cvEditors = new CVEditor[2];
 	
 	private TabSheet detailTab = new TabSheet();
 	
+	private MLabel lAgency = new MLabel("Agency");
 	private MLabel lTitle = new MLabel();
 	private MLabel lDefinition = new MLabel();
 	private MLabel lCode = new MLabel();
@@ -167,6 +174,16 @@ public class DetailView extends CvManagerView {
 
 	@PostConstruct
 	public void init() {
+		cvEditors[0] = new CVEditor("DDI", "DDI");
+		cvEditors[0].setLogoPath("img/ddi-logo-r.png");
+		cvEditors[1] = new CVEditor("CESSDA", "CESSDA");
+		cvEditors[1].setLogoPath("img/cessda.png");
+		
+		editorCb.setItems(cvEditors);
+		editorCb.setItemCaptionGenerator(CVEditor::getName);
+		editorCb.setEmptySelectionAllowed( false );
+		editorCb.setTextInputAllowed( false );
+		
 		MButton backToResults = new MButton(FontAwesome.BACKWARD, this::back);
 		backToResults.setCaption("Back");
 		backToResults.withStyleName(ValoTheme.BUTTON_FRIENDLY, ValoTheme.BUTTON_SMALL, "pull-right", "marginleft20");
@@ -304,6 +321,11 @@ public class DetailView extends CvManagerView {
 	}
 	
 	private void doSaveConcept() {
+		if( selectedLang.equals("en")) {
+			List<CVEditor> editorSet = cvItem.getCvScheme().getOwnerAgency();
+			editorSet.clear();
+			editorSet.add( editorCb.getValue() );
+		}
 		cvItem.getCvScheme().save();
 		DDIStore ddiStore = cvManagerService.saveElement(cvItem.getCvScheme().ddiStore, "Peter", "minor edit");
 		Notification.show("All changes saved");
@@ -322,6 +344,11 @@ public class DetailView extends CvManagerView {
 						+ cvItem.getCvScheme().getTitleByLanguage("en") + "</strong>");
 
 		Resource res = new ThemeResource("img/ddi-logo-r.png");
+		
+		//TODO: remove this workaround
+		if( cvItem.getCvScheme().getOwnerAgency().get(0).getName().equals("CESSDA"))
+			res = new ThemeResource("img/cessda.png");
+		
 		Image logo = new Image(null, res);
 		logo.setWidth("100px");
 
@@ -378,13 +405,34 @@ public class DetailView extends CvManagerView {
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
 				.withValue(cvItem.getCvScheme().getOwnerAgency().get(0).getName() + " Controlled Vocabulary for "
 						+ cvItem.getCvScheme().getTitleByLanguage("en") + "</strong>");
+		
+		MLabel topTitleEdit = new MLabel();
+		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
+				.withValue( " Controlled Vocabulary for "
+						+ cvItem.getCvScheme().getTitleByLanguage("en") + "</strong>");
 
 		Resource res = new ThemeResource("img/ddi-logo-r.png");
+		
+		//TODO: remove this workaround
+				if( cvItem.getCvScheme().getOwnerAgency().get(0).getName().equals("CESSDA"))
+					res = new ThemeResource("img/cessda.png");
+				
+		for( CVEditor editor : cvEditors) {
+			if( editor.getName().equals( cvItem.getCvScheme().getOwnerAgency().get(0).getName() ))
+				editorCb.setValue(editor);
+		}
+		
+				
 		Image logo = new Image(null, res);
 		logo.setWidth("100px");
 
 		MCssLayout topHead = new MCssLayout();
 		topHead.withFullWidth().add(logo, topTitle);
+		
+		editorCb.setStyleName("rightPart");
+		MCssLayout topHeadEdit = new MCssLayout();
+		topHeadEdit.withFullWidth().add( lAgency.withWidth("120px").withStyleName("leftPart"),
+				editorCb);
 
 		MTextField titleField = new MTextField();
 		titleField.withStyleName("editField");//.withValue(cvItem.getCvScheme().getTitleByLanguage("en"));
@@ -480,11 +528,15 @@ public class DetailView extends CvManagerView {
 						new MLabel(cvItem.getCvScheme().getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
 		if (selectedLang.equals( configService.getDefaultSourceLanguage())) {
+			topHead.setVisible( false );
+			topHeadEdit.setVisible( true );
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 			langSecOl.setVisible(false);
 			langSec.setVisible(true);
 		} else {
+			topHead.setVisible( true );
+			topHeadEdit.setVisible( false );
 			titleSmallOl.setVisible(true);
 			descriptionOl.setVisible(true);
 			langSecOl.setVisible(true);
@@ -492,7 +544,7 @@ public class DetailView extends CvManagerView {
 		}
 			
 
-		topEditSection.add(topHead, titleSmall, description, code, langSec, titleSmallOl, descriptionOl, langSecOl);
+		topEditSection.add(topHead, topHeadEdit, titleSmall, description, code, langSec, titleSmallOl, descriptionOl, langSecOl);
 	}
 
 	private void initBottomViewSection() {

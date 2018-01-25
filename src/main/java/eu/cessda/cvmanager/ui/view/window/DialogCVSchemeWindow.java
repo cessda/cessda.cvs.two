@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -113,7 +115,15 @@ public class DialogCVSchemeWindow extends MWindow {
 			if(!isInputValid())
 				return;
 			log.trace(getCvScheme().getTitleByLanguage(getLanguage()));
-			getCvScheme().addEditor( editorCb.getValue());
+			//agency
+			List<CVEditor> editorSet = getCvScheme().getOwnerAgency();
+			if(editorSet ==  null)
+				editorSet = new ArrayList<>();
+			else
+				editorSet.clear();
+			editorSet.add( editorCb.getValue() );
+			getCvScheme().setOwnerAgency((ArrayList<CVEditor>) editorSet);
+				
 			getCvScheme().save();
 			DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
 			eventBus.publish( this, ddiStore);
