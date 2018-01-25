@@ -140,7 +140,8 @@ public class CvSchemeComponent extends CustomComponent {
 				+ cvScheme.getContainerId() + "'>" + cvScheme.getTitleByLanguage(language) + "</a>");
 		desc.setValue(cvScheme.getDescriptionByLanguage(language));
 		version.setValue("Version: " + cvScheme.getVersion().getPublicationVersion()
-				+ (language.equals("en") ? "" : "_" + language) + " <a href='#'>Download</a>");
+				+ (language.equals("en") ? "" : "_" + language) + "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
+				+ cvScheme.getContainerId() + "'>Download</a>");
 
 		List<CVConcept> theConceptList = cvScheme.getConceptList();
 

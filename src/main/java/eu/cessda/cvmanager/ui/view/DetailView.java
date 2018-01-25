@@ -290,7 +290,7 @@ public class DetailView extends CvManagerView {
 					initTopEditSection();
 					initBottomViewSection();
 				}
-				updateMessageStrings(getLocale());
+				updateMessageStrings(locale);
 			});
 			languageLayout.add(langButton);
 			if( item.equals(sourceLanguage)) {

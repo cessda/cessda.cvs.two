@@ -1,11 +1,14 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.Locale;
+
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -13,10 +16,13 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.HasValue.ValueChangeEvent;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.Language;
@@ -33,6 +39,8 @@ public class DialogCVSchemeWindow extends MWindow {
 	
 	private static final CVEditor[] cvEditors = new CVEditor[2];
 	private final EventBus.UIEventBus eventBus;
+	private final I18N i18n;
+	private Locale locale = UI.getCurrent().getLocale();
 	
 	private MLabel lAgency = new MLabel( "Agency" );
 	private MLabel lCode = new MLabel( "Code" );
@@ -55,10 +63,11 @@ public class DialogCVSchemeWindow extends MWindow {
 
 	//private EditorView theView;
 
-	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, String orignalLanguage, String language) {
+	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, String orignalLanguage, String language, I18N i18n) {
 		super("Add CVScheme");
 		
 		this.eventBus = eventBus;
+		this.i18n = i18n;
 				
 		lAgency.withStyleName( "required" );
 		lCode.withStyleName( "required" );
@@ -87,27 +96,22 @@ public class DialogCVSchemeWindow extends MWindow {
 		setCvScheme(cvScheme);	
 
 		binder.setBean(getCvScheme());
-
-		binder.bind(tfTitle, concept -> getTitleByLanguage(concept),
-				(concept, value) -> setTitleByLanguage(concept, value));
-
-		binder.bind(tfCode, concept -> concept.getCode(),
-				(concept, value) -> concept.setCode(value));
+		//remove default value
+		getCvScheme().setTitleByLanguage("en", "");
+		getCvScheme().setDescriptionByLanguage("en", "");
 		
-		binder.bind(description, concept -> getDescriptionByLanguage(concept),
-				(concept, value) -> setDescriptionByLanguage(concept, value));
+		tfCode.withFullWidth();
+		tfCode.addValueChangeListener( e -> {
+			//Only allow letter
+			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^A-Za-z]", ""));
+		});
 		
-		tfCode
-			.withFullWidth()
-			.withValue( "" );
-		tfTitle
-			.withFullWidth()
-			.withValue( "" );
-		
+		tfTitle.withFullWidth();
 		description.setSizeFull();
-		description.setValue( "" );
 
 		storeCode.addClickListener(event -> {
+			if(!isInputValid())
+				return;
 			log.trace(getCvScheme().getTitleByLanguage(getLanguage()));
 			getCvScheme().addEditor( editorCb.getValue());
 			getCvScheme().save();
@@ -176,6 +180,34 @@ public class DialogCVSchemeWindow extends MWindow {
 			.withContent(layout);
 	}
 
+	private boolean isInputValid() {
+		getCvScheme().setCode(tfCode.getValue());
+		getCvScheme().setTitleByLanguage("en", tfTitle.getValue());
+		getCvScheme().setDescriptionByLanguage("en", description.getValue());
+		
+		binder
+		.forField( tfCode)
+		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+		.bind( concept -> concept.getCode(),
+				(concept, value) -> concept.setCode(value));
+		
+		binder
+		.forField( tfTitle)
+		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+		.bind(concept -> getTitleByLanguage(concept),
+			(concept, value) -> setTitleByLanguage(concept, value));
+
+		binder
+		.forField( description)
+		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 5000 ))
+		.bind(concept -> getDescriptionByLanguage(concept),
+			(concept, value) -> setDescriptionByLanguage(concept, value));
+		
+		binder.forField( tfTitle).withValidator( new StringLengthValidator( "required field", 1, 250 ));
+		binder.validate();
+		return binder.isValid();
+	}
+
 	private CVScheme setTitleByLanguage(CVScheme concept, String value) {
 
 		concept.setTitleByLanguage(getOrginalLanguage(), value);
@@ -225,13 +257,4 @@ public class DialogCVSchemeWindow extends MWindow {
 	public void setCvScheme(CVScheme cvScheme) {
 		this.cvScheme = cvScheme;
 	}
-
-//	public EditorView getTheView() {
-//		return theView;
-//	}
-//
-//	public void setTheView(EditorView theView) {
-//		this.theView = theView;
-//	}
-
 }

@@ -164,7 +164,7 @@ public class ActionPanel extends CustomComponent{
 		newCvScheme.createId();
 		newCvScheme.setContainerId(newCvScheme.getId());
 
-		Window window = new DialogCVSchemeWindow(eventBus, cvManagerService, newCvScheme, "en", "en");
+		Window window = new DialogCVSchemeWindow(eventBus, cvManagerService, newCvScheme, "en", "en", i18n);
 		getUI().addWindow(window);
 	}
 	
