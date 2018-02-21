@@ -6,10 +6,6 @@ package eu.cessda.cvmanager.ui;
 import java.util.Arrays;
 import java.util.Locale;
 
-import org.gesis.security.SecurityService;
-import org.gesis.security.util.ErrorHandler;
-import org.gesis.security.util.LoginSucceedEvent;
-import org.gesis.security.views.AccessDeniedView;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus.UIEventBus;
@@ -43,7 +39,11 @@ import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.MessageByLocaleService;
+import eu.cessda.cvmanager.security.ErrorHandler;
+import eu.cessda.cvmanager.security.LoginSucceedEvent;
+import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
+import eu.cessda.cvmanager.ui.view.AccessDeniedView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 import eu.cessda.cvmanager.ui.view.ErrorView;

@@ -2,9 +2,6 @@ package eu.cessda.cvmanager.ui.view;
 
 import java.util.Locale;
 
-import org.gesis.security.SecurityService;
-import org.gesis.security.db.DBservices;
-import org.gesis.security.db.User;
 import org.springframework.stereotype.Component;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBus.UIEventBus;
@@ -30,10 +27,12 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import eu.cessda.cvmanager.domain.User;
+import eu.cessda.cvmanager.security.DBservices;
+import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.PasswordValidator;
-import eu.cessda.cvmanager.service.db.UserData;
-import eu.cessda.cvmanager.service.db.UserDataRepository;
 import eu.cessda.cvmanager.ui.CVManagerUI;
+import eu.cessda.cvmanager.ui.layout.AdvertiserPanelLayout;
 import eu.cessda.cvmanager.ui.view.entities.UserDataEntity;
 
 @SpringView(name = UserProfileView.VIEW_NAME)
@@ -47,7 +46,6 @@ public class UserProfileView extends VerticalLayout implements View {
 	public static final String VIEW_NAME = "Profile";
 	private EventBus.UIEventBus eventBus;
 	private DBservices db;
-	private UserDataRepository userDataRepository;
 	private SecurityService securityService;
 
 	private Locale local = UI.getCurrent().getLocale();
@@ -83,7 +81,6 @@ public class UserProfileView extends VerticalLayout implements View {
 	private Button updatePasswordButton = new Button();
 
 	private User user;
-	private UserData userData;
 
 	private UserDataEntity userDataEntity = new UserDataEntity();
 	private Binder<UserDataEntity> binder = new Binder<UserDataEntity>();
@@ -92,13 +89,11 @@ public class UserProfileView extends VerticalLayout implements View {
 			.getMessage("form.registration." + e.getComponent().getCaption() + ".help")));
 
 	// autowired
-	public UserProfileView(SecurityService ss, UIEventBus eventBus, DBservices db, UserDataRepository udr,
-			UserDataRepository userDataRepository) {
+	public UserProfileView(SecurityService ss, UIEventBus eventBus, DBservices db) {
 		this.securityService = ss;
 		this.eventBus = eventBus;
 		this.db = db;
-		this.userDataRepository = udr;
-		this.userDataRepository = userDataRepository;
+
 	}
 
 	@Override
@@ -107,22 +102,10 @@ public class UserProfileView extends VerticalLayout implements View {
 
 		username = securityService.getLoggedInUsername();
 		user = db.getUserByUsername(username);
-		userData = userDataRepository.findByUsername(username);
-
-		if (userData == null) {
-			userData = new UserData();
-			userData.setFirstname(user.getFirstName());
-			userData.setLastname(user.getLastName());
-		} else {
-			if (userData.getFirstname() == null)
-				userData.setFirstname(user.getFirstName());
-			if (userData.getLastname() == null)
-				userData.setLastname(user.getLastName());
-		}
 
 		headerTitle.setStyleName("headertitle");
 
-		advLayout = new AdvertiserPanelLayout(eventBus);
+		advLayout = new AdvertiserPanelLayout(eventBus, null);
 		advLayout.setSpacing(true);
 
 		// lEmail.withStyleName("required").withContentMode(ContentMode.HTML)
@@ -176,7 +159,6 @@ public class UserProfileView extends VerticalLayout implements View {
 		firstname.setCaption("firstname");
 
 		firstname.addFocusListener(focusListener);
-		firstname.setValue(userData.getFirstname());
 		binder.forField(firstname)
 				.withValidator(new StringLengthValidator("Please enter your firstname (2 letters min)", 2, 250))
 				.bind(UserDataEntity::getFirstName, UserDataEntity::setFirstName);
@@ -194,7 +176,6 @@ public class UserProfileView extends VerticalLayout implements View {
 		lastname.setCaption("lastname");
 
 		lastname.addFocusListener(focusListener);
-		lastname.setValue(userData.getLastname());
 
 		lAffiliation.setValue(getUi().getMessageByLocaleService().getMessage("form.registration.institute"));
 
@@ -211,8 +192,6 @@ public class UserProfileView extends VerticalLayout implements View {
 		persistentIdentifier.setCaption("identifier");
 
 		persistentIdentifier.addFocusListener(focusListener);
-		if (userData.getIdentifier() != null)
-			persistentIdentifier.setValue(userData.getIdentifier());
 
 		// lChangePasswordInfo.withContentMode(ContentMode.HTML)
 		// .setValue(getUi().getMessageByLocaleService().getMessage("form.registration.changepassword"));
@@ -326,13 +305,6 @@ public class UserProfileView extends VerticalLayout implements View {
 
 		}
 
-		userData.setUsername(email.getValue());
-		userData.setFirstname(firstname.getValue());
-		userData.setLastname(lastname.getValue());
-		userData.setAffiliation(affiliation.getValue());
-		userData.setIdentifier(persistentIdentifier.getValue());
-
-		userDataRepository.save(userData);
 		Notification.show("Profile updated");
 	}
 
@@ -344,9 +316,6 @@ public class UserProfileView extends VerticalLayout implements View {
 				Notification.show("Unable to update password, please try again in few minutes");
 				return;
 			}
-			userData.setPassword(password.getValue());
-			userDataRepository.save(userData);
-
 			Notification.show("Password updated");
 			// reset
 			password.setValue("");
