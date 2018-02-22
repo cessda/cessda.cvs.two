@@ -99,13 +99,13 @@ public class DBservices{
 		u.setPassword(encrypt.encode(u.getPassword()));
 		//check if the user is already exists
 		if(!this.userExists(u.getUsername())){
-			HashSet<Role> rr = new HashSet<>();
-			//for each role of the current user
-			for(Role r : u.getRoles()) {
-				Role r1 =  this.getRoleByName(RoleType.valueOf(r.getName()));
-				rr.add(r1);
-			}
-			u.setRoles(rr);
+//			HashSet<Role> rr = new HashSet<>();
+//			//for each role of the current user
+//			for(Role r : u.getRoles()) {
+//				Role r1 =  this.getRoleByName(RoleType.valueOf(r.getName()));
+//				rr.add(r1);
+//			}
+//			u.setRoles(rr);
 			
 			//save in the database
 			userRep.save(u);
@@ -293,14 +293,14 @@ public class DBservices{
 	 */
 	//"ROLE_" prefix is mandatory
 	//@Secured({"ROLE_ADMIN"})
-	@Secured("org.gesis.db.getNumberOfUsersByRole")
-	public String getNumberOfUsersByRole(){
-		String s = "";
-		RoleType[] rt = RoleType.values();
-		s = s + "#Users ( " + rt[0].toString() + " ) = " + this.getRoleByName(rt[0]).getUsers().size();
-		for(int i = 1; i < rt.length; i++){
-			s = s + " , #Users ( " + rt[i].toString() + " ) = " + this.getRoleByName(rt[i]).getUsers().size();
-		}
-		return s;
-	}
+//	@Secured("org.gesis.db.getNumberOfUsersByRole")
+//	public String getNumberOfUsersByRole(){
+//		String s = "";
+//		RoleType[] rt = RoleType.values();
+//		s = s + "#Users ( " + rt[0].toString() + " ) = " + this.getRoleByName(rt[0]).getUsers().size();
+//		for(int i = 1; i < rt.length; i++){
+//			s = s + " , #Users ( " + rt[i].toString() + " ) = " + this.getRoleByName(rt[i]).getUsers().size();
+//		}
+//		return s;
+//	}
 }

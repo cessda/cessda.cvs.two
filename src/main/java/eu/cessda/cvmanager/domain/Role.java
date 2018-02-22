@@ -28,9 +28,9 @@ public class Role implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "role")
     @JsonIgnore
-    private Set<User> users = new HashSet<>();
+    private Set<UserAgencyRole> userAgencyRoles = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -66,32 +66,31 @@ public class Role implements Serializable {
         this.description = description;
     }
 
-    public Set<User> getUsers() {
-        return users;
+    public Set<UserAgencyRole> getUserAgencyRoles() {
+        return userAgencyRoles;
     }
 
-    public Role users(Set<User> users) {
-        this.users = users;
+    public Role userAgencyRoles(Set<UserAgencyRole> userAgencyRoles) {
+        this.userAgencyRoles = userAgencyRoles;
         return this;
     }
 
-    public Role addUser(User user) {
-        this.users.add(user);
-        user.getRoles().add(this);
+    public Role addUserAgencyRole(UserAgencyRole userAgencyRole) {
+        this.userAgencyRoles.add(userAgencyRole);
+        userAgencyRole.setRole(this);
         return this;
     }
 
-    public Role removeUser(User user) {
-        this.users.remove(user);
-        user.getRoles().remove(this);
+    public Role removeUserAgencyRole(UserAgencyRole userAgencyRole) {
+        this.userAgencyRoles.remove(userAgencyRole);
+        userAgencyRole.setRole(null);
         return this;
     }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
+    public void setUserAgencyRoles(Set<UserAgencyRole> userAgencyRoles) {
+        this.userAgencyRoles = userAgencyRoles;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) {

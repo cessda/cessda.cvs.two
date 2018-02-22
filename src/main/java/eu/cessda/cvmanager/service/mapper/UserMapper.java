@@ -10,9 +10,10 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {RoleMapper.class})
 public interface UserMapper extends EntityMapper<UserDTO, User> {
-
-
-    @Mapping(target = "userAgencies", ignore = true)
+	@Mappings({
+		@Mapping(target = "userAgencyRoles", ignore = true),
+	    @Mapping(target = "userAgencies", ignore = true)
+	})
     User toEntity(UserDTO userDTO);
 
     default User fromId(Long id) {

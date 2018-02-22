@@ -7,8 +7,10 @@ import javax.annotation.PostConstruct;
 
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.i18n.I18N;
+import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
+import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -21,9 +23,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.renderers.TextRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 
@@ -42,14 +42,12 @@ import eu.cessda.cvmanager.ui.view.admin.form.UserAgencyForm;
 @SpringView(name = ManageUserAgencyView.VIEW_NAME)
 public class ManageUserAgencyView extends CvManagerAdminView {
 
+	private static final long serialVersionUID = 5095824532249073046L;
 	public static final String VIEW_NAME = "manage-user-agency";
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	// autowired
 	private final UserAgencyService userAgencyService;
-	private final UserService userService;
-	private final AgencyService agencyService;
-	private final LanguageRightService languageRightService;
 
 	// components
 	private MLabel pageTitle = new MLabel();
@@ -60,14 +58,11 @@ public class ManageUserAgencyView extends CvManagerAdminView {
 
 	public ManageUserAgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			CvManagerService cvManagerService, SecurityService securityService, UserAgencyService userAgencyService,
-			UserService userService, AgencyService agencyService, LanguageRightService languageRightService) {
+			UserService userService, AgencyService agencyService) {
 		super(i18n, eventBus, configService, cvManagerService, securityService, ManageUserAgencyView.VIEW_NAME);
 		eventBus.subscribe(this, ManageUserAgencyView.VIEW_NAME);
 		
 		this.userAgencyService = userAgencyService;
-		this.userService = userService;
-		this.agencyService = agencyService;
-		this.languageRightService = languageRightService;
 		this.form = new UserAgencyForm(this, userAgencyService, userService, agencyService);
 	}
 
@@ -76,13 +71,14 @@ public class ManageUserAgencyView extends CvManagerAdminView {
 //		LoginView.NAVIGATETO_VIEWNAME = ManageAgencyView.VIEW_NAME;
 		
 		pageTitle.withContentMode(ContentMode.HTML)
-			.withValue("<h1>Manage User Agency Relation</h1>");
+			.withValue("<h1>Manage User - Agency</h1>");
 		
 		layout.withSpacing(false)
 			.withMargin(false)
 			.withFullSize();
 
 		filterText.withPlaceholder("filter by user name / agency name ...")
+			.withWidth("300px")
 			.withValueChangeMode(ValueChangeMode.LAZY)
 			.addValueChangeListener(e -> updateList());
 
@@ -94,14 +90,16 @@ public class ManageUserAgencyView extends CvManagerAdminView {
         filtering.addComponents(filterText, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         
-        Button addCustomerBtn = new Button("Add new user agency relation");
-        addCustomerBtn.addClickListener(e -> {
+        MButton addBtn = new MButton(" + Add new user - agency - language");
+        addBtn.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
+        addBtn.addClickListener(e -> {
             grid.asSingleSelect().clear();
             form.setUserLayoutVisible( true );
             form.setUserAgencyDTO(new UserAgencyDTO());
         });
         
-        HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
+        MCssLayout toolbar = new MCssLayout(filtering, addBtn);
+        toolbar.withFullWidth();
 
         grid.setColumns("id", "firstName", "lastName", "agencyName");
 

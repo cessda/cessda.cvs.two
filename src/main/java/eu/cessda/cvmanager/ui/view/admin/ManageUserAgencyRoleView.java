@@ -23,7 +23,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -32,34 +31,43 @@ import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.AgencyService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
-import eu.cessda.cvmanager.service.dto.AgencyDTO;
+import eu.cessda.cvmanager.service.LanguageRightService;
+import eu.cessda.cvmanager.service.RoleService;
+import eu.cessda.cvmanager.service.UserAgencyRoleService;
+import eu.cessda.cvmanager.service.UserAgencyService;
+import eu.cessda.cvmanager.service.UserService;
+import eu.cessda.cvmanager.service.dto.UserAgencyDTO;
+import eu.cessda.cvmanager.service.dto.UserAgencyRoleDTO;
 import eu.cessda.cvmanager.ui.view.admin.form.AgencyForm;
+import eu.cessda.cvmanager.ui.view.admin.form.UserAgencyForm;
+import eu.cessda.cvmanager.ui.view.admin.form.UserAgencyRoleForm;
 
 @UIScope
-@SpringView(name = ManageAgencyView.VIEW_NAME)
-public class ManageAgencyView extends CvManagerAdminView {
+@SpringView(name = ManageUserAgencyRoleView.VIEW_NAME)
+public class ManageUserAgencyRoleView extends CvManagerAdminView {
 
-	private static final long serialVersionUID = 6904286186508174249L;
-	public static final String VIEW_NAME = "manage-agency";
+	private static final long serialVersionUID = 5095824532249073046L;
+	public static final String VIEW_NAME = "manage-user-agency-role";
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	// autowired
-	private final AgencyService agencyService;
+	private final UserAgencyRoleService userAgencyRoleService;
 
 	// components
 	private MLabel pageTitle = new MLabel();
 	private MVerticalLayout layout = new MVerticalLayout();
-	private Grid<AgencyDTO> grid = new Grid<>(AgencyDTO.class);
+	private Grid<UserAgencyRoleDTO> grid = new Grid<>(UserAgencyRoleDTO.class);
 	private MTextField filterText = new MTextField();
-	private AgencyForm form;
+	private UserAgencyRoleForm form;
 
-	public ManageAgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
-			CvManagerService cvManagerService, SecurityService securityService, AgencyService agencyService) {
-		super(i18n, eventBus, configService, cvManagerService, securityService, ManageAgencyView.VIEW_NAME);
-		eventBus.subscribe(this, ManageAgencyView.VIEW_NAME);
+	public ManageUserAgencyRoleView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+			CvManagerService cvManagerService, SecurityService securityService, UserAgencyService userAgencyService,
+			UserAgencyRoleService userAgencyRoleService, UserService userService, RoleService roleService) {
+		super(i18n, eventBus, configService, cvManagerService, securityService, ManageUserAgencyRoleView.VIEW_NAME);
+		eventBus.subscribe(this, ManageUserAgencyRoleView.VIEW_NAME);
 		
-		this.agencyService = agencyService;
-		this.form =  new AgencyForm(this, this.agencyService);
+		this.userAgencyRoleService = userAgencyRoleService;
+		this.form = new UserAgencyRoleForm(this, userAgencyService, userService, userAgencyRoleService, roleService);
 	}
 
 	@PostConstruct
@@ -67,13 +75,13 @@ public class ManageAgencyView extends CvManagerAdminView {
 //		LoginView.NAVIGATETO_VIEWNAME = ManageAgencyView.VIEW_NAME;
 		
 		pageTitle.withContentMode(ContentMode.HTML)
-			.withValue("<h1>Manage Agency</h1>");
+			.withValue("<h1>Manage User - Agency - Role</h1>");
 		
 		layout.withSpacing(false)
 			.withMargin(false)
 			.withFullSize();
 
-		filterText.withPlaceholder("filter by name / description ...")
+		filterText.withPlaceholder("filter by user name / agency name ...")
 			.withWidth("300px")
 			.withValueChangeMode(ValueChangeMode.LAZY)
 			.addValueChangeListener(e -> updateList());
@@ -86,25 +94,34 @@ public class ManageAgencyView extends CvManagerAdminView {
         filtering.addComponents(filterText, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         
-        MButton addBtn = new MButton("+ Add new agency");
+        MButton addBtn = new MButton(" + Add new user - role");
         addBtn.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
         addBtn.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            form.setAgencyDTO(new AgencyDTO());
+            form.setUserRoleLayoutVisible( true );
+            form.setUserAgencyRoleDTO(new UserAgencyRoleDTO());
         });
         
-        MCssLayout toolbar = new MCssLayout(filtering, addBtn);
+        MButton addBtn2 = new MButton(" + Add new user&agency - role");
+        addBtn2.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
+        addBtn2.addClickListener(e -> {
+            grid.asSingleSelect().clear();
+            form.setUserAgencyRoleLayoutVisible( true );
+            form.setUserAgencyRoleDTO(new UserAgencyRoleDTO());
+        });
+        
+        MCssLayout toolbar = new MCssLayout(filtering, addBtn, addBtn2);
         toolbar.withFullWidth();
 
-        grid.setColumns("id", "name", "description");
-        
+        grid.setColumns("id", "firstName", "lastName", "agency", "role");
+
         HorizontalLayout main = new HorizontalLayout(grid, form);
         main.setSizeFull();
         grid.setSizeFull();
         main.setExpandRatio(grid, 1);
 
         layout.addComponents(pageTitle, toolbar, main);
-        
+        // fetch list of Customers from service and assign it to Grid
         updateList();
 
         rightContainer.add(layout).withExpand(layout,1);
@@ -115,7 +132,9 @@ public class ManageAgencyView extends CvManagerAdminView {
             if (event.getValue() == null) {
                 form.setVisible(false);
             } else {
-                form.setAgencyDTO(event.getValue());
+            	form.setUserRoleLayoutVisible( false );
+            	form.setUserAgencyRoleLayoutVisible( false );
+                form.setUserAgencyRoleDTO(event.getValue());
             }
         });
 	}
@@ -124,12 +143,14 @@ public class ManageAgencyView extends CvManagerAdminView {
 	public void enter(ViewChangeEvent event) {
 		locale = UI.getCurrent().getLocale();
 		updateMessageStrings(locale);
-		updateList();
+        updateList();
+        form.updateSetRole();
 	}
 
 	@Override
 	public void afterViewChange(ViewChangeEvent arg0) {
 		// TODO Auto-generated method stub
+
 	}
 
 	@Override
@@ -140,12 +161,25 @@ public class ManageAgencyView extends CvManagerAdminView {
 
 	@Override
 	public void updateMessageStrings(Locale locale) {
+
 		actionAdminPanel.updateMessageStrings(locale);
 	}
 
 	public void updateList() {
-		List<AgencyDTO> agencyDTOs = agencyService.findAll(filterText.getValue());
+		List<UserAgencyRoleDTO> agencyDTOs = userAgencyRoleService.findAll();
+		// copy name for user-agency to user
+		for( UserAgencyRoleDTO uard : agencyDTOs) {
+			if(uard.getAgency() != null) {
+				uard.setFirstName( uard.getUaFirstName());
+				uard.setLastName( uard.getUaLastName());
+			}
+		}
 		grid.setItems(agencyDTOs);
 	}
 
+	public Grid<UserAgencyRoleDTO> getGrid() {
+		return grid;
+	}
+
+	
 }

@@ -32,7 +32,7 @@ public abstract class CvManagerAdminView extends MVerticalLayout implements MVie
 
 	private static final long serialVersionUID = -8769292972079523949L;
 	public static enum ActionType{
-		MANAGEAGENCY, MANAGEUSERAGENCY, MANAGEUSERAGENCYLANGUAGE // this should be similar to view names
+		MANAGEUSER, MANAGEAGENCY, MANAGEUSERAGENCY, MANAGEUSERAGENCYLANGUAGE, MANAGEUSERAGENCYROLE // this should be similar to view names
 	}
 	
 	protected final I18N i18n;

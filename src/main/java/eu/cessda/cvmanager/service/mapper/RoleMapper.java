@@ -12,7 +12,7 @@ import org.mapstruct.*;
 public interface RoleMapper extends EntityMapper<RoleDTO, Role> {
 
 
-    @Mapping(target = "users", ignore = true)
+	@Mapping(target = "userAgencyRoles", ignore = true)
     Role toEntity(RoleDTO roleDTO);
 
     default Role fromId(Long id) {

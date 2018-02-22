@@ -254,12 +254,12 @@ public class EditorView extends VerticalLayout implements View {
 			User user = dbService.getUserByUsername(userName);
 			boolean hasRole = false;
 
-			for (Role role : user.getRoles()) {
-				if (role.getName().equals("ROLE_ADMIN")) {
-					hasRole = true;
-					log.info(role.getName());
-				}
-			}
+//			for (Role role : user.getRoles()) {
+//				if (role.getName().equals("ROLE_ADMIN")) {
+//					hasRole = true;
+//					log.info(role.getName());
+//				}
+//			}
 			return auth.isAuthenticated() && hasRole;
 		}
 		return false;

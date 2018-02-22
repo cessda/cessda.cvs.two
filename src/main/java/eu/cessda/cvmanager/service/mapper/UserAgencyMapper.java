@@ -21,6 +21,7 @@ public interface UserAgencyMapper extends EntityMapper<UserAgencyDTO, UserAgency
 	UserAgencyDTO toDto(UserAgency userAgency);
 	
 	@Mappings({
+		@Mapping(target = "userAgencyRoles", ignore = true),
 	    @Mapping(target = "languageRights", ignore = true),
 	    @Mapping(source = "userId", target = "user"),
 	    @Mapping(source = "agencyId", target = "agency")

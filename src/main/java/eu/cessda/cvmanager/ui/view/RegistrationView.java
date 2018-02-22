@@ -356,7 +356,7 @@ public class RegistrationView extends MVerticalLayout implements View, Translata
 		user.setRandomUsername( UUID.randomUUID().toString() );
 		user.setEnable( true );
 		user.setLocked(false);
-		user.setRoles(roles);
+//		user.setRoles(roles);
 		
 		dbService.addUser(user);
 		

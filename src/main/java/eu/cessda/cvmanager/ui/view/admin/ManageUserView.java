@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
@@ -32,34 +33,37 @@ import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.AgencyService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
-import eu.cessda.cvmanager.service.dto.AgencyDTO;
+import eu.cessda.cvmanager.service.UserService;
+import eu.cessda.cvmanager.service.dto.UserDTO;
 import eu.cessda.cvmanager.ui.view.admin.form.AgencyForm;
+import eu.cessda.cvmanager.ui.view.admin.form.UserForm;
 
 @UIScope
-@SpringView(name = ManageAgencyView.VIEW_NAME)
-public class ManageAgencyView extends CvManagerAdminView {
+@SpringView(name = ManageUserView.VIEW_NAME)
+public class ManageUserView extends CvManagerAdminView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
-	public static final String VIEW_NAME = "manage-agency";
+	public static final String VIEW_NAME = "manage-user";
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	// autowired
-	private final AgencyService agencyService;
+	private final UserService userService;
 
 	// components
 	private MLabel pageTitle = new MLabel();
 	private MVerticalLayout layout = new MVerticalLayout();
-	private Grid<AgencyDTO> grid = new Grid<>(AgencyDTO.class);
+	private Grid<UserDTO> grid = new Grid<>(UserDTO.class);
 	private MTextField filterText = new MTextField();
-	private AgencyForm form;
+	private UserForm form;
 
-	public ManageAgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
-			CvManagerService cvManagerService, SecurityService securityService, AgencyService agencyService) {
-		super(i18n, eventBus, configService, cvManagerService, securityService, ManageAgencyView.VIEW_NAME);
-		eventBus.subscribe(this, ManageAgencyView.VIEW_NAME);
+	public ManageUserView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+			CvManagerService cvManagerService, SecurityService securityService, UserService userService,
+			BCryptPasswordEncoder encrypt) {
+		super(i18n, eventBus, configService, cvManagerService, securityService, ManageUserView.VIEW_NAME);
+		eventBus.subscribe(this, ManageUserView.VIEW_NAME);
 		
-		this.agencyService = agencyService;
-		this.form =  new AgencyForm(this, this.agencyService);
+		this.userService = userService;
+		this.form = new UserForm(this, this.userService, encrypt);
 	}
 
 	@PostConstruct
@@ -67,13 +71,13 @@ public class ManageAgencyView extends CvManagerAdminView {
 //		LoginView.NAVIGATETO_VIEWNAME = ManageAgencyView.VIEW_NAME;
 		
 		pageTitle.withContentMode(ContentMode.HTML)
-			.withValue("<h1>Manage Agency</h1>");
+			.withValue("<h1>Manage User</h1>");
 		
 		layout.withSpacing(false)
 			.withMargin(false)
 			.withFullSize();
 
-		filterText.withPlaceholder("filter by name / description ...")
+		filterText.withPlaceholder("filter by name / username ...")
 			.withWidth("300px")
 			.withValueChangeMode(ValueChangeMode.LAZY)
 			.addValueChangeListener(e -> updateList());
@@ -86,17 +90,17 @@ public class ManageAgencyView extends CvManagerAdminView {
         filtering.addComponents(filterText, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         
-        MButton addBtn = new MButton("+ Add new agency");
+        MButton addBtn = new MButton("+ Add new user");
         addBtn.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
         addBtn.addClickListener(e -> {
             grid.asSingleSelect().clear();
-            form.setAgencyDTO(new AgencyDTO());
+            form.setUserDTO(new UserDTO());
         });
         
         MCssLayout toolbar = new MCssLayout(filtering, addBtn);
         toolbar.withFullWidth();
 
-        grid.setColumns("id", "name", "description");
+        grid.setColumns("id", "firstName", "lastName", "username");
         
         HorizontalLayout main = new HorizontalLayout(grid, form);
         main.setSizeFull();
@@ -115,7 +119,7 @@ public class ManageAgencyView extends CvManagerAdminView {
             if (event.getValue() == null) {
                 form.setVisible(false);
             } else {
-                form.setAgencyDTO(event.getValue());
+                form.setUserDTO(event.getValue());
             }
         });
 	}
@@ -144,7 +148,7 @@ public class ManageAgencyView extends CvManagerAdminView {
 	}
 
 	public void updateList() {
-		List<AgencyDTO> agencyDTOs = agencyService.findAll(filterText.getValue());
+		List<UserDTO> agencyDTOs = userService.findAll(filterText.getValue());
 		grid.setItems(agencyDTOs);
 	}
 

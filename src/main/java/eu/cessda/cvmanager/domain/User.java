@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -38,6 +39,7 @@ public class User implements Serializable {
     @Column( name = "last_name", nullable = false )
     private String lastName;
 
+    @Column( name = "enable", nullable = false )
     private Boolean enable;
 
     @Column( name = "token", unique = true)
@@ -49,15 +51,13 @@ public class User implements Serializable {
 	@Column( name = "locked", nullable = false )
     private Boolean locked;
 
+	@OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private Set<UserAgencyRole> userAgencyRoles = new HashSet<>();
+
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private Set<UserAgency> userAgencies = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(name = "user_role",
-               joinColumns = @JoinColumn(name="user_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="role_id", referencedColumnName="id"))
-    private Set<Role> roles = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -159,7 +159,7 @@ public class User implements Serializable {
     }
 
     public Set<UserAgency> getUserAgencies() {
-        return userAgencies;
+        return userAgencies == null ? Collections.emptySet() : userAgencies;
     }
 
     public User userAgencies(Set<UserAgency> userAgencies) {
@@ -183,31 +183,30 @@ public class User implements Serializable {
         this.userAgencies = userAgencies;
     }
 
-    public Set<Role> getRoles() {
-        return roles;
+    public Set<UserAgencyRole> getUserAgencyRoles() {
+        return userAgencyRoles == null ?  Collections.emptySet() : userAgencyRoles;
     }
 
-    public User roles(Set<Role> roles) {
-        this.roles = roles;
+    public User userAgencyRoles(Set<UserAgencyRole> userAgencyRoles) {
+        this.userAgencyRoles = userAgencyRoles;
         return this;
     }
 
-    public User addRole(Role role) {
-        this.roles.add(role);
-        role.getUsers().add(this);
+    public User addUserAgencyRole(UserAgencyRole userAgencyRole) {
+        this.userAgencyRoles.add(userAgencyRole);
+        userAgencyRole.setUser(this);
         return this;
     }
 
-    public User removeRole(Role role) {
-        this.roles.remove(role);
-        role.getUsers().remove(this);
+    public User removeUserAgencyRole(UserAgencyRole userAgencyRole) {
+        this.userAgencyRoles.remove(userAgencyRole);
+        userAgencyRole.setUser(null);
         return this;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setUserAgencyRoles(Set<UserAgencyRole> userAgencyRoles) {
+        this.userAgencyRoles = userAgencyRoles;
     }
-
     
     public String getToken() {
 		return token;

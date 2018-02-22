@@ -7,8 +7,10 @@ import javax.annotation.PostConstruct;
 
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.i18n.I18N;
+import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
+import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -21,23 +23,16 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.renderers.TextRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 
 import eu.cessda.cvmanager.security.SecurityService;
-import eu.cessda.cvmanager.service.AgencyService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.service.LanguageRightService;
 import eu.cessda.cvmanager.service.UserAgencyService;
-import eu.cessda.cvmanager.service.UserService;
 import eu.cessda.cvmanager.service.dto.LanguageRightDTO;
-import eu.cessda.cvmanager.service.dto.UserAgencyDTO;
-import eu.cessda.cvmanager.ui.view.admin.form.AgencyForm;
-import eu.cessda.cvmanager.ui.view.admin.form.UserAgencyForm;
 import eu.cessda.cvmanager.ui.view.admin.form.UserAgencyLanguageForm;
 
 @UIScope
@@ -49,9 +44,6 @@ public class ManageUserAgencyLanguageView extends CvManagerAdminView {
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	// autowired
-	private final UserAgencyService userAgencyService;
-	private final UserService userService;
-	private final AgencyService agencyService;
 	private final LanguageRightService languageRightService;
 
 	// components
@@ -63,13 +55,10 @@ public class ManageUserAgencyLanguageView extends CvManagerAdminView {
 
 	public ManageUserAgencyLanguageView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			CvManagerService cvManagerService, SecurityService securityService, UserAgencyService userAgencyService,
-			UserService userService, AgencyService agencyService, LanguageRightService languageRightService) {
+			LanguageRightService languageRightService) {
 		super(i18n, eventBus, configService, cvManagerService, securityService, ManageUserAgencyLanguageView.VIEW_NAME);
 		eventBus.subscribe(this, ManageUserAgencyLanguageView.VIEW_NAME);
 		
-		this.userAgencyService = userAgencyService;
-		this.userService = userService;
-		this.agencyService = agencyService;
 		this.languageRightService = languageRightService;
 		this.form = new UserAgencyLanguageForm(this, userAgencyService, languageRightService);
 	}
@@ -79,13 +68,14 @@ public class ManageUserAgencyLanguageView extends CvManagerAdminView {
 //		LoginView.NAVIGATETO_VIEWNAME = ManageAgencyView.VIEW_NAME;
 		
 		pageTitle.withContentMode(ContentMode.HTML)
-			.withValue("<h1>Manage User Agency Relation</h1>");
+			.withValue("<h1>Manage User&Agency - Language</h1>");
 		
 		layout.withSpacing(false)
 			.withMargin(false)
 			.withFullSize();
 
 		filterText.withPlaceholder("filter by user-agency name ...")
+			.withWidth("300px")
 			.withValueChangeMode(ValueChangeMode.LAZY)
 			.addValueChangeListener(e -> updateList());
 
@@ -97,14 +87,16 @@ public class ManageUserAgencyLanguageView extends CvManagerAdminView {
         filtering.addComponents(filterText, clearFilterTextBtn);
         filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
         
-        Button addCustomerBtn = new Button("Add new user agency relation");
-        addCustomerBtn.addClickListener(e -> {
+        MButton addBtn = new MButton("+ Add new user agency relation");
+        addBtn.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
+        addBtn.addClickListener(e -> {
             grid.asSingleSelect().clear();
             form.setUserLayoutVisible( true );
             form.setLanguageRightDTO(new LanguageRightDTO());
         });
         
-        HorizontalLayout toolbar = new HorizontalLayout(filtering, addCustomerBtn);
+        MCssLayout toolbar = new MCssLayout(filtering, addBtn);
+        toolbar.withFullWidth();
 
         grid.setColumns("id", "firstName", "lastName", "agencyName", "languageType", "language");
 

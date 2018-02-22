@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.cessda.cvmanager.domain.Role;
 import eu.cessda.cvmanager.domain.User;
+import eu.cessda.cvmanager.domain.UserAgency;
+import eu.cessda.cvmanager.domain.UserAgencyRole;
 
 
 /**
@@ -36,11 +38,14 @@ public class UserDetailesServiceImpl implements UserDetailsService{
 	@Transactional( readOnly = true )
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException{
 		User u = db.getUserByUsername(username);
-						
+		Set<UserAgency> userAgencies = u.getUserAgencies();
+		Set<UserAgencyRole> userAgencyRoles = u.getUserAgencyRoles();
+				
 		Set<GrantedAuthority> ga = new HashSet<>();
-		for(Role r : u.getRoles()){
-			ga.add(new SimpleGrantedAuthority(r.getName()));
-		}
+		
+//		for(Role r : u.getRoles()){
+//			ga.add(new SimpleGrantedAuthority(r.getName()));
+//		}
 		
 		// get DSpace authority
 //		org.dspace.rest.common.User dspaceUser = new org.dspace.rest.common.User();

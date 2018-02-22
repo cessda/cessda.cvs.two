@@ -21,6 +21,10 @@ public class UserAgency implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @OneToMany(mappedBy = "userAgency")
+    @JsonIgnore
+    private Set<UserAgencyRole> userAgencyRoles = new HashSet<>();
 
     @OneToMany(mappedBy = "userAgency")
     @JsonIgnore
@@ -38,6 +42,31 @@ public class UserAgency implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public Set<UserAgencyRole> getUserAgencyRoles() {
+        return userAgencyRoles;
+    }
+
+    public UserAgency userAgencyRoles(Set<UserAgencyRole> userAgencyRoles) {
+        this.userAgencyRoles = userAgencyRoles;
+        return this;
+    }
+
+    public UserAgency addUserAgencyRole(UserAgencyRole userAgencyRole) {
+        this.userAgencyRoles.add(userAgencyRole);
+        userAgencyRole.setUserAgency(this);
+        return this;
+    }
+
+    public UserAgency removeUserAgencyRole(UserAgencyRole userAgencyRole) {
+        this.userAgencyRoles.remove(userAgencyRole);
+        userAgencyRole.setUserAgency(null);
+        return this;
+    }
+
+    public void setUserAgencyRoles(Set<UserAgencyRole> userAgencyRoles) {
+        this.userAgencyRoles = userAgencyRoles;
     }
 
     public Set<LanguageRight> getLanguageRights() {

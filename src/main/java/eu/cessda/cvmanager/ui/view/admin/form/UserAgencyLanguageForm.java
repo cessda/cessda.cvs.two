@@ -30,10 +30,7 @@ public class UserAgencyLanguageForm extends FormLayout {
 	
     private final LanguageRightService languageRightService;
     private final UserAgencyService userAgencyService;
-    
-    private MVerticalLayout userLayout = new MVerticalLayout();
-//    private FormLayout formLayout = new FormLayout();
-    
+        
     private LanguageRightDTO languageRightDTO;
     private ManageUserAgencyLanguageView manageUserAgencyLanguageView;
 	
@@ -60,10 +57,13 @@ public class UserAgencyLanguageForm extends FormLayout {
         languageOption.setCaption("Language Option");
         languageOption.setItems(Language.values());
         
-        filterText.withPlaceholder("Find user - agency")
+        filterText
+        	.withCaption("Search")
+        	.withPlaceholder("Find user - agency")
 			.withValueChangeMode(ValueChangeMode.LAZY)
 			.addValueChangeListener(e -> updateList());
         
+        userAgencyGrid.setHeight("250px");
         userAgencyGrid.setColumns("id", "firstName", "lastName", "agencyName");
         
         userAgencyGrid.asSingleSelect().addValueChangeListener(event -> {
@@ -90,11 +90,11 @@ public class UserAgencyLanguageForm extends FormLayout {
         save.addClickListener(e -> this.save());
         delete.addClickListener(e -> this.delete());
         
-        userLayout.add(filterText, userAgencyGrid);
         
         setSizeUndefined();
-        addComponents(userLayout, name, languageTypeOption, languageOption, buttons);
+        addComponents(filterText, userAgencyGrid, name, languageTypeOption, languageOption, buttons);
         
+        filterText.setVisible( false );
         userAgencyGrid.setVisible( false );
     }
 
@@ -162,7 +162,8 @@ public class UserAgencyLanguageForm extends FormLayout {
 	}
     
     public void setUserLayoutVisible(boolean visible) {
-    	userLayout.setVisible(visible);
+    	filterText.setVisible(visible);
+    	filterText.setValue("");
     	name.setValue("");
     	languageTypeOption.setValue( null );
     	languageOption.setValue( null );
