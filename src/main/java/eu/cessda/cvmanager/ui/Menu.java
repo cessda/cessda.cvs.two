@@ -3,7 +3,6 @@ package eu.cessda.cvmanager.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.gesis.security.SecurityService;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
@@ -22,6 +21,7 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 
+import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.ui.view.LoginView;
 
 /**

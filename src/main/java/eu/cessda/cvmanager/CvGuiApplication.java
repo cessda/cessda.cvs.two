@@ -16,9 +16,9 @@ import org.vaadin.spring.i18n.MessageProvider;
 import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@ComponentScan(basePackages = { "org.gesis", "eu.cessda" })
-@EnableJpaRepositories(basePackages = { "org.gesis" })
-@EntityScan(basePackages = { "org.gesis" })
+@ComponentScan(basePackages = { "eu.cessda" })
+@EnableJpaRepositories(basePackages = { "eu.cessda" })
+@EntityScan(basePackages = { "eu.cessda" })
 
 public class CvGuiApplication extends SpringBootServletInitializer {
 

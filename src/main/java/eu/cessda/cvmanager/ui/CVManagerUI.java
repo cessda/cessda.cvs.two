@@ -6,10 +6,6 @@ package eu.cessda.cvmanager.ui;
 import java.util.Arrays;
 import java.util.Locale;
 
-import org.gesis.security.SecurityService;
-import org.gesis.security.util.ErrorHandler;
-import org.gesis.security.util.LoginSucceedEvent;
-import org.gesis.security.views.AccessDeniedView;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus.UIEventBus;
@@ -43,12 +39,17 @@ import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.MessageByLocaleService;
+import eu.cessda.cvmanager.security.ErrorHandler;
+import eu.cessda.cvmanager.security.LoginSucceedEvent;
+import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
+import eu.cessda.cvmanager.ui.view.AccessDeniedView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 import eu.cessda.cvmanager.ui.view.ErrorView;
 import eu.cessda.cvmanager.ui.view.LoginView;
 import eu.cessda.cvmanager.ui.view.SearchView;
+import eu.cessda.cvmanager.ui.view.admin.ManageUserView;
 import eu.cessda.cvmanager.utils.FileUtils;
 
 /**
@@ -80,6 +81,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private MButton home = new MButton("Home", this::gotoHome);
 
 	private MButton searchCVs = new MButton("Search CVs", this::gotoSearchCvs);
+	
+	private MButton adminButton = new MButton("Admin", this::goToAdmin);
 
 	private MButton logIn = new MButton("Login", this::doLogin);
 	private MButton logout = new MButton("Logout", this::doLogout);
@@ -139,9 +142,11 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			logout.setVisible(true);
+			adminButton.setVisible(true);
 			logIn.setVisible(false);
 		} else {
 			logout.setVisible(false);
+			adminButton.setVisible(false);
 			logIn.setVisible(true);
 		}
 
@@ -169,6 +174,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		// listAllCv.withStyleName( ValoTheme.BUTTON_LINK );
 		searchCVs.withStyleName(ValoTheme.BUTTON_LINK);
 		// editorCVs.withStyleName( ValoTheme.BUTTON_LINK );
+		adminButton.withStyleName(ValoTheme.BUTTON_LINK);
 		logIn.withStyleName(ValoTheme.BUTTON_LINK);
 		logout.withStyleName(ValoTheme.BUTTON_LINK);
 
@@ -183,7 +189,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 				// signUp,
 				// listAllCv,
 				searchCVs,
-
+				adminButton,
 				// editorCVs,
 				logIn, logout);
 
@@ -219,6 +225,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	public void gotoProfile(ClickEvent event) {
 
+	}
+	
+	public void goToAdmin(ClickEvent event) {
+		navigator.navigateTo(ManageUserView.VIEW_NAME);
 	}
 
 	public void doLogin(ClickEvent event) {
@@ -264,6 +274,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		// newDataset.setVisible( true );
 		// browse.setVisible( true );
 		logout.setVisible(true);
+		adminButton.setVisible(true);
 		logIn.setVisible(false);
 		// signUp.setVisible( false );
 		// }

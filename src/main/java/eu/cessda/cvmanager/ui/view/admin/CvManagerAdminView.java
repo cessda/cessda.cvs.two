@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view;
+package eu.cessda.cvmanager.ui.view.admin;
 
 import java.util.Locale;
 
@@ -28,11 +28,11 @@ import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 
-public abstract class CvManagerView extends MVerticalLayout implements MView, Translatable {
+public abstract class CvManagerAdminView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -8769292972079523949L;
 	public static enum ActionType{
-		SEARCH, BROWSE, DETAIL // this should be similar to view names
+		MANAGEUSER, MANAGEAGENCY, MANAGEUSERAGENCY, MANAGEUSERAGENCYLANGUAGE, MANAGEUSERAGENCYROLE // this should be similar to view names
 	}
 	
 	protected final I18N i18n;
@@ -46,10 +46,10 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
 	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
-	protected ActionPanel actionPanel;
+	protected ActionAdminPanel actionAdminPanel;
 	protected MVerticalLayout rightContainer = new MVerticalLayout();
 	
-	public CvManagerView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
+	public CvManagerAdminView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			CvManagerService cvManagerService, SecurityService securityService, String actionType) {
 		this.i18n = i;
 		this.eventBus = eventBus;
@@ -57,9 +57,9 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 		this.cvManagerService = cvManagerService;
 		this.securityService = securityService;
 		
-		this.actionType = ActionType.valueOf(actionType.toUpperCase());
+		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
-		actionPanel = new ActionPanel( this );
+		actionAdminPanel = new ActionAdminPanel( this );
 		
 		this.eventBus.subscribe( this );
 	}
@@ -77,10 +77,10 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 			.withFullWidth()
 			.withSpacing( false )
 			.withMargin( false )
-			.add( actionPanel,
+			.add( actionAdminPanel,
 				rightContainer
 			)
-			.withExpand( actionPanel, 0.2f )
+			.withExpand( actionAdminPanel, 0.2f )
 			.withExpand( rightContainer, 0.8f );
 		
 		mainContainer
@@ -95,16 +95,16 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 			.add( mainContainer );
 		
 		if( SecurityContextHolder.getContext().getAuthentication() == null && !securityService.rememberMeLogin()) {
-			actionPanel.setVisible( false );
+			actionAdminPanel.setVisible( false );
 		} else {
-			actionPanel.setVisible( true );
+			actionAdminPanel.setVisible( true );
 		}
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )
 	public void onAuthenticate( LoginSucceedEvent event )
 	{
-		actionPanel.setVisible( true );
+		actionAdminPanel.setVisible( true );
 	}
 
 	public EventBus.UIEventBus getEventBus() {

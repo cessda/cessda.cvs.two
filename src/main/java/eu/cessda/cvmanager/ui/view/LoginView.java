@@ -2,10 +2,6 @@ package eu.cessda.cvmanager.ui.view;
 
 import java.util.Locale;
 
-import org.gesis.security.SecurityService;
-import org.gesis.security.db.DBservices;
-import org.gesis.security.db.User;
-import org.gesis.security.util.LoginSucceedEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.vaadin.spring.events.EventBus;
@@ -35,6 +31,10 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import eu.cessda.cvmanager.domain.User;
+import eu.cessda.cvmanager.security.DBservices;
+import eu.cessda.cvmanager.security.LoginSucceedEvent;
+import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 
 /**
@@ -135,7 +135,7 @@ public class LoginView extends MVerticalLayout implements MView, Translatable {
 			// check for disabled user
 			User user = dbService.getUserByUsername(this.username.getValue());
 			if (user != null) {
-				if (!user.isEnabled()) {
+				if (!user.isEnable()) {
 					infoUserDisabled.setVisible(true);
 					return;
 				}

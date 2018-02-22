@@ -9,10 +9,6 @@ import java.util.List;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.security.SecurityService;
-import org.gesis.security.db.DBservices;
-import org.gesis.security.db.Role;
-import org.gesis.security.db.User;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
@@ -44,6 +40,10 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
+import eu.cessda.cvmanager.domain.Role;
+import eu.cessda.cvmanager.domain.User;
+import eu.cessda.cvmanager.security.DBservices;
+import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
@@ -254,12 +254,12 @@ public class EditorView extends VerticalLayout implements View {
 			User user = dbService.getUserByUsername(userName);
 			boolean hasRole = false;
 
-			for (Role role : user.getRoles()) {
-				if (role.getName().equals("ROLE_ADMIN")) {
-					hasRole = true;
-					log.info(role.getName());
-				}
-			}
+//			for (Role role : user.getRoles()) {
+//				if (role.getName().equals("ROLE_ADMIN")) {
+//					hasRole = true;
+//					log.info(role.getName());
+//				}
+//			}
 			return auth.isAuthenticated() && hasRole;
 		}
 		return false;

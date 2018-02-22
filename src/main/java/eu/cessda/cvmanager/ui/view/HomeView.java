@@ -48,8 +48,8 @@ import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 
 @UIScope
-@SpringView(name = SearchView.VIEW_NAME)
-public class SearchView extends CvManagerView {
+@SpringView(name = HomeView.VIEW_NAME)
+public class HomeView extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "Browse";
@@ -83,15 +83,15 @@ public class SearchView extends CvManagerView {
 	// The opened search hit at the results grid (null at the begining)
 	// private SearchHit selectedItem = null;
 
-	public SearchView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public HomeView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			CvManagerService cvManagerService, SecurityService securityService) {
-		super(i18n, eventBus, configService, cvManagerService, securityService, SearchView.VIEW_NAME);
-		eventBus.subscribe(this, SearchView.VIEW_NAME);
+		super(i18n, eventBus, configService, cvManagerService, securityService, HomeView.VIEW_NAME);
+		eventBus.subscribe(this, HomeView.VIEW_NAME);
 	}
 
 	@PostConstruct
 	public void init() {
-		LoginView.NAVIGATETO_VIEWNAME = SearchView.VIEW_NAME;
+		LoginView.NAVIGATETO_VIEWNAME = HomeView.VIEW_NAME;
 
 		// the layout that contains the three zones: filters, search box, and
 		// results
