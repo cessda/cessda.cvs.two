@@ -6,6 +6,15 @@ package eu.cessda.cvmanager.ui;
 import java.util.Arrays;
 import java.util.Locale;
 
+import org.gesis.wts.security.ErrorHandler;
+import org.gesis.wts.security.LoginSucceedEvent;
+import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.security.UserDetails;
+import org.gesis.wts.ui.view.AccessDeniedView;
+import org.gesis.wts.ui.view.ErrorView;
+import org.gesis.wts.ui.view.LoginView;
+import org.gesis.wts.ui.view.admin.ManageUserView;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus.UIEventBus;
@@ -39,17 +48,12 @@ import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.MessageByLocaleService;
-import eu.cessda.cvmanager.security.ErrorHandler;
-import eu.cessda.cvmanager.security.LoginSucceedEvent;
-import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
-import eu.cessda.cvmanager.ui.view.AccessDeniedView;
+import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
-import eu.cessda.cvmanager.ui.view.ErrorView;
-import eu.cessda.cvmanager.ui.view.LoginView;
+import eu.cessda.cvmanager.ui.view.HomeView;
 import eu.cessda.cvmanager.ui.view.SearchView;
-import eu.cessda.cvmanager.ui.view.admin.ManageUserView;
 import eu.cessda.cvmanager.utils.FileUtils;
 
 /**
@@ -82,6 +86,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private MButton searchCVs = new MButton("Search CVs", this::gotoSearchCvs);
 	
+	private MButton agencyButton = new MButton("Agency", this::goToAgency);
 	private MButton adminButton = new MButton("Admin", this::goToAdmin);
 
 	private MButton logIn = new MButton("Login", this::doLogin);
@@ -92,6 +97,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private String webLanguage = "de";
 
 	private ComboBox countryBox = new ComboBox();
+	private UserDetails userDetail;
 
 	public CVManagerUI(MessageByLocaleService messageByLocaleService, SpringViewProvider viewProvider,
 			SecurityService securityService, UIEventBus eventBus, I18N i18n) {
@@ -137,7 +143,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 		String uriQuery = Page.getCurrent().getLocation().toString();
 		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ))
-			navigator.navigateTo(SearchView.VIEW_NAME);
+			navigator.navigateTo(AgencyView.VIEW_NAME);
 		navigator.addViewChangeListener(viewChangeListener);
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
@@ -174,6 +180,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		// listAllCv.withStyleName( ValoTheme.BUTTON_LINK );
 		searchCVs.withStyleName(ValoTheme.BUTTON_LINK);
 		// editorCVs.withStyleName( ValoTheme.BUTTON_LINK );
+		agencyButton.withStyleName(ValoTheme.BUTTON_LINK);
 		adminButton.withStyleName(ValoTheme.BUTTON_LINK);
 		logIn.withStyleName(ValoTheme.BUTTON_LINK);
 		logout.withStyleName(ValoTheme.BUTTON_LINK);
@@ -189,6 +196,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 				// signUp,
 				// listAllCv,
 				searchCVs,
+				agencyButton,
 				adminButton,
 				// editorCVs,
 				logIn, logout);
@@ -225,6 +233,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	public void gotoProfile(ClickEvent event) {
 
+	}
+	
+	public void goToAgency(ClickEvent event) {
+		navigator.navigateTo(AgencyView.VIEW_NAME);
 	}
 	
 	public void goToAdmin(ClickEvent event) {
@@ -269,6 +281,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	@EventBusListenerMethod(scope = EventScope.UI)
 	public void onPersonModified(LoginSucceedEvent event) {
+		
+		setUserDetail( SecurityUtils.getCurrentUserDetails().get());
 		// if( securityService.isAuthenticate()){
 		System.out.println("User logged in!");
 		// newDataset.setVisible( true );
@@ -291,6 +305,14 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		searchCVs.withCaption(i18n.get("view.home.menu.browse", locale));
 		logIn.withCaption(i18n.get("view.home.menu.login", locale));
 		logout.withCaption(i18n.get("view.home.menu.logout", locale));
+	}
+
+	public UserDetails getUserDetail() {
+		return userDetail;
+	}
+
+	public void setUserDetail(UserDetails userDetail) {
+		this.userDetail = userDetail;
 	}
 
 }

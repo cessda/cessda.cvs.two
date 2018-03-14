@@ -22,6 +22,13 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.gesis.wts.security.LoginSucceedEvent;
+import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.service.AgencyService;
+import org.gesis.wts.service.VocabularyService;
+import org.gesis.wts.service.dto.AgencyDTO;
+import org.gesis.wts.service.dto.VocabularyDTO;
+import org.gesis.wts.ui.view.LoginView;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.thymeleaf.TemplateEngine;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -72,8 +79,6 @@ import com.vaadin.ui.themes.ValoTheme;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
-import eu.cessda.cvmanager.security.LoginSucceedEvent;
-import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
@@ -91,7 +96,12 @@ public class DetailView extends CvManagerView {
 	public static final String VIEW_NAME = "Detail";
 	private Locale locale = UI.getCurrent().getLocale();
 	private final TemplateEngine templateEngine;
+	private final AgencyService agencyService;
+	private final VocabularyService vocabularyService;
 
+	private AgencyDTO agency;
+	private VocabularyDTO vocabulary;
+	
 	private String selectedLang = "en";
 	private FormMode formMode;
 
@@ -166,9 +176,12 @@ public class DetailView extends CvManagerView {
 	private ExportLayout exportLayoutContent;
 
 	public DetailView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
-			CvManagerService cvManagerService, SecurityService securityService, TemplateEngine templateEngine) {
+			CvManagerService cvManagerService, SecurityService securityService, AgencyService agencyService,
+			VocabularyService vocabularyService, TemplateEngine templateEngine) {
 		super(i18n, eventBus, configService, cvManagerService, securityService, DetailView.VIEW_NAME);
 		this.templateEngine = templateEngine;
+		this.agencyService = agencyService;
+		this.vocabularyService = vocabularyService;
 		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
@@ -281,6 +294,22 @@ public class DetailView extends CvManagerView {
 		languageLayout.removeAllComponents();
 		
 		List<DDIStore> ddiSchemes = cvManagerService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
+		
+		// find in Vocabulary entity as well
+		vocabulary = vocabularyService.getByUri( cvItem.getCurrentCvId() );
+		if( vocabulary == null ) {
+			vocabulary = new VocabularyDTO();
+			vocabulary.setUri(cvItem.getCurrentCvId());
+			vocabulary.setActive( true );
+			vocabulary.setVersion( "1.0" );
+			
+			agency = agencyService.findOne(1L);
+			vocabulary.setAgencyId(agency.getId());
+		} else {
+			agency = agencyService.findOne(1L);
+			vocabulary.setAgencyId(agency.getId());
+		}
+		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
 			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
 		}
@@ -328,6 +357,10 @@ public class DetailView extends CvManagerView {
 		}
 		cvItem.getCvScheme().save();
 		DDIStore ddiStore = cvManagerService.saveElement(cvItem.getCvScheme().ddiStore, "Peter", "minor edit");
+		
+		// update vocabulary on database as well
+		vocabularyService.save(vocabulary);
+			
 		Notification.show("All changes saved");
 		setFormMode(FormMode.view);
 		initTopViewSection();

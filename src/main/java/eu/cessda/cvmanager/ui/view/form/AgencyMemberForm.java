@@ -1,7 +1,14 @@
-package eu.cessda.cvmanager.ui.view.admin.form;
+package eu.cessda.cvmanager.ui.view.form;
 
 import java.util.List;
 
+import org.gesis.wts.service.AgencyService;
+import org.gesis.wts.service.UserAgencyService;
+import org.gesis.wts.service.UserService;
+import org.gesis.wts.service.dto.AgencyDTO;
+import org.gesis.wts.service.dto.UserAgencyDTO;
+import org.gesis.wts.service.dto.UserDTO;
+import org.gesis.wts.ui.view.admin.ManageUserAgencyView;
 import org.vaadin.viritin.fields.MTextField;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -15,15 +22,9 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.service.AgencyService;
-import eu.cessda.cvmanager.service.UserAgencyService;
-import eu.cessda.cvmanager.service.UserService;
-import eu.cessda.cvmanager.service.dto.AgencyDTO;
-import eu.cessda.cvmanager.service.dto.UserAgencyDTO;
-import eu.cessda.cvmanager.service.dto.UserDTO;
-import eu.cessda.cvmanager.ui.view.admin.ManageUserAgencyView;
+import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 
-public class UserAgencyForm extends FormLayout {
+public class AgencyMemberForm extends FormLayout {
 
 	private static final long serialVersionUID = -1221682959975551083L;
 	private final UserAgencyService userAgencyService;
@@ -31,7 +32,7 @@ public class UserAgencyForm extends FormLayout {
     private final UserService userService;
             
     private UserAgencyDTO userAgencyDTO;
-    private ManageUserAgencyView manageAgencyView;
+    private DialogAgencyManageMember dialogAgencyManageMember;
 	
 	private MTextField name = new MTextField("Name");
 	private MTextField filterText = new MTextField();
@@ -42,8 +43,9 @@ public class UserAgencyForm extends FormLayout {
 
 	private Grid<UserDTO> userGrid = new Grid<>(UserDTO.class);
 
-    public UserAgencyForm(ManageUserAgencyView manageUserAgencyView, UserAgencyService userAgencyService, UserService userService, AgencyService agencyService) {
-        this.manageAgencyView = manageUserAgencyView;
+
+    public AgencyMemberForm(DialogAgencyManageMember dialogAgencyManageMember, UserAgencyService userAgencyService, UserService userService, AgencyService agencyService) {
+        this.dialogAgencyManageMember = dialogAgencyManageMember;
         this.userAgencyService = userAgencyService;
         this.agencyService = agencyService;
         this.userService = userService;
@@ -132,20 +134,20 @@ public class UserAgencyForm extends FormLayout {
 
     private void delete() {
     	userAgencyService.delete(userAgencyDTO.getId());
-        manageAgencyView.updateList();
+        dialogAgencyManageMember.updateList();
         setVisible(false);
     }
 
     private void save() {
     	userAgencyService.save(userAgencyDTO);
-        manageAgencyView.updateList();
+        dialogAgencyManageMember.updateList();
         setVisible(false);
     }
     
     private void updateList() {
     	String keyword = filterText.getValue();
     	if( keyword.length() > 1) {
-    		manageAgencyView.getGrid().asSingleSelect().clear();
+    		dialogAgencyManageMember.getGrid().asSingleSelect().clear();
     		userGrid.setVisible( true );
 			List<UserDTO> userDTOs = userService.findAll( filterText.getValue());
 			userGrid.setItems(userDTOs);

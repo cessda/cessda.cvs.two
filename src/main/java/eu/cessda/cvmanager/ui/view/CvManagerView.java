@@ -7,6 +7,9 @@ import javax.annotation.PostConstruct;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.wts.security.LoginSucceedEvent;
+import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.ui.view.admin.CvManagerAdminView.ActionType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
@@ -23,8 +26,6 @@ import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.model.CvItem;
-import eu.cessda.cvmanager.security.LoginSucceedEvent;
-import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 
@@ -32,7 +33,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 
 	private static final long serialVersionUID = -8769292972079523949L;
 	public static enum ActionType{
-		SEARCH, BROWSE, DETAIL // this should be similar to view names
+		SEARCH, BROWSE, DETAIL, AGENCY, AGENCYDISCOVER// this should be similar to view names
 	}
 	
 	protected final I18N i18n;
@@ -40,6 +41,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	protected final ConfigurationService configService;
 	protected final CvManagerService cvManagerService;
 	protected final SecurityService securityService;
+	protected Locale locale = UI.getCurrent().getLocale();
 	
 	private final ActionType actionType;
 	protected CvItem cvItem = new CvItem();
@@ -57,7 +59,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 		this.cvManagerService = cvManagerService;
 		this.securityService = securityService;
 		
-		this.actionType = ActionType.valueOf(actionType.toUpperCase());
+		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
 		actionPanel = new ActionPanel( this );
 		
@@ -126,4 +128,13 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	public void setCvItem(CvItem cvItem) {
 		this.cvItem = cvItem;
 	}
+
+	public Locale getLocale() {
+		return locale;
+	}
+
+	public void setLocale(Locale locale) {
+		this.locale = locale;
+	}
+	
 }

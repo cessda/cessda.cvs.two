@@ -1,6 +1,7 @@
 package eu.cessda.cvmanager;
 
 import org.apache.commons.lang3.CharEncoding;
+import org.gesis.wts.service.mapper.AgencyMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -16,9 +17,9 @@ import org.vaadin.spring.i18n.MessageProvider;
 import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
-@ComponentScan(basePackages = { "eu.cessda" })
-@EnableJpaRepositories(basePackages = { "eu.cessda" })
-@EntityScan(basePackages = { "eu.cessda" })
+@ComponentScan(basePackages = { "eu.cessda", "org.gesis" })
+@EnableJpaRepositories(basePackages = { "eu.cessda", "org.gesis" })
+@EntityScan(basePackages = { "eu.cessda", "org.gesis" })
 
 public class CvGuiApplication extends SpringBootServletInitializer {
 
@@ -47,5 +48,5 @@ public class CvGuiApplication extends SpringBootServletInitializer {
 	    templateResolver.setCacheable(false);
 	    return templateResolver;
 	}
-
+	
 }

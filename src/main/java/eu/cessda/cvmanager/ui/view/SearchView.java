@@ -14,6 +14,8 @@ import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.ui.view.LoginView;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -42,7 +44,6 @@ import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
@@ -297,7 +298,7 @@ public class SearchView extends CvManagerView {
 		else
 			infoResult.setValue("Showing 1 - " + hits.size() + " of " + hits.size());
 
-		Label header = new Label("<b>" + hits.size() + " CVs retrieved</b>", ContentMode.HTML);
+		Label header = new Label("<b>" + hits.size() + " Agencies retrieved</b>", ContentMode.HTML);
 
 		// initialize the results grid
 		Grid<CVScheme> results = new Grid<>(CVScheme.class);

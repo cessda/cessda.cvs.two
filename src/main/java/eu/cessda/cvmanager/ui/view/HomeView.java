@@ -14,6 +14,8 @@ import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.ui.view.LoginView;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -42,7 +44,6 @@ import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.security.SecurityService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
@@ -52,7 +53,7 @@ import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 public class HomeView extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
-	public static final String VIEW_NAME = "Browse";
+	public static final String VIEW_NAME = "Home";
 	private Locale locale = UI.getCurrent().getLocale();
 
 	// main container

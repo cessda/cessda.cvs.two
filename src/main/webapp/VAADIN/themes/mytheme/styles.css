@@ -16816,3 +16816,8 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-treegrid-cell-content {
 	vertical-align: top;
 }
+
+.mytheme .bold-text {
+	color: #000;
+	font-weight: 800;
+}

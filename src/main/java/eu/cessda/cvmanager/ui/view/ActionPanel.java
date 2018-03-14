@@ -56,6 +56,9 @@ public class ActionPanel extends CustomComponent{
 	private MButton buttonPublishCv = new MButton();
 	private MButton buttonUnpublishCv = new MButton();
 	
+	// agency button
+	private MButton buttonManageMember = new MButton();
+	
 	private boolean enableSort=false;
 	
 	private CvManagerView cvManagerView;
@@ -91,7 +94,8 @@ public class ActionPanel extends CustomComponent{
 			.withFullWidth();
 		buttonUnpublishCv
 			.withFullWidth();
-		
+		buttonManageMember
+			.withFullWidth();
 		
 		buttonAddCv.addClickListener( this::doCvAdd );
 		buttonChangeAgency.addClickListener( this::doCvSelectAgency );
@@ -108,6 +112,9 @@ public class ActionPanel extends CustomComponent{
 		buttonPublishCv.addClickListener( this::doPublishCv );
 		buttonUnpublishCv.addClickListener( this::doUnpublishCv );
 		
+		
+		buttonManageMember.addClickListener( this::doManageMember );
+		
 		conceptSelectedChange(null);
 		
 		actionLayout
@@ -123,7 +130,9 @@ public class ActionPanel extends CustomComponent{
 					buttonCodeAddTranslation,
 					buttonCodeAddChild,
 					buttonCodeDelete,
-					buttonCodeSort//,
+					buttonCodeSort,
+					
+					buttonManageMember
 					
 //					buttonValidateCv,
 //					buttonFinaliseReview,
@@ -145,11 +154,29 @@ public class ActionPanel extends CustomComponent{
 				buttonFinaliseReview.setVisible( false );
 				buttonPublishCv.setVisible( false );
 				buttonUnpublishCv.setVisible( false );
+				
+				buttonManageMember.setVisible( false );
 				break;
 			case DETAIL:
 				buttonCodeAddTranslation.setVisible( false );
 				buttonCodeAddChild.setVisible( false );
 				buttonCodeDelete.setVisible( false );
+				
+				buttonManageMember.setVisible( false );
+				break;
+			case AGENCY:
+				buttonAddCv.setVisible( false);
+				buttonChangeAgency.setVisible( false );
+				buttonChangeLanguage.setVisible( false );
+				buttonCodeAdd.setVisible( false );
+				buttonCodeAddTranslation.setVisible( false );
+				buttonCodeAddChild.setVisible( false );
+				buttonCodeDelete.setVisible( false );
+				buttonCodeSort.setVisible( false );
+				buttonValidateCv.setVisible( false );
+				buttonFinaliseReview.setVisible( false );
+				buttonPublishCv.setVisible( false );
+				buttonUnpublishCv.setVisible( false );
 				break;
 		}
 		
@@ -193,6 +220,11 @@ public class ActionPanel extends CustomComponent{
 	private void doCodeAddChild(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADDCHILD_DIALOG, null) );
+	}
+	
+	private void doManageMember(ClickEvent event ) {
+		applyButtonStyle( event.getButton());
+		eventBus.publish(EventScope.UI, AgencyView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.AGENCY_MANAGE_MEMBER, null) );
 	}
 	
 	private void applyButtonStyle(Button pressedButton) {
@@ -280,6 +312,12 @@ public class ActionPanel extends CustomComponent{
 		buttonFinaliseReview.withCaption( i18n.get("view.action.button.cvconcept.finalize", locale));
 		buttonPublishCv.withCaption( i18n.get("view.action.button.cvconcept.publish", locale));
 		buttonUnpublishCv.withCaption( i18n.get("view.action.button.cvconcept.unpublish", locale));
+		
+		buttonManageMember.withCaption( "Manage Member" );
+	}
+
+	public MButton getButtonManageMember() {
+		return buttonManageMember;
 	}
 	
 }

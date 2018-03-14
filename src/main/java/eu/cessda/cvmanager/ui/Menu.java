@@ -3,6 +3,8 @@ package eu.cessda.cvmanager.ui;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.ui.view.LoginView;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
@@ -21,8 +23,6 @@ import com.vaadin.ui.MenuBar.Command;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.security.SecurityService;
-import eu.cessda.cvmanager.ui.view.LoginView;
 
 /**
  * Responsive navigation menu presenting a list of available views to the user.

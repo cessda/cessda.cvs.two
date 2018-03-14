@@ -236,7 +236,13 @@
             <artifactId>mapstruct-jdk8</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-		
+        
+        <dependency>
+            <groupId>org.gesis.wts</groupId>
+            <artifactId>usermanagement</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        
 	</dependencies>
 
 	<dependencyManagement>
@@ -331,7 +337,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
-                <version>${maven-eclipse-plugin.version}</version>
                 <configuration>
                     <downloadSources>true</downloadSources>
                     <downloadJavadocs>true</downloadJavadocs>
