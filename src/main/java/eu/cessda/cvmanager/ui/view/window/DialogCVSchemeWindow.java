@@ -7,6 +7,8 @@ import java.util.Locale;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.security.UserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -62,6 +64,8 @@ public class DialogCVSchemeWindow extends MWindow {
 	private String orginalLanguage;
 	private String language;
 	private CVScheme cvScheme;
+	
+	private UserDetails userDetails;
 
 	//private EditorView theView;
 
@@ -70,6 +74,8 @@ public class DialogCVSchemeWindow extends MWindow {
 		
 		this.eventBus = eventBus;
 		this.i18n = i18n;
+		
+		userDetails = SecurityUtils.getLoggedUser();
 				
 		lAgency.withStyleName( "required" );
 		lCode.withStyleName( "required" );
