@@ -236,7 +236,7 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 		else
 			infoResult.setValue("Showing 1 - " + hits.size() + " of " + hits.size());
 
-		Label header = new Label("<b>" + hits.size() + " Agencies retrieved</b>", ContentMode.HTML);
+		Label header = new Label("<b>" + hits.size() + " Vocabularies</b>", ContentMode.HTML);
 
 		// initialize the results grid
 		Grid<CVScheme> results = new Grid<>(CVScheme.class);
