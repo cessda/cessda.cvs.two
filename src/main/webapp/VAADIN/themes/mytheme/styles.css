@@ -16718,12 +16718,12 @@ div.v-layout.v-horizontal.v-widget {
 	height: auto !important;
 }
 
-.mytheme .search-grid .v-grid-tablewrapper {
+.mytheme .search-grid  > .v-grid-tablewrapper {
 	position: relative;
 	height: auto !important;
 }
 
-.mytheme .search-grid .v-grid-tablewrapper table > tbody {
+.mytheme .search-grid  > .v-grid-tablewrapper  > table > tbody {
 	position: relative;
 }
 
@@ -16736,13 +16736,13 @@ div.v-layout.v-horizontal.v-widget {
 	float: left;
 }
 
-.mytheme .undefined-height > .v-grid-tablewrapper > table tr {
+.mytheme .undefined-height > .v-grid-tablewrapper > table > tbody > tr {
 	transform: none !important;
 	float: left;
 	position: relative !important;
 }
 
-.mytheme .undefined-height > .v-grid-tablewrapper > table tr td {
+.mytheme .undefined-height > .v-grid-tablewrapper > table > tbody > tr td {
 	height: auto !important;
 	display: table-cell;
 	float: none;
@@ -16803,6 +16803,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .dialog-content {
 	margin-top: 10px;
+	overflow-y: unset;
 }
 
 .mytheme .dialog-content .v-caption {
@@ -16818,6 +16819,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .bold-text {
-	color: #000;
+	color: #656565;
 	font-weight: 800;
 }

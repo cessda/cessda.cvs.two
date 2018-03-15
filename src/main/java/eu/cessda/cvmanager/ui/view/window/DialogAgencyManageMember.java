@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -8,11 +9,15 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.LanguageRightService;
+import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyRoleService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
 import org.gesis.wts.service.dto.AgencyDTO;
+import org.gesis.wts.service.dto.LanguageRightDTO;
 import org.gesis.wts.service.dto.UserAgencyDTO;
+import org.gesis.wts.service.dto.UserAgencyRoleDTO;
+import org.gesis.wts.service.dto.UserDTO;
 import org.gesis.wts.ui.view.admin.form.UserAgencyForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,12 +43,17 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.Language;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.model.AgencyMemberItem;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.ui.component.AgencyGridComponent;
+import eu.cessda.cvmanager.ui.component.AgencyMemberGridComponent;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.form.AgencyMemberForm;
 
@@ -55,6 +65,7 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
 	private final UserService userService;
+	private final RoleService roleService;
 	private final AgencyService agencyService;
 	private final UserAgencyService userAgencyService;
 	private final UserAgencyRoleService userAgencyRoleService;
@@ -62,15 +73,13 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 	private final Locale locale;
 	
 	private MCssLayout layout = new MCssLayout();
-	private Grid<UserAgencyDTO> grid = new Grid<>(UserAgencyDTO.class);
+	private Grid<AgencyMemberItem> grid = new Grid<>(AgencyMemberItem.class);
 	private MTextField filterText = new MTextField();
 	private AgencyMemberForm form;
 	private AgencyDTO agency;
 
-	private Button storeCode = new Button("Save");
-
 	public DialogAgencyManageMember(UIEventBus eventBus, AgencyDTO agency, UserService userService,
-			AgencyService agencyService, UserAgencyService userAgencyService,
+			RoleService roleService, AgencyService agencyService, UserAgencyService userAgencyService,
 			UserAgencyRoleService userAgencyRoleService, LanguageRightService languageRightService,
 			I18N i18n, Locale locale) {
 		
@@ -79,6 +88,7 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 		this.eventBus = eventBus;
 		this.agency = agency;
 		this.userService = userService;
+		this.roleService = roleService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
 		this.userAgencyRoleService = userAgencyRoleService;
@@ -95,15 +105,19 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 		MButton addBtn = new MButton(" + Add new member");
         addBtn.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
         addBtn.addClickListener(e -> {
-            grid.asSingleSelect().clear();
             form.setUserLayoutVisible( true );
-            form.setUserAgencyDTO(new UserAgencyDTO());
+            
+            UserAgencyDTO uAgency = new UserAgencyDTO();
+            uAgency.setAgencyId( agency.getId());
+            uAgency.setAgencyName( agency.getName() );
+            
+            AgencyMemberItem agencyMember = new AgencyMemberItem(uAgency);
+            
+            form.setAgencyMemberItem( agencyMember );
         });
         
         MCssLayout toolbar = new MCssLayout(addBtn);
         toolbar.withFullWidth();
-
-        grid.setColumns("id", "firstName", "lastName", "agencyName");
 
         HorizontalLayout main = new HorizontalLayout(grid, form);
         main.setSizeFull();
@@ -114,17 +128,13 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 
         form.setVisible(false);
         
-        grid.asSingleSelect().addValueChangeListener(event -> {
-            if (event.getValue() == null) {
-                form.setVisible(false);
-            } else {
-            	form.setUserLayoutVisible( false );
-                form.setUserAgencyDTO(event.getValue());
-            }
-        });
+        grid.addStyleNames(ValoTheme.TABLE_BORDERLESS, "undefined-height", "search-grid");
+		grid.setHeaderVisible(false);
+		grid.setSelectionMode( SelectionMode.NONE );
 		
 		layout
-			.withFullSize()
+			.withHeight("96%")
+			.withWidth("100%")
 			.withStyleName("dialog-content")
 			.add( 
 					toolbar, main
@@ -140,15 +150,38 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 	}
 
 	public void updateList() {
-		List<UserAgencyDTO> agencyDTOs = userAgencyService.findAll( filterText.getValue());
-		grid.setItems(agencyDTOs);
+		List<AgencyMemberItem> agencyMembers = new ArrayList<>();
+		// first get all useragency member
+		List<UserAgencyDTO> userAgencies = userAgencyService.findByAgency( agency.getId() );
+		for( UserAgencyDTO userAgency : userAgencies ) {
+			AgencyMemberItem agencyMember = new AgencyMemberItem(userAgency);
+			
+			List<UserAgencyRoleDTO> agencyRoles = userAgencyRoleService.findByUserAgency(userAgency.getId());
+			agencyMember.setUserAgencyRoles(agencyRoles);
+			
+			List<LanguageRightDTO> languageRights = languageRightService.findByUserAgency(userAgency.getId());
+			agencyMember.setLanguageRights(languageRights);
+			
+			agencyMembers.add(agencyMember);
+		}
+		
+		grid.setItems( agencyMembers );
+		
+		grid.removeAllColumns();
+		grid.addColumn(agencyMember -> {
+			return new AgencyMemberGridComponent( this, agencyMember, agency, userService,
+					roleService, agencyService, userAgencyService, userAgencyRoleService, languageRightService,
+					i18n, locale);
+		}, new ComponentRenderer()).setId("agencyMember");
+
+		grid.getColumn("agencyMember").setExpandRatio(1);
 	}
 
-	public Grid<UserAgencyDTO> getGrid() {
+	public Grid<AgencyMemberItem> getGrid() {
 		return grid;
 	}
 
-	public void setGrid(Grid<UserAgencyDTO> grid) {
+	public void setGrid(Grid<AgencyMemberItem> grid) {
 		this.grid = grid;
 	}
 

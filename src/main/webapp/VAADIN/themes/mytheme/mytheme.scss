@@ -1741,14 +1741,15 @@ $v-selection-item-border-radius: 0;
    .search-grid{
    		float:left;
    		height: auto !important;
-   		.v-grid-tablewrapper{
+   		>.v-grid-tablewrapper{
    			position: relative;
    			height: auto !important;
-	   		table>tbody{
+	   		>table>tbody{
 	   		    position: relative;
 	   		}
 	   	}
    	}
+
    	.v-treegrid-undefined-height{
    		height:auto !important;
    	}
@@ -1756,18 +1757,16 @@ $v-selection-item-border-radius: 0;
    		position: relative !important;
 		float: left;
    	}
-   	.undefined-height>.v-grid-tablewrapper>table{
-   		tr{
-   			transform: none !important;
-   			float:left;
-   			position: relative !important;
-		   	td{
-		   		height:auto !important;
-    			display:table-cell;
-    			float:none;
-    			vertical-align: top;
-		   	}
-	   }
+   	.undefined-height>.v-grid-tablewrapper>table>tbody>tr{
+		transform: none !important;
+		float:left;
+		position: relative !important;
+	   	td{
+	   		height:auto !important;
+			display:table-cell;
+			float:none;
+			vertical-align: top;
+	   	}
    }
    .v-treegrid-tablewrapper{
    		position:relative;
@@ -1820,6 +1819,7 @@ $v-selection-item-border-radius: 0;
 	}
 	.dialog-content{
 		margin-top:10px;
+		overflow-y:unset;
 		.v-caption{
 			display:none;
 		}

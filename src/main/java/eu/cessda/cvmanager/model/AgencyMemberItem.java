@@ -1,39 +1,35 @@
 package eu.cessda.cvmanager.model;
 
+import java.util.List;
+
+import org.gesis.wts.service.dto.LanguageRightDTO;
+import org.gesis.wts.service.dto.UserAgencyDTO;
+import org.gesis.wts.service.dto.UserAgencyRoleDTO;
+
 public class AgencyMemberItem {
-	private String name;
-	private String username;
-	private String role;
-	private String language;
+	private UserAgencyDTO userAgency;
+	private List<UserAgencyRoleDTO> userAgencyRoles;
+	private List<LanguageRightDTO> languageRights;
 	
-	public AgencyMemberItem(String name, String username, String role, String language) {
-		this.name = name;
-		this.username = username;
-		this.role = role;
-		this.language = language;
+	public AgencyMemberItem(UserAgencyDTO userAgency) {
+		this.userAgency = userAgency;
 	}
-	public String getName() {
-		return name;
+	public UserAgencyDTO getUserAgency() {
+		return userAgency;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setUserAgency(UserAgencyDTO userAgency) {
+		this.userAgency = userAgency;
 	}
-	public String getUsername() {
-		return username;
+	public List<UserAgencyRoleDTO> getUserAgencyRoles() {
+		return userAgencyRoles;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserAgencyRoles(List<UserAgencyRoleDTO> userAgencyRoles) {
+		this.userAgencyRoles = userAgencyRoles;
 	}
-	public String getRole() {
-		return role;
+	public List<LanguageRightDTO> getLanguageRights() {
+		return languageRights;
 	}
-	public void setRole(String role) {
-		this.role = role;
-	}
-	public String getLanguage() {
-		return language;
-	}
-	public void setLanguage(String language) {
-		this.language = language;
+	public void setLanguageRights(List<LanguageRightDTO> languageRights) {
+		this.languageRights = languageRights;
 	}
 }

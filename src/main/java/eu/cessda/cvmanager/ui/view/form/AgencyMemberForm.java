@@ -22,6 +22,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.themes.ValoTheme;
 
+import eu.cessda.cvmanager.model.AgencyMemberItem;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 
 public class AgencyMemberForm extends FormLayout {
@@ -37,9 +38,7 @@ public class AgencyMemberForm extends FormLayout {
 	private MTextField name = new MTextField("Name");
 	private MTextField filterText = new MTextField();
 	
-    private ComboBox<AgencyDTO> agency = new ComboBox<>();
     private Button save = new Button("Save");
-    private Button delete = new Button("Delete");
 
 	private Grid<UserDTO> userGrid = new Grid<>(UserDTO.class);
 
@@ -51,7 +50,6 @@ public class AgencyMemberForm extends FormLayout {
         this.userService = userService;
         
         name.withReadOnly( true );
-        agency.setCaption("Agency");
         
         filterText
         	.withCaption("Search")
@@ -60,7 +58,8 @@ public class AgencyMemberForm extends FormLayout {
 			.addValueChangeListener(e -> updateList());
         
         userGrid.setHeight("250px");
-        userGrid.setColumns("id", "firstName", "lastName", "username");
+        userGrid.setWidth("200px");
+        userGrid.setColumns("username", "firstName", "lastName");
         
         userGrid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
@@ -68,37 +67,22 @@ public class AgencyMemberForm extends FormLayout {
             }
         });
         
-        agency.setItems( this.agencyService.findAll());
-        agency.setItemCaptionGenerator(new ItemCaptionGenerator<AgencyDTO>() {
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String apply(AgencyDTO item) {
-				return item.getId() + "-" + item.getName();
-			}
-		});
-        agency.addValueChangeListener( e -> {
-        	if( e.getValue() != null )
-        		this.userAgencyDTO.setAgencyId( e.getValue().getId() );
-        });
-
-        HorizontalLayout buttons = new HorizontalLayout(save, delete);
+        HorizontalLayout buttons = new HorizontalLayout(save);
 
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(KeyCode.ENTER);
 
         save.addClickListener(e -> this.save());
-        delete.addClickListener(e -> this.delete());
         
         setSizeUndefined();
-        addComponents(filterText, userGrid, name, agency, buttons);
+        addComponents(filterText, userGrid, name, buttons);
         
         filterText.setVisible( false );
         userGrid.setVisible( false );
     }
 
-    public void setUserAgencyDTO(UserAgencyDTO userAgencyDTO) {
-        this.userAgencyDTO = userAgencyDTO;
+    public void setAgencyMemberItem(AgencyMemberItem agencyMemberItem) {
+        this.userAgencyDTO = agencyMemberItem.getUserAgency();
         AgencyDTO agencyDto = new AgencyDTO();
         agencyDto.setId(userAgencyDTO.getAgencyId());
         agencyDto.setName(userAgencyDTO.getAgencyName());
@@ -108,17 +92,9 @@ public class AgencyMemberForm extends FormLayout {
         userDto.setFirstName( userAgencyDTO.getFirstName() );
         userDto.setLastName( userAgencyDTO.getLastName() );
         
-        if( agencyDto.isPersisted() )
-        	agency.setValue( agencyDto );
-        else
-        	agency.setValue( null );
-        
         setSelectedUser(userDto);
 
-        // Show delete button for only customers already in the database
-        delete.setVisible(userAgencyDTO.isPersisted());
         setVisible(true);
-        name.selectAll();
     }
     
     private void setSelectedUser( UserDTO userDto) {    	
@@ -147,12 +123,10 @@ public class AgencyMemberForm extends FormLayout {
     private void updateList() {
     	String keyword = filterText.getValue();
     	if( keyword.length() > 1) {
-    		dialogAgencyManageMember.getGrid().asSingleSelect().clear();
     		userGrid.setVisible( true );
 			List<UserDTO> userDTOs = userService.findAll( filterText.getValue());
 			userGrid.setItems(userDTOs);
     	} else {
-    		userGrid.asSingleSelect().clear();
     		userGrid.setVisible( false );
     	}
 	}
@@ -161,7 +135,6 @@ public class AgencyMemberForm extends FormLayout {
     	filterText.setVisible(visible);
     	filterText.setValue("");
     	name.setValue("");
-    	agency.setValue( null );
     }
 
 }

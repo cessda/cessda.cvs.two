@@ -18,6 +18,7 @@ import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.LanguageRightService;
+import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyRoleService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
@@ -78,6 +79,7 @@ public class AgencyView extends CvManagerView {
 //	Autowired
 	private final UserService userService;
 	private final AgencyService agencyService;
+	private final RoleService roleService;
 	private final UserAgencyService userAgencyService;
 	private final UserAgencyRoleService userAgencyRoleService;
 	private final LanguageRightService languageRightService;
@@ -103,10 +105,11 @@ public class AgencyView extends CvManagerView {
 
 	public AgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			CvManagerService cvManagerService, SecurityService securityService, 
-			UserService userService, AgencyService agencyService, UserAgencyService userAgencyService,
+			UserService userService, RoleService roleService, AgencyService agencyService, UserAgencyService userAgencyService,
 			UserAgencyRoleService userAgencyRoleService, LanguageRightService languageRightService) {
 		super(i18n, eventBus, configService, cvManagerService, securityService, AgencyView.VIEW_NAME);
 		this.userService = userService;
+		this.roleService = roleService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
 		this.userAgencyRoleService = userAgencyRoleService;
@@ -175,7 +178,7 @@ public class AgencyView extends CvManagerView {
 	{
 		switch(event.getType()) {
 			case AGENCY_MANAGE_MEMBER:
-				Window window = new DialogAgencyManageMember(eventBus, agency, userService, agencyService, userAgencyService, userAgencyRoleService, languageRightService, i18n, locale);
+				Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, userAgencyRoleService, languageRightService, i18n, locale);
 				getUI().addWindow(window);
 				break;
 			default:
