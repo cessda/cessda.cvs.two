@@ -123,11 +123,11 @@ public class AgencySearchLayout extends MCssLayout implements Translatable {
 		this.searchGlobalContainer.addComponents(searchBoxContainer, resultsContainer);
 		this.searchGlobalContainer.setExpandRatio(resultsContainer, 1);
 
-		this.globalContainer.addComponents(filtersContainer, searchGlobalContainer);
+		this.globalContainer.addComponents( filtersContainer, searchGlobalContainer);
 		this.globalContainer.setExpandRatio(searchGlobalContainer, 1);
 		
 		layout
-			.add( globalContainer )
+			.add( new Label("<h3>Search Agencies</h3>", ContentMode.HTML), globalContainer )
 			.withFullSize();
 		
 		this.add( layout);

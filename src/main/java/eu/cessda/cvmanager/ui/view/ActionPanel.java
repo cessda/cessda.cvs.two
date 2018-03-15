@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.wts.security.SecurityUtils;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -139,6 +140,11 @@ public class ActionPanel extends CustomComponent{
 //					buttonPublishCv,
 //					buttonUnpublishCv
 			);
+		
+		if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ) || SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN_AGENCY" ))
+			buttonManageMember.setVisible( true );
+		else
+			buttonManageMember.setVisible( false );
 		
 		switch( this.cvManagerView.getActionType()) {
 			case SEARCH:

@@ -22,6 +22,7 @@ import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyRoleService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
+import org.gesis.wts.service.VocabularyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
 import org.springframework.util.MultiValueMap;
@@ -83,6 +84,8 @@ public class AgencyView extends CvManagerView {
 	private final UserAgencyService userAgencyService;
 	private final UserAgencyRoleService userAgencyRoleService;
 	private final LanguageRightService languageRightService;
+	private final VocabularyService vocabularyService;
+	private final CvManagerService cvManagerService;
 //	private final User
 	
 	private MHorizontalLayout mainContent = new MHorizontalLayout();
@@ -106,7 +109,7 @@ public class AgencyView extends CvManagerView {
 	public AgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			CvManagerService cvManagerService, SecurityService securityService, 
 			UserService userService, RoleService roleService, AgencyService agencyService, UserAgencyService userAgencyService,
-			UserAgencyRoleService userAgencyRoleService, LanguageRightService languageRightService) {
+			UserAgencyRoleService userAgencyRoleService, LanguageRightService languageRightService, VocabularyService vocabularyService) {
 		super(i18n, eventBus, configService, cvManagerService, securityService, AgencyView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
@@ -114,10 +117,12 @@ public class AgencyView extends CvManagerView {
 		this.userAgencyService = userAgencyService;
 		this.userAgencyRoleService = userAgencyRoleService;
 		this.languageRightService = languageRightService;
+		this.vocabularyService = vocabularyService;
+		this.cvManagerService = cvManagerService;
 		
 		aOwnLayout = new AgencyOwnLayout(i18n, eventBus, this, agencyService, configService); 
 		aSearchLayout = new AgencySearchLayout(i18n, eventBus, this, agencyService, configService);
-		aDetailLayout = new AgencyDetailLayout(i18n, eventBus, this, agencyService, configService); 
+		aDetailLayout = new AgencyDetailLayout(i18n, eventBus, this, agencyService, configService, vocabularyService, cvManagerService, configService); 
 		
 		eventBus.subscribe(this, AgencyView.VIEW_NAME);
 	}
@@ -205,7 +210,10 @@ public class AgencyView extends CvManagerView {
 			aSearchLayout.updateList();
 			
 		} else {
-			actionPanel.getButtonManageMember().setVisible( true );
+			if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ) || SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN_AGENCY" ))
+				actionPanel.getButtonManageMember().setVisible( true );
+			else
+				actionPanel.getButtonManageMember().setVisible( false );
 			aDetailLayout.setVisible( true );
 			aSearchLayout.setVisible( false );
 		}
@@ -230,4 +238,7 @@ public class AgencyView extends CvManagerView {
 		actionPanel.updateMessageStrings(locale);
 	}
 
+	public AgencyDetailLayout getaDetailLayout() {
+		return aDetailLayout;
+	}
 }

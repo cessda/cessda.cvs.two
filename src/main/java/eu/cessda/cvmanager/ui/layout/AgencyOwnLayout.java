@@ -144,7 +144,7 @@ public class AgencyOwnLayout extends MCssLayout implements Translatable {
 
 		});
 		
-		layout.addComponents(header, agencyGrid, new Label("<h3>Search Agencies</h3>", ContentMode.HTML));
+		layout.addComponents(header, agencyGrid);
 		layout.setMargin(true);
 		layout.setSpacing(true);
 		layout.setSizeFull();

@@ -64,6 +64,7 @@ public class AgencyGridComponent extends CustomComponent {
 		enTitle.setCaption( agency.getName() );
 		enTitle.addClickListener( e -> {
 			agencyView.setAgency( agency, ViewMode.DETAIL);
+			agencyView.getaDetailLayout().setAgency(agency);
 		});
 		desc.withContentMode(ContentMode.HTML).withFullWidth();
 		desc.setValue( agency.getDescription() );
