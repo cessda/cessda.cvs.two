@@ -149,7 +149,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			logout.setVisible(true);
 			
-//			if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ))
+			if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ))
 				adminButton.setVisible(true);
 			logIn.setVisible(false);
 		} else {
@@ -157,8 +157,6 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			adminButton.setVisible(false);
 			logIn.setVisible(true);
 		}
-		
-		adminButton.setVisible(true);
 
 		eventBus.subscribe(this);
 		// updateMessageStrings(UI.getCurrent().getLocale());
@@ -293,7 +291,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		// browse.setVisible( true );
 		logout.setVisible(true);
 		
-//		if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ))
+		if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ))
 			adminButton.setVisible(true);
 		
 		logIn.setVisible(false);

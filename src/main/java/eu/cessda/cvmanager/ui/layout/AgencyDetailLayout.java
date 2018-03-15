@@ -90,7 +90,7 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 	private AgencyDTO agency;
 	
 	private Image logo;
-	private final String logoPath = "img/cessda.png";
+	private final String logoPath = "img/noimage.png";
 	
 	private MCssLayout layout = new MCssLayout();
 	private MCssLayout headerLayout = new MCssLayout();

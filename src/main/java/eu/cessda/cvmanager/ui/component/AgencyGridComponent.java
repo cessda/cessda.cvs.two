@@ -77,7 +77,9 @@ public class AgencyGridComponent extends CustomComponent {
 
 		vLayout.withMargin(false).withFullWidth().add(languageLayout, titleLayout, desc, version, conceptList);
 
-		Resource res = new ThemeResource("img/ddi-logo-r.png");
+		Resource res = new ThemeResource("img/noimage.png");
+		if( agency.getLogoPath() != null && !agency.getLogoPath().isEmpty())
+			res = new ThemeResource(agency.getLogoPath());
 
 		logo = new Image(null, res);
 		logo.setWidth("100");

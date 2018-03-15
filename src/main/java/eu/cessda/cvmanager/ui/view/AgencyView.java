@@ -171,9 +171,6 @@ public class AgencyView extends CvManagerView {
 
 		}
 		
-	
-		
-		
 		updateMessageStrings( getLocale() );
 	}
 
