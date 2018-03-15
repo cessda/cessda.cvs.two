@@ -11,6 +11,7 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
+import com.vaadin.server.Page;
 import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
@@ -65,6 +66,10 @@ public class AgencyGridComponent extends CustomComponent {
 		enTitle.addClickListener( e -> {
 			agencyView.setAgency( agency, ViewMode.DETAIL);
 			agencyView.getaDetailLayout().setAgency(agency);
+			
+			String url = Page.getCurrent().getUriFragment().toString();
+			url = url.split(AgencyView.VIEW_NAME)[0] + AgencyView.VIEW_NAME + "/" + agency.getId();
+			Page.getCurrent().setUriFragment(url, true);
 		});
 		desc.withContentMode(ContentMode.HTML).withFullWidth();
 		desc.setValue( agency.getDescription() );
@@ -78,8 +83,9 @@ public class AgencyGridComponent extends CustomComponent {
 		vLayout.withMargin(false).withFullWidth().add(languageLayout, titleLayout, desc, version, conceptList);
 
 		Resource res = new ThemeResource("img/noimage.png");
-		if( agency.getLogoPath() != null && !agency.getLogoPath().isEmpty())
-			res = new ThemeResource(agency.getLogoPath());
+		if( agency.getLogopath() != null && !agency.getLogopath().isEmpty())
+			res = new ThemeResource(agency.getLogopath());
+		
 
 		logo = new Image(null, res);
 		logo.setWidth("100");

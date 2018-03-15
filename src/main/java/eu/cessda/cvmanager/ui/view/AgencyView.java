@@ -183,6 +183,9 @@ public class AgencyView extends CvManagerView {
 				Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, userAgencyRoleService, languageRightService, i18n, locale);
 				getUI().addWindow(window);
 				break;
+			case AGENCY_SEARCH_MODE:
+				setAgency(null, ViewMode.INITIAL);
+				break;
 			default:
 				break;
 		}
@@ -213,6 +216,7 @@ public class AgencyView extends CvManagerView {
 				actionPanel.getButtonManageMember().setVisible( false );
 			aDetailLayout.setVisible( true );
 			aSearchLayout.setVisible( false );
+			aDetailLayout.setAgency(agency);
 		}
 	}
 	

@@ -14,7 +14,8 @@ public class CvManagerEvent {
 		CVCONCEPT_ADDCHILD_DIALOG(14), 
 		CVCONCEPT_DELETED(15),
 		CVCONCEPT_SORT(16),
-		AGENCY_MANAGE_MEMBER(50);
+		AGENCY_SEARCH_MODE(50),
+		AGENCY_MANAGE_MEMBER(51);
 		
 		private final int value;
 		

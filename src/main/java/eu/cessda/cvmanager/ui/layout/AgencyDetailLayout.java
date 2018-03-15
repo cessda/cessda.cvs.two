@@ -273,8 +273,8 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 
 	private void setHeaderContent() {
 		Resource res = new ThemeResource(logoPath);
-		if( agency.getLogoPath() != null && !agency.getLogoPath().isEmpty())
-			res = new ThemeResource(agency.getLogoPath());
+		if( agency.getLogopath() != null && !agency.getLogopath().isEmpty())
+			res = new ThemeResource(agency.getLogopath());
 		
 		logo = new Image(null, res);
 		logo.setWidth("200px");

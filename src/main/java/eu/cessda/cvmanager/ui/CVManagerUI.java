@@ -48,6 +48,8 @@ import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.MessageByLocaleService;
+import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.DetailView;
@@ -142,8 +144,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		this.viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
 
 		String uriQuery = Page.getCurrent().getLocation().toString();
-		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ))
-			navigator.navigateTo(AgencyView.VIEW_NAME);
+		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ))
+			navigator.navigateTo(SearchView.VIEW_NAME);
 		navigator.addViewChangeListener(viewChangeListener);
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
@@ -239,6 +241,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	
 	public void goToAgency(ClickEvent event) {
 		navigator.navigateTo(AgencyView.VIEW_NAME);
+		eventBus.publish(EventScope.UI, AgencyView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.AGENCY_SEARCH_MODE, null) );
 	}
 	
 	public void goToAdmin(ClickEvent event) {

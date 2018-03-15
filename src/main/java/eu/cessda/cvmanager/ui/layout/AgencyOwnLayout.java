@@ -107,6 +107,10 @@ public class AgencyOwnLayout extends MCssLayout implements Translatable {
 		agencyGrid.removeAllColumns();
 		
 		agencies = agencyService.findByUserId( SecurityUtils.getLoggedUser().getId() );
+		
+		if( agencies.isEmpty() )
+			layout.setVisible( false );
+		
 		agencyGrid.setItems( agencies );
 		
 		agencyGrid.addColumn(agency -> {
