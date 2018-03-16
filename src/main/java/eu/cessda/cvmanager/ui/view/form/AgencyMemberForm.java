@@ -20,6 +20,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.model.AgencyMemberItem;
@@ -115,9 +116,13 @@ public class AgencyMemberForm extends FormLayout {
     }
 
     private void save() {
-    	userAgencyService.save(userAgencyDTO);
-        dialogAgencyManageMember.updateList();
-        setVisible(false);
+    	if( userAgencyDTO.getUserId() == null ) {
+    		Notification.show("Please select one of the user on the table above");
+    	} else {
+	    	userAgencyService.save(userAgencyDTO);
+	        dialogAgencyManageMember.updateList();
+	        setVisible(false);
+    	}
     }
     
     private void updateList() {

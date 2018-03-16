@@ -93,7 +93,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 			.add( columnContainer );
 		
 		this
-			.withHeightUndefined()
+			.withUndefinedHeight()
 			.add( mainContainer );
 		
 		if( SecurityContextHolder.getContext().getAuthentication() == null && !securityService.rememberMeLogin()) {

@@ -124,7 +124,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 		viewContainer.withFullWidth().withMargin(new MMarginInfo(false, false, true, false)).withStyleName("content");
 
-		root.withResponsive(true).withFullWidth().withMargin(false).withHeightUndefined()
+		root.withResponsive(true).withFullWidth().withMargin(false).withUndefinedSize()
 				.withDefaultComponentAlignment(Alignment.TOP_CENTER).with(headerBar,
 						// searchBox,
 						viewContainer, footer)
