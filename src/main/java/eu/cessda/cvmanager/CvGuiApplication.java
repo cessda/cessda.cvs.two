@@ -34,7 +34,7 @@ public class CvGuiApplication extends SpringBootServletInitializer {
 
 	@Bean
 	MessageProvider messageProvider() {
-		return new ResourceBundleMessageProvider("org.vaadin.spring.i18n.messages", "UTF-8");
+		return new ResourceBundleMessageProvider("i18n.messages", "UTF-8");
 	}
 	
 	@Bean

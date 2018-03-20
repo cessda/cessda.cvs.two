@@ -1,25 +1,13 @@
 package eu.cessda.cvmanager.ui.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
-import org.gesis.wts.service.LanguageRightService;
 import org.gesis.wts.service.RoleService;
-import org.gesis.wts.service.UserAgencyRoleService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
 import org.gesis.wts.service.VocabularyService;
@@ -27,47 +15,24 @@ import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
-import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.renderers.ComponentRenderer;
-import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.I18n;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
-import eu.cessda.cvmanager.ui.component.AgencyGridComponent;
-import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 import eu.cessda.cvmanager.ui.layout.AgencyDetailLayout;
 import eu.cessda.cvmanager.ui.layout.AgencyOwnLayout;
 import eu.cessda.cvmanager.ui.layout.AgencySearchLayout;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
-import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 
 @UIScope
 @SpringView(name = AgencyView.VIEW_NAME)
@@ -82,8 +47,6 @@ public class AgencyView extends CvManagerView {
 	private final AgencyService agencyService;
 	private final RoleService roleService;
 	private final UserAgencyService userAgencyService;
-	private final UserAgencyRoleService userAgencyRoleService;
-	private final LanguageRightService languageRightService;
 	private final VocabularyService vocabularyService;
 	private final CvManagerService cvManagerService;
 //	private final User
@@ -109,14 +72,12 @@ public class AgencyView extends CvManagerView {
 	public AgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			CvManagerService cvManagerService, SecurityService securityService, 
 			UserService userService, RoleService roleService, AgencyService agencyService, UserAgencyService userAgencyService,
-			UserAgencyRoleService userAgencyRoleService, LanguageRightService languageRightService, VocabularyService vocabularyService) {
+			VocabularyService vocabularyService) {
 		super(i18n, eventBus, configService, cvManagerService, securityService, AgencyView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
-		this.userAgencyRoleService = userAgencyRoleService;
-		this.languageRightService = languageRightService;
 		this.vocabularyService = vocabularyService;
 		this.cvManagerService = cvManagerService;
 		
@@ -180,7 +141,7 @@ public class AgencyView extends CvManagerView {
 	{
 		switch(event.getType()) {
 			case AGENCY_MANAGE_MEMBER:
-				Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, userAgencyRoleService, languageRightService, i18n, locale);
+				Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, i18n, locale);
 				getUI().addWindow(window);
 				break;
 			case AGENCY_SEARCH_MODE:

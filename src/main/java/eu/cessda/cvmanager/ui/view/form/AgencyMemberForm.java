@@ -23,7 +23,6 @@ import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.model.AgencyMemberItem;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 
 public class AgencyMemberForm extends FormLayout {
@@ -82,8 +81,8 @@ public class AgencyMemberForm extends FormLayout {
         userGrid.setVisible( false );
     }
 
-    public void setAgencyMemberItem(AgencyMemberItem agencyMemberItem) {
-        this.userAgencyDTO = agencyMemberItem.getUserAgency();
+    public void setUserAgencyDTO(UserAgencyDTO agencyMember) {
+        this.userAgencyDTO = agencyMember;
         AgencyDTO agencyDto = new AgencyDTO();
         agencyDto.setId(userAgencyDTO.getAgencyId());
         agencyDto.setName(userAgencyDTO.getAgencyName());
