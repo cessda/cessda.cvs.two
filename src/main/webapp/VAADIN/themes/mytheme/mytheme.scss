@@ -1744,8 +1744,12 @@ $v-selection-item-border-radius: 0;
    		>.v-grid-tablewrapper{
    			position: relative;
    			height: auto !important;
+   			width: 100% !important;
 	   		>table>tbody{
 	   		    position: relative;
+	   		    tr{
+	   		    	width: 100% !important;
+	   		    }
 	   		}
 	   	}
    	}

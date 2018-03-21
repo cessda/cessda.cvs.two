@@ -16721,10 +16721,15 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .search-grid  > .v-grid-tablewrapper {
 	position: relative;
 	height: auto !important;
+	width: 100% !important;
 }
 
 .mytheme .search-grid  > .v-grid-tablewrapper  > table > tbody {
 	position: relative;
+}
+
+.mytheme .search-grid  > .v-grid-tablewrapper  > table > tbody tr {
+	width: 100% !important;
 }
 
 .mytheme .v-treegrid-undefined-height {
