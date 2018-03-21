@@ -1,12 +1,15 @@
 package eu.cessda.cvmanager.ui.view.window;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.wts.domain.User;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyService;
@@ -66,7 +69,7 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 	private final Locale locale;
 	
 	private MCssLayout layout = new MCssLayout();
-	private Grid<UserAgencyDTO> grid = new Grid<>(UserAgencyDTO.class);
+	private Grid<UserDTO> grid = new Grid<>(UserDTO.class);
 	private MTextField filterText = new MTextField();
 	private AgencyMemberForm form;
 	private AgencyDTO agency;
@@ -139,25 +142,27 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 
 	public void updateList() {
 		// first get all useragency member
-		List<UserAgencyDTO> userAgencies = userAgencyService.findByAgency( agency.getId() );
+		List<UserDTO> members = userService.findAllByAgencyId( agency.getId() );
 		
-		grid.setItems( userAgencies );
+		grid.setItems( members );
 		
 		grid.removeAllColumns();
-		grid.addColumn(agencyMember -> {
-			return new AgencyMemberGridComponent( this, agencyMember, agency, userService,
-					roleService, agencyService, userAgencyService,
+
+		grid.addColumn( member -> {
+			return new AgencyMemberGridComponent( this, member, agency, 
+					userAgencyService.findByUser( member.getId() ),
+					userService, roleService, agencyService, userAgencyService,
 					i18n, locale);
 		}, new ComponentRenderer()).setId("agencyMember");
-
+		
 		grid.getColumn("agencyMember").setExpandRatio(1);
 	}
 
-	public Grid<UserAgencyDTO> getGrid() {
+	public Grid<UserDTO> getGrid() {
 		return grid;
 	}
 
-	public void setGrid(Grid<UserAgencyDTO> grid) {
+	public void setGrid(Grid<UserDTO> grid) {
 		this.grid = grid;
 	}
 
