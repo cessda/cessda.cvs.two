@@ -1,15 +1,8 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.wts.domain.User;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyService;
@@ -17,42 +10,24 @@ import org.gesis.wts.service.UserService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.service.dto.UserAgencyDTO;
 import org.gesis.wts.service.dto.UserDTO;
-import org.gesis.wts.ui.view.admin.form.UserAgencyForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBus.UIEventBus;
-import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
-import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
-import com.vaadin.data.Binder;
-import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.Language;
-import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.CvManagerService;
-import eu.cessda.cvmanager.ui.component.AgencyGridComponent;
 import eu.cessda.cvmanager.ui.component.AgencyMemberGridComponent;
-import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.form.AgencyMemberForm;
 
 public class DialogAgencyManageMember extends MWindow implements Translatable{
@@ -130,10 +105,9 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 			.add( 
 					toolbar, main
 			);
-
 		this
 			.withHeight("650px")
-			.withWidth("1024px")
+			.withWidth("1200px")
 			.withModal( true )
 			.withContent(layout);
 

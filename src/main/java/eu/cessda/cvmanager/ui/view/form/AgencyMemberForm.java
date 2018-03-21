@@ -2,6 +2,8 @@ package eu.cessda.cvmanager.ui.view.form;
 
 import java.util.List;
 
+import org.gesis.wts.domain.enumeration.AgencyRole;
+import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
@@ -20,6 +22,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
+import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -37,6 +40,9 @@ public class AgencyMemberForm extends FormLayout {
 	
 	private MTextField name = new MTextField("Name");
 	private MTextField filterText = new MTextField();
+	
+	private NativeSelect<AgencyRole> roleOption = new NativeSelect<>( "Role" );
+    private NativeSelect<Language> languageOption = new NativeSelect<>( "Language" );
 	
     private Button save = new Button("Save");
 
@@ -57,6 +63,17 @@ public class AgencyMemberForm extends FormLayout {
 			.withValueChangeMode(ValueChangeMode.LAZY)
 			.addValueChangeListener(e -> updateList());
         
+        roleOption.setItems( AgencyRole.values());
+        languageOption.setItems(Language.values());
+        languageOption.setVisible( false );
+        languageOption.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String apply(Language item) {
+				return item.name() + " (" +item.getLanguage() + ")";
+			}
+		});
+        
         userGrid.setHeight("250px");
         userGrid.setWidth("200px");
         userGrid.setColumns("username", "firstName", "lastName");
@@ -67,6 +84,26 @@ public class AgencyMemberForm extends FormLayout {
             }
         });
         
+        roleOption.addValueChangeListener( e -> {
+        	if( e.getValue() != null ) {
+        		if( e.getValue().equals(AgencyRole.VIEW) || e.getValue().equals(AgencyRole.ADMIN) )
+        			languageOption.setVisible( false );
+        		else
+        			languageOption.setVisible( true );
+    			this.userAgencyDTO.setAgencyRole( e.getValue() );
+        	} else {
+        		languageOption.setVisible( false );
+        		this.userAgencyDTO.setAgencyRole( null );
+        	}
+        });
+        
+        languageOption.addValueChangeListener( e -> {
+        	if( e.getValue() != null ) {
+        		this.userAgencyDTO.setLanguage( e.getValue() );
+        	} else
+        		this.userAgencyDTO.setLanguage( null );
+        });
+        
         HorizontalLayout buttons = new HorizontalLayout(save);
 
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
@@ -75,7 +112,8 @@ public class AgencyMemberForm extends FormLayout {
         save.addClickListener(e -> this.save());
         
         setSizeUndefined();
-        addComponents(filterText, userGrid, name, buttons);
+        addStyleName("show-caption");
+        addComponents(filterText, userGrid, name, roleOption, languageOption, buttons);
         
         filterText.setVisible( false );
         userGrid.setVisible( false );
@@ -118,7 +156,21 @@ public class AgencyMemberForm extends FormLayout {
     	if( userAgencyDTO.getUserId() == null ) {
     		Notification.show("Please select one of the user on the table above");
     	} else {
+    		if( userAgencyDTO.getAgencyRole() == null ) {
+        		Notification.show("Please select role!");
+        		return;
+        	}
+        	if( languageOption.isVisible() && userAgencyDTO.getLanguage() == null ) {
+        		Notification.show("Please select language!");
+        		return;
+        	}
+    		
 	    	userAgencyService.save(userAgencyDTO);
+	    	
+	    	userAgencyDTO.setAgencyRole( null );
+	    	userAgencyDTO.setLanguage( null );
+	    	roleOption.setValue( null );
+	    	languageOption.setValue( null );
 	        dialogAgencyManageMember.updateList();
 	        setVisible(false);
     	}

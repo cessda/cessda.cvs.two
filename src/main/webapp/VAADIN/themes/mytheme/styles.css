@@ -16752,6 +16752,7 @@ div.v-layout.v-horizontal.v-widget {
 	display: table-cell;
 	float: none;
 	vertical-align: top;
+	padding: 0 !important;
 }
 
 .mytheme .v-treegrid-tablewrapper {
@@ -16817,6 +16818,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .dialog-content .v-label {
 	padding: 6px 0;
+}
+
+.mytheme .dialog-content .show-caption .v-caption {
+	display: block;
 }
 
 .mytheme .v-treegrid-cell-content {

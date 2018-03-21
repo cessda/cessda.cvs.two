@@ -209,6 +209,14 @@ public class AgencyMemberGridComponent extends CustomComponent {
 			.withCaption( "+ Add" )
 			.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "btn-spacing-normal")
 			.addClickListener( e -> {
+				if( userAgency.getAgencyRole() == null ) {
+		    		Notification.show("Please select role!");
+		    		return;
+		    	}
+		    	if( languageOption.isVisible() && userAgency.getLanguage() == null ) {
+		    		Notification.show("Please select language!");
+		    		return;
+		    	}
 				if( !isRoleExist()) {
 					userAgencyService.save(userAgency);
 					refresh();
@@ -239,8 +247,15 @@ public class AgencyMemberGridComponent extends CustomComponent {
 			.withStyleName( ValoTheme.BUTTON_DANGER, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-large");
 		
 		bDelete.addClickListener( e -> {
-			userAgencyService.delete( userRole.getId() );
-			refresh();
+			if( agencyMembers.size() > 1) {
+				userAgencyService.delete( userRole.getId() );
+				refresh();
+			} else { // the last user-agency relation
+				//remove from agency
+				agencyMembers.stream().forEach( item -> userAgencyService.delete( item.getId()));
+				// ask parent to refresh
+				dialogAgencyMember.updateList();
+			}
 		});
 		
 		return bDelete;

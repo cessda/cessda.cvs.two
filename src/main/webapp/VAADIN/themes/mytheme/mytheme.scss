@@ -1770,6 +1770,7 @@ $v-selection-item-border-radius: 0;
 			display:table-cell;
 			float:none;
 			vertical-align: top;
+			padding:0 !important;
 	   	}
    }
    .v-treegrid-tablewrapper{
@@ -1829,6 +1830,11 @@ $v-selection-item-border-radius: 0;
 		}
 		.v-label{
 			padding: 6px 0;
+		}
+		.show-caption{
+			.v-caption{
+				display:block;
+			}
 		}
 	}
 	.v-treegrid-cell-content{
