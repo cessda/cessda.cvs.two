@@ -1057,7 +1057,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "8.2.1";
+	content: "8.3.2";
 }
 
 .v-widget {
@@ -16736,9 +16736,18 @@ div.v-layout.v-horizontal.v-widget {
 	height: auto !important;
 }
 
-.mytheme .v-tabsheet-tabsheetpanel > .v-scrollable {
+.mytheme .v-tabsheet-content {
+	width: 100% !important;
+}
+
+.mytheme .v-tabsheet-content  > .v-tabsheet-tabsheetpanel {
+	width: 100% !important;
+}
+
+.mytheme .v-tabsheet-content  > .v-tabsheet-tabsheetpanel  > .v-scrollable {
 	position: relative !important;
 	float: left;
+	width: 100% !important;
 }
 
 .mytheme .undefined-height > .v-grid-tablewrapper > table > tbody > tr {

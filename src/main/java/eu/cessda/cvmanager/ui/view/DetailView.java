@@ -591,6 +591,7 @@ public class DetailView extends CvManagerView {
 		detailTab = new TabSheet();
 		detailTab.setStyleName("detail-tab");
 		detailTab.setHeightUndefined();
+		detailTab.setWidth("100%");
 	
 		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale));
 		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale));
@@ -602,6 +603,7 @@ public class DetailView extends CvManagerView {
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
 		detailTreeGrid.setHeight("800px");
+		detailTreeGrid.setWidthUndefined();
 		
 		updateDetailGrid();	
 		
