@@ -1,0 +1,62 @@
+cvmanager:
+  export:
+    filterTag: skos:canonicalUri,skos:publishedVersionsURI,skos:versionNotes,skos:priorVersion,skos:languages,skos:language
+ddiflatdb:
+  rest:
+    url: '@ddiflatdb.rest.url@'
+  server:
+    uri: '@ddiflatdb.server.uri@'
+logging:
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS}  %highlight(%-5level) %30.30(%M) %40.40((%file:%line\))
+      - %msg%n'
+security:
+  user:
+    name: u
+    password: p
+server:
+  contextPath: '@server.contextPath@'
+  port: '@server.port@'
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  data:
+    elasticsearch:
+      clusterNodes: ''
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    password: '@spring.datasource.password@'
+    url: '@spring.datasource.url@'
+    username: '@spring.datasource.username@'
+  http:
+    encoding:
+      charset: UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: update
+      dialect: org.hibernate.dialect.MySQLDialect
+    properties:
+      hibernate:
+        format_sql: 'true'
+    show-sql: 'false'
+  mail:
+    host: svboexc02.gesis.intra
+    properties:
+      mail:
+        smtp:
+          auth: 'false'
+  messages:
+    encoding: UTF-8
+  thymeleaf:
+    encoding: UTF-8
+    mode: HTML5
+vaadin:
+  servlet:
+    heartbeatInterval: '60'
+    productionMode: 'true'
+vaadin4spring:
+  i18n:
+    message-format-cache:
+      enabled: 'false'
+    message-provider-cache:
+      cleanup-interval-seconds: '5'

@@ -257,7 +257,6 @@ public class AgencyMemberGridComponent extends CustomComponent {
 				dialogAgencyMember.updateList();
 			}
 		});
-		
 		return bDelete;
 	}
 	
