@@ -22,7 +22,7 @@ public class ConfigurationService {
 	@Autowired
 	private Environment env;
 
-	@Value("${server.contextPath}")
+	@Value("${server.servlet.context-path}")
 	private String serverContextPath;
 	
 	@Value("${ddiflatdb.rest.url}")

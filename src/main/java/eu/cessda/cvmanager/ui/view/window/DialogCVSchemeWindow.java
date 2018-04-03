@@ -7,6 +7,7 @@ import java.util.Locale;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.security.UserDetails;
 import org.slf4j.Logger;
@@ -29,7 +30,6 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
-import eu.cessda.cvmanager.Language;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 

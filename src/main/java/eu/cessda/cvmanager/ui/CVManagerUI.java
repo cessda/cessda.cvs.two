@@ -47,7 +47,6 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.MessageByLocaleService;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
@@ -72,7 +71,6 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private static final long serialVersionUID = -6435583434844959571L;
 
-	private final MessageByLocaleService messageByLocaleService;
 	private final SpringViewProvider viewProvider;
 	private final SecurityService securityService;
 	private final UIEventBus eventBus;
@@ -101,9 +99,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private ComboBox countryBox = new ComboBox();
 	private UserDetails userDetail;
 
-	public CVManagerUI(MessageByLocaleService messageByLocaleService, SpringViewProvider viewProvider,
+	public CVManagerUI(SpringViewProvider viewProvider,
 			SecurityService securityService, UIEventBus eventBus, I18N i18n) {
-		this.messageByLocaleService = messageByLocaleService;
 		this.viewProvider = viewProvider;
 		this.securityService = securityService;
 		this.eventBus = eventBus;
@@ -300,11 +297,6 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		logIn.setVisible(false);
 		// signUp.setVisible( false );
 		// }
-	}
-	
-	public MessageByLocaleService getMessageByLocaleService() {
-
-		return messageByLocaleService;
 	}
 
 	@Override

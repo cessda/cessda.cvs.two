@@ -25,9 +25,7 @@ import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.service.AgencyService;
-import org.gesis.wts.service.VocabularyService;
 import org.gesis.wts.service.dto.AgencyDTO;
-import org.gesis.wts.service.dto.VocabularyDTO;
 import org.gesis.wts.ui.view.LoginView;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.thymeleaf.TemplateEngine;
@@ -81,6 +79,8 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
@@ -300,7 +300,6 @@ public class DetailView extends CvManagerView {
 		if( vocabulary == null ) {
 			vocabulary = new VocabularyDTO();
 			vocabulary.setUri(cvItem.getCurrentCvId());
-			vocabulary.setActive( true );
 			vocabulary.setVersion( "1.0" );
 			
 			agency = agencyService.findOne(1L);
