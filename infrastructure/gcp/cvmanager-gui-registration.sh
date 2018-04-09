@@ -10,7 +10,7 @@ gcloud container clusters get-credentials $PRODUCT-$ENVIRONMENT-cc --zone=$ZONE 
 if kubectl get deployment $PRODUCT-mailrelay-$ENVIRONMENT -n $PRODUCT-$ENVIRONMENT > /dev/null 2>&1;
   then
     echo "MailRelay component available, deployment will be processed"
-    sed -i "s/svboexc02.gesis.intra/$PRODUCT-mailrelay-$ENVIRONMENT/g" ../../src/main/resources/application.properties
+    sed -i "s/svboexc02.gesis.intra/$PRODUCT-mailrelay-$ENVIRONMENT/g" ../../src/main/resources/application.yml
   else
     echo "MailRelay component not available, deployment's aborted"
     exit 1
