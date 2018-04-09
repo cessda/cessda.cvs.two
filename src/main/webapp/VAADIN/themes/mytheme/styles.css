@@ -1057,7 +1057,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "8.3.2";
+	content: "8.3.1";
 }
 
 .v-widget {
@@ -16767,6 +16767,7 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-treegrid-tablewrapper {
 	position: relative;
 	height: auto !important;
+	width: 100% !important;
 }
 
 .mytheme .v-treegrid-tablewrapper table tr {

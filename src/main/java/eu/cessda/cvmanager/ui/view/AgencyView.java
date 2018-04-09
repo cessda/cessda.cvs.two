@@ -10,7 +10,6 @@ import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
-import org.gesis.wts.service.VocabularyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
 import org.springframework.util.MultiValueMap;
@@ -27,8 +26,10 @@ import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.ui.layout.AgencyDetailLayout;
 import eu.cessda.cvmanager.ui.layout.AgencyOwnLayout;
 import eu.cessda.cvmanager.ui.layout.AgencySearchLayout;
@@ -61,8 +62,6 @@ public class AgencyView extends CvManagerView {
 	private AgencySearchLayout aSearchLayout;
 	private AgencyDetailLayout aDetailLayout;
 	
-	
-	private AgencyDTO agency;
 	private ViewMode viewMode;
 	
 
@@ -71,9 +70,9 @@ public class AgencyView extends CvManagerView {
 
 	public AgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			CvManagerService cvManagerService, SecurityService securityService, 
-			UserService userService, RoleService roleService, AgencyService agencyService, UserAgencyService userAgencyService,
-			VocabularyService vocabularyService) {
-		super(i18n, eventBus, configService, cvManagerService, securityService, AgencyView.VIEW_NAME);
+			UserService userService, RoleService roleService, AgencyService agencyService, 
+			UserAgencyService userAgencyService, VocabularyService vocabularyService, CodeService codeService) {
+		super(i18n, eventBus, configService, cvManagerService, securityService, agencyService, vocabularyService, codeService, AgencyView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
 		this.agencyService = agencyService;
@@ -132,7 +131,20 @@ public class AgencyView extends CvManagerView {
 
 		}
 		
+		
+		updateActionPanel();
 		updateMessageStrings( getLocale() );
+	}
+	
+	@Override
+	protected void updateActionPanel() {
+		if( agency != null ) {
+			if( SecurityUtils.isCurrentUserAgencyAdmin(agency)) {
+				actionPanel.getButtonManageMember().setVisible( true );
+				actionPanel.setVisible( true );
+			}
+		}
+		super.updateActionPanel();
 	}
 
 

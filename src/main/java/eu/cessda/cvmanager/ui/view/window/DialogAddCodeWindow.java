@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.wts.domain.enumeration.Language;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -24,7 +25,6 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
-import eu.cessda.cvmanager.Language;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CvManagerService;

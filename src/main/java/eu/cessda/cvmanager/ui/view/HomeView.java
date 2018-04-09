@@ -15,6 +15,7 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.ui.view.LoginView;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
@@ -44,8 +45,10 @@ import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 
 @UIScope
@@ -85,8 +88,9 @@ public class HomeView extends CvManagerView {
 	// private SearchHit selectedItem = null;
 
 	public HomeView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
-			CvManagerService cvManagerService, SecurityService securityService) {
-		super(i18n, eventBus, configService, cvManagerService, securityService, HomeView.VIEW_NAME);
+			CvManagerService cvManagerService, SecurityService securityService, AgencyService agencyService, 
+			VocabularyService vocabularyService, CodeService codeService) {
+		super(i18n, eventBus, configService, cvManagerService, securityService, agencyService, vocabularyService, codeService, HomeView.VIEW_NAME);
 		eventBus.subscribe(this, HomeView.VIEW_NAME);
 	}
 

@@ -14,6 +14,7 @@ import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.ui.view.AccessDeniedView;
 import org.gesis.wts.ui.view.ErrorView;
 import org.gesis.wts.ui.view.LoginView;
+import org.gesis.wts.ui.view.admin.ManageUserAgencyView;
 import org.gesis.wts.ui.view.admin.ManageUserView;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,7 +48,6 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.MessageByLocaleService;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
@@ -72,7 +72,6 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private static final long serialVersionUID = -6435583434844959571L;
 
-	private final MessageByLocaleService messageByLocaleService;
 	private final SpringViewProvider viewProvider;
 	private final SecurityService securityService;
 	private final UIEventBus eventBus;
@@ -101,9 +100,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private ComboBox countryBox = new ComboBox();
 	private UserDetails userDetail;
 
-	public CVManagerUI(MessageByLocaleService messageByLocaleService, SpringViewProvider viewProvider,
+	public CVManagerUI(SpringViewProvider viewProvider,
 			SecurityService securityService, UIEventBus eventBus, I18N i18n) {
-		this.messageByLocaleService = messageByLocaleService;
 		this.viewProvider = viewProvider;
 		this.securityService = securityService;
 		this.eventBus = eventBus;
@@ -151,7 +149,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			logout.setVisible(true);
 			
-			if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ))
+			if( SecurityUtils.isCurrentUserAgencyAdmin())
 				adminButton.setVisible(true);
 			logIn.setVisible(false);
 		} else {
@@ -245,7 +243,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 	
 	public void goToAdmin(ClickEvent event) {
-		navigator.navigateTo(ManageUserView.VIEW_NAME);
+		if( SecurityUtils.isCurrentUserSystemAdmin() )
+			navigator.navigateTo(ManageUserView.VIEW_NAME);
+		else
+			navigator.navigateTo(ManageUserAgencyView.VIEW_NAME);
 	}
 
 	public void doLogin(ClickEvent event) {
@@ -294,17 +295,14 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		// browse.setVisible( true );
 		logout.setVisible(true);
 		
-		if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ))
+		System.out.println(SecurityUtils.isCurrentUserAgencyAdmin());
+		
+		if( SecurityUtils.isCurrentUserAgencyAdmin())
 			adminButton.setVisible(true);
 		
 		logIn.setVisible(false);
 		// signUp.setVisible( false );
 		// }
-	}
-	
-	public MessageByLocaleService getMessageByLocaleService() {
-
-		return messageByLocaleService;
 	}
 
 	@Override

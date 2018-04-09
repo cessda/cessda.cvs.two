@@ -10,19 +10,29 @@ logging:
   pattern:
     console: '%d{yyyy-MM-dd HH:mm:ss.SSS}  %highlight(%-5level) %30.30(%M) %40.40((%file:%line\))
       - %msg%n'
-security:
-  user:
-    name: u
-    password: p
 server:
-  contextPath: '@server.contextPath@'
+  servlet:
+    context-path: '@server.servlet.contextPath@'
   port: '@server.port@'
   tomcat:
     uri-encoding: UTF-8
 spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: false
   data:
     elasticsearch:
-      clusterNodes: ''
+      cluster-name: elasticsearch
+      cluster-nodes: 127.0.0.1:9300
+      properties:
+        http:
+          enabled: true
+          port: 9200
+        path:
+          logs: target/elasticsearch/log
+          data: target/elasticsearch/data
   datasource:
     driverClassName: com.mysql.jdbc.Driver
     password: '@spring.datasource.password@'
@@ -34,10 +44,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-      dialect: org.hibernate.dialect.MySQLDialect
     properties:
-      hibernate:
-        format_sql: 'true'
+      hibernate.format_sql: 'true'
+      hibernate.id.new_generator_mappings: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
     show-sql: 'false'
   mail:
     host: svboexc02.gesis.intra

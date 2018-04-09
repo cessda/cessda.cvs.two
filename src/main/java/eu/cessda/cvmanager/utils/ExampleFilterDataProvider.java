@@ -162,7 +162,7 @@ public class ExampleFilterDataProvider<T, ID extends Serializable> implements Co
         }
 
         @Override
-        public int getOffset() {
+        public long getOffset() {
             return offset;
         }
 
