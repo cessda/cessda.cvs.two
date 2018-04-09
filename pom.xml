@@ -29,7 +29,7 @@
 		<!-- Ops: Replace the next three lines if you prefer the cred configurations in code else pass via commandline-->
 		<sonar.host.url>http://104.155.63.80:9000/</sonar.host.url>
 		<sonar.login>2f2cc09e66386ee2bbb36f0579d064e42e5d02fb</sonar.login>
-		<!--<sonar.password>replace-me</sonar.password>--><!-- 
+		<!--<sonar.password>replace-me</sonar.password>-->
 		<sonar.projectName>cessda.cvmanager.alpha</sonar.projectName>
 		<sonar-maven-plugin.version>3.0.2</sonar-maven-plugin.version>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
@@ -37,7 +37,7 @@
 		<sonar.exclusions>**/VAADIN/themes/*/*.css</sonar.exclusions>
 		<sonar.jacoco.reportPath>${project.basedir}/target/jacoco.exec</sonar.jacoco.reportPath>
 		<jacoco-maven-plugin.version>0.7.8</jacoco-maven-plugin.version>
-		<docker.registry.uri>eu.gcr.io/cessda-development</docker.registry.uri> -->
+		<docker.registry.uri>eu.gcr.io/cessda-development</docker.registry.uri>
 		<!--Sonar Pros: ends-->
 		<mapstruct.version>1.2.0.Final</mapstruct.version>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
@@ -490,7 +490,7 @@
 				</executions>
 			</plugin>
 			<!-- Sonar Start -->
-		<!-- 	<plugin>
+		 	<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>sonar-maven-plugin</artifactId>
 				<version>${sonar-maven-plugin.version}</version>
@@ -509,7 +509,7 @@
 				<configuration>
 					<destFile>${sonar.jacoco.reportPath}</destFile>
 				</configuration>
-			</plugin> -->
+			</plugin>
 			<!-- Sonar End -->
 		</plugins>
 		<resources>
