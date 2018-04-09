@@ -1783,6 +1783,7 @@ $v-selection-item-border-radius: 0;
    .v-treegrid-tablewrapper{
    		position:relative;
    		height:auto !important;
+   		width:100% !important;
    		table{
 	   		tr{
 	   			transform: none !important;

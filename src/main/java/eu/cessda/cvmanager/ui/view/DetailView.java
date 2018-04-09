@@ -24,6 +24,7 @@ import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
@@ -77,6 +78,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.service.VocabularyService;
@@ -177,8 +179,8 @@ public class DetailView extends CvManagerView {
 
 	public DetailView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			CvManagerService cvManagerService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, TemplateEngine templateEngine) {
-		super(i18n, eventBus, configService, cvManagerService, securityService, DetailView.VIEW_NAME);
+			VocabularyService vocabularyService, CodeService codeService, TemplateEngine templateEngine) {
+		super(i18n, eventBus, configService, cvManagerService, securityService, agencyService, vocabularyService, codeService, DetailView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -195,7 +197,7 @@ public class DetailView extends CvManagerView {
 		editorCb.setItems(cvEditors);
 		editorCb.setItemCaptionGenerator(CVEditor::getName);
 		editorCb.setEmptySelectionAllowed( false );
-		editorCb.setTextInputAllowed( false );
+		editorCb .setTextInputAllowed( false );
 		
 		MButton backToResults = new MButton(FontAwesome.BACKWARD, this::back);
 		backToResults.setCaption("Back");
@@ -270,6 +272,16 @@ public class DetailView extends CvManagerView {
 			}
 
 		}
+		
+		updateActionPanel();
+	}
+	
+	@Override
+	protected void updateActionPanel() {
+		actionPanel.setSlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvSl( getAgency()) );
+		actionPanel.setTlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvTl( getAgency() ) );
+		
+		super.updateActionPanel();
 	}
 	
 	private void setDetails() {
@@ -297,16 +309,18 @@ public class DetailView extends CvManagerView {
 		
 		// find in Vocabulary entity as well
 		vocabulary = vocabularyService.getByUri( cvItem.getCurrentCvId() );
+		
+		//TODO, remove this "if" after all vocabularies belong to agency
 		if( vocabulary == null ) {
 			vocabulary = new VocabularyDTO();
 			vocabulary.setUri(cvItem.getCurrentCvId());
 			vocabulary.setVersion( "1.0" );
 			
-			agency = agencyService.findOne(1L);
-			vocabulary.setAgencyId(agency.getId());
+			setAgency( agencyService.findOne(1L) );
+			vocabulary.setAgencyId(getAgency().getId());
 		} else {
-			agency = agencyService.findOne(1L);
-			vocabulary.setAgencyId(agency.getId());
+			setAgency( agencyService.findOne(1L) );
+			vocabulary.setAgencyId(getAgency().getId());
 		}
 		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {

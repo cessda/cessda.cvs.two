@@ -10,6 +10,8 @@ import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.security.UserDetails;
+import org.gesis.wts.service.AgencyService;
+import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -26,6 +28,7 @@ import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -41,9 +44,9 @@ public class DialogCVSchemeWindow extends MWindow {
 	private static final long serialVersionUID = -8116725336044618619L;
 	private static final Logger log = LoggerFactory.getLogger(DialogCVSchemeWindow.class);
 	
-	private static final CVEditor[] cvEditors = new CVEditor[2];
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
+	private final AgencyService agencyService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	private MLabel lAgency = new MLabel( "Agency" );
@@ -56,8 +59,8 @@ public class DialogCVSchemeWindow extends MWindow {
 	private MTextField tfCode = new MTextField("Code");
 	private MTextField tfTitle = new MTextField("Title*");
 	private TextArea description = new TextArea("Description*");
-	private ComboBox<CVEditor> editorCb = new ComboBox<>("Agency*");
-	private ComboBox<String> languageCb = new ComboBox<>("Language*");
+	private ComboBox<AgencyDTO> editorCb = new ComboBox<>("Agency*");
+	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 	private Button storeCode = new Button("Save");
 	
 	private Binder<CVScheme> binder = new Binder<CVScheme>();
@@ -69,9 +72,9 @@ public class DialogCVSchemeWindow extends MWindow {
 
 	//private EditorView theView;
 
-	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, String orignalLanguage, String language, I18N i18n) {
+	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, AgencyService agencyService, CVScheme cvScheme, String orignalLanguage, String language, I18N i18n) {
 		super("Add CVScheme");
-		
+		this.agencyService = agencyService;
 		this.eventBus = eventBus;
 		this.i18n = i18n;
 		
@@ -82,21 +85,45 @@ public class DialogCVSchemeWindow extends MWindow {
 		lTitle.withStyleName( "required" );
 		lDescription.withStyleName( "required" );
 		
-		cvEditors[0] = new CVEditor("DDI", "DDI");
-		cvEditors[0].setLogoPath("img/ddi-logo-r.png");
-		cvEditors[1] = new CVEditor("CESSDA", "CESSDA");
-		cvEditors[1].setLogoPath("img/cessda.png");
+		if( SecurityUtils.isCurrentUserSystemAdmin()) {
+			editorCb.setItems( agencyService.findAll());
+		}
+		else {
+			SecurityUtils.getCurrentUserAgencies().ifPresent( agencies -> {
+				editorCb.setItems( agencies );
+			});
+		}
 		
-		editorCb.setItems(cvEditors);
-		editorCb.setItemCaptionGenerator(CVEditor::getName);
+		editorCb.setItemCaptionGenerator(AgencyDTO::getName);
 		editorCb.setEmptySelectionAllowed( false );
 		editorCb.setTextInputAllowed( false );
-		editorCb.setValue(cvEditors[0]);
+		editorCb.addValueChangeListener( e -> {
+			if( e.getValue() != null ) {
+				languageCb.setReadOnly( false );
+				if( SecurityUtils.isCurrentUserAgencyAdmin( e.getValue() )) {
+					languageCb.setItems( Language.values() );
+				}
+				else {
+					SecurityUtils.getCurrentUserLanguageSlByAgency( e.getValue() ).ifPresent( languages -> {
+						languageCb.setItems( languages );
+					});
+				}
+			} else {
+				languageCb.setReadOnly( true );
+				languageCb.setValue( null );
+			}
+		});
 		
-		languageCb.setItems( Language.getAllEnumCapitalized());
+		languageCb.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String apply(Language item) {
+				return item.name() + " (" +item.getLanguage() + ")";
+			}
+		});
+		
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
-		languageCb.setValue("English");
 		languageCb.setReadOnly( true );
 
 		setOrginalLanguage(orignalLanguage);
@@ -127,7 +154,7 @@ public class DialogCVSchemeWindow extends MWindow {
 				editorSet = new ArrayList<>();
 			else
 				editorSet.clear();
-			editorSet.add( editorCb.getValue() );
+//			editorSet.add( editorCb.getValue() );
 			getCvScheme().setOwnerAgency((ArrayList<CVEditor>) editorSet);
 				
 			getCvScheme().save();

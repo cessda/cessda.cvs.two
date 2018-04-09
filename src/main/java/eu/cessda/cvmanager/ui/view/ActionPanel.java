@@ -1,11 +1,14 @@
 package eu.cessda.cvmanager.ui.view;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+
 import java.util.Iterator;
 import java.util.Locale;
 
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.service.AgencyService;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -38,6 +41,7 @@ public class ActionPanel extends CustomComponent{
 	private Locale locale = UI.getCurrent().getLocale();
 	private final EventBus.UIEventBus eventBus;
 	private final CvManagerService cvManagerService;
+	private final AgencyService agencyService;
 	
 	private MVerticalLayout actionLayout = new MVerticalLayout();
 
@@ -64,11 +68,12 @@ public class ActionPanel extends CustomComponent{
 	
 	private CvManagerView cvManagerView;
 	
-	public ActionPanel( CvManagerView cvManagerView) {
+	public ActionPanel( CvManagerView cvManagerView, AgencyService agencyService) {
 		this.cvManagerView = cvManagerView;
 		this.eventBus = cvManagerView.getEventBus();
 		this.cvManagerService = cvManagerView.getCvManagerService();
 		this.i18n = cvManagerView.i18n;
+		this.agencyService = agencyService;
 		updateMessageStrings(locale);
 		
 		buttonAddCv
@@ -141,10 +146,11 @@ public class ActionPanel extends CustomComponent{
 //					buttonUnpublishCv
 			);
 		
-		if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ) || SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN_AGENCY" ))
+		if( SecurityUtils.isCurrentUserSystemAdmin())
 			buttonManageMember.setVisible( true );
-		else
+		else {
 			buttonManageMember.setVisible( false );
+		}
 		
 		switch( this.cvManagerView.getActionType()) {
 			case SEARCH:
@@ -197,7 +203,7 @@ public class ActionPanel extends CustomComponent{
 		newCvScheme.createId();
 		newCvScheme.setContainerId(newCvScheme.getId());
 
-		Window window = new DialogCVSchemeWindow(eventBus, cvManagerService, newCvScheme, "en", "en", i18n);
+		Window window = new DialogCVSchemeWindow(eventBus, cvManagerService, agencyService, newCvScheme, "en", "en", i18n);
 		getUI().addWindow(window);
 	}
 	
@@ -209,7 +215,7 @@ public class ActionPanel extends CustomComponent{
 	private void doCvAddTranslation(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
-		Window window = new DialogAddLanguageWindow(eventBus, cvManagerService, cvManagerView.getCvItem().getCvScheme());
+		Window window = new DialogAddLanguageWindow(eventBus, cvManagerService, cvManagerView.getCvItem().getCvScheme(), cvManagerView);
 		getUI().addWindow(window);
 	}
 	
@@ -325,5 +331,30 @@ public class ActionPanel extends CustomComponent{
 	public MButton getButtonManageMember() {
 		return buttonManageMember;
 	}
+
+	public MVerticalLayout getActionLayout() {
+		return actionLayout;
+	}
+
+	public MButton getButtonAddCv() {
+		return buttonAddCv;
+	}
+
+	public MButton getButtonCodeAdd() {
+		return buttonCodeAdd;
+	}
+
+	public MButton getButtonCodeSort() {
+		return buttonCodeSort;
+	}
 	
+	public void setSlRoleActionButtonVisible(boolean visibility) {
+		buttonAddCv.setVisible(visibility);
+		buttonCodeAdd.setVisible(visibility);
+		buttonCodeSort.setVisible(visibility);
+	}
+	
+	public void setTlRoleActionButtonVisible(boolean visibility) {
+		buttonChangeLanguage.setVisible(visibility);
+	}
 }

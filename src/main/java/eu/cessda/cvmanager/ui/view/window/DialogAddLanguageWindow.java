@@ -7,6 +7,8 @@ import java.util.Set;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -20,10 +22,12 @@ import com.vaadin.data.Binder;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.ui.view.CvManagerView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
 public class DialogAddLanguageWindow extends MWindow {
@@ -51,27 +55,22 @@ public class DialogAddLanguageWindow extends MWindow {
 	private TextArea sourceDescription = new TextArea("Definition (source)");
 	private MTextField tfTitle = new MTextField("Title*");
 	private TextArea description = new TextArea("Definition*");
-	private ComboBox<String> languageCb = new ComboBox<>("Language*");
+	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 	private Button storeCode = new Button("Save");
 
 	private CVScheme cvScheme;
 	private String selectedLanguage;
+	private CvManagerView cvManagerView;
 
 	//private EditorView theView;
 
-	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService,  CVScheme cS) {
+	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService,  CVScheme cS, CvManagerView cvManagerView) {
 		super("Add Language");
 		this.eventBus = eventBus;
 		this.cvScheme = cS;
-		
-		Set<String> allLanguages = new LinkedHashSet<>();
-		allLanguages.addAll(Language.getAllEnumValue());
+		this.cvManagerView = cvManagerView;
 		
 		Set<String> currentCvLanguage = cvScheme.getLanguagesByTitle();
-		
-		allLanguages.removeAll(currentCvLanguage);
-		
-		List<String> availableLanguage = Language.getFilteredEnumCapitalized( allLanguages );
 		
 		lTitle.withStyleName( "required" );
 		lLanguage.withStyleName( "required" );
@@ -91,21 +90,27 @@ public class DialogAddLanguageWindow extends MWindow {
 		tfTitle.withFullWidth();
 		description.setSizeFull();
 		
-		languageCb.setItems( availableLanguage );
+		if( SecurityUtils.isCurrentUserAgencyAdmin( cvManagerView.getAgency() )) {
+			languageCb.setItems( Language.values() );
+		}
+		else {
+			SecurityUtils.getCurrentUserLanguageTlByAgency( cvManagerView.getAgency() ).ifPresent( languages -> {
+				languageCb.setItems( languages );
+			});
+		}
+		
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
-		if( !availableLanguage.isEmpty()) {
-			languageCb.setValue(availableLanguage.get(0));
-			selectedLanguage = Language.valueOf( availableLanguage.get(0).toUpperCase()).getLanguage();
-			lTitle.setValue( "Title (" + selectedLanguage + ")");
-			lDescription.setValue( "Definition ("+ selectedLanguage +")");
-		} else {
-			tfTitle.setVisible( false );
-			description.setVisible( false );
-			storeCode.setVisible( false );
-		}
+		languageCb.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String apply(Language item) {
+				return item.name() + " (" +item.getLanguage() + ")";
+			}
+		});
+
 		languageCb.addValueChangeListener( e -> {
-			selectedLanguage = Language.valueOf( e.getValue().toString().toUpperCase()).getLanguage();
+			selectedLanguage = e.getValue().toString();
 			lTitle.setValue( "Title (" + selectedLanguage + ")");
 			lDescription.setValue( "Definition ("+ selectedLanguage +")");
 		});

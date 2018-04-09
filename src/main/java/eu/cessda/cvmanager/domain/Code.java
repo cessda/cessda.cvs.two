@@ -53,7 +53,7 @@ public class Code implements Serializable {
             mainField = @Field(type = FieldType.keyword, index = true),
             otherFields = {
             		@InnerField(suffix = "untouched", type = FieldType.keyword, store = true, index = false),
-            		@InnerField(suffix = "sort", type = FieldType.keyword, store = true, indexAnalyzer = "keyword")
+//            		@InnerField(suffix = "sort", type = FieldType.keyword, store = true, indexAnalyzer = "keyword")
             }
     )
     private Set<String> languages;

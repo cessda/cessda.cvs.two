@@ -17,11 +17,19 @@ server:
   tomcat:
     uri-encoding: UTF-8
 spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: false
   data:
     elasticsearch:
-      cluster-name: cluster1
+      cluster-name: elasticsearch
       cluster-nodes: 127.0.0.1:9300
       properties:
+        http:
+          enabled: true
+          port: 9200
         path:
           logs: target/elasticsearch/log
           data: target/elasticsearch/data

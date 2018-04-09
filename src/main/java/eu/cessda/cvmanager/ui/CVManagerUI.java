@@ -14,6 +14,7 @@ import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.ui.view.AccessDeniedView;
 import org.gesis.wts.ui.view.ErrorView;
 import org.gesis.wts.ui.view.LoginView;
+import org.gesis.wts.ui.view.admin.ManageUserAgencyView;
 import org.gesis.wts.ui.view.admin.ManageUserView;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -148,7 +149,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			logout.setVisible(true);
 			
-			if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ))
+			if( SecurityUtils.isCurrentUserAgencyAdmin())
 				adminButton.setVisible(true);
 			logIn.setVisible(false);
 		} else {
@@ -242,7 +243,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 	
 	public void goToAdmin(ClickEvent event) {
-		navigator.navigateTo(ManageUserView.VIEW_NAME);
+		if( SecurityUtils.isCurrentUserSystemAdmin() )
+			navigator.navigateTo(ManageUserView.VIEW_NAME);
+		else
+			navigator.navigateTo(ManageUserAgencyView.VIEW_NAME);
 	}
 
 	public void doLogin(ClickEvent event) {
@@ -291,7 +295,9 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		// browse.setVisible( true );
 		logout.setVisible(true);
 		
-		if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ))
+		System.out.println(SecurityUtils.isCurrentUserAgencyAdmin());
+		
+		if( SecurityUtils.isCurrentUserAgencyAdmin())
 			adminButton.setVisible(true);
 		
 		logIn.setVisible(false);
