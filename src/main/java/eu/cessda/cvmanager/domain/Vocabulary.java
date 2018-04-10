@@ -6,11 +6,14 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.gesis.wts.domain.Agency;
+import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.service.dto.AgencyDTO;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 import org.springframework.data.elasticsearch.annotations.InnerField;
 import org.springframework.data.elasticsearch.annotations.MultiField;
+import org.springframework.data.elasticsearch.annotations.FieldIndex;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -33,6 +36,10 @@ public class Vocabulary implements Serializable {
     private Long id;
 
     @NotNull
+    @Column(name = "notation", nullable = false)
+    private String notation;
+    
+    @NotNull
     @Column(name = "uri", nullable = false)
     private String uri;
 
@@ -42,28 +49,23 @@ public class Vocabulary implements Serializable {
     private String version;
 
     @Column(name = "archived")
-    private Boolean archived;
+    private Boolean archived = false;
 
     @Column(name = "withdrawn")
-    private Boolean withdrawn;
+    private Boolean withdrawn = false;
 
     @Column(name = "discoverable")
-    private Boolean discoverable;
+    private Boolean discoverable = false;
 
     @Column(name = "languages")
     @ElementCollection( targetClass=String.class )
-    @MultiField(
-            mainField = @Field(type = FieldType.keyword, index = true),
-            otherFields = {
-            		@InnerField(suffix = "untouched", type = FieldType.keyword, store = true, index = false),
-//            		@InnerField(suffix = "sort", type = FieldType.keyword, store = true, indexAnalyzer = "keyword")
-            }
-    )
+    @Field(type = FieldType.keyword)
     private Set<String> languages;
     
     @NotNull
     @Size(max = 20)
     @Column(name = "source_language", length = 20, nullable = false)
+    @Field(type = FieldType.keyword)
     private String sourceLanguage;
     
     @NotNull
@@ -72,6 +74,7 @@ public class Vocabulary implements Serializable {
 
     @NotNull
     @Column(name = "agency_name", nullable = false)
+    @Field(type = FieldType.keyword)
     private String agencyName;
 
     @Lob
@@ -240,12 +243,12 @@ public class Vocabulary implements Serializable {
 
     @OneToMany(mappedBy = "vocabulary")
     @JsonIgnore
+    @Field(type = FieldType.Nested)
     private Set<Code> codes = new HashSet<>();
 
     @Transient
     private Agency agency;
-
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
+    
     public Long getId() {
         return id;
     }
@@ -266,6 +269,14 @@ public class Vocabulary implements Serializable {
     public void setUri(String uri) {
         this.uri = uri;
     }
+    
+    public String getNotation() {
+		return notation;
+	}
+
+	public void setNotation(String notation) {
+		this.notation = notation;
+	}
 
     public String getVersion() {
         return version;

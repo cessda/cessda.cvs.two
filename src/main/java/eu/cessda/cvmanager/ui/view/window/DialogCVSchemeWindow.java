@@ -24,6 +24,7 @@ import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue.ValueChangeEvent;
+import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -33,20 +34,22 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
+import eu.cessda.cvmanager.domain.Vocabulary;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
 public class DialogCVSchemeWindow extends MWindow {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8116725336044618619L;
 	private static final Logger log = LoggerFactory.getLogger(DialogCVSchemeWindow.class);
 	
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
 	private final AgencyService agencyService;
+	private final VocabularyService vocabularyService;
+	private final CvManagerService cvManagerService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	private MLabel lAgency = new MLabel( "Agency" );
@@ -64,18 +67,22 @@ public class DialogCVSchemeWindow extends MWindow {
 	private Button storeCode = new Button("Save");
 	
 	private Binder<CVScheme> binder = new Binder<CVScheme>();
-	private String orginalLanguage;
-	private String language;
+	private Language language;
+	private AgencyDTO agency;
+//	private String orginalLanguage;
+//	private String language;
 	private CVScheme cvScheme;
 	
 	private UserDetails userDetails;
 
 	//private EditorView theView;
 
-	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, AgencyService agencyService, CVScheme cvScheme, String orignalLanguage, String language, I18N i18n) {
+	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, AgencyService agencyService, VocabularyService vocabularyService, CVScheme cvScheme, I18N i18n) {
 		super("Add CVScheme");
 		this.agencyService = agencyService;
 		this.eventBus = eventBus;
+		this.cvManagerService = cvManagerService;
+		this.vocabularyService = vocabularyService;
 		this.i18n = i18n;
 		
 		userDetails = SecurityUtils.getLoggedUser();
@@ -94,6 +101,7 @@ public class DialogCVSchemeWindow extends MWindow {
 			});
 		}
 		
+		editorCb.setValue( editorCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
 		editorCb.setItemCaptionGenerator(AgencyDTO::getName);
 		editorCb.setEmptySelectionAllowed( false );
 		editorCb.setTextInputAllowed( false );
@@ -108,9 +116,12 @@ public class DialogCVSchemeWindow extends MWindow {
 						languageCb.setItems( languages );
 					});
 				}
+				languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
+				agency = e.getValue();
 			} else {
 				languageCb.setReadOnly( true );
 				languageCb.setValue( null );
+				agency = null;
 			}
 		});
 		
@@ -125,9 +136,15 @@ public class DialogCVSchemeWindow extends MWindow {
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
 		languageCb.setReadOnly( true );
+		languageCb.addValueChangeListener( e -> {
+			if( e.getValue() != null )
+				language = e.getValue();
+			else
+				language = null;
+		});
 
-		setOrginalLanguage(orignalLanguage);
-		setLanguage(language);
+//		setOrginalLanguage(orignalLanguage);
+//		setLanguage(language);
 		setCvScheme(cvScheme);	
 
 		binder.setBean(getCvScheme());
@@ -145,23 +162,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		description.setSizeFull();
 
 		storeCode.addClickListener(event -> {
-			if(!isInputValid())
-				return;
-			log.trace(getCvScheme().getTitleByLanguage(getLanguage()));
-			//agency
-			List<CVEditor> editorSet = getCvScheme().getOwnerAgency();
-			if(editorSet ==  null)
-				editorSet = new ArrayList<>();
-			else
-				editorSet.clear();
-//			editorSet.add( editorCb.getValue() );
-			getCvScheme().setOwnerAgency((ArrayList<CVEditor>) editorSet);
-				
-			getCvScheme().save();
-			DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
-			eventBus.publish( this, ddiStore);
-			close();
-			UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
+			saveCV();
 		});
 		
 		Button cancelButton = new Button("Cancel", e -> this.close());
@@ -223,6 +224,33 @@ public class DialogCVSchemeWindow extends MWindow {
 			.withContent(layout);
 	}
 
+	private void saveCV() {
+		if(!isInputValid())
+			return;
+		//agency
+		List<CVEditor> editorSet = getCvScheme().getOwnerAgency();
+		if(editorSet ==  null)
+			editorSet = new ArrayList<>();
+		else
+			editorSet.clear();
+//			editorSet.add( editorCb.getValue() );
+		// save on flatDB
+		getCvScheme().setOwnerAgency((ArrayList<CVEditor>) editorSet);
+		getCvScheme().save();
+		
+		// save on database
+		VocabularyDTO vocabulary = new VocabularyDTO();
+		vocabulary.setNotation( tfCode.getValue() );
+		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
+		vocabulary.setAgency(agency);
+		vocabularyService.save(vocabulary);
+		
+		DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
+		eventBus.publish( this, ddiStore);
+		close();
+		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
+	}
+
 	private boolean isInputValid() {
 		getCvScheme().setCode(tfCode.getValue());
 		getCvScheme().setTitleByLanguage("en", tfTitle.getValue());
@@ -252,45 +280,24 @@ public class DialogCVSchemeWindow extends MWindow {
 	}
 
 	private CVScheme setTitleByLanguage(CVScheme concept, String value) {
-
-		concept.setTitleByLanguage(getOrginalLanguage(), value);
+		concept.setTitleByLanguage( language.toString(), value);
 		return concept;
 	}
 
 	private String getTitleByLanguage(CVScheme concept) {
 
-		return concept.getTitleByLanguage(getOrginalLanguage());
+		return concept.getTitleByLanguage( language.toString());
 
 	}
 
-	private Object setDescriptionByLanguage(CVScheme concept, String value) {
-		concept.setDescriptionByLanguage(getOrginalLanguage(), value);
-		return null;
+	private CVScheme setDescriptionByLanguage(CVScheme concept, String value) {
+		concept.setDescriptionByLanguage(language.toString(), value);
+		return concept;
 	}
 
 	private String getDescriptionByLanguage(CVScheme concept) {
 
-		return concept.getDescriptionByLanguage(getOrginalLanguage());
-	}
-
-	public String getOrginalLanguage() {
-
-		return orginalLanguage;
-	}
-
-	public void setOrginalLanguage(String orginalLanguage) {
-
-		this.orginalLanguage = orginalLanguage;
-	}
-
-	public String getLanguage() {
-
-		return language;
-	}
-
-	public void setLanguage(String language) {
-
-		this.language = language;
+		return concept.getDescriptionByLanguage(language.toString());
 	}
 
 	public CVScheme getCvScheme() {

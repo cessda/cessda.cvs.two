@@ -32,6 +32,10 @@ public class Code implements Serializable {
     @NotNull
     @Column(name = "uri", nullable = false)
     private String uri;
+    
+    @NotNull
+    @Column(name = "notation", nullable = false)
+    private String notation;
 
     @NotNull
     @Size(max = 20)
@@ -49,18 +53,13 @@ public class Code implements Serializable {
 
     @Column(name = "languages")
     @ElementCollection( targetClass=String.class )
-    @MultiField(
-            mainField = @Field(type = FieldType.keyword, index = true),
-            otherFields = {
-            		@InnerField(suffix = "untouched", type = FieldType.keyword, store = true, index = false),
-//            		@InnerField(suffix = "sort", type = FieldType.keyword, store = true, indexAnalyzer = "keyword")
-            }
-    )
+    @Field(type = FieldType.keyword)
     private Set<String> languages;
     
     @NotNull
     @Size(max = 20)
     @Column(name = "source_language", length = 20, nullable = false)
+    @Field(type = FieldType.keyword)
     private String sourceLanguage;
 
     @Lob
@@ -230,7 +229,6 @@ public class Code implements Serializable {
     @ManyToOne
     private Vocabulary vocabulary;
 
-    // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
     }
@@ -260,8 +258,16 @@ public class Code implements Serializable {
         this.version = version;
         return this;
     }
+    
+    public String getNotation() {
+		return notation;
+	}
 
-    public void setVersion(String version) {
+	public void setNotation(String notation) {
+		this.notation = notation;
+	}
+
+	public void setVersion(String version) {
         this.version = version;
     }
 

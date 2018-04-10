@@ -17,6 +17,9 @@ public class CodeDTO implements Serializable {
 
     @NotNull
     private String uri;
+    
+    @NotNull
+    private String notation;
 
     @NotNull
     @Size(max = 20)
@@ -153,6 +156,14 @@ public class CodeDTO implements Serializable {
     public void setUri(String uri) {
         this.uri = uri;
     }
+    
+    public String getNotation() {
+		return notation;
+	}
+
+	public void setNotation(String notation) {
+		this.notation = notation;
+	}
 
     public String getVersion() {
         return version;

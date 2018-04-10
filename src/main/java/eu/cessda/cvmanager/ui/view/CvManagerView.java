@@ -76,7 +76,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 		
 		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
-		actionPanel = new ActionPanel( this , agencyService);
+		actionPanel = new ActionPanel( this , agencyService, vocabularyService);
 		actionPanel.setWidth("240px");
 		
 		this.eventBus.subscribe( this );

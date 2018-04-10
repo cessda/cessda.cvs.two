@@ -29,6 +29,7 @@ import com.vaadin.ui.Window;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 
@@ -42,6 +43,7 @@ public class ActionPanel extends CustomComponent{
 	private final EventBus.UIEventBus eventBus;
 	private final CvManagerService cvManagerService;
 	private final AgencyService agencyService;
+	private final VocabularyService vocabularyService;
 	
 	private MVerticalLayout actionLayout = new MVerticalLayout();
 
@@ -68,12 +70,13 @@ public class ActionPanel extends CustomComponent{
 	
 	private CvManagerView cvManagerView;
 	
-	public ActionPanel( CvManagerView cvManagerView, AgencyService agencyService) {
+	public ActionPanel( CvManagerView cvManagerView, AgencyService agencyService, VocabularyService vocabularyService) {
 		this.cvManagerView = cvManagerView;
 		this.eventBus = cvManagerView.getEventBus();
 		this.cvManagerService = cvManagerView.getCvManagerService();
 		this.i18n = cvManagerView.i18n;
 		this.agencyService = agencyService;
+		this.vocabularyService = vocabularyService;
 		updateMessageStrings(locale);
 		
 		buttonAddCv
@@ -203,7 +206,7 @@ public class ActionPanel extends CustomComponent{
 		newCvScheme.createId();
 		newCvScheme.setContainerId(newCvScheme.getId());
 
-		Window window = new DialogCVSchemeWindow(eventBus, cvManagerService, agencyService, newCvScheme, "en", "en", i18n);
+		Window window = new DialogCVSchemeWindow(eventBus, cvManagerService, agencyService, vocabularyService, newCvScheme, i18n);
 		getUI().addWindow(window);
 	}
 	
