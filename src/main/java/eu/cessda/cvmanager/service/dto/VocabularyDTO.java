@@ -9,6 +9,7 @@ import org.gesis.wts.service.dto.AgencyDTO;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.HashSet;
 import java.util.Objects;
 
 /**
@@ -223,15 +224,10 @@ public class VocabularyDTO implements Serializable {
     			setDefinitionSe(definition);
     			break;
     	}
-    	addLanguage(language.name());
+    	addLanguage(language.name().toLowerCase());
     	return this;
     }
     
-    public void setAgency( AgencyDTO agencyDTO ) {
-    	setAgencyId( agencyDTO.getId());
-    	setAgencyName( agencyDTO.getName());
-    }
-        
     public Long getId() {
         return id;
     }
@@ -313,6 +309,8 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public VocabularyDTO addLanguage(String language) {
+		if(languages == null)
+			languages = new HashSet<>();
 		this.languages.add(language);
 		return this;
 	}

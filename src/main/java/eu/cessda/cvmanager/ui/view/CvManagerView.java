@@ -35,6 +35,7 @@ import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 
 public abstract class CvManagerView extends MVerticalLayout implements MView, Translatable {
 
@@ -56,6 +57,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	private final ActionType actionType;
 	protected CvItem cvItem = new CvItem();
 	protected AgencyDTO agency;
+	protected VocabularyDTO vocabulary;
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
 	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
@@ -76,7 +78,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 		
 		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
-		actionPanel = new ActionPanel( this , agencyService, vocabularyService);
+		actionPanel = new ActionPanel( this,  agencyService, vocabularyService);
 		actionPanel.setWidth("240px");
 		
 		this.eventBus.subscribe( this );
@@ -175,5 +177,13 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 
 	public void setAgency(AgencyDTO agency) {
 		this.agency = agency;
-	}	
+	}
+
+	public VocabularyDTO getVocabulary() {
+		return vocabulary;
+	}
+
+	public void setVocabulary(VocabularyDTO vocabulary) {
+		this.vocabulary = vocabulary;
+	}
 }

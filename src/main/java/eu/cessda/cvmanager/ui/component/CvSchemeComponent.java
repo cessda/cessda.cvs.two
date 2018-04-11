@@ -97,10 +97,6 @@ public class CvSchemeComponent extends CustomComponent {
 				res = new ThemeResource(agency.getLogoPath());
 		}
 		
-		//TODO: remove this workaround
-		if( cvScheme.getOwnerAgency().get(0).getName().equals("CESSDA"))
-			res = new ThemeResource("img/cessda.png");
-
 		logo = new Image(null, res);
 		logo.setWidth("100");
 

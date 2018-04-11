@@ -1,5 +1,8 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -27,6 +30,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.CvManagerView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
@@ -39,6 +43,9 @@ public class DialogAddLanguageWindow extends MWindow {
 	private static final Logger log = LoggerFactory.getLogger(DialogAddLanguageWindow.class);
 	
 	private final EventBus.UIEventBus eventBus;
+	private final AgencyDTO agency;
+	private final VocabularyDTO vocabulary;
+	private final CvManagerService cvManagerService;
 
 	private Binder<CVScheme> binder = new Binder<CVScheme>();
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -59,18 +66,38 @@ public class DialogAddLanguageWindow extends MWindow {
 	private Button storeCode = new Button("Save");
 
 	private CVScheme cvScheme;
-	private String selectedLanguage;
+	private Language language;
 	private CvManagerView cvManagerView;
 
 	//private EditorView theView;
 
-	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService,  CVScheme cS, CvManagerView cvManagerView) {
+	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService,  CVScheme cS, 
+			CvManagerView cvManagerView) {
 		super("Add Language");
 		this.eventBus = eventBus;
 		this.cvScheme = cS;
 		this.cvManagerView = cvManagerView;
+		this.cvManagerService = cvManagerService;
+		this.agency = cvManagerView.getAgency();
+		this.vocabulary = cvManagerView.getVocabulary();
 		
-		Set<String> currentCvLanguage = cvScheme.getLanguagesByTitle();
+		// TODO: use list language from vocabulary if possible
+		List<Language> availableLanguages = new ArrayList<>();
+		Set<Language> userLanguages = new HashSet<>();
+		if( SecurityUtils.isCurrentUserAgencyAdmin( cvManagerView.getAgency() )) {
+			userLanguages.addAll( Arrays.asList( Language.values() ) );
+		}
+		else {
+			SecurityUtils.getCurrentUserLanguageTlByAgency( cvManagerView.getAgency() ).ifPresent( languages -> {
+				userLanguages.addAll(languages);
+			});
+		}
+		
+		if( vocabulary != null ) {
+			availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
+		} else {
+			availableLanguages = Language.getFilteredLanguage(userLanguages, cvScheme.getLanguagesByTitle());
+		}
 		
 		lTitle.withStyleName( "required" );
 		lLanguage.withStyleName( "required" );
@@ -90,15 +117,7 @@ public class DialogAddLanguageWindow extends MWindow {
 		tfTitle.withFullWidth();
 		description.setSizeFull();
 		
-		if( SecurityUtils.isCurrentUserAgencyAdmin( cvManagerView.getAgency() )) {
-			languageCb.setItems( Language.values() );
-		}
-		else {
-			SecurityUtils.getCurrentUserLanguageTlByAgency( cvManagerView.getAgency() ).ifPresent( languages -> {
-				languageCb.setItems( languages );
-			});
-		}
-		
+		languageCb.setItems( availableLanguages );
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
 		languageCb.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
@@ -110,9 +129,9 @@ public class DialogAddLanguageWindow extends MWindow {
 		});
 
 		languageCb.addValueChangeListener( e -> {
-			selectedLanguage = e.getValue().toString();
-			lTitle.setValue( "Title (" + selectedLanguage + ")");
-			lDescription.setValue( "Definition ("+ selectedLanguage +")");
+			language = e.getValue();
+			lTitle.setValue( "Title (" + language + ")");
+			lDescription.setValue( "Definition ("+ language +")");
 		});
 
 		setCvScheme(cvScheme);;
@@ -126,11 +145,7 @@ public class DialogAddLanguageWindow extends MWindow {
 				(concept, value) -> setDescriptionByLanguage(concept, value));
 
 		storeCode.addClickListener(event -> {
-			getCvScheme().save();
-			DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
-			eventBus.publish( this, ddiStore);
-			close();
-			UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
+			saveCV();
 		});
 
 		Button cancelButton = new Button("Cancel", e -> this.close());
@@ -198,34 +213,38 @@ public class DialogAddLanguageWindow extends MWindow {
 			.withModal( true )
 			.withContent(layout);
 	}
+
+	private void saveCV() {
+		getCvScheme().save();
+		DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
+		eventBus.publish( this, ddiStore);
+		close();
+		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
+	}
 	
 	private CVScheme setTitleByLanguage(CVScheme concept, String value) {
 
-		concept.setTitleByLanguage(getSelectedLanguage(), value);
+		concept.setTitleByLanguage(language.toString(), value);
 		return concept;
 	}
 
 	private String getTitleByLanguage(CVScheme concept) {
 
-		return concept.getTitleByLanguage(getSelectedLanguage());
+		return concept.getTitleByLanguage(language.toString());
 
 	}
 	
 	private Object setDescriptionByLanguage(CVScheme concept, String value) {
-		concept.setDescriptionByLanguage(getSelectedLanguage(), value);
+		concept.setDescriptionByLanguage(language.toString(), value);
 		return null;
 	}
 
 	private String getDescriptionByLanguage(CVScheme concept) {
 
-		return concept.getDescriptionByLanguage(getSelectedLanguage());
+		return concept.getDescriptionByLanguage(language.toString());
 
 	}
 	
-	public String getSelectedLanguage() {
-		return selectedLanguage;
-	}
-
 	public CVScheme getCvScheme() {
 		return cvScheme;
 	}

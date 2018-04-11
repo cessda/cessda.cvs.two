@@ -9,6 +9,7 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
+import org.gesis.wts.service.dto.AgencyDTO;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -30,6 +31,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CvManagerService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 
@@ -46,6 +48,8 @@ public class ActionPanel extends CustomComponent{
 	private final VocabularyService vocabularyService;
 	
 	private MVerticalLayout actionLayout = new MVerticalLayout();
+	private AgencyDTO agency;
+	private VocabularyDTO vocabulary;
 
 	private MLabel panelHeader = new MLabel();
 	private MButton buttonAddCv = new MButton();
@@ -77,6 +81,8 @@ public class ActionPanel extends CustomComponent{
 		this.i18n = cvManagerView.i18n;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
+		this.vocabulary = cvManagerView.getVocabulary();
+		this.agency = cvManagerView.getAgency();
 		updateMessageStrings(locale);
 		
 		buttonAddCv

@@ -101,7 +101,6 @@ public class DialogCVSchemeWindow extends MWindow {
 			});
 		}
 		
-		editorCb.setValue( editorCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
 		editorCb.setItemCaptionGenerator(AgencyDTO::getName);
 		editorCb.setEmptySelectionAllowed( false );
 		editorCb.setTextInputAllowed( false );
@@ -117,6 +116,12 @@ public class DialogCVSchemeWindow extends MWindow {
 					});
 				}
 				languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
+				if( languageCb.getValue() != null ) {
+					languageCb.setReadOnly( false );
+					language = languageCb.getValue();
+				}
+				else
+					languageCb.setReadOnly( true );
 				agency = e.getValue();
 			} else {
 				languageCb.setReadOnly( true );
@@ -124,6 +129,8 @@ public class DialogCVSchemeWindow extends MWindow {
 				agency = null;
 			}
 		});
+		editorCb.setValue( editorCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
+		
 		
 		languageCb.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
 			private static final long serialVersionUID = 1L;
@@ -135,22 +142,21 @@ public class DialogCVSchemeWindow extends MWindow {
 		
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
-		languageCb.setReadOnly( true );
+		
 		languageCb.addValueChangeListener( e -> {
 			if( e.getValue() != null )
 				language = e.getValue();
 			else
 				language = null;
 		});
+		
+		
 
 //		setOrginalLanguage(orignalLanguage);
 //		setLanguage(language);
 		setCvScheme(cvScheme);	
 
 		binder.setBean(getCvScheme());
-		//remove default value
-		getCvScheme().setTitleByLanguage("en", "");
-		getCvScheme().setDescriptionByLanguage("en", "");
 		
 		tfCode.withFullWidth();
 		tfCode.addValueChangeListener( e -> {
@@ -233,19 +239,29 @@ public class DialogCVSchemeWindow extends MWindow {
 			editorSet = new ArrayList<>();
 		else
 			editorSet.clear();
-//			editorSet.add( editorCb.getValue() );
+		CVEditor cvEditor = new CVEditor();
+		cvEditor.setName( agency.getName());
+		cvEditor.setLogoPath( agency.getLogopath());
+		
+		editorSet.add( cvEditor );
 		// save on flatDB
 		getCvScheme().setOwnerAgency((ArrayList<CVEditor>) editorSet);
 		getCvScheme().save();
 		
+		DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add new CV");
+		
 		// save on database
 		VocabularyDTO vocabulary = new VocabularyDTO();
+		vocabulary.setVersion("1.0");
+		vocabulary.setUri( ddiStore.getElementId());
 		vocabulary.setNotation( tfCode.getValue() );
 		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
-		vocabulary.setAgency(agency);
+		vocabulary.setAgencyId( agency.getId());
+		vocabulary.setAgencyName( agency.getName());
+		vocabulary.setSourceLanguage( language.name().toLowerCase());
 		vocabularyService.save(vocabulary);
 		
-		DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
+		
 		eventBus.publish( this, ddiStore);
 		close();
 		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
@@ -253,8 +269,8 @@ public class DialogCVSchemeWindow extends MWindow {
 
 	private boolean isInputValid() {
 		getCvScheme().setCode(tfCode.getValue());
-		getCvScheme().setTitleByLanguage("en", tfTitle.getValue());
-		getCvScheme().setDescriptionByLanguage("en", description.getValue());
+		getCvScheme().setTitleByLanguage(language.toString(), tfTitle.getValue());
+		getCvScheme().setDescriptionByLanguage(language.toString(), description.getValue());
 		
 		binder
 		.forField( tfCode)

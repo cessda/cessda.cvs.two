@@ -214,6 +214,8 @@ public class CodeDTO implements Serializable {
 	}
 	
 	public CodeDTO addLanguage(String language) {
+		if(languages == null)
+			languages = new HashSet<>();
 		this.languages.add(language);
 		return this;
 	}
