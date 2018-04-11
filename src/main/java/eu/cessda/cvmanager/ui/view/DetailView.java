@@ -101,8 +101,6 @@ public class DetailView extends CvManagerView {
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
 
-	private AgencyDTO agency;
-	private VocabularyDTO vocabulary;
 	
 	private String selectedLang = "en";
 	private FormMode formMode;
@@ -311,16 +309,18 @@ public class DetailView extends CvManagerView {
 		vocabulary = vocabularyService.getByUri( cvItem.getCurrentCvId() );
 		
 		//TODO, remove this "if" after all vocabularies belong to agency
-		if( vocabulary == null ) {
-			vocabulary = new VocabularyDTO();
+		if( getVocabulary() == null ) {
+			VocabularyDTO vocabulary = new VocabularyDTO();
 			vocabulary.setUri(cvItem.getCurrentCvId());
 			vocabulary.setVersion( "1.0" );
 			
 			setAgency( agencyService.findOne(1L) );
 			vocabulary.setAgencyId(getAgency().getId());
+			
+			setVocabulary(vocabulary);
 		} else {
 			setAgency( agencyService.findOne(1L) );
-			vocabulary.setAgencyId(getAgency().getId());
+			getVocabulary().setAgencyId(getAgency().getId());
 		}
 		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
@@ -905,7 +905,7 @@ public class DetailView extends CvManagerView {
 				newCVConcept.createId();
 				newCVConcept.setContainerId( cvItem.getCvScheme().getContainerId());
 
-				DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, cvManagerService, cvItem.getCvScheme(), newCVConcept,null, "en", i18n, UI.getCurrent().getLocale());
+				DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, cvManagerService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
 				getUI().addWindow(dialogAddCodeWindow1);
 				
 				break;
@@ -926,7 +926,7 @@ public class DetailView extends CvManagerView {
 				childConcept.createId();
 				childConcept.setContainerId( cvItem.getCvScheme().getContainerId());
 
-				DialogAddCodeWindow dialogAddCodeWindow2 = new DialogAddCodeWindow(eventBus, cvManagerService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), "en", i18n, UI.getCurrent().getLocale());
+				DialogAddCodeWindow dialogAddCodeWindow2 = new DialogAddCodeWindow(eventBus, cvManagerService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
 				getUI().addWindow( dialogAddCodeWindow2 );
 				break;
 			case CVCONCEPT_DELETED:

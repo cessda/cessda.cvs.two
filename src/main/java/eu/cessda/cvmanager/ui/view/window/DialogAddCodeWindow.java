@@ -6,9 +6,12 @@ import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
@@ -19,15 +22,18 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.provider.Query;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
 public class DialogAddCodeWindow extends MWindow implements Translatable{
@@ -49,33 +55,62 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private MTextField notation = new MTextField();
 	private TextField preferedLabel = new TextField();
 	private TextArea description = new TextArea();
-	private ComboBox<String> languageCb = new ComboBox<>();
-	private String orginalLanguage;
+	private ComboBox<Language> languageCb = new ComboBox<>();
 
 	private Button storeCode = new Button("Save");
 	private CVConcept theCode;
 	private CVConcept parentCode;
 	private CVScheme cvScheme;
+	
+	private AgencyDTO agency;
+	private VocabularyDTO vocabulary;
+	private Language language;
 
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvSch, CVConcept newCode, CVConcept parent, String orignalLanguage, I18N i18n, Locale locale) {
+	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvSch, CVConcept newCode, CVConcept parent, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, I18N i18n, Locale locale) {
 		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage("en") : parent.getNotation() )));
 		
 		this.eventBus = eventBus;
 		this.cvScheme = cvSch;
 		this.parentCode = parent;
 		this.i18n = i18n;
+		this.vocabulary = vocabularyDTO;
+		this.agency = agencyDTO;
 
-		languageCb.setItems( Language.getAllEnumCapitalized());
+		if( SecurityUtils.isCurrentUserAgencyAdmin( agency  )) {
+			languageCb.setItems( Language.values() );
+		}
+		else {
+			SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
+				languageCb.setItems( languages );
+			});
+		}
+		languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
+		if( languageCb.getValue() != null ) 
+			language = languageCb.getValue();
+	
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
-		languageCb.setValue("English");
-		languageCb.setReadOnly( true );
+		
+		languageCb.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String apply(Language item) {
+				return item.name() + " (" +item.getLanguage() + ")";
+			}
+		});
+		
+		languageCb.addValueChangeListener( e -> {
+			if( e.getValue() != null )
+				language = e.getValue();
+			else
+				language = null;
+		});
+		
 		
 		preferedLabel.setWidth("100%");
 		description.setSizeFull();
 		notation.withWidth("85%");
 
-		setOrginalLanguage(orignalLanguage);
 		setTheCode(newCode);
 
 		binder.setBean(getTheCode());
@@ -91,7 +126,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 		storeCode.addClickListener(event -> {
 			// CVConcept cv = binder.getBean();
-			log.trace(getTheCode().getPrefLabelByLanguage(getOrginalLanguage()));
+			log.trace(getTheCode().getPrefLabelByLanguage( language.toString() ));
 			getTheCode().save();
 			DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, "User", "Add Code");
 			if(parentCode == null ) // root concept
@@ -171,37 +206,27 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {
 
-		concept.setPrefLabelByLanguage(getOrginalLanguage(), value);
+		concept.setPrefLabelByLanguage( language.toString() , value);
 		return concept;
 	}
 
 	private String getPrefLabelByLanguage(CVConcept concept) {
 
-		return concept.getPrefLabelByLanguage(getOrginalLanguage());
+		return concept.getPrefLabelByLanguage( language.toString() );
 
 	}
 
 	private Object setDescriptionByLanguage(CVConcept concept, String value) {
 
 		System.out.println("FooBar");
-		concept.setDescriptionByLanguage(getOrginalLanguage(), value);
+		concept.setDescriptionByLanguage( language.toString() , value);
 		return null;
 	}
 
 	private String getDescriptionByLanguage(CVConcept concept) {
 
-		return concept.getDescriptionByLanguage(getOrginalLanguage());
+		return concept.getDescriptionByLanguage( language.toString() );
 
-	}
-
-	public String getOrginalLanguage() {
-
-		return orginalLanguage;
-	}
-
-	public void setOrginalLanguage(String orginalLanguage) {
-
-		this.orginalLanguage = orginalLanguage;
 	}
 
 	public CVConcept getTheCode() {

@@ -22,6 +22,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.provider.Query;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -118,6 +119,10 @@ public class DialogAddLanguageWindow extends MWindow {
 		description.setSizeFull();
 		
 		languageCb.setItems( availableLanguages );
+		languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
+		if( languageCb.getValue() != null )
+			language = languageCb.getValue();
+
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
 		languageCb.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
@@ -215,8 +220,17 @@ public class DialogAddLanguageWindow extends MWindow {
 	}
 
 	private void saveCV() {
+		// TODO: validation with binding
+		if( tfTitle.getValue() == null || tfTitle.getValue().isEmpty())
+			return;
+		
+		if( description.getValue() == null || description.getValue().isEmpty())
+			return;
+		
 		getCvScheme().save();
-		DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, "Peter", "minor edit");
+		DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add CV translation");
+		// TODO: store the variable and index
+		
 		eventBus.publish( this, ddiStore);
 		close();
 		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
@@ -229,6 +243,8 @@ public class DialogAddLanguageWindow extends MWindow {
 	}
 
 	private String getTitleByLanguage(CVScheme concept) {
+		if( language == null )
+			return "";
 
 		return concept.getTitleByLanguage(language.toString());
 
@@ -240,7 +256,9 @@ public class DialogAddLanguageWindow extends MWindow {
 	}
 
 	private String getDescriptionByLanguage(CVScheme concept) {
-
+		if( language == null )
+			return "";
+		
 		return concept.getDescriptionByLanguage(language.toString());
 
 	}
