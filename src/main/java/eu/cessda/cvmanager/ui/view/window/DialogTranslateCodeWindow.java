@@ -1,6 +1,10 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -8,10 +12,13 @@ import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -19,17 +26,22 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.provider.Query;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 
@@ -42,6 +54,10 @@ public class DialogTranslateCodeWindow extends MWindow {
 	 */
 	private static final long serialVersionUID = 8118228014482059473L;
 	private final EventBus.UIEventBus eventBus;
+	private final I18N i18n;
+	private final CvManagerService cvManagerService;
+	private final VocabularyService vocabularyService;
+	private final CodeService codeService;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -62,34 +78,45 @@ public class DialogTranslateCodeWindow extends MWindow {
 
 	private TextField preferedLabel = new TextField("Code");
 	private TextArea description = new TextArea("Definition");
-	private ComboBox<String> languageCb = new ComboBox<>("Language");
-
-	private String selectedLanguage;
+	private ComboBox<Language> languageCb = new ComboBox<>("Language");
 
 	private Button storeCode = new Button("Save");
 
 	private CVScheme cvScheme;
 	private CVConcept code;
 	
+	private AgencyDTO agency;
+	private VocabularyDTO vocabulary;
+	private Language language;
+	
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
-	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, CVConcept cvConcept, String sLanguage) {
+	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, VocabularyService vocabularyService, CodeService codeService,
+			CVScheme cvScheme, CVConcept cvConcept, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, I18N i18n, Locale locale) {
 		super( "Add Code Translation");
 		this.cvScheme = cvScheme;
 		this.code = cvConcept;
 		
 		this.eventBus = eventBus;
+		this.i18n = i18n;
+		this.vocabulary = vocabularyDTO;
+		this.agency = agencyDTO;
+		this.cvManagerService = cvManagerService;
+		this.vocabularyService = vocabularyService;
+		this.codeService = codeService;
 		
-		codeText.setValue( code.getPrefLabelByLanguage( "en" ));
+		Language sourceLang = Language.getEnumByName( vocabulary.getSourceLanguage() );
+		
+		codeText.setValue( code.getPrefLabelByLanguage( sourceLang.toString() ));
 		codeText.withFullWidth()
 			.withReadOnly( true );
 		
 		sourceTitle.withFullWidth();
-		sourceTitle.setValue( code.getPrefLabelByLanguage( "en" ) );
+		sourceTitle.setValue( code.getPrefLabelByLanguage( sourceLang.toString() ) );
 		sourceDescription.setSizeFull();
 		
-		sourceDescription.setValue( code.getDescriptionByLanguage( "en" ) );
+		sourceDescription.setValue( code.getDescriptionByLanguage( sourceLang.toString() ) );
 		sourceDescription.setReadOnly( true );
 		sourceTitle.setReadOnly( true );
 		
@@ -98,33 +125,56 @@ public class DialogTranslateCodeWindow extends MWindow {
 		
 		sourceLanguage
 			.withReadOnly( true)
-			.setValue( "English" );
+			.setValue( sourceLang.name() );
 		
 		lTitle.withStyleName( "required" );
 		lLanguage.withStyleName( "required" );
 		lDescription.withStyleName( "required" );
 		
-		Set<String> currentCvLanguage = cvScheme.getLanguagesByTitle();
+		// TODO: use list language from vocabulary if possible
+		List<Language> availableLanguages = new ArrayList<>();
+		Set<Language> userLanguages = new HashSet<>();
+		if( SecurityUtils.isCurrentUserAgencyAdmin( this.agency )) {
+			userLanguages.addAll( Arrays.asList( Language.values() ) );
+		}
+		else {
+			SecurityUtils.getCurrentUserLanguageTlByAgency(  this.agency ).ifPresent( languages -> {
+				userLanguages.addAll(languages);
+			});
+		}
 		
-		List<String> languages = Language.getFilteredEnumCapitalized( currentCvLanguage );
-		languages.remove( "English" );
+		if( vocabulary != null ) {
+			availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
+		} else {
+			availableLanguages = Language.getFilteredLanguage(userLanguages, cvScheme.getLanguagesByTitle());
+		}
+		// remove with sourceLanguage option if exist
+		availableLanguages.remove( sourceLang );
 		
+		languageCb.setItems( availableLanguages );
+		languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
+		if( languageCb.getValue() != null )
+			language = languageCb.getValue();
 		
-		
-		languageCb.setItems( languages );
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
-		languageCb.setValue(  languages.get(0));
+		languageCb.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String apply(Language item) {
+				return item.name() + " (" +item.getLanguage() + ")";
+			}
+		});
 		languageCb.addValueChangeListener( e -> {
-			setSelectedLanguage( Language.valueOf( e.getValue().toString().toUpperCase()).getLanguage());
+			language = e.getValue();
 			
-			preferedLabel.setCaption( "Code (" + selectedLanguage + ")*");
-			description.setCaption( "Definition ("+ selectedLanguage +")*");
+			preferedLabel.setCaption( "Code (" + language + ")*");
+			description.setCaption( "Definition ("+ language +")*");
 			
-			preferedLabel.setValue( code.getPrefLabelByLanguage(selectedLanguage));
-			description.setValue( code.getDescriptionByLanguage(selectedLanguage) );
+			preferedLabel.setValue( code.getPrefLabelByLanguage(language.toString()));
+			description.setValue( code.getDescriptionByLanguage(language.toString()) );
 			
-			if( e.getValue().equals( "en" )) {
+			if( e.getValue().equals( sourceLang )) {
 				sourceRowA.setVisible( false );
 				sourceRowB.setVisible( false );
 			} else {
@@ -133,11 +183,10 @@ public class DialogTranslateCodeWindow extends MWindow {
 			}
 		});
 		
-		this.selectedLanguage = Language.valueOf( languageCb.getValue().toString().toUpperCase()).getLanguage();
-		preferedLabel.setCaption( "Code (" + selectedLanguage + ")*");
-		description.setCaption( "Definition ("+ selectedLanguage +")*");
+		preferedLabel.setCaption( "Code (" + language.toString() + ")*");
+		description.setCaption( "Definition ("+ language.toString() +")*");
 		
-		if( selectedLanguage.equals( "en" )) {
+		if( language.equals( sourceLang )) {
 			sourceRowA.setVisible( false );
 			sourceRowB.setVisible( false );
 		} else {
@@ -154,15 +203,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 				(concept, value) -> setDescriptionByLanguage(concept, value));
 
 		storeCode.addClickListener(event -> {
-			// CVConcept cv = binder.getBean();
-			log.trace(code.getPrefLabelByLanguage(selectedLanguage));
-			code.save();
-			DDIStore ddiStore = cvManagerService.saveElement(code.ddiStore, "Peter", "minor edit");
-			
-			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
-			
-			this.close();
-
+			saveCode();
 		});
 
 		Button cancelButton = new Button("Cancel", e -> this.close());
@@ -231,34 +272,35 @@ public class DialogTranslateCodeWindow extends MWindow {
 			.withContent(layout);
 	}
 
-	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {
+	private void saveCode() {
+		// CVConcept cv = binder.getBean();
+		log.trace(code.getPrefLabelByLanguage(language.toString()));
+		code.save();
+		DDIStore ddiStore = cvManagerService.saveElement(code.ddiStore, "Peter", "minor edit");
+		
+		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
+		
+		this.close();
+	}
 
-		concept.setPrefLabelByLanguage(selectedLanguage, value);
+	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {
+		concept.setPrefLabelByLanguage(language.toString(), value);
 		return concept;
 	}
 
 	private String getPrefLabelByLanguage(CVConcept concept) {
-
-		return concept.getPrefLabelByLanguage(selectedLanguage);
+		return concept.getPrefLabelByLanguage(language.toString());
 
 	}
 
 	private Object setDescriptionByLanguage(CVConcept concept, String value) {
-
-		System.out.println("FooBar");
-		concept.setDescriptionByLanguage(selectedLanguage, value);
+		concept.setDescriptionByLanguage(language.toString(), value);
 		return null;
 	}
 
 	private String getDescriptionByLanguage(CVConcept concept) {
 
-		return concept.getDescriptionByLanguage(selectedLanguage);
+		return concept.getDescriptionByLanguage(language.toString());
 
 	}
-
-	public void setSelectedLanguage(String selectedLanguage) {
-		this.selectedLanguage = selectedLanguage;
-	}
-	
-	
 }

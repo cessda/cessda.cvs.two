@@ -3,6 +3,9 @@ package eu.cessda.cvmanager.service.dto;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.*;
+
+import org.gesis.wts.domain.enumeration.Language;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -140,6 +143,85 @@ public class CodeDTO implements Serializable {
 
     @Lob
     private String definitionSe;
+    
+    public CodeDTO setTitleDefinition( String title, String definition, String language) {
+    	return setTitleDefinition(title, definition, Language.valueOf(language));
+    }
+
+    public CodeDTO setTitleDefinition( String title, String definition, Language language) {
+    	switch (language) {
+    		case CZECH:
+    			setTitleCs(title);
+    			setDefinitionCs(definition);
+    			break;
+    		case DANISH:
+    			setTitleDa(title);
+    			setDefinitionDa(definition);
+    			break;
+    		case DUTCH:
+    			setTitleNl(title);
+    			setDefinitionNl(definition);
+    			break;
+    		case ENGLISH:
+    			setTitleEn(title);
+    			setDefinitionEn(definition);
+    			break;
+    		case FINNISH:
+    			setTitleFi(title);
+    			setDefinitionFi(definition);
+    			break;
+    		case FRENCH:
+    			setTitleFr(title);
+    			setDefinitionFr(definition);
+    			break;
+    		case GERMAN:
+    			setTitleDe(title);
+    			setDefinitionDe(definition);
+    			break;
+    		case GREEK:
+    			setTitleEl(title);
+    			setDefinitionEl(definition);
+    			break;
+    		case HUNGARIAN:
+    			setTitleHu(title);
+    			setDefinitionHu(definition);
+    			break;
+    		case LITHUANIAN:
+    			setTitleLt(title);
+    			setDefinitionLt(definition);
+    			break;
+    		case NORWEGIAN:
+    			setTitleNo(title);
+    			setDefinitionNo(definition);
+    			break;
+    		case PORTUGUESE:
+    			setTitleNo(title);
+    			setDefinitionNo(definition);
+    			break;
+    		case ROMANIAN:
+    			setTitleRo(title);
+    			setDefinitionRo(definition);
+    			break;
+    		case SLOVAK:
+    			setTitleSk(title);
+    			setDefinitionSk(definition);
+    			break;
+    		case SLOVENIAN:
+    			setTitleSl(title);
+    			setDefinitionSl(definition);
+    			break;
+    		case SPANISH:
+    			setTitleEs(title);
+    			setDefinitionEs(definition);
+    			break;
+    		case SWEDISH:
+    			setTitleSe(title);
+    			setDefinitionSe(definition);
+    			break;
+    	}
+    	addLanguage(language.name().toLowerCase());
+    	return this;
+    }
 
     public Long getId() {
         return id;

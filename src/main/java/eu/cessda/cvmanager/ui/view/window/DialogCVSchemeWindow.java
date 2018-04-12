@@ -290,7 +290,6 @@ public class DialogCVSchemeWindow extends MWindow {
 		.bind(concept -> getDescriptionByLanguage(concept),
 			(concept, value) -> setDescriptionByLanguage(concept, value));
 		
-		binder.forField( tfTitle).withValidator( new StringLengthValidator( "required field", 1, 250 ));
 		binder.validate();
 		return binder.isValid();
 	}

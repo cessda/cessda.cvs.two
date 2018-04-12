@@ -23,6 +23,7 @@ import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.provider.Query;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -32,7 +33,10 @@ import com.vaadin.ui.TextField;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
@@ -43,6 +47,9 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
+	private final CvManagerService cvManagerService;
+	private final VocabularyService vocabularyService;
+	private final CodeService codeService;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	
@@ -66,8 +73,9 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private VocabularyDTO vocabulary;
 	private Language language;
 
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvSch, CVConcept newCode, CVConcept parent, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, I18N i18n, Locale locale) {
-		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage("en") : parent.getNotation() )));
+	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, VocabularyService vocabularyService, CodeService codeService,
+			CVScheme cvSch, CVConcept newCode, CVConcept parent, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, I18N i18n, Locale locale) {
+		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage( Language.getEnumByName( vocabularyDTO.getSourceLanguage()).toString()) : parent.getNotation() )));
 		
 		this.eventBus = eventBus;
 		this.cvScheme = cvSch;
@@ -75,21 +83,25 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		this.i18n = i18n;
 		this.vocabulary = vocabularyDTO;
 		this.agency = agencyDTO;
+		this.cvManagerService = cvManagerService;
+		this.vocabularyService = vocabularyService;
+		this.codeService = codeService;
 
 		if( SecurityUtils.isCurrentUserAgencyAdmin( agency  )) {
 			languageCb.setItems( Language.values() );
 		}
 		else {
-			SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
+			SecurityUtils.getCurrentUserLanguageSlByAgency( agency ).ifPresent( languages -> {
 				languageCb.setItems( languages );
 			});
 		}
-		languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
+		languageCb.setValue( Language.getEnumByName( vocabulary.getSourceLanguage()));
 		if( languageCb.getValue() != null ) 
 			language = languageCb.getValue();
 	
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
+		languageCb.setReadOnly( true );
 		
 		languageCb.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
 			private static final long serialVersionUID = 1L;
@@ -114,37 +126,9 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		setTheCode(newCode);
 
 		binder.setBean(getTheCode());
-		
-		binder.bind(notation, concept -> concept.getNotation(),
-				(concept, value) -> concept.setNotation(value));
-
-		binder.bind(preferedLabel, concept -> getPrefLabelByLanguage(concept),
-				(concept, value) -> setPrefLabelByLanguage(concept, value));
-
-		binder.bind(description, concept -> getDescriptionByLanguage(concept),
-				(concept, value) -> setDescriptionByLanguage(concept, value));
 
 		storeCode.addClickListener(event -> {
-			// CVConcept cv = binder.getBean();
-			log.trace(getTheCode().getPrefLabelByLanguage( language.toString() ));
-			getTheCode().save();
-			DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, "User", "Add Code");
-			if(parentCode == null ) // root concept
-			{
-				cvScheme.addOrderedMemberList(ddiStore.getElementId());
-				cvScheme.save();
-				DDIStore ddiStoreCv = cvManagerService.saveElement(cvScheme.ddiStore, "User", "Update Top Concept");
-			}
-			else // child code, add narrower data in parent
-			{
-				//parentCode.addOrderedNarrowerList("http://lod.gesis.org/thesoz/concept_" + ddiStore.getElementId());
-				parentCode.addOrderedNarrowerList( ddiStore.getElementId());
-				parentCode.save();
-				cvManagerService.saveElement(parentCode.ddiStore, "User", "Add Code");
-			}
-			
-			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
-			this.close();
+			saveCode();
 		});
 		
 		Button cancelButton = new Button("Cancel", e -> this.close());
@@ -204,6 +188,67 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		updateMessageStrings(locale);
 	}
 
+	private void saveCode() {
+		if(!isInputValid())
+			return;
+		// CVConcept cv = binder.getBean();
+		log.trace(getTheCode().getPrefLabelByLanguage( language.toString() ));
+		getTheCode().save();
+		DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code");
+		if(parentCode == null ) // root concept
+		{
+			cvScheme.addOrderedMemberList(ddiStore.getElementId());
+			cvScheme.save();
+			DDIStore ddiStoreCv = cvManagerService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update Top Concept");
+		}
+		else // child code, add narrower data in parent
+		{
+			//parentCode.addOrderedNarrowerList("http://lod.gesis.org/thesoz/concept_" + ddiStore.getElementId());
+			parentCode.addOrderedNarrowerList( ddiStore.getElementId());
+			parentCode.save();
+			cvManagerService.saveElement(parentCode.ddiStore, "User", "Add Code");
+		}
+		
+		// save on database
+		CodeDTO code = new CodeDTO();
+		code.setVersion( "1.0" );
+		code.setUri( ddiStore.getElementId() );
+		code.setNotation( notation.getValue() );
+		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
+		code.setSourceLanguage( language.name().toLowerCase());
+		codeService.save(code);
+		
+		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
+		this.close();
+	}
+
+	private boolean isInputValid() {
+		getTheCode().setNotation(notation.getValue());
+		getTheCode().setPrefLabelByLanguage(language.toString(), preferedLabel.getValue());
+		getTheCode().setDescriptionByLanguage(language.toString(), description.getValue());
+		
+		binder
+			.forField( notation )
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind( concept -> concept.getNotation(),
+				(concept, value) -> concept.setNotation(value));
+
+		binder
+			.forField( preferedLabel )
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind( concept -> getPrefLabelByLanguage(concept),
+				(concept, value) -> setPrefLabelByLanguage(concept, value));
+
+		binder
+			.forField( description )
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind( concept -> getDescriptionByLanguage(concept),
+				(concept, value) -> setDescriptionByLanguage(concept, value));
+		
+		binder.validate();
+		return binder.isValid();
+	}
+
 	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {
 
 		concept.setPrefLabelByLanguage( language.toString() , value);
@@ -212,7 +257,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 	private String getPrefLabelByLanguage(CVConcept concept) {
 
-		return concept.getPrefLabelByLanguage( language.toString() );
+    		return concept.getPrefLabelByLanguage( language.toString() );
 
 	}
 

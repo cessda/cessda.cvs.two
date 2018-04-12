@@ -22,6 +22,7 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
@@ -100,7 +101,7 @@ public class DetailView extends CvManagerView {
 	private final TemplateEngine templateEngine;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
-
+	private final CodeService codeService;
 	
 	private String selectedLang = "en";
 	private FormMode formMode;
@@ -182,6 +183,7 @@ public class DetailView extends CvManagerView {
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
+		this.codeService = codeService;
 		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
@@ -306,27 +308,30 @@ public class DetailView extends CvManagerView {
 		List<DDIStore> ddiSchemes = cvManagerService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
 		
 		// find in Vocabulary entity as well
-		vocabulary = vocabularyService.getByUri( cvItem.getCurrentCvId() );
-		
-		//TODO, remove this "if" after all vocabularies belong to agency
-		if( getVocabulary() == null ) {
-			VocabularyDTO vocabulary = new VocabularyDTO();
-			vocabulary.setUri(cvItem.getCurrentCvId());
-			vocabulary.setVersion( "1.0" );
-			
-			setAgency( agencyService.findOne(1L) );
-			vocabulary.setAgencyId(getAgency().getId());
-			
-			setVocabulary(vocabulary);
-		} else {
-			setAgency( agencyService.findOne(1L) );
-			getVocabulary().setAgencyId(getAgency().getId());
-		}
+		setVocabulary(  vocabularyService.getByUri( cvItem.getCurrentCvId() ) );
 		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
 			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
 		}
 		
+		//TODO, remove this "if" after all vocabularies belong to agency
+		if( getVocabulary() == null ) {
+			
+			List<CVEditor> owners = cvItem.getCvScheme().getEditor();
+			if( owners != null && !owners.isEmpty() )
+				setAgency( agencyService.findByName( owners.get( 0 ).getName()));
+			
+			if( getAgency() == null)
+				setAgency( agencyService.findOne(1L) );
+			
+			getVocabulary().setAgencyId( getAgency().getId());
+			getVocabulary().setAgencyName( getAgency().getName());
+						
+			setVocabulary( VocabularyDTO.generateFromCVScheme( cvItem.getCvScheme()) );
+		} else {
+			setAgency( agencyService.findByName( getVocabulary().getAgencyName()));
+		}
+				
 		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
 		String sourceLanguage = configService.getDefaultSourceLanguage();//cvItem.getCvScheme().getSourceLanguage();
 		String clickedLanguage = cvItem.getCurrentLanguage() == null ? sourceLanguage : cvItem.getCurrentLanguage();
@@ -905,7 +910,7 @@ public class DetailView extends CvManagerView {
 				newCVConcept.createId();
 				newCVConcept.setContainerId( cvItem.getCvScheme().getContainerId());
 
-				DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, cvManagerService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
+				DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, cvManagerService, vocabularyService, codeService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
 				getUI().addWindow(dialogAddCodeWindow1);
 				
 				break;
@@ -916,7 +921,7 @@ public class DetailView extends CvManagerView {
 					Notification.show("Please add CV translation first");
 				}
 				else {
-					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, cvManagerService, cvItem.getCvScheme(), cvItem.getCvConcept(), selectedLang);
+					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, cvManagerService, vocabularyService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
 					getUI().addWindow( windowTranslate );
 				}
 				break;
@@ -926,7 +931,7 @@ public class DetailView extends CvManagerView {
 				childConcept.createId();
 				childConcept.setContainerId( cvItem.getCvScheme().getContainerId());
 
-				DialogAddCodeWindow dialogAddCodeWindow2 = new DialogAddCodeWindow(eventBus, cvManagerService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
+				DialogAddCodeWindow dialogAddCodeWindow2 = new DialogAddCodeWindow(eventBus, cvManagerService, vocabularyService, codeService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
 				getUI().addWindow( dialogAddCodeWindow2 );
 				break;
 			case CVCONCEPT_DELETED:

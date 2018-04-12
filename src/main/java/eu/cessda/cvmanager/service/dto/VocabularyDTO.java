@@ -4,6 +4,7 @@ package eu.cessda.cvmanager.service.dto;
 import javax.persistence.Lob;
 import javax.validation.constraints.*;
 
+import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
 
@@ -667,4 +668,23 @@ public class VocabularyDTO implements Serializable {
     public boolean isPersisted() {
 		return id != null;
 	}
+    
+    public static VocabularyDTO generateFromCVScheme ( CVScheme cvScheme) {
+    	VocabularyDTO vocabulary = new VocabularyDTO();
+		vocabulary.setUri(cvScheme.getId());
+		
+		//TODO: need to change hard.coded value
+		vocabulary.setVersion( "1.0" );
+		vocabulary.setSourceLanguage( Language.ENGLISH.toString().toLowerCase());
+		
+		vocabulary.setNotation( cvScheme.getCode());
+		vocabulary.setLanguages( cvScheme.getLanguagesByTitle());
+		
+		cvScheme.getLanguagesByTitle().forEach( lang -> {
+			if( cvScheme.getTitleByLanguage(lang) != null && cvScheme.getDescriptionByLanguage(lang) != null )
+				vocabulary.setTitleDefinition( cvScheme.getTitleByLanguage(lang) , cvScheme.getDescriptionByLanguage(lang), lang );
+		});
+		
+		return vocabulary;
+    }
 }
