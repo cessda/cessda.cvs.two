@@ -22,4 +22,7 @@ public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
 	@Query( "select v from Vocabulary v where v.agencyId = :agencyId" )
 	List<Vocabulary> findByAgency(@Param("agencyId") Long agencyId);
 
+	@Query( "select v from Vocabulary v where v.notation = :notation" )
+	Vocabulary findByNotation(@Param("notation") String notation);
+
 }

@@ -125,4 +125,16 @@ public class CodeServiceImpl implements CodeService {
         Page<Code> result = codeSearchRepository.search(queryStringQuery(query), pageable);
         return result.map(codeMapper::toDto);
     }
+
+	@Override
+	public CodeDTO getByUri(String uri) {
+		Code code = codeRepository.getByUri(uri);
+        return codeMapper.toDto(code);
+	}
+
+	@Override
+	public CodeDTO getByNotation(String notation) {
+		Code code = codeRepository.getByNotation(notation);
+        return codeMapper.toDto(code);
+	}
 }

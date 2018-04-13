@@ -30,11 +30,11 @@ public class Code implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "uri", nullable = false)
+    @Column(name = "uri", length = 240, nullable = false, unique = true)
     private String uri;
     
     @NotNull
-    @Column(name = "notation", nullable = false)
+    @Column(name = "notation", length = 240, nullable = false, unique = true)
     private String notation;
 
     @NotNull
@@ -61,6 +61,13 @@ public class Code implements Serializable {
     @Column(name = "source_language", length = 20, nullable = false)
     @Field(type = FieldType.keyword)
     private String sourceLanguage;
+    
+    // if null, then it is top concept
+    @Column(name = "parent", length = 240)
+    private String parent;
+    
+    @Column(name = "\"position\"")
+    private Integer position;
 
     @Lob
     @Column(name = "title_cs")
@@ -154,10 +161,12 @@ public class Code implements Serializable {
 
     @Lob
     @Column(name = "title_lt")
+    @Field(type = FieldType.text, store = true )
     private String titleLt;
 
     @Lob
     @Column(name = "definition_lt")
+    @Field(type = FieldType.text, store = true )
     private String definitionLt;
 
     @Lob
@@ -192,18 +201,22 @@ public class Code implements Serializable {
 
     @Lob
     @Column(name = "title_sk")
+    @Field(type = FieldType.text, store = true )
     private String titleSk;
 
     @Lob
     @Column(name = "definition_sk")
+    @Field(type = FieldType.text, store = true )
     private String definitionSk;
 
     @Lob
     @Column(name = "title_sl")
+    @Field(type = FieldType.text, store = true )
     private String titleSl;
 
     @Lob
     @Column(name = "definition_sl")
+    @Field(type = FieldType.text, store = true )
     private String definitionSl;
 
     @Lob
@@ -335,8 +348,24 @@ public class Code implements Serializable {
 		this.languages.add(language);
 		return this;
 	}
+	
+    public String getParent() {
+		return parent;
+	}
 
-    public String getTitleCs() {
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public String getTitleCs() {
         return titleCs;
     }
 

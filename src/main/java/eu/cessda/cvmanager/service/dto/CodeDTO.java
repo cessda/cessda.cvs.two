@@ -4,6 +4,7 @@ package eu.cessda.cvmanager.service.dto;
 import javax.persistence.Lob;
 import javax.validation.constraints.*;
 
+import org.gesis.stardat.entity.CVConcept;
 import org.gesis.wts.domain.enumeration.Language;
 
 import java.io.Serializable;
@@ -40,6 +41,10 @@ public class CodeDTO implements Serializable {
     @Size(max = 20)
     private String sourceLanguage;
 
+    private String parent;
+    
+    private Integer position;
+    
     private Long vocabularyId;
     
     @Lob
@@ -145,7 +150,7 @@ public class CodeDTO implements Serializable {
     private String definitionSe;
     
     public CodeDTO setTitleDefinition( String title, String definition, String language) {
-    	return setTitleDefinition(title, definition, Language.valueOf(language));
+    	return setTitleDefinition(title, definition, Language.getEnum(language));
     }
 
     public CodeDTO setTitleDefinition( String title, String definition, Language language) {
@@ -300,6 +305,22 @@ public class CodeDTO implements Serializable {
 			languages = new HashSet<>();
 		this.languages.add(language);
 		return this;
+	}
+	
+	 public String getParent() {
+		return parent;
+	}
+
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 
     public Long getVocabularyId() {
@@ -650,4 +671,109 @@ public class CodeDTO implements Serializable {
             ", definitionSe='" + getDefinitionSe() + "'" +
             "}";
     }
+    
+    public static CodeDTO generateFromCVConcept ( CodeDTO code, CVConcept cvConcept) {
+    	if( code == null) {
+    		code = new CodeDTO();
+    		code.setUri(cvConcept.getId());
+    	}
+		
+		return extractCVSchemeToCodeDTO(cvConcept, code);
+    }
+    
+    public static CodeDTO generateFromCVConcept ( CVConcept cvConcept) {
+    	return generateFromCVConcept(null, cvConcept);
+    }
+
+	private static CodeDTO extractCVSchemeToCodeDTO(CVConcept cvConcept, CodeDTO code) {
+		//TODO: need to change hard coded value
+		code.setVersion( "1.0" );
+		code.setSourceLanguage( Language.ENGLISH.toString().toLowerCase());
+				
+		code.setNotation( cvConcept.getNotation());
+		code.setLanguages( cvConcept.getLanguagesByPrefLabel());
+		Set<String> langs = Language.getEnumAsSetString();
+		
+		cvConcept.getLanguagesByPrefLabel().forEach( lang -> {
+			if( !langs.contains( lang ))
+				return;
+				
+			if( cvConcept.getPrefLabelByLanguage(lang) != null && cvConcept.getDescriptionByLanguage(lang) != null ){
+				String title = cvConcept.getPrefLabelByLanguage(lang);
+				String definition =cvConcept.getDescriptionByLanguage(lang);
+				switch ( Language.getEnum(lang) ) {
+	    		case CZECH:
+	    			code.setTitleCs(title);
+	    			code.setDefinitionCs(definition);
+	    			break;
+	    		case DANISH:
+	    			code.setTitleDa(title);
+	    			code.setDefinitionDa(definition);
+	    			break;
+	    		case DUTCH:
+	    			code.setTitleNl(title);
+	    			code.setDefinitionNl(definition);
+	    			break;
+	    		case ENGLISH:
+	    			code.setTitleEn(title);
+	    			code.setDefinitionEn(definition);
+	    			break;
+	    		case FINNISH:
+	    			code.setTitleFi(title);
+	    			code.setDefinitionFi(definition);
+	    			break;
+	    		case FRENCH:
+	    			code.setTitleFr(title);
+	    			code.setDefinitionFr(definition);
+	    			break;
+	    		case GERMAN:
+	    			code.setTitleDe(title);
+	    			code.setDefinitionDe(definition);
+	    			break;
+	    		case GREEK:
+	    			code.setTitleEl(title);
+	    			code.setDefinitionEl(definition);
+	    			break;
+	    		case HUNGARIAN:
+	    			code.setTitleHu(title);
+	    			code.setDefinitionHu(definition);
+	    			break;
+	    		case LITHUANIAN:
+	    			code.setTitleLt(title);
+	    			code.setDefinitionLt(definition);
+	    			break;
+	    		case NORWEGIAN:
+	    			code.setTitleNo(title);
+	    			code.setDefinitionNo(definition);
+	    			break;
+	    		case PORTUGUESE:
+	    			code.setTitleNo(title);
+	    			code.setDefinitionNo(definition);
+	    			break;
+	    		case ROMANIAN:
+	    			code.setTitleRo(title);
+	    			code.setDefinitionRo(definition);
+	    			break;
+	    		case SLOVAK:
+	    			code.setTitleSk(title);
+	    			code.setDefinitionSk(definition);
+	    			break;
+	    		case SLOVENIAN:
+	    			code.setTitleSl(title);
+	    			code.setDefinitionSl(definition);
+	    			break;
+	    		case SPANISH:
+	    			code.setTitleEs(title);
+	    			code.setDefinitionEs(definition);
+	    			break;
+	    		case SWEDISH:
+	    			code.setTitleSe(title);
+	    			code.setDefinitionSe(definition);
+	    			break;
+				}
+			}
+		});
+		
+		return code;
+	}
 }

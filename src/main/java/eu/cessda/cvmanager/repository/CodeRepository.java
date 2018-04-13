@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import eu.cessda.cvmanager.domain.Code;
 
 import org.springframework.data.jpa.repository.*;
+import org.springframework.data.repository.query.Param;
 
 
 /**
@@ -12,5 +13,11 @@ import org.springframework.data.jpa.repository.*;
  */
 @Repository
 public interface CodeRepository extends JpaRepository<Code, Long> {
+
+	@Query( "select c from Code c where c.uri = :uri" )
+	Code getByUri(@Param("uri") String uri);
+
+	@Query( "select c from Code c where c.notation = :notation" )
+	Code getByNotation(@Param("notation")String notation);
 
 }

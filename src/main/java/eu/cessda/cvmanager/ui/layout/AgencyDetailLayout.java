@@ -68,7 +68,7 @@ import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamRes
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
@@ -84,7 +84,7 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 	private final AgencyView agencyView;
 	private final ConfigurationService configurationService;
 	private final VocabularyService vocabularyService;
-	private final CvManagerService cvManagerService;
+	private final StardatDDIService stardatDDIService;
 	private final ConfigurationService configService;
 	
 	private AgencyDTO agency;
@@ -125,7 +125,7 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 	public AgencyDetailLayout(I18N i18n,  UIEventBus eventBus,
 			AgencyView agencyView, AgencyService agencyService,
 			 ConfigurationService configurationService, 
-			 VocabularyService vocabularyService, CvManagerService cvManagerService, 
+			 VocabularyService vocabularyService, StardatDDIService stardatDDIService, 
 			 ConfigurationService configService) {
 		super();
 		this.i18n = i18n;
@@ -133,7 +133,7 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 		this.eventBus = eventBus;
 		this.configurationService = configurationService;
 		this.vocabularyService = vocabularyService;
-		this.cvManagerService = cvManagerService;
+		this.stardatDDIService = stardatDDIService;
 		this.configService = configService;
 		
 		initLayout();
@@ -205,7 +205,7 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 		List<VocabularyDTO> vocabularyDTOs = vocabularyService.findByAgency( agency.getId() );
 		
 		for(VocabularyDTO vocabularyDto : vocabularyDTOs ) {
-			List<DDIStore> ddiStoreScheme = cvManagerService.findByIdAndElementType(vocabularyDto.getUri(),
+			List<DDIStore> ddiStoreScheme = stardatDDIService.findByIdAndElementType(vocabularyDto.getUri(),
 					DDIElement.CVSCHEME);
 			if(ddiStoreScheme.size() == 1) {
 				CVScheme scheme = new CVScheme(ddiStoreScheme.get(0));

@@ -28,7 +28,7 @@ import com.vaadin.ui.TextField;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
 public class DialogMultipleOption extends MWindow {

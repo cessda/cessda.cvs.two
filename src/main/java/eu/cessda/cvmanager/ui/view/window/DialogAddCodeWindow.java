@@ -34,7 +34,7 @@ import com.vaadin.ui.TextField;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -47,7 +47,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
-	private final CvManagerService cvManagerService;
+	private final StardatDDIService stardatDDIService;
 	private final VocabularyService vocabularyService;
 	private final CodeService codeService;
 
@@ -73,7 +73,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private VocabularyDTO vocabulary;
 	private Language language;
 
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, VocabularyService vocabularyService, CodeService codeService,
+	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, CodeService codeService,
 			CVScheme cvSch, CVConcept newCode, CVConcept parent, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, I18N i18n, Locale locale) {
 		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage( Language.getEnumByName( vocabularyDTO.getSourceLanguage()).toString()) : parent.getNotation() )));
 		
@@ -83,7 +83,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		this.i18n = i18n;
 		this.vocabulary = vocabularyDTO;
 		this.agency = agencyDTO;
-		this.cvManagerService = cvManagerService;
+		this.stardatDDIService = stardatDDIService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
 
@@ -194,19 +194,19 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		// CVConcept cv = binder.getBean();
 		log.trace(getTheCode().getPrefLabelByLanguage( language.toString() ));
 		getTheCode().save();
-		DDIStore ddiStore = cvManagerService.saveElement(getTheCode().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code");
+		DDIStore ddiStore = stardatDDIService.saveElement(getTheCode().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code");
 		if(parentCode == null ) // root concept
 		{
 			cvScheme.addOrderedMemberList(ddiStore.getElementId());
 			cvScheme.save();
-			DDIStore ddiStoreCv = cvManagerService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update Top Concept");
+			DDIStore ddiStoreCv = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update Top Concept");
 		}
 		else // child code, add narrower data in parent
 		{
 			//parentCode.addOrderedNarrowerList("http://lod.gesis.org/thesoz/concept_" + ddiStore.getElementId());
 			parentCode.addOrderedNarrowerList( ddiStore.getElementId());
 			parentCode.save();
-			cvManagerService.saveElement(parentCode.ddiStore, "User", "Add Code");
+			stardatDDIService.saveElement(parentCode.ddiStore, "User", "Add Code");
 		}
 		
 		// save on database

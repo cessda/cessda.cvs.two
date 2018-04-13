@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import com.vaadin.data.TreeData;
 
 @Service
-public class CvManagerService {
+public class StardatDDIService {
 	public final ConfigurationService configService;
 	
 	public final RestClient restClient;
 
-	public CvManagerService(ConfigurationService configService) {
+	public StardatDDIService(ConfigurationService configService) {
 		this.configService = configService;
 		
 		this.restClient = new RestClient( configService.getDdiflatdbRestUrl() );

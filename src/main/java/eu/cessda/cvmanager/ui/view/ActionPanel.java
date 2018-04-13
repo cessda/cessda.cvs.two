@@ -29,7 +29,7 @@ import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
@@ -43,7 +43,7 @@ public class ActionPanel extends CustomComponent{
 	private I18N i18n;
 	private Locale locale = UI.getCurrent().getLocale();
 	private final EventBus.UIEventBus eventBus;
-	private final CvManagerService cvManagerService;
+	private final StardatDDIService stardatDDIService;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
 	
@@ -77,7 +77,7 @@ public class ActionPanel extends CustomComponent{
 	public ActionPanel( CvManagerView cvManagerView, AgencyService agencyService, VocabularyService vocabularyService) {
 		this.cvManagerView = cvManagerView;
 		this.eventBus = cvManagerView.getEventBus();
-		this.cvManagerService = cvManagerView.getCvManagerService();
+		this.stardatDDIService = cvManagerView.getCvManagerService();
 		this.i18n = cvManagerView.i18n;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -212,7 +212,7 @@ public class ActionPanel extends CustomComponent{
 		newCvScheme.createId();
 		newCvScheme.setContainerId(newCvScheme.getId());
 
-		Window window = new DialogCVSchemeWindow(eventBus, cvManagerService, agencyService, vocabularyService, newCvScheme, i18n);
+		Window window = new DialogCVSchemeWindow(eventBus, stardatDDIService, agencyService, vocabularyService, newCvScheme, i18n);
 		getUI().addWindow(window);
 	}
 	
@@ -224,7 +224,7 @@ public class ActionPanel extends CustomComponent{
 	private void doCvAddTranslation(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
-		Window window = new DialogAddLanguageWindow(eventBus, cvManagerService, cvManagerView.getCvItem().getCvScheme(), cvManagerView);
+		Window window = new DialogAddLanguageWindow(eventBus, stardatDDIService, cvManagerView.getCvItem().getCvScheme(), cvManagerView, vocabularyService);
 		getUI().addWindow(window);
 	}
 	

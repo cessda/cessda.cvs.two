@@ -23,6 +23,7 @@ import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.provider.Query;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -30,7 +31,8 @@ import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.CvManagerView;
 import eu.cessda.cvmanager.ui.view.DetailView;
@@ -46,7 +48,8 @@ public class DialogAddLanguageWindow extends MWindow {
 	private final EventBus.UIEventBus eventBus;
 	private final AgencyDTO agency;
 	private final VocabularyDTO vocabulary;
-	private final CvManagerService cvManagerService;
+	private final StardatDDIService stardatDDIService;
+	private final VocabularyService vocabularyService;
 
 	private Binder<CVScheme> binder = new Binder<CVScheme>();
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -65,22 +68,23 @@ public class DialogAddLanguageWindow extends MWindow {
 	private TextArea description = new TextArea("Definition*");
 	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 	private Button storeCode = new Button("Save");
-
+	
 	private CVScheme cvScheme;
 	private Language language;
 	private CvManagerView cvManagerView;
 
 	//private EditorView theView;
 
-	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService,  CVScheme cS, 
-			CvManagerView cvManagerView) {
+	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService,  CVScheme cS, 
+			CvManagerView cvManagerView, VocabularyService vocabularyService) {
 		super("Add Language");
 		this.eventBus = eventBus;
 		this.cvScheme = cS;
 		this.cvManagerView = cvManagerView;
-		this.cvManagerService = cvManagerService;
+		this.stardatDDIService = stardatDDIService;
 		this.agency = cvManagerView.getAgency();
 		this.vocabulary = cvManagerView.getVocabulary();
+		this.vocabularyService = vocabularyService;
 		
 		// TODO: use list language from vocabulary if possible
 		List<Language> availableLanguages = new ArrayList<>();
@@ -99,6 +103,10 @@ public class DialogAddLanguageWindow extends MWindow {
 		} else {
 			availableLanguages = Language.getFilteredLanguage(userLanguages, cvScheme.getLanguagesByTitle());
 		}
+		
+		Language sourceLang = Language.getEnumByName( vocabulary.getSourceLanguage() );
+		// remove with sourceLanguage option if exist
+		availableLanguages.remove( sourceLang );
 		
 		lTitle.withStyleName( "required" );
 		lLanguage.withStyleName( "required" );
@@ -142,12 +150,6 @@ public class DialogAddLanguageWindow extends MWindow {
 		setCvScheme(cvScheme);;
 
 		binder.setBean(getCvScheme());
-
-		binder.bind(tfTitle, concept -> getTitleByLanguage(concept),
-				(concept, value) -> setTitleByLanguage(concept, value));
-
-		binder.bind(description, concept -> getDescriptionByLanguage(concept),
-				(concept, value) -> setDescriptionByLanguage(concept, value));
 
 		storeCode.addClickListener(event -> {
 			saveCV();
@@ -220,20 +222,38 @@ public class DialogAddLanguageWindow extends MWindow {
 	}
 
 	private void saveCV() {
-		// TODO: validation with binding
-		if( tfTitle.getValue() == null || tfTitle.getValue().isEmpty())
-			return;
-		
-		if( description.getValue() == null || description.getValue().isEmpty())
+		if(!isInputValid())
 			return;
 		
 		getCvScheme().save();
-		DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add CV translation");
-		// TODO: store the variable and index
+		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add CV translation");
+		// store the variable and index
+		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
+		vocabularyService.save(vocabulary);
 		
 		eventBus.publish( this, ddiStore);
 		close();
 		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
+	}
+	
+	private boolean isInputValid() {
+		getCvScheme().setTitleByLanguage(language.toString(), tfTitle.getValue());
+		getCvScheme().setDescriptionByLanguage(language.toString(), description.getValue());
+		
+		binder
+		.forField( tfTitle)
+		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+		.bind(concept -> getTitleByLanguage(concept),
+			(concept, value) -> setTitleByLanguage(concept, value));
+
+		binder
+		.forField( description)
+		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 5000 ))
+		.bind(concept -> getDescriptionByLanguage(concept),
+			(concept, value) -> setDescriptionByLanguage(concept, value));
+		
+		binder.validate();
+		return binder.isValid();
 	}
 	
 	private CVScheme setTitleByLanguage(CVScheme concept, String value) {

@@ -81,7 +81,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
@@ -103,7 +103,7 @@ public class DetailView extends CvManagerView {
 	private final VocabularyService vocabularyService;
 	private final CodeService codeService;
 	
-	private String selectedLang = "en";
+	private Language selectedLang = Language.ENGLISH;
 	private FormMode formMode;
 
 	private MCssLayout buttonLayout = new MCssLayout();
@@ -177,9 +177,9 @@ public class DetailView extends CvManagerView {
 	private ExportLayout exportLayoutContent;
 
 	public DetailView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
-			CvManagerService cvManagerService, SecurityService securityService, AgencyService agencyService,
+			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, CodeService codeService, TemplateEngine templateEngine) {
-		super(i18n, eventBus, configService, cvManagerService, securityService, agencyService, vocabularyService, codeService, DetailView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, DetailView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -257,7 +257,7 @@ public class DetailView extends CvManagerView {
 					String selectedLanguage = mappedParams.get("lang");
 					if( selectedLanguage != null ) {
 						cvItem.setCurrentLanguage( mappedParams.get("lang") );
-						selectedLang = selectedLanguage;
+						selectedLang = Language.getEnum( selectedLanguage );
 					}
 				}
 				LoginView.NAVIGATETO_VIEWNAME = DetailView.VIEW_NAME + "/" + itemPathPart[0];
@@ -305,7 +305,7 @@ public class DetailView extends CvManagerView {
 	private void refreshCvScheme() {
 		languageLayout.removeAllComponents();
 		
-		List<DDIStore> ddiSchemes = cvManagerService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
+		List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
 		
 		// find in Vocabulary entity as well
 		setVocabulary(  vocabularyService.getByUri( cvItem.getCurrentCvId() ) );
@@ -324,10 +324,10 @@ public class DetailView extends CvManagerView {
 			if( getAgency() == null)
 				setAgency( agencyService.findOne(1L) );
 			
+			setVocabulary( VocabularyDTO.generateFromCVScheme( cvItem.getCvScheme()) );
+			
 			getVocabulary().setAgencyId( getAgency().getId());
 			getVocabulary().setAgencyName( getAgency().getName());
-						
-			setVocabulary( VocabularyDTO.generateFromCVScheme( cvItem.getCvScheme()) );
 		} else {
 			setAgency( agencyService.findByName( getVocabulary().getAgencyName()));
 		}
@@ -342,7 +342,7 @@ public class DetailView extends CvManagerView {
 				applyButtonStyle(e.getButton());
 				
 				cvItem.setCurrentLanguage(e.getButton().getCaption().toLowerCase());
-				setSelectedLang(e.getButton().getCaption().toLowerCase());
+				setSelectedLang( Language.getEnum( e.getButton().getCaption().toLowerCase()) );
 				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
 				
 				if (formMode.equals(FormMode.view)) {
@@ -368,13 +368,13 @@ public class DetailView extends CvManagerView {
 	}
 	
 	private void doSaveConcept() {
-		if( selectedLang.equals("en")) {
+		if( selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() )  )) {
 			List<CVEditor> editorSet = cvItem.getCvScheme().getOwnerAgency();
 			editorSet.clear();
 			editorSet.add( editorCb.getValue() );
 		}
 		cvItem.getCvScheme().save();
-		DDIStore ddiStore = cvManagerService.saveElement(cvItem.getCvScheme().ddiStore, "Peter", "minor edit");
+		DDIStore ddiStore = stardatDDIService.saveElement(cvItem.getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "CV updated");
 		
 		// update vocabulary on database as well
 		vocabularyService.save(vocabulary);
@@ -421,14 +421,14 @@ public class DetailView extends CvManagerView {
 		MCssLayout titleSmallOl = new MCssLayout();
 		titleSmallOl.withFullWidth().add(
 				lTitleOl.withWidth("120px").withStyleName("leftPart"),
-				new MLabel(cvItem.getCvScheme().getTitleByLanguage(selectedLang)).withStyleName("rightPart"));
+				new MLabel(cvItem.getCvScheme().getTitleByLanguage(selectedLang.toString())).withStyleName("rightPart"));
 
 		MCssLayout descriptionOl = new MCssLayout();
 		descriptionOl.withFullWidth().add(
 				lDefinitionOl.withWidth("120px").withStyleName("leftPart"),
-				new MLabel(cvItem.getCvScheme().getDescriptionByLanguage(selectedLang)).withStyleName("rightPart"));
+				new MLabel(cvItem.getCvScheme().getDescriptionByLanguage(selectedLang.toString())).withStyleName("rightPart"));
 
-		if (selectedLang.equals(configService.getDefaultSourceLanguage())) {
+		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 		}
@@ -437,11 +437,11 @@ public class DetailView extends CvManagerView {
 		langSec.withFullWidth().add(
 				new MCssLayout().withWidth("33%")
 						.add(lLang.withWidth("120px").withStyleName("leftPart"),
-								new MLabel(selectedLang).withStyleName("rightPart")),
+								new MLabel(selectedLang.toString()).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						lVersion.withWidth("180px").withStyleName("leftPart"),
-						new MLabel(cvItem.getCvScheme().getVersion().getPublicationVersion() + (selectedLang.equals("en") ? ""
-								: "-" + selectedLang)).withStyleName("rightPart")),
+						new MLabel(cvItem.getCvScheme().getVersion().getPublicationVersion() + (selectedLang.toString().equals("en") ? ""
+								: "-" + selectedLang.toString())).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						lDate.withWidth("140px").withStyleName("leftPart"),
 						new MLabel(cvItem.getCvScheme().getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
@@ -490,7 +490,7 @@ public class DetailView extends CvManagerView {
 
 		MCssLayout titleSmall = new MCssLayout();
 		titleSmall.withFullWidth().add( lTitle2.withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals("en") ? titleField
+				selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() )) ? titleField
 						: new MLabel(cvItem.getCvScheme().getTitleByLanguage("en")).withStyleName("rightPart"));
 
 		TextArea descField = new TextArea();
@@ -499,7 +499,7 @@ public class DetailView extends CvManagerView {
 
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(lDefinition2.withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals("en") ? descField
+				selectedLang.equals(Language.getEnumByName( vocabulary.getSourceLanguage() )) ? descField
 						: new MLabel(cvItem.getCvScheme().getDescriptionByLanguage("en")).withStyleName("rightPart"));
 
 		MTextField codeField = new MTextField();
@@ -508,7 +508,7 @@ public class DetailView extends CvManagerView {
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode2.withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals("en") ? codeField : new MLabel(cvItem.getCvScheme().getCode()).withStyleName("rightPart"));
+				selectedLang.equals(Language.getEnumByName( vocabulary.getSourceLanguage() )) ? codeField : new MLabel(cvItem.getCvScheme().getCode()).withStyleName("rightPart"));
 		
 		Binder<CVScheme> cvSchemeBinder = new Binder<>();
 		cvSchemeBinder.setBean(cvItem.getCvScheme());
@@ -540,7 +540,7 @@ public class DetailView extends CvManagerView {
 										.withStyleName("rightPart")));
 
 		MTextField titleFieldOl = new MTextField();
-		titleFieldOl.withStyleName("editField").withValue(cvItem.getCvScheme().getTitleByLanguage(selectedLang));
+		titleFieldOl.withStyleName("editField").withValue(cvItem.getCvScheme().getTitleByLanguage(selectedLang.toString()));
 
 		MCssLayout titleSmallOl = new MCssLayout();
 		titleSmallOl.withFullWidth().add(
@@ -549,7 +549,7 @@ public class DetailView extends CvManagerView {
 
 		TextArea descFieldOl = new TextArea();
 		descFieldOl.setStyleName("editField");
-		descFieldOl.setValue(cvItem.getCvScheme().getDescriptionByLanguage(selectedLang));
+		descFieldOl.setValue(cvItem.getCvScheme().getDescriptionByLanguage(selectedLang.toString()));
 
 		MCssLayout descriptionOl = new MCssLayout();
 		descriptionOl.withFullWidth().add(
@@ -558,27 +558,27 @@ public class DetailView extends CvManagerView {
 		
 		// Binder other language
 		cvSchemeBinder.bind( titleFieldOl, 
-				cScheme -> cScheme.getTitleByLanguage( getSelectedLang()),
-				(cScheme, value) -> cScheme.setTitleByLanguage( getSelectedLang() , value) );
+				cScheme -> cScheme.getTitleByLanguage( getSelectedLang().toString()),
+				(cScheme, value) -> cScheme.setTitleByLanguage( getSelectedLang().toString() , value) );
 		
 		cvSchemeBinder.bind( descFieldOl, 
-				cScheme -> cScheme.getDescriptionByLanguage( getSelectedLang() ),
-				(cScheme, value) -> cScheme.setDescriptionByLanguage( getSelectedLang() , value) );
+				cScheme -> cScheme.getDescriptionByLanguage( getSelectedLang().toString() ),
+				(cScheme, value) -> cScheme.setDescriptionByLanguage( getSelectedLang().toString() , value) );
 
 		MCssLayout langSecOl = new MCssLayout();
 		langSecOl.withFullWidth().add(
 				new MCssLayout().withWidth("33%")
 						.add(lLang3.withWidth("120px").withStyleName("leftPart"),
-								new MLabel(selectedLang).withStyleName("rightPart")),
+								new MLabel(selectedLang.toString()).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						lVersion3.withWidth("180px").withStyleName("leftPart"),
-						new MLabel(cvItem.getCvScheme().getVersion().getPublicationVersion() + (selectedLang.equals("en") ? ""
-								: "-" + selectedLang)).withStyleName("rightPart")),
+						new MLabel(cvItem.getCvScheme().getVersion().getPublicationVersion() + (selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() )) ? ""
+								: "-" + selectedLang.toString())).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						lDate3.withWidth("140px").withStyleName("leftPart"),
 						new MLabel(cvItem.getCvScheme().getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
-		if (selectedLang.equals( configService.getDefaultSourceLanguage())) {
+		if (selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ))) {
 			topHead.setVisible( false );
 			topHeadEdit.setVisible( true );
 			titleSmallOl.setVisible(false);
@@ -639,11 +639,11 @@ public class DetailView extends CvManagerView {
 			.setExpandRatio(1)
 			.setId("prefLabelSl");
 
-		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
-			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang))
-				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang ))
+		if( !selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ) ))
+			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang.toString()))
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 				//.setEditorBinding(prefLabelBinding)
-				.setEditorComponent(prefLanguageEditor, (concept, value) -> concept.setPrefLabelByLanguage( selectedLang, value))
+				.setEditorComponent(prefLanguageEditor, (concept, value) -> concept.setPrefLabelByLanguage( selectedLang.toString(), value))
 				.setExpandRatio(1)
 				.setId("prefLabelTl");// Component(prefLanguageEditor,
 		
@@ -654,11 +654,11 @@ public class DetailView extends CvManagerView {
 				.setExpandRatio(3)
 				.setId("definitionSl");
 		
-		if( !selectedLang.equals( configService.getDefaultSourceLanguage() ))
+		if( !selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ) ))
 			detailTreeGrid.addColumn(concept -> {
-				return new Label( concept.getDescriptionByLanguage(selectedLang));
+				return new Label( concept.getDescriptionByLanguage(selectedLang.toString()));
 			}, new ComponentRenderer())
-			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang ))
+			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString() ))
 			.setExpandRatio(3)
 			.setId("definitionTl");
 		
@@ -666,7 +666,7 @@ public class DetailView extends CvManagerView {
 		detailTreeGrid.addItemClickListener( event -> {
 			if( SecurityContextHolder.getContext().getAuthentication() != null && event.getMouseEventDetails().isDoubleClick() ) {
 				CVConcept selectedRow = event.getItem();
-				Window window = new DialogEditCodeWindow(eventBus, cvManagerService, cvItem.getCvScheme(), selectedRow, selectedLang);
+				Window window = new DialogEditCodeWindow(eventBus, stardatDDIService, cvItem.getCvScheme(), selectedRow, selectedLang.toString());
 				getUI().addWindow(window);
 			}
 		});
@@ -765,18 +765,18 @@ public class DetailView extends CvManagerView {
 	                					Integer targetNodeLevel = event.getDropTargetRowDepth().get();
 	                					
 	                					if( targetNodeLevel == 0 ) { // root concept, reorder
-	                						cvManagerService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeData.getRootItems());
+	                						stardatDDIService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeData.getRootItems());
 	                					} else { // reorder narrower
-	                						cvManagerService.storeNarrowerConcept( targetNodeParent, cvCodeTreeData.getChildren( targetNodeParent ));
+	                						stardatDDIService.storeNarrowerConcept( targetNodeParent, cvCodeTreeData.getChildren( targetNodeParent ));
 	                					}
 	                					  
 	                					// dragged node not from topConcepts, need to reorder the narrower list
 	                					// from previous parent
 	                					if( !parentSame ) {
 		                					if( draggedNodeParent != null ) {
-		                						cvManagerService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeData.getChildren( draggedNodeParent ));
+		                						stardatDDIService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeData.getChildren( draggedNodeParent ));
 		                					} else {
-		                						cvManagerService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeData.getRootItems());
+		                						stardatDDIService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeData.getRootItems());
 		                					}
 	                					}
 	                				} 
@@ -790,12 +790,12 @@ public class DetailView extends CvManagerView {
             							
             							// update topconcept, if dragged top concept is null
             							if( draggedNodeParent == null ) { // dragged node was topconcept
-            								cvManagerService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeData.getRootItems());
+            								stardatDDIService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeData.getRootItems());
             							} else {
-            								cvManagerService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeData.getChildren( draggedNodeParent ));
+            								stardatDDIService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeData.getChildren( draggedNodeParent ));
             							}
             							// update new parent child order
-            							cvManagerService.storeNarrowerConcept( targetRow, cvCodeTreeData.getChildren( targetRow ));
+            							stardatDDIService.storeNarrowerConcept( targetRow, cvCodeTreeData.getChildren( targetRow ));
 	                				}
 	                				draggedItems = null;
 	                			})
@@ -812,7 +812,7 @@ public class DetailView extends CvManagerView {
 		cvCodeTreeData = dataProvider.getTreeData();
 		cvCodeTreeData.clear();
 		// assign the tree structure
-		List<DDIStore> ddiConcepts = cvManagerService.findByIdAndElementType(cvItem.getCvScheme().getContainerId(), DDIElement.CVCONCEPT);
+		List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvItem.getCvScheme().getContainerId(), DDIElement.CVCONCEPT);
 		CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvItem.getCvScheme(), cvCodeTreeData);
 		
 		cvItem.setCvCodeTreeData(cvCodeTreeData);
@@ -859,11 +859,11 @@ public class DetailView extends CvManagerView {
 		}
 	}
 
-	public String getSelectedLang() {
+	public Language getSelectedLang() {
 		return selectedLang;
 	}
 
-	public void setSelectedLang(String selectedLang) {
+	public void setSelectedLang(Language selectedLang) {
 		this.selectedLang = selectedLang;
 	}
 
@@ -910,7 +910,7 @@ public class DetailView extends CvManagerView {
 				newCVConcept.createId();
 				newCVConcept.setContainerId( cvItem.getCvScheme().getContainerId());
 
-				DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, cvManagerService, vocabularyService, codeService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
+				DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
 				getUI().addWindow(dialogAddCodeWindow1);
 				
 				break;
@@ -921,7 +921,7 @@ public class DetailView extends CvManagerView {
 					Notification.show("Please add CV translation first");
 				}
 				else {
-					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, cvManagerService, vocabularyService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
+					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), getVocabulary(), getAgency(), code, i18n, UI.getCurrent().getLocale());
 					getUI().addWindow( windowTranslate );
 				}
 				break;
@@ -931,7 +931,7 @@ public class DetailView extends CvManagerView {
 				childConcept.createId();
 				childConcept.setContainerId( cvItem.getCvScheme().getContainerId());
 
-				DialogAddCodeWindow dialogAddCodeWindow2 = new DialogAddCodeWindow(eventBus, cvManagerService, vocabularyService, codeService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
+				DialogAddCodeWindow dialogAddCodeWindow2 = new DialogAddCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
 				getUI().addWindow( dialogAddCodeWindow2 );
 				break;
 			case CVCONCEPT_DELETED:
@@ -942,7 +942,7 @@ public class DetailView extends CvManagerView {
 		
 					dialog -> {
 						if( dialog.isConfirmed() ) {
-							cvManagerService.deleteConceptTree(cvCodeTreeData, cvItem.getCvConcept());
+							stardatDDIService.deleteConceptTree(cvCodeTreeData, cvItem.getCvConcept());
 							cvCodeTreeData.removeItem( cvItem.getCvConcept() );
 							detailTreeGrid.getDataProvider().refreshAll();
 						}

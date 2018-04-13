@@ -27,6 +27,7 @@ import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.provider.Query;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -39,8 +40,9 @@ import com.vaadin.ui.Window;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
@@ -55,7 +57,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private static final long serialVersionUID = 8118228014482059473L;
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
-	private final CvManagerService cvManagerService;
+	private final StardatDDIService stardatDDIService;
 	private final VocabularyService vocabularyService;
 	private final CodeService codeService;
 
@@ -83,40 +85,42 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private Button storeCode = new Button("Save");
 
 	private CVScheme cvScheme;
-	private CVConcept code;
+	private CVConcept cvConcept;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
+	private CodeDTO code;
 	private Language language;
 	
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
-	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, VocabularyService vocabularyService, CodeService codeService,
-			CVScheme cvScheme, CVConcept cvConcept, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, I18N i18n, Locale locale) {
+	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, CodeService codeService,
+			CVScheme cvScheme, CVConcept cvConcept, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, CodeDTO codeDTO, I18N i18n, Locale locale) {
 		super( "Add Code Translation");
 		this.cvScheme = cvScheme;
-		this.code = cvConcept;
+		this.cvConcept = cvConcept;
 		
 		this.eventBus = eventBus;
 		this.i18n = i18n;
 		this.vocabulary = vocabularyDTO;
 		this.agency = agencyDTO;
-		this.cvManagerService = cvManagerService;
+		this.stardatDDIService = stardatDDIService;
 		this.vocabularyService = vocabularyService;
+		this.code = codeDTO;
 		this.codeService = codeService;
 		
 		Language sourceLang = Language.getEnumByName( vocabulary.getSourceLanguage() );
 		
-		codeText.setValue( code.getPrefLabelByLanguage( sourceLang.toString() ));
+		codeText.setValue( cvConcept.getPrefLabelByLanguage( sourceLang.toString() ));
 		codeText.withFullWidth()
 			.withReadOnly( true );
 		
 		sourceTitle.withFullWidth();
-		sourceTitle.setValue( code.getPrefLabelByLanguage( sourceLang.toString() ) );
+		sourceTitle.setValue( cvConcept.getPrefLabelByLanguage( sourceLang.toString() ) );
 		sourceDescription.setSizeFull();
 		
-		sourceDescription.setValue( code.getDescriptionByLanguage( sourceLang.toString() ) );
+		sourceDescription.setValue( cvConcept.getDescriptionByLanguage( sourceLang.toString() ) );
 		sourceDescription.setReadOnly( true );
 		sourceTitle.setReadOnly( true );
 		
@@ -171,8 +175,8 @@ public class DialogTranslateCodeWindow extends MWindow {
 			preferedLabel.setCaption( "Code (" + language + ")*");
 			description.setCaption( "Definition ("+ language +")*");
 			
-			preferedLabel.setValue( code.getPrefLabelByLanguage(language.toString()));
-			description.setValue( code.getDescriptionByLanguage(language.toString()) );
+			preferedLabel.setValue( cvConcept.getPrefLabelByLanguage(language.toString()));
+			description.setValue( cvConcept.getDescriptionByLanguage(language.toString()) );
 			
 			if( e.getValue().equals( sourceLang )) {
 				sourceRowA.setVisible( false );
@@ -194,13 +198,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 			sourceRowB.setVisible( true );
 		}
 
-		binder.setBean(code);
-
-		binder.bind(preferedLabel, concept -> getPrefLabelByLanguage(concept),
-				(concept, value) -> setPrefLabelByLanguage(concept, value));
-
-		binder.bind(description, concept -> getDescriptionByLanguage(concept),
-				(concept, value) -> setDescriptionByLanguage(concept, value));
+		binder.setBean(cvConcept);
 
 		storeCode.addClickListener(event -> {
 			saveCode();
@@ -273,14 +271,39 @@ public class DialogTranslateCodeWindow extends MWindow {
 	}
 
 	private void saveCode() {
-		// CVConcept cv = binder.getBean();
-		log.trace(code.getPrefLabelByLanguage(language.toString()));
-		code.save();
-		DDIStore ddiStore = cvManagerService.saveElement(code.ddiStore, "Peter", "minor edit");
+		if(!isInputValid())
+			return;
+		
+		log.trace(cvConcept.getPrefLabelByLanguage(language.toString()));
+		cvConcept.save();
+		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, "Peter", "minor edit");
+		// store the code and index
+		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
+		codeService.save(code);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 		
 		this.close();
+	}
+	
+	private boolean isInputValid() {
+		cvConcept.setPrefLabelByLanguage(language.toString(), preferedLabel.getValue());
+		cvConcept.setDescriptionByLanguage(language.toString(), description.getValue());
+		
+		binder
+			.forField( preferedLabel )
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind( concept -> getPrefLabelByLanguage(concept),
+				(concept, value) -> setPrefLabelByLanguage(concept, value));
+
+		binder
+			.forField( description )
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind( concept -> getDescriptionByLanguage(concept),
+				(concept, value) -> setDescriptionByLanguage(concept, value));
+		
+		binder.validate();
+		return binder.isValid();
 	}
 
 	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {

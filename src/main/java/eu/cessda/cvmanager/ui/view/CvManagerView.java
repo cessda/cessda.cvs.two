@@ -33,8 +33,9 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 
 public abstract class CvManagerView extends MVerticalLayout implements MView, Translatable {
@@ -47,7 +48,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	protected final I18N i18n;
 	protected final EventBus.UIEventBus eventBus;
 	protected final ConfigurationService configService;
-	protected final CvManagerService cvManagerService;
+	protected final StardatDDIService stardatDDIService;
 	protected final SecurityService securityService;
 	protected final AgencyService agencyService;
 	protected final VocabularyService vocabularyService;
@@ -58,6 +59,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	protected CvItem cvItem = new CvItem();
 	protected AgencyDTO agency;
 	protected VocabularyDTO vocabulary;
+	protected CodeDTO code;
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
 	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
@@ -65,12 +67,12 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	protected MVerticalLayout rightContainer = new MVerticalLayout();
 	
 	public CvManagerView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
-			CvManagerService cvManagerService, SecurityService securityService, AgencyService agencyService,
+			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService,  CodeService codeService,	String actionType) {
 		this.i18n = i;
 		this.eventBus = eventBus;
 		this.configService = configService;
-		this.cvManagerService = cvManagerService;
+		this.stardatDDIService = stardatDDIService;
 		this.securityService = securityService;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -147,8 +149,8 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 		return eventBus;
 	}
 
-	public CvManagerService getCvManagerService() {
-		return cvManagerService;
+	public StardatDDIService getCvManagerService() {
+		return stardatDDIService;
 	}
 
 	public ActionType getActionType() {
@@ -186,4 +188,13 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	public void setVocabulary(VocabularyDTO vocabulary) {
 		this.vocabulary = vocabulary;
 	}
+
+	public CodeDTO getCode() {
+		return code;
+	}
+
+	public void setCode(CodeDTO code) {
+		this.code = code;
+	}
+	
 }

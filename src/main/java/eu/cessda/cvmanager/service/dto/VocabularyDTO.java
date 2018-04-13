@@ -10,6 +10,7 @@ import org.gesis.wts.service.dto.AgencyDTO;
 
 import java.io.Serializable;
 import java.util.Set;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -151,7 +152,7 @@ public class VocabularyDTO implements Serializable {
     private String definitionSe;
     
     public VocabularyDTO setTitleDefinition( String title, String definition, String language) {
-    	return setTitleDefinition(title, definition, Language.valueOf(language));
+    	return setTitleDefinition(title, definition, Language.getEnum(language));
     }
 
     public VocabularyDTO setTitleDefinition( String title, String definition, Language language) {
@@ -668,23 +669,108 @@ public class VocabularyDTO implements Serializable {
     public boolean isPersisted() {
 		return id != null;
 	}
+    public static VocabularyDTO generateFromCVScheme ( VocabularyDTO vocabulary, CVScheme cvScheme) {
+    	if( vocabulary == null ) {
+    		vocabulary = new VocabularyDTO();
+			vocabulary.setUri(cvScheme.getId());
+    	}
+    	
+    	return extractCVSchemeToVocabularyDTO(cvScheme, vocabulary);
+    }
     
     public static VocabularyDTO generateFromCVScheme ( CVScheme cvScheme) {
-    	VocabularyDTO vocabulary = new VocabularyDTO();
-		vocabulary.setUri(cvScheme.getId());
-		
-		//TODO: need to change hard.coded value
+    	return generateFromCVScheme( null, cvScheme);
+    }
+
+	private static VocabularyDTO extractCVSchemeToVocabularyDTO(CVScheme cvScheme, VocabularyDTO vocabulary) {
+		//TODO: need to change hard coded value
 		vocabulary.setVersion( "1.0" );
 		vocabulary.setSourceLanguage( Language.ENGLISH.toString().toLowerCase());
 		
 		vocabulary.setNotation( cvScheme.getCode());
 		vocabulary.setLanguages( cvScheme.getLanguagesByTitle());
+		Set<String> langs = Language.getEnumAsSetString();
 		
 		cvScheme.getLanguagesByTitle().forEach( lang -> {
-			if( cvScheme.getTitleByLanguage(lang) != null && cvScheme.getDescriptionByLanguage(lang) != null )
-				vocabulary.setTitleDefinition( cvScheme.getTitleByLanguage(lang) , cvScheme.getDescriptionByLanguage(lang), lang );
+			if( !langs.contains( lang ))
+				return;
+				
+			if( cvScheme.getTitleByLanguage(lang) != null && cvScheme.getDescriptionByLanguage(lang) != null ){
+				String title = cvScheme.getTitleByLanguage(lang);
+				String definition =cvScheme.getDescriptionByLanguage(lang);
+				switch ( Language.getEnum(lang) ) {
+	    		case CZECH:
+	    			vocabulary.setTitleCs(title);
+	    			vocabulary.setDefinitionCs(definition);
+	    			break;
+	    		case DANISH:
+	    			vocabulary.setTitleDa(title);
+	    			vocabulary.setDefinitionDa(definition);
+	    			break;
+	    		case DUTCH:
+	    			vocabulary.setTitleNl(title);
+	    			vocabulary.setDefinitionNl(definition);
+	    			break;
+	    		case ENGLISH:
+	    			vocabulary.setTitleEn(title);
+	    			vocabulary.setDefinitionEn(definition);
+	    			break;
+	    		case FINNISH:
+	    			vocabulary.setTitleFi(title);
+	    			vocabulary.setDefinitionFi(definition);
+	    			break;
+	    		case FRENCH:
+	    			vocabulary.setTitleFr(title);
+	    			vocabulary.setDefinitionFr(definition);
+	    			break;
+	    		case GERMAN:
+	    			vocabulary.setTitleDe(title);
+	    			vocabulary.setDefinitionDe(definition);
+	    			break;
+	    		case GREEK:
+	    			vocabulary.setTitleEl(title);
+	    			vocabulary.setDefinitionEl(definition);
+	    			break;
+	    		case HUNGARIAN:
+	    			vocabulary.setTitleHu(title);
+	    			vocabulary.setDefinitionHu(definition);
+	    			break;
+	    		case LITHUANIAN:
+	    			vocabulary.setTitleLt(title);
+	    			vocabulary.setDefinitionLt(definition);
+	    			break;
+	    		case NORWEGIAN:
+	    			vocabulary.setTitleNo(title);
+	    			vocabulary.setDefinitionNo(definition);
+	    			break;
+	    		case PORTUGUESE:
+	    			vocabulary.setTitleNo(title);
+	    			vocabulary.setDefinitionNo(definition);
+	    			break;
+	    		case ROMANIAN:
+	    			vocabulary.setTitleRo(title);
+	    			vocabulary.setDefinitionRo(definition);
+	    			break;
+	    		case SLOVAK:
+	    			vocabulary.setTitleSk(title);
+	    			vocabulary.setDefinitionSk(definition);
+	    			break;
+	    		case SLOVENIAN:
+	    			vocabulary.setTitleSl(title);
+	    			vocabulary.setDefinitionSl(definition);
+	    			break;
+	    		case SPANISH:
+	    			vocabulary.setTitleEs(title);
+	    			vocabulary.setDefinitionEs(definition);
+	    			break;
+	    		case SWEDISH:
+	    			vocabulary.setTitleSe(title);
+	    			vocabulary.setDefinitionSe(definition);
+	    			break;
+				}
+			}
 		});
 		
 		return vocabulary;
-    }
+	}
 }

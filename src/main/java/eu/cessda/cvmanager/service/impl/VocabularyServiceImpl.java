@@ -129,7 +129,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
 	@Override
 	public VocabularyDTO getByUri(String cvUri) {
-	 Vocabulary vocabulary = vocabularyRepository.findByUri( cvUri );
+		Vocabulary vocabulary = vocabularyRepository.findByUri( cvUri );
         return vocabularyMapper.toDto(vocabulary);
 	}
 
@@ -139,5 +139,11 @@ public class VocabularyServiceImpl implements VocabularyService {
 	        return vocabularyRepository.findByAgency(agencyId).stream()
 	            .map(vocabularyMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public VocabularyDTO getByNotation(String notation) {
+		Vocabulary vocabulary = vocabularyRepository.findByNotation( notation );
+        return vocabularyMapper.toDto(vocabulary);
 	}
 }

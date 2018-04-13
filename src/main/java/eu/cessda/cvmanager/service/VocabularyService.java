@@ -63,4 +63,6 @@ public interface VocabularyService {
 	VocabularyDTO getByUri(String cvUri);
 
 	List<VocabularyDTO> findByAgency(Long agencyId);
+
+	VocabularyDTO getByNotation(String notation);
 }

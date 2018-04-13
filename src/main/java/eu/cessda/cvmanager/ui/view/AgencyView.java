@@ -28,7 +28,7 @@ import com.vaadin.ui.Window;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.ui.layout.AgencyDetailLayout;
 import eu.cessda.cvmanager.ui.layout.AgencyOwnLayout;
@@ -49,7 +49,7 @@ public class AgencyView extends CvManagerView {
 	private final RoleService roleService;
 	private final UserAgencyService userAgencyService;
 	private final VocabularyService vocabularyService;
-	private final CvManagerService cvManagerService;
+	private final StardatDDIService stardatDDIService;
 //	private final User
 	
 	private MHorizontalLayout mainContent = new MHorizontalLayout();
@@ -69,20 +69,20 @@ public class AgencyView extends CvManagerView {
 	// private SearchHit selectedItem = null;
 
 	public AgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
-			CvManagerService cvManagerService, SecurityService securityService, 
+			StardatDDIService stardatDDIService, SecurityService securityService, 
 			UserService userService, RoleService roleService, AgencyService agencyService, 
 			UserAgencyService userAgencyService, VocabularyService vocabularyService, CodeService codeService) {
-		super(i18n, eventBus, configService, cvManagerService, securityService, agencyService, vocabularyService, codeService, AgencyView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, AgencyView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
 		this.vocabularyService = vocabularyService;
-		this.cvManagerService = cvManagerService;
+		this.stardatDDIService = stardatDDIService;
 		
 		aOwnLayout = new AgencyOwnLayout(i18n, eventBus, this, agencyService, configService); 
 		aSearchLayout = new AgencySearchLayout(i18n, eventBus, this, agencyService, configService);
-		aDetailLayout = new AgencyDetailLayout(i18n, eventBus, this, agencyService, configService, vocabularyService, cvManagerService, configService); 
+		aDetailLayout = new AgencyDetailLayout(i18n, eventBus, this, agencyService, configService, vocabularyService, stardatDDIService, configService); 
 		
 		eventBus.subscribe(this, AgencyView.VIEW_NAME);
 	}

@@ -28,7 +28,7 @@ import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 
@@ -75,7 +75,7 @@ public class DialogEditCodeWindow extends MWindow {
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
-	public DialogEditCodeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, CVScheme cvScheme, CVConcept code, String sLanguage) {
+	public DialogEditCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, CVScheme cvScheme, CVConcept code, String sLanguage) {
 		super( "Edit Code");
 		this.cvScheme = cvScheme;
 		this.code = code;
@@ -163,7 +163,7 @@ public class DialogEditCodeWindow extends MWindow {
 			// CVConcept cv = binder.getBean();
 			log.trace(code.getPrefLabelByLanguage(selectedLanguage));
 			code.save();
-			DDIStore ddiStore = cvManagerService.saveElement(code.ddiStore, "Peter", "minor edit");
+			DDIStore ddiStore = stardatDDIService.saveElement(code.ddiStore, "Peter", "minor edit");
 			
 			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 			

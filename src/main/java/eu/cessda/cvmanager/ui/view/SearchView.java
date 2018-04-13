@@ -48,7 +48,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 
@@ -89,9 +89,9 @@ public class SearchView extends CvManagerView {
 	// private SearchHit selectedItem = null;
 
 	public SearchView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
-			CvManagerService cvManagerService, SecurityService securityService, AgencyService agencyService,
+			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, CodeService codeService) {
-		super(i18n, eventBus, configService, cvManagerService, securityService, agencyService, vocabularyService, codeService, SearchView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, SearchView.VIEW_NAME);
 		eventBus.subscribe(this, SearchView.VIEW_NAME);
 	}
 
@@ -235,16 +235,16 @@ public class SearchView extends CvManagerView {
 			Map<String, CVScheme> mapHits = new HashMap<String, CVScheme>();
 
 			// initialize the new query
-			List<DDIStore> searchResult = cvManagerService.findByContentAndElementType(this.searchBox.getValue(),
+			List<DDIStore> searchResult = stardatDDIService.findByContentAndElementType(this.searchBox.getValue(),
 					DDIElement.CVSCHEME);
 
-			List<DDIStore> searchResult2 = cvManagerService.findByContentAndElementType(this.searchBox.getValue(),
+			List<DDIStore> searchResult2 = stardatDDIService.findByContentAndElementType(this.searchBox.getValue(),
 					DDIElement.CVCONCEPT);
 
 			for (DDIStore store : searchResult2) {
 				CVConcept concept = new CVConcept(store);
 
-				List<DDIStore> ddiStoreScheme = cvManagerService.findByIdAndElementType(concept.getContainerId(),
+				List<DDIStore> ddiStoreScheme = stardatDDIService.findByIdAndElementType(concept.getContainerId(),
 						DDIElement.CVSCHEME);
 
 				if (ddiStoreScheme.size() == 1) {
@@ -286,7 +286,7 @@ public class SearchView extends CvManagerView {
 
 	private void resetSearch() {
 		searchBox.setValue("");
-		List<DDIStore> searchResult = cvManagerService.findStudyByElementType(DDIElement.CVSCHEME);
+		List<DDIStore> searchResult = stardatDDIService.findStudyByElementType(DDIElement.CVSCHEME);
 
 		hits = new ArrayList<CVScheme>();
 		for (DDIStore store : searchResult) {

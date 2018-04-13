@@ -37,12 +37,12 @@ public class CvGuiApplication extends SpringBootServletInitializer {
 	}
 	
 	@Bean
-	@Description("Thymeleaf template resolver serving HTML 5")
+	@Description("Thymeleaf template resolver serving HTML")
 	public ClassLoaderTemplateResolver emailTemplateResolver() {
 	    ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 	    templateResolver.setPrefix("templates/");
 	    templateResolver.setSuffix(".html");
-	    templateResolver.setTemplateMode("HTML5");
+	    templateResolver.setTemplateMode("HTML");
 	    templateResolver.setCharacterEncoding("UTF_8");
 	    templateResolver.setCacheable(false);
 	    return templateResolver;

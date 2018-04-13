@@ -34,14 +34,14 @@ public class Vocabulary implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull
-    @Column(name = "notation", nullable = false)
-    private String notation;
     
     @NotNull
-    @Column(name = "uri", nullable = false)
+    @Column(name = "uri", length = 240, nullable = false, unique = true)
     private String uri;
+    
+    @NotNull
+    @Column(name = "notation", length = 240, nullable = false, unique = true)
+    private String notation;
 
     @NotNull
     @Size(max = 20)
@@ -169,10 +169,12 @@ public class Vocabulary implements Serializable {
 
     @Lob
     @Column(name = "title_lt")
+    @Field(type = FieldType.text, store = true )
     private String titleLt;
 
     @Lob
     @Column(name = "definition_lt")
+    @Field(type = FieldType.text, store = true )
     private String definitionLt;
 
     @Lob
@@ -207,18 +209,22 @@ public class Vocabulary implements Serializable {
 
     @Lob
     @Column(name = "title_sk")
+    @Field(type = FieldType.text, store = true )
     private String titleSk;
 
     @Lob
     @Column(name = "definition_sk")
+    @Field(type = FieldType.text, store = true )
     private String definitionSk;
 
     @Lob
     @Column(name = "title_sl")
+    @Field(type = FieldType.text, store = true )
     private String titleSl;
 
     @Lob
     @Column(name = "definition_sl")
+    @Field(type = FieldType.text, store = true )
     private String definitionSl;
 
     @Lob

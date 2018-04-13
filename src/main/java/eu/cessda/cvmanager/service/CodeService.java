@@ -59,4 +59,8 @@ public interface CodeService {
      * @return the list of entities
      */
     Page<CodeDTO> search(String query, Pageable pageable);
+
+	CodeDTO getByUri(String uri);
+
+	CodeDTO getByNotation(String notation);
 }

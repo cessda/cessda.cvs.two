@@ -35,7 +35,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.domain.Vocabulary;
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
@@ -49,7 +49,7 @@ public class DialogCVSchemeWindow extends MWindow {
 	private final I18N i18n;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
-	private final CvManagerService cvManagerService;
+	private final StardatDDIService stardatDDIService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	private MLabel lAgency = new MLabel( "Agency" );
@@ -77,11 +77,11 @@ public class DialogCVSchemeWindow extends MWindow {
 
 	//private EditorView theView;
 
-	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, CvManagerService cvManagerService, AgencyService agencyService, VocabularyService vocabularyService, CVScheme cvScheme, I18N i18n) {
+	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, AgencyService agencyService, VocabularyService vocabularyService, CVScheme cvScheme, I18N i18n) {
 		super("Add CVScheme");
 		this.agencyService = agencyService;
 		this.eventBus = eventBus;
-		this.cvManagerService = cvManagerService;
+		this.stardatDDIService = stardatDDIService;
 		this.vocabularyService = vocabularyService;
 		this.i18n = i18n;
 		
@@ -248,7 +248,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		getCvScheme().setOwnerAgency((ArrayList<CVEditor>) editorSet);
 		getCvScheme().save();
 		
-		DDIStore ddiStore = cvManagerService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add new CV");
+		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add new CV");
 		
 		// save on database
 		VocabularyDTO vocabulary = new VocabularyDTO();

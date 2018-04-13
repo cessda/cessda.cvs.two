@@ -12,7 +12,7 @@ import org.gesis.stardat.entity.DDIElement;
 
 import com.vaadin.data.TreeData;
 
-import eu.cessda.cvmanager.service.CvManagerService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 
 public class CvCodeTreeUtils{
 	private static List<String> conceptToBeRemoved = null;
