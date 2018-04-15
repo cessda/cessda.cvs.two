@@ -240,7 +240,10 @@ public class DetailView extends CvManagerView {
 	@EventBusListenerMethod( scope = EventScope.UI )
 	public void onAuthenticate( LoginSucceedEvent event )
 	{
-		editButton.setVisible( true );
+		if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLang))
+			editButton.setVisible( true );
+		else
+			editButton.setVisible( false );
 		actionPanel.setVisible( true );
 	}
 	
@@ -349,15 +352,19 @@ public class DetailView extends CvManagerView {
 				setSelectedLang( Language.getEnum( e.getButton().getCaption().toLowerCase()) );
 				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
 				
-				if (formMode.equals(FormMode.view)) {
-					initTopViewSection();
-					initTopEditSection();
-					initBottomViewSection();
-				} else {
-					initTopViewSection();
-					initTopEditSection();
-					initBottomViewSection();
-				}
+				setFormMode(FormMode.view);
+				
+				initTopViewSection();
+				initTopEditSection();
+				initBottomViewSection();
+				
+				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLang))
+					editButton.setVisible( true );
+				else
+					editButton.setVisible( false );
+				
+				actionPanel.conceptSelectedChange( null );
+				setCode( null );
 				updateMessageStrings(locale);
 			});
 			languageLayout.add(langButton);
@@ -688,9 +695,13 @@ public class DetailView extends CvManagerView {
 		detailTreeGrid.setSizeFull();
 		detailTreeGrid.addItemClickListener( event -> {
 			if( SecurityContextHolder.getContext().getAuthentication() != null && event.getMouseEventDetails().isDoubleClick() ) {
-				CVConcept selectedRow = event.getItem();
-				Window window = new DialogEditCodeWindow(eventBus, stardatDDIService, cvItem.getCvScheme(), selectedRow, selectedLang.toString());
-				getUI().addWindow(window);
+				if(  SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLang) ) {
+					CVConcept selectedRow = event.getItem();
+					Window window = new DialogEditCodeWindow(eventBus, stardatDDIService, cvItem.getCvScheme(), selectedRow, selectedLang.toString());
+					getUI().addWindow(window);
+				} else {
+					Notification.show( "you are not allowed to edit this code" );
+				}
 			}
 		});
 		
@@ -968,6 +979,8 @@ public class DetailView extends CvManagerView {
 							stardatDDIService.deleteConceptTree(cvCodeTreeData, cvItem.getCvConcept());
 							cvCodeTreeData.removeItem( cvItem.getCvConcept() );
 							detailTreeGrid.getDataProvider().refreshAll();
+							actionPanel.conceptSelectedChange( null );
+							setCode( null );
 						}
 					}
 
