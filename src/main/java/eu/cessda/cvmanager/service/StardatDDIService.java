@@ -7,6 +7,7 @@ import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.gesis.wts.security.SecurityUtils;
 import org.springframework.stereotype.Service;
 
 import com.vaadin.data.TreeData;
@@ -48,10 +49,14 @@ public class StardatDDIService {
 	}
 	
 	public void deleteConceptTree(TreeData<CVConcept> treeData, CVConcept targetConcept) {
-		deleteById(targetConcept.ddiStore.getPrimaryKey(), "peter", "delete concept");
+		deleteById(targetConcept.ddiStore.getPrimaryKey(), SecurityUtils.getCurrentUserLogin().get() , "delete concept");
 		treeData.getChildren(targetConcept).forEach( childConcept -> {
 			deleteConceptTree(treeData, childConcept);
 		});
+	}
+	
+	public void deleteScheme( CVScheme cvScheme ) {
+		deleteById( cvScheme.ddiStore.getPrimaryKey(), SecurityUtils.getCurrentUserLogin().get() , "delete scheme");
 	}
 	
 	public DDIStore storeTopConcept( CVScheme cvScheme, List<CVConcept> topConcepts ) {

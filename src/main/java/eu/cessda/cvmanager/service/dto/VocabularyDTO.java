@@ -685,7 +685,7 @@ public class VocabularyDTO implements Serializable {
 	private static VocabularyDTO extractCVSchemeToVocabularyDTO(CVScheme cvScheme, VocabularyDTO vocabulary) {
 		//TODO: need to change hard coded value
 		vocabulary.setVersion( "1.0" );
-		vocabulary.setSourceLanguage( Language.ENGLISH.toString().toLowerCase());
+		vocabulary.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 		
 		vocabulary.setNotation( cvScheme.getCode());
 		vocabulary.setLanguages( cvScheme.getLanguagesByTitle());

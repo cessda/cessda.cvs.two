@@ -688,7 +688,7 @@ public class CodeDTO implements Serializable {
 	private static CodeDTO extractCVSchemeToCodeDTO(CVConcept cvConcept, CodeDTO code) {
 		//TODO: need to change hard coded value
 		code.setVersion( "1.0" );
-		code.setSourceLanguage( Language.ENGLISH.toString().toLowerCase());
+		code.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 				
 		code.setNotation( cvConcept.getNotation());
 		code.setLanguages( cvConcept.getLanguagesByPrefLabel());

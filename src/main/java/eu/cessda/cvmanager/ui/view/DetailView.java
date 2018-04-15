@@ -111,6 +111,9 @@ public class DetailView extends CvManagerView {
 			"pull-right");
 	private MButton saveButton = new MButton("Save").withStyleName(ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL,
 			"pull-right");
+	
+	private MButton deleteButton = new MButton("Delete").withStyleName(ValoTheme.BUTTON_DANGER, ValoTheme.BUTTON_SMALL,
+			"pull-right");
 	private MButton cancelButton = new MButton("Cancel").withStyleName(ValoTheme.BUTTON_SMALL, "pull-right");
 
 	private MCssLayout topSection = new MCssLayout().withFullWidth();
@@ -206,6 +209,7 @@ public class DetailView extends CvManagerView {
 		editButton.addClickListener(e -> setFormMode(FormMode.edit));
 		cancelButton.addClickListener(e -> setFormMode(FormMode.view));
 		saveButton.addClickListener( this::doSaveConcept );
+		deleteButton.addClickListener( this::deleteScheme);
 		
 		buttonLayout
 			.withFullWidth()
@@ -593,9 +597,28 @@ public class DetailView extends CvManagerView {
 			langSecOl.setVisible(true);
 			langSec.setVisible(false);
 		}
-			
 
-		topEditSection.add(topHead, topHeadEdit, titleSmall, description, code, langSec, titleSmallOl, descriptionOl, langSecOl);
+		topEditSection.add(topHead, topHeadEdit, titleSmall, description, code, langSec, 
+				titleSmallOl, descriptionOl, langSecOl, deleteButton);
+	}
+	
+	public void deleteScheme( ClickEvent event) {
+		ConfirmDialog.show( this.getUI(), "Confirm",
+				"Are you sure you want to delete the vocabulary \"" + cvItem.getCvScheme().getTitleByLanguage( selectedLang.toString() ) + "\"?", "yes",
+				"cancel",
+		
+					dialog -> {
+						if( dialog.isConfirmed() ) {
+							// delete from stardat ddiflatdb
+							stardatDDIService.deleteScheme( cvItem.getCvScheme());
+							// delete from database and index
+							if( vocabulary.isPersisted() )
+								vocabularyService.delete( vocabulary.getId());
+							// navigate to search view
+							UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
+						}
+					}
+				);
 	}
 
 	private void initBottomViewSection() {

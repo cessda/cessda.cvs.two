@@ -137,8 +137,6 @@ public class SearchView extends CvManagerView {
 		this.globalContainer.setExpandRatio(searchGlobalContainer, 1);
 
 		rightContainer.add(globalContainer).withExpand(globalContainer, 1);
-
-		resetSearch();
 	}
 
 	@Override
@@ -146,6 +144,8 @@ public class SearchView extends CvManagerView {
 		locale = UI.getCurrent().getLocale();
 		updateActionPanel();
 		updateMessageStrings(locale);
+		
+		resetSearch();
 	}
 	
 	@Override
