@@ -130,6 +130,7 @@ public class DialogEditCodeWindow extends MWindow {
 		preferedLabel.setCaption( "Descriptive term (" + language + ")*");
 		description.setCaption( "Definition ("+ language +")*");
 		
+		notation.setValue( cvConcept.getNotation() );
 		preferedLabel.setValue( cvConcept.getPrefLabelByLanguage(language.toString()));
 		description.setValue( cvConcept.getDescriptionByLanguage(language.toString()) );
 		

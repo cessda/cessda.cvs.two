@@ -279,7 +279,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, "Peter", "minor edit");
 		// store the code and index
 		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
-		codeService.save(code);
+//		codeService.save(code);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 		

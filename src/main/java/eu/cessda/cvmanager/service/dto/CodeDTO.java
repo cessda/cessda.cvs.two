@@ -309,7 +309,7 @@ public class CodeDTO implements Serializable {
 	public CodeDTO addLanguage(String language) {
 		if(languages == null)
 			languages = new HashSet<>();
-		this.languages.add(language);
+//		this.languages.add(language);
 		return this;
 	}
 	
@@ -701,6 +701,7 @@ public class CodeDTO implements Serializable {
 		code.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 				
 		code.setNotation( cvConcept.getNotation());
+		// TODO incorrect implementation - fix this
 		code.setLanguages( cvConcept.getLanguagesByPrefLabel());
 		Set<String> langs = Language.getEnumAsSetString();
 		
