@@ -75,8 +75,10 @@ public class ImportService {
 				if( code == null )
 					code = codeService.getByNotation( cvConcept.getNotation() );
 				
-				if( code == null )
+				if( code == null ) {
 					code = CodeDTO.generateFromCVConcept(cvConcept);
+					code.setVocabularyId( vocabulary.getId() );
+				}
 				else
 					code = CodeDTO.generateFromCVConcept(code, cvConcept);
 				
