@@ -53,7 +53,7 @@ public class CodeServiceImpl implements CodeService {
         Code code = codeMapper.toEntity(codeDTO);
         code = codeRepository.save(code);
         CodeDTO result = codeMapper.toDto(code);
-        if( code.isDiscoverable())
+        if( code.isDiscoverable() != null && code.isDiscoverable())
         	codeSearchRepository.save(code);
         return result;
     }
@@ -114,7 +114,7 @@ public class CodeServiceImpl implements CodeService {
     
 	@Override
 	public void delete(CodeDTO code) {
-		if( code.isDiscoverable())
+		if( code.isDiscoverable() != null && code.isDiscoverable())
         	codeSearchRepository.deleteById( code.getId() );
 		
 		delete( code.getId() );

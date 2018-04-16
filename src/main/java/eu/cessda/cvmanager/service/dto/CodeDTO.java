@@ -16,6 +16,12 @@ import java.util.Objects;
  * A DTO for the Code entity.
  */
 public class CodeDTO implements Serializable {
+	
+	public CodeDTO() {
+		archived = false;
+		withdrawn = false;
+		discoverable = false;
+	}
 
     private Long id;
 

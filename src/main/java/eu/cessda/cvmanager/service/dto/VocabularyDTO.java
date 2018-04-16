@@ -19,6 +19,12 @@ import java.util.Objects;
  */
 public class VocabularyDTO implements Serializable {
 
+	public VocabularyDTO() {
+		archived = false;
+		withdrawn = false;
+		discoverable = false;
+	}
+	
     private Long id;
 
     @NotNull

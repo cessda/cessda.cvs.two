@@ -53,7 +53,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         Vocabulary vocabulary = vocabularyMapper.toEntity(vocabularyDTO);
         vocabulary = vocabularyRepository.save(vocabulary);
         VocabularyDTO result = vocabularyMapper.toDto(vocabulary);
-        if( vocabulary.isDiscoverable())
+        if( vocabulary.isDiscoverable() != null && vocabulary.isDiscoverable())
         	vocabularySearchRepository.save(vocabulary);
         return result;
     }
@@ -115,7 +115,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     
 	@Override
 	public void delete(VocabularyDTO vocabulary) {
-		if( vocabulary.isDiscoverable() )
+		if(  vocabulary.isDiscoverable() != null && vocabulary.isDiscoverable() )
 			vocabularySearchRepository.deleteById( vocabulary.getId() );
 		
 		delete( vocabulary.getId() );
