@@ -53,7 +53,8 @@ public class VocabularyServiceImpl implements VocabularyService {
         Vocabulary vocabulary = vocabularyMapper.toEntity(vocabularyDTO);
         vocabulary = vocabularyRepository.save(vocabulary);
         VocabularyDTO result = vocabularyMapper.toDto(vocabulary);
-        vocabularySearchRepository.save(vocabulary);
+        if( vocabulary.isDiscoverable())
+        	vocabularySearchRepository.save(vocabulary);
         return result;
     }
 
