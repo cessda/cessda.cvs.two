@@ -672,6 +672,10 @@ public class CodeDTO implements Serializable {
             "}";
     }
     
+    public boolean isPersisted() {
+		return id != null;
+	}
+    
     public static CodeDTO generateFromCVConcept ( CodeDTO code, CVConcept cvConcept) {
     	if( code == null) {
     		code = new CodeDTO();
