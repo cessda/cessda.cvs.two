@@ -7,11 +7,8 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.InnerField;
-import org.springframework.data.elasticsearch.annotations.MultiField;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -34,7 +31,7 @@ public class Code implements Serializable {
     private String uri;
     
     @NotNull
-    @Column(name = "notation", length = 240, nullable = false, unique = true)
+    @Column(name = "notation", length = 240, nullable = false)
     private String notation;
 
     @NotNull
