@@ -230,14 +230,14 @@ public class Code implements Serializable {
     private String definitionEs;
 
     @Lob
-    @Column(name = "title_se")
+    @Column(name = "title_sv")
     @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
-    private String titleSe;
+    private String titleSv;
 
     @Lob
-    @Column(name = "definition_se")
+    @Column(name = "definition_sv")
     @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
-    private String definitionSe;
+    private String definitionSv;
 
     @ManyToOne
     private Vocabulary vocabulary;
@@ -781,30 +781,30 @@ public class Code implements Serializable {
         this.definitionEs = definitionEs;
     }
 
-    public String getTitleSe() {
-        return titleSe;
+    public String getTitleSv() {
+        return titleSv;
     }
 
-    public Code titleSe(String titleSe) {
-        this.titleSe = titleSe;
+    public Code titleSv(String titleSv) {
+        this.titleSv = titleSv;
         return this;
     }
 
-    public void setTitleSe(String titleSe) {
-        this.titleSe = titleSe;
+    public void setTitleSv(String titleSv) {
+        this.titleSv = titleSv;
     }
 
-    public String getDefinitionSe() {
-        return definitionSe;
+    public String getDefinitionSv() {
+        return definitionSv;
     }
 
-    public Code definitionSe(String definitionSe) {
-        this.definitionSe = definitionSe;
+    public Code definitionSv(String definitionSv) {
+        this.definitionSv = definitionSv;
         return this;
     }
 
-    public void setDefinitionSe(String definitionSe) {
-        this.definitionSe = definitionSe;
+    public void setDefinitionSv(String definitionSv) {
+        this.definitionSv = definitionSv;
     }
 
 
@@ -884,8 +884,8 @@ public class Code implements Serializable {
             ", definitionSl='" + getDefinitionSl() + "'" +
             ", titleEs='" + getTitleEs() + "'" +
             ", definitionEs='" + getDefinitionEs() + "'" +
-            ", titleSe='" + getTitleSe() + "'" +
-            ", definitionSe='" + getDefinitionSe() + "'" +
+            ", titleSv='" + getTitleSv() + "'" +
+            ", definitionSv='" + getDefinitionSv() + "'" +
             "}";
     }
 }

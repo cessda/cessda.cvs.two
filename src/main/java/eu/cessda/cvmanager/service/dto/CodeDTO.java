@@ -144,10 +144,10 @@ public class CodeDTO implements Serializable {
     private String definitionEs;
 
     @Lob
-    private String titleSe;
+    private String titleSv;
 
     @Lob
-    private String definitionSe;
+    private String definitionSv;
     
     public CodeDTO setTitleDefinition( String title, String definition, String language) {
     	return setTitleDefinition(title, definition, Language.getEnum(language));
@@ -220,8 +220,8 @@ public class CodeDTO implements Serializable {
     			setDefinitionEs(definition);
     			break;
     		case SWEDISH:
-    			setTitleSe(title);
-    			setDefinitionSe(definition);
+    			setTitleSv(title);
+    			setDefinitionSv(definition);
     			break;
     	}
     	addLanguage(language.name().toLowerCase());
@@ -587,20 +587,20 @@ public class CodeDTO implements Serializable {
         this.definitionEs = definitionEs;
     }
 
-    public String getTitleSe() {
-        return titleSe;
+    public String getTitleSv() {
+        return titleSv;
     }
 
-    public void setTitleSe(String titleSe) {
-        this.titleSe = titleSe;
+    public void setTitleSv(String titleSv) {
+        this.titleSv = titleSv;
     }
 
-    public String getDefinitionSe() {
-        return definitionSe;
+    public String getDefinitionSv() {
+        return definitionSv;
     }
 
-    public void setDefinitionSe(String definitionSe) {
-        this.definitionSe = definitionSe;
+    public void setDefinitionSv(String definitionSv) {
+        this.definitionSv = definitionSv;
     }
 
     @Override
@@ -667,8 +667,8 @@ public class CodeDTO implements Serializable {
             ", definitionSl='" + getDefinitionSl() + "'" +
             ", titleEs='" + getTitleEs() + "'" +
             ", definitionEs='" + getDefinitionEs() + "'" +
-            ", titleSe='" + getTitleSe() + "'" +
-            ", definitionSe='" + getDefinitionSe() + "'" +
+            ", titleSv='" + getTitleSv() + "'" +
+            ", definitionSv='" + getDefinitionSv() + "'" +
             "}";
     }
     
@@ -771,8 +771,8 @@ public class CodeDTO implements Serializable {
 	    			code.setDefinitionEs(definition);
 	    			break;
 	    		case SWEDISH:
-	    			code.setTitleSe(title);
-	    			code.setDefinitionSe(definition);
+	    			code.setTitleSv(title);
+	    			code.setDefinitionSv(definition);
 	    			break;
 				}
 			}
