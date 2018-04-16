@@ -51,6 +51,13 @@ public interface CodeService {
     void delete(Long id);
     
     /**
+     * Delete the code.
+     *
+     * @param code the code of the entity
+     */
+    void delete(CodeDTO code);
+    
+    /**
      * Search for the code corresponding to the query.
      *
      * @param query the query of the search

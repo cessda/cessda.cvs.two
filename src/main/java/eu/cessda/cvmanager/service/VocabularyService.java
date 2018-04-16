@@ -51,6 +51,13 @@ public interface VocabularyService {
     void delete(Long id);
     
     /**
+     * Delete the vocabulary.
+     *
+     * @param vocabulary the vocabulary of the entity
+     */
+    void delete(VocabularyDTO vocabulary);
+    
+    /**
      * Search for the vocabulary corresponding to the query.
      *
      * @param query the query of the search
@@ -65,4 +72,6 @@ public interface VocabularyService {
 	List<VocabularyDTO> findByAgency(Long agencyId);
 
 	VocabularyDTO getByNotation(String notation);
+
+	
 }

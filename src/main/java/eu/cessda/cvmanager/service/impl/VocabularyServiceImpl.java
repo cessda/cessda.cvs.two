@@ -109,8 +109,16 @@ public class VocabularyServiceImpl implements VocabularyService {
     public void delete(Long id) {
         log.debug("Request to delete Vocabulary : {}", id);
         vocabularyRepository.deleteById(id);
-        vocabularySearchRepository.deleteById(id);
+        
     }
+    
+	@Override
+	public void delete(VocabularyDTO vocabulary) {
+		if( vocabulary.isDiscoverable() )
+			vocabularySearchRepository.deleteById( vocabulary.getId() );
+		
+		delete( vocabulary.getId() );
+	}
 
     /**
      * Search for the vocabulary corresponding to the query.

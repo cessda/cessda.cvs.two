@@ -623,7 +623,7 @@ public class DetailView extends CvManagerView {
 							stardatDDIService.deleteScheme( cvItem.getCvScheme());
 							// delete from database and index
 							if( vocabulary.isPersisted() )
-								vocabularyService.delete( vocabulary.getId());
+								vocabularyService.delete( vocabulary );
 							// navigate to search view
 							UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
 						}
@@ -1006,7 +1006,7 @@ public class DetailView extends CvManagerView {
 							cvCodeTreeData.removeItem( cvItem.getCvConcept() );
 							
 							if( code.isPersisted())
-								codeService.delete( code.getId());
+								codeService.delete( code );
 							
 							detailTreeGrid.getDataProvider().refreshAll();
 							actionPanel.conceptSelectedChange( null );

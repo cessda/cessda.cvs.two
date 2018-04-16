@@ -53,7 +53,8 @@ public class CodeServiceImpl implements CodeService {
         Code code = codeMapper.toEntity(codeDTO);
         code = codeRepository.save(code);
         CodeDTO result = codeMapper.toDto(code);
-        codeSearchRepository.save(code);
+        if( code.isDiscoverable())
+        	codeSearchRepository.save(code);
         return result;
     }
 
@@ -108,8 +109,16 @@ public class CodeServiceImpl implements CodeService {
     public void delete(Long id) {
         log.debug("Request to delete Code : {}", id);
         codeRepository.deleteById(id);
-        codeSearchRepository.deleteById(id);
+      
     }
+    
+	@Override
+	public void delete(CodeDTO code) {
+		if( code.isDiscoverable())
+        	codeSearchRepository.deleteById( code.getId() );
+		
+		delete( code.getId() );
+	}
 
     /**
      * Search for the code corresponding to the query.
