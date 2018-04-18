@@ -30,7 +30,7 @@
 
 $v-app-loading-text: "CESSDA CV Manager";
 $v-background-color: #fafafa;
-$v-app-background-color: #e7ebf2;
+$v-app-background-color: #fff;
 $v-panel-background-color: #fff;
 $v-focus-color: #3b5998;
 $v-focus-style: 0 0 1px 1px rgba($v-focus-color, .5);
@@ -278,6 +278,7 @@ $v-selection-item-border-radius: 0;
 			height: 33px;
 			margin-top: 10px;
 		}
+		
 		.v-textarea {
 			margin-top: 8px;
 			border:1px solid  rgba(172,166,144,0.60);
@@ -606,14 +607,6 @@ $v-selection-item-border-radius: 0;
 	 
 	 
 	 .mainlayout {
-		background-color: #fff !important;
-	    font-family: 'Open Sans', sans-serif, Helvetica, Arial, sans-serif;
-	    //font-size: 16px;
-	    color: #656565;
-	    //line-height: 22px;
-	    min-width: 960px !important;
-
-    	line-height: 1.4
 	}
 	
 	  .v-accordion {
@@ -908,42 +901,15 @@ $v-selection-item-border-radius: 0;
     	}
 	}
 
-	.social{
-		ul {
-		    list-style: none;
-		    float: right;
-		    margin-top: 0;
-		    padding: 0;
-		}
-		li{ 
-			float: left;
-			a {
-			    padding: 0;
-			    text-align: center;
-			    display: block;
-			    color: #515A5F;
-			    line-height: 40px;
-			    height: 30px;
-			    font-size: 14px;
-			    text-align: center;
-			    width: 30px;
-			    background: none;
-			    
-			    i {
-				    font-size: 15px;
-				}
-		    }
-	    }
-	}
-
 	#logo{
 	width: 300px;
 	}
 
 	.sublogo{
-		color:#fff;
+		color:#4b4b4b;
 		font-weight:800;
-		font-size:20px;
+		font-size:18px;
+		margin-top:-5px;
 	}
 	
 	#footer {
@@ -1339,13 +1305,6 @@ $v-selection-item-border-radius: 0;
 	.v-margin-top {
 		 padding-top: 10px !important;
 	}
-
-	h3{
-	    color: #905b32 !important;    
-	   
-	}
-	
-	
 	
 	.yeardate{
 	
@@ -1574,7 +1533,7 @@ $v-selection-item-border-radius: 0;
    path{
    	    stroke: transparent;
     	stroke-width: 10px;
-    	fill: #fff;
+    	fill: #6b6b6b;
 	}
 
 	.tags ul {
@@ -1645,11 +1604,6 @@ $v-selection-item-border-radius: 0;
 		}
 	}
 
-	.menuLayout{
-		color:#fff;
-		font-weight:800;
-		margin-top: 60px;
-	}	
 	#introArea {
 	    padding: 30px 0;
 	    border-bottom: 1px solid #ccc;
@@ -1851,5 +1805,49 @@ $v-selection-item-border-radius: 0;
 	.bold-text{
 		color:#656565;
 		font-weight:800;
+	}
+	.language-option{
+		width:120px;
+		.v-filterselect-input{
+			background: #85C4EC;
+    		border: none !important;
+	   		color: #fff;
+    		font-weight: 800;
+	    	box-shadow: inset 0 1px 0 #66a8d1, inset 0 -1px 0 #66a8d1, 0 2px 3px rgba(0, 0, 0, 0.05);
+		}
+		.v-filterselect-input:focus{
+			box-shadow: inset 0 1px 0 #66a8d1, inset 0 -1px 0 #66a8d1, 0 2px 3px rgba(0, 0, 0, 0.05);
+		}
+		.v-filterselect-button{
+			color: #fff;
+		}
+	}
+	.icon-header{
+		color: #fff;
+		padding: 5px 0 0px 5px;
+		font-size:180%;
+	}
+	.container {
+	    text-align:unset;
+	}
+	.menu-bg{
+		.v-button-link{
+			font-family: "Source Sans Pro",sans-serif;
+		    font-size: 110%;
+		    font-weight: 600;
+		    text-transform: uppercase;
+		    display: inline-flex;
+		    padding: 0 10px;
+		    color: #fff;
+		    text-decoration: none;
+		    line-height:30px;
+		}
+		.v-button-link:hover {
+		    color: #B2D3ED;
+		    -webkit-transition: 0.5s ease-out;
+		    -moz-transition: 0.5s ease-out;
+		    -o-transition: 0.5s ease-out;
+		    transition: 0.5s ease-out;
+		}
 	}
 }

@@ -1,4 +1,5 @@
 @import "mytheme.scss";
+@import "cessda.scss";
 @import "addons.scss";
 
 // This file prefixes all rules with the theme name to avoid causing conflicts with other themes.
@@ -6,6 +7,7 @@
 
 .mytheme {
   @include addons;
+  @include cessda;
   @include mytheme;
 
 }

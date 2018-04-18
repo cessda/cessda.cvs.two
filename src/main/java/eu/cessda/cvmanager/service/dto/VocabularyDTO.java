@@ -694,7 +694,7 @@ public class VocabularyDTO implements Serializable {
 		vocabulary.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 		
 		vocabulary.setNotation( cvScheme.getCode());
-		vocabulary.setLanguages( cvScheme.getLanguagesByTitle());
+		vocabulary.setLanguages( Language.getLanguagesFromIso(cvScheme.getLanguagesByTitle()));
 		Set<String> langs = Language.getEnumAsSetString();
 		
 		cvScheme.getLanguagesByTitle().forEach( lang -> {

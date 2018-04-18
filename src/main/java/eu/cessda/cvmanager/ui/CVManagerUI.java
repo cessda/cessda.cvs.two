@@ -6,6 +6,7 @@ package eu.cessda.cvmanager.ui;
 import java.util.Arrays;
 import java.util.Locale;
 
+import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.ErrorHandler;
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
@@ -46,6 +47,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
@@ -80,7 +82,9 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private MVerticalLayout root = new MVerticalLayout();
 	private MCssLayout headerBar = new MCssLayout();
 	private MVerticalLayout viewContainer = new MVerticalLayout();
-	private CustomLayout headerToplinks = new CustomLayout("headerToplinks");
+	private MCssLayout headerTop = new MCssLayout();
+	private MCssLayout headerMiddle = new MCssLayout();
+	private MCssLayout headerBottom = new MCssLayout();
 	private CustomLayout footer = new CustomLayout("footer");
 
 	private MButton home = new MButton("Home", this::gotoHome);
@@ -97,7 +101,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private String webLanguage = "de";
 
-	private ComboBox countryBox = new ComboBox();
+	private ComboBox<Language> countryBox = new ComboBox<>();
 	private UserDetails userDetail;
 
 	public CVManagerUI(SpringViewProvider viewProvider,
@@ -165,50 +169,133 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private void addHeader() {
 
 		countryBox.setTextInputAllowed(false);
-		countryBox.setItems(Arrays.asList("en", "de", "fi"));
+		countryBox.setItems( Language.ENGLISH, Language.GERMAN, Language.FINNISH);
 		countryBox.setEmptySelectionAllowed(false);
-		countryBox.setWidth("80px");
-		countryBox.setValue("en");
+		countryBox.setStyleName( "language-option" );
+		countryBox.setValue( Language.ENGLISH );
 		countryBox.addValueChangeListener(e -> {
-			setLocale(new Locale(e.getValue().toString().toLowerCase()));
+			setLocale(new Locale(e.getValue().toString()));
+		});
+		countryBox.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
+			private static final long serialVersionUID = 1L;
+			@Override
+			public String apply(Language item) {
+				return item.name().substring(0, 1) + item.name().substring(1).toLowerCase();
+			}
 		});
 		setLocale(new Locale(countryBox.getValue().toString().toLowerCase()));
-
-		headerToplinks.setSizeFull();
+		
+		MCssLayout headerTopContainer = new MCssLayout();
+		headerTopContainer
+			.withStyleName( "row" )
+			.withFullWidth()
+			.add(
+				new MLabel()
+					.withContentMode( ContentMode.HTML)
+					.withStyleName( "col-md-4" )
+					.withValue( "		<div class=\"email\">\n" + 
+							"			<a href=\"mailto:cessda@cessda.net\"><i class=\"fa fa-envelope\"></i> cessda@cessda.net</a>\n" + 
+							"		</div>"),
+				new MLabel()
+					.withContentMode( ContentMode.HTML)
+					.withStyleName( "col-md-4 social text-center" )
+					.withValue( "	<ul>\n" + 
+							"		<li><a href=\"https://www.facebook.com/Cessda-463858013634628/\" target=\"_blank\"><i class=\"fa fa-facebook\"></i></a></li>\n" + 
+							"		<li><a href=\"https://twitter.com/CESSDA_Data/\" target=\"_blank\"><i class=\"fa fa-twitter\"></i></a></li>\n" + 
+							"		<li><a href=\"https://www.linkedin.com/company/9392869\" target=\"_blank\"><i class=\"fa fa-linkedin\"></i></a></li>\n" + 
+							"		<li><a href=\"https://www.instagram.com/cessda_data/\" target=\"_blank\"><i class=\"fa fa-instagram\"></i></a></li>\n" + 
+							"		<li><a href=\"https://plus.google.com/112779581489694492154\" target=\"_blank\"><i class=\"fa fa-google-plus\"></i></a></li>\n" + 
+							"	</ul>" ),
+				new MCssLayout()
+					.withStyleName( "col-md-4 log-in pull-right" )
+					.add(
+						new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-header fa fa-globe\"></i>" ),
+						countryBox,
+						new MCssLayout()
+							.withStyleName( "login" )
+							.add( 
+								logIn, 
+								logout
+							)
+					)
+			);
+		
 		MLabel logo = new MLabel();
 		logo.withContent(FileUtils.getSiteLogo()).withContentMode(ContentMode.HTML).withFullWidth();
+			
+		MCssLayout headerMiddleContent = new MCssLayout();
+		headerMiddleContent
+			.withStyleName( "row header-content" )
+			.withFullWidth()
+			.add(
+				new MCssLayout()
+					.withStyleName("col-md-4")
+					.add(
+							logo,
+							new MLabel("CV Manager").withFullWidth().withContentMode(ContentMode.HTML).withStyleName("sublogo")
+						),
+					new MCssLayout()
+					.withStyleName("col-md-4 text-center")
+					.add(
+							new MLabel( "<h2>Consortium of European Social Science Data Archives</h2>" ).withContentMode( ContentMode.HTML ).withStyleName("text-center").withFullWidth()
+						)
+					);
 
-		home.withStyleName(ValoTheme.BUTTON_LINK);
-		// listAllCv.withStyleName( ValoTheme.BUTTON_LINK );
-		searchCVs.withStyleName(ValoTheme.BUTTON_LINK);
-		// editorCVs.withStyleName( ValoTheme.BUTTON_LINK );
-		agencyButton.withStyleName(ValoTheme.BUTTON_LINK);
-		adminButton.withStyleName(ValoTheme.BUTTON_LINK);
-		logIn.withStyleName(ValoTheme.BUTTON_LINK);
-		logout.withStyleName(ValoTheme.BUTTON_LINK);
+		home.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
+		// listAllCv.withStyleName( ValoTheme.BUTTON_LINK + " pull-left");
+		searchCVs.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
+		// editorCVs.withStyleName( ValoTheme.BUTTON_LINK + " pull-left");
+		agencyButton.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
+		adminButton.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
+		logIn.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
+		logout.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
+		
+		
+		headerTop
+			.withFullWidth()
+			.withStyleName( "primary-header" )
+			.add(
+					new MCssLayout()
+					.withStyleName( "container" )
+					.add( headerTopContainer )
+			);
+		
+		headerMiddle
+			.withFullWidth()
+			.withStyleName( "common-header header-bg" )
+			.add(
+					new MCssLayout()
+					.withStyleName( "container" )
+					.add( headerMiddleContent )
+			);
 
-		MVerticalLayout logoLayout = new MVerticalLayout();
-		logoLayout.withFullWidth().withMargin(new MarginInfo(true, true, true, false)).add(logo,
-				new MLabel("CV Manager").withFullWidth().withContentMode(ContentMode.HTML).withStyleName("sublogo"));
-
-		MHorizontalLayout menuLayout = new MHorizontalLayout();
-
-		menuLayout.withFullWidth().withStyleName("menuLayout").withMargin(new MarginInfo(true, true, true, false)).add(
-				countryBox, home,
-				// signUp,
-				// listAllCv,
-				searchCVs,
-				agencyButton,
-				adminButton,
-				// editorCVs,
-				logIn, logout);
-
-		headerBar.withResponsive(true).withStyleName("headerbar").add(
-
-				headerToplinks,
-				new MHorizontalLayout().withStyleName("mid_search").withFullWidth().withMargin(false)
-						.add(new MHorizontalLayout().withStyleName("container").add(logoLayout, menuLayout)
-								.withExpand(logoLayout, 0.4f).withExpand(menuLayout, 0.6f))
+		headerBottom
+			.withFullWidth()
+			.withStyleName("menu-bg")
+			.add(
+					new MCssLayout()
+					.withStyleName( "container" )
+					.add(
+						home,
+						// signUp,
+						// listAllCv,
+						searchCVs,
+						agencyButton,
+						adminButton
+						// editorCVs,
+					)
+			);
+		
+		headerBar
+			.withResponsive(true)
+			.withStyleName("header-cessda")
+			.add(
+				headerTop,
+				headerMiddle,
+				headerBottom
+//				new MHorizontalLayout().withStyleName("mid_search").withFullWidth().withMargin(false)
+//						.add(new MHorizontalLayout().withStyleName("container").add(logoLayout, menuLayout)
+//								.withExpand(logoLayout, 0.4f).withExpand(menuLayout, 0.6f))
 
 		);
 	}

@@ -701,8 +701,7 @@ public class CodeDTO implements Serializable {
 		code.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 				
 		code.setNotation( cvConcept.getNotation());
-		// TODO incorrect implementation - fix this
-		code.setLanguages( cvConcept.getLanguagesByPrefLabel());
+		code.setLanguages( Language.getLanguagesFromIso(cvConcept.getLanguagesByPrefLabel()));
 		Set<String> langs = Language.getEnumAsSetString();
 		
 		cvConcept.getLanguagesByPrefLabel().forEach( lang -> {

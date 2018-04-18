@@ -98,9 +98,9 @@ public class CvSchemeComponent extends CustomComponent {
 		}
 		
 		logo = new Image(null, res);
-		logo.setWidth("100");
+		logo.setWidth("120px");
 
-		hLayout.withFullWidth().add(logo, vLayout).withExpand(logo, 0.13f).withExpand(vLayout, 0.87f);
+		hLayout.withFullWidth().add(logo, vLayout).withExpand(vLayout, 1.0f);
 
 		container.withStyleName("itemcontainer").withFullWidth().add(hLayout);
 		// Initial
