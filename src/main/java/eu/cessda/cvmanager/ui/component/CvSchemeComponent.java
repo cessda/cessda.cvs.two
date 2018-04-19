@@ -137,11 +137,11 @@ public class CvSchemeComponent extends CustomComponent {
 		log.info("URL is: " + enTitle.getValue());
 
 		olTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
-				+ cvScheme.getContainerId() + "'>" + cvScheme.getTitleByLanguage(language) + "</a>");
+				+ cvScheme.getContainerId() + "'>" + cvScheme.getCode() + "</a>");
 		desc.setValue(cvScheme.getDescriptionByLanguage(language));
-		version.setValue("Version: " + cvScheme.getVersion().getPublicationVersion()
+		version.setValue("Version: " + cvScheme.getVersion().getPublicationVersion() + " "
 				+ (language.equals("en") ? "" : "_" + language) + "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
-				+ cvScheme.getContainerId() + "'>Download</a>");
+				+ cvScheme.getContainerId() +"?tab=download"+ "'>Download</a>");
 
 		List<CVConcept> theConceptList = cvScheme.getConceptList();
 

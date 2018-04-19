@@ -181,6 +181,7 @@ public class DetailView extends CvManagerView {
 	private ExportLayout exportLayoutContent;
 	private Binder<CVScheme> cvSchemeBinder = new Binder<>();
 	private String sourceLanguage;
+	private String activeTab;
 
 	public DetailView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
@@ -269,6 +270,12 @@ public class DetailView extends CvManagerView {
 						cvItem.setCurrentLanguage( mappedParams.get("lang") );
 						selectedLang = Language.getEnum( selectedLanguage );
 					}
+					if(  mappedParams.get("tab") != null )
+						activeTab = mappedParams.get("tab");
+					else
+						activeTab = "detail";
+				} else {
+					activeTab = "detail";
 				}
 				LoginView.NAVIGATETO_VIEWNAME = DetailView.VIEW_NAME + "/" + itemPathPart[0];
 				cvItem.setCurrentCvId(itemPathPart[0]);
@@ -650,6 +657,8 @@ public class DetailView extends CvManagerView {
 		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale));
 		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale));
 		
+		setActiveTab();
+		
 		detailTreeGrid = new TreeGrid<>(CVConcept.class);
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
@@ -758,6 +767,19 @@ public class DetailView extends CvManagerView {
 		exportLayout.add(exportLayoutContent);
 
 		bottomViewSection.add(detailTab);
+	}
+
+	private void setActiveTab() {
+		if( activeTab != null) {
+			switch( activeTab) {
+				case "download":
+					detailTab.setSelectedTab(4);
+					break;
+				default:
+					detailTab.setSelectedTab(0);
+			}
+		} else
+			detailTab.setSelectedTab(0);
 	}
 	
 	private void enableTreeGridDragAndDropSort() {		
