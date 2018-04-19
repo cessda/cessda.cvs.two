@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.utils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,35 @@ import eu.cessda.cvmanager.service.dto.CodeDTO;
 
 public class CvCodeTreeUtils{
 	private static List<String> conceptToBeRemoved = null;
+	
+	/**
+	 * Generate a tree from codes. The codes should have been sorted correctly
+	 * based on position. Otherwise the tree will be failed to be built
+	 * @param codes ~ sorted codes by position
+	 * @return
+	 */
+	public static TreeData<CodeDTO> getTreeDataByCodes( List<CodeDTO> codes){
+		return getTreeDataByCodes(codes, null);
+	}
+	
+	public static TreeData<CodeDTO> getTreeDataByCodes( List<CodeDTO> codes, TreeData<CodeDTO> codeTree){
+		if( codeTree == null)
+			codeTree = new TreeData<>();
+		else
+			codeTree.clear();
+		
+		Map<String, CodeDTO> codeMap = new HashMap<>();
+		for( CodeDTO code: codes) {
+			if( code.getParent() == null ) {
+				codeTree.addRootItems( code );
+				codeMap.put( code.getUri(), code);
+			} else {
+				// determine parent
+				codeTree.addItem( codeMap.get( code.getParent()), code);
+			}
+		}
+		return codeTree;
+	}
 	
 	public static List<CodeDTO> getCodeDTOByConceptTree( TreeData<CVConcept> conceptTree){
 		List<CodeDTO> codes = new ArrayList<>();
