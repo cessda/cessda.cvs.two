@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @Service
 public class ImportService {
@@ -61,30 +62,42 @@ public class ImportService {
 			else
 				vocabulary = VocabularyDTO.generateFromCVScheme(vocabulary, cvScheme);
 			
-			vocabularyService.save(vocabulary);
+			vocabulary.setDiscoverable( true );
+			vocabulary = vocabularyService.save(vocabulary);
 			
 			// get codes
 			List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType( cvScheme.getContainerId(), DDIElement.CVCONCEPT);
 			
-			for (DDIStore concept : ddiConcepts) {
-				CVConcept cvConcept = new CVConcept( concept );
+//			for (DDIStore concept : ddiConcepts) {
+//				CVConcept cvConcept = new CVConcept( concept );
+//				
+//				// get Code
+//				CodeDTO code = codeService.getByUri( cvConcept.getContainerId() );
+//				
+//				if( code == null )
+//					code = codeService.getByNotation( cvConcept.getNotation() );
+//				
+//				if( code == null ) {
+//					code = CodeDTO.generateFromCVConcept(cvConcept);
+//					code.setVocabularyId( vocabulary.getId() );
+//				}
+//				else
+//					code = CodeDTO.generateFromCVConcept(code, cvConcept);
+//				
+//				code.setVocabularyId( vocabulary.getId());
+//				codeService.save(code);
+//				
+//			}
+			List<CodeDTO> codes = CvCodeTreeUtils.getCodeDTOByConceptTree( CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvScheme) );
+			for(CodeDTO code: codes){
+				code.setVocabularyId( vocabulary.getId() );
 				
-				// get Code
-				CodeDTO code = codeService.getByUri( cvConcept.getContainerId() );
-				
-				if( code == null )
-					code = codeService.getByNotation( cvConcept.getNotation() );
-				
-				if( code == null ) {
-					code = CodeDTO.generateFromCVConcept(cvConcept);
-					code.setVocabularyId( vocabulary.getId() );
-				}
-				else
-					code = CodeDTO.generateFromCVConcept(code, cvConcept);
-				
+				CodeDTO codeDB = codeService.getByUri( code.getUri() );
+				if( codeDB != null)
+					code.setId( codeDB.getId());
+				code.setDiscoverable( true );
 				codeService.save(code);
-				
-			}
+			};
 		}
 		log.debug("DDIFlatDB imported to database");
 	}

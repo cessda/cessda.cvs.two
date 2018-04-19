@@ -70,4 +70,6 @@ public interface CodeService {
 	CodeDTO getByUri(String uri);
 
 	CodeDTO getByNotation(String notation);
+	
+	List<CodeDTO> findByVocabulary( Long vocabularyId);
 }

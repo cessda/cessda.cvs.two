@@ -13,9 +13,44 @@ import org.gesis.stardat.entity.DDIElement;
 import com.vaadin.data.TreeData;
 
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
 
 public class CvCodeTreeUtils{
 	private static List<String> conceptToBeRemoved = null;
+	
+	public static List<CodeDTO> getCodeDTOByConceptTree( TreeData<CVConcept> conceptTree){
+		List<CodeDTO> codes = new ArrayList<>();
+		int position = 0;
+		for(CVConcept cvConceptRoot: conceptTree.getRootItems()) {
+			CodeDTO codeRoot = CodeDTO.generateFromCVConcept(cvConceptRoot);
+			codeRoot.setPosition(position);
+			position++;
+			codes.add( codeRoot );
+			if( !conceptTree.getChildren(cvConceptRoot).isEmpty())
+				position = traverseChildCvConcept( codes, conceptTree, cvConceptRoot, conceptTree.getChildren(cvConceptRoot), position );
+		};
+		return codes;
+	}
+	
+	private static int traverseChildCvConcept(List<CodeDTO> codes, TreeData<CVConcept> conceptTree,
+			CVConcept cvConceptParent, List<CVConcept> cvConcepts, Integer position) {
+		for(CVConcept cvConcept: cvConcepts) {
+			CodeDTO code = CodeDTO.generateFromCVConcept(cvConcept);
+			code.setPosition(position);
+			code.setParent( cvConceptParent.getContainerId());
+			position++;
+			codes.add(code);
+			if( !conceptTree.getChildren(cvConcept).isEmpty())
+				position = traverseChildCvConcept( codes, conceptTree, cvConcept, conceptTree.getChildren(cvConcept), position );
+		};
+		return position;
+	}
+
+	public static TreeData<CVConcept> buildCvConceptTree(List<DDIStore> ddiConcepts, CVScheme cvScheme) {
+		TreeData<CVConcept> cvConceptTree = new TreeData<CVConcept>();
+		buildCvConceptTree(ddiConcepts, cvScheme, cvConceptTree);
+		return cvConceptTree;
+	}
 	
 	public static void buildCvConceptTree(List<DDIStore> ddiConcepts, CVScheme cvScheme, TreeData<CVConcept> cvConceptTree ) {
 		cvConceptTree.clear();

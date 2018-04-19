@@ -146,4 +146,12 @@ public class CodeServiceImpl implements CodeService {
 		Code code = codeRepository.getByNotation(notation);
         return codeMapper.toDto(code);
 	}
+
+	@Override
+	public List<CodeDTO> findByVocabulary(Long vocabularyId) {
+		log.debug("Request to get all Codes given vocabulary");
+        return codeRepository.findAllByVocabulary( vocabularyId ).stream()
+            .map(codeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }
