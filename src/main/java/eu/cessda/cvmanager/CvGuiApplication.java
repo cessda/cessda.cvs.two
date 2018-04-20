@@ -43,7 +43,7 @@ public class CvGuiApplication extends SpringBootServletInitializer {
 	    templateResolver.setPrefix("templates/");
 	    templateResolver.setSuffix(".html");
 	    templateResolver.setTemplateMode("HTML");
-	    templateResolver.setCharacterEncoding("UTF_8");
+	    templateResolver.setCharacterEncoding("UTF-8");
 	    templateResolver.setCacheable(false);
 	    return templateResolver;
 	}
