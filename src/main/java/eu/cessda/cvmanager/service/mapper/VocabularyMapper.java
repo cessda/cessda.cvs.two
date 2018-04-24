@@ -9,16 +9,17 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 /**
  * Mapper for the entity Vocabulary and its DTO VocabularyDTO.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {CodeMapper.class})
 public interface VocabularyMapper extends EntityMapper<VocabularyDTO, Vocabulary> {
 	
 	@Mappings({
+		@Mapping(source = "codes", target = "codes"),
 		@Mapping(source = "languages", target = "languages"),
 	})
     VocabularyDTO toDto(Vocabulary vocabulary);
 
     @Mappings({
-	    @Mapping(target = "codes", ignore = true),
+	    @Mapping(source = "codes", target = "codes"),
 	    @Mapping(target = "languages"),
     })
     Vocabulary toEntity(VocabularyDTO vocabularyDTO);

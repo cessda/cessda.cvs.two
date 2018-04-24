@@ -1,6 +1,6 @@
 package eu.cessda.cvmanager.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -247,9 +247,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String definitionSv;
 
-    @OneToMany(mappedBy = "vocabulary")
-    @JsonIgnore
-    @Field(type = FieldType.Nested)
+//    @JsonBackReference
+//    @OneToMany(mappedBy = "vocabulary")
+    @Transient
+    @Field(type = FieldType.Nested, store = true)
     private Set<Code> codes = new HashSet<>();
 
     @Transient
@@ -836,13 +837,13 @@ public class Vocabulary implements Serializable {
 
     public Vocabulary addCode(Code code) {
         this.codes.add(code);
-        code.setVocabulary(this);
+//        code.setVocabulary(this);
         return this;
     }
 
     public Vocabulary removeCode(Code code) {
         this.codes.remove(code);
-        code.setVocabulary(null);
+//        code.setVocabulary(null);
         return this;
     }
 

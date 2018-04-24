@@ -6,11 +6,9 @@ import javax.validation.constraints.*;
 
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.service.dto.AgencyDTO;
 
 import java.io.Serializable;
 import java.util.Set;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 
@@ -44,6 +42,8 @@ public class VocabularyDTO implements Serializable {
     private Boolean discoverable;
     
     private Set<String> languages;
+    
+    private Set<CodeDTO> codes = new HashSet<>();
 
     @NotNull
     @Size(max = 20)
@@ -601,6 +601,31 @@ public class VocabularyDTO implements Serializable {
 
     public void setAgencyId(Long agencyId) {
         this.agencyId = agencyId;
+    }
+    
+    public Set<CodeDTO> getCodes() {
+        return codes;
+    }
+
+    public VocabularyDTO codes(Set<CodeDTO> codes) {
+        this.codes = codes;
+        return this;
+    }
+
+    public VocabularyDTO addCode(CodeDTO code) {
+    	if( this.codes == null )
+    		this.codes = new HashSet<>();
+        this.codes.add(code);
+        return this;
+    }
+
+    public VocabularyDTO removeCode(CodeDTO code) {
+        this.codes.remove(code);
+        return this;
+    }
+
+    public void setCodes(Set<CodeDTO> codes) {
+        this.codes = codes;
     }
 
 	@Override

@@ -7,5 +7,5 @@ import eu.cessda.cvmanager.domain.Code;
 /**
  * Spring Data Elasticsearch repository for the Code entity.
  */
-public interface CodeSearchRepository extends ElasticsearchRepository<Code, Long> {
+public interface CodeSearchRepository/* extends ElasticsearchRepository<Code, Long> */{
 }

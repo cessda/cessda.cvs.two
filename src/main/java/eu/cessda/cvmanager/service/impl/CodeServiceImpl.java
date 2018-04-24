@@ -33,12 +33,12 @@ public class CodeServiceImpl implements CodeService {
 
     private final CodeMapper codeMapper;
 
-    private final CodeSearchRepository codeSearchRepository;
+//    private final CodeSearchRepository codeSearchRepository;
 
-    public CodeServiceImpl(CodeRepository codeRepository, CodeMapper codeMapper, CodeSearchRepository codeSearchRepository) {
+    public CodeServiceImpl(CodeRepository codeRepository, CodeMapper codeMapper/*, CodeSearchRepository codeSearchRepository*/) {
         this.codeRepository = codeRepository;
         this.codeMapper = codeMapper;
-        this.codeSearchRepository = codeSearchRepository;
+//        this.codeSearchRepository = codeSearchRepository;
     }
 
     /**
@@ -53,8 +53,8 @@ public class CodeServiceImpl implements CodeService {
         Code code = codeMapper.toEntity(codeDTO);
         code = codeRepository.save(code);
         CodeDTO result = codeMapper.toDto(code);
-        if( code.isDiscoverable() != null && code.isDiscoverable())
-        	codeSearchRepository.save(code);
+//        if( code.isDiscoverable() != null && code.isDiscoverable())
+//        	codeSearchRepository.save(code);
         return result;
     }
 
@@ -114,8 +114,8 @@ public class CodeServiceImpl implements CodeService {
     
 	@Override
 	public void delete(CodeDTO code) {
-		if( code.isDiscoverable() != null && code.isDiscoverable())
-        	codeSearchRepository.deleteById( code.getId() );
+//		if( code.isDiscoverable() != null && code.isDiscoverable())
+//        	codeSearchRepository.deleteById( code.getId() );
 		
 		delete( code.getId() );
 	}
@@ -131,8 +131,8 @@ public class CodeServiceImpl implements CodeService {
     @Transactional(readOnly = true)
     public Page<CodeDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Codes for query {}", query);
-        Page<Code> result = codeSearchRepository.search(queryStringQuery(query), pageable);
-        return result.map(codeMapper::toDto);
+//        Page<Code> result = codeSearchRepository.search(queryStringQuery(query), pageable);
+        return null;//result.map(codeMapper::toDto);
     }
 
 	@Override

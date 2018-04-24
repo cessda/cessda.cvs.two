@@ -13,8 +13,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import eu.cessda.cvmanager.domain.Vocabulary;
+import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @Service
@@ -26,12 +29,16 @@ public class ImportService {
 	private final VocabularyService vocabularyService;
 	private final CodeService codeService;
 	private final StardatDDIService stardatDDIService;
+	private final VocabularyMapper vocabularyMapper;
+	private final VocabularySearchRepository vocabularySearchRepository;
 	public ImportService(AgencyService agencyService, VocabularyService vocabularyService, CodeService codeService,
-			StardatDDIService stardatDDIService) {
+			StardatDDIService stardatDDIService, VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository) {
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
 		this.stardatDDIService = stardatDDIService;
+		this.vocabularyMapper = vocabularyMapper;
+		this.vocabularySearchRepository = vocabularySearchRepository;
 	}
 	
 	public void importFromStardat() {
@@ -96,8 +103,13 @@ public class ImportService {
 				if( codeDB != null)
 					code.setId( codeDB.getId());
 				code.setDiscoverable( true );
-				codeService.save(code);
+				code = codeService.save(code);
+				vocabulary.addCode(code);
 			};
+			
+			// reindex nested codes
+			Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
+			vocabularySearchRepository.save( vocab );
 		}
 		log.debug("DDIFlatDB imported to database");
 	}

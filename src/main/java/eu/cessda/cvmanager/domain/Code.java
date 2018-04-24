@@ -8,6 +8,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -17,7 +19,7 @@ import java.util.Set;
  */
 @Entity
 @Table(name = "code")
-@Document(indexName = "code")
+//@Document(indexName = "codes")
 public class Code implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -236,8 +238,12 @@ public class Code implements Serializable {
     @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String definitionSv;
 
-    @ManyToOne
-    private Vocabulary vocabulary;
+//    @JsonManagedReference
+//    @ManyToOne
+//    private Vocabulary vocabulary;
+    
+    @Column(name = "vocabulary_id")
+    private Long vocabularyId;
 
     public Long getId() {
         return id;
@@ -804,19 +810,26 @@ public class Code implements Serializable {
         this.definitionSv = definitionSv;
     }
 
-
-    public Vocabulary getVocabulary() {
-        return vocabulary;
+    public Long getVocabularyId() {
+        return vocabularyId;
     }
 
-    public Code vocabulary(Vocabulary vocabulary) {
-        this.vocabulary = vocabulary;
-        return this;
+    public void setVocabularyId(Long vocabularyId) {
+        this.vocabularyId = vocabularyId;
     }
 
-    public void setVocabulary(Vocabulary vocabulary) {
-        this.vocabulary = vocabulary;
-    }
+//    public Vocabulary getVocabulary() {
+//        return vocabulary;
+//    }
+//
+//    public Code vocabulary(Vocabulary vocabulary) {
+//        this.vocabulary = vocabulary;
+//        return this;
+//    }
+//
+//    public void setVocabulary(Vocabulary vocabulary) {
+//        this.vocabulary = vocabulary;
+//    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

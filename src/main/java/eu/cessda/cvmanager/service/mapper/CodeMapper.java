@@ -10,17 +10,15 @@ import eu.cessda.cvmanager.service.dto.CodeDTO;
 /**
  * Mapper for the entity Code and its DTO CodeDTO.
  */
-@Mapper(componentModel = "spring", uses = {VocabularyMapper.class})
+@Mapper(componentModel = "spring")
 public interface CodeMapper extends EntityMapper<CodeDTO, Code> {
 	@Mappings({
 		@Mapping(source = "languages", target = "languages"),
-		@Mapping(source = "vocabulary.id", target = "vocabularyId")
 	})
     CodeDTO toDto(Code code);
 
 	@Mappings({
 		@Mapping(target = "languages"),
-		@Mapping(source = "vocabularyId", target = "vocabulary")
 	})
     Code toEntity(CodeDTO codeDTO);
 
