@@ -10,12 +10,16 @@ import org.gesis.wts.domain.enumeration.Language;
 import java.io.Serializable;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A DTO for the Vocabulary entity.
  */
 public class VocabularyDTO implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	public VocabularyDTO() {
 		archived = false;
@@ -157,6 +161,86 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String definitionSv;
     
+    public String getTitleByLanguage( Language language ) {
+    	switch (language) {
+		case CZECH:
+			return titleCs;
+		case DANISH:
+			return titleDa;
+		case DUTCH:
+			return titleNl;
+		case ENGLISH:
+			return titleEn;
+		case FINNISH:
+			return titleFi;
+		case FRENCH:
+			return titleFr;
+		case GERMAN:
+			return titleDe;
+		case GREEK:
+			return titleEl;
+		case HUNGARIAN:
+			return titleHu;
+		case LITHUANIAN:
+			return titleLt;
+		case NORWEGIAN:
+			return titleNo;
+		case PORTUGUESE:
+			return titlePt;
+		case ROMANIAN:
+			return titleRo;
+		case SLOVAK:
+			return titleSk;
+		case SLOVENIAN:
+			return titleSl;
+		case SPANISH:
+			return titleEs;
+		case SWEDISH:
+			return titleSv;
+    	}
+    	return null;
+    }
+    
+    public String getDefinitionByLanguage( Language language ) {
+    	switch (language) {
+		case CZECH:
+			return definitionCs;
+		case DANISH:
+			return definitionDa;
+		case DUTCH:
+			return definitionNl;
+		case ENGLISH:
+			return definitionEn;
+		case FINNISH:
+			return definitionFi;
+		case FRENCH:
+			return definitionFr;
+		case GERMAN:
+			return definitionDe;
+		case GREEK:
+			return definitionEl;
+		case HUNGARIAN:
+			return definitionHu;
+		case LITHUANIAN:
+			return definitionLt;
+		case NORWEGIAN:
+			return definitionNo;
+		case PORTUGUESE:
+			return definitionPt;
+		case ROMANIAN:
+			return definitionRo;
+		case SLOVAK:
+			return definitionSk;
+		case SLOVENIAN:
+			return definitionSl;
+		case SPANISH:
+			return definitionEs;
+		case SWEDISH:
+			return definitionSv;
+    	}
+    	return null;
+    }
+    
     public VocabularyDTO setTitleDefinition( String title, String definition, String language) {
     	return setTitleDefinition(title, definition, Language.getEnum(language));
     }
@@ -208,8 +292,8 @@ public class VocabularyDTO implements Serializable {
     			setDefinitionNo(definition);
     			break;
     		case PORTUGUESE:
-    			setTitleNo(title);
-    			setDefinitionNo(definition);
+    			setTitlePt(title);
+    			setDefinitionPt(definition);
     			break;
     		case ROMANIAN:
     			setTitleRo(title);
@@ -775,8 +859,8 @@ public class VocabularyDTO implements Serializable {
 	    			vocabulary.setDefinitionNo(definition);
 	    			break;
 	    		case PORTUGUESE:
-	    			vocabulary.setTitleNo(title);
-	    			vocabulary.setDefinitionNo(definition);
+	    			vocabulary.setTitlePt(title);
+	    			vocabulary.setDefinitionPt(definition);
 	    			break;
 	    		case ROMANIAN:
 	    			vocabulary.setTitleRo(title);
@@ -803,5 +887,9 @@ public class VocabularyDTO implements Serializable {
 		});
 		
 		return vocabulary;
+	}
+	
+	public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
+		return vocabs.stream().filter( voc -> voc.getId() == Long.parseLong(docId)).findFirst();
 	}
 }

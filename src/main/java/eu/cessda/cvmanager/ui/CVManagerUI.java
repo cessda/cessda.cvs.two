@@ -58,6 +58,7 @@ import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 import eu.cessda.cvmanager.ui.view.HomeView;
 import eu.cessda.cvmanager.ui.view.SearchView;
+import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
 import eu.cessda.cvmanager.utils.FileUtils;
 
 /**
@@ -146,7 +147,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		this.viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
 
 		String uriQuery = Page.getCurrent().getLocation().toString();
-		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ))
+		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
+				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ))
 			navigator.navigateTo(SearchView.VIEW_NAME);
 		navigator.addViewChangeListener(viewChangeListener);
 

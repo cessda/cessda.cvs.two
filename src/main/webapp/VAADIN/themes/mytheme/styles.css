@@ -17573,3 +17573,9 @@ div.v-layout.v-horizontal.v-widget {
 	-o-transition: 0.5s ease-out;
 	transition: 0.5s ease-out;
 }
+
+.mytheme .highlight {
+	color: #6a6a6a;
+	font-weight: bold;
+	font-style: normal;
+}

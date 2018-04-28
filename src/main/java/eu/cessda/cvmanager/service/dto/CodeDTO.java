@@ -206,8 +206,8 @@ public class CodeDTO implements Serializable {
     			setDefinitionNo(definition);
     			break;
     		case PORTUGUESE:
-    			setTitleNo(title);
-    			setDefinitionNo(definition);
+    			setTitlePt(title);
+    			setDefinitionPt(definition);
     			break;
     		case ROMANIAN:
     			setTitleRo(title);
@@ -757,8 +757,8 @@ public class CodeDTO implements Serializable {
 	    			code.setDefinitionNo(definition);
 	    			break;
 	    		case PORTUGUESE:
-	    			code.setTitleNo(title);
-	    			code.setDefinitionNo(definition);
+	    			code.setTitlePt(title);
+	    			code.setDefinitionPt(definition);
 	    			break;
 	    		case ROMANIAN:
 	    			code.setTitleRo(title);

@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 
 /**
  * Service Interface for managing Vocabulary.
@@ -66,6 +67,8 @@ public interface VocabularyService {
      * @return the list of entities
      */
     Page<VocabularyDTO> search(String query, Pageable pageable);
+    
+    EsQueryResultDetail search (EsQueryResultDetail esQueryResultDetail);
 
 	VocabularyDTO getByUri(String cvUri);
 

@@ -220,9 +220,11 @@ public class ElasticsearchTemplateAggregationTests {
 		for(SearchHit hit : searchResponse.getHits()) {
 			innerHits.putAll( hit.getInnerHits() );
 		}
-			
+					
 		// then
 		assertThat(aggregations, is(notNullValue()));
 		assertThat(aggregations.asMap().get("vocabulary"), is(notNullValue()));
 	}
+	
+	
 }
