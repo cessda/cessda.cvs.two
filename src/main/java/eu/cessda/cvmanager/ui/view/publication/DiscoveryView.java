@@ -114,43 +114,21 @@ public class DiscoveryView extends CvPublicationView {
 		eventBus.subscribe(this, DiscoveryView.VIEW_NAME);
 	}
 
-	private void refreshSearchResult() {
-		// set the query properties from url parameter
-		
-		
-		// query
-		esQueryResultDetail = vocabularyService.search( esQueryResultDetail );
-		
-		// set filter and pagination bar
-		filterLayout.setFacetFilter(esQueryResultDetail);
-		paginationBar.updateState(esQueryResultDetail);
-		
-		// update the result list
-		cvGrid.setItems( esQueryResultDetail.getVocabularies().getContent() );
-		cvGrid.removeAllColumns();
-		cvGrid.setHeaderVisible(false);
-		cvGrid.addColumn(voc -> {
-			agency = agencyService.findOne( voc.getAgencyId() );
-			return new VocabularyGridRow(voc, agency, configService,  searchTextField.getValue());
-		}, new ComponentRenderer()).setId("cvColumn");
-		// results.setRowHeight( 135.0 );
-		cvGrid.getColumn("cvColumn").setExpandRatio(1);
-
-		
-		
-	}
-
 	@PostConstruct
 	public void init() {
 		LoginView.NAVIGATETO_VIEWNAME = DiscoveryView.VIEW_NAME;
 		paginationBar = new PaginationBar( paggingListener , i18n);
 		filterLayout = new FiltersLayout( this, filterListener, i18n );
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
+		
+		// button style
+		sortByRelevence.setStyleName( "groupButton disable" );
+		sortByTitle.setStyleName( "groupButton enable" );
 
 		// refresh initial result
 		refreshSearchResult();
 		
-		resultInfo.setContentMode( ContentMode.HTML );
+		resultInfo.withContentMode( ContentMode.HTML );
 		cvGrid
 			.withStyleName(ValoTheme.TABLE_BORDERLESS, "undefined-height", "search-grid", "no-stripe")
 			.withFullSize()
@@ -163,15 +141,16 @@ public class DiscoveryView extends CvPublicationView {
 			.addTextChangeListener( e -> {
 				esQueryResultDetail.clear();
 				esQueryResultDetail.setSearchTerm( e.getValue() );
-				esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
-				refreshSearchResult();
+				sortByRelevence.click();
 			});
 		
 		sortByRelevence.addClickListener( e -> {
-			sortByRelevence.setStyleName( "groupButton enable" );
-			sortByTitle.setStyleName( "groupButton disable" );
-			esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, "_score") );
-			refreshSearchResult();
+			if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty() ) {
+				sortByRelevence.setStyleName( "groupButton enable" );
+				sortByTitle.setStyleName( "groupButton disable" );
+				esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, "_score") );
+				refreshSearchResult();
+			}
 		});
 
 		sortByTitle.addClickListener( e->{
@@ -233,6 +212,31 @@ public class DiscoveryView extends CvPublicationView {
 		refreshSearchResult();
 	}
 
+	public void refreshSearchResult() {
+		// set the query properties from url parameter
+		
+		// query
+		esQueryResultDetail = vocabularyService.search( esQueryResultDetail );
+		
+		// set filter and pagination bar
+		filterLayout.setFacetFilter(esQueryResultDetail);
+		paginationBar.updateState(esQueryResultDetail);
+		resultInfo.setValue( "<h3 class=\"result-info\"><strong>" + esQueryResultDetail.getVocabularies().getTotalElements() + " results found</strong></h3>");
+		
+		// update the result list
+		cvGrid.setItems( esQueryResultDetail.getVocabularies().getContent() );
+		cvGrid.removeAllColumns();
+		cvGrid.setHeaderVisible(false);
+		cvGrid.addColumn(voc -> {
+			agency = agencyService.findOne( voc.getAgencyId() );
+			return new VocabularyGridRow(voc, agency, configService,  searchTextField.getValue());
+		}, new ComponentRenderer()).setId("cvColumn");
+		// results.setRowHeight( 135.0 );
+		cvGrid.getColumn("cvColumn").setExpandRatio(1);
+
+		
+		
+	}
 
 	@Override
 	public void afterViewChange(ViewChangeEvent arg0) {

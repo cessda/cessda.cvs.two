@@ -16729,7 +16729,7 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 12px;
 	border-radius: 3px;
 	height: 33px;
-	background-color: #b0a790;
+	background-color: #905b32;
 	background-image: none;
 	border: none;
 	-webkit-box-shadow: none;
@@ -16753,7 +16753,7 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 12px;
 	border-radius: 0px;
 	height: 33px;
-	background-color: #797465;
+	background-color: #905b32;
 	background-image: none;
 	border: none;
 	-webkit-box-shadow: none;
@@ -17575,7 +17575,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .highlight {
-	color: #6a6a6a;
 	font-weight: bold;
 	font-style: normal;
 }
@@ -17647,4 +17646,45 @@ div.v-layout.v-horizontal.v-widget {
 	background: -o-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
 	background: -ms-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
 	background: radial, ellipse center, rgba(0, 0, 0, 0.1) 0%, transparent 75%;
+}
+
+.mytheme .v-filterselect {
+	height: 33px;
+	-webkit-box-shadow: none;
+	font-size: 14px;
+	border: none !important;
+}
+
+.mytheme .v-filterselect-input {
+	border: 1px solid rgba(172, 166, 144, 0.6) !important;
+}
+
+.mytheme .v-filterselect [class*="input"][class*="prompt"] {
+	color: red !important;
+}
+
+.mytheme .groupButton {
+	border-radius: 0;
+	border: 1px solid #ccc;
+	margin: 0;
+	text-decoration: none;
+	-webkit-box-shadow: none;
+	background-image: none;
+	font-size: 14px;
+	height: 30px;
+	float: left;
+}
+
+.mytheme .groupButton.enable {
+	color: #fff;
+	background-color: #905b32;
+}
+
+.mytheme .groupButton.disable {
+	color: #905b32;
+	background-color: #fff;
+}
+
+.mytheme h3.result-info {
+	color: #905b32 !important;
 }

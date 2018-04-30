@@ -88,6 +88,7 @@ public class FiltersLayout extends CustomComponent{
 		facetFilters.clear();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void setFacetFilter( EsQueryResultDetail esQueryResultDetail ) {
 		clear();
 		
@@ -97,6 +98,7 @@ public class FiltersLayout extends CustomComponent{
 			.addClickListener( e -> {
 				esQueryResultDetail.getFilterItems().clear();
 				discoveryView.setEsQueryResultDetail(esQueryResultDetail);
+				discoveryView.refreshSearchResult();
 			});
 		
 		filterLayout.add(resetFilter);
@@ -162,9 +164,6 @@ public class FiltersLayout extends CustomComponent{
 			                for (Bucket b : bkts) {
 
 			                    if (b.getDocCount() != 0) {
-			                        //ESClassification classificaiton = new ESClassification();
-//			                        System.out.println((int) b.getDocCount());
-//			                        System.out.println(b.getKeyAsString());
 			                        
 			                        boolean isFacetChecked = false;
 									if( selectedFacetItem != null && !selectedFacetItem.isEmpty())
@@ -178,95 +177,14 @@ public class FiltersLayout extends CustomComponent{
 										checkedFilterExist = true;
 									}
 
-			                    } else {
-			                        //list = Collections.<ESClassification> emptyList();
-			                    }
-
+			                    } 
 			                }
-
-
 			            }
-
 			        }
-					
-					
-//					
-//					for (Terms.Bucket b : aggregation.getBuckets()) {
-////						valuesWithNumHits.put(b.getKeyAsString(), b.getDocCount());
-//						
-//						boolean isFacetChecked = false;
-//						if( selectedFacetItem != null && !selectedFacetItem.isEmpty())
-//							isFacetChecked = selectedFacetItem.contains( b.getKeyAsString() );
-//						
-//						facetItems.add( b.getKeyAsString() + " (" + b.getDocCount() + ")" );
-//						
-//						// only show checkbox on selected facet
-//						if( isFacetChecked) {
-//							facetFilter.addFacetItem( b.getKeyAsString() + " (" + b.getDocCount() + ")", isFacetChecked);
-//							checkedFilterExist = true;
-//						}
-//						
-//					}
 					facetFilter.getSearchFacetItem().setItems(facetItems);
-					
-//					for (Filters.Bucket b : aggFilters.getBuckets()) {
-////						for (Terms.Bucket bb : (Bucket) b.getAggregations()) {
-////							
-////						}
-////						valuesWithNumHits.put(b.getKeyAsString(), b.getDocCount());
-//						
-//						boolean isFacetChecked = false;
-//						if( selectedFacetItem != null && !selectedFacetItem.isEmpty())
-//							isFacetChecked = selectedFacetItem.contains( b.getKeyAsString() );
-//						
-//						facetItems.add( b.getKeyAsString() + " (" + b.getDocCount() + ")" );
-//						
-//						// only show checkbox on selected facet
-//						if( isFacetChecked) {
-//							facetFilter.addFacetItem( b.getKeyAsString() + " (" + b.getDocCount() + ")", isFacetChecked);
-//							checkedFilterExist = true;
-//						}
-//						
-//					}
-//					facetFilter.getSearchFacetItem().setItems(facetItems);
 				}
 			}
-			
 		}
-		
-		
-	
-						
-//		for ( Field field : esQueryResultDetail.getResult().getFacetFields() )
-//		{
-//			List<String> facetItems = new ArrayList<>();
-//			FacetFilter facetFilter = new FacetFilter( field.getName() );
-//			// add list
-//			facetFilters.add( facetFilter );
-//			// add GUI
-//			filterLayout.add( facetFilter );
-//			
-//			Set<String> selectedFacetItem = null;
-//			if( esQueryResultDetail != null)
-//				selectedFacetItem = SolrQueryDetail.getSelectedFilterByField(field.getName(), esQueryResultDetail);
-//			
-//			for ( FacetEntry facetEntry : esQueryResultDetail.getResult().getFacetResultPage( field ).getContent() ) {
-//				if( facetEntry.getValue().length() < 2)
-//					continue;
-//				boolean isFacetChecked = false;
-//				if( selectedFacetItem != null && !selectedFacetItem.isEmpty())
-//					isFacetChecked = selectedFacetItem.contains( facetEntry.getValue() );
-//				
-//				facetItems.add( facetEntry.getValue() + " (" + facetEntry.getValueCount() + ")" );
-//				
-//				// only show checkbox on selected facet
-//				if( isFacetChecked) {
-//					facetFilter.addFacetItem( facetEntry.getValue() + " (" + facetEntry.getValueCount() + ")", isFacetChecked);
-//					checkedFilterExist = true;
-//				}
-//			}
-//			ComponentUtils.setComboboxItems(facetFilter.getSearchFacetItem(), facetItems.toArray(new String[facetItems.size()]));
-//		}
 		
 		if( checkedFilterExist )
 			resetFilter.setVisible( true );
@@ -321,7 +239,7 @@ public class FiltersLayout extends CustomComponent{
 			});
 			
 			facetLayout.add( 
-					new Label( "<h3 class=\"filter-menu\">" + i18n.get(fieldName, locale) + "</h3>" , ContentMode.HTML),
+					new Label( "<h3 class=\"filter-menu\">" + i18n.get("filter." + fieldName, locale) + "</h3>" , ContentMode.HTML),
 					searchFacetItem
 					);
 			

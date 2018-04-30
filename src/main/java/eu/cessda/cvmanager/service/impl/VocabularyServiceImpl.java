@@ -228,7 +228,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			.withPageable( esQueryResultDetail.getPage());
 		
 		// add sorting
-		if(esQueryResultDetail.getFirstSortOrder().equals("_score") )
+		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") )
 			searchQueryBuilder.withSort( SortBuilders.scoreSort());
 		else {
 			Order order = esQueryResultDetail.getFirstSortOrder();
@@ -245,7 +245,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 		// at the end build search query
 		SearchQuery searchQuery = searchQueryBuilder.build();
-				
+		
+		// put the vocabulary results
 		Page<VocabularyDTO> vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class).map(vocabularyMapper::toDto);
 		
 		// get search response for aggregation, hits, inner hits and highlighter
@@ -256,8 +257,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 			}
 		});
 		
-		Aggregations aggregations = searchResponse.getAggregations();
-		esQueryResultDetail.setAggregations(aggregations);
+		// set aggregation
+		esQueryResultDetail.setAggregations( searchResponse.getAggregations() );
 		
 		// update vocabulary based on highlight and inner hit
 		if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty()) {
