@@ -77,7 +77,9 @@ public class FiltersLayout extends CustomComponent{
 		this.filterListener = filterListener;
 		this.i18n = i18n;
 
-		filterLayout.withFullWidth();
+		filterLayout
+			.withFullWidth()
+			.withStyleName( "filter-layout" );
 		setCompositionRoot( filterLayout );
     }
 	
@@ -116,7 +118,6 @@ public class FiltersLayout extends CustomComponent{
 					Set<String> selectedFacetItem = EsQueryResultDetail.getSelectedFilterByField(field, esQueryResultDetail);
 					
 					for (Terms.Bucket b : aggregation.getBuckets()) {
-//						valuesWithNumHits.put(b.getKeyAsString(), b.getDocCount());
 						
 						boolean isFacetChecked = false;
 						if( selectedFacetItem != null && !selectedFacetItem.isEmpty())
@@ -312,7 +313,7 @@ public class FiltersLayout extends CustomComponent{
 //			searchFacetItem.setInputPrompt( "Filter by " + i18n.get(fieldName, locale).toLowerCase() );
 //			searchFacetItem.setNullSelectionAllowed( false );
 //			searchFacetItem.setFilteringMode(FilteringMode.CONTAINS);
-			searchFacetItem.setWidth("90%");
+			searchFacetItem.setSizeFull();
 			searchFacetItem.addValueChangeListener( e -> {
 				String selectedVal = e.getValue().toString();
 				int index = selectedVal.lastIndexOf( "(" );

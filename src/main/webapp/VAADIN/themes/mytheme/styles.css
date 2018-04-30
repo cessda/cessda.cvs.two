@@ -17313,10 +17313,6 @@ div.v-layout.v-horizontal.v-widget {
 	height: 0;
 }
 
-.mytheme .itemcontainer :hover {
-	background-color: #efefef;
-}
-
 .mytheme .v-label-undef-w {
 	white-space: normal;
 }
@@ -17413,6 +17409,10 @@ div.v-layout.v-horizontal.v-widget {
 	width: 100% !important;
 }
 
+.mytheme .search-grid  > .v-grid-tablewrapper  > table > tbody tr td.v-grid-cell-focused::before {
+	border: none;
+}
+
 .mytheme .v-treegrid-undefined-height {
 	height: auto !important;
 }
@@ -17439,10 +17439,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .undefined-height > .v-grid-tablewrapper > table > tbody > tr td {
 	height: auto !important;
-	display: table-cell;
 	float: none;
 	vertical-align: top;
 	padding: 0 !important;
+	width: 100% !important;
 }
 
 .mytheme .v-treegrid-tablewrapper {
@@ -17578,4 +17578,73 @@ div.v-layout.v-horizontal.v-widget {
 	color: #6a6a6a;
 	font-weight: bold;
 	font-style: normal;
+}
+
+.mytheme .filter-layout {
+	padding: 0 20px 20px 0;
+}
+
+.mytheme .v-slot-pull-right {
+	clear: none;
+}
+
+.mytheme .v-slot-pull-left {
+	clear: none;
+}
+
+.mytheme .v-grid-borderless .v-grid-tablewrapper {
+	border: none;
+}
+
+.mytheme .v-grid-borderless .v-grid-tablewrapper td {
+	border: none;
+}
+
+.mytheme .no-stripe > .v-grid-tablewrapper > table > tbody > tr {
+	background-color: #fff;
+}
+
+.mytheme .no-stripe > .v-grid-tablewrapper > table > tbody > tr td {
+	background-color: #fff;
+}
+
+.mytheme .no-stripe > .v-grid-tablewrapper > table > tbody > tr:hover {
+	background-color: #fff;
+}
+
+.mytheme .no-stripe > .v-grid-tablewrapper > table > tbody > tr:hover td:hover {
+	background-color: #fff;
+}
+
+.mytheme hr.fancy-line {
+	border: 0;
+	height: 1px;
+	position: relative;
+	margin: 0.5em 0;
+}
+
+.mytheme hr.fancy-line:before {
+	top: -0.5em;
+	height: 1em;
+}
+
+.mytheme hr.fancy-line:after {
+	content: "";
+	height: 0.5em;
+	top: 1px;
+}
+
+.mytheme hr.fancy-line:before, .mytheme hr.fancy-line:after {
+	content: "";
+	position: absolute;
+	width: 100%;
+}
+
+.mytheme hr.fancy-line, .mytheme hr.fancy-line:before {
+	background: -moz-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
+	background: -webkit-gradient(radial, center center, 0px, center center, 75%, color-stop(0%, rgba(0, 0, 0, 0.1)), color-stop(75%, transparent));
+	background: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
+	background: -o-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
+	background: -ms-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
+	background: radial, ellipse center, rgba(0, 0, 0, 0.1) 0%, transparent 75%;
 }

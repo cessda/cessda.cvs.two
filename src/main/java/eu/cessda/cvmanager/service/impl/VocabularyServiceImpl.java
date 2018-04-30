@@ -41,6 +41,7 @@ import eu.cessda.cvmanager.repository.VocabularyRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.ElasticsearchTemplate2;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
@@ -50,10 +51,13 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -215,6 +219,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	@Override
 	public EsQueryResultDetail search(EsQueryResultDetail esQueryResultDetail) {
 		String searchTerm = esQueryResultDetail.getSearchTerm();
+		// uild query 
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
 			.withSearchType(SearchType.DEFAULT)
@@ -236,12 +241,12 @@ public class VocabularyServiceImpl implements VocabularyService {
 			searchQueryBuilder.addAggregation(aggregration);
 		
 		if( searchTerm != null && !searchTerm.isEmpty())
-			searchQueryBuilder.withHighlightFields( generateHighlightBuilder() );
+			searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain() );
 		
 		// at the end build search query
 		SearchQuery searchQuery = searchQueryBuilder.build();
 				
-		Page<VocabularyDTO> vocabulary = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class).map(vocabularyMapper::toDto);
+		Page<VocabularyDTO> vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class).map(vocabularyMapper::toDto);
 		
 		// get search response for aggregation, hits, inner hits and highlighter
 		SearchResponse searchResponse = elasticsearchTemplate.query(searchQuery, new ResultsExtractor<SearchResponse>() {
@@ -256,14 +261,74 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 		// update vocabulary based on highlight and inner hit
 		if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty()) {
-			Map<String, SearchHits> innerHits = new LinkedHashMap<>();
-			for(SearchHit hit : searchResponse.getHits()) {
-				if( VocabularyDTO.findByIdFromList( vocabulary.getContent(), hit.getId()).isPresent()) {
-					VocabularyDTO cvHit = VocabularyDTO.findByIdFromList( vocabulary.getContent(), hit.getId()).get();
+			applySearchHitAndHighlight(vocabularyPage, searchResponse);
+			
+			esQueryResultDetail.setVocabularies(vocabularyPage);
+		} else {
+			// remove unnecessary code
+			for( VocabularyDTO vocab : vocabularyPage.getContent())
+				vocab.setCodes( Collections.emptySet() );
+			// no search term then just assign vocabulary as it is
+			esQueryResultDetail.setVocabularies(vocabularyPage);
+		}
+		
+		return esQueryResultDetail;
+	}
+
+	private void applySearchHitAndHighlight(Page<VocabularyDTO> vocabularyPage, SearchResponse searchResponse) {
+		for(SearchHit hit : searchResponse.getHits()) {
+			if( VocabularyDTO.findByIdFromList( vocabularyPage.getContent(), hit.getId()).isPresent()) {
+				VocabularyDTO cvHit = VocabularyDTO.findByIdFromList( vocabularyPage.getContent(), hit.getId()).get();
+				
+				if( hit.getHighlightFields() != null ) 
+					applyVocabularyHighlighter(hit, cvHit);
 					
-					if( hit.getHighlightFields() != null ) {
-						
-						for (Map.Entry<String, HighlightField> entry : hit.getHighlightFields().entrySet()) {
+				if( hit.getInnerHits() == null )
+					continue;
+				
+				applyCodeHighlighter(hit, cvHit);
+				
+			}
+		}
+	}
+	
+	private void applyVocabularyHighlighter(SearchHit hit, VocabularyDTO cvHit) {
+		for (Map.Entry<String, HighlightField> entry : hit.getHighlightFields().entrySet()) {
+			String fieldName = entry.getKey();
+			HighlightField highlighField = entry.getValue();
+			StringBuilder highLightText = new StringBuilder();
+			for( Text text: highlighField.getFragments()) {
+				highLightText.append( text.string() + " ");
+			}
+			java.lang.reflect.Field declaredField = null;
+			try {
+				declaredField = VocabularyDTO.class.getDeclaredField( fieldName );
+				declaredField.setAccessible( true );
+				declaredField.set(cvHit, highLightText.toString());
+			} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+				
+		}
+	}
+
+	private void applyCodeHighlighter(SearchHit hit, VocabularyDTO cvHit) {
+		Set<CodeDTO> newCodes = new LinkedHashSet<>();
+		
+		for( Map.Entry<String, SearchHits> innerHitEntry : hit.getInnerHits().entrySet()) {
+			SearchHits innerHits = innerHitEntry.getValue();
+			
+			for( SearchHit innerHit: innerHits) {
+				
+				if( innerHit.getHighlightFields().isEmpty())
+					continue;
+				
+				if( CodeDTO.findByIdFromList( cvHit.getCodes() , (int) innerHit.getSource().get("id")).isPresent()) {
+					CodeDTO codeHit = CodeDTO.findByIdFromList( cvHit.getCodes(),  (int) innerHit.getSource().get("id")).get();
+					
+					if( innerHit.getHighlightFields() != null ) {
+						for (Map.Entry<String, HighlightField> entry : innerHit.getHighlightFields().entrySet()) {
 							String fieldName = entry.getKey();
 							HighlightField highlighField = entry.getValue();
 							StringBuilder highLightText = new StringBuilder();
@@ -272,57 +337,24 @@ public class VocabularyServiceImpl implements VocabularyService {
 							}
 							java.lang.reflect.Field declaredField = null;
 							try {
-								declaredField = VocabularyDTO.class.getDeclaredField( fieldName );
+								declaredField = CodeDTO.class.getDeclaredField( fieldName.substring( CODE_PATH.length() + 1 ) );
 								declaredField.setAccessible( true );
-								declaredField.set(cvHit, highLightText.toString());
+								declaredField.set(codeHit, highLightText.toString());
 							} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
 								e.printStackTrace();
-							}
-							
+							}				
 								
-						}
-						
+						}					
 					}
-					
-					
+					newCodes.add(codeHit);
 				}
-				
-//				VocabularyDTO.findByIdFromList( vocabulary.getContent(), hit.getId()).ifPresent( cvHit -> {
-//					if( hit.getHighlightFields() != null ) {
-//						for ( String key : hit.getSource().keySet() ) {
-//							java.lang.reflect.Field declaredField = null;
-////							declaredField = VocabularyDTO.class.getDeclaredField( hit.)
-//						}
-//						
-//					}
-//				});
-				innerHits.putAll( hit.getInnerHits() );
 			}
-			esQueryResultDetail.setInnerHits(innerHits);
-			
-			esQueryResultDetail.setVocabularies(vocabulary);
-		} else {
-			// no search term then just assign vocabulary as it is
-			esQueryResultDetail.setVocabularies(vocabulary);
 		}
 		
-		return esQueryResultDetail;
+		cvHit.setCodes(newCodes);
 	}
-	
-	public static HighlightBuilder.Field[] generateHighlightBuilder() {
-		List<HighlightBuilder.Field> fields = new ArrayList<>();
-		// all language fields
-		for(String langIso : Language.getCapitalizedEnum()) {
-			fields.add( new HighlightBuilder.Field( "title" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
-			fields.add( new HighlightBuilder.Field( "definition" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
-			fields.add( new HighlightBuilder.Field( CODE_PATH +".title" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
-			fields.add( new HighlightBuilder.Field( CODE_PATH +".definition" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
-		}
-		
-//		fields.add( new HighlightBuilder.Field( "definitionFi" ).preTags("<span class=\"highlight\">").postTags("</span>") );
-//		fields.add( new HighlightBuilder.Field( "definitionEn" ).preTags("<span class=\"highlight\">").postTags("</span>") );
-		return fields.toArray( new HighlightBuilder.Field[ fields.size() ] );
-	}
+
+
 	
 	public static QueryBuilder generateMainAndNestedQuery( String term ) {
 		if( term != null && !term.isEmpty())
@@ -346,6 +378,16 @@ public class VocabularyServiceImpl implements VocabularyService {
 		return boolQuery;
 	}
 	
+	public static HighlightBuilder.Field[] generateHighlightBuilderMain() {
+		List<HighlightBuilder.Field> fields = new ArrayList<>();
+		// all language fields
+		for(String langIso : Language.getCapitalizedEnum()) {
+			fields.add( new HighlightBuilder.Field( "title" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
+			fields.add( new HighlightBuilder.Field( "definition" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
+		}
+		return fields.toArray( new HighlightBuilder.Field[ fields.size() ] );
+	}
+	
 	public static QueryBuilder generateNestedQuery( String term ) {
 		// query for all languages
 		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
@@ -358,10 +400,22 @@ public class VocabularyServiceImpl implements VocabularyService {
 		}
 //		boolQuery.should( QueryBuilders.termQuery( CODE_PATH +".notation", term).boost( 2.0f ));
 		
-		return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None).innerHit( new InnerHitBuilder());
+		return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
+				.innerHit( new InnerHitBuilder( CODE_PATH )
+				.setHighlightBuilder( nestedHighlightBuilder() ));
 	}
 	
-	public static  QueryBuilder generateFilterQuery( List<FilterItem> filterItems ) {
+	private static HighlightBuilder nestedHighlightBuilder() {
+		HighlightBuilder highlightBuilder = new HighlightBuilder();
+		// all language fields
+		for(String langIso : Language.getCapitalizedEnum()) {
+			highlightBuilder.field( CODE_PATH +".title" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>" );
+			highlightBuilder.field( CODE_PATH +".definition" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>" );
+		}
+		return highlightBuilder;
+	}
+	
+	public static QueryBuilder generateFilterQuery( List<FilterItem> filterItems ) {
 		BoolQueryBuilder boolQueryFilter = QueryBuilders.boolQuery();
 		
 		for(FilterItem filterItem : filterItems) {

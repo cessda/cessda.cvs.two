@@ -43,15 +43,16 @@ public class VocabularyGridRow extends CustomComponent {
 
 	private MCssLayout container = new MCssLayout();
 	private MHorizontalLayout hLayout = new MHorizontalLayout();
-	private MVerticalLayout vLayout = new MVerticalLayout();
+	private MCssLayout vLayout = new MCssLayout();
 	private MCssLayout languageLayout = new MCssLayout();
 	private MCssLayout titleLayout = new MCssLayout();
+	private MCssLayout codeList = new MCssLayout();
 	private MLabel slTitle = new MLabel();
 	private MLabel tlTitle = new MLabel();
 	private MLabel desc = new MLabel();
 	private MLabel version = new MLabel();
 
-	private MLabel conceptList = new MLabel();
+//	private MLabel conceptList = new MLabel();
 	private Image logo;
 
 	private transient ConfigurationService configService;
@@ -73,9 +74,10 @@ public class VocabularyGridRow extends CustomComponent {
 
 		desc.withContentMode(ContentMode.HTML).withFullWidth();
 		version.withContentMode(ContentMode.HTML);
-		conceptList.withContentMode(ContentMode.HTML);
+//		conceptList.withContentMode(ContentMode.HTML);
+		codeList.withFullWidth();
 
-		languageLayout.withFullWidth();
+		languageLayout.withUndefinedSize().withStyleName( "pull-right" );
 		String sourceLanguage = configService.getDefaultSourceLanguage();
 		
 		Language.getIsoFromLanguage( vocabulary.getLanguages() ).forEach(item -> {
@@ -92,16 +94,26 @@ public class VocabularyGridRow extends CustomComponent {
 			}
 		});
 
-		titleLayout.withFullWidth().add(slTitle, tlTitle);
+		titleLayout
+			.withUndefinedSize()
+			.withStyleName( "pull-left" )
+			.add(slTitle, tlTitle);
 
-		vLayout.withMargin(false).withFullWidth().add(languageLayout, titleLayout, desc, version, conceptList);
+		vLayout
+			.withFullWidth()
+			.add(languageLayout, titleLayout, desc, version, codeList);
 		
 		logo = new Image(null, new ThemeResource( agency.getLogopath() ));
 		logo.setWidth("120px");
 
 		hLayout.withFullWidth().add(logo, vLayout).withExpand(vLayout, 1.0f);
 
-		container.withStyleName("itemcontainer").withFullWidth().add(hLayout);
+		container
+			.withStyleName("itemcontainer")
+			.withFullWidth()
+			.add( 
+				hLayout,
+				new MLabel("<hr class=\"fancy-line\"/>").withContentMode( ContentMode.HTML ).withFullSize());
 		// Initial
 		setContent( Language.ENGLISH );
 	}
@@ -124,17 +136,29 @@ public class VocabularyGridRow extends CustomComponent {
 	}
 
 	private void setContent(Language language) {
+		codeList.removeAllComponents();
+		codeList.setVisible( false );
+		
+		String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getUri();
 		Language sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage() );
-		slTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
-				+ vocabulary.getUri() + "'>" + vocabulary.getTitleByLanguage(sourceLanguage) + "</a>");
+		slTitle.setValue("<a href='" + baseUrl + "'>" + vocabulary.getTitleByLanguage(sourceLanguage) + "</a>");
 		log.info("URL is: " + slTitle.getValue());
 
-		tlTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
-				+ vocabulary.getUri()  + "'>" + vocabulary.getNotation() + "</a>");
+		tlTitle.setValue("<a href='" + baseUrl  + "'>" + vocabulary.getNotation() + "</a>");
 		desc.setValue(vocabulary.getDefinitionByLanguage(language));
 		version.setValue("Version: " + vocabulary.getVersion() + " "
-				+ (language.equals("en") ? "" : "_" + language) + "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
-				+ vocabulary.getUri() +"?tab=download"+ "'>Download</a>");
+				+ (language.equals("en") ? "" : "_" + language) + " <a href='" + baseUrl +"?tab=download"+ "'>Download</a>");
+		
+		if( !vocabulary.getCodes().isEmpty() ) {
+			codeList.setVisible( true );
+			for( CodeDTO code: vocabulary.getCodes() ) {
+				codeList.add(
+					new MLabel( "<a href=\"" + baseUrl + "?code=" + code.getNotation() + "\">" + code.getTitleByLanguage( language ) + "</a>" 
+							+ " " + code.getDefinitionByLanguage( language ))
+					.withContentMode( ContentMode.HTML )
+				);
+			}
+		}
 
 		// COmpare Code with InnerHit
 //		List<CVConcept> theConceptList = vocabulary.getConceptList();

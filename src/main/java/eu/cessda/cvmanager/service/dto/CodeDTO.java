@@ -9,8 +9,10 @@ import org.gesis.wts.domain.enumeration.Language;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
+import java.util.Optional;
 
 /**
  * A DTO for the Code entity.
@@ -154,6 +156,86 @@ public class CodeDTO implements Serializable {
 
     @Lob
     private String definitionSv;
+    
+    public String getTitleByLanguage( Language language ) {
+    	switch (language) {
+		case CZECH:
+			return titleCs;
+		case DANISH:
+			return titleDa;
+		case DUTCH:
+			return titleNl;
+		case ENGLISH:
+			return titleEn;
+		case FINNISH:
+			return titleFi;
+		case FRENCH:
+			return titleFr;
+		case GERMAN:
+			return titleDe;
+		case GREEK:
+			return titleEl;
+		case HUNGARIAN:
+			return titleHu;
+		case LITHUANIAN:
+			return titleLt;
+		case NORWEGIAN:
+			return titleNo;
+		case PORTUGUESE:
+			return titlePt;
+		case ROMANIAN:
+			return titleRo;
+		case SLOVAK:
+			return titleSk;
+		case SLOVENIAN:
+			return titleSl;
+		case SPANISH:
+			return titleEs;
+		case SWEDISH:
+			return titleSv;
+    	}
+    	return null;
+    }
+    
+    public String getDefinitionByLanguage( Language language ) {
+    	switch (language) {
+		case CZECH:
+			return definitionCs;
+		case DANISH:
+			return definitionDa;
+		case DUTCH:
+			return definitionNl;
+		case ENGLISH:
+			return definitionEn;
+		case FINNISH:
+			return definitionFi;
+		case FRENCH:
+			return definitionFr;
+		case GERMAN:
+			return definitionDe;
+		case GREEK:
+			return definitionEl;
+		case HUNGARIAN:
+			return definitionHu;
+		case LITHUANIAN:
+			return definitionLt;
+		case NORWEGIAN:
+			return definitionNo;
+		case PORTUGUESE:
+			return definitionPt;
+		case ROMANIAN:
+			return definitionRo;
+		case SLOVAK:
+			return definitionSk;
+		case SLOVENIAN:
+			return definitionSl;
+		case SPANISH:
+			return definitionEs;
+		case SWEDISH:
+			return definitionSv;
+    	}
+    	return null;
+    }
     
     public CodeDTO setTitleDefinition( String title, String definition, String language) {
     	return setTitleDefinition(title, definition, Language.getEnum(language));
@@ -785,5 +867,9 @@ public class CodeDTO implements Serializable {
 		});
 		
 		return code;
+	}
+	
+	public static Optional<CodeDTO> findByIdFromList(Set<CodeDTO> codes, int docId) {
+		return codes.stream().filter( voc -> voc.getId() == docId).findFirst();
 	}
 }

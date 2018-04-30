@@ -253,9 +253,9 @@ public class Vocabulary implements Serializable {
     @Transient
     @Field(type = FieldType.Nested, store = true)
     private Set<Code> codes = new HashSet<>();
-
+    
     @Transient
-    private Agency agency;
+    private String selectedIsoLang;
     
     public Long getId() {
         return id;
@@ -852,21 +852,15 @@ public class Vocabulary implements Serializable {
         this.codes = codes;
     }
 
-    public Agency getAgency() {
-        return agency;
-    }
+    public String getSelectedIsoLang() {
+		return selectedIsoLang;
+	}
 
-    public Vocabulary agency(Agency agency) {
-        this.agency = agency;
-        return this;
-    }
+	public void setSelectedIsoLang(String selectedIsoLang) {
+		this.selectedIsoLang = selectedIsoLang;
+	}
 
-    public void setAgency(Agency agency) {
-        this.agency = agency;
-    }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
-
-    @Override
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

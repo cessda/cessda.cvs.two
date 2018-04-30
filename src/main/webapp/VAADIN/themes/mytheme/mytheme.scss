@@ -1623,7 +1623,7 @@ $v-selection-item-border-radius: 0;
   			height:0;
   		}
   		:hover{
-  			background-color:#efefef;
+  			/*background-color:#efefef;*/
   		}
   	}
   
@@ -1703,6 +1703,9 @@ $v-selection-item-border-radius: 0;
 	   		    position: relative;
 	   		    tr{
 	   		    	width: 100% !important;
+	   		    	td.v-grid-cell-focused::before{
+	   		    		border:none;
+	   		    	}
 	   		    }
 	   		}
 	   	}
@@ -1728,10 +1731,10 @@ $v-selection-item-border-radius: 0;
 		position: relative !important;
 	   	td{
 	   		height:auto !important;
-			display:table-cell;
 			float:none;
 			vertical-align: top;
 			padding:0 !important;
+			width:100% !important;
 	   	}
    }
    .v-treegrid-tablewrapper{
@@ -1854,5 +1857,69 @@ $v-selection-item-border-radius: 0;
 		color: #6a6a6a;
 		font-weight: bold;
     	font-style: normal;
+	}
+	
+	.filter-layout{
+		padding: 0 20px 20px 0; 
+	}
+	.v-slot-pull-right{
+		clear:none;
+	}
+	.v-slot-pull-left{
+		clear:none;
+	}
+	
+	.v-grid-borderless{
+		.v-grid-tablewrapper{
+			border:none;
+			td{
+				border:none;
+			}
+		}
+	}
+	
+	.no-stripe>.v-grid-tablewrapper>table>tbody>tr{
+		background-color:#fff;
+		td{
+			background-color:#fff;
+		}
+	}
+	
+	.no-stripe>.v-grid-tablewrapper>table>tbody>tr:hover{
+		background-color:#fff;
+		td:hover{
+			background-color:#fff;
+		}
+	}
+	
+	hr.fancy-line { 
+	    border: 0; 
+	    height: 1px;
+	    position: relative;
+	    margin: 0.5em 0; /* Keep other elements away from pseudo elements*/
+	}
+	hr.fancy-line:before {
+	    top: -0.5em;
+	    height: 1em;
+	}
+	hr.fancy-line:after {
+	    content:'';
+	    height: 0.5em;   /* half the height of :before */
+	    top: 1px;        /* height of hr*/
+	}
+	
+	hr.fancy-line:before, hr.fancy-line:after {
+	    content: '';
+	    position: absolute;
+	    width: 100%;
+	}
+	
+	hr.fancy-line, hr.fancy-line:before {
+	    background: -moz-radial-gradient(center, ellipse cover, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 75%);
+	    background: -webkit-gradient(radial, center center, 0px, center center, 75%, color-stop(0%,rgba(0,0,0,0.1)), color-stop(75%,rgba(0,0,0,0)));
+	    background: -webkit-radial-gradient(center, ellipse cover, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 75%);
+	    background: -o-radial-gradient(center, ellipse cover, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 75%);
+	    background: -ms-radial-gradient(center, ellipse cover, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 75%);
+	    background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%,rgba(0,0,0,0) 75%);
 	}
 }

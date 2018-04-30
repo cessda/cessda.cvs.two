@@ -152,7 +152,7 @@ public class DiscoveryView extends CvPublicationView {
 		
 		resultInfo.setContentMode( ContentMode.HTML );
 		cvGrid
-			.withStyleName(ValoTheme.TABLE_BORDERLESS, "undefined-height", "search-grid")
+			.withStyleName(ValoTheme.TABLE_BORDERLESS, "undefined-height", "search-grid", "no-stripe")
 			.withFullSize()
 			.setSelectionMode(SelectionMode.NONE);
 		
@@ -186,6 +186,8 @@ public class DiscoveryView extends CvPublicationView {
 				sortByTitle
 			);
 		
+		filterLayout.setWidth("250px");
+		
 		resultLayout.add( 
 				filterLayout,
 				new MVerticalLayout( 
@@ -195,10 +197,9 @@ public class DiscoveryView extends CvPublicationView {
 				.withSpacing( false ) 
 				)
 			.withFullWidth()
-			.withExpand( filterLayout, 0.25f )
 			.withSpacing( false )
 			.withMargin( false )
-			.withExpand( resultLayout.getComponent( 1 ), 0.75f );
+			.withExpand( resultLayout.getComponent( 1 ), 1.0f );
 		
 		mainLayout
 		.add( 

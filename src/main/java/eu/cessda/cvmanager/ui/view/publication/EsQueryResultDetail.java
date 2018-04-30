@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.Aggregations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,7 +32,6 @@ public class EsQueryResultDetail {
 	// Results
 	private Page<VocabularyDTO> vocabularies;
 	private Aggregations aggregations;
-	private Map<String, SearchHits> innerHits;
 	// highlight
 
 	
@@ -127,14 +125,6 @@ public class EsQueryResultDetail {
 
 	public void setAggregations(Aggregations aggregations) {
 		this.aggregations = aggregations;
-	}
-
-	public Map<String, SearchHits> getInnerHits() {
-		return innerHits;
-	}
-
-	public void setInnerHits(Map<String, SearchHits> innerHits) {
-		this.innerHits = innerHits;
 	}
 	
 	public Order getFirstSortOrder() {

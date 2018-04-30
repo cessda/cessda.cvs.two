@@ -59,6 +59,8 @@ public class VocabularyDTO implements Serializable {
     @NotNull
     private String agencyName;
     
+    private String selectedIsoLang;
+    
     @Lob
     private String titleCs;
 
@@ -711,6 +713,14 @@ public class VocabularyDTO implements Serializable {
     public void setCodes(Set<CodeDTO> codes) {
         this.codes = codes;
     }
+    
+	public String getSelectedIsoLang() {
+		return selectedIsoLang;
+	}
+
+	public void setSelectedIsoLang(String selectedIsoLang) {
+		this.selectedIsoLang = selectedIsoLang;
+	}
 
 	@Override
     public boolean equals(Object o) {
