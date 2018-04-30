@@ -17688,3 +17688,26 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme h3.result-info {
 	color: #905b32 !important;
 }
+
+.mytheme h3.filter-menu {
+	margin: 0;
+	font-size: 1.1em;
+	color: #905b32 !important;
+	line-height: 1.2em;
+	font-weight: 600;
+}
+
+.mytheme .v-filterselect {
+	height: 33px;
+	-webkit-box-shadow: none;
+	font-size: 14px;
+	border: none !important;
+}
+
+.mytheme .v-filterselect-input {
+	border: 1px solid rgba(172, 166, 144, 0.6) !important;
+}
+
+.mytheme .v-filterselect [class*="input"][class*="prompt"] {
+	color: red !important;
+}

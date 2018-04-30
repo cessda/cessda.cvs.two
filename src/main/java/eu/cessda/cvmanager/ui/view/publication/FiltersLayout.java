@@ -168,13 +168,12 @@ public class FiltersLayout extends CustomComponent{
 			                        boolean isFacetChecked = false;
 									if( selectedFacetItem != null && !selectedFacetItem.isEmpty())
 										isFacetChecked = selectedFacetItem.contains( b.getKeyAsString() );
-									
-									facetItems.add( b.getKeyAsString() + " (" + b.getDocCount() + ")" );
-									
 									// only show checkbox on selected facet
 									if( isFacetChecked) {
 										facetFilter.addFacetItem( b.getKeyAsString() + " (" + b.getDocCount() + ")", isFacetChecked);
 										checkedFilterExist = true;
+									} else {
+										facetItems.add( b.getKeyAsString() + " (" + b.getDocCount() + ")" );
 									}
 
 			                    } 
@@ -228,10 +227,10 @@ public class FiltersLayout extends CustomComponent{
 			
 			this.facetName = fieldName;
 			
-//			searchFacetItem.setInputPrompt( "Filter by " + i18n.get(fieldName, locale).toLowerCase() );
+			searchFacetItem.setPlaceholder( "Filter by " + i18n.get("filter." + fieldName, locale).toLowerCase() );
 //			searchFacetItem.setNullSelectionAllowed( false );
 //			searchFacetItem.setFilteringMode(FilteringMode.CONTAINS);
-			searchFacetItem.setSizeFull();
+			searchFacetItem.setWidth("100%");
 			searchFacetItem.addValueChangeListener( e -> {
 				String selectedVal = e.getValue().toString();
 				int index = selectedVal.lastIndexOf( "(" );

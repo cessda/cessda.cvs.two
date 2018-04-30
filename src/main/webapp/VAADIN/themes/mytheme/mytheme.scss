@@ -1959,4 +1959,25 @@ $v-selection-item-border-radius: 0;
    	h3.result-info{
    		color: #905b32 !important;
    	}
+   	h3.filter-menu{
+   	    margin: 0;
+    	font-size: 1.1em;
+   		color: #905b32 !important;
+   		line-height: 1.2em;
+    	font-weight: 600;
+   	}
+   	
+   	.v-filterselect {
+		 height:33px;
+		 -webkit-box-shadow:none;
+		 font-size:14px;
+		 border:none !important;
+	} 
+	.v-filterselect-input {
+		border:1px solid  rgba(172,166,144,0.60) !important;
+	} 
+	
+	.v-filterselect [class*="input"][class*="prompt"]  {
+		color:red !important;
+	} 
 }

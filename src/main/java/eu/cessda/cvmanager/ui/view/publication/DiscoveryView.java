@@ -136,12 +136,15 @@ public class DiscoveryView extends CvPublicationView {
 		
 		searchTextField
 			.withWidth( "300px" )
-			.withInputPrompt( "Search CVs" )
-			.withValueChangeMode( ValueChangeMode.LAZY)
+			.withValueChangeMode( ValueChangeMode.TIMEOUT)
+			.withValueChangeTimeout( 500 )
 			.addTextChangeListener( e -> {
 				esQueryResultDetail.clear();
 				esQueryResultDetail.setSearchTerm( e.getValue() );
-				sortByRelevence.click();
+				sortByRelevence.setStyleName( "groupButton enable" );
+				sortByTitle.setStyleName( "groupButton disable" );
+				esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, "_score") );
+				refreshSearchResult();
 			});
 		
 		sortByRelevence.addClickListener( e -> {
