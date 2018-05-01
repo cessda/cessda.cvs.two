@@ -11,11 +11,11 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
-import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.filters.Filters;
 import org.elasticsearch.search.aggregations.bucket.filters.FiltersAggregationBuilder;
-import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -27,10 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
-import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ResultsExtractor;
-import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
-import org.springframework.data.elasticsearch.core.query.Field;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
@@ -44,15 +41,14 @@ import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
+import eu.cessda.cvmanager.ui.view.publication.EsFilter;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
-import eu.cessda.cvmanager.ui.view.publication.FilterItem;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -204,27 +200,19 @@ public class VocabularyServiceImpl implements VocabularyService {
         return vocabularyMapper.toDto(vocabulary);
 	}
 	
-	// SEARCH
-	// notation
-	// title
-	// definition
-	
-	// AGGR
-	// agencyName
-	// languages
-	
-	// Pageable and Sort
-
+	/**
+	 *  Main search method
+	 */
 	@SuppressWarnings("rawtypes")
 	@Override
-	public EsQueryResultDetail search(EsQueryResultDetail esQueryResultDetail) {
+	public EsQueryResultDetail search( EsQueryResultDetail esQueryResultDetail ) {
 		String searchTerm = esQueryResultDetail.getSearchTerm();
 		// uild query 
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
 			.withSearchType(SearchType.DEFAULT)
 			.withIndices("vocabulary").withTypes("vocabulary")
-			.withFilter( generateFilterQuery( esQueryResultDetail.getFilterItems()) )
+			.withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
 			.withPageable( esQueryResultDetail.getPage());
 		
 		// add sorting
@@ -236,7 +224,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		}
 		
 		// add aggregation
-		List<AbstractAggregationBuilder> aggregrations =  generateAggregrations( esQueryResultDetail.getFilterItems(), esQueryResultDetail.getAggFields());
+		List<AbstractAggregationBuilder> aggregrations =  generateAggregrations( esQueryResultDetail );
 		for(AbstractAggregationBuilder aggregration : aggregrations )
 			searchQueryBuilder.addAggregation(aggregration);
 		
@@ -257,8 +245,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 			}
 		});
 		
-		// set aggregation
-		esQueryResultDetail.setAggregations( searchResponse.getAggregations() );
+		// assign aggregation to esQueryResultDetail
+		generateAggregrationFilter(esQueryResultDetail, searchResponse);
 		
 		// update vocabulary based on highlight and inner hit
 		if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty()) {
@@ -274,6 +262,59 @@ public class VocabularyServiceImpl implements VocabularyService {
 		}
 		
 		return esQueryResultDetail;
+	}
+
+	private void generateAggregrationFilter(EsQueryResultDetail esQueryResultDetail, SearchResponse searchResponse) {
+		// generate aggregation filter
+		for( String field : esQueryResultDetail.getAggFields() ) {
+			if( !esQueryResultDetail.isAnyFilterActive()) {
+				Terms aggregation = searchResponse.getAggregations().get( field + "_count");//esQueryResultDetail.getAggregations().get( field + "_count");
+				
+				if( aggregation == null)
+					continue;
+
+				esQueryResultDetail.getEsFilterByField( field ).ifPresent( esFilter -> {
+					esFilter.clearBucket();
+					for (Terms.Bucket b : aggregation.getBuckets()) 
+						esFilter.addBucket( b.getKeyAsString(), b.getDocCount() );
+				});
+				
+				
+			}
+			else {
+				Filters aggFilters= searchResponse.getAggregations().get( "aggregration_filter");
+				if( aggFilters == null )
+					continue;
+				
+				esQueryResultDetail.getEsFilterByField( field ).ifPresent( esFilter -> {
+					esFilter.clearBucket();
+					
+					Collection<Filters.Bucket> buckets = (Collection<Filters.Bucket>) aggFilters.getBuckets();
+					
+					for (Filters.Bucket bucket : buckets) {
+						
+						if (bucket.getDocCount() == 0)
+							continue;
+						
+						Terms terms = bucket.getAggregations().get(field + "_count");
+						
+		                @SuppressWarnings("unchecked")
+						Collection<Terms.Bucket> bkts = (Collection<Bucket>) terms.getBuckets();
+		                for (Bucket b : bkts) {
+		                	
+		                	if (b.getDocCount() == 0)
+		                		continue;
+		                	
+		                	if( !EsFilter.isActiveFilter(esFilter, b.getKeyAsString()) )
+		                		esFilter.addBucket( b.getKeyAsString(), b.getDocCount() );
+		                	else
+		                		esFilter.addFilteredBucket( b.getKeyAsString(), b.getDocCount() );
+		                }
+						
+					}
+				});
+			}
+		}
 	}
 
 	private void applySearchHitAndHighlight(Page<VocabularyDTO> vocabularyPage, SearchResponse searchResponse) {
@@ -416,43 +457,31 @@ public class VocabularyServiceImpl implements VocabularyService {
 		return highlightBuilder;
 	}
 	
-	public static QueryBuilder generateFilterQuery( List<FilterItem> filterItems ) {
+	public static QueryBuilder generateFilterQuery( List<EsFilter> esFilters ) {
 		BoolQueryBuilder boolQueryFilter = QueryBuilders.boolQuery();
 		
-		for(FilterItem filterItem : filterItems) {
-			boolQueryFilter.must(QueryBuilders.termQuery( filterItem.getField(), filterItem.getValue()));
+		for( EsFilter esFilter : esFilters ) {
+			for( String filterValue : esFilter.getValues() ) {
+				boolQueryFilter.must(QueryBuilders.termQuery( esFilter.getField(), filterValue ));
+			}
 		}
 		
 		return boolQueryFilter;
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public static List<AbstractAggregationBuilder> generateAggregrations( List<FilterItem> filterItems, List<String> aggFields){
-		Map<String, List<FilterItem>> activeAggsMap = new LinkedHashMap<>();
-		
-		if( filterItems != null && !filterItems.isEmpty()) {
-			for( FilterItem filterItem : filterItems) {
-				if( aggFields.contains( filterItem.getField())) {
-					List<FilterItem> activeAggs = activeAggsMap.get( filterItem.getField() );
-					if( activeAggs == null ) {
-						activeAggs = new ArrayList<>();
-						activeAggsMap.put( filterItem.getField(), activeAggs );
-					}
-					activeAggs.add(filterItem);
-				}
-			}
-		}
-		
+	public static List<AbstractAggregationBuilder> generateAggregrations( EsQueryResultDetail esQueryResultDetail ){
+
 		List<AbstractAggregationBuilder> aggBuilders = new ArrayList<>();
 		
-		if( filterItems == null || filterItems.isEmpty() || activeAggsMap.isEmpty() ) {
-			for(String aggField: aggFields)
+		if( !esQueryResultDetail.isAnyFilterActive() ) {
+			for(String aggField: esQueryResultDetail.getAggFields())
 				aggBuilders.add( AggregationBuilders.terms( aggField + "_count").field( aggField));
 		}
 		else {
-			FiltersAggregationBuilder filtersAggregation = AggregationBuilders.filters( "aggregration_filter", generateFilterQuery( filterItems )) ;
+			FiltersAggregationBuilder filtersAggregation = AggregationBuilders.filters( "aggregration_filter", generateFilterQuery( esQueryResultDetail.getEsFilters() )) ;
 			
-			for(String aggField: aggFields)
+			for(String aggField: esQueryResultDetail.getAggFields() )
 				filtersAggregation.subAggregation( AggregationBuilders.terms( aggField + "_count").field( aggField ) );
 			
 			aggBuilders.add(filtersAggregation);

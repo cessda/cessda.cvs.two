@@ -1,29 +1,20 @@
 package eu.cessda.cvmanager.ui.view.publication;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.security.SecurityService;
-import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
@@ -33,43 +24,29 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.event.ShortcutAction;
-import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
-import eu.cessda.cvmanager.ui.view.CvManagerView;
-import eu.cessda.cvmanager.ui.view.GesisPagination;
-import eu.cessda.cvmanager.ui.view.HelpWindow;
+
 
 @UIScope
 @SpringView(name = DiscoveryView.VIEW_NAME)
 public class DiscoveryView extends CvPublicationView {
 
+	private static final long serialVersionUID = -2479053676589191249L;
 	public static final String VIEW_NAME = "discover";
 	public static final String FIELD_SORT = "notation";
 	private Locale locale = UI.getCurrent().getLocale();
@@ -94,9 +71,9 @@ public class DiscoveryView extends CvPublicationView {
 	
 	private ArrayList<CVScheme> hits = new ArrayList<>();
 
-	private final FiltersLayout.FilterListener filterListener = filterItems -> {
+	private final FiltersLayout.FilterListener filterListener = ( fieldName, activeFilters) -> {
 		esQueryResultDetail.resetPaging();
-		esQueryResultDetail.setFilterItems(filterItems);
+		esQueryResultDetail.getEsFilterByField( fieldName ).ifPresent( esFilter -> esFilter.setValues( activeFilters ));
 		refreshSearchResult();
 	};
 	

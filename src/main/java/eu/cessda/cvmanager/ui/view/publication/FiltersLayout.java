@@ -1,48 +1,23 @@
 package eu.cessda.cvmanager.ui.view.publication;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
 
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.bucket.SingleBucketAggregation;
-import org.elasticsearch.search.aggregations.bucket.filter.Filter;
-import org.elasticsearch.search.aggregations.bucket.filters.Filters;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms.Bucket;
-import org.springframework.data.domain.Page;
-//import org.springframework.data.solr.core.query.Field;
-//import org.springframework.data.solr.core.query.result.FacetEntry;
-//import org.springframework.data.solr.core.query.result.FacetFieldEntry;
-//import org.springframework.data.solr.core.query.result.FacetPage;
-import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
-//import org.vaadin.tokenfield.TokenField;
+
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MCheckBox;
 import org.vaadin.viritin.layouts.MCssLayout;
 
 import com.vaadin.shared.ui.ContentMode;
-//import com.vaadin.shared.ui.combobox.FilteringMode;
-//import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBox;
+
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Button.ClickListener;
 
-//import net.cessda.saw.utils.ComponentUtils;
-//import net.cessda.saw.vaadin.view.SearchView;
-//import net.cessda.saw.vaadin.view.Token;
-
-import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Slider;
 import com.vaadin.ui.UI;
+
 
 public class FiltersLayout extends CustomComponent{
 
@@ -50,7 +25,7 @@ public class FiltersLayout extends CustomComponent{
 	
 	@FunctionalInterface
 	public interface FilterListener {
-		void filterSelected( List<FilterItem> filterItems );
+		void filterSelected( String field, List<String> activeFilter );
 	}
 	
 	private DiscoveryView discoveryView;
@@ -88,7 +63,6 @@ public class FiltersLayout extends CustomComponent{
 		facetFilters.clear();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void setFacetFilter( EsQueryResultDetail esQueryResultDetail ) {
 		clear();
 		
@@ -96,164 +70,85 @@ public class FiltersLayout extends CustomComponent{
 			.withVisible( false )
 			.withStyleName( "groupButton disable" )
 			.addClickListener( e -> {
-				esQueryResultDetail.getFilterItems().clear();
-				discoveryView.setEsQueryResultDetail(esQueryResultDetail);
+				esQueryResultDetail.clearFilter();
+//				discoveryView.setEsQueryResultDetail(esQueryResultDetail);
 				discoveryView.refreshSearchResult();
 			});
 		
 		filterLayout.add(resetFilter);
 		
-		boolean checkedFilterExist = false;
-		
-		for( String field : filterFields ) {
-			if( esQueryResultDetail.getFilterItems().isEmpty() ) {
-				Terms aggregation = esQueryResultDetail.getAggregations().get( field + "_count");
-				
-				if( aggregation != null) {
-					List<String> facetItems = new ArrayList<>();
-					FacetFilter facetFilter = new FacetFilter( field );
-					// add list
-					facetFilters.add( facetFilter );
-					// add GUI
-					filterLayout.add( facetFilter );
-					
-					Set<String> selectedFacetItem = EsQueryResultDetail.getSelectedFilterByField(field, esQueryResultDetail);
-					
-					for (Terms.Bucket b : aggregation.getBuckets()) {
-						
-						boolean isFacetChecked = false;
-						if( selectedFacetItem != null && !selectedFacetItem.isEmpty())
-							isFacetChecked = selectedFacetItem.contains( b.getKeyAsString() );
-						
-						facetItems.add( b.getKeyAsString() + " (" + b.getDocCount() + ")" );
-						
-						// only show checkbox on selected facet
-						if( isFacetChecked) {
-							facetFilter.addFacetItem( b.getKeyAsString() + " (" + b.getDocCount() + ")", isFacetChecked);
-							checkedFilterExist = true;
-						}
-						
-					}
-					facetFilter.getSearchFacetItem().setItems(facetItems);
-				}
-				
-			}
-			else {
-				Filters aggFilters= esQueryResultDetail.getAggregations().get( "aggregration_filter");
-				if( aggFilters != null ) {
-					List<String> facetItems = new ArrayList<>();
-					FacetFilter facetFilter = new FacetFilter( field );
-					// add list
-					facetFilters.add( facetFilter );
-					// add GUI
-					filterLayout.add( facetFilter );
-					
-					Set<String> selectedFacetItem = EsQueryResultDetail.getSelectedFilterByField(field, esQueryResultDetail);
-					
-//					Terms aggregation = ((SingleBucketAggregation) aggFilters).getAggregations().get( field + "_count");
-					Collection<Filters.Bucket> buckets = (Collection<Filters.Bucket>) aggFilters.getBuckets();
-					
-					for (Filters.Bucket bucket : buckets) {
-
-			            if (bucket.getDocCount() != 0) {
-
-			                System.out.println((int) bucket.getDocCount());
-			                System.out.println(bucket.getKeyAsString());
-			                Terms terms =bucket.getAggregations().get(field + "_count");
-			                Collection<Terms.Bucket> bkts = (Collection<Bucket>) terms.getBuckets();
-			                for (Bucket b : bkts) {
-
-			                    if (b.getDocCount() != 0) {
-			                        
-			                        boolean isFacetChecked = false;
-									if( selectedFacetItem != null && !selectedFacetItem.isEmpty())
-										isFacetChecked = selectedFacetItem.contains( b.getKeyAsString() );
-									// only show checkbox on selected facet
-									if( isFacetChecked) {
-										facetFilter.addFacetItem( b.getKeyAsString() + " (" + b.getDocCount() + ")", isFacetChecked);
-										checkedFilterExist = true;
-									} else {
-										facetItems.add( b.getKeyAsString() + " (" + b.getDocCount() + ")" );
-									}
-
-			                    } 
-			                }
-			            }
-			        }
-					facetFilter.getSearchFacetItem().setItems(facetItems);
-				}
-			}
+		if( !esQueryResultDetail.getEsFilters().isEmpty() ) {
+			
+			for( EsFilter esFilter : esQueryResultDetail.getEsFilters()) {
+				FacetFilter facetFilter = new FacetFilter(esFilter);
+				facetFilters.add( facetFilter );
+				filterLayout.add( facetFilter );
+			};
+			
+			if( esQueryResultDetail.isAnyFilterActive())
+				resetFilter.setVisible( true );
 		}
-		
-		if( checkedFilterExist )
-			resetFilter.setVisible( true );
-	}
-	
-	public List<FilterItem> getSelectedFacetItem( String newFacetName, String newFacetValue) {
-		List<FilterItem> filterItems = new ArrayList<>();
-		
-		facetFilters.forEach( facetFilter ->{
-			facetFilter.getItems().forEach( item ->{
-				if( item.getValue() ) {
-					// remove facet occurrence number from caption
-					String caption = item.getCaption();
-					int index = caption.lastIndexOf( "(" );
-					
-					FilterItem filterItem = new FilterItem(facetFilter.getFacetName(), caption.substring( 0, index).trim());
-					filterItems.add(filterItem);
-				}
-			});
-		});
-		
-		if( newFacetName != null && newFacetValue != null && !newFacetValue.isEmpty()) {
-			FilterItem filterItem = new FilterItem(newFacetName, newFacetValue);
-			filterItems.add(filterItem);
-		}
-		return filterItems;
 	}
 
-	
-	
 	class FacetFilter extends CustomComponent{
 		
 		private static final long serialVersionUID = -2492140838449462532L;
+		private MCssLayout facetLayout = new MCssLayout();
+		private EsFilter esFilter;
+		private ComboBox<String> filterOption = new ComboBox<>();
 		private String facetName;
 		private List<MCheckBox> items = new ArrayList<>();
-		private MCssLayout facetLayout = new MCssLayout();
-		private ComboBox searchFacetItem = new ComboBox();
-		
-		public FacetFilter(String fieldName ) {
-			setCompositionRoot( facetLayout );
-			
-			this.facetName = fieldName;
-			
-			searchFacetItem.setPlaceholder( "Filter by " + i18n.get("filter." + fieldName, locale).toLowerCase() );
-//			searchFacetItem.setNullSelectionAllowed( false );
-//			searchFacetItem.setFilteringMode(FilteringMode.CONTAINS);
-			searchFacetItem.setWidth("100%");
-			searchFacetItem.addValueChangeListener( e -> {
-				String selectedVal = e.getValue().toString();
-				int index = selectedVal.lastIndexOf( "(" );
-				filterListener.filterSelected(getSelectedFacetItem( facetName, selectedVal.substring( 0, index).trim()));
-			});
+				
+		public FacetFilter(EsFilter eFilter ) {
+			this.esFilter = eFilter;
 			
 			facetLayout.add( 
-					new Label( "<h3 class=\"filter-menu\">" + i18n.get("filter." + fieldName, locale) + "</h3>" , ContentMode.HTML),
-					searchFacetItem
-					);
+					new Label( "<h3 class=\"filter-menu\">" + i18n.get("filter." + esFilter.getField(), locale) + "</h3>" , ContentMode.HTML)
+			);
 			
+			switch( esFilter.getFilterType()) {
+				case NORMAL:{
+					generateNormalFilter();
+				}
+			}
+			setCompositionRoot( facetLayout );
 		}
 		
-		public void addFacetItem(String itemLabel, boolean checked) {
-			MCheckBox checkBox = new MCheckBox( itemLabel );
-			checkBox
-				.withFullWidth()
-				.withStyleName( "font13px" )
-				.setValue( checked );
-			items.add(checkBox);
-			facetLayout.add(checkBox);
+		private void generateNormalFilter() {
+			// generate combobox option
+			filterOption.setPlaceholder( "Filter by " + i18n.get("filter." + esFilter.getField(), locale).toLowerCase() );
+			filterOption.setItems( esFilter.getBucketAsList());
+			filterOption.setWidth("100%");
+			filterOption.addValueChangeListener( e -> {
+				String selectedVal = e.getValue();
+				int index = selectedVal.lastIndexOf( "(" );
+				esFilter.addValue( selectedVal.substring( 0, index).trim() );
+				filterListener.filterSelected( esFilter.getField(), esFilter.getValues());
+			});
+			facetLayout.add( filterOption );
 			
-			checkBox.addValueChangeListener( event -> filterListener.filterSelected(getSelectedFacetItem( null, null)));
+			// generate checkbox option
+			generateCheckboxSelectedFilter();
+		}
+		
+		private void generateCheckboxSelectedFilter() {
+			esFilter.getFilteredBucketAsList().forEach( e -> {
+				MCheckBox checkBox = new MCheckBox( e );
+				checkBox
+					.withFullWidth()
+					.withStyleName( "font13px" )
+					.setValue( true );
+				items.add(checkBox);
+				facetLayout.add(checkBox);
+				
+				checkBox.addValueChangeListener( event -> {
+					String selectedVal = event.getComponent().getCaption();
+					int index = selectedVal.lastIndexOf( "(" );
+					esFilter.getValues().remove( selectedVal.substring( 0, index).trim() );
+					filterListener.filterSelected( esFilter.getField(), esFilter.getValues());
+				});
+			});
+			
 		}
 
 		public String getFacetName() {
@@ -280,14 +175,6 @@ public class FiltersLayout extends CustomComponent{
 			this.facetLayout = facetLayout;
 		}
 
-		public ComboBox getSearchFacetItem() {
-			return searchFacetItem;
-		}
-
-		public void setSearchFacetItem(ComboBox searchFacetItem) {
-			this.searchFacetItem = searchFacetItem;
-		}
-		
 	}
 
 }

@@ -1,15 +1,11 @@
 package eu.cessda.cvmanager.ui.view.publication;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
-import org.elasticsearch.search.aggregations.Aggregations;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -24,43 +20,32 @@ public class EsQueryResultDetail {
 	// Query properties
 	private String searchTerm;
 	private List<String> aggFields = new ArrayList<>( Arrays.asList( FiltersLayout.filterFields));
-	private List<FilterItem> filterItems = new ArrayList<>();
 	private Pageable page = PageRequest.of( 0, pageSize );
 	private Sort sort;
-	// sort and so on
+	private List<EsFilter> esFilters = new ArrayList<>();
 	
 	// Results
 	private Page<VocabularyDTO> vocabularies;
-	private Aggregations aggregations;
-	// highlight
-
 	
-	public EsQueryResultDetail addFacetItem(FilterItem fi) {
-		filterItems.add( fi );
-		return this;
-	}
-	
-	public String[] getFacetOptions() {
-		Set<String> facetOptions = new LinkedHashSet<>();
-		filterItems.forEach( item -> facetOptions.add( item.getField() ));
-		
-		return facetOptions.toArray( new String[facetOptions.size()]);
-	}
-	
-	public static Set<String> getSelectedFilterByField( String fieldName, EsQueryResultDetail fce ){
-		if( fce == null || fce.filterItems == null || fce.filterItems.isEmpty())
-			return Collections.emptySet();
-		
-		return fce.filterItems.stream()
-				.filter(facetItem -> facetItem.getField().equals(fieldName))
-				.map( facetItem -> facetItem.getValue() )
-				.collect(Collectors.toSet());
+	public EsQueryResultDetail() {
+		// initialize esfilter
+		for( String field: aggFields) {
+			EsFilter esFilter = new EsFilter();
+			esFilter.setField( field );
+			this.addEsFilter(esFilter);
+		}
 	}
 	
 	public void clear() {
 		searchTerm = null;
-		filterItems.clear();
+		clearFilter();
 		page = PageRequest.of( 0, pageSize );
+	}
+	
+	public void clearFilter() {
+		this.esFilters.forEach( esFilter -> {
+			esFilter.getValues().clear();
+		});
 	}
 	
 	public void resetPaging() {
@@ -103,14 +88,6 @@ public class EsQueryResultDetail {
 		this.aggFields = aggFields;
 	}
 
-	public List<FilterItem> getFilterItems() {
-		return filterItems;
-	}
-
-	public void setFilterItems(List<FilterItem> filterItems) {
-		this.filterItems = filterItems;
-	}
-
 	public Page<VocabularyDTO> getVocabularies() {
 		return vocabularies;
 	}
@@ -119,16 +96,32 @@ public class EsQueryResultDetail {
 		this.vocabularies = vocabularies;
 	}
 
-	public Aggregations getAggregations() {
-		return aggregations;
-	}
-
-	public void setAggregations(Aggregations aggregations) {
-		this.aggregations = aggregations;
-	}
-	
 	public Order getFirstSortOrder() {
 		return sort.iterator().next();
 	}
+
+	public List<EsFilter> getEsFilters() {
+		return esFilters;
+	}
+
+	public void setEsFilters(List<EsFilter> esFilters) {
+		this.esFilters = esFilters;
+	}
 	
+	public EsQueryResultDetail addEsFilter( EsFilter esFilter) {
+		this.esFilters.add(esFilter);
+		return this;
+	}
+	
+	public Optional<EsFilter> getEsFilterByField( String field) {
+		return this.esFilters.stream().filter( e -> e.getField().equals( field )).findFirst();
+	}
+		
+	public boolean isAnyFilterActive() {
+		for( EsFilter esFilter : this.esFilters){
+			if( esFilter.getValues() != null && !esFilter.getValues().isEmpty())
+				return true;
+		};
+		return false;
+	}
 }

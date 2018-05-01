@@ -3,10 +3,6 @@ package eu.cessda.cvmanager.ui.view.publication;
 import java.util.Iterator;
 import java.util.List;
 
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVEditor;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.LanguageLabel;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
@@ -15,9 +11,7 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.server.Resource;
 import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button;
