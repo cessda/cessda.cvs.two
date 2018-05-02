@@ -50,12 +50,24 @@ public class VocabularyGridRow extends CustomComponent {
 	private Image logo;
 
 	private transient ConfigurationService configService;
+	private Language currentSelectedLanguage;
+	private Language sourceLanguage;
 
 	public VocabularyGridRow(VocabularyDTO voc, AgencyDTO agency, ConfigurationService configService, String keyword) {
 		this.vocabulary = voc;
 		this.agency = agency;
 		this.configService = configService;
 		this.keyword = keyword;
+		
+		if( vocabulary.getSourceLanguage() != null) 
+			sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage() );
+		else
+			sourceLanguage = Language.ENGLISH;
+		
+		if( this.vocabulary.getSelectedLang() != null )
+			currentSelectedLanguage = this.vocabulary.getSelectedLang();
+		else
+			currentSelectedLanguage = sourceLanguage;
 
 		setCompositionRoot(container);
 		initLayout();
@@ -76,9 +88,18 @@ public class VocabularyGridRow extends CustomComponent {
 		
 		Language.getIsoFromLanguage( vocabulary.getLanguages() ).forEach(item -> {
 			MButton langButton = new MButton(item.toUpperCase());
-			langButton.withStyleName("langbutton").addClickListener(e -> {
+			langButton.addStyleName( "langbutton" );
+			
+			if( item.equalsIgnoreCase( sourceLanguage.toString() ))
+				langButton.addStyleName( "button-source-language" );
+			
+			if( item.equalsIgnoreCase( currentSelectedLanguage.toString() ))
+				langButton.addStyleName( "button-language-selected" );
+			
+			langButton.addClickListener(e -> {
 				applyButtonStyle(e.getButton());
-				setContent(Language.getEnum( e.getButton().getCaption().toLowerCase() ));
+				currentSelectedLanguage = Language.getEnum( e.getButton().getCaption().toLowerCase() );
+				setContent();
 			});
 			languageLayout.add(langButton);
 			if (item.equals(sourceLanguage)) {
@@ -109,7 +130,7 @@ public class VocabularyGridRow extends CustomComponent {
 				hLayout,
 				new MLabel("<hr class=\"fancy-line\"/>").withContentMode( ContentMode.HTML ).withFullSize());
 		// Initial
-		setContent( Language.ENGLISH );
+		setContent();
 	}
 
 	public Image getLogo() {
@@ -129,60 +150,45 @@ public class VocabularyGridRow extends CustomComponent {
 		this.container = container;
 	}
 
-	private void setContent(Language language) {
+	private void setContent() {
 		codeList.removeAllComponents();
 		codeList.setVisible( false );
 		
+		String title = vocabulary.getTitleByLanguage( currentSelectedLanguage );
+		String definition = vocabulary.getDefinitionByLanguage( currentSelectedLanguage );
+		
+		if( title == null )
+			return;
+		
+		if( definition == null )
+			definition = "";
+		
 		String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getUri();
-		Language sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage() );
-		slTitle.setValue("<a href='" + baseUrl + "'>" + vocabulary.getTitleByLanguage(sourceLanguage) + "</a>");
+		
+		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
 		log.info("URL is: " + slTitle.getValue());
 
 		tlTitle.setValue("<a href='" + baseUrl  + "'>" + vocabulary.getNotation() + "</a>");
-		desc.setValue(vocabulary.getDefinitionByLanguage(language));
+		desc.setValue( definition );
 		version.setValue("Version: " + vocabulary.getVersion() + " "
-				+ (language.equals("en") ? "" : "_" + language) + " <a href='" + baseUrl +"?tab=download"+ "'>Download</a>");
+				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.toString()) + " <a href='" + baseUrl +"?tab=download"+ "'>Download</a>");
 		
 		if( !vocabulary.getCodes().isEmpty() ) {
 			codeList.setVisible( true );
 			for( CodeDTO code: vocabulary.getCodes() ) {
-				codeList.add(
-					new MLabel( "<a href=\"" + baseUrl + "?code=" + code.getNotation() + "\">" + code.getTitleByLanguage( language ) + "</a>" 
-							+ " " + code.getDefinitionByLanguage( language ))
-					.withContentMode( ContentMode.HTML )
-				);
+				String codeTitle = code.getTitleByLanguage( currentSelectedLanguage );
+				String codeDefinition = code.getDefinitionByLanguage( currentSelectedLanguage );
+				if( codeDefinition == null )
+					codeDefinition = "";
+				if( codeTitle != null ) {
+					codeList.add(
+						new MLabel( "<a href=\"" + baseUrl + "?code=" + code.getNotation() + "\">" + codeTitle + "</a>" 
+								+ " " + codeDefinition)
+						.withContentMode( ContentMode.HTML )
+					);
+				}
 			}
 		}
-
-		// COmpare Code with InnerHit
-//		List<CVConcept> theConceptList = vocabulary.getConceptList();
-//
-//		if (!theConceptList.isEmpty()) {
-//			StringBuilder sConcepts = new StringBuilder();
-//			sConcepts.append("Found in code(s): ");
-//
-//			int index= 0;
-//			for (CVConcept concept : theConceptList) {
-//				if( index > 0)
-//					sConcepts.append( ", ");
-//				sConcepts.append( getMatchesConceptFromKeyword(concept, language));
-//				index++;
-//			}
-//			conceptList.setValue(sConcepts.toString());
-//		}
-	}
-	
-	private String getMatchesConceptFromKeyword(CodeDTO code, Language language) {
-//		String conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
-//				+ vocabulary.getContainerId() + "/" + concept.getNotation() + "'>" + concept.getPrefLabelByLanguage(language) + "</a>";
-//		for (LanguageLabel languagelabel : concept.getPrefLabel()) {
-//			if( languagelabel.getLabel().toLowerCase().contains(keyword)) {
-//				conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
-//						+ vocabulary.getContainerId() + "/" + concept.getNotation() + "?lang=" + languagelabel.getLanguage() + "'>" +languagelabel.getLabel() + "</a>";
-//			}
-//		};
-//		return conceptLink;
-		return null;
 	}
 
 	private void applyButtonStyle(Button pressedButton) {
@@ -191,10 +197,10 @@ public class VocabularyGridRow extends CustomComponent {
 		while (iterate.hasNext()) {
 			Component c = iterate.next();
 			if (c instanceof Button) {
-				((Button) c).removeStyleName("button-pressed");
+				((Button) c).removeStyleName("button-language-selected");
 			}
 		}
-		pressedButton.addStyleName("button-pressed");
+		pressedButton.addStyleName("button-language-selected");
 	}
 
 }

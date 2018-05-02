@@ -17324,6 +17324,9 @@ div.v-layout.v-horizontal.v-widget {
 	margin: 0 0 0 10px;
 	height: 24px;
 	float: right;
+	border: none;
+	box-shadow: none;
+	background-image: none;
 }
 
 .mytheme .marginright20 {
@@ -17710,4 +17713,16 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-filterselect [class*="input"][class*="prompt"] {
 	color: red !important;
+}
+
+.mytheme .button-source-language {
+	font-family: "Source Sans Pro", sans-serif;
+	font-weight: 600;
+	color: #000;
+	text-decoration: underline;
+}
+
+.mytheme .button-language-selected {
+	background-image: -webkit-linear-gradient(top, #fafafa 2%, #eaeaea 98%);
+	background-image: linear, to bottom, #fafafa 2%, #eaeaea 98%;
 }

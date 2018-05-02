@@ -207,7 +207,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	@Override
 	public EsQueryResultDetail search( EsQueryResultDetail esQueryResultDetail ) {
 		String searchTerm = esQueryResultDetail.getSearchTerm();
-		// uild query 
+		// build query 
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
 			.withSearchType(SearchType.DEFAULT)
@@ -228,6 +228,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		for(AbstractAggregationBuilder aggregration : aggregrations )
 			searchQueryBuilder.addAggregation(aggregration);
 		
+		// add highlighter
 		if( searchTerm != null && !searchTerm.isEmpty())
 			searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain() );
 		
@@ -254,7 +255,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			
 			esQueryResultDetail.setVocabularies(vocabularyPage);
 		} else {
-			// remove unnecessary code
+			// remove unnecessary nested code entities
 			for( VocabularyDTO vocab : vocabularyPage.getContent())
 				vocab.setCodes( Collections.emptySet() );
 			// no search term then just assign vocabulary as it is
@@ -289,6 +290,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 				esQueryResultDetail.getEsFilterByField( field ).ifPresent( esFilter -> {
 					esFilter.clearBucket();
 					
+					@SuppressWarnings("unchecked")
 					Collection<Filters.Bucket> buckets = (Collection<Filters.Bucket>) aggFilters.getBuckets();
 					
 					for (Filters.Bucket bucket : buckets) {
@@ -347,6 +349,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 				declaredField = VocabularyDTO.class.getDeclaredField( fieldName );
 				declaredField.setAccessible( true );
 				declaredField.set(cvHit, highLightText.toString());
+				
+				setSelectedLanguageByHighlight( cvHit, fieldName );
 			} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
@@ -375,13 +379,15 @@ public class VocabularyServiceImpl implements VocabularyService {
 							HighlightField highlighField = entry.getValue();
 							StringBuilder highLightText = new StringBuilder();
 							for( Text text: highlighField.getFragments()) {
-								highLightText.append( text.string() + " ");
+								highLightText.append( text.string() + "   ");
 							}
 							java.lang.reflect.Field declaredField = null;
 							try {
 								declaredField = CodeDTO.class.getDeclaredField( fieldName.substring( CODE_PATH.length() + 1 ) );
 								declaredField.setAccessible( true );
 								declaredField.set(codeHit, highLightText.toString());
+								
+								setSelectedLanguageByHighlight( cvHit, fieldName );
 							} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
 								e.printStackTrace();
 							}				
@@ -396,6 +402,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 		cvHit.setCodes(newCodes);
 	}
 
+	
+	// set selected language based on highlight
+	private void setSelectedLanguageByHighlight( VocabularyDTO cvHit, String highlightField) {
+		// only set selected language once
+		if( cvHit.getSelectedLang() == null ) {
+			// get last language information from the field and get the Language enum
+			String langIso = highlightField.substring( highlightField.length() - 2, highlightField.length());
+			Language lang = Language.getEnum( langIso );
+			cvHit.setSelectedLang(lang);
+		}
+	}
 
 	
 	public static QueryBuilder generateMainAndNestedQuery( String term ) {

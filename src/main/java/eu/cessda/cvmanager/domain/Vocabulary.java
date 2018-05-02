@@ -255,7 +255,7 @@ public class Vocabulary implements Serializable {
     private Set<Code> codes = new HashSet<>();
     
     @Transient
-    private String selectedIsoLang;
+    private Language selectedLang;
     
     public Long getId() {
         return id;
@@ -852,12 +852,12 @@ public class Vocabulary implements Serializable {
         this.codes = codes;
     }
 
-    public String getSelectedIsoLang() {
-		return selectedIsoLang;
+    public Language getSelectedLang() {
+		return selectedLang;
 	}
 
-	public void setSelectedIsoLang(String selectedIsoLang) {
-		this.selectedIsoLang = selectedIsoLang;
+	public void setSelectedLang(Language selectedLang) {
+		this.selectedLang = selectedLang;
 	}
 
 	@Override

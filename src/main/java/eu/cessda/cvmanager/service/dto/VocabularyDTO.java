@@ -59,7 +59,7 @@ public class VocabularyDTO implements Serializable {
     @NotNull
     private String agencyName;
     
-    private String selectedIsoLang;
+    private Language selectedLang;
     
     @Lob
     private String titleCs;
@@ -714,12 +714,12 @@ public class VocabularyDTO implements Serializable {
         this.codes = codes;
     }
     
-	public String getSelectedIsoLang() {
-		return selectedIsoLang;
+	public Language getSelectedLang() {
+		return selectedLang;
 	}
 
-	public void setSelectedIsoLang(String selectedIsoLang) {
-		this.selectedIsoLang = selectedIsoLang;
+	public void setSelectedLang(Language selectedLang) {
+		this.selectedLang = selectedLang;
 	}
 
 	@Override

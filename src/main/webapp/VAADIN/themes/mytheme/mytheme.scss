@@ -1638,6 +1638,9 @@ $v-selection-item-border-radius: 0;
 	    margin: 0 0 0 10px;
 	    height: 24px;
 	    float: right;
+	    border: none;
+    	box-shadow: none;
+    	background-image: none;
  	}
  	.marginright20{
  		margin-right: 20px;
@@ -1979,5 +1982,15 @@ $v-selection-item-border-radius: 0;
 	
 	.v-filterselect [class*="input"][class*="prompt"]  {
 		color:red !important;
-	} 
+	}
+	.button-source-language{
+		font-family: "Source Sans Pro", sans-serif;
+	    font-weight: 600;
+	    color: #000;
+	    text-decoration: underline;
+	}
+	.button-language-selected{
+		background-image: -webkit-linear-gradient(top, #fafafa 2%, #eaeaea 98%);
+    	background-image: linear-gradient(to bottom,#fafafa 2%, #eaeaea 98%);
+	}
 }
