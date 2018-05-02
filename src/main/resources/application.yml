@@ -29,7 +29,7 @@ spring:
   data:
     elasticsearch:
       cluster-name: elasticsearch
-      cluster-nodes: 127.0.0.1:9300
+      cluster-nodes: localhost:9300
       properties:
         path:
           logs: target/elasticsearch/log
