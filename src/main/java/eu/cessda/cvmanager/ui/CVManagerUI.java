@@ -94,6 +94,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	
 	private MButton agencyButton = new MButton("Agency", this::goToAgency);
 	private MButton adminButton = new MButton("Admin", this::goToAdmin);
+	private MButton discoverButton = new MButton("Published", this::goToDiscovery);
 
 	private MButton logIn = new MButton("Login", this::doLogin);
 	private MButton logout = new MButton("Logout", this::doLogout);
@@ -248,6 +249,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		searchCVs.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		// editorCVs.withStyleName( ValoTheme.BUTTON_LINK + " pull-left");
 		agencyButton.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
+		discoverButton.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		adminButton.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		logIn.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		logout.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
@@ -283,6 +285,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 						// listAllCv,
 						searchCVs,
 						agencyButton,
+						discoverButton,
 						adminButton
 						// editorCVs,
 					)
@@ -329,6 +332,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	public void goToAgency(ClickEvent event) {
 		navigator.navigateTo(AgencyView.VIEW_NAME);
 		eventBus.publish(EventScope.UI, AgencyView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.AGENCY_SEARCH_MODE, null) );
+	}
+	
+	public void goToDiscovery(ClickEvent event) {
+		navigator.navigateTo(DiscoveryView.VIEW_NAME);
 	}
 	
 	public void goToAdmin(ClickEvent event) {
