@@ -8,12 +8,12 @@ import javax.validation.constraints.*;
 import org.gesis.wts.domain.Agency;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
-import org.springframework.data.elasticsearch.annotations.Document;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.InnerField;
-import org.springframework.data.elasticsearch.annotations.MultiField;
-import org.springframework.data.elasticsearch.annotations.FieldIndex;
+//import org.springframework.data.elasticsearch.annotations.Document;
+//import org.springframework.data.elasticsearch.annotations.Field;
+//import org.springframework.data.elasticsearch.annotations.FieldType;
+//import org.springframework.data.elasticsearch.annotations.InnerField;
+//import org.springframework.data.elasticsearch.annotations.MultiField;
+//import org.springframework.data.elasticsearch.annotations.FieldIndex;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -26,7 +26,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "vocabulary")
-@Document(indexName = "vocabulary")
+//@Document(indexName = "vocabulary")
 public class Vocabulary implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -41,7 +41,7 @@ public class Vocabulary implements Serializable {
     
     @NotNull
     @Column(name = "notation", length = 240, nullable = false, unique = true)
-    @Field(type = FieldType.text, fielddata = true)
+//    @Field(type = FieldType.text, fielddata = true)
     private String notation;
 
     @NotNull
@@ -60,13 +60,13 @@ public class Vocabulary implements Serializable {
 
     @Column(name = "languages")
     @ElementCollection( targetClass=String.class )
-    @Field(type = FieldType.keyword)
+//    @Field(type = FieldType.keyword)
     private Set<String> languages;
     
     @NotNull
     @Size(max = 20)
     @Column(name = "source_language", length = 20, nullable = false)
-    @Field(type = FieldType.keyword)
+//    @Field(type = FieldType.keyword)
     private String sourceLanguage;
     
     @NotNull
@@ -75,183 +75,183 @@ public class Vocabulary implements Serializable {
 
     @NotNull
     @Column(name = "agency_name", nullable = false)
-    @Field(type = FieldType.keyword)
+//    @Field(type = FieldType.keyword)
     private String agencyName;
 
     @Lob
     @Column(name = "title_cs")
-    @Field(type = FieldType.text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
+//    @Field(type = FieldType.text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
     private String titleCs;
 
     @Lob
     @Column(name = "definition_cs")
-    @Field(type = FieldType.text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
+//    @Field(type = FieldType.text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
     private String definitionCs;
 
     @Lob
     @Column(name = "title_da")
-    @Field(type = FieldType.text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
+//    @Field(type = FieldType.text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
     private String titleDa;
 
     @Lob
     @Column(name = "definition_da")
-    @Field(type = FieldType.text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
+//    @Field(type = FieldType.text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
     private String definitionDa;
 
     @Lob
     @Column(name = "title_nl")
-    @Field(type = FieldType.text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
+//    @Field(type = FieldType.text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
     private String titleNl;
 
     @Lob
     @Column(name = "definition_nl")
-    @Field(type = FieldType.text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
+//    @Field(type = FieldType.text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
     private String definitionNl;
 
     @Lob
     @Column(name = "title_en")
-    @Field(type = FieldType.text, store = true, analyzer = "english", searchAnalyzer = "english" )
+//    @Field(type = FieldType.text, store = true, analyzer = "english", searchAnalyzer = "english" )
     private String titleEn;
 
     @Lob
     @Column(name = "definition_en")
-    @Field(type = FieldType.text, store = true, analyzer = "english", searchAnalyzer = "english" )
+//    @Field(type = FieldType.text, store = true, analyzer = "english", searchAnalyzer = "english" )
     private String definitionEn;
 
     @Lob
     @Column(name = "title_fi")
-    @Field(type = FieldType.text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
+//    @Field(type = FieldType.text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
     private String titleFi;
 
     @Lob
     @Column(name = "definition_fi")
-    @Field(type = FieldType.text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
+//    @Field(type = FieldType.text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
     private String definitionFi;
 
     @Lob
     @Column(name = "title_fr")
-    @Field(type = FieldType.text, store = true, analyzer = "french", searchAnalyzer = "french" )
+//    @Field(type = FieldType.text, store = true, analyzer = "french", searchAnalyzer = "french" )
     private String titleFr;
 
     @Lob
     @Column(name = "definition_fr")
-    @Field(type = FieldType.text, store = true, analyzer = "french", searchAnalyzer = "french" )
+//    @Field(type = FieldType.text, store = true, analyzer = "french", searchAnalyzer = "french" )
     private String definitionFr;
 
     @Lob
     @Column(name = "title_de")
-    @Field(type = FieldType.text, store = true, analyzer = "german", searchAnalyzer = "german" )
+//    @Field(type = FieldType.text, store = true, analyzer = "german", searchAnalyzer = "german" )
     private String titleDe;
 
     @Lob
     @Column(name = "definition_de")
-    @Field(type = FieldType.text, store = true, analyzer = "german", searchAnalyzer = "german" )
+//    @Field(type = FieldType.text, store = true, analyzer = "german", searchAnalyzer = "german" )
     private String definitionDe;
 
     @Lob
     @Column(name = "title_el")
-    @Field(type = FieldType.text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
+//    @Field(type = FieldType.text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
     private String titleEl;
 
     @Lob
     @Column(name = "definition_el")
-    @Field(type = FieldType.text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
+//    @Field(type = FieldType.text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
     private String definitionEl;
 
     @Lob
     @Column(name = "title_hu")
-    @Field(type = FieldType.text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
+//    @Field(type = FieldType.text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
     private String titleHu;
 
     @Lob
     @Column(name = "definition_hu")
-    @Field(type = FieldType.text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
+//    @Field(type = FieldType.text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
     private String definitionHu;
 
     @Lob
     @Column(name = "title_lt")
-    @Field(type = FieldType.text, store = true )
+//    @Field(type = FieldType.text, store = true )
     private String titleLt;
 
     @Lob
     @Column(name = "definition_lt")
-    @Field(type = FieldType.text, store = true )
+//    @Field(type = FieldType.text, store = true )
     private String definitionLt;
 
     @Lob
     @Column(name = "title_no")
-    @Field(type = FieldType.text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
+//    @Field(type = FieldType.text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
     private String titleNo;
 
     @Lob
     @Column(name = "definition_no")
-    @Field(type = FieldType.text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
+//    @Field(type = FieldType.text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
     private String definitionNo;
 
     @Lob
     @Column(name = "title_pt")
-    @Field(type = FieldType.text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
+//    @Field(type = FieldType.text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
     private String titlePt;
 
     @Lob
     @Column(name = "definition_pt")
-    @Field(type = FieldType.text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
+//    @Field(type = FieldType.text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
     private String definitionPt;
 
     @Lob
     @Column(name = "title_ro")
-    @Field(type = FieldType.text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
+//    @Field(type = FieldType.text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
     private String titleRo;
 
     @Lob
     @Column(name = "definition_ro")
-    @Field(type = FieldType.text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
+//    @Field(type = FieldType.text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
     private String definitionRo;
 
     @Lob
     @Column(name = "title_sk")
-    @Field(type = FieldType.text, store = true )
+//    @Field(type = FieldType.text, store = true )
     private String titleSk;
 
     @Lob
     @Column(name = "definition_sk")
-    @Field(type = FieldType.text, store = true )
+//    @Field(type = FieldType.text, store = true )
     private String definitionSk;
 
     @Lob
     @Column(name = "title_sl")
-    @Field(type = FieldType.text, store = true )
+//    @Field(type = FieldType.text, store = true )
     private String titleSl;
 
     @Lob
     @Column(name = "definition_sl")
-    @Field(type = FieldType.text, store = true )
+//    @Field(type = FieldType.text, store = true )
     private String definitionSl;
 
     @Lob
     @Column(name = "title_es")
-    @Field(type = FieldType.text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
+//    @Field(type = FieldType.text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
     private String titleEs;
 
     @Lob
     @Column(name = "definition_es")
-    @Field(type = FieldType.text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
+//    @Field(type = FieldType.text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
     private String definitionEs;
 
     @Lob
     @Column(name = "title_sv")
-    @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
+//    @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String titleSv;
 
     @Lob
     @Column(name = "definition_sv")
-    @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
+//    @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String definitionSv;
 
 //    @JsonBackReference
 //    @OneToMany(mappedBy = "vocabulary")
     @Transient
-    @Field(type = FieldType.Nested, store = true)
+//    @Field(type = FieldType.Nested, store = true)
     private Set<Code> codes = new HashSet<>();
     
     @Transient

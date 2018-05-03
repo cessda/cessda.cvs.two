@@ -32,13 +32,13 @@ public class ImportService {
 	private final VocabularyMapper vocabularyMapper;
 	private final VocabularySearchRepository vocabularySearchRepository;
 	public ImportService(AgencyService agencyService, VocabularyService vocabularyService, CodeService codeService,
-			StardatDDIService stardatDDIService, VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository) {
+			StardatDDIService stardatDDIService, VocabularyMapper vocabularyMapper/*, VocabularySearchRepository vocabularySearchRepository*/) {
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyMapper = vocabularyMapper;
-		this.vocabularySearchRepository = vocabularySearchRepository;
+		this.vocabularySearchRepository = null;//vocabularySearchRepository;
 	}
 	
 	public void importFromStardat() {
@@ -107,9 +107,9 @@ public class ImportService {
 				vocabulary.addCode(code);
 			};
 			
-			// reindex nested codes
-			Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
-			vocabularySearchRepository.save( vocab );
+//			// reindex nested codes
+//			Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
+//			vocabularySearchRepository.save( vocab );
 		}
 		log.debug("DDIFlatDB imported to database");
 	}

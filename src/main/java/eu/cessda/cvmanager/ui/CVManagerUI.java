@@ -285,7 +285,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 						// listAllCv,
 						searchCVs,
 						agencyButton,
-						discoverButton,
+//						discoverButton,
 						adminButton
 						// editorCVs,
 					)
