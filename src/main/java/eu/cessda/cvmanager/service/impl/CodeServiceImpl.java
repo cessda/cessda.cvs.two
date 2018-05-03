@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import eu.cessda.cvmanager.domain.Code;
 import eu.cessda.cvmanager.repository.CodeRepository;
-import eu.cessda.cvmanager.repository.search.CodeSearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.mapper.CodeMapper;
