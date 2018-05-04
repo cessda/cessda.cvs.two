@@ -27,7 +27,7 @@ public class PaginationBar extends MHorizontalLayout {
     }
 	
     private PagingListener listener;
-    private int noOfRows = 5;
+    private int noOfRows = 10;
     private int totalPages;
     private int currentPage;
     private Button first, last, next, previous,status;
