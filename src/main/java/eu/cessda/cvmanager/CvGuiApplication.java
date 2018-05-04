@@ -9,7 +9,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Description;
-//import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 import org.vaadin.spring.i18n.MessageProvider;
@@ -18,7 +18,7 @@ import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 @ComponentScan(basePackages = { "org.gesis.wts", "eu.cessda.cvmanager" })
 @EnableJpaRepositories(basePackages = { "org.gesis.wts.repository", "eu.cessda.cvmanager.repository" })
-//@EnableElasticsearchRepositories(basePackages = { "eu.cessda.cvmanager.repository.search" })
+@EnableElasticsearchRepositories(basePackages = { "eu.cessda.cvmanager.repository.search" })
 @EntityScan(basePackages = { "org.gesis.wts", "eu.cessda.cvmanager" })
 public class CvGuiApplication extends SpringBootServletInitializer {
 

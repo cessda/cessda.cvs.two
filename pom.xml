@@ -250,12 +250,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
 		</dependency>
-        <!-- 
+        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
-        -->
+        
         <dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
@@ -557,6 +557,8 @@
 				<spring.datasource.url>jdbc:mysql://localhost:3306/cvmanager-security?useSSL=false</spring.datasource.url>
 				<spring.datasource.username>cessda</spring.datasource.username>
 				<spring.datasource.password>cessda01</spring.datasource.password>
+				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
+				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
             <build>
           		<plugins>
@@ -593,6 +595,8 @@
                 <spring.datasource.url>jdbc:mysql://104.155.73.84:3306/cvmanager-security?useSSL=false</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
+				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
+				<spring.data.elasticsearch.cluster-nodes>cessda-cvmanager-es-dev-cluster:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
         </profile>
         <profile>
@@ -614,6 +618,8 @@
                 <spring.datasource.url>jdbc:mysql://104.155.73.84:3306/cvmanager-security?useSSL=false</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
+				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
+				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
             <build>
           		<plugins>
@@ -641,7 +647,9 @@
 				<ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
                 <spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
-				<spring.datasource.password>GVM8Sj8FUxBf4gk</spring.datasource.password>
+				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
+				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
+				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
             <build>
           		<plugins>
