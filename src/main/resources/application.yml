@@ -28,8 +28,8 @@ spring:
       enabled: false
   data:
     elasticsearch:
-      cluster-name: elasticsearch
-      cluster-nodes: localhost:9300
+      cluster-name: '@spring.data.elasticsearch.cluster-name@'
+      cluster-nodes: '@spring.data.elasticsearch.cluster-nodes@'
       properties:
         path:
           logs: target/elasticsearch/log
