@@ -479,7 +479,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 		for( EsFilter esFilter : esFilters ) {
 			for( String filterValue : esFilter.getValues() ) {
-				boolQueryFilter.must(QueryBuilders.termQuery( esFilter.getField(), filterValue ));
+				boolQueryFilter.should(QueryBuilders.termQuery( esFilter.getField(), filterValue ));
 			}
 		}
 		
