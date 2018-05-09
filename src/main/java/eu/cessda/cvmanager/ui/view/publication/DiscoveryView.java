@@ -15,6 +15,8 @@ import org.gesis.wts.ui.view.LoginView;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.vaadin.spring.events.EventBus;
+import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
@@ -35,6 +37,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
@@ -54,14 +57,18 @@ public class DiscoveryView extends CvPublicationView {
 
 	// main container
 	private MVerticalLayout mainLayout = new MVerticalLayout();
-	private MHorizontalLayout resultLayout = new MHorizontalLayout();
+	private MCssLayout resultLayout = new MCssLayout();
+	private MCssLayout gridResultLayout = new MCssLayout();
 	
 	private MGrid<VocabularyDTO> cvGrid = new MGrid<>( VocabularyDTO.class );
 	
+	private MButton showFilter = new MButton( "Show Filter" );
+	private MButton hideFilter = new MButton( "Hide Filter" );
+	
+	private MCssLayout searchTopLayout = new MCssLayout();
 	private MCssLayout sortButtonLayout = new MCssLayout();
 	private MButton sortByRelevence = new MButton( "Relevance" );
 	private MButton sortByTitle = new MButton( "A-Z" );
-	private MTextField searchTextField = new MTextField();
 	private MLabel resultInfo = new MLabel();
 	
 	private Map<Long, AgencyDTO> agencyMap = new HashMap<>();
@@ -111,19 +118,6 @@ public class DiscoveryView extends CvPublicationView {
 			.withFullSize()
 			.setSelectionMode(SelectionMode.NONE);
 		
-		searchTextField
-			.withWidth( "300px" )
-			.withValueChangeMode( ValueChangeMode.TIMEOUT)
-			.withValueChangeTimeout( 500 )
-			.addTextChangeListener( e -> {
-				esQueryResultDetail.clear();
-				esQueryResultDetail.setSearchTerm( e.getValue() );
-				sortByRelevence.setStyleName( "groupButton enable" );
-				sortByTitle.setStyleName( "groupButton disable" );
-				esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, "_score") );
-				refreshSearchResult();
-			});
-		
 		sortByRelevence.addClickListener( e -> {
 			if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty() ) {
 				sortByRelevence.setStyleName( "groupButton enable" );
@@ -140,38 +134,59 @@ public class DiscoveryView extends CvPublicationView {
 			refreshSearchResult();
 		});
 		
-		sortButtonLayout.add(
+		sortButtonLayout
+			.withStyleName("pull-right")
+			.add(
 				sortByRelevence,
 				sortByTitle
 			);
 		
-		filterLayout.setWidth("250px");
+		filterLayout.setWidthUndefined();
+		filterLayout.addStyleNames("facet-filter","facet-responsive");
+		
+		gridResultLayout.withStyleName( "result-container" );
+		
+		showFilter
+			.withStyleName("show-filter" ,"filter-button", "button-responsive")
+			.addClickListener( e -> {
+				e.getButton().removeStyleName("button-responsive");
+				hideFilter.addStyleName("button-responsive");
+				filterLayout.removeStyleName("facet-responsive");
+			});
+		hideFilter
+			.withStyleName("hide-filter", "filter-button")
+			.addClickListener( e -> {
+				e.getButton().removeStyleName("button-responsive");
+				showFilter.addStyleName("button-responsive");
+				filterLayout.addStyleName("facet-responsive");
+			});
+
+		
+		searchTopLayout
+			.withStyleName("search-option")
+			.add( 
+				resultInfo,
+				sortButtonLayout
+			);
 		
 		resultLayout.add( 
+				showFilter,
+				hideFilter,
 				filterLayout,
-				new MVerticalLayout( 
+				gridResultLayout
+					.add( 
 						cvGrid, 
-						paginationBar )
-				.withMargin( false )
-				.withSpacing( false ) 
+						paginationBar 
+					)
 				)
-			.withFullWidth()
-			.withSpacing( false )
-			.withMargin( false )
-			.withExpand( resultLayout.getComponent( 1 ), 1.0f );
+			.withFullWidth();
 		
 		mainLayout
 		.add( 
 			new MVerticalLayout(
-				new MHorizontalLayout(
-					resultInfo,
-					sortButtonLayout,
-					searchTextField
-					)
-				.withAlign( resultInfo, Alignment.TOP_LEFT )
-				.withAlign( searchTextField, Alignment.TOP_RIGHT )
-				.withFullWidth()
-				,resultLayout )
+				searchTopLayout
+				,resultLayout 
+			)
 		
 		.withMargin( false ) );
 		
@@ -209,7 +224,7 @@ public class DiscoveryView extends CvPublicationView {
 		cvGrid.setHeaderVisible(false);
 		cvGrid.addColumn(voc -> {
 			agency = agencyService.findOne( voc.getAgencyId() );
-			return new VocabularyGridRow(voc, agency, configService,  searchTextField.getValue());
+			return new VocabularyGridRow(voc, agency, configService);
 		}, new ComponentRenderer()).setId("cvColumn");
 		// results.setRowHeight( 135.0 );
 		cvGrid.getColumn("cvColumn").setExpandRatio(1);
@@ -232,7 +247,7 @@ public class DiscoveryView extends CvPublicationView {
 
 	@Override
 	public void updateMessageStrings(Locale locale) {
-		searchTextField.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
+//		searchTextField.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
 	}
 
 	public ArrayList<CVScheme> getHits() {
@@ -251,4 +266,20 @@ public class DiscoveryView extends CvPublicationView {
 		this.esQueryResultDetail = esQueryResultDetail;
 	}
 	
+	@EventBusListenerMethod( scope = EventScope.UI )
+	public void eventHandle( CvManagerEvent.Event event)
+	{
+		switch(event.getType()) {
+			case VOCABULARY_SEARCH:
+				esQueryResultDetail.clear();
+				esQueryResultDetail.setSearchTerm( (String) event.getPayload() );
+				sortByRelevence.setStyleName( "groupButton enable" );
+				sortByTitle.setStyleName( "groupButton disable" );
+				esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, "_score") );
+				refreshSearchResult();
+				break;
+			default:
+				break;
+		}
+	}
 }

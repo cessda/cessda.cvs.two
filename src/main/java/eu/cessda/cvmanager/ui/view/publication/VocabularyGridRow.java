@@ -31,7 +31,6 @@ public class VocabularyGridRow extends CustomComponent {
 	private final VocabularyDTO vocabulary;
 	private final AgencyDTO agency;
 	private List<CodeDTO> codes;
-	private String keyword;
 
 	private static final long serialVersionUID = 4932510587869607326L;
 
@@ -53,11 +52,10 @@ public class VocabularyGridRow extends CustomComponent {
 	private Language currentSelectedLanguage;
 	private Language sourceLanguage;
 
-	public VocabularyGridRow(VocabularyDTO voc, AgencyDTO agency, ConfigurationService configService, String keyword) {
+	public VocabularyGridRow(VocabularyDTO voc, AgencyDTO agency, ConfigurationService configService) {
 		this.vocabulary = voc;
 		this.agency = agency;
 		this.configService = configService;
-		this.keyword = keyword;
 		
 		if( vocabulary.getSourceLanguage() != null) 
 			sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage() );

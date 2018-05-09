@@ -15,7 +15,8 @@ public class CvManagerEvent {
 		CVCONCEPT_DELETED(15),
 		CVCONCEPT_SORT(16),
 		AGENCY_SEARCH_MODE(50),
-		AGENCY_MANAGE_MEMBER(51);
+		AGENCY_MANAGE_MEMBER(51),
+		VOCABULARY_SEARCH(100);
 		
 		private final int value;
 		

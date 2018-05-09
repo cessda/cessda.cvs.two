@@ -27,6 +27,7 @@ import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.spring.i18n.support.TranslatableUI;
 import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -41,6 +42,7 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.MarginInfo;
+import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.Alignment;
@@ -105,6 +107,9 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private ComboBox<Language> countryBox = new ComboBox<>();
 	private UserDetails userDetail;
+	
+	
+	private MTextField searchTf = new MTextField();
 
 	public CVManagerUI(SpringViewProvider viewProvider,
 			SecurityService securityService, UIEventBus eventBus, I18N i18n) {
@@ -176,6 +181,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		countryBox.setEmptySelectionAllowed(false);
 		countryBox.setStyleName( "language-option" );
 		countryBox.setValue( Language.ENGLISH );
+		countryBox.setWidth("100px");
 		countryBox.addValueChangeListener(e -> {
 			setLocale(new Locale(e.getValue().toString()));
 		});
@@ -195,14 +201,11 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.add(
 				new MLabel()
 					.withContentMode( ContentMode.HTML)
-					.withStyleName( "col-md-4" )
-					.withValue( "		<div class=\"email\">\n" + 
+					.withStyleName( "col-md-6 social text-center" )
+					.withValue(  "		<div class=\"email\">\n" + 
 							"			<a href=\"mailto:cessda@cessda.net\"><i class=\"fa fa-envelope\"></i> cessda@cessda.net</a>\n" + 
-							"		</div>"),
-				new MLabel()
-					.withContentMode( ContentMode.HTML)
-					.withStyleName( "col-md-4 social text-center" )
-					.withValue( "	<ul>\n" + 
+							"		</div>" +
+							"	<ul>\n" + 
 							"		<li><a href=\"https://www.facebook.com/Cessda-463858013634628/\" target=\"_blank\"><i class=\"fa fa-facebook\"></i></a></li>\n" + 
 							"		<li><a href=\"https://twitter.com/CESSDA_Data/\" target=\"_blank\"><i class=\"fa fa-twitter\"></i></a></li>\n" + 
 							"		<li><a href=\"https://www.linkedin.com/company/9392869\" target=\"_blank\"><i class=\"fa fa-linkedin\"></i></a></li>\n" + 
@@ -210,7 +213,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 							"		<li><a href=\"https://plus.google.com/112779581489694492154\" target=\"_blank\"><i class=\"fa fa-google-plus\"></i></a></li>\n" + 
 							"	</ul>" ),
 				new MCssLayout()
-					.withStyleName( "col-md-4 log-in pull-right" )
+					.withStyleName( "col-md-6 log-in pull-right" )
 					.add(
 						new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-header fa fa-globe\"></i>" ),
 						countryBox,
@@ -238,9 +241,9 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 							new MLabel("CV Manager").withFullWidth().withContentMode(ContentMode.HTML).withStyleName("sublogo")
 						),
 					new MCssLayout()
-					.withStyleName("col-md-4 text-center")
+					.withStyleName("col-md-8 text-center")
 					.add(
-							new MLabel( "<h2>Consortium of European Social Science Data Archives</h2>" ).withContentMode( ContentMode.HTML ).withStyleName("text-center").withFullWidth()
+							searchBox()
 						)
 					);
 
@@ -254,6 +257,15 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		logIn.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		logout.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		
+		searchTf
+			.withPlaceholder("Find Controlled Vocabulary")
+			.withFullWidth()
+			.withValueChangeMode( ValueChangeMode.LAZY)
+			.withValueChangeTimeout( 200 )
+			.addTextChangeListener( e -> {
+				navigator.navigateTo(DiscoveryView.VIEW_NAME);
+				eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
+			});
 		
 		headerTop
 			.withFullWidth()
@@ -303,6 +315,17 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 //								.withExpand(logoLayout, 0.4f).withExpand(menuLayout, 0.6f))
 
 		);
+	}
+	
+	private MCssLayout searchBox() {
+		MCssLayout searchContainer = new MCssLayout();
+		searchContainer
+			.withStyleName("search-box")
+			.add( 
+				new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-search fa fa-search\"></i>" ),
+				searchTf 
+			);
+		return searchContainer;
 	}
 
 	public void gotoHome(ClickEvent event) {

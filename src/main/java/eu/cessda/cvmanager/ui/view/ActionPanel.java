@@ -53,6 +53,7 @@ public class ActionPanel extends CustomComponent{
 
 	private MLabel panelHeader = new MLabel();
 	private MButton buttonAddCv = new MButton();
+	private MButton buttonEditCv = new MButton();
 	private MButton buttonChangeAgency = new MButton();
 	private MButton buttonChangeLanguage = new MButton();
 	
@@ -86,6 +87,8 @@ public class ActionPanel extends CustomComponent{
 		updateMessageStrings(locale);
 		
 		buttonAddCv
+			.withFullWidth();
+		buttonEditCv
 			.withFullWidth();
 		buttonChangeAgency
 			.withFullWidth();

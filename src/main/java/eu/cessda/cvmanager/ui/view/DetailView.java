@@ -690,7 +690,7 @@ public class DetailView extends CvManagerView {
 				.setId("prefLabelTl");// Component(prefLanguageEditor,
 		
 		detailTreeGrid.addColumn(concept -> {
-					return new Label( concept.getDescriptionByLanguage( sourceLanguage ));
+					return new MLabel( concept.getDescriptionByLanguage( sourceLanguage )).withStyleName( "word-brake-normal" );
 				}, new ComponentRenderer())
 				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
 				.setExpandRatio(3)
@@ -698,7 +698,7 @@ public class DetailView extends CvManagerView {
 		
 		if( !selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ) ))
 			detailTreeGrid.addColumn(concept -> {
-				return new Label( concept.getDescriptionByLanguage(selectedLang.toString()));
+				return new MLabel( concept.getDescriptionByLanguage(selectedLang.toString())).withStyleName( "word-brake-normal" );
 			}, new ComponentRenderer())
 			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString() ))
 			.setExpandRatio(3)

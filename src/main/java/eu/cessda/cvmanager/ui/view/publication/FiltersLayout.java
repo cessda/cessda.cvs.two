@@ -53,7 +53,6 @@ public class FiltersLayout extends CustomComponent{
 		this.i18n = i18n;
 
 		filterLayout
-			.withFullWidth()
 			.withStyleName( "filter-layout" );
 		setCompositionRoot( filterLayout );
     }
@@ -102,7 +101,9 @@ public class FiltersLayout extends CustomComponent{
 		public FacetFilter(EsFilter eFilter ) {
 			this.esFilter = eFilter;
 			
-			facetLayout.add( 
+			facetLayout
+				.withFullWidth()
+				.add( 
 					new Label( "<h3 class=\"filter-menu\">" + i18n.get("filter." + esFilter.getField(), locale) + "</h3>" , ContentMode.HTML)
 			);
 			
