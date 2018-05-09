@@ -36,6 +36,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Viewport;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.Page;
@@ -68,6 +69,7 @@ import eu.cessda.cvmanager.utils.FileUtils;
  *
  */
 
+@Viewport("initial-scale=1, maximum-scale=1")
 @Theme("mytheme")
 @SpringUI
 @PreserveOnRefresh
