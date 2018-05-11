@@ -17283,6 +17283,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .search-grid  > .v-grid-tablewrapper  > table > tbody {
 	position: relative;
+	touch-action: auto;
 }
 
 .mytheme .search-grid  > .v-grid-tablewrapper  > table > tbody tr {

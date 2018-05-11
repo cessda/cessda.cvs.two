@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -70,6 +71,7 @@ public class ImportService {
 				vocabulary = VocabularyDTO.generateFromCVScheme(vocabulary, cvScheme);
 			
 			vocabulary.setDiscoverable( true );
+			vocabulary.setPublicationDate( LocalDate.now());
 			vocabulary = vocabularyService.save(vocabulary);
 			
 			// get codes

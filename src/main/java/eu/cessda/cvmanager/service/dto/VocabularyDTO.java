@@ -8,6 +8,7 @@ import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
@@ -48,6 +49,8 @@ public class VocabularyDTO implements Serializable {
     private Set<String> languages;
     
     private Set<CodeDTO> codes = new HashSet<>();
+    
+    private LocalDate publicationDate;
 
     @NotNull
     @Size(max = 20)
@@ -408,8 +411,16 @@ public class VocabularyDTO implements Serializable {
 		this.languages.add(language);
 		return this;
 	}
+	
+    public LocalDate getPublicationDate() {
+		return publicationDate;
+	}
 
-    public String getTitleCs() {
+	public void setPublicationDate(LocalDate publicationDate) {
+		this.publicationDate = publicationDate;
+	}
+
+	public String getTitleCs() {
         return titleCs;
     }
 

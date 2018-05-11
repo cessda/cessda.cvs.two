@@ -1,23 +1,17 @@
 package eu.cessda.cvmanager.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.gesis.wts.domain.Agency;
 import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.service.dto.AgencyDTO;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-import org.springframework.data.elasticsearch.annotations.InnerField;
-import org.springframework.data.elasticsearch.annotations.MultiField;
-import org.springframework.data.elasticsearch.annotations.FieldIndex;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -77,6 +71,19 @@ public class Vocabulary implements Serializable {
     @Column(name = "agency_name", nullable = false)
     @Field(type = FieldType.keyword)
     private String agencyName;
+    
+//  @JsonBackReference
+//  @OneToMany(mappedBy = "vocabulary")
+    @Transient
+    @Field(type = FieldType.Nested, store = true)
+    private Set<Code> codes = new HashSet<>();
+	  
+    @Transient
+    private Language selectedLang;
+	  
+    @Column(name = "publication_date")
+    @Field(type = FieldType.Date, format = DateFormat.date)
+    private LocalDate publicationDate;
 
     @Lob
     @Column(name = "title_cs")
@@ -247,15 +254,6 @@ public class Vocabulary implements Serializable {
     @Column(name = "definition_sv")
     @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String definitionSv;
-
-//    @JsonBackReference
-//    @OneToMany(mappedBy = "vocabulary")
-    @Transient
-    @Field(type = FieldType.Nested, store = true)
-    private Set<Code> codes = new HashSet<>();
-    
-    @Transient
-    private Language selectedLang;
     
     public Long getId() {
         return id;
@@ -384,8 +382,16 @@ public class Vocabulary implements Serializable {
 		this.languages.add(language);
 		return this;
 	}
+	
+    public LocalDate getPublicationDate() {
+		return publicationDate;
+	}
 
-    public String getTitleCs() {
+	public void setPublicationDate(LocalDate publicationDate) {
+		this.publicationDate = publicationDate;
+	}
+
+	public String getTitleCs() {
         return titleCs;
     }
 

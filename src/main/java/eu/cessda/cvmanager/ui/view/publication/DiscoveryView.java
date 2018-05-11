@@ -117,7 +117,7 @@ public class DiscoveryView extends CvPublicationView {
 			.withStyleName(ValoTheme.TABLE_BORDERLESS, "undefined-height", "search-grid", "no-stripe")
 			.withFullSize()
 			.setSelectionMode(SelectionMode.NONE);
-		
+				
 		sortByRelevence.addClickListener( e -> {
 			if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty() ) {
 				sortByRelevence.setStyleName( "groupButton enable" );
@@ -143,7 +143,7 @@ public class DiscoveryView extends CvPublicationView {
 		
 		filterLayout.setWidthUndefined();
 		filterLayout.addStyleNames("facet-filter","facet-responsive");
-		
+				
 		gridResultLayout.withStyleName( "result-container" );
 		
 		showFilter
