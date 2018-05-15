@@ -32,10 +32,6 @@ public class CodeDTO implements Serializable {
     
     @NotNull
     private String notation;
-
-    @NotNull
-    @Size(max = 20)
-    private String version;
     
     private Boolean archived;
 
@@ -339,14 +335,6 @@ public class CodeDTO implements Serializable {
 	public void setNotation(String notation) {
 		this.notation = notation;
 	}
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
 
     public Boolean isArchived() {
         return archived;
@@ -717,7 +705,6 @@ public class CodeDTO implements Serializable {
         return "CodeDTO{" +
             "id=" + getId() +
             ", uri='" + getUri() + "'" +
-            ", version='" + getVersion() + "'" +
             ", archived='" + isArchived() + "'" +
             ", withdrawn='" + isWithdrawn() + "'" +
             ", discoverable='" + isDiscoverable() + "'" +
@@ -779,7 +766,6 @@ public class CodeDTO implements Serializable {
 
 	private static CodeDTO extractCVSchemeToCodeDTO(CVConcept cvConcept, CodeDTO code) {
 		//TODO: need to change hard coded value
-		code.setVersion( "1.0" );
 		code.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 				
 		code.setNotation( cvConcept.getNotation());

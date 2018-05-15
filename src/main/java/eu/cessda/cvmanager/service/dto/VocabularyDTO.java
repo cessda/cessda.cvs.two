@@ -7,8 +7,11 @@ import javax.validation.constraints.*;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 
+import eu.cessda.cvmanager.domain.enumeration.Status;
+
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
@@ -29,16 +32,25 @@ public class VocabularyDTO implements Serializable {
 	}
 	
     private Long id;
+    
+	private String status;
+	
 
     @NotNull
+    @Size(max = 240)
     private String uri;
     
     @NotNull
+    @Size(max = 240)
     private String notation;
 
     @NotNull
     @Size(max = 20)
-    private String version;
+    private String versionNumber;
+    
+    private Long initialPublication;
+
+    private Long previousPublication;
 
     private Boolean archived;
 
@@ -48,27 +60,37 @@ public class VocabularyDTO implements Serializable {
     
     private Set<String> languages;
     
-    private Set<CodeDTO> codes = new HashSet<>();
-    
-    private LocalDate publicationDate;
-
     @NotNull
     @Size(max = 20)
     private String sourceLanguage;
-
+    
     @NotNull
     private Long agencyId;
     
     @NotNull
     private String agencyName;
     
+    private Set<CodeDTO> codes = new HashSet<>();
+    
+    private Set<VersionDTO> vers = new HashSet<>();
+    
     private Language selectedLang;
     
+    private LocalDate publicationDate;
+    
+    private LocalDateTime lastModified;
+    
+    @Size(max = 20)
+    private String versionCs;
+
     @Lob
     private String titleCs;
 
     @Lob
     private String definitionCs;
+
+    @Size(max = 20)
+    private String versionDa;
 
     @Lob
     private String titleDa;
@@ -76,11 +98,17 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String definitionDa;
 
+    @Size(max = 20)
+    private String versionNl;
+
     @Lob
     private String titleNl;
 
     @Lob
     private String definitionNl;
+
+    @Size(max = 20)
+    private String versionEn;
 
     @Lob
     private String titleEn;
@@ -88,11 +116,17 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String definitionEn;
 
+    @Size(max = 20)
+    private String versionFi;
+
     @Lob
     private String titleFi;
 
     @Lob
     private String definitionFi;
+
+    @Size(max = 20)
+    private String versionFr;
 
     @Lob
     private String titleFr;
@@ -100,11 +134,17 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String definitionFr;
 
+    @Size(max = 20)
+    private String versionDe;
+
     @Lob
     private String titleDe;
 
     @Lob
     private String definitionDe;
+
+    @Size(max = 20)
+    private String versionEl;
 
     @Lob
     private String titleEl;
@@ -112,11 +152,17 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String definitionEl;
 
+    @Size(max = 20)
+    private String versionHu;
+
     @Lob
     private String titleHu;
 
     @Lob
     private String definitionHu;
+
+    @Size(max = 20)
+    private String versionLt;
 
     @Lob
     private String titleLt;
@@ -124,11 +170,17 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String definitionLt;
 
+    @Size(max = 20)
+    private String versionNo;
+
     @Lob
     private String titleNo;
 
     @Lob
     private String definitionNo;
+
+    @Size(max = 20)
+    private String versionPt;
 
     @Lob
     private String titlePt;
@@ -136,11 +188,17 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String definitionPt;
 
+    @Size(max = 20)
+    private String versionRo;
+
     @Lob
     private String titleRo;
 
     @Lob
     private String definitionRo;
+
+    @Size(max = 20)
+    private String versionSk;
 
     @Lob
     private String titleSk;
@@ -148,17 +206,26 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String definitionSk;
 
+    @Size(max = 20)
+    private String versionSl;
+
     @Lob
     private String titleSl;
 
     @Lob
     private String definitionSl;
 
+    @Size(max = 20)
+    private String versionEs;
+
     @Lob
     private String titleEs;
 
     @Lob
     private String definitionEs;
+
+    @Size(max = 20)
+    private String versionSv;
 
     @Lob
     private String titleSv;
@@ -349,14 +416,6 @@ public class VocabularyDTO implements Serializable {
 		this.notation = notation;
 	}
 
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
     public Boolean isArchived() {
         return archived;
     }
@@ -418,6 +477,14 @@ public class VocabularyDTO implements Serializable {
 
 	public void setPublicationDate(LocalDate publicationDate) {
 		this.publicationDate = publicationDate;
+	}
+		
+	public LocalDateTime getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(LocalDateTime lastModified) {
+		this.lastModified = lastModified;
 	}
 
 	public String getTitleCs() {
@@ -733,6 +800,182 @@ public class VocabularyDTO implements Serializable {
 		this.selectedLang = selectedLang;
 	}
 
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public String getVersionNumber() {
+		return versionNumber;
+	}
+
+	public void setVersionNumber(String versionNumber) {
+		this.versionNumber = versionNumber;
+	}
+
+	public Long getInitialPublication() {
+		return initialPublication;
+	}
+
+	public void setInitialPublication(Long initialPublication) {
+		this.initialPublication = initialPublication;
+	}
+
+	public Long getPreviousPublication() {
+		return previousPublication;
+	}
+
+	public void setPreviousPublication(Long previousPublication) {
+		this.previousPublication = previousPublication;
+	}
+
+	public Set<VersionDTO> getVers() {
+		return vers;
+	}
+
+	public void setVers(Set<VersionDTO> vers) {
+		this.vers = vers;
+	}
+
+	public String getVersionCs() {
+		return versionCs;
+	}
+
+	public void setVersionCs(String versionCs) {
+		this.versionCs = versionCs;
+	}
+
+	public String getVersionDa() {
+		return versionDa;
+	}
+
+	public void setVersionDa(String versionDa) {
+		this.versionDa = versionDa;
+	}
+
+	public String getVersionNl() {
+		return versionNl;
+	}
+
+	public void setVersionNl(String versionNl) {
+		this.versionNl = versionNl;
+	}
+
+	public String getVersionEn() {
+		return versionEn;
+	}
+
+	public void setVersionEn(String versionEn) {
+		this.versionEn = versionEn;
+	}
+
+	public String getVersionFi() {
+		return versionFi;
+	}
+
+	public void setVersionFi(String versionFi) {
+		this.versionFi = versionFi;
+	}
+
+	public String getVersionFr() {
+		return versionFr;
+	}
+
+	public void setVersionFr(String versionFr) {
+		this.versionFr = versionFr;
+	}
+
+	public String getVersionDe() {
+		return versionDe;
+	}
+
+	public void setVersionDe(String versionDe) {
+		this.versionDe = versionDe;
+	}
+
+	public String getVersionEl() {
+		return versionEl;
+	}
+
+	public void setVersionEl(String versionEl) {
+		this.versionEl = versionEl;
+	}
+
+	public String getVersionHu() {
+		return versionHu;
+	}
+
+	public void setVersionHu(String versionHu) {
+		this.versionHu = versionHu;
+	}
+
+	public String getVersionLt() {
+		return versionLt;
+	}
+
+	public void setVersionLt(String versionLt) {
+		this.versionLt = versionLt;
+	}
+
+	public String getVersionNo() {
+		return versionNo;
+	}
+
+	public void setVersionNo(String versionNo) {
+		this.versionNo = versionNo;
+	}
+
+	public String getVersionPt() {
+		return versionPt;
+	}
+
+	public void setVersionPt(String versionPt) {
+		this.versionPt = versionPt;
+	}
+
+	public String getVersionRo() {
+		return versionRo;
+	}
+
+	public void setVersionRo(String versionRo) {
+		this.versionRo = versionRo;
+	}
+
+	public String getVersionSk() {
+		return versionSk;
+	}
+
+	public void setVersionSk(String versionSk) {
+		this.versionSk = versionSk;
+	}
+
+	public String getVersionSl() {
+		return versionSl;
+	}
+
+	public void setVersionSl(String versionSl) {
+		this.versionSl = versionSl;
+	}
+
+	public String getVersionEs() {
+		return versionEs;
+	}
+
+	public void setVersionEs(String versionEs) {
+		this.versionEs = versionEs;
+	}
+
+	public String getVersionSv() {
+		return versionSv;
+	}
+
+	public void setVersionSv(String versionSv) {
+		this.versionSv = versionSv;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -759,7 +1002,7 @@ public class VocabularyDTO implements Serializable {
         return "VocabularyDTO{" +
             "id=" + getId() +
             ", uri='" + getUri() + "'" +
-            ", version='" + getVersion() + "'" +
+            ", version='" + getVersionNumber() + "'" +
             ", archived='" + isArchived() + "'" +
             ", withdrawn='" + isWithdrawn() + "'" +
             ", discoverable='" + isDiscoverable() + "'" +
@@ -820,7 +1063,7 @@ public class VocabularyDTO implements Serializable {
 
 	private static VocabularyDTO extractCVSchemeToVocabularyDTO(CVScheme cvScheme, VocabularyDTO vocabulary) {
 		//TODO: need to change hard coded value
-		vocabulary.setVersion( "1.0" );
+		vocabulary.setVersionNumber( "1.0" );
 		vocabulary.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 		
 		vocabulary.setNotation( cvScheme.getCode());

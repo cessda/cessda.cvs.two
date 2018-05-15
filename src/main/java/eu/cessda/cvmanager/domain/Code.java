@@ -4,11 +4,13 @@ package eu.cessda.cvmanager.domain;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,11 +35,6 @@ public class Code implements Serializable {
     @NotNull
     @Column(name = "notation", length = 240, nullable = false)
     private String notation;
-
-    @NotNull
-    @Size(max = 20)
-    @Column(name = "version", length = 20, nullable = false)
-    private String version;
     
     @Column(name = "archived")
     private Boolean archived;
@@ -65,7 +62,15 @@ public class Code implements Serializable {
     
     @Column(name = "\"position\"")
     private Integer position;
-
+    
+    @Column(name = "publication_date")
+    @Field(type = FieldType.Date, format = DateFormat.date)
+    private LocalDate publicationDate;
+    
+    @Column(name = "last_modified")
+    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    private LocalDateTime lastModified;
+    
     @Lob
     @Column(name = "title_cs")
     @Field(type = FieldType.text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
@@ -264,15 +269,6 @@ public class Code implements Serializable {
         this.uri = uri;
     }
 
-    public String getVersion() {
-        return version;
-    }
-
-    public Code version(String version) {
-        this.version = version;
-        return this;
-    }
-    
     public String getNotation() {
 		return notation;
 	}
@@ -280,10 +276,6 @@ public class Code implements Serializable {
 	public void setNotation(String notation) {
 		this.notation = notation;
 	}
-
-	public void setVersion(String version) {
-        this.version = version;
-    }
 
     public Boolean isArchived() {
         return archived;
@@ -815,7 +807,7 @@ public class Code implements Serializable {
     public void setVocabularyId(Long vocabularyId) {
         this.vocabularyId = vocabularyId;
     }
-
+    
 //    public Vocabulary getVocabulary() {
 //        return vocabulary;
 //    }
@@ -828,9 +820,23 @@ public class Code implements Serializable {
 //    public void setVocabulary(Vocabulary vocabulary) {
 //        this.vocabulary = vocabulary;
 //    }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+	public LocalDate getPublicationDate() {
+		return publicationDate;
+	}
 
-    @Override
+	public void setPublicationDate(LocalDate publicationDate) {
+		this.publicationDate = publicationDate;
+	}
+
+	public LocalDateTime getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(LocalDateTime lastModified) {
+		this.lastModified = lastModified;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -855,7 +861,6 @@ public class Code implements Serializable {
         return "Vocabulary{" +
             "id=" + getId() +
             ", uri='" + getUri() + "'" +
-            ", version='" + getVersion() + "'" +
             ", archived='" + isArchived() + "'" +
             ", withdrawn='" + isWithdrawn() + "'" +
             ", discoverable='" + isDiscoverable() + "'" +

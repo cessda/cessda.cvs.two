@@ -252,7 +252,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		
 		// save on database
 		VocabularyDTO vocabulary = new VocabularyDTO();
-		vocabulary.setVersion("1.0");
+		vocabulary.setVersionNumber("1.0");
 		vocabulary.setUri( ddiStore.getElementId());
 		vocabulary.setNotation( tfCode.getValue() );
 		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);

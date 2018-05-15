@@ -16,10 +16,13 @@ import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.EntityMapper;
 import org.springframework.data.elasticsearch.core.ResultsExtractor;
 import org.springframework.data.elasticsearch.core.SearchResultMapper;
 import org.springframework.data.elasticsearch.core.aggregation.AggregatedPage;
+import org.springframework.data.elasticsearch.core.convert.MappingElasticsearchConverter;
 import org.springframework.data.elasticsearch.core.facet.FacetRequest;
+import org.springframework.data.elasticsearch.core.mapping.SimpleElasticsearchMappingContext;
 import org.springframework.data.elasticsearch.core.query.IndexBoost;
 import org.springframework.data.elasticsearch.core.query.Query;
 import org.springframework.data.elasticsearch.core.query.ScriptField;
@@ -33,7 +36,6 @@ import org.springframework.data.elasticsearch.core.query.SourceFilter;
  * the ElasticsearchTemplate needs to be extended
  * @ Original author
  */
-@Service
 public class ElasticsearchTemplate2 extends ElasticsearchTemplate{
 
 	private String searchTimeout;
@@ -41,6 +43,10 @@ public class ElasticsearchTemplate2 extends ElasticsearchTemplate{
 	public ElasticsearchTemplate2(Client client) {
 		super(client);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public ElasticsearchTemplate2(Client client, EntityMapper entityMapper) {
+		super(client, new MappingElasticsearchConverter(new SimpleElasticsearchMappingContext()), entityMapper);
 	}
 	
 	@Override

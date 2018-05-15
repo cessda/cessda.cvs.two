@@ -9,9 +9,16 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import eu.cessda.cvmanager.domain.enumeration.Status;
+
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -22,26 +29,48 @@ import java.util.Objects;
 @Table(name = "vocabulary")
 @Document(indexName = "vocabulary")
 public class Vocabulary implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+    
+	private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    // only for SL status
+    @Column(name = "status", length = 20, nullable = false)
+    @Field(type = FieldType.keyword)
+    private String status;
+    
+    // both sl and tl statuses
+    @Column(name = "statuses")
+    @ElementCollection( targetClass=String.class )
+    @Field(type = FieldType.keyword)
+    private Set<String> statuses;
+    
+    @Column(name = "restrict_roles")
+    @ElementCollection( targetClass=String.class )
+    @Field(type = FieldType.keyword)
+    private Set<String> restrictRoles;
     
     @NotNull
     @Column(name = "uri", length = 240, nullable = false, unique = true)
     private String uri;
     
     @NotNull
-    @Column(name = "notation", length = 240, nullable = false, unique = true)
+    @Column(name = "notation", length = 240, nullable = false)
     @Field(type = FieldType.text, fielddata = true)
     private String notation;
 
     @NotNull
     @Size(max = 20)
-    @Column(name = "version", length = 20, nullable = false)
-    private String version;
+    @Column(name = "version_number", length = 20, nullable = false)
+    private String versionNumber;
+    
+    @Column(name = "initial_publication")
+    private Long initialPublication;
+    
+    @Column(name = "previous_publication")
+    private Long previousPublication;
 
     @Column(name = "archived")
     private Boolean archived = false;
@@ -77,13 +106,33 @@ public class Vocabulary implements Serializable {
     @Transient
     @Field(type = FieldType.Nested, store = true)
     private Set<Code> codes = new HashSet<>();
+    
+    @Transient
+    @Field(type = FieldType.Nested, store = true)
+    private Set<Version> vers = new HashSet<>();
 	  
     @Transient
     private Language selectedLang;
 	  
     @Column(name = "publication_date")
     @Field(type = FieldType.Date, format = DateFormat.date)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate publicationDate;
+    
+    @Column(name = "last_modified")
+    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime lastModified;
+    
+    @ManyToMany(cascade = { CascadeType.PERSIST })
+    @JoinTable(name = "vocabulary_version",
+               joinColumns = @JoinColumn(name="vocabulary_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="version_id", referencedColumnName="id"))
+    private Set<Version> versions = new HashSet<>();
+    
+    @Size(max = 20)
+    @Column(name = "version_cs", length = 20)
+    private String versionCs;
 
     @Lob
     @Column(name = "title_cs")
@@ -94,6 +143,10 @@ public class Vocabulary implements Serializable {
     @Column(name = "definition_cs")
     @Field(type = FieldType.text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
     private String definitionCs;
+    
+    @Size(max = 20)
+    @Column(name = "version_da", length = 20)
+    private String versionDa;
 
     @Lob
     @Column(name = "title_da")
@@ -104,6 +157,10 @@ public class Vocabulary implements Serializable {
     @Column(name = "definition_da")
     @Field(type = FieldType.text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
     private String definitionDa;
+    
+    @Size(max = 20)
+    @Column(name = "version_nl", length = 20)
+    private String versionNl;
 
     @Lob
     @Column(name = "title_nl")
@@ -114,6 +171,10 @@ public class Vocabulary implements Serializable {
     @Column(name = "definition_nl")
     @Field(type = FieldType.text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
     private String definitionNl;
+    
+    @Size(max = 20)
+    @Column(name = "version_en", length = 20)
+    private String versionEn;
 
     @Lob
     @Column(name = "title_en")
@@ -124,6 +185,10 @@ public class Vocabulary implements Serializable {
     @Column(name = "definition_en")
     @Field(type = FieldType.text, store = true, analyzer = "english", searchAnalyzer = "english" )
     private String definitionEn;
+    
+    @Size(max = 20)
+    @Column(name = "version_fi", length = 20)
+    private String versionFi;
 
     @Lob
     @Column(name = "title_fi")
@@ -135,6 +200,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
     private String definitionFi;
 
+    @Size(max = 20)
+    @Column(name = "version_fr", length = 20)
+    private String versionFr;
+    
     @Lob
     @Column(name = "title_fr")
     @Field(type = FieldType.text, store = true, analyzer = "french", searchAnalyzer = "french" )
@@ -144,6 +213,10 @@ public class Vocabulary implements Serializable {
     @Column(name = "definition_fr")
     @Field(type = FieldType.text, store = true, analyzer = "french", searchAnalyzer = "french" )
     private String definitionFr;
+    
+    @Size(max = 20)
+    @Column(name = "version_de", length = 20)
+    private String versionDe;
 
     @Lob
     @Column(name = "title_de")
@@ -155,6 +228,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true, analyzer = "german", searchAnalyzer = "german" )
     private String definitionDe;
 
+    @Size(max = 20)
+    @Column(name = "version_el", length = 20)
+    private String versionEl;
+    
     @Lob
     @Column(name = "title_el")
     @Field(type = FieldType.text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
@@ -165,6 +242,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
     private String definitionEl;
 
+    @Size(max = 20)
+    @Column(name = "version_hu", length = 20)
+    private String versionHu;
+    
     @Lob
     @Column(name = "title_hu")
     @Field(type = FieldType.text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
@@ -175,6 +256,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
     private String definitionHu;
 
+    @Size(max = 20)
+    @Column(name = "version_lt", length = 20)
+    private String versionLt;
+    
     @Lob
     @Column(name = "title_lt")
     @Field(type = FieldType.text, store = true )
@@ -185,6 +270,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true )
     private String definitionLt;
 
+    @Size(max = 20)
+    @Column(name = "version_no", length = 20)
+    private String versionNo;
+    
     @Lob
     @Column(name = "title_no")
     @Field(type = FieldType.text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
@@ -195,6 +284,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
     private String definitionNo;
 
+    @Size(max = 20)
+    @Column(name = "version_pt", length = 20)
+    private String versionPt;
+    
     @Lob
     @Column(name = "title_pt")
     @Field(type = FieldType.text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
@@ -204,6 +297,10 @@ public class Vocabulary implements Serializable {
     @Column(name = "definition_pt")
     @Field(type = FieldType.text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
     private String definitionPt;
+    
+    @Size(max = 20)
+    @Column(name = "version_ro", length = 20)
+    private String versionRo;
 
     @Lob
     @Column(name = "title_ro")
@@ -215,6 +312,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
     private String definitionRo;
 
+    @Size(max = 20)
+    @Column(name = "version_sk", length = 20)
+    private String versionSk;
+    
     @Lob
     @Column(name = "title_sk")
     @Field(type = FieldType.text, store = true )
@@ -225,6 +326,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true )
     private String definitionSk;
 
+    @Size(max = 20)
+    @Column(name = "version_sl", length = 20)
+    private String versionSl;
+    
     @Lob
     @Column(name = "title_sl")
     @Field(type = FieldType.text, store = true )
@@ -235,6 +340,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true )
     private String definitionSl;
 
+    @Size(max = 20)
+    @Column(name = "version_es", length = 20)
+    private String versionEs;
+    
     @Lob
     @Column(name = "title_es")
     @Field(type = FieldType.text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
@@ -245,6 +354,10 @@ public class Vocabulary implements Serializable {
     @Field(type = FieldType.text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
     private String definitionEs;
 
+    @Size(max = 20)
+    @Column(name = "version_sv", length = 20)
+    private String versionSv;
+    
     @Lob
     @Column(name = "title_sv")
     @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
@@ -284,17 +397,17 @@ public class Vocabulary implements Serializable {
 		this.notation = notation;
 	}
 
-    public String getVersion() {
-        return version;
+    public String getVersionNumber() {
+        return versionNumber;
     }
 
-    public Vocabulary version(String version) {
-        this.version = version;
+    public Vocabulary versionNumber(String versionNumber) {
+        this.versionNumber = versionNumber;
         return this;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
+    public void setVersionNumber(String versionNumber) {
+        this.versionNumber = versionNumber;
     }
 
     public Boolean isArchived() {
@@ -389,6 +502,30 @@ public class Vocabulary implements Serializable {
 
 	public void setPublicationDate(LocalDate publicationDate) {
 		this.publicationDate = publicationDate;
+	}
+	
+	public LocalDateTime getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(LocalDateTime lastModified) {
+		this.lastModified = lastModified;
+	}
+	
+	public Set<Version> getVersions() {
+		return versions;
+	}
+
+	public void setVersions(Set<Version> versions) {
+		this.versions = versions;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getTitleCs() {
@@ -853,8 +990,8 @@ public class Vocabulary implements Serializable {
 //        code.setVocabulary(null);
         return this;
     }
-
-    public void setCodes(Set<Code> codes) {
+    
+	public void setCodes(Set<Code> codes) {
         this.codes = codes;
     }
 
@@ -865,6 +1002,185 @@ public class Vocabulary implements Serializable {
 	public void setSelectedLang(Language selectedLang) {
 		this.selectedLang = selectedLang;
 	}
+	
+
+	public Set<String> getRestrictRoles() {
+		return restrictRoles;
+	}
+
+	public void setRestrictRoles(Set<String> restrictRoles) {
+		this.restrictRoles = restrictRoles;
+	}
+
+	public Long getPreviousPublication() {
+		return previousPublication;
+	}
+
+	public void setPreviousPublication(Long previousPublication) {
+		this.previousPublication = previousPublication;
+	}
+
+	public Long getInitialPublication() {
+		return initialPublication;
+	}
+
+	public void setInitialPublication(Long initialPublication) {
+		this.initialPublication = initialPublication;
+	}
+
+	public String getVersionCs() {
+		return versionCs;
+	}
+
+	public void setVersionCs(String versionCs) {
+		this.versionCs = versionCs;
+	}
+
+	public String getVersionDa() {
+		return versionDa;
+	}
+
+	public void setVersionDa(String versionDa) {
+		this.versionDa = versionDa;
+	}
+
+	public String getVersionNl() {
+		return versionNl;
+	}
+
+	public void setVersionNl(String versionNl) {
+		this.versionNl = versionNl;
+	}
+
+	public String getVersionEn() {
+		return versionEn;
+	}
+
+	public void setVersionEn(String versionEn) {
+		this.versionEn = versionEn;
+	}
+
+	public String getVersionFi() {
+		return versionFi;
+	}
+
+	public void setVersionFi(String versionFi) {
+		this.versionFi = versionFi;
+	}
+
+	public String getVersionFr() {
+		return versionFr;
+	}
+
+	public void setVersionFr(String versionFr) {
+		this.versionFr = versionFr;
+	}
+
+	public String getVersionDe() {
+		return versionDe;
+	}
+
+	public void setVersionDe(String versionDe) {
+		this.versionDe = versionDe;
+	}
+
+	public String getVersionEl() {
+		return versionEl;
+	}
+
+	public void setVersionEl(String versionEl) {
+		this.versionEl = versionEl;
+	}
+
+	public String getVersionHu() {
+		return versionHu;
+	}
+
+	public void setVersionHu(String versionHu) {
+		this.versionHu = versionHu;
+	}
+
+	public String getVersionLt() {
+		return versionLt;
+	}
+
+	public void setVersionLt(String versionLt) {
+		this.versionLt = versionLt;
+	}
+
+	public String getVersionNo() {
+		return versionNo;
+	}
+
+	public void setVersionNo(String versionNo) {
+		this.versionNo = versionNo;
+	}
+
+	public String getVersionPt() {
+		return versionPt;
+	}
+
+	public void setVersionPt(String versionPt) {
+		this.versionPt = versionPt;
+	}
+
+	public String getVersionRo() {
+		return versionRo;
+	}
+
+	public void setVersionRo(String versionRo) {
+		this.versionRo = versionRo;
+	}
+
+	public String getVersionSk() {
+		return versionSk;
+	}
+
+	public void setVersionSk(String versionSk) {
+		this.versionSk = versionSk;
+	}
+
+	public String getVersionSl() {
+		return versionSl;
+	}
+
+	public void setVersionSl(String versionSl) {
+		this.versionSl = versionSl;
+	}
+
+	public String getVersionEs() {
+		return versionEs;
+	}
+
+	public void setVersionEs(String versionEs) {
+		this.versionEs = versionEs;
+	}
+
+	public String getVersionSv() {
+		return versionSv;
+	}
+
+	public void setVersionSv(String versionSv) {
+		this.versionSv = versionSv;
+	}
+
+	public Set<String> getStatuses() {
+		return statuses;
+	}
+
+	public void setStatuses(Set<String> statuses) {
+		this.statuses = statuses;
+	}
+
+	public Set<Version> getVers() {
+		return vers;
+	}
+
+	public void setVers(Set<Version> vers) {
+		this.vers = vers;
+	}
+	
+	
 
 	@Override
     public boolean equals(Object o) {
@@ -891,7 +1207,7 @@ public class Vocabulary implements Serializable {
         return "Vocabulary{" +
             "id=" + getId() +
             ", uri='" + getUri() + "'" +
-            ", version='" + getVersion() + "'" +
+            ", versionNumber='" + getVersionNumber() + "'" +
             ", archived='" + isArchived() + "'" +
             ", withdrawn='" + isWithdrawn() + "'" +
             ", discoverable='" + isDiscoverable() + "'" +

@@ -168,7 +168,7 @@ public class VocabularyGridRow extends CustomComponent {
 
 		tlTitle.setValue("<a href='" + baseUrl  + "'>" + vocabulary.getNotation() + "</a>");
 		desc.setValue( definition );
-		version.setValue("Version: " + vocabulary.getVersion() + " "
+		version.setValue("Version: " + vocabulary.getVersionNumber() + " "
 				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.toString()) + " <a href='" + baseUrl +"?tab=download"+ "'>Download</a>");
 		
 		if( !vocabulary.getCodes().isEmpty() ) {

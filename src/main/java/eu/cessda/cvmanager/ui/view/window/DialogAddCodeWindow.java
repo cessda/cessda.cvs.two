@@ -211,7 +211,6 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		
 		// save on database
 		CodeDTO code = new CodeDTO();
-		code.setVersion( "1.0" );
 		code.setUri( ddiStore.getElementId() );
 		code.setNotation( notation.getValue() );
 		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
