@@ -1,0 +1,20 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: DEPLOYMENTNAME
+  labels:
+    app: DEPLOYMENTNAME
+  namespace: NAMESPACE
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: DEPLOYMENTNAME
+    spec:
+      containers:
+      - name: DEPLOYMENTNAME
+        image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
+        ports:
+        - containerPort: 8080
+          name: frontend-cport

@@ -1,0 +1,75 @@
+cvmanager:
+  export:
+    filterTag: skos:canonicalUri,skos:publishedVersionsURI,skos:versionNotes,skos:priorVersion,skos:languages,skos:language
+ddiflatdb:
+  rest:
+    url: '@ddiflatdb.rest.url@'
+  server:
+    uri: '@ddiflatdb.server.uri@'
+logging:
+  pattern:
+    console: '%d{yyyy-MM-dd HH:mm:ss.SSS}  %highlight(%-5level) %30.30(%M) %40.40((%file:%line\)) - %msg%n'
+  level:
+    ROOT: INFO
+    org.elasticsearch: DEBUG
+    org.gesis.wts: DEBUG
+    eu.cessda.cvmanager: DEBUG
+server:
+  servlet:
+    context-path: '@server.servlet.contextPath@'
+  port: '@server.port@'
+  tomcat:
+    uri-encoding: UTF-8
+spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: false
+  data:
+    elasticsearch:
+      cluster-name: '@spring.data.elasticsearch.cluster-name@'
+      cluster-nodes: '@spring.data.elasticsearch.cluster-nodes@'
+      properties:
+        path:
+          logs: target/elasticsearch/log
+          data: target/elasticsearch/data
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    password: '@spring.datasource.password@'
+    url: '@spring.datasource.url@'
+    username: '@spring.datasource.username@'
+  http:
+    encoding:
+      charset: UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.format_sql: 'true'
+      hibernate.id.new_generator_mappings: true
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+    show-sql: 'false'
+  mail:
+    host: svboexc02.gesis.intra
+    properties:
+      mail:
+        smtp:
+          auth: 'false'
+  messages:
+    encoding: UTF-8
+  thymeleaf:
+    encoding: UTF-8
+    mode: HTML
+vaadin:
+  servlet:
+    heartbeatInterval: '60'
+    productionMode: 'true'
+vaadin4spring:
+  i18n:
+    message-format-cache:
+      enabled: 'false'
+    message-provider-cache:
+      cleanup-interval-seconds: '5'

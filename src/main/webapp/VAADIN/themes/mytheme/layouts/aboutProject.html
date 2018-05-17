@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script language="javascript" type="text/javascript">
+    var classname = document.getElementsByClassName("v-csslayout-uploadform");
+
+    var myFunction = function() {
+    	
+        var attribute = this.getAttribute("clientX");
+        alert(this.clientX);
+
+    };
+
+
+    for (var i = 0; i < classname.length; i++) {
+        classname[i].addEventListener('click', getCords, false);
+
+    }
+    
+    function getCords(event){
+        
+        
+
+       var myElement = document.querySelector("#helptext");
+       // var myElement = document.getElementsByClassName("activehelptext");
+       alert(myElement.value);
+        //myElement.style.backgroundcolor = red;
+      // myElement.style.top = event.clientY+"px";
+       myElement.style.top = "400px";
+
+    }
+
+    </script>
+    
+  </head>
+  <body>
+    <div>
+   <div class="divhelptext" location="title"></div>
+</div>
+<div>
+   <div  class="divhelptext" location="lastname"></div>
+   <div  class="divhelptext" location="fistname"></div>
+   <div  class="divhelptext" location="institute"></div>
+   <div  class="divhelptext" location="email"></div>
+   <div  class="divhelptext" location="pid"></div>
+</div>
+<div>
+   <div class="divhelptext" location="scientificDis"></div>
+   <div class="divhelptext" location="keywords"></div>
+   <div class="divhelptext" location="jel"></div>
+   <div class="divhelptext" location="gameclassification"></div>
+</div>
+  </body>
+</html>

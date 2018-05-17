@@ -1,0 +1,181 @@
+package eu.cessda.cvmanager.ui.view.publication;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
+import org.vaadin.spring.i18n.I18N;
+
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.fields.MCheckBox;
+import org.vaadin.viritin.layouts.MCssLayout;
+
+import com.vaadin.shared.ui.ContentMode;
+
+import com.vaadin.ui.ComboBox;
+
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.UI;
+
+
+public class FiltersLayout extends CustomComponent{
+
+	private static final long serialVersionUID = -3119422665592890019L;
+	
+	@FunctionalInterface
+	public interface FilterListener {
+		void filterSelected( String field, List<String> activeFilter );
+	}
+	
+	private DiscoveryView discoveryView;
+	
+	private I18N i18n;
+	private Locale locale = UI.getCurrent().getLocale();
+	
+	public static final String AGENCY_AGG = "agencyName";
+	public static final String LANGS_AGG = "languages";
+	
+	public static String[] filterFields = {
+			AGENCY_AGG,
+			LANGS_AGG
+		};
+	
+	private MButton resetFilter = new MButton( "Reset filter" );
+	private MCssLayout filterLayout = new MCssLayout();
+	private List<FacetFilter> facetFilters = new ArrayList<>();
+	private FilterListener filterListener;
+	
+
+	public FiltersLayout( DiscoveryView searchView, FilterListener filterListener, I18N i18n ) {
+		this.discoveryView = searchView;
+		this.filterListener = filterListener;
+		this.i18n = i18n;
+
+		filterLayout
+			.withStyleName( "filter-layout" );
+		setCompositionRoot( filterLayout );
+    }
+	
+	public void clear() {
+		filterLayout.removeAllComponents();
+		facetFilters.clear();
+	}
+	
+	public void setFacetFilter( EsQueryResultDetail esQueryResultDetail ) {
+		clear();
+		
+		resetFilter
+			.withVisible( false )
+			.withStyleName( "groupButton disable" )
+			.addClickListener( e -> {
+				esQueryResultDetail.clearFilter();
+//				discoveryView.setEsQueryResultDetail(esQueryResultDetail);
+				discoveryView.refreshSearchResult();
+			});
+		
+		filterLayout.add(resetFilter);
+		
+		if( !esQueryResultDetail.getEsFilters().isEmpty() ) {
+			
+			for( EsFilter esFilter : esQueryResultDetail.getEsFilters()) {
+				FacetFilter facetFilter = new FacetFilter(esFilter);
+				facetFilters.add( facetFilter );
+				filterLayout.add( facetFilter );
+			};
+			
+			if( esQueryResultDetail.isAnyFilterActive())
+				resetFilter.setVisible( true );
+		}
+	}
+
+	class FacetFilter extends CustomComponent{
+		
+		private static final long serialVersionUID = -2492140838449462532L;
+		private MCssLayout facetLayout = new MCssLayout();
+		private EsFilter esFilter;
+		private ComboBox<String> filterOption = new ComboBox<>();
+		private String facetName;
+		private List<MCheckBox> items = new ArrayList<>();
+				
+		public FacetFilter(EsFilter eFilter ) {
+			this.esFilter = eFilter;
+			
+			facetLayout
+				.withFullWidth()
+				.add( 
+					new Label( "<h3 class=\"filter-menu\">" + i18n.get("filter." + esFilter.getField(), locale) + "</h3>" , ContentMode.HTML)
+			);
+			
+			switch( esFilter.getFilterType()) {
+				case NORMAL:{
+					generateNormalFilter();
+				}
+			}
+			setCompositionRoot( facetLayout );
+		}
+		
+		private void generateNormalFilter() {
+			// generate combobox option
+			filterOption.setPlaceholder( "Filter by " + i18n.get("filter." + esFilter.getField(), locale).toLowerCase() );
+			filterOption.setItems( esFilter.getBucketAsList());
+			filterOption.setWidth("100%");
+			filterOption.addValueChangeListener( e -> {
+				String selectedVal = e.getValue();
+				int index = selectedVal.lastIndexOf( "(" );
+				esFilter.addValue( selectedVal.substring( 0, index).trim() );
+				filterListener.filterSelected( esFilter.getField(), esFilter.getValues());
+			});
+			facetLayout.add( filterOption );
+			
+			// generate checkbox option
+			generateCheckboxSelectedFilter();
+		}
+		
+		private void generateCheckboxSelectedFilter() {
+			esFilter.getFilteredBucketAsList().forEach( e -> {
+				MCheckBox checkBox = new MCheckBox( e );
+				checkBox
+					.withFullWidth()
+					.withStyleName( "font13px" )
+					.setValue( true );
+				items.add(checkBox);
+				facetLayout.add(checkBox);
+				
+				checkBox.addValueChangeListener( event -> {
+					String selectedVal = event.getComponent().getCaption();
+					int index = selectedVal.lastIndexOf( "(" );
+					esFilter.getValues().remove( selectedVal.substring( 0, index).trim() );
+					filterListener.filterSelected( esFilter.getField(), esFilter.getValues());
+				});
+			});
+			
+		}
+
+		public String getFacetName() {
+			return facetName;
+		}
+
+		public void setFacetName(String facetName) {
+			this.facetName = facetName;
+		}
+
+		public List<MCheckBox> getItems() {
+			return items;
+		}
+
+		public void setItems(List<MCheckBox> items) {
+			this.items = items;
+		}
+
+		public MCssLayout getFacetLayout() {
+			return facetLayout;
+		}
+
+		public void setFacetLayout(MCssLayout facetLayout) {
+			this.facetLayout = facetLayout;
+		}
+
+	}
+
+}
