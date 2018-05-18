@@ -51,6 +51,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
@@ -108,10 +109,12 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private String webLanguage = "de";
 
 	private ComboBox<Language> countryBox = new ComboBox<>();
-	private UserDetails userDetail;
-	
+	private UserDetails userDetail;	
 	
 	private MTextField searchTf = new MTextField();
+	private MCssLayout userSubMenu = new MCssLayout();
+	private MLabel usernameTf = new MLabel();
+	private MCssLayout userInfoLayout = new MCssLayout();
 
 	public CVManagerUI(SpringViewProvider viewProvider,
 			SecurityService securityService, UIEventBus eventBus, I18N i18n) {
@@ -161,13 +164,13 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		navigator.addViewChangeListener(viewChangeListener);
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			logout.setVisible(true);
+			userInfoLayout.setVisible(true);
 			
 			if( SecurityUtils.isCurrentUserAgencyAdmin())
 				adminButton.setVisible(true);
 			logIn.setVisible(false);
 		} else {
-			logout.setVisible(false);
+			userInfoLayout.setVisible(false);
 			adminButton.setVisible(false);
 			logIn.setVisible(true);
 		}
@@ -196,6 +199,23 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		});
 		setLocale(new Locale(countryBox.getValue().toString().toLowerCase()));
 		
+		userSubMenu
+			.withId("user-submenu")
+			.add(
+				adminButton,
+				logout
+			);
+
+		userInfoLayout
+			.withId("user-menu")
+			.add(
+				new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-header fa fa-user\"></i>" ),
+				usernameTf,
+				userSubMenu
+			);
+		
+		
+		
 		MCssLayout headerTopContainer = new MCssLayout();
 		headerTopContainer
 			.withStyleName( "row" )
@@ -223,7 +243,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 							.withStyleName( "login" )
 							.add( 
 								logIn, 
-								logout
+								userInfoLayout
 							)
 					)
 			);
@@ -299,8 +319,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 						// listAllCv,
 						searchCVs,
 						agencyButton,
-						discoverButton,
-						adminButton
+						discoverButton
+						
 						// editorCVs,
 					)
 			);
@@ -414,7 +434,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		System.out.println("User logged in!");
 		// newDataset.setVisible( true );
 		// browse.setVisible( true );
-		logout.setVisible(true);
+		userInfoLayout.setVisible(true);
+		usernameTf.setValue( SecurityUtils.getLoggedUser().getLastName() );
 		
 		System.out.println(SecurityUtils.isCurrentUserAgencyAdmin());
 		

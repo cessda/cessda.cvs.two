@@ -2086,4 +2086,33 @@ $v-selection-item-border-radius: 0;
 	.word-brake-normal{
 		word-break: normal;
 	}
+	
+	#user-menu{
+		min-width: 150px;
+		color:#fff;
+	    margin-top: 5px;
+	    margin-bottom: -2px;
+	    line-height: 24px;
+	    i{
+	    	padding-top: 0;
+    	    padding-right: 10px;
+	    }
+	    #user-submenu {
+			display: block;
+			position: absolute;
+			width: 150px;
+			z-index: 200;
+			background: #B2D3ED;
+			list-style: none;
+			line-height: 2em;
+			overflow: hidden;
+		    max-height:0;
+		    transition: max-height 0.7s ease-in; 
+		}
+	}
+	
+
+	#user-menu:hover #user-submenu {
+		max-height: 200px;
+	}
 }
