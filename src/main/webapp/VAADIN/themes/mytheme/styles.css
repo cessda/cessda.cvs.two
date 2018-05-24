@@ -17476,6 +17476,23 @@ div.v-layout.v-horizontal.v-widget {
 	transition: 0.5s ease-out;
 }
 
+.mytheme .breadcrumb {
+	width: 100%;
+	text-align: center;
+	margin: 0 auto;
+	padding: 2px 15px;
+	background-color: #fff;
+}
+
+.mytheme .breadcrumb a {
+	color: #767676;
+	font-size: 12px;
+}
+
+.mytheme .bc-first {
+	padding-left: 10px;
+}
+
 .mytheme .highlight {
 	font-weight: bold;
 	font-style: normal;

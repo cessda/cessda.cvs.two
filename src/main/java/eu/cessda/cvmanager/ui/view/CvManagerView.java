@@ -24,6 +24,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.navigator.MView;
 
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -37,6 +38,8 @@ import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.ui.CVManagerUI;
+import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 
 public abstract class CvManagerView extends MVerticalLayout implements MView, Translatable {
 
@@ -65,6 +68,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
 	protected ActionPanel actionPanel;
 	protected MVerticalLayout rightContainer = new MVerticalLayout();
+	private Breadcrumbs breadcrumbs;
 	
 	public CvManagerView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
@@ -116,6 +120,17 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 			.add( mainContainer );
 		
 		updateActionPanel();
+	}
+	
+	@Override
+	public void enter(ViewChangeEvent event) {
+		updateBreadcrumb();
+	}
+	
+	public void updateBreadcrumb() {
+		breadcrumbs = ((CVManagerUI) getUI()).getBreadCrumb();
+		breadcrumbs
+			.clear();
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )
@@ -195,6 +210,16 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 
 	public void setCode(CodeDTO code) {
 		this.code = code;
+	}
+
+
+	public Breadcrumbs getBreadcrumbs() {
+		return breadcrumbs;
+	}
+
+
+	public void setBreadcrumbs(Breadcrumbs breadcrumbs) {
+		this.breadcrumbs = breadcrumbs;
 	}
 	
 }

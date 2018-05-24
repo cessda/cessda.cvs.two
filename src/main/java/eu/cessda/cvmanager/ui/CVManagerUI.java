@@ -56,7 +56,9 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
+import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
@@ -82,6 +84,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private final SpringViewProvider viewProvider;
 	private final SecurityService securityService;
+	private final ConfigurationService configurationService;
 	private final UIEventBus eventBus;
 	private final I18N i18n;
 
@@ -115,11 +118,14 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private MCssLayout userSubMenu = new MCssLayout();
 	private MLabel usernameTf = new MLabel();
 	private MCssLayout userInfoLayout = new MCssLayout();
+	private Breadcrumbs breadCrumb = new Breadcrumbs();
 
 	public CVManagerUI(SpringViewProvider viewProvider,
-			SecurityService securityService, UIEventBus eventBus, I18N i18n) {
+			SecurityService securityService, ConfigurationService configurationService, 
+			UIEventBus eventBus, I18N i18n) {
 		this.viewProvider = viewProvider;
 		this.securityService = securityService;
+		this.configurationService = configurationService;
 		this.eventBus = eventBus;
 		this.i18n = i18n;
 	}
@@ -127,6 +133,11 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	@Override
 	protected void initUI(VaadinRequest request) {
 		setLocale(Locale.ENGLISH);
+		
+		breadCrumb
+			.withBaseUrl( configurationService.getServerContextPath() )
+			.withBasePageName("Home")
+			.withBasePageUrl( SearchView.VIEW_NAME);
 
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
@@ -331,7 +342,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.add(
 				headerTop,
 				headerMiddle,
-				headerBottom
+				headerBottom,
+				breadCrumb
 //				new MHorizontalLayout().withStyleName("mid_search").withFullWidth().withMargin(false)
 //						.add(new MHorizontalLayout().withStyleName("container").add(logoLayout, menuLayout)
 //								.withExpand(logoLayout, 0.4f).withExpand(menuLayout, 0.6f))
@@ -461,6 +473,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	public void setUserDetail(UserDetails userDetail) {
 		this.userDetail = userDetail;
+	}
+
+	public Breadcrumbs getBreadCrumb() {
+		return breadCrumb;
 	}
 
 }

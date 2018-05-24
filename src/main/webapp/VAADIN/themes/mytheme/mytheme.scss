@@ -1875,6 +1875,20 @@ $v-selection-item-border-radius: 0;
 		    transition: 0.5s ease-out;
 		}
 	}
+	.breadcrumb{
+		width:100%;
+		text-align:center;
+		margin: 0 auto;
+		padding: 2px 15px;
+		background-color:#fff;
+		a{ 
+			color:#767676;
+			font-size:12px;
+		}
+	}
+	.bc-first{
+		padding-left:10px;
+	}
 	.highlight{
 		font-weight: bold;
     	font-style: normal;

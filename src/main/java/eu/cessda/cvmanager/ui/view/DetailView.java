@@ -85,6 +85,7 @@ import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
@@ -196,6 +197,7 @@ public class DetailView extends CvManagerView {
 
 	@PostConstruct
 	public void init() {
+		
 		cvEditors[0] = new CVEditor("DDI", "DDI");
 		cvEditors[0].setLogoPath("img/ddi-logo-r.png");
 		cvEditors[1] = new CVEditor("CESSDA", "CESSDA");
@@ -253,6 +255,8 @@ public class DetailView extends CvManagerView {
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
+		super.enter(event);
+		
 		locale = UI.getCurrent().getLocale();
 		setOldView(event.getOldView());
 		actionPanel.conceptSelectedChange( null );
@@ -348,6 +352,12 @@ public class DetailView extends CvManagerView {
 		} else {
 			setAgency( agencyService.findByName( getVocabulary().getAgencyName()));
 		}
+		
+		// update breadcrumb
+		getBreadcrumbs()
+			.addItem(getAgency().getName(), "agency")
+			.build();
+		
 				
 		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
 		sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage().toString()).toString();
