@@ -1,10 +1,8 @@
 package eu.cessda.cvmanager.ui.component;
 
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.label.MLabel;
@@ -13,9 +11,9 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.CustomComponent;
 
-import eu.cessda.cvmanager.ui.view.DetailView;
-
 public class Breadcrumbs extends CustomComponent {
+
+	private static final long serialVersionUID = -746842814675835328L;
 
 	final static Logger log = LoggerFactory.getLogger(Breadcrumbs.class);
 

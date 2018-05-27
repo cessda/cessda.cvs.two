@@ -17259,10 +17259,6 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 2px;
 }
 
-.mytheme .right-container {
-	margin-left: 15px;
-}
-
 .mytheme .button-pressed {
 	outline: -webkit-focus-ring-color auto 10px;
 	outline-color: #191919;
@@ -17499,7 +17495,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .filter-layout {
-	padding: 0 20px 20px 0;
+	padding: 0 10px 20px 10px;
 	width: 100%;
 }
 
@@ -17681,9 +17677,22 @@ div.v-layout.v-horizontal.v-widget {
 	width: 250px;
 }
 
-.mytheme .result-container {
+.mytheme .top-panel {
+	width: 100%;
+	margin: 5px 0;
+}
+
+.mytheme .side-panel {
+	float: left;
+	display: block;
+	width: 250px;
+	margin: 5px;
+}
+
+.mytheme .main-container {
 	display: block;
 	margin-left: 260px;
+	padding: 5px;
 }
 
 .mytheme .search-option {
@@ -17710,6 +17719,17 @@ div.v-layout.v-horizontal.v-widget {
 	margin-bottom: 20px;
 }
 
+.mytheme .panel-container {
+	width: 100%;
+	border-radius: 3px;
+	padding: 0;
+	background: #ffffff;
+	border-top: 3px solid #d2d6de;
+	margin-bottom: 20px;
+	width: 100%;
+	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
 .mytheme .show-filter {
 	display: none;
 }
@@ -17718,8 +17738,43 @@ div.v-layout.v-horizontal.v-widget {
 	display: none;
 }
 
+.mytheme .show-block {
+	display: none;
+}
+
+.mytheme .hide-block {
+	display: none;
+}
+
 .mytheme .word-brake-normal {
 	word-break: normal;
+}
+
+.mytheme .title-block {
+	font-weight: 700;
+}
+
+.mytheme .header-block {
+	font-size: 14px;
+	color: #444444;
+	padding: 10px 6px;
+	border-bottom: 1px solid #f4f4f4;
+	width: 100%;
+}
+
+.mytheme .block-close-button {
+	border: 0;
+	background-image: none;
+	width: 30px;
+	float: right;
+	padding: 0;
+	height: 18px;
+	color: #97a0b3;
+	display: none;
+}
+
+.mytheme .block-close-button:hover {
+	color: #606c84;
 }
 
 .mytheme #user-menu {
@@ -17752,6 +17807,10 @@ div.v-layout.v-horizontal.v-widget {
 	max-height: 200px;
 }
 
+.mytheme .box-widget {
+	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;
@@ -17771,13 +17830,18 @@ div.v-layout.v-horizontal.v-widget {
 	.facet-filter {
 		width: 100% !important;
 	}
-	.result-container {
+	.side-panel {
+		width: 100% !important;
+		margin: 5px 0 !important;
+		padding: 5px 0 !important;
+	}
+	.main-container {
 		margin-left: 0 !important;
 	}
 	.button-responsive {
 		display: block !important;
 	}
-	.facet-responsive {
+	.block-responsive {
 		display: none !important;
 	}
 }

@@ -19,6 +19,7 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
+import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.navigator.MView;
@@ -61,9 +62,10 @@ public abstract class CvPublicationView extends MVerticalLayout implements MView
 	protected VocabularyDTO vocabulary;
 	protected CodeDTO code;
 	
-	protected MVerticalLayout mainContainer = new MVerticalLayout();
-	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
-	protected MVerticalLayout rightContainer = new MVerticalLayout();
+	protected MCssLayout outerContainer = new MCssLayout();
+	protected MCssLayout topPanel = new MCssLayout();
+	protected MCssLayout sidePanel = new MCssLayout();
+	protected MCssLayout mainContainer = new MCssLayout();
 	
 	public CvPublicationView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
@@ -86,30 +88,30 @@ public abstract class CvPublicationView extends MVerticalLayout implements MView
 	@PostConstruct
 	public void initview() {
 		
-		rightContainer
-			.withMargin( false )
-			.withSpacing( false )
-			.withStyleName( "right-container" );
+		topPanel
+			.withStyleName( "top-panel" );
 
-		columnContainer
-			.withFullWidth()
-			.withSpacing( false )
-			.withMargin( false )
-			.add(
-				rightContainer
-			)
-			.withExpand( rightContainer, 1f );
+		sidePanel
+			.withStyleName( "side-panel" );
 		
 		mainContainer
+			.withFullWidth()
+			.withStyleName( "main-container" );
+		
+		outerContainer
 			//.withWidth( "1170px" )
 			.withStyleName( "mainlayout" )
-			.withSpacing( true )
-			.withMargin( new MarginInfo( false, false, false, false ) )
-			.add( columnContainer );
+			.add( 
+				topPanel,
+				sidePanel, 
+				mainContainer 
+			);
 		
 		this
 			.withUndefinedHeight()
-			.add( mainContainer );
+			.withSpacing( false )
+			.withMargin( false )
+			.add( outerContainer );
 		
 	}
 	

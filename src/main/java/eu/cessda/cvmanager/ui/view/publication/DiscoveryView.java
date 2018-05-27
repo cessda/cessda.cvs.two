@@ -56,14 +56,10 @@ public class DiscoveryView extends CvPublicationView {
 	private final VocabularyService vocabularyService;
 
 	// main container
-	private MVerticalLayout mainLayout = new MVerticalLayout();
 	private MCssLayout resultLayout = new MCssLayout();
 	private MCssLayout gridResultLayout = new MCssLayout();
 	
 	private MGrid<VocabularyDTO> cvGrid = new MGrid<>( VocabularyDTO.class );
-	
-	private MButton showFilter = new MButton( "Show Filter" );
-	private MButton hideFilter = new MButton( "Hide Filter" );
 	
 	private MCssLayout searchTopLayout = new MCssLayout();
 	private MCssLayout sortButtonLayout = new MCssLayout();
@@ -102,7 +98,7 @@ public class DiscoveryView extends CvPublicationView {
 	public void init() {
 		LoginView.NAVIGATETO_VIEWNAME = DiscoveryView.VIEW_NAME;
 		paginationBar = new PaginationBar( paggingListener , i18n);
-		filterLayout = new FiltersLayout( this, filterListener, i18n );
+		filterLayout = new FiltersLayout( "block.filter", "block.filter.show","block.filter.hide",this, filterListener, i18n );
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
 		
 		// button style
@@ -141,26 +137,9 @@ public class DiscoveryView extends CvPublicationView {
 				sortByTitle
 			);
 		
-		filterLayout.setWidthUndefined();
-		filterLayout.addStyleNames("facet-filter","facet-responsive");
+		filterLayout.setWidth("100%");
 				
 		gridResultLayout.withStyleName( "result-container" );
-		
-		showFilter
-			.withStyleName("show-filter" ,"filter-button", "button-responsive")
-			.addClickListener( e -> {
-				e.getButton().removeStyleName("button-responsive");
-				hideFilter.addStyleName("button-responsive");
-				filterLayout.removeStyleName("facet-responsive");
-			});
-		hideFilter
-			.withStyleName("hide-filter", "filter-button")
-			.addClickListener( e -> {
-				e.getButton().removeStyleName("button-responsive");
-				showFilter.addStyleName("button-responsive");
-				filterLayout.addStyleName("facet-responsive");
-			});
-
 		
 		searchTopLayout
 			.withStyleName("search-option")
@@ -170,9 +149,6 @@ public class DiscoveryView extends CvPublicationView {
 			);
 		
 		resultLayout.add( 
-				showFilter,
-				hideFilter,
-				filterLayout,
 				gridResultLayout
 					.add( 
 						cvGrid, 
@@ -181,16 +157,10 @@ public class DiscoveryView extends CvPublicationView {
 				)
 			.withFullWidth();
 		
-		mainLayout
-		.add( 
-			new MVerticalLayout(
-				searchTopLayout
-				,resultLayout 
-			)
-		
-		.withMargin( false ) );
-		
-		rightContainer.add( mainLayout ).withExpand( mainLayout , 1);
+		// assign to parent block
+		topPanel.add( searchTopLayout );
+		sidePanel.add( filterLayout );
+		mainContainer.add( resultLayout );
 			
 	}
 

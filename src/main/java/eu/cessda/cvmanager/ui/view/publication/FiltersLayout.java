@@ -18,8 +18,10 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 
+import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 
-public class FiltersLayout extends CustomComponent{
+
+public class FiltersLayout extends ResponsiveBlock{
 
 	private static final long serialVersionUID = -3119422665592890019L;
 	
@@ -47,14 +49,14 @@ public class FiltersLayout extends CustomComponent{
 	private FilterListener filterListener;
 	
 
-	public FiltersLayout( DiscoveryView searchView, FilterListener filterListener, I18N i18n ) {
+	public FiltersLayout( String titleHeader, String showHeader, String hideHeader, DiscoveryView searchView, FilterListener filterListener, I18N i18n ) {
+		super(titleHeader, showHeader, hideHeader, i18n);
 		this.discoveryView = searchView;
 		this.filterListener = filterListener;
 		this.i18n = i18n;
 
-		filterLayout
-			.withStyleName( "filter-layout" );
-		setCompositionRoot( filterLayout );
+		filterLayout.withStyleName( "filter-layout" );
+		getInnerContainer().add( filterLayout );
     }
 	
 	public void clear() {

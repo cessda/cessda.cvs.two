@@ -34,14 +34,20 @@
 		width:100% !important;
 	}
 	
-	.result-container{
+	.side-panel{
+		width:100% !important;
+		margin:5px 0 !important;
+		padding:5px 0 !important;
+	}
+	
+	.main-container{
 		margin-left:0 !important;
 	}
 	
 	.button-responsive{
 		display:block !important;
 	}
-	.facet-responsive{
+	.block-responsive{
 		display:none !important;
 	}
 }
