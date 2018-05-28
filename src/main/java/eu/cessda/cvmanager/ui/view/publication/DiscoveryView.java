@@ -98,7 +98,7 @@ public class DiscoveryView extends CvPublicationView {
 	public void init() {
 		LoginView.NAVIGATETO_VIEWNAME = DiscoveryView.VIEW_NAME;
 		paginationBar = new PaginationBar( paggingListener , i18n);
-		filterLayout = new FiltersLayout( "block.filter", "block.filter.show","block.filter.hide",this, filterListener, i18n );
+		filterLayout = new FiltersLayout( "block.filter", "block.filter.show", this, filterListener, i18n );
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
 		
 		// button style

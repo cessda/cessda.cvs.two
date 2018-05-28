@@ -37,12 +37,10 @@ public class ResponsiveBlock extends CustomComponent implements Translatable {
 	private MButton hideBlock = new MButton( VaadinIcons.CLOSE);
 	private String titleHeader;
 	private String showHeader;
-	private String hideHeader;
 	
-	public ResponsiveBlock( String titleHeader, String showHeader, String hideHeader, I18N i18n ) {
+	public ResponsiveBlock( String titleHeader, String showHeader, I18N i18n ) {
 		this.titleHeader = titleHeader;
 		this.showHeader = showHeader;
-		this.hideHeader = hideHeader;
 		this.i18n = i18n;
 		setCompositionRoot(container);
 		initLayout();

@@ -49,8 +49,8 @@ public class FiltersLayout extends ResponsiveBlock{
 	private FilterListener filterListener;
 	
 
-	public FiltersLayout( String titleHeader, String showHeader, String hideHeader, DiscoveryView searchView, FilterListener filterListener, I18N i18n ) {
-		super(titleHeader, showHeader, hideHeader, i18n);
+	public FiltersLayout( String titleHeader, String showHeader, DiscoveryView searchView, FilterListener filterListener, I18N i18n ) {
+		super(titleHeader, showHeader, i18n);
 		this.discoveryView = searchView;
 		this.filterListener = filterListener;
 		this.i18n = i18n;
