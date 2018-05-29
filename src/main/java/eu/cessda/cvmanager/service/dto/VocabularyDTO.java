@@ -60,6 +60,8 @@ public class VocabularyDTO implements Serializable {
     
     private Set<String> languages;
     
+    private Set<String> statuses;
+    
     @NotNull
     @Size(max = 20)
     private String sourceLanguage;
@@ -468,6 +470,21 @@ public class VocabularyDTO implements Serializable {
 		if(languages == null)
 			languages = new HashSet<>();
 		this.languages.add(language);
+		return this;
+	}
+	
+	public Set<String> getStatuses() {
+		return statuses;
+	}
+
+	public void setStatuses(Set<String> statuses) {
+		this.statuses = statuses;
+	}
+	
+	public VocabularyDTO addStatus(String status) {
+		if(this.statuses == null)
+			this.statuses = new HashSet<>();
+		this.statuses.add( status );
 		return this;
 	}
 	

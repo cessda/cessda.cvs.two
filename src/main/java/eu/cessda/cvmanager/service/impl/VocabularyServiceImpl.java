@@ -507,4 +507,68 @@ public class VocabularyServiceImpl implements VocabularyService {
 		}
 		return aggBuilders;
 	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public EsQueryResultDetail searchPublished( EsQueryResultDetail esQueryResultDetail ) {
+		String searchTerm = esQueryResultDetail.getSearchTerm();
+		// build query 
+		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
+			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
+			.withSearchType(SearchType.DEFAULT)
+			.withIndices("vocabulary-publish").withTypes("publishedvocabulary")
+			.withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
+			.withPageable( esQueryResultDetail.getPage());
+		
+		// add sorting
+		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") )
+			searchQueryBuilder.withSort( SortBuilders.scoreSort());
+		else {
+			Order order = esQueryResultDetail.getFirstSortOrder();
+			searchQueryBuilder.withSort( SortBuilders.fieldSort( order.getProperty()).order( order.getDirection().equals( Direction.ASC) ? SortOrder.ASC : SortOrder.DESC));
+		}
+		
+		// add aggregation
+		List<AbstractAggregationBuilder> aggregrations =  generateAggregrations( esQueryResultDetail );
+		for(AbstractAggregationBuilder aggregration : aggregrations )
+			searchQueryBuilder.addAggregation(aggregration);
+		
+		// add highlighter
+		if( searchTerm != null && !searchTerm.isEmpty())
+			searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain() );
+		
+		// at the end build search query
+		SearchQuery searchQuery = searchQueryBuilder.build();
+		
+		Page<Vocabulary> vocPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class);
+		
+		// put the vocabulary results
+		Page<VocabularyDTO> vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class).map(vocabularyMapper::toDto);
+		
+		// get search response for aggregation, hits, inner hits and highlighter
+		SearchResponse searchResponse = elasticsearchTemplate.query(searchQuery, new ResultsExtractor<SearchResponse>() {
+			@Override
+			public SearchResponse extract(SearchResponse response) {
+				return response;
+			}
+		});
+		
+		// assign aggregation to esQueryResultDetail
+		generateAggregrationFilter(esQueryResultDetail, searchResponse);
+		
+		// update vocabulary based on highlight and inner hit
+		if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty()) {
+			applySearchHitAndHighlight(vocabularyPage, searchResponse);
+			
+			esQueryResultDetail.setVocabularies(vocabularyPage);
+		} else {
+			// remove unnecessary nested code entities
+			for( VocabularyDTO vocab : vocabularyPage.getContent())
+				vocab.setCodes( Collections.emptySet() );
+			// no search term then just assign vocabulary as it is
+			esQueryResultDetail.setVocabularies(vocabularyPage);
+		}
+		
+		return esQueryResultDetail;
+	}
 }

@@ -19,6 +19,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
+import eu.cessda.cvmanager.ui.view.EditorSearchView;
 
 
 public class FiltersLayout extends ResponsiveBlock{
@@ -30,17 +31,26 @@ public class FiltersLayout extends ResponsiveBlock{
 		void filterSelected( String field, List<String> activeFilter );
 	}
 	
+	// later change with generic
 	private DiscoveryView discoveryView;
+	private EditorSearchView editorSearchView;
 	
 	private I18N i18n;
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	public static final String AGENCY_AGG = "agencyName";
 	public static final String LANGS_AGG = "languages";
+	public static final String STATUS_AGG = "statuses";
 	
 	public static String[] filterFields = {
 			AGENCY_AGG,
 			LANGS_AGG
+		};
+	
+	public static String[] filterEditorFields = {
+			AGENCY_AGG,
+			LANGS_AGG,
+			STATUS_AGG
 		};
 	
 	private MButton resetFilter = new MButton( "Reset filter" );
@@ -49,9 +59,10 @@ public class FiltersLayout extends ResponsiveBlock{
 	private FilterListener filterListener;
 	
 
-	public FiltersLayout( String titleHeader, String showHeader, DiscoveryView searchView, FilterListener filterListener, I18N i18n ) {
+	public FiltersLayout( String titleHeader, String showHeader, DiscoveryView searchView, EditorSearchView editorSearchView, FilterListener filterListener, I18N i18n ) {
 		super(titleHeader, showHeader, i18n);
 		this.discoveryView = searchView;
+		this.editorSearchView = editorSearchView;
 		this.filterListener = filterListener;
 		this.i18n = i18n;
 
@@ -73,7 +84,10 @@ public class FiltersLayout extends ResponsiveBlock{
 			.addClickListener( e -> {
 				esQueryResultDetail.clearFilter();
 //				discoveryView.setEsQueryResultDetail(esQueryResultDetail);
-				discoveryView.refreshSearchResult();
+				if( discoveryView != null )
+					discoveryView.refreshSearchResult();
+				if( editorSearchView != null )
+					editorSearchView.refreshSearchResult();
 			});
 		
 		filterLayout.add(resetFilter);

@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view.publication;
+package eu.cessda.cvmanager.ui.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
@@ -46,14 +47,20 @@ import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
+import eu.cessda.cvmanager.ui.layout.EditorSearchActionLayout;
+import eu.cessda.cvmanager.ui.view.publication.CvView;
+import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
+import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
+import eu.cessda.cvmanager.ui.view.publication.PaginationBar;
+import eu.cessda.cvmanager.ui.view.publication.VocabularyGridRow;
 
 
 @UIScope
-@SpringView(name = DiscoveryView.VIEW_NAME)
-public class DiscoveryView extends CvView {
+@SpringView(name = EditorSearchView.VIEW_NAME)
+public class EditorSearchView extends CvView {
 
 	private static final long serialVersionUID = -2479053676589191249L;
-	public static final String VIEW_NAME = "discover";
+	public static final String VIEW_NAME = "editor-search";
 	public static final String FIELD_SORT = "notation";
 	private Locale locale = UI.getCurrent().getLocale();
 	private final VocabularyService vocabularyService;
@@ -72,8 +79,10 @@ public class DiscoveryView extends CvView {
 	
 	private Map<Long, AgencyDTO> agencyMap = new HashMap<>();
 	private FiltersLayout filterLayout;
+	private EditorSearchActionLayout editorSearchActionLayout;
+	
 	private PaginationBar paginationBar;
-	private EsQueryResultDetail esQueryResultDetail = new EsQueryResultDetail( DiscoveryView.VIEW_NAME );
+	private EsQueryResultDetail esQueryResultDetail = new EsQueryResultDetail( EditorSearchView.VIEW_NAME );
 	
 	private ArrayList<CVScheme> hits = new ArrayList<>();
 
@@ -87,22 +96,24 @@ public class DiscoveryView extends CvView {
 		esQueryResultDetail.setPage( PageRequest.of( page, pagesize ) );
 		refreshSearchResult();
 	};
+	
 
-	public DiscoveryView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public EditorSearchView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
+			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
 			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
 			PublishedVocabularySearchRepository publishedVocabularySearchRepository) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, publishedVocabularySearchRepository, DiscoveryView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, publishedVocabularySearchRepository, EditorSearchView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
-		eventBus.subscribe(this, DiscoveryView.VIEW_NAME);
+		eventBus.subscribe(this, EditorSearchView.VIEW_NAME);
 	}
 
 	@PostConstruct
 	public void init() {
-		LoginView.NAVIGATETO_VIEWNAME = DiscoveryView.VIEW_NAME;
+		LoginView.NAVIGATETO_VIEWNAME = EditorSearchView.VIEW_NAME;
 		paginationBar = new PaginationBar( paggingListener , i18n);
-		filterLayout = new FiltersLayout( "block.filter", "block.filter.show", this, null, filterListener, i18n );
+		filterLayout = new FiltersLayout( "block.filter", "block.filter.show", null, this, filterListener, i18n );
+		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository);
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
 		
 		// button style
@@ -163,7 +174,11 @@ public class DiscoveryView extends CvView {
 		
 		// assign to parent block
 		topPanel.add( searchTopLayout );
-		sidePanel.add( filterLayout );
+		sidePanel
+			.add( 
+				filterLayout,
+				editorSearchActionLayout
+			);
 		mainContainer.add( resultLayout );
 			
 	}
@@ -179,13 +194,19 @@ public class DiscoveryView extends CvView {
 		// TODO: set query by query string
 		
 		refreshSearchResult();
+		
+		// action block check
+		if( !SecurityUtils.isCurrentUserAllowCreateCvSl() )
+			editorSearchActionLayout.setVisible( false );
+		else
+			editorSearchActionLayout.setVisible( true );
 	}
 
 	public void refreshSearchResult() {
 		// set the query properties from url parameter
 		
 		// query
-		esQueryResultDetail = vocabularyService.searchPublished( esQueryResultDetail );
+		esQueryResultDetail = vocabularyService.search( esQueryResultDetail );
 		
 		// set filter and pagination bar
 		filterLayout.setFacetFilter(esQueryResultDetail);

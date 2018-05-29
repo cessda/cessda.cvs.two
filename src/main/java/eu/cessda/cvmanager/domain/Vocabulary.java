@@ -28,7 +28,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "vocabulary")
 @Document(indexName = "vocabulary")
-public class Vocabulary extends BasicVocabulary implements Serializable {
+public class Vocabulary extends BaseVocabulary implements Serializable {
     
 	private static final long serialVersionUID = 1L;
     

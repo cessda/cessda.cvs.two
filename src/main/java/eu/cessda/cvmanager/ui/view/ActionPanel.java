@@ -215,8 +215,8 @@ public class ActionPanel extends CustomComponent{
 		newCvScheme.createId();
 		newCvScheme.setContainerId(newCvScheme.getId());
 
-		Window window = new DialogCVSchemeWindow(eventBus, stardatDDIService, agencyService, vocabularyService, newCvScheme, i18n);
-		getUI().addWindow(window);
+//		Window window = new DialogCVSchemeWindow(/*eventBus, */stardatDDIService, agencyService, vocabularyService, newCvScheme, i18n);
+//		getUI().addWindow(window);
 	}
 	
 	private void doCvSelectAgency(ClickEvent event ) {

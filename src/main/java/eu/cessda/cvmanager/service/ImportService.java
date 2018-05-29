@@ -14,11 +14,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import eu.cessda.cvmanager.domain.BaseVocabulary;
+import eu.cessda.cvmanager.domain.PublishedVocabulary;
 import eu.cessda.cvmanager.domain.Vocabulary;
 import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
@@ -32,15 +36,23 @@ public class ImportService {
 	private final CodeService codeService;
 	private final StardatDDIService stardatDDIService;
 	private final VocabularyMapper vocabularyMapper;
+	private final PublishedVocabularyMapper publishedVocabularyMapper;
+	// Elasticsearch repo for Editor
 	private final VocabularySearchRepository vocabularySearchRepository;
+	// Elasticsearch repo for Published
+	private final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
 	public ImportService(AgencyService agencyService, VocabularyService vocabularyService, CodeService codeService,
-			StardatDDIService stardatDDIService, VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository) {
+			StardatDDIService stardatDDIService, VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository,
+			PublishedVocabularySearchRepository publishedVocabularySearchRepository,
+			PublishedVocabularyMapper publishedVocabularyMapper) {
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyMapper = vocabularyMapper;
+		this.publishedVocabularyMapper = publishedVocabularyMapper;
 		this.vocabularySearchRepository = vocabularySearchRepository;
+		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
 	}
 	
 	public void importFromStardat() {
@@ -114,6 +126,10 @@ public class ImportService {
 			// reindex nested codes
 			Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 			vocabularySearchRepository.save( vocab );
+			
+			PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
+			publishedVocabularySearchRepository.save( publishedVocabulary );
+			
 		}
 		log.debug("DDIFlatDB imported to database");
 	}

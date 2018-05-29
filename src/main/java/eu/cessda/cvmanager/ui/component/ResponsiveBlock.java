@@ -90,6 +90,10 @@ public class ResponsiveBlock extends CustomComponent implements Translatable {
 				innerContainer
 			);
 	}
+	
+	public void setVisible(boolean visible) {
+		container.setVisible(visible);
+	}
 
 	@Override
 	public void updateMessageStrings(Locale locale) {

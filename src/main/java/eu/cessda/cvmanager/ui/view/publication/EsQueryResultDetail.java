@@ -27,7 +27,12 @@ public class EsQueryResultDetail {
 	// Results
 	private Page<VocabularyDTO> vocabularies;
 	
-	public EsQueryResultDetail() {
+	public EsQueryResultDetail( String viewName) {
+		if( viewName.equals( DiscoveryView.VIEW_NAME))
+			aggFields = new ArrayList<>( Arrays.asList( FiltersLayout.filterFields));
+		else
+			aggFields = new ArrayList<>( Arrays.asList( FiltersLayout.filterEditorFields));
+		
 		// initialize esfilter
 		for( String field: aggFields) {
 			EsFilter esFilter = new EsFilter();
