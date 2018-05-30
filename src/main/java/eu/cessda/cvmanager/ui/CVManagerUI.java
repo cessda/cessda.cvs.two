@@ -51,13 +51,17 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
+import com.vaadin.ui.PopupView;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
+import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.EditorSearchView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 import eu.cessda.cvmanager.ui.view.HomeView;
 import eu.cessda.cvmanager.ui.view.SearchView;
@@ -81,6 +85,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private final SpringViewProvider viewProvider;
 	private final SecurityService securityService;
+	private final ConfigurationService configurationService;
 	private final UIEventBus eventBus;
 	private final I18N i18n;
 
@@ -108,15 +113,20 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private String webLanguage = "de";
 
 	private ComboBox<Language> countryBox = new ComboBox<>();
-	private UserDetails userDetail;
-	
+	private UserDetails userDetail;	
 	
 	private MTextField searchTf = new MTextField();
+	private MCssLayout userSubMenu = new MCssLayout();
+	private MLabel usernameLbl = new MLabel();
+	private MCssLayout userInfoLayout = new MCssLayout();
+	private Breadcrumbs breadCrumb = new Breadcrumbs();
 
 	public CVManagerUI(SpringViewProvider viewProvider,
-			SecurityService securityService, UIEventBus eventBus, I18N i18n) {
+			SecurityService securityService, ConfigurationService configurationService, 
+			UIEventBus eventBus, I18N i18n) {
 		this.viewProvider = viewProvider;
 		this.securityService = securityService;
+		this.configurationService = configurationService;
 		this.eventBus = eventBus;
 		this.i18n = i18n;
 	}
@@ -124,6 +134,11 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	@Override
 	protected void initUI(VaadinRequest request) {
 		setLocale(Locale.ENGLISH);
+		
+		breadCrumb
+			.withBaseUrl( configurationService.getServerContextPath() )
+			.withBasePageName("Home")
+			.withBasePageUrl( EditorSearchView.VIEW_NAME);
 
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
@@ -133,16 +148,27 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		footer.setStyleName("footer");
 		footer.setWidth(100, Unit.PERCENTAGE);
 
-		viewContainer.withFullWidth().withMargin(new MMarginInfo(false, false, true, false)).withStyleName("content");
+		viewContainer
+			.withFullWidth()
+			.withMargin( false )
+			.withStyleName("content");
 
-		root.withResponsive(true).withFullWidth().withMargin(false).withUndefinedSize()
-				.withDefaultComponentAlignment(Alignment.TOP_CENTER).with(headerBar,
-						// searchBox,
-						viewContainer, footer)
-				.withExpand(viewContainer, 1.0f);
+		root
+			.withResponsive(true)
+			.withFullWidth()
+			.withMargin(false)
+			.withSpacing( false )
+			.withUndefinedSize()
+			.withDefaultComponentAlignment(Alignment.TOP_CENTER)
+			.with(
+				headerBar,
+				// searchBox,
+				viewContainer, 
+				footer
+			)
+			.withExpand(viewContainer, 1.0f);
 
 		// main UI properties
-
 		setStyleName("mainlayout");
 		setContent(root);
 
@@ -157,17 +183,17 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		String uriQuery = Page.getCurrent().getLocation().toString();
 		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
 				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ))
-			navigator.navigateTo(SearchView.VIEW_NAME);
+			navigator.navigateTo(EditorSearchView.VIEW_NAME);
 		navigator.addViewChangeListener(viewChangeListener);
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
-			logout.setVisible(true);
+			userInfoLayout.setVisible(true);
 			
 			if( SecurityUtils.isCurrentUserAgencyAdmin())
 				adminButton.setVisible(true);
 			logIn.setVisible(false);
 		} else {
-			logout.setVisible(false);
+			userInfoLayout.setVisible(false);
 			adminButton.setVisible(false);
 			logIn.setVisible(true);
 		}
@@ -196,6 +222,23 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		});
 		setLocale(new Locale(countryBox.getValue().toString().toLowerCase()));
 		
+		userSubMenu
+			.withId("user-submenu")
+			.add(
+				adminButton,
+				logout
+			);
+
+		userInfoLayout
+			.withId("user-menu")
+			.add(
+				new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-header fa fa-user\"></i>" ),
+				usernameLbl,
+				userSubMenu
+			);
+		
+		
+		
 		MCssLayout headerTopContainer = new MCssLayout();
 		headerTopContainer
 			.withStyleName( "row" )
@@ -223,7 +266,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 							.withStyleName( "login" )
 							.add( 
 								logIn, 
-								logout
+								userInfoLayout
 							)
 					)
 			);
@@ -259,14 +302,22 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		logIn.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		logout.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		
+		if( SecurityUtils.isAuthenticated() )
+			usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
+		
 		searchTf
 			.withPlaceholder("Find Controlled Vocabulary")
 			.withFullWidth()
 			.withValueChangeMode( ValueChangeMode.LAZY)
 			.withValueChangeTimeout( 200 )
 			.addTextChangeListener( e -> {
-				navigator.navigateTo(DiscoveryView.VIEW_NAME);
-				eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
+				if( navigator.getCurrentView().toString().indexOf( "Discovery" ) > 0 ) {
+					navigator.navigateTo(DiscoveryView.VIEW_NAME);
+					eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
+				} else {
+					navigator.navigateTo(EditorSearchView.VIEW_NAME);
+					eventBus.publish(EventScope.UI, EditorSearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_EDITOR_SEARCH, e.getValue()) );
+				}
 			});
 		
 		headerTop
@@ -299,8 +350,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 						// listAllCv,
 						searchCVs,
 						agencyButton,
-						discoverButton,
-						adminButton
+						discoverButton
+						
 						// editorCVs,
 					)
 			);
@@ -311,7 +362,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.add(
 				headerTop,
 				headerMiddle,
-				headerBottom
+				headerBottom,
+				breadCrumb
 //				new MHorizontalLayout().withStyleName("mid_search").withFullWidth().withMargin(false)
 //						.add(new MHorizontalLayout().withStyleName("container").add(logoLayout, menuLayout)
 //								.withExpand(logoLayout, 0.4f).withExpand(menuLayout, 0.6f))
@@ -331,15 +383,15 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 
 	public void gotoHome(ClickEvent event) {
-		navigator.navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(EditorSearchView.VIEW_NAME);
 	}
 
 	public void gotoListAllCvs(ClickEvent event) {
-		navigator.navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(EditorSearchView.VIEW_NAME);
 	}
 
 	public void gotoSearchCvs(ClickEvent event) {
-		navigator.navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(EditorSearchView.VIEW_NAME);
 	}
 
 	public void gotoEditorCvs(ClickEvent event) {
@@ -347,7 +399,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 
 	public void gotoBrowse(ClickEvent event) {
-		navigator.navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(EditorSearchView.VIEW_NAME);
 	}
 
 	public void gotoProfile(ClickEvent event) {
@@ -414,7 +466,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		System.out.println("User logged in!");
 		// newDataset.setVisible( true );
 		// browse.setVisible( true );
-		logout.setVisible(true);
+		userInfoLayout.setVisible(true);
+		usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
 		
 		System.out.println(SecurityUtils.isCurrentUserAgencyAdmin());
 		
@@ -440,6 +493,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	public void setUserDetail(UserDetails userDetail) {
 		this.userDetail = userDetail;
+	}
+
+	public Breadcrumbs getBreadCrumb() {
+		return breadCrumb;
 	}
 
 }

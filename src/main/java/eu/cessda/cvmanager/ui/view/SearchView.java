@@ -141,6 +141,8 @@ public class SearchView extends CvManagerView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		super.enter(event);
+		
 		locale = UI.getCurrent().getLocale();
 		updateActionPanel();
 		updateMessageStrings(locale);

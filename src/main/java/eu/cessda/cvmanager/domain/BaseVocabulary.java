@@ -1,398 +1,353 @@
-package eu.cessda.cvmanager.service.dto;
+package eu.cessda.cvmanager.domain;
 
-
-import javax.persistence.Lob;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import eu.cessda.cvmanager.domain.enumeration.Status;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
- * A DTO for the Vocabulary entity.
+ * A Vocabulary.
  */
-public class VocabularyDTO implements Serializable {
-
+@MappedSuperclass
+public class BaseVocabulary implements Serializable {
+    
 	private static final long serialVersionUID = 1L;
 
-	public VocabularyDTO() {
-		archived = false;
-		withdrawn = false;
-		discoverable = false;
-	}
-	
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-	private String status;
-	
-
+    // only for SL status
+    @Column(name = "status", length = 20, nullable = false)
+    @Field(type = FieldType.keyword)
+    private String status;
+    
     @NotNull
-    @Size(max = 240)
+    @Column(name = "uri", length = 240, nullable = false, unique = true)
     private String uri;
     
     @NotNull
-    @Size(max = 240)
+    @Column(name = "notation", length = 240, nullable = false, unique = true)
+    @Field(type = FieldType.text, fielddata = true)
     private String notation;
 
     @NotNull
     @Size(max = 20)
+    @Column(name = "version_number", length = 20, nullable = false)
     private String versionNumber;
     
+    @Column(name = "initial_publication")
     private Long initialPublication;
-
+    
+    @Column(name = "previous_publication")
     private Long previousPublication;
 
-    private Boolean archived;
+    @Column(name = "archived")
+    private Boolean archived = false;
 
-    private Boolean withdrawn;
+    @Column(name = "withdrawn")
+    private Boolean withdrawn = false;
 
-    private Boolean discoverable;
-    
+    @Column(name = "discoverable")
+    private Boolean discoverable = false;
+
+    @Column(name = "languages")
+    @ElementCollection( targetClass=String.class )
+    @Field(type = FieldType.keyword)
     private Set<String> languages;
-    
-    private Set<String> statuses;
     
     @NotNull
     @Size(max = 20)
+    @Column(name = "source_language", length = 20, nullable = false)
+    @Field(type = FieldType.keyword)
     private String sourceLanguage;
     
     @NotNull
+    @Column(name = "agency_id", nullable = false)
     private Long agencyId;
-    
+
     @NotNull
+    @Column(name = "agency_name", nullable = false)
+    @Field(type = FieldType.keyword)
     private String agencyName;
     
-    private Set<CodeDTO> codes = new HashSet<>();
+//  @JsonBackReference
+//  @OneToMany(mappedBy = "vocabulary")
+    @Transient
+    @Field(type = FieldType.Nested, store = true)
+    private Set<Code> codes = new HashSet<>();
     
-    private Set<VersionDTO> vers = new HashSet<>();
-    
+    @Transient
+    @Field(type = FieldType.Nested, store = true)
+    private Set<Version> vers = new HashSet<>();
+	  
+    @Transient
     private Language selectedLang;
-    
+	  
+    @Column(name = "publication_date")
+    @Field(type = FieldType.Date, format = DateFormat.date)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate publicationDate;
     
+    @Column(name = "last_modified")
+    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime lastModified;
     
     @Size(max = 20)
+    @Column(name = "version_cs", length = 20)
     private String versionCs;
 
     @Lob
+    @Column(name = "title_cs")
+    @Field(type = FieldType.text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
     private String titleCs;
 
     @Lob
+    @Column(name = "definition_cs")
+    @Field(type = FieldType.text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
     private String definitionCs;
-
+    
     @Size(max = 20)
+    @Column(name = "version_da", length = 20)
     private String versionDa;
 
     @Lob
+    @Column(name = "title_da")
+    @Field(type = FieldType.text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
     private String titleDa;
 
     @Lob
+    @Column(name = "definition_da")
+    @Field(type = FieldType.text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
     private String definitionDa;
-
+    
     @Size(max = 20)
+    @Column(name = "version_nl", length = 20)
     private String versionNl;
 
     @Lob
+    @Column(name = "title_nl")
+    @Field(type = FieldType.text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
     private String titleNl;
 
     @Lob
+    @Column(name = "definition_nl")
+    @Field(type = FieldType.text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
     private String definitionNl;
-
+    
     @Size(max = 20)
+    @Column(name = "version_en", length = 20)
     private String versionEn;
 
     @Lob
+    @Column(name = "title_en")
+    @Field(type = FieldType.text, store = true, analyzer = "english", searchAnalyzer = "english" )
     private String titleEn;
 
     @Lob
+    @Column(name = "definition_en")
+    @Field(type = FieldType.text, store = true, analyzer = "english", searchAnalyzer = "english" )
     private String definitionEn;
-
+    
     @Size(max = 20)
+    @Column(name = "version_fi", length = 20)
     private String versionFi;
 
     @Lob
+    @Column(name = "title_fi")
+    @Field(type = FieldType.text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
     private String titleFi;
 
     @Lob
+    @Column(name = "definition_fi")
+    @Field(type = FieldType.text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
     private String definitionFi;
 
     @Size(max = 20)
+    @Column(name = "version_fr", length = 20)
     private String versionFr;
-
+    
     @Lob
+    @Column(name = "title_fr")
+    @Field(type = FieldType.text, store = true, analyzer = "french", searchAnalyzer = "french" )
     private String titleFr;
 
     @Lob
+    @Column(name = "definition_fr")
+    @Field(type = FieldType.text, store = true, analyzer = "french", searchAnalyzer = "french" )
     private String definitionFr;
-
+    
     @Size(max = 20)
+    @Column(name = "version_de", length = 20)
     private String versionDe;
 
     @Lob
+    @Column(name = "title_de")
+    @Field(type = FieldType.text, store = true, analyzer = "german", searchAnalyzer = "german" )
     private String titleDe;
 
     @Lob
+    @Column(name = "definition_de")
+    @Field(type = FieldType.text, store = true, analyzer = "german", searchAnalyzer = "german" )
     private String definitionDe;
 
     @Size(max = 20)
+    @Column(name = "version_el", length = 20)
     private String versionEl;
-
+    
     @Lob
+    @Column(name = "title_el")
+    @Field(type = FieldType.text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
     private String titleEl;
 
     @Lob
+    @Column(name = "definition_el")
+    @Field(type = FieldType.text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
     private String definitionEl;
 
     @Size(max = 20)
+    @Column(name = "version_hu", length = 20)
     private String versionHu;
-
+    
     @Lob
+    @Column(name = "title_hu")
+    @Field(type = FieldType.text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
     private String titleHu;
 
     @Lob
+    @Column(name = "definition_hu")
+    @Field(type = FieldType.text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
     private String definitionHu;
 
     @Size(max = 20)
+    @Column(name = "version_lt", length = 20)
     private String versionLt;
-
+    
     @Lob
+    @Column(name = "title_lt")
+    @Field(type = FieldType.text, store = true )
     private String titleLt;
 
     @Lob
+    @Column(name = "definition_lt")
+    @Field(type = FieldType.text, store = true )
     private String definitionLt;
 
     @Size(max = 20)
+    @Column(name = "version_no", length = 20)
     private String versionNo;
-
+    
     @Lob
+    @Column(name = "title_no")
+    @Field(type = FieldType.text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
     private String titleNo;
 
     @Lob
+    @Column(name = "definition_no")
+    @Field(type = FieldType.text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
     private String definitionNo;
 
     @Size(max = 20)
+    @Column(name = "version_pt", length = 20)
     private String versionPt;
-
+    
     @Lob
+    @Column(name = "title_pt")
+    @Field(type = FieldType.text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
     private String titlePt;
 
     @Lob
+    @Column(name = "definition_pt")
+    @Field(type = FieldType.text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
     private String definitionPt;
-
+    
     @Size(max = 20)
+    @Column(name = "version_ro", length = 20)
     private String versionRo;
 
     @Lob
+    @Column(name = "title_ro")
+    @Field(type = FieldType.text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
     private String titleRo;
 
     @Lob
+    @Column(name = "definition_ro")
+    @Field(type = FieldType.text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
     private String definitionRo;
 
     @Size(max = 20)
+    @Column(name = "version_sk", length = 20)
     private String versionSk;
-
+    
     @Lob
+    @Column(name = "title_sk")
+    @Field(type = FieldType.text, store = true )
     private String titleSk;
 
     @Lob
+    @Column(name = "definition_sk")
+    @Field(type = FieldType.text, store = true )
     private String definitionSk;
 
     @Size(max = 20)
+    @Column(name = "version_sl", length = 20)
     private String versionSl;
-
+    
     @Lob
+    @Column(name = "title_sl")
+    @Field(type = FieldType.text, store = true )
     private String titleSl;
 
     @Lob
+    @Column(name = "definition_sl")
+    @Field(type = FieldType.text, store = true )
     private String definitionSl;
 
     @Size(max = 20)
+    @Column(name = "version_es", length = 20)
     private String versionEs;
-
+    
     @Lob
+    @Column(name = "title_es")
+    @Field(type = FieldType.text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
     private String titleEs;
 
     @Lob
+    @Column(name = "definition_es")
+    @Field(type = FieldType.text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
     private String definitionEs;
 
     @Size(max = 20)
+    @Column(name = "version_sv", length = 20)
     private String versionSv;
-
+    
     @Lob
+    @Column(name = "title_sv")
+    @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String titleSv;
 
     @Lob
+    @Column(name = "definition_sv")
+    @Field(type = FieldType.text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String definitionSv;
-    
-    public String getTitleByLanguage( Language language ) {
-    	switch (language) {
-		case CZECH:
-			return titleCs;
-		case DANISH:
-			return titleDa;
-		case DUTCH:
-			return titleNl;
-		case ENGLISH:
-			return titleEn;
-		case FINNISH:
-			return titleFi;
-		case FRENCH:
-			return titleFr;
-		case GERMAN:
-			return titleDe;
-		case GREEK:
-			return titleEl;
-		case HUNGARIAN:
-			return titleHu;
-		case LITHUANIAN:
-			return titleLt;
-		case NORWEGIAN:
-			return titleNo;
-		case PORTUGUESE:
-			return titlePt;
-		case ROMANIAN:
-			return titleRo;
-		case SLOVAK:
-			return titleSk;
-		case SLOVENIAN:
-			return titleSl;
-		case SPANISH:
-			return titleEs;
-		case SWEDISH:
-			return titleSv;
-    	}
-    	return null;
-    }
-    
-    public String getDefinitionByLanguage( Language language ) {
-    	switch (language) {
-		case CZECH:
-			return definitionCs;
-		case DANISH:
-			return definitionDa;
-		case DUTCH:
-			return definitionNl;
-		case ENGLISH:
-			return definitionEn;
-		case FINNISH:
-			return definitionFi;
-		case FRENCH:
-			return definitionFr;
-		case GERMAN:
-			return definitionDe;
-		case GREEK:
-			return definitionEl;
-		case HUNGARIAN:
-			return definitionHu;
-		case LITHUANIAN:
-			return definitionLt;
-		case NORWEGIAN:
-			return definitionNo;
-		case PORTUGUESE:
-			return definitionPt;
-		case ROMANIAN:
-			return definitionRo;
-		case SLOVAK:
-			return definitionSk;
-		case SLOVENIAN:
-			return definitionSl;
-		case SPANISH:
-			return definitionEs;
-		case SWEDISH:
-			return definitionSv;
-    	}
-    	return null;
-    }
-    
-    public VocabularyDTO setTitleDefinition( String title, String definition, String language) {
-    	return setTitleDefinition(title, definition, Language.getEnum(language));
-    }
-
-    public VocabularyDTO setTitleDefinition( String title, String definition, Language language) {
-    	switch (language) {
-    		case CZECH:
-    			setTitleCs(title);
-    			setDefinitionCs(definition);
-    			break;
-    		case DANISH:
-    			setTitleDa(title);
-    			setDefinitionDa(definition);
-    			break;
-    		case DUTCH:
-    			setTitleNl(title);
-    			setDefinitionNl(definition);
-    			break;
-    		case ENGLISH:
-    			setTitleEn(title);
-    			setDefinitionEn(definition);
-    			break;
-    		case FINNISH:
-    			setTitleFi(title);
-    			setDefinitionFi(definition);
-    			break;
-    		case FRENCH:
-    			setTitleFr(title);
-    			setDefinitionFr(definition);
-    			break;
-    		case GERMAN:
-    			setTitleDe(title);
-    			setDefinitionDe(definition);
-    			break;
-    		case GREEK:
-    			setTitleEl(title);
-    			setDefinitionEl(definition);
-    			break;
-    		case HUNGARIAN:
-    			setTitleHu(title);
-    			setDefinitionHu(definition);
-    			break;
-    		case LITHUANIAN:
-    			setTitleLt(title);
-    			setDefinitionLt(definition);
-    			break;
-    		case NORWEGIAN:
-    			setTitleNo(title);
-    			setDefinitionNo(definition);
-    			break;
-    		case PORTUGUESE:
-    			setTitlePt(title);
-    			setDefinitionPt(definition);
-    			break;
-    		case ROMANIAN:
-    			setTitleRo(title);
-    			setDefinitionRo(definition);
-    			break;
-    		case SLOVAK:
-    			setTitleSk(title);
-    			setDefinitionSk(definition);
-    			break;
-    		case SLOVENIAN:
-    			setTitleSl(title);
-    			setDefinitionSl(definition);
-    			break;
-    		case SPANISH:
-    			setTitleEs(title);
-    			setDefinitionEs(definition);
-    			break;
-    		case SWEDISH:
-    			setTitleSv(title);
-    			setDefinitionSv(definition);
-    			break;
-    	}
-    	addLanguage(language.name().toLowerCase());
-    	return this;
-    }
     
     public Long getId() {
         return id;
@@ -404,6 +359,11 @@ public class VocabularyDTO implements Serializable {
 
     public String getUri() {
         return uri;
+    }
+
+    public BaseVocabulary uri(String uri) {
+        this.uri = uri;
+        return this;
     }
 
     public void setUri(String uri) {
@@ -418,8 +378,26 @@ public class VocabularyDTO implements Serializable {
 		this.notation = notation;
 	}
 
+    public String getVersionNumber() {
+        return versionNumber;
+    }
+
+    public BaseVocabulary versionNumber(String versionNumber) {
+        this.versionNumber = versionNumber;
+        return this;
+    }
+
+    public void setVersionNumber(String versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
     public Boolean isArchived() {
         return archived;
+    }
+
+    public BaseVocabulary archived(Boolean archived) {
+        this.archived = archived;
+        return this;
     }
 
     public void setArchived(Boolean archived) {
@@ -430,12 +408,22 @@ public class VocabularyDTO implements Serializable {
         return withdrawn;
     }
 
+    public BaseVocabulary withdrawn(Boolean withdrawn) {
+        this.withdrawn = withdrawn;
+        return this;
+    }
+
     public void setWithdrawn(Boolean withdrawn) {
         this.withdrawn = withdrawn;
     }
 
     public Boolean isDiscoverable() {
         return discoverable;
+    }
+
+    public BaseVocabulary discoverable(Boolean discoverable) {
+        this.discoverable = discoverable;
+        return this;
     }
 
     public void setDiscoverable(Boolean discoverable) {
@@ -446,12 +434,30 @@ public class VocabularyDTO implements Serializable {
         return sourceLanguage;
     }
 
+    public BaseVocabulary sourceLanguage(String sourceLanguage) {
+        this.sourceLanguage = sourceLanguage;
+        return this;
+    }
+
     public void setSourceLanguage(String sourceLanguage) {
         this.sourceLanguage = sourceLanguage;
     }
+    
+    public Long getAgencyId() {
+		return agencyId;
+	}
 
-    public String getAgencyName() {
+	public void setAgencyId(Long agencyId) {
+		this.agencyId = agencyId;
+	}
+
+	public String getAgencyName() {
         return agencyName;
+    }
+
+    public BaseVocabulary agencyName(String agencyName) {
+        this.agencyName = agencyName;
+        return this;
     }
 
     public void setAgencyName(String agencyName) {
@@ -466,25 +472,8 @@ public class VocabularyDTO implements Serializable {
 		this.languages = languages;
 	}
 	
-	public VocabularyDTO addLanguage(String language) {
-		if(languages == null)
-			languages = new HashSet<>();
+	public BaseVocabulary addLanguage(String language) {
 		this.languages.add(language);
-		return this;
-	}
-	
-	public Set<String> getStatuses() {
-		return statuses;
-	}
-
-	public void setStatuses(Set<String> statuses) {
-		this.statuses = statuses;
-	}
-	
-	public VocabularyDTO addStatus(String status) {
-		if(this.statuses == null)
-			this.statuses = new HashSet<>();
-		this.statuses.add( status );
 		return this;
 	}
 	
@@ -495,7 +484,7 @@ public class VocabularyDTO implements Serializable {
 	public void setPublicationDate(LocalDate publicationDate) {
 		this.publicationDate = publicationDate;
 	}
-		
+	
 	public LocalDateTime getLastModified() {
 		return lastModified;
 	}
@@ -503,9 +492,22 @@ public class VocabularyDTO implements Serializable {
 	public void setLastModified(LocalDateTime lastModified) {
 		this.lastModified = lastModified;
 	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public String getTitleCs() {
         return titleCs;
+    }
+
+    public BaseVocabulary titleCs(String titleCs) {
+        this.titleCs = titleCs;
+        return this;
     }
 
     public void setTitleCs(String titleCs) {
@@ -516,12 +518,22 @@ public class VocabularyDTO implements Serializable {
         return definitionCs;
     }
 
+    public BaseVocabulary definitionCs(String definitionCs) {
+        this.definitionCs = definitionCs;
+        return this;
+    }
+
     public void setDefinitionCs(String definitionCs) {
         this.definitionCs = definitionCs;
     }
 
     public String getTitleDa() {
         return titleDa;
+    }
+
+    public BaseVocabulary titleDa(String titleDa) {
+        this.titleDa = titleDa;
+        return this;
     }
 
     public void setTitleDa(String titleDa) {
@@ -532,12 +544,22 @@ public class VocabularyDTO implements Serializable {
         return definitionDa;
     }
 
+    public BaseVocabulary definitionDa(String definitionDa) {
+        this.definitionDa = definitionDa;
+        return this;
+    }
+
     public void setDefinitionDa(String definitionDa) {
         this.definitionDa = definitionDa;
     }
 
     public String getTitleNl() {
         return titleNl;
+    }
+
+    public BaseVocabulary titleNl(String titleNl) {
+        this.titleNl = titleNl;
+        return this;
     }
 
     public void setTitleNl(String titleNl) {
@@ -548,12 +570,22 @@ public class VocabularyDTO implements Serializable {
         return definitionNl;
     }
 
+    public BaseVocabulary definitionNl(String definitionNl) {
+        this.definitionNl = definitionNl;
+        return this;
+    }
+
     public void setDefinitionNl(String definitionNl) {
         this.definitionNl = definitionNl;
     }
 
     public String getTitleEn() {
         return titleEn;
+    }
+
+    public BaseVocabulary titleEn(String titleEn) {
+        this.titleEn = titleEn;
+        return this;
     }
 
     public void setTitleEn(String titleEn) {
@@ -564,12 +596,22 @@ public class VocabularyDTO implements Serializable {
         return definitionEn;
     }
 
+    public BaseVocabulary definitionEn(String definitionEn) {
+        this.definitionEn = definitionEn;
+        return this;
+    }
+
     public void setDefinitionEn(String definitionEn) {
         this.definitionEn = definitionEn;
     }
 
     public String getTitleFi() {
         return titleFi;
+    }
+
+    public BaseVocabulary titleFi(String titleFi) {
+        this.titleFi = titleFi;
+        return this;
     }
 
     public void setTitleFi(String titleFi) {
@@ -580,12 +622,22 @@ public class VocabularyDTO implements Serializable {
         return definitionFi;
     }
 
+    public BaseVocabulary definitionFi(String definitionFi) {
+        this.definitionFi = definitionFi;
+        return this;
+    }
+
     public void setDefinitionFi(String definitionFi) {
         this.definitionFi = definitionFi;
     }
 
     public String getTitleFr() {
         return titleFr;
+    }
+
+    public BaseVocabulary titleFr(String titleFr) {
+        this.titleFr = titleFr;
+        return this;
     }
 
     public void setTitleFr(String titleFr) {
@@ -596,12 +648,22 @@ public class VocabularyDTO implements Serializable {
         return definitionFr;
     }
 
+    public BaseVocabulary definitionFr(String definitionFr) {
+        this.definitionFr = definitionFr;
+        return this;
+    }
+
     public void setDefinitionFr(String definitionFr) {
         this.definitionFr = definitionFr;
     }
 
     public String getTitleDe() {
         return titleDe;
+    }
+
+    public BaseVocabulary titleDe(String titleDe) {
+        this.titleDe = titleDe;
+        return this;
     }
 
     public void setTitleDe(String titleDe) {
@@ -612,12 +674,22 @@ public class VocabularyDTO implements Serializable {
         return definitionDe;
     }
 
+    public BaseVocabulary definitionDe(String definitionDe) {
+        this.definitionDe = definitionDe;
+        return this;
+    }
+
     public void setDefinitionDe(String definitionDe) {
         this.definitionDe = definitionDe;
     }
 
     public String getTitleEl() {
         return titleEl;
+    }
+
+    public BaseVocabulary titleEl(String titleEl) {
+        this.titleEl = titleEl;
+        return this;
     }
 
     public void setTitleEl(String titleEl) {
@@ -628,12 +700,22 @@ public class VocabularyDTO implements Serializable {
         return definitionEl;
     }
 
+    public BaseVocabulary definitionEl(String definitionEl) {
+        this.definitionEl = definitionEl;
+        return this;
+    }
+
     public void setDefinitionEl(String definitionEl) {
         this.definitionEl = definitionEl;
     }
 
     public String getTitleHu() {
         return titleHu;
+    }
+
+    public BaseVocabulary titleHu(String titleHu) {
+        this.titleHu = titleHu;
+        return this;
     }
 
     public void setTitleHu(String titleHu) {
@@ -644,12 +726,22 @@ public class VocabularyDTO implements Serializable {
         return definitionHu;
     }
 
+    public BaseVocabulary definitionHu(String definitionHu) {
+        this.definitionHu = definitionHu;
+        return this;
+    }
+
     public void setDefinitionHu(String definitionHu) {
         this.definitionHu = definitionHu;
     }
 
     public String getTitleLt() {
         return titleLt;
+    }
+
+    public BaseVocabulary titleLt(String titleLt) {
+        this.titleLt = titleLt;
+        return this;
     }
 
     public void setTitleLt(String titleLt) {
@@ -660,12 +752,22 @@ public class VocabularyDTO implements Serializable {
         return definitionLt;
     }
 
+    public BaseVocabulary definitionLt(String definitionLt) {
+        this.definitionLt = definitionLt;
+        return this;
+    }
+
     public void setDefinitionLt(String definitionLt) {
         this.definitionLt = definitionLt;
     }
 
     public String getTitleNo() {
         return titleNo;
+    }
+
+    public BaseVocabulary titleNo(String titleNo) {
+        this.titleNo = titleNo;
+        return this;
     }
 
     public void setTitleNo(String titleNo) {
@@ -676,12 +778,22 @@ public class VocabularyDTO implements Serializable {
         return definitionNo;
     }
 
+    public BaseVocabulary definitionNo(String definitionNo) {
+        this.definitionNo = definitionNo;
+        return this;
+    }
+
     public void setDefinitionNo(String definitionNo) {
         this.definitionNo = definitionNo;
     }
 
     public String getTitlePt() {
         return titlePt;
+    }
+
+    public BaseVocabulary titlePt(String titlePt) {
+        this.titlePt = titlePt;
+        return this;
     }
 
     public void setTitlePt(String titlePt) {
@@ -692,12 +804,22 @@ public class VocabularyDTO implements Serializable {
         return definitionPt;
     }
 
+    public BaseVocabulary definitionPt(String definitionPt) {
+        this.definitionPt = definitionPt;
+        return this;
+    }
+
     public void setDefinitionPt(String definitionPt) {
         this.definitionPt = definitionPt;
     }
 
     public String getTitleRo() {
         return titleRo;
+    }
+
+    public BaseVocabulary titleRo(String titleRo) {
+        this.titleRo = titleRo;
+        return this;
     }
 
     public void setTitleRo(String titleRo) {
@@ -708,12 +830,22 @@ public class VocabularyDTO implements Serializable {
         return definitionRo;
     }
 
+    public BaseVocabulary definitionRo(String definitionRo) {
+        this.definitionRo = definitionRo;
+        return this;
+    }
+
     public void setDefinitionRo(String definitionRo) {
         this.definitionRo = definitionRo;
     }
 
     public String getTitleSk() {
         return titleSk;
+    }
+
+    public BaseVocabulary titleSk(String titleSk) {
+        this.titleSk = titleSk;
+        return this;
     }
 
     public void setTitleSk(String titleSk) {
@@ -724,12 +856,22 @@ public class VocabularyDTO implements Serializable {
         return definitionSk;
     }
 
+    public BaseVocabulary definitionSk(String definitionSk) {
+        this.definitionSk = definitionSk;
+        return this;
+    }
+
     public void setDefinitionSk(String definitionSk) {
         this.definitionSk = definitionSk;
     }
 
     public String getTitleSl() {
         return titleSl;
+    }
+
+    public BaseVocabulary titleSl(String titleSl) {
+        this.titleSl = titleSl;
+        return this;
     }
 
     public void setTitleSl(String titleSl) {
@@ -740,12 +882,22 @@ public class VocabularyDTO implements Serializable {
         return definitionSl;
     }
 
+    public BaseVocabulary definitionSl(String definitionSl) {
+        this.definitionSl = definitionSl;
+        return this;
+    }
+
     public void setDefinitionSl(String definitionSl) {
         this.definitionSl = definitionSl;
     }
 
     public String getTitleEs() {
         return titleEs;
+    }
+
+    public BaseVocabulary titleEs(String titleEs) {
+        this.titleEs = titleEs;
+        return this;
     }
 
     public void setTitleEs(String titleEs) {
@@ -756,12 +908,22 @@ public class VocabularyDTO implements Serializable {
         return definitionEs;
     }
 
+    public BaseVocabulary definitionEs(String definitionEs) {
+        this.definitionEs = definitionEs;
+        return this;
+    }
+
     public void setDefinitionEs(String definitionEs) {
         this.definitionEs = definitionEs;
     }
 
     public String getTitleSv() {
         return titleSv;
+    }
+
+    public BaseVocabulary titleSv(String titleSv) {
+        this.titleSv = titleSv;
+        return this;
     }
 
     public void setTitleSv(String titleSv) {
@@ -772,73 +934,46 @@ public class VocabularyDTO implements Serializable {
         return definitionSv;
     }
 
+    public BaseVocabulary definitionSv(String definitionSv) {
+        this.definitionSv = definitionSv;
+        return this;
+    }
+
     public void setDefinitionSv(String definitionSv) {
         this.definitionSv = definitionSv;
     }
-    
-    public Long getAgencyId() {
-        return agencyId;
-    }
 
-    public void setAgencyId(Long agencyId) {
-        this.agencyId = agencyId;
-    }
-    
-    public Set<CodeDTO> getCodes() {
+    public Set<Code> getCodes() {
         return codes;
     }
 
-    public VocabularyDTO codes(Set<CodeDTO> codes) {
+    public BaseVocabulary codes(Set<Code> codes) {
         this.codes = codes;
         return this;
     }
 
-    public VocabularyDTO addCode(CodeDTO code) {
-    	if( this.codes == null )
-    		this.codes = new HashSet<>();
+    public BaseVocabulary addCode(Code code) {
         this.codes.add(code);
+//        code.setVocabulary(this);
         return this;
     }
 
-    public VocabularyDTO removeCode(CodeDTO code) {
+    public BaseVocabulary removeCode(Code code) {
         this.codes.remove(code);
+//        code.setVocabulary(null);
         return this;
-    }
-
-    public void setCodes(Set<CodeDTO> codes) {
-        this.codes = codes;
     }
     
-	public Language getSelectedLang() {
+	public void setCodes(Set<Code> codes) {
+        this.codes = codes;
+    }
+
+    public Language getSelectedLang() {
 		return selectedLang;
 	}
 
 	public void setSelectedLang(Language selectedLang) {
 		this.selectedLang = selectedLang;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getVersionNumber() {
-		return versionNumber;
-	}
-
-	public void setVersionNumber(String versionNumber) {
-		this.versionNumber = versionNumber;
-	}
-
-	public Long getInitialPublication() {
-		return initialPublication;
-	}
-
-	public void setInitialPublication(Long initialPublication) {
-		this.initialPublication = initialPublication;
 	}
 
 	public Long getPreviousPublication() {
@@ -849,12 +984,12 @@ public class VocabularyDTO implements Serializable {
 		this.previousPublication = previousPublication;
 	}
 
-	public Set<VersionDTO> getVers() {
-		return vers;
+	public Long getInitialPublication() {
+		return initialPublication;
 	}
 
-	public void setVers(Set<VersionDTO> vers) {
-		this.vers = vers;
+	public void setInitialPublication(Long initialPublication) {
+		this.initialPublication = initialPublication;
 	}
 
 	public String getVersionCs() {
@@ -993,6 +1128,14 @@ public class VocabularyDTO implements Serializable {
 		this.versionSv = versionSv;
 	}
 
+	public Set<Version> getVers() {
+		return vers;
+	}
+
+	public void setVers(Set<Version> vers) {
+		this.vers = vers;
+	}
+
 	@Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -1001,12 +1144,11 @@ public class VocabularyDTO implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-
-        VocabularyDTO vocabularyDTO = (VocabularyDTO) o;
-        if(vocabularyDTO.getId() == null || getId() == null) {
+        BaseVocabulary vocabulary = (BaseVocabulary) o;
+        if (vocabulary.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), vocabularyDTO.getId());
+        return Objects.equals(getId(), vocabulary.getId());
     }
 
     @Override
@@ -1016,10 +1158,10 @@ public class VocabularyDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "VocabularyDTO{" +
+        return "Vocabulary{" +
             "id=" + getId() +
             ", uri='" + getUri() + "'" +
-            ", version='" + getVersionNumber() + "'" +
+            ", versionNumber='" + getVersionNumber() + "'" +
             ", archived='" + isArchived() + "'" +
             ", withdrawn='" + isWithdrawn() + "'" +
             ", discoverable='" + isDiscoverable() + "'" +
@@ -1061,118 +1203,4 @@ public class VocabularyDTO implements Serializable {
             ", definitionSv='" + getDefinitionSv() + "'" +
             "}";
     }
-    
-    public boolean isPersisted() {
-		return id != null;
-	}
-    public static VocabularyDTO generateFromCVScheme ( VocabularyDTO vocabulary, CVScheme cvScheme) {
-    	if( vocabulary == null ) {
-    		vocabulary = new VocabularyDTO();
-			vocabulary.setUri(cvScheme.getId());
-    	}
-    	
-    	return extractCVSchemeToVocabularyDTO(cvScheme, vocabulary);
-    }
-    
-    public static VocabularyDTO generateFromCVScheme ( CVScheme cvScheme) {
-    	return generateFromCVScheme( null, cvScheme);
-    }
-
-	private static VocabularyDTO extractCVSchemeToVocabularyDTO(CVScheme cvScheme, VocabularyDTO vocabulary) {
-		//TODO: need to change hard coded value
-		vocabulary.setVersionNumber( "1.0" );
-		vocabulary.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
-		
-		vocabulary.setNotation( cvScheme.getCode());
-		vocabulary.setLanguages( Language.getLanguagesFromIso(cvScheme.getLanguagesByTitle()));
-		Set<String> langs = Language.getEnumAsSetString();
-		
-		cvScheme.getLanguagesByTitle().forEach( lang -> {
-			if( !langs.contains( lang ))
-				return;
-				
-			if( cvScheme.getTitleByLanguage(lang) != null && cvScheme.getDescriptionByLanguage(lang) != null ){
-				String title = cvScheme.getTitleByLanguage(lang);
-				String definition =cvScheme.getDescriptionByLanguage(lang);
-				switch ( Language.getEnum(lang) ) {
-	    		case CZECH:
-	    			vocabulary.setTitleCs(title);
-	    			vocabulary.setDefinitionCs(definition);
-	    			break;
-	    		case DANISH:
-	    			vocabulary.setTitleDa(title);
-	    			vocabulary.setDefinitionDa(definition);
-	    			break;
-	    		case DUTCH:
-	    			vocabulary.setTitleNl(title);
-	    			vocabulary.setDefinitionNl(definition);
-	    			break;
-	    		case ENGLISH:
-	    			vocabulary.setTitleEn(title);
-	    			vocabulary.setDefinitionEn(definition);
-	    			break;
-	    		case FINNISH:
-	    			vocabulary.setTitleFi(title);
-	    			vocabulary.setDefinitionFi(definition);
-	    			break;
-	    		case FRENCH:
-	    			vocabulary.setTitleFr(title);
-	    			vocabulary.setDefinitionFr(definition);
-	    			break;
-	    		case GERMAN:
-	    			vocabulary.setTitleDe(title);
-	    			vocabulary.setDefinitionDe(definition);
-	    			break;
-	    		case GREEK:
-	    			vocabulary.setTitleEl(title);
-	    			vocabulary.setDefinitionEl(definition);
-	    			break;
-	    		case HUNGARIAN:
-	    			vocabulary.setTitleHu(title);
-	    			vocabulary.setDefinitionHu(definition);
-	    			break;
-	    		case LITHUANIAN:
-	    			vocabulary.setTitleLt(title);
-	    			vocabulary.setDefinitionLt(definition);
-	    			break;
-	    		case NORWEGIAN:
-	    			vocabulary.setTitleNo(title);
-	    			vocabulary.setDefinitionNo(definition);
-	    			break;
-	    		case PORTUGUESE:
-	    			vocabulary.setTitlePt(title);
-	    			vocabulary.setDefinitionPt(definition);
-	    			break;
-	    		case ROMANIAN:
-	    			vocabulary.setTitleRo(title);
-	    			vocabulary.setDefinitionRo(definition);
-	    			break;
-	    		case SLOVAK:
-	    			vocabulary.setTitleSk(title);
-	    			vocabulary.setDefinitionSk(definition);
-	    			break;
-	    		case SLOVENIAN:
-	    			vocabulary.setTitleSl(title);
-	    			vocabulary.setDefinitionSl(definition);
-	    			break;
-	    		case SPANISH:
-	    			vocabulary.setTitleEs(title);
-	    			vocabulary.setDefinitionEs(definition);
-	    			break;
-	    		case SWEDISH:
-	    			vocabulary.setTitleSv(title);
-	    			vocabulary.setDefinitionSv(definition);
-	    			break;
-				}
-			}
-		});
-		
-		return vocabulary;
-	}
-	
-	public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
-		if( docId == null )
-			return Optional.empty();
-		return vocabs.stream().filter( voc -> voc.getId() == Long.parseLong(docId)).findFirst();
-	}
 }

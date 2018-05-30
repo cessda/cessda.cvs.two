@@ -14,7 +14,6 @@ import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.events.EventBus;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -45,7 +44,6 @@ public class DialogAddLanguageWindow extends MWindow {
 	private static final long serialVersionUID = -8944364070898136792L;
 	private static final Logger log = LoggerFactory.getLogger(DialogAddLanguageWindow.class);
 	
-	private final EventBus.UIEventBus eventBus;
 	private final AgencyDTO agency;
 	private final VocabularyDTO vocabulary;
 	private final StardatDDIService stardatDDIService;
@@ -71,29 +69,27 @@ public class DialogAddLanguageWindow extends MWindow {
 	
 	private CVScheme cvScheme;
 	private Language language;
-	private CvManagerView cvManagerView;
 
+	
 	//private EditorView theView;
 
-	public DialogAddLanguageWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService,  CVScheme cS, 
-			CvManagerView cvManagerView, VocabularyService vocabularyService) {
+	public DialogAddLanguageWindow(StardatDDIService stardatDDIService,  CVScheme cvScheme,
+			 VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, VocabularyService vocabularyService) {
 		super("Add Language");
-		this.eventBus = eventBus;
-		this.cvScheme = cS;
-		this.cvManagerView = cvManagerView;
+		this.cvScheme = cvScheme;
 		this.stardatDDIService = stardatDDIService;
-		this.agency = cvManagerView.getAgency();
-		this.vocabulary = cvManagerView.getVocabulary();
+		this.agency = agencyDTO;
+		this.vocabulary = vocabularyDTO;
 		this.vocabularyService = vocabularyService;
 		
 		// TODO: use list language from vocabulary if possible
 		List<Language> availableLanguages = new ArrayList<>();
 		Set<Language> userLanguages = new HashSet<>();
-		if( SecurityUtils.isCurrentUserAgencyAdmin( cvManagerView.getAgency() )) {
+		if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
 			userLanguages.addAll( Arrays.asList( Language.values() ) );
 		}
 		else {
-			SecurityUtils.getCurrentUserLanguageTlByAgency( cvManagerView.getAgency() ).ifPresent( languages -> {
+			SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
 				userLanguages.addAll(languages);
 			});
 		}
@@ -231,7 +227,6 @@ public class DialogAddLanguageWindow extends MWindow {
 		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
 		vocabularyService.save(vocabulary);
 		
-		eventBus.publish( this, ddiStore);
 		close();
 		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
 	}

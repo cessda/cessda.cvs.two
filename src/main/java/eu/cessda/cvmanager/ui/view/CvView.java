@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view.publication;
+package eu.cessda.cvmanager.ui.view;
 
 import java.util.Iterator;
 import java.util.Locale;
@@ -19,11 +19,13 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
+import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.navigator.MView;
 
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -31,18 +33,23 @@ import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.model.CvItem;
+import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
+import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
+import eu.cessda.cvmanager.ui.CVManagerUI;
+import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 
-public abstract class CvPublicationView extends MVerticalLayout implements MView, Translatable {
+public abstract class CvView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -8769292972079523949L;
 	public static enum ActionType{
-		DISCOVER// this should be similar to view names
+		DISCOVER, EDITORSEARCH, DETAIL// this should be similar to view names
 	}
 	
 	protected final I18N i18n;
@@ -51,8 +58,14 @@ public abstract class CvPublicationView extends MVerticalLayout implements MView
 	protected final StardatDDIService stardatDDIService;
 	protected final SecurityService securityService;
 	protected final AgencyService agencyService;
+	protected final VocabularyMapper vocabularyMapper;
 	protected final VocabularyService vocabularyService;
 	protected final CodeService codeService;
+	// Elasticsearch repo for Editor
+	protected final VocabularySearchRepository vocabularySearchRepository;
+	// Elasticsearch repo for Published
+	protected final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
+	
 	protected Locale locale = UI.getCurrent().getLocale();
 	
 	private final ActionType actionType;
@@ -60,14 +73,18 @@ public abstract class CvPublicationView extends MVerticalLayout implements MView
 	protected AgencyDTO agency;
 	protected VocabularyDTO vocabulary;
 	protected CodeDTO code;
+	protected Breadcrumbs breadcrumbs;
 	
-	protected MVerticalLayout mainContainer = new MVerticalLayout();
-	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
-	protected MVerticalLayout rightContainer = new MVerticalLayout();
+	protected MCssLayout outerContainer = new MCssLayout();
+	protected MCssLayout topPanel = new MCssLayout();
+	protected MCssLayout sidePanel = new MCssLayout();
+	protected MCssLayout mainContainer = new MCssLayout();
 	
-	public CvPublicationView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
+	public CvView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService,  CodeService codeService,	String actionType) {
+			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
+			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
+			PublishedVocabularySearchRepository publishedVocabularySearchRepository, String actionType ) {
 		this.i18n = i;
 		this.eventBus = eventBus;
 		this.configService = configService;
@@ -75,7 +92,10 @@ public abstract class CvPublicationView extends MVerticalLayout implements MView
 		this.securityService = securityService;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
+		this.vocabularyMapper = vocabularyMapper;
 		this.codeService = codeService;
+		this.vocabularySearchRepository = vocabularySearchRepository;
+		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
 		
 		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
@@ -86,31 +106,41 @@ public abstract class CvPublicationView extends MVerticalLayout implements MView
 	@PostConstruct
 	public void initview() {
 		
-		rightContainer
-			.withMargin( false )
-			.withSpacing( false )
-			.withStyleName( "right-container" );
+		topPanel
+			.withStyleName( "top-panel" );
 
-		columnContainer
-			.withFullWidth()
-			.withSpacing( false )
-			.withMargin( false )
-			.add(
-				rightContainer
-			)
-			.withExpand( rightContainer, 1f );
+		sidePanel
+			.withStyleName( "side-panel" );
 		
 		mainContainer
+			.withStyleName( "main-container" );
+		
+		outerContainer
 			//.withWidth( "1170px" )
 			.withStyleName( "mainlayout" )
-			.withSpacing( true )
-			.withMargin( new MarginInfo( false, false, false, false ) )
-			.add( columnContainer );
+			.add( 
+				topPanel,
+				sidePanel, 
+				mainContainer 
+			);
 		
 		this
 			.withUndefinedHeight()
-			.add( mainContainer );
+			.withSpacing( false )
+			.withMargin( false )
+			.add( outerContainer );
 		
+	}
+	
+	@Override
+	public void enter(ViewChangeEvent event) {
+		updateBreadcrumb();
+	}
+	
+	public void updateBreadcrumb() {
+		breadcrumbs = ((CVManagerUI) getUI()).getBreadCrumb();
+		breadcrumbs
+			.clear();
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )
@@ -124,7 +154,7 @@ public abstract class CvPublicationView extends MVerticalLayout implements MView
 		return eventBus;
 	}
 
-	public StardatDDIService getCvManagerService() {
+	public StardatDDIService getStardatDDIService() {
 		return stardatDDIService;
 	}
 
@@ -171,5 +201,4 @@ public abstract class CvPublicationView extends MVerticalLayout implements MView
 	public void setCode(CodeDTO code) {
 		this.code = code;
 	}
-	
 }

@@ -69,6 +69,8 @@ public interface VocabularyService {
     Page<VocabularyDTO> search(String query, Pageable pageable);
     
     EsQueryResultDetail search (EsQueryResultDetail esQueryResultDetail);
+    
+    EsQueryResultDetail searchPublished (EsQueryResultDetail esQueryResultDetail);
 
 	VocabularyDTO getByUri(String cvUri);
 
@@ -76,5 +78,5 @@ public interface VocabularyService {
 
 	VocabularyDTO getByNotation(String notation);
 
-	
+	boolean existsByNotation(String notation);
 }

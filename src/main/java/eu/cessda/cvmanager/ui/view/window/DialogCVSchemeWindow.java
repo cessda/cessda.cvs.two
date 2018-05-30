@@ -35,9 +35,11 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.domain.Vocabulary;
+import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
 public class DialogCVSchemeWindow extends MWindow {
@@ -45,11 +47,13 @@ public class DialogCVSchemeWindow extends MWindow {
 	private static final long serialVersionUID = -8116725336044618619L;
 	private static final Logger log = LoggerFactory.getLogger(DialogCVSchemeWindow.class);
 	
-	private final EventBus.UIEventBus eventBus;
+//	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
 	private final AgencyService agencyService;
+	private final VocabularyMapper vocabularyMapper;
 	private final VocabularyService vocabularyService;
 	private final StardatDDIService stardatDDIService;
+	private final VocabularySearchRepository vocabularySearchRepository;
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	private MLabel lAgency = new MLabel( "Agency" );
@@ -69,24 +73,21 @@ public class DialogCVSchemeWindow extends MWindow {
 	private Binder<CVScheme> binder = new Binder<CVScheme>();
 	private Language language;
 	private AgencyDTO agency;
-//	private String orginalLanguage;
-//	private String language;
+	private VocabularyDTO vocabulary;
 	private CVScheme cvScheme;
-	
-	private UserDetails userDetails;
 
-	//private EditorView theView;
-
-	public DialogCVSchemeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, AgencyService agencyService, VocabularyService vocabularyService, CVScheme cvScheme, I18N i18n) {
+	public DialogCVSchemeWindow(StardatDDIService stardatDDIService, AgencyService agencyService, 
+			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
+			VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, VocabularyDTO vocabulary, I18N i18n, Language selectedLanguage) {
 		super("Add CVScheme");
 		this.agencyService = agencyService;
-		this.eventBus = eventBus;
 		this.stardatDDIService = stardatDDIService;
+		this.vocabularyMapper = vocabularyMapper;
 		this.vocabularyService = vocabularyService;
+		this.vocabularySearchRepository = vocabularySearchRepository;
+		this.vocabulary = vocabulary;
 		this.i18n = i18n;
-		
-		userDetails = SecurityUtils.getLoggedUser();
-				
+						
 		lAgency.withStyleName( "required" );
 		lCode.withStyleName( "required" );
 		lTitle.withStyleName( "required" );
@@ -251,7 +252,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add new CV");
 		
 		// save on database
-		VocabularyDTO vocabulary = new VocabularyDTO();
+		vocabulary = new VocabularyDTO();
 		vocabulary.setVersionNumber("1.0");
 		vocabulary.setUri( ddiStore.getElementId());
 		vocabulary.setNotation( tfCode.getValue() );
@@ -259,10 +260,14 @@ public class DialogCVSchemeWindow extends MWindow {
 		vocabulary.setAgencyId( agency.getId());
 		vocabulary.setAgencyName( agency.getName());
 		vocabulary.setSourceLanguage( language.name().toLowerCase());
-		vocabularyService.save(vocabulary);
+		vocabulary.setStatus( getCvScheme().getStatus() );
+		vocabulary.addStatus( getCvScheme().getStatus() );
+		vocabulary = vocabularyService.save(vocabulary);
 		
+		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
+		vocabularySearchRepository.save( vocab );
 		
-		eventBus.publish( this, ddiStore);
+//		eventBus.publish( this, ddiStore);
 		close();
 		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
 	}
