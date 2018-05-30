@@ -1171,6 +1171,8 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
+		if( docId == null )
+			return Optional.empty();
 		return vocabs.stream().filter( voc -> voc.getId() == Long.parseLong(docId)).findFirst();
 	}
 }

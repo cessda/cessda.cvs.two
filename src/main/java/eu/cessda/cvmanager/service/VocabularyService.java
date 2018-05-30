@@ -78,5 +78,5 @@ public interface VocabularyService {
 
 	VocabularyDTO getByNotation(String notation);
 
-	
+	boolean existsByNotation(String notation);
 }

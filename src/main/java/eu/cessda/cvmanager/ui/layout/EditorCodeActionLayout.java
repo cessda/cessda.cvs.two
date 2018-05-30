@@ -20,7 +20,7 @@ import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 
-public class EditorSearchActionLayout extends ResponsiveBlock{
+public class EditorCodeActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
 	
 	private final StardatDDIService stardatDDIService;
@@ -34,7 +34,7 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 	
 	private MButton buttonAddCv = new MButton();
 	
-	public EditorSearchActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
+	public EditorCodeActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
 			VocabularySearchRepository vocabularySearchRepository) {
 		super(titleHeader, showHeader, i18n);

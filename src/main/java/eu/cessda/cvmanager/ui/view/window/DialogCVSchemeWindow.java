@@ -73,28 +73,21 @@ public class DialogCVSchemeWindow extends MWindow {
 	private Binder<CVScheme> binder = new Binder<CVScheme>();
 	private Language language;
 	private AgencyDTO agency;
-//	private String orginalLanguage;
-//	private String language;
+	private VocabularyDTO vocabulary;
 	private CVScheme cvScheme;
-	
-	private UserDetails userDetails;
 
-	//private EditorView theView;
-
-	public DialogCVSchemeWindow(/*EventBus.UIEventBus eventBus,*/ StardatDDIService stardatDDIService, AgencyService agencyService, 
+	public DialogCVSchemeWindow(StardatDDIService stardatDDIService, AgencyService agencyService, 
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
-			VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, I18N i18n) {
+			VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, VocabularyDTO vocabulary, I18N i18n, Language selectedLanguage) {
 		super("Add CVScheme");
 		this.agencyService = agencyService;
-//		this.eventBus = eventBus;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyMapper = vocabularyMapper;
 		this.vocabularyService = vocabularyService;
 		this.vocabularySearchRepository = vocabularySearchRepository;
+		this.vocabulary = vocabulary;
 		this.i18n = i18n;
-		
-		userDetails = SecurityUtils.getLoggedUser();
-				
+						
 		lAgency.withStyleName( "required" );
 		lCode.withStyleName( "required" );
 		lTitle.withStyleName( "required" );
@@ -259,7 +252,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add new CV");
 		
 		// save on database
-		VocabularyDTO vocabulary = new VocabularyDTO();
+		vocabulary = new VocabularyDTO();
 		vocabulary.setVersionNumber("1.0");
 		vocabulary.setUri( ddiStore.getElementId());
 		vocabulary.setNotation( tfCode.getValue() );
@@ -269,7 +262,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		vocabulary.setSourceLanguage( language.name().toLowerCase());
 		vocabulary.setStatus( getCvScheme().getStatus() );
 		vocabulary.addStatus( getCvScheme().getStatus() );
-		vocabularyService.save(vocabulary);
+		vocabulary = vocabularyService.save(vocabulary);
 		
 		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 		vocabularySearchRepository.save( vocab );

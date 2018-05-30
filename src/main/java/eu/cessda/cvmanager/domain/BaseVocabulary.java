@@ -44,7 +44,7 @@ public class BaseVocabulary implements Serializable {
     private String uri;
     
     @NotNull
-    @Column(name = "notation", length = 240, nullable = false)
+    @Column(name = "notation", length = 240, nullable = false, unique = true)
     @Field(type = FieldType.text, fielddata = true)
     private String notation;
 

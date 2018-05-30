@@ -46,6 +46,7 @@ import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
+import eu.cessda.cvmanager.ui.view.CvView;
 
 
 @UIScope

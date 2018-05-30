@@ -79,17 +79,13 @@ import com.vaadin.ui.themes.ValoTheme;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
-import eu.cessda.cvmanager.ui.layout.EditorCvActionLayout;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
@@ -98,11 +94,11 @@ import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @UIScope
-@SpringView(name = DetailView.VIEW_NAME)
-public class DetailView extends CvView {
+@SpringView(name = DetailView2.VIEW_NAME)
+public class DetailView2 extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
-	public static final String VIEW_NAME = "detail";
+	public static final String VIEW_NAME = "Detail2";
 	private Locale locale = UI.getCurrent().getLocale();
 	private final TemplateEngine templateEngine;
 	private final AgencyService agencyService;
@@ -187,27 +183,20 @@ public class DetailView extends CvView {
 	private Binder<CVScheme> cvSchemeBinder = new Binder<>();
 	private String sourceLanguage;
 	private String activeTab;
-	
-	private EditorCvActionLayout editorCvActionLayout;
 
-	public DetailView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public DetailView2( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
-			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
-			PublishedVocabularySearchRepository publishedVocabularySearchRepository, TemplateEngine templateEngine) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, 
-				codeService, vocabularySearchRepository, publishedVocabularySearchRepository, DetailView.VIEW_NAME);
+			VocabularyService vocabularyService, CodeService codeService, TemplateEngine templateEngine) {
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, DetailView2.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
-		eventBus.subscribe( this, DetailView.VIEW_NAME );
+		eventBus.subscribe( this, DetailView2.VIEW_NAME );
 	}
 
 	@PostConstruct
 	public void init() {
-		
-		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository);
 		
 		cvEditors[0] = new CVEditor("DDI", "DDI");
 		cvEditors[0].setLogoPath("img/ddi-logo-r.png");
@@ -244,12 +233,7 @@ public class DetailView extends CvView {
 
 		bottomSection.add(bottomViewSection, bottomEditSection);
 		
-		sidePanel
-			.add( 
-				editorCvActionLayout
-			);
-		
-		mainContainer
+		rightContainer
 			.add(
 				buttonLayout, 
 				topSection, 
@@ -266,7 +250,7 @@ public class DetailView extends CvView {
 			editButton.setVisible( true );
 		else
 			editButton.setVisible( false );
-//		actionPanel.setVisible( true );
+		actionPanel.setVisible( true );
 	}
 	
 	@Override
@@ -275,7 +259,7 @@ public class DetailView extends CvView {
 		
 		locale = UI.getCurrent().getLocale();
 		setOldView(event.getOldView());
-//		actionPanel.conceptSelectedChange( null );
+		actionPanel.conceptSelectedChange( null );
 
 		if (event.getParameters() != null) {
 			try {
@@ -297,7 +281,7 @@ public class DetailView extends CvView {
 				} else {
 					activeTab = "detail";
 				}
-				LoginView.NAVIGATETO_VIEWNAME = DetailView.VIEW_NAME + "/" + itemPathPart[0];
+				LoginView.NAVIGATETO_VIEWNAME = DetailView2.VIEW_NAME + "/" + itemPathPart[0];
 				cvItem.setCurrentCvId(itemPathPart[0]);
 				if( itemPathPart.length > 1 )
 					cvItem.setCurrentConceptId(itemPathPart[1]);
@@ -310,31 +294,22 @@ public class DetailView extends CvView {
 
 		}
 		
-//		updateActionPanel();
+		updateActionPanel();
 	}
 	
-//	@Override
-//	protected void updateActionPanel() {
-//		actionPanel.setSlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvSl( getAgency()) );
-//		actionPanel.setTlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvTl( getAgency() ) );
-//		
-//		super.updateActionPanel();
-//	}
+	@Override
+	protected void updateActionPanel() {
+		actionPanel.setSlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvSl( getAgency()) );
+		actionPanel.setTlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvTl( getAgency() ) );
+		
+		super.updateActionPanel();
+	}
 	
 	private void setDetails() {
 		setFormMode(FormMode.view);
 		
 		refreshCvScheme();
 //		refreshCvConcepts();
-		
-		editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
-		editorCvActionLayout.setAgency( getAgency() );
-		editorCvActionLayout.setVocabulary( getVocabulary() );
-		
-		// update breadcrumb
-		breadcrumbs
-			.addItem(getAgency().getName(), "agency")
-			.build();
 
 		initTopViewSection();
 		initTopEditSection();
@@ -342,14 +317,8 @@ public class DetailView extends CvView {
 		//initBottomEditSection();
 		updateMessageStrings(UI.getCurrent().getLocale());
 		
-		// TODO: Workaround so that the translation label visible ~ not efficient need correct solution
+		// TODO: Workaround so that the translation label viible ~ not efficient need correct solution
 		initTopViewSection();
-		
-		
-		if( editorCvActionLayout.hasActionRight() )
-			mainContainer.removeStyleName("margin-left10");
-		else
-			mainContainer.addStyleName("margin-left10");
 	}
 
 
@@ -384,7 +353,10 @@ public class DetailView extends CvView {
 			setAgency( agencyService.findByName( getVocabulary().getAgencyName()));
 		}
 		
-		
+		// update breadcrumb
+		getBreadcrumbs()
+			.addItem(getAgency().getName(), "agency")
+			.build();
 		
 				
 		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
@@ -398,7 +370,7 @@ public class DetailView extends CvView {
 				
 				cvItem.setCurrentLanguage(e.getButton().getCaption().toLowerCase());
 				setSelectedLang( Language.getEnum( e.getButton().getCaption().toLowerCase()) );
-//				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
+				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
 				
 				setFormMode(FormMode.view);
 				
@@ -411,7 +383,7 @@ public class DetailView extends CvView {
 				else
 					editButton.setVisible( false );
 				
-//				actionPanel.conceptSelectedChange( null );
+				actionPanel.conceptSelectedChange( null );
 				setCode( null );
 				updateMessageStrings(locale);
 			});
@@ -767,7 +739,7 @@ public class DetailView extends CvView {
 		detailTreeGrid.asSingleSelect().addValueChangeListener( event -> {		
 			if (event.getValue() != null) {
 				cvItem.setCvConcept( event.getValue() );
-//				actionPanel.conceptSelectedChange( cvItem.getCvConcept() );
+				actionPanel.conceptSelectedChange( cvItem.getCvConcept() );
 				
 				// get code
 				code = codeService.getByUri( cvItem.getCvConcept().getContainerId());
@@ -779,8 +751,8 @@ public class DetailView extends CvView {
             }
 		});
 		
-//		if(enableTreeDragAndDrop && actionPanel.isEnableSort())
-//			enableTreeGridDragAndDropSort();
+		if(enableTreeDragAndDrop && actionPanel.isEnableSort())
+			enableTreeGridDragAndDropSort();
 		
 		// select row programatically
 		if(cvItem.getCvConcept() != null ) {
@@ -1069,7 +1041,7 @@ public class DetailView extends CvView {
 								codeService.delete( code );
 							
 							detailTreeGrid.getDataProvider().refreshAll();
-//							actionPanel.conceptSelectedChange( null );
+							actionPanel.conceptSelectedChange( null );
 							setCode( null );
 						}
 					}
@@ -1151,6 +1123,6 @@ public class DetailView extends CvView {
 		if( detailTreeGrid.getColumn("definitionTl") != null )
 			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
 		
-//		actionPanel.updateMessageStrings(locale);
+		actionPanel.updateMessageStrings(locale);
 	}
 }

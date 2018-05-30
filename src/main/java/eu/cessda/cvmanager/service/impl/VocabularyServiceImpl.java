@@ -200,6 +200,15 @@ public class VocabularyServiceImpl implements VocabularyService {
         return vocabularyMapper.toDto(vocabulary);
 	}
 	
+	@Override
+	public boolean existsByNotation(String notation) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+	
+	
 	/**
 	 *  Main search method
 	 */

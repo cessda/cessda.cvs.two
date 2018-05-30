@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view.publication;
+package eu.cessda.cvmanager.ui.view;
 
 import java.util.Iterator;
 import java.util.Locale;
@@ -25,6 +25,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.navigator.MView;
 
 import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
@@ -41,12 +42,14 @@ import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
+import eu.cessda.cvmanager.ui.CVManagerUI;
+import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 
 public abstract class CvView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -8769292972079523949L;
 	public static enum ActionType{
-		DISCOVER, EDITORSEARCH// this should be similar to view names
+		DISCOVER, EDITORSEARCH, DETAIL// this should be similar to view names
 	}
 	
 	protected final I18N i18n;
@@ -70,6 +73,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected AgencyDTO agency;
 	protected VocabularyDTO vocabulary;
 	protected CodeDTO code;
+	protected Breadcrumbs breadcrumbs;
 	
 	protected MCssLayout outerContainer = new MCssLayout();
 	protected MCssLayout topPanel = new MCssLayout();
@@ -126,6 +130,17 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 			.withMargin( false )
 			.add( outerContainer );
 		
+	}
+	
+	@Override
+	public void enter(ViewChangeEvent event) {
+		updateBreadcrumb();
+	}
+	
+	public void updateBreadcrumb() {
+		breadcrumbs = ((CVManagerUI) getUI()).getBreadCrumb();
+		breadcrumbs
+			.clear();
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )

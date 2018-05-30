@@ -48,7 +48,6 @@ import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.layout.EditorSearchActionLayout;
-import eu.cessda.cvmanager.ui.view.publication.CvView;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
 import eu.cessda.cvmanager.ui.view.publication.PaginationBar;
@@ -265,7 +264,7 @@ public class EditorSearchView extends CvView {
 	public void eventHandle( CvManagerEvent.Event event)
 	{
 		switch(event.getType()) {
-			case VOCABULARY_SEARCH:
+			case VOCABULARY_EDITOR_SEARCH:
 				esQueryResultDetail.clear();
 				esQueryResultDetail.setSearchTerm( (String) event.getPayload() );
 				sortByRelevence.setStyleName( "groupButton enable" );

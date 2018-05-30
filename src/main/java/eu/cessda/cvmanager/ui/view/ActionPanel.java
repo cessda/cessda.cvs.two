@@ -55,7 +55,7 @@ public class ActionPanel extends CustomComponent{
 	private MButton buttonAddCv = new MButton();
 	private MButton buttonEditCv = new MButton();
 	private MButton buttonChangeAgency = new MButton();
-	private MButton buttonChangeLanguage = new MButton();
+	private MButton buttonAddTranslation = new MButton();
 	
 	private MButton buttonCodeAdd = new MButton();
 	private MButton buttonCodeAddTranslation = new MButton();
@@ -92,7 +92,7 @@ public class ActionPanel extends CustomComponent{
 			.withFullWidth();
 		buttonChangeAgency
 			.withFullWidth();
-		buttonChangeLanguage
+		buttonAddTranslation
 			.withFullWidth();
 		buttonCodeAdd
 			.withFullWidth();
@@ -117,7 +117,7 @@ public class ActionPanel extends CustomComponent{
 		
 		buttonAddCv.addClickListener( this::doCvAdd );
 		buttonChangeAgency.addClickListener( this::doCvSelectAgency );
-		buttonChangeLanguage.addClickListener( this::doCvAddTranslation );
+		buttonAddTranslation.addClickListener( this::doCvAddTranslation );
 		
 		buttonCodeAdd.addClickListener( this::doAddCode );
 		buttonCodeAddTranslation.addClickListener( this::doCodeAddTranslation );
@@ -142,7 +142,7 @@ public class ActionPanel extends CustomComponent{
 					panelHeader,
 					buttonAddCv,
 					//buttonChangeAgency,
-					buttonChangeLanguage,
+					buttonAddTranslation,
 					new Label("<div style=\"width:100%\">&nbsp;</div>", ContentMode.HTML),
 					buttonCodeAdd,
 					buttonCodeAddTranslation,
@@ -168,7 +168,7 @@ public class ActionPanel extends CustomComponent{
 			case SEARCH:
 			case BROWSE:
 				buttonChangeAgency.setVisible( false );
-				buttonChangeLanguage.setVisible( false );
+				buttonAddTranslation.setVisible( false );
 				buttonCodeAdd.setVisible( false );
 				buttonCodeAddTranslation.setVisible( false );
 				buttonCodeAddChild.setVisible( false );
@@ -191,7 +191,7 @@ public class ActionPanel extends CustomComponent{
 			case AGENCY:
 				buttonAddCv.setVisible( false);
 				buttonChangeAgency.setVisible( false );
-				buttonChangeLanguage.setVisible( false );
+				buttonAddTranslation.setVisible( false );
 				buttonCodeAdd.setVisible( false );
 				buttonCodeAddTranslation.setVisible( false );
 				buttonCodeAddChild.setVisible( false );
@@ -227,8 +227,8 @@ public class ActionPanel extends CustomComponent{
 	private void doCvAddTranslation(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
 		
-		Window window = new DialogAddLanguageWindow(eventBus, stardatDDIService, cvManagerView.getCvItem().getCvScheme(), cvManagerView, vocabularyService);
-		getUI().addWindow(window);
+//		Window window = new DialogAddLanguageWindow(eventBus, stardatDDIService, cvManagerView.getCvItem().getCvScheme(), cvManagerView, vocabularyService);
+//		getUI().addWindow(window);
 	}
 	
 	private void doAddCode(ClickEvent event ) {
@@ -326,7 +326,7 @@ public class ActionPanel extends CustomComponent{
 		panelHeader.setValue(i18n.get("view.action.panel", locale));
 		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));
 		buttonChangeAgency.withCaption( i18n.get("view.action.button.cvscheme.editor", locale));
-		buttonChangeLanguage.withCaption( i18n.get("view.action.button.cvscheme.translation", locale));
+		buttonAddTranslation.withCaption( i18n.get("view.action.button.cvscheme.translation", locale));
 		buttonCodeAdd.withCaption( i18n.get("view.action.button.cvconcept.new", locale));
 		buttonCodeAddTranslation.withCaption( i18n.get("view.action.button.cvconcept.translation", locale));
 		buttonCodeAddChild.withCaption( "Add Child" );
@@ -367,6 +367,6 @@ public class ActionPanel extends CustomComponent{
 	}
 	
 	public void setTlRoleActionButtonVisible(boolean visibility) {
-		buttonChangeLanguage.setVisible(visibility);
+		buttonAddTranslation.setVisible(visibility);
 	}
 }

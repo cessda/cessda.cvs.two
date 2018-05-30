@@ -61,6 +61,7 @@ import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.EditorSearchView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 import eu.cessda.cvmanager.ui.view.HomeView;
 import eu.cessda.cvmanager.ui.view.SearchView;
@@ -116,7 +117,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	
 	private MTextField searchTf = new MTextField();
 	private MCssLayout userSubMenu = new MCssLayout();
-	private MLabel usernameTf = new MLabel();
+	private MLabel usernameLbl = new MLabel();
 	private MCssLayout userInfoLayout = new MCssLayout();
 	private Breadcrumbs breadCrumb = new Breadcrumbs();
 
@@ -137,7 +138,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		breadCrumb
 			.withBaseUrl( configurationService.getServerContextPath() )
 			.withBasePageName("Home")
-			.withBasePageUrl( SearchView.VIEW_NAME);
+			.withBasePageUrl( EditorSearchView.VIEW_NAME);
 
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
@@ -182,7 +183,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		String uriQuery = Page.getCurrent().getLocation().toString();
 		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
 				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ))
-			navigator.navigateTo(SearchView.VIEW_NAME);
+			navigator.navigateTo(EditorSearchView.VIEW_NAME);
 		navigator.addViewChangeListener(viewChangeListener);
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
@@ -232,7 +233,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.withId("user-menu")
 			.add(
 				new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-header fa fa-user\"></i>" ),
-				usernameTf,
+				usernameLbl,
 				userSubMenu
 			);
 		
@@ -301,14 +302,22 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		logIn.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		logout.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		
+		if( SecurityUtils.isAuthenticated() )
+			usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
+		
 		searchTf
 			.withPlaceholder("Find Controlled Vocabulary")
 			.withFullWidth()
 			.withValueChangeMode( ValueChangeMode.LAZY)
 			.withValueChangeTimeout( 200 )
 			.addTextChangeListener( e -> {
-				navigator.navigateTo(DiscoveryView.VIEW_NAME);
-				eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
+				if( navigator.getCurrentView().toString().indexOf( "Discovery" ) > 0 ) {
+					navigator.navigateTo(DiscoveryView.VIEW_NAME);
+					eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
+				} else {
+					navigator.navigateTo(EditorSearchView.VIEW_NAME);
+					eventBus.publish(EventScope.UI, EditorSearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_EDITOR_SEARCH, e.getValue()) );
+				}
 			});
 		
 		headerTop
@@ -374,15 +383,15 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 
 	public void gotoHome(ClickEvent event) {
-		navigator.navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(EditorSearchView.VIEW_NAME);
 	}
 
 	public void gotoListAllCvs(ClickEvent event) {
-		navigator.navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(EditorSearchView.VIEW_NAME);
 	}
 
 	public void gotoSearchCvs(ClickEvent event) {
-		navigator.navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(EditorSearchView.VIEW_NAME);
 	}
 
 	public void gotoEditorCvs(ClickEvent event) {
@@ -390,7 +399,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 
 	public void gotoBrowse(ClickEvent event) {
-		navigator.navigateTo(SearchView.VIEW_NAME);
+		navigator.navigateTo(EditorSearchView.VIEW_NAME);
 	}
 
 	public void gotoProfile(ClickEvent event) {
@@ -458,7 +467,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		// newDataset.setVisible( true );
 		// browse.setVisible( true );
 		userInfoLayout.setVisible(true);
-		usernameTf.setValue( SecurityUtils.getLoggedUser().getLastName() );
+		usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
 		
 		System.out.println(SecurityUtils.isCurrentUserAgencyAdmin());
 		
