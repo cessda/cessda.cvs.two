@@ -4,7 +4,9 @@
 package eu.cessda.cvmanager.ui;
 
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.ErrorHandler;
@@ -120,6 +122,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private MLabel usernameLbl = new MLabel();
 	private MCssLayout userInfoLayout = new MCssLayout();
 	private Breadcrumbs breadCrumb = new Breadcrumbs();
+	private Map<String, String> breadcrumbItemMap = new LinkedHashMap<>();
 
 	public CVManagerUI(SpringViewProvider viewProvider,
 			SecurityService securityService, ConfigurationService configurationService, 
@@ -499,4 +502,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		return breadCrumb;
 	}
 
+	public Map<String, String> getBreadcrumbItemMap() {
+		return breadcrumbItemMap;
+	}
 }

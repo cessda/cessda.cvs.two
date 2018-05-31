@@ -171,7 +171,7 @@ public class DialogAddLanguageWindow extends MWindow {
 				),
 				new MHorizontalLayout()
 					.withFullWidth()
-					.withHeight("290px")
+					.withHeight("100%")
 					.add(
 						lSourceDescription, sourceDescription
 					).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
@@ -189,7 +189,7 @@ public class DialogAddLanguageWindow extends MWindow {
 				),
 				new MHorizontalLayout()
 					.withFullWidth()
-					.withHeight("290px")
+					.withHeight("100%")
 					.add(
 						lDescription, description
 					).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),

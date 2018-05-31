@@ -45,8 +45,10 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.CvView;
+import eu.cessda.cvmanager.ui.view.EditorSearchView;
 
 
 @UIScope
@@ -93,8 +95,9 @@ public class DiscoveryView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
 			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
+			PublishedVocabularyMapper publishedVocabularyMapper,
 			PublishedVocabularySearchRepository publishedVocabularySearchRepository) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, publishedVocabularySearchRepository, DiscoveryView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, publishedVocabularyMapper, publishedVocabularySearchRepository, DiscoveryView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
 		eventBus.subscribe(this, DiscoveryView.VIEW_NAME);
 	}
@@ -109,9 +112,6 @@ public class DiscoveryView extends CvView {
 		// button style
 		sortByRelevence.setStyleName( "groupButton disable" );
 		sortByTitle.setStyleName( "groupButton enable" );
-
-		// refresh initial result
-		refreshSearchResult();
 		
 		resultInfo.withContentMode( ContentMode.HTML );
 		cvGrid
@@ -171,6 +171,8 @@ public class DiscoveryView extends CvView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		super.enter(event);
+		
 		locale = UI.getCurrent().getLocale();
 		
 		updateMessageStrings(locale);
@@ -187,6 +189,10 @@ public class DiscoveryView extends CvView {
 		
 		// query
 		esQueryResultDetail = vocabularyService.searchPublished( esQueryResultDetail );
+		
+		// set Main UI BreadcrumbItemMap
+		breadcrumbItemMap.clear();
+		breadcrumbItemMap.put("search", DiscoveryView.VIEW_NAME );
 		
 		// set filter and pagination bar
 		filterLayout.setFacetFilter(esQueryResultDetail);

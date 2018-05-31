@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import eu.cessda.cvmanager.domain.BaseVocabulary;
 import eu.cessda.cvmanager.domain.PublishedVocabulary;
+import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.Vocabulary;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
@@ -83,7 +85,9 @@ public class ImportService {
 			else
 				vocabulary = VocabularyDTO.generateFromCVScheme(vocabulary, cvScheme);
 			
+			
 			vocabulary.setStatus( Status.PUBLISHED.toString() );
+			vocabulary.addStatus( Status.PUBLISHED.toString() );
 			vocabulary.setDiscoverable( true );
 			vocabulary.setPublicationDate( LocalDate.now());
 			vocabulary = vocabularyService.save(vocabulary);

@@ -25,4 +25,6 @@ public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
 	@Query( "select v from Vocabulary v where v.notation = :notation" )
 	Vocabulary findByNotation(@Param("notation") String notation);
 
+	boolean existsByNotation(String notation);
+
 }

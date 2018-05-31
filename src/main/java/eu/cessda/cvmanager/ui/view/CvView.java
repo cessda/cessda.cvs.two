@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.view;
 
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -41,6 +42,7 @@ import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
@@ -60,6 +62,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected final AgencyService agencyService;
 	protected final VocabularyMapper vocabularyMapper;
 	protected final VocabularyService vocabularyService;
+	protected final PublishedVocabularyMapper publishedVocabularyMapper;
 	protected final CodeService codeService;
 	// Elasticsearch repo for Editor
 	protected final VocabularySearchRepository vocabularySearchRepository;
@@ -74,6 +77,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected VocabularyDTO vocabulary;
 	protected CodeDTO code;
 	protected Breadcrumbs breadcrumbs;
+	protected Map<String, String> breadcrumbItemMap;
 	
 	protected MCssLayout outerContainer = new MCssLayout();
 	protected MCssLayout topPanel = new MCssLayout();
@@ -84,7 +88,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
 			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
-			PublishedVocabularySearchRepository publishedVocabularySearchRepository, String actionType ) {
+			PublishedVocabularyMapper publishedVocabularyMapper, PublishedVocabularySearchRepository publishedVocabularySearchRepository, String actionType ) {
 		this.i18n = i;
 		this.eventBus = eventBus;
 		this.configService = configService;
@@ -95,6 +99,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		this.vocabularyMapper = vocabularyMapper;
 		this.codeService = codeService;
 		this.vocabularySearchRepository = vocabularySearchRepository;
+		this.publishedVocabularyMapper = publishedVocabularyMapper;
 		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
 		
 		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
@@ -138,9 +143,17 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	}
 	
 	public void updateBreadcrumb() {
+		breadcrumbItemMap = ((CVManagerUI) getUI()).getBreadcrumbItemMap();
+		
 		breadcrumbs = ((CVManagerUI) getUI()).getBreadCrumb();
 		breadcrumbs
 			.clear();
+		
+		if( !breadcrumbItemMap.isEmpty() ) {
+			breadcrumbItemMap.forEach( (k , v ) -> {
+				breadcrumbs.addItem( k, v );
+			});
+		}
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )
@@ -201,4 +214,5 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	public void setCode(CodeDTO code) {
 		this.code = code;
 	}
+
 }

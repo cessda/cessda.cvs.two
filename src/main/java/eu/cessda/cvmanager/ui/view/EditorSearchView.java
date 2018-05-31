@@ -46,6 +46,7 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.layout.EditorSearchActionLayout;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
@@ -101,8 +102,9 @@ public class EditorSearchView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
 			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
+			PublishedVocabularyMapper publishedVocabularyMapper,
 			PublishedVocabularySearchRepository publishedVocabularySearchRepository) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, publishedVocabularySearchRepository, EditorSearchView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, publishedVocabularyMapper, publishedVocabularySearchRepository, EditorSearchView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
 		eventBus.subscribe(this, EditorSearchView.VIEW_NAME);
 	}
@@ -112,15 +114,12 @@ public class EditorSearchView extends CvView {
 		LoginView.NAVIGATETO_VIEWNAME = EditorSearchView.VIEW_NAME;
 		paginationBar = new PaginationBar( paggingListener , i18n);
 		filterLayout = new FiltersLayout( "block.filter", "block.filter.show", null, this, filterListener, i18n );
-		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository);
+		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, eventBus);
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
 		
 		// button style
 		sortByRelevence.setStyleName( "groupButton disable" );
 		sortByTitle.setStyleName( "groupButton enable" );
-
-		// refresh initial result
-		refreshSearchResult();
 		
 		resultInfo.withContentMode( ContentMode.HTML );
 		cvGrid
@@ -184,6 +183,8 @@ public class EditorSearchView extends CvView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		super.enter(event);
+		
 		locale = UI.getCurrent().getLocale();
 		
 		updateMessageStrings(locale);
@@ -206,6 +207,10 @@ public class EditorSearchView extends CvView {
 		
 		// query
 		esQueryResultDetail = vocabularyService.search( esQueryResultDetail );
+		
+		// set Main UI BreadcrumbItemMap
+		breadcrumbItemMap.clear();
+		breadcrumbItemMap.put("editor-search", EditorSearchView.VIEW_NAME );
 		
 		// set filter and pagination bar
 		filterLayout.setFacetFilter(esQueryResultDetail);

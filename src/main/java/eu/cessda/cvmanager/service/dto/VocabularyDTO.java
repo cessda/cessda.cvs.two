@@ -7,6 +7,8 @@ import javax.validation.constraints.*;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 
+import eu.cessda.cvmanager.domain.Version;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 
 import java.io.Serializable;
@@ -1080,6 +1082,7 @@ public class VocabularyDTO implements Serializable {
 
 	private static VocabularyDTO extractCVSchemeToVocabularyDTO(CVScheme cvScheme, VocabularyDTO vocabulary) {
 		//TODO: need to change hard coded value
+		vocabulary.setUri( cvScheme.getId() );
 		vocabulary.setVersionNumber( "1.0" );
 		vocabulary.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 		
@@ -1092,9 +1095,11 @@ public class VocabularyDTO implements Serializable {
 				return;
 				
 			if( cvScheme.getTitleByLanguage(lang) != null && cvScheme.getDescriptionByLanguage(lang) != null ){
+				Language langEnum = Language.getEnum(lang);
 				String title = cvScheme.getTitleByLanguage(lang);
 				String definition =cvScheme.getDescriptionByLanguage(lang);
-				switch ( Language.getEnum(lang) ) {
+				
+				switch ( langEnum ) {
 	    		case CZECH:
 	    			vocabulary.setTitleCs(title);
 	    			vocabulary.setDefinitionCs(definition);
@@ -1164,6 +1169,27 @@ public class VocabularyDTO implements Serializable {
 	    			vocabulary.setDefinitionSv(definition);
 	    			break;
 				}
+				
+//				VersionDTO version = new VersionDTO();
+//				version.setStatus( Status.DRAFT.toString() );
+//				if( langEnum.equals( Language.ENGLISH)) {
+//					version.setItemType( ItemType.SL.toString());
+//					version.setNumber( "1.0" );
+//				} else {
+//					version.setItemType( ItemType.TL.toString());
+//					version.setNumber( "0.0.1" );
+//				}
+//				version.setLanguage( langEnum.name().toLowerCase());
+//				version.setUri( vocabulary.getUri() );
+//				version.setNotation( vocabulary.getNotation() );
+//				version.setTitle( title );
+//				version.setDefinition(definition);
+//				version.setPreviousVersion( 0L );
+//				version.setInitialVersion( 0L );
+//				version.setCreator( 1L );
+//				version.setPublisher( 1L );
+				
+				
 			}
 		});
 		

@@ -202,8 +202,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	
 	@Override
 	public boolean existsByNotation(String notation) {
-		// TODO Auto-generated method stub
-		return false;
+		return vocabularyRepository.existsByNotation( notation );
 	}
 	
 	

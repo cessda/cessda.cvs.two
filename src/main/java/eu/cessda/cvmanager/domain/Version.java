@@ -93,10 +93,10 @@ public class Version implements Serializable{
     @Column(name = "initial_version", nullable = false)
     private Long initialVersion;
     
-    @Column(name = "creator", nullable = false)
+    @Column(name = "creator")
     private Long creator;
     
-    @Column(name = "publisher", nullable = false)
+    @Column(name = "publisher")
     private Long publisher;
     
     @ManyToMany(mappedBy = "versions")
