@@ -858,4 +858,22 @@ public class CodeDTO implements Serializable {
 	public static Optional<CodeDTO> findByIdFromList(Set<CodeDTO> codes, int docId) {
 		return codes.stream().filter( voc -> voc.getId() == docId).findFirst();
 	}
+	
+	public static Set<ConceptDTO> getConceptsFromCodes( List<CodeDTO> codes, Language lang){
+		Set<ConceptDTO> concepts = new HashSet<>();
+		
+		codes.forEach( code -> {
+			String cTitle = code.getTitleByLanguage(lang);
+			if( cTitle != null && !cTitle.isEmpty()) {
+				ConceptDTO concept = new ConceptDTO();
+				concept.setNotation( code.getNotation());
+				concept.setTitle(cTitle);
+				concept.setDefinition( code.getDefinitionByLanguage(lang));
+				
+				concepts.add(concept);
+			}
+		});
+		
+		return concepts;
+	}
 }

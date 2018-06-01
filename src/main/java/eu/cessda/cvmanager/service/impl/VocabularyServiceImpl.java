@@ -33,7 +33,9 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.Vocabulary;
+import eu.cessda.cvmanager.repository.VersionRepository;
 import eu.cessda.cvmanager.repository.VocabularyRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.ElasticsearchTemplate2;
@@ -66,6 +68,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 	private static final String CODE_PATH = "codes";
 
     private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
+    
+    private final VersionRepository versionRepository;
 
     private final VocabularyRepository vocabularyRepository;
 
@@ -78,11 +82,13 @@ public class VocabularyServiceImpl implements VocabularyService {
     private final ElasticsearchTemplate2 elasticsearchTemplate;
 
     public VocabularyServiceImpl(VocabularyRepository vocabularyRepository, VocabularyMapper vocabularyMapper, 
-    		VocabularySearchRepository vocabularySearchRepository, ElasticsearchTemplate2 elasticsearchTemplate) {
+    		VocabularySearchRepository vocabularySearchRepository, ElasticsearchTemplate2 elasticsearchTemplate,
+    		VersionRepository versionRepository) {
         this.vocabularyRepository = vocabularyRepository;
         this.vocabularyMapper = vocabularyMapper;
         this.vocabularySearchRepository = vocabularySearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
+        this.versionRepository = versionRepository;
     }
 
     /**
@@ -95,6 +101,12 @@ public class VocabularyServiceImpl implements VocabularyService {
     public VocabularyDTO save(VocabularyDTO vocabularyDTO) {
         log.debug("Request to save Vocabulary : {}", vocabularyDTO);
         Vocabulary vocabulary = vocabularyMapper.toEntity(vocabularyDTO);
+        
+        // store version first if exist
+        for( Version version: vocabulary.getVersions()) {
+        	version = versionRepository.save( version );
+        }
+        
         vocabulary = vocabularyRepository.save(vocabulary);
         VocabularyDTO result = vocabularyMapper.toDto(vocabulary);
 //        if( vocabulary.isDiscoverable() != null && vocabulary.isDiscoverable())

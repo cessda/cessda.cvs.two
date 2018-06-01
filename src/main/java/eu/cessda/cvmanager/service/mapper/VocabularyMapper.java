@@ -13,12 +13,14 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 public interface VocabularyMapper extends EntityMapper<VocabularyDTO, Vocabulary> {
 		
 	@Mappings({
+		@Mapping(source = "vers", target = "vers"),
 		@Mapping(source = "codes", target = "codes"),
 		@Mapping(source = "languages", target = "languages"),
 	})
     VocabularyDTO toDto(Vocabulary vocabulary);
 
     @Mappings({
+    	@Mapping(source = "vers", target = "vers"),
 	    @Mapping(source = "codes", target = "codes"),
 	    @Mapping(source = "languages", target = "languages"),
     })

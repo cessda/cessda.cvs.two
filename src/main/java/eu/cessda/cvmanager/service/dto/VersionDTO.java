@@ -5,10 +5,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import javax.validation.constraints.*;
+
+import static org.hamcrest.CoreMatchers.equalTo;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Stream;
 import java.util.Objects;
+import java.util.Optional;
+
 import javax.persistence.Lob;
 
 /**
@@ -26,7 +32,6 @@ public class VersionDTO implements Serializable {
     @NotNull
     private String itemType;
 
-    @NotNull
     @Size(max = 20)
     private String language;
     
@@ -41,10 +46,8 @@ public class VersionDTO implements Serializable {
     @Lob
     private String summary;
 
-    @NotNull
     private String uri;
 
-    @NotNull
     @Size(max = 240)
     private String notation;
 
@@ -241,4 +244,20 @@ public class VersionDTO implements Serializable {
             ", publisher=" + getPublisher() +
             "}";
     }
+	
+	public static Optional<VersionDTO> getLatestVersion( Set<VersionDTO> versionDTOs, String langauge, String status){
+		if( versionDTOs == null || versionDTOs.isEmpty() || langauge == null)
+			return Optional.empty();
+		
+		Stream<VersionDTO> sortedVersion = versionDTOs
+				.stream()
+				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+				.filter( p -> langauge.equalsIgnoreCase( p.language ));
+		
+		if( status != null )
+			sortedVersion
+			.filter( p -> status.equalsIgnoreCase( p.status ));
+		
+		return sortedVersion.findFirst();
+	}
 }

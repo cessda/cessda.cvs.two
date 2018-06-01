@@ -78,6 +78,8 @@ public class VocabularyDTO implements Serializable {
     
     private Set<VersionDTO> vers = new HashSet<>();
     
+    private Set<VersionDTO> versions = new HashSet<>();
+    
     private Language selectedLang;
     
     private LocalDate publicationDate;
@@ -811,6 +813,36 @@ public class VocabularyDTO implements Serializable {
         this.codes = codes;
     }
     
+	public Set<VersionDTO> getVers() {
+		return vers;
+	}
+
+	public void setVers(Set<VersionDTO> vers) {
+		this.vers = vers;
+	}
+	
+	public VocabularyDTO addVers(VersionDTO ver) {
+    	if( this.vers == null )
+    		this.vers  = new HashSet<>();
+        this.vers.add( ver );
+        return this;
+    }
+    
+	public Set<VersionDTO> getVersions() {
+		return versions;
+	}
+
+	public void setVersions(Set<VersionDTO> versions) {
+		this.versions = versions;
+	}
+	
+	public VocabularyDTO addVersions(VersionDTO version) {
+    	if( this.versions == null )
+    		this.versions  = new HashSet<>();
+        this.versions.add( version );
+        return this;
+    }
+
 	public Language getSelectedLang() {
 		return selectedLang;
 	}
@@ -849,14 +881,6 @@ public class VocabularyDTO implements Serializable {
 
 	public void setPreviousPublication(Long previousPublication) {
 		this.previousPublication = previousPublication;
-	}
-
-	public Set<VersionDTO> getVers() {
-		return vers;
-	}
-
-	public void setVers(Set<VersionDTO> vers) {
-		this.vers = vers;
 	}
 
 	public String getVersionCs() {
@@ -1090,6 +1114,9 @@ public class VocabularyDTO implements Serializable {
 		vocabulary.setLanguages( Language.getLanguagesFromIso(cvScheme.getLanguagesByTitle()));
 		Set<String> langs = Language.getEnumAsSetString();
 		
+		String versionTL = "0.0.1";
+		String versionSL = "1.0";
+		
 		cvScheme.getLanguagesByTitle().forEach( lang -> {
 			if( !langs.contains( lang ))
 				return;
@@ -1099,96 +1126,94 @@ public class VocabularyDTO implements Serializable {
 				String title = cvScheme.getTitleByLanguage(lang);
 				String definition =cvScheme.getDescriptionByLanguage(lang);
 				
+				
 				switch ( langEnum ) {
 	    		case CZECH:
 	    			vocabulary.setTitleCs(title);
 	    			vocabulary.setDefinitionCs(definition);
+	    			vocabulary.setVersionCs(versionTL);
 	    			break;
 	    		case DANISH:
 	    			vocabulary.setTitleDa(title);
 	    			vocabulary.setDefinitionDa(definition);
+	    			vocabulary.setVersionDa(versionTL);
 	    			break;
 	    		case DUTCH:
 	    			vocabulary.setTitleNl(title);
 	    			vocabulary.setDefinitionNl(definition);
+	    			vocabulary.setVersionNl(versionTL);
 	    			break;
 	    		case ENGLISH:
 	    			vocabulary.setTitleEn(title);
 	    			vocabulary.setDefinitionEn(definition);
+	    			vocabulary.setVersionEn(versionSL);
 	    			break;
 	    		case FINNISH:
 	    			vocabulary.setTitleFi(title);
 	    			vocabulary.setDefinitionFi(definition);
+	    			vocabulary.setVersionFi(versionTL);
 	    			break;
 	    		case FRENCH:
 	    			vocabulary.setTitleFr(title);
 	    			vocabulary.setDefinitionFr(definition);
+	    			vocabulary.setVersionFr(versionTL);
 	    			break;
 	    		case GERMAN:
 	    			vocabulary.setTitleDe(title);
 	    			vocabulary.setDefinitionDe(definition);
+	    			vocabulary.setVersionDe(versionTL);
 	    			break;
 	    		case GREEK:
 	    			vocabulary.setTitleEl(title);
 	    			vocabulary.setDefinitionEl(definition);
+	    			vocabulary.setVersionEl(versionTL);
 	    			break;
 	    		case HUNGARIAN:
 	    			vocabulary.setTitleHu(title);
 	    			vocabulary.setDefinitionHu(definition);
+	    			vocabulary.setVersionHu(versionTL);
 	    			break;
 	    		case LITHUANIAN:
 	    			vocabulary.setTitleLt(title);
 	    			vocabulary.setDefinitionLt(definition);
+	    			vocabulary.setVersionLt(versionTL);
 	    			break;
 	    		case NORWEGIAN:
 	    			vocabulary.setTitleNo(title);
 	    			vocabulary.setDefinitionNo(definition);
+	    			vocabulary.setVersionNo(versionTL);
 	    			break;
 	    		case PORTUGUESE:
 	    			vocabulary.setTitlePt(title);
 	    			vocabulary.setDefinitionPt(definition);
+	    			vocabulary.setVersionPt(versionTL);
 	    			break;
 	    		case ROMANIAN:
 	    			vocabulary.setTitleRo(title);
 	    			vocabulary.setDefinitionRo(definition);
+	    			vocabulary.setVersionRo(versionTL);
 	    			break;
 	    		case SLOVAK:
 	    			vocabulary.setTitleSk(title);
 	    			vocabulary.setDefinitionSk(definition);
+	    			vocabulary.setVersionSk(versionTL);
 	    			break;
 	    		case SLOVENIAN:
 	    			vocabulary.setTitleSl(title);
 	    			vocabulary.setDefinitionSl(definition);
+	    			vocabulary.setVersionSl(versionTL);
 	    			break;
 	    		case SPANISH:
 	    			vocabulary.setTitleEs(title);
 	    			vocabulary.setDefinitionEs(definition);
+	    			vocabulary.setVersionEs(versionTL);
 	    			break;
 	    		case SWEDISH:
 	    			vocabulary.setTitleSv(title);
 	    			vocabulary.setDefinitionSv(definition);
+	    			vocabulary.setVersionSv(versionTL);
 	    			break;
 				}
-				
-//				VersionDTO version = new VersionDTO();
-//				version.setStatus( Status.DRAFT.toString() );
-//				if( langEnum.equals( Language.ENGLISH)) {
-//					version.setItemType( ItemType.SL.toString());
-//					version.setNumber( "1.0" );
-//				} else {
-//					version.setItemType( ItemType.TL.toString());
-//					version.setNumber( "0.0.1" );
-//				}
-//				version.setLanguage( langEnum.name().toLowerCase());
-//				version.setUri( vocabulary.getUri() );
-//				version.setNotation( vocabulary.getNotation() );
-//				version.setTitle( title );
-//				version.setDefinition(definition);
-//				version.setPreviousVersion( 0L );
-//				version.setInitialVersion( 0L );
-//				version.setCreator( 1L );
-//				version.setPublisher( 1L );
-				
 				
 			}
 		});

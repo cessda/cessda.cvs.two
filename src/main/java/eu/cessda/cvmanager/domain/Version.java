@@ -49,9 +49,8 @@ public class Version implements Serializable{
     @Field(type = FieldType.keyword)
     private String itemType;
     
-    @NotNull
     @Size(max = 20)
-    @Column(name = "language", length = 20, nullable = false)
+    @Column(name = "language", length = 20)
     @Field(type = FieldType.keyword)
     private String language;
     
@@ -70,13 +69,11 @@ public class Version implements Serializable{
     @Column(name = "summary")
     private String summary;
     
-    @NotNull
-    @Column(name = "uri", length = 240, nullable = false)
+    @Column(name = "uri", length = 240)
     private String uri;
     
     // Start SL or TL Vocabulary
-    @NotNull
-    @Column(name = "notation", length = 240, nullable = false)
+    @Column(name = "notation", length = 240)
     private String notation;
     
     @Lob
