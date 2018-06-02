@@ -27,6 +27,7 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
+import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.ValueChangeMode;
@@ -126,7 +127,7 @@ public class EditorSearchView extends CvView {
 			.withStyleName(ValoTheme.TABLE_BORDERLESS, "undefined-height", "search-grid", "no-stripe")
 			.withFullSize()
 			.setSelectionMode(SelectionMode.NONE);
-				
+		
 		sortByRelevence.addClickListener( e -> {
 			if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty() ) {
 				sortByRelevence.setStyleName( "groupButton enable" );

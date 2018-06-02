@@ -245,14 +245,14 @@ public class VersionDTO implements Serializable {
             "}";
     }
 	
-	public static Optional<VersionDTO> getLatestVersion( Set<VersionDTO> versionDTOs, String langauge, String status){
-		if( versionDTOs == null || versionDTOs.isEmpty() || langauge == null)
+	public static Optional<VersionDTO> getLatestVersion( Set<VersionDTO> versionDTOs, String language, String status){
+		if( versionDTOs == null || versionDTOs.isEmpty() || language == null)
 			return Optional.empty();
 		
 		Stream<VersionDTO> sortedVersion = versionDTOs
 				.stream()
 				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
-				.filter( p -> langauge.equalsIgnoreCase( p.language ));
+				.filter( p -> language.equalsIgnoreCase( p.language ));
 		
 		if( status != null )
 			sortedVersion

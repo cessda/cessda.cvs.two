@@ -202,8 +202,8 @@ public class ImportService {
 			Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 			vocabularySearchRepository.save( vocab );
 			
-			PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
-			publishedVocabularySearchRepository.save( publishedVocabulary );
+//			PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
+//			publishedVocabularySearchRepository.save( publishedVocabulary );
 			
 		}
 		log.debug("DDIFlatDB imported to database");

@@ -17758,6 +17758,10 @@ div.v-layout.v-horizontal.v-widget {
 	font-weight: 700;
 }
 
+.mytheme .col-des-4 {
+	width: 33%;
+}
+
 .mytheme .header-block {
 	font-size: 14px;
 	color: #444444;
@@ -17847,6 +17851,9 @@ div.v-layout.v-horizontal.v-widget {
 	}
 	.block-responsive {
 		display: none !important;
+	}
+	.col-des-4 {
+		width: 100% !important;
 	}
 }
 

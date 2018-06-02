@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.layout;
 
 import java.util.Locale;
 
+import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
@@ -26,6 +27,7 @@ import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
@@ -57,7 +59,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	
 	private Language selectedLanguage;
 	private Language sourceLanguage;
-	private Status currentStatus;
+	private VersionDTO currentVersion;
 	
 	private CVScheme cvScheme;
 	
@@ -69,6 +71,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private MButton buttonFinaliseReview = new MButton();
 	private MButton buttonPublishCv = new MButton();
 	private MButton buttonWithdrawnCv = new MButton();
+	private boolean isCurrentSL;
 	
 	
 	public EditorCvActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
@@ -109,9 +112,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		buttonPublishCv
 			.withFullWidth()
 			.addClickListener( this::publishCv );
-		
-		updateMessageStrings(locale);
-		
+				
 		getInnerContainer()
 			.add(
 				buttonAddCv,
@@ -136,7 +137,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	
 	private void doCvEdit( ClickEvent event ) {
 		Window window = null;
-		if( vocabulary.isPersisted())
+		if( sourceLanguage.equals(selectedLanguage))
 			window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, cvScheme, vocabulary, agency, i18n, selectedLanguage, eventBus);
 		else
 			window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, agency, vocabularyService);
@@ -156,17 +157,33 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		
 					dialog -> {
 						if( dialog.isConfirmed() ) {
-							vocabulary.setStatus( Status.REVIEW.toString());
-							vocabulary.getStatuses().clear();
-							vocabulary.addStatus( Status.REVIEW.toString() );
+							// set status for curent version to review
+							currentVersion.setStatus( Status.REVIEW.toString() );
+							vocabulary.setStatusByLanguage(selectedLanguage, Status.REVIEW.toString());
+							
+							// if source labguage
+							if( isCurrentSL) {
+								vocabulary.setStatus( Status.REVIEW.toString());
+							}
+							
+							// set collection of statuses for indexing
+							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
 							
 							// save to database
 							vocabulary = vocabularyService.save(vocabulary);
 							
-							// index
+							// index for editor
+							vocabulary.setVers( vocabulary.getLatestVersions());
+							vocabulary.setCodes( vocabulary.generateCodesFromLatestVersion());
 							Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 							vocabularySearchRepository.save( vocab );
 							
+							// save to flatDB
+							cvScheme.setStatus(Status.REVIEW.toString()  );
+							getCvScheme().save();
+							DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+														
+							// refresh detail page
 							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 						}
 					}
@@ -180,19 +197,34 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		
 					dialog -> {
 						if( dialog.isConfirmed() ) {
-							vocabulary.setStatus( Status.PUBLISHED.toString());
-							vocabulary.getStatuses().clear();
-							vocabulary.addStatus( Status.PUBLISHED.toString() );
+							
+							currentVersion.setStatus( Status.PUBLISHED.toString() );
+							vocabulary.setStatusByLanguage(selectedLanguage, Status.PUBLISHED.toString());
+							
+							if( isCurrentSL) {
+								vocabulary.setStatus( Status.PUBLISHED.toString());
+							}
+							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
 							
 							// save to database
 							vocabulary = vocabularyService.save(vocabulary);
 							
-							// index
+							// index for editor
+							vocabulary.setVers( vocabulary.getLatestVersions());
+							vocabulary.setCodes( vocabulary.generateCodesFromLatestVersion());
 							Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 							vocabularySearchRepository.save( vocab );
 							
+							// index for publication page
+							vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
+							vocabulary.setCodes( vocabulary.generateCodesFromLatestPublishedVersion());
 							PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
 							publishedVocabularySearchRepository.save( publishedVocabulary );
+							
+							// save to flatDB
+							cvScheme.setStatus(Status.PUBLISHED.toString()  );
+							getCvScheme().save();
+							DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
 							
 							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 						}
@@ -202,11 +234,12 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	
 	@Override
 	public void updateMessageStrings(Locale locale) {
+		String buttonSuffix = (isCurrentSL ? " SL " : " TL ") + selectedLanguage.name().toLowerCase();
 		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));
-		buttonEditCv.withCaption(i18n.get("view.action.button.cvscheme.edit", locale));
+		buttonEditCv.withCaption(i18n.get("view.action.button.cvscheme.edit", locale) + buttonSuffix);
 		buttonAddTranslation.withCaption( i18n.get("view.action.button.cvscheme.translation", locale));
-		buttonSentToReview.withCaption( "Submit to review" );
-		buttonPublishCv.withCaption( "Publish");
+		buttonSentToReview.withCaption( "Submit" +  buttonSuffix );
+		buttonPublishCv.withCaption( "Publish" + buttonSuffix);
 	}
 
 	public AgencyDTO getAgency() {
@@ -261,16 +294,29 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		this.sourceLanguage = sourceLanguage;
 	}
 	
-	public void setCurrentStatus(Status currentStatus) {
-		this.currentStatus = currentStatus;
+	public VersionDTO getCurrentVersion() {
+		return currentVersion;
+	}
+
+	public void setCurrentVersion(VersionDTO currentVersion) {
+		this.currentVersion = currentVersion;
 	}
 
 	public boolean hasActionRight() {
+		
 		boolean hasAction = false;
 		if( !SecurityUtils.isAuthenticated() ) {
 			setVisible( false );
 		}
 		else {
+			
+			if( sourceLanguage.equals(selectedLanguage))
+				isCurrentSL = true;
+			else
+				isCurrentSL = false;
+			
+			updateMessageStrings(locale);
+			
 			setVisible( true );
 			hasAction = true;
 			// check add CV button
@@ -279,38 +325,47 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 			else
 				buttonAddCv.setVisible( false );
 			
-			// check edit CV button
-			if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage))
-				buttonEditCv.setVisible( true );
-			else
+			if( currentVersion == null ) {
 				buttonEditCv.setVisible( false );
+				buttonSentToReview.setVisible( false );
+				buttonPublishCv.setVisible( false );
+				buttonAddTranslation.setVisible( false );
+			}
+			else {
 			
-			if( currentStatus.equals( Status.DRAFT )) {
-				buttonPublishCv.setVisible( false );
-				buttonAddTranslation.setVisible( false );
-				if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) {
-					buttonSentToReview.setVisible( true );
-				}
-				else {
-					buttonSentToReview.setVisible( false );
-				}
-			} else if(currentStatus.equals( Status.REVIEW )) {
-				buttonSentToReview.setVisible( false );
-				buttonAddTranslation.setVisible( false );
-				if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) {
-					buttonPublishCv.setVisible( true );
-				}
-				else {
-					buttonPublishCv.setVisible( false );
-				}
+			// check edit CV button
+				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage))
+					buttonEditCv.setVisible( true );
+				else
+					buttonEditCv.setVisible( false );
 				
-			} else if(currentStatus.equals( Status.PUBLISHED )) {
-				buttonSentToReview.setVisible( false );
-				buttonPublishCv.setVisible( false );
-				if( SecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) )
-					buttonAddTranslation.setVisible( true );
-				else {
+				if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
+					buttonPublishCv.setVisible( false );
 					buttonAddTranslation.setVisible( false );
+					if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) {
+						buttonSentToReview.setVisible( true );
+					}
+					else {
+						buttonSentToReview.setVisible( false );
+					}
+				} else if(currentVersion.getStatus().equals( Status.REVIEW.toString() )) {
+					buttonSentToReview.setVisible( false );
+					buttonAddTranslation.setVisible( false );
+					if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) {
+						buttonPublishCv.setVisible( true );
+					}
+					else {
+						buttonPublishCv.setVisible( false );
+					}
+					
+				} else if(currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
+					buttonSentToReview.setVisible( false );
+					buttonPublishCv.setVisible( false );
+					if( SecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) )
+						buttonAddTranslation.setVisible( true );
+					else {
+						buttonAddTranslation.setVisible( false );
+					}
 				}
 			}
 			

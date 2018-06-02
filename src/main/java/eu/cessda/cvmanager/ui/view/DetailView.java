@@ -76,6 +76,7 @@ import com.vaadin.ui.components.grid.TreeGridDropTarget;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
@@ -112,7 +113,7 @@ public class DetailView extends CvView {
 	private final CodeService codeService;
 	
 	private Language selectedLang = Language.ENGLISH;
-	private FormMode formMode;
+//	private FormMode formMode;
 
 //	private MCssLayout buttonLayout = new MCssLayout();
 //	private MButton editButton = new MButton("Edit").withStyleName(ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL,
@@ -174,7 +175,7 @@ public class DetailView extends CvView {
 	
 	private boolean enableTreeDragAndDrop;
 
-	private View oldView;
+//	private View oldView;
 	
 	private TreeGrid<CVConcept> detailTreeGrid = new TreeGrid<>(CVConcept.class);
 	private TreeGridDragSource<CVConcept> dragSource;
@@ -279,7 +280,7 @@ public class DetailView extends CvView {
 		super.enter(event);
 		
 		locale = UI.getCurrent().getLocale();
-		setOldView(event.getOldView());
+//		setOldView(event.getOldView());
 //		actionPanel.conceptSelectedChange( null );
 
 		if (event.getParameters() != null) {
@@ -295,6 +296,7 @@ public class DetailView extends CvView {
 						cvItem.setCurrentLanguage( mappedParams.get("lang") );
 						selectedLang = Language.getEnum( selectedLanguage );
 						
+						// set selected language and version
 						editorCvActionLayout.setSelectedLanguage(selectedLang);
 					}
 					if(  mappedParams.get("tab") != null )
@@ -329,16 +331,14 @@ public class DetailView extends CvView {
 //	}
 	
 	private void setDetails() {
-		setFormMode(FormMode.view);
+//		setFormMode(FormMode.view);
 		
 		refreshCvScheme();
 //		refreshCvConcepts();
 		
-		editorCvActionLayout.setCurrentStatus( Status.valueOf( vocabulary.getStatus().toUpperCase()));
-		editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
-		editorCvActionLayout.setAgency( agency );
-		editorCvActionLayout.setVocabulary( vocabulary );
-		editorCvActionLayout.setSourceLanguage( Language.getEnumByName( vocabulary.getSourceLanguage()));
+		
+		
+		
 		
 		// update breadcrumb
 		breadcrumbs
@@ -357,6 +357,10 @@ public class DetailView extends CvView {
 		
 		topPanel.setVisible( false );
 		
+		refreshCvActionButton();
+	}
+
+	private void refreshCvActionButton() {
 		if( editorCvActionLayout.hasActionRight() ) {
 			mainContainer.removeStyleName("margin-left10");
 			sidePanel.setVisible( true );
@@ -399,11 +403,15 @@ public class DetailView extends CvView {
 			setAgency( agencyService.findByName( getVocabulary().getAgencyName()));
 		}
 		
-		
-		
-				
 		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
+		
 		sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage().toString()).toString();
+		
+		editorCvActionLayout.setSourceLanguage( Language.getEnumByName( vocabulary.getSourceLanguage()));
+		editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
+		editorCvActionLayout.setAgency( agency );
+		editorCvActionLayout.setVocabulary( vocabulary );
+		
 		String clickedLanguage = cvItem.getCurrentLanguage() == null ? sourceLanguage : cvItem.getCurrentLanguage();
 
 		languages.forEach(item -> {
@@ -415,13 +423,16 @@ public class DetailView extends CvView {
 				setSelectedLang( Language.getEnum( e.getButton().getCaption().toLowerCase()) );
 //				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
 				
-				setFormMode(FormMode.view);
+//				setFormMode(FormMode.view);
 				
 				initTopViewSection();
 //				initTopEditSection();
 				initBottomViewSection();
 				
 				editorCvActionLayout.setSelectedLanguage(selectedLang);
+				editorCvActionLayout.setCurrentVersion( null );
+				vocabulary.getLatestVersionByLanguage(selectedLang)
+					.ifPresent( v -> editorCvActionLayout.setCurrentVersion(v));
 				
 //				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLang))
 //					editButton.setVisible( true );
@@ -431,6 +442,7 @@ public class DetailView extends CvView {
 //				actionPanel.conceptSelectedChange( null );
 				setCode( null );
 				updateMessageStrings(locale);
+				refreshCvActionButton();
 			});
 			languageLayout.add(langButton);
 			if( item.equals(sourceLanguage)) {
@@ -438,6 +450,7 @@ public class DetailView extends CvView {
 				langButton.setDescription( "source language" );
 			}
 			if( item.equals(clickedLanguage) ) {
+				editorCvActionLayout.setSelectedLanguage( Language.getEnum( item) );
 				langButton.click();
 			}
 		});
@@ -456,7 +469,7 @@ public class DetailView extends CvView {
 		vocabularyService.save(vocabulary);
 			
 		Notification.show("All changes saved");
-		setFormMode(FormMode.view);
+//		setFormMode(FormMode.view);
 		initTopViewSection();
 		// emit Event for searchView
 		eventBus.publish(EventScope.UI, SearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, ddiStore) );
@@ -483,25 +496,25 @@ public class DetailView extends CvView {
 		topHead.withFullWidth().add(logo, topTitle);
 
 		MCssLayout titleSmall = new MCssLayout();
-		titleSmall.withFullWidth().add( lTitle.withWidth("120px").withStyleName("leftPart"),
+		titleSmall.withFullWidth().add( lTitle.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(cvItem.getCvScheme().getTitleByLanguage( sourceLanguage )).withStyleName("rightPart"));
 
 		MCssLayout description = new MCssLayout();
-		description.withFullWidth().add(lDefinition.withWidth("120px").withStyleName("leftPart"),
+		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(cvItem.getCvScheme().getDescriptionByLanguage( sourceLanguage )).withStyleName("rightPart"));
 
 		MCssLayout code = new MCssLayout();
-		code.withFullWidth().add(lCode.withWidth("120px").withStyleName("leftPart"),
+		code.withFullWidth().add(lCode.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(cvItem.getCvScheme().getCode()).withStyleName("rightPart"));
 
 		MCssLayout titleSmallOl = new MCssLayout();
 		titleSmallOl.withFullWidth().add(
-				lTitleOl.withWidth("120px").withStyleName("leftPart"),
+				lTitleOl.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(cvItem.getCvScheme().getTitleByLanguage(selectedLang.toString())).withStyleName("rightPart"));
 
 		MCssLayout descriptionOl = new MCssLayout();
 		descriptionOl.withFullWidth().add(
-				lDefinitionOl.withWidth("120px").withStyleName("leftPart"),
+				lDefinitionOl.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(cvItem.getCvScheme().getDescriptionByLanguage(selectedLang.toString())).withStyleName("rightPart"));
 
 		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
@@ -509,20 +522,29 @@ public class DetailView extends CvView {
 			descriptionOl.setVisible(false);
 		}
 
-		MCssLayout langSec = new MCssLayout();
-		langSec.withFullWidth().add(
-				new MCssLayout().withWidth("33%")
-						.add(lLang.withWidth("120px").withStyleName("leftPart"),
+		MCssLayout langVersDateLayout = new MCssLayout();
+		langVersDateLayout.withFullWidth().add(
+				new MCssLayout().withStyleName("col-des-4")
+						.add(lLang.withWidth("140px").withStyleName("leftPart"),
 								new MLabel(selectedLang.toString()).withStyleName("rightPart")),
-				new MCssLayout().withWidth("33%").add(
-						lVersion.withWidth("180px").withStyleName("leftPart"),
-						new MLabel(cvItem.getCvScheme().getVersion().getPublicationVersion() + (selectedLang.toString().equals( sourceLanguage ) ? ""
-								: "-" + selectedLang.toString())).withStyleName("rightPart")),
-				new MCssLayout().withWidth("33%").add(
-						lDate.withWidth("140px").withStyleName("leftPart"),
-						new MLabel(cvItem.getCvScheme().getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
+				new MCssLayout()
+						.withStyleName("col-des-4")
+						.add(
+								lVersion.withWidth("140px").withStyleName("leftPart"),
+								new MLabel(vocabulary.getVersionByLanguage( selectedLang )+ (selectedLang.toString().equals( sourceLanguage ) ? ""
+								: "-" + selectedLang.toString())).withStyleName("rightPart"))
+				);
+		
+		if( vocabulary.getStatus().equals( Status.PUBLISHED.toString()))
+			langVersDateLayout.add(
+					new MCssLayout()
+						.withStyleName("col-des-4")
+						.add(
+								lDate.withWidth("140px").withStyleName("leftPart"),
+								new MLabel(cvItem.getCvScheme().getVersion().getPublicationDate().toString()).withStyleName("rightPart"))
+					);
 
-		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langSec);
+		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langVersDateLayout);
 	}
 
 //	private void initTopEditSection() {
@@ -963,38 +985,38 @@ public class DetailView extends CvView {
 			cvItem.setCvConcept(currentCvConcept);
 		}
 	}
-	
-	public FormMode getFormMode() {
-		return formMode;
-	}
-
-	public void setFormMode(FormMode fMode) {
-		formMode = fMode;
-
-		switch (formMode) {
-		case view:
-			topViewSection.setVisible(true);
-//			topEditSection.setVisible(false);
-//			saveButton.setVisible(false);
-//			cancelButton.setVisible(false);
-//			if( SecurityContextHolder.getContext().getAuthentication() == null ) {
-//				editButton.setVisible( false );
-//			} else {
-//				editButton.setVisible( true );
-//			}
-			break;
-		case edit:
-//			topEditSection.setVisible(true);
-			topViewSection.setVisible(false);
-//			saveButton.setVisible(true);
-//			cancelButton.setVisible(true);
-//			editButton.setVisible(false);
-
-			break;
-		default:
-			break;
-		}
-	}
+//	
+//	public FormMode getFormMode() {
+//		return formMode;
+//	}
+//
+//	public void setFormMode(FormMode fMode) {
+//		formMode = fMode;
+//
+//		switch (formMode) {
+//		case view:
+//			topViewSection.setVisible(true);
+////			topEditSection.setVisible(false);
+////			saveButton.setVisible(false);
+////			cancelButton.setVisible(false);
+////			if( SecurityContextHolder.getContext().getAuthentication() == null ) {
+////				editButton.setVisible( false );
+////			} else {
+////				editButton.setVisible( true );
+////			}
+//			break;
+//		case edit:
+////			topEditSection.setVisible(true);
+//			topViewSection.setVisible(false);
+////			saveButton.setVisible(true);
+////			cancelButton.setVisible(true);
+////			editButton.setVisible(false);
+//
+//			break;
+//		default:
+//			break;
+//		}
+//	}
 
 	public Language getSelectedLang() {
 		return selectedLang;
@@ -1004,24 +1026,24 @@ public class DetailView extends CvView {
 		this.selectedLang = selectedLang;
 	}
 
-	private void setOldView(View oldView) {
-		this.oldView = oldView;
-	}
+//	private void setOldView(View oldView) {
+//		this.oldView = oldView;
+//	}
+//
+//	private View getOldView() {
+//		return this.oldView;
+//	}
 
-	private View getOldView() {
-		return this.oldView;
-	}
-
-	private void back(ClickEvent clickEvent) {
-
-		UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
-		if (getOldView().getClass().getSimpleName().equals("HomeView")) {
-			UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
-		} else {
-			UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
-		}
-
-	}
+//	private void back(ClickEvent clickEvent) {
+//
+//		UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
+//		if (getOldView().getClass().getSimpleName().equals("HomeView")) {
+//			UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
+//		} else {
+//			UI.getCurrent().getNavigator().navigateTo(SearchView.VIEW_NAME);
+//		}
+//
+//	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )
 	public void resetGrid( DDIStore ddiStore ) {

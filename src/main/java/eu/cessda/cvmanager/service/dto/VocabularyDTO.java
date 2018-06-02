@@ -7,6 +7,7 @@ import javax.validation.constraints.*;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 
+import eu.cessda.cvmanager.domain.Concept;
 import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
@@ -15,8 +16,13 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -319,6 +325,46 @@ public class VocabularyDTO implements Serializable {
     	return null;
     }
     
+    public String getVersionByLanguage( Language language ) {
+    	switch (language) {
+		case CZECH:
+			return versionCs;
+		case DANISH:
+			return versionDa;
+		case DUTCH:
+			return versionNl;
+		case ENGLISH:
+			return versionEn;
+		case FINNISH:
+			return versionFi;
+		case FRENCH:
+			return versionFr;
+		case GERMAN:
+			return versionDe;
+		case GREEK:
+			return versionEl;
+		case HUNGARIAN:
+			return versionHu;
+		case LITHUANIAN:
+			return versionLt;
+		case NORWEGIAN:
+			return versionNo;
+		case PORTUGUESE:
+			return versionPt;
+		case ROMANIAN:
+			return versionRo;
+		case SLOVAK:
+			return versionSk;
+		case SLOVENIAN:
+			return versionSl;
+		case SPANISH:
+			return versionEs;
+		case SWEDISH:
+			return versionSv;
+    	}
+    	return null;
+    }
+    
     public VocabularyDTO setTitleDefinition( String title, String definition, String language) {
     	return setTitleDefinition(title, definition, Language.getEnum(language));
     }
@@ -397,6 +443,64 @@ public class VocabularyDTO implements Serializable {
     	addLanguage(language.name().toLowerCase());
     	return this;
     }
+    
+	public VocabularyDTO setStatusByLanguage(Language language, String status) {
+		switch (language) {
+			case CZECH:
+				setVersionCs(status);
+				break;
+			case DANISH:
+				setVersionDa(status);
+				break;
+			case DUTCH:
+				setVersionNl(status);
+				break;
+			case ENGLISH:
+				setVersionEn(status);
+				break;
+			case FINNISH:
+				setVersionFi(status);
+				break;
+			case FRENCH:
+				setVersionFr(status);
+				break;
+			case GERMAN:
+				setVersionDe(status);
+				break;
+			case GREEK:
+				setVersionEl(status);
+				break;
+			case HUNGARIAN:
+				setVersionHu(status);
+				break;
+			case LITHUANIAN:
+				setVersionLt(status);
+				break;
+			case NORWEGIAN:
+				setVersionNo(status);
+				break;
+			case PORTUGUESE:
+				setVersionPt(status);
+				break;
+			case ROMANIAN:
+				setVersionRo(status);
+				break;
+			case SLOVAK:
+				setVersionSk(status);
+				break;
+			case SLOVENIAN:
+				setVersionSl(status);
+				break;
+			case SPANISH:
+				setVersionEs(status);
+				break;
+			case SWEDISH:
+				setVersionSv(status);
+				break;
+		}
+		
+		return this;
+	}
     
     public Long getId() {
         return id;
@@ -1221,9 +1325,90 @@ public class VocabularyDTO implements Serializable {
 		return vocabulary;
 	}
 	
+	public Set<String> getLatestStatuses(){
+		Set<String> latestStatuses = new HashSet<>();
+		getLatestVersions().forEach( v -> latestStatuses.add(v.getStatus()));
+		return latestStatuses;
+	}
+	
+	public Set<VersionDTO> getLatestVersions(){
+		return getLatestVersions( null );
+	}
+	
+	public Set<VersionDTO> getLatestVersions(String status){
+		Set<VersionDTO> versionDTOs = new HashSet<>();
+		for(String lang: languages) {
+			getLatestVersionByLanguage(lang, status).ifPresent( v -> versionDTOs.add(v));
+		}
+		return versionDTOs;
+	}
+	
+	public Optional<VersionDTO> getLatestVersionByLanguage(Language language) {
+		return getLatestVersionByLanguage(language.name().toLowerCase());
+	}
+	
+	public Optional<VersionDTO> getLatestVersionByLanguage(String language) {
+		return getLatestVersionByLanguage(language, null);
+	}
+	
+	public Optional<VersionDTO> getLatestVersionByLanguage(String language, String status) {
+		
+		if( status == null ) {
+			return versions
+					.stream()
+					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+					.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
+					.findFirst();
+		} else {
+			return versions
+					.stream()
+					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+					.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
+					.filter( p -> status.equalsIgnoreCase( p.getStatus() ))
+					.findFirst();
+		}
+	}
+	
 	public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
 		if( docId == null )
 			return Optional.empty();
 		return vocabs.stream().filter( voc -> voc.getId() == Long.parseLong(docId)).findFirst();
 	}
+	
+	public Set<CodeDTO> generateCodesFromLatestVersion(){
+		// get from latest version from all status
+		return extractCodeFromVersionConcept( null );
+	}
+	
+	public Set<CodeDTO> generateCodesFromLatestPublishedVersion(){
+		return extractCodeFromVersionConcept( Status.PUBLISHED.toString() );
+	}
+
+	private Set<CodeDTO> extractCodeFromVersionConcept( String status) {
+		Map<String, CodeDTO> codeMap = new HashMap<>();
+		for(String lang: languages) {
+			Language langEnum = Language.getEnumByName(lang);
+			getLatestVersionByLanguage(lang,status).ifPresent( versionDTO -> {
+				// get codes
+				for( ConceptDTO concept : versionDTO.getConcepts()){
+					CodeDTO targetCode = codeMap.get( concept.getNotation());
+					if( targetCode == null ) {
+						CodeDTO newCode = new CodeDTO();
+						newCode.setNotation( concept.getNotation());
+						newCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum);
+						codeMap.put(concept.getNotation(), newCode);
+					} else {
+						targetCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum);
+					}
+				};
+			});
+		}
+		return codeMap
+				.values()
+				.stream()
+				.collect( Collectors.toSet());
+	}
+	
+
+	
 }
