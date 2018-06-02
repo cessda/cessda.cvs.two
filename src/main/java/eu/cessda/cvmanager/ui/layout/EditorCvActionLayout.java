@@ -71,6 +71,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private MButton buttonFinaliseReview = new MButton();
 	private MButton buttonPublishCv = new MButton();
 	private MButton buttonWithdrawnCv = new MButton();
+	
+	private MButton buttonNewVersion = new MButton();
 	private boolean isCurrentSL;
 	
 	
@@ -131,22 +133,23 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		newCvScheme.setContainerId(newCvScheme.getId());
 		newCvScheme.setStatus( Status.DRAFT.toString() );
 
-		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, newCvScheme, new VocabularyDTO(), agency, i18n, null, eventBus);
+		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, newCvScheme, new VocabularyDTO(), new VersionDTO(), agency, i18n, null, eventBus);
 		getUI().addWindow(window);
 	}
 	
 	private void doCvEdit( ClickEvent event ) {
 		Window window = null;
 		if( sourceLanguage.equals(selectedLanguage))
-			window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, cvScheme, vocabulary, agency, i18n, selectedLanguage, eventBus);
+			window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, 
+					cvScheme, vocabulary, currentVersion, agency, i18n, selectedLanguage, eventBus);
 		else
-			window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, agency, vocabularyService);
+			window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, currentVersion, agency, vocabularyService, vocabularyMapper, vocabularySearchRepository, eventBus);
 		getUI().addWindow(window);
 	}
 	
 	private void doCvAddTranslation(ClickEvent event ) {
 		
-		Window window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, agency, vocabularyService);
+		Window window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, new VersionDTO(), agency, vocabularyService, vocabularyMapper, vocabularySearchRepository, eventBus);
 		getUI().addWindow(window);
 	}
 	
@@ -361,6 +364,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 				} else if(currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
 					buttonSentToReview.setVisible( false );
 					buttonPublishCv.setVisible( false );
+					buttonEditCv.setVisible( false );
 					if( SecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) )
 						buttonAddTranslation.setVisible( true );
 					else {

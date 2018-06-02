@@ -1218,6 +1218,11 @@ public class VocabularyDTO implements Serializable {
 		vocabulary.setLanguages( Language.getLanguagesFromIso(cvScheme.getLanguagesByTitle()));
 		Set<String> langs = Language.getEnumAsSetString();
 		
+		if( cvScheme.getStatus() == null )
+			vocabulary.setStatus(Status.DRAFT.toString());
+		else
+			vocabulary.setStatus(cvScheme.getStatus());
+		
 		String versionTL = "0.0.1";
 		String versionSL = "1.0";
 		

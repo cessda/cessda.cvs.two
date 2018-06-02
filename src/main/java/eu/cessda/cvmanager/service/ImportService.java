@@ -140,7 +140,6 @@ public class ImportService {
 						System.out.println( "Error: " + vocabulary.getNotation() + " - " + version.getNotation() + " - " + version.getUri() + " " + version.getLanguage());
 					}
 					vocabulary.addVersions(version);
-					vocabulary.addVers(version);
 				}
 			}
 			
@@ -199,6 +198,7 @@ public class ImportService {
 			};
 			
 			// reindex nested codes
+			vocabulary.setVers( vocabulary.getVersions());
 			Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 			vocabularySearchRepository.save( vocab );
 			

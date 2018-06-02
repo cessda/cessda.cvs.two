@@ -24,7 +24,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.DetailView2;
 
 public class CvSchemeComponent extends CustomComponent {
 
@@ -132,15 +132,15 @@ public class CvSchemeComponent extends CustomComponent {
 	}
 
 	private void setContent(String language) {
-		enTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
+		enTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
 				+ cvScheme.getContainerId() + "'>" + cvScheme.getTitleByLanguage("en") + "</a>");
 //		log.info("URL is: " + enTitle.getValue());
 
-		olTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
+		olTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
 				+ cvScheme.getContainerId() + "'>" + cvScheme.getCode() + "</a>");
 		desc.setValue(cvScheme.getDescriptionByLanguage(language));
 		version.setValue("Version: " + cvScheme.getVersion().getPublicationVersion() + " "
-				+ (language.equals("en") ? "" : "_" + language) + "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
+				+ (language.equals("en") ? "" : "_" + language) + "<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
 				+ cvScheme.getContainerId() +"?tab=download"+ "'>Download</a>");
 
 		List<CVConcept> theConceptList = cvScheme.getConceptList();
@@ -161,11 +161,11 @@ public class CvSchemeComponent extends CustomComponent {
 	}
 	
 	private String getMatchesConceptFromKeyword(CVConcept concept, String language) {
-		String conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
+		String conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
 				+ cvScheme.getContainerId() + "/" + concept.getNotation() + "'>" + concept.getPrefLabelByLanguage(language) + "</a>";
 		for (LanguageLabel languagelabel : concept.getPrefLabel()) {
 			if( languagelabel.getLabel().toLowerCase().contains(keyword)) {
-				conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/"
+				conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
 						+ cvScheme.getContainerId() + "/" + concept.getNotation() + "?lang=" + languagelabel.getLanguage() + "'>" +languagelabel.getLabel() + "</a>";
 			}
 		};

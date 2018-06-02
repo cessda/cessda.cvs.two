@@ -37,11 +37,14 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.domain.Vocabulary;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.DetailView;
@@ -79,6 +82,7 @@ public class DialogCVSchemeWindow extends MWindow {
 	private Language language;
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
+	private VersionDTO version;
 	private CVScheme cvScheme;
 	
 	private boolean isUpdated = false;
@@ -86,7 +90,7 @@ public class DialogCVSchemeWindow extends MWindow {
 	public DialogCVSchemeWindow(StardatDDIService stardatDDIService, AgencyService agencyService, 
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
 			VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, 
-			VocabularyDTO vocabulary, AgencyDTO agency, I18N i18n, Language selectedLanguage,
+			VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, I18N i18n, Language selectedLanguage,
 			UIEventBus eventBus) {
 		super("Add CVScheme");
 		this.agencyService = agencyService;
@@ -96,6 +100,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		this.vocabularyService = vocabularyService;
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.vocabulary = vocabulary;
+		this.version = version;
 		this.agency = agency;
 		this.i18n = i18n;
 		this.eventBus = eventBus;
@@ -309,9 +314,24 @@ public class DialogCVSchemeWindow extends MWindow {
 			vocabulary.setSourceLanguage( language.name().toLowerCase());
 			vocabulary.setStatus( getCvScheme().getStatus() );
 			vocabulary.addStatus( getCvScheme().getStatus() );
+			
+			version.setUri(ddiStore.getElementId());
+			version.setNotation( tfCode.getValue());
+			version.setNumber("1.0");
+			version.setStatus( Status.DRAFT.toString() );
+			version.setItemType( ItemType.SL.toString());
+			version.setLanguage( language.name().toLowerCase() );
+			version.setPreviousVersion( 0L );
+			version.setInitialVersion( 0L );
+			
+			vocabulary.addVersions(version);
+			vocabulary.addVers(version);
 		}
 		
 		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
+		
+		version.setTitle( tfTitle.getValue());
+		version.setDefinition( description.getValue() );
 		
 		// save to database
 		vocabulary = vocabularyService.save(vocabulary);

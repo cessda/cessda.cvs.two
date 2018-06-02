@@ -17639,8 +17639,20 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .button-language-selected {
-	background-image: -webkit-linear-gradient(top, #fafafa 2%, #eaeaea 98%);
-	background-image: linear, to bottom, #fafafa 2%, #eaeaea 98%;
+	background-image: -webkit-linear-gradient(top, #fafafa 2%, #dadada 98%);
+	background-image: linear, to bottom, #fafafa 2%, #dadada 98%;
+}
+
+.mytheme .status-draft {
+	webkit-box-shadow: 3px 3px 8px -3px #f00;
+	-moz-box-shadow: 3px 3px 8px -3px #f00;
+	box-shadow: 3px 3px 8px -3px #f00;
+}
+
+.mytheme .status-review {
+	webkit-box-shadow: 3px 3px 8px -3px #3300ff;
+	-moz-box-shadow: 3px 3px 8px -3px #3300ff;
+	box-shadow: 3px 3px 8px -3px #3300ff;
 }
 
 .mytheme .search-box {

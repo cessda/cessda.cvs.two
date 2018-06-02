@@ -98,7 +98,7 @@ import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 public class DetailView2 extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
-	public static final String VIEW_NAME = "Detail2";
+	public static final String VIEW_NAME = "detailold";
 	private Locale locale = UI.getCurrent().getLocale();
 	private final TemplateEngine templateEngine;
 	private final AgencyService agencyService;

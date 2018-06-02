@@ -19,6 +19,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
 
+import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -93,6 +94,15 @@ public class VocabularyGridRow extends CustomComponent {
 			
 			if( item.equalsIgnoreCase( currentSelectedLanguage.toString() ))
 				langButton.addStyleName( "button-language-selected" );
+			
+			// determine the status
+			vocabulary.getLatestVersionByLanguage( Language.getEnum(item).name().toLowerCase())
+			.ifPresent( versionDTO -> {
+				if( versionDTO.getStatus().equals( Status.DRAFT.toString()))
+					langButton.addStyleName( "status-draft" );
+				else if( versionDTO.getStatus().equals( Status.REVIEW.toString()))
+					langButton.addStyleName( "status-review" );
+			});
 			
 			langButton.addClickListener(e -> {
 				applyButtonStyle(e.getButton());

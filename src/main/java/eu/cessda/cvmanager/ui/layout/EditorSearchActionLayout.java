@@ -17,6 +17,7 @@ import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
@@ -73,7 +74,7 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 		newCvScheme.setContainerId(newCvScheme.getId());
 		newCvScheme.setStatus( Status.DRAFT.toString() );
 
-		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, newCvScheme, new VocabularyDTO(), null, i18n, null, eventBus);
+		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, newCvScheme, new VocabularyDTO(), new VersionDTO(), null, i18n, null, eventBus);
 		getUI().addWindow(window);
 	}
 	
