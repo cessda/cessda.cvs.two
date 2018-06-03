@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -388,6 +389,7 @@ public class DetailView extends CvView {
 		String clickedLanguage = cvItem.getCurrentLanguage() == null ? sourceLanguage : cvItem.getCurrentLanguage();
 
 		languages.forEach(item -> {
+			
 			MButton langButton = new MButton(item.toUpperCase());
 			langButton.withStyleName("langbutton");
 			
@@ -400,10 +402,19 @@ public class DetailView extends CvView {
 			// determine the status
 			vocabulary.getLatestVersionByLanguage( Language.getEnum(item).name().toLowerCase())
 			.ifPresent( versionDTO -> {
-				if( versionDTO.getStatus().equals( Status.DRAFT.toString()))
-					langButton.addStyleName( "status-draft" );
-				else if( versionDTO.getStatus().equals( Status.REVIEW.toString()))
-					langButton.addStyleName( "status-review" );
+				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
+					// TODO: check detail for editor or publication page
+					if( !breadcrumbItemMap.isEmpty() && breadcrumbItemMap.get("editor-search") != null )
+						langButton.addStyleName( "status-draft" );
+					else
+						langButton.setVisible( false );
+				}
+				else if( versionDTO.getStatus().equals( Status.REVIEW.toString())) {
+					if( !breadcrumbItemMap.isEmpty() && breadcrumbItemMap.get("editor-search") != null )
+						langButton.addStyleName( "status-review" );
+					else
+						langButton.setVisible( false );
+				}
 			});
 			
 			langButton.addClickListener(e -> {
