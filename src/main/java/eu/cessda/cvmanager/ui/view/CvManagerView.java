@@ -45,7 +45,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 
 	private static final long serialVersionUID = -8769292972079523949L;
 	public static enum ActionType{
-		SEARCH, BROWSE, DETAIL, AGENCY, AGENCYDISCOVER// this should be similar to view names
+		SEARCH, BROWSE, DETAIL, AGENCY, AGENCYDISCOVER, DETAILOLD// this should be similar to view names
 	}
 	
 	protected final I18N i18n;

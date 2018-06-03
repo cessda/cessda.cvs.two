@@ -42,6 +42,12 @@ public class Concept implements Serializable{
     @Column(name = "definition")
     private String definition;
     
+//    @Column(name = "parent")
+//    private Long parent;
+//    
+//    @Column(name = "\"position\"")
+//    private Integer position;
+    
     @OneToMany(mappedBy = "concept")
     @JsonIgnore
     private Set<ConceptChange> conceptChanges = new HashSet<>();

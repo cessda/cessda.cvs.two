@@ -88,6 +88,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow2;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogMultipleOption;
 import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
@@ -1002,7 +1003,7 @@ public class DetailView2 extends CvManagerView {
 				newCVConcept.createId();
 				newCVConcept.setContainerId( cvItem.getCvScheme().getContainerId());
 
-				DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
+				DialogAddCodeWindow2 dialogAddCodeWindow1 = new DialogAddCodeWindow2(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
 				getUI().addWindow(dialogAddCodeWindow1);
 				
 				break;
@@ -1023,7 +1024,7 @@ public class DetailView2 extends CvManagerView {
 				childConcept.createId();
 				childConcept.setContainerId( cvItem.getCvScheme().getContainerId());
 
-				DialogAddCodeWindow dialogAddCodeWindow2 = new DialogAddCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
+				DialogAddCodeWindow2 dialogAddCodeWindow2 = new DialogAddCodeWindow2(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
 				getUI().addWindow( dialogAddCodeWindow2 );
 				break;
 			case CVCONCEPT_DELETED:

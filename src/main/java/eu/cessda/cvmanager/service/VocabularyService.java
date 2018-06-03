@@ -79,4 +79,8 @@ public interface VocabularyService {
 	VocabularyDTO getByNotation(String notation);
 
 	boolean existsByNotation(String notation);
+	
+	void indexEditor( VocabularyDTO vocabulary);
+	
+	void indexPublication ( VocabularyDTO vocabulary);
 }

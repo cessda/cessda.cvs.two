@@ -1414,6 +1414,11 @@ public class VocabularyDTO implements Serializable {
 				.collect( Collectors.toSet());
 	}
 	
-
+	public static Set<String> getLanguagesFromVersions( Set<VersionDTO> versDTOs){
+		return versDTOs
+				.stream()
+				.map( s -> s.getLanguage())
+				.collect( Collectors.toSet());
+	}
 	
 }

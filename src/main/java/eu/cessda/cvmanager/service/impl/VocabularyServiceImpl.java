@@ -33,15 +33,18 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import eu.cessda.cvmanager.domain.PublishedVocabulary;
 import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.Vocabulary;
 import eu.cessda.cvmanager.repository.VersionRepository;
 import eu.cessda.cvmanager.repository.VocabularyRepository;
+import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.ElasticsearchTemplate2;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.publication.EsFilter;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
@@ -77,18 +80,25 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private final VocabularySearchRepository vocabularySearchRepository;
     
+    private final PublishedVocabularyMapper publishedVocabularyMapper;
+    
+    private final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
+    
     // Use original ElasticsearchTemplate if this bug is fixed
     // https://jira.spring.io/browse/DATAES-412
     private final ElasticsearchTemplate2 elasticsearchTemplate;
 
     public VocabularyServiceImpl(VocabularyRepository vocabularyRepository, VocabularyMapper vocabularyMapper, 
     		VocabularySearchRepository vocabularySearchRepository, ElasticsearchTemplate2 elasticsearchTemplate,
-    		VersionRepository versionRepository) {
+    		VersionRepository versionRepository,PublishedVocabularyMapper publishedVocabularyMapper,
+    		PublishedVocabularySearchRepository publishedVocabularySearchRepository) {
         this.vocabularyRepository = vocabularyRepository;
         this.vocabularyMapper = vocabularyMapper;
         this.vocabularySearchRepository = vocabularySearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.versionRepository = versionRepository;
+        this.publishedVocabularyMapper = publishedVocabularyMapper;
+        this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
     }
 
     /**
@@ -590,5 +600,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 		}
 		
 		return esQueryResultDetail;
+	}
+
+	@Override
+	public void indexEditor(VocabularyDTO vocabulary) {
+		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
+		vocabularySearchRepository.save( vocab );
+	}
+
+	@Override
+	public void indexPublication(VocabularyDTO vocabulary) {
+		PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
+		publishedVocabularySearchRepository.save( publishedVocabulary );
 	}
 }

@@ -55,7 +55,6 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private Locale locale = UI.getCurrent().getLocale();
 	private final UIEventBus eventBus;
 	
-	private DetailView detailView;
 	
 	private Language selectedLanguage;
 	private Language sourceLanguage;
@@ -79,7 +78,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	public EditorCvActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
 			VocabularySearchRepository vocabularySearchRepository, PublishedVocabularyMapper publishedVocabularyMapper,
-			PublishedVocabularySearchRepository publishedVocabularySearchRepository, DetailView detailView, UIEventBus eventBus) {
+			PublishedVocabularySearchRepository publishedVocabularySearchRepository, UIEventBus eventBus) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
@@ -89,7 +88,6 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
 		this.publishedVocabularyMapper = publishedVocabularyMapper;
-		this.detailView = detailView;
 		this.eventBus = eventBus;
 		init();
 	}
@@ -97,22 +95,27 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private void init() {
 		buttonAddCv
 			.withFullWidth()
+			.withStyleName("action-button")
 			.addClickListener( this::doCvAdd );
 		
 		buttonEditCv
 			.withFullWidth()
+			.withStyleName("action-button")
 			.addClickListener( this::doCvEdit );
 		
 		buttonAddTranslation
 			.withFullWidth()
+			.withStyleName("action-button")
 			.addClickListener( this::doCvAddTranslation );
 		
 		buttonSentToReview
 			.withFullWidth()
+			.withStyleName("action-button")
 			.addClickListener( this::changeStatusToReview );
 		
 		buttonPublishCv
 			.withFullWidth()
+			.withStyleName("action-button")
 			.addClickListener( this::publishCv );
 				
 		getInnerContainer()
@@ -215,11 +218,13 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							// index for editor
 							vocabulary.setVers( vocabulary.getLatestVersions());
 							vocabulary.setCodes( vocabulary.generateCodesFromLatestVersion());
+							vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
 							Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 							vocabularySearchRepository.save( vocab );
 							
 							// index for publication page
 							vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
+							vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
 							vocabulary.setCodes( vocabulary.generateCodesFromLatestPublishedVersion());
 							PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
 							publishedVocabularySearchRepository.save( publishedVocabulary );

@@ -35,23 +35,21 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
-import eu.cessda.cvmanager.service.dto.ConceptDTO;
-import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 
-public class DialogAddCodeWindow extends MWindow implements Translatable{
+public class DialogAddCodeWindow2 extends MWindow implements Translatable{
 
 	private static final long serialVersionUID = -2960064213533383226L;
-	private static final Logger log = LoggerFactory.getLogger(DialogAddCodeWindow.class);
+	private static final Logger log = LoggerFactory.getLogger(DialogAddCodeWindow2.class);
 
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
 	private final StardatDDIService stardatDDIService;
-	private final VersionService versionService;
+	private final VocabularyService vocabularyService;
+	private final CodeService codeService;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	
@@ -71,29 +69,35 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private CVConcept parentCode;
 	private CVScheme cvScheme;
 	
-	private VersionDTO version;
-	private ConceptDTO concept;
+	private AgencyDTO agency;
+	private VocabularyDTO vocabulary;
 	private Language language;
 
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VersionService versionService,
-			CVScheme cvSch, CVConcept newCode, CVConcept parent, VersionDTO versionDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
-		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
-				locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage( Language.getEnumByName( versionDTO.getLanguage()).toString()) : parent.getNotation() )));
+	public DialogAddCodeWindow2(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, CodeService codeService,
+			CVScheme cvSch, CVConcept newCode, CVConcept parent, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, I18N i18n, Locale locale) {
+		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage( Language.getEnumByName( vocabularyDTO.getSourceLanguage()).toString()) : parent.getNotation() )));
 		
 		this.eventBus = eventBus;
 		this.cvScheme = cvSch;
 		this.parentCode = parent;
 		this.i18n = i18n;
-		this.version = versionDTO;
-		this.concept = conceptDTO;
+		this.vocabulary = vocabularyDTO;
+		this.agency = agencyDTO;
 		this.stardatDDIService = stardatDDIService;
-		this.versionService = versionService;
+		this.vocabularyService = vocabularyService;
+		this.codeService = codeService;
 
-		language = Language.getEnumByName( this.version.getLanguage());
-		
-		languageCb.setItems( language);
-		languageCb.setValue( language );
-
+		if( SecurityUtils.isCurrentUserAgencyAdmin( agency  )) {
+			languageCb.setItems( Language.values() );
+		}
+		else {
+			SecurityUtils.getCurrentUserLanguageSlByAgency( agency ).ifPresent( languages -> {
+				languageCb.setItems( languages );
+			});
+		}
+		languageCb.setValue( Language.getEnumByName( vocabulary.getSourceLanguage()));
+		if( languageCb.getValue() != null ) 
+			language = languageCb.getValue();
 	
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
@@ -205,13 +209,13 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 			stardatDDIService.saveElement(parentCode.ddiStore, "User", "Add Code");
 		}
 		
-//		// save on database
-//		CodeDTO code = new CodeDTO();
-//		code.setUri( ddiStore.getElementId() );
-//		code.setNotation( notation.getValue() );
-//		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
-//		code.setSourceLanguage( language.name().toLowerCase());
-//		codeService.save(code);
+		// save on database
+		CodeDTO code = new CodeDTO();
+		code.setUri( ddiStore.getElementId() );
+		code.setNotation( notation.getValue() );
+		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
+		code.setSourceLanguage( language.name().toLowerCase());
+		codeService.save(code);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 		this.close();

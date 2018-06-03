@@ -1,7 +1,5 @@
 package eu.cessda.cvmanager.ui.view;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-
 import java.util.Iterator;
 import java.util.Locale;
 

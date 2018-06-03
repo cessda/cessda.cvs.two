@@ -23,6 +23,10 @@ public class ConceptDTO implements Serializable {
 
     @Lob
     private String definition;
+    
+//    private Long parent;
+//    
+//    private Integer position;
 
     public Long getId() {
         return id;

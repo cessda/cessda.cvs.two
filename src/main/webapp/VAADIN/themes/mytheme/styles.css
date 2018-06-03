@@ -17831,6 +17831,10 @@ div.v-layout.v-horizontal.v-widget {
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
+.mytheme .action-button {
+	margin: 5px 0;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;
