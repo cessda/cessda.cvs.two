@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.*;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -193,6 +191,14 @@ public class VersionDTO implements Serializable {
 
     public void setConcepts(Set<ConceptDTO> concepts) {
         this.concepts = concepts;
+    }
+    
+    public VersionDTO addConcept( ConceptDTO concept ) {
+    	if( this.concepts == null )
+    		this.concepts = new HashSet<>();
+    	
+    	this.concepts.add(concept);
+    	return this;
     }
 
     @Override

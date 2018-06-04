@@ -51,7 +51,9 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
 	private final StardatDDIService stardatDDIService;
+	private final VocabularyService vocabularyService;
 	private final VersionService versionService;
+	private final CodeService codeService;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	
@@ -71,12 +73,14 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private CVConcept parentCode;
 	private CVScheme cvScheme;
 	
+	private VocabularyDTO vocabulary;
 	private VersionDTO version;
 	private ConceptDTO concept;
 	private Language language;
 
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VersionService versionService,
-			CVScheme cvSch, CVConcept newCode, CVConcept parent, VersionDTO versionDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
+	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, 
+			VersionService versionService,CodeService codeService, CVScheme cvSch, CVConcept newCode, CVConcept parent, VocabularyDTO vocabularyDTO,
+			VersionDTO versionDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
 		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
 				locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage( Language.getEnumByName( versionDTO.getLanguage()).toString()) : parent.getNotation() )));
 		
@@ -84,9 +88,12 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		this.cvScheme = cvSch;
 		this.parentCode = parent;
 		this.i18n = i18n;
+		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
 		this.concept = conceptDTO;
+		this.codeService = codeService;
 		this.stardatDDIService = stardatDDIService;
+		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
 
 		language = Language.getEnumByName( this.version.getLanguage());
@@ -205,13 +212,28 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 			stardatDDIService.saveElement(parentCode.ddiStore, "User", "Add Code");
 		}
 		
-//		// save on database
-//		CodeDTO code = new CodeDTO();
-//		code.setUri( ddiStore.getElementId() );
-//		code.setNotation( notation.getValue() );
-//		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
-//		code.setSourceLanguage( language.name().toLowerCase());
-//		codeService.save(code);
+		// save to concept
+		// TODO: save version and concept
+		concept.setNotation( notation.getValue() );
+		concept.setTitle( preferedLabel.getValue() );
+		concept.setDefinition( description.getValue() );
+		version.addConcept(concept);
+		versionService.save(version);
+		
+		// save on database
+		CodeDTO code = new CodeDTO();
+		code.setUri( ddiStore.getElementId() );
+		code.setNotation( notation.getValue() );
+		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
+		code.setSourceLanguage( language.name().toLowerCase());
+		code.setVocabularyId( vocabulary.getId() );
+		codeService.save(code);
+		
+		// TODO: Fixing code indexing
+		// indexing
+		vocabulary.addCode(code);
+		vocabulary.setVers( vocabulary.getVersions());
+		vocabularyService.indexEditor(vocabulary);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 		this.close();
@@ -284,4 +306,5 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		lDescription.withValue( i18n.get( "dialog.detail.code.add.form.definition" , locale)).withStyleName( "required" );
 		lLanguage.withValue( i18n.get( "dialog.detail.code.add.form.language" , locale));
 	}
+	
 }

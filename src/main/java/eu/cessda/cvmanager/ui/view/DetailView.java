@@ -87,6 +87,7 @@ import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -114,6 +115,7 @@ public class DetailView extends CvView {
 	private final TemplateEngine templateEngine;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
+	private final VersionService versionService;
 	private final CodeService codeService;
 	
 	private Language selectedLang = Language.ENGLISH;
@@ -193,7 +195,7 @@ public class DetailView extends CvView {
 	public DetailView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
-			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
+			VersionService versionService, CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
 			PublishedVocabularyMapper publishedVocabularyMapper,PublishedVocabularySearchRepository publishedVocabularySearchRepository, 
 			TemplateEngine templateEngine) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, 
@@ -201,6 +203,7 @@ public class DetailView extends CvView {
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
+		this.versionService = versionService;
 		this.codeService = codeService;
 		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
@@ -213,8 +216,7 @@ public class DetailView extends CvView {
 				vocabularySearchRepository, publishedVocabularyMapper, publishedVocabularySearchRepository, eventBus);
 		
 		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
-				stardatDDIService, agencyService, vocabularyService, vocabularyMapper, 
-				vocabularySearchRepository, publishedVocabularyMapper, publishedVocabularySearchRepository, eventBus);
+				stardatDDIService, agencyService, vocabularyService, versionService, codeService, eventBus);
 		
 
 		languageLayout.withFullWidth();
@@ -384,7 +386,7 @@ public class DetailView extends CvView {
 		
 		
 		editorCodeActionLayout.setCvScheme( cvItem.getCvScheme() );
-		
+		editorCodeActionLayout.setVocabulary(vocabulary);
 		
 		String clickedLanguage = cvItem.getCurrentLanguage() == null ? sourceLanguage : cvItem.getCurrentLanguage();
 
@@ -847,16 +849,16 @@ public class DetailView extends CvView {
 				updateDetailGrid();
 				
 				break;
-			case CVCONCEPT_ADD_DIALOG:
-				CVConcept newCVConcept = new CVConcept();
-				newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
-				newCVConcept.createId();
-				newCVConcept.setContainerId( cvItem.getCvScheme().getContainerId());
-
-				DialogAddCodeWindow2 dialogAddCodeWindow1 = new DialogAddCodeWindow2(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
-				getUI().addWindow(dialogAddCodeWindow1);
-				
-				break;
+//			case CVCONCEPT_ADD_DIALOG:
+//				CVConcept newCVConcept = new CVConcept();
+//				newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
+//				newCVConcept.createId();
+//				newCVConcept.setContainerId( cvItem.getCvScheme().getContainerId());
+//
+//				DialogAddCodeWindow2 dialogAddCodeWindow1 = new DialogAddCodeWindow2(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
+//				getUI().addWindow(dialogAddCodeWindow1);
+//				
+//				break;
 			case CVCONCEPT_TRANSLATION_DIALOG:
 				if( cvCodeTreeData == null || cvCodeTreeData.getRootItems().isEmpty()) {
 					Notification.show("Please add code first");

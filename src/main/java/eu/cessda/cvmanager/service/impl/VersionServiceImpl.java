@@ -1,7 +1,9 @@
 package eu.cessda.cvmanager.service.impl;
 
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.domain.Concept;
 import eu.cessda.cvmanager.domain.Version;
+import eu.cessda.cvmanager.repository.ConceptRepository;
 import eu.cessda.cvmanager.repository.VersionRepository;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.mapper.VersionMapper;
@@ -28,10 +30,12 @@ public class VersionServiceImpl implements VersionService {
 
     private final VersionMapper versionMapper;
 
-
-    public VersionServiceImpl(VersionRepository versionRepository, VersionMapper versionMapper) {
+    private final ConceptRepository conceptRepository;
+    
+    public VersionServiceImpl(VersionRepository versionRepository, VersionMapper versionMapper, ConceptRepository conceptRepository) {
         this.versionRepository = versionRepository;
         this.versionMapper = versionMapper;
+        this.conceptRepository = conceptRepository;
     }
 
     /**
@@ -44,6 +48,12 @@ public class VersionServiceImpl implements VersionService {
     public VersionDTO save(VersionDTO versionDTO) {
         log.debug("Request to save Version : {}", versionDTO);
         Version version = versionMapper.toEntity(versionDTO);
+        
+        // stoce Concept first if exist
+        for( Concept concept: version.getConcepts()) {
+        	concept = conceptRepository.save(concept);
+        }
+        
         version = versionRepository.save(version);
         VersionDTO result = versionMapper.toDto(version);
 //        versionSearchRepository.save(version);

@@ -402,6 +402,12 @@ public class VocabularyServiceImpl implements VocabularyService {
 				if( innerHit.getHighlightFields().isEmpty())
 					continue;
 				
+				if(cvHit.getCodes() == null )
+					continue;
+				
+				if( innerHit.getSource().get("id") == null )
+					continue;
+				
 				if( CodeDTO.findByIdFromList( cvHit.getCodes() , (int) innerHit.getSource().get("id")).isPresent()) {
 					CodeDTO codeHit = CodeDTO.findByIdFromList( cvHit.getCodes(),  (int) innerHit.getSource().get("id")).get();
 					

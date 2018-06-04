@@ -21,10 +21,13 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
@@ -38,10 +41,8 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	private final StardatDDIService stardatDDIService;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
-	private final VocabularyMapper vocabularyMapper;
-	private final VocabularySearchRepository vocabularySearchRepository;
-	private final PublishedVocabularyMapper publishedVocabularyMapper;
-	private final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
+	private final VersionService versionService;
+	private final CodeService codeService;
 	
 	private I18N i18n;
 	private Locale locale = UI.getCurrent().getLocale();
@@ -57,24 +58,22 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	private boolean enableSort;
 	private boolean isCurrentSL;
 	
+	private VocabularyDTO vocabulary;
 	private CVScheme cvScheme;
 	private CVConcept cvConcept;
 	private VersionDTO currentVersion;
 	private ConceptDTO currentConcept;
 	
 	public EditorCodeActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
-			AgencyService agencyService, VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
-			VocabularySearchRepository vocabularySearchRepository, PublishedVocabularyMapper publishedVocabularyMapper,
-			PublishedVocabularySearchRepository publishedVocabularySearchRepository, UIEventBus eventBus) {
+			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService,
+			CodeService codeService, UIEventBus eventBus) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
-		this.vocabularyMapper = vocabularyMapper;
-		this.vocabularySearchRepository = vocabularySearchRepository;
-		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
-		this.publishedVocabularyMapper = publishedVocabularyMapper;
+		this.versionService = versionService;
+		this.codeService = codeService;
 		this.eventBus = eventBus;
 		init();
 	}
@@ -125,6 +124,9 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		newCVConcept.createId();
 		newCVConcept.setContainerId( cvScheme.getContainerId());
 
+		DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, stardatDDIService, vocabularyService, versionService, codeService, cvScheme, newCVConcept, null, vocabulary, currentVersion, new ConceptDTO(), i18n, locale);
+		getUI().addWindow(dialogAddCodeWindow1);
+		
 //		DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, stardatDDIService, versionService, cvScheme, newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
 //		getUI().addWindow(dialogAddCodeWindow1);
 //		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADD_DIALOG, null) );
@@ -196,6 +198,14 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 
 	public void setCurrentConcept(ConceptDTO currentConcept) {
 		this.currentConcept = currentConcept;
+	}
+	
+	public VocabularyDTO getVocabulary() {
+		return vocabulary;
+	}
+
+	public void setVocabulary(VocabularyDTO vocabulary) {
+		this.vocabulary = vocabulary;
 	}
 	
 }
