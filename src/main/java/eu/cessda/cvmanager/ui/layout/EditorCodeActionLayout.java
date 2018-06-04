@@ -84,19 +84,24 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 			.withStyleName("action-button");
 		buttonCodeEdit
 			.withFullWidth()
-			.withStyleName("action-button");
+			.withStyleName("action-button")
+			.setVisible( false);
 		buttonCodeAddChild
 			.withFullWidth()
-			.withStyleName("action-button");
+			.withStyleName("action-button")
+			.setVisible( false);
 		buttonCodeAddTranslation
 			.withFullWidth()
-			.withStyleName("action-button");
+			.withStyleName("action-button")
+			.setVisible( false);
 		buttonCodeDelete
 			.withFullWidth()
-			.withStyleName("action-button");
+			.withStyleName("action-button")
+			.setVisible( false);
 		buttonCodeSort
 			.withFullWidth()
-			.withStyleName("action-button");
+			.withStyleName("action-button")
+			.setVisible( false);
 		
 		buttonCodeAdd.addClickListener( this::doAddCode );
 		buttonCodeEdit.addClickListener( this::doEditCode );
@@ -206,6 +211,22 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 
 	public void setVocabulary(VocabularyDTO vocabulary) {
 		this.vocabulary = vocabulary;
+	}
+	
+	public boolean hasActionRight() {
+		
+		boolean hasAction = false;
+		if( !SecurityUtils.isAuthenticated() ) {
+			setVisible( false );
+		}
+		
+		if( currentVersion.getStatus().equals( Status.PUBLISHED.toString()) ) {
+			setVisible( false );
+		} else {
+			hasAction = true;
+		}
+		
+		return hasAction;
 	}
 	
 }

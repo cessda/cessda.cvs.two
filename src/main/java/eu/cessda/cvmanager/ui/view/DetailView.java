@@ -330,6 +330,7 @@ public class DetailView extends CvView {
 		topPanel.setVisible( false );
 		
 		refreshCvActionButton();
+		refreshCodeActionButton();
 	}
 
 	private void refreshCvActionButton() {
@@ -343,7 +344,14 @@ public class DetailView extends CvView {
 		}
 	}
 
-
+	private void refreshCodeActionButton() {
+		if( editorCodeActionLayout.hasActionRight() ) {
+			editorCodeActionLayout.setVisible( true );
+		}
+		else {
+			editorCodeActionLayout.setVisible( false );
+		}
+	}
 
 	private void refreshCvScheme() {
 		languageLayout.removeAllComponents();
@@ -460,6 +468,7 @@ public class DetailView extends CvView {
 				setCode( null );
 				updateMessageStrings(locale);
 				refreshCvActionButton();
+				refreshCodeActionButton();
 			});
 			languageLayout.add(langButton);
 			if( item.equals(sourceLanguage)) {
