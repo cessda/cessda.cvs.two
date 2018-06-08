@@ -15,4 +15,3 @@ if kubectl get deployment $PRODUCT-mailrelay-$ENVIRONMENT -n $PRODUCT-$ENVIRONME
     echo "MailRelay component not available, deployment's aborted"
     exit 1
 fi;
-
