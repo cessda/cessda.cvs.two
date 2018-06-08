@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
@@ -42,7 +42,7 @@
 		<mapstruct.version>1.2.0.Final</mapstruct.version>
 		<maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
 		<hibernate.version>5.2.17.Final</hibernate.version>
-		
+
 	</properties>
 
 	<repositories>
@@ -54,7 +54,7 @@
 			<id>vaadin-addons</id>
 			<url>http://maven.vaadin.com/vaadin-addons</url>
 		</repository>
-		<!-- 
+		<!--
 		<repository>
 			  <id>vaadin-prereleases</id>
 			  <name>Vaadin Pre-releases</name>
@@ -67,7 +67,7 @@
     		<id>gesis-${gesis.repository.visibility}</id>
     		<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}</url>
   		</pluginRepository>
-  		<!-- 
+  		<!--
   		 <pluginRepository>
 			  <id>vaadin-prereleases</id>
 			  <name>Vaadin Pre-releases</name>
@@ -82,7 +82,7 @@
 			<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}-releases</url>
 		</repository>
 		<snapshotRepository>
-			<id>gesis-${gesis.repository.visibility}-snapshots</id> 
+			<id>gesis-${gesis.repository.visibility}-snapshots</id>
 			<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}-snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
@@ -116,7 +116,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -141,7 +141,7 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<dependency>
    			<groupId>org.vaadin.addon</groupId>
    			<artifactId>confirmdialog</artifactId>
@@ -180,18 +180,18 @@
 			<artifactId>stardat-ddi-entities</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>org.vaadin</groupId>
 		    <artifactId>viritin</artifactId>
 		    <version>2.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -233,35 +233,35 @@
             <artifactId>flying-saucer-pdf</artifactId>
             <version>9.1.4</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-jdk8</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.gesis.wts</groupId>
             <artifactId>usermanagement</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-        
+
         <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
 		</dependency>
-        
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
-        
+
         <dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.7</version>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>com.fasterxml.jackson.module</groupId>
 		    <artifactId>jackson-module-parameter-names</artifactId>
@@ -274,7 +274,7 @@
 		    <groupId>com.fasterxml.jackson.datatype</groupId>
 		    <artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
-        
+
 	</dependencies>
 
 	<dependencyManagement>
@@ -308,7 +308,7 @@
 					<artifactId>git-commit-id-plugin</artifactId>
 					<version>2.2.2</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -340,7 +340,7 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -365,7 +365,7 @@
                     </annotationProcessorPaths>
 				</configuration>
 			</plugin>
-			
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -374,7 +374,7 @@
                     <downloadJavadocs>true</downloadJavadocs>
                 </configuration>
             </plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -477,7 +477,7 @@
 							<goal>update-theme</goal>
 							<goal>update-widgetset</goal>
 							-->
-							<!-- 
+							<!--
 							<goal>compile-theme</goal>
 							<goal>compile</goal>
 							-->
@@ -537,7 +537,7 @@
 		</resources>
 	</build>
 
-	
+
 	<profiles>
 		 <profile>
             <id>local</id>
@@ -593,7 +593,7 @@
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
-				<spring.data.elasticsearch.cluster-nodes>cessda-cvmanager-es-dev-cluster:9300</spring.data.elasticsearch.cluster-nodes>
+				<spring.data.elasticsearch.cluster-nodes>cessda-cvmanager-es-staging-cluster:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
         </profile>
         <profile>
@@ -602,7 +602,7 @@
                 <tomcat.url>http://10.6.13.128:9090/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <!-- 
+                <!--
                 <server.servlet.contextPath>/cvmanager-test</server.servlet.contextPath>
                 <ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
 				<spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</spring.datasource.url>
