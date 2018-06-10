@@ -1,6 +1,7 @@
 package eu.cessda.cvmanager.service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,19 +18,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.cessda.cvmanager.domain.BaseVocabulary;
-import eu.cessda.cvmanager.domain.PublishedVocabulary;
+import eu.cessda.cvmanager.domain.Code;
 import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.Vocabulary;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
@@ -43,24 +41,18 @@ public class ImportService {
 	private final CodeService codeService;
 	private final StardatDDIService stardatDDIService;
 	private final VocabularyMapper vocabularyMapper;
-	private final PublishedVocabularyMapper publishedVocabularyMapper;
 	// Elasticsearch repo for Editor
 	private final VocabularySearchRepository vocabularySearchRepository;
-	// Elasticsearch repo for Published
-	private final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
 	private final VersionService versionService;
 	public ImportService(AgencyService agencyService, VocabularyService vocabularyService, CodeService codeService,
-			StardatDDIService stardatDDIService, VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository,
-			PublishedVocabularySearchRepository publishedVocabularySearchRepository,
-			PublishedVocabularyMapper publishedVocabularyMapper, VersionService versionService) {
+			StardatDDIService stardatDDIService, VersionService versionService,
+			VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository) {
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyMapper = vocabularyMapper;
-		this.publishedVocabularyMapper = publishedVocabularyMapper;
 		this.vocabularySearchRepository = vocabularySearchRepository;
-		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
 		this.versionService = versionService;
 	}
 	
@@ -123,7 +115,7 @@ public class ImportService {
 						version.setNumber( "1.0" );
 					} else {
 						version.setItemType( ItemType.TL.toString());
-						version.setNumber( "0.0.1" );
+						version.setNumber( "1.0.1" );
 					}
 					version.setLanguage( lang);
 					version.setUri( vocabulary.getUri() );
@@ -168,13 +160,30 @@ public class ImportService {
 //			}
 			// assign concepts (structured Code based on Version) to latest version entity
 			List<CodeDTO> codes = CvCodeTreeUtils.getCodeDTOByConceptTree( CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvScheme) );
+
+			//saved codes
+			List<CodeDTO> savedCodes = new ArrayList<>();
+			
+			// store code for indexing
+			for(CodeDTO code: codes){							
+				CodeDTO codeDB = codeService.getByUri( code.getUri() );
+				if( codeDB != null)
+					code.setId( codeDB.getId());
+				code.setDiscoverable( true );
+				
+				// store code to db
+				code = codeService.save(code);
+				
+				savedCodes.add(code);
+				vocabulary.addCode(code);
+			};
 			
 			if( !vocabulary.isPersisted()) {
 				for( String lang : vocabulary.getLanguages()){
 					Language langEnum = Language.getEnumByName(lang);
 					
 					VersionDTO.getLatestVersion( vocabulary.getVersions(), lang, null).ifPresent( versionDTO -> {
-						Set<ConceptDTO> conceptsFromCodes = CodeDTO.getConceptsFromCodes(codes, langEnum);
+						Set<ConceptDTO> conceptsFromCodes = CodeDTO.getConceptsFromCodes(savedCodes, langEnum);
 						versionDTO.setConcepts(conceptsFromCodes);
 					});
 				};
@@ -183,27 +192,17 @@ public class ImportService {
 			// store vocabulary
 			vocabulary = vocabularyService.save(vocabulary);
 			
-			// store code for indexing
-			for(CodeDTO code: codes){
-				code.setVocabularyId( vocabulary.getId() );
-				
-				CodeDTO codeDB = codeService.getByUri( code.getUri() );
-				if( codeDB != null)
-					code.setId( codeDB.getId());
-				code.setDiscoverable( true );
-				
-				// store code to db
-				code = codeService.save(code);
-				vocabulary.addCode(code);
-			};
+			// store code once more now with vocabularry
+	        // store code if exist
+	        for( CodeDTO code: savedCodes) {
+	        	code.setVocabularyId( vocabulary.getId());
+	        	code = codeService.save(code);
+	        }
 			
 			// reindex nested codes
 			vocabulary.setVers( vocabulary.getVersions());
 			Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 			vocabularySearchRepository.save( vocab );
-			
-//			PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
-//			publishedVocabularySearchRepository.save( publishedVocabulary );
 			
 		}
 		log.debug("DDIFlatDB imported to database");

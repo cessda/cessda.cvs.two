@@ -337,8 +337,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		vocabulary = vocabularyService.save(vocabulary);
 		
 		// index
-		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
-		vocabularySearchRepository.save( vocab );
+		vocabularyService.index(vocabulary);
 		
 		// use eventbus to update detail view
 		if( isUpdated )

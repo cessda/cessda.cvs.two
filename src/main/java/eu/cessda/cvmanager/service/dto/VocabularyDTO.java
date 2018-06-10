@@ -68,6 +68,8 @@ public class VocabularyDTO implements Serializable {
     
     private Set<String> languages;
     
+    private Set<String> languagesPublished;
+    
     private Set<String> statuses;
     
     @NotNull
@@ -444,62 +446,116 @@ public class VocabularyDTO implements Serializable {
     	return this;
     }
     
-	public VocabularyDTO setStatusByLanguage(Language language, String status) {
+	public VocabularyDTO setVersionByLanguage(Language language, String versionNumber) {
 		switch (language) {
 			case CZECH:
-				setVersionCs(status);
+				setVersionCs(versionNumber);
 				break;
 			case DANISH:
-				setVersionDa(status);
+				setVersionDa(versionNumber);
 				break;
 			case DUTCH:
-				setVersionNl(status);
+				setVersionNl(versionNumber);
 				break;
 			case ENGLISH:
-				setVersionEn(status);
+				setVersionEn(versionNumber);
 				break;
 			case FINNISH:
-				setVersionFi(status);
+				setVersionFi(versionNumber);
 				break;
 			case FRENCH:
-				setVersionFr(status);
+				setVersionFr(versionNumber);
 				break;
 			case GERMAN:
-				setVersionDe(status);
+				setVersionDe(versionNumber);
 				break;
 			case GREEK:
-				setVersionEl(status);
+				setVersionEl(versionNumber);
 				break;
 			case HUNGARIAN:
-				setVersionHu(status);
+				setVersionHu(versionNumber);
 				break;
 			case LITHUANIAN:
-				setVersionLt(status);
+				setVersionLt(versionNumber);
 				break;
 			case NORWEGIAN:
-				setVersionNo(status);
+				setVersionNo(versionNumber);
 				break;
 			case PORTUGUESE:
-				setVersionPt(status);
+				setVersionPt(versionNumber);
 				break;
 			case ROMANIAN:
-				setVersionRo(status);
+				setVersionRo(versionNumber);
 				break;
 			case SLOVAK:
-				setVersionSk(status);
+				setVersionSk(versionNumber);
 				break;
 			case SLOVENIAN:
-				setVersionSl(status);
+				setVersionSl(versionNumber);
 				break;
 			case SPANISH:
-				setVersionEs(status);
+				setVersionEs(versionNumber);
 				break;
 			case SWEDISH:
-				setVersionSv(status);
+				setVersionSv(versionNumber);
 				break;
 		}
 		
 		return this;
+	}
+	
+	public void clearContent() {
+		setVersionCs(null);
+		setVersionDa(null);
+		setVersionNl(null);
+		setVersionEn(null);
+		setVersionFi(null);
+		setVersionFr(null);
+		setVersionDe(null);
+		setVersionEl(null);
+		setVersionHu(null);
+		setVersionLt(null);
+		setVersionNo(null);
+		setVersionPt(null);
+		setVersionRo(null);
+		setVersionSk(null);
+		setVersionSl(null);
+		setVersionEs(null);
+		setVersionSv(null);
+		setTitleCs(null);
+		setDefinitionCs(null);
+		setTitleDa(null);
+		setDefinitionDa(null);
+		setTitleNl(null);
+		setDefinitionNl(null);
+		setTitleEn(null);
+		setDefinitionEn(null);
+		setTitleFi(null);
+		setDefinitionFi(null);
+		setTitleFr(null);
+		setDefinitionFr(null);
+		setTitleDe(null);
+		setDefinitionDe(null);
+		setTitleEl(null);
+		setDefinitionEl(null);
+		setTitleHu(null);
+		setDefinitionHu(null);
+		setTitleLt(null);
+		setDefinitionLt(null);
+		setTitleNo(null);
+		setDefinitionNo(null);
+		setTitlePt(null);
+		setDefinitionPt(null);
+		setTitleRo(null);
+		setDefinitionRo(null);
+		setTitleSk(null);
+		setDefinitionSk(null);
+		setTitleSl(null);
+		setDefinitionSl(null);
+		setTitleEs(null);
+		setDefinitionEs(null);
+		setTitleSv(null);
+		setDefinitionSv(null);
 	}
     
     public Long getId() {
@@ -578,6 +634,21 @@ public class VocabularyDTO implements Serializable {
 		if(languages == null)
 			languages = new HashSet<>();
 		this.languages.add(language);
+		return this;
+	}
+	
+	public Set<String> getLanguagesPublished() {
+		return languagesPublished;
+	}
+
+	public void setLanguagesPublished(Set<String> languagesPublished) {
+		this.languagesPublished = languagesPublished;
+	}
+	
+	public VocabularyDTO addLanguagePublished(String language) {
+		if(languagesPublished == null)
+			languagesPublished = new HashSet<>();
+		this.languagesPublished.add(language);
 		return this;
 	}
 	
@@ -1393,9 +1464,10 @@ public class VocabularyDTO implements Serializable {
 		Map<String, CodeDTO> codeMap = new HashMap<>();
 		for(String lang: languages) {
 			Language langEnum = Language.getEnumByName(lang);
-			getLatestVersionByLanguage(lang,status).ifPresent( versionDTO -> {
+			
+			if( getLatestVersionByLanguage(lang,status).isPresent() ) {
 				// get codes
-				for( ConceptDTO concept : versionDTO.getConcepts()){
+				for( ConceptDTO concept : getLatestVersionByLanguage(lang,status).get().getConcepts()){
 					CodeDTO targetCode = codeMap.get( concept.getNotation());
 					if( targetCode == null ) {
 						CodeDTO newCode = new CodeDTO();
@@ -1406,17 +1478,37 @@ public class VocabularyDTO implements Serializable {
 						targetCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum);
 					}
 				};
-			});
+			}
+//			getLatestVersionByLanguage(lang,status).ifPresent( versionDTO -> {
+//				// get codes
+//				for( ConceptDTO concept : versionDTO.getConcepts()){
+//					CodeDTO targetCode = codeMap.get( concept.getNotation());
+//					if( targetCode == null ) {
+//						CodeDTO newCode = new CodeDTO();
+//						newCode.setNotation( concept.getNotation());
+//						newCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum);
+//						codeMap.put(concept.getNotation(), newCode);
+//					} else {
+//						targetCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum);
+//					}
+//				};
+//			});
 		}
-		return codeMap
-				.values()
-				.stream()
-				.collect( Collectors.toSet());
+		
+		return new HashSet<>( codeMap.values());
 	}
 	
 	public static Set<String> getLanguagesFromVersions( Set<VersionDTO> versDTOs){
 		return versDTOs
 				.stream()
+				.map( s -> s.getLanguage())
+				.collect( Collectors.toSet());
+	}
+	
+	public static Set<String> getPublishedLanguagesFromVersions( Set<VersionDTO> versDTOs){
+		return versDTOs
+				.stream()
+				.filter( v -> v.getStatus().equals( Status.PUBLISHED.toString()))
 				.map( s -> s.getLanguage())
 				.collect( Collectors.toSet());
 	}

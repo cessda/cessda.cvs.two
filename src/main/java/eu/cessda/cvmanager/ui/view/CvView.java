@@ -34,7 +34,6 @@ import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.model.CvItem;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
@@ -42,7 +41,6 @@ import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
@@ -62,12 +60,9 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected final AgencyService agencyService;
 	protected final VocabularyMapper vocabularyMapper;
 	protected final VocabularyService vocabularyService;
-	protected final PublishedVocabularyMapper publishedVocabularyMapper;
 	protected final CodeService codeService;
 	// Elasticsearch repo for Editor
 	protected final VocabularySearchRepository vocabularySearchRepository;
-	// Elasticsearch repo for Published
-	protected final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
 	
 	protected Locale locale = UI.getCurrent().getLocale();
 	
@@ -88,7 +83,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
 			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
-			PublishedVocabularyMapper publishedVocabularyMapper, PublishedVocabularySearchRepository publishedVocabularySearchRepository, String actionType ) {
+			String actionType ) {
 		this.i18n = i;
 		this.eventBus = eventBus;
 		this.configService = configService;
@@ -99,8 +94,6 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		this.vocabularyMapper = vocabularyMapper;
 		this.codeService = codeService;
 		this.vocabularySearchRepository = vocabularySearchRepository;
-		this.publishedVocabularyMapper = publishedVocabularyMapper;
-		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
 		
 		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		

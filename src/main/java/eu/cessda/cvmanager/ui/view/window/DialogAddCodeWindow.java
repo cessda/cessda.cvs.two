@@ -233,7 +233,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		// indexing
 		vocabulary.addCode(code);
 		vocabulary.setVers( vocabulary.getVersions());
-		vocabularyService.indexEditor(vocabulary);
+		vocabularyService.index(vocabulary);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 		this.close();

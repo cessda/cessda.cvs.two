@@ -19,7 +19,6 @@ import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.StardatDDIService;
@@ -28,7 +27,6 @@ import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.DetailView;
@@ -167,6 +165,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		buttonCodeAdd.withCaption( i18n.get("view.action.button.cvconcept.new", locale));
+		buttonCodeEdit.withCaption( "Edit Code" );
 		buttonCodeAddTranslation.withCaption( i18n.get("view.action.button.cvconcept.translation", locale));
 		buttonCodeAddChild.withCaption( "Add Child" );
 		buttonCodeDelete.withCaption( i18n.get("view.action.button.cvconcept.delete", locale));

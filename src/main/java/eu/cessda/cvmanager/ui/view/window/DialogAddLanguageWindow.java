@@ -55,8 +55,8 @@ public class DialogAddLanguageWindow extends MWindow {
 	private static final Logger log = LoggerFactory.getLogger(DialogAddLanguageWindow.class);
 	
 	private final UIEventBus eventBus;
-	private final AgencyDTO agency;
-	private final VocabularyDTO vocabulary;
+	private AgencyDTO agency;
+	private VocabularyDTO vocabulary;
 	private final VocabularyMapper vocabularyMapper;
 	private final VocabularySearchRepository vocabularySearchRepository;
 	private VersionDTO version;
@@ -282,11 +282,12 @@ public class DialogAddLanguageWindow extends MWindow {
 		
 		// store the variable and index
 		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
-		vocabularyService.save(vocabulary);
 		
-		// indexing storing
-		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
-		vocabularySearchRepository.save( vocab );
+		// save to database
+		vocabulary = vocabularyService.save(vocabulary);
+		
+		// index
+		vocabularyService.index(vocabulary);
 		
 		// use eventbus to update detail view
 		if( version.isPersisted() )

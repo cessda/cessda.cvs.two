@@ -12,6 +12,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 
 import java.io.Serializable;
@@ -28,10 +29,10 @@ import java.util.Objects;
 @Entity
 @Table(name = "vocabulary")
 @Document(indexName = "vocabulary")
-public class Vocabulary extends BaseVocabulary implements Serializable {
+public class Vocabulary extends VocabularyBase{
     
 	private static final long serialVersionUID = 1L;
-    
+	
     // both sl and tl statuses
     @Column(name = "statuses")
     @ElementCollection( targetClass=String.class )
@@ -75,7 +76,7 @@ public class Vocabulary extends BaseVocabulary implements Serializable {
 	public void setStatuses(Set<String> statuses) {
 		this.statuses = statuses;
 	}
-	
+
 
 	@Override
     public boolean equals(Object o) {

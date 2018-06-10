@@ -33,19 +33,25 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.cessda.cvmanager.domain.PublishedVocabulary;
+import eu.cessda.cvmanager.domain.Code;
 import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.Vocabulary;
+import eu.cessda.cvmanager.domain.VocabularyPublish;
+import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.repository.CodeRepository;
 import eu.cessda.cvmanager.repository.VersionRepository;
 import eu.cessda.cvmanager.repository.VocabularyRepository;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
+import eu.cessda.cvmanager.repository.search.VocabularyPublishSearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ElasticsearchTemplate2;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
+import eu.cessda.cvmanager.service.mapper.VocabularyPublishMapper;
 import eu.cessda.cvmanager.ui.view.publication.EsFilter;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 
@@ -54,6 +60,9 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -72,33 +81,36 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
     
+    private final CodeService codeService;
+    
     private final VersionRepository versionRepository;
 
     private final VocabularyRepository vocabularyRepository;
 
     private final VocabularyMapper vocabularyMapper;
+    
+    private final VocabularyPublishMapper vocabularyPublishMapper;
 
     private final VocabularySearchRepository vocabularySearchRepository;
     
-    private final PublishedVocabularyMapper publishedVocabularyMapper;
-    
-    private final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
-    
+    private final VocabularyPublishSearchRepository vocabularyPublishSearchRepository;
+
     // Use original ElasticsearchTemplate if this bug is fixed
     // https://jira.spring.io/browse/DATAES-412
     private final ElasticsearchTemplate2 elasticsearchTemplate;
 
     public VocabularyServiceImpl(VocabularyRepository vocabularyRepository, VocabularyMapper vocabularyMapper, 
     		VocabularySearchRepository vocabularySearchRepository, ElasticsearchTemplate2 elasticsearchTemplate,
-    		VersionRepository versionRepository,PublishedVocabularyMapper publishedVocabularyMapper,
-    		PublishedVocabularySearchRepository publishedVocabularySearchRepository) {
+    		VocabularyPublishMapper vocabularyPublishMapper, VersionRepository versionRepository, CodeService codeService,
+    		VocabularyPublishSearchRepository vocabularyPublishSearchRepository) {
+    	this.codeService = codeService;
         this.vocabularyRepository = vocabularyRepository;
         this.vocabularyMapper = vocabularyMapper;
+        this.vocabularyPublishMapper = vocabularyPublishMapper;
         this.vocabularySearchRepository = vocabularySearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.versionRepository = versionRepository;
-        this.publishedVocabularyMapper = publishedVocabularyMapper;
-        this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
+        this.vocabularyPublishSearchRepository = vocabularyPublishSearchRepository;
     }
 
     /**
@@ -552,7 +564,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
 			.withSearchType(SearchType.DEFAULT)
-			.withIndices("vocabulary-publish").withTypes("publishedvocabulary")
+			.withIndices("vocabulary-publish").withTypes("vocabularypublish")
 			.withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
 			.withPageable( esQueryResultDetail.getPage());
 		
@@ -609,14 +621,61 @@ public class VocabularyServiceImpl implements VocabularyService {
 	}
 
 	@Override
-	public void indexEditor(VocabularyDTO vocabulary) {
+	public void index(VocabularyDTO vocabulary) {
+		// index nested object as well
+		// get version
+		vocabulary.setVers( vocabulary.getLatestVersions());
+		// set languages
+		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
+		// get codes
+		List<CodeDTO> codes = codeService.findByVocabulary( vocabulary.getId());
+		vocabulary.setCodes( new HashSet<>( codes ));
+		
+		
 		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 		vocabularySearchRepository.save( vocab );
 	}
-
+	
 	@Override
-	public void indexPublication(VocabularyDTO vocabulary) {
-		PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
-		publishedVocabularySearchRepository.save( publishedVocabulary );
+	public void indexPublish(VocabularyDTO vocabulary) {
+		// index nested object as well
+		// get latest version
+		vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
+		
+		// set languages from latest version
+		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
+		// set published languages across versions
+		vocabulary.setLanguagesPublished( VocabularyDTO.getPublishedLanguagesFromVersions( vocabulary.getVers() ));
+		// update/generate vocabulary content
+		// 1. clear vocabulary DTO first before replacing content
+		vocabulary.clearContent();
+		// 2. generate vocabulary content from version
+		for( VersionDTO versionDTO : vocabulary.getVers()) {
+			Language versionLanguage = Language.getEnumByName( versionDTO.getLanguage() );
+			vocabulary.setVersionByLanguage(versionLanguage, versionDTO.getNumber());
+			vocabulary.setTitleDefinition( versionDTO.getTitle(), versionDTO.getDefinition(), versionLanguage);
+		}
+		
+		// 3. generate code content from version, create codeMap first
+		List<CodeDTO> codes = codeService.findByVocabulary( vocabulary.getId());
+		Map<String, CodeDTO> codesMap = new HashMap<>();
+		for( CodeDTO eachCode: codes) {
+			eachCode.clearCode();
+			codesMap.put( eachCode.getNotation(), eachCode);
+		}
+		for( VersionDTO versionDTO : vocabulary.getVers()) {
+			Language versionLanguage = Language.getEnumByName( versionDTO.getLanguage() );
+			for( ConceptDTO concept : versionDTO.getConcepts()) {
+				CodeDTO targetCode = codesMap.get( concept.getNotation());
+				if( targetCode == null )
+					continue;
+				
+				targetCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), versionLanguage);
+			}
+		}
+		vocabulary.setCodes( new HashSet<>( codesMap.values() ));
+		
+		VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
+		vocabularyPublishSearchRepository.save( vocab );
 	}
 }

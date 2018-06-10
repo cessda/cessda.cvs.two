@@ -311,6 +311,43 @@ public class CodeDTO implements Serializable {
     	addLanguage(language.name().toLowerCase());
     	return this;
     }
+    
+    public void clearCode() {
+    	setTitleCs(null);
+		setDefinitionCs(null);
+		setTitleDa(null);
+		setDefinitionDa(null);
+		setTitleNl(null);
+		setDefinitionNl(null);
+		setTitleEn(null);
+		setDefinitionEn(null);
+		setTitleFi(null);
+		setDefinitionFi(null);
+		setTitleFr(null);
+		setDefinitionFr(null);
+		setTitleDe(null);
+		setDefinitionDe(null);
+		setTitleEl(null);
+		setDefinitionEl(null);
+		setTitleHu(null);
+		setDefinitionHu(null);
+		setTitleLt(null);
+		setDefinitionLt(null);
+		setTitleNo(null);
+		setDefinitionNo(null);
+		setTitlePt(null);
+		setDefinitionPt(null);
+		setTitleRo(null);
+		setDefinitionRo(null);
+		setTitleSk(null);
+		setDefinitionSk(null);
+		setTitleSl(null);
+		setDefinitionSl(null);
+		setTitleEs(null);
+		setDefinitionEs(null);
+		setTitleSv(null);
+		setDefinitionSv(null);
+    }
 
     public Long getId() {
         return id;
@@ -869,6 +906,7 @@ public class CodeDTO implements Serializable {
 				concept.setNotation( code.getNotation());
 				concept.setTitle(cTitle);
 				concept.setDefinition( code.getDefinitionByLanguage(lang));
+				concept.setCodeId( code.getId());
 				
 				concepts.add(concept);
 			}

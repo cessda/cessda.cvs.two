@@ -42,11 +42,8 @@ public class Concept implements Serializable{
     @Column(name = "definition")
     private String definition;
     
-//    @Column(name = "parent")
-//    private Long parent;
-//    
-//    @Column(name = "\"position\"")
-//    private Integer position;
+    @Column(name = "code_id")
+    private Long codeId;
     
     @OneToMany(mappedBy = "concept")
     @JsonIgnore
@@ -137,4 +134,12 @@ public class Concept implements Serializable{
     public void setVersions(Set<Version> versions) {
         this.versions = versions;
     }
+
+	public Long getCodeId() {
+		return codeId;
+	}
+
+	public void setCodeId(Long codeId) {
+		this.codeId = codeId;
+	}
 }

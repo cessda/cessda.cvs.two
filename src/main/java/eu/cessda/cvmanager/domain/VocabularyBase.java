@@ -5,28 +5,24 @@ import javax.validation.constraints.*;
 
 import org.gesis.wts.domain.enumeration.Language;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
-import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import eu.cessda.cvmanager.domain.enumeration.Status;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
 /**
- * A Vocabulary.
+ * A VocabularyBase.
  */
 @MappedSuperclass
-public class BaseVocabulary implements Serializable {
+public class VocabularyBase implements Serializable {
     
 	private static final long serialVersionUID = 1L;
 
@@ -67,11 +63,6 @@ public class BaseVocabulary implements Serializable {
 
     @Column(name = "discoverable")
     private Boolean discoverable = false;
-
-    @Column(name = "languages")
-    @ElementCollection( targetClass=String.class )
-    @Field(type = FieldType.keyword)
-    private Set<String> languages;
     
     @NotNull
     @Size(max = 20)
@@ -88,8 +79,16 @@ public class BaseVocabulary implements Serializable {
     @Field(type = FieldType.keyword)
     private String agencyName;
     
-//  @JsonBackReference
-//  @OneToMany(mappedBy = "vocabulary")
+    @Column(name = "languages")
+    @ElementCollection( targetClass=String.class )
+    @Field(type = FieldType.keyword)
+    private Set<String> languages;
+    
+    @Column(name = "languages_published")
+    @ElementCollection( targetClass=String.class )
+    @Field(type = FieldType.keyword)
+    private Set<String> languagesPublished;
+    
     @Transient
     @Field(type = FieldType.Nested, store = true)
     private Set<Code> codes = new HashSet<>();
@@ -361,7 +360,7 @@ public class BaseVocabulary implements Serializable {
         return uri;
     }
 
-    public BaseVocabulary uri(String uri) {
+    public VocabularyBase uri(String uri) {
         this.uri = uri;
         return this;
     }
@@ -382,7 +381,7 @@ public class BaseVocabulary implements Serializable {
         return versionNumber;
     }
 
-    public BaseVocabulary versionNumber(String versionNumber) {
+    public VocabularyBase versionNumber(String versionNumber) {
         this.versionNumber = versionNumber;
         return this;
     }
@@ -395,7 +394,7 @@ public class BaseVocabulary implements Serializable {
         return archived;
     }
 
-    public BaseVocabulary archived(Boolean archived) {
+    public VocabularyBase archived(Boolean archived) {
         this.archived = archived;
         return this;
     }
@@ -408,7 +407,7 @@ public class BaseVocabulary implements Serializable {
         return withdrawn;
     }
 
-    public BaseVocabulary withdrawn(Boolean withdrawn) {
+    public VocabularyBase withdrawn(Boolean withdrawn) {
         this.withdrawn = withdrawn;
         return this;
     }
@@ -421,7 +420,7 @@ public class BaseVocabulary implements Serializable {
         return discoverable;
     }
 
-    public BaseVocabulary discoverable(Boolean discoverable) {
+    public VocabularyBase discoverable(Boolean discoverable) {
         this.discoverable = discoverable;
         return this;
     }
@@ -434,7 +433,7 @@ public class BaseVocabulary implements Serializable {
         return sourceLanguage;
     }
 
-    public BaseVocabulary sourceLanguage(String sourceLanguage) {
+    public VocabularyBase sourceLanguage(String sourceLanguage) {
         this.sourceLanguage = sourceLanguage;
         return this;
     }
@@ -455,7 +454,7 @@ public class BaseVocabulary implements Serializable {
         return agencyName;
     }
 
-    public BaseVocabulary agencyName(String agencyName) {
+    public VocabularyBase agencyName(String agencyName) {
         this.agencyName = agencyName;
         return this;
     }
@@ -472,8 +471,21 @@ public class BaseVocabulary implements Serializable {
 		this.languages = languages;
 	}
 	
-	public BaseVocabulary addLanguage(String language) {
+	public VocabularyBase addLanguage(String language) {
 		this.languages.add(language);
+		return this;
+	}
+	
+	public Set<String> getLanguagesPublished() {
+		return languagesPublished;
+	}
+
+	public void setLanguagesPublished(Set<String> languagesPublished) {
+		this.languagesPublished = languagesPublished;
+	}
+	
+	public VocabularyBase addLanguagePublished(String languagePublished) {
+		this.languagesPublished.add(languagePublished);
 		return this;
 	}
 	
@@ -505,7 +517,7 @@ public class BaseVocabulary implements Serializable {
         return titleCs;
     }
 
-    public BaseVocabulary titleCs(String titleCs) {
+    public VocabularyBase titleCs(String titleCs) {
         this.titleCs = titleCs;
         return this;
     }
@@ -518,7 +530,7 @@ public class BaseVocabulary implements Serializable {
         return definitionCs;
     }
 
-    public BaseVocabulary definitionCs(String definitionCs) {
+    public VocabularyBase definitionCs(String definitionCs) {
         this.definitionCs = definitionCs;
         return this;
     }
@@ -531,7 +543,7 @@ public class BaseVocabulary implements Serializable {
         return titleDa;
     }
 
-    public BaseVocabulary titleDa(String titleDa) {
+    public VocabularyBase titleDa(String titleDa) {
         this.titleDa = titleDa;
         return this;
     }
@@ -544,7 +556,7 @@ public class BaseVocabulary implements Serializable {
         return definitionDa;
     }
 
-    public BaseVocabulary definitionDa(String definitionDa) {
+    public VocabularyBase definitionDa(String definitionDa) {
         this.definitionDa = definitionDa;
         return this;
     }
@@ -557,7 +569,7 @@ public class BaseVocabulary implements Serializable {
         return titleNl;
     }
 
-    public BaseVocabulary titleNl(String titleNl) {
+    public VocabularyBase titleNl(String titleNl) {
         this.titleNl = titleNl;
         return this;
     }
@@ -570,7 +582,7 @@ public class BaseVocabulary implements Serializable {
         return definitionNl;
     }
 
-    public BaseVocabulary definitionNl(String definitionNl) {
+    public VocabularyBase definitionNl(String definitionNl) {
         this.definitionNl = definitionNl;
         return this;
     }
@@ -583,7 +595,7 @@ public class BaseVocabulary implements Serializable {
         return titleEn;
     }
 
-    public BaseVocabulary titleEn(String titleEn) {
+    public VocabularyBase titleEn(String titleEn) {
         this.titleEn = titleEn;
         return this;
     }
@@ -596,7 +608,7 @@ public class BaseVocabulary implements Serializable {
         return definitionEn;
     }
 
-    public BaseVocabulary definitionEn(String definitionEn) {
+    public VocabularyBase definitionEn(String definitionEn) {
         this.definitionEn = definitionEn;
         return this;
     }
@@ -609,7 +621,7 @@ public class BaseVocabulary implements Serializable {
         return titleFi;
     }
 
-    public BaseVocabulary titleFi(String titleFi) {
+    public VocabularyBase titleFi(String titleFi) {
         this.titleFi = titleFi;
         return this;
     }
@@ -622,7 +634,7 @@ public class BaseVocabulary implements Serializable {
         return definitionFi;
     }
 
-    public BaseVocabulary definitionFi(String definitionFi) {
+    public VocabularyBase definitionFi(String definitionFi) {
         this.definitionFi = definitionFi;
         return this;
     }
@@ -635,7 +647,7 @@ public class BaseVocabulary implements Serializable {
         return titleFr;
     }
 
-    public BaseVocabulary titleFr(String titleFr) {
+    public VocabularyBase titleFr(String titleFr) {
         this.titleFr = titleFr;
         return this;
     }
@@ -648,7 +660,7 @@ public class BaseVocabulary implements Serializable {
         return definitionFr;
     }
 
-    public BaseVocabulary definitionFr(String definitionFr) {
+    public VocabularyBase definitionFr(String definitionFr) {
         this.definitionFr = definitionFr;
         return this;
     }
@@ -661,7 +673,7 @@ public class BaseVocabulary implements Serializable {
         return titleDe;
     }
 
-    public BaseVocabulary titleDe(String titleDe) {
+    public VocabularyBase titleDe(String titleDe) {
         this.titleDe = titleDe;
         return this;
     }
@@ -674,7 +686,7 @@ public class BaseVocabulary implements Serializable {
         return definitionDe;
     }
 
-    public BaseVocabulary definitionDe(String definitionDe) {
+    public VocabularyBase definitionDe(String definitionDe) {
         this.definitionDe = definitionDe;
         return this;
     }
@@ -687,7 +699,7 @@ public class BaseVocabulary implements Serializable {
         return titleEl;
     }
 
-    public BaseVocabulary titleEl(String titleEl) {
+    public VocabularyBase titleEl(String titleEl) {
         this.titleEl = titleEl;
         return this;
     }
@@ -700,7 +712,7 @@ public class BaseVocabulary implements Serializable {
         return definitionEl;
     }
 
-    public BaseVocabulary definitionEl(String definitionEl) {
+    public VocabularyBase definitionEl(String definitionEl) {
         this.definitionEl = definitionEl;
         return this;
     }
@@ -713,7 +725,7 @@ public class BaseVocabulary implements Serializable {
         return titleHu;
     }
 
-    public BaseVocabulary titleHu(String titleHu) {
+    public VocabularyBase titleHu(String titleHu) {
         this.titleHu = titleHu;
         return this;
     }
@@ -726,7 +738,7 @@ public class BaseVocabulary implements Serializable {
         return definitionHu;
     }
 
-    public BaseVocabulary definitionHu(String definitionHu) {
+    public VocabularyBase definitionHu(String definitionHu) {
         this.definitionHu = definitionHu;
         return this;
     }
@@ -739,7 +751,7 @@ public class BaseVocabulary implements Serializable {
         return titleLt;
     }
 
-    public BaseVocabulary titleLt(String titleLt) {
+    public VocabularyBase titleLt(String titleLt) {
         this.titleLt = titleLt;
         return this;
     }
@@ -752,7 +764,7 @@ public class BaseVocabulary implements Serializable {
         return definitionLt;
     }
 
-    public BaseVocabulary definitionLt(String definitionLt) {
+    public VocabularyBase definitionLt(String definitionLt) {
         this.definitionLt = definitionLt;
         return this;
     }
@@ -765,7 +777,7 @@ public class BaseVocabulary implements Serializable {
         return titleNo;
     }
 
-    public BaseVocabulary titleNo(String titleNo) {
+    public VocabularyBase titleNo(String titleNo) {
         this.titleNo = titleNo;
         return this;
     }
@@ -778,7 +790,7 @@ public class BaseVocabulary implements Serializable {
         return definitionNo;
     }
 
-    public BaseVocabulary definitionNo(String definitionNo) {
+    public VocabularyBase definitionNo(String definitionNo) {
         this.definitionNo = definitionNo;
         return this;
     }
@@ -791,7 +803,7 @@ public class BaseVocabulary implements Serializable {
         return titlePt;
     }
 
-    public BaseVocabulary titlePt(String titlePt) {
+    public VocabularyBase titlePt(String titlePt) {
         this.titlePt = titlePt;
         return this;
     }
@@ -804,7 +816,7 @@ public class BaseVocabulary implements Serializable {
         return definitionPt;
     }
 
-    public BaseVocabulary definitionPt(String definitionPt) {
+    public VocabularyBase definitionPt(String definitionPt) {
         this.definitionPt = definitionPt;
         return this;
     }
@@ -817,7 +829,7 @@ public class BaseVocabulary implements Serializable {
         return titleRo;
     }
 
-    public BaseVocabulary titleRo(String titleRo) {
+    public VocabularyBase titleRo(String titleRo) {
         this.titleRo = titleRo;
         return this;
     }
@@ -830,7 +842,7 @@ public class BaseVocabulary implements Serializable {
         return definitionRo;
     }
 
-    public BaseVocabulary definitionRo(String definitionRo) {
+    public VocabularyBase definitionRo(String definitionRo) {
         this.definitionRo = definitionRo;
         return this;
     }
@@ -843,7 +855,7 @@ public class BaseVocabulary implements Serializable {
         return titleSk;
     }
 
-    public BaseVocabulary titleSk(String titleSk) {
+    public VocabularyBase titleSk(String titleSk) {
         this.titleSk = titleSk;
         return this;
     }
@@ -856,7 +868,7 @@ public class BaseVocabulary implements Serializable {
         return definitionSk;
     }
 
-    public BaseVocabulary definitionSk(String definitionSk) {
+    public VocabularyBase definitionSk(String definitionSk) {
         this.definitionSk = definitionSk;
         return this;
     }
@@ -869,7 +881,7 @@ public class BaseVocabulary implements Serializable {
         return titleSl;
     }
 
-    public BaseVocabulary titleSl(String titleSl) {
+    public VocabularyBase titleSl(String titleSl) {
         this.titleSl = titleSl;
         return this;
     }
@@ -882,7 +894,7 @@ public class BaseVocabulary implements Serializable {
         return definitionSl;
     }
 
-    public BaseVocabulary definitionSl(String definitionSl) {
+    public VocabularyBase definitionSl(String definitionSl) {
         this.definitionSl = definitionSl;
         return this;
     }
@@ -895,7 +907,7 @@ public class BaseVocabulary implements Serializable {
         return titleEs;
     }
 
-    public BaseVocabulary titleEs(String titleEs) {
+    public VocabularyBase titleEs(String titleEs) {
         this.titleEs = titleEs;
         return this;
     }
@@ -908,7 +920,7 @@ public class BaseVocabulary implements Serializable {
         return definitionEs;
     }
 
-    public BaseVocabulary definitionEs(String definitionEs) {
+    public VocabularyBase definitionEs(String definitionEs) {
         this.definitionEs = definitionEs;
         return this;
     }
@@ -921,7 +933,7 @@ public class BaseVocabulary implements Serializable {
         return titleSv;
     }
 
-    public BaseVocabulary titleSv(String titleSv) {
+    public VocabularyBase titleSv(String titleSv) {
         this.titleSv = titleSv;
         return this;
     }
@@ -934,7 +946,7 @@ public class BaseVocabulary implements Serializable {
         return definitionSv;
     }
 
-    public BaseVocabulary definitionSv(String definitionSv) {
+    public VocabularyBase definitionSv(String definitionSv) {
         this.definitionSv = definitionSv;
         return this;
     }
@@ -947,18 +959,18 @@ public class BaseVocabulary implements Serializable {
         return codes;
     }
 
-    public BaseVocabulary codes(Set<Code> codes) {
+    public VocabularyBase codes(Set<Code> codes) {
         this.codes = codes;
         return this;
     }
 
-    public BaseVocabulary addCode(Code code) {
+    public VocabularyBase addCode(Code code) {
         this.codes.add(code);
 //        code.setVocabulary(this);
         return this;
     }
 
-    public BaseVocabulary removeCode(Code code) {
+    public VocabularyBase removeCode(Code code) {
         this.codes.remove(code);
 //        code.setVocabulary(null);
         return this;
@@ -1144,7 +1156,7 @@ public class BaseVocabulary implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        BaseVocabulary vocabulary = (BaseVocabulary) o;
+        VocabularyBase vocabulary = (VocabularyBase) o;
         if (vocabulary.getId() == null || getId() == null) {
             return false;
         }
@@ -1158,7 +1170,7 @@ public class BaseVocabulary implements Serializable {
 
     @Override
     public String toString() {
-        return "Vocabulary{" +
+        return "VocabularyBase{" +
             "id=" + getId() +
             ", uri='" + getUri() + "'" +
             ", versionNumber='" + getVersionNumber() + "'" +

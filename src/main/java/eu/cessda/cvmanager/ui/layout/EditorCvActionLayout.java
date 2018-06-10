@@ -18,18 +18,17 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
-import eu.cessda.cvmanager.domain.PublishedVocabulary;
 import eu.cessda.cvmanager.domain.Vocabulary;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.CvView;
@@ -42,11 +41,10 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	
 	private final StardatDDIService stardatDDIService;
 	private final AgencyService agencyService;
+//	private final CodeService codeService;
 	private final VocabularyService vocabularyService;
 	private final VocabularyMapper vocabularyMapper;
 	private final VocabularySearchRepository vocabularySearchRepository;
-	private final PublishedVocabularyMapper publishedVocabularyMapper;
-	private final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -76,18 +74,16 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	
 	
 	public EditorCvActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
-			AgencyService agencyService, VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
-			VocabularySearchRepository vocabularySearchRepository, PublishedVocabularyMapper publishedVocabularyMapper,
-			PublishedVocabularySearchRepository publishedVocabularySearchRepository, UIEventBus eventBus) {
+			AgencyService agencyService, VocabularyService vocabularyService/*, CodeService codeService*/, VocabularyMapper vocabularyMapper,
+			VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
+//		this.codeService = codeService;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.vocabularyMapper = vocabularyMapper;
 		this.vocabularySearchRepository = vocabularySearchRepository;
-		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
-		this.publishedVocabularyMapper = publishedVocabularyMapper;
 		this.eventBus = eventBus;
 		init();
 	}
@@ -165,9 +161,9 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 						if( dialog.isConfirmed() ) {
 							// set status for curent version to review
 							currentVersion.setStatus( Status.REVIEW.toString() );
-							vocabulary.setStatusByLanguage(selectedLanguage, Status.REVIEW.toString());
+							vocabulary.setVersionByLanguage(selectedLanguage, Status.REVIEW.toString());
 							
-							// if source labguage
+							// if source language
 							if( isCurrentSL) {
 								vocabulary.setStatus( Status.REVIEW.toString());
 							}
@@ -179,15 +175,12 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							vocabulary = vocabularyService.save(vocabulary);
 							
 							// index for editor
-							vocabulary.setVers( vocabulary.getLatestVersions());
-							vocabulary.setCodes( vocabulary.generateCodesFromLatestVersion());
-							Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
-							vocabularySearchRepository.save( vocab );
+							vocabularyService.index(vocabulary);
 							
 							// save to flatDB
 							cvScheme.setStatus(Status.REVIEW.toString()  );
 							getCvScheme().save();
-							DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+							DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Review Cv");
 														
 							// refresh detail page
 							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
@@ -205,29 +198,22 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 						if( dialog.isConfirmed() ) {
 							
 							currentVersion.setStatus( Status.PUBLISHED.toString() );
-							vocabulary.setStatusByLanguage(selectedLanguage, Status.PUBLISHED.toString());
+							vocabulary.setVersionByLanguage(selectedLanguage, Status.PUBLISHED.toString());
 							
 							if( isCurrentSL) {
 								vocabulary.setStatus( Status.PUBLISHED.toString());
 							}
 							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
+							vocabulary.addLanguagePublished( selectedLanguage.name().toLowerCase());
 							
 							// save to database
 							vocabulary = vocabularyService.save(vocabulary);
 							
 							// index for editor
-							vocabulary.setVers( vocabulary.getLatestVersions());
-							vocabulary.setCodes( vocabulary.generateCodesFromLatestVersion());
-							vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
-							Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
-							vocabularySearchRepository.save( vocab );
+							vocabularyService.index(vocabulary);
 							
-							// index for publication page
-							vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
-							vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
-							vocabulary.setCodes( vocabulary.generateCodesFromLatestPublishedVersion());
-							PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
-							publishedVocabularySearchRepository.save( publishedVocabulary );
+							// index for publication
+							vocabularyService.indexPublish(vocabulary);
 							
 							// save to flatDB
 							cvScheme.setStatus(Status.PUBLISHED.toString()  );

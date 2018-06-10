@@ -3,6 +3,8 @@ package eu.cessda.cvmanager.service.dto;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+
+import javax.persistence.Column;
 import javax.persistence.Lob;
 
 /**
@@ -24,10 +26,8 @@ public class ConceptDTO implements Serializable {
     @Lob
     private String definition;
     
-//    private Long parent;
-//    
-//    private Integer position;
-
+    private Long codeId;
+    
     public Long getId() {
         return id;
     }
@@ -90,4 +90,12 @@ public class ConceptDTO implements Serializable {
             ", definition='" + getDefinition() + "'" +
             "}";
     }
+    
+	public Long getCodeId() {
+		return codeId;
+	}
+
+	public void setCodeId(Long codeId) {
+		this.codeId = codeId;
+	}
 }

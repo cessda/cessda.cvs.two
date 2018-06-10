@@ -17650,9 +17650,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .status-review {
-	webkit-box-shadow: 3px 3px 8px -3px #3300ff;
-	-moz-box-shadow: 3px 3px 8px -3px #3300ff;
-	box-shadow: 3px 3px 8px -3px #3300ff;
+	webkit-box-shadow: 3px 3px 8px -3px #ffa500;
+	-moz-box-shadow: 3px 3px 8px -3px #ffa500;
+	box-shadow: 3px 3px 8px -3px #ffa500;
 }
 
 .mytheme .search-box {

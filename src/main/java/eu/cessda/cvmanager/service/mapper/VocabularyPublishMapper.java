@@ -3,32 +3,36 @@ package eu.cessda.cvmanager.service.mapper;
 import org.gesis.wts.service.mapper.EntityMapper;
 import org.mapstruct.*;
 
-import eu.cessda.cvmanager.domain.PublishedVocabulary;
+import eu.cessda.cvmanager.domain.VocabularyPublish;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 
 /**
  * Mapper for the entity Vocabulary and its DTO VocabularyDTO.
  */
 @Mapper(componentModel = "spring", uses = {CodeMapper.class, VersionMapper.class})
-public interface PublishedVocabularyMapper extends EntityMapper<VocabularyDTO, PublishedVocabulary> {
+public interface VocabularyPublishMapper extends EntityMapper<VocabularyDTO, VocabularyPublish> {
 		
 	@Mappings({
+		@Mapping(source = "vers", target = "vers"),
 		@Mapping(source = "codes", target = "codes"),
 		@Mapping(source = "languages", target = "languages"),
+		@Mapping(source = "languagesPublished", target = "languagesPublished")
 	})
-    VocabularyDTO toDto(PublishedVocabulary vocabulary);
+    VocabularyDTO toDto(VocabularyPublish vocabulary);
 
     @Mappings({
+    	@Mapping(source = "vers", target = "vers"),
 	    @Mapping(source = "codes", target = "codes"),
 	    @Mapping(source = "languages", target = "languages"),
+		@Mapping(source = "languagesPublished", target = "languagesPublished")
     })
-    PublishedVocabulary toEntity(VocabularyDTO vocabularyDTO);
+    VocabularyPublish toEntity(VocabularyDTO vocabularyDTO);
 
-    default PublishedVocabulary fromId(Long id) {
+    default VocabularyPublish fromId(Long id) {
         if (id == null) {
             return null;
         }
-        PublishedVocabulary vocabulary = new PublishedVocabulary();
+        VocabularyPublish vocabulary = new VocabularyPublish();
         vocabulary.setId(id);
         return vocabulary;
     }

@@ -80,7 +80,7 @@ public interface VocabularyService {
 
 	boolean existsByNotation(String notation);
 	
-	void indexEditor( VocabularyDTO vocabulary);
+	void index( VocabularyDTO vocabulary);
 	
-	void indexPublication ( VocabularyDTO vocabulary);
+	void indexPublish( VocabularyDTO vocabulary);
 }
