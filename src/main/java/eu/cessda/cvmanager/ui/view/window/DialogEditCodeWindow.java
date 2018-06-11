@@ -84,9 +84,10 @@ public class DialogEditCodeWindow extends MWindow {
 	private Button storeCode = new Button("Save");
 
 	private CVScheme cvScheme;
-	private VersionDTO version;
 	private CVConcept cvConcept;
+	
 	private VocabularyDTO vocabulary;
+	private VersionDTO version;
 	private CodeDTO code;
 	private ConceptDTO concept;
 	

@@ -1008,15 +1008,15 @@ public class DetailView2 extends CvManagerView {
 				
 				break;
 			case CVCONCEPT_TRANSLATION_DIALOG:
-				if( cvCodeTreeData == null || cvCodeTreeData.getRootItems().isEmpty()) {
-					Notification.show("Please add code first");
-				} else if( cvItem.getCvScheme().getLanguagesByTitle().size() == 1) {
-					Notification.show("Please add CV translation first");
-				}
-				else {
-					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), getVocabulary(), getAgency(), code, i18n, UI.getCurrent().getLocale());
-					getUI().addWindow( windowTranslate );
-				}
+//				if( cvCodeTreeData == null || cvCodeTreeData.getRootItems().isEmpty()) {
+//					Notification.show("Please add code first");
+//				} else if( cvItem.getCvScheme().getLanguagesByTitle().size() == 1) {
+//					Notification.show("Please add CV translation first");
+//				}
+//				else {
+//					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), getVocabulary(), getAgency(), code, i18n, UI.getCurrent().getLocale());
+//					getUI().addWindow( windowTranslate );
+//				}
 				break;
 			case CVCONCEPT_ADDCHILD_DIALOG:
 				CVConcept childConcept = new CVConcept();

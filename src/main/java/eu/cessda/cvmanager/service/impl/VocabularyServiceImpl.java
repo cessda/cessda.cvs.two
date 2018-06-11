@@ -276,9 +276,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 		// at the end build search query
 		SearchQuery searchQuery = searchQueryBuilder.build();
-		
-		Page<Vocabulary> vocPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class);
-		
+				
 		// put the vocabulary results
 		Page<VocabularyDTO> vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class).map(vocabularyMapper::toDto);
 		
@@ -598,9 +596,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 		// at the end build search query
 		SearchQuery searchQuery = searchQueryBuilder.build();
-		
-		Page<Vocabulary> vocPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class);
-		
+				
 		// put the vocabulary results
 		Page<VocabularyDTO> vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class).map(vocabularyMapper::toDto);
 		

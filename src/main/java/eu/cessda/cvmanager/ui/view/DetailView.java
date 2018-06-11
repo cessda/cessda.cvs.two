@@ -875,27 +875,18 @@ public class DetailView extends CvView {
 				updateDetailGrid();
 				
 				break;
-//			case CVCONCEPT_ADD_DIALOG:
-//				CVConcept newCVConcept = new CVConcept();
-//				newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
-//				newCVConcept.createId();
-//				newCVConcept.setContainerId( cvItem.getCvScheme().getContainerId());
-//
-//				DialogAddCodeWindow2 dialogAddCodeWindow1 = new DialogAddCodeWindow2(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
-//				getUI().addWindow(dialogAddCodeWindow1);
-//				
+
+//			case CVCONCEPT_TRANSLATION_DIALOG:
+//				if( cvCodeTreeData == null || cvCodeTreeData.getRootItems().isEmpty()) {
+//					Notification.show("Please add code first");
+//				} else if( cvItem.getCvScheme().getLanguagesByTitle().size() == 1) {
+//					Notification.show("Please add CV translation first");
+//				}
+//				else {
+//					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), getVocabulary(), getAgency(), code, i18n, UI.getCurrent().getLocale());
+//					getUI().addWindow( windowTranslate );
+//				}
 //				break;
-			case CVCONCEPT_TRANSLATION_DIALOG:
-				if( cvCodeTreeData == null || cvCodeTreeData.getRootItems().isEmpty()) {
-					Notification.show("Please add code first");
-				} else if( cvItem.getCvScheme().getLanguagesByTitle().size() == 1) {
-					Notification.show("Please add CV translation first");
-				}
-				else {
-					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), getVocabulary(), getAgency(), code, i18n, UI.getCurrent().getLocale());
-					getUI().addWindow( windowTranslate );
-				}
-				break;
 			case CVCONCEPT_ADDCHILD_DIALOG:
 				CVConcept childConcept = new CVConcept();
 				childConcept.loadSkeleton(childConcept.getDefaultDialect());
