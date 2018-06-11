@@ -76,11 +76,12 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private VocabularyDTO vocabulary;
 	private VersionDTO version;
 	private ConceptDTO concept;
+	private CodeDTO code;
 	private Language language;
 
 	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, 
 			VersionService versionService,CodeService codeService, CVScheme cvSch, CVConcept newCode, CVConcept parent, VocabularyDTO vocabularyDTO,
-			VersionDTO versionDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
+			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
 		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
 				locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage( Language.getEnumByName( versionDTO.getLanguage()).toString()) : parent.getNotation() )));
 		
@@ -90,6 +91,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		this.i18n = i18n;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
+		this.code = codeDTO;
 		this.concept = conceptDTO;
 		this.codeService = codeService;
 		this.stardatDDIService = stardatDDIService;
@@ -136,6 +138,11 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		
 		Button cancelButton = new Button("Cancel", e -> this.close());
 		MHorizontalLayout row1 = new MHorizontalLayout();
+		
+		notation.addValueChangeListener( e -> {
+			//Only allow letter
+			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^A-Za-z]", ""));
+		});
 		
 		layout
 			.withHeight("98%")
@@ -212,27 +219,32 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 			stardatDDIService.saveElement(parentCode.ddiStore, "User", "Add Code");
 		}
 		
+		// save the code
+		if( !code.isPersisted() ) {
+			code.setUri( ddiStore.getElementId() );
+			code.setSourceLanguage( language.name().toLowerCase());
+			code.setVocabularyId( vocabulary.getId() );
+		}
+		
+		code.setNotation( notation.getValue() );
+		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
+		code = codeService.save(code);
+		
 		// save to concept
-		// TODO: save version and concept
+		if( !concept.isPersisted()) {
+			vocabulary.addCode(code);
+			concept.setCodeId( code.getId());
+			version.addConcept(concept);
+		}
 		concept.setNotation( notation.getValue() );
 		concept.setTitle( preferedLabel.getValue() );
 		concept.setDefinition( description.getValue() );
-		version.addConcept(concept);
-		versionService.save(version);
 		
-		// save on database
-		CodeDTO code = new CodeDTO();
-		code.setUri( ddiStore.getElementId() );
-		code.setNotation( notation.getValue() );
-		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
-		code.setSourceLanguage( language.name().toLowerCase());
-		code.setVocabularyId( vocabulary.getId() );
-		codeService.save(code);
-		
-		// TODO: Fixing code indexing
-		// indexing
-		vocabulary.addCode(code);
-		vocabulary.setVers( vocabulary.getVersions());
+		// save vocabulary, version
+//		version = versionService.save(version);
+//		vocabulary.getVersions();
+
+		// indexing editor
 		vocabularyService.index(vocabulary);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );

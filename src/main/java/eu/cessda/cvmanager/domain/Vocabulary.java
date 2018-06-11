@@ -45,7 +45,7 @@ public class Vocabulary extends VocabularyBase{
     private Set<String> restrictRoles;
     
     
-    @ManyToMany(cascade = { CascadeType.PERSIST })
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
     @JoinTable(name = "vocabulary_version",
                joinColumns = @JoinColumn(name="vocabulary_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="version_id", referencedColumnName="id"))

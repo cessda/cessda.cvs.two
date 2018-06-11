@@ -106,7 +106,7 @@ public class Version implements Serializable{
     @Field(type = FieldType.keyword)
     private List<String> restrictRoles;
     
-    @ManyToMany(cascade = { CascadeType.PERSIST })
+    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH  })
     @JoinTable(name = "version_concept",
                joinColumns = @JoinColumn(name="version_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="concept_id", referencedColumnName="id"))

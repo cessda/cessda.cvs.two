@@ -98,4 +98,8 @@ public class ConceptDTO implements Serializable {
 	public void setCodeId(Long codeId) {
 		this.codeId = codeId;
 	}
+	
+	public boolean isPersisted() {
+		return id != null;
+	}
 }

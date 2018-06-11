@@ -24,6 +24,7 @@ import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -127,7 +128,9 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		newCVConcept.createId();
 		newCVConcept.setContainerId( cvScheme.getContainerId());
 
-		DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, stardatDDIService, vocabularyService, versionService, codeService, cvScheme, newCVConcept, null, vocabulary, currentVersion, new ConceptDTO(), i18n, locale);
+		DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(
+				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
+				cvScheme, newCVConcept, null, vocabulary, currentVersion, new CodeDTO(), new ConceptDTO(), i18n, locale);
 		getUI().addWindow(dialogAddCodeWindow1);
 		
 //		DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(eventBus, stardatDDIService, versionService, cvScheme, newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
