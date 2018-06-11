@@ -4,8 +4,10 @@ import java.util.Locale;
 
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
+import org.gesis.wts.service.dto.AgencyDTO;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
@@ -21,6 +23,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
@@ -33,6 +36,7 @@ import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
 
 public class EditorCodeActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -42,6 +46,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	private final VocabularyService vocabularyService;
 	private final VersionService versionService;
 	private final CodeService codeService;
+	private final ConceptService conceptService;
 	
 	private I18N i18n;
 	private Locale locale = UI.getCurrent().getLocale();
@@ -61,11 +66,15 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	private CVScheme cvScheme;
 	private CVConcept cvConcept;
 	private VersionDTO currentVersion;
+	private CodeDTO currentCode;
 	private ConceptDTO currentConcept;
+	private AgencyDTO agency;
+	private Language selectedLanguage;
+	private Language sourceLanguage;
 	
 	public EditorCodeActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService,
-			CodeService codeService, UIEventBus eventBus) {
+			CodeService codeService, ConceptService conceptService, UIEventBus eventBus) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
@@ -73,6 +82,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
 		this.codeService = codeService;
+		this.conceptService = conceptService;
 		this.eventBus = eventBus;
 		init();
 	}
@@ -114,6 +124,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		getInnerContainer()
 			.add(
 				buttonCodeAdd,
+				buttonCodeEdit,
 				buttonCodeAddChild,
 				buttonCodeAddTranslation,
 				buttonCodeDelete,
@@ -139,11 +150,21 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	}
 	
 	private void doEditCode(ClickEvent event ) {
-		if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
+		if( !SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage) )
+			return;
+		
+		Window window = new DialogEditCodeWindow(
+				eventBus, stardatDDIService, vocabularyService, codeService, conceptService, cvScheme, 
+				cvConcept, selectedLanguage, vocabulary, currentVersion, currentCode, 
+				currentConcept, i18n, locale);
+		
+		getUI().addWindow(window);
 			
-		} else {
-			// 
-		}
+//		if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
+//			
+//		} else {
+//			// 
+//		}
 //		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADD_DIALOG, null) );
 	}
 	
@@ -163,6 +184,12 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		enableSort = !enableSort;
 		buttonCodeSort.withCaption( enableSort ? "Disable order code" : "Enable order code" );
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_SORT, enableSort) );
+	}
+	
+	public void clearCode() {
+		setCvConcept( null );
+		setCurrentCode( null );
+		setCurrentConcept( null );
 	}
 	
 	@Override
@@ -218,17 +245,60 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	public boolean hasActionRight() {
 		
 		boolean hasAction = false;
-		if( !SecurityUtils.isAuthenticated() ) {
-			setVisible( false );
-		}
-		
-		if( currentVersion.getStatus().equals( Status.PUBLISHED.toString()) ) {
+		if( !SecurityUtils.isAuthenticated() || currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
 			setVisible( false );
 		} else {
 			hasAction = true;
+			if( SecurityUtils.isCurrentUserAllowCreateCvSl() )
+				buttonCodeAdd.setVisible( true );
+			else
+				buttonCodeAdd.setVisible( false );
+			
+			if( cvConcept != null && currentCode != null && currentConcept != null) {
+				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage))
+					buttonCodeEdit.setVisible( true );
+				else
+					buttonCodeEdit.setVisible( false );
+			} else {
+				buttonCodeEdit.setVisible( false );
+			}
 		}
 		
+		
+		
 		return hasAction;
+	}
+
+	public CodeDTO getCurrentCode() {
+		return currentCode;
+	}
+
+	public void setCurrentCode(CodeDTO currentCode) {
+		this.currentCode = currentCode;
+	}
+
+	public Language getSelectedLanguage() {
+		return selectedLanguage;
+	}
+
+	public void setSelectedLanguage(Language selectedLanguage) {
+		this.selectedLanguage = selectedLanguage;
+	}
+	
+	public Language getSourceLanguage() {
+		return sourceLanguage;
+	}
+
+	public void setSourceLanguage(Language sourceLanguage) {
+		this.sourceLanguage = sourceLanguage;
+	}
+
+	public AgencyDTO getAgency() {
+		return agency;
+	}
+
+	public void setAgency(AgencyDTO agency) {
+		this.agency = agency;
 	}
 	
 }

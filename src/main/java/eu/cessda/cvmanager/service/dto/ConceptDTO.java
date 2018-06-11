@@ -3,6 +3,8 @@ package eu.cessda.cvmanager.service.dto;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
@@ -101,5 +103,9 @@ public class ConceptDTO implements Serializable {
 	
 	public boolean isPersisted() {
 		return id != null;
+	}
+	
+	public static Optional<ConceptDTO> getConceptFromCode( Set<ConceptDTO> concepts, Long codeId){
+		return concepts.stream().filter( c -> c.getCodeId() == codeId).findFirst();
 	}
 }

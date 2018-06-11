@@ -34,8 +34,13 @@ import com.vaadin.ui.Window;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
@@ -43,14 +48,14 @@ import eu.cessda.cvmanager.ui.view.EditorView;
 public class DialogEditCodeWindow extends MWindow {
 
 	private static final Logger log = LoggerFactory.getLogger(DialogEditCodeWindow.class);
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8118228014482059473L;
+	
 	private final EventBus.UIEventBus eventBus;
+	private final I18N i18n;
 	private final StardatDDIService stardatDDIService;
+	private final VocabularyService vocabularyService;
 	private final CodeService codeService;
+	private final ConceptService conceptService;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -79,26 +84,35 @@ public class DialogEditCodeWindow extends MWindow {
 	private Button storeCode = new Button("Save");
 
 	private CVScheme cvScheme;
+	private VersionDTO version;
 	private CVConcept cvConcept;
 	private VocabularyDTO vocabulary;
 	private CodeDTO code;
+	private ConceptDTO concept;
 	
 	MHorizontalLayout sourceRow = new MHorizontalLayout();
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
-	public DialogEditCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, CodeService codeService, 
-			CVScheme cvScheme, CVConcept conceptCode, Language sLanguage, VocabularyDTO vocabularyDTO, CodeDTO codeDTO, I18N i18n, Locale locale) {
+	public DialogEditCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, 
+			VocabularyService vocabularyService, CodeService codeService, ConceptService conceptService,
+			CVScheme cvScheme, CVConcept conceptCode, Language sLanguage, VocabularyDTO vocabularyDTO, 
+			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
 		super( "Edit Code");
+		this.i18n = i18n;
 		this.cvScheme = cvScheme;
 		this.cvConcept = conceptCode;
 		this.language = sLanguage;
 		this.stardatDDIService = stardatDDIService;
+		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
+		this.conceptService = conceptService;
 		
 		this.eventBus = eventBus;
 		this.vocabulary = vocabularyDTO;
+		this.version = versionDTO;
 		this.code = codeDTO;
+		this.concept = conceptDTO;
 		
 		sourceNotation.withWidth("85%");
 		sourceNotation.setValue( cvConcept.getNotation() == null ? "" : cvConcept.getNotation() );
@@ -203,7 +217,8 @@ public class DialogEditCodeWindow extends MWindow {
 							).withExpand(lSourceTitle, 0.15f).withExpand( sourceTitle, 0.85f),
 					sourceRowB
 						.withFullWidth()
-						.withHeight("270px")
+						.withFullHeight()
+//						.withHeight("270px")
 						.add(
 							lSourceDescription, sourceDescription
 						).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
@@ -221,7 +236,8 @@ public class DialogEditCodeWindow extends MWindow {
 					),
 					new MHorizontalLayout()
 						.withFullWidth()
-						.withHeight("290px")
+						.withFullHeight()
+//						.withHeight("290px")
 						.add(
 							lDescription, description
 						).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
@@ -266,7 +282,8 @@ public class DialogEditCodeWindow extends MWindow {
 					).withExpand(lTitle, 0.15f).withExpand( preferedLabel, 0.85f),
 				new MHorizontalLayout()
 				.withFullWidth()
-				.withHeight("300px")
+				.withFullHeight()
+//				.withHeight("300px")
 				.add(
 					lDescription, description
 				).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
@@ -304,6 +321,16 @@ public class DialogEditCodeWindow extends MWindow {
 		// store the code and index
 		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
 		codeService.save(code);
+		// store concept
+		concept.setTitle( preferedLabel.getValue() );
+		concept.setDefinition( description.getValue() );
+		conceptService.save(concept);
+		
+		// save vocabulary, version
+		vocabulary = vocabularyService.save(vocabulary);
+
+		// indexing editor
+		vocabularyService.index(vocabulary);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 		

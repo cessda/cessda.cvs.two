@@ -729,8 +729,8 @@ public class DetailView2 extends CvManagerView {
 					if( code == null )
 						code = CodeDTO.generateFromCVConcept( cvItem.getCvConcept() );
 					
-					Window window = new DialogEditCodeWindow(eventBus, stardatDDIService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), selectedLang, vocabulary, code, i18n, locale);
-					getUI().addWindow(window);
+//					Window window = new DialogEditCodeWindow(eventBus, stardatDDIService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), selectedLang, vocabulary, code, i18n, locale);
+//					getUI().addWindow(window);
 				} else {
 					Notification.show( "you are not allowed to edit this code" );
 				}

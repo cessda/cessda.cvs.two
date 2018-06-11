@@ -241,8 +241,8 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		concept.setDefinition( description.getValue() );
 		
 		// save vocabulary, version
-//		version = versionService.save(version);
-//		vocabulary.getVersions();
+		version = versionService.save( version );
+		vocabulary = vocabularyService.save(vocabulary);
 
 		// indexing editor
 		vocabularyService.index(vocabulary);

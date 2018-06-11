@@ -8,6 +8,8 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.wts.domain.enumeration.Language;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +50,10 @@ public class CodeDTO implements Serializable {
     private String parent;
     
     private Integer position;
+    
+    private LocalDate publicationDate;
+    
+    private LocalDateTime lastModified;
     
     private Long vocabularyId;
     
@@ -788,7 +794,23 @@ public class CodeDTO implements Serializable {
 		return id != null;
 	}
     
-    public static CodeDTO generateFromCVConcept ( CodeDTO code, CVConcept cvConcept) {
+    public LocalDate getPublicationDate() {
+		return publicationDate;
+	}
+
+	public void setPublicationDate(LocalDate publicationDate) {
+		this.publicationDate = publicationDate;
+	}
+
+	public LocalDateTime getLastModified() {
+		return lastModified;
+	}
+
+	public void setLastModified(LocalDateTime lastModified) {
+		this.lastModified = lastModified;
+	}
+
+	public static CodeDTO generateFromCVConcept ( CodeDTO code, CVConcept cvConcept) {
     	if( code == null) {
     		code = new CodeDTO();
     		code.setUri(cvConcept.getId());

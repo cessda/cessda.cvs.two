@@ -266,7 +266,7 @@ public class VersionDTO implements Serializable {
 		
 		return sortedVersion.findFirst();
 	}
-	
+		
 	public boolean isPersisted() {
 		return id != null;
 	}
