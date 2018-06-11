@@ -528,9 +528,20 @@ public class VocabularyServiceImpl implements VocabularyService {
 		BoolQueryBuilder boolQueryFilter = QueryBuilders.boolQuery();
 		
 		for( EsFilter esFilter : esFilters ) {
-			for( String filterValue : esFilter.getValues() ) {
-				boolQueryFilter.must(QueryBuilders.termQuery( esFilter.getField(), filterValue ));
+			if( esFilter.getValues() != null && !esFilter.getValues().isEmpty()) {
+				if( esFilter.getValues().size() == 1) { // use AND if the an iten in the filter is selected
+					boolQueryFilter.must(QueryBuilders.termQuery( esFilter.getField(), esFilter.getValues().get(0) ));
+				} else {
+					BoolQueryBuilder withinFilterBoolQueryFilter = QueryBuilders.boolQuery();
+					// use OR for multiple values within a filter
+					for( String filterValue : esFilter.getValues() ) {
+						withinFilterBoolQueryFilter.should(QueryBuilders.termQuery( esFilter.getField(), filterValue ));
+					}
+					// use AND to combine filter with the rest
+					boolQueryFilter.must( withinFilterBoolQueryFilter );
+				}
 			}
+			
 		}
 		
 		return boolQueryFilter;

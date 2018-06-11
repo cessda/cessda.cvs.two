@@ -271,6 +271,9 @@ public class DetailView extends CvView {
 						
 						// set selected language and version
 						editorCvActionLayout.setSelectedLanguage(selectedLang);
+					} else {
+						selectedLang = null;
+						editorCvActionLayout.setSelectedLanguage(null);
 					}
 					if(  mappedParams.get("tab") != null )
 						activeTab = mappedParams.get("tab");
@@ -411,16 +414,16 @@ public class DetailView extends CvView {
 			.ifPresent( versionDTO -> {
 				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
 					// TODO: check detail for editor or publication page
-					if( !breadcrumbItemMap.isEmpty() && breadcrumbItemMap.get("editor-search") != null )
+//					if( !breadcrumbItemMap.isEmpty() && breadcrumbItemMap.get("editor-search") != null )
 						langButton.addStyleName( "status-draft" );
-					else
-						langButton.setVisible( false );
+//					else
+//						langButton.setVisible( false );
 				}
 				else if( versionDTO.getStatus().equals( Status.REVIEW.toString())) {
-					if( !breadcrumbItemMap.isEmpty() && breadcrumbItemMap.get("editor-search") != null )
+//					if( !breadcrumbItemMap.isEmpty() && breadcrumbItemMap.get("editor-search") != null )
 						langButton.addStyleName( "status-review" );
-					else
-						langButton.setVisible( false );
+//					else
+//						langButton.setVisible( false );
 				}
 			});
 			
