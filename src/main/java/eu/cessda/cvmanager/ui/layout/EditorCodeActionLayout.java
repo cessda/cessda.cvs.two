@@ -160,7 +160,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	
 	private void doCodeAddTranslation(ClickEvent event ) {
 		Window windowTranslate = new DialogTranslateCodeWindow(
-				eventBus, stardatDDIService, vocabularyService, codeService, conceptService, cvScheme, 
+				eventBus, stardatDDIService, vocabularyService, versionService, codeService, conceptService, cvScheme, 
 				cvConcept, selectedLanguage, sourceLanguage, vocabulary, currentVersion, currentCode, 
 				new ConceptDTO(), i18n, locale);
 		getUI().addWindow( windowTranslate );

@@ -42,6 +42,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
@@ -60,6 +61,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private final StardatDDIService stardatDDIService;
 	private final VocabularyService vocabularyService;
 	private final CodeService codeService;
+	private final VersionService versionService;
 	private final ConceptService conceptService;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
@@ -101,7 +103,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
 	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, 
-			VocabularyService vocabularyService, CodeService codeService, ConceptService conceptService,
+			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			CVScheme cvScheme, CVConcept conceptCode, Language sLanguage, Language sourceLang, VocabularyDTO vocabularyDTO, 
 			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
 		super( "Add Code Translation");
@@ -111,6 +113,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 		this.language = sLanguage;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyService = vocabularyService;
+		this.versionService = versionService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		
@@ -161,24 +164,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 				return item.name() + " (" +item.getLanguage() + ")";
 			}
 		});
-		languageCb.addValueChangeListener( e -> {
-			language = e.getValue();
-			
-			preferedLabel.setCaption( "Code (" + language + ")*");
-			description.setCaption( "Definition ("+ language +")*");
-			
-			preferedLabel.setValue( cvConcept.getPrefLabelByLanguage(language.toString()));
-			description.setValue( cvConcept.getDescriptionByLanguage(language.toString()) );
-			
-			if( e.getValue().equals( sourceLang )) {
-				sourceRowA.setVisible( false );
-				sourceRowB.setVisible( false );
-			} else {
-				sourceRowA.setVisible( true );
-				sourceRowB.setVisible( true );
-			}
-		});
-		
+
 		preferedLabel.setCaption( "Code (" + language.toString() + ")*");
 		description.setCaption( "Definition ("+ language.toString() +")*");
 		
@@ -271,7 +257,24 @@ public class DialogTranslateCodeWindow extends MWindow {
 		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, "Peter", "minor edit");
 		// store the code and index
 		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
-//		codeService.save(code);
+		codeService.save(code);
+		
+		
+		// store concept
+		if( !concept.isPersisted()) {
+			concept.setCodeId( code.getId());
+			version.addConcept(concept);
+		}
+		concept.setNotation( code.getNotation() );
+		concept.setTitle( preferedLabel.getValue() );
+		concept.setDefinition( description.getValue() );
+		
+		// save vocabulary, version
+		version = versionService.save( version );
+		vocabulary = vocabularyService.save(vocabulary);
+
+		// indexing editor
+		vocabularyService.index(vocabulary);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 		
@@ -290,7 +293,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 
 		binder
 			.forField( description )
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
 			.bind( concept -> getDescriptionByLanguage(concept),
 				(concept, value) -> setDescriptionByLanguage(concept, value));
 		

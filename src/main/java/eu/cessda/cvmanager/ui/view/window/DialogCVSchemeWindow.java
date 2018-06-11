@@ -373,7 +373,7 @@ public class DialogCVSchemeWindow extends MWindow {
 
 		binder
 		.forField( description)
-		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 5000 ))
+		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
 		.bind(concept -> getDescriptionByLanguage(concept),
 			(concept, value) -> setDescriptionByLanguage(concept, value));
 		
