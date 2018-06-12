@@ -907,8 +907,19 @@ public class DetailView extends CvView {
 							stardatDDIService.deleteConceptTree(cvCodeTreeData, cvItem.getCvConcept());
 							cvCodeTreeData.removeItem( cvItem.getCvConcept() );
 							
-							if( code.isPersisted())
+							cvItem.setCvConcept( null );
+							editorCodeActionLayout.clearCode();
+							
+							
+							if( code.isPersisted()) {
+								// TODO get all affected code in the tree
+								
+								// remove concepts
+								List<ConceptDTO> concepts = conceptService.findAllByCode( code.getId());
+								for(ConceptDTO toDeleteConcept : concepts)
+									conceptService.delete( toDeleteConcept.getId());
 								codeService.delete( code );
+							}
 							
 							detailTreeGrid.getDataProvider().refreshAll();
 //							actionPanel.conceptSelectedChange( null );

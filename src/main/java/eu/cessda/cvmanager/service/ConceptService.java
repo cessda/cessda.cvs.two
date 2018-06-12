@@ -1,6 +1,9 @@
 package eu.cessda.cvmanager.service;
 
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -49,4 +52,6 @@ public interface ConceptService {
      * @return the list of entities
      */
     Page<ConceptDTO> search(String query, Pageable pageable);
+
+	List<ConceptDTO> findAllByCode(Long codeId);
 }

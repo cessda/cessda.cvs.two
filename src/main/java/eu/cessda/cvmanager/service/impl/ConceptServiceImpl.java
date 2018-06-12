@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Service Implementation for managing Concept.
  */
@@ -104,4 +108,12 @@ public class ConceptServiceImpl implements ConceptService {
 //        Page<Concept> result = conceptSearchRepository.search(queryStringQuery(query), pageable);
         return null;//result.map(conceptMapper::toDto);
     }
+
+	@Override
+	public List<ConceptDTO> findAllByCode(Long codeId) {
+		
+		return conceptRepository.findAllByVocabulary( codeId ).stream()
+	            .map(conceptMapper::toDto)
+	            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

@@ -270,8 +270,10 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 				if( selectedLanguage.equals( sourceLanguage) ) {
 					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
 						buttonCodeAddChild.setVisible( true );
+						buttonCodeDelete.setVisible( true );
 					}else {
 						buttonCodeAddChild.setVisible( false );
+						buttonCodeDelete.setVisible( false );
 					}
 				}
 			} else if( cvConcept != null && currentCode != null && currentConcept == null) {
@@ -281,10 +283,21 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 				}else {
 					buttonCodeAddTranslation.setVisible( false );
 				}
+				
+				if( selectedLanguage.equals( sourceLanguage) ) {
+					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
+						buttonCodeAddChild.setVisible( true );
+						buttonCodeDelete.setVisible( true );
+					}else {
+						buttonCodeAddChild.setVisible( false );
+						buttonCodeDelete.setVisible( false );
+					}
+				}
 			} else {
 				buttonCodeEdit.setVisible( false );
 				buttonCodeAddTranslation.setVisible( false );
 				buttonCodeAddChild.setVisible( false );
+				buttonCodeDelete.setVisible( false );
 			}
 		}
 		
