@@ -39,6 +39,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -59,6 +60,7 @@ public class DialogAddLanguageWindow extends MWindow {
 	private VocabularyDTO vocabulary;
 	private final VocabularyMapper vocabularyMapper;
 	private final VocabularySearchRepository vocabularySearchRepository;
+	private final VersionService versionService;
 	private VersionDTO version;
 	
 	private final StardatDDIService stardatDDIService;
@@ -90,7 +92,7 @@ public class DialogAddLanguageWindow extends MWindow {
 
 	public DialogAddLanguageWindow(StardatDDIService stardatDDIService,  CVScheme cvScheme,
 			 VocabularyDTO vocabularyDTO, VersionDTO versionDTO, AgencyDTO agencyDTO, 
-			 VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
+			 VocabularyService vocabularyService, VersionService versionService, VocabularyMapper vocabularyMapper,
 			 VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus) {
 		super("Add Language");
 		this.cvScheme = cvScheme;
@@ -99,6 +101,7 @@ public class DialogAddLanguageWindow extends MWindow {
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
 		this.vocabularyService = vocabularyService;
+		this.versionService = versionService;
 		this.vocabularyMapper = vocabularyMapper;
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.eventBus = eventBus;
@@ -262,6 +265,9 @@ public class DialogAddLanguageWindow extends MWindow {
 		getCvScheme().save();
 		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add CV translation");
 		
+		version.setTitle( tfTitle.getValue() );
+		version.setDefinition( description.getValue());
+		
 		// store new version
 		if( !version.isPersisted()) {
 			version.setUri( vocabulary.getUri() );
@@ -273,13 +279,11 @@ public class DialogAddLanguageWindow extends MWindow {
 			version.setPreviousVersion( 0L );
 			version.setInitialVersion( 0L );
 			
+			version = versionService.save(version);
+			
 			vocabulary.addVersions(version);
 			vocabulary.addVers(version);
 		}
-		
-		version.setTitle( tfTitle.getValue() );
-		version.setDefinition( description.getValue());
-		
 		// store the variable and index
 		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
 		
@@ -290,11 +294,10 @@ public class DialogAddLanguageWindow extends MWindow {
 		vocabularyService.index(vocabulary);
 		
 		// use eventbus to update detail view
-		if( version.isPersisted() )
-			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 		
 		close();
-		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
+//		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
 	}
 	
 	private boolean isInputValid() {

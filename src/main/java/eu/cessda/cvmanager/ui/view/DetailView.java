@@ -215,7 +215,7 @@ public class DetailView extends CvView {
 	public void init() {
 		
 		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, 
-				stardatDDIService, agencyService, vocabularyService, vocabularyMapper, 
+				stardatDDIService, agencyService, vocabularyService, versionService, vocabularyMapper, 
 				vocabularySearchRepository, eventBus);
 		
 		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
