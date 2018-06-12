@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.List;
 import java.util.Locale;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -22,6 +23,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
@@ -42,6 +44,7 @@ import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 public class DialogAddCodeWindow extends MWindow implements Translatable{
 
@@ -70,28 +73,30 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 	private Button storeCode = new Button("Save");
 	private CVConcept theCode;
-	private CVConcept parentCode;
+	private CVConcept parentCvConcept;
 	private CVScheme cvScheme;
 	
 	private VocabularyDTO vocabulary;
 	private VersionDTO version;
 	private ConceptDTO concept;
 	private CodeDTO code;
+	private CodeDTO parentCode;
 	private Language language;
 
 	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, 
-			VersionService versionService,CodeService codeService, CVScheme cvSch, CVConcept newCode, CVConcept parent, VocabularyDTO vocabularyDTO,
-			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
-		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
-				locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage( Language.getEnumByName( versionDTO.getLanguage()).toString()) : parent.getNotation() )));
+			VersionService versionService,CodeService codeService, CVScheme cvSch, CVConcept newCode, CVConcept parentCvConcept, VocabularyDTO vocabularyDTO,
+			VersionDTO versionDTO, CodeDTO codeDTO, CodeDTO parentCodeDTO,ConceptDTO conceptDTO, I18N i18n, Locale locale) {
+		super( parentCvConcept == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
+				locale, ( parentCvConcept.getNotation() == null? parentCvConcept.getPrefLabelByLanguage( Language.getEnumByName( versionDTO.getLanguage()).toString()) : parentCvConcept.getNotation() )));
 		
 		this.eventBus = eventBus;
 		this.cvScheme = cvSch;
-		this.parentCode = parent;
+		this.parentCvConcept = parentCvConcept;
 		this.i18n = i18n;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
 		this.code = codeDTO;
+		this.parentCode = parentCodeDTO;
 		this.concept = conceptDTO;
 		this.codeService = codeService;
 		this.stardatDDIService = stardatDDIService;
@@ -205,7 +210,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		log.trace(getTheCode().getPrefLabelByLanguage( language.toString() ));
 		getTheCode().save();
 		DDIStore ddiStore = stardatDDIService.saveElement(getTheCode().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code");
-		if(parentCode == null ) // root concept
+		if(parentCvConcept == null ) // root concept
 		{
 			cvScheme.addOrderedMemberList(ddiStore.getElementId());
 			cvScheme.save();
@@ -214,21 +219,43 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		else // child code, add narrower data in parent
 		{
 			//parentCode.addOrderedNarrowerList("http://lod.gesis.org/thesoz/concept_" + ddiStore.getElementId());
-			parentCode.addOrderedNarrowerList( ddiStore.getElementId());
-			parentCode.save();
-			stardatDDIService.saveElement(parentCode.ddiStore, "User", "Add Code");
+			parentCvConcept.addOrderedNarrowerList( ddiStore.getElementId());
+			parentCvConcept.save();
+			DDIStore ddiStoreCv = stardatDDIService.saveElement(parentCvConcept.ddiStore, "User", "Add Code");
 		}
 		
 		// save the code
-		if( !code.isPersisted() ) {
-			code.setUri( ddiStore.getElementId() );
-			code.setSourceLanguage( language.name().toLowerCase());
-			code.setVocabularyId( vocabulary.getId() );
+		if( parentCode == null) {
+			if( !code.isPersisted() ) {
+				code.setUri( ddiStore.getElementId() );
+				code.setSourceLanguage( language.name().toLowerCase());
+				code.setVocabularyId( vocabulary.getId() );
+			}
+			
+			code.setNotation( notation.getValue() );
+			code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
+			code = codeService.save(code);
+		} else {
+			if( !code.isPersisted() ) {
+				code.setUri( ddiStore.getElementId() );
+				code.setSourceLanguage( language.name().toLowerCase());
+				code.setVocabularyId( vocabulary.getId() );
+			}
+			code.setParent( parentCode.getUri());
+			code.setNotation( notation.getValue() );
+			code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
+			
+			List<CodeDTO> codeDTOs = codeService.findByVocabulary( vocabulary.getId());
+			// re-save tree structure 
+			TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
+			codeTreeData.addItem(parentCode, code);
+			
+			List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
+			for( CodeDTO eachCode: newCodeDTOs) {
+				eachCode = codeService.save(eachCode);
+			}
+			
 		}
-		
-		code.setNotation( notation.getValue() );
-		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
-		code = codeService.save(code);
 		
 		// save to concept
 		if( !concept.isPersisted()) {

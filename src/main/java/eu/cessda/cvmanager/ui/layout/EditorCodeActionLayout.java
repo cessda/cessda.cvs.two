@@ -140,10 +140,11 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		newCVConcept.createId();
 		newCVConcept.setContainerId( cvScheme.getContainerId());
 
-		DialogAddCodeWindow dialogAddCodeWindow1 = new DialogAddCodeWindow(
+		DialogAddCodeWindow dialogAddCodeWindow = new DialogAddCodeWindow(
 				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
-				cvScheme, newCVConcept, null, vocabulary, currentVersion, new CodeDTO(), new ConceptDTO(), i18n, locale);
-		getUI().addWindow(dialogAddCodeWindow1);
+				cvScheme, newCVConcept, null, vocabulary, currentVersion, 
+				new CodeDTO(), null, new ConceptDTO(), i18n, locale);
+		getUI().addWindow(dialogAddCodeWindow);
 	}
 	
 	private void doEditCode(ClickEvent event ) {
@@ -167,7 +168,16 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	}
 	
 	private void doCodeAddChild(ClickEvent event ) {
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADDCHILD_DIALOG, null) );
+		CVConcept newCVConcept = new CVConcept();
+		newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
+		newCVConcept.createId();
+		newCVConcept.setContainerId( cvScheme.getContainerId());
+		
+		DialogAddCodeWindow dialogAddChildCodeWindow = new DialogAddCodeWindow(
+				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
+				cvScheme, newCVConcept, cvConcept, vocabulary, currentVersion, 
+				new CodeDTO(), currentCode, new ConceptDTO(), i18n, locale);
+		getUI().addWindow( dialogAddChildCodeWindow );
 	}
 	
 	private void doDeleteCode(ClickEvent event ) {
@@ -256,6 +266,14 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 				}else {
 					buttonCodeEdit.setVisible( false );
 				}
+				
+				if( selectedLanguage.equals( sourceLanguage) ) {
+					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
+						buttonCodeAddChild.setVisible( true );
+					}else {
+						buttonCodeAddChild.setVisible( false );
+					}
+				}
 			} else if( cvConcept != null && currentCode != null && currentConcept == null) {
 				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
 					buttonCodeAddTranslation.setVisible( true );
@@ -266,6 +284,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 			} else {
 				buttonCodeEdit.setVisible( false );
 				buttonCodeAddTranslation.setVisible( false );
+				buttonCodeAddChild.setVisible( false );
 			}
 		}
 		

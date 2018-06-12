@@ -192,7 +192,7 @@ public class ImportService {
 			// store vocabulary
 			vocabulary = vocabularyService.save(vocabulary);
 			
-			// store code once more now with vocabularry
+			// store code once more now with vocabulary
 	        // store code if exist
 	        for( CodeDTO code: savedCodes) {
 	        	code.setVocabularyId( vocabulary.getId());

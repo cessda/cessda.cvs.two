@@ -48,6 +48,31 @@ public class CvCodeTreeUtils{
 		return codeTree;
 	}
 	
+	public static List<CodeDTO> getCodeDTOByCodeTree( TreeData<CodeDTO> codeTree){
+		List<CodeDTO> codes = new ArrayList<>();
+		int position = 0;
+		for(CodeDTO codeRoot: codeTree.getRootItems()) {
+			codeRoot.setPosition(position);
+			position++;
+			codes.add( codeRoot );
+			if( !codeTree.getChildren( codeRoot).isEmpty())
+				position = traverseChildCode( codes, codeTree, codeRoot, codeTree.getChildren(codeRoot), position );
+		};
+		return codes;
+	}
+	
+	private static int traverseChildCode(List<CodeDTO> codes, TreeData<CodeDTO> codeTree,
+			CodeDTO codeParent, List<CodeDTO> codesChild, Integer position) {
+		for(CodeDTO code: codesChild) {
+			code.setPosition(position);
+			position++;
+			codes.add(code);
+			if( !codeTree.getChildren( code ).isEmpty())
+				position = traverseChildCode( codes, codeTree, code, codeTree.getChildren( code ), position );
+		};
+		return position;
+	}
+	
 	public static List<CodeDTO> getCodeDTOByConceptTree( TreeData<CVConcept> conceptTree){
 		List<CodeDTO> codes = new ArrayList<>();
 		int position = 0;
