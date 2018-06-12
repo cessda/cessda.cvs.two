@@ -124,10 +124,11 @@ public class VocabularyServiceImpl implements VocabularyService {
         log.debug("Request to save Vocabulary : {}", vocabularyDTO);
         Vocabulary vocabulary = vocabularyMapper.toEntity(vocabularyDTO);
         
-        // store version first if exist
-        for( Version version: vocabulary.getVersions()) {
-        	version = versionRepository.save( version );
-        }
+//      Not needed due to CascadeType changed to PERSIST, MERGE, REFRESH
+//         store version first if exist
+//        for( Version version: vocabulary.getVersions()) {
+//        	version = versionRepository.save( version );
+//        }
         
         vocabulary = vocabularyRepository.save(vocabulary);
         VocabularyDTO result = vocabularyMapper.toDto(vocabulary);

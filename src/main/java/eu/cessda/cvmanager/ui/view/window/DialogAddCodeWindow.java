@@ -36,6 +36,7 @@ import com.vaadin.ui.TextField;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
@@ -56,6 +57,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private final StardatDDIService stardatDDIService;
 	private final VocabularyService vocabularyService;
 	private final VersionService versionService;
+	private final ConceptService conceptService;
 	private final CodeService codeService;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
@@ -84,7 +86,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private Language language;
 
 	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, 
-			VersionService versionService,CodeService codeService, CVScheme cvSch, CVConcept newCode, CVConcept parentCvConcept, VocabularyDTO vocabularyDTO,
+			VersionService versionService,CodeService codeService, ConceptService conceptService, CVScheme cvSch, CVConcept newCode, CVConcept parentCvConcept, VocabularyDTO vocabularyDTO,
 			VersionDTO versionDTO, CodeDTO codeDTO, CodeDTO parentCodeDTO,ConceptDTO conceptDTO, I18N i18n, Locale locale) {
 		super( parentCvConcept == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
 				locale, ( parentCvConcept.getNotation() == null? parentCvConcept.getPrefLabelByLanguage( Language.getEnumByName( versionDTO.getLanguage()).toString()) : parentCvConcept.getNotation() )));
@@ -99,6 +101,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		this.parentCode = parentCodeDTO;
 		this.concept = conceptDTO;
 		this.codeService = codeService;
+		this.conceptService = conceptService;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
@@ -224,6 +227,13 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 			DDIStore ddiStoreCv = stardatDDIService.saveElement(parentCvConcept.ddiStore, "User", "Add Code");
 		}
 		
+		code.setNotation( notation.getValue() );
+		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
+		
+		concept.setNotation( notation.getValue() );
+		concept.setTitle( preferedLabel.getValue() );
+		concept.setDefinition( description.getValue() );
+		
 		// save the code
 		if( parentCode == null) {
 			if( !code.isPersisted() ) {
@@ -231,10 +241,15 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 				code.setSourceLanguage( language.name().toLowerCase());
 				code.setVocabularyId( vocabulary.getId() );
 			}
-			
-			code.setNotation( notation.getValue() );
-			code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
 			code = codeService.save(code);
+			
+			// save to concept
+			if( !concept.isPersisted()) {
+				vocabulary.addCode(code);
+				concept.setCodeId( code.getId());
+				version.addConcept(concept);
+				concept = conceptService.save(concept);
+			}
 		} else {
 			if( !code.isPersisted() ) {
 				code.setUri( ddiStore.getElementId() );
@@ -242,8 +257,6 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 				code.setVocabularyId( vocabulary.getId() );
 			}
 			code.setParent( parentCode.getUri());
-			code.setNotation( notation.getValue() );
-			code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
 			
 			List<CodeDTO> codeDTOs = codeService.findByVocabulary( vocabulary.getId());
 			// re-save tree structure 
@@ -252,24 +265,24 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 			
 			List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
 			for( CodeDTO eachCode: newCodeDTOs) {
-				eachCode = codeService.save(eachCode);
+				if( !eachCode.isPersisted())
+					code = codeService.save(eachCode);
+				else
+					codeService.save(eachCode);
+			}
+			
+			// save to concept
+			if( !concept.isPersisted()) {
+				vocabulary.addCode(code);
+				concept.setCodeId( code.getId());
+				version.addConcept(concept);
+				concept = conceptService.save(concept);
 			}
 			
 		}
-		
-		// save to concept
-		if( !concept.isPersisted()) {
-			vocabulary.addCode(code);
-			concept.setCodeId( code.getId());
-			version.addConcept(concept);
-		}
-		concept.setNotation( notation.getValue() );
-		concept.setTitle( preferedLabel.getValue() );
-		concept.setDefinition( description.getValue() );
-		
-		// save vocabulary, version
-		version = versionService.save( version );
-		vocabulary = vocabularyService.save(vocabulary);
+
+//		// save vocabulary
+//		vocabulary = vocabularyService.save(vocabulary);
 
 		// indexing editor
 		vocabularyService.index(vocabulary);

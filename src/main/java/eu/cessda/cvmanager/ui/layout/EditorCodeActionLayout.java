@@ -142,7 +142,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 
 		DialogAddCodeWindow dialogAddCodeWindow = new DialogAddCodeWindow(
 				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
-				cvScheme, newCVConcept, null, vocabulary, currentVersion, 
+				conceptService, cvScheme, newCVConcept, null, vocabulary, currentVersion, 
 				new CodeDTO(), null, new ConceptDTO(), i18n, locale);
 		getUI().addWindow(dialogAddCodeWindow);
 	}
@@ -175,7 +175,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		
 		DialogAddCodeWindow dialogAddChildCodeWindow = new DialogAddCodeWindow(
 				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
-				cvScheme, newCVConcept, cvConcept, vocabulary, currentVersion, 
+				conceptService, cvScheme, newCVConcept, cvConcept, vocabulary, currentVersion, 
 				new CodeDTO(), currentCode, new ConceptDTO(), i18n, locale);
 		getUI().addWindow( dialogAddChildCodeWindow );
 	}

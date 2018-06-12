@@ -270,9 +270,8 @@ public class DialogTranslateCodeWindow extends MWindow {
 		concept.setDefinition( description.getValue() );
 		
 		// save vocabulary, version
-		version = versionService.save( version );
-		vocabulary = vocabularyService.save(vocabulary);
-
+		concept = conceptService.save(concept);
+		
 		// indexing editor
 		vocabularyService.index(vocabulary);
 		

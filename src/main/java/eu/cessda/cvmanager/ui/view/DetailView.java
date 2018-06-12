@@ -625,28 +625,7 @@ public class DetailView extends CvView {
 			.setId("definitionTl");
 		
 		detailTreeGrid.setSizeFull();
-		detailTreeGrid.addItemClickListener( event -> {
-			if( SecurityContextHolder.getContext().getAuthentication() != null && event.getMouseEventDetails().isDoubleClick() ) {
-				if(  SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLang) ) {
-					
-					detailTreeGrid.asSingleSelect().clear();
-					
-					cvItem.setCvConcept( event.getItem() );
-
-					// get code
-					code = codeService.getByUri( cvItem.getCvConcept().getContainerId());
-					if( code == null )
-						code = CodeDTO.generateFromCVConcept( cvItem.getCvConcept() );
-					
-					
-					
-//					Window window = new DialogEditCodeWindow(eventBus, stardatDDIService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), selectedLang, vocabulary, code, i18n, locale);
-//					getUI().addWindow(window);
-				} else {
-					Notification.show( "you are not allowed to edit this code" );
-				}
-			}
-		});
+		
 		
 		detailTreeGrid.asSingleSelect().addValueChangeListener( event -> {		
 			if (event.getValue() != null) {
@@ -662,8 +641,17 @@ public class DetailView extends CvView {
 				
 				// get concept
 				ConceptDTO.getConceptFromCode(currentVersion.getConcepts(), code.getId()).ifPresent( conceptDTO -> {
-					currentConcept = conceptDTO;
-					editorCodeActionLayout.setCurrentConcept(conceptDTO);
+					if( conceptDTO.isPersisted()) {
+						currentConcept = conceptDTO;
+						editorCodeActionLayout.setCurrentConcept(conceptDTO);
+					} else {
+						// query in database for updated one
+						ConceptDTO conceptFromDb = conceptService.findOneByCodeNotationAndId( code.getNotation(), code.getId() );
+						if( conceptFromDb != null ) {
+							currentConcept = conceptFromDb;
+							editorCodeActionLayout.setCurrentConcept(conceptFromDb);
+						}
+					}
 				});
 								
 				refreshCodeActionButton();
@@ -872,6 +860,8 @@ public class DetailView extends CvView {
 				setDetails();
 				break;
 			case CVCONCEPT_CREATED:
+				// refresh vocabulary
+				vocabulary = vocabularyService.findOne( vocabulary.getId());
 				updateDetailGrid();
 				
 				break;
@@ -909,20 +899,18 @@ public class DetailView extends CvView {
 							
 							cvItem.setCvConcept( null );
 							editorCodeActionLayout.clearCode();
-							
+							refreshCodeActionButton();
 							
 							if( code.isPersisted()) {
-								// TODO get all affected code in the tree
-								
-								// remove concepts
-								List<ConceptDTO> concepts = conceptService.findAllByCode( code.getId());
-								for(ConceptDTO toDeleteConcept : concepts)
-									conceptService.delete( toDeleteConcept.getId());
-								codeService.delete( code );
+								codeService.deleteCodeTree(code, vocabulary.getId());
 							}
 							
 							detailTreeGrid.getDataProvider().refreshAll();
 //							actionPanel.conceptSelectedChange( null );
+							
+							// reindex
+							vocabularyService.index(vocabulary);
+							
 							setCode( null );
 						}
 					}

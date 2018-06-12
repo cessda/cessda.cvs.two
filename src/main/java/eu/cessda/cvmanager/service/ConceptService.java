@@ -54,4 +54,6 @@ public interface ConceptService {
     Page<ConceptDTO> search(String query, Pageable pageable);
 
 	List<ConceptDTO> findAllByCode(Long codeId);
+
+	ConceptDTO findOneByCodeNotationAndId(String notation, Long id);
 }

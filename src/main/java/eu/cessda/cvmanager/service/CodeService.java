@@ -72,4 +72,6 @@ public interface CodeService {
 	CodeDTO getByNotation(String notation);
 	
 	List<CodeDTO> findByVocabulary( Long vocabularyId);
+	
+	void deleteCodeTree( CodeDTO pivotCode, Long vocabularyId);
 }

@@ -22,4 +22,7 @@ public interface ConceptRepository extends JpaRepository<Concept, Long> {
 	@Query( "select c from Concept c where c.codeId = :codeId" )
 	List<Concept> findAllByVocabulary(@Param("codeId") Long codeId);
 
+	@Query( "select c from Concept c where c.codeId = :codeId and c.notation = :notation" )
+	Concept findOneByCodeNotationAndId(@Param("notation") String notation,@Param("codeId") Long codeId);
+
 }

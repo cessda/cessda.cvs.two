@@ -191,8 +191,9 @@ public class VocabularyGridRow extends CustomComponent {
 				if( codeTitle != null ) {
 					codeList.add(
 						new MLabel( "<a href=\"" + baseUrl + "?code=" + code.getNotation() + "\">" + codeTitle + "</a>" 
-								+ " " + codeDefinition)
+								+ " " + codeDefinition )
 						.withContentMode( ContentMode.HTML )
+						.withFullWidth()
 					);
 				}
 			}

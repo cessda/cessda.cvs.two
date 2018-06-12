@@ -49,10 +49,11 @@ public class VersionServiceImpl implements VersionService {
         log.debug("Request to save Version : {}", versionDTO);
         Version version = versionMapper.toEntity(versionDTO);
         
-        // stoce Concept first if exist
-        for( Concept concept: version.getConcepts()) {
-        	concept = conceptRepository.save(concept);
-        }
+//        Not needed due to CascadeType changed to PERSIST, MERGE, REFRESH
+//        // store Concept first if exist
+//        for( Concept concept: version.getConcepts()) {
+//        	concept = conceptRepository.save(concept);
+//        }
         
         version = versionRepository.save(version);
         VersionDTO result = versionMapper.toDto(version);

@@ -327,9 +327,6 @@ public class DialogEditCodeWindow extends MWindow {
 		concept.setDefinition( description.getValue() );
 		conceptService.save(concept);
 		
-		// save vocabulary, version
-		vocabulary = vocabularyService.save(vocabulary);
-
 		// indexing editor
 		vocabularyService.index(vocabulary);
 		

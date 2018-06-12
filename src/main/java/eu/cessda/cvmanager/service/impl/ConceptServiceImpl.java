@@ -116,4 +116,10 @@ public class ConceptServiceImpl implements ConceptService {
 	            .map(conceptMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
+
+	@Override
+	public ConceptDTO findOneByCodeNotationAndId(String notation, Long codeId) {
+		Concept concept = conceptRepository.findOneByCodeNotationAndId(notation, codeId);
+        return conceptMapper.toDto(concept);
+	}
 }
