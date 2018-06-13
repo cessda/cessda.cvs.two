@@ -15,7 +15,7 @@ import org.springframework.data.domain.Sort.Order;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 
 public class EsQueryResultDetail {
-	public static final int pageSize = 10 ;
+	public static final int pageSize = 3 ;
 	
 	// Query properties
 	private String searchTerm;

@@ -78,6 +78,7 @@ import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.domain.Version;
+import eu.cessda.cvmanager.domain.VocabularyChange;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
@@ -88,6 +89,7 @@ import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
@@ -118,6 +120,7 @@ public class DetailView extends CvView {
 	private final VersionService versionService;
 	private final CodeService codeService;
 	private final ConceptService conceptService;
+	private final VocabularyChangeService vocabularyChangeService;
 	
 	private Language selectedLang = Language.ENGLISH;
 
@@ -199,7 +202,8 @@ public class DetailView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
 			VersionService versionService, CodeService codeService, ConceptService conceptService,
-			VocabularySearchRepository vocabularySearchRepository, TemplateEngine templateEngine) {
+			VocabularySearchRepository vocabularySearchRepository, TemplateEngine templateEngine,
+			VocabularyChangeService vocabularyChangeService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, 
 				codeService, vocabularySearchRepository, DetailView.VIEW_NAME);
 		this.templateEngine = templateEngine;
@@ -208,6 +212,7 @@ public class DetailView extends CvView {
 		this.versionService = versionService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
+		this.vocabularyChangeService = vocabularyChangeService;
 		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
@@ -216,10 +221,11 @@ public class DetailView extends CvView {
 		
 		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, 
 				stardatDDIService, agencyService, vocabularyService, versionService, vocabularyMapper, 
-				vocabularySearchRepository, eventBus);
+				vocabularySearchRepository, eventBus, vocabularyChangeService);
 		
 		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
-				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus);
+				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
+				vocabularyChangeService);
 		
 
 		languageLayout.withFullWidth();

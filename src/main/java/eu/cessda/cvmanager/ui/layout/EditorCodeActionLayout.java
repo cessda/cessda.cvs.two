@@ -26,6 +26,7 @@ import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
@@ -48,6 +49,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	private final VersionService versionService;
 	private final CodeService codeService;
 	private final ConceptService conceptService;
+	private final VocabularyChangeService vocabularyChangeService;
 	
 	private I18N i18n;
 	private Locale locale = UI.getCurrent().getLocale();
@@ -75,7 +77,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	
 	public EditorCodeActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService,
-			CodeService codeService, ConceptService conceptService, UIEventBus eventBus) {
+			CodeService codeService, ConceptService conceptService, UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
@@ -85,6 +87,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		this.eventBus = eventBus;
+		this.vocabularyChangeService = vocabularyChangeService;
 		init();
 	}
 

@@ -45,10 +45,6 @@ public class Concept implements Serializable{
     @Column(name = "code_id")
     private Long codeId;
     
-    @OneToMany(mappedBy = "concept")
-    @JsonIgnore
-    private Set<ConceptChange> conceptChanges = new HashSet<>();
-    
     @ManyToMany(mappedBy = "concepts")
     @JsonIgnore
     private Set<Version> versions = new HashSet<>();
@@ -84,31 +80,6 @@ public class Concept implements Serializable{
 	public void setDefinition(String definition) {
 		this.definition = definition;
 	}
-
-	public Set<ConceptChange> getConceptChanges() {
-        return conceptChanges;
-    }
-
-    public Concept conceptChanges(Set<ConceptChange> conceptChanges) {
-        this.conceptChanges = conceptChanges;
-        return this;
-    }
-
-    public Concept addConceptChange(ConceptChange conceptChange) {
-        this.conceptChanges.add(conceptChange);
-        conceptChange.setConcept(this);
-        return this;
-    }
-
-    public Concept removeConceptChange(ConceptChange conceptChange) {
-        this.conceptChanges.remove(conceptChange);
-        conceptChange.setConcept(null);
-        return this;
-    }
-
-    public void setConceptChanges(Set<ConceptChange> conceptChanges) {
-        this.conceptChanges = conceptChanges;
-    }
 
     public Set<Version> getVersions() {
         return versions;

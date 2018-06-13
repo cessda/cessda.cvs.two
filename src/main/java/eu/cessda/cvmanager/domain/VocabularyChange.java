@@ -9,18 +9,23 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * A ConceptChange.
+ * A VocabularyChange.
  */
 @Entity
-@Table(name = "concept_change")
-@Document(indexName = "conceptchange")
-public class ConceptChange implements Serializable {
+@Table(name = "vocabulary_change")
+public class VocabularyChange implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    
+    @Column(name = "vocabulary_id")
+    private Long vocabularyId;
+    
+    @Column(name = "version_id")
+    private Long versionId;
 
     @NotNull
     @Size(max = 60)
@@ -34,11 +39,11 @@ public class ConceptChange implements Serializable {
     @Column(name = "user_id")
     private Long userId;
     
+    @Column(name = "user_name", length = 120)
+    private String userName;
+    
     @Column(name = "date")
     private LocalDateTime date;
-
-    @ManyToOne
-    private Concept concept;
 
     public Long getId() {
         return id;
@@ -52,7 +57,7 @@ public class ConceptChange implements Serializable {
         return changeType;
     }
 
-    public ConceptChange changeType(String changeType) {
+    public VocabularyChange changeType(String changeType) {
         this.changeType = changeType;
         return this;
     }
@@ -65,7 +70,7 @@ public class ConceptChange implements Serializable {
         return description;
     }
 
-    public ConceptChange description(String description) {
+    public VocabularyChange description(String description) {
         this.description = description;
         return this;
     }
@@ -78,7 +83,7 @@ public class ConceptChange implements Serializable {
         return userId;
     }
 
-    public ConceptChange userId(Long userId) {
+    public VocabularyChange userId(Long userId) {
         this.userId = userId;
         return this;
     }
@@ -87,19 +92,6 @@ public class ConceptChange implements Serializable {
         this.userId = userId;
     }
 
-    public Concept getConcept() {
-        return concept;
-    }
-
-    public ConceptChange concept(Concept concept) {
-        this.concept = concept;
-        return this;
-    }
-
-    public void setConcept(Concept concept) {
-        this.concept = concept;
-    }
-    
     public LocalDateTime getDate() {
 		return date;
 	}
@@ -116,11 +108,11 @@ public class ConceptChange implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        ConceptChange conceptChange = (ConceptChange) o;
-        if (conceptChange.getId() == null || getId() == null) {
+        VocabularyChange vocabularyChange = (VocabularyChange) o;
+        if (vocabularyChange.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), conceptChange.getId());
+        return Objects.equals(getId(), vocabularyChange.getId());
     }
 
     @Override
@@ -130,11 +122,35 @@ public class ConceptChange implements Serializable {
 
     @Override
     public String toString() {
-        return "ConceptChange{" +
+        return "VocabularyChange{" +
             "id=" + getId() +
             ", changeType='" + getChangeType() + "'" +
             ", description='" + getDescription() + "'" +
             ", userId=" + getUserId() +
             "}";
     }
+
+	public Long getVocabularyId() {
+		return vocabularyId;
+	}
+
+	public void setVocabularyId(Long vocabularyId) {
+		this.vocabularyId = vocabularyId;
+	}
+
+	public Long getVersionId() {
+		return versionId;
+	}
+
+	public void setVersionId(Long versionId) {
+		this.versionId = versionId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 }

@@ -12,8 +12,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring", uses = {})
 public interface ConceptMapper extends EntityMapper<ConceptDTO, Concept> {
 
-
-    @Mapping(target = "conceptChanges", ignore = true)
     @Mapping(target = "versions", ignore = true)
     Concept toEntity(ConceptDTO conceptDTO);
 

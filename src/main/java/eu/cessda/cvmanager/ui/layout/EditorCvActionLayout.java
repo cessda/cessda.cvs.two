@@ -26,6 +26,7 @@ import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -47,6 +48,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private final VocabularyMapper vocabularyMapper;
 	private final VocabularySearchRepository vocabularySearchRepository;
 	private final VersionService versionService;
+	private final VocabularyChangeService vocabularyChangeService;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -77,7 +79,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	
 	public EditorCvActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService/*, CodeService codeService*/, 
-			VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus) {
+			VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus, 
+			VocabularyChangeService vocabularyChangeService) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
@@ -88,6 +91,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		this.vocabularyMapper = vocabularyMapper;
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.eventBus = eventBus;
+		this.vocabularyChangeService = vocabularyChangeService;
 		init();
 	}
 
@@ -136,7 +140,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		newCvScheme.setStatus( Status.DRAFT.toString() );
 
 		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, 
-				vocabularySearchRepository, newCvScheme, new VocabularyDTO(), new VersionDTO(), agency, i18n, null, eventBus);
+				vocabularySearchRepository, newCvScheme, new VocabularyDTO(), new VersionDTO(), agency, i18n, null, 
+				eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
 	}
 	
@@ -144,17 +149,17 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		Window window = null;
 		if( sourceLanguage.equals(selectedLanguage))
 			window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, 
-					cvScheme, vocabulary, currentVersion, agency, i18n, selectedLanguage, eventBus);
+					cvScheme, vocabulary, currentVersion, agency, i18n, selectedLanguage, eventBus, vocabularyChangeService);
 		else
 			window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, currentVersion, agency, vocabularyService, 
-					versionService, vocabularyMapper, vocabularySearchRepository, eventBus);
+					versionService, vocabularyMapper, vocabularySearchRepository, eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
 	}
 	
 	private void doCvAddTranslation(ClickEvent event ) {
 		
 		Window window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, new VersionDTO(), agency, 
-				vocabularyService, versionService, vocabularyMapper, vocabularySearchRepository, eventBus);
+				vocabularyService, versionService, vocabularyMapper, vocabularySearchRepository, eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
 	}
 	

@@ -1,6 +1,9 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,6 +23,7 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
+import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
@@ -28,10 +32,12 @@ import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue.ValueChangeEvent;
 import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -43,8 +49,10 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.DetailView;
@@ -62,6 +70,7 @@ public class DialogCVSchemeWindow extends MWindow {
 	private final VocabularyService vocabularyService;
 	private final StardatDDIService stardatDDIService;
 	private final VocabularySearchRepository vocabularySearchRepository;
+	private final VocabularyChangeService vocabularyChangeService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	private MLabel lAgency = new MLabel( "Agency" );
@@ -78,6 +87,13 @@ public class DialogCVSchemeWindow extends MWindow {
 	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 	private Button storeCode = new Button("Save");
 	
+	private MCssLayout changeBox = new MCssLayout();
+	private MLabel lChange = new MLabel( "Change notes:" );
+	private MLabel lChangeType = new MLabel( "Type*" );
+	private MLabel lChangeDesc = new MLabel( "Description" );
+	private ComboBox<String> changeCb = new ComboBox<>();
+	private TextArea changeDesc = new TextArea();
+	
 	private Binder<CVScheme> binder = new Binder<CVScheme>();
 	private Language language;
 	private AgencyDTO agency;
@@ -91,7 +107,7 @@ public class DialogCVSchemeWindow extends MWindow {
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
 			VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, 
 			VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, I18N i18n, Language selectedLanguage,
-			UIEventBus eventBus) {
+			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super( version.isPersisted() ?"Edit Vocabulary": "Add Vocabulary");
 		this.agencyService = agencyService;
 		this.cvScheme = cvScheme;
@@ -104,6 +120,7 @@ public class DialogCVSchemeWindow extends MWindow {
 		this.agency = agency;
 		this.i18n = i18n;
 		this.eventBus = eventBus;
+		this.vocabularyChangeService = vocabularyChangeService;
 						
 		init();
 	}
@@ -225,6 +242,29 @@ public class DialogCVSchemeWindow extends MWindow {
 		
 		Button cancelButton = new Button("Cancel", e -> this.close());
 		
+		lChange
+			.withStyleName("change-header");
+		changeCb.setWidth("100%");
+		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.cvChangeTypes));
+		changeCb.setTextInputAllowed(false);
+//		changeCb.setEmptySelectionAllowed(false);
+		changeDesc.setWidth("100%");
+		changeBox
+			.withStyleName("change-block")
+			.add( 
+				lChange,
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+						lChangeType, changeCb
+					).withExpand( lChangeType, 0.15f).withExpand( changeCb, 0.85f),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+						lChangeDesc, changeDesc
+					).withExpand( lChangeDesc, 0.15f).withExpand( changeDesc, 0.85f)
+			);
+		
 		layout
 			.withHeight("98%")
 			.withStyleName("dialog-content")
@@ -256,24 +296,51 @@ public class DialogCVSchemeWindow extends MWindow {
 				.withHeight("100%")
 				.add(
 					lDescription, description
-				).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
+				).withExpand( lDescription, 0.15f).withExpand( description, 0.85f)
+				
+			);
+
+		if( version.isPersisted() ) {
+			layout
+			.add(
+				changeBox,
 				new MHorizontalLayout()
-				.withFullWidth()
-				.add( storeCode,
-					cancelButton
-				)
-				.withExpand(storeCode, 0.8f)
-				.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
-				.withExpand(cancelButton, 0.1f)
-				.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
+					.withFullWidth()
+					.add( storeCode,
+						cancelButton
+					)
+					.withExpand(storeCode, 0.8f)
+					.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
+					.withExpand(cancelButton, 0.1f)
+					.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 			)
 			.withExpand(layout.getComponent(0), 0.07f)
 			.withExpand(layout.getComponent(1), 0.07f)
 			.withExpand(layout.getComponent(2), 0.07f)
 			.withExpand(layout.getComponent(3), 0.5f)
-			.withExpand(layout.getComponent(4), 0.3f)
-			.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
-
+			.withExpand(layout.getComponent(4), 0.1f)
+			.withExpand(layout.getComponent(5), 0.3f)
+			.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
+		} else {
+			layout
+				.add(
+					new MHorizontalLayout()
+						.withFullWidth()
+						.add( storeCode,
+							cancelButton
+						)
+						.withExpand(storeCode, 0.8f)
+						.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
+						.withExpand(cancelButton, 0.1f)
+						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
+				)
+				.withExpand(layout.getComponent(0), 0.07f)
+				.withExpand(layout.getComponent(1), 0.07f)
+				.withExpand(layout.getComponent(2), 0.07f)
+				.withExpand(layout.getComponent(3), 0.5f)
+				.withExpand(layout.getComponent(4), 0.3f)
+				.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
+		}
 		
 		this
 			.withHeight("650px")
@@ -285,6 +352,13 @@ public class DialogCVSchemeWindow extends MWindow {
 	private void saveCV() {
 		if(!isInputValid())
 			return;
+		
+		if( isUpdated ) {
+			if( changeCb.getValue() == null ) {
+				Notification.show("Please select the change type!");
+				return;
+			}
+		}
 		//agency
 		List<CVEditor> editorSet = getCvScheme().getOwnerAgency();
 		if(editorSet ==  null)
@@ -338,6 +412,20 @@ public class DialogCVSchemeWindow extends MWindow {
 		
 		// index
 		vocabularyService.index(vocabulary);
+		
+		if( isUpdated ) {
+			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
+			changeDTO.setVocabularyId( vocabulary.getId());
+			changeDTO.setVersionId( version.getId()); 
+			changeDTO.setChangeType( changeCb.getValue() );
+			changeDTO.setDescription( changeDesc.getValue() == null ? "": changeDesc.getValue() );
+			changeDTO.setDate( LocalDateTime.now() );
+			UserDetails loggedUser = SecurityUtils.getLoggedUser();
+			changeDTO.setUserId( loggedUser.getId() );
+			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
+			
+			vocabularyChangeService.save(changeDTO);
+		} 
 		
 		// use eventbus to update detail view
 		if( isUpdated )

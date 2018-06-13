@@ -1,21 +1,21 @@
 package eu.cessda.cvmanager.service;
 
-import eu.cessda.cvmanager.service.dto.ConceptChangeDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 /**
- * Service Interface for managing ConceptChange.
+ * Service Interface for managing VocabularyChange.
  */
-public interface ConceptChangeService {
+public interface VocabularyChangeService {
 
     /**
      * Save a conceptChange.
      *
-     * @param conceptChangeDTO the entity to save
+     * @param vocabularyChangeDTO the entity to save
      * @return the persisted entity
      */
-    ConceptChangeDTO save(ConceptChangeDTO conceptChangeDTO);
+    VocabularyChangeDTO save(VocabularyChangeDTO vocabularyChangeDTO);
 
     /**
      * Get all the conceptChanges.
@@ -23,7 +23,7 @@ public interface ConceptChangeService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<ConceptChangeDTO> findAll(Pageable pageable);
+    Page<VocabularyChangeDTO> findAll(Pageable pageable);
 
     /**
      * Get the "id" conceptChange.
@@ -31,7 +31,7 @@ public interface ConceptChangeService {
      * @param id the id of the entity
      * @return the entity
      */
-    ConceptChangeDTO findOne(Long id);
+    VocabularyChangeDTO findOne(Long id);
 
     /**
      * Delete the "id" conceptChange.
@@ -48,5 +48,5 @@ public interface ConceptChangeService {
      * @param pageable the pagination information
      * @return the list of entities
      */
-    Page<ConceptChangeDTO> search(String query, Pageable pageable);
+    Page<VocabularyChangeDTO> search(String query, Pageable pageable);
 }

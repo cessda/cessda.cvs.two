@@ -40,6 +40,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -93,7 +94,7 @@ public class DialogAddLanguageWindow extends MWindow {
 	public DialogAddLanguageWindow(StardatDDIService stardatDDIService,  CVScheme cvScheme,
 			 VocabularyDTO vocabularyDTO, VersionDTO versionDTO, AgencyDTO agencyDTO, 
 			 VocabularyService vocabularyService, VersionService versionService, VocabularyMapper vocabularyMapper,
-			 VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus) {
+			 VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super("Add Language");
 		this.cvScheme = cvScheme;
 		this.stardatDDIService = stardatDDIService;

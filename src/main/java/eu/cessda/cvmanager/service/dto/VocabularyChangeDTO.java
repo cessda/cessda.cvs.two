@@ -5,16 +5,37 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Lob;
 
 /**
- * A DTO for the ConceptChange entity.
+ * A DTO for the VocabularyChange entity.
  */
-public class ConceptChangeDTO implements Serializable {
+public class VocabularyChangeDTO implements Serializable {
+	
+	public static String[] cvChangeTypes = {
+			"CV Short Name changed",
+			"CV Long Name changed",
+			"CV definition amended with meaning change",
+			"CV definition rephrased"
+	};
+	
+	public static String[] codeChangeTypes = {
+			"Code added",
+			"Code removed",
+			"Code value changed",
+			"Code descriptive term rephrased",
+			"Code definition amended with meaning change",
+			"Code definition rephrased"
+	};
 
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
+	
+    private Long vocabularyId;
+    
+    private Long versionId;
 
     @NotNull
     @Size(max = 60)
@@ -25,9 +46,9 @@ public class ConceptChangeDTO implements Serializable {
 
     private Long userId;
     
+    private String userName;
+    
     private LocalDateTime date;
-
-    private Long conceptId;
 
     public Long getId() {
         return id;
@@ -61,14 +82,6 @@ public class ConceptChangeDTO implements Serializable {
         this.userId = userId;
     }
 
-    public Long getConceptId() {
-        return conceptId;
-    }
-
-    public void setConceptId(Long conceptId) {
-        this.conceptId = conceptId;
-    }
-    
     public LocalDateTime getDate() {
 		return date;
 	}
@@ -86,11 +99,11 @@ public class ConceptChangeDTO implements Serializable {
             return false;
         }
 
-        ConceptChangeDTO conceptChangeDTO = (ConceptChangeDTO) o;
-        if(conceptChangeDTO.getId() == null || getId() == null) {
+        VocabularyChangeDTO vocabularyChangeDTO = (VocabularyChangeDTO) o;
+        if(vocabularyChangeDTO.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), conceptChangeDTO.getId());
+        return Objects.equals(getId(), vocabularyChangeDTO.getId());
     }
 
     @Override
@@ -100,11 +113,37 @@ public class ConceptChangeDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "ConceptChangeDTO{" +
+        return "VocabularyChangeDTO{" +
             "id=" + getId() +
             ", changeType='" + getChangeType() + "'" +
             ", description='" + getDescription() + "'" +
             ", userId=" + getUserId() +
             "}";
     }
+
+	public Long getVocabularyId() {
+		return vocabularyId;
+	}
+
+	public void setVocabularyId(Long vocabularyId) {
+		this.vocabularyId = vocabularyId;
+	}
+
+	public Long getVersionId() {
+		return versionId;
+	}
+
+	public void setVersionId(Long versionId) {
+		this.versionId = versionId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+    
+    
 }

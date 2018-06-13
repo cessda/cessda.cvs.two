@@ -44,6 +44,7 @@ import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
@@ -84,6 +85,7 @@ public class EditorSearchView extends CvView {
 	private EsQueryResultDetail esQueryResultDetail = new EsQueryResultDetail( EditorSearchView.VIEW_NAME );
 	
 	private ArrayList<CVScheme> hits = new ArrayList<>();
+	private final VocabularyChangeService vocabularyChangeService;
 
 	private final FiltersLayout.FilterListener filterListener = ( fieldName, activeFilters) -> {
 		esQueryResultDetail.resetPaging();
@@ -100,9 +102,11 @@ public class EditorSearchView extends CvView {
 	public EditorSearchView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
-			CodeService codeService, VocabularySearchRepository vocabularySearchRepository) {
+			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
+			VocabularyChangeService vocabularyChangeService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, EditorSearchView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
+		this.vocabularyChangeService = vocabularyChangeService;
 		eventBus.subscribe(this, EditorSearchView.VIEW_NAME);
 	}
 
@@ -111,7 +115,7 @@ public class EditorSearchView extends CvView {
 		LoginView.NAVIGATETO_VIEWNAME = EditorSearchView.VIEW_NAME;
 		paginationBar = new PaginationBar( paggingListener , i18n);
 		filterLayout = new FiltersLayout( "block.filter", "block.filter.show", null, this, filterListener, i18n );
-		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, eventBus);
+		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, eventBus, vocabularyChangeService);
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
 		
 		// button style
