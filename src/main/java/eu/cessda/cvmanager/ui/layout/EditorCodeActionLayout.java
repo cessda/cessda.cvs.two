@@ -254,10 +254,18 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		} else {
 			hasAction = true;
 
-			if( selectedLanguage.equals( sourceLanguage) && SecurityUtils.isCurrentUserAllowCreateCvSl() )
+			if( selectedLanguage.equals( sourceLanguage) && SecurityUtils.isCurrentUserAllowCreateCvSl() ) {
 				buttonCodeAdd.setVisible( true );
-			else
+				VersionDTO latestSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getLatestVersions());
+				if( latestSLVersion.getConcepts() != null && latestSLVersion.getConcepts().size() > 1 )
+					buttonCodeSort.setVisible( true );
+				else
+					buttonCodeSort.setVisible( false );
+			}
+			else {
 				buttonCodeAdd.setVisible( false );
+				buttonCodeSort.setVisible( false );
+			}
 			
 			if( cvConcept != null && currentCode != null && currentConcept != null) {
 				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {

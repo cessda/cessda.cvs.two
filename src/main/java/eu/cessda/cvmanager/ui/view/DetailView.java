@@ -663,8 +663,8 @@ public class DetailView extends CvView {
             }
 		});
 		
-//		if(enableTreeDragAndDrop && actionPanel.isEnableSort())
-//			enableTreeGridDragAndDropSort();
+		if(enableTreeDragAndDrop)
+			enableTreeGridDragAndDropSort();
 		
 		// select row programatically
 		if(cvItem.getCvConcept() != null ) {

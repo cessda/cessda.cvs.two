@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.*;
 
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -250,6 +252,19 @@ public class VersionDTO implements Serializable {
             ", publisher=" + getPublisher() +
             "}";
     }
+	
+	public static VersionDTO getLatestSourceVersion( Set<VersionDTO> versionDTOs) {
+		Optional<VersionDTO> latestSourceVersion = versionDTOs
+				.stream()
+				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+				.filter( p -> p.itemType.equals( ItemType.SL.toString()))
+				.findFirst();
+		
+		if( latestSourceVersion.isPresent() )
+			return latestSourceVersion.get();
+		else
+			return null;
+	}
 	
 	public static Optional<VersionDTO> getLatestVersion( Set<VersionDTO> versionDTOs, String language, String status){
 		if( versionDTOs == null || versionDTOs.isEmpty() || language == null)
