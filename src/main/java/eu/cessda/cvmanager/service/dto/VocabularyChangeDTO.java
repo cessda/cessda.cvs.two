@@ -21,8 +21,6 @@ public class VocabularyChangeDTO implements Serializable {
 	};
 	
 	public static String[] codeChangeTypes = {
-			"Code added",
-			"Code removed",
 			"Code value changed",
 			"Code descriptive term rephrased",
 			"Code definition amended with meaning change",

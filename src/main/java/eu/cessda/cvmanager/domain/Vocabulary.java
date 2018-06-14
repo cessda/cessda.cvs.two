@@ -36,12 +36,12 @@ public class Vocabulary extends VocabularyBase{
     // both sl and tl statuses
     @Column(name = "statuses")
     @ElementCollection( targetClass=String.class )
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private Set<String> statuses;
     
     @Column(name = "restrict_roles")
     @ElementCollection( targetClass=String.class )
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private Set<String> restrictRoles;
     
     

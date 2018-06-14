@@ -27,7 +27,7 @@ public class PaginationBar extends MHorizontalLayout {
     }
 	
     private PagingListener listener;
-    private int noOfRows = 3;
+    private int noOfRows = 10;
     private int totalPages;
     private int currentPage;
     private Button first, last, next, previous,status;
@@ -56,7 +56,7 @@ public class PaginationBar extends MHorizontalLayout {
 //        pages = (int) Math.ceil((float)getSize() / getPageSize());
 //        setPages();
 
-		Integer[] perPages={ 3, 10, 20,30,50,100};
+		Integer[] perPages={ 10, 20,30,50,100};
 		perpage.setWidth(7, Unit.EM);
 		perpage.setItems( perPages );
 		perpage.setValue( perPages[0] );

@@ -92,7 +92,7 @@ public class DialogCVSchemeWindow extends MWindow {
 	private MLabel lChangeType = new MLabel( "Type*" );
 	private MLabel lChangeDesc = new MLabel( "Description" );
 	private ComboBox<String> changeCb = new ComboBox<>();
-	private TextArea changeDesc = new TextArea();
+	private MTextField changeDesc = new MTextField();
 	
 	private Binder<CVScheme> binder = new Binder<CVScheme>();
 	private Language language;

@@ -42,16 +42,16 @@ public class Version implements Serializable{
     private Long id;
     
     @Column(name = "status", length = 20, nullable = false)
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private String status;
     
     @Column(name = "item_type", length = 20, nullable = false)
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private String itemType;
     
     @Size(max = 20)
     @Column(name = "language", length = 20)
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private String language;
     
     @Column(name = "last_modified")
@@ -103,7 +103,7 @@ public class Version implements Serializable{
     // in case only for SL type version
     @Column(name = "restrict_role")
     @ElementCollection( targetClass=String.class )
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private List<String> restrictRoles;
     
     @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH  })

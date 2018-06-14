@@ -1,6 +1,7 @@
 package eu.cessda.cvmanager.ui.view;
 
 import java.nio.charset.Charset;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,6 +28,7 @@ import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
@@ -94,6 +96,7 @@ import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
@@ -913,6 +916,18 @@ public class DetailView extends CvView {
 							
 							detailTreeGrid.getDataProvider().refreshAll();
 //							actionPanel.conceptSelectedChange( null );
+							
+							// save change log
+							VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
+							changeDTO.setVocabularyId( vocabulary.getId());
+							changeDTO.setVersionId( editorCodeActionLayout.getCurrentVersion().getId()); 
+							changeDTO.setChangeType( "Code deleted" );
+							changeDTO.setDescription( "Code " + code.getNotation() + " added");
+							changeDTO.setDate( LocalDateTime.now() );
+							UserDetails loggedUser = SecurityUtils.getLoggedUser();
+							changeDTO.setUserId( loggedUser.getId() );
+							changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
+							vocabularyChangeService.save(changeDTO);
 							
 							// reindex
 							vocabularyService.index(vocabulary);
