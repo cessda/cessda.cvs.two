@@ -41,6 +41,7 @@ import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Viewport;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ContentMode;
@@ -109,6 +110,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private MButton logIn = new MButton("Login", this::doLogin);
 	private MButton logout = new MButton("Logout", this::doLogout);
+	private MButton clearSearchButton = new MButton();
 
 	private Navigator navigator;
 
@@ -223,6 +225,11 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 				return item.name().substring(0, 1) + item.name().substring(1).toLowerCase();
 			}
 		});
+		
+		//  Remove this line if select language is activated
+		countryBox.setVisible( false );
+		
+		
 		setLocale(new Locale(countryBox.getValue().toString().toLowerCase()));
 		
 		userSubMenu
@@ -263,7 +270,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 				new MCssLayout()
 					.withStyleName( "col-md-6 log-in pull-right" )
 					.add(
-						new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-header fa fa-globe\"></i>" ),
+//						new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-header fa fa-globe\"></i>" ),
 						countryBox,
 						new MCssLayout()
 							.withStyleName( "login" )
@@ -321,6 +328,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 					navigator.navigateTo(EditorSearchView.VIEW_NAME);
 					eventBus.publish(EventScope.UI, EditorSearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_EDITOR_SEARCH, e.getValue()) );
 				}
+				if( e.getValue() != null && e.getValue().length() > 0)
+					clearSearchButton.setVisible( true );
+				else
+					clearSearchButton.setVisible( false );
 			});
 		
 		headerTop
@@ -376,11 +387,19 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	
 	private MCssLayout searchBox() {
 		MCssLayout searchContainer = new MCssLayout();
+		clearSearchButton
+			.withIcon(FontAwesome.TIMES)
+			.withStyleName("clear-search-button")
+			.withVisible( false )
+			.addClickListener( e -> {
+				clearSearch();
+			});
 		searchContainer
 			.withStyleName("search-box")
 			.add( 
 				new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-search fa fa-search\"></i>" ),
-				searchTf 
+				searchTf,
+				clearSearchButton
 			);
 		return searchContainer;
 	}
@@ -504,5 +523,9 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	public Map<String, String> getBreadcrumbItemMap() {
 		return breadcrumbItemMap;
+	}
+	
+	public void clearSearch() {
+		searchTf.setValue("");
 	}
 }

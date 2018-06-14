@@ -2206,6 +2206,20 @@ $v-selection-item-border-radius: 0;
 		margin:5px 0;
 	}
 	
+	.clear-search-button{
+	    background-color: #fff;
+	    background-image: none;
+	    height: 40px;
+	    display: block;
+	    text-shadow: none;
+	    box-shadow: none;
+	    border: none;
+	    .FontAwesome{
+	    	color: #c3c3c3;
+	    	font-size:2rem;
+	    }
+    }
+	
 	.change-block{
 		background-color:#eee;
 		border-radius:10px;
