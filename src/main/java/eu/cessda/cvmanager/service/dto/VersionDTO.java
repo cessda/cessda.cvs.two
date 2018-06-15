@@ -64,6 +64,12 @@ public class VersionDTO implements Serializable {
     private Long creator;
 
     private Long publisher;
+    
+    @Lob
+    private String versionNotes;
+    
+    @Lob
+    private String discussionNotes;
 
     private Set<ConceptDTO> concepts = new HashSet<>();
 
@@ -230,6 +236,22 @@ public class VersionDTO implements Serializable {
 
 	public void setLastModified(LocalDateTime lastModified) {
 		this.lastModified = lastModified;
+	}
+	
+	public String getVersionNotes() {
+		return versionNotes;
+	}
+
+	public void setVersionNotes(String versionNotes) {
+		this.versionNotes = versionNotes;
+	}
+	
+	public String getDiscussionNotes() {
+		return discussionNotes;
+	}
+
+	public void setDiscussionNotes(String discussionNotes) {
+		this.discussionNotes = discussionNotes;
 	}
 
 	@Override

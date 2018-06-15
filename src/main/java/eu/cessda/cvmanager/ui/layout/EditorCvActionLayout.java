@@ -37,6 +37,7 @@ import eu.cessda.cvmanager.ui.view.CvView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindow;
 
 public class EditorCvActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -68,8 +69,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private MButton buttonEditCv = new MButton();
 	private MButton buttonAddTranslation = new MButton();
 	
-	private MButton buttonSentToReview= new MButton();
-	private MButton buttonFinaliseReview = new MButton();
+	private MButton buttonReviewInitial= new MButton();
+	private MButton buttonReviewFinal = new MButton("Final Review");
 	private MButton buttonPublishCv = new MButton();
 	private MButton buttonWithdrawnCv = new MButton();
 	
@@ -99,33 +100,45 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		buttonAddCv
 			.withFullWidth()
 			.withStyleName("action-button")
+			.withVisible( false )
 			.addClickListener( this::doCvAdd );
 		
 		buttonEditCv
 			.withFullWidth()
 			.withStyleName("action-button")
+			.withVisible( false )
 			.addClickListener( this::doCvEdit );
 		
 		buttonAddTranslation
 			.withFullWidth()
 			.withStyleName("action-button")
+			.withVisible( false )
 			.addClickListener( this::doCvAddTranslation );
 		
-		buttonSentToReview
+		buttonReviewInitial
 			.withFullWidth()
 			.withStyleName("action-button")
-			.addClickListener( this::changeStatusToReview );
+			.withVisible( false )
+			.addClickListener( this::changeStatus );
+		
+		buttonReviewFinal
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::changeStatus );
 		
 		buttonPublishCv
 			.withFullWidth()
 			.withStyleName("action-button")
-			.addClickListener( this::publishCv );
+			.withVisible( false )
+			.addClickListener( this::changeStatus );
 				
 		getInnerContainer()
 			.add(
 				buttonAddCv,
 				buttonEditCv,
-				buttonSentToReview,
+				buttonReviewInitial,
+				buttonReviewFinal,
 				buttonPublishCv,
 				buttonAddTranslation
 			);
@@ -163,41 +176,11 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		getUI().addWindow(window);
 	}
 	
-	public void changeStatusToReview(ClickEvent event ) {
-		ConfirmDialog.show( this.getUI(), "Confirm",
-				"Are you sure you want to submit " + vocabulary.getNotation() +" SL?", "yes",
-				"cancel",
-		
-					dialog -> {
-						if( dialog.isConfirmed() ) {
-							// set status for curent version to review
-							currentVersion.setStatus( Status.REVIEW.toString() );
-							vocabulary.setVersionByLanguage(selectedLanguage, Status.REVIEW.toString());
-							
-							// if source language
-							if( isCurrentSL) {
-								vocabulary.setStatus( Status.REVIEW.toString());
-							}
-							
-							// set collection of statuses for indexing
-							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
-							
-							// save to database
-							vocabulary = vocabularyService.save(vocabulary);
-							
-							// index for editor
-							vocabularyService.index(vocabulary);
-							
-							// save to flatDB
-							cvScheme.setStatus(Status.REVIEW.toString()  );
-							getCvScheme().save();
-							DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Review Cv");
-														
-							// refresh detail page
-							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-						}
-					}
-				);
+	public void changeStatus(ClickEvent event ) {
+		Window window = new DialogManageStatusWindow(stardatDDIService, vocabularyService, versionService, 
+				cvScheme, vocabulary, currentVersion, selectedLanguage, sourceLanguage, 
+				agency, eventBus, vocabularyChangeService);
+		getUI().addWindow(window);
 	}
 	
 	public void publishCv(ClickEvent event ) {
@@ -243,7 +226,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));
 		buttonEditCv.withCaption(i18n.get("view.action.button.cvscheme.edit", locale) + buttonSuffix);
 		buttonAddTranslation.withCaption( i18n.get("view.action.button.cvscheme.translation", locale));
-		buttonSentToReview.withCaption( "Submit" +  buttonSuffix );
+		buttonReviewInitial.withCaption( "Initial Review" +  buttonSuffix );
+		buttonReviewFinal.withCaption( "Final Review" +  buttonSuffix );
 		buttonPublishCv.withCaption( "Publish" + buttonSuffix);
 	}
 
@@ -327,51 +311,29 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 			// check add CV button
 			if( SecurityUtils.isCurrentUserAllowCreateCvSl() )
 				buttonAddCv.setVisible( true );
-			else
-				buttonAddCv.setVisible( false );
 			
-			if( currentVersion == null ) {
-				buttonEditCv.setVisible( false );
-				buttonSentToReview.setVisible( false );
-				buttonPublishCv.setVisible( false );
-				buttonAddTranslation.setVisible( false );
-			}
-			else {
+			if( currentVersion != null )  {
 			
 			// check edit CV button
 				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage))
 					buttonEditCv.setVisible( true );
-				else
-					buttonEditCv.setVisible( false );
+
 				
 				if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
-					buttonPublishCv.setVisible( false );
-					buttonAddTranslation.setVisible( false );
 					if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) {
-						buttonSentToReview.setVisible( true );
+						buttonReviewInitial.setVisible( true );
 					}
-					else {
-						buttonSentToReview.setVisible( false );
-					}
-				} else if(currentVersion.getStatus().equals( Status.REVIEW.toString() )) {
-					buttonSentToReview.setVisible( false );
-					buttonAddTranslation.setVisible( false );
-					if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) {
-						buttonPublishCv.setVisible( true );
-					}
-					else {
-						buttonPublishCv.setVisible( false );
-					}
+				} else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() )) {
+					if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) 
+						buttonReviewFinal.setVisible( true );
 					
-				} else if(currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
-					buttonSentToReview.setVisible( false );
-					buttonPublishCv.setVisible( false );
-					buttonEditCv.setVisible( false );
+				} else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() )) {
+					if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) 
+						buttonPublishCv.setVisible( true );
+					
+				}else if(currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
 					if( SecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) )
 						buttonAddTranslation.setVisible( true );
-					else {
-						buttonAddTranslation.setVisible( false );
-					}
 				}
 			}
 			

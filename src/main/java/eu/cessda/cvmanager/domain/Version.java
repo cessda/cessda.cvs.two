@@ -96,6 +96,14 @@ public class Version implements Serializable{
     @Column(name = "publisher")
     private Long publisher;
     
+    @Lob
+    @Column(name = "version_notes")
+    private String versionNotes;
+    
+    @Lob
+    @Column(name = "discussion_notes")
+    private String discussionNotes;
+    
     @ManyToMany(mappedBy = "versions")
     @JsonIgnore
     private List<Vocabulary> vocabularies;
@@ -264,8 +272,22 @@ public class Version implements Serializable{
 		this.concepts = concepts;
 	}
 	
+	public String getVersionNotes() {
+		return versionNotes;
+	}
+
+	public void setVersionNotes(String versionNotes) {
+		this.versionNotes = versionNotes;
+	}
 	
-	
+	public String getDiscussionNotes() {
+		return discussionNotes;
+	}
+
+	public void setDiscussionNotes(String discussionNotes) {
+		this.discussionNotes = discussionNotes;
+	}
+
 	@Override
     public String toString() {
         return "Version{" +

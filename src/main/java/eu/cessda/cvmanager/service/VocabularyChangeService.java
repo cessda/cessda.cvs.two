@@ -1,6 +1,9 @@
 package eu.cessda.cvmanager.service;
 
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
+
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -49,4 +52,7 @@ public interface VocabularyChangeService {
      * @return the list of entities
      */
     Page<VocabularyChangeDTO> search(String query, Pageable pageable);
+    
+    
+    List<VocabularyChangeDTO> findAllByVocabularyVersionId( Long vocabularyId, Long versionId);
 }

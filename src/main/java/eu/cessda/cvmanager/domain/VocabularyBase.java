@@ -348,6 +348,10 @@ public class VocabularyBase implements Serializable {
     @Field(type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String definitionSv;
     
+    @Lob
+    @Column(name = "notes")
+    private String notes;
+    
     public Long getId() {
         return id;
     }
@@ -1146,6 +1150,14 @@ public class VocabularyBase implements Serializable {
 
 	public void setVers(Set<Version> vers) {
 		this.vers = vers;
+	}
+	
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 	@Override

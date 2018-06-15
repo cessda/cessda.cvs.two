@@ -518,6 +518,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 
 	public Breadcrumbs getBreadCrumb() {
+		clearSearch();
 		return breadCrumb;
 	}
 

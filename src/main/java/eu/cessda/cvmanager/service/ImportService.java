@@ -77,10 +77,10 @@ public class ImportService {
 			if( vocabulary == null ) {
 				vocabulary = VocabularyDTO.generateFromCVScheme(cvScheme);
 				
-				List<CVEditor> owners = cvScheme.getEditor();
+				String owner = cvScheme.getOwnerAgency().get(0).getName();
 				AgencyDTO agencyDto = null;
-				if( owners != null && !owners.isEmpty() )
-					agencyDto =  agencyService.findByName( owners.get( 0 ).getName());
+				if( owner != null && !owner.isEmpty() )
+					agencyDto =  agencyService.findByName( owner );
 				
 				if( agencyDto == null)
 					agencyDto = agencyService.findOne(1L);

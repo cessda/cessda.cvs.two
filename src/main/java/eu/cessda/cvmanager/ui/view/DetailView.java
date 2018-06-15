@@ -373,9 +373,9 @@ public class DetailView extends CvView {
 		//TODO, remove this "if" after all vocabularies belong to agency
 		if( getVocabulary() == null ) {
 			
-			List<CVEditor> owners = cvItem.getCvScheme().getEditor();
-			if( owners != null && !owners.isEmpty() )
-				setAgency( agencyService.findByName( owners.get( 0 ).getName()));
+			String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
+			if( owner != null && !owner.isEmpty() )
+				setAgency( agencyService.findByName( owner));
 			
 			if( getAgency() == null)
 				setAgency( agencyService.findOne(1L) );
@@ -425,11 +425,14 @@ public class DetailView extends CvView {
 //					else
 //						langButton.setVisible( false );
 				}
-				else if( versionDTO.getStatus().equals( Status.REVIEW.toString())) {
+				else if( versionDTO.getStatus().equals( Status.INITIAL_REVIEW.toString())) {
 //					if( !breadcrumbItemMap.isEmpty() && breadcrumbItemMap.get("editor-search") != null )
-						langButton.addStyleName( "status-review" );
+						langButton.addStyleName( "status-review-initial" );
 //					else
 //						langButton.setVisible( false );
+				}
+				else if( versionDTO.getStatus().equals( Status.FINAL_REVIEW.toString())) {
+					langButton.addStyleName( "status-review-final" );
 				}
 			});
 			

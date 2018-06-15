@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Service Implementation for managing VocabularyChange.
  */
@@ -104,4 +108,13 @@ public class VocabularyChangeServiceImpl implements VocabularyChangeService {
 //        Page<VocabularyChange> result = conceptChangeSearchRepository.search(queryStringQuery(query), pageable);
         return null;//result.map(vocabularyChangeMapper::toDto);
     }
+
+	@Override
+	public List<VocabularyChangeDTO> findAllByVocabularyVersionId(Long vocabularyId, Long versionId) {
+		return vocabularyChangeRepository
+				.findAllByVocabularyVersionId( vocabularyId, versionId)
+				.stream()
+				.map(vocabularyChangeMapper::toDto)
+	            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

@@ -17649,10 +17649,16 @@ div.v-layout.v-horizontal.v-widget {
 	box-shadow: 3px 3px 8px -3px #f00;
 }
 
-.mytheme .status-review {
+.mytheme .status-review-initial {
 	webkit-box-shadow: 3px 3px 8px -3px #ffa500;
 	-moz-box-shadow: 3px 3px 8px -3px #ffa500;
 	box-shadow: 3px 3px 8px -3px #ffa500;
+}
+
+.mytheme .status-review-final {
+	webkit-box-shadow: 3px 3px 8px -3px #0014ff;
+	-moz-box-shadow: 3px 3px 8px -3px #0014ff;
+	box-shadow: 3px 3px 8px -3px #0014ff;
 }
 
 .mytheme .search-box {
@@ -17862,6 +17868,39 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 1.5rem;
 	font-weight: 700;
 	width: 100%;
+}
+
+.mytheme .button-layout {
+	width: 100%;
+	height: 50px;
+}
+
+.mytheme .section-header {
+	text-align: left;
+	padding: 0 10px;
+	font-weight: 600;
+	font-size: 1.2rem;
+}
+
+.mytheme .section-block {
+	width: 100%;
+	padding: 5px;
+	margin-bottom: 10px;
+	border-radius: 5px;
+	background-color: #eee;
+}
+
+.mytheme .action-button2 {
+	float: right;
+	margin-left: 15px;
+}
+
+.mytheme .height-100 {
+	height: 100px;
+}
+
+.mytheme .height-200 {
+	height: 200px;
 }
 
 @media (min-width: 992px) {

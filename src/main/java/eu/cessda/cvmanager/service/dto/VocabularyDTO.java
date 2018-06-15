@@ -247,6 +247,9 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String definitionSv;
     
+    @Lob
+    private String notes;
+    
     public String getTitleByLanguage( Language language ) {
     	switch (language) {
 		case CZECH:
@@ -1192,6 +1195,14 @@ public class VocabularyDTO implements Serializable {
 
 	public void setVersionSv(String versionSv) {
 		this.versionSv = versionSv;
+	}
+	
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
 	}
 
 	@Override

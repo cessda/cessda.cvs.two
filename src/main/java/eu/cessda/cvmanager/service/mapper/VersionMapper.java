@@ -11,9 +11,16 @@ import org.mapstruct.*;
  */
 @Mapper(componentModel = "spring", uses = {ConceptMapper.class})
 public interface VersionMapper extends EntityMapper<VersionDTO, Version> {
+	
+	@Mappings({
+	    @Mapping(source = "discussionNotes", target = "discussionNotes")
+	})
+	VersionDTO toDto( Version version);
 
-
-    @Mapping(target = "vocabularies", ignore = true)
+	@Mappings({
+	    @Mapping(target = "vocabularies", ignore = true),
+	    @Mapping(source = "discussionNotes", target = "discussionNotes")
+	})
     Version toEntity(VersionDTO versionDTO);
 
     default Version fromId(Long id) {

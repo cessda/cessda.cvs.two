@@ -100,8 +100,10 @@ public class VocabularyGridRow extends CustomComponent {
 			.ifPresent( versionDTO -> {
 				if( versionDTO.getStatus().equals( Status.DRAFT.toString()))
 					langButton.addStyleName( "status-draft" );
-				else if( versionDTO.getStatus().equals( Status.REVIEW.toString()))
-					langButton.addStyleName( "status-review" );
+				else if( versionDTO.getStatus().equals( Status.INITIAL_REVIEW.toString()))
+					langButton.addStyleName( "status-review-initial" );
+				else if( versionDTO.getStatus().equals( Status.FINAL_REVIEW.toString()))
+					langButton.addStyleName( "status-review-final" );
 			});
 			
 			langButton.addClickListener(e -> {
