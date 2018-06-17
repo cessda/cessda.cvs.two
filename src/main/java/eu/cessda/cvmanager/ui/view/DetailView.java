@@ -445,9 +445,7 @@ public class DetailView extends CvView {
 				
 //				setFormMode(FormMode.view);
 				
-				initTopViewSection();
-//				initTopEditSection();
-				initBottomViewSection();
+
 				
 				editorCvActionLayout.setSelectedLanguage(selectedLang);
 				editorCodeActionLayout.setSelectedLanguage(selectedLang);
@@ -467,7 +465,9 @@ public class DetailView extends CvView {
 					});
 				
 				
-				
+				initTopViewSection();
+//				initTopEditSection();
+				initBottomViewSection();
 				
 //				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLang))
 //					editButton.setVisible( true );
@@ -564,7 +564,7 @@ public class DetailView extends CvView {
 						.withStyleName("col-des-4")
 						.add(
 								lDate.withWidth("140px").withStyleName("leftPart"),
-								new MLabel(cvItem.getCvScheme().getVersion().getPublicationDate().toString()).withStyleName("rightPart"))
+								new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 					);
 
 		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langVersDateLayout);

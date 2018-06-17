@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,6 +10,7 @@ import java.util.Set;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.stardat.entity.CVVersion;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.security.UserDetails;
@@ -43,6 +45,7 @@ import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
@@ -382,7 +385,14 @@ public class DialogManageStatusWindow extends MWindow {
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
 								currentVersion.setVersionNotes( versionNotes.getValue());
 								currentVersion.setNumber( versionNumberField.getValue());
+								currentVersion.setPublicationDate( LocalDate.now());
 								vocabulary.setVersionByLanguage(selectedLanguage, versionNumberField.getValue());
+								if( selectedLanguage.equals( sourceLanguage ))
+									vocabulary.setPublicationDate( LocalDate.now());
+								
+								CVVersion cvVersion = new CVVersion();
+								cvVersion.setPublicationDate( LocalDate.now());
+								cvVersion.setContainerId( cvScheme.getContainerId());
 							}
 							
 							// save to database
@@ -398,6 +408,7 @@ public class DialogManageStatusWindow extends MWindow {
 							// save to flatDB
 							cvScheme.setStatus( nextStatus );
 							cvScheme.save();
+						
 							DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
 							
 							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );

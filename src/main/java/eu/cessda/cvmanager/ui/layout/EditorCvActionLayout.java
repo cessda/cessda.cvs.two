@@ -298,6 +298,11 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 			setVisible( false );
 		}
 		else {
+			buttonAddCv.setVisible( false );
+			buttonReviewInitial.setVisible( false );
+			buttonReviewFinal.setVisible( false );
+			buttonPublishCv.setVisible( false );
+			buttonAddTranslation.setVisible( false );
 			
 			if( sourceLanguage.equals(selectedLanguage))
 				isCurrentSL = true;
