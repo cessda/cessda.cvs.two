@@ -103,6 +103,7 @@ import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayout;
 import eu.cessda.cvmanager.ui.layout.EditorCvActionLayout;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
+import eu.cessda.cvmanager.ui.layout.IdentityVersionLayout;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow2;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
@@ -193,7 +194,10 @@ public class DetailView extends CvView {
 	private List<CVConcept> draggedItems;
 	private TreeDataProvider<CVConcept> dataProvider;
 	
+	private IdentityVersionLayout identityVersionLayout;
 	private ExportLayout exportLayoutContent;
+	
+	
 	private Binder<CVScheme> cvSchemeBinder = new Binder<>();
 	private Language sourceLanguage;
 	private String activeTab;
@@ -574,6 +578,7 @@ public class DetailView extends CvView {
 		bottomViewSection.removeAllComponents();
 		detailLayout.removeAllComponents();
 		exportLayout.removeAllComponents();
+		identifyLayout.removeAllComponents();
 		
 		exportLayout.withHeight("450px");
 		detailLayout.setHeight("800px");
@@ -697,8 +702,13 @@ public class DetailView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
+		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService);
+		identifyLayout.add( identityVersionLayout );
+		
 		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
 		exportLayout.add(exportLayoutContent);
+		
+		
 
 		bottomViewSection.add(detailTab);
 	}

@@ -36,6 +36,7 @@ $v-focus-color: #3b5998;
 $v-focus-style: 0 0 1px 1px rgba($v-focus-color, .5);
 $v-border-radius: 3px;
 $v-textfield-border-radius: 0;
+//$v-font-family: Helvetica, Arial, 'lucida grande', tahoma, verdana, arial, sans-serif;
 $v-font-family: Helvetica, Arial, 'lucida grande', tahoma, verdana, arial, sans-serif;
 $v-font-size: 14px;
 $v-font-color: #37404E;
@@ -2267,5 +2268,20 @@ $v-selection-item-border-radius: 0;
 	}
 	.white-bg{
 		background-color:#fff;
+	}
+	.version-item{
+		width:100%;
+		margin-bottom:8px;
+	}
+	.version-item h2{
+		font-weight:600;
+		font-size:1.2rem;
+		padding:0;
+		margin:0;
+		margin-top:2px !important;
+	}
+	.version-item .v-label{
+		width:100%;
+		margin-bottom:4px;
 	}
 }

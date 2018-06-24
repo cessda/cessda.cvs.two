@@ -37,6 +37,7 @@ import org.vaadin.viritin.layouts.MMarginInfo;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.annotations.PreserveOnRefresh;
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Viewport;
 import com.vaadin.navigator.Navigator;
@@ -77,6 +78,7 @@ import eu.cessda.cvmanager.utils.FileUtils;
  */
 
 @Viewport("initial-scale=1, maximum-scale=1")
+@StyleSheet({"http://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900"})
 @Theme("mytheme")
 @SpringUI
 @PreserveOnRefresh

@@ -9,8 +9,14 @@ import javax.validation.constraints.*;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.Objects;
 import java.util.Optional;
@@ -306,5 +312,32 @@ public class VersionDTO implements Serializable {
 		
 	public boolean isPersisted() {
 		return id != null;
+	}
+	
+	public static Map<String,List<VersionDTO>> generateVersionMap(Set<VersionDTO> versionDTOs){
+		Map<String,List<VersionDTO>> versionMap = new TreeMap<>();
+		
+		// first put into Map, sorted in natural key order
+		for(VersionDTO eachVerDTO : versionDTOs) {
+			String key = eachVerDTO.getItemType() + "_" + eachVerDTO.getLanguage();
+			List<VersionDTO> versionDs = versionMap.get( key );
+			if( versionDs  == null ) {
+				versionDs = new ArrayList<>();
+				versionMap.put( key , versionDs);
+			}
+			versionDs.add(eachVerDTO);
+		}
+		
+		// sort version list
+		for(Map.Entry<String,List<VersionDTO>> eachVersions : versionMap.entrySet()) {
+			List<VersionDTO> eachValues = eachVersions.getValue();
+			
+			eachValues = eachValues.stream()
+						.sorted( (v1, v2) -> v1.getPreviousVersion().compareTo( v2.getPreviousVersion()))
+						.collect( Collectors.toList());
+		}
+		
+		return versionMap;
+		
 	}
 }
