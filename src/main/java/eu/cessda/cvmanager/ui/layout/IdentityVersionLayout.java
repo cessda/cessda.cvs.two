@@ -45,6 +45,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader;
 import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamResource;
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
@@ -89,11 +90,13 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 		for(Map.Entry<String,List<VersionDTO>> eachVersions : versionMap.entrySet()) {
 			if(eachVersions.getKey().startsWith( ItemType.SL.toString())) {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
-					this.add( generateVersionSl(orderedVer));
+					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()))
+						this.add( generateVersionSl(orderedVer));
 				}
 			} else {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
-					this.add( generateVersionTl(orderedVer));
+					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()))
+						this.add( generateVersionTl(orderedVer));
 				}
 			}
 		}
@@ -113,7 +116,7 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 		infoVersion
 			.withValue("<h2>Source language</h2>" +
 					versionDTO.getLanguage() + ": " + versionDTO.getNumber() +
-					" Date of publication:" + versionDTO.getPublicationDate());
+					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
 		
 		noteVersion
 			.withValue("<h2>Version notes</h2>" +
@@ -151,7 +154,7 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 		infoVersion
 			.withValue("<h2>Translation</h2>" +
 					versionDTO.getLanguage() + ": " + versionDTO.getNumber() +
-					" Date of publication:" + versionDTO.getPublicationDate());
+					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
 		
 		noteVersion
 			.withValue("<h2>Version notes</h2>" +

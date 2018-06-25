@@ -299,6 +299,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		}
 		else {
 			buttonAddCv.setVisible( false );
+			buttonEditCv.setVisible( false );
 			buttonReviewInitial.setVisible( false );
 			buttonReviewFinal.setVisible( false );
 			buttonPublishCv.setVisible( false );

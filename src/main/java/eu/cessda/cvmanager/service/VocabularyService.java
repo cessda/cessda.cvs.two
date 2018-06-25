@@ -2,9 +2,11 @@ package eu.cessda.cvmanager.service;
 
 import java.util.List;
 
+import org.gesis.stardat.entity.CVScheme;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 
@@ -83,4 +85,6 @@ public interface VocabularyService {
 	void index( VocabularyDTO vocabulary);
 	
 	void indexPublish( VocabularyDTO vocabulary);
+	
+	VocabularyDTO createNewVersion(VocabularyDTO currentVocabulary, CvItem cvItem);
 }

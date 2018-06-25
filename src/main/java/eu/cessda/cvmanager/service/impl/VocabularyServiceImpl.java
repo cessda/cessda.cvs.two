@@ -38,6 +38,7 @@ import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.Vocabulary;
 import eu.cessda.cvmanager.domain.VocabularyPublish;
 import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.CodeRepository;
 import eu.cessda.cvmanager.repository.VersionRepository;
 import eu.cessda.cvmanager.repository.VocabularyRepository;
@@ -685,5 +686,11 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 		VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
 		vocabularyPublishSearchRepository.save( vocab );
+	}
+
+	@Override
+	public VocabularyDTO createNewVersion(VocabularyDTO currentVocabulary, CvItem cvItem) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
