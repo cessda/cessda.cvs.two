@@ -112,12 +112,13 @@ import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @UIScope
-@SpringView(name = DetailView.VIEW_NAME)
-public class DetailView extends CvView {
+@SpringView(name = DetailsView.VIEW_NAME)
+public class DetailsView extends CvView {
 
-	private static final long serialVersionUID = 6904286186508174249L;
-	public static final String VIEW_NAME = "detail";
+	private static final long serialVersionUID = -1095312295254197091L;
+	public static final String VIEW_NAME = "details";
 	private Locale locale = UI.getCurrent().getLocale();
+	
 	private final TemplateEngine templateEngine;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
@@ -130,11 +131,11 @@ public class DetailView extends CvView {
 
 	private MCssLayout topSection = new MCssLayout().withFullWidth();
 	private MCssLayout topViewSection = new MCssLayout().withFullWidth();
-//	private MCssLayout topEditSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomViewSection = new MCssLayout().withFullWidth();
-//	private MCssLayout bottomEditSection = new MCssLayout().withFullWidth();
 	
+	// the tabs
+	private TabSheet detailTab = new TabSheet();
 	private MCssLayout detailLayout = new MCssLayout().withFullWidth();
 	private MCssLayout identifyLayout = new MCssLayout().withFullWidth();
 	private MCssLayout ddiLayout = new MCssLayout().withFullWidth();
@@ -144,12 +145,7 @@ public class DetailView extends CvView {
 	private TextField codeEditor = new TextField();
 	private TextField prefLanguageEditor = new TextField();
 	private TextField prefLabelEditor = new TextField();
-//	private ComboBox<CVEditor> editorCb = new ComboBox<>();
-	private static final CVEditor[] cvEditors = new CVEditor[2];
 	
-	private TabSheet detailTab = new TabSheet();
-	
-	private MLabel lAgency = new MLabel("Agency");
 	private MLabel lTitle = new MLabel();
 	private MLabel lDefinition = new MLabel();
 	private MLabel lCode = new MLabel();
@@ -205,14 +201,14 @@ public class DetailView extends CvView {
 	private EditorCvActionLayout editorCvActionLayout;
 	private EditorCodeActionLayout editorCodeActionLayout;
 
-	public DetailView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public DetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
 			VersionService versionService, CodeService codeService, ConceptService conceptService,
 			VocabularySearchRepository vocabularySearchRepository, TemplateEngine templateEngine,
 			VocabularyChangeService vocabularyChangeService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, 
-				codeService, vocabularySearchRepository, DetailView.VIEW_NAME);
+				codeService, vocabularySearchRepository, DetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -220,7 +216,7 @@ public class DetailView extends CvView {
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		this.vocabularyChangeService = vocabularyChangeService;
-		eventBus.subscribe( this, DetailView.VIEW_NAME );
+		eventBus.subscribe( this, DetailsView.VIEW_NAME );
 	}
 
 	@PostConstruct
@@ -266,6 +262,14 @@ public class DetailView extends CvView {
 //		actionPanel.setVisible( true );
 	}
 	
+	/**
+	 * In this method, the following is checked:
+	 * - uid - The ID of CVScheme ~ all published CV also stored in CVSCheme DDI flatDB
+	 * - link - The Link of CV
+	 * - lang - the selected language
+	 * - concept - the selected concept
+	 * - tab - the active tab
+	 */
 	@Override
 	public void enter(ViewChangeEvent event) {
 		super.enter(event);
@@ -299,7 +303,7 @@ public class DetailView extends CvView {
 					selectedLang = null;
 					activeTab = "detail";
 				}
-				LoginView.NAVIGATETO_VIEWNAME = DetailView.VIEW_NAME + "/" + itemPathPart[0];
+				LoginView.NAVIGATETO_VIEWNAME = DetailsView.VIEW_NAME + "/" + itemPathPart[0];
 				cvItem.setCurrentCvId(itemPathPart[0]);
 				if( itemPathPart.length > 1 )
 					cvItem.setCurrentConceptId(itemPathPart[1]);

@@ -86,5 +86,11 @@ public interface VocabularyService {
 	
 	void indexPublish( VocabularyDTO vocabulary);
 	
-	VocabularyDTO createNewVersion(VocabularyDTO currentVocabulary, CvItem cvItem);
+	/**
+	 * 
+	 * @param currentVocabulary
+	 * @param cvItem
+	 * @return the new cv link
+	 */
+	String createNewVersion(VocabularyDTO currentVocabulary, CvItem cvItem);
 }

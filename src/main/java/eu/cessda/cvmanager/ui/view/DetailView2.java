@@ -908,7 +908,7 @@ public class DetailView2 extends CvManagerView {
 		List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvItem.getCvScheme().getContainerId(), DDIElement.CVCONCEPT);
 		CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvItem.getCvScheme(), cvCodeTreeData);
 		
-		cvItem.setCvCodeTreeData(cvCodeTreeData);
+		cvItem.setCvConceptTreeData(cvCodeTreeData);
 		// refresh tree
 		dataProvider.refreshAll();
 		// expand all nodes

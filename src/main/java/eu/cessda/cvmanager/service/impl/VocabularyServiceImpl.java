@@ -20,7 +20,11 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.gesis.stardat.ddiflatdb.client.DDIStore;
+import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -32,6 +36,8 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.vaadin.data.TreeData;
 
 import eu.cessda.cvmanager.domain.Code;
 import eu.cessda.cvmanager.domain.Version;
@@ -46,6 +52,7 @@ import eu.cessda.cvmanager.repository.search.VocabularyPublishSearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ElasticsearchTemplate2;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
@@ -96,6 +103,8 @@ public class VocabularyServiceImpl implements VocabularyService {
     
     private final VocabularyPublishSearchRepository vocabularyPublishSearchRepository;
 
+    private final StardatDDIService stardatDDIService;
+    
     // Use original ElasticsearchTemplate if this bug is fixed
     // https://jira.spring.io/browse/DATAES-412
     private final ElasticsearchTemplate2 elasticsearchTemplate;
@@ -103,7 +112,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     public VocabularyServiceImpl(VocabularyRepository vocabularyRepository, VocabularyMapper vocabularyMapper, 
     		VocabularySearchRepository vocabularySearchRepository, ElasticsearchTemplate2 elasticsearchTemplate,
     		VocabularyPublishMapper vocabularyPublishMapper, VersionRepository versionRepository, CodeService codeService,
-    		VocabularyPublishSearchRepository vocabularyPublishSearchRepository) {
+    		VocabularyPublishSearchRepository vocabularyPublishSearchRepository, StardatDDIService stardatDDIService) {
     	this.codeService = codeService;
         this.vocabularyRepository = vocabularyRepository;
         this.vocabularyMapper = vocabularyMapper;
@@ -112,6 +121,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.versionRepository = versionRepository;
         this.vocabularyPublishSearchRepository = vocabularyPublishSearchRepository;
+        this.stardatDDIService = stardatDDIService;
     }
 
     /**
@@ -689,8 +699,44 @@ public class VocabularyServiceImpl implements VocabularyService {
 	}
 
 	@Override
-	public VocabularyDTO createNewVersion(VocabularyDTO currentVocabulary, CvItem cvItem) {
-		// TODO Auto-generated method stub
+	public String createNewVersion(VocabularyDTO currentVocabulary, CvItem cvItem) {
+		// Flatdb - Clone for versioning
+		// 1. Clone CvScheme
+		CVScheme newCvScheme = cvItem.getCvScheme();
+		newCvScheme.createId();
+		newCvScheme.setContainerId(newCvScheme.getId());
+		newCvScheme.setStatus( Status.DRAFT.toString() );
+		// remove all top concepts
+		newCvScheme.setOrderedMemberList( null );
+		newCvScheme.save();
+		// store and update cvScheme
+		DDIStore ddiStoreCvScheme = stardatDDIService.saveElement( newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add new CV");
+		newCvScheme = new CVScheme(ddiStoreCvScheme);
+		// 2. Clone CvConcept
+		TreeData<CVConcept> cvConceptTreeData = cvItem.getCvConceptTreeData();
+		for( CVConcept topConcept : cvConceptTreeData.getRootItems()) {
+			// clone top concept by replacing the ID
+			topConcept.createId();
+			topConcept.setContainerId( newCvScheme.getContainerId());
+			topConcept.save();
+			DDIStore ddiStore = stardatDDIService.saveElement(topConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add top concept");
+			
+			newCvScheme.addOrderedMemberList(ddiStore.getElementId());
+			newCvScheme.save();
+			DDIStore ddiStoreCv = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update Top Concept");
+		}
+		
+		
+		
+		// DB - Vocabulary versioning
+		// 1. 
+//		VocabularyDTO vo
+		
+		
+		
+		
+		
+		
 		return null;
 	}
 }

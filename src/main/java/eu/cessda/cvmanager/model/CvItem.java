@@ -13,7 +13,7 @@ public class CvItem {
 	private CVScheme cvScheme;
 	// for selected concept
 	private CVConcept cvConcept;
-	private TreeData<CVConcept> cvCodeTreeData;
+	private TreeData<CVConcept> cvConceptTreeData;
 	
 	private String currentCvId;
 	private String currentConceptId;
@@ -25,15 +25,15 @@ public class CvItem {
 	public void setCvScheme(CVScheme cvScheme) {
 		this.cvScheme = cvScheme;
 	}
-	public TreeData<CVConcept> getCvCodeTreeData() {
-		return cvCodeTreeData;
+	public TreeData<CVConcept> getCvConceptTreeData() {
+		return cvConceptTreeData;
 	}
-	public void setCvCodeTreeData(TreeData<CVConcept> cvCodeTreeData) {
-		this.cvCodeTreeData = cvCodeTreeData;
+	public void setCvConceptTreeData(TreeData<CVConcept> cvCodeTreeData) {
+		this.cvConceptTreeData = cvCodeTreeData;
 	}
 
 	public Stream<CVConcept> getFlattenedCvConceptStreams(){
-		return cvCodeTreeData
+		return cvConceptTreeData
 				.getRootItems()
 				.stream()
 				.flatMap( x -> flattened(x));
@@ -48,7 +48,7 @@ public class CvItem {
 	private Stream<CVConcept> flattened( CVConcept cvConcept){
 		return Stream.concat(
 				Stream.of( cvConcept ), 
-				cvCodeTreeData
+				cvConceptTreeData
 					.getChildren(cvConcept)
 						.stream()
 						.flatMap( x -> flattened(x)) 
