@@ -3,10 +3,12 @@ package eu.cessda.cvmanager.service;
 import java.util.List;
 
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.wts.domain.enumeration.Language;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import eu.cessda.cvmanager.model.CvItem;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 
@@ -70,6 +72,8 @@ public interface VocabularyService {
      */
     Page<VocabularyDTO> search(String query, Pageable pageable);
     
+    void detach( VocabularyDTO vocabularyDTO);
+    
     EsQueryResultDetail search (EsQueryResultDetail esQueryResultDetail);
     
     EsQueryResultDetail searchPublished (EsQueryResultDetail esQueryResultDetail);
@@ -84,13 +88,16 @@ public interface VocabularyService {
 	
 	void index( VocabularyDTO vocabulary);
 	
-	void indexPublish( VocabularyDTO vocabulary);
+	void indexPublish( VocabularyDTO vocabulary, VersionDTO currentVersion);
 	
 	/**
+	 * Create new version of the Vocabulary
+	 * 
+	 * 
 	 * 
 	 * @param currentVocabulary
 	 * @param cvItem
 	 * @return the new cv link
 	 */
-	String createNewVersion(VocabularyDTO currentVocabulary, CvItem cvItem);
+	String createNewVersion(VocabularyDTO vocabulary, CvItem cvItem, Language language);
 }

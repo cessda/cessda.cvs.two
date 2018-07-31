@@ -12,7 +12,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -56,6 +59,10 @@ public class CodeDTO implements Serializable {
     private LocalDateTime lastModified;
     
     private Long vocabularyId;
+    
+    private Long versionId;
+    
+    private String versionNumber;
     
     @Lob
     private String titleCs;
@@ -237,6 +244,121 @@ public class CodeDTO implements Serializable {
 			return definitionSv;
     	}
     	return null;
+    }
+    
+    public CodeDTO setTitleByLanguage( String title, Language language) {
+    	switch (language) {
+    		case CZECH:
+    			setTitleCs(title);
+    			break;
+    		case DANISH:
+    			setTitleDa(title);
+    			break;
+    		case DUTCH:
+    			setTitleNl(title);
+    			break;
+    		case ENGLISH:
+    			setTitleEn(title);
+    			break;
+    		case FINNISH:
+    			setTitleFi(title);
+    			break;
+    		case FRENCH:
+    			setTitleFr(title);
+    			break;
+    		case GERMAN:
+    			setTitleDe(title);
+    			break;
+    		case GREEK:
+    			setTitleEl(title);
+    			break;
+    		case HUNGARIAN:
+    			setTitleHu(title);
+    			break;
+    		case LITHUANIAN:
+    			setTitleLt(title);
+    			break;
+    		case NORWEGIAN:
+    			setTitleNo(title);
+    			break;
+    		case PORTUGUESE:
+    			setTitlePt(title);
+    			break;
+    		case ROMANIAN:
+    			setTitleRo(title);
+    			break;
+    		case SLOVAK:
+    			setTitleSk(title);
+    			break;
+    		case SLOVENIAN:
+    			setTitleSl(title);
+    			break;
+    		case SPANISH:
+    			setTitleEs(title);
+    			break;
+    		case SWEDISH:
+    			setTitleSv(title);
+    			break;
+    	}
+    	return this;
+    }
+    
+    public CodeDTO setDefinitionByLanguage( String definition, Language language) {
+    	switch (language) {
+    		case CZECH:
+    			setDefinitionCs(definition);
+    			break;
+    		case DANISH:
+    			setDefinitionDa(definition);
+    			break;
+    		case DUTCH:
+    			setDefinitionNl(definition);
+    			break;
+    		case ENGLISH:
+    			setDefinitionEn(definition);
+    			break;
+    		case FINNISH:
+    			setDefinitionFi(definition);
+    			break;
+    		case FRENCH:
+    			setDefinitionFr(definition);
+    			break;
+    		case GERMAN:
+    			setDefinitionDe(definition);
+    			break;
+    		case GREEK:
+    			setDefinitionEl(definition);
+    			break;
+    		case HUNGARIAN:
+    			setDefinitionHu(definition);
+    			break;
+    		case LITHUANIAN:
+    			setDefinitionLt(definition);
+    			break;
+    		case NORWEGIAN:
+    			setDefinitionNo(definition);
+    			break;
+    		case PORTUGUESE:
+    			setDefinitionPt(definition);
+    			break;
+    		case ROMANIAN:
+    			setDefinitionRo(definition);
+    			break;
+    		case SLOVAK:
+    			setDefinitionSk(definition);
+    			break;
+    		case SLOVENIAN:
+    			setDefinitionSl(definition);
+    			break;
+    		case SPANISH:
+    			setDefinitionEs(definition);
+    			break;
+    		case SWEDISH:
+    			setDefinitionSv(definition);
+    			break;
+    	}
+    	addLanguage(language.name().toLowerCase());
+    	return this;
     }
     
     public CodeDTO setTitleDefinition( String title, String definition, String language) {
@@ -810,6 +932,22 @@ public class CodeDTO implements Serializable {
 		this.lastModified = lastModified;
 	}
 
+	public Long getVersionId() {
+		return versionId;
+	}
+
+	public void setVersionId(Long versionId) {
+		this.versionId = versionId;
+	}
+
+	public String getVersionNumber() {
+		return versionNumber;
+	}
+
+	public void setVersionNumber(String versionNumber) {
+		this.versionNumber = versionNumber;
+	}
+
 	public static CodeDTO generateFromCVConcept ( CodeDTO code, CVConcept cvConcept) {
     	if( code == null) {
     		code = new CodeDTO();
@@ -935,5 +1073,64 @@ public class CodeDTO implements Serializable {
 		});
 		
 		return concepts;
+	}
+	
+	public static Map<String, CodeDTO> getCodeAsMap( List<CodeDTO> codes) {
+		return codes.stream()
+				.collect(Collectors.toMap( CodeDTO::getNotation, Function.identity()));
+	}
+	
+	public static CodeDTO clone (CodeDTO code) {
+		CodeDTO clonedCode = new CodeDTO();
+		clonedCode.setUri(code.getUri());
+		clonedCode.setNotation( code.getNotation());
+		clonedCode.setArchived( code.isArchived() );
+		clonedCode.setWithdrawn( code.isWithdrawn() );
+		clonedCode.setDiscoverable( code.isDiscoverable());
+		clonedCode.setLanguages( code.getLanguages());
+		clonedCode.setSourceLanguage( code.getSourceLanguage());
+		clonedCode.setParent( code.getParent() );
+		clonedCode.setPosition( code.getPosition() );
+//		clonedCode.setPublicationDate( code.getPublicationDate() );
+//		clonedCode.setLastModified( code.getLastModified() );
+		clonedCode.setVocabularyId( code.getVocabularyId() );
+//		clonedCode.setVersionId( code.getVersionId() );
+//		clonedCode.setVersionNumber( code.getVersionNumber() );
+		clonedCode.setTitleCs( code.getTitleCs());
+		clonedCode.setTitleDa( code.getTitleDa());
+		clonedCode.setTitleNl( code.getTitleNl());
+		clonedCode.setTitleEn( code.getTitleEn());
+		clonedCode.setTitleFi( code.getTitleFi());
+		clonedCode.setTitleFr( code.getTitleFr());
+		clonedCode.setTitleDe( code.getTitleDe());
+		clonedCode.setTitleEl( code.getTitleEl());
+		clonedCode.setTitleHu( code.getTitleHu());
+		clonedCode.setTitleLt( code.getTitleLt());
+		clonedCode.setTitleNo( code.getTitleNo());
+		clonedCode.setTitlePt( code.getTitlePt());
+		clonedCode.setTitleRo( code.getTitleRo());
+		clonedCode.setTitleSk( code.getTitleSk());
+		clonedCode.setTitleSl( code.getTitleSl());
+		clonedCode.setTitleEs( code.getTitleEs());
+		clonedCode.setTitleSv( code.getTitleSv());
+		clonedCode.setDefinitionCs( code.getDefinitionCs());
+		clonedCode.setDefinitionDa( code.getDefinitionDa());
+		clonedCode.setDefinitionNl( code.getDefinitionNl());
+		clonedCode.setDefinitionEn( code.getDefinitionEn());
+		clonedCode.setDefinitionFi( code.getDefinitionFi());
+		clonedCode.setDefinitionFr( code.getDefinitionFr());
+		clonedCode.setDefinitionDe( code.getDefinitionDe());
+		clonedCode.setDefinitionEl( code.getDefinitionEl());
+		clonedCode.setDefinitionHu( code.getDefinitionHu());
+		clonedCode.setDefinitionLt( code.getDefinitionLt());
+		clonedCode.setDefinitionNo( code.getDefinitionNo());
+		clonedCode.setDefinitionPt( code.getDefinitionPt());
+		clonedCode.setDefinitionRo( code.getDefinitionRo());
+		clonedCode.setDefinitionSk( code.getDefinitionSk());
+		clonedCode.setDefinitionSl( code.getDefinitionSl());
+		clonedCode.setDefinitionEs( code.getDefinitionEs());
+		clonedCode.setDefinitionSv( code.getDefinitionSv());
+		
+		return clonedCode;
 	}
 }

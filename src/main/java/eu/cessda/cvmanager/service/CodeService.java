@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.vaadin.data.TreeData;
+
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 
 /**
@@ -73,5 +75,17 @@ public interface CodeService {
 	
 	List<CodeDTO> findByVocabulary( Long vocabularyId);
 	
+	List<CodeDTO> findByVocabularyAndVersionNumber( Long vocabularyId, String versionNumber);
+	
+	List<CodeDTO> findByVocabularyAndVersion( Long vocabularyId, Long versionId);
+	
+	List<CodeDTO> findArchivedByVocabularyAndVersionNumber( Long vocabularyId, String versionNumber);
+	
+	List<CodeDTO> findArchivedByVocabularyAndVersion( Long vocabularyId, Long versionId);
+	
+	List<CodeDTO> findWorkflowCodesByVocabulary( Long vocabularyId );
+	
 	void deleteCodeTree( CodeDTO pivotCode, Long vocabularyId);
+	
+	void deleteCodeTree( TreeData<CodeDTO> treeData, CodeDTO code);
 }

@@ -43,6 +43,7 @@ import eu.cessda.cvmanager.domain.Code;
 import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.Vocabulary;
 import eu.cessda.cvmanager.domain.VocabularyPublish;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.CodeRepository;
@@ -78,12 +79,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 /**
  * Service Implementation for managing Vocabulary.
  */
 @Service
 @Transactional
 public class VocabularyServiceImpl implements VocabularyService {
+	@PersistenceContext
+    private EntityManager em;
 	
 	private static final String CODE_PATH = "codes";
 
@@ -260,11 +266,13 @@ public class VocabularyServiceImpl implements VocabularyService {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public EsQueryResultDetail search( EsQueryResultDetail esQueryResultDetail ) {
+		// get user keyword
 		String searchTerm = esQueryResultDetail.getSearchTerm();
 		// build query 
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
 			.withSearchType(SearchType.DEFAULT)
+			// set the target index
 			.withIndices("vocabulary").withTypes("vocabulary")
 			.withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
 			.withPageable( esQueryResultDetail.getPage());
@@ -656,7 +664,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 	}
 	
 	@Override
-	public void indexPublish(VocabularyDTO vocabulary) {
+	public void indexPublish(VocabularyDTO vocabulary, VersionDTO version) {
+		VersionDTO slLatestVersion = null;
 		// index nested object as well
 		// get latest version
 		vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
@@ -670,73 +679,152 @@ public class VocabularyServiceImpl implements VocabularyService {
 		vocabulary.clearContent();
 		// 2. generate vocabulary content from version
 		for( VersionDTO versionDTO : vocabulary.getVers()) {
+			if( versionDTO.getItemType().equals( ItemType.SL))
+				slLatestVersion = versionDTO;
 			Language versionLanguage = Language.getEnumByName( versionDTO.getLanguage() );
 			vocabulary.setVersionByLanguage(versionLanguage, versionDTO.getNumber());
 			vocabulary.setTitleDefinition( versionDTO.getTitle(), versionDTO.getDefinition(), versionLanguage);
 		}
 		
 		// 3. generate code content from version, create codeMap first
-		List<CodeDTO> codes = codeService.findByVocabulary( vocabulary.getId());
-		Map<String, CodeDTO> codesMap = new HashMap<>();
-		for( CodeDTO eachCode: codes) {
-			eachCode.clearCode();
-			codesMap.put( eachCode.getNotation(), eachCode);
+		// Publishing SL
+		if( version.getItemType().equals( ItemType.SL.toString())) {
+			// clone each code
+			List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+			for( CodeDTO eachCode : codes ) {
+				CodeDTO code = CodeDTO.clone(eachCode);
+				code.setArchived( true );
+				code.setVersionId(version.getId());
+				code.setVersionNumber( version.getNumber() );
+				codeService.save(code);
+			}
+			
 		}
-		for( VersionDTO versionDTO : vocabulary.getVers()) {
-			Language versionLanguage = Language.getEnumByName( versionDTO.getLanguage() );
-			for( ConceptDTO concept : versionDTO.getConcepts()) {
-				CodeDTO targetCode = codesMap.get( concept.getNotation());
-				if( targetCode == null )
+		else 	// Publishing TL
+		{
+			Language versionLanguage = Language.getEnumByName( version.getLanguage() );
+			List<CodeDTO> codes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), slLatestVersion.getId());
+			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
+			for( ConceptDTO concept : version.getConcepts()) {
+				CodeDTO code = codeMap.get( concept.getNotation());
+				if( code == null )
 					continue;
-				
-				targetCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), versionLanguage);
+				code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), versionLanguage);
+				codeService.save(code);
 			}
 		}
-		vocabulary.setCodes( new HashSet<>( codesMap.values() ));
 		
 		VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
 		vocabularyPublishSearchRepository.save( vocab );
 	}
 
 	@Override
-	public String createNewVersion(VocabularyDTO currentVocabulary, CvItem cvItem) {
+	public String createNewVersion(VocabularyDTO vocabulary, CvItem cvItem, Language language) {
 		// Flatdb - Clone for versioning
-		// 1. Clone CvScheme
-		CVScheme newCvScheme = cvItem.getCvScheme();
-		newCvScheme.createId();
-		newCvScheme.setContainerId(newCvScheme.getId());
-		newCvScheme.setStatus( Status.DRAFT.toString() );
-		// remove all top concepts
-		newCvScheme.setOrderedMemberList( null );
-		newCvScheme.save();
-		// store and update cvScheme
-		DDIStore ddiStoreCvScheme = stardatDDIService.saveElement( newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add new CV");
-		newCvScheme = new CVScheme(ddiStoreCvScheme);
-		// 2. Clone CvConcept
-		TreeData<CVConcept> cvConceptTreeData = cvItem.getCvConceptTreeData();
-		for( CVConcept topConcept : cvConceptTreeData.getRootItems()) {
-			// clone top concept by replacing the ID
-			topConcept.createId();
-			topConcept.setContainerId( newCvScheme.getContainerId());
-			topConcept.save();
-			DDIStore ddiStore = stardatDDIService.saveElement(topConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add top concept");
-			
-			newCvScheme.addOrderedMemberList(ddiStore.getElementId());
-			newCvScheme.save();
-			DDIStore ddiStoreCv = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update Top Concept");
-		}
+		// 1. Clone CvScheme by creating new cvScheme
 		
-		
-		
+//		CVScheme newCvScheme = new CVScheme();
+//		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
+//		newCvScheme.createId();
+//		newCvScheme.setContainerId(newCvScheme.getId());
+//		newCvScheme.setStatus( Status.DRAFT.toString() );
+//		
+//		newCvScheme.setOwnerAgency( cvItem.getCvScheme().getOwnerAgency());
+//		newCvScheme.setLanguages( cvItem.getCvScheme().getLanguages());
+//		newCvScheme.setCode( cvItem.getCvScheme().getCode() );
+//		newCvScheme.setTitle( cvItem.getCvScheme().getTitle());
+//		newCvScheme.setDescription( cvItem.getCvScheme().getDescription());
+//		
+//		newCvScheme.save();
+//		// store and update cvScheme
+//		DDIStore ddiStoreCvScheme = stardatDDIService.saveElement( newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Clone CVScheme");
+//		newCvScheme = new CVScheme(ddiStoreCvScheme);
+//		
+//		
+//		// 2. Clone CvConcept
+//		TreeData<CVConcept> cvConceptTreeData = cvItem.getCvConceptTreeData();
+//		// clone top concept
+//		for( CVConcept topConcept : cvConceptTreeData.getRootItems()) {
+//			// clone top concept 
+//			CVConcept newTopConcept = new CVConcept();
+//			newTopConcept.loadSkeleton(newTopConcept.getDefaultDialect());
+//			newTopConcept.createId();
+//			newTopConcept.setNotation( topConcept.getNotation());
+//			newTopConcept.setPrefLabel( topConcept.getPrefLabel() );
+//			newTopConcept.setDescription( topConcept.getDescription() );
+//			
+//			newTopConcept.setContainerId( newCvScheme.getContainerId());
+//			newTopConcept.save();
+//			DDIStore ddiStore = stardatDDIService.saveElement(newTopConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Clone root concept");
+//			// add top concept to CVScheme
+//			newCvScheme.addOrderedMemberList(ddiStore.getElementId());
+//			
+//			// clone and store code/concept children
+//			cloneChildConcept( newCvScheme, cvConceptTreeData, topConcept, newTopConcept);
+//			
+//		}
+//		// store changes on cvScheme
+//		newCvScheme.save();
+//		ddiStoreCvScheme = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update clonned Top Concept");
+
 		// DB - Vocabulary versioning
-		// 1. 
-//		VocabularyDTO vo
+		// 1. VocabularyDTO set id to null, so it will be stored as a new entity
+		// detach vocabulary so it can be saved as another entity
 		
+//		no longer needed, only use one vocabulary
+//		detach(vocabulary);
+//		
+//		vocabulary.setId( null );
 		
+//		vocabulary.setUri( ddiStoreCvScheme.getElementId());
+//		vocabulary.setStatus( Status.DRAFT.toString() );
 		
+		// add new version
+		VersionDTO version = VersionDTO.getLatestSourceVersion( vocabulary.getVersions());
+		version.setPreviousVersion( version.getId() );
+		version.setId( null );
+//		version.setUri( );
+		version.setNumber("1.1");
+		version.setStatus( Status.DRAFT.toString() );
+		version.setInitialVersion( 0L );
 		
+		vocabulary.addVersions(version);
+		vocabulary.addVers(version);
 		
+		// save to database
+		vocabulary = save(vocabulary);
 		
-		return null;
+		// index
+		index(vocabulary);
+		
+		return vocabulary.getNotation();
+	}
+
+	private void cloneChildConcept(CVScheme newCvScheme, TreeData<CVConcept> cvConceptTreeData, CVConcept parentConcept, CVConcept newParentConcept) {
+		for( CVConcept childConcept : cvConceptTreeData.getChildren(parentConcept)){
+			
+			CVConcept newChildConcept = new CVConcept();
+			newChildConcept.loadSkeleton(newChildConcept.getDefaultDialect());
+			newChildConcept.createId();
+			newChildConcept.setNotation( childConcept.getNotation());
+			newChildConcept.setPrefLabel( childConcept.getPrefLabel() );
+			newChildConcept.setDescription( childConcept.getDescription() );
+			
+			
+			newChildConcept.setContainerId( newCvScheme.getContainerId());
+			newChildConcept.save();
+			DDIStore ddiStore = stardatDDIService.saveElement(newChildConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Clone child concept");
+			
+			newParentConcept.addOrderedNarrowerList( ddiStore.getElementId() );
+			newParentConcept.save();
+			DDIStore ddiStoreParentConcept = stardatDDIService.saveElement(newParentConcept.ddiStore, "User", "Add Code narrower");
+			
+			cloneChildConcept(newCvScheme, cvConceptTreeData, childConcept, newChildConcept);
+		}
+	}
+
+	@Override
+	public void detach(VocabularyDTO vocabularyDTO) {
+		em.detach( vocabularyMapper.toEntity(vocabularyDTO));
 	}
 }

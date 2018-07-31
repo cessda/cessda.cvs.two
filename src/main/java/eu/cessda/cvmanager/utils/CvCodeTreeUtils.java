@@ -92,7 +92,7 @@ public class CvCodeTreeUtils{
 		for(CVConcept cvConcept: cvConcepts) {
 			CodeDTO code = CodeDTO.generateFromCVConcept(cvConcept);
 			code.setPosition(position);
-			code.setParent( cvConceptParent.getContainerId());
+			code.setParent( cvConceptParent.getNotation());
 			position++;
 			codes.add(code);
 			if( !conceptTree.getChildren(cvConcept).isEmpty())
@@ -109,6 +109,7 @@ public class CvCodeTreeUtils{
 	
 	public static void buildCvConceptTree(List<DDIStore> ddiConcepts, CVScheme cvScheme, TreeData<CVConcept> cvConceptTree ) {
 		cvConceptTree.clear();
+		// put list of concept into map, with the id as the key
 		Map<String, CVConcept> cvConceptMap = new HashMap<>();
 		List<CVConcept> rootCvConcepts = new ArrayList<>();
 		ddiConcepts.forEach(ddiConcept -> {
@@ -158,5 +159,25 @@ public class CvCodeTreeUtils{
 			});
 		}
 	}
+
+	/**
+	 * the tree position needs to be correct
+	 * @param codeDTOs
+	 * @param cvCodeTree
+	 */
+	public static void buildCvConceptTree(List<CodeDTO> codeDTOs, TreeData<CodeDTO> cvCodeTree) {
+		cvCodeTree.clear();
 	
+		Map<String, CodeDTO> codeMaps = new HashMap<>();
+		for(CodeDTO code : codeDTOs) {
+			if( code.getParent() == null ) { // if root concept
+				cvCodeTree.addRootItems( code );
+			} else { // if child
+				// find parent concept
+				CodeDTO parentCode = codeMaps.get( code.getParent() );
+				cvCodeTree.addItem(parentCode, code);
+			}
+			codeMaps.put( code.getNotation(), code);
+		}
+	}
 }

@@ -16,6 +16,7 @@ public class CvItem {
 	private TreeData<CVConcept> cvConceptTreeData;
 	
 	private String currentCvId;
+	private String currentNotation;
 	private String currentConceptId;
 	private String currentLanguage;
 	
@@ -53,6 +54,12 @@ public class CvItem {
 						.stream()
 						.flatMap( x -> flattened(x)) 
 				);
+	}
+	public String getCurrentNotation() {
+		return currentNotation;
+	}
+	public void setCurrentNotation(String currentNotation) {
+		this.currentNotation = currentNotation;
 	}
 	public String getCurrentCvId() {
 		return currentCvId;
