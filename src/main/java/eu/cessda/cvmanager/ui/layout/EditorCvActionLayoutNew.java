@@ -37,15 +37,18 @@ import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.CvView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindowNew;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindowNew;
 import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindowNew;
 
-public class EditorCvActionLayout extends ResponsiveBlock{
+public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
 	
 	private final StardatDDIService stardatDDIService;
 	private final AgencyService agencyService;
-//	private final CodeService codeService;
+	private final CodeService codeService;
 	private final VocabularyService vocabularyService;
 	private final VocabularyMapper vocabularyMapper;
 	private final VocabularySearchRepository vocabularySearchRepository;
@@ -80,14 +83,14 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private boolean isCurrentSL;
 	
 	
-	public EditorCvActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
-			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService/*, CodeService codeService*/, 
+	public EditorCvActionLayoutNew(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
+			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService, CodeService codeService, 
 			VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus, 
 			VocabularyChangeService vocabularyChangeService) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
-//		this.codeService = codeService;
+		this.codeService = codeService;
 		this.agencyService = agencyService;
 		this.versionService = versionService;
 		this.vocabularyService = vocabularyService;
@@ -161,7 +164,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		newCvScheme.setContainerId(newCvScheme.getId());
 		newCvScheme.setStatus( Status.DRAFT.toString() );
 
-		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, 
+		Window window = new DialogCVSchemeWindowNew(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, 
 				vocabularySearchRepository, newCvScheme, new VocabularyDTO(), new VersionDTO(), agency, i18n, null, 
 				eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
@@ -170,64 +173,64 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private void doCvEdit( ClickEvent event ) {
 		Window window = null;
 		if( sourceLanguage.equals(selectedLanguage))
-			window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, 
+			window = new DialogCVSchemeWindowNew(stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, 
 					cvScheme, vocabulary, currentVersion, agency, i18n, selectedLanguage, eventBus, vocabularyChangeService);
 		else
-			window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, currentVersion, agency, vocabularyService, 
+			window = new DialogAddLanguageWindowNew(stardatDDIService, cvScheme, vocabulary, currentVersion, agency, vocabularyService, 
 					versionService, vocabularyMapper, vocabularySearchRepository, eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
 	}
 	
 	private void doCvAddTranslation(ClickEvent event ) {
 		
-		Window window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, new VersionDTO(), agency, 
+		Window window = new DialogAddLanguageWindowNew(stardatDDIService, cvScheme, vocabulary, new VersionDTO(), agency, 
 				vocabularyService, versionService, vocabularyMapper, vocabularySearchRepository, eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
 	}
 	
 	public void changeStatus(ClickEvent event ) {
-		Window window = new DialogManageStatusWindow(stardatDDIService, vocabularyService, versionService, 
+		Window window = new DialogManageStatusWindowNew(stardatDDIService, codeService, vocabularyService, versionService, 
 				cvScheme, vocabulary, currentVersion, selectedLanguage, sourceLanguage, 
 				agency, eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
 	}
 	
-	public void publishCv(ClickEvent event ) {
-		ConfirmDialog.show( this.getUI(), "Confirm",
-				"Are you sure you want to publish " + vocabulary.getNotation() +" SL?", "yes",
-				"cancel",
-		
-					dialog -> {
-						if( dialog.isConfirmed() ) {
-							
-							currentVersion.setStatus( Status.PUBLISHED.toString() );
-							vocabulary.setVersionByLanguage(selectedLanguage, Status.PUBLISHED.toString());
-							
-							if( isCurrentSL) {
-								vocabulary.setStatus( Status.PUBLISHED.toString());
-							}
-							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
-							vocabulary.addLanguagePublished( selectedLanguage.name().toLowerCase());
-							
-							// save to database
-							vocabulary = vocabularyService.save(vocabulary);
-							
-							// index for editor
-							vocabularyService.index(vocabulary);
-							
-							// index for publication
-							vocabularyService.indexPublish(vocabulary, currentVersion);
-							
-							// save to flatDB
-							cvScheme.setStatus(Status.PUBLISHED.toString()  );
-							getCvScheme().save();
-							DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
-							
-							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-						}
-					}
-				);
-	}
+//	public void publishCv(ClickEvent event ) {
+//		ConfirmDialog.show( this.getUI(), "Confirm",
+//				"Are you sure you want to publish " + vocabulary.getNotation() +" SL?", "yes",
+//				"cancel",
+//		
+//					dialog -> {
+//						if( dialog.isConfirmed() ) {
+//							
+//							currentVersion.setStatus( Status.PUBLISHED.toString() );
+//							vocabulary.setVersionByLanguage(selectedLanguage, Status.PUBLISHED.toString());
+//							
+//							if( isCurrentSL) {
+//								vocabulary.setStatus( Status.PUBLISHED.toString());
+//							}
+//							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
+//							vocabulary.addLanguagePublished( selectedLanguage.name().toLowerCase());
+//							
+//							// save to database
+//							vocabulary = vocabularyService.save(vocabulary);
+//							
+//							// index for editor
+//							vocabularyService.index(vocabulary);
+//							
+//							// index for publication
+//							vocabularyService.indexPublish(vocabulary, currentVersion);
+//							
+//							// save to flatDB
+//							cvScheme.setStatus(Status.PUBLISHED.toString()  );
+//							getCvScheme().save();
+//							DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+//							
+//							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+//						}
+//					}
+//				);
+//	}
 	
 	/**
 	 * Create new version based on the selected language in the Vocabulary

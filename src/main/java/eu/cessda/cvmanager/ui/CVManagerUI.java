@@ -65,6 +65,7 @@ import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.DetailsView;
 import eu.cessda.cvmanager.ui.view.EditorSearchView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 import eu.cessda.cvmanager.ui.view.HomeView;
@@ -189,7 +190,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 		String uriQuery = Page.getCurrent().getLocation().toString();
 		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
-				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ))
+				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ) &&  !uriQuery.contains( "#!" + DetailsView.VIEW_NAME ))
 			navigator.navigateTo(EditorSearchView.VIEW_NAME);
 		navigator.addViewChangeListener(viewChangeListener);
 

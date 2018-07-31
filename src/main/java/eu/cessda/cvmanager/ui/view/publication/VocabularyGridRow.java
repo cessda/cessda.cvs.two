@@ -24,6 +24,7 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.DetailsView;
 
 public class VocabularyGridRow extends CustomComponent {
 
@@ -177,7 +178,7 @@ public class VocabularyGridRow extends CustomComponent {
 		if( definition == null )
 			definition = "";
 		
-		String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getUri();
+		String baseUrl = configService.getServerContextPath() + "/#!" + DetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
 		
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
 		log.info("URL is: " + slTitle.getValue());

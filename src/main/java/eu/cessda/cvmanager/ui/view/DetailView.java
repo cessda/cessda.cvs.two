@@ -602,7 +602,10 @@ public class DetailView extends CvView {
 		detailTreeGrid.setHeight("800px");
 		detailTreeGrid.setWidthUndefined();
 		
-		updateDetailGrid();	
+		updateDetailGrid();
+		
+		// Set CV item object in the ActionLayout
+		editorCvActionLayout.setCvItem(cvItem);
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.SINGLE );
 		

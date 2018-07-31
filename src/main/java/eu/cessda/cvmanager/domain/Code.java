@@ -29,7 +29,7 @@ public class Code implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "uri", length = 240, nullable = false, unique = true)
+    @Column(name = "uri", length = 240)
     private String uri;
     
     @NotNull
@@ -247,6 +247,12 @@ public class Code implements Serializable {
     
     @Column(name = "vocabulary_id")
     private Long vocabularyId;
+    
+    @Column(name = "version_id")
+    private Long versionId;
+    
+    @Column(name = "version_number")
+    private String versionNumber;
 
     public Long getId() {
         return id;
@@ -834,6 +840,22 @@ public class Code implements Serializable {
 
 	public void setLastModified(LocalDateTime lastModified) {
 		this.lastModified = lastModified;
+	}
+
+	public Long getVersionId() {
+		return versionId;
+	}
+
+	public void setVersionId(Long versionId) {
+		this.versionId = versionId;
+	}
+
+	public String getVersionNumber() {
+		return versionNumber;
+	}
+
+	public void setVersionNumber(String versionNumber) {
+		this.versionNumber = versionNumber;
 	}
 
 	@Override

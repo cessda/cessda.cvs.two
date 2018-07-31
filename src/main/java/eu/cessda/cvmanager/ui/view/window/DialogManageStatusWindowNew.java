@@ -4,13 +4,17 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
+import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.CVVersion;
+import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.security.UserDetails;
@@ -47,25 +51,29 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.DetailsView;
 
-public class DialogManageStatusWindow extends MWindow {
+public class DialogManageStatusWindowNew extends MWindow {
 
 	private static final long serialVersionUID = -8944364070898136792L;
-	private static final Logger log = LoggerFactory.getLogger(DialogManageStatusWindow.class);
+	private static final Logger log = LoggerFactory.getLogger(DialogManageStatusWindowNew.class);
 	
 	private final UIEventBus eventBus;
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
 	private final StardatDDIService stardatDDIService;
+	private final CodeService codeService;
 	private final VocabularyService vocabularyService;
 	
 	private AgencyDTO agency;
@@ -109,13 +117,14 @@ public class DialogManageStatusWindow extends MWindow {
 	
 	private String nextStatus = null;
 
-	public DialogManageStatusWindow(StardatDDIService stardatDDIService,  
-			VocabularyService vocabularyService, VersionService versionService,
+	public DialogManageStatusWindowNew(StardatDDIService stardatDDIService,  
+			CodeService codeService, VocabularyService vocabularyService, VersionService versionService,
 			CVScheme cvScheme, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, 
 			Language selectedLanguage, Language sourceLanguage, AgencyDTO agencyDTO, 
 			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super("Manage Status " + ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase());
 		this.stardatDDIService = stardatDDIService;
+		this.codeService = codeService;
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
 		this.cvScheme = cvScheme;
@@ -390,9 +399,6 @@ public class DialogManageStatusWindow extends MWindow {
 								if( selectedLanguage.equals( sourceLanguage ))
 									vocabulary.setPublicationDate( LocalDate.now());
 								
-								CVVersion cvVersion = new CVVersion();
-								cvVersion.setPublicationDate( LocalDate.now());
-								cvVersion.setContainerId( cvScheme.getContainerId());
 							}
 							
 							// save to database
@@ -402,16 +408,54 @@ public class DialogManageStatusWindow extends MWindow {
 							vocabularyService.index(vocabulary);
 							
 							// index for publication
-							if( nextStatus.equals( Status.PUBLISHED.toString()))
+							if( nextStatus.equals( Status.PUBLISHED.toString())) {
+								
+								
+								// save also in the cv scheme
+								if (cvScheme == null) {
+									CVScheme newCvScheme = new CVScheme();
+									newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
+									newCvScheme.setId( vocabulary.getUri());
+									newCvScheme.setContainerId(newCvScheme.getId());
+									newCvScheme.setStatus( Status.PUBLISHED.toString() );
+									
+									CVVersion cvVersion = new CVVersion();
+									cvVersion.setContainerId( newCvScheme.getContainerId());
+									cvVersion.setType( currentVersion.getNumber() );
+									
+									newCvScheme.setVersion(cvVersion);
+									
+									
+									// Store also Owner Agency, Vocabulary and codes
+									// store agency
+									List<CVEditor> editorSet = new ArrayList<>();
+									CVEditor cvEditor = new CVEditor();
+									cvEditor.setName( agency.getName());
+									cvEditor.setLogoPath( agency.getLogopath());
+									
+									editorSet.add( cvEditor );
+									newCvScheme.setOwnerAgency((ArrayList<CVEditor>) editorSet);
+									
+									newCvScheme.save();
+									DDIStore ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+									
+								} else {
+									cvScheme.setStatus( nextStatus );
+									cvScheme.save();
+//									DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+								}
+								
 								vocabularyService.indexPublish(vocabulary, currentVersion);
+								
+							}
 							
-							// save to flatDB
-							cvScheme.setStatus( nextStatus );
-							cvScheme.save();
-						
-							DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
-							
-							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+//							// save to flatDB
+//							cvScheme.setStatus( nextStatus );
+//							cvScheme.save();
+//						
+//							DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+//							
+							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 							closeDialog();
 						}
 					}

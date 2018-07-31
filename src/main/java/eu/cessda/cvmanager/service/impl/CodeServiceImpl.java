@@ -191,4 +191,50 @@ public class CodeServiceImpl implements CodeService {
 				traverseToDeleteCode( codes, codeTree, codeTree.getChildren( code ));
 		};
 	}
+
+	@Override
+	public void deleteCodeTree(TreeData<CodeDTO> treeData, CodeDTO code) {
+		treeData.getChildren(code).forEach( c -> deleteCodeTree(treeData, c));
+		delete(code);
+	}
+
+	@Override
+	public List<CodeDTO> findByVocabularyAndVersionNumber(Long vocabularyId, String versionNumber) {
+		log.debug("Request to get all ByVocabularyAndVersionNumber");
+        return codeRepository.findByVocabularyAndVersionNumber(vocabularyId, versionNumber).stream()
+            .map(codeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public List<CodeDTO> findByVocabularyAndVersion(Long vocabularyId, Long versionId) {
+		log.debug("Request to get all ByVocabularyAndVersion");
+        return codeRepository.findByVocabularyAndVersion(vocabularyId, versionId).stream()
+            .map(codeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public List<CodeDTO> findArchivedByVocabularyAndVersionNumber(Long vocabularyId, String versionNumber) {
+		log.debug("Request to get all ArchivedByVocabularyAndVersionNumber");
+        return codeRepository.findByArchivedByVocabularyAndVersionNumber(vocabularyId, versionNumber).stream()
+            .map(codeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public List<CodeDTO> findArchivedByVocabularyAndVersion(Long vocabularyId, Long versionId) {
+		log.debug("Request to get all ArchivedByVocabularyAndVersion");
+        return codeRepository.findByArchivedVocabularyAndVersion(vocabularyId, versionId).stream()
+            .map(codeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public List<CodeDTO> findWorkflowCodesByVocabulary(Long vocabularyId) {
+		log.debug("Request to get all WorkflowCodesByVocabulary");
+        return codeRepository.findWorkflowCodesByVocabulary(vocabularyId).stream()
+            .map(codeMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }
