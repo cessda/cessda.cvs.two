@@ -388,6 +388,8 @@ public class DialogCVSchemeWindow extends MWindow {
 			vocabulary.setSourceLanguage( language.name().toLowerCase());
 			vocabulary.setStatus( getCvScheme().getStatus() );
 			vocabulary.addStatus( getCvScheme().getStatus() );
+			vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
+			
 			
 			version.setUri(ddiStore.getElementId());
 			version.setNotation( tfCode.getValue());
@@ -400,15 +402,16 @@ public class DialogCVSchemeWindow extends MWindow {
 			
 			vocabulary.addVersions(version);
 			vocabulary.addVers(version);
+		} else {
+		
+			vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
+			
+			version.setTitle( tfTitle.getValue());
+			version.setDefinition( description.getValue() );
+			
+			// save to database
+			vocabulary = vocabularyService.save(vocabulary);
 		}
-		
-		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
-		
-		version.setTitle( tfTitle.getValue());
-		version.setDefinition( description.getValue() );
-		
-		// save to database
-		vocabulary = vocabularyService.save(vocabulary);
 		
 		// index
 		vocabularyService.index(vocabulary);

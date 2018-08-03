@@ -268,6 +268,7 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 		// store concept
 		if( !concept.isPersisted()) {
 			concept.setCodeId( code.getId());
+			concept.setVersionId( version.getId());
 			// save vocabulary, version
 			concept = conceptService.save(concept);
 			version.addConcept(concept);

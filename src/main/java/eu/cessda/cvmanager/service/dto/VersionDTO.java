@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import javax.validation.constraints.*;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -76,6 +77,8 @@ public class VersionDTO implements Serializable {
     
     @Lob
     private String discussionNotes;
+    
+    private Long vocabularyId;
 
     private Set<ConceptDTO> concepts = new HashSet<>();
 
@@ -214,8 +217,16 @@ public class VersionDTO implements Serializable {
     	this.concepts.add(concept);
     	return this;
     }
+    
+    public Long getVocabularyId() {
+		return vocabularyId;
+	}
 
-    @Override
+	public void setVocabularyId(Long vocabularyId) {
+		this.vocabularyId = vocabularyId;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -339,5 +350,40 @@ public class VersionDTO implements Serializable {
 		
 		return versionMap;
 		
+	}
+	
+	public static String generateVersionInfo(List<VersionDTO> versionDTOs ) {
+		StringBuilder sb = new StringBuilder();
+		for(VersionDTO version: versionDTOs) {
+			sb.append("<strong> V." + version.getNumber() + "</strong></br>");
+			sb.append("Notes:</br>" + version.getVersionNotes() + "</br></br>");
+		}
+		
+		return sb.toString();
+	}
+	
+	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber) {
+		VersionDTO newVersion = new VersionDTO();
+		newVersion.setStatus( Status.DRAFT.toString());
+		newVersion.setItemType( targetVersion.getItemType() );
+		newVersion.setLanguage( targetVersion.getLanguage() );
+		newVersion.setLastModified( LocalDateTime.now());
+		newVersion.setNumber(versionNumber);
+		newVersion.setNotation( targetVersion.getNotation() );
+		newVersion.setTitle( targetVersion.getTitle() );
+		newVersion.setDefinition( targetVersion.getDefinition() );
+		newVersion.setPreviousVersion( targetVersion.getId() );
+		newVersion.setInitialVersion( targetVersion.getInitialVersion() );
+		newVersion.setCreator( userId );
+		newVersion.setVocabularyId( targetVersion.getVocabularyId());
+		newVersion.setVersionNotes( targetVersion.getVersionNotes());
+		
+		// clone concepts as well
+		for(ConceptDTO targetConcept: targetVersion.getConcepts()) {
+			ConceptDTO newConcept = ConceptDTO.clone(targetConcept);
+			newVersion.addConcept(newConcept);
+		}
+		
+		return newVersion;
 	}
 }

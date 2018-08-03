@@ -25,6 +25,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -40,6 +41,7 @@ import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindowNew;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindowNew;
+import eu.cessda.cvmanager.ui.view.window.DialogCreateVersionWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindowNew;
 
@@ -49,6 +51,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	private final StardatDDIService stardatDDIService;
 	private final AgencyService agencyService;
 	private final CodeService codeService;
+	private final ConceptService conceptService;
 	private final VocabularyService vocabularyService;
 	private final VocabularyMapper vocabularyMapper;
 	private final VocabularySearchRepository vocabularySearchRepository;
@@ -84,13 +87,15 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	
 	
 	public EditorCvActionLayoutNew(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
-			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService, CodeService codeService, 
+			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService, 
+			ConceptService conceptService, CodeService codeService, 
 			VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus, 
 			VocabularyChangeService vocabularyChangeService) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
 		this.codeService = codeService;
+		this.conceptService = conceptService;
 		this.agencyService = agencyService;
 		this.versionService = versionService;
 		this.vocabularyService = vocabularyService;
@@ -189,7 +194,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	}
 	
 	public void changeStatus(ClickEvent event ) {
-		Window window = new DialogManageStatusWindowNew(stardatDDIService, codeService, vocabularyService, versionService, 
+		Window window = new DialogManageStatusWindowNew(stardatDDIService, codeService, conceptService, vocabularyService, versionService, 
 				cvScheme, vocabulary, currentVersion, selectedLanguage, sourceLanguage, 
 				agency, eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
@@ -237,19 +242,26 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	 * @param event
 	 */
 	private void createNewVersion(ClickEvent event ) {
-		// TODO: check vocabulary language type
-		ConfirmDialog.show( this.getUI(), "Confirm",
-				"Create new version of  " + vocabulary.getNotation() +" SL?", "yes",
-				"cancel",
+		// open dialog create new version window
+		// show the list of published SL and TL that will be cloned
 		
-					dialog -> {
-						if( dialog.isConfirmed() ) {
-							String newCvLink = vocabularyService.createNewVersion(vocabulary, cvItem, selectedLanguage);
-							
-							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + newCvLink);
-						}
-					}
-				);
+		Window window = new DialogCreateVersionWindow(stardatDDIService, codeService, conceptService, vocabularyService, versionService, cvScheme, 
+				vocabulary, currentVersion, selectedLanguage, sourceLanguage, agency, eventBus, vocabularyChangeService);
+		getUI().addWindow(window);
+		
+//		// TODO: check vocabulary language type
+//		ConfirmDialog.show( this.getUI(), "Confirm",
+//				"Create new version of  " + vocabulary.getNotation() +" SL?", "yes",
+//				"cancel",
+//		
+//					dialog -> {
+//						if( dialog.isConfirmed() ) {
+//							String newCvLink = vocabularyService.createNewVersion(vocabulary, cvItem, selectedLanguage);
+//							
+//							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + newCvLink);
+//						}
+//					}
+//				);
 	}
 	
 	@Override

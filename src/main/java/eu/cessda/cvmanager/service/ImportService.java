@@ -38,6 +38,7 @@ public class ImportService {
 	
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
+	private final ConceptService conceptService;
 	private final CodeService codeService;
 	private final StardatDDIService stardatDDIService;
 	private final VocabularyMapper vocabularyMapper;
@@ -45,11 +46,12 @@ public class ImportService {
 	private final VocabularySearchRepository vocabularySearchRepository;
 	private final VersionService versionService;
 	public ImportService(AgencyService agencyService, VocabularyService vocabularyService, CodeService codeService,
-			StardatDDIService stardatDDIService, VersionService versionService,
+			ConceptService conceptService, StardatDDIService stardatDDIService, VersionService versionService,
 			VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository) {
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
+		this.conceptService = conceptService;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyMapper = vocabularyMapper;
 		this.vocabularySearchRepository = vocabularySearchRepository;
@@ -65,6 +67,12 @@ public class ImportService {
 			
 			if( executedCVSchemeId.contains(cvScheme.getId()))
 				continue;
+			
+			// get codes
+			List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType( cvScheme.getContainerId(), DDIElement.CVCONCEPT);
+			
+			// assign concepts (structured Code based on Version) to latest version entity
+			List<CodeDTO> codes = CvCodeTreeUtils.getCodeDTOByConceptTree( CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvScheme) );
 			
 			executedCVSchemeId.add(cvScheme.getId());
 			
@@ -97,70 +105,9 @@ public class ImportService {
 			vocabulary.setDiscoverable( true );
 			vocabulary.setPublicationDate( LocalDate.now());
 			
-			// assign version
-			// workaround to prevent save multiple version
-			// TODO: check if version already exist
-			if( !vocabulary.isPersisted()) {
-				for( String lang: vocabulary.getLanguages()) {
-					Language langEnum = Language.getEnumByName(lang);
-					
-					VersionDTO version = null;
-					
-					if( version == null)
-						version = new VersionDTO();
-					
-					version.setStatus( Status.DRAFT.toString() );
-					if( lang.equals( "english")) {
-						version.setItemType( ItemType.SL.toString());
-						version.setNumber( "1.0" );
-					} else {
-						version.setItemType( ItemType.TL.toString());
-						version.setNumber( "1.0.1" );
-					}
-					version.setLanguage( lang);
-					version.setUri( vocabulary.getUri() );
-					version.setNotation( vocabulary.getNotation() );
-					version.setTitle( vocabulary.getTitleByLanguage(langEnum) );
-					version.setDefinition(vocabulary.getDefinitionByLanguage(langEnum) );
-					version.setPreviousVersion( 0L );
-					version.setInitialVersion( 0L );
-					version.setCreator( 1L );
-					version.setPublisher( 1L );
-					
-					System.out.println( version.getNotation() + " - " + version.getUri() + " " + version.getLanguage() + " " + version.getInitialVersion());
-					if( version.getNotation() == null || version.getUri() == null || version.getLanguage() == null ) {
-						System.out.println( "Error: " + vocabulary.getNotation() + " - " + version.getNotation() + " - " + version.getUri() + " " + version.getLanguage());
-					}
-					vocabulary.addVersions(version);
-				}
-			}
+			// store vocabulary
+			vocabulary = vocabularyService.save(vocabulary);
 			
-			// get codes
-			List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType( cvScheme.getContainerId(), DDIElement.CVCONCEPT);
-			
-//			for (DDIStore concept : ddiConcepts) {
-//				CVConcept cvConcept = new CVConcept( concept );
-//				
-//				// get Code
-//				CodeDTO code = codeService.getByUri( cvConcept.getContainerId() );
-//				
-//				if( code == null )
-//					code = codeService.getByNotation( cvConcept.getNotation() );
-//				
-//				if( code == null ) {
-//					code = CodeDTO.generateFromCVConcept(cvConcept);
-//					code.setVocabularyId( vocabulary.getId() );
-//				}
-//				else
-//					code = CodeDTO.generateFromCVConcept(code, cvConcept);
-//				
-//				code.setVocabularyId( vocabulary.getId());
-//				codeService.save(code);
-//				
-//			}
-			// assign concepts (structured Code based on Version) to latest version entity
-			List<CodeDTO> codes = CvCodeTreeUtils.getCodeDTOByConceptTree( CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvScheme) );
-
 			//saved codes
 			List<CodeDTO> savedCodes = new ArrayList<>();
 			
@@ -172,32 +119,84 @@ public class ImportService {
 				code.setDiscoverable( true );
 				
 				// store code to db
+				code.setVocabularyId( vocabulary.getId());
 				code = codeService.save(code);
 				
 				savedCodes.add(code);
 				vocabulary.addCode(code);
 			};
 			
-			if( !vocabulary.isPersisted()) {
-				for( String lang : vocabulary.getLanguages()){
-					Language langEnum = Language.getEnumByName(lang);
-					
-					VersionDTO.getLatestVersion( vocabulary.getVersions(), lang, null).ifPresent( versionDTO -> {
-						Set<ConceptDTO> conceptsFromCodes = CodeDTO.getConceptsFromCodes(savedCodes, langEnum);
-						versionDTO.setConcepts(conceptsFromCodes);
-					});
+			// assign version
+			// workaround to prevent save multiple version
+			// TODO: check if version already exist
+			for( String lang: vocabulary.getLanguages()) {
+				Language langEnum = Language.getEnumByName(lang);
+				
+				VersionDTO version = null;
+				
+				if( version == null)
+					version = new VersionDTO();
+				
+				version.setStatus( Status.DRAFT.toString() );
+				if( lang.equals( "english")) {
+					version.setItemType( ItemType.SL.toString());
+					version.setNumber( "1.0" );
+				} else {
+					version.setItemType( ItemType.TL.toString());
+					version.setNumber( "1.0.1" );
+				}
+				version.setLanguage( lang);
+				version.setUri( vocabulary.getUri() );
+				version.setNotation( vocabulary.getNotation() );
+				version.setTitle( vocabulary.getTitleByLanguage(langEnum) );
+				version.setDefinition(vocabulary.getDefinitionByLanguage(langEnum) );
+				version.setPreviousVersion( 0L );
+				version.setInitialVersion( 0L );
+				version.setCreator( 1L );
+				version.setPublisher( 1L );
+				version.setVocabularyId( vocabulary.getId());
+				
+				version = versionService.save(version);
+				
+				version.setInitialVersion( version.getId() );
+				version = versionService.save(version);
+				
+				// set concept from code
+				Set<ConceptDTO> conceptsFromCodes = CodeDTO.getConceptsFromCodes(savedCodes, langEnum, version.getId());
+				for( ConceptDTO concept: conceptsFromCodes ){
+					concept = conceptService.save(concept);
+					version.addConcept(concept);
 				};
+				
+//				System.out.println( version.getNotation() + " - " + version.getUri() + " " + version.getLanguage() + " " + version.getInitialVersion());
+//				if( version.getNotation() == null || version.getUri() == null || version.getLanguage() == null ) {
+//					System.out.println( "Error: " + vocabulary.getNotation() + " - " + version.getNotation() + " - " + version.getUri() + " " + version.getLanguage());
+//				}
+				vocabulary.addVersions(version);
 			}
 			
-			// store vocabulary
-			vocabulary = vocabularyService.save(vocabulary);
 			
-			// store code once more now with vocabulary
-	        // store code if exist
-	        for( CodeDTO code: savedCodes) {
-	        	code.setVocabularyId( vocabulary.getId());
-	        	code = codeService.save(code);
-	        }
+
+
+			
+//			for( String lang : vocabulary.getLanguages()){
+//				Language langEnum = Language.getEnumByName(lang);
+//				
+//				VersionDTO.getLatestVersion( vocabulary.getVersions(), lang, null).ifPresent( versionDTO -> {
+//					Set<ConceptDTO> conceptsFromCodes = CodeDTO.getConceptsFromCodes(savedCodes, langEnum);
+//					versionDTO.setConcepts(conceptsFromCodes);
+//				});
+//			};
+//			
+//			// store vocabulary
+//			vocabulary = vocabularyService.save(vocabulary);
+//			
+//			// store code once more now with vocabulary
+//	        // store code if exist
+//	        for( CodeDTO code: savedCodes) {
+//	        	code.setVocabularyId( vocabulary.getId());
+//	        	code = codeService.save(code);
+//	        }
 			
 			// reindex nested codes
 			vocabulary.setVers( vocabulary.getVersions());

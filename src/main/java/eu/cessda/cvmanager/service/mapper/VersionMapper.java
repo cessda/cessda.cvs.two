@@ -9,16 +9,17 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Version and its DTO VersionDTO.
  */
-@Mapper(componentModel = "spring", uses = {ConceptMapper.class})
+@Mapper(componentModel = "spring", uses = {ConceptMapper.class, VocabularyMapper.class})
 public interface VersionMapper extends EntityMapper<VersionDTO, Version> {
 	
 	@Mappings({
+		@Mapping(source = "vocabulary.id", target = "vocabularyId"),
 	    @Mapping(source = "discussionNotes", target = "discussionNotes")
 	})
 	VersionDTO toDto( Version version);
 
 	@Mappings({
-	    @Mapping(target = "vocabularies", ignore = true),
+		@Mapping(source = "vocabularyId", target = "vocabulary"),
 	    @Mapping(source = "discussionNotes", target = "discussionNotes")
 	})
     Version toEntity(VersionDTO versionDTO);

@@ -254,6 +254,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 			if( !concept.isPersisted()) {
 				vocabulary.addCode(code);
 				concept.setCodeId( code.getId());
+				concept.setVersionId( version.getId() );
 				concept = conceptService.save(concept);
 				version.addConcept(concept);
 				version = versionService.save(version);

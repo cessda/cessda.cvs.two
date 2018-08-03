@@ -350,10 +350,24 @@ public class DialogAddLanguageWindowNew extends MWindow {
 			version.setStatus( Status.DRAFT.toString() );
 			version.setItemType( ItemType.TL.toString());
 			version.setLanguage( language.name().toLowerCase() );
+			
 			version.setPreviousVersion( 0L );
 			version.setInitialVersion( 0L );
+			version.setVocabularyId( vocabulary.getId());
+			
+			// get previous version
+			VersionDTO.getLatestVersion( vocabulary.getVersions(), language.name().toLowerCase(), Status.PUBLISHED.toString())
+			.ifPresent( prevVersion ->{
+				version.setPreviousVersion( prevVersion.getId() );
+				version.setInitialVersion( prevVersion.getInitialVersion() );
+			});
 			
 			version = versionService.save(version);
+			
+			if( version.getInitialVersion() == 0L) {
+				version.setInitialVersion( version.getId() );
+				version = versionService.save(version);
+			}
 			
 			vocabulary.addVersions(version);
 			vocabulary.addVers(version);

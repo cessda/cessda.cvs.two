@@ -90,6 +90,8 @@ public interface VocabularyService {
 	
 	void indexPublish( VocabularyDTO vocabulary, VersionDTO currentVersion);
 	
+
+	
 	/**
 	 * Create new version of the Vocabulary
 	 * 

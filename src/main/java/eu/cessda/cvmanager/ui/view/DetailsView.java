@@ -233,7 +233,7 @@ public class DetailsView extends CvView {
 	public void init() {
 		
 		editorCvActionLayout = new EditorCvActionLayoutNew("block.action.cv", "block.action.cv.show", i18n, 
-				stardatDDIService, agencyService, vocabularyService, versionService, codeService, vocabularyMapper, 
+				stardatDDIService, agencyService, vocabularyService, versionService, conceptService, codeService, vocabularyMapper, 
 				vocabularySearchRepository, eventBus, vocabularyChangeService);
 		
 		editorCodeActionLayout = new EditorCodeActionLayoutNew("block.action.code", "block.action.code.show", i18n,
@@ -390,6 +390,12 @@ public class DetailsView extends CvView {
 		languageLayout.removeAllComponents();
 		
 		vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
+		
+		if( vocabulary == null ) {
+			Notification.show("Unable to find vocabulary");
+			return;
+		}
+		
 		agency = agencyService.findByName( getVocabulary().getAgencyName());
 		
 		if ( vocabulary.getUri() != null && !vocabulary.getUri().isEmpty()) {

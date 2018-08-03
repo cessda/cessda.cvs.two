@@ -24,7 +24,7 @@ public interface CodeRepository extends JpaRepository<Code, Long> {
 	@Query( "select c from Code c where c.notation = :notation" )
 	Code getByNotation(@Param("notation")String notation);
 
-	@Query( "select c from Code c where c.vocabularyId = :vocabularyId order by position" )
+	@Query( "select c from Code c where c.vocabularyId = :vocabularyId order by c.position" )
 	List<Code> findAllByVocabulary(@Param("vocabularyId")Long vocabularyId);
 
 	@Query( "select c from Code c where c.vocabularyId = :vocabularyId AND c.versionNumber = :versionNumber order by position" )

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -45,9 +46,15 @@ public class Concept implements Serializable{
     @Column(name = "code_id")
     private Long codeId;
     
-    @ManyToMany(mappedBy = "concepts")
-    @JsonIgnore
-    private Set<Version> versions = new HashSet<>();
+    @Column(name = "parent_id")
+    private Long previousConcept;
+    
+//    @ManyToMany(mappedBy = "concepts")
+//    @JsonIgnore
+//    private Set<Version> versions = new HashSet<>();
+//    
+    @ManyToOne
+    private Version version;
 
 	public Long getId() {
 		return id;
@@ -81,36 +88,52 @@ public class Concept implements Serializable{
 		this.definition = definition;
 	}
 
-    public Set<Version> getVersions() {
-        return versions;
-    }
-
-    public Concept versions(Set<Version> versions) {
-        this.versions = versions;
-        return this;
-    }
-
-    public Concept addVersion(Version version) {
-        this.versions.add(version);
-        version.getConcepts().add(this);
-        return this;
-    }
-
-    public Concept removeVersion(Version version) {
-        this.versions.remove(version);
-        version.getConcepts().remove(this);
-        return this;
-    }
-
-    public void setVersions(Set<Version> versions) {
-        this.versions = versions;
-    }
+//    public Set<Version> getVersions() {
+//        return versions;
+//    }
+//
+//    public Concept versions(Set<Version> versions) {
+//        this.versions = versions;
+//        return this;
+//    }
+//
+//    public Concept addVersion(Version version) {
+//        this.versions.add(version);
+//        version.getConcepts().add(this);
+//        return this;
+//    }
+//
+//    public Concept removeVersion(Version version) {
+//        this.versions.remove(version);
+//        version.getConcepts().remove(this);
+//        return this;
+//    }
+//
+//    public void setVersions(Set<Version> versions) {
+//        this.versions = versions;
+//    }
 
 	public Long getCodeId() {
 		return codeId;
 	}
-
+	
 	public void setCodeId(Long codeId) {
 		this.codeId = codeId;
+	}
+
+	public Long getPreviousConcept() {
+		return previousConcept;
+	}
+
+	public void setPreviousConcept(Long previousConcept) {
+		this.previousConcept = previousConcept;
+	}
+
+	public Version getVersion() {
+		return version;
+	}
+
+	public void setVersion(Version version) {
+		this.version = version;
 	}
 }

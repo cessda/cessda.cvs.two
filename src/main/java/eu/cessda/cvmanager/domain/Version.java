@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +19,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -104,9 +107,12 @@ public class Version implements Serializable{
     @Column(name = "discussion_notes")
     private String discussionNotes;
     
-    @ManyToMany(mappedBy = "versions")
-    @JsonIgnore
-    private List<Vocabulary> vocabularies;
+//    @ManyToMany(mappedBy = "versions")
+//    @JsonIgnore
+//    private List<Vocabulary> vocabularies;
+    
+    @ManyToOne
+    private Vocabulary vocabulary;
     
     // in case only for SL type version
     @Column(name = "restrict_role")
@@ -114,10 +120,14 @@ public class Version implements Serializable{
     @Field(type = FieldType.Keyword)
     private List<String> restrictRoles;
     
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH  })
-    @JoinTable(name = "version_concept",
-               joinColumns = @JoinColumn(name="version_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="concept_id", referencedColumnName="id"))
+//    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH  })
+//    @JoinTable(name = "version_concept",
+//               joinColumns = @JoinColumn(name="version_id", referencedColumnName="id"),
+//               inverseJoinColumns = @JoinColumn(name="concept_id", referencedColumnName="id"))
+//    private Set<Concept> concepts = new HashSet<>();
+    
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH },
+    		mappedBy = "version", orphanRemoval = true)
     private Set<Concept> concepts = new HashSet<>();
 
 	public Long getId() {
@@ -240,16 +250,24 @@ public class Version implements Serializable{
 		this.definition = definition;
 	}
 
-	public List<Vocabulary> getVocabularies() {
-		return vocabularies;
-	}
-
-	public void setVocabularies(List<Vocabulary> vocabularies) {
-		this.vocabularies = vocabularies;
-	}
-
+//	public List<Vocabulary> getVocabularies() {
+//		return vocabularies;
+//	}
+//
+//	public void setVocabularies(List<Vocabulary> vocabularies) {
+//		this.vocabularies = vocabularies;
+//	}
+	
 	public List<String> getRestrictRoles() {
 		return restrictRoles;
+	}
+
+	public Vocabulary getVocabulary() {
+		return vocabulary;
+	}
+
+	public void setVocabulary(Vocabulary vocabulary) {
+		this.vocabulary = vocabulary;
 	}
 
 	public void setRestrictRoles(List<String> restrictRoles) {

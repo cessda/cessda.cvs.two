@@ -1057,6 +1057,10 @@ public class CodeDTO implements Serializable {
 	}
 	
 	public static Set<ConceptDTO> getConceptsFromCodes( List<CodeDTO> codes, Language lang){
+		return getConceptsFromCodes(codes, lang, null);
+	}
+	
+	public static Set<ConceptDTO> getConceptsFromCodes( List<CodeDTO> codes, Language lang, Long versionId){
 		Set<ConceptDTO> concepts = new HashSet<>();
 		
 		codes.forEach( code -> {
@@ -1067,6 +1071,8 @@ public class CodeDTO implements Serializable {
 				concept.setTitle(cTitle);
 				concept.setDefinition( code.getDefinitionByLanguage(lang));
 				concept.setCodeId( code.getId());
+				if(versionId != null )
+					concept.setVersionId(versionId);
 				
 				concepts.add(concept);
 			}

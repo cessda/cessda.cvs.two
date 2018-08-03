@@ -44,11 +44,14 @@ public class Vocabulary extends VocabularyBase{
     @Field(type = FieldType.Keyword)
     private Set<String> restrictRoles;
     
+//    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
+//    @JoinTable(name = "vocabulary_version",
+//               joinColumns = @JoinColumn(name="vocabulary_id", referencedColumnName="id"),
+//               inverseJoinColumns = @JoinColumn(name="version_id", referencedColumnName="id"))
+//    private Set<Version> versions = new HashSet<>();
     
-    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH })
-    @JoinTable(name = "vocabulary_version",
-               joinColumns = @JoinColumn(name="vocabulary_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="version_id", referencedColumnName="id"))
+    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH },
+    		mappedBy = "vocabulary", orphanRemoval = true)
     private Set<Version> versions = new HashSet<>();
     
 	

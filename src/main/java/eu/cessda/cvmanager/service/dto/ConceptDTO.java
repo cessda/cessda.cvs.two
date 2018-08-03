@@ -30,6 +30,10 @@ public class ConceptDTO implements Serializable {
     
     private Long codeId;
     
+    private Long versionId;
+    
+    private Long previousConcept;
+    
     public Long getId() {
         return id;
     }
@@ -101,11 +105,43 @@ public class ConceptDTO implements Serializable {
 		this.codeId = codeId;
 	}
 	
+	public Long getVersionId() {
+		return versionId;
+	}
+
+	public void setVersionId(Long versionId) {
+		this.versionId = versionId;
+	}
+
+	public Long getPreviousConcept() {
+		return previousConcept;
+	}
+
+	public void setPreviousConcept(Long previousConcept) {
+		this.previousConcept = previousConcept;
+	}
+
 	public boolean isPersisted() {
 		return id != null;
 	}
 	
 	public static Optional<ConceptDTO> getConceptFromCode( Set<ConceptDTO> concepts, Long codeId){
 		return concepts.stream().filter( c -> c.getCodeId() == codeId).findFirst();
+	}
+	
+	public static Optional<ConceptDTO> getConceptFromCode( Set<ConceptDTO> concepts, String notation){
+		return concepts.stream().filter( c -> c.getNotation().equals(notation)).findFirst();
+	}
+	
+	public static ConceptDTO clone(ConceptDTO targetConcept) {
+		ConceptDTO newConcept = new ConceptDTO();
+		newConcept.setNotation( targetConcept.getNotation());
+		newConcept.setTitle( targetConcept.getTitle() );
+		newConcept.setDefinition( targetConcept.getDefinition() );
+		newConcept.setPreviousConcept( targetConcept.getId());
+		
+		// note the codeId and versionId need to be added later
+		
+		return newConcept;
 	}
 }

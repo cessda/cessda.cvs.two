@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
+import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.CVVersion;
@@ -52,11 +53,13 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -74,6 +77,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private final VocabularyChangeService vocabularyChangeService;
 	private final StardatDDIService stardatDDIService;
 	private final CodeService codeService;
+	private final ConceptService conceptService;
 	private final VocabularyService vocabularyService;
 	
 	private AgencyDTO agency;
@@ -118,13 +122,15 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private String nextStatus = null;
 
 	public DialogManageStatusWindowNew(StardatDDIService stardatDDIService,  
-			CodeService codeService, VocabularyService vocabularyService, VersionService versionService,
+			CodeService codeService, ConceptService conceptService, 
+			VocabularyService vocabularyService, VersionService versionService,
 			CVScheme cvScheme, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, 
 			Language selectedLanguage, Language sourceLanguage, AgencyDTO agencyDTO, 
 			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super("Manage Status " + ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase());
 		this.stardatDDIService = stardatDDIService;
 		this.codeService = codeService;
+		this.conceptService = conceptService;
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
 		this.cvScheme = cvScheme;
@@ -177,7 +183,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.addClickListener( e -> {
 				currentVersion.setDiscussionNotes( discussionArea.getValue() );
 				currentVersion = versionService.save(currentVersion);
-				Notification.show("Notes/DIscussion is saved!");
+				Notification.show("Notes/Discussion is saved!");
 			});
 		
 		discussionBlock
@@ -304,7 +310,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.setWidth("80px");
 		
 		if( sourceLanguage.equals( selectedLanguage ))
-			versionNumberField.setValue("1.0.0");
+			versionNumberField.setValue("1.0");
 		else
 			versionNumberField.setValue("1.0.1");
 		
@@ -411,39 +417,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
 								
 								
-								// save also in the cv scheme
-								if (cvScheme == null) {
-									CVScheme newCvScheme = new CVScheme();
-									newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-									newCvScheme.setId( vocabulary.getUri());
-									newCvScheme.setContainerId(newCvScheme.getId());
-									newCvScheme.setStatus( Status.PUBLISHED.toString() );
-									
-									CVVersion cvVersion = new CVVersion();
-									cvVersion.setContainerId( newCvScheme.getContainerId());
-									cvVersion.setType( currentVersion.getNumber() );
-									
-									newCvScheme.setVersion(cvVersion);
-									
-									
-									// Store also Owner Agency, Vocabulary and codes
-									// store agency
-									List<CVEditor> editorSet = new ArrayList<>();
-									CVEditor cvEditor = new CVEditor();
-									cvEditor.setName( agency.getName());
-									cvEditor.setLogoPath( agency.getLogopath());
-									
-									editorSet.add( cvEditor );
-									newCvScheme.setOwnerAgency((ArrayList<CVEditor>) editorSet);
-									
-									newCvScheme.save();
-									DDIStore ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
-									
-								} else {
-									cvScheme.setStatus( nextStatus );
-									cvScheme.save();
-//									DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
-								}
+								publishCv(vocabulary, currentVersion);
 								
 								vocabularyService.indexPublish(vocabulary, currentVersion);
 								
@@ -460,6 +434,128 @@ public class DialogManageStatusWindowNew extends MWindow {
 						}
 					}
 				);
+	}
+	
+	private void publishCv( VocabularyDTO vocabulary, VersionDTO version ) {
+		VersionDTO slLatestVersion = null;
+		// index nested object as well
+		// get latest version
+		vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
+		
+		// set languages from latest version
+		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
+		// set published languages across versions
+		vocabulary.setLanguagesPublished( VocabularyDTO.getPublishedLanguagesFromVersions( vocabulary.getVers() ));
+		// update/generate vocabulary content
+		// 1. clear vocabulary DTO first before replacing content
+		vocabulary.clearContent();
+		// 2. generate vocabulary content from version
+		for( VersionDTO versionDTO : vocabulary.getVers()) {
+			if( versionDTO.getItemType().equals( ItemType.SL.toString()))
+				slLatestVersion = versionDTO;
+			Language versionLanguage = Language.getEnumByName( versionDTO.getLanguage() );
+			vocabulary.setVersionByLanguage(versionLanguage, versionDTO.getNumber());
+			vocabulary.setTitleDefinition( versionDTO.getTitle(), versionDTO.getDefinition(), versionLanguage);
+		}
+		
+		// 3. generate code content from version, create codeMap first
+		// Publishing SL
+		if( version.getItemType().equals( ItemType.SL.toString())) {
+			// clone each code
+			List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+			for( CodeDTO eachCode : codes ) {
+				CodeDTO newCode = CodeDTO.clone(eachCode);
+				newCode.setArchived( true );
+				newCode.setVersionId(version.getId());
+				newCode.setVersionNumber( version.getNumber() );
+				newCode = codeService.save( newCode);
+				
+				// store also the concept "code id changed"
+				if( ConceptDTO.getConceptFromCode( version.getConcepts(), eachCode.getId()).isPresent()  ) {
+					ConceptDTO c = ConceptDTO.getConceptFromCode( version.getConcepts(), eachCode.getId()).get();
+					c.setCodeId( newCode.getId());
+					conceptService.save(c);
+				}
+			}
+			
+			
+			// save also in the cv scheme
+			if (cvScheme == null) {
+				CVScheme newCvScheme = new CVScheme();
+				newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
+				newCvScheme.setId( vocabulary.getUri());
+				newCvScheme.setContainerId(newCvScheme.getId());
+				newCvScheme.setStatus( Status.PUBLISHED.toString() );
+				
+				CVVersion cvVersion = new CVVersion();
+				cvVersion.setContainerId( newCvScheme.getContainerId());
+				cvVersion.setType( currentVersion.getNumber() );
+				
+				newCvScheme.setVersion(cvVersion);
+				
+				
+				// Store also Owner Agency, Vocabulary and codes
+				// store agency
+				List<CVEditor> editorSet = new ArrayList<>();
+				CVEditor cvEditor = new CVEditor();
+				cvEditor.setName( agency.getName());
+				cvEditor.setLogoPath( agency.getLogopath());
+				
+				editorSet.add( cvEditor );
+				newCvScheme.setOwnerAgency((ArrayList<CVEditor>) editorSet);
+				
+				newCvScheme.save();
+				DDIStore ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+				
+				
+				
+				
+			} else {
+				cvScheme.setStatus( nextStatus );
+				cvScheme.save();
+				DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+				// save also cvConcept
+				// get cv concept one by one in case it is exist
+				List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
+				
+				Map<String, CVConcept> cvConceptMap = new HashMap<>();
+				List<CVConcept> rootCvConcepts = new ArrayList<>();
+				ddiConcepts.forEach(ddiConcept -> {
+					CVConcept concept = new CVConcept(ddiConcept);
+					cvConceptMap.put(concept.getId(), concept);
+				});
+				
+				for( CodeDTO eachCode : codes ) {
+					CVConcept cvCcp = cvConceptMap.get( eachCode.getNotation());
+					if( cvCcp == null ) {
+						//create new concept
+						
+					}
+					
+					// TODO: delete not use CVConcept
+				}
+			}
+			
+			
+			
+			
+		}
+		else 	// Publishing TL
+		{
+			Language versionLanguage = Language.getEnumByName( version.getLanguage() );
+			List<CodeDTO> codes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), slLatestVersion.getId());
+			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
+			for( ConceptDTO concept : version.getConcepts()) {
+				CodeDTO code = codeMap.get( concept.getNotation());
+				if( code == null )
+					continue;
+				code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), versionLanguage);
+				codeService.save(code);
+			}
+		}
+		
+		
+		
 	}
 	
 	public void closeDialog() {

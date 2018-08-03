@@ -1,6 +1,11 @@
 package eu.cessda.cvmanager.service;
 
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+
+import java.util.List;
+import java.util.Map;
+
+import org.gesis.wts.domain.enumeration.Language;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -49,4 +54,9 @@ public interface VersionService {
      * @return the list of entities
      */
     Page<VersionDTO> search(String query, Pageable pageable);
+    
+    List<VersionDTO> findAllByVocabulary(Long vocabularyId);
+    
+    Map<String, List<VersionDTO>> getOrderedLanguageVersionMap( Long vocabularyId );
+    Map<String, List<VersionDTO>> getOrderedLanguageSpecificVersionMap( Long vocabularyId, Language language );
 }
