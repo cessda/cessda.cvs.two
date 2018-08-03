@@ -367,7 +367,7 @@ public class VersionDTO implements Serializable {
 		newVersion.setStatus( Status.DRAFT.toString());
 		newVersion.setItemType( targetVersion.getItemType() );
 		newVersion.setLanguage( targetVersion.getLanguage() );
-		newVersion.setLastModified( LocalDateTime.now());
+//		newVersion.setLastModified( LocalDateTime.now());
 		newVersion.setNumber(versionNumber);
 		newVersion.setNotation( targetVersion.getNotation() );
 		newVersion.setTitle( targetVersion.getTitle() );
@@ -376,7 +376,7 @@ public class VersionDTO implements Serializable {
 		newVersion.setInitialVersion( targetVersion.getInitialVersion() );
 		newVersion.setCreator( userId );
 		newVersion.setVocabularyId( targetVersion.getVocabularyId());
-		newVersion.setVersionNotes( targetVersion.getVersionNotes());
+		newVersion.setSummary( targetVersion.getSummary());
 		
 		// clone concepts as well
 		for(ConceptDTO targetConcept: targetVersion.getConcepts()) {

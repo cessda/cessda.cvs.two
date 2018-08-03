@@ -55,6 +55,7 @@ import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.ui.view.DetailsView;
 
 public class IdentityVersionLayout extends MCssLayout implements Translatable {
 	
@@ -66,10 +67,13 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 	private final VocabularyDTO vocabulary;
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
 	private final VocabularyChangeService vocabularyChangeService;
+	private final ConfigurationService configService;
+	private String baseUrl;
 	
 	public IdentityVersionLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO,
-			VocabularyChangeService vocabularyChangeService) {
+			VocabularyChangeService vocabularyChangeService,
+			ConfigurationService configService) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
@@ -77,6 +81,7 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 		this.agency = agencyDTO;
 		this.vocabulary = vocabularyDTO;
 		this.vocabularyChangeService = vocabularyChangeService;
+		this.configService = configService;
 		
 		this
 			.withFullWidth();
@@ -85,6 +90,9 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 	}
 
 	private void init() {
+		baseUrl = configService.getServerContextPath() + "/#!" + DetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
+		
+		
 		Map<String, List<VersionDTO>> versionMap = VersionDTO.generateVersionMap( vocabulary.getVersions());
 		
 		for(Map.Entry<String,List<VersionDTO>> eachVersions : versionMap.entrySet()) {
@@ -113,9 +121,15 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML);
 		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML);
 		
+//		infoVersion
+//		.withValue("<h2>Source language</h2>" +
+//				"<a href='" + baseUrl  + versionDTO.getUri() + "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
+//				" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
+	
+		
 		infoVersion
 			.withValue("<h2>Source language</h2>" +
-					versionDTO.getLanguage() + ": " + versionDTO.getNumber() +
+					"<a href='" + baseUrl  + "?vers=" + versionDTO.getNumber()+ "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
 					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
 		
 		noteVersion

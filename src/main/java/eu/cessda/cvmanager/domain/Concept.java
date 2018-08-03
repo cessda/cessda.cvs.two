@@ -46,7 +46,7 @@ public class Concept implements Serializable{
     @Column(name = "code_id")
     private Long codeId;
     
-    @Column(name = "parent_id")
+    @Column(name = "previous_concept")
     private Long previousConcept;
     
 //    @ManyToMany(mappedBy = "concepts")

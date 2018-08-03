@@ -215,7 +215,7 @@ public class DialogCreateVersionWindow extends MWindow {
 			.withValue( "Notes / Discussion" );
 		discussionInfo
 			.withFullWidth()
-			.withValue("The discussion notes will be save if new version is created");
+			.withValue("The discussion notes will be saved if new version is created");
 		discussionArea.setWidth("100%");
 		discussionArea.setValue( currentVersion.getDiscussionNotes() == null ? "":currentVersion.getDiscussionNotes());
 		
@@ -335,7 +335,7 @@ public class DialogCreateVersionWindow extends MWindow {
 					newVersion = versionService.save(newVersion);
 					// save concepts
 					for( CodeDTO code: codes) {
-						ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getId()).ifPresent( c -> c.setCodeId( code.getId()));
+						ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getNotation()).ifPresent( c -> c.setCodeId( code.getId()));
 					}
 					
 					for( ConceptDTO newConcept: newVersion.getConcepts()) {

@@ -207,6 +207,7 @@ public class DetailsView extends CvView {
 	private Binder<CVScheme> cvSchemeBinder = new Binder<>();
 	private Language sourceLanguage;
 	private String activeTab;
+	private String versionNumber;
 	
 	private EditorCvActionLayoutNew editorCvActionLayout;
 	private EditorCodeActionLayoutNew editorCodeActionLayout;
@@ -318,6 +319,12 @@ public class DetailsView extends CvView {
 						activeTab = mappedParams.get("tab");
 					else
 						activeTab = "detail";
+					if(  mappedParams.get("vers") != null )
+						versionNumber = mappedParams.get("vers");
+					else
+						versionNumber = null;
+					
+					
 				}
 				
 				
@@ -350,7 +357,7 @@ public class DetailsView extends CvView {
 		// update breadcrumb
 		breadcrumbs
 			.addItem(getAgency().getName(), "agency")
-			.addItem( vocabulary.getNotation() + " " + vocabulary.getVersionNumber() + " (" + vocabulary.getStatus() + ")", null)
+			.addItem( currentVersion.getNotation() + " " + currentVersion.getNumber() + " (" + currentVersion.getStatus() + ")", null)
 			.build();
 
 		initTopViewSection();
@@ -452,6 +459,7 @@ public class DetailsView extends CvView {
 		currentSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getVersions());
 		currentVersion = currentSLVersion;
 		
+		// TODO change this implementation 
 		languages.forEach(item -> {
 			Language eachLanguage = Language.getEnum(item);
 			
@@ -465,7 +473,7 @@ public class DetailsView extends CvView {
 				langButton.addStyleName( "button-language-selected" );
 			
 			// determine the status
-			vocabulary.getLatestVersionByLanguage( eachLanguage.name().toLowerCase())
+			vocabulary.getLatestVersionByLanguage( eachLanguage.name().toLowerCase(), versionNumber)
 			.ifPresent( versionDTO -> {
 				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
 					// TODO: check detail for editor or publication page
@@ -502,7 +510,7 @@ public class DetailsView extends CvView {
 				currentVersion = null;
 				editorCvActionLayout.setCurrentVersion( null );
 				editorCodeActionLayout.setCurrentVersion( null );
-				vocabulary.getLatestVersionByLanguage(selectedLang)
+				vocabulary.getLatestVersionByLanguage(selectedLang, versionNumber)
 					.ifPresent( v -> {
 						editorCvActionLayout.setCurrentVersion(v);
 						editorCodeActionLayout.setCurrentVersion(v);
@@ -552,7 +560,7 @@ public class DetailsView extends CvView {
 		MLabel topTitle = new MLabel();
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
 				.withValue( agency.getName() + " Controlled Vocabulary for "
-						+ vocabulary.getTitleByLanguage( sourceLanguage ) + "</strong>");
+						+ currentVersion.getTitle() + "</strong>");
 
 		Resource res = new ThemeResource("img/ddi-logo-r.png");
 		
@@ -849,7 +857,7 @@ public class DetailsView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService);
+		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService);
 		identifyLayout.add( identityVersionLayout );
 		
 //		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);

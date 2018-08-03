@@ -1431,29 +1431,62 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(Language language) {
-		return getLatestVersionByLanguage(language.name().toLowerCase());
+		return getLatestVersionByLanguage(language.name().toLowerCase(), null);
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(String language) {
 		return getLatestVersionByLanguage(language, null);
 	}
 	
-	public Optional<VersionDTO> getLatestVersionByLanguage(String language, String status) {
+	public Optional<VersionDTO> getLatestVersionByLanguage(String language, String version) {
+		return getLatestVersionByLanguage(language, version, null);
+	}
+	
+	public Optional<VersionDTO> getLatestVersionByLanguage(Language language, String version) {
+		return getLatestVersionByLanguage(language.name().toLowerCase(), version, null);
+	}
+	
+	public Optional<VersionDTO> getLatestVersionByLanguage(String language, String version, String status) {
+		// sort first
+		List<VersionDTO> vers = versions.stream()
+				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+				.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
+				.collect( Collectors.toList());
+			
+		if( status != null && version != null )
+			return vers.stream()
+					.filter( v -> status.equalsIgnoreCase( v.getStatus() ))
+					.filter( v -> version.equalsIgnoreCase( v.getNumber() ))
+					.findFirst();
 		
-		if( status == null ) {
-			return versions
-					.stream()
-					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
-					.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
+		else if( status != null )
+			return vers.stream()
+					.filter( v -> status.equalsIgnoreCase( v.getStatus() ))
 					.findFirst();
-		} else {
-			return versions
-					.stream()
-					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
-					.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
-					.filter( p -> status.equalsIgnoreCase( p.getStatus() ))
+		
+		else if( version != null )
+			return vers.stream()
+					.filter( v -> version.equalsIgnoreCase( v.getNumber() ))
 					.findFirst();
-		}
+		
+		else
+			return vers.stream().findFirst();
+			
+		
+//		if( status == null ) {
+//			return versions
+//					.stream()
+//					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+//					.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
+//					.findFirst();
+//		} else {
+//			return versions
+//					.stream()
+//					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+//					.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
+//					.filter( p -> status.equalsIgnoreCase( p.getStatus() ))
+//					.findFirst();
+//		}
 	}
 	
 	public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
