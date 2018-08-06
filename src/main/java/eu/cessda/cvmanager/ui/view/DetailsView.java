@@ -404,7 +404,7 @@ public class DetailsView extends CvView {
 		}
 		
 		agency = agencyService.findByName( getVocabulary().getAgencyName());
-		
+				
 		if ( vocabulary.getUri() != null && !vocabulary.getUri().isEmpty()) {
 			List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(vocabulary.getUri(), DDIElement.CVSCHEME);
 			
@@ -440,6 +440,7 @@ public class DetailsView extends CvView {
 		
 		Set<String> languages = vocabulary.getLanguages();
 		
+		// determine source langauge
 		sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage().toString());
 		if(selectedLang == null )
 			selectedLang = sourceLanguage;
@@ -450,17 +451,13 @@ public class DetailsView extends CvView {
 		editorCvActionLayout.setAgency( agency );
 		editorCvActionLayout.setVocabulary( vocabulary );
 		
-		editorCodeActionLayout.setSourceLanguage( sourceLanguage );
-		if( cvItem.getCvScheme() != null )
-			editorCodeActionLayout.setCvScheme( cvItem.getCvScheme() );
-		editorCodeActionLayout.setAgency( agency );
-		editorCodeActionLayout.setVocabulary(vocabulary);
-		
 		currentSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getVersions());
 		currentVersion = currentSLVersion;
+		Notification.show("currentVersion " + currentVersion.getId());
 		
 		// TODO change this implementation 
 		languages.forEach(item -> {
+			Notification.show("Languages " + item);
 			Language eachLanguage = Language.getEnum(item);
 			
 			MButton langButton = new MButton(eachLanguage.toString().toUpperCase());
@@ -541,6 +538,8 @@ public class DetailsView extends CvView {
 				editorCodeActionLayout.clearCode();
 				refreshCodeActionButton();
 			});
+			
+			
 			languageLayout.add(langButton);
 			if( eachLanguage.equals(sourceLanguage)) {
 				langButton.addStyleName("font-bold");
@@ -549,7 +548,10 @@ public class DetailsView extends CvView {
 			if( eachLanguage.equals( selectedLang ) ) {
 				editorCvActionLayout.setSelectedLanguage( Language.getEnum( item) );
 				langButton.click();
+				Notification.show("Languagesc clicked " + item);
 			}
+			
+			
 		});
 	}
 
