@@ -459,6 +459,7 @@ public class DetailsView extends CvView {
 		languages.forEach(item -> {
 			Notification.show("Languages " + item);
 			Language eachLanguage = Language.getEnum(item);
+			Notification.show("Languages eachLanguage" + eachLanguage.toString());
 			
 			MButton langButton = new MButton(eachLanguage.toString().toUpperCase());
 			langButton.withStyleName("langbutton");
@@ -539,14 +540,16 @@ public class DetailsView extends CvView {
 				refreshCodeActionButton();
 			});
 			
-			
+			Notification.show("Languages language added" + eachLanguage.toString());
 			languageLayout.add(langButton);
+			
+			
 			if( eachLanguage.equals(sourceLanguage)) {
 				langButton.addStyleName("font-bold");
 				langButton.setDescription( "source language" );
 			}
 			if( eachLanguage.equals( selectedLang ) ) {
-				editorCvActionLayout.setSelectedLanguage( Language.getEnum( item) );
+//				editorCvActionLayout.setSelectedLanguage( Language.getEnum( item) );
 				langButton.click();
 				Notification.show("Languagesc clicked " + item);
 			}
