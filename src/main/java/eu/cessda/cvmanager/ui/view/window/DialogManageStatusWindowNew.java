@@ -35,6 +35,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
+import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.shared.ui.ContentMode;
@@ -66,6 +67,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 public class DialogManageStatusWindowNew extends MWindow {
 
@@ -365,7 +367,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 		
 		String confirmInfo = null;
 		if( currentStatus.equals( Status.DRAFT.toString())) {
-			nextStatus = Status.INITIAL_REVIEW.toString();
+//			nextStatus = Status.INITIAL_REVIEW.toString();
+			nextStatus = Status.FINAL_REVIEW.toString();
 			confirmInfo = "Are you sure that you want to change the state of CV-" + ( sourceLanguage.equals(selectedLanguage) ? "SL " : "TL ") + "\"" + currentVersion.getTitle() + "\" from " + currentStatus + " to " + nextStatus + "?";
 		}
 		else if( currentStatus.equals( Status.INITIAL_REVIEW.toString())) {
@@ -402,6 +405,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 								currentVersion.setNumber( versionNumberField.getValue());
 								currentVersion.setPublicationDate( LocalDate.now());
 								vocabulary.setVersionByLanguage(selectedLanguage, versionNumberField.getValue());
+								vocabulary.setUri( currentVersion.getUri());
 								if( selectedLanguage.equals( sourceLanguage ))
 									vocabulary.setPublicationDate( LocalDate.now());
 								
@@ -438,7 +442,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 	
 	private void publishCv( VocabularyDTO vocabulary, VersionDTO version ) {
 		VersionDTO slLatestVersion = null;
-		// index nested object as well
+
 		// get latest version
 		vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
 		
@@ -447,8 +451,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 		// set published languages across versions
 		vocabulary.setLanguagesPublished( VocabularyDTO.getPublishedLanguagesFromVersions( vocabulary.getVers() ));
 		// update/generate vocabulary content
-		// 1. clear vocabulary DTO first before replacing content
-		vocabulary.clearContent();
+//		// 1. clear vocabulary DTO first before replacing content
+//		vocabulary.clearContent();
 		// 2. generate vocabulary content from version
 		for( VersionDTO versionDTO : vocabulary.getVers()) {
 			if( versionDTO.getItemType().equals( ItemType.SL.toString()))
@@ -463,12 +467,16 @@ public class DialogManageStatusWindowNew extends MWindow {
 		if( version.getItemType().equals( ItemType.SL.toString())) {
 			// clone each code
 			List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+			List<CodeDTO> newCodes = new ArrayList<>();
 			for( CodeDTO eachCode : codes ) {
+				//TODO:  probably only need to clone published one
 				CodeDTO newCode = CodeDTO.clone(eachCode);
 				newCode.setArchived( true );
 				newCode.setVersionId(version.getId());
 				newCode.setVersionNumber( version.getNumber() );
 				newCode = codeService.save( newCode);
+				
+				newCodes.add(newCode);
 				
 				// store also the concept "code id changed"
 				if( ConceptDTO.getConceptFromCode( version.getConcepts(), eachCode.getId()).isPresent()  ) {
@@ -478,12 +486,11 @@ public class DialogManageStatusWindowNew extends MWindow {
 				}
 			}
 			
-			
 			// save also in the cv scheme
 			if (cvScheme == null) {
 				CVScheme newCvScheme = new CVScheme();
 				newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-				newCvScheme.setId( vocabulary.getUri());
+				newCvScheme.setId( currentVersion.getUri());
 				newCvScheme.setContainerId(newCvScheme.getId());
 				newCvScheme.setStatus( Status.PUBLISHED.toString() );
 				
@@ -495,7 +502,10 @@ public class DialogManageStatusWindowNew extends MWindow {
 				
 				
 				// Store also Owner Agency, Vocabulary and codes
-				// store agency
+				// store vocabulary content
+				newCvScheme = VocabularyDTO.setCvSchemeByVocabulary(newCvScheme, vocabulary);
+				
+				// store owner agency
 				List<CVEditor> editorSet = new ArrayList<>();
 				CVEditor cvEditor = new CVEditor();
 				cvEditor.setName( agency.getName());
@@ -504,44 +514,76 @@ public class DialogManageStatusWindowNew extends MWindow {
 				editorSet.add( cvEditor );
 				newCvScheme.setOwnerAgency((ArrayList<CVEditor>) editorSet);
 				
+				newCvScheme.setCode( vocabulary.getNotation());
+				
 				newCvScheme.save();
 				DDIStore ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
 				
+				//refresh cvScheme
+				newCvScheme = new CVScheme(ddiStore);
+				 
+				// store complete codeDTOs to CVConcept
+				TreeData<CodeDTO> codeTree = new TreeData<>();
+				CvCodeTreeUtils.buildCvConceptTree(newCodes, codeTree);
 				
+				// generate tree concept
+				TreeData<CVConcept> cvConceptTree = new TreeData<>();
+				cvConceptTree = CvCodeTreeUtils.generateCVConceptTreeFromCodeTree(codeTree, newCvScheme);
 				
+				// save all cvConcepts and update cvScheme
+				storeCvConceptTree( cvConceptTree , newCvScheme);
 				
-			} else {
+			} 
+			// cvScheme already exist "in case that CV is imported"
+			else 
+			{
 				cvScheme.setStatus( nextStatus );
+				cvScheme.setOrderedMemberList( null );
 				cvScheme.save();
 				DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+				//refresh cvScheme
+				cvScheme = new CVScheme(ddiStore);
 				// save also cvConcept
 				// get cv concept one by one in case it is exist
 				List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
 				
-				Map<String, CVConcept> cvConceptMap = new HashMap<>();
-				List<CVConcept> rootCvConcepts = new ArrayList<>();
-				ddiConcepts.forEach(ddiConcept -> {
-					CVConcept concept = new CVConcept(ddiConcept);
-					cvConceptMap.put(concept.getId(), concept);
-				});
-				
-				for( CodeDTO eachCode : codes ) {
-					CVConcept cvCcp = cvConceptMap.get( eachCode.getNotation());
-					if( cvCcp == null ) {
-						//create new concept
-						
-					}
-					
-					// TODO: delete not use CVConcept
+				// remove existing cvConcept
+				for(DDIStore ddiConcept: ddiConcepts) {
+					stardatDDIService.deleteById( ddiConcept.getPrimaryKey(), SecurityUtils.getCurrentUserLogin().get() , "replace concept by deleting first");
 				}
+				
+//				Map<String, CVConcept> cvConceptMap = new HashMap<>();
+//				List<CVConcept> rootCvConcepts = new ArrayList<>();
+//				ddiConcepts.forEach(ddiConcept -> {
+//					CVConcept concept = new CVConcept(ddiConcept);
+//					cvConceptMap.put(concept.getId(), concept);
+//				});
+//				
+//				for( CodeDTO eachCode : codes ) {
+//					CVConcept cvCcp = cvConceptMap.get( eachCode.getNotation());
+//					if( cvCcp == null ) {
+//						//create new concept
+//						
+//					}
+//					
+//				}
+				
+				// store complete codeDTOs to CVConcept
+				TreeData<CodeDTO> codeTree = new TreeData<>();
+				CvCodeTreeUtils.buildCvConceptTree(newCodes, codeTree);
+				
+				// generate tree concept
+				TreeData<CVConcept> cvConceptTree = new TreeData<>();
+				cvConceptTree = CvCodeTreeUtils.generateCVConceptTreeFromCodeTree(codeTree, cvScheme);
+				
+				// save all cvConcepts and update cvScheme
+				storeCvConceptTree( cvConceptTree , cvScheme);
 			}
-			
-			
-			
-			
 		}
 		else 	// Publishing TL
 		{
+			// the codes need to be re-saved
+			// get the codes from vocabulary and slLatest version
 			Language versionLanguage = Language.getEnumByName( version.getLanguage() );
 			List<CodeDTO> codes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), slLatestVersion.getId());
 			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
@@ -552,12 +594,61 @@ public class DialogManageStatusWindowNew extends MWindow {
 				code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), versionLanguage);
 				codeService.save(code);
 			}
+			
+			// save in the flatdb
+			// save CvScheme
+			cvScheme.setTitleByLanguage(versionLanguage.toString(), version.getTitle());
+			cvScheme.setDescriptionByLanguage(versionLanguage.toString(), version.getDefinition());
+			cvScheme.save();
+			stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv " + version.getNotation() + " TL" + versionLanguage.toString());
+			
+			// save  CvConcept
+			List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
+			Map<String, CVConcept> cvConceptMaps = new HashMap<>();
+			for(DDIStore ddiConcept: ddiConcepts) {
+				CVConcept cvConcept = new CVConcept(ddiConcept);
+				cvConceptMaps.put( cvConcept.getNotation(), cvConcept);
+			}
+			for( ConceptDTO concept : version.getConcepts()) {
+				CVConcept cvConcept = cvConceptMaps.get( concept.getNotation() );
+				if( cvConcept == null )
+					continue;
+				cvConcept.setPrefLabelByLanguage(versionLanguage.toString(),  concept.getTitle());
+				cvConcept.setDescriptionByLanguage(versionLanguage.toString(), concept.getDefinition());
+				cvConcept.save();
+			   stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "publish code " + cvConcept.getNotation());
+			}
 		}
-		
-		
-		
 	}
 	
+	private void storeCvConceptTree(TreeData<CVConcept> cvConceptTree, CVScheme newCvScheme) {
+		List<CVConcept> rootItems = cvConceptTree.getRootItems();
+		for(CVConcept topCvConcept : rootItems) {
+			DDIStore ddiStoreTopCvConcept = stardatDDIService.saveElement(topCvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code " + topCvConcept.getNotation());
+			newCvScheme.addOrderedMemberList(ddiStoreTopCvConcept.getElementId());
+			
+			for( CVConcept childCvConcept : cvConceptTree.getChildren(topCvConcept)) {
+				storeCvConceptTreeChild( cvConceptTree, childCvConcept, topCvConcept);
+			}
+		}
+		// store top concept
+		newCvScheme.save();
+		stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update Top Concept");
+	}
+
+	private void storeCvConceptTreeChild(TreeData<CVConcept> cvConceptTree, CVConcept cCvConcept,
+			CVConcept topCvConcept) {
+		// store cvConcept
+		DDIStore ddiStoreCvConcept = stardatDDIService.saveElement(cCvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code " + cCvConcept.getNotation());
+		// store narrower
+		topCvConcept.addOrderedNarrowerList( ddiStoreCvConcept.getElementId());
+		topCvConcept.save();
+		stardatDDIService.saveElement(topCvConcept.ddiStore, "User", "Add Code narrower");
+		for( CVConcept cvConceptChild : cvConceptTree.getChildren(cCvConcept)) {
+			storeCvConceptTreeChild( cvConceptTree, cvConceptChild, cCvConcept);
+		}
+	}
+
 	public void closeDialog() {
 		this.close();
 	}

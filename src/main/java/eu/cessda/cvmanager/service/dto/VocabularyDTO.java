@@ -43,8 +43,6 @@ public class VocabularyDTO implements Serializable {
     
 	private String status;
 	
-
-    @NotNull
     @Size(max = 240)
     private String uri;
     
@@ -1425,7 +1423,7 @@ public class VocabularyDTO implements Serializable {
 	public Set<VersionDTO> getLatestVersions(String status){
 		Set<VersionDTO> versionDTOs = new HashSet<>();
 		for(String lang: languages) {
-			getLatestVersionByLanguage(lang, status).ifPresent( v -> versionDTOs.add(v));
+			getLatestVersionByLanguage(lang, null, status).ifPresent( v -> versionDTOs.add(v));
 		}
 		return versionDTOs;
 	}
@@ -1555,6 +1553,19 @@ public class VocabularyDTO implements Serializable {
 				.filter( v -> v.getStatus().equals( Status.PUBLISHED.toString()))
 				.map( s -> s.getLanguage())
 				.collect( Collectors.toSet());
+	}
+	
+	public static CVScheme setCvSchemeByVocabulary( CVScheme cvScheme, VocabularyDTO vocabulary) {
+		// get published languages from vocabulary
+		// TODO: consider getPublishedLanguages
+		for(String lang : vocabulary.getLanguages()) {
+			Language eachLanguage = Language.getEnum(lang);
+			String languageIso = eachLanguage.toString();
+			
+			cvScheme.setTitleByLanguage(languageIso, vocabulary.getTitleByLanguage(eachLanguage));
+			cvScheme.setDescriptionByLanguage(languageIso, vocabulary.getDefinitionByLanguage(eachLanguage));
+		}
+		return cvScheme;
 	}
 	
 }

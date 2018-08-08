@@ -202,16 +202,15 @@ public class DetailView extends CvView {
 	private Language sourceLanguage;
 	private String activeTab;
 	
-	private EditorCvActionLayout editorCvActionLayout;
-	private EditorCodeActionLayout editorCodeActionLayout;
+//	private EditorCvActionLayout editorCvActionLayout;
+//	private EditorCodeActionLayout editorCodeActionLayout;
 
 	public DetailView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
-			VersionService versionService, CodeService codeService, ConceptService conceptService,
+			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			VocabularySearchRepository vocabularySearchRepository, TemplateEngine templateEngine,
 			VocabularyChangeService vocabularyChangeService) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, 
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
 				codeService, vocabularySearchRepository, DetailView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
@@ -226,13 +225,12 @@ public class DetailView extends CvView {
 	@PostConstruct
 	public void init() {
 		
-		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, 
-				stardatDDIService, agencyService, vocabularyService, versionService, vocabularyMapper, 
-				vocabularySearchRepository, eventBus, vocabularyChangeService);
-		
-		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
-				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
-				vocabularyChangeService);
+//		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, 
+//				stardatDDIService, agencyService, vocabularyService, versionService, vocabularySearchRepository, eventBus, vocabularyChangeService);
+//		
+//		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
+//				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
+//				vocabularyChangeService);
 		
 
 		languageLayout.withFullWidth();
@@ -241,11 +239,11 @@ public class DetailView extends CvView {
 
 		bottomSection.add(bottomViewSection/*, bottomEditSection*/);
 		
-		sidePanel
-			.add( 
-				editorCvActionLayout,
-				editorCodeActionLayout
-			);
+//		sidePanel
+//			.add( 
+//				editorCvActionLayout,
+//				editorCodeActionLayout
+//			);
 		
 		mainContainer
 			.add(
@@ -338,29 +336,29 @@ public class DetailView extends CvView {
 		
 		topPanel.setVisible( false );
 		
-		refreshCvActionButton();
-		refreshCodeActionButton();
+//		refreshCvActionButton();
+//		refreshCodeActionButton();
 	}
 
-	private void refreshCvActionButton() {
-		if( editorCvActionLayout.hasActionRight() ) {
-			mainContainer.removeStyleName("margin-left10");
-			sidePanel.setVisible( true );
-		}
-		else {
-			mainContainer.addStyleName("margin-left10");
-			sidePanel.setVisible( false );
-		}
-	}
-
-	private void refreshCodeActionButton() {
-		if( editorCodeActionLayout.hasActionRight() ) {
-			editorCodeActionLayout.setVisible( true );
-		}
-		else {
-			editorCodeActionLayout.setVisible( false );
-		}
-	}
+//	private void refreshCvActionButton() {
+//		if( editorCvActionLayout.hasActionRight() ) {
+//			mainContainer.removeStyleName("margin-left10");
+//			sidePanel.setVisible( true );
+//		}
+//		else {
+//			mainContainer.addStyleName("margin-left10");
+//			sidePanel.setVisible( false );
+//		}
+//	}
+//
+//	private void refreshCodeActionButton() {
+//		if( editorCodeActionLayout.hasActionRight() ) {
+//			editorCodeActionLayout.setVisible( true );
+//		}
+//		else {
+//			editorCodeActionLayout.setVisible( false );
+//		}
+//	}
 
 	private void refreshCvScheme() {
 		languageLayout.removeAllComponents();
@@ -374,7 +372,6 @@ public class DetailView extends CvView {
 			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
 		}
 		
-		//TODO, remove this "if" after all vocabularies belong to agency
 		if( getVocabulary() == null ) {
 			
 			String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
@@ -398,15 +395,15 @@ public class DetailView extends CvView {
 		if(selectedLang == null )
 			selectedLang = sourceLanguage;
 		
-		editorCvActionLayout.setSourceLanguage( sourceLanguage );
-		editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
-		editorCvActionLayout.setAgency( agency );
-		editorCvActionLayout.setVocabulary( vocabulary );
-		
-		editorCodeActionLayout.setSourceLanguage( sourceLanguage );
-		editorCodeActionLayout.setCvScheme( cvItem.getCvScheme() );
-		editorCodeActionLayout.setAgency( agency );
-		editorCodeActionLayout.setVocabulary(vocabulary);
+//		editorCvActionLayout.setSourceLanguage( sourceLanguage );
+//		editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
+//		editorCvActionLayout.setAgency( agency );
+//		editorCvActionLayout.setVocabulary( vocabulary );
+//		
+//		editorCodeActionLayout.setSourceLanguage( sourceLanguage );
+//		editorCodeActionLayout.setCvScheme( cvItem.getCvScheme() );
+//		editorCodeActionLayout.setAgency( agency );
+//		editorCodeActionLayout.setVocabulary(vocabulary);
 		
 		languages.forEach(item -> {
 			
@@ -451,16 +448,16 @@ public class DetailView extends CvView {
 				
 
 				
-				editorCvActionLayout.setSelectedLanguage(selectedLang);
-				editorCodeActionLayout.setSelectedLanguage(selectedLang);
+//				editorCvActionLayout.setSelectedLanguage(selectedLang);
+//				editorCodeActionLayout.setSelectedLanguage(selectedLang);
 				
 				currentVersion = null;
-				editorCvActionLayout.setCurrentVersion( null );
-				editorCodeActionLayout.setCurrentVersion( null );
+//				editorCvActionLayout.setCurrentVersion( null );
+//				editorCodeActionLayout.setCurrentVersion( null );
 				vocabulary.getLatestVersionByLanguage(selectedLang)
 					.ifPresent( v -> {
-						editorCvActionLayout.setCurrentVersion(v);
-						editorCodeActionLayout.setCurrentVersion(v);
+//						editorCvActionLayout.setCurrentVersion(v);
+//						editorCodeActionLayout.setCurrentVersion(v);
 						currentVersion = v;
 						
 						versionLabel.setValue( currentVersion.getNumber() + (selectedLang.equals( sourceLanguage ) ? ""
@@ -481,12 +478,12 @@ public class DetailView extends CvView {
 //				actionPanel.conceptSelectedChange( null );
 				setCode( null );
 				updateMessageStrings(locale);
-				refreshCvActionButton();
+//				refreshCvActionButton();
 				
 				// clear cvConcept selection and button
 				detailTreeGrid.asSingleSelect().clear();
-				editorCodeActionLayout.clearCode();
-				refreshCodeActionButton();
+//				editorCodeActionLayout.clearCode();
+//				refreshCodeActionButton();
 			});
 			languageLayout.add(langButton);
 			if( item.equals(sourceLanguage.toString())) {
@@ -494,7 +491,7 @@ public class DetailView extends CvView {
 				langButton.setDescription( "source language" );
 			}
 			if( item.equals( selectedLang.toString() ) ) {
-				editorCvActionLayout.setSelectedLanguage( Language.getEnum( item) );
+//				editorCvActionLayout.setSelectedLanguage( Language.getEnum( item) );
 				langButton.click();
 			}
 		});
@@ -605,7 +602,7 @@ public class DetailView extends CvView {
 		updateDetailGrid();
 		
 		// Set CV item object in the ActionLayout
-		editorCvActionLayout.setCvItem(cvItem);
+//		editorCvActionLayout.setCvItem(cvItem);
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.SINGLE );
 		
@@ -656,30 +653,30 @@ public class DetailView extends CvView {
 				if( code == null )
 					code = CodeDTO.generateFromCVConcept( cvItem.getCvConcept() );
 				
-				editorCodeActionLayout.setCvConcept( cvItem.getCvConcept() );
-				editorCodeActionLayout.setCurrentCode(code);
+//				editorCodeActionLayout.setCvConcept( cvItem.getCvConcept() );
+//				editorCodeActionLayout.setCurrentCode(code);
 				
 				// get concept
 				ConceptDTO.getConceptFromCode(currentVersion.getConcepts(), code.getId()).ifPresent( conceptDTO -> {
 					if( conceptDTO.isPersisted()) {
 						currentConcept = conceptDTO;
-						editorCodeActionLayout.setCurrentConcept(conceptDTO);
+//						editorCodeActionLayout.setCurrentConcept(conceptDTO);
 					} else {
 						// query in database for updated one
 						ConceptDTO conceptFromDb = conceptService.findOneByCodeNotationAndId( code.getNotation(), code.getId() );
 						if( conceptFromDb != null ) {
 							currentConcept = conceptFromDb;
-							editorCodeActionLayout.setCurrentConcept(conceptFromDb);
+//							editorCodeActionLayout.setCurrentConcept(conceptFromDb);
 						}
 					}
 				});
 								
-				refreshCodeActionButton();
+//				refreshCodeActionButton();
 				
             } else {
             	cvItem.setCvConcept(  null );
-            	editorCodeActionLayout.clearCode();
-				refreshCodeActionButton();
+//            	editorCodeActionLayout.clearCode();
+//				refreshCodeActionButton();
             }
 		});
 		
@@ -923,8 +920,8 @@ public class DetailView extends CvView {
 							cvCodeTreeData.removeItem( cvItem.getCvConcept() );
 							
 							cvItem.setCvConcept( null );
-							editorCodeActionLayout.clearCode();
-							refreshCodeActionButton();
+//							editorCodeActionLayout.clearCode();
+//							refreshCodeActionButton();
 							
 							if( code.isPersisted()) {
 								codeService.deleteCodeTree(code, vocabulary.getId());
@@ -936,7 +933,7 @@ public class DetailView extends CvView {
 							// save change log
 							VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
 							changeDTO.setVocabularyId( vocabulary.getId());
-							changeDTO.setVersionId( editorCodeActionLayout.getCurrentVersion().getId()); 
+//							changeDTO.setVersionId( editorCodeActionLayout.getCurrentVersion().getId()); 
 							changeDTO.setChangeType( "Code deleted" );
 							changeDTO.setDescription( "Code " + code.getNotation() + " added");
 							changeDTO.setDate( LocalDateTime.now() );

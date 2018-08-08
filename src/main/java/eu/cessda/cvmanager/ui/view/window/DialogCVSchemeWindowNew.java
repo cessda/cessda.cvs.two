@@ -49,12 +49,12 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
 
@@ -67,7 +67,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 	private final I18N i18n;
 	private final UIEventBus eventBus;
 	private final AgencyService agencyService;
-	private final VocabularyMapper vocabularyMapper;
+	private final VersionService versionService;
 	private final VocabularyService vocabularyService;
 	private final StardatDDIService stardatDDIService;
 	private final VocabularySearchRepository vocabularySearchRepository;
@@ -105,7 +105,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 	private boolean isUpdated = false;
 
 	public DialogCVSchemeWindowNew(StardatDDIService stardatDDIService, AgencyService agencyService, 
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
+			VocabularyService vocabularyService, VersionService versionService,
 			VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, 
 			VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, I18N i18n, Language selectedLanguage,
 			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
@@ -113,7 +113,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		this.agencyService = agencyService;
 		this.cvScheme = cvScheme;
 		this.stardatDDIService = stardatDDIService;
-		this.vocabularyMapper = vocabularyMapper;
+		this.versionService = versionService;
 		this.vocabularyService = vocabularyService;
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.vocabulary = vocabulary;
@@ -382,9 +382,13 @@ public class DialogCVSchemeWindowNew extends MWindow {
 //		
 		// save on database
 		// new item
+		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
+		
+		version.setTitle( tfTitle.getValue());
+		version.setDefinition( description.getValue() );
+		
 		if( !isUpdated )
 		{
-			vocabulary.setUri( cvScheme.getContainerId() );
 			vocabulary.setNotation( tfCode.getValue() );
 			vocabulary.setVersionNumber("1.0");
 			vocabulary.setAgencyId( agency.getId());
@@ -402,17 +406,21 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			version.setPreviousVersion( 0L );
 			version.setInitialVersion( 0L );
 			
+			// save to database
+			vocabulary = vocabularyService.save(vocabulary);
+			
+			version.setVocabularyId( vocabulary.getId() );
+			version = versionService.save( version );
+			
 			vocabulary.addVersions(version);
 			vocabulary.addVers(version);
+		} else {
+			
+			// save to database
+			vocabulary = vocabularyService.save(vocabulary);
 		}
 		
-		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
 		
-		version.setTitle( tfTitle.getValue());
-		version.setDefinition( description.getValue() );
-		
-		// save to database
-		vocabulary = vocabularyService.save(vocabulary);
 		
 		// index
 		vocabularyService.index(vocabulary);

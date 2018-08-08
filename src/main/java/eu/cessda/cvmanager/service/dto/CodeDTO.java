@@ -5,7 +5,10 @@ import javax.persistence.Lob;
 import javax.validation.constraints.*;
 
 import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
+
+import com.vaadin.data.TreeData;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -357,7 +360,7 @@ public class CodeDTO implements Serializable {
     			setDefinitionSv(definition);
     			break;
     	}
-    	addLanguage(language.name().toLowerCase());
+    	addLanguage(language.toString());
     	return this;
     }
     
@@ -436,7 +439,7 @@ public class CodeDTO implements Serializable {
     			setDefinitionSv(definition);
     			break;
     	}
-    	addLanguage(language.name().toLowerCase());
+    	addLanguage(language.toString());
     	return this;
     }
     
@@ -544,7 +547,7 @@ public class CodeDTO implements Serializable {
 	public CodeDTO addLanguage(String language) {
 		if(languages == null)
 			languages = new HashSet<>();
-//		this.languages.add(language);
+		this.languages.add(language);
 		return this;
 	}
 	
@@ -954,14 +957,14 @@ public class CodeDTO implements Serializable {
     		code.setUri(cvConcept.getId());
     	}
 		
-		return extractCVSchemeToCodeDTO(cvConcept, code);
+		return extractCVConceptToCodeDTO(cvConcept, code);
     }
     
     public static CodeDTO generateFromCVConcept ( CVConcept cvConcept) {
     	return generateFromCVConcept(null, cvConcept);
     }
 
-	private static CodeDTO extractCVSchemeToCodeDTO(CVConcept cvConcept, CodeDTO code) {
+	private static CodeDTO extractCVConceptToCodeDTO(CVConcept cvConcept, CodeDTO code) {
 		//TODO: need to change hard coded value
 		code.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 				
@@ -1139,4 +1142,20 @@ public class CodeDTO implements Serializable {
 		
 		return clonedCode;
 	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

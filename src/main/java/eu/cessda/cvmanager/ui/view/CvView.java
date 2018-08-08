@@ -6,33 +6,23 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.stardat.ddiflatdb.client.RestClient;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
-import org.gesis.wts.ui.view.admin.CvManagerAdminView.ActionType;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.navigator.MView;
 
-import com.vaadin.navigator.View;
+
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
-import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
@@ -41,7 +31,6 @@ import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 
@@ -58,7 +47,6 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected final StardatDDIService stardatDDIService;
 	protected final SecurityService securityService;
 	protected final AgencyService agencyService;
-	protected final VocabularyMapper vocabularyMapper;
 	protected final VocabularyService vocabularyService;
 	protected final CodeService codeService;
 	// Elasticsearch repo for Editor
@@ -81,8 +69,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	
 	public CvView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
-			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
+			VocabularyService vocabularyService, CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
 			String actionType ) {
 		this.i18n = i;
 		this.eventBus = eventBus;
@@ -91,7 +78,6 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		this.securityService = securityService;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
-		this.vocabularyMapper = vocabularyMapper;
 		this.codeService = codeService;
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		

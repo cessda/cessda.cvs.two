@@ -64,7 +64,6 @@ public class DialogAddLanguageWindow extends MWindow {
 	private final UIEventBus eventBus;
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
-	private final VocabularyMapper vocabularyMapper;
 	private final VocabularySearchRepository vocabularySearchRepository;
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
@@ -106,7 +105,7 @@ public class DialogAddLanguageWindow extends MWindow {
 
 	public DialogAddLanguageWindow(StardatDDIService stardatDDIService,  CVScheme cvScheme,
 			 VocabularyDTO vocabularyDTO, VersionDTO versionDTO, AgencyDTO agencyDTO, 
-			 VocabularyService vocabularyService, VersionService versionService, VocabularyMapper vocabularyMapper,
+			 VocabularyService vocabularyService, VersionService versionService,
 			 VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super("Add Language");
 		this.cvScheme = cvScheme;
@@ -116,7 +115,6 @@ public class DialogAddLanguageWindow extends MWindow {
 		this.version = versionDTO;
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
-		this.vocabularyMapper = vocabularyMapper;
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.eventBus = eventBus;
 		this.vocabularyChangeService = vocabularyChangeService;

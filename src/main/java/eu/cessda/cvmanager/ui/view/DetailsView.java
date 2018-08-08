@@ -214,12 +214,10 @@ public class DetailsView extends CvView {
 
 	public DetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
-			VersionService versionService, CodeService codeService, ConceptService conceptService,
+			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			VocabularySearchRepository vocabularySearchRepository, TemplateEngine templateEngine,
 			VocabularyChangeService vocabularyChangeService) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, 
-				codeService, vocabularySearchRepository, DetailsView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, vocabularySearchRepository, DetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -234,7 +232,7 @@ public class DetailsView extends CvView {
 	public void init() {
 		
 		editorCvActionLayout = new EditorCvActionLayoutNew("block.action.cv", "block.action.cv.show", i18n, 
-				stardatDDIService, agencyService, vocabularyService, versionService, conceptService, codeService, vocabularyMapper, 
+				stardatDDIService, agencyService, vocabularyService, versionService, conceptService, codeService, 
 				vocabularySearchRepository, eventBus, vocabularyChangeService);
 		
 		editorCodeActionLayout = new EditorCodeActionLayoutNew("block.action.code", "block.action.code.show", i18n,
@@ -405,13 +403,7 @@ public class DetailsView extends CvView {
 		
 		agency = agencyService.findByName( getVocabulary().getAgencyName());
 				
-		if ( vocabulary.getUri() != null && !vocabulary.getUri().isEmpty()) {
-			List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(vocabulary.getUri(), DDIElement.CVSCHEME);
-			
-			if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
-				cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
-			}
-		}
+
 		
 		// find in Vocabulary entity as well
 //		setVocabulary(  vocabularyService.getByUri( cvItem.getCurrentCvId() ) );
@@ -440,18 +432,33 @@ public class DetailsView extends CvView {
 		
 		Set<String> languages = vocabulary.getLanguages();
 		
+		editorCvActionLayout.setVocabulary( vocabulary );
+		editorCodeActionLayout.setVocabulary( vocabulary );
+		
+		editorCvActionLayout.setAgency( agency );
+		editorCodeActionLayout.setAgency( agency );
+		
+		
 		// determine source langauge
 		sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage().toString());
 		if(selectedLang == null )
 			selectedLang = sourceLanguage;
 		
+		// set source language to action layouts
 		editorCvActionLayout.setSourceLanguage( sourceLanguage );
-		if( cvItem.getCvScheme() != null )
-			editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
-		editorCvActionLayout.setAgency( agency );
-		editorCvActionLayout.setVocabulary( vocabulary );
-		
+		editorCodeActionLayout.setSourceLanguage( sourceLanguage );
+				
 		currentSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getVersions());
+		
+		if ( currentSLVersion.getUri() != null && !currentSLVersion.getUri().isEmpty()) {
+			List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(currentSLVersion.getUri(), DDIElement.CVSCHEME);
+			
+			if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
+				cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
+				editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
+			}
+		}
+		
 		currentVersion = currentSLVersion;
 		
 		// TODO change this implementation 
@@ -496,9 +503,7 @@ public class DetailsView extends CvView {
 //				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
 				
 //				setFormMode(FormMode.view);
-				
-
-				
+							
 				editorCvActionLayout.setSelectedLanguage(selectedLang);
 				editorCodeActionLayout.setSelectedLanguage(selectedLang);
 				
@@ -1016,6 +1021,7 @@ public class DetailsView extends CvView {
 		// assign the tree structure
 		List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
 		CvCodeTreeUtils.buildCvConceptTree( codeDTOs , cvCodeTreeDataNew);
+		cvItem.setCvCodeTreeData(cvCodeTreeDataNew);
 		// refresh tree
 		dataProviderNew.refreshAll();
 		// expand all nodes

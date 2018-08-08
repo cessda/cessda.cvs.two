@@ -44,6 +44,7 @@ import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -64,6 +65,7 @@ public class EditorSearchView extends CvView {
 	public static final String FIELD_SORT = "notation";
 	private Locale locale = UI.getCurrent().getLocale();
 	private final VocabularyService vocabularyService;
+	private final VersionService versionService;
 
 	// main container
 	private MCssLayout resultLayout = new MCssLayout();
@@ -101,12 +103,12 @@ public class EditorSearchView extends CvView {
 
 	public EditorSearchView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
-			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
+			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
 			VocabularyChangeService vocabularyChangeService) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, EditorSearchView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, vocabularySearchRepository, EditorSearchView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
 		this.vocabularyChangeService = vocabularyChangeService;
+		this.versionService = versionService;
 		eventBus.subscribe(this, EditorSearchView.VIEW_NAME);
 	}
 
@@ -115,7 +117,8 @@ public class EditorSearchView extends CvView {
 		LoginView.NAVIGATETO_VIEWNAME = EditorSearchView.VIEW_NAME;
 		paginationBar = new PaginationBar( paggingListener , i18n);
 		filterLayout = new FiltersLayout( "block.filter", "block.filter.show", null, this, filterListener, i18n );
-		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, eventBus, vocabularyChangeService);
+		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, 
+				versionService, vocabularySearchRepository, eventBus, vocabularyChangeService);
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
 		
 		// button style

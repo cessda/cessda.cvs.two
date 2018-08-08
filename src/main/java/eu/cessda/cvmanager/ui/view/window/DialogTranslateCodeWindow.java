@@ -254,7 +254,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 		
 		log.trace(cvConcept.getPrefLabelByLanguage(language.toString()));
 		cvConcept.save();
-		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, "Peter", "minor edit");
+		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "add translation");
 		// store the code and index
 		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
 		codeService.save(code);

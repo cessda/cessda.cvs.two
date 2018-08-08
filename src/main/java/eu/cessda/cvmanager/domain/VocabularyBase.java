@@ -35,8 +35,7 @@ public class VocabularyBase implements Serializable {
     @Field(type = FieldType.Keyword)
     private String status;
     
-    @NotNull
-    @Column(name = "uri", length = 240, nullable = false, unique = true)
+    @Column(name = "uri", length = 240, unique = true)
     private String uri;
     
     @NotNull

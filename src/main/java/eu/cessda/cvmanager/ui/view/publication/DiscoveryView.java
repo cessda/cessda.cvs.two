@@ -91,9 +91,8 @@ public class DiscoveryView extends CvView {
 
 	public DiscoveryView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
-			CodeService codeService, VocabularySearchRepository vocabularySearchRepository) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, DiscoveryView.VIEW_NAME);
+			VocabularyService vocabularyService, CodeService codeService, VocabularySearchRepository vocabularySearchRepository) {
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService,  codeService, vocabularySearchRepository, DiscoveryView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
 		eventBus.subscribe(this, DiscoveryView.VIEW_NAME);
 	}
@@ -201,7 +200,7 @@ public class DiscoveryView extends CvView {
 		cvGrid.setHeaderVisible(false);
 		cvGrid.addColumn(voc -> {
 			agency = agencyService.findOne( voc.getAgencyId() );
-			return new VocabularyGridRow(voc, agency, configService);
+			return new VocabularyGridRowPublish(voc, agency, configService);
 		}, new ComponentRenderer()).setId("cvColumn");
 		// results.setRowHeight( 135.0 );
 		cvGrid.getColumn("cvColumn").setExpandRatio(1);

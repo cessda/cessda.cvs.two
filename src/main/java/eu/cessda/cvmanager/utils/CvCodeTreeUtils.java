@@ -10,6 +10,7 @@ import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.gesis.wts.domain.enumeration.Language;
 
 import com.vaadin.data.TreeData;
 
@@ -72,6 +73,8 @@ public class CvCodeTreeUtils{
 		};
 		return position;
 	}
+	
+	
 	
 	public static List<CodeDTO> getCodeDTOByConceptTree( TreeData<CVConcept> conceptTree){
 		List<CodeDTO> codes = new ArrayList<>();
@@ -180,4 +183,56 @@ public class CvCodeTreeUtils{
 			codeMaps.put( code.getNotation(), code);
 		}
 	}
+	
+	public static TreeData<CVConcept> generateCVConceptTreeFromCodeTree(TreeData<CodeDTO> codeTree, CVScheme cvScheme) {
+		TreeData<CVConcept> cvConceptTree = new TreeData<>();
+		
+		for(CodeDTO topCode : codeTree.getRootItems()) {
+			
+			CVConcept topCVConcept = new CVConcept();
+			topCVConcept.loadSkeleton(topCVConcept.getDefaultDialect());
+			topCVConcept.createId();
+			topCVConcept.setContainerId( cvScheme.getContainerId());
+			topCVConcept.setNotation( topCode.getNotation() );
+			
+			for( String langString: topCode.getLanguages()) {
+				Language lang = Language.getEnum(langString);
+				topCVConcept.setPrefLabelByLanguage(lang.toString(), topCode.getTitleByLanguage(lang));
+				topCVConcept.setDescriptionByLanguage(lang.toString(), topCode.getTitleByLanguage(lang));
+			}
+			// add root entry
+			topCVConcept.save();
+			cvConceptTree.addRootItems(topCVConcept);
+			
+			for(CodeDTO childCode : codeTree.getChildren(topCode)) {
+				generateCVConceptTreeNarrowerFromCodeTree(cvConceptTree, codeTree, cvScheme, topCVConcept, childCode);
+			}
+		}
+	
+		return cvConceptTree;
+	}
+	
+	private static void generateCVConceptTreeNarrowerFromCodeTree(TreeData<CVConcept> cvConceptTree, TreeData<CodeDTO> codeTree, CVScheme cvScheme, CVConcept parentCVConcept, CodeDTO childCode) {
+		
+		CVConcept newCVConcept = new CVConcept();
+		newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
+		newCVConcept.createId();
+		newCVConcept.setContainerId( cvScheme.getContainerId());
+		newCVConcept.setNotation( childCode.getNotation() );
+		
+		for( String langString: childCode.getLanguages()) {
+			Language lang = Language.getEnum(langString);
+			newCVConcept.setPrefLabelByLanguage(lang.toString(), childCode.getTitleByLanguage(lang));
+			newCVConcept.setDescriptionByLanguage(lang.toString(), childCode.getTitleByLanguage(lang));
+		}
+		// add narrower entry
+		newCVConcept.save();
+		cvConceptTree.addItem(parentCVConcept, newCVConcept);
+		
+		for(CodeDTO code : codeTree.getChildren( childCode )) {
+			generateCVConceptTreeNarrowerFromCodeTree(cvConceptTree, codeTree, cvScheme, newCVConcept, code);
+		}
+		
+	}
+	
 }

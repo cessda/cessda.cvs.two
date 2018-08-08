@@ -66,7 +66,6 @@ public class DialogCVSchemeWindow extends MWindow {
 	private final I18N i18n;
 	private final UIEventBus eventBus;
 	private final AgencyService agencyService;
-	private final VocabularyMapper vocabularyMapper;
 	private final VocabularyService vocabularyService;
 	private final StardatDDIService stardatDDIService;
 	private final VocabularySearchRepository vocabularySearchRepository;
@@ -104,15 +103,13 @@ public class DialogCVSchemeWindow extends MWindow {
 	private boolean isUpdated = false;
 
 	public DialogCVSchemeWindow(StardatDDIService stardatDDIService, AgencyService agencyService, 
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
-			VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, 
+			VocabularyService vocabularyService, VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, 
 			VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, I18N i18n, Language selectedLanguage,
 			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super( version.isPersisted() ?"Edit Vocabulary": "Add Vocabulary");
 		this.agencyService = agencyService;
 		this.cvScheme = cvScheme;
 		this.stardatDDIService = stardatDDIService;
-		this.vocabularyMapper = vocabularyMapper;
 		this.vocabularyService = vocabularyService;
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.vocabulary = vocabulary;

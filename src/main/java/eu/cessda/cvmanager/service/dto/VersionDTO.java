@@ -309,16 +309,18 @@ public class VersionDTO implements Serializable {
 		if( versionDTOs == null || versionDTOs.isEmpty() || language == null)
 			return Optional.empty();
 		
-		Stream<VersionDTO> sortedVersion = versionDTOs
-				.stream()
-				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
-				.filter( p -> language.equalsIgnoreCase( p.language ));
+		if( status != null ) {
+			return versionDTOs.stream()
+					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+					.filter( p -> language.equalsIgnoreCase( p.language ))
+					.filter( p -> status.equalsIgnoreCase( p.status ))
+					.findFirst();
+		}else
+			return versionDTOs
+					.stream()
+					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+					.filter( p -> language.equalsIgnoreCase( p.language )).findFirst();
 		
-		if( status != null )
-			sortedVersion
-			.filter( p -> status.equalsIgnoreCase( p.status ));
-		
-		return sortedVersion.findFirst();
 	}
 		
 	public boolean isPersisted() {

@@ -9,11 +9,14 @@ import org.gesis.stardat.entity.CVScheme;
 
 import com.vaadin.data.TreeData;
 
+import eu.cessda.cvmanager.service.dto.CodeDTO;
+
 public class CvItem {
 	private CVScheme cvScheme;
 	// for selected concept
 	private CVConcept cvConcept;
 	private TreeData<CVConcept> cvConceptTreeData;
+	private TreeData<CodeDTO> cvCodeTreeData;
 	
 	private String currentCvId;
 	private String currentNotation;
@@ -85,5 +88,11 @@ public class CvItem {
 	public void setCvConcept(CVConcept cvConcept) {
 		this.cvConcept = cvConcept;
 	}
-
+	public TreeData<CodeDTO> getCvCodeTreeData() {
+		return cvCodeTreeData;
+	}
+	public void setCvCodeTreeData(TreeData<CodeDTO> cvCodeTreeData) {
+		this.cvCodeTreeData = cvCodeTreeData;
+	}
+	
 }
