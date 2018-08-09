@@ -371,8 +371,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 		
 		String confirmInfo = null;
 		if( currentStatus.equals( Status.DRAFT.toString())) {
-//			nextStatus = Status.INITIAL_REVIEW.toString();
-			nextStatus = Status.FINAL_REVIEW.toString();
+			nextStatus = Status.INITIAL_REVIEW.toString();
+//			nextStatus = Status.FINAL_REVIEW.toString();
 			confirmInfo = "Are you sure that you want to change the state of CV-" + ( sourceLanguage.equals(selectedLanguage) ? "SL " : "TL ") + "\"" + currentVersion.getTitle() + "\" from " + currentStatus + " to " + nextStatus + "?";
 		}
 		else if( currentStatus.equals( Status.INITIAL_REVIEW.toString())) {
