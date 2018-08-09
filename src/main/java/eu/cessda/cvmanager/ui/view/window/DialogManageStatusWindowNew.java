@@ -417,8 +417,10 @@ public class DialogManageStatusWindowNew extends MWindow {
 								);
 								
 								vocabulary.setVersionByLanguage(selectedLanguage, versionNumberField.getValue());
-								if( selectedLanguage.equals( sourceLanguage ))
+								if( selectedLanguage.equals( sourceLanguage )) {
 									vocabulary.setVersionNumber( versionNumberField.getValue() );
+									vocabulary.setUri( currentVersion.getUri());
+								}
 								vocabulary.setUri( currentVersion.getUri());
 								if( selectedLanguage.equals( sourceLanguage ))
 									vocabulary.setPublicationDate( LocalDate.now());
