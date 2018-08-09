@@ -343,7 +343,7 @@ public class DialogAddLanguageWindowNew extends MWindow {
 		
 		// store new version
 		if( !version.isPersisted()) {
-			version.setUri( vocabulary.getUri() );
+//			version.setUri( vocabulary.getUri() );
 			version.setNotation( vocabulary.getNotation());
 			version.setNumber("0.0.1");
 			version.setStatus( Status.DRAFT.toString() );

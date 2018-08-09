@@ -17925,6 +17925,10 @@ div.v-layout.v-horizontal.v-widget {
 	margin-bottom: 4px;
 }
 
+.mytheme .yscroll {
+	overflow-y: scroll;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;

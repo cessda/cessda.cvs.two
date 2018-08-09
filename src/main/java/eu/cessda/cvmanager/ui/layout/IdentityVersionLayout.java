@@ -55,6 +55,7 @@ import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
 
 public class IdentityVersionLayout extends MCssLayout implements Translatable {
@@ -90,7 +91,7 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 	}
 
 	private void init() {
-		baseUrl = configService.getServerContextPath() + "/#!" + DetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
+		baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/";
 		
 		
 		Map<String, List<VersionDTO>> versionMap = VersionDTO.generateVersionMap( vocabulary.getVersions());
@@ -129,7 +130,7 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 		
 		infoVersion
 			.withValue("<h2>Source language</h2>" +
-					"<a href='" + baseUrl  + "?vers=" + versionDTO.getNumber()+ "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
+					"<a href='" + baseUrl + versionDTO.getUri()+ "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
 					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
 		
 		noteVersion

@@ -1303,8 +1303,8 @@ public class VocabularyDTO implements Serializable {
 		else
 			vocabulary.setStatus(cvScheme.getStatus());
 		
-		String versionTL = "0.0.1";
-		String versionSL = "1.0";
+		String versionTL =  null;
+		String versionSL = null;
 		
 		cvScheme.getLanguagesByTitle().forEach( lang -> {
 			if( !langs.contains( lang ))

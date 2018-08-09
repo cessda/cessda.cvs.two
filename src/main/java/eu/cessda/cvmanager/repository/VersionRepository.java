@@ -19,6 +19,9 @@ public interface VersionRepository extends JpaRepository<Version, Long> {
     @Query("select version from Version version left join fetch version.concepts where version.id =:id")
     Version findOneWithEagerRelationships(@Param("id") Long id);
 
-    @Query("select v from Version v where v.vocabulary.id =:vocabularyId order by v.itemType, v.language, v.number")
+    @Query("select v from Version v where v.vocabulary.id =:vocabularyId order by v.itemType, v.language, v.number DESC")
     List<Version> findAllByVocabulary(@Param("vocabularyId") Long vocabularyId);
+
+    @Query( "select v from Version v where v.uri = :cvUri" )
+	Version findByUri(@Param("cvUri") String cvUri);
 }

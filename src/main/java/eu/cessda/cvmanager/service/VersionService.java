@@ -53,6 +53,9 @@ public interface VersionService {
      * @param pageable the pagination information
      * @return the list of entities
      */
+    
+    VersionDTO getByUri(String cvUri);
+    
     Page<VersionDTO> search(String query, Pageable pageable);
     
     List<VersionDTO> findAllByVocabulary(Long vocabularyId);

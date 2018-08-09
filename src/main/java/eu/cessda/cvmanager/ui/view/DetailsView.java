@@ -621,13 +621,13 @@ public class DetailsView extends CvView {
 						)
 				);
 		
-		if( vocabulary.getStatus().equals( Status.PUBLISHED.toString()))
+		if( vocabulary.getStatus().equals( Status.PUBLISHED.toString()) && currentVersion.getPublicationDate() != null)
 			langVersDateLayout.add(
 					new MCssLayout()
 						.withStyleName("col-des-4")
 						.add(
 								lDate.withWidth("140px").withStyleName("leftPart"),
-								new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
+								new MLabel(currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 					);
 
 		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langVersDateLayout);
@@ -1062,6 +1062,11 @@ public class DetailsView extends CvView {
 				vocabulary = vocabularyService.findOne( vocabulary.getId());
 				updateDetailGrid();
 				
+				break;
+				
+			case CVSCHEME_NEWVERSION:
+				super.updateBreadcrumb();
+				setDetails();
 				break;
 
 //			case CVCONCEPT_TRANSLATION_DIALOG:

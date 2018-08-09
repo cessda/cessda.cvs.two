@@ -112,7 +112,7 @@ public class DialogCreateVersionWindow extends MWindow {
 	private MTextField versionNumberField = new MTextField();
 	private MCssLayout versionButtonLayout = new MCssLayout();
 	
-	private MButton buttonPublishCv = new MButton("Publish");
+	private MButton buttonPublishCv = new MButton("Create New Version");
 	private MButton cancelButton = new MButton("Cancel", e -> this.close());
 	
 	private boolean slVersioning;
@@ -250,14 +250,14 @@ public class DialogCreateVersionWindow extends MWindow {
 		versionHistoryLayout
 			.withFullWidth()
 			.withHeight("100px")
-			.withStyleName( "white-bg" )
+			.withStyleName( "yscroll","white-bg" )
 			.add(
 				new MLabel("Version History").withStyleName( "section-header" ).withFullWidth()
 			);
 		
 		versionHistoryLayout
 			.add(
-				new MLabel( currentVersion.getVersionNotes() ).withContentMode( ContentMode.HTML )
+				new MLabel( currentVersion.getSummary() == null ? "no prior version" : currentVersion.getSummary() ).withContentMode( ContentMode.HTML )
 			);
 		
 		versionNotesLabel
@@ -332,6 +332,14 @@ public class DialogCreateVersionWindow extends MWindow {
 					VersionDTO targetVersion = cv.getVersionOption().getValue();
 					VersionDTO newVersion = VersionDTO.clone(targetVersion, SecurityUtils.getLoggedUser().getId(), versionNumber );
 					newVersion.setDiscussionNotes( discussionArea.getValue() );
+					
+					CVScheme newCvScheme = new CVScheme();
+					newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
+					newCvScheme.createId();
+					newCvScheme.setContainerId(newCvScheme.getId());
+					
+					newVersion.setUri( newCvScheme.getContainerId() );
+					
 					newVersion = versionService.save(newVersion);
 					// save concepts
 					for( CodeDTO code: codes) {
@@ -352,6 +360,7 @@ public class DialogCreateVersionWindow extends MWindow {
 			// reindex
 			vocabularyService.index(vocabulary);
 			
+			eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_NEWVERSION, null) );
 			close();
 			UI.getCurrent().getNavigator().navigateTo( DetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
 	}

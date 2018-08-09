@@ -87,10 +87,10 @@ public class Version implements Serializable{
     @Column(name = "definition")
     private String definition;
     
-    @Column(name = "previous_version", nullable = false)
+    @Column(name = "previous_version")
     private Long previousVersion;
     
-    @Column(name = "initial_version", nullable = false)
+    @Column(name = "initial_version")
     private Long initialVersion;
     
     @Column(name = "creator")

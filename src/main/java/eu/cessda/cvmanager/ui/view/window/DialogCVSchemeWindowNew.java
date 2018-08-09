@@ -95,7 +95,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
 	
-	private Binder<CVScheme> binder = new Binder<CVScheme>();
+	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
 	private Language language;
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -226,7 +226,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 //		setLanguage(language);
 		setCvScheme(cvScheme);	
 
-		binder.setBean(getCvScheme());
+		binder.setBean( version );
 		
 		tfCode.withFullWidth();
 		tfCode.addValueChangeListener( e -> {
@@ -361,16 +361,16 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			}
 		}
 		//agency
-		List<CVEditor> editorSet = getCvScheme().getOwnerAgency();
-		if(editorSet ==  null)
-			editorSet = new ArrayList<>();
-		else
-			editorSet.clear();
-		CVEditor cvEditor = new CVEditor();
-		cvEditor.setName( agency.getName());
-		cvEditor.setLogoPath( agency.getLogopath());
-		
-		editorSet.add( cvEditor );
+//		List<CVEditor> editorSet = getCvScheme().getOwnerAgency();
+//		if(editorSet ==  null)
+//			editorSet = new ArrayList<>();
+//		else
+//			editorSet.clear();
+//		CVEditor cvEditor = new CVEditor();
+//		cvEditor.setName( agency.getName());
+//		cvEditor.setLogoPath( agency.getLogopath());
+//		
+//		editorSet.add( cvEditor );
 		
 		// prevent storing in flatDB
 		
@@ -403,14 +403,15 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			version.setStatus( Status.DRAFT.toString() );
 			version.setItemType( ItemType.SL.toString());
 			version.setLanguage( language.name().toLowerCase() );
-			version.setPreviousVersion( 0L );
-			version.setInitialVersion( 0L );
+			version.setPreviousVersion(0L);
+			version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId());
 			
 			// save to database
 			vocabulary = vocabularyService.save(vocabulary);
 			
 			version.setVocabularyId( vocabulary.getId() );
 			version = versionService.save( version );
+			version.setInitialVersion( version.getId() );
 			
 			vocabulary.addVersions(version);
 			vocabulary.addVers(version);
@@ -449,9 +450,10 @@ public class DialogCVSchemeWindowNew extends MWindow {
 	}
 
 	private boolean isInputValid() {
-		getCvScheme().setCode(tfCode.getValue());
-		getCvScheme().setTitleByLanguage(language.toString(), tfTitle.getValue());
-		getCvScheme().setDescriptionByLanguage(language.toString(), description.getValue());
+		
+		version.setNotation( tfCode.getValue() );
+		version.setTitle( tfTitle.getValue() );
+		version.setDefinition( description.getValue() );
 		
 		System.out.println( vocabularyService.existsByNotation( tfCode.getValue() ));
 		
@@ -461,36 +463,25 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			.forField( tfCode)
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))
 			.withValidator(p -> !vocabularyService.existsByNotation( p ), "code is already exist")
-			.bind( concept -> concept.getCode(),
-					(concept, value) -> concept.setCode(value));
+			.bind( v -> v.getNotation(),(v, value) -> v.setNotation(value));
 		}
 		
 		binder
 		.forField( tfTitle)
 		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-		.bind(concept -> getTitleByLanguage(concept),
-			(concept, value) -> setTitleByLanguage(concept, value));
+		.bind(v -> v.getTitle(),
+			(v, value) -> v.setTitle( value));
 
 		binder
 		.forField( description)
 		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
-		.bind(concept -> getDescriptionByLanguage(concept),
-			(concept, value) -> setDescriptionByLanguage(concept, value));
+		.bind(v -> v.getDefinition(),
+			(v, value) -> v.setDefinition( value ));
 		
 		binder.validate();
 		return binder.isValid();
 	}
 
-	private CVScheme setTitleByLanguage(CVScheme concept, String value) {
-		concept.setTitleByLanguage( language.toString(), value);
-		return concept;
-	}
-
-	private String getTitleByLanguage(CVScheme concept) {
-
-		return concept.getTitleByLanguage( language.toString());
-
-	}
 
 	private CVScheme setDescriptionByLanguage(CVScheme concept, String value) {
 		concept.setDescriptionByLanguage(language.toString(), value);

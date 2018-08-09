@@ -322,7 +322,7 @@ public class DetailView extends CvView {
 		// update breadcrumb
 		breadcrumbs
 			.addItem(getAgency().getName(), "agency")
-			.addItem( vocabulary.getNotation() + " " + vocabulary.getVersionNumber() + " (" + vocabulary.getStatus() + ")", null)
+			.addItem( vocabulary.getNotation() + " " + currentVersion.getNumber(), null)
 			.build();
 
 		initTopViewSection();
@@ -366,34 +366,25 @@ public class DetailView extends CvView {
 		List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
 		
 		// find in Vocabulary entity as well
-		setVocabulary(  vocabularyService.getByUri( cvItem.getCurrentCvId() ) );
+		currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
+		vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
 		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
 			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
 		}
 		
-		if( getVocabulary() == null ) {
-			
-			String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
-			if( owner != null && !owner.isEmpty() )
-				setAgency( agencyService.findByName( owner));
-			
-			if( getAgency() == null)
-				setAgency( agencyService.findOne(1L) );
-			
-			setVocabulary( VocabularyDTO.generateFromCVScheme( cvItem.getCvScheme()) );
-			
-			getVocabulary().setAgencyId( getAgency().getId());
-			getVocabulary().setAgencyName( getAgency().getName());
-		} else {
-			setAgency( agencyService.findByName( getVocabulary().getAgencyName()));
-		}
+		String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
+		if( owner != null && !owner.isEmpty() )
+			setAgency( agencyService.findByName( owner));
+		
+		if( getAgency() == null)
+			setAgency( agencyService.findOne(1L) );
+		
 		
 		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
 		
-		sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage().toString());
-		if(selectedLang == null )
-			selectedLang = sourceLanguage;
+		sourceLanguage = Language.getEnumByName( "english");
+		selectedLang = Language.getEnumByName( currentVersion.getLanguage());
 		
 //		editorCvActionLayout.setSourceLanguage( sourceLanguage );
 //		editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
@@ -416,27 +407,6 @@ public class DetailView extends CvView {
 			if( item.equalsIgnoreCase( selectedLang.toString() ))
 				langButton.addStyleName( "button-language-selected" );
 			
-			// determine the status
-			vocabulary.getLatestVersionByLanguage( Language.getEnum(item).name().toLowerCase())
-			.ifPresent( versionDTO -> {
-				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
-					// TODO: check detail for editor or publication page
-//					if( !breadcrumbItemMap.isEmpty() && breadcrumbItemMap.get("editor-search") != null )
-						langButton.addStyleName( "status-draft" );
-//					else
-//						langButton.setVisible( false );
-				}
-				else if( versionDTO.getStatus().equals( Status.INITIAL_REVIEW.toString())) {
-//					if( !breadcrumbItemMap.isEmpty() && breadcrumbItemMap.get("editor-search") != null )
-						langButton.addStyleName( "status-review-initial" );
-//					else
-//						langButton.setVisible( false );
-				}
-				else if( versionDTO.getStatus().equals( Status.FINAL_REVIEW.toString())) {
-					langButton.addStyleName( "status-review-final" );
-				}
-			});
-			
 			langButton.addClickListener(e -> {
 				applyButtonStyle(e.getButton());
 				
@@ -451,20 +421,12 @@ public class DetailView extends CvView {
 //				editorCvActionLayout.setSelectedLanguage(selectedLang);
 //				editorCodeActionLayout.setSelectedLanguage(selectedLang);
 				
-				currentVersion = null;
 //				editorCvActionLayout.setCurrentVersion( null );
 //				editorCodeActionLayout.setCurrentVersion( null );
-				vocabulary.getLatestVersionByLanguage(selectedLang)
-					.ifPresent( v -> {
-//						editorCvActionLayout.setCurrentVersion(v);
-//						editorCodeActionLayout.setCurrentVersion(v);
-						currentVersion = v;
-						
-						versionLabel.setValue( currentVersion.getNumber() + (selectedLang.equals( sourceLanguage ) ? ""
-								: "-" + selectedLang.toString())  + 
-								( currentVersion.getStatus().equals( Status.PUBLISHED.toString() ) ? "":" (" + currentVersion.getStatus() + ")"));
-					});
-				
+
+				versionLabel.setValue( currentVersion.getNumber() + (selectedLang.equals( sourceLanguage ) ? ""
+						: "-" + selectedLang.toString())  + 
+						( currentVersion.getStatus().equals( Status.PUBLISHED.toString() ) ? "":" (" + currentVersion.getStatus() + ")"));
 				
 				initTopViewSection();
 //				initTopEditSection();
@@ -559,14 +521,13 @@ public class DetailView extends CvView {
 						)
 				);
 		
-		if( vocabulary.getStatus().equals( Status.PUBLISHED.toString()))
-			langVersDateLayout.add(
-					new MCssLayout()
-						.withStyleName("col-des-4")
-						.add(
-								lDate.withWidth("140px").withStyleName("leftPart"),
-								new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
-					);
+		langVersDateLayout.add(
+				new MCssLayout()
+					.withStyleName("col-des-4")
+					.add(
+							lDate.withWidth("140px").withStyleName("leftPart"),
+							new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
+				);
 
 		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langVersDateLayout);
 	}
@@ -618,7 +579,7 @@ public class DetailView extends CvView {
 			.setExpandRatio(1)
 			.setId("prefLabelSl");
 
-		if( !selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ) ))
+		if( !selectedLang.equals( Language.getEnumByName( "english" ) ))
 			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang.toString()))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 				//.setEditorBinding(prefLabelBinding)
@@ -633,7 +594,7 @@ public class DetailView extends CvView {
 				.setExpandRatio(3)
 				.setId("definitionSl");
 		
-		if( !selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ) ))
+		if( !selectedLang.equals( Language.getEnumByName( "english" ) ))
 			detailTreeGrid.addColumn(concept -> {
 				return new MLabel( concept.getDescriptionByLanguage(selectedLang.toString())).withStyleName( "word-brake-normal" );
 			}, new ComponentRenderer())

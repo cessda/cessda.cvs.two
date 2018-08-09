@@ -284,17 +284,16 @@ public class DialogManageStatusWindowNew extends MWindow {
 		versionHistoryLayout
 			.withFullWidth()
 			.withHeight("100px")
-			.withStyleName( "white-bg" )
+			.withStyleName( "yscroll","white-bg" )
 			.add(
 				new MLabel("Version History").withStyleName( "section-header" ).withFullWidth()
 			);
 		
-		// TODO: Fix after versioning activated
 		versionHistoryLayout
 			.add(
-				new MLabel("No prior version").withContentMode( ContentMode.HTML )
+				new MLabel( currentVersion.getSummary() == null ? "no prior version" : currentVersion.getSummary() ).withContentMode( ContentMode.HTML )
 			);
-		
+			
 		versionNotesLabel
 			.withFullWidth()
 			.withStyleName("section-header")
@@ -311,10 +310,15 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.withStyleName("pull-left")
 			.setWidth("80px");
 		
-		if( sourceLanguage.equals( selectedLanguage ))
-			versionNumberField.setValue("1.0");
-		else
-			versionNumberField.setValue("1.0.1");
+		if( currentVersion.getNumber() == null) {
+			if( sourceLanguage.equals( selectedLanguage ))
+				versionNumberField.setValue("1.0");
+			else
+				versionNumberField.setValue( vocabulary.getVersionEn() + ".1");
+		}
+		else {
+			versionNumberField.setValue( currentVersion.getNumber() );
+		}
 		
 		versionButtonLayout
 		.withStyleName("button-layout")
@@ -404,7 +408,17 @@ public class DialogManageStatusWindowNew extends MWindow {
 								currentVersion.setVersionNotes( versionNotes.getValue());
 								currentVersion.setNumber( versionNumberField.getValue());
 								currentVersion.setPublicationDate( LocalDate.now());
+								// add summary
+								currentVersion.setSummary(
+									(currentVersion.getSummary() == null ? "":currentVersion.getSummary()) +"<br/><br/>"+
+									"<strong>" + currentVersion.getNumber() + "</strong>"+
+									" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + currentVersion.getPublicationDate() +
+									"notes:<br/>" + currentVersion.getVersionNotes()
+								);
+								
 								vocabulary.setVersionByLanguage(selectedLanguage, versionNumberField.getValue());
+								if( selectedLanguage.equals( sourceLanguage ))
+									vocabulary.setVersionNumber( versionNumberField.getValue() );
 								vocabulary.setUri( currentVersion.getUri());
 								if( selectedLanguage.equals( sourceLanguage ))
 									vocabulary.setPublicationDate( LocalDate.now());
@@ -487,56 +501,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			}
 			
 			// save also in the cv scheme
-			if (cvScheme == null) {
-				CVScheme newCvScheme = new CVScheme();
-				newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-				newCvScheme.setId( currentVersion.getUri());
-				newCvScheme.setContainerId(newCvScheme.getId());
-				newCvScheme.setStatus( Status.PUBLISHED.toString() );
-				
-				CVVersion cvVersion = new CVVersion();
-				cvVersion.setContainerId( newCvScheme.getContainerId());
-				cvVersion.setType( currentVersion.getNumber() );
-				
-				newCvScheme.setVersion(cvVersion);
-				
-				
-				// Store also Owner Agency, Vocabulary and codes
-				// store vocabulary content
-				newCvScheme = VocabularyDTO.setCvSchemeByVocabulary(newCvScheme, vocabulary);
-				
-				// store owner agency
-				List<CVEditor> editorSet = new ArrayList<>();
-				CVEditor cvEditor = new CVEditor();
-				cvEditor.setName( agency.getName());
-				cvEditor.setLogoPath( agency.getLogopath());
-				
-				editorSet.add( cvEditor );
-				newCvScheme.setOwnerAgency((ArrayList<CVEditor>) editorSet);
-				
-				newCvScheme.setCode( vocabulary.getNotation());
-				
-				newCvScheme.save();
-				DDIStore ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
-				
-				//refresh cvScheme
-				newCvScheme = new CVScheme(ddiStore);
-				 
-				// store complete codeDTOs to CVConcept
-				TreeData<CodeDTO> codeTree = new TreeData<>();
-				CvCodeTreeUtils.buildCvConceptTree(newCodes, codeTree);
-				
-				// generate tree concept
-				TreeData<CVConcept> cvConceptTree = new TreeData<>();
-				cvConceptTree = CvCodeTreeUtils.generateCVConceptTreeFromCodeTree(codeTree, newCvScheme);
-				
-				// save all cvConcepts and update cvScheme
-				storeCvConceptTree( cvConceptTree , newCvScheme);
-				
-			} 
-			// cvScheme already exist "in case that CV is imported"
-			else 
-			{
+			if (cvScheme != null && cvScheme.getContainerId().equals( currentVersion.getUri())) {
 				cvScheme.setStatus( nextStatus );
 				cvScheme.setOrderedMemberList( null );
 				cvScheme.save();
@@ -578,6 +543,61 @@ public class DialogManageStatusWindowNew extends MWindow {
 				
 				// save all cvConcepts and update cvScheme
 				storeCvConceptTree( cvConceptTree , cvScheme);
+				
+				
+			} 
+			// cvScheme already exist "in case that CV is imported"
+			else 
+			{
+				
+				CVScheme newCvScheme = new CVScheme();
+				newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
+				newCvScheme.setId( currentVersion.getUri());
+				newCvScheme.setContainerId(newCvScheme.getId());
+				newCvScheme.setStatus( Status.PUBLISHED.toString() );
+				
+//				CVVersion cvVersion = new CVVersion();
+//				cvVersion.setContainerId( newCvScheme.getContainerId());
+//				cvVersion.setType( currentVersion.getNumber() );
+//				
+//				newCvScheme.setVersion(cvVersion);
+				
+				
+				// Store also Owner Agency, Vocabulary and codes
+				// store vocabulary content
+				newCvScheme = VocabularyDTO.setCvSchemeByVocabulary(newCvScheme, vocabulary);
+				
+				// store owner agency
+				List<CVEditor> editorSet = new ArrayList<>();
+				CVEditor cvEditor = new CVEditor();
+				cvEditor.setName( agency.getName());
+				cvEditor.setLogoPath( agency.getLogopath());
+				
+				editorSet.add( cvEditor );
+				newCvScheme.setOwnerAgency((ArrayList<CVEditor>) editorSet);
+				
+				newCvScheme.setCode( vocabulary.getNotation());
+				
+				newCvScheme.save();
+				DDIStore ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
+				// TODO: fix unable to store nameCode
+				//refresh cvScheme
+				newCvScheme = new CVScheme(ddiStore);
+				newCvScheme.setCode( vocabulary.getNotation());
+				newCvScheme = new CVScheme( stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Cv add missing nameCode"));
+				
+				 
+				// store complete codeDTOs to CVConcept
+				TreeData<CodeDTO> codeTree = new TreeData<>();
+				CvCodeTreeUtils.buildCvConceptTree(newCodes, codeTree);
+				
+				// generate tree concept
+				TreeData<CVConcept> cvConceptTree = new TreeData<>();
+				cvConceptTree = CvCodeTreeUtils.generateCVConceptTreeFromCodeTree(codeTree, newCvScheme);
+				
+				// save all cvConcepts and update cvScheme
+				storeCvConceptTree( cvConceptTree , newCvScheme);
+				
 			}
 		}
 		else 	// Publishing TL

@@ -156,5 +156,11 @@ public class VersionServiceImpl implements VersionService {
 	        .collect(Collectors.toCollection(LinkedList::new));
 	}
 
+	@Override
+	public VersionDTO getByUri(String cvUri) {
+		Version version = versionRepository.findByUri( cvUri );
+		return versionMapper.toDto( version );
+	}
+
 
 }
