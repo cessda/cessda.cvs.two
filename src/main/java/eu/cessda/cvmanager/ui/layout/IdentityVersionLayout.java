@@ -70,11 +70,13 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 	private final VocabularyChangeService vocabularyChangeService;
 	private final ConfigurationService configService;
 	private String baseUrl;
+	private String currentVersionNumber;
 	
 	public IdentityVersionLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO,
 			VocabularyChangeService vocabularyChangeService,
-			ConfigurationService configService) {
+			ConfigurationService configService,
+			String currentVersionNumber) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
@@ -83,6 +85,7 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 		this.vocabulary = vocabularyDTO;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.configService = configService;
+		this.currentVersionNumber = currentVersionNumber;
 		
 		this
 			.withFullWidth();
@@ -92,19 +95,26 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 
 	private void init() {
 		baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/";
-		
+		boolean showSlVersion = false;
+		boolean showTlVersion = false;
 		
 		Map<String, List<VersionDTO>> versionMap = VersionDTO.generateVersionMap( vocabulary.getVersions());
 		
 		for(Map.Entry<String,List<VersionDTO>> eachVersions : versionMap.entrySet()) {
 			if(eachVersions.getKey().startsWith( ItemType.SL.toString())) {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
-					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()))
+					if( orderedVer.getNumber().indexOf( currentVersionNumber ) == 0) 
+						showSlVersion = true;
+					
+					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showSlVersion)
 						this.add( generateVersionSl(orderedVer));
 				}
 			} else {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
-					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()))
+					if( orderedVer.getNumber().indexOf( currentVersionNumber ) == 0) 
+						showTlVersion = true;
+					
+					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showTlVersion)
 						this.add( generateVersionTl(orderedVer));
 				}
 			}

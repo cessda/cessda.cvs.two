@@ -346,8 +346,9 @@ public class VersionDTO implements Serializable {
 			List<VersionDTO> eachValues = eachVersions.getValue();
 			
 			eachValues = eachValues.stream()
-						.sorted( (v1, v2) -> v1.getPreviousVersion().compareTo( v2.getPreviousVersion()))
+						.sorted( (v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion()))
 						.collect( Collectors.toList());
+			versionMap.put( eachVersions.getKey(), eachValues);
 		}
 		
 		return versionMap;

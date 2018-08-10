@@ -755,7 +755,7 @@ public class DetailsView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService);
+		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentSLVersion.getNumber());
 		identifyLayout.add( identityVersionLayout );
 		
 //		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);

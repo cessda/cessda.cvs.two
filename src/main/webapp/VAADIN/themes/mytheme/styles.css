@@ -17929,6 +17929,11 @@ div.v-layout.v-horizontal.v-widget {
 	overflow-y: scroll;
 }
 
+.mytheme .alert-warning {
+	font-size: 1.5em;
+	text-align: center;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;

@@ -134,6 +134,7 @@ public class DetailView extends CvView {
 	private MCssLayout bottomSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomViewSection = new MCssLayout().withFullWidth();
 //	private MCssLayout bottomEditSection = new MCssLayout().withFullWidth();
+	private MCssLayout newerVersionAvailable = new MCssLayout();
 	
 	private MCssLayout detailLayout = new MCssLayout().withFullWidth();
 	private MCssLayout identifyLayout = new MCssLayout().withFullWidth();
@@ -180,6 +181,7 @@ public class DetailView extends CvView {
 	
 	private VersionDTO currentVersion;
 	private ConceptDTO currentConcept;
+	private VersionDTO latestSlVersion;
 	
 	private MLabel versionLabel = new MLabel();
 
@@ -369,6 +371,8 @@ public class DetailView extends CvView {
 		currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
 		vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
 		
+		
+		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
 			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
 		}
@@ -461,6 +465,30 @@ public class DetailView extends CvView {
 
 	private void initTopViewSection() {
 		topViewSection.removeAllComponents();
+		
+		vocabulary
+		.getLatestVersionByLanguage( sourceLanguage.name().toLowerCase(), null, Status.PUBLISHED.toString())
+		.ifPresent( slVersion -> {
+			latestSlVersion = slVersion;
+			// warning about newer version
+			if( latestSlVersion.getId() > currentVersion.getId()) {
+				String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/";
+				newerVersionAvailable.removeAllComponents();
+				newerVersionAvailable
+					.withWidth("100%")
+					.withStyleName( "alert alert-warning" )
+					.add(
+						new MLabel()
+							.withContentMode( ContentMode.HTML)
+							.withValue(
+								"Newer version is available " +
+										"<a href='" + baseUrl + latestSlVersion.getUri()+ "'>" + latestSlVersion.getNotation() + ". " + latestSlVersion.getNumber() +"</a> "
+							)
+					);
+				
+				topViewSection.add( newerVersionAvailable );
+			}
+		});
 
 		MLabel topTitle = new MLabel();
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
@@ -663,7 +691,7 @@ public class DetailView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService);
+		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentVersion.getNumber());
 		identifyLayout.add( identityVersionLayout );
 		
 		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
