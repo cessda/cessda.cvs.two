@@ -334,7 +334,8 @@ public class DialogAddLanguageWindowNew extends MWindow {
 			}
 		}
 		
-//		prevent storing in FlatDB
+//		prevent storing in FlatDB			
+
 //		getCvScheme().save();
 //		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add CV translation");
 		

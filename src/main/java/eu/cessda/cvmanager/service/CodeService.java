@@ -88,4 +88,6 @@ public interface CodeService {
 	void deleteCodeTree( CodeDTO pivotCode, Long vocabularyId);
 	
 	void deleteCodeTree( TreeData<CodeDTO> treeData, CodeDTO code);
+	
+	void storeCodeTree( TreeData<CodeDTO> treeData);
 }

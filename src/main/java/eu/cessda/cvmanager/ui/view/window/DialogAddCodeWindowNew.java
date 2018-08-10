@@ -72,8 +72,10 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 	private MLabel lTitle = new MLabel( "Descriptive term" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language (source)" );
+	
 
 	private MVerticalLayout layout = new MVerticalLayout();
+	private MTextField parentNotation = new MTextField();
 	private MTextField notation = new MTextField();
 	private TextField preferedLabel = new TextField();
 	private TextArea description = new TextArea();
@@ -141,7 +143,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 		
 		preferedLabel.setWidth("100%");
 		description.setSizeFull();
-		notation.withWidth("85%");
+		
 
 		setTheCode(newCode);
 
@@ -159,23 +161,50 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^A-Za-z]", ""));
 		});
 		
+		if( parentCode != null )  {
+			notation.withWidth("80%");
+			parentNotation
+				.withReadOnly( true )
+				.withWidth("100%")
+				.withValue( parentCode.getNotation() + ".");
+			row1
+				.withFullWidth()
+				.add(
+					new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+							lNotation, parentNotation, notation
+					)
+					.withExpand(lNotation, 0.215f)
+					.withExpand(parentNotation, 0.290f)
+					.withExpand(notation, 0.490f),
+					new MHorizontalLayout().add(
+							lLanguage, languageCb
+					)
+			).withExpand( row1.getComponent(0), 0.7f)
+			 .withExpand( row1.getComponent(1), 0.3f);
+		} else {
+			notation.withWidth("85%");
+			row1
+				.withFullWidth()
+				.add(
+					new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+							lNotation, notation
+					).withExpand(lNotation, 0.215f).withExpand(notation, 0.785f),
+					new MHorizontalLayout().add(
+							lLanguage, languageCb
+					)
+			).withExpand( row1.getComponent(0), 0.7f)
+			 .withExpand( row1.getComponent(1), 0.3f);
+		}
+		
 		layout
 			.withHeight("98%")
 			.withStyleName("dialog-content")
 			.add( 
-				row1
-					.withFullWidth()
-					.add(
-						new MHorizontalLayout()
-						.withFullWidth()
-						.add(
-								lNotation, notation
-						).withExpand(lNotation, 0.215f).withExpand(notation, 0.785f),
-						new MHorizontalLayout().add(
-								lLanguage, languageCb
-						)
-				).withExpand( row1.getComponent(0), 0.7f)
-				 .withExpand( row1.getComponent(1), 0.3f),
+				row1,
 				new MHorizontalLayout()
 					.withFullWidth()
 					.add(
@@ -234,40 +263,32 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 //			DDIStore ddiStoreCv = stardatDDIService.saveElement(parentCvConcept.ddiStore, "User", "Add Code");
 //		}
 		
-		code.setNotation( notation.getValue() );
+		
 		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
 		
-		concept.setNotation( notation.getValue() );
+		
 		concept.setTitle( preferedLabel.getValue() );
 		concept.setDefinition( description.getValue() );
 		
+		if( !code.isPersisted() ) {
+			code.setSourceLanguage( language.name().toLowerCase());
+			code.setVocabularyId( vocabulary.getId() );
+		}
+		
 		// save the code
 		if( parentCode == null) {
-			if( !code.isPersisted() ) {
-				code.setUri( vocabulary.getNotation() +"_" + code.getNotation() );
-				code.setSourceLanguage( language.name().toLowerCase());
-				code.setVocabularyId( vocabulary.getId() );
-			}
+			code.setNotation( notation.getValue() );
+			code.setUri( code.getNotation() );
+			concept.setNotation( notation.getValue() );
+			
 			code = codeService.save(code);
-			
-			// save to concept
-			if( !concept.isPersisted()) {
-				vocabulary.addCode(code);
-				concept.setCodeId( code.getId());
-				concept.setVersionId( version.getId() );
-				concept = conceptService.save(concept);
-				version.addConcept(concept);
-				version = versionService.save(version);
-			}
 		} else {
-			if( !code.isPersisted() ) {
-				code.setUri( vocabulary.getNotation() +"_" + code.getNotation() );
-				code.setSourceLanguage( language.name().toLowerCase());
-				code.setVocabularyId( vocabulary.getId() );
-			}
-			code.setParent( parentCode.getUri());
+			code.setNotation( parentCode.getNotation() + "." + notation.getValue());
+			code.setUri( code.getNotation() );
+			concept.setNotation( parentCode.getNotation() + "." + notation.getValue());
+			code.setParent( parentCode.getNotation());
 			
-			List<CodeDTO> codeDTOs = codeService.findByVocabulary( vocabulary.getId());
+			List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
 			// re-save tree structure 
 			TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
 			codeTreeData.addItem(parentCode, code);
@@ -279,16 +300,15 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 				else
 					codeService.save(eachCode);
 			}
-			
-			// save to concept
-			if( !concept.isPersisted()) {
-				vocabulary.addCode(code);
-				concept.setCodeId( code.getId());
-				concept = conceptService.save(concept);
-				version.addConcept(concept);
-				version = versionService.save(version);
-			}
-			
+		}
+		// save to concept
+		if( !concept.isPersisted()) {
+			vocabulary.addCode(code);
+			concept.setCodeId( code.getId());
+			concept.setVersionId( version.getId() );
+			concept = conceptService.save(concept);
+			version.addConcept(concept);
+			version = versionService.save(version);
 		}
 
 		// save change log

@@ -413,7 +413,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 									(currentVersion.getSummary() == null ? "":currentVersion.getSummary()) +
 									"<strong>" + currentVersion.getNumber() + "</strong>"+
 									" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + currentVersion.getPublicationDate() +
-									"<br/>notes:<br/>" + currentVersion.getVersionNotes()
+									"<br/>notes:<br/>" + currentVersion.getVersionNotes() + "<br/><br/>"
 								);
 								
 								vocabulary.setVersionByLanguage(selectedLanguage, versionNumberField.getValue());

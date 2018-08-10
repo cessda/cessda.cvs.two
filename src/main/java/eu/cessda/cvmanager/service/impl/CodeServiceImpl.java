@@ -194,7 +194,16 @@ public class CodeServiceImpl implements CodeService {
 
 	@Override
 	public void deleteCodeTree(TreeData<CodeDTO> treeData, CodeDTO code) {
-		treeData.getChildren(code).forEach( c -> deleteCodeTree(treeData, c));
+		treeData.getChildren(code).forEach( c -> {
+			// delete also related concept
+			List<ConceptDTO> concepts = conceptService.findAllByCode( c.getId());
+			for( ConceptDTO concept: concepts)
+				conceptService.delete( concept.getId());
+			
+			deleteCodeTree(treeData, c);
+		});
+		
+		
 		delete(code);
 	}
 
@@ -236,5 +245,34 @@ public class CodeServiceImpl implements CodeService {
         return codeRepository.findWorkflowCodesByVocabulary(vocabularyId).stream()
             .map(codeMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
+	}
+
+	@Override
+	public void storeCodeTree( TreeData<CodeDTO> codeTree){
+		int position = 0;
+		for(CodeDTO codeRoot: codeTree.getRootItems()) {
+			codeRoot.setPosition(position);
+			codeRoot.setParent( null );
+			
+			// store top code
+			save(codeRoot);
+			position++;
+			if( !codeTree.getChildren( codeRoot).isEmpty())
+				position = traverseChildCode(  codeTree, codeRoot, codeTree.getChildren(codeRoot), position );
+		};
+	}
+	
+	private int traverseChildCode( TreeData<CodeDTO> codeTree,
+			CodeDTO codeParent, List<CodeDTO> codesChild, Integer position) {
+		for(CodeDTO code: codesChild) {
+			code.setPosition(position);
+			code.setParent( codeParent.getNotation());
+			// store code
+			save(code);
+			position++;
+			if( !codeTree.getChildren( code ).isEmpty())
+				position = traverseChildCode(  codeTree, code, codeTree.getChildren( code ), position );
+		};
+		return position;
 	}
 }
