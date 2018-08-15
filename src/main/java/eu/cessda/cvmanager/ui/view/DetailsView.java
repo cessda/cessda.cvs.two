@@ -355,7 +355,7 @@ public class DetailsView extends CvView {
 		// update breadcrumb
 		breadcrumbs
 			.addItem(getAgency().getName(), "agency")
-			.addItem( currentVersion.getNotation() + " " + currentVersion.getNumber() + " (" + currentVersion.getStatus() + ")", null)
+			.addItem( currentVersion.getNotation() + " " + (currentVersion.getNumber() == null ? "":currentVersion.getNumber()) + " (" + currentVersion.getStatus() + ")", null)
 			.build();
 
 		initTopViewSection();
@@ -440,7 +440,7 @@ public class DetailsView extends CvView {
 		
 		
 		// determine source langauge
-		sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage().toString());
+		sourceLanguage = Language.valueOfEnum( vocabulary.getSourceLanguage());
 		if(selectedLang == null )
 			selectedLang = sourceLanguage;
 		
@@ -475,7 +475,7 @@ public class DetailsView extends CvView {
 				langButton.addStyleName( "button-language-selected" );
 			
 			// determine the status
-			vocabulary.getLatestVersionByLanguage( eachLanguage.name().toLowerCase(), versionNumber)
+			vocabulary.getLatestVersionByLanguage( eachLanguage.toString(), versionNumber)
 			.ifPresent( versionDTO -> {
 				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
 					// TODO: check detail for editor or publication page
@@ -516,8 +516,8 @@ public class DetailsView extends CvView {
 						editorCodeActionLayout.setCurrentVersion(v);
 						currentVersion = v;
 						
-						versionLabel.setValue( currentVersion.getNumber() + (selectedLang.equals( sourceLanguage ) ? ""
-								: "-" + selectedLang.toString())  + 
+						versionLabel.setValue( (currentVersion.getNumber() == null ? "":currentVersion.getNumber()) + 
+								(selectedLang.equals( sourceLanguage ) ? "": "-" + selectedLang.toString())  + 
 								( currentVersion.getStatus().equals( Status.PUBLISHED.toString() ) ? "":" (" + currentVersion.getStatus() + ")"));
 					});
 				
@@ -676,7 +676,7 @@ public class DetailsView extends CvView {
 			.setExpandRatio(1)
 			.setId("prefLabelSl");
 
-		if( !selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ) ))
+		if( !selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() ) ))
 			detailTreeGridNew.addColumn(code -> code.getTitleByLanguage(selectedLang))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 				.setExpandRatio(1)
@@ -689,7 +689,7 @@ public class DetailsView extends CvView {
 				.setExpandRatio(3)
 				.setId("definitionSl");
 		
-		if( !selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ) ))
+		if( !selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() ) ))
 			detailTreeGridNew.addColumn(code -> {
 				return new MLabel( code.getDefinitionByLanguage(selectedLang)).withStyleName( "word-brake-normal" );
 			}, new ComponentRenderer())

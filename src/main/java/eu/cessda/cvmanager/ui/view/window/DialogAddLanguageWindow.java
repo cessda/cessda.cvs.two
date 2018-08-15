@@ -125,7 +125,7 @@ public class DialogAddLanguageWindow extends MWindow {
 			tfTitle.setValue( version.getTitle());
 			description.setValue( version.getDefinition());
 			
-			Language selectedLanguage = Language.getEnumByName( version.getLanguage());
+			Language selectedLanguage = Language.valueOfEnum( version.getLanguage());
 			languageCb.setItems( selectedLanguage );
 			languageCb.setValue(selectedLanguage);
 			languageCb.setReadOnly( true );
@@ -149,7 +149,7 @@ public class DialogAddLanguageWindow extends MWindow {
 				availableLanguages = Language.getFilteredLanguage(userLanguages, cvScheme.getLanguagesByTitle());
 			}
 			
-			Language sourceLang = Language.getEnumByName( vocabulary.getSourceLanguage() );
+			Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 			// remove with sourceLanguage option if exist
 			availableLanguages.remove( sourceLang );
 			
@@ -345,7 +345,7 @@ public class DialogAddLanguageWindow extends MWindow {
 			version.setNumber("0.0.1");
 			version.setStatus( Status.DRAFT.toString() );
 			version.setItemType( ItemType.TL.toString());
-			version.setLanguage( language.name().toLowerCase() );
+			version.setLanguage( language.toString() );
 			version.setPreviousVersion( 0L );
 			version.setInitialVersion( 0L );
 			

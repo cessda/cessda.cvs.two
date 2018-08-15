@@ -380,7 +380,7 @@ public class DialogManageStatusWindow extends MWindow {
 								vocabulary.setStatus( nextStatus);
 							}
 							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
-							vocabulary.addLanguagePublished( selectedLanguage.name().toLowerCase());
+							vocabulary.addLanguagePublished( selectedLanguage.toString());
 							
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
 								currentVersion.setVersionNotes( versionNotes.getValue());

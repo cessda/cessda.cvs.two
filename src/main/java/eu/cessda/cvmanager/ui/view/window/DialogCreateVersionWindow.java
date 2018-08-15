@@ -95,7 +95,7 @@ public class DialogCreateVersionWindow extends MWindow {
 	private MCssLayout versionListBlock = new MCssLayout();
 	private MLabel cloneBlockTitle = new MLabel();
 	private MLabel cloneBlockInfo = new MLabel().withContentMode( ContentMode.HTML );
-	private MGrid<CloneVersion> versionGrid = new MGrid<>( CloneVersion.class );
+//	private MGrid<CloneVersion> versionGrid = new MGrid<>( CloneVersion.class );
 	
 	private MCssLayout discussionBlock = new MCssLayout();
 	private MLabel discussionTitle = new MLabel();
@@ -108,8 +108,8 @@ public class DialogCreateVersionWindow extends MWindow {
 	private MCssLayout versionHistoryLayout = new MCssLayout();
 	private MLabel versionNotesLabel = new MLabel();
 	private TextArea versionNotes = new TextArea();
-	private MLabel versionNumberLabel = new MLabel();
-	private MTextField versionNumberField = new MTextField();
+//	private MLabel versionNumberLabel = new MLabel();
+//	private MTextField versionNumberField = new MTextField();
 	private MCssLayout versionButtonLayout = new MCssLayout();
 	
 	private MButton buttonPublishCv = new MButton("Create New Version");
@@ -117,7 +117,7 @@ public class DialogCreateVersionWindow extends MWindow {
 	
 	private boolean slVersioning;
 	private String recommendVersionNumber = null;
-	List<CloneVersion> cloneVersions = new ArrayList<>();
+//	List<CloneVersion> cloneVersions = new ArrayList<>();
 
 	public DialogCreateVersionWindow(StardatDDIService stardatDDIService, CodeService codeService, 
 			ConceptService conceptService, VocabularyService vocabularyService, VersionService versionService,
@@ -147,49 +147,50 @@ public class DialogCreateVersionWindow extends MWindow {
 
 	private void init() {
 //		String buttonSuffix = ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase();
-		
-		Map<String, List<VersionDTO>> orderedLanguageVersionMap = null;
-		if( selectedLanguage.equals(sourceLanguage)) {
+		if( selectedLanguage.equals(sourceLanguage))
 			slVersioning = true;
-			orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
-		}
-		else {
-			orderedLanguageVersionMap = versionService.getOrderedLanguageSpecificVersionMap(vocabulary.getId(), selectedLanguage);
-		}
-		orderedLanguageVersionMap.forEach( (k,v) -> cloneVersions.add( new CloneVersion(k, v, currentVersion)));
+//		Map<String, List<VersionDTO>> orderedLanguageVersionMap = null;
+//		if( selectedLanguage.equals(sourceLanguage)) {
+//			slVersioning = true;
+//			orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
+//		}
+//		else {
+//			orderedLanguageVersionMap = versionService.getOrderedLanguageSpecificVersionMap(vocabulary.getId(), selectedLanguage);
+//		}
+//		orderedLanguageVersionMap.forEach( (k,v) -> cloneVersions.add( new CloneVersion(k, v, currentVersion)));
 		
 		// increment the recommended version number
 		int lastDotIndex = recommendVersionNumber.lastIndexOf(".");
 		String lastNumber = recommendVersionNumber.substring( lastDotIndex + 1);
 		recommendVersionNumber = recommendVersionNumber.substring(0, lastDotIndex + 1) + (Integer.parseInt(lastNumber) + 1);
-		versionNumberField.setValue( recommendVersionNumber );
+//		versionNumberField.setValue( recommendVersionNumber );
 		
-		versionGrid
-			.withFullWidth()
-			.withHeight("200px")
-			.setItems(cloneVersions);
-		
-		versionGrid.removeAllColumns();
-		versionGrid.addColumn( cVersion -> {
-				return cVersion.getCloneCb();
-			}, new ComponentRenderer())
-			.setCaption("Clone")
-			.setExpandRatio( 1 )
-			.setId("cloneClm");
-		versionGrid.addColumn( cVersion -> cVersion.getLanguage())
-			.setCaption("Language")
-			.setExpandRatio( 2 )
-			.setId("languageClm");
-		versionGrid.addColumn( cVersion -> cVersion.getType())
-			.setCaption("Type")
-			.setExpandRatio( 1 )
-			.setId("typeClm");
-		versionGrid.addColumn( cVersion -> {
-			return cVersion.getVersionOption();
-			}, new ComponentRenderer())
-			.setCaption("Version")
-			.setExpandRatio( 1 )
-			.setId("versionClm");
+//		versionGrid
+//			.withFullWidth()
+//			.withHeight("200px")
+//			.setItems(cloneVersions);
+//		
+//		versionGrid.removeAllColumns();
+//		versionGrid.addColumn( cVersion -> {
+//				return cVersion.getCloneCb();
+//			}, new ComponentRenderer())
+//			.setCaption("Clone")
+//			.setExpandRatio( 1 )
+//			.setId("cloneClm");
+//		versionGrid.addColumn( cVersion -> cVersion.getLanguage())
+//			.setCaption("Language")
+//			.setExpandRatio( 2 )
+//			.setId("languageClm");
+//		versionGrid.addColumn( cVersion -> cVersion.getType())
+//			.setCaption("Type")
+//			.setExpandRatio( 1 )
+//			.setId("typeClm");
+//		versionGrid.addColumn( cVersion -> {
+//			return cVersion.getVersionOption();
+//			}, new ComponentRenderer())
+//			.setCaption("Version")
+//			.setExpandRatio( 1 )
+//			.setId("versionClm");
 		
 		cloneBlockTitle
 			.withFullWidth()
@@ -205,8 +206,8 @@ public class DialogCreateVersionWindow extends MWindow {
 			.withFullWidth()
 			.add( 
 				cloneBlockTitle,
-				cloneBlockInfo,
-				versionGrid
+				cloneBlockInfo
+//				versionGrid
 			);
 		
 		discussionTitle
@@ -237,23 +238,18 @@ public class DialogCreateVersionWindow extends MWindow {
 		versioningTitle
 			.withFullWidth()
 			.withStyleName("section-header")
-			.withValue("Create new version");
+			.withValue("Version History");
 		
 		versionInfo
 			.withFullWidth()
 			.withContentMode( ContentMode.HTML )
-			.withValue("Please fill the version notes and version number if any. </br> "
-					+ "The version notes and number still can be edited until before publishing. </br> "
-					+ "The current version for " + currentVersion.getNotation() + "-" + currentVersion.getLanguage()
+			.withValue("The current version for " + currentVersion.getNotation() + "-" + currentVersion.getLanguage()
 					+ "(" + currentVersion.getItemType() + ") is <strong>" + currentVersion.getNumber() + "</strong>" );
 		
 		versionHistoryLayout
 			.withFullWidth()
 			.withHeight("100px")
-			.withStyleName( "yscroll","white-bg" )
-			.add(
-				new MLabel("Version History").withStyleName( "section-header" ).withFullWidth()
-			);
+			.withStyleName( "yscroll","white-bg" );
 		
 		versionHistoryLayout
 			.add(
@@ -267,20 +263,20 @@ public class DialogCreateVersionWindow extends MWindow {
 		
 		versionNotes.setWidth("100%");
 		versionNotes.setHeight("100px");
-		
-		versionNumberLabel
-			.withStyleName("section-header","pull-left")
-			.withValue("Version Number: ");
-		
-		versionNumberField
-			.withStyleName("pull-left")
-			.setWidth("80px");
+//		
+//		versionNumberLabel
+//			.withStyleName("section-header","pull-left")
+//			.withValue("Version Number: ");
+//		
+//		versionNumberField
+//			.withStyleName("pull-left")
+//			.setWidth("80px");
 		
 		versionButtonLayout
 		.withStyleName("button-layout")
 		.add(
-				versionNumberLabel,
-				versionNumberField,
+//				versionNumberLabel,
+//				versionNumberField,
 				buttonPublishCv,
 				cancelButton
 		);
@@ -301,7 +297,7 @@ public class DialogCreateVersionWindow extends MWindow {
 			.withFullWidth()
 			.withStyleName("dialog-content")
 			.add(
-				versionListBlock,
+//				versionListBlock,
 				discussionBlock,
 				versioningBlock
 				);
@@ -317,45 +313,51 @@ public class DialogCreateVersionWindow extends MWindow {
 	
 	private void createNewVersion() {
 			// get all checked version and perform cloning
-			for(CloneVersion cv: cloneVersions) {
+//			for(CloneVersion cv: cloneVersions) {
 				// clone the version
-				if( cv.getCloneCb().getValue() == true) {
-					// get workflow codes
-					List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
-					
-					// set version number
-					String versionNumber = versionNumberField.getValue();
-					if( slVersioning && !cv.getType().equals( ItemType.SL.toString())) {
-						versionNumber = versionNumber + ".1";
-					}
-					
-					VersionDTO targetVersion = cv.getVersionOption().getValue();
-					VersionDTO newVersion = VersionDTO.clone(targetVersion, SecurityUtils.getLoggedUser().getId(), versionNumber );
-					newVersion.setDiscussionNotes( discussionArea.getValue() );
-					
-					CVScheme newCvScheme = new CVScheme();
-					newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-					newCvScheme.createId();
-					newCvScheme.setContainerId(newCvScheme.getId());
-					
-					newVersion.setUri( newCvScheme.getContainerId() );
-					
-					newVersion = versionService.save(newVersion);
-					// save concepts
-					for( CodeDTO code: codes) {
-						ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getNotation()).ifPresent( c -> c.setCodeId( code.getId()));
-					}
-					
-					for( ConceptDTO newConcept: newVersion.getConcepts()) {
-						newConcept.setVersionId( newVersion.getId());
-						conceptService.save(newConcept);
-					}
-					
-					vocabulary.addVersions(newVersion);
-				}
+//				if( cv.getCloneCb().getValue() == true) {
+		
+		
+			// get workflow codes
+			List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+			
+			// set version number
+//			String versionNumber = versionNumberField.getValue();
+//			if( slVersioning && !currentVersion.getItemType().equals( ItemType.SL.toString())) {
+//				versionNumber = versionNumber + ".1";
+//			}
+//			
+			VersionDTO newVersion = VersionDTO.clone(currentVersion, SecurityUtils.getLoggedUser().getId(), null);
+			newVersion.setDiscussionNotes( discussionArea.getValue() );
+			
+			CVScheme newCvScheme = new CVScheme();
+			newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
+			newCvScheme.createId();
+			newCvScheme.setContainerId(newCvScheme.getId());
+			
+			if( slVersioning ) {
+				newVersion.setUri( newCvScheme.getContainerId() );
 			}
+			
+			newVersion = versionService.save(newVersion);
+			// save concepts
+			for( CodeDTO code: codes) {
+				ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getNotation()).ifPresent( c -> c.setCodeId( code.getId()));
+			}
+			
+			for( ConceptDTO newConcept: newVersion.getConcepts()) {
+				newConcept.setVersionId( newVersion.getId());
+				conceptService.save(newConcept);
+			}
+			
+			vocabulary.addVersions(newVersion);
+					
+					
+					
+//				}
+//			}
 			// save whole vocabulary
-			vocabularyService.save(vocabulary);
+			vocabulary = vocabularyService.save(vocabulary);
 			
 			// reindex
 			vocabularyService.index(vocabulary);

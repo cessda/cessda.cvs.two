@@ -135,7 +135,7 @@ public class VersionServiceImpl implements VersionService {
 		Map<String, List<VersionDTO>> langVersionMap = new LinkedHashMap<>();
 		for( VersionDTO version : versionDTOs) {
 			if( language != null)
-				if( !language.name().equalsIgnoreCase( version.getLanguage() ))
+				if( !language.toString().equalsIgnoreCase( version.getLanguage() ))
 					continue;
 			
 			List<VersionDTO> versions = langVersionMap.get( version.getLanguage() );

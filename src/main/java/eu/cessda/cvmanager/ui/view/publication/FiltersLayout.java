@@ -40,12 +40,12 @@ public class FiltersLayout extends ResponsiveBlock{
 	
 	public static final String AGENCY_AGG = "agencyName";
 	public static final String LANGS_AGG = "languages";
-	public static final String LANGS_PUB_AGG = "publishedLanguages";
+	public static final String LANGS_PUB_AGG = "languagesPublished";
 	public static final String STATUS_AGG = "statuses";
 	
 	public static String[] filterFields = {
 			AGENCY_AGG,
-			LANGS_AGG
+			LANGS_PUB_AGG
 		};
 	
 	public static String[] filterEditorFields = {

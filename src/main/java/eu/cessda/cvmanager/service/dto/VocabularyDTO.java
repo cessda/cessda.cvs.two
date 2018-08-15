@@ -443,7 +443,7 @@ public class VocabularyDTO implements Serializable {
     			setDefinitionSv(definition);
     			break;
     	}
-    	addLanguage(language.name().toLowerCase());
+    	addLanguage(language.toString());
     	return this;
     }
     
@@ -506,6 +506,7 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public void clearContent() {
+		setLanguages( null );
 		setVersionCs(null);
 		setVersionDa(null);
 		setVersionNl(null);
@@ -1292,7 +1293,7 @@ public class VocabularyDTO implements Serializable {
 		//TODO: need to change hard coded value
 		vocabulary.setUri( cvScheme.getId() );
 		vocabulary.setVersionNumber( "1.0" );
-		vocabulary.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
+		vocabulary.setSourceLanguage( Language.ENGLISH.toString());
 		
 		vocabulary.setNotation( cvScheme.getCode());
 		vocabulary.setLanguages( Language.getLanguagesFromIso(cvScheme.getLanguagesByTitle()));
@@ -1429,7 +1430,7 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(Language language) {
-		return getLatestVersionByLanguage(language.name().toLowerCase(), null);
+		return getLatestVersionByLanguage(language.toString(), null);
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(String language) {
@@ -1441,7 +1442,7 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(Language language, String version) {
-		return getLatestVersionByLanguage(language.name().toLowerCase(), version, null);
+		return getLatestVersionByLanguage(language.toString(), version, null);
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(String language, String version, String status) {
@@ -1469,22 +1470,6 @@ public class VocabularyDTO implements Serializable {
 		
 		else
 			return vers.stream().findFirst();
-			
-		
-//		if( status == null ) {
-//			return versions
-//					.stream()
-//					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
-//					.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
-//					.findFirst();
-//		} else {
-//			return versions
-//					.stream()
-//					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
-//					.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
-//					.filter( p -> status.equalsIgnoreCase( p.getStatus() ))
-//					.findFirst();
-//		}
 	}
 	
 	public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
@@ -1505,7 +1490,7 @@ public class VocabularyDTO implements Serializable {
 	private Set<CodeDTO> extractCodeFromVersionConcept( String status) {
 		Map<String, CodeDTO> codeMap = new HashMap<>();
 		for(String lang: languages) {
-			Language langEnum = Language.getEnumByName(lang);
+			Language langEnum = Language.valueOfEnum(lang);
 			
 			if( getLatestVersionByLanguage(lang,status).isPresent() ) {
 				// get codes

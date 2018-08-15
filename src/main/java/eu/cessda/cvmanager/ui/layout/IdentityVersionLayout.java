@@ -103,16 +103,28 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 		for(Map.Entry<String,List<VersionDTO>> eachVersions : versionMap.entrySet()) {
 			if(eachVersions.getKey().startsWith( ItemType.SL.toString())) {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
-					if( orderedVer.getNumber().indexOf( currentVersionNumber ) == 0) 
+					if( orderedVer.getNumber() == null )
+						continue;
+					//only show equal or lower version
+					if( currentVersionNumber == null )
 						showSlVersion = true;
+					else
+						if( orderedVer.getNumber() != null && orderedVer.getNumber().indexOf( currentVersionNumber ) == 0) 
+							showSlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showSlVersion)
 						this.add( generateVersionSl(orderedVer));
 				}
 			} else {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
-					if( orderedVer.getNumber().indexOf( currentVersionNumber ) == 0) 
+					if( orderedVer.getNumber() == null )
+						continue;
+					//only show equal or lower version
+					if( currentVersionNumber == null )
 						showTlVersion = true;
+					else
+						if( orderedVer.getNumber() != null && orderedVer.getNumber().indexOf( currentVersionNumber ) == 0) 
+							showTlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showTlVersion)
 						this.add( generateVersionTl(orderedVer));

@@ -265,7 +265,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	
 	@Override
 	public void updateMessageStrings(Locale locale) {
-		String buttonSuffix = (isCurrentSL ? " SL " : " TL ") + selectedLanguage.name().toLowerCase();
+		String buttonSuffix = (isCurrentSL ? " SL " : " TL ") + selectedLanguage.toString();
 		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));
 		buttonEditCv.withCaption(i18n.get("view.action.button.cvscheme.edit", locale) + buttonSuffix);
 		buttonAddTranslation.withCaption( i18n.get("view.action.button.cvscheme.translation", locale));

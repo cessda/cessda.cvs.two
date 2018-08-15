@@ -46,7 +46,6 @@ public class VersionDTO implements Serializable {
 
     private LocalDate publicationDate;
 
-    @NotNull
     @Size(max = 20)
     private String number;
 

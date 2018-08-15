@@ -127,7 +127,7 @@ public class DialogAddLanguageWindowNew extends MWindow {
 			tfTitle.setValue( version.getTitle());
 			description.setValue( version.getDefinition());
 			
-			Language selectedLanguage = Language.getEnumByName( version.getLanguage());
+			Language selectedLanguage = Language.valueOfEnum( version.getLanguage());
 			languageCb.setItems( selectedLanguage );
 			languageCb.setValue(selectedLanguage);
 			languageCb.setReadOnly( true );
@@ -151,7 +151,7 @@ public class DialogAddLanguageWindowNew extends MWindow {
 				availableLanguages = Language.getFilteredLanguage(userLanguages, cvScheme.getLanguagesByTitle());
 			}
 			
-			Language sourceLang = Language.getEnumByName( vocabulary.getSourceLanguage() );
+			Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 			// remove with sourceLanguage option if exist
 			availableLanguages.remove( sourceLang );
 			
@@ -349,14 +349,14 @@ public class DialogAddLanguageWindowNew extends MWindow {
 			version.setNumber("0.0.1");
 			version.setStatus( Status.DRAFT.toString() );
 			version.setItemType( ItemType.TL.toString());
-			version.setLanguage( language.name().toLowerCase() );
+			version.setLanguage( language.toString());
 			
 			version.setPreviousVersion( 0L );
 			version.setInitialVersion( 0L );
 			version.setVocabularyId( vocabulary.getId());
 			
 			// get previous version
-			VersionDTO.getLatestVersion( vocabulary.getVersions(), language.name().toLowerCase(), Status.PUBLISHED.toString())
+			VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), Status.PUBLISHED.toString())
 			.ifPresent( prevVersion ->{
 				version.setPreviousVersion( prevVersion.getId() );
 				version.setInitialVersion( prevVersion.getInitialVersion() );

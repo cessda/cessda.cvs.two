@@ -655,9 +655,37 @@ public class VocabularyServiceImpl implements VocabularyService {
 		// set languages
 		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
 		// get codes
-		List<CodeDTO> codes = codeService.findByVocabulary( vocabulary.getId());
+		List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
 		vocabulary.setCodes( new HashSet<>( codes ));
 		
+		// Apply filter in case latest SL version is a draft
+		// Since SL need to be published first,
+		// before it is possible for TL to be added or edited
+		
+		
+		
+		
+		
+		// if the latest version of the SL is not yet published
+		// then remove any TL information, before re-indexing
+		// check if the latest SL is not yet published yet.
+		VersionDTO latestSLversion = vocabulary.getLatestVersionByLanguage( vocabulary.getSourceLanguage() ).get();
+		if( !latestSLversion.getStatus().equals( Status.PUBLISHED.toString()) ) {
+			// clear vocabulary and assign only with SL version
+			vocabulary.clearContent();
+			vocabulary.addLanguage( latestSLversion.getLanguage());
+			vocabulary.setTitleDefinition( latestSLversion.getTitle(), latestSLversion.getDefinition(), latestSLversion.getLanguage());
+		
+			// clear codes and assign with concepts from SL version
+			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
+			for( ConceptDTO concept : latestSLversion.getConcepts()) {
+				CodeDTO code = codeMap.get( concept.getNotation());
+				if( code == null )
+					continue;
+				code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), latestSLversion.getLanguage());
+			}
+			vocabulary = save(vocabulary);
+		}
 		
 		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
 		vocabularySearchRepository.save( vocab );
@@ -665,55 +693,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 	
 	@Override
 	public void indexPublish(VocabularyDTO vocabulary, VersionDTO version) {
-//		VersionDTO slLatestVersion = null;
-//		// index nested object as well
-//		// get latest version
-//		vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
-//		
-//		// set languages from latest version
-//		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
-//		// set published languages across versions
-//		vocabulary.setLanguagesPublished( VocabularyDTO.getPublishedLanguagesFromVersions( vocabulary.getVers() ));
-//		// update/generate vocabulary content
-//		// 1. clear vocabulary DTO first before replacing content
-//		vocabulary.clearContent();
-//		// 2. generate vocabulary content from version
-//		for( VersionDTO versionDTO : vocabulary.getVers()) {
-//			if( versionDTO.getItemType().equals( ItemType.SL))
-//				slLatestVersion = versionDTO;
-//			Language versionLanguage = Language.getEnumByName( versionDTO.getLanguage() );
-//			vocabulary.setVersionByLanguage(versionLanguage, versionDTO.getNumber());
-//			vocabulary.setTitleDefinition( versionDTO.getTitle(), versionDTO.getDefinition(), versionLanguage);
-//		}
-//		
-//		// 3. generate code content from version, create codeMap first
-//		// Publishing SL
-//		if( version.getItemType().equals( ItemType.SL.toString())) {
-//			// clone each code
-//			List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
-//			for( CodeDTO eachCode : codes ) {
-//				CodeDTO code = CodeDTO.clone(eachCode);
-//				code.setArchived( true );
-//				code.setVersionId(version.getId());
-//				code.setVersionNumber( version.getNumber() );
-//				codeService.save(code);
-//			}
-//			
-//		}
-//		else 	// Publishing TL
-//		{
-//			Language versionLanguage = Language.getEnumByName( version.getLanguage() );
-//			List<CodeDTO> codes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), slLatestVersion.getId());
-//			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
-//			for( ConceptDTO concept : version.getConcepts()) {
-//				CodeDTO code = codeMap.get( concept.getNotation());
-//				if( code == null )
-//					continue;
-//				code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), versionLanguage);
-//				codeService.save(code);
-//			}
-//		}
-		
 		VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
 		vocabularyPublishSearchRepository.save( vocab );
 	}

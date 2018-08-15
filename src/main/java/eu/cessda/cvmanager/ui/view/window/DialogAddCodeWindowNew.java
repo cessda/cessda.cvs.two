@@ -97,7 +97,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 			VersionService versionService,CodeService codeService, ConceptService conceptService, CVScheme cvSch, CVConcept newCode, CVConcept parentCvConcept, VocabularyDTO vocabularyDTO,
 			VersionDTO versionDTO, CodeDTO codeDTO, CodeDTO parentCodeDTO,ConceptDTO conceptDTO, I18N i18n, Locale locale, VocabularyChangeService vocabularyChangeService) {
 		super( parentCvConcept == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
-				locale, ( parentCvConcept.getNotation() == null? parentCvConcept.getPrefLabelByLanguage( Language.getEnumByName( versionDTO.getLanguage()).toString()) : parentCvConcept.getNotation() )));
+				locale, ( parentCvConcept.getNotation() == null? parentCvConcept.getPrefLabelByLanguage( Language.valueOfEnum( versionDTO.getLanguage()).toString()) : parentCvConcept.getNotation() )));
 		
 		this.eventBus = eventBus;
 		this.cvScheme = cvSch;
@@ -115,7 +115,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 		this.versionService = versionService;
 		this.vocabularyChangeService = vocabularyChangeService;
 
-		language = Language.getEnumByName( this.version.getLanguage());
+		language = Language.valueOfEnum( this.version.getLanguage());
 		
 		languageCb.setItems( language);
 		languageCb.setValue( language );
@@ -271,7 +271,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 		concept.setDefinition( description.getValue() );
 		
 		if( !code.isPersisted() ) {
-			code.setSourceLanguage( language.name().toLowerCase());
+			code.setSourceLanguage( language.toString());
 			code.setVocabularyId( vocabulary.getId() );
 		}
 		

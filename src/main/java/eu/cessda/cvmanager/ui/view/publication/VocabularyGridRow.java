@@ -60,7 +60,7 @@ public class VocabularyGridRow extends CustomComponent {
 		this.configService = configService;
 		
 		if( vocabulary.getSourceLanguage() != null) 
-			sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage() );
+			sourceLanguage = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 		else
 			sourceLanguage = Language.ENGLISH;
 		
@@ -85,7 +85,7 @@ public class VocabularyGridRow extends CustomComponent {
 
 		languageLayout.withUndefinedSize().withStyleName( "pull-right" );
 		
-		Language.getIsoFromLanguage( vocabulary.getLanguages() ).forEach(item -> {
+		vocabulary.getLanguages().forEach(item -> {
 			MButton langButton = new MButton(item.toUpperCase());
 			langButton.addStyleName( "langbutton" );
 			
@@ -96,7 +96,7 @@ public class VocabularyGridRow extends CustomComponent {
 				langButton.addStyleName( "button-language-selected" );
 			
 			// determine the status
-			vocabulary.getLatestVersionByLanguage( Language.getEnum(item).name().toLowerCase())
+			vocabulary.getLatestVersionByLanguage( item )
 			.ifPresent( versionDTO -> {
 				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
 					langButton.addStyleName( "status-draft" );

@@ -75,7 +75,7 @@ public class DialogAddCodeWindow2 extends MWindow implements Translatable{
 
 	public DialogAddCodeWindow2(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, CodeService codeService,
 			CVScheme cvSch, CVConcept newCode, CVConcept parent, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, I18N i18n, Locale locale) {
-		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage( Language.getEnumByName( vocabularyDTO.getSourceLanguage()).toString()) : parent.getNotation() )));
+		super( parent == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , locale, ( parent.getNotation() == null? parent.getPrefLabelByLanguage( Language.valueOfEnum( vocabularyDTO.getSourceLanguage()).toString()) : parent.getNotation() )));
 		
 		this.eventBus = eventBus;
 		this.cvScheme = cvSch;
@@ -95,7 +95,7 @@ public class DialogAddCodeWindow2 extends MWindow implements Translatable{
 				languageCb.setItems( languages );
 			});
 		}
-		languageCb.setValue( Language.getEnumByName( vocabulary.getSourceLanguage()));
+		languageCb.setValue( Language.valueOfEnum( vocabulary.getSourceLanguage()));
 		if( languageCb.getValue() != null ) 
 			language = languageCb.getValue();
 	
@@ -214,7 +214,7 @@ public class DialogAddCodeWindow2 extends MWindow implements Translatable{
 		code.setUri( ddiStore.getElementId() );
 		code.setNotation( notation.getValue() );
 		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
-		code.setSourceLanguage( language.name().toLowerCase());
+		code.setSourceLanguage( language.toString());
 		codeService.save(code);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );

@@ -138,7 +138,7 @@ public class DialogEditCodeWindow extends MWindow {
 		
 		notation.withWidth("85%");
 		
-		String sourceLang = Language.getEnumByName( vocabulary.getSourceLanguage() ).toString();
+		String sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() ).toString();
 		
 		sourceTitle.withFullWidth();
 		sourceTitle.setValue( cvConcept.getPrefLabelByLanguage( sourceLang ) );

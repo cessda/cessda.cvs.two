@@ -171,7 +171,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		
 		// update process
 		if( isUpdated) {
-			language = Language.getEnumByName( vocabulary.getSourceLanguage() );
+			language = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 			// fill with value
 			editorCb.setItems( agency );
 			editorCb.setValue( agency );
@@ -393,7 +393,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			vocabulary.setVersionNumber("1.0");
 			vocabulary.setAgencyId( agency.getId());
 			vocabulary.setAgencyName( agency.getName());
-			vocabulary.setSourceLanguage( language.name().toLowerCase());
+			vocabulary.setSourceLanguage( language.toString());
 			vocabulary.setStatus( getCvScheme().getStatus() );
 			vocabulary.addStatus( getCvScheme().getStatus() );
 			
@@ -402,7 +402,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			version.setNumber("1.0");
 			version.setStatus( Status.DRAFT.toString() );
 			version.setItemType( ItemType.SL.toString());
-			version.setLanguage( language.name().toLowerCase() );
+			version.setLanguage( language.toString() );
 			version.setPreviousVersion(0L);
 			version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId());
 			

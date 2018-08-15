@@ -65,7 +65,7 @@ public class Version implements Serializable{
     @Field(type = FieldType.Date, format = DateFormat.date)
     private LocalDate publicationDate;
     
-    @Column(name = "number", length = 20, nullable = false)
+    @Column(name = "number", length = 20)
     private String number;
     
     @Lob

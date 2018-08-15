@@ -139,7 +139,7 @@ public class DialogEditCodeWindowNew extends MWindow {
 		
 		notation.withWidth("85%");
 		
-		Language sourceLang = Language.getEnumByName( vocabulary.getSourceLanguage() );
+		Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 		
 		sourceTitle.withFullWidth();
 		sourceTitle.setValue( code.getTitleByLanguage( sourceLang ) );

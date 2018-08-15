@@ -361,7 +361,7 @@ public class DetailView2 extends CvManagerView {
 		
 				
 		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
-		sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage().toString()).toString();
+		sourceLanguage = Language.valueOfEnum( vocabulary.getSourceLanguage().toString()).toString();
 		String clickedLanguage = cvItem.getCurrentLanguage() == null ? sourceLanguage : cvItem.getCurrentLanguage();
 
 		languages.forEach(item -> {
@@ -400,7 +400,7 @@ public class DetailView2 extends CvManagerView {
 	}
 	
 	private void doSaveConcept() {
-		if( selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() )  )) {
+		if( selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() )  )) {
 			List<CVEditor> editorSet = cvItem.getCvScheme().getOwnerAgency();
 			editorSet.clear();
 			editorSet.add( editorCb.getValue() );
@@ -522,7 +522,7 @@ public class DetailView2 extends CvManagerView {
 
 		MCssLayout titleSmall = new MCssLayout();
 		titleSmall.withFullWidth().add( lTitle2.withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() )) ? titleField
+				selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() )) ? titleField
 						: new MLabel(cvItem.getCvScheme().getTitleByLanguage( sourceLanguage )).withStyleName("rightPart"));
 
 		TextArea descField = new TextArea();
@@ -531,7 +531,7 @@ public class DetailView2 extends CvManagerView {
 
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(lDefinition2.withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals(Language.getEnumByName( vocabulary.getSourceLanguage() )) ? descField
+				selectedLang.equals(Language.valueOfEnum( vocabulary.getSourceLanguage() )) ? descField
 						: new MLabel(cvItem.getCvScheme().getDescriptionByLanguage( sourceLanguage )).withStyleName("rightPart"));
 
 		MTextField codeField = new MTextField();
@@ -540,7 +540,7 @@ public class DetailView2 extends CvManagerView {
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode2.withWidth("120px").withStyleName("leftPart"),
-				selectedLang.equals(Language.getEnumByName( vocabulary.getSourceLanguage() )) ? codeField : new MLabel(cvItem.getCvScheme().getCode()).withStyleName("rightPart"));
+				selectedLang.equals(Language.valueOfEnum( vocabulary.getSourceLanguage() )) ? codeField : new MLabel(cvItem.getCvScheme().getCode()).withStyleName("rightPart"));
 		
 		
 		cvSchemeBinder.setBean(cvItem.getCvScheme());
@@ -604,13 +604,13 @@ public class DetailView2 extends CvManagerView {
 								new MLabel(selectedLang.toString()).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						lVersion3.withWidth("180px").withStyleName("leftPart"),
-						new MLabel(cvItem.getCvScheme().getVersion().getPublicationVersion() + (selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() )) ? ""
+						new MLabel(cvItem.getCvScheme().getVersion().getPublicationVersion() + (selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() )) ? ""
 								: "-" + selectedLang.toString())).withStyleName("rightPart")),
 				new MCssLayout().withWidth("33%").add(
 						lDate3.withWidth("140px").withStyleName("leftPart"),
 						new MLabel(cvItem.getCvScheme().getVersion().getPublicationDate().toString()).withStyleName("rightPart")));
 
-		if (selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ))) {
+		if (selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() ))) {
 			topHead.setVisible( false );
 			topHeadEdit.setVisible( true );
 			titleSmallOl.setVisible(false);
@@ -692,7 +692,7 @@ public class DetailView2 extends CvManagerView {
 			.setExpandRatio(1)
 			.setId("prefLabelSl");
 
-		if( !selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ) ))
+		if( !selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() ) ))
 			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang.toString()))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 				//.setEditorBinding(prefLabelBinding)
@@ -707,7 +707,7 @@ public class DetailView2 extends CvManagerView {
 				.setExpandRatio(3)
 				.setId("definitionSl");
 		
-		if( !selectedLang.equals( Language.getEnumByName( vocabulary.getSourceLanguage() ) ))
+		if( !selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() ) ))
 			detailTreeGrid.addColumn(concept -> {
 				return new MLabel( concept.getDescriptionByLanguage(selectedLang.toString())).withStyleName( "word-brake-normal" );
 			}, new ComponentRenderer())

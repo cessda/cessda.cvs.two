@@ -12,6 +12,7 @@ import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
@@ -130,7 +131,7 @@ public class ImportService {
 			// workaround to prevent save multiple version
 			// TODO: check if version already exist
 			for( String lang: vocabulary.getLanguages()) {
-				Language langEnum = Language.getEnumByName(lang);
+				Language langEnum = Language.valueOfEnum(lang);
 				
 				VersionDTO version = null;
 				
@@ -138,22 +139,21 @@ public class ImportService {
 					version = new VersionDTO();
 				
 				version.setStatus( Status.DRAFT.toString() );
-				if( lang.equals( "english")) {
+				if( langEnum.equals( Language.ENGLISH )) {
 					version.setItemType( ItemType.SL.toString());
-					version.setNumber( "1.0" );
+					version.setUri( vocabulary.getUri() );
 				} else {
 					version.setItemType( ItemType.TL.toString());
-					version.setNumber( "1.0.1" );
 				}
 				version.setLanguage( lang);
-				version.setUri( vocabulary.getUri() );
+				
 				version.setNotation( vocabulary.getNotation() );
 				version.setTitle( vocabulary.getTitleByLanguage(langEnum) );
 				version.setDefinition(vocabulary.getDefinitionByLanguage(langEnum) );
 				version.setPreviousVersion( 0L );
 				version.setInitialVersion( 0L );
-				version.setCreator( 1L );
-				version.setPublisher( 1L );
+				version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId() );
+//				version.setPublisher( 1L );
 				version.setVocabularyId( vocabulary.getId());
 				
 				version = versionService.save(version);
@@ -168,40 +168,11 @@ public class ImportService {
 					version.addConcept(concept);
 				};
 				
-//				System.out.println( version.getNotation() + " - " + version.getUri() + " " + version.getLanguage() + " " + version.getInitialVersion());
-//				if( version.getNotation() == null || version.getUri() == null || version.getLanguage() == null ) {
-//					System.out.println( "Error: " + vocabulary.getNotation() + " - " + version.getNotation() + " - " + version.getUri() + " " + version.getLanguage());
-//				}
 				vocabulary.addVersions(version);
 			}
 			
-			
-
-
-			
-//			for( String lang : vocabulary.getLanguages()){
-//				Language langEnum = Language.getEnumByName(lang);
-//				
-//				VersionDTO.getLatestVersion( vocabulary.getVersions(), lang, null).ifPresent( versionDTO -> {
-//					Set<ConceptDTO> conceptsFromCodes = CodeDTO.getConceptsFromCodes(savedCodes, langEnum);
-//					versionDTO.setConcepts(conceptsFromCodes);
-//				});
-//			};
-//			
-//			// store vocabulary
-//			vocabulary = vocabularyService.save(vocabulary);
-//			
-//			// store code once more now with vocabulary
-//	        // store code if exist
-//	        for( CodeDTO code: savedCodes) {
-//	        	code.setVocabularyId( vocabulary.getId());
-//	        	code = codeService.save(code);
-//	        }
-			
 			// reindex nested codes
-			vocabulary.setVers( vocabulary.getVersions());
-			Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
-			vocabularySearchRepository.save( vocab );
+			vocabularyService.index(vocabulary);
 			
 		}
 		log.debug("DDIFlatDB imported to database");

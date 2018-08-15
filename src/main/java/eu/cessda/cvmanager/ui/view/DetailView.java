@@ -385,10 +385,11 @@ public class DetailView extends CvView {
 			setAgency( agencyService.findOne(1L) );
 		
 		
-		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
+//		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
+		Set<String> languages = vocabulary.getLanguagesPublished();
 		
-		sourceLanguage = Language.getEnumByName( "english");
-		selectedLang = Language.getEnumByName( currentVersion.getLanguage());
+		sourceLanguage = Language.valueOfEnum( vocabulary.getSourceLanguage());
+		selectedLang = Language.valueOfEnum( currentVersion.getLanguage());
 		
 //		editorCvActionLayout.setSourceLanguage( sourceLanguage );
 //		editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
@@ -466,13 +467,26 @@ public class DetailView extends CvView {
 	private void initTopViewSection() {
 		topViewSection.removeAllComponents();
 		
+		
+		if( SecurityUtils.isAuthenticated()) {
+			String baseUrl = configService.getServerContextPath() + "/#!" + DetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
+			topViewSection.add( new MLabel()
+					.withContentMode( ContentMode.HTML)
+					.withStyleName("pull-right")
+					.withValue(
+						" " +
+								"<a href='" + baseUrl + "'> View in Editor</a> "
+					) );
+		}
+		
 		vocabulary
-		.getLatestVersionByLanguage( sourceLanguage.name().toLowerCase(), null, Status.PUBLISHED.toString())
+		.getLatestVersionByLanguage( sourceLanguage.toString(), null, Status.PUBLISHED.toString())
 		.ifPresent( slVersion -> {
+			String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/";
 			latestSlVersion = slVersion;
 			// warning about newer version
 			if( latestSlVersion.getId() > currentVersion.getId()) {
-				String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/";
+				
 				newerVersionAvailable.removeAllComponents();
 				newerVersionAvailable
 					.withWidth("100%")
@@ -607,7 +621,7 @@ public class DetailView extends CvView {
 			.setExpandRatio(1)
 			.setId("prefLabelSl");
 
-		if( !selectedLang.equals( Language.getEnumByName( "english" ) ))
+		if( !selectedLang.equals( Language.valueOfEnum( "english" ) ))
 			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang.toString()))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 				//.setEditorBinding(prefLabelBinding)
@@ -622,7 +636,7 @@ public class DetailView extends CvView {
 				.setExpandRatio(3)
 				.setId("definitionSl");
 		
-		if( !selectedLang.equals( Language.getEnumByName( "english" ) ))
+		if( !selectedLang.equals( Language.valueOfEnum( "english" ) ))
 			detailTreeGrid.addColumn(concept -> {
 				return new MLabel( concept.getDescriptionByLanguage(selectedLang.toString())).withStyleName( "word-brake-normal" );
 			}, new ComponentRenderer())

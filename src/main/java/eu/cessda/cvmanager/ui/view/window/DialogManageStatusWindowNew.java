@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
@@ -68,6 +70,7 @@ import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
+import eu.cessda.cvmanager.utils.VersionUtils;
 
 public class DialogManageStatusWindowNew extends MWindow {
 
@@ -116,12 +119,16 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private TextArea versionNotes = new TextArea();
 	private MLabel versionNumberLabel = new MLabel();
 	private MTextField versionNumberField = new MTextField();
+	private MCssLayout tlCloneInfoLayout = new MCssLayout();
 	private MCssLayout versionButtonLayout = new MCssLayout();
 	
 	private MButton buttonPublishCv = new MButton("Publish");
 	private MButton cancelButton = new MButton("Cancel", e -> this.close());
 	
 	private String nextStatus = null;
+	private List<VersionDTO> latestTlVersions = new ArrayList<>();
+	private String versionNumberSL = "1.0";
+	private String versionNumberTL = "1.0.1";
 
 	public DialogManageStatusWindowNew(StardatDDIService stardatDDIService,  
 			CodeService codeService, ConceptService conceptService, 
@@ -145,7 +152,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 		
 		this.eventBus = eventBus;
 		this.vocabularyChangeService = vocabularyChangeService;
-		
 		init();
 	}
 
@@ -254,6 +260,40 @@ public class DialogManageStatusWindowNew extends MWindow {
 			statusBlock.setVisible( false );
 			versionBlock.setVisible( true );
 			discussionArea.addStyleName("height-100");
+			
+			// prepare the version number
+			// get latest published
+			vocabulary.getLatestVersionByLanguage( vocabulary.getSourceLanguage(), null, Status.PUBLISHED.toString()).ifPresent( slPublish -> {
+				versionNumberSL = slPublish.getNumber();
+				if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
+					int lastDotIndex = versionNumberSL.lastIndexOf(".");
+					String lastNumber = versionNumberSL.substring( lastDotIndex + 1);
+					versionNumberSL = versionNumberSL.substring(0, lastDotIndex + 1) + (Integer.parseInt(lastNumber) + 1);
+				}
+				else {
+					versionNumberTL = versionNumberSL + ".1";
+					vocabulary.getLatestVersionByLanguage( currentVersion.getLanguage(), null, Status.PUBLISHED.toString()).ifPresent( tlPublish -> {
+						String latestTLPublishNumber = tlPublish.getNumber();
+						if( VersionUtils.compareVersion(latestTLPublishNumber,  versionNumberSL ) > 0 ) {
+							int lastDotIndex2 = latestTLPublishNumber.lastIndexOf(".");
+							String lastNumber2 = latestTLPublishNumber.substring( lastDotIndex2 + 1);
+							versionNumberTL = latestTLPublishNumber.substring(0, lastDotIndex2 + 1) + (Integer.parseInt(lastNumber2) + 1);
+						}
+						
+					});
+				}
+			});
+
+			
+			if( currentVersion.getItemType().equals(ItemType.SL.toString())){
+				// get available TL, get language first and then get the latest TL
+				// TODO: need to specify the status of the TL?
+				for(String lang : VocabularyDTO.getLanguagesFromVersions( vocabulary.getVersions())) {
+					if( lang.equals( sourceLanguage.toString()))
+						continue;
+					latestTlVersions.add( vocabulary.getLatestVersionByLanguage(lang).get());
+				}
+			} 
 		}
 		
 		buttonPublishCv
@@ -310,15 +350,12 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.withStyleName("pull-left")
 			.setWidth("80px");
 		
-		if( currentVersion.getNumber() == null) {
-			if( sourceLanguage.equals( selectedLanguage ))
-				versionNumberField.setValue("1.0");
-			else
-				versionNumberField.setValue( vocabulary.getVersionEn() + ".1");
-		}
-		else {
-			versionNumberField.setValue( currentVersion.getNumber() );
-		}
+		if( sourceLanguage.equals( selectedLanguage ))
+			versionNumberField.setValue( versionNumberSL );
+		else
+			versionNumberField.setValue( versionNumberTL);
+
+
 		
 		versionButtonLayout
 		.withStyleName("button-layout")
@@ -329,6 +366,28 @@ public class DialogManageStatusWindowNew extends MWindow {
 				cancelButton
 		);
 		
+		tlCloneInfoLayout
+			.withFullWidth();
+		if( !latestTlVersions.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			for(VersionDTO ver : latestTlVersions) {
+				Language verLang = Language.valueOfEnum( ver.getLanguage());
+				sb.append( verLang.toStringCapitalized() + " " + (ver.getNumber() == null ? "" : ver.getNumber() ) + " (" + ver.getStatus() + ") <br/>");
+			}
+			
+			tlCloneInfoLayout
+				.add(
+						new MLabel()
+							.withFullWidth()
+							.withContentMode( ContentMode.HTML)
+							.withValue("<strong>The following TL items will be cloned as draft : </strong>"),
+						new MLabel()
+							.withFullWidth()
+							.withContentMode( ContentMode.HTML)
+							.withValue( sb.toString() )
+				);
+		}
+		
 		versionBlock
 			.withStyleName("section-block")
 			.withFullWidth()
@@ -338,6 +397,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 				versionHistoryLayout,
 				versionNotesLabel,
 				versionNotes,
+				tlCloneInfoLayout,
 				versionButtonLayout
 			);
 		
@@ -394,17 +454,19 @@ public class DialogManageStatusWindowNew extends MWindow {
 		
 					dialog -> {
 						if( dialog.isConfirmed() ) {
-							
+								
 							currentVersion.setStatus( nextStatus );
 							vocabulary.setVersionByLanguage(selectedLanguage, nextStatus);
 							
 							if( selectedLanguage.equals( sourceLanguage )) {
 								vocabulary.setStatus( nextStatus);
 							}
-							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
-							vocabulary.addLanguagePublished( selectedLanguage.name().toLowerCase());
+							
+							
 							
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
+								vocabulary.setStatuses( vocabulary.getLatestStatuses() );
+								
 								currentVersion.setVersionNotes( versionNotes.getValue());
 								currentVersion.setNumber( versionNumberField.getValue());
 								currentVersion.setPublicationDate( LocalDate.now());
@@ -416,15 +478,43 @@ public class DialogManageStatusWindowNew extends MWindow {
 									"<br/>notes:<br/>" + currentVersion.getVersionNotes() + "<br/><br/>"
 								);
 								
+								
 								vocabulary.setVersionByLanguage(selectedLanguage, versionNumberField.getValue());
+								// if SL is published
 								if( selectedLanguage.equals( sourceLanguage )) {
 									vocabulary.setVersionNumber( versionNumberField.getValue() );
+									// only set Uri everytime SL published
 									vocabulary.setUri( currentVersion.getUri());
-								}
-								vocabulary.setUri( currentVersion.getUri());
-								if( selectedLanguage.equals( sourceLanguage ))
 									vocabulary.setPublicationDate( LocalDate.now());
-								
+									vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVersions()) );
+									vocabulary.setLanguagesPublished( null);
+									vocabulary.addLanguagePublished( sourceLanguage.toString());
+									
+									
+									// get workflow codes
+									List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+									
+									// clone any latest TL if exist
+									for( VersionDTO targetTLversion : latestTlVersions ) {
+										// create new version
+										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), null );
+										newVersion = versionService.save(newVersion);
+										
+										// save concepts
+										for( CodeDTO code: codes) {
+											ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getNotation()).ifPresent( c -> c.setCodeId( code.getId()));
+										}
+										for( ConceptDTO newConcept: newVersion.getConcepts()) {
+											newConcept.setVersionId( newVersion.getId());
+											conceptService.save(newConcept);
+										}
+										
+										vocabulary.addVersions(newVersion);
+									}
+								} else {
+									
+									vocabulary.addLanguagePublished( selectedLanguage.toString());
+								}
 							}
 							
 							// save to database
@@ -433,14 +523,12 @@ public class DialogManageStatusWindowNew extends MWindow {
 							// index for editor
 							vocabularyService.index(vocabulary);
 							
-							// index for publication
+							// more steps for publishing SL and TL
+							// store also in the flatDB
+							// index elastic for the publication site
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
-								
-								
 								publishCv(vocabulary, currentVersion);
-								
 								vocabularyService.indexPublish(vocabulary, currentVersion);
-								
 							}
 							
 //							// save to flatDB
@@ -456,6 +544,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 				);
 	}
 	
+
 	private void publishCv( VocabularyDTO vocabulary, VersionDTO version ) {
 		VersionDTO slLatestVersion = null;
 
@@ -463,22 +552,21 @@ public class DialogManageStatusWindowNew extends MWindow {
 		vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
 		
 		// set languages from latest version
-		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
+//		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
 		// set published languages across versions
-		vocabulary.setLanguagesPublished( VocabularyDTO.getPublishedLanguagesFromVersions( vocabulary.getVers() ));
 		// update/generate vocabulary content
 //		// 1. clear vocabulary DTO first before replacing content
 //		vocabulary.clearContent();
-		// 2. generate vocabulary content from version
+		// 1. generate vocabulary content from the latest versions
 		for( VersionDTO versionDTO : vocabulary.getVers()) {
 			if( versionDTO.getItemType().equals( ItemType.SL.toString()))
 				slLatestVersion = versionDTO;
-			Language versionLanguage = Language.getEnumByName( versionDTO.getLanguage() );
+			Language versionLanguage = Language.valueOfEnum( versionDTO.getLanguage() );
 			vocabulary.setVersionByLanguage(versionLanguage, versionDTO.getNumber());
 			vocabulary.setTitleDefinition( versionDTO.getTitle(), versionDTO.getDefinition(), versionLanguage);
 		}
 		
-		// 3. generate code content from version, create codeMap first
+		// 2. generate code content from version, create codeMap first
 		// Publishing SL
 		if( version.getItemType().equals( ItemType.SL.toString())) {
 			// clone each code
@@ -519,22 +607,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 					stardatDDIService.deleteById( ddiConcept.getPrimaryKey(), SecurityUtils.getCurrentUserLogin().get() , "replace concept by deleting first");
 				}
 				
-//				Map<String, CVConcept> cvConceptMap = new HashMap<>();
-//				List<CVConcept> rootCvConcepts = new ArrayList<>();
-//				ddiConcepts.forEach(ddiConcept -> {
-//					CVConcept concept = new CVConcept(ddiConcept);
-//					cvConceptMap.put(concept.getId(), concept);
-//				});
-//				
-//				for( CodeDTO eachCode : codes ) {
-//					CVConcept cvCcp = cvConceptMap.get( eachCode.getNotation());
-//					if( cvCcp == null ) {
-//						//create new concept
-//						
-//					}
-//					
-//				}
-				
 				// store complete codeDTOs to CVConcept
 				TreeData<CodeDTO> codeTree = new TreeData<>();
 				CvCodeTreeUtils.buildCvConceptTree(newCodes, codeTree);
@@ -558,6 +630,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 				newCvScheme.setContainerId(newCvScheme.getId());
 				newCvScheme.setStatus( Status.PUBLISHED.toString() );
 				
+//				// issue in CV version
 //				CVVersion cvVersion = new CVVersion();
 //				cvVersion.setContainerId( newCvScheme.getContainerId());
 //				cvVersion.setType( currentVersion.getNumber() );
@@ -601,12 +674,13 @@ public class DialogManageStatusWindowNew extends MWindow {
 				storeCvConceptTree( cvConceptTree , newCvScheme);
 				
 			}
+
 		}
 		else 	// Publishing TL
 		{
 			// the codes need to be re-saved
 			// get the codes from vocabulary and slLatest version
-			Language versionLanguage = Language.getEnumByName( version.getLanguage() );
+			Language versionLanguage = Language.valueOfEnum( version.getLanguage() );
 			List<CodeDTO> codes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), slLatestVersion.getId());
 			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
 			for( ConceptDTO concept : version.getConcepts()) {
@@ -622,8 +696,9 @@ public class DialogManageStatusWindowNew extends MWindow {
 			cvScheme.setTitleByLanguage(versionLanguage.toString(), version.getTitle());
 			cvScheme.setDescriptionByLanguage(versionLanguage.toString(), version.getDefinition());
 			cvScheme.save();
-			stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv " + version.getNotation() + " TL" + versionLanguage.toString());
-			
+			DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv " + version.getNotation() + " TL" + versionLanguage.toString());
+			//refresh cvScheme
+			cvScheme = new CVScheme(ddiStore);
 			// save  CvConcept
 			List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
 			Map<String, CVConcept> cvConceptMaps = new HashMap<>();
@@ -638,7 +713,11 @@ public class DialogManageStatusWindowNew extends MWindow {
 				cvConcept.setPrefLabelByLanguage(versionLanguage.toString(),  concept.getTitle());
 				cvConcept.setDescriptionByLanguage(versionLanguage.toString(), concept.getDefinition());
 				cvConcept.save();
-			   stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "publish code " + cvConcept.getNotation());
+				try {
+					stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "publish code " + cvConcept.getNotation());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 			}
 		}
 	}
