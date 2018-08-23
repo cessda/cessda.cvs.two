@@ -1725,6 +1725,35 @@ $v-selection-item-border-radius: 0;
 			}
 	   	}
    	}
+   .export-grid{
+   		height:auto !important;
+	   .v-grid-tablewrapper{
+	   		position:relative;
+	   		height:auto !important;
+	   		width:100% !important;
+	   		table{
+		   		tr{
+		   			transform: none !important;
+		   			float:left;
+		   			position: relative !important;
+				   	td{
+				   		height:auto !important;
+		    			display:table-cell;
+		    			float:none;
+		    			vertical-align: top;
+		    			white-space: -moz-pre-wrap; /* Mozilla */
+						white-space: -hp-pre-wrap; /* HP printers */
+						white-space: -o-pre-wrap; /* Opera 7 */
+						white-space: -pre-wrap; /* Opera 4-6 */
+						white-space: pre-wrap; /* CSS 2.1 */
+						white-space: pre-line;
+						word-break: break-all;
+					    word-wrap: break-word;
+				   	}
+			   }
+		   }
+	   }
+   }
    	.undefined-height>.v-grid-tablewrapper>table>tbody>tr{
 		transform: none !important;
 		float:left;
@@ -1794,9 +1823,8 @@ $v-selection-item-border-radius: 0;
 			    overflow-x: hidden;
 			}
 			tbody.v-grid-body{
-	   			position:absolute;
+	   			position:relative;
 	   			display: block;
-			    overflow-y: hidden;
 			    overflow-x: hidden;
 			}
 		}
@@ -1993,11 +2021,14 @@ $v-selection-item-border-radius: 0;
    		color:#905b32;
     	background-color:#fff;
    	}
+   	.result-info{
+   		display:flex;
+   	}
    	h3.result-info{
    		color: #555555 !important;
 	    line-height: 1em;
 	    font-size: 1em;
-	    margin: 8px 5px !important;
+	    margin: 8px 25px 8px 5px!important;
    	}
    	h3.filter-menu{
    	    margin: 0;
@@ -2074,6 +2105,42 @@ $v-selection-item-border-radius: 0;
 	    }
 	}
 	
+	.search-box-secondary{
+		border: 2px solid #eeeeee;
+	    border-radius: 3px;
+	    background-color: #ffffff;
+        color: #c3c3c3;
+	    height: 35px;
+	    margin: 0 0 0 auto;
+	    display: flex;
+	    flex: 1;
+	    
+	    .icon-search{
+	    	background-size: contain;
+		    height: 20px;
+		    width: 20px;
+		    display: block;
+		    margin: 3px 0 0 10px;
+		    font-weight: 400;
+		    line-height: 1.5;
+		    font-size: 120%;
+	    }
+	    
+	    input[type="text"]{
+	    	margin-top: 4px;
+		    border: none;
+		    box-shadow: none;
+	    }
+	    
+	    .v-textfield{
+	    	height: 25px;
+	    }
+	    .clear-search-button{
+	    	height: 30px;
+	    }
+	    
+	}
+	
 	.facet-filter{
 		float:left;
 		display:block;
@@ -2103,6 +2170,13 @@ $v-selection-item-border-radius: 0;
 	.search-option{
 		background-color: #eeeeee;
 		display: block;
+		padding: 10px 15px;
+    	border-radius: 3px;
+    	width:100%;
+	}
+	.search-option-flex{
+		background-color: #eeeeee;
+		display: flex;
 		padding: 10px 15px;
     	border-radius: 3px;
     	width:100%;

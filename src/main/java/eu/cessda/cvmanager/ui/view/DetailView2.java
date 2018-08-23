@@ -774,7 +774,7 @@ public class DetailView2 extends CvManagerView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, null, configService, templateEngine);
 		exportLayout.add(exportLayoutContent);
 
 		bottomViewSection.add(detailTab);

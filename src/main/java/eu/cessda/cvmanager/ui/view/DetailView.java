@@ -708,8 +708,9 @@ public class DetailView extends CvView {
 		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentVersion.getNumber());
 		identifyLayout.add( identityVersionLayout );
 		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, versionService, configService, templateEngine);
 		exportLayout.add(exportLayoutContent);
+		exportLayout.setSizeFull();
 		
 		
 

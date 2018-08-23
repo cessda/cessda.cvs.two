@@ -462,8 +462,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 								vocabulary.setStatus( nextStatus);
 							}
 							
-							
-							
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
 								vocabulary.setStatuses( vocabulary.getLatestStatuses() );
 								
@@ -490,7 +488,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 									vocabulary.setLanguagesPublished( null);
 									vocabulary.addLanguagePublished( sourceLanguage.toString());
 									
-									
 									// get workflow codes
 									List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
 									
@@ -498,6 +495,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 									for( VersionDTO targetTLversion : latestTlVersions ) {
 										// create new version
 										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), null );
+										newVersion.setUriSl( vocabulary.getUri());
 										newVersion = versionService.save(newVersion);
 										
 										// save concepts

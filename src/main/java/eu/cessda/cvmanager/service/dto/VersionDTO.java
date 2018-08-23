@@ -53,6 +53,8 @@ public class VersionDTO implements Serializable {
     private String summary;
 
     private String uri;
+    
+    private String uriSl;
 
     @Size(max = 240)
     private String notation;
@@ -144,6 +146,14 @@ public class VersionDTO implements Serializable {
     public void setUri(String uri) {
         this.uri = uri;
     }
+    
+    public String getUriSl() {
+		return uriSl;
+	}
+
+	public void setUriSl(String uriSl) {
+		this.uriSl = uriSl;
+	}
 
     public String getNotation() {
         return notation;

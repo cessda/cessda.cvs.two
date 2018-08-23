@@ -337,6 +337,7 @@ public class DialogCreateVersionWindow extends MWindow {
 			
 			if( slVersioning ) {
 				newVersion.setUri( newCvScheme.getContainerId() );
+				newVersion.setUriSl( newVersion.getUriSl());
 			}
 			
 			newVersion = versionService.save(newVersion);

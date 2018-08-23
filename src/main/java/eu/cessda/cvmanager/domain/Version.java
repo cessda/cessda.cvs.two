@@ -75,6 +75,9 @@ public class Version implements Serializable{
     @Column(name = "uri", length = 240)
     private String uri;
     
+    @Column(name = "uri_sl", length = 240)
+    private String uriSl;
+    
     // Start SL or TL Vocabulary
     @Column(name = "notation", length = 240)
     private String notation;
@@ -280,6 +283,14 @@ public class Version implements Serializable{
 
 	public void setUri(String uri) {
 		this.uri = uri;
+	}
+	
+	public String getUriSl() {
+		return uriSl;
+	}
+
+	public void setUriSl(String uriSl) {
+		this.uriSl = uriSl;
 	}
 
 	public Set<Concept> getConcepts() {

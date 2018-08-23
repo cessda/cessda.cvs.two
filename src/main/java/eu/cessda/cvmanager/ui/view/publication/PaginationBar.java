@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import org.springframework.data.domain.Pageable;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
@@ -92,6 +93,21 @@ public class PaginationBar extends MHorizontalLayout {
         next.setEnabled(hasNext);
         if( esQueryResultDetail.getVocabularies().getTotalPages() > 0)
         	status.setCaption("page "+(currentPage + 1)+" of "+ esQueryResultDetail.getVocabularies().getTotalPages() );
+        else
+        	status.setCaption("page 0 of 0" );
+    }
+    
+    public void updateState(Pageable pageable, int totalPage) {
+    	currentPage = pageable.getPageNumber();
+        final boolean hasPrev = currentPage > 0;
+        first.setEnabled(hasPrev);
+        previous.setEnabled(hasPrev);
+        totalPages = totalPage;
+        final boolean hasNext = currentPage < totalPage - 1;
+        last.setEnabled(hasNext);
+        next.setEnabled(hasNext);
+        if( totalPage > 0)
+        	status.setCaption("page "+(currentPage + 1)+" of "+ totalPage );
         else
         	status.setCaption("page 0 of 0" );
     }

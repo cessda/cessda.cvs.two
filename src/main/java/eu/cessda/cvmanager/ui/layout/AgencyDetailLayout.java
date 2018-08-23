@@ -75,6 +75,7 @@ import eu.cessda.cvmanager.ui.component.CvSchemeComponent;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.GesisPagination;
 import eu.cessda.cvmanager.ui.view.HelpWindow;
+import eu.cessda.cvmanager.ui.view.AgencyView.ViewMode;
 
 public class AgencyDetailLayout extends MCssLayout implements Translatable {
 	
@@ -102,14 +103,9 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 	private HorizontalLayout globalContainer = new HorizontalLayout();
 	private VerticalLayout filtersContainer = new VerticalLayout();
 	private VerticalLayout searchGlobalContainer = new VerticalLayout();
-	// search box area
-	private VerticalLayout searchBoxContainer = new VerticalLayout();
-	private TextField searchBox;
-	private Button showAllStudiesButton;
 
-	private MHorizontalLayout searchOption = new MHorizontalLayout();
-	private MButton clearButton = new MButton();
-	private MButton searchHelpButton = new MButton();
+
+	private MButton backButton = new MButton("Back");
 
 	private MHorizontalLayout filterOption = new MHorizontalLayout();
 	private MHorizontalLayout perPageResult = new MHorizontalLayout();
@@ -161,24 +157,23 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 		this.searchGlobalContainer.setMargin(false);
 		this.searchGlobalContainer.setSizeFull();
 
-		// search box zone
-		this.searchBoxContainer.setSpacing(false);
-		this.searchBoxContainer.setMargin(false);
-		this.searchBoxContainer.setSizeFull();
-		this.searchBoxContainer.setHeightUndefined();
-		
-
 		// results zone
 		this.resultsContainer.setSpacing(false);
 		this.resultsContainer.setMargin(false);
 		this.resultsContainer.setSizeFull();
 
-		this.searchGlobalContainer.addComponents(searchBoxContainer, resultsContainer);
+		this.searchGlobalContainer.addComponents(resultsContainer);
 		this.searchGlobalContainer.setExpandRatio(resultsContainer, 1);
 
 		this.globalContainer.addComponents(filtersContainer, searchGlobalContainer);
 		this.globalContainer.setExpandRatio(searchGlobalContainer, 1);
-				
+		
+		backButton
+			.withStyleName( "pull-right" )
+			.addClickListener( e -> {
+				agencyView.setAgency( null , ViewMode.INITIAL);
+			});
+		
 		titleLayout
 			.withStyleName( "pull-left" )
 			.add( headTitle );
@@ -186,7 +181,8 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 		headerLayout
 			.withFullWidth()
 			.add(logoLayout, 
-				titleLayout);
+				titleLayout,
+				backButton);
 				
 		layout
 			.withFullWidth()
