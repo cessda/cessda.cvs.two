@@ -678,13 +678,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 			// clear codes and assign with concepts from SL version
 			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
+			Set<CodeDTO> codesUpdated = new HashSet<>();
 			for( ConceptDTO concept : latestSLversion.getConcepts()) {
 				CodeDTO code = codeMap.get( concept.getNotation());
 				if( code == null )
 					continue;
+				code.clearCode();
 				code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), latestSLversion.getLanguage());
+				codesUpdated.add(code);
 			}
 			vocabulary = save(vocabulary);
+			vocabulary.setCodes(codesUpdated);
 		}
 		
 		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);

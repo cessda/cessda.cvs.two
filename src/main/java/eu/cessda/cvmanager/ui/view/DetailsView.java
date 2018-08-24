@@ -100,12 +100,15 @@ import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
+import eu.cessda.cvmanager.ui.layout.DdiUsageLayout;
 import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayout;
 import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayoutNew;
 import eu.cessda.cvmanager.ui.layout.EditorCvActionLayout;
 import eu.cessda.cvmanager.ui.layout.EditorCvActionLayoutNew;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
-import eu.cessda.cvmanager.ui.layout.IdentityVersionLayout;
+import eu.cessda.cvmanager.ui.layout.IdentityLayout;
+import eu.cessda.cvmanager.ui.layout.LicenseLayout;
+import eu.cessda.cvmanager.ui.layout.VersionLayout;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow2;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
@@ -139,6 +142,7 @@ public class DetailsView extends CvView {
 	// the tabs
 	private TabSheet detailTab = new TabSheet();
 	private MCssLayout detailLayout = new MCssLayout().withFullWidth();
+	private MCssLayout versionContentLayout = new MCssLayout().withFullWidth();
 	private MCssLayout identifyLayout = new MCssLayout().withFullWidth();
 	private MCssLayout ddiLayout = new MCssLayout().withFullWidth();
 	private MCssLayout licenseLayout = new MCssLayout().withFullWidth();
@@ -200,9 +204,11 @@ public class DetailsView extends CvView {
 //	private TreeDataProvider<CVConcept> dataProvider;
 	private TreeDataProvider<CodeDTO> dataProviderNew;
 	
-	private IdentityVersionLayout identityVersionLayout;
+	private VersionLayout versionLayout;
 	private ExportLayout exportLayoutContent;
-	
+	private IdentityLayout identityLayout;
+	private DdiUsageLayout ddiUsageLayout;
+	private LicenseLayout licenseLayoutContent;
 	
 	private Binder<CVScheme> cvSchemeBinder = new Binder<>();
 	private Language sourceLanguage;
@@ -639,6 +645,8 @@ public class DetailsView extends CvView {
 		detailLayout.removeAllComponents();
 		exportLayout.removeAllComponents();
 		identifyLayout.removeAllComponents();
+		ddiLayout.removeAllComponents();
+		licenseLayout.removeAllComponents();
 		
 		exportLayout.withHeight("450px");
 		detailLayout.setHeight("800px");
@@ -649,6 +657,7 @@ public class DetailsView extends CvView {
 		detailTab.setWidth("100%");
 	
 		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale));
+		detailTab.addTab(versionContentLayout, i18n.get("view.detail.cvconcept.tab.version", locale));
 		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale));
 		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale));
 		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale));
@@ -755,8 +764,21 @@ public class DetailsView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentSLVersion.getNumber());
-		identifyLayout.add( identityVersionLayout );
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentSLVersion.getNumber());
+		versionContentLayout.add( versionLayout );
+		
+		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
+		identifyLayout.add( identityLayout );
+		
+		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
+		ddiLayout.add(ddiUsageLayout);
+		
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
+		licenseLayout.add( licenseLayoutContent );
+		
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, versionService, configService, templateEngine);
+		exportLayout.add(exportLayoutContent);
+		exportLayout.setSizeFull();
 		
 //		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
 //		exportLayout.add(exportLayoutContent);
@@ -1120,10 +1142,11 @@ public class DetailsView extends CvView {
 		lDate3.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
 		
 		detailTab.getTab(0).setCaption( i18n.get("view.detail.cvconcept.tab.detail", locale));
-		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.identity", locale));
-		detailTab.getTab(2).setCaption( i18n.get("view.detail.cvconcept.tab.ddi", locale));
-		detailTab.getTab(3).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
-		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
+		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.version", locale));
+		detailTab.getTab(2).setCaption( i18n.get("view.detail.cvconcept.tab.identity", locale));
+		detailTab.getTab(3).setCaption( i18n.get("view.detail.cvconcept.tab.ddi", locale));
+		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
+		detailTab.getTab(5).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
 		
 //		detailTreeGrid.getColumn("code").setCaption( "Code" );
 //		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );

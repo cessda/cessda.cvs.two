@@ -117,12 +117,15 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private MCssLayout versionHistoryLayout = new MCssLayout();
 	private MLabel versionNotesLabel = new MLabel();
 	private TextArea versionNotes = new TextArea();
+	private MLabel versionChangesLabel = new MLabel();
+	private TextArea versionChanges = new TextArea();
 	private MLabel versionNumberLabel = new MLabel();
 	private MTextField versionNumberField = new MTextField();
 	private MCssLayout tlCloneInfoLayout = new MCssLayout();
 	private MCssLayout versionButtonLayout = new MCssLayout();
 	
 	private MButton buttonPublishCv = new MButton("Publish");
+	private MButton buttonSave = new MButton("Save");
 	private MButton cancelButton = new MButton("Cancel", e -> this.close());
 	
 	private String nextStatus = null;
@@ -299,6 +302,9 @@ public class DialogManageStatusWindowNew extends MWindow {
 		buttonPublishCv
 			.withStyleName("action-button2")
 			.addClickListener(this::forwardToPublish);
+		buttonSave
+			.withStyleName("action-button2")
+			.addClickListener(this::saveWithoutPublish);
 		cancelButton
 			.addStyleNames("action-button2");
 		
@@ -339,8 +345,18 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.withStyleName("section-header")
 			.withValue("Version Notes");
 		
+		versionChangesLabel
+			.withFullWidth()
+			.withStyleName("section-header")
+			.withValue("Version Changes");
+		
 		versionNotes.setWidth("100%");
-		versionNotes.setHeight("200px");
+		versionNotes.setHeight("160px");
+		versionNotes.setValue( currentVersion.getVersionNotes() == null ? "" : currentVersion.getVersionNotes() );
+		
+		versionChanges.setWidth("100%");
+		versionChanges.setHeight("160px");
+		versionChanges.setValue( currentVersion.getVersionChanges() == null ? "" : currentVersion.getVersionChanges() );
 		
 		versionNumberLabel
 			.withStyleName("section-header","pull-left")
@@ -350,8 +366,12 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.withStyleName("pull-left")
 			.setWidth("80px");
 		
-		if( sourceLanguage.equals( selectedLanguage ))
-			versionNumberField.setValue( versionNumberSL );
+		if( sourceLanguage.equals( selectedLanguage )) {
+			if( currentVersion.getNumber() == null )
+				versionNumberField.setValue( versionNumberSL );
+			else
+				versionNumberField.setValue( currentVersion.getNumber());
+		}
 		else
 			versionNumberField.setValue( versionNumberTL);
 
@@ -363,6 +383,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 				versionNumberLabel,
 				versionNumberField,
 				buttonPublishCv,
+				buttonSave,
 				cancelButton
 		);
 		
@@ -397,6 +418,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 				versionHistoryLayout,
 				versionNotesLabel,
 				versionNotes,
+				versionChangesLabel,
+				versionChanges,
 				tlCloneInfoLayout,
 				versionButtonLayout
 			);
@@ -416,6 +439,16 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
+	}
+	
+	private void saveWithoutPublish() {
+		currentVersion.setDiscussionNotes( discussionArea.getValue() );
+		currentVersion.setVersionNotes( versionNotes.getValue() );
+		currentVersion.setVersionChanges( versionChanges.getValue() );
+		currentVersion.setNumber( versionNumberField.getValue() );
+		currentVersion = versionService.save(currentVersion);
+		Notification.show("Changes are saved!");
+		close();
 	}
 	
 	private void forwardToPublish() {
@@ -494,7 +527,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 									// clone any latest TL if exist
 									for( VersionDTO targetTLversion : latestTlVersions ) {
 										// create new version
-										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), null );
+										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), null, agency.getLicense(), agency.getCopyright() );
 										newVersion.setUriSl( vocabulary.getUri());
 										newVersion = versionService.save(newVersion);
 										

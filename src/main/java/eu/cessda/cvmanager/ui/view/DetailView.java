@@ -100,10 +100,13 @@ import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
+import eu.cessda.cvmanager.ui.layout.DdiUsageLayout;
 import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayout;
 import eu.cessda.cvmanager.ui.layout.EditorCvActionLayout;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
-import eu.cessda.cvmanager.ui.layout.IdentityVersionLayout;
+import eu.cessda.cvmanager.ui.layout.IdentityLayout;
+import eu.cessda.cvmanager.ui.layout.LicenseLayout;
+import eu.cessda.cvmanager.ui.layout.VersionLayout;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow2;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
@@ -136,7 +139,10 @@ public class DetailView extends CvView {
 //	private MCssLayout bottomEditSection = new MCssLayout().withFullWidth();
 	private MCssLayout newerVersionAvailable = new MCssLayout();
 	
+	// the tabs
+	private TabSheet detailTab = new TabSheet();
 	private MCssLayout detailLayout = new MCssLayout().withFullWidth();
+	private MCssLayout versionContentLayout = new MCssLayout().withFullWidth();
 	private MCssLayout identifyLayout = new MCssLayout().withFullWidth();
 	private MCssLayout ddiLayout = new MCssLayout().withFullWidth();
 	private MCssLayout licenseLayout = new MCssLayout().withFullWidth();
@@ -148,7 +154,6 @@ public class DetailView extends CvView {
 //	private ComboBox<CVEditor> editorCb = new ComboBox<>();
 	private static final CVEditor[] cvEditors = new CVEditor[2];
 	
-	private TabSheet detailTab = new TabSheet();
 	
 	private MLabel lAgency = new MLabel("Agency");
 	private MLabel lTitle = new MLabel();
@@ -196,9 +201,11 @@ public class DetailView extends CvView {
 	private List<CVConcept> draggedItems;
 	private TreeDataProvider<CVConcept> dataProvider;
 	
-	private IdentityVersionLayout identityVersionLayout;
+	private VersionLayout versionLayout;
 	private ExportLayout exportLayoutContent;
-	
+	private IdentityLayout identityLayout;
+	private DdiUsageLayout ddiUsageLayout;
+	private LicenseLayout licenseLayoutContent;
 	
 	private Binder<CVScheme> cvSchemeBinder = new Binder<>();
 	private Language sourceLanguage;
@@ -579,6 +586,8 @@ public class DetailView extends CvView {
 		detailLayout.removeAllComponents();
 		exportLayout.removeAllComponents();
 		identifyLayout.removeAllComponents();
+		ddiLayout.removeAllComponents();
+		licenseLayout.removeAllComponents();
 		
 		exportLayout.withHeight("450px");
 		detailLayout.setHeight("800px");
@@ -589,6 +598,7 @@ public class DetailView extends CvView {
 		detailTab.setWidth("100%");
 	
 		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale));
+		detailTab.addTab(versionContentLayout, i18n.get("view.detail.cvconcept.tab.version", locale));
 		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale));
 		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale));
 		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale));
@@ -615,11 +625,11 @@ public class DetailView extends CvView {
 			.setExpandRatio(1)
 			.setId("code");
 	
-		detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage( sourceLanguage.toString() ))
-			.setCaption(i18n.get("view.detail.cvconcept.column.sl.title", locale))
-			.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage( sourceLanguage.toString() , value))
-			.setExpandRatio(1)
-			.setId("prefLabelSl");
+//		detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage( sourceLanguage.toString() ))
+//			.setCaption(i18n.get("view.detail.cvconcept.column.sl.title", locale))
+//			.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage( sourceLanguage.toString() , value))
+//			.setExpandRatio(1)
+//			.setId("prefLabelSl");
 
 		if( !selectedLang.equals( Language.valueOfEnum( "english" ) ))
 			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang.toString()))
@@ -628,13 +638,13 @@ public class DetailView extends CvView {
 				.setEditorComponent(prefLanguageEditor, (concept, value) -> concept.setPrefLabelByLanguage( selectedLang.toString(), value))
 				.setExpandRatio(1)
 				.setId("prefLabelTl");// Component(prefLanguageEditor,
-		
-		detailTreeGrid.addColumn(concept -> {
-					return new MLabel( concept.getDescriptionByLanguage( sourceLanguage.toString() )).withStyleName( "word-brake-normal" );
-				}, new ComponentRenderer())
-				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
-				.setExpandRatio(3)
-				.setId("definitionSl");
+//		
+//		detailTreeGrid.addColumn(concept -> {
+//					return new MLabel( concept.getDescriptionByLanguage( sourceLanguage.toString() )).withStyleName( "word-brake-normal" );
+//				}, new ComponentRenderer())
+//				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
+//				.setExpandRatio(3)
+//				.setId("definitionSl");
 		
 		if( !selectedLang.equals( Language.valueOfEnum( "english" ) ))
 			detailTreeGrid.addColumn(concept -> {
@@ -705,8 +715,17 @@ public class DetailView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		identityVersionLayout = new IdentityVersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentVersion.getNumber());
-		identifyLayout.add( identityVersionLayout );
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentVersion.getNumber());
+		identifyLayout.add( versionLayout );
+		
+		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
+		identifyLayout.add( identityLayout );
+		
+		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
+		ddiLayout.add(ddiUsageLayout);
+		
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
+		licenseLayout.add( licenseLayoutContent );
 		
 		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, versionService, configService, templateEngine);
 		exportLayout.add(exportLayoutContent);
@@ -1017,16 +1036,17 @@ public class DetailView extends CvView {
 		lDate3.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
 		
 		detailTab.getTab(0).setCaption( i18n.get("view.detail.cvconcept.tab.detail", locale));
-		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.identity", locale));
-		detailTab.getTab(2).setCaption( i18n.get("view.detail.cvconcept.tab.ddi", locale));
-		detailTab.getTab(3).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
-		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
+		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.version", locale));
+		detailTab.getTab(2).setCaption( i18n.get("view.detail.cvconcept.tab.identity", locale));
+		detailTab.getTab(3).setCaption( i18n.get("view.detail.cvconcept.tab.ddi", locale));
+		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
+		detailTab.getTab(5).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
 		
 		detailTreeGrid.getColumn("code").setCaption( "Code" );
-		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
+//		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
 		if( detailTreeGrid.getColumn("prefLabelTl") != null )
 			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang) );
-		detailTreeGrid.getColumn("definitionSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.definition", locale) );
+//		detailTreeGrid.getColumn("definitionSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.definition", locale) );
 		if( detailTreeGrid.getColumn("definitionTl") != null )
 			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
 		

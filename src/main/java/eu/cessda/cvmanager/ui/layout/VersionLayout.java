@@ -58,7 +58,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
 
-public class IdentityVersionLayout extends MCssLayout implements Translatable {
+public class VersionLayout extends MCssLayout implements Translatable {
 	
 	private static final long serialVersionUID = -2461005203070668382L;
 	private final I18N i18n;
@@ -72,7 +72,7 @@ public class IdentityVersionLayout extends MCssLayout implements Translatable {
 	private String baseUrl;
 	private String currentVersionNumber;
 	
-	public IdentityVersionLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
+	public VersionLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO,
 			VocabularyChangeService vocabularyChangeService,
 			ConfigurationService configService,

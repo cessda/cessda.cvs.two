@@ -8,8 +8,11 @@ import javax.annotation.PostConstruct;
 
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
+import org.gesis.wts.ui.view.AccessDeniedView;
+import org.gesis.wts.ui.view.LoginView;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
@@ -34,24 +37,20 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 
-public abstract class CvView extends MVerticalLayout implements MView, Translatable {
+public abstract class CvAdminView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -8769292972079523949L;
 	public static enum ActionType{
-		ADMIN, DISCOVER, EDITORSEARCH, DETAIL, DETAILS, AGENCY// this should be similar to view names
+		ADMIN
 	}
 	
 	protected final I18N i18n;
 	protected final EventBus.UIEventBus eventBus;
 	protected final ConfigurationService configService;
-	protected final StardatDDIService stardatDDIService;
+
 	protected final SecurityService securityService;
 	protected final AgencyService agencyService;
-	protected final VocabularyService vocabularyService;
-	protected final CodeService codeService;
-	// Elasticsearch repo for Editor
-	protected final VocabularySearchRepository vocabularySearchRepository;
-	
+
 	protected Locale locale = UI.getCurrent().getLocale();
 	
 	private final ActionType actionType;
@@ -67,20 +66,16 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected MCssLayout sidePanel = new MCssLayout();
 	protected MCssLayout mainContainer = new MCssLayout();
 	
-	public CvView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
-			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
-			String actionType ) {
+	private final String viewName;
+	
+	public CvAdminView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
+			SecurityService securityService, AgencyService agencyService, String actionType ) {
 		this.i18n = i;
 		this.eventBus = eventBus;
 		this.configService = configService;
-		this.stardatDDIService = stardatDDIService;
 		this.securityService = securityService;
 		this.agencyService = agencyService;
-		this.vocabularyService = vocabularyService;
-		this.codeService = codeService;
-		this.vocabularySearchRepository = vocabularySearchRepository;
-		
+		this.viewName = actionType;
 		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
 		this.eventBus.subscribe( this );
@@ -91,7 +86,8 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	public void initview() {
 		
 		topPanel
-			.withStyleName( "top-panel" );
+			.withStyleName( "top-panel" )
+			.setVisible( false );
 
 		sidePanel
 			.withStyleName( "side-panel" );
@@ -118,6 +114,8 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	
 	@Override
 	public void enter(ViewChangeEvent event) {
+		if(!authorizeViewAccess())
+			return;
 		updateBreadcrumb();
 	}
 	
@@ -135,6 +133,15 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		}
 	}
 	
+	protected boolean authorizeViewAccess() {
+		if( !SecurityUtils.isCurrentUserSystemAdmin()) {
+			LoginView.NAVIGATETO_VIEWNAME = viewName;
+			UI.getCurrent().getNavigator().navigateTo(AccessDeniedView.NAME);
+			return false;
+		}
+		return true;
+	}
+	
 	@EventBusListenerMethod( scope = EventScope.UI )
 	public void onAuthenticate( LoginSucceedEvent event )
 	{
@@ -146,9 +153,6 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		return eventBus;
 	}
 
-	public StardatDDIService getStardatDDIService() {
-		return stardatDDIService;
-	}
 
 	public ActionType getActionType() {
 		return actionType;

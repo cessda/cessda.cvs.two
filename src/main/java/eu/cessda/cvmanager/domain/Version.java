@@ -107,8 +107,28 @@ public class Version implements Serializable{
     private String versionNotes;
     
     @Lob
+    @Column(name = "version_changes")
+    private String versionChanges;
+    
+    @Lob
     @Column(name = "discussion_notes")
     private String discussionNotes;
+    
+    @Lob
+    @Column(name = "copyright")
+    private String copyright;
+    
+    @Lob
+    @Column(name = "license")
+    private String license;
+    
+    @Lob
+    @Column(name = "identity")
+    private String identity;
+    
+    @Lob
+    @Column(name = "ddi_usage")
+    private String ddiUsage;
     
 //    @ManyToMany(mappedBy = "versions")
 //    @JsonIgnore
@@ -309,12 +329,52 @@ public class Version implements Serializable{
 		this.versionNotes = versionNotes;
 	}
 	
+	public String getVersionChanges() {
+		return versionChanges;
+	}
+
+	public void setVersionChanges(String versionChanges) {
+		this.versionChanges = versionChanges;
+	}
+
 	public String getDiscussionNotes() {
 		return discussionNotes;
 	}
 
 	public void setDiscussionNotes(String discussionNotes) {
 		this.discussionNotes = discussionNotes;
+	}
+	
+	public String getCopyright() {
+		return copyright;
+	}
+
+	public void setCopyright(String copyright) {
+		this.copyright = copyright;
+	}
+
+	public String getLicense() {
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
+	}
+
+	public String getIdentity() {
+		return identity;
+	}
+
+	public void setIdentity(String identity) {
+		this.identity = identity;
+	}
+
+	public String getDdiUsage() {
+		return ddiUsage;
+	}
+
+	public void setDdiUsage(String ddiUsage) {
+		this.ddiUsage = ddiUsage;
 	}
 
 	@Override

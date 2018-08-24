@@ -76,8 +76,18 @@ public class VersionDTO implements Serializable {
     @Lob
     private String versionNotes;
     
+    private String versionChanges;
+    
     @Lob
     private String discussionNotes;
+    
+    private String copyright;
+    
+    private String license;
+    
+    private String identity;
+    
+    private String ddiUsage;
     
     private Long vocabularyId;
 
@@ -272,6 +282,14 @@ public class VersionDTO implements Serializable {
 		this.versionNotes = versionNotes;
 	}
 	
+	public String getVersionChanges() {
+		return versionChanges;
+	}
+
+	public void setVersionChanges(String versionChanges) {
+		this.versionChanges = versionChanges;
+	}
+	
 	public String getDiscussionNotes() {
 		return discussionNotes;
 	}
@@ -279,7 +297,39 @@ public class VersionDTO implements Serializable {
 	public void setDiscussionNotes(String discussionNotes) {
 		this.discussionNotes = discussionNotes;
 	}
+	
+	public String getCopyright() {
+		return copyright;
+	}
 
+	public void setCopyright(String copyright) {
+		this.copyright = copyright;
+	}
+
+	public String getLicense() {
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
+	}
+
+	public String getIdentity() {
+		return identity;
+	}
+
+	public void setIdentity(String identity) {
+		this.identity = identity;
+	}
+
+	public String getDdiUsage() {
+		return ddiUsage;
+	}
+
+	public void setDdiUsage(String ddiUsage) {
+		this.ddiUsage = ddiUsage;
+	}
+	
 	@Override
     public String toString() {
         return "VersionDTO{" +
@@ -374,7 +424,7 @@ public class VersionDTO implements Serializable {
 		return sb.toString();
 	}
 	
-	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber) {
+	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, String license, String copyright) {
 		VersionDTO newVersion = new VersionDTO();
 		newVersion.setStatus( Status.DRAFT.toString());
 		newVersion.setItemType( targetVersion.getItemType() );
@@ -389,7 +439,10 @@ public class VersionDTO implements Serializable {
 		newVersion.setCreator( userId );
 		newVersion.setVocabularyId( targetVersion.getVocabularyId());
 		newVersion.setSummary( targetVersion.getSummary());
-		
+		newVersion.setLicense(license);
+		newVersion.setCopyright(copyright);
+		newVersion.setDdiUsage( targetVersion.getDdiUsage() );
+		newVersion.setIdentity( targetVersion.getIdentity() );
 		// clone concepts as well
 		for(ConceptDTO targetConcept: targetVersion.getConcepts()) {
 			ConceptDTO newConcept = ConceptDTO.clone(targetConcept);

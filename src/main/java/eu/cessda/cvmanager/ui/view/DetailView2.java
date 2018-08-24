@@ -82,6 +82,7 @@ import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -105,6 +106,7 @@ public class DetailView2 extends CvManagerView {
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
 	private final CodeService codeService;
+	private final VersionService versionService;
 	
 	private Language selectedLang = Language.ENGLISH;
 	private FormMode formMode;
@@ -187,12 +189,13 @@ public class DetailView2 extends CvManagerView {
 
 	public DetailView2( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, CodeService codeService, TemplateEngine templateEngine) {
+			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, TemplateEngine templateEngine) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, DetailView2.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
+		this.versionService = versionService;
 		eventBus.subscribe( this, DetailView2.VIEW_NAME );
 	}
 
@@ -774,7 +777,7 @@ public class DetailView2 extends CvManagerView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, null, configService, templateEngine);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, versionService, configService, templateEngine);
 		exportLayout.add(exportLayoutContent);
 
 		bottomViewSection.add(detailTab);

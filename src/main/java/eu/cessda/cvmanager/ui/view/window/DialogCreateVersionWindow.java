@@ -327,7 +327,7 @@ public class DialogCreateVersionWindow extends MWindow {
 //				versionNumber = versionNumber + ".1";
 //			}
 //			
-			VersionDTO newVersion = VersionDTO.clone(currentVersion, SecurityUtils.getLoggedUser().getId(), null);
+			VersionDTO newVersion = VersionDTO.clone(currentVersion, SecurityUtils.getLoggedUser().getId(), null, agency.getLicense(), agency.getCopyright() );
 			newVersion.setDiscussionNotes( discussionArea.getValue() );
 			
 			CVScheme newCvScheme = new CVScheme();

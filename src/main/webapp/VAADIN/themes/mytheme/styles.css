@@ -15746,12 +15746,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme h2 {
-	font-size: 32px;
+	font-size: 1.2em;
 	font-weight: 700;
-	line-height: 40px;
 	color: #333;
 	line-height: normal;
-	margin: 0 0 10px 0;
+	margin: 0 0 10px 0 !important;
 	font-family: "Open Sans", sans-serif;
 }
 
@@ -16201,6 +16200,10 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme #cooplogo {
 	margin: 0px 8px 0px 8px;
+}
+
+.mytheme .mainlayout {
+	width: 100%;
 }
 
 .mytheme .v-accordion {
