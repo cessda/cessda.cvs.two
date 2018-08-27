@@ -133,10 +133,8 @@ public class DetailView extends CvView {
 
 	private MCssLayout topSection = new MCssLayout().withFullWidth();
 	private MCssLayout topViewSection = new MCssLayout().withFullWidth();
-//	private MCssLayout topEditSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomViewSection = new MCssLayout().withFullWidth();
-//	private MCssLayout bottomEditSection = new MCssLayout().withFullWidth();
 	private MCssLayout newerVersionAvailable = new MCssLayout();
 	
 	// the tabs
@@ -151,7 +149,6 @@ public class DetailView extends CvView {
 	private TextField codeEditor = new TextField();
 	private TextField prefLanguageEditor = new TextField();
 	private TextField prefLabelEditor = new TextField();
-//	private ComboBox<CVEditor> editorCb = new ComboBox<>();
 	private static final CVEditor[] cvEditors = new CVEditor[2];
 	
 	
@@ -190,7 +187,6 @@ public class DetailView extends CvView {
 	
 	private MLabel versionLabel = new MLabel();
 
-//	private View oldView;
 	
 	private TreeGrid<CVConcept> detailTreeGrid = new TreeGrid<>(CVConcept.class);
 	private TreeGridDragSource<CVConcept> dragSource;
@@ -211,8 +207,6 @@ public class DetailView extends CvView {
 	private Language sourceLanguage;
 	private String activeTab;
 	
-//	private EditorCvActionLayout editorCvActionLayout;
-//	private EditorCodeActionLayout editorCodeActionLayout;
 
 	public DetailView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
@@ -233,27 +227,12 @@ public class DetailView extends CvView {
 
 	@PostConstruct
 	public void init() {
-		
-//		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, 
-//				stardatDDIService, agencyService, vocabularyService, versionService, vocabularySearchRepository, eventBus, vocabularyChangeService);
-//		
-//		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
-//				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
-//				vocabularyChangeService);
-		
-
 		languageLayout.withFullWidth();
 
 		topSection.add(topViewSection/*, topEditSection*/);
 
 		bottomSection.add(bottomViewSection/*, bottomEditSection*/);
-		
-//		sidePanel
-//			.add( 
-//				editorCvActionLayout,
-//				editorCodeActionLayout
-//			);
-		
+
 		mainContainer
 			.add(
 				topSection, 
@@ -716,7 +695,7 @@ public class DetailView extends CvView {
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
 		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentVersion.getNumber());
-		identifyLayout.add( versionLayout );
+		versionContentLayout.add( versionLayout );
 		
 		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
 		identifyLayout.add( identityLayout );

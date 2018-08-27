@@ -13,7 +13,9 @@ import org.gesis.wts.service.UserService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
 import org.gesis.wts.ui.view.admin.layout.ManageAgencyLayout;
+import org.gesis.wts.ui.view.admin.layout.ManageUserAgencyLayout;
 import org.gesis.wts.ui.view.admin.layout.ManageUserLayout;
+import org.gesis.wts.ui.view.admin.layout.ManageUserRoleLayout;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -63,7 +65,12 @@ public class AdminView extends CvAdminView {
 
 	private static final long serialVersionUID = 2321835584429770141L;
 	public static final String VIEW_NAME = "admin";
-	public enum AdminContent { USER_MANAGEMENT, AGENCY_MANAGEMENT };
+	public enum AdminContent { 
+		MANAGE_USER, 
+		MANAGE_AGENCY,
+		MANAGE_USER_AGENCY,
+		MANAGE_USER_ROLE
+	};
 	
 //	Autowired
 	private final UserService userService;
@@ -119,7 +126,7 @@ public class AdminView extends CvAdminView {
 				if( path.length > 0 && !path[0].isEmpty()) { // if contains agency Id
 					setMainContent (path[0]);
 				} else {
-					setMainContent(AdminContent.USER_MANAGEMENT);
+					setMainContent(AdminContent.MANAGE_USER);
 				}
 				
 				if( uriPath.contains( "?" )) {
@@ -166,13 +173,18 @@ public class AdminView extends CvAdminView {
 		adminActionLayout.setVisible( adminActionLayout.hasActionRight() );
 		mainContainer.removeAllComponents();
 		switch(adminContent) {
-			case USER_MANAGEMENT:
+			case MANAGE_USER:
 				mainContainer.add( new ManageUserLayout(i18n, userService, encrypt) );
 				break;
-			case AGENCY_MANAGEMENT:
+			case MANAGE_AGENCY:
 				mainContainer.add( new ManageAgencyLayout(i18n, agencyService) );
 				break;
-			
+			case MANAGE_USER_AGENCY:
+				mainContainer.add( new ManageUserAgencyLayout(i18n, userAgencyService, userService, agencyService) );
+				break;
+			case MANAGE_USER_ROLE:
+				mainContainer.add( new ManageUserRoleLayout(i18n, userService, roleService));
+				break;
 		}
 	}
 	

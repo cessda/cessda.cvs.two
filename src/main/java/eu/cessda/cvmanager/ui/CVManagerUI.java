@@ -48,6 +48,7 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.ValueChangeMode;
+import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.Alignment;
@@ -210,6 +211,21 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 		eventBus.subscribe(this);
 		// updateMessageStrings(UI.getCurrent().getLocale());
+		
+		// remember me login
+		if (securityService.rememberMeLogin()) {
+
+			// Now when the session is reinitialized, we can enable
+			// websocket communication. Or we could have just
+			// used WEBSOCKET_XHR and skipped this step completely.
+			this.getUI().getPushConfiguration().setTransport(Transport.WEBSOCKET);
+
+			// throw an event when the login is succeeded
+			eventBus.publish(this, new LoginSucceedEvent());
+
+			this.getUI().getNavigator().navigateTo(LoginView.NAVIGATETO_VIEWNAME);
+
+		}
 	}
 
 	private void addHeader() {

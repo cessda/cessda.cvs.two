@@ -1754,17 +1754,30 @@ $v-selection-item-border-radius: 0;
 		   }
 	   }
    }
-   	.undefined-height>.v-grid-tablewrapper>table>tbody>tr{
-		transform: none !important;
-		float:left;
-		position: relative !important;
-	   	td{
-	   		height:auto !important;
-			float:none;
-			vertical-align: top;
-			padding:0 !important;
-			width:100% !important;
-	   	}
+   	.undefined-height>.v-grid-tablewrapper{
+   		position:relative;
+   		height:auto !important;
+   		width:100% !important;
+   		
+   		table>tbody>tr{
+			transform: none !important;
+			float:left;
+			position: relative !important;
+		   	td{
+		   		height:auto !important;
+		   		display:table-cell;
+				float:none;
+				vertical-align: top;
+    			white-space: -moz-pre-wrap; /* Mozilla */
+				white-space: -hp-pre-wrap; /* HP printers */
+				white-space: -o-pre-wrap; /* Opera 7 */
+				white-space: -pre-wrap; /* Opera 4-6 */
+				white-space: pre-wrap; /* CSS 2.1 */
+				white-space: pre-line;
+				word-break: break-all;
+			    word-wrap: break-word;
+		   	}
+	   }
    }
    .v-treegrid-tablewrapper{
    		position:relative;
@@ -1788,6 +1801,10 @@ $v-selection-item-border-radius: 0;
 					white-space: pre-line;
 					word-break: break-all;
 				    word-wrap: break-word;
+				    
+				    .v-treegrid-node{
+   			 			white-space: nowrap;
+				    }
 			   	}
 		   }
 	   }

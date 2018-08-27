@@ -17342,18 +17342,31 @@ div.v-layout.v-horizontal.v-widget {
 	word-wrap: break-word;
 }
 
-.mytheme .undefined-height > .v-grid-tablewrapper > table > tbody > tr {
+.mytheme .undefined-height > .v-grid-tablewrapper {
+	position: relative;
+	height: auto !important;
+	width: 100% !important;
+}
+
+.mytheme .undefined-height > .v-grid-tablewrapper table > tbody > tr {
 	transform: none !important;
 	float: left;
 	position: relative !important;
 }
 
-.mytheme .undefined-height > .v-grid-tablewrapper > table > tbody > tr td {
+.mytheme .undefined-height > .v-grid-tablewrapper table > tbody > tr td {
 	height: auto !important;
+	display: table-cell;
 	float: none;
 	vertical-align: top;
-	padding: 0 !important;
-	width: 100% !important;
+	white-space: -moz-pre-wrap;
+	white-space: -hp-pre-wrap;
+	white-space: -o-pre-wrap;
+	white-space: -pre-wrap;
+	white-space: pre-wrap;
+	white-space: pre-line;
+	word-break: break-all;
+	word-wrap: break-word;
 }
 
 .mytheme .v-treegrid-tablewrapper {
@@ -17381,6 +17394,10 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: pre-line;
 	word-break: break-all;
 	word-wrap: break-word;
+}
+
+.mytheme .v-treegrid-tablewrapper table tr td .v-treegrid-node {
+	white-space: nowrap;
 }
 
 .mytheme .v-treegrid-cell-content {

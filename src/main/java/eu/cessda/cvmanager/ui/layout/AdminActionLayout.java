@@ -16,9 +16,11 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.label.MLabel;
 
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button.ClickEvent;
 
 import eu.cessda.cvmanager.domain.Vocabulary;
@@ -57,15 +59,7 @@ import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindowNew;
 public class AdminActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
 	
-	private final UserService userService;
-	private final RoleService roleService;
-	private final AgencyService agencyService;
-	private final UserAgencyService userAgencyService;
-	private final MetadataFieldService metadataFieldService;
-	private final MetadataValueService metadataValueService;
-	
 	private final AdminView adminView;
-	
 
 	private I18N i18n;
 	private Locale locale = UI.getCurrent().getLocale();
@@ -74,7 +68,8 @@ public class AdminActionLayout extends ResponsiveBlock{
 	
 	private MButton buttonManageUser = new MButton("Manage User");
 	private MButton buttonManageAgency = new MButton("Manage Agency");
-		
+	private MButton buttonManageUserAgency = new MButton("Manage User Agency");
+	private MButton buttonManageUserRole = new MButton("Manage User Agency");
 	
 	public AdminActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 
 			AdminView adminView, AgencyDTO agency, UserService userService, RoleService roleService, AgencyService agencyService,
@@ -84,12 +79,6 @@ public class AdminActionLayout extends ResponsiveBlock{
 		this.i18n = i18n;
 		this.eventBus = eventBus;
 		this.adminView = adminView;
-		this.userService = userService;
-		this.roleService = roleService;
-		this.metadataFieldService = metadataFieldService;
-		this.metadataValueService = metadataValueService;
-		this.agencyService = agencyService;
-		this.userAgencyService = userAgencyService;
 		this.i18n = i18n;
 		init();
 	}
@@ -107,19 +96,42 @@ public class AdminActionLayout extends ResponsiveBlock{
 			.withVisible( false )
 			.addClickListener( this::doManageAgency );
 		
+		buttonManageUserAgency
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::doManageUserAgency );
+		
+		buttonManageUserRole
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::doManageUserRole );
+		
 		getInnerContainer()
 			.add(
 				buttonManageUser,
-				buttonManageAgency
+				buttonManageAgency,
+				buttonManageUserAgency,
+				new MLabel("<hr/>").withContentMode( ContentMode.HTML ),
+				buttonManageUserRole
 			);
 	}
 
 	private void doManageUser(ClickEvent event ) {
-		adminView.setMainContent( AdminContent.USER_MANAGEMENT );
+		adminView.setMainContent( AdminContent.MANAGE_USER );
 	}
 	
 	private void doManageAgency(ClickEvent event ) {
-		adminView.setMainContent( AdminContent.AGENCY_MANAGEMENT );
+		adminView.setMainContent( AdminContent.MANAGE_AGENCY );
+	}
+	
+	private void doManageUserAgency(ClickEvent event ) {
+		adminView.setMainContent( AdminContent.MANAGE_USER_AGENCY );
+	}
+	
+	private void doManageUserRole(ClickEvent event ) {
+		adminView.setMainContent( AdminContent.MANAGE_USER_ROLE );
 	}
 	
 	@Override
@@ -137,6 +149,8 @@ public class AdminActionLayout extends ResponsiveBlock{
 			hasAction = true;
 			buttonManageUser.setVisible( true );
 			buttonManageAgency.setVisible( true );
+			buttonManageUserAgency.setVisible( true );
+			buttonManageUserRole.setVisible( true );
 		}
 		
 		return hasAction;
