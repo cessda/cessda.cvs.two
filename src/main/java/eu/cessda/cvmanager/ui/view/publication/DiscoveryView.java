@@ -76,8 +76,6 @@ public class DiscoveryView extends CvView {
 	private PaginationBar paginationBar;
 	private EsQueryResultDetail esQueryResultDetail = new EsQueryResultDetail( DiscoveryView.VIEW_NAME );
 	
-	private ArrayList<CVScheme> hits = new ArrayList<>();
-
 	private final FiltersLayout.FilterListener filterListener = ( fieldName, activeFilters) -> {
 		esQueryResultDetail.resetPaging();
 		esQueryResultDetail.getEsFilterByField( fieldName ).ifPresent( esFilter -> esFilter.setValues( activeFilters ));
@@ -199,7 +197,11 @@ public class DiscoveryView extends CvView {
 		cvGrid.removeAllColumns();
 		cvGrid.setHeaderVisible(false);
 		cvGrid.addColumn(voc -> {
-			agency = agencyService.findOne( voc.getAgencyId() );
+			agency = agencyMap.get( voc.getAgencyId() );
+			if( agency == null ) {
+				agency = agencyService.findOne( voc.getAgencyId() );
+				agencyMap.put( agency.getId(), agency);
+			}
 			return new VocabularyGridRowPublish(voc, agency, configService);
 		}, new ComponentRenderer()).setId("cvColumn");
 		// results.setRowHeight( 135.0 );
@@ -226,13 +228,6 @@ public class DiscoveryView extends CvView {
 //		searchTextField.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
 	}
 
-	public ArrayList<CVScheme> getHits() {
-		return hits;
-	}
-
-	public void setHits(ArrayList<CVScheme> hits) {
-		this.hits = hits;
-	}
 
 	public EsQueryResultDetail getEsQueryResultDetail() {
 		return esQueryResultDetail;

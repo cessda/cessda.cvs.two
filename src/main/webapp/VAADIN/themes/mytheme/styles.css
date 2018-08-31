@@ -993,10 +993,6 @@
  */
 
 /**
- *
- */
-
-/**
  * @group window
  */
 
@@ -1057,7 +1053,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "8.3.1";
+	content: "8.5.1";
 }
 
 .v-widget {
@@ -13277,6 +13273,7 @@ div.v-layout.v-horizontal.v-widget {
 	width: 100% !important;
 	height: auto !important;
 	padding: 8px;
+	display: inline-flex;
 }
 
 .mytheme .v-colorpicker-preview-textfield {
@@ -16299,7 +16296,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-upload .v-button {
-	visibility: hidden;
+	display: none;
 }
 
 .mytheme .v-button-borderless {
@@ -17463,6 +17460,10 @@ div.v-layout.v-horizontal.v-widget {
 	display: block;
 }
 
+.mytheme .v-formlayout .v-caption {
+	display: block;
+}
+
 .mytheme .v-treegrid-cell-content {
 	vertical-align: top;
 }
@@ -18030,6 +18031,18 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .alert-warning {
 	font-size: 1.5em;
 	text-align: center;
+}
+
+.mytheme .v-upload-immediate input[type="file"] {
+	opacity: 100;
+	filter: alpha(opacity=100) ;
+	z-index: 9000;
+	position: relative;
+	right: 0;
+	height: 30px;
+	text-align: right;
+	border: none;
+	background: transparent;
 }
 
 @media (min-width: 992px) {

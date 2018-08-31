@@ -1472,6 +1472,13 @@ public class VocabularyDTO implements Serializable {
 			return vers.stream().findFirst();
 	}
 	
+	public List<VersionDTO> getVersionsByLanguage( String language){
+		return versions.stream()
+				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+				.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
+				.collect( Collectors.toList());
+	}
+	
 	public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
 		if( docId == null )
 			return Optional.empty();

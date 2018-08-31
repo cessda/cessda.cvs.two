@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view;
+package eu.cessda.cvmanager.ui.view.admin;
 
 import java.util.Iterator;
 import java.util.Locale;

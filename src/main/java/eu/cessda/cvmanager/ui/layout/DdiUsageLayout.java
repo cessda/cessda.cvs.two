@@ -13,6 +13,7 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
 
 import eu.cessda.cvmanager.service.VersionService;
@@ -33,8 +34,7 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 	private MLabel contentInfo = new MLabel().withContentMode( ContentMode.HTML);
 	
 	private MCssLayout editLayout = new MCssLayout().withFullSize();
-	private MLabel editLabelInfo = new MLabel("Edit information, you can provide HTML content here:");
-	private TextArea infoEditor = new TextArea();
+	private RichTextArea infoEditor = new RichTextArea();
 	
 	private MButton editSwitchButton = new MButton( "Edit" );
 	private MCssLayout buttonLayout = new MCssLayout().withFullWidth();
@@ -79,7 +79,8 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 			);
 		
 		infoEditor.setWidth("100%");
-		infoEditor.setHeight("240px");
+		infoEditor.setHeight("340px");
+		infoEditor.setValue( version.getDdiUsage() );
 		
 		saveButton
 			.withStyleName("pull-right")
@@ -99,7 +100,6 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 		
 		editLayout
 			.add(
-				editLabelInfo,
 				infoEditor,
 				buttonLayout
 			);

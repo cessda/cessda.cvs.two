@@ -1,6 +1,7 @@
 package eu.cessda.cvmanager.ui.layout;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Locale;
 
 import org.gesis.wts.security.SecurityUtils;
@@ -14,10 +15,12 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.TextArea;
 
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.dto.LicenseDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 
 public class LicenseLayout extends MCssLayout implements Translatable {
@@ -26,36 +29,43 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 	private final I18N i18n;
 	private final Locale locale;
 	private final VersionDTO version;
+	private final AgencyDTO agency;
 	private final VersionService versionService;
 	
 	private enum LayoutMode{ READ, EDIT };
 	
 	private MCssLayout infoLayout = new MCssLayout().withFullSize();
-	private MLabel notExistInfo = new MLabel("No information is available");
-	private MLabel contentInfo = new MLabel().withContentMode( ContentMode.HTML);
+	private MLabel copyrightInfo = new MLabel().withContentMode( ContentMode.HTML);
 	
 	private MCssLayout editLayout = new MCssLayout().withFullSize();
-	private MLabel editLabelInfo = new MLabel("Edit information, you can provide HTML content here:");
-	private MLabel copyrightLabel = new MLabel("<strong>Copyright:</strong>").withFullWidth().withContentMode( ContentMode.HTML);
-	private TextArea copyright = new TextArea("Copyright");
-	private MLabel licenseLabel = new MLabel("<strong>License:</strong>").withFullWidth().withContentMode( ContentMode.HTML);
-    private TextArea license = new TextArea("License");
-	
+
 	private MButton editSwitchButton = new MButton( "Edit" );
 	private MCssLayout buttonLayout = new MCssLayout().withFullWidth();
 	private MButton saveButton = new MButton( "Save" );
 	private MButton cancelButton = new MButton( "Cancel" );
 	private boolean readOnly;
 	
+	private ComboBox<LicenseDTO> licensesCb = new ComboBox<>( "EditLicense" );
+    private MLabel licensePreview = new MLabel().withContentMode( ContentMode.HTML);
+	
 	public LicenseLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VersionDTO versionDTO,
-			VersionService versionService, boolean readOnly) {
+			VersionService versionService, List<LicenseDTO> licenses,
+			boolean readOnly) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
 		this.version = versionDTO;
+		this.agency= agencyDTO;
 		this.versionService = versionService;
 		this.readOnly = readOnly;
+		licensesCb.setItems( licenses );
+		if( version.getLicenseId() != null) 
+       	 licenses.stream().filter( p -> p.getId().longValue() == version.getLicenseId().longValue()).findFirst().ifPresent( 
+       			 license -> {
+       				 licensesCb.setValue(license);
+       				 setLicensePreview(license);
+       			 });
 		
 		this.withFullWidth();
 		init();
@@ -63,8 +73,13 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 	
 	private void init() {
 		switchMode( LayoutMode.READ );
-		refreshInfo();
 		
+		int year = LocalDate.now().getYear();
+		if( version.getStatus().equals( Status.PUBLISHED.toString())) {
+			year = version.getPublicationDate().getYear();
+		}
+		copyrightInfo.setValue( "<p>Copyright © <a href='" + agency.getLink() + "' target='_blank'>" + agency.getName() + "</a> " + year + ".</p>");
+		copyrightInfo.withFullWidth();
 		editSwitchButton
 			.withStyleName("pull-right")
 			.withVisible( false )
@@ -78,23 +93,29 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 		
 		infoLayout
 			.add(
-				notExistInfo,
-				contentInfo,
 				editSwitchButton
 			);
 		
-		copyright.setWidth("100%");
-		copyright.setHeight("80px");
-		license.setWidth("100%");
-		license.setHeight("80px");
+		
+        licensesCb.setWidth( "100%" );
+        licensesCb.setTextInputAllowed( false );
+        licensesCb.setItemCaptionGenerator( item -> item.getId() + " " + item.getName());
+        licensesCb.addValueChangeListener( e -> {
+        	if( e.getValue() != null)
+        		setLicensePreview( e.getValue());
+        	else
+        		licensePreview.setValue("");
+        });
 		
 		saveButton
 			.withStyleName("pull-right")
 			.addClickListener( e -> {
-				version.setLicense( license.getValue());
-				version.setCopyright( copyright.getValue());
+				if( licensesCb.getValue() != null)
+		    		version.setLicenseId( licensesCb.getValue().getId() );
+		    	else
+		    		version.setLicenseId( null );
 				versionService.save(version);
-				refreshInfo();
+				setLicensePreview( licensesCb.getValue() );
 				switchMode( LayoutMode.READ);
 			});
 		
@@ -107,17 +128,16 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 		
 		editLayout
 			.add(
-				editLabelInfo,
-				copyrightLabel,
-				copyright,
-				licenseLabel,
-				license,
+				licensesCb,
 				buttonLayout
 			);
 		this
 			.add( 
-				infoLayout, 
-				editLayout
+				copyrightInfo,
+				editLayout,
+				licensePreview,
+				infoLayout
+				
 			);
 	}
 	
@@ -130,25 +150,17 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 			editLayout.setVisible( true );
 		}
 	}
-
-	private void refreshInfo() {
-		if( version.getCopyright() != null && !version.getCopyright().isEmpty()) {
-			contentInfo.setVisible( true );
-			notExistInfo.setVisible( false );
-			
-			int year = LocalDate.now().getYear();
-			if( version.getStatus().equals( Status.PUBLISHED.toString())) {
-				year = version.getPublicationDate().getYear();
-			}
-			contentInfo.setValue( "<p>Copyright © " + version.getCopyright() + " " + year + ".</p>" +
-						"<p>This work is licensed under a "+ version.getLicense() + ".</p>");
-		}
-		else {
-			contentInfo.setVisible( false );
-			notExistInfo.setVisible( true );
-		}
-	}
-
+	
+    private void setLicensePreview( LicenseDTO licenseDto ) {
+    	if( licenseDto.isPersisted())
+    		licensePreview.setValue( "<p>"
+    			+ "<img style=\"width:120px\" alt=\"" + licenseDto.getName() + "\" style=\"border-width:0\" src=\"" + licenseDto.getLogoLink() + "\">"
+    			+ "&nbsp;&nbsp;&nbsp;<span>This work is licensed under a "
+    			+ "<a rel=\"license\" href=\"" + licenseDto.getLink() + "\">" + licenseDto.getName() + "</a>.</span>"
+    			+ "</p>" );
+    	else
+    		licensePreview.setValue( "" );
+    }
 
 	@Override
 	public void updateMessageStrings(Locale locale) {

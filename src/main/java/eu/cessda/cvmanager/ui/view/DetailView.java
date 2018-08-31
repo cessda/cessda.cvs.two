@@ -89,6 +89,7 @@ import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.LicenseService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -128,6 +129,7 @@ public class DetailView extends CvView {
 	private final CodeService codeService;
 	private final ConceptService conceptService;
 	private final VocabularyChangeService vocabularyChangeService;
+	private final LicenseService licenseService;
 	
 	private Language selectedLang = Language.ENGLISH;
 
@@ -212,7 +214,7 @@ public class DetailView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			VocabularySearchRepository vocabularySearchRepository, TemplateEngine templateEngine,
-			VocabularyChangeService vocabularyChangeService) {
+			VocabularyChangeService vocabularyChangeService, LicenseService licenseService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
 				codeService, vocabularySearchRepository, DetailView.VIEW_NAME);
 		this.templateEngine = templateEngine;
@@ -222,6 +224,7 @@ public class DetailView extends CvView {
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		this.vocabularyChangeService = vocabularyChangeService;
+		this.licenseService = licenseService;
 		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
@@ -495,17 +498,15 @@ public class DetailView extends CvView {
 				.withValue(cvItem.getCvScheme().getOwnerAgency().get(0).getName() + " Controlled Vocabulary for "
 						+ cvItem.getCvScheme().getTitleByLanguage( sourceLanguage.toString() ) + "</strong>");
 
-		Resource res = new ThemeResource("img/ddi-logo-r.png");
-		
-		//TODO: remove this workaround
-		if( cvItem.getCvScheme().getOwnerAgency().get(0).getName().equals("CESSDA"))
-			res = new ThemeResource("img/cessda.png");
-		
-		Image logo = new Image(null, res);
-		logo.setWidth("100px");
-
+		MLabel logoLabel = new MLabel()
+			.withContentMode( ContentMode.HTML )
+			.withWidth("120px");
+			
+		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
+			logoLabel.setValue(  "<img style=\"width:120px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
+			
 		MCssLayout topHead = new MCssLayout();
-		topHead.withFullWidth().add(logo, topTitle);
+		topHead.withFullWidth().add( logoLabel, topTitle);
 
 		MCssLayout titleSmall = new MCssLayout();
 		titleSmall.withFullWidth().add( lTitle.withWidth("140px").withStyleName("leftPart"),
@@ -703,7 +704,7 @@ public class DetailView extends CvView {
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
 		ddiLayout.add(ddiUsageLayout);
 		
-		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenseService.findAll(),  true);
 		licenseLayout.add( licenseLayoutContent );
 		
 		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, versionService, configService, templateEngine);

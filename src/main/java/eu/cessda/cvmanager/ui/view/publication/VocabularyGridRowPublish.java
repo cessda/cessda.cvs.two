@@ -47,9 +47,6 @@ public class VocabularyGridRowPublish extends CustomComponent {
 	private MLabel desc = new MLabel();
 	private MLabel version = new MLabel();
 
-//	private MLabel conceptList = new MLabel();
-	private Image logo;
-
 	private transient ConfigurationService configService;
 	private Language currentSelectedLanguage;
 	private Language sourceLanguage;
@@ -133,10 +130,14 @@ public class VocabularyGridRowPublish extends CustomComponent {
 			.withFullWidth()
 			.add(languageLayout, titleLayout, desc, version, codeList);
 		
-		logo = new Image(null, new ThemeResource( agency.getLogopath() ));
-		logo.setWidth("120px");
+		MLabel logoLabel = new MLabel()
+			.withContentMode( ContentMode.HTML )
+			.withWidth("120px");
+		
+		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
+			logoLabel.setValue(  "<img style=\"width:120px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
 
-		hLayout.withFullWidth().add(logo, vLayout).withExpand(vLayout, 1.0f);
+		hLayout.withFullWidth().add(logoLabel, vLayout).withExpand(vLayout, 1.0f);
 
 		container
 			.withStyleName("itemcontainer")
@@ -147,15 +148,6 @@ public class VocabularyGridRowPublish extends CustomComponent {
 		// Initial
 		setContent();
 	}
-
-	public Image getLogo() {
-		return logo;
-	}
-
-	public void setLogo(Image logo) {
-		this.logo = logo;
-	}
-
 
 	public MCssLayout getContainer() {
 		return container;

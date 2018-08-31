@@ -706,7 +706,7 @@ $v-selection-item-border-radius: 0;
 	}
 	
 	 .v-upload .v-button {
-		visibility: hidden;
+		display:none;
 	}
 	
 	.v-button-borderless{
@@ -1869,6 +1869,11 @@ $v-selection-item-border-radius: 0;
 			}
 		}
 	}
+	.v-formlayout{
+		.v-caption{
+			display:block;
+		}
+	}
 	.v-treegrid-cell-content{
 	    vertical-align: top;
 	}
@@ -2382,5 +2387,17 @@ $v-selection-item-border-radius: 0;
 	.alert-warning{
 		font-size:1.5em;
 		text-align:center;
+	}
+	
+	.v-upload-immediate input[type="file"] {
+		opacity: 100;
+		filter: alpha(opacity=100) ;
+		z-index: 9000;
+		position: relative;
+		right: 0;
+		height: 30px;
+		text-align: right;
+		border: none;
+		background: transparent;
 	}
 }

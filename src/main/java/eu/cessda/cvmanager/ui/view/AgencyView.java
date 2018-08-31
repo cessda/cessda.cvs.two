@@ -81,7 +81,7 @@ public class AgencyView extends CvView {
 //	1. Agency own layout
 //	2. Agency search layout
 //	3. Agency details layout
-	private AgencyOwnLayout aOwnLayout;
+//	private AgencyOwnLayout aOwnLayout;
 	private AgencySearchLayout aSearchLayout;
 	private AgencyDetailLayout aDetailLayout;
 	private AgencyActionLayout aActionLayout;
@@ -113,7 +113,7 @@ public class AgencyView extends CvView {
 		aActionLayout = new AgencyActionLayout( "block.action.agency" , "block.action.agency.show" , 
 				i18n, eventBus, agency, userService, roleService, agencyService, metadataFieldService, 
 				metadataValueService, userAgencyService);
-		aOwnLayout = new AgencyOwnLayout(i18n, eventBus, this, agencyService, configService); 
+//		aOwnLayout = new AgencyOwnLayout(i18n, eventBus, this, agencyService, configService); 
 		aSearchLayout = new AgencySearchLayout(i18n, eventBus, this, agencyService, configService);
 		aDetailLayout = new AgencyDetailLayout(i18n, eventBus, this, agencyService, configService, vocabularyService, stardatDDIService, configService); 
 		
@@ -150,7 +150,7 @@ public class AgencyView extends CvView {
 		
 		mainContainer
 			.add(
-				aOwnLayout,
+//				aOwnLayout,
 				aSearchLayout, 
 				aDetailLayout
 			);
@@ -237,13 +237,13 @@ public class AgencyView extends CvView {
 			aSearchLayout.setVisible( true );
 			topPanel.setVisible( true );
 			
-			if( SecurityUtils.isAuthenticated()) {
-				aOwnLayout.updateList();
-				aOwnLayout.setVisible( true );
-			}
-			else {
-				aOwnLayout.setVisible( false );
-			}
+//			if( SecurityUtils.isAuthenticated()) {
+//				aOwnLayout.updateList();
+//				aOwnLayout.setVisible( true );
+//			}
+//			else {
+//				aOwnLayout.setVisible( false );
+//			}
 			aSearchLayout.updateList();
 			
 		} else {

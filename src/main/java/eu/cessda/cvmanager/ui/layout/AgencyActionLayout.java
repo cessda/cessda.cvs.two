@@ -111,7 +111,8 @@ public class AgencyActionLayout extends ResponsiveBlock{
 		
 		getInnerContainer()
 			.add(
-				buttonManageMember
+				buttonManageMember,
+				buttonManageProfile
 			);
 	}
 
@@ -153,7 +154,6 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	public void setSelectedLanguage(Language selectedLanguage) {
 		this.selectedLanguage = selectedLanguage;
 	}
-
 	
 	public Language getSourceLanguage() {
 		return sourceLanguage;
@@ -179,10 +179,10 @@ public class AgencyActionLayout extends ResponsiveBlock{
 			setVisible( false );
 		}
 		else {
-			buttonManageMember.setVisible( false );
 			setVisible( true );
 			hasAction = true;
 			buttonManageMember.setVisible( true );
+			buttonManageProfile.setVisible( true );
 			
 		}
 		

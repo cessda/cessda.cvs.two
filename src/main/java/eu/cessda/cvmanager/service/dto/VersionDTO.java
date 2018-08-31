@@ -54,6 +54,8 @@ public class VersionDTO implements Serializable {
 
     private String uri;
     
+    private String canonicalUri;
+    
     private String uriSl;
 
     @Size(max = 240)
@@ -84,6 +86,8 @@ public class VersionDTO implements Serializable {
     private String copyright;
     
     private String license;
+    
+    private Long licenseId;
     
     private String identity;
     
@@ -156,6 +160,14 @@ public class VersionDTO implements Serializable {
     public void setUri(String uri) {
         this.uri = uri;
     }
+    
+	public String getCanonicalUri() {
+		return canonicalUri;
+	}
+
+	public void setCanonicalUri(String canonicalUri) {
+		this.canonicalUri = canonicalUri;
+	}
     
     public String getUriSl() {
 		return uriSl;
@@ -313,6 +325,14 @@ public class VersionDTO implements Serializable {
 	public void setLicense(String license) {
 		this.license = license;
 	}
+	
+	public Long getLicenseId() {
+		return licenseId;
+	}
+
+	public void setLicenseId(Long licenseId) {
+		this.licenseId = licenseId;
+	}
 
 	public String getIdentity() {
 		return identity;
@@ -424,7 +444,7 @@ public class VersionDTO implements Serializable {
 		return sb.toString();
 	}
 	
-	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, String license, String copyright) {
+	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId) {
 		VersionDTO newVersion = new VersionDTO();
 		newVersion.setStatus( Status.DRAFT.toString());
 		newVersion.setItemType( targetVersion.getItemType() );
@@ -439,8 +459,7 @@ public class VersionDTO implements Serializable {
 		newVersion.setCreator( userId );
 		newVersion.setVocabularyId( targetVersion.getVocabularyId());
 		newVersion.setSummary( targetVersion.getSummary());
-		newVersion.setLicense(license);
-		newVersion.setCopyright(copyright);
+		newVersion.setLicenseId(agencylicenseId);
 		newVersion.setDdiUsage( targetVersion.getDdiUsage() );
 		newVersion.setIdentity( targetVersion.getIdentity() );
 		// clone concepts as well

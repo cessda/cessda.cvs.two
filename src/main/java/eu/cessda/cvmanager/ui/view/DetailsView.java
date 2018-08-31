@@ -89,6 +89,7 @@ import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.LicenseService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -131,7 +132,8 @@ public class DetailsView extends CvView {
 	private final CodeService codeService;
 	private final ConceptService conceptService;
 	private final VocabularyChangeService vocabularyChangeService;
-	
+	private final LicenseService licenseService;
+
 	private Language selectedLang = Language.ENGLISH;
 
 	private MCssLayout topSection = new MCssLayout().withFullWidth();
@@ -222,7 +224,7 @@ public class DetailsView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			VocabularySearchRepository vocabularySearchRepository, TemplateEngine templateEngine,
-			VocabularyChangeService vocabularyChangeService) {
+			VocabularyChangeService vocabularyChangeService, LicenseService licenseService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, vocabularySearchRepository, DetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
@@ -231,6 +233,7 @@ public class DetailsView extends CvView {
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		this.vocabularyChangeService = vocabularyChangeService;
+		this.licenseService = licenseService;
 		eventBus.subscribe( this, DetailsView.VIEW_NAME );
 	}
 
@@ -573,18 +576,16 @@ public class DetailsView extends CvView {
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
 				.withValue( agency.getName() + " Controlled Vocabulary for "
 						+ currentVersion.getTitle() + "</strong>");
-
-		Resource res = new ThemeResource("img/ddi-logo-r.png");
 		
-		//TODO: remove this workaround
-		if( agency.getName().equals("CESSDA"))
-			res = new ThemeResource("img/cessda.png");
-		
-		Image logo = new Image(null, res);
-		logo.setWidth("100px");
-
+		MLabel logoLabel = new MLabel()
+			.withContentMode( ContentMode.HTML )
+			.withWidth("120px");
+			
+		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
+			logoLabel.setValue(  "<img style=\"width:120px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
+			
 		MCssLayout topHead = new MCssLayout();
-		topHead.withFullWidth().add(logo, topTitle);
+		topHead.withFullWidth().add( logoLabel, topTitle);
 
 		MCssLayout titleSmall = new MCssLayout();
 		titleSmall.withFullWidth().add( lTitle.withWidth("140px").withStyleName("leftPart"),
@@ -773,7 +774,7 @@ public class DetailsView extends CvView {
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
 		ddiLayout.add(ddiUsageLayout);
 		
-		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenseService.findAll(), false);
 		licenseLayout.add( licenseLayoutContent );
 		
 		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, versionService, configService, templateEngine);
@@ -962,10 +963,14 @@ public class DetailsView extends CvView {
 //		}
 //		
 		/*--------------------------*/
+		detailTreeGridNew.asSingleSelect().clear();
+		editorCodeActionLayout.setCurrentConcept(null);
+		refreshCodeActionButton();
+		
 		
 		dataProviderNew  = (TreeDataProvider<CodeDTO>) detailTreeGridNew.getDataProvider();
 		cvCodeTreeDataNew = dataProviderNew.getTreeData();
-		
+		cvCodeTreeDataNew.clear();
 		// assign the tree structure
 		List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
 		CvCodeTreeUtils.buildCvConceptTree( codeDTOs , cvCodeTreeDataNew);

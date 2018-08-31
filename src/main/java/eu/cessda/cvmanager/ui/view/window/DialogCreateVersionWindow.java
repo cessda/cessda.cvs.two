@@ -322,13 +322,14 @@ public class DialogCreateVersionWindow extends MWindow {
 			List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
 			
 			// set version number
-//			String versionNumber = versionNumberField.getValue();
-//			if( slVersioning && !currentVersion.getItemType().equals( ItemType.SL.toString())) {
-//				versionNumber = versionNumber + ".1";
-//			}
-//			
-			VersionDTO newVersion = VersionDTO.clone(currentVersion, SecurityUtils.getLoggedUser().getId(), null, agency.getLicense(), agency.getCopyright() );
+			String versionNumber = recommendVersionNumber;
+			if( slVersioning && !currentVersion.getItemType().equals( ItemType.SL.toString())) {
+				versionNumber = versionNumber + ".1";
+			}
+			
+			VersionDTO newVersion = VersionDTO.clone(currentVersion, SecurityUtils.getLoggedUser().getId(), versionNumber, agency.getLicenseId() );
 			newVersion.setDiscussionNotes( discussionArea.getValue() );
+			
 			
 			CVScheme newCvScheme = new CVScheme();
 			newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());

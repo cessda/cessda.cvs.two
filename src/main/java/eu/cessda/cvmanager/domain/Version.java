@@ -75,6 +75,9 @@ public class Version implements Serializable{
     @Column(name = "uri", length = 240)
     private String uri;
     
+    @Column(name = "canonical_uri", length = 240)
+    private String canonicalUri;
+    
     @Column(name = "uri_sl", length = 240)
     private String uriSl;
     
@@ -121,6 +124,9 @@ public class Version implements Serializable{
     @Lob
     @Column(name = "license")
     private String license;
+    
+    @Column(name = "license_id")
+    private Long licenseId;
     
     @Lob
     @Column(name = "identity")
@@ -305,6 +311,14 @@ public class Version implements Serializable{
 		this.uri = uri;
 	}
 	
+	public String getCanonicalUri() {
+		return canonicalUri;
+	}
+
+	public void setCanonicalUri(String canonicalUri) {
+		this.canonicalUri = canonicalUri;
+	}
+
 	public String getUriSl() {
 		return uriSl;
 	}
@@ -360,7 +374,15 @@ public class Version implements Serializable{
 	public void setLicense(String license) {
 		this.license = license;
 	}
+	
+	public Long getLicenseId() {
+		return licenseId;
+	}
 
+	public void setLicenseId(Long licenseId) {
+		this.licenseId = licenseId;
+	}
+	
 	public String getIdentity() {
 		return identity;
 	}

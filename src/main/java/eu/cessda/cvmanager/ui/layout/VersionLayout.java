@@ -94,6 +94,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	}
 
 	private void init() {
+		this.removeAllComponents();
 		baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/";
 		boolean showSlVersion = false;
 		boolean showTlVersion = false;

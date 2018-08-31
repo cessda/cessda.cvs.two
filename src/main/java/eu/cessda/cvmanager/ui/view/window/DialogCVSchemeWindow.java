@@ -396,6 +396,7 @@ public class DialogCVSchemeWindow extends MWindow {
 			version.setLanguage( language.toString() );
 			version.setPreviousVersion( 0L );
 			version.setInitialVersion( 0L );
+			version.setLicenseId( agency.getLicenseId());
 			
 			vocabulary.addVersions(version);
 			vocabulary.addVers(version);

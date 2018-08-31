@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
@@ -20,20 +19,14 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.renderers.ComponentRenderer;
@@ -48,7 +41,6 @@ import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.layout.EditorSearchActionLayout;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
@@ -86,7 +78,6 @@ public class EditorSearchView extends CvView {
 	private PaginationBar paginationBar;
 	private EsQueryResultDetail esQueryResultDetail = new EsQueryResultDetail( EditorSearchView.VIEW_NAME );
 	
-	private ArrayList<CVScheme> hits = new ArrayList<>();
 	private final VocabularyChangeService vocabularyChangeService;
 
 	private final FiltersLayout.FilterListener filterListener = ( fieldName, activeFilters) -> {
@@ -226,7 +217,11 @@ public class EditorSearchView extends CvView {
 		cvGrid.removeAllColumns();
 		cvGrid.setHeaderVisible(false);
 		cvGrid.addColumn(voc -> {
-			agency = agencyService.findOne( voc.getAgencyId() );
+			agency = agencyMap.get( voc.getAgencyId() );
+			if( agency == null ) {
+				agency = agencyService.findOne( voc.getAgencyId() );
+				agencyMap.put( agency.getId(), agency);
+			}
 			return new VocabularyGridRow(voc, agency, configService);
 		}, new ComponentRenderer()).setId("cvColumn");
 		// results.setRowHeight( 135.0 );
@@ -251,14 +246,6 @@ public class EditorSearchView extends CvView {
 	@Override
 	public void updateMessageStrings(Locale locale) {
 //		searchTextField.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
-	}
-
-	public ArrayList<CVScheme> getHits() {
-		return hits;
-	}
-
-	public void setHits(ArrayList<CVScheme> hits) {
-		this.hits = hits;
 	}
 
 	public EsQueryResultDetail getEsQueryResultDetail() {

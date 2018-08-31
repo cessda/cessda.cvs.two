@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.layout;
+package eu.cessda.cvmanager.ui.view.admin;
 
 import java.util.Locale;
 
@@ -42,10 +42,9 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
-import eu.cessda.cvmanager.ui.view.AdminView;
 import eu.cessda.cvmanager.ui.view.CvView;
 import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.AdminView.AdminContent;
+import eu.cessda.cvmanager.ui.view.admin.AdminView.AdminContent;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindowNew;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
@@ -69,7 +68,8 @@ public class AdminActionLayout extends ResponsiveBlock{
 	private MButton buttonManageUser = new MButton("Manage User");
 	private MButton buttonManageAgency = new MButton("Manage Agency");
 	private MButton buttonManageUserAgency = new MButton("Manage User Agency");
-	private MButton buttonManageUserRole = new MButton("Manage User Agency");
+	private MButton buttonManageUserRole = new MButton("Manage User Role");
+	private MButton buttonManageLicense = new MButton("Manage License");
 	
 	public AdminActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 
 			AdminView adminView, AgencyDTO agency, UserService userService, RoleService roleService, AgencyService agencyService,
@@ -108,13 +108,21 @@ public class AdminActionLayout extends ResponsiveBlock{
 			.withVisible( false )
 			.addClickListener( this::doManageUserRole );
 		
+		buttonManageLicense
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::doManageLicense );
+		
 		getInnerContainer()
 			.add(
 				buttonManageUser,
 				buttonManageAgency,
 				buttonManageUserAgency,
 				new MLabel("<hr/>").withContentMode( ContentMode.HTML ),
-				buttonManageUserRole
+				buttonManageUserRole,
+				new MLabel("<hr/>").withContentMode( ContentMode.HTML ),
+				buttonManageLicense
 			);
 	}
 
@@ -134,6 +142,10 @@ public class AdminActionLayout extends ResponsiveBlock{
 		adminView.setMainContent( AdminContent.MANAGE_USER_ROLE );
 	}
 	
+	private void doManageLicense(ClickEvent event ) {
+		adminView.setMainContent( AdminContent.MANAGE_LICENSE );
+	}
+	
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		buttonManageUser.withCaption( "Manage Member" );
@@ -151,6 +163,7 @@ public class AdminActionLayout extends ResponsiveBlock{
 			buttonManageAgency.setVisible( true );
 			buttonManageUserAgency.setVisible( true );
 			buttonManageUserRole.setVisible( true );
+			buttonManageLicense.setVisible( true );
 		}
 		
 		return hasAction;

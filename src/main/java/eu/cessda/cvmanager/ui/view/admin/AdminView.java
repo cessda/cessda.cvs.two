@@ -1,63 +1,33 @@
-package eu.cessda.cvmanager.ui.view;
+package eu.cessda.cvmanager.ui.view.admin;
 
 import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 
 import org.gesis.wts.security.SecurityService;
-import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
-import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
-import org.gesis.wts.ui.view.admin.layout.ManageAgencyLayout;
 import org.gesis.wts.ui.view.admin.layout.ManageUserAgencyLayout;
 import org.gesis.wts.ui.view.admin.layout.ManageUserLayout;
 import org.gesis.wts.ui.view.admin.layout.ManageUserRoleLayout;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.fields.MTextField;
-import org.vaadin.viritin.label.MLabel;
-import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Window;
 
-import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.LicenseService;
 import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.ui.layout.AdminActionLayout;
-import eu.cessda.cvmanager.ui.layout.AgencyActionLayout;
-import eu.cessda.cvmanager.ui.layout.AgencyDetailLayout;
-import eu.cessda.cvmanager.ui.layout.AgencyOwnLayout;
-import eu.cessda.cvmanager.ui.layout.AgencySearchLayout;
-import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
-import eu.cessda.cvmanager.ui.view.publication.PaginationBar;
-import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 
 @UIScope
 @SpringView(name = AdminView.VIEW_NAME)
@@ -69,7 +39,8 @@ public class AdminView extends CvAdminView {
 		MANAGE_USER, 
 		MANAGE_AGENCY,
 		MANAGE_USER_AGENCY,
-		MANAGE_USER_ROLE
+		MANAGE_USER_ROLE, 
+		MANAGE_LICENSE
 	};
 	
 //	Autowired
@@ -79,19 +50,21 @@ public class AdminView extends CvAdminView {
 	private final UserAgencyService userAgencyService;
 	private final MetadataFieldService metadataFieldService;
 	private final MetadataValueService metadataValueService;
+	private final LicenseService licenseService;
 	private final BCryptPasswordEncoder encrypt;
 	
 	private AdminActionLayout adminActionLayout;
 	
 	public AdminView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			SecurityService securityService, UserService userService, RoleService roleService, 
-			AgencyService agencyService, 
+			AgencyService agencyService, LicenseService licenseService,
 			MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
 			UserAgencyService userAgencyService, BCryptPasswordEncoder encrypt) {
 		super(i18n, eventBus, configService, securityService, agencyService, AdminView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
 		this.agencyService = agencyService;
+		this.licenseService = licenseService;
 		this.userAgencyService = userAgencyService;
 		this.metadataFieldService = metadataFieldService;
 		this.metadataValueService = metadataValueService;
@@ -177,13 +150,16 @@ public class AdminView extends CvAdminView {
 				mainContainer.add( new ManageUserLayout(i18n, userService, encrypt) );
 				break;
 			case MANAGE_AGENCY:
-				mainContainer.add( new ManageAgencyLayout(i18n, agencyService) );
+				mainContainer.add( new ManageAgencyLayout(i18n, agencyService, licenseService) );
 				break;
 			case MANAGE_USER_AGENCY:
 				mainContainer.add( new ManageUserAgencyLayout(i18n, userAgencyService, userService, agencyService) );
 				break;
 			case MANAGE_USER_ROLE:
 				mainContainer.add( new ManageUserRoleLayout(i18n, userService, roleService));
+				break;
+			case MANAGE_LICENSE:
+				mainContainer.add( new ManageLicenseLayout(i18n, licenseService));
 				break;
 		}
 	}

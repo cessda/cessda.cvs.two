@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.view.window;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -232,6 +233,12 @@ public class DialogEditCodeWindowNew extends MWindow {
 					).withExpand( lChangeDesc, 0.15f).withExpand( changeDesc, 0.85f)
 			);
 		
+		// check if current version is the initial version
+		List<VersionDTO> versionsByLanguage = vocabulary.getVersionsByLanguage( vocabulary.getSourceLanguage() );
+		if( versionsByLanguage.size() == 1) {
+			changeBox.setVisible( false );
+		}
+		
 		MHorizontalLayout row1 = new MHorizontalLayout();
 		
 		if( !language.equals( sourceLang) ) {
@@ -361,11 +368,11 @@ public class DialogEditCodeWindowNew extends MWindow {
 		if(!isInputValid())
 			return;
 		
-		if( changeCb.getValue() == null ) {
-			Notification.show("Please select the change type!");
-			return;
-		}
-		
+//		if( changeCb.getValue() == null ) {
+//			Notification.show("Please select the change type!");
+//			return;
+//		}
+//		
 		// CVConcept cv = binder.getBean();
 //		log.trace(cvConcept.getPrefLabelByLanguage(language.toString()));
 //		cvConcept.save();

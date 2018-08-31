@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,10 +45,12 @@ import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
@@ -64,6 +68,7 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 	private final CodeService codeService;
 	private final VersionService versionService;
 	private final ConceptService conceptService;
+	private final VocabularyChangeService vocabularyChangeService;
 
 	Binder<ConceptDTO> binder = new Binder<ConceptDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -106,7 +111,7 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 	public DialogTranslateCodeWindowNew(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, 
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			CVScheme cvScheme, CVConcept conceptCode, Language sLanguage, Language sourceLang, VocabularyDTO vocabularyDTO, 
-			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
+			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, VocabularyChangeService vocabularyChangeService, I18N i18n, Locale locale) {
 		super( "Add Code Translation");
 		this.i18n = i18n;
 		this.cvScheme = cvScheme;
@@ -117,6 +122,7 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 		this.versionService = versionService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
+		this.vocabularyChangeService = vocabularyChangeService;
 		
 		this.eventBus = eventBus;
 		this.vocabulary = vocabularyDTO;
@@ -277,6 +283,18 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 			// save vocabulary, version
 			concept = conceptService.save(concept);
 		}
+		
+		// save change log
+		VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
+		changeDTO.setVocabularyId( vocabulary.getId());
+		changeDTO.setVersionId( version.getId()); 
+		changeDTO.setChangeType( "Code added" );
+		changeDTO.setDescription( concept.getNotation());
+		changeDTO.setDate( LocalDateTime.now() );
+		UserDetails loggedUser = SecurityUtils.getLoggedUser();
+		changeDTO.setUserId( loggedUser.getId() );
+		changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
+		vocabularyChangeService.save(changeDTO);
 
 		
 		// indexing editor

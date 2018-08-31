@@ -40,6 +40,7 @@ import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Viewport;
+import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
@@ -64,7 +65,6 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
-import eu.cessda.cvmanager.ui.view.AdminView;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
@@ -72,6 +72,7 @@ import eu.cessda.cvmanager.ui.view.EditorSearchView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 import eu.cessda.cvmanager.ui.view.HomeView;
 import eu.cessda.cvmanager.ui.view.SearchView;
+import eu.cessda.cvmanager.ui.view.admin.AdminView;
 import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
 import eu.cessda.cvmanager.utils.FileUtils;
 
@@ -193,7 +194,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		String uriQuery = Page.getCurrent().getLocation().toString();
 		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
 				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ) && !uriQuery.contains( "#!" + DetailsView.VIEW_NAME )  && 
-				!uriQuery.contains( "#!" + AdminView.VIEW_NAME ))
+				!uriQuery.contains( "#!" + AdminView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorSearchView.VIEW_NAME ))
 			navigator.navigateTo(EditorSearchView.VIEW_NAME);
 		navigator.addViewChangeListener(viewChangeListener);
 
@@ -223,7 +224,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			// throw an event when the login is succeeded
 			eventBus.publish(this, new LoginSucceedEvent());
 
-			this.getUI().getNavigator().navigateTo(LoginView.NAVIGATETO_VIEWNAME);
+//			this.getUI().getNavigator().navigateTo(LoginView.NAVIGATETO_VIEWNAME);
 
 		}
 	}
@@ -342,11 +343,12 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.withValueChangeMode( ValueChangeMode.LAZY)
 			.withValueChangeTimeout( 200 )
 			.addTextChangeListener( e -> {
-				if( navigator.getCurrentView().toString().indexOf( "Discovery" ) > 0 ) {
-					navigator.navigateTo(DiscoveryView.VIEW_NAME);
+				if( navigator.getCurrentView().toString().indexOf( "DiscoveryView" ) > 0 ) {
+//					navigator.navigateTo(DiscoveryView.VIEW_NAME);
 					eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
 				} else {
-					navigator.navigateTo(EditorSearchView.VIEW_NAME);
+					if( navigator.getCurrentView().toString().indexOf( "EditorSearchView" ) < 0 && !e.getValue().isEmpty())
+						navigator.navigateTo(EditorSearchView.VIEW_NAME);
 					eventBus.publish(EventScope.UI, EditorSearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_EDITOR_SEARCH, e.getValue()) );
 				}
 				if( e.getValue() != null && e.getValue().length() > 0)
@@ -536,7 +538,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 
 	public Breadcrumbs getBreadCrumb() {
-		clearSearch();
+//		clearSearch();
 		return breadCrumb;
 	}
 

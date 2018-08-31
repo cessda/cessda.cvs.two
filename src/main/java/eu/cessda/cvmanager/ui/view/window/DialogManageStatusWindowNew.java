@@ -261,6 +261,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 		}
 		else if( currentVersion.getStatus().equals(Status.FINAL_REVIEW.toString())) {
 			statusBlock.setVisible( false );
+			buttonDiscussionSave.setVisible( false );
 			versionBlock.setVisible( true );
 			discussionArea.addStyleName("height-100");
 			
@@ -287,7 +288,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 				}
 			});
 
-			
+			// If publishing SL
 			if( currentVersion.getItemType().equals(ItemType.SL.toString())){
 				// get available TL, get language first and then get the latest TL
 				// TODO: need to specify the status of the TL?
@@ -296,7 +297,14 @@ public class DialogManageStatusWindowNew extends MWindow {
 						continue;
 					latestTlVersions.add( vocabulary.getLatestVersionByLanguage(lang).get());
 				}
-			} 
+				StringBuilder versionChangesContent = new StringBuilder();
+				for( VocabularyChangeDTO vc : changes) {
+					versionChangesContent.append( vc.getChangeType() + " " + vc.getDescription() + "\n");
+				}
+				versionChanges.setValue(versionChangesContent.toString());
+			} else {
+				
+			}
 		}
 		
 		buttonPublishCv
@@ -352,11 +360,9 @@ public class DialogManageStatusWindowNew extends MWindow {
 		
 		versionNotes.setWidth("100%");
 		versionNotes.setHeight("160px");
-		versionNotes.setValue( currentVersion.getVersionNotes() == null ? "" : currentVersion.getVersionNotes() );
 		
 		versionChanges.setWidth("100%");
 		versionChanges.setHeight("160px");
-		versionChanges.setValue( currentVersion.getVersionChanges() == null ? "" : currentVersion.getVersionChanges() );
 		
 		versionNumberLabel
 			.withStyleName("section-header","pull-left")
@@ -527,7 +533,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 									// clone any latest TL if exist
 									for( VersionDTO targetTLversion : latestTlVersions ) {
 										// create new version
-										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), null, agency.getLicense(), agency.getCopyright() );
+										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), null, agency.getLicenseId());
 										newVersion.setUriSl( vocabulary.getUri());
 										newVersion = versionService.save(newVersion);
 										

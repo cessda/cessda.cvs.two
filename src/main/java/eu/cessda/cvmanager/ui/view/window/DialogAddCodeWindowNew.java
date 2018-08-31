@@ -316,7 +316,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 		changeDTO.setVocabularyId( vocabulary.getId());
 		changeDTO.setVersionId( version.getId()); 
 		changeDTO.setChangeType( "Code added" );
-		changeDTO.setDescription( "Code " + concept.getNotation() + " added");
+		changeDTO.setDescription( concept.getNotation());
 		changeDTO.setDate( LocalDateTime.now() );
 		UserDetails loggedUser = SecurityUtils.getLoggedUser();
 		changeDTO.setUserId( loggedUser.getId() );

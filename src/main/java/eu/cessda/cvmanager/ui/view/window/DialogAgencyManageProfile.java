@@ -19,10 +19,15 @@ import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.layouts.MCssLayout;
+import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
+import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.RichTextArea;
+import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
@@ -44,7 +49,14 @@ public class DialogAgencyManageProfile extends MWindow implements Translatable{
 	private final MetadataValueService metadataValueService;
 	private final Locale locale;
 	
-	private MCssLayout layout = new MCssLayout();
+	private MTextField name = new MTextField("Name");
+    private MTextField description = new MTextField("Description");
+    private RichTextArea license = new RichTextArea("LicenseDTO");
+    private RichTextArea copyright = new RichTextArea("Copyright");
+    private MButton save = new MButton("Save");
+    private MButton cancel = new MButton("Cancel");
+	
+	private MFormLayout layout = new MFormLayout();
 	private AgencyDTO agency;
 
 	public DialogAgencyManageProfile(UIEventBus eventBus, AgencyDTO agency, AgencyService agencyService, 
@@ -62,14 +74,37 @@ public class DialogAgencyManageProfile extends MWindow implements Translatable{
 		this.locale = locale;
 		
 		initLayout();
+		
+		HorizontalLayout buttons = new HorizontalLayout(save, cancel);
+		 
+		layout
+			.withHeight("96%")
+			.withWidth("100%")
+			.withStyleName("dialog-content")
+			.addComponents( 
+				name, description, copyright, license, buttons
+			);
+		this
+			.withHeight("650px")
+			.withWidth("1200px")
+			.withModal( true )
+			.withContent(layout);
+
+		updateMessageStrings(locale);
 	}
 	
 	private void initLayout() {
-		
-	}
-
-	public void updateList() {
-	
+		name
+			.withFullWidth()
+			.withValue( agency.getName());
+		description
+			.withFullWidth()
+			.withValue( agency.getDescription());
+		license.setValue( agency.getLicense() );
+		license.setWidth("100%");
+		license.setHeight("100px");
+		copyright
+			.setValue( agency.getCopyright()  );
 	}
 
 	@Override
