@@ -80,7 +80,8 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 		
 		infoEditor.setWidth("100%");
 		infoEditor.setHeight("340px");
-		infoEditor.setValue( version.getDdiUsage() );
+		if( version.getDdiUsage() != null )
+			infoEditor.setValue( version.getDdiUsage() );
 		
 		saveButton
 			.withStyleName("pull-right")
