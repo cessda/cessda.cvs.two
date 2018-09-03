@@ -61,5 +61,7 @@ public interface VersionService {
     List<VersionDTO> findAllByVocabulary(Long vocabularyId);
     
     Map<String, List<VersionDTO>> getOrderedLanguageVersionMap( Long vocabularyId );
+    Map<String, List<VersionDTO>> getOrderedLanguageVersionMap( Long vocabularyId , String status);
     Map<String, List<VersionDTO>> getOrderedLanguageSpecificVersionMap( Long vocabularyId, Language language );
+    Map<String, List<VersionDTO>> getOrderedLanguageSpecificVersionMap( Long vocabularyId, Language language , String status);
 }

@@ -66,6 +66,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
@@ -205,7 +206,7 @@ public class DetailView extends CvView {
 	private DdiUsageLayout ddiUsageLayout;
 	private LicenseLayout licenseLayoutContent;
 	
-	private Binder<CVScheme> cvSchemeBinder = new Binder<>();
+	private Map<String, List<VersionDTO>> orderedLanguageVersionMap;
 	private Language sourceLanguage;
 	private String activeTab;
 	
@@ -237,12 +238,12 @@ public class DetailView extends CvView {
 		bottomSection.add(bottomViewSection/*, bottomEditSection*/);
 
 		mainContainer
+		.withStyleName("margin-left10")
 			.add(
 				topSection, 
 				languageLayout, 
 				bottomSection
 			);
-
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )
@@ -359,7 +360,6 @@ public class DetailView extends CvView {
 		// find in Vocabulary entity as well
 		currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
 		vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
-		
 		
 		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
@@ -577,12 +577,12 @@ public class DetailView extends CvView {
 		detailTab.setHeightUndefined();
 		detailTab.setWidth("100%");
 	
-		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale));
-		detailTab.addTab(versionContentLayout, i18n.get("view.detail.cvconcept.tab.version", locale));
-		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale));
-		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale));
-		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale));
-		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale));
+		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale)).setId("detail");
+		detailTab.addTab(versionContentLayout, i18n.get("view.detail.cvconcept.tab.version", locale)).setId("version");
+		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale)).setId("identify");
+		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale)).setId("identify");
+		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale)).setId("license");
+		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale)).setId("export");
 		
 		setActiveTab();
 		
@@ -707,11 +707,22 @@ public class DetailView extends CvView {
 		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenseService.findAll(),  true);
 		licenseLayout.add( licenseLayoutContent );
 		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, versionService, configService, templateEngine);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, templateEngine, true);
 		exportLayout.add(exportLayoutContent);
 		exportLayout.setSizeFull();
 		
-		
+		detailTab.addSelectedTabChangeListener( e -> {
+			TabSheet tabsheet = e.getTabSheet();
+			 // Find the tab (here we know it's a layout)
+	        Layout tab = (Layout) tabsheet.getSelectedTab();
+	        
+			if( tabsheet.getTab(tab).getId().equals("export")) {
+				vocabulary = vocabularyService.findOne(currentVersion.getVocabularyId());
+				// get all version put it on the map
+				orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
+				exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
+			}
+		});
 
 		bottomViewSection.add(detailTab);
 	}

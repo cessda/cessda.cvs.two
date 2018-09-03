@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -23,6 +24,8 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.service.dto.AgencyDTO;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.vaadin.spring.events.EventBus.UIEventBus;
@@ -45,6 +48,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.renderers.ComponentRenderer;
 
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader;
 import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamResource;
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
@@ -86,6 +90,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private final TemplateEngine templateEngine;
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
 	private final VocabularyDTO vocabulary;
+	private final AgencyDTO agency;
 	
 	private Set<String> filteredTag = new HashSet<>();
 	private MGrid<ExportCV> exportGrid = new MGrid<>( ExportCV.class );
@@ -96,47 +101,40 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private MButton exportPdf = new MButton("Export Pdf").withStyleName("marginleft20");
 	private MButton exportHtml = new MButton("Export Html").withStyleName("marginleft20");
 	
-	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, VocabularyDTO vocabulary,
-			VersionService versionService, ConfigurationService configurationService, TemplateEngine templateEngine) {
-		super();
+	private MButton exportLatestPdf = new MButton("Export SL latest Pdf").withStyleName("marginleft20");
+	private Map<String, List<VersionDTO>> orderedLanguageVersionMap;
+	private boolean publishView;
+	
+	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, VocabularyDTO vocabulary, AgencyDTO agency,
+			VersionService versionService, ConfigurationService configurationService,
+			TemplateEngine templateEngine, boolean isPublished) {
 		this.i18n = i18n;
 		this.locale = locale;
 		this.eventBus = eventBus;
 		this.cvItem = cvItem;
 		this.vocabulary = vocabulary;
+		this.agency = agency;
 		this.configurationService = configurationService;
 		this.versionService = versionService;
 		this.templateEngine = templateEngine;
+		this.publishView = isPublished;
 		
 		initLayout();
 	}
 
 	private void initLayout() {
-		exportCvItems = new ArrayList<>();
-		
-		Map<String, List<VersionDTO>> orderedLanguageVersionMap = null;
-		orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
-			
-		orderedLanguageVersionMap.forEach( (k,v) -> exportCvItems.add( new ExportCV(k, v)));
 		
 		exportGrid.addStyleNames("export-grid");
 		exportGrid.removeAllColumns();		
 		exportGrid.setHeight("300px");
-		
-		
 		exportGrid
 			.withFullWidth()
-			.withHeight("200px")
-			.setItems(exportCvItems);
+			.withHeight("200px");
 			
-		exportGrid.addColumn( cVersion -> cVersion.getLanguage())
+		exportGrid.addColumn( cVersion -> Language.valueOfEnum( cVersion.getLanguage()).toStringCapitalized())
 			.setCaption("Language")
 			.setExpandRatio( 2 )
 			.setId("languageClm");
-		exportGrid.addColumn( cVersion -> cVersion.getType())
-			.setCaption("Type")
-			.setExpandRatio( 1 )
-			.setId("typeClm");
 		exportGrid.addColumn( cVersion -> {
 			return cVersion.getVersionOption();
 			}, new ComponentRenderer())
@@ -169,7 +167,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 		sectionLayout
 			.withFullSize()
-			.add( gridLayout, exportSkos, exportPdf , exportHtml);
+			.add( gridLayout, exportSkos, exportPdf , exportHtml, exportLatestPdf);
 		
 		this
 			.withFullWidth()
@@ -183,9 +181,106 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		
 		OnDemandFileDownloader onDemandSkosFileDownloaderHtml = new OnDemandFileDownloader( createOnDemandResource( DownloadType.HTML ));
 		onDemandSkosFileDownloaderHtml.extend(exportHtml);
+		
+		OnDemandFileDownloader onDemandSkosFileDownloaderPdfLatest = new OnDemandFileDownloader( createOnDemandResource( DownloadType.PDF ));
+		onDemandSkosFileDownloaderPdfLatest.extend(exportLatestPdf);
+	}
+	
+	public void updateGrid( VersionDTO pivotVersion , Map<String, List<VersionDTO>> versionMap ) {
+		exportCvItems = new ArrayList<>();
+
+		Map<String, List<VersionDTO>> filteredVersionMap = getFilteredVersionMap(null, versionMap);
+		filteredVersionMap.forEach( (k,v) -> exportCvItems.add( new ExportCV(k, v)));
+		
+		exportGrid.setItems(exportCvItems);
+	}
+	
+	public Map<String, List<VersionDTO>> getFilteredVersionMap ( VersionDTO pivotVersion , Map<String, List<VersionDTO>> versionMap) {
+		Map<String, List<VersionDTO>> filteredVersionMap = new LinkedHashMap<>();
+		if( pivotVersion == null ) {
+			//get latest SL version
+			for(Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
+				pivotVersion = entry.getValue().get(0);
+				//break after first loop since SL version is always in the first entry
+				break;
+			}
+		}
+		
+		if( pivotVersion.getItemType().equals( ItemType.SL.toString())) {
+			
+			for(Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
+				if( entry.getKey().equals( pivotVersion.getLanguage() ) )
+					filteredVersionMap.put( entry.getKey(), entry.getValue());
+				else {
+					// get only SL that within SL version
+					List<VersionDTO> oldValue = entry.getValue();
+					List<VersionDTO> newValue = new ArrayList<>();
+					for(VersionDTO eachVersion: oldValue) {
+						if( eachVersion.getUriSl() != null && eachVersion.getUriSl().equals(pivotVersion.getUri()))
+							newValue.add(eachVersion);
+					}
+					if( !newValue.isEmpty() )
+						filteredVersionMap.put( entry.getKey(), newValue);
+				}
+
+			}
+			
+		} else {
+			filteredVersionMap.put( pivotVersion.getLanguage(), versionMap.get( pivotVersion.getLanguage()));
+		}
+		
+		return filteredVersionMap;
 	}
 	
 	private OnDemandStreamResource createOnDemandResource( DownloadType downloadType) {
+		return new OnDemandStreamResource() {
+			private static final long serialVersionUID = 3421089012275806929L;
+			@Override
+			public InputStream getStream() {
+				List<VersionDTO> exportVersions = new ArrayList<>();
+				
+				for(ExportCV ecv : exportCvItems) {
+					Map<DownloadType, VersionDTO> fotmatVersionMap = ecv.getFotmatVersionMap();
+					if( fotmatVersionMap.get(downloadType) != null ) {
+						exportVersions.add( fotmatVersionMap.get(downloadType) );
+					}
+				}
+								
+				if(exportVersions.isEmpty()){
+					Notification.show( "No language selected!" );
+					return null;
+				}
+				
+                try { 
+                	switch (downloadType) {
+	                	case HTML:
+	                		break;
+						case PDF:
+							try {
+								return new FileInputStream( generateExportFile(downloadType, exportVersions));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							break;
+						default:
+							return new ByteArrayInputStream( generateSKOSxml( downloadType, exportVersions ).getBytes(StandardCharsets.UTF_8.name()));
+					}
+                    
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+				return null;
+			}
+			
+			@Override
+			public String getFilename() {
+				return generateOnDemandFileName( downloadType , true);
+			}
+		};
+	}
+	
+	private OnDemandStreamResource createOnDemandResourceNew( DownloadType downloadType) {
 		return new OnDemandStreamResource() {
 			private static final long serialVersionUID = 3421089012275806929L;
 			@Override
@@ -258,12 +353,9 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 	private File generateExportFile( DownloadType type, List<VersionDTO> exportVersions) throws Exception {
 		Map<String, Object> map = new HashMap<>();
-		map.put("content", generateSKOSxml( type, exportVersions ));
-		map.put("filterOutLanguage", exportVersions);
-		map.put("scheme", cvItem.getCvScheme());
-		map.put("concepts", cvItem.getFlattenedCvConceptStreams().collect(Collectors.toList()));
-		map.put("preflabelOl", cvItem.getCvScheme().getTitleByLanguage("en"));
-		map.put("definitionOl", cvItem.getCvScheme().getDescriptionByLanguage("en"));
+		map.put("versions", exportVersions);
+		map.put("agency", agency);
+
 		
 		return generateFileByThymeleafTemplate(generateOnDemandFileName( type , false), "export", map, type);
 	}
@@ -339,8 +431,9 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 
 	
 	private String generateOnDemandFileName(DownloadType type, boolean withFileFormat) {
-		String title = !cvItem.getCvScheme().getCode().isEmpty() ? cvItem.getCvScheme().getCode() : cvItem.getCvScheme().getTitleByLanguage("en");		
-		return title + "_" + String.join("-", getFilteredLanguages( type , true)) + "_" + LocalDateTime.now().format(dateFormatter) + (withFileFormat ? "." + type.toString() : "");
+//		String title = !cvItem.getCvScheme().getCode().isEmpty() ? cvItem.getCvScheme().getCode() : cvItem.getCvScheme().getTitleByLanguage("en");		
+//		return title + "_" + String.join("-", getFilteredLanguages( type , true)) + "_" + LocalDateTime.now().format(dateFormatter) + (withFileFormat ? "." + type.toString() : "");
+		return vocabulary.getNotation() + "test_SL.pdf";
 	}
 
 	@Override
@@ -369,7 +462,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			this.versionOption.setItems( versions );
 			this.versionOption.setWidth("100%");
 			this.versionOption.setItemCaptionGenerator( vers -> {
-				return vers.getNumber() + " (" + vers.getStatus() + ")";
+				return publishView ? vers.getNumber(): vers.getNumber() + " (" + vers.getStatus() + ")";
 			});
 			this.versionOption.setValue( versions.get(0) );
 			this.versionOption.setEmptySelectionAllowed( false );
@@ -436,6 +529,14 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		public void setType(String type) {
 			this.type = type;
 		}
+	}
+
+	public Map<String, List<VersionDTO>> getOrderedLanguageVersionMap() {
+		return orderedLanguageVersionMap;
+	}
+
+	public void setOrderedLanguageVersionMap(Map<String, List<VersionDTO>> orderedLanguageVersionMap) {
+		this.orderedLanguageVersionMap = orderedLanguageVersionMap;
 	}
 
 }

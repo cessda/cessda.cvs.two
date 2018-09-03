@@ -127,6 +127,10 @@ public class VersionServiceImpl implements VersionService {
 		return getOrderedLanguageSpecificVersionMap(vocabularyId, null );
 	}
 	
+	public Map<String, List<VersionDTO>> getOrderedLanguageVersionMap(Long vocabularyId, String status) {
+		return getOrderedLanguageSpecificVersionMap(vocabularyId, null , status);
+	}
+	
 	@Override
 	public Map<String, List<VersionDTO>> getOrderedLanguageSpecificVersionMap(Long vocabularyId, Language language) {
 		List<VersionDTO> versionDTOs = findAllByVocabulary(vocabularyId);
@@ -137,6 +141,31 @@ public class VersionServiceImpl implements VersionService {
 			if( language != null)
 				if( !language.toString().equalsIgnoreCase( version.getLanguage() ))
 					continue;
+			
+			List<VersionDTO> versions = langVersionMap.get( version.getLanguage() );
+			if( versions == null ) {
+				versions = new ArrayList<>();
+				langVersionMap.put( version.getLanguage(), versions);
+			}
+			versions.add(version);
+		}
+		return langVersionMap;
+	}
+	
+	public Map<String, List<VersionDTO>> getOrderedLanguageSpecificVersionMap(Long vocabularyId, Language language, String status) {
+		List<VersionDTO> versionDTOs = findAllByVocabulary(vocabularyId);
+		
+		// create map based on language
+		Map<String, List<VersionDTO>> langVersionMap = new LinkedHashMap<>();
+		for( VersionDTO version : versionDTOs) {
+			if( language != null)
+				if( !language.toString().equalsIgnoreCase( version.getLanguage() ))
+					continue;
+			
+			if( status != null ) {
+				if( !status.equals( version.getStatus() ))
+					continue;
+			}
 			
 			List<VersionDTO> versions = langVersionMap.get( version.getLanguage() );
 			if( versions == null ) {

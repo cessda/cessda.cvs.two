@@ -66,6 +66,7 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.Image;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
@@ -212,7 +213,7 @@ public class DetailsView extends CvView {
 	private DdiUsageLayout ddiUsageLayout;
 	private LicenseLayout licenseLayoutContent;
 	
-	private Binder<CVScheme> cvSchemeBinder = new Binder<>();
+	private Map<String, List<VersionDTO>> orderedLanguageVersionMap;
 	private Language sourceLanguage;
 	private String activeTab;
 	private String versionNumber;
@@ -412,33 +413,6 @@ public class DetailsView extends CvView {
 		
 		agency = agencyService.findByName( getVocabulary().getAgencyName());
 				
-
-		
-		// find in Vocabulary entity as well
-//		setVocabulary(  vocabularyService.getByUri( cvItem.getCurrentCvId() ) );
-		
-
-		
-		//TODO, remove this "if" after all vocabularies belong to agency
-//		if( getVocabulary() == null ) {
-//			
-//			String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
-//			if( owner != null && !owner.isEmpty() )
-//				setAgency( agencyService.findByName( owner));
-//			
-//			if( getAgency() == null)
-//				setAgency( agencyService.findOne(1L) );
-//			
-//			setVocabulary( VocabularyDTO.generateFromCVScheme( cvItem.getCvScheme()) );
-//			
-//			getVocabulary().setAgencyId( getAgency().getId());
-//			getVocabulary().setAgencyName( getAgency().getName());
-//		} else {
-//			setAgency( agencyService.findByName( getVocabulary().getAgencyName()));
-//		}
-		
-//		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
-		
 		Set<String> languages = vocabulary.getLanguages();
 		
 		editorCvActionLayout.setVocabulary( vocabulary );
@@ -657,12 +631,13 @@ public class DetailsView extends CvView {
 		detailTab.setHeightUndefined();
 		detailTab.setWidth("100%");
 	
-		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale));
-		detailTab.addTab(versionContentLayout, i18n.get("view.detail.cvconcept.tab.version", locale));
-		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale));
-		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale));
-		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale));
-		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale));
+		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale)).setId("detail");
+		detailTab.addTab(versionContentLayout, i18n.get("view.detail.cvconcept.tab.version", locale)).setId("version");
+		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale)).setId("identify");
+		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale)).setId("identify");
+		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale)).setId("license");
+		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale)).setId("export");
+		
 		
 		setActiveTab();
 			
@@ -777,15 +752,24 @@ public class DetailsView extends CvView {
 		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenseService.findAll(), false);
 		licenseLayout.add( licenseLayoutContent );
 		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, versionService, configService, templateEngine);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, templateEngine, false);
 		exportLayout.add(exportLayoutContent);
 		exportLayout.setSizeFull();
 		
-//		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, configService, templateEngine);
-//		exportLayout.add(exportLayoutContent);
-		
-		
 
+		detailTab.addSelectedTabChangeListener( e -> {
+			TabSheet tabsheet = e.getTabSheet();
+			 // Find the tab (here we know it's a layout)
+	        Layout tab = (Layout) tabsheet.getSelectedTab();
+	        
+			if( tabsheet.getTab(tab).getId().equals("export")) {
+				vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
+				// get all version put it on the map
+				orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
+				exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
+			}
+		});
+		
 		bottomViewSection.add(detailTab);
 	}
 

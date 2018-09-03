@@ -4,17 +4,17 @@ import java.util.Locale;
 
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.dto.AgencyDTO;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextArea;
 
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -86,7 +86,12 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 		saveButton
 			.withStyleName("pull-right")
 			.addClickListener( e -> {
-				version.setDdiUsage( infoEditor.getValue());
+				if( infoEditor.getValue().isEmpty()) {
+					version.setDdiUsage( "" );
+				}
+				else {
+					version.setDdiUsage( toXHTML( infoEditor.getValue() ) );
+				}
 				versionService.save(version);
 				refreshInfo();
 				switchMode( LayoutMode.READ);
@@ -109,6 +114,13 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 				infoLayout, 
 				editLayout
 			);
+	}
+	
+	private String toXHTML( String html ) {
+	    final Document document = Jsoup.parse(html);
+	    document.select("script,.hidden,link").remove();
+	    document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);    
+	    return document.body().html();
 	}
 	
 	private void switchMode( LayoutMode layoutMode) {

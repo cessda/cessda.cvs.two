@@ -333,20 +333,15 @@ public class DialogAddLanguageWindowNew extends MWindow {
 				return;
 			}
 		}
-		
-//		prevent storing in FlatDB			
 
-//		getCvScheme().save();
-//		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add CV translation");
-		
 		version.setTitle( tfTitle.getValue() );
 		version.setDefinition( description.getValue());
 		
 		// store new version
 		if( !version.isPersisted()) {
-//			version.setUri( vocabulary.getUri() );
+			version.setUriSl( vocabulary.getUri() );
 			version.setNotation( vocabulary.getNotation());
-//			version.setNumber("0.0.1");
+			version.setNumber( vocabulary.getVersionNumber() + ".1");
 			version.setStatus( Status.DRAFT.toString() );
 			version.setItemType( ItemType.TL.toString());
 			version.setLanguage( language.toString());
@@ -360,11 +355,17 @@ public class DialogAddLanguageWindowNew extends MWindow {
 			.ifPresent( prevVersion ->{
 				version.setPreviousVersion( prevVersion.getId() );
 				version.setInitialVersion( prevVersion.getInitialVersion() );
+				// get last version number from previous version if exist
+				if( prevVersion.getNumber().indexOf( vocabulary.getVersionNumber()) == 0 ) {
+					int lastDotIndex = vocabulary.getVersionNumber().lastIndexOf(".");
+					version.setNumber( vocabulary.getVersionNumber() + "." + (Integer.parseInt(vocabulary.getVersionNumber().substring( lastDotIndex + 1)) + 1));
+				}
 			});
 			
 			version = versionService.save(version);
 			
 			if( version.getInitialVersion() == 0L) {
+				// initial version
 				version.setInitialVersion( version.getId() );
 				version = versionService.save(version);
 			}

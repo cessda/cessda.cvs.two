@@ -199,68 +199,14 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 		getUI().addWindow(window);
 	}
 	
-//	public void publishCv(ClickEvent event ) {
-//		ConfirmDialog.show( this.getUI(), "Confirm",
-//				"Are you sure you want to publish " + vocabulary.getNotation() +" SL?", "yes",
-//				"cancel",
-//		
-//					dialog -> {
-//						if( dialog.isConfirmed() ) {
-//							
-//							currentVersion.setStatus( Status.PUBLISHED.toString() );
-//							vocabulary.setVersionByLanguage(selectedLanguage, Status.PUBLISHED.toString());
-//							
-//							if( isCurrentSL) {
-//								vocabulary.setStatus( Status.PUBLISHED.toString());
-//							}
-//							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
-//							vocabulary.addLanguagePublished( selectedLanguage.name().toLowerCase());
-//							
-//							// save to database
-//							vocabulary = vocabularyService.save(vocabulary);
-//							
-//							// index for editor
-//							vocabularyService.index(vocabulary);
-//							
-//							// index for publication
-//							vocabularyService.indexPublish(vocabulary, currentVersion);
-//							
-//							// save to flatDB
-//							cvScheme.setStatus(Status.PUBLISHED.toString()  );
-//							getCvScheme().save();
-//							DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
-//							
-//							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-//						}
-//					}
-//				);
-//	}
-	
 	/**
 	 * Create new version based on the selected language in the Vocabulary
 	 * @param event
 	 */
 	private void createNewVersion(ClickEvent event ) {
-		// open dialog create new version window
-		// show the list of published SL and TL that will be cloned
-		
 		Window window = new DialogCreateVersionWindow(stardatDDIService, codeService, conceptService, vocabularyService, versionService, cvScheme, 
 				vocabulary, currentVersion, selectedLanguage, sourceLanguage, agency, eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
-		
-//		// TODO: check vocabulary language type
-//		ConfirmDialog.show( this.getUI(), "Confirm",
-//				"Create new version of  " + vocabulary.getNotation() +" SL?", "yes",
-//				"cancel",
-//		
-//					dialog -> {
-//						if( dialog.isConfirmed() ) {
-//							String newCvLink = vocabularyService.createNewVersion(vocabulary, cvItem, selectedLanguage);
-//							
-//							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + newCvLink);
-//						}
-//					}
-//				);
 	}
 	
 	@Override
