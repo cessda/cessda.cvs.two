@@ -738,7 +738,7 @@ public class DetailsView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentSLVersion.getNumber());
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService);
 		versionContentLayout.add( versionLayout );
 		
 		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, false);
@@ -765,6 +765,18 @@ public class DetailsView extends CvView {
 				// get all version put it on the map
 				orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
 				exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
+			}
+			else if (tabsheet.getTab(tab).getId().equals("version")) {
+				versionLayout.refreshContent(currentVersion);
+			}
+			
+			if( SecurityUtils.isAuthenticated()) {
+				if (tabsheet.getTab(tab).getId().equals("detail")) {
+					editorCodeActionLayout.setVisible( true );
+				}
+				else {
+					editorCodeActionLayout.setVisible( false );
+				}
 			}
 		});
 		

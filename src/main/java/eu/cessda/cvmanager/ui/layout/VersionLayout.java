@@ -72,12 +72,12 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	private final VocabularyChangeService vocabularyChangeService;
 	private final ConfigurationService configService;
 	private String baseUrl;
-	private String currentVersionNumber;
+	private Map<String, List<VersionDTO>> versionMap;
 	
 	public VersionLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO,
 			VocabularyChangeService vocabularyChangeService,
-			ConfigurationService configService, String currentVersionNumber) {
+			ConfigurationService configService) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
@@ -86,7 +86,6 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		this.vocabulary = vocabularyDTO;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.configService = configService;
-		this.currentVersionNumber = currentVersionNumber;
 		
 		this
 			.withFullWidth();
@@ -96,22 +95,34 @@ public class VersionLayout extends MCssLayout implements Translatable {
 
 	private void init() {
 		baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
+		versionMap = VersionDTO.generateVersionMap( vocabulary.getVersions());
 		
+	}
+	
+	public void refreshContent( VersionDTO version ) {
+		this.removeAllComponents();
+		if( version.getItemType().equals(ItemType.SL.toString())) {
+			this.add( new MLabel("<h2>Source</h2>").withFullWidth().withContentMode( ContentMode.HTML));
+		}
+		else {
+			this.add( new MLabel("<h2>Translation</h2>").withFullWidth().withContentMode( ContentMode.HTML));
+		}
 		boolean showSlVersion = false;
 		boolean showTlVersion = false;
-		
-		Map<String, List<VersionDTO>> versionMap = VersionDTO.generateVersionMap( vocabulary.getVersions());
-		
 		for(Map.Entry<String,List<VersionDTO>> eachVersions : versionMap.entrySet()) {
 			if(eachVersions.getKey().startsWith( ItemType.SL.toString())) {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
+					// only shows its versions
+					if( !version.getLanguage().equals( orderedVer.getLanguage()))
+						continue;
+					
 					if( orderedVer.getNumber() == null )
 						continue;
 					//only show equal or lower version
-					if( currentVersionNumber == null )
+					if( version.getNumber() == null )
 						showSlVersion = true;
 					else
-						if( orderedVer.getNumber() != null && orderedVer.getNumber().indexOf( currentVersionNumber ) == 0) 
+						if( orderedVer.getNumber() != null && orderedVer.getNumber().indexOf( version.getNumber() ) == 0) 
 							showSlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showSlVersion)
@@ -119,13 +130,17 @@ public class VersionLayout extends MCssLayout implements Translatable {
 				}
 			} else {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
+					// only shows its versions
+					if( !version.getLanguage().equals( orderedVer.getLanguage()))
+						continue;
+					
 					if( orderedVer.getNumber() == null )
 						continue;
 					//only show equal or lower version
-					if( currentVersionNumber == null )
+					if( version.getNumber() == null )
 						showTlVersion = true;
 					else
-						if( orderedVer.getNumber() != null && orderedVer.getNumber().indexOf( currentVersionNumber ) == 0) 
+						if( orderedVer.getNumber() != null && orderedVer.getNumber().indexOf( version.getNumber() ) == 0) 
 							showTlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showTlVersion)
@@ -135,16 +150,13 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		}
 	}
 	
-	public void refreshContent() {
-		
-	}
-	
 	public MCssLayout generateVersionSl( VersionDTO versionDTO ) {
 		MCssLayout versionLayout = new MCssLayout();
+		String cvUrl = null;
 		
-		MLabel infoVersion = new MLabel().withContentMode( ContentMode.HTML);
-		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML);
-		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML);
+		MLabel infoVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
+		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
+		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
 		
 //		infoVersion
 //		.withValue("<h2>Source language</h2>" +
@@ -152,16 +164,16 @@ public class VersionLayout extends MCssLayout implements Translatable {
 //				" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
 	
 		try {
-			baseUrl += URLEncoder.encode(versionDTO.getUri(), "UTF-8");
+			cvUrl = baseUrl + URLEncoder.encode(versionDTO.getUri(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
-			baseUrl += versionDTO.getUri();
+			cvUrl = baseUrl + versionDTO.getUri();
 			e.printStackTrace();
 		}
 		
 		infoVersion
-			.withValue("<h2>Source language</h2>" +
-					"<a href='" + baseUrl + "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
-					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication: " + versionDTO.getPublicationDate());
+			.withValue("<h2>" +
+					"<a href='" + cvUrl + "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
+					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication: " + versionDTO.getPublicationDate() + "</h2>");
 		
 		noteVersion
 			.withValue("<h2>Version notes</h2>" +
@@ -185,30 +197,24 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	
 	public MCssLayout generateVersionTl( VersionDTO versionDTO ) {
 		MCssLayout versionLayout = new MCssLayout();
+		String cvUrl = null;
 		
 		MLabel infoVersion = new MLabel().withContentMode( ContentMode.HTML);
 		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML);
 		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML);
 		
 		infoVersion
-			.withValue("<h2>Translation</h2>" +
+			.withValue("<h2>" +
 					versionDTO.getLanguage() + ": " + versionDTO.getNumber() +
-					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
+					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate() + "</h2>");
 		
 		noteVersion
 			.withValue("<h2>Version notes</h2>" +
 				versionDTO.getVersionNotes());
 		
-		StringBuilder changesVer = new StringBuilder();
-		List<VocabularyChangeDTO> changes = vocabularyChangeService.findAllByVocabularyVersionId( vocabulary.getId(), versionDTO.getId());
-
-		for( VocabularyChangeDTO eachChange: changes) {
-			changesVer.append( eachChange.getChangeType() + ": " + eachChange.getDescription() + "</br>");
-		}
-		
 		changeVersion
 			.withValue("<h2>Changes since previous version</h2>" +
-					changesVer.toString());
+					versionDTO.getVersionChanges());
 		
 		versionLayout
 			.withStyleName( "version-item" )
@@ -225,5 +231,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	public void updateMessageStrings(Locale locale) {
 		
 	}
+	
+	
 
 }

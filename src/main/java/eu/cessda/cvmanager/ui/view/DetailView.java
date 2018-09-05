@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.view;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -497,6 +499,14 @@ public class DetailView extends CvView {
 			// warning about newer version
 			if( latestSlVersion.getId() > currentVersion.getId()) {
 				
+				String cvUrl = null;
+				try {
+					cvUrl = baseUrl +  vocabulary.getNotation() + "?url=" +URLEncoder.encode(latestSlVersion.getUri(), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					cvUrl = baseUrl  + vocabulary.getNotation() + "?url=" + latestSlVersion.getUri();
+					e.printStackTrace();
+				}
+				
 				newerVersionAvailable.removeAllComponents();
 				newerVersionAvailable
 					.withWidth("100%")
@@ -506,7 +516,7 @@ public class DetailView extends CvView {
 							.withContentMode( ContentMode.HTML)
 							.withValue(
 								"Newer version is available " +
-										"<a href='" + baseUrl + latestSlVersion.getUri()+ "'>" + latestSlVersion.getNotation() + ". " + latestSlVersion.getNumber() +"</a> "
+										"<a href='" + cvUrl + "'>" + latestSlVersion.getNotation() + ". " + latestSlVersion.getNumber() +"</a> "
 							)
 					);
 				
@@ -717,7 +727,7 @@ public class DetailView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentVersion.getNumber());
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService);
 		versionContentLayout.add( versionLayout );
 		
 		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, true);
@@ -744,6 +754,10 @@ public class DetailView extends CvView {
 				orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
 				exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
 			}
+			else if (tabsheet.getTab(tab).getId().equals("version")) {
+				versionLayout.refreshContent(currentVersion);
+			}
+			
 		});
 
 		bottomViewSection.add(detailTab);
