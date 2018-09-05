@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.gesis.wts.domain.enumeration.Language;
 import org.vaadin.spring.i18n.I18N;
 
 import org.vaadin.viritin.button.MButton;
@@ -136,6 +137,11 @@ public class FiltersLayout extends ResponsiveBlock{
 			// generate combobox option
 			filterOption.setPlaceholder( "Filter by " + i18n.get("filter." + esFilter.getField(), locale).toLowerCase() );
 			filterOption.setItems( esFilter.getBucketAsList());
+			if( esFilter.getField().equals(LANGS_AGG) || esFilter.getField().equals(LANGS_PUB_AGG) )
+				filterOption.setItemCaptionGenerator( lang -> {
+					int index = lang.lastIndexOf( "(" );
+					return Language.valueOfEnum( lang.substring( 0, index).trim() ).toStringCapitalized2() + lang.substring( index );
+				});
 			filterOption.setWidth("100%");
 			filterOption.addValueChangeListener( e -> {
 				String selectedVal = e.getValue();
@@ -156,13 +162,25 @@ public class FiltersLayout extends ResponsiveBlock{
 					.withFullWidth()
 					.withStyleName( "font13px" )
 					.setValue( true );
+				if( esFilter.getField().equals(LANGS_AGG) || esFilter.getField().equals(LANGS_PUB_AGG) ) {
+					int index = e.lastIndexOf( "(" );
+					checkBox.setCaption( Language.valueOfEnum( e.substring( 0, index).trim() ).toStringCapitalized2() + e.substring( index ) );
+				}
+					
 				items.add(checkBox);
 				facetLayout.add(checkBox);
 				
 				checkBox.addValueChangeListener( event -> {
 					String selectedVal = event.getComponent().getCaption();
-					int index = selectedVal.lastIndexOf( "(" );
-					esFilter.getValues().remove( selectedVal.substring( 0, index).trim() );
+					if( esFilter.getField().equals(LANGS_AGG) || esFilter.getField().equals(LANGS_PUB_AGG) ) {
+						int index1 = selectedVal.lastIndexOf( "_" );
+						int index2 = selectedVal.lastIndexOf( "(" );
+						esFilter.getValues().remove( selectedVal.substring( index1  + 1, index2).trim() );
+					} else {
+						int index = selectedVal.lastIndexOf( "(" );
+						esFilter.getValues().remove( selectedVal.substring( 0, index).trim() );
+					}
+					
 					filterListener.filterSelected( esFilter.getField(), esFilter.getValues());
 				});
 			});

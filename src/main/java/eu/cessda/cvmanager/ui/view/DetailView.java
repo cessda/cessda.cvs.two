@@ -264,11 +264,12 @@ public class DetailView extends CvView {
 
 		if (event.getParameters() != null) {
 			try {
+				Map<String, String> mappedParams = new HashMap<>();
 				String[] itemPath = event.getParameters().split("\\?");
 				String[] itemPathPart = itemPath[0].split("/");
 				if(itemPath.length > 1) {
 					List<NameValuePair> params = URLEncodedUtils.parse( itemPath[1],  Charset.forName("UTF-8"));
-					Map<String, String> mappedParams = params.stream().collect(
+					mappedParams = params.stream().collect(
 					        Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
 					String selectedLanguage = mappedParams.get("lang");
 					if( selectedLanguage != null ) {
@@ -290,9 +291,11 @@ public class DetailView extends CvView {
 					activeTab = "detail";
 				}
 				LoginView.NAVIGATETO_VIEWNAME = DetailView.VIEW_NAME + "/" + itemPathPart[0];
-				cvItem.setCurrentCvId(itemPathPart[0]);
-				if( itemPathPart.length > 1 )
-					cvItem.setCurrentConceptId(itemPathPart[1]);
+				if( itemPathPart.length > 0 )
+					cvItem.setCurrentNotation(itemPathPart[0]);
+				if( mappedParams.get("url") != null)
+					cvItem.setCurrentCvId( mappedParams.get("url") );
+
 				
 				setDetails() ;
 
@@ -317,9 +320,9 @@ public class DetailView extends CvView {
 			.addItem( vocabulary.getNotation() + " " + currentVersion.getNumber(), null)
 			.build();
 
-		initTopViewSection();
+//		initTopViewSection();
 //		initTopEditSection();
-		initBottomViewSection();
+//		initBottomViewSection();
 		//initBottomEditSection();
 		updateMessageStrings(UI.getCurrent().getLocale());
 		
@@ -354,13 +357,26 @@ public class DetailView extends CvView {
 
 	private void refreshCvScheme() {
 		languageLayout.removeAllComponents();
+		List<DDIStore> ddiSchemes = null;
+		if( cvItem.getCurrentCvId() != null ) {
+			ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
+		}
 		
-		List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
-		
-		// find in Vocabulary entity as well
-		currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
-		vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
-		
+		if( ddiSchemes == null ) {
+			if( cvItem.getCurrentNotation() != null ) {
+				vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
+				
+				if(vocabulary != null ) {
+					ddiSchemes = stardatDDIService.findByIdAndElementType( vocabulary.getUri(), DDIElement.CVSCHEME);
+					currentVersion = versionService.getByUri( vocabulary.getUri() );
+				}
+				
+			}
+		} else {
+			// find in Vocabulary entity as well
+			currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
+			vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
+		}
 		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
 			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
@@ -568,6 +584,7 @@ public class DetailView extends CvView {
 		identifyLayout.removeAllComponents();
 		ddiLayout.removeAllComponents();
 		licenseLayout.removeAllComponents();
+		versionContentLayout.removeAllComponents();
 		
 		exportLayout.withHeight("450px");
 		detailLayout.setHeight("800px");
@@ -698,7 +715,7 @@ public class DetailView extends CvView {
 		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentVersion.getNumber());
 		versionContentLayout.add( versionLayout );
 		
-		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
+		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, true);
 		identifyLayout.add( identityLayout );
 		
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);

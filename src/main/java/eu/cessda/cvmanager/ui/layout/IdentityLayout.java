@@ -8,55 +8,80 @@ import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
+import org.vaadin.viritin.layouts.MFormLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.TextArea;
 
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.ui.view.AgencyView;
+import eu.cessda.cvmanager.ui.view.DetailView;
 
 public class IdentityLayout extends MCssLayout implements Translatable {
 	
 	private static final long serialVersionUID = -2461005203070668382L;
 	private final I18N i18n;
 	private final Locale locale;
+	private final AgencyDTO agency;
 	private final VersionDTO version;
 	private final VersionService versionService;
-	
+	private final ConfigurationService configService;
+	private String baseUrl;
 	private enum LayoutMode{ READ, EDIT };
 	
-	private MCssLayout infoLayout = new MCssLayout().withFullSize();
-	private MLabel notExistInfo = new MLabel("No information is available");
-	private MLabel contentInfo = new MLabel().withContentMode( ContentMode.HTML);
+	private MFormLayout formLayout = new MFormLayout();
 	
-	private MCssLayout editLayout = new MCssLayout().withFullSize();
-	private MLabel editLabelInfo = new MLabel("Edit information, you can provide HTML content here");
-	private TextArea infoEditor = new TextArea();
+	
+	private MTextField urnEdit = new MTextField();
 	
 	private MButton editSwitchButton = new MButton( "Edit" );
 	private MCssLayout buttonLayout = new MCssLayout().withFullWidth();
 	private MButton saveButton = new MButton( "Save" );
 	private MButton cancelButton = new MButton( "Cancel" );
+	
+	private MLabel canonicalUri = new MLabel().withContentMode( ContentMode.HTML );
+	private MLabel canonicalUriVersion = new MLabel().withContentMode( ContentMode.HTML );
+	private MLabel agencyValue = new MLabel().withContentMode( ContentMode.HTML );
 	private boolean readOnly;
 	
 	public IdentityLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VersionDTO versionDTO,
-			VersionService versionService, boolean readOnly) {
+			VersionService versionService, ConfigurationService configService,
+			boolean readOnly) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
 		this.version = versionDTO;
 		this.versionService = versionService;
 		this.readOnly = readOnly;
+		this.configService = configService;
+		this.agency = agencyDTO;
 		
 		this.withFullWidth();
 		init();
 	}
 	
 	private void init() {
+		String baseCanonicalUri = null;
+		if( version.getCanonicalUri() != null) {
+			int index = version.getCanonicalUri().lastIndexOf(".");
+			baseCanonicalUri = version.getCanonicalUri().substring( 0, index);
+		}
+			
+		baseUrl = configService.getServerContextPath() + "/#!" + AgencyView.VIEW_NAME + "/" + agency.getName();
+		
+		formLayout.setMargin( false );
+		
+		canonicalUri.setCaption("Canonical URI");
+		canonicalUriVersion.setCaption("Canonical URI of this version");
+		agencyValue.setCaption("Agency Name");
+		
 		switchMode( LayoutMode.READ );
 		refreshInfo();
 		
@@ -71,64 +96,75 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			editSwitchButton.setVisible( false );
 		}
 		
-		infoLayout
-			.add(
-				notExistInfo,
-				contentInfo,
-				editSwitchButton
-			);
-		
-		infoEditor.setWidth("100%");
-		infoEditor.setHeight("240px");
-		
+		urnEdit
+			.withCaption( "Edit canonical URL" )
+			.setWidth("100%");
+
 		saveButton
-			.withStyleName("pull-right")
 			.addClickListener( e -> {
-				version.setIdentity( infoEditor.getValue());
+				String uriCv = urnEdit.getValue() + version.getNotation()  + ":" + version.getNumber() + "-" + version.getLanguage();
+				version.setCanonicalUri(uriCv);
 				versionService.save(version);
 				refreshInfo();
 				switchMode( LayoutMode.READ);
 			});
 		
 		cancelButton
-			.withStyleName("pull-right")
 			.addClickListener( e -> switchMode( LayoutMode.READ));
 		
 		buttonLayout
 			.add( saveButton, cancelButton);
 		
-		editLayout
-			.add(
-				editLabelInfo,
-				infoEditor,
-				buttonLayout
+		agencyValue
+			.setValue("&nbsp; <a href='" + baseUrl + "'>" + agency.getName()  +"</a> ");
+		
+		
+		formLayout
+			.addComponents(
+				canonicalUri,
+				canonicalUriVersion,
+				editSwitchButton,
+				urnEdit,
+				buttonLayout,
+				
+				agencyValue
 			);
+		
 		this
 			.add( 
-				infoLayout, 
-				editLayout
+				formLayout
 			);
 	}
 	
 	private void switchMode( LayoutMode layoutMode) {
 		if( layoutMode.equals( LayoutMode.READ)) {
-			infoLayout.setVisible( true );
-			editLayout.setVisible( false );
+			editSwitchButton.setVisible( true );
+			canonicalUri.setVisible( true );
+			canonicalUriVersion.setVisible( true );
+			urnEdit.setVisible( false );
+			buttonLayout.setVisible( false );
 		} else {
-			infoLayout.setVisible( false );
-			editLayout.setVisible( true );
+			editSwitchButton.setVisible( false );
+			canonicalUri.setVisible( false );
+			canonicalUriVersion.setVisible( false );
+			urnEdit.setVisible( true );
+			buttonLayout.setVisible( true );
 		}
 	}
 
 	private void refreshInfo() {
-		if( version.getIdentity() != null && !version.getIdentity().isEmpty()) {
-			contentInfo.setVisible( true );
-			notExistInfo.setVisible( false );
-			contentInfo.setValue( version.getIdentity() );
+		if( version.getCanonicalUri() == null || version.getCanonicalUri().isEmpty()) {
+			canonicalUri.setVisible( false );
+			canonicalUriVersion.setVisible( false );
 		}
 		else {
-			contentInfo.setVisible( false );
-			notExistInfo.setVisible( true );
+			int index = version.getCanonicalUri().lastIndexOf(":");
+			String cvCanonicalUri = version.getCanonicalUri().substring(0, index);
+			canonicalUri.setValue( cvCanonicalUri );
+			canonicalUriVersion.setValue( version.getCanonicalUri());
+			int index2 = cvCanonicalUri.lastIndexOf(":");
+			if( index2 > 0)
+				urnEdit.setValue( cvCanonicalUri.substring(0, index2) );
 		}
 	}
 

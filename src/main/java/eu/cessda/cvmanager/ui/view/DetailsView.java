@@ -368,9 +368,9 @@ public class DetailsView extends CvView {
 			.addItem( currentVersion.getNotation() + " " + (currentVersion.getNumber() == null ? "":currentVersion.getNumber()) + " (" + currentVersion.getStatus() + ")", null)
 			.build();
 
-		initTopViewSection();
+//		initTopViewSection();
 //		initTopEditSection();
-		initBottomViewSection();
+//		initBottomViewSection();
 		//initBottomEditSection();
 		updateMessageStrings(UI.getCurrent().getLocale());
 		
@@ -622,6 +622,7 @@ public class DetailsView extends CvView {
 		identifyLayout.removeAllComponents();
 		ddiLayout.removeAllComponents();
 		licenseLayout.removeAllComponents();
+		versionContentLayout.removeAllComponents();
 		
 		exportLayout.withHeight("450px");
 		detailLayout.setHeight("800px");
@@ -743,7 +744,7 @@ public class DetailsView extends CvView {
 		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, currentSLVersion.getNumber());
 		versionContentLayout.add( versionLayout );
 		
-		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
+		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, false);
 		identifyLayout.add( identityLayout );
 		
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);

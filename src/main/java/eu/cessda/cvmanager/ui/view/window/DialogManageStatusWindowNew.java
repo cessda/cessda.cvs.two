@@ -381,7 +381,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 		else
 			versionNumberField.setValue( versionNumberTL);
 
-
+		if( currentVersion.getVersionNotes() != null )
+			versionNotes.setValue( currentVersion.getVersionNotes() );
 		
 		versionButtonLayout
 		.withStyleName("button-layout")
@@ -507,10 +508,17 @@ public class DialogManageStatusWindowNew extends MWindow {
 								currentVersion.setVersionNotes( versionNotes.getValue());
 								currentVersion.setNumber( versionNumberField.getValue());
 								currentVersion.setPublicationDate( LocalDate.now());
+								
+								String urn =  agency.getCanonicalUri();
+								if(urn == null) {
+									urn = "urn:" + agency.getName().replace(" ", "") + "-cv:";
+								}
+								currentVersion.setCanonicalUri(urn + currentVersion.getTitle() + ":" + currentVersion.getNumber() + "-" + currentVersion.getLanguage());
+								
 								// add summary
 								currentVersion.setSummary(
 									(currentVersion.getSummary() == null ? "":currentVersion.getSummary()) +
-									"<br/><strong>" + currentVersion.getNumber() + "</strong>"+
+									"<strong>" + currentVersion.getNumber() + "</strong>"+
 									" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + currentVersion.getPublicationDate() +
 									"<br/>notes:<br/>" + currentVersion.getVersionNotes() + "<br/><br/>"
 								);

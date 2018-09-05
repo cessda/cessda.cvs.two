@@ -103,7 +103,9 @@ div.CodeList {
   </head>
   <body>
   
-  		<div th:remove="tag" th:each="version : ${versions}">
+  		<div th:remove="tag" th:each="version, iterStat: ${versions}">
+  		
+  			<div th:if="${iterStat.index} > 0" class="pagebreak"></div>
   		
 		    <div class="page">	
 		      <div style="width: 100%;">
@@ -125,16 +127,14 @@ div.CodeList {
 		        <dd th:text="${version.notation}"></dd>
 		        <dt>Long Name:</dt>
 		        <dd th:text="${version.title}"></dd>
-		        <dt>Version:</dt>
-		        <dd th:text="${version.number}">1.0</dd>
-		        <dt>Version Notes:</dt>
-		        <dd>
-		                
-		            </dd>
-		        <dt>Canonical URI:</dt>
-		        <dd>urn:ddi-cv:AggregationMethod</dd>
-		        <dt>Canonical URI of this version:</dt>
-		        <dd>urn:ddi-cv:AggregationMethod:1.0</dd>
+		        <dt th:if="${version.number != null}">Version:</dt>
+		        <dd th:if="${version.number != null}"th:text="${version.number}">1.0</dd>
+		        <dt th:if="${version.versionNotes != null}">Version Notes:</dt>
+		        <dd th:if="${version.versionNotes != null}" th:text="${version.versionNotes}"></dd>
+		        <dt th:if="${version.versionChanges != null}">Version Changes:</dt>
+		        <dd th:if="${version.versionChanges != null}" th:text="${version.versionChanges}"></dd>
+		        <dt th:if="${version.canonicalUri != null}">Canonical URI of this version:</dt>
+		        <dd th:if="${version.canonicalUri != null}" th:text="${version.canonicalUri}"></dd>
 		        
 		        <dt>Agency Name: </dt>
 		        <dd>
@@ -175,7 +175,7 @@ div.CodeList {
 		    <p>Copyright © <a href="http://www.ddialliance.org/">DDI Alliance</a> 2014.</p>
 		    <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons Attribution-ShareAlike 3" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a>  <span>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3</a>.</span></p>
     
-    	<div class="pagebreak"></div>
+    	
     	</div>
   </body>
 </html>

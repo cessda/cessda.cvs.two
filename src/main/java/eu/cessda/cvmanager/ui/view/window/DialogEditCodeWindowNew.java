@@ -386,18 +386,19 @@ public class DialogEditCodeWindowNew extends MWindow {
 		conceptService.save(concept);
 		
 		// save changes log
-		VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-		changeDTO.setVocabularyId( vocabulary.getId());
-		changeDTO.setVersionId( version.getId()); 
-		changeDTO.setChangeType( changeCb.getValue() );
-		changeDTO.setDescription( changeDesc.getValue() == null ? "": changeDesc.getValue() );
-		changeDTO.setDate( LocalDateTime.now() );
-		UserDetails loggedUser = SecurityUtils.getLoggedUser();
-		changeDTO.setUserId( loggedUser.getId() );
-		changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-		
-		vocabularyChangeService.save(changeDTO);
-		
+		if( changeBox.isVisible() ) {
+			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
+			changeDTO.setVocabularyId( vocabulary.getId());
+			changeDTO.setVersionId( version.getId()); 
+			changeDTO.setChangeType( changeCb.getValue() );
+			changeDTO.setDescription( changeDesc.getValue() == null ? "": changeDesc.getValue() );
+			changeDTO.setDate( LocalDateTime.now() );
+			UserDetails loggedUser = SecurityUtils.getLoggedUser();
+			changeDTO.setUserId( loggedUser.getId() );
+			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
+			
+			vocabularyChangeService.save(changeDTO);
+		}
 		
 		// indexing editor
 		vocabularyService.index(vocabulary);

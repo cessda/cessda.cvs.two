@@ -17,7 +17,8 @@ import com.vaadin.ui.UI;
 
 @Service
 public class ConfigurationService {
-	private final String SOURCE_LANGUAGE = "en";
+	public static final String SOURCE_LANGUAGE = "en";
+	public static final String DEFAULT_CV_LINK = "http://www.example.com/Specification/CV/";
 	
 	@Autowired
 	private Environment env;

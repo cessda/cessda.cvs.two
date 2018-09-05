@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.view.publication;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 
@@ -170,7 +172,13 @@ public class VocabularyGridRowPublish extends CustomComponent {
 		if( definition == null )
 			definition = "";
 		
-		String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getUri();
+		String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
+		try {
+			baseUrl += URLEncoder.encode(vocabulary.getUri(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			baseUrl += vocabulary.getUri();
+			e.printStackTrace();
+		}
 		
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
 		log.info("URL is: " + slTitle.getValue());

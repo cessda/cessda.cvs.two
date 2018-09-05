@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -75,8 +77,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	public VersionLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO,
 			VocabularyChangeService vocabularyChangeService,
-			ConfigurationService configService,
-			String currentVersionNumber) {
+			ConfigurationService configService, String currentVersionNumber) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
@@ -94,8 +95,8 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	}
 
 	private void init() {
-		this.removeAllComponents();
-		baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/";
+		baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
+		
 		boolean showSlVersion = false;
 		boolean showTlVersion = false;
 		
@@ -150,26 +151,26 @@ public class VersionLayout extends MCssLayout implements Translatable {
 //				"<a href='" + baseUrl  + versionDTO.getUri() + "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
 //				" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
 	
+		try {
+			baseUrl += URLEncoder.encode(versionDTO.getUri(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			baseUrl += versionDTO.getUri();
+			e.printStackTrace();
+		}
 		
 		infoVersion
 			.withValue("<h2>Source language</h2>" +
-					"<a href='" + baseUrl + versionDTO.getUri()+ "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
-					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
+					"<a href='" + baseUrl + "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
+					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication: " + versionDTO.getPublicationDate());
 		
 		noteVersion
 			.withValue("<h2>Version notes</h2>" +
 				versionDTO.getVersionNotes());
 		
-		StringBuilder changesVer = new StringBuilder();
-		List<VocabularyChangeDTO> changes = vocabularyChangeService.findAllByVocabularyVersionId( vocabulary.getId(), versionDTO.getId());
-
-		for( VocabularyChangeDTO eachChange: changes) {
-			changesVer.append( eachChange.getChangeType() + ": " + eachChange.getDescription() + "</br>");
-		}
 		
 		changeVersion
 			.withValue("<h2>Changes since previous version</h2>" +
-					changesVer.toString());
+				versionDTO.getVersionChanges());
 		
 		versionLayout
 			.withStyleName( "version-item" )

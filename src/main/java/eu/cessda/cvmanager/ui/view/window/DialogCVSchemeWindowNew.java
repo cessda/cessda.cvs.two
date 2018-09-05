@@ -48,6 +48,7 @@ import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -243,6 +244,12 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		
 		Button cancelButton = new Button("Cancel", e -> this.close());
 		
+		// check if current version is the initial version
+		List<VersionDTO> versionsByLanguage = vocabulary.getVersionsByLanguage( vocabulary.getSourceLanguage() );
+		if( versionsByLanguage.size() == 1) {
+			changeBox.setVisible( false );
+		}
+		
 		lChange
 			.withStyleName("change-header");
 		changeCb.setWidth("100%");
@@ -355,10 +362,10 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			return;
 		
 		if( isUpdated ) {
-			if( changeCb.getValue() == null ) {
-				Notification.show("Please select the change type!");
-				return;
-			}
+//			if( changeCb.getValue() == null ) {
+//				Notification.show("Please select the change type!");
+//				return;
+//			}
 		}
 		//agency
 //		List<CVEditor> editorSet = getCvScheme().getOwnerAgency();
@@ -387,6 +394,14 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		version.setTitle( tfTitle.getValue());
 		version.setDefinition( description.getValue() );
 		
+		String cvUriLink = agency.getUri();
+		if(cvUriLink == null )
+			cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
+		if(!cvUriLink.endsWith("/"))
+			cvUriLink += "/";
+		
+		cvUriLink += tfCode.getValue();
+		
 		if( !isUpdated )
 		{
 			vocabulary.setNotation( tfCode.getValue() );
@@ -394,10 +409,10 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			vocabulary.setAgencyId( agency.getId());
 			vocabulary.setAgencyName( agency.getName());
 			vocabulary.setSourceLanguage( language.toString());
-			vocabulary.setStatus( getCvScheme().getStatus() );
-			vocabulary.addStatus( getCvScheme().getStatus() );
+			vocabulary.setStatus( Status.DRAFT.toString());
+			vocabulary.addStatus( Status.DRAFT.toString() );
 			
-			version.setUri( cvScheme.getContainerId() );
+			version.setUri( cvUriLink );
 			version.setNotation( tfCode.getValue());
 			version.setNumber("1.0");
 			version.setStatus( Status.DRAFT.toString() );
@@ -426,7 +441,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		// index
 		vocabularyService.index(vocabulary);
 		
-		if( isUpdated ) {
+		if( isUpdated && changeBox.isVisible()) {
 			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
 			changeDTO.setVocabularyId( vocabulary.getId());
 			changeDTO.setVersionId( version.getId()); 
