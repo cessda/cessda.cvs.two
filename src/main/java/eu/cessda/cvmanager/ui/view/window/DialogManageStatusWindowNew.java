@@ -291,7 +291,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			// If publishing SL
 			if( currentVersion.getItemType().equals(ItemType.SL.toString())){
 				// get available TL, get language first and then get the latest TL
-				// TODO: need to specify the status of the TL?
+				// The latest TL will be listed as the target TL to be cloned
 				for(String lang : VocabularyDTO.getLanguagesFromVersions( vocabulary.getVersions())) {
 					if( lang.equals( sourceLanguage.toString()))
 						continue;
@@ -299,11 +299,15 @@ public class DialogManageStatusWindowNew extends MWindow {
 				}
 				StringBuilder versionChangesContent = new StringBuilder();
 				for( VocabularyChangeDTO vc : changes) {
-					versionChangesContent.append( vc.getChangeType() + " " + vc.getDescription() + "\n");
+					versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
 				}
 				versionChanges.setValue(versionChangesContent.toString());
 			} else {
-				
+				StringBuilder versionChangesContent = new StringBuilder();
+				for( VocabularyChangeDTO vc : changes) {
+					versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
+				}
+				versionChanges.setValue(versionChangesContent.toString());
 			}
 		}
 		
@@ -472,7 +476,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 		String confirmInfo = null;
 		if( currentStatus.equals( Status.DRAFT.toString())) {
 			nextStatus = Status.INITIAL_REVIEW.toString();
-//			nextStatus = Status.FINAL_REVIEW.toString();
 			confirmInfo = "Are you sure that you want to change the state of CV-" + ( sourceLanguage.equals(selectedLanguage) ? "SL " : "TL ") + "\"" + currentVersion.getTitle() + "\" from " + currentStatus + " to " + nextStatus + "?";
 		}
 		else if( currentStatus.equals( Status.INITIAL_REVIEW.toString())) {
@@ -496,7 +499,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 						if( dialog.isConfirmed() ) {
 								
 							currentVersion.setStatus( nextStatus );
-							vocabulary.setVersionByLanguage(selectedLanguage, nextStatus);
 							
 							if( selectedLanguage.equals( sourceLanguage )) {
 								vocabulary.setStatus( nextStatus);
@@ -508,6 +510,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 								currentVersion.setVersionNotes( versionNotes.getValue());
 								currentVersion.setNumber( versionNumberField.getValue());
 								currentVersion.setPublicationDate( LocalDate.now());
+								currentVersion.setLicenseId( agency.getLicenseId());
 								
 								String urn =  agency.getCanonicalUri();
 								if(urn == null) {
@@ -560,6 +563,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 									
 									vocabulary.addLanguagePublished( selectedLanguage.toString());
 								}
+							} else {
+								currentVersion = versionService.save(currentVersion);
 							}
 							
 							// save to database

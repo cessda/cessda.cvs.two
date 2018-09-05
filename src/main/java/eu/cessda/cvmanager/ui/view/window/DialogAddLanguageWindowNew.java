@@ -369,6 +369,8 @@ public class DialogAddLanguageWindowNew extends MWindow {
 				version.setInitialVersion( version.getId() );
 				version = versionService.save(version);
 			}
+			// update version in vocabulary
+			vocabulary.setVersionByLanguage(language, version.getNumber());
 			
 			vocabulary.addVersions(version);
 			vocabulary.addVers(version);
@@ -395,10 +397,10 @@ public class DialogAddLanguageWindowNew extends MWindow {
 		vocabularyService.index(vocabulary);
 		
 		// use eventbus to update detail view
-		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+//		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 		
 		close();
-//		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
+		UI.getCurrent().getNavigator().navigateTo( DetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.toString());
 	}
 	
 	private boolean isInputValid() {

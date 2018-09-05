@@ -361,32 +361,6 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		if(!isInputValid())
 			return;
 		
-		if( isUpdated ) {
-//			if( changeCb.getValue() == null ) {
-//				Notification.show("Please select the change type!");
-//				return;
-//			}
-		}
-		//agency
-//		List<CVEditor> editorSet = getCvScheme().getOwnerAgency();
-//		if(editorSet ==  null)
-//			editorSet = new ArrayList<>();
-//		else
-//			editorSet.clear();
-//		CVEditor cvEditor = new CVEditor();
-//		cvEditor.setName( agency.getName());
-//		cvEditor.setLogoPath( agency.getLogopath());
-//		
-//		editorSet.add( cvEditor );
-		
-		// prevent storing in flatDB
-		
-//		// save on flatDB
-//		getCvScheme().setOwnerAgency((ArrayList<CVEditor>) editorSet);
-//		getCvScheme().save();
-//		
-//		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add new CV");
-//		
 		// save on database
 		// new item
 		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
