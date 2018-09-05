@@ -97,6 +97,7 @@ import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.service.dto.LicenseDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -188,23 +189,16 @@ public class DetailsView extends CvView {
 	private ConceptDTO currentConcept;
 	
 	private MLabel versionLabel = new MLabel();
-
-//	private View oldView;
 	
-//	private TreeGrid<CVConcept> detailTreeGrid = new TreeGrid<>(CVConcept.class);
-//	private TreeGridDragSource<CVConcept> dragSource;
-//	private TreeGridDropTarget<CVConcept> dropTarget;
+	private List<LicenseDTO> licenses;
 	
 	private TreeGrid<CodeDTO> detailTreeGridNew = new TreeGrid<>(CodeDTO.class);
 	private TreeGridDragSource<CodeDTO> dragSourceNew;
 	private TreeGridDropTarget<CodeDTO> dropTargetNew;
 
-//	private TreeData<CVConcept> cvCodeTreeData;
 	private TreeData<CodeDTO> cvCodeTreeDataNew;
 	private MCssLayout languageLayout = new MCssLayout();
-//	private List<CVConcept> draggedItems;
 	private List<CodeDTO> draggedItemsNew;
-//	private TreeDataProvider<CVConcept> dataProvider;
 	private TreeDataProvider<CodeDTO> dataProviderNew;
 	
 	private VersionLayout versionLayout;
@@ -412,6 +406,9 @@ public class DetailsView extends CvView {
 		}
 		
 		agency = agencyService.findByName( getVocabulary().getAgencyName());
+		
+		// get all available licenses
+			licenses = licenseService.findAll();
 				
 		Set<String> languages = vocabulary.getLanguages();
 		
@@ -750,10 +747,10 @@ public class DetailsView extends CvView {
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
 		ddiLayout.add(ddiUsageLayout);
 		
-		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenseService.findAll(), false);
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenses, false);
 		licenseLayout.add( licenseLayoutContent );
 		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, templateEngine, false);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, licenses, templateEngine, false);
 		exportLayout.add(exportLayoutContent);
 		exportLayout.setSizeFull();
 		

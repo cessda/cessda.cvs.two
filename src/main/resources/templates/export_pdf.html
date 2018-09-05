@@ -143,8 +143,7 @@ div.CodeList {
 		      </dl>
 		    </div>
 		    <hr />
-    
-    
+
 		    <div class="CodeList page">
 		      <table>
 		        <caption>Code List</caption>
@@ -172,8 +171,15 @@ div.CodeList {
 		    </div>
 		    <hr />
 		    <h2>Copyright and License</h2>
-		    <p>Copyright © <a href="http://www.ddialliance.org/">DDI Alliance</a> 2014.</p>
-		    <p><a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/"><img alt="Creative Commons Attribution-ShareAlike 3" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/80x15.png" /></a>  <span>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons Attribution-ShareAlike 3</a>.</span></p>
+		    <p>Copyright © <a th:href="${agency.link}" th:text="${agency.name}"></a> <span th:text="${year}"></span>.</p>
+		    <p th:if="${license != null}">
+		    	<a rel="license" th:href="${license.link}">
+		    	<img style="border-width:0;width:140px" th:attr="src=${license.logoLink},title=${license.name},alt=${license.name}" />
+		    	</a>
+				<span>This work is licensed under a 
+					<a rel="license" th:href="${license.link}" th:text="${license.name}"></a>.
+				</span>
+			</p>
     
     	
     	</div>

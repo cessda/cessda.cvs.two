@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -56,6 +57,7 @@ import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.dto.LicenseDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 
@@ -93,6 +95,9 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private final VocabularyDTO vocabulary;
 	private final AgencyDTO agency;
 	
+	private List<LicenseDTO> licenses;
+	private LicenseDTO license;
+	
 	private Set<String> filteredTag = new HashSet<>();
 	private MGrid<ExportCV> exportGrid = new MGrid<>( ExportCV.class );
 	private List<ExportCV> exportCvItems = new ArrayList<>();
@@ -104,10 +109,11 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 	private Map<String, List<VersionDTO>> orderedLanguageVersionMap = new LinkedHashMap<>();
 	private boolean publishView;
+	private int year = LocalDate.now().getYear();
 	
 	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, VocabularyDTO vocabulary, AgencyDTO agency,
 			VersionService versionService, ConfigurationService configurationService,
-			TemplateEngine templateEngine, boolean isPublished) {
+			List<LicenseDTO> licenses, TemplateEngine templateEngine, boolean isPublished) {
 		this.i18n = i18n;
 		this.locale = locale;
 		this.eventBus = eventBus;
@@ -118,11 +124,14 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		this.versionService = versionService;
 		this.templateEngine = templateEngine;
 		this.publishView = isPublished;
+		this.licenses = licenses;
 		
 		initLayout();
 	}
 
 	private void initLayout() {
+		if( !publishView )
+			exportSkos.setVisible( false );
 		
 		exportGrid.addStyleNames("export-grid");
 		exportGrid.removeAllColumns();		
@@ -141,12 +150,13 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			.setCaption("Version")
 			.setExpandRatio( 2 )
 			.setId("versionClm");
-		exportGrid.addColumn( cVersion -> {
-			return cVersion.getExportSkosCb();
-			}, new ComponentRenderer())
-			.setCaption("Skos")
-			.setExpandRatio( 1 )
-			.setId("skosClm");
+		if( publishView )
+			exportGrid.addColumn( cVersion -> {
+				return cVersion.getExportSkosCb();
+				}, new ComponentRenderer())
+				.setCaption("Skos")
+				.setExpandRatio( 1 )
+				.setId("skosClm");
 		exportGrid.addColumn( cVersion -> {
 			return cVersion.getExportPdfCb();
 			}, new ComponentRenderer())
@@ -172,10 +182,10 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		this
 			.withFullWidth()
 			.add( sectionLayout);
-		
-		OnDemandFileDownloader onDemandSkosFileDownloader = new OnDemandFileDownloader( createOnDemandResource( DownloadType.SKOS ));
-		onDemandSkosFileDownloader.extend(exportSkos);
-		
+		if( publishView ) {
+			OnDemandFileDownloader onDemandSkosFileDownloader = new OnDemandFileDownloader( createOnDemandResource( DownloadType.SKOS ));
+			onDemandSkosFileDownloader.extend(exportSkos);
+		}
 		OnDemandFileDownloader onDemandSkosFileDownloaderPdf = new OnDemandFileDownloader( createOnDemandResource( DownloadType.PDF ));
 		onDemandSkosFileDownloaderPdf.extend(exportPdf);
 		
@@ -189,6 +199,18 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 
 		Map<String, List<VersionDTO>> filteredVersionMap = getFilteredVersionMap(null, versionMap);
 		filteredVersionMap.forEach( (k,v) -> exportCvItems.add( new ExportCV(k, v)));
+		
+		if(pivotVersion.getLicenseId() != null) {
+			licenses.stream().filter( p -> p.getId().longValue() == pivotVersion.getLicenseId().longValue()).findFirst().ifPresent( 
+	       			 license -> {
+	       				 this.license = license;
+	       			 });
+		}
+		
+		
+		if( pivotVersion.getStatus().equals( Status.PUBLISHED.toString())) {
+			year = pivotVersion.getPublicationDate().getYear();
+		}
 		
 		exportGrid.setItems(exportCvItems);
 	}
@@ -269,7 +291,12 @@ public class ExportLayout  extends MCssLayout implements Translatable {
                 try { 
                 	switch (downloadType) {
 	                	case HTML:
-	                		break;
+	                		try {
+								return new FileInputStream( generateExportFile(downloadType, exportVersions));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							break;
 						case PDF:
 							try {
 								return new FileInputStream( generateExportFile(downloadType, exportVersions));
@@ -325,7 +352,8 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		Map<String, Object> map = new HashMap<>();
 		map.put("versions", exportVersions);
 		map.put("agency", agency);
-
+		map.put("license", license);
+		map.put("year", year);
 		
 		return generateFileByThymeleafTemplate(generateOnDemandFileName( type , false), "export", map, type);
 	}
@@ -346,13 +374,6 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		return title.toString();
 	}
 	
-//	private String generateOnDemandFileName(DownloadType type, boolean withFileFormat) {
-//		String title = !cvItem.getCvScheme().getCode().isEmpty() ? cvItem.getCvScheme().getCode() : cvItem.getCvScheme().getTitleByLanguage("en");		
-//		return title + "_" + String.join("-", getFilteredLanguages( type , true)) + "_" + LocalDateTime.now().format(dateFormatter) + (withFileFormat ? "." + type.toString() : "");
-//		return vocabulary.getNotation() + "test_SL.pdf";
-//	}
-//
-//
 //
 //	private Set<String> getFilteredLanguages( DownloadType type, boolean checked) {
 //		Stream<ExportCV> exportCvStream = null;

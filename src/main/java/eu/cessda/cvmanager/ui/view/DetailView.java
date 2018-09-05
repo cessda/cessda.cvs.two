@@ -97,6 +97,7 @@ import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.service.dto.LicenseDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -207,6 +208,7 @@ public class DetailView extends CvView {
 	private LicenseLayout licenseLayoutContent;
 	
 	private Map<String, List<VersionDTO>> orderedLanguageVersionMap;
+	private List<LicenseDTO> licenses;
 	private Language sourceLanguage;
 	private String activeTab;
 	
@@ -388,6 +390,9 @@ public class DetailView extends CvView {
 		
 		if( getAgency() == null)
 			setAgency( agencyService.findOne(1L) );
+		
+		// get all available licenses
+		licenses = licenseService.findAll();
 		
 		
 //		Set<String> languages = cvItem.getCvScheme().getLanguagesByTitle();
@@ -721,10 +726,10 @@ public class DetailView extends CvView {
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
 		ddiLayout.add(ddiUsageLayout);
 		
-		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenseService.findAll(),  true);
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenses,  true);
 		licenseLayout.add( licenseLayoutContent );
 		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, templateEngine, true);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, licenses, templateEngine, true);
 		exportLayout.add(exportLayoutContent);
 		exportLayout.setSizeFull();
 		
