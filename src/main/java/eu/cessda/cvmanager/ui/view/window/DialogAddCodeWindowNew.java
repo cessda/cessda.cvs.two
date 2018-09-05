@@ -66,7 +66,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 	private final CodeService codeService;
 	private final VocabularyChangeService vocabularyChangeService;
 
-	Binder<CVConcept> binder = new Binder<CVConcept>();
+	private Binder<ConceptDTO> binder = new Binder<ConceptDTO>();
 	
 	private MLabel lNotation = new MLabel( "Code" );
 	private MLabel lTitle = new MLabel( "Descriptive term" );
@@ -82,9 +82,6 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 	private ComboBox<Language> languageCb = new ComboBox<>();
 
 	private Button storeCode = new Button("Save");
-	private CVConcept theCode;
-	private CVConcept parentCvConcept;
-	private CVScheme cvScheme;
 	
 	private VocabularyDTO vocabulary;
 	private VersionDTO version;
@@ -100,8 +97,6 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 				locale, ( parentCvConcept.getNotation() == null? parentCvConcept.getPrefLabelByLanguage( Language.valueOfEnum( versionDTO.getLanguage()).toString()) : parentCvConcept.getNotation() )));
 		
 		this.eventBus = eventBus;
-		this.cvScheme = cvSch;
-		this.parentCvConcept = parentCvConcept;
 		this.i18n = i18n;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
@@ -145,9 +140,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 		description.setSizeFull();
 		
 
-		setTheCode(newCode);
-
-		binder.setBean(getTheCode());
+		binder.setBean( concept);
 
 		storeCode.addClickListener(event -> {
 			saveCode();
@@ -245,27 +238,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 	private void saveCode() {
 		if(!isInputValid())
 			return;
-		// CVConcept cv = binder.getBean();
-		log.trace(getTheCode().getPrefLabelByLanguage( language.toString() ));
-		getTheCode().save();
-//		DDIStore ddiStore = stardatDDIService.saveElement(getTheCode().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code");
-//		if(parentCvConcept == null ) // root concept
-//		{
-//			cvScheme.addOrderedMemberList(ddiStore.getElementId());
-//			cvScheme.save();
-//			DDIStore ddiStoreCv = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update Top Concept");
-//		}
-//		else // child code, add narrower data in parent
-//		{
-//			//parentCode.addOrderedNarrowerList("http://lod.gesis.org/thesoz/concept_" + ddiStore.getElementId());
-//			parentCvConcept.addOrderedNarrowerList( ddiStore.getElementId());
-//			parentCvConcept.save();
-//			DDIStore ddiStoreCv = stardatDDIService.saveElement(parentCvConcept.ddiStore, "User", "Add Code");
-//		}
-		
-		
 		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
-		
 		
 		concept.setTitle( preferedLabel.getValue() );
 		concept.setDefinition( description.getValue() );
@@ -332,63 +305,31 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 	}
 
 	private boolean isInputValid() {
-		getTheCode().setNotation(notation.getValue());
-		getTheCode().setPrefLabelByLanguage(language.toString(), preferedLabel.getValue());
-		getTheCode().setDescriptionByLanguage(language.toString(), description.getValue());
+		concept.setNotation(notation.getValue());
+		concept.setTitle( preferedLabel.getValue());
+		concept.setDefinition( description.getValue());
 		
 		binder
 			.forField( notation )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( concept -> concept.getNotation(),
-				(concept, value) -> concept.setNotation(value));
+			.withValidator( p -> !version.isConceptEsixt(p), "code is already exist")
+			.bind( c -> c.getNotation(),
+				(c, value) -> c.setNotation(value));
 
 		binder
 			.forField( preferedLabel )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( concept -> getPrefLabelByLanguage(concept),
-				(concept, value) -> setPrefLabelByLanguage(concept, value));
+			.bind( c -> c.getTitle(),
+				(c, value) -> c.setTitle( value));
 
 		binder
 			.forField( description )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
-			.bind( concept -> getDescriptionByLanguage(concept),
-				(concept, value) -> setDescriptionByLanguage(concept, value));
+			.bind( c -> c.getDefinition(),
+					(c, value) -> c.setDefinition( value));
 		
 		binder.validate();
 		return binder.isValid();
-	}
-
-	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {
-
-		concept.setPrefLabelByLanguage( language.toString() , value);
-		return concept;
-	}
-
-	private String getPrefLabelByLanguage(CVConcept concept) {
-
-    		return concept.getPrefLabelByLanguage( language.toString() );
-
-	}
-
-	private Object setDescriptionByLanguage(CVConcept concept, String value) {
-
-		System.out.println("FooBar");
-		concept.setDescriptionByLanguage( language.toString() , value);
-		return null;
-	}
-
-	private String getDescriptionByLanguage(CVConcept concept) {
-
-		return concept.getDescriptionByLanguage( language.toString() );
-
-	}
-
-	public CVConcept getTheCode() {
-		return theCode;
-	}
-
-	public void setTheCode(CVConcept theCode) {
-		this.theCode = theCode;
 	}
 
 	@Override

@@ -256,6 +256,13 @@ public class VersionDTO implements Serializable {
 	public void setVocabularyId(Long vocabularyId) {
 		this.vocabularyId = vocabularyId;
 	}
+	
+	public boolean isConceptEsixt(String newConcept) {
+		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getNotation().endsWith(newConcept)).findFirst();
+		if( findFirst.isPresent())
+			return true;
+		return false;
+	}
 
 	@Override
     public boolean equals(Object o) {
