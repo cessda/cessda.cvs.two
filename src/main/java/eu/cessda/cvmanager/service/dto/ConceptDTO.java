@@ -17,6 +17,9 @@ public class ConceptDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
+	
+	@Size(max = 255)
+	private String uri;
 
     @NotNull
     @Size(max = 240)
@@ -41,6 +44,14 @@ public class ConceptDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
 
     public String getNotation() {
         return notation;
@@ -133,8 +144,9 @@ public class ConceptDTO implements Serializable {
 		return concepts.stream().filter( c -> c.getNotation().equals(notation)).findFirst();
 	}
 	
-	public static ConceptDTO clone(ConceptDTO targetConcept) {
+	public static ConceptDTO clone(ConceptDTO targetConcept, String uri) {
 		ConceptDTO newConcept = new ConceptDTO();
+		newConcept.setUri(uri);
 		newConcept.setNotation( targetConcept.getNotation());
 		newConcept.setTitle( targetConcept.getTitle() );
 		newConcept.setDefinition( targetConcept.getDefinition() );

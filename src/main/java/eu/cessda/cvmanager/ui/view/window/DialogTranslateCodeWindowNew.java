@@ -43,6 +43,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -258,11 +259,23 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 	private void saveCode() {
 		if(!isInputValid())
 			return;
-		
+		// generate Uri by inserting notation after cvScheme notation
+		String uri = version.getUri();
+		int lastIndex = uri.lastIndexOf("/");
+		if( lastIndex == -1) {
+			uri = ConfigurationService.DEFAULT_CV_LINK;
+			if(!uri.endsWith("/"))
+				uri += "/";
+			uri += version.getNotation();
+		} else {
+			uri = uri.substring(0, lastIndex);
+		}
+			
 		// store the code and index
 		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
 		codeService.save(code);
 		
+		concept.setUri( uri + "#" + code.getNotation() + "/" + language.toString());
 		concept.setNotation( code.getNotation() );
 		concept.setTitle( preferedLabel.getValue() );
 		concept.setDefinition( description.getValue() );

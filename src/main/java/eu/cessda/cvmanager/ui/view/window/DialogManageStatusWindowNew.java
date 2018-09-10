@@ -57,6 +57,7 @@ import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -320,16 +321,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 		cancelButton
 			.addStyleNames("action-button2");
 		
-		
-//		private MCssLayout versionBlock = new MCssLayout();
-//		private MLabel versionTitle = new MLabel();
-//		private MLabel versionInfo = new MLabel();
-//		private MCssLayout versionHistoryLayout = new MCssLayout();
-//		private TextArea versionNotes = new TextArea();
-//		private MLabel versionNumberLabel = new MLabel();
-//		private MTextField versionNumberField = new MTextField();
-//		private MCssLayout versionButtonLayout = new MCssLayout();
-		
 		versionTitle
 			.withFullWidth()
 			.withStyleName("section-header")
@@ -497,6 +488,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 		
 					dialog -> {
 						if( dialog.isConfirmed() ) {
+							String versionNumber = versionNumberField.getValue();
 								
 							currentVersion.setStatus( nextStatus );
 							
@@ -506,6 +498,9 @@ public class DialogManageStatusWindowNew extends MWindow {
 							
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
 								vocabulary.setStatuses( vocabulary.getLatestStatuses() );
+								
+								// add version number to URI
+								currentVersion.setUri( currentVersion.getUri() + "/" + versionNumber);
 								
 								currentVersion.setVersionNotes( versionNotes.getValue());
 								currentVersion.setNumber( versionNumberField.getValue());
@@ -526,6 +521,12 @@ public class DialogManageStatusWindowNew extends MWindow {
 									"<br/>notes:<br/>" + currentVersion.getVersionNotes() + "<br/><br/>"
 								);
 								
+								// update concept uri
+								for(ConceptDTO concept : currentVersion.getConcepts()) {
+									concept.setUri( concept.getUri() + "/" + versionNumber);
+									conceptService.save( concept );
+								}
+								
 								
 								vocabulary.setVersionByLanguage(selectedLanguage, versionNumberField.getValue());
 								// if SL is published
@@ -541,10 +542,16 @@ public class DialogManageStatusWindowNew extends MWindow {
 									// get workflow codes
 									List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
 									
+									String cvUriLink = agency.getUri();
+									if(cvUriLink == null )
+										cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
+									if(!cvUriLink.endsWith("/"))
+										cvUriLink += "/";
+									
 									// clone any latest TL if exist
 									for( VersionDTO targetTLversion : latestTlVersions ) {
 										// create new version
-										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), null, agency.getLicenseId());
+										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), null, agency.getLicenseId(), cvUriLink);
 										newVersion.setUriSl( vocabulary.getUri());
 										newVersion = versionService.save(newVersion);
 										
@@ -560,10 +567,12 @@ public class DialogManageStatusWindowNew extends MWindow {
 										vocabulary.addVersions(newVersion);
 									}
 								} else {
+									// if TL is published
 									
 									vocabulary.addLanguagePublished( selectedLanguage.toString());
 								}
 							} else {
+								// other status forward but not publish
 								currentVersion = versionService.save(currentVersion);
 							}
 							

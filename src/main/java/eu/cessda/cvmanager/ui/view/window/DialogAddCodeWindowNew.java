@@ -39,6 +39,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -238,8 +239,24 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 	private void saveCode() {
 		if(!isInputValid())
 			return;
+		
+		// generate Uri by inserting notation after cvScheme notation
+		String uri = version.getUri();
+		int lastIndex = uri.lastIndexOf("/");
+		if( lastIndex == -1) {
+			uri = ConfigurationService.DEFAULT_CV_LINK;
+			if(!uri.endsWith("/"))
+				uri += "/";
+			uri += version.getNotation();
+		} else {
+			uri = uri.substring(0, lastIndex);
+		}
+			
+		
+		
 		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
 		
+		concept.setUri( uri + "#" + notation.getValue() + "/" + language.toString());
 		concept.setTitle( preferedLabel.getValue() );
 		concept.setDefinition( description.getValue() );
 		
@@ -312,7 +329,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 		binder
 			.forField( notation )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.withValidator( p -> !version.isConceptEsixt(p), "code is already exist")
+			.withValidator( p -> !version.isConceptExist(parentCode == null? p: parentCode.getNotation() + "." + p), "code is already exist")
 			.bind( c -> c.getNotation(),
 				(c, value) -> c.setNotation(value));
 

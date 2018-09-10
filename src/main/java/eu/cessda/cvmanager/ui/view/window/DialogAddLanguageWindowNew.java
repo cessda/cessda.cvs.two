@@ -42,6 +42,7 @@ import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -339,7 +340,17 @@ public class DialogAddLanguageWindowNew extends MWindow {
 		
 		// store new version
 		if( !version.isPersisted()) {
+			String cvUriLink = agency.getUri();
+			if(cvUriLink == null )
+				cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
+			if(!cvUriLink.endsWith("/"))
+				cvUriLink += "/";
+			
+			cvUriLink += vocabulary.getNotation() + "/" + language.toString();
+			
 			version.setUriSl( vocabulary.getUri() );
+			version.setUri( cvUriLink );
+			
 			version.setNotation( vocabulary.getNotation());
 			version.setNumber( vocabulary.getVersionNumber() + ".1");
 			version.setStatus( Status.DRAFT.toString() );
@@ -395,10 +406,7 @@ public class DialogAddLanguageWindowNew extends MWindow {
 		
 		// index
 		vocabularyService.index(vocabulary);
-		
-		// use eventbus to update detail view
-//		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-		
+
 		close();
 		UI.getCurrent().getNavigator().navigateTo( DetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.toString());
 	}

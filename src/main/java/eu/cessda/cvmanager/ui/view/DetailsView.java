@@ -254,7 +254,8 @@ public class DetailsView extends CvView {
 			.add( 
 				editorCvActionLayout,
 				editorCodeActionLayout
-			);
+			)
+			.addStyleName("side-panel-action");
 		
 		mainContainer
 			.add(

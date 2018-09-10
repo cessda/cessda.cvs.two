@@ -257,8 +257,8 @@ public class VersionDTO implements Serializable {
 		this.vocabularyId = vocabularyId;
 	}
 	
-	public boolean isConceptEsixt(String newConcept) {
-		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getNotation().endsWith(newConcept)).findFirst();
+	public boolean isConceptExist(String newConcept) {
+		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getNotation().equals(newConcept)).findFirst();
 		if( findFirst.isPresent())
 			return true;
 		return false;
@@ -451,8 +451,11 @@ public class VersionDTO implements Serializable {
 		return sb.toString();
 	}
 	
-	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId) {
+	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri) {
 		VersionDTO newVersion = new VersionDTO();
+		// generate uri
+		newVersion.setUri( agencyUri + targetVersion.getNotation() + "/" + targetVersion.getLanguage());
+		
 		newVersion.setStatus( Status.DRAFT.toString());
 		newVersion.setItemType( targetVersion.getItemType() );
 		newVersion.setLanguage( targetVersion.getLanguage() );
@@ -471,7 +474,7 @@ public class VersionDTO implements Serializable {
 		newVersion.setIdentity( targetVersion.getIdentity() );
 		// clone concepts as well
 		for(ConceptDTO targetConcept: targetVersion.getConcepts()) {
-			ConceptDTO newConcept = ConceptDTO.clone(targetConcept);
+			ConceptDTO newConcept = ConceptDTO.clone(targetConcept, agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage());
 			newVersion.addConcept(newConcept);
 		}
 		

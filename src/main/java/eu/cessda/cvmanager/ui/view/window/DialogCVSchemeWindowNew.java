@@ -368,16 +368,16 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		version.setTitle( tfTitle.getValue());
 		version.setDefinition( description.getValue() );
 		
-		String cvUriLink = agency.getUri();
-		if(cvUriLink == null )
-			cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
-		if(!cvUriLink.endsWith("/"))
-			cvUriLink += "/";
-		
-		cvUriLink += tfCode.getValue();
-		
 		if( !isUpdated )
 		{
+			String cvUriLink = agency.getUri();
+			if(cvUriLink == null )
+				cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
+			if(!cvUriLink.endsWith("/"))
+				cvUriLink += "/";
+			
+			cvUriLink += tfCode.getValue() + "/" + language.toString();
+			
 			vocabulary.setNotation( tfCode.getValue() );
 			vocabulary.setVersionNumber("1.0");
 			vocabulary.setAgencyId( agency.getId());

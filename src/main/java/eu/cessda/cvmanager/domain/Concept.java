@@ -31,6 +31,9 @@ public class Concept implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@Column(name = "uri", length = 255)
+    private String uri;
+	
 	@NotNull
     @Column(name = "notation", length = 240, nullable = false)
     private String notation;
@@ -62,6 +65,14 @@ public class Concept implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	public String getNotation() {

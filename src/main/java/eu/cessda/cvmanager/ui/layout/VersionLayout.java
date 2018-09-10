@@ -107,29 +107,34 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		else {
 			this.add( new MLabel("<h2>Translation</h2>").withFullWidth().withContentMode( ContentMode.HTML));
 		}
-		boolean showSlVersion = false;
-		boolean showTlVersion = false;
+		
+		
 		for(Map.Entry<String,List<VersionDTO>> eachVersions : versionMap.entrySet()) {
+			boolean expandLayout = true;
 			if(eachVersions.getKey().startsWith( ItemType.SL.toString())) {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
-					// only shows its versions
+					boolean showSlVersion = false;
+					// only shows version in specific language
 					if( !version.getLanguage().equals( orderedVer.getLanguage()))
 						continue;
-					
+					// do not show if version number not exist
 					if( orderedVer.getNumber() == null )
 						continue;
 					//only show equal or lower version
 					if( version.getNumber() == null )
 						showSlVersion = true;
-					else
-						if( orderedVer.getNumber() != null && orderedVer.getNumber().indexOf( version.getNumber() ) == 0) 
+					else //TODO: change with version number comparator
+						if(orderedVer.getNumber().indexOf( version.getNumber() ) == 0) 
 							showSlVersion = true;
 					
-					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showSlVersion)
-						this.add( generateVersionSl(orderedVer));
+					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showSlVersion) {
+						this.add( generateVersionSl(orderedVer, expandLayout));
+						expandLayout = false;
+					}
 				}
 			} else {
 				for(VersionDTO orderedVer : eachVersions.getValue()) {
+					boolean showTlVersion = false;
 					// only shows its versions
 					if( !version.getLanguage().equals( orderedVer.getLanguage()))
 						continue;
@@ -144,13 +149,13 @@ public class VersionLayout extends MCssLayout implements Translatable {
 							showTlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showTlVersion)
-						this.add( generateVersionTl(orderedVer));
+						this.add( generateVersionTl(orderedVer, showTlVersion));
 				}
 			}
 		}
 	}
 	
-	public MCssLayout generateVersionSl( VersionDTO versionDTO ) {
+	public MCssLayout generateVersionSl( VersionDTO versionDTO, boolean expand) {
 		MCssLayout versionLayout = new MCssLayout();
 		String cvUrl = null;
 		
@@ -195,7 +200,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		return versionLayout;
 	}
 	
-	public MCssLayout generateVersionTl( VersionDTO versionDTO ) {
+	public MCssLayout generateVersionTl( VersionDTO versionDTO, boolean expand ) {
 		MCssLayout versionLayout = new MCssLayout();
 		String cvUrl = null;
 		
