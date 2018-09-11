@@ -186,12 +186,16 @@ public class CvCodeTreeUtils{
 	
 	public static TreeData<CVConcept> generateCVConceptTreeFromCodeTree(TreeData<CodeDTO> codeTree, CVScheme cvScheme) {
 		TreeData<CVConcept> cvConceptTree = new TreeData<>();
+		String baseUri = cvScheme.getContainerId().substring(0, cvScheme.getContainerId().lastIndexOf("/"));
+		String versionNumber = cvScheme.getContainerId().substring(cvScheme.getContainerId().lastIndexOf("/"),cvScheme.getContainerId().length());
+		baseUri = baseUri.substring(0, baseUri.lastIndexOf("/"));
+		
 		
 		for(CodeDTO topCode : codeTree.getRootItems()) {
 			
 			CVConcept topCVConcept = new CVConcept();
 			topCVConcept.loadSkeleton(topCVConcept.getDefaultDialect());
-			topCVConcept.createId();
+			topCVConcept.setId( baseUri + "#" + topCode.getNotation() + versionNumber);
 			topCVConcept.setContainerId( cvScheme.getContainerId());
 			topCVConcept.setNotation( topCode.getNotation() );
 			
@@ -205,18 +209,18 @@ public class CvCodeTreeUtils{
 			cvConceptTree.addRootItems(topCVConcept);
 			
 			for(CodeDTO childCode : codeTree.getChildren(topCode)) {
-				generateCVConceptTreeNarrowerFromCodeTree(cvConceptTree, codeTree, cvScheme, topCVConcept, childCode);
+				generateCVConceptTreeNarrowerFromCodeTree(cvConceptTree, codeTree, cvScheme, topCVConcept, childCode, baseUri ,versionNumber);
 			}
 		}
 	
 		return cvConceptTree;
 	}
 	
-	private static void generateCVConceptTreeNarrowerFromCodeTree(TreeData<CVConcept> cvConceptTree, TreeData<CodeDTO> codeTree, CVScheme cvScheme, CVConcept parentCVConcept, CodeDTO childCode) {
+	private static void generateCVConceptTreeNarrowerFromCodeTree(TreeData<CVConcept> cvConceptTree, TreeData<CodeDTO> codeTree, CVScheme cvScheme, CVConcept parentCVConcept, CodeDTO childCode, String baseUri, String versionNumber) {
 		
 		CVConcept newCVConcept = new CVConcept();
 		newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
-		newCVConcept.createId();
+		newCVConcept.setId( baseUri + "#" + childCode.getNotation() + versionNumber);
 		newCVConcept.setContainerId( cvScheme.getContainerId());
 		newCVConcept.setNotation( childCode.getNotation() );
 		
@@ -230,7 +234,7 @@ public class CvCodeTreeUtils{
 		cvConceptTree.addItem(parentCVConcept, newCVConcept);
 		
 		for(CodeDTO code : codeTree.getChildren( childCode )) {
-			generateCVConceptTreeNarrowerFromCodeTree(cvConceptTree, codeTree, cvScheme, newCVConcept, code);
+			generateCVConceptTreeNarrowerFromCodeTree(cvConceptTree, codeTree, cvScheme, newCVConcept, code, baseUri, versionNumber);
 		}
 		
 	}
