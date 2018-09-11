@@ -152,10 +152,6 @@ public class DetailsView extends CvView {
 	private MCssLayout licenseLayout = new MCssLayout().withFullWidth();
 	private MCssLayout exportLayout = new MCssLayout().withFullWidth();
 
-	private TextField codeEditor = new TextField();
-	private TextField prefLanguageEditor = new TextField();
-	private TextField prefLabelEditor = new TextField();
-	
 	private MLabel lTitle = new MLabel();
 	private MLabel lDefinition = new MLabel();
 	private MLabel lCode = new MLabel();
@@ -186,20 +182,19 @@ public class DetailsView extends CvView {
 	
 	private VersionDTO currentVersion;
 	private VersionDTO currentSLVersion;
-	private ConceptDTO currentConcept;
 	
 	private MLabel versionLabel = new MLabel();
 	
 	private List<LicenseDTO> licenses;
 	
-	private TreeGrid<CodeDTO> detailTreeGridNew = new TreeGrid<>(CodeDTO.class);
-	private TreeGridDragSource<CodeDTO> dragSourceNew;
-	private TreeGridDropTarget<CodeDTO> dropTargetNew;
+	private TreeGrid<CodeDTO> detailTreeGrid = new TreeGrid<>(CodeDTO.class);
+	private TreeGridDragSource<CodeDTO> dragSource;
+	private TreeGridDropTarget<CodeDTO> dropTarget;
 
-	private TreeData<CodeDTO> cvCodeTreeDataNew;
+	private TreeData<CodeDTO> cvCodeTreeData;
 	private MCssLayout languageLayout = new MCssLayout();
-	private List<CodeDTO> draggedItemsNew;
-	private TreeDataProvider<CodeDTO> dataProviderNew;
+	private List<CodeDTO> draggedItems;
+	private TreeDataProvider<CodeDTO> dataProvider;
 	
 	private VersionLayout versionLayout;
 	private ExportLayout exportLayoutContent;
@@ -355,7 +350,6 @@ public class DetailsView extends CvView {
 	private void setDetails() {
 		
 		refreshCvScheme();
-//		refreshCvConcepts();
 		
 		// update breadcrumb
 		breadcrumbs
@@ -363,10 +357,6 @@ public class DetailsView extends CvView {
 			.addItem( currentVersion.getNotation() + " " + (currentVersion.getNumber() == null ? "":currentVersion.getNumber()) + " (" + currentVersion.getStatus() + ")", null)
 			.build();
 
-//		initTopViewSection();
-//		initTopEditSection();
-//		initBottomViewSection();
-		//initBottomEditSection();
 		updateMessageStrings(UI.getCurrent().getLocale());
 		
 		// top panes is the layout container for search, just hide here
@@ -481,9 +471,6 @@ public class DetailsView extends CvView {
 				
 				cvItem.setCurrentLanguage(e.getButton().getCaption().toLowerCase());
 				setSelectedLang( Language.getEnum( e.getButton().getCaption().toLowerCase()) );
-//				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
-				
-//				setFormMode(FormMode.view);
 							
 				editorCvActionLayout.setSelectedLanguage(selectedLang);
 				editorCodeActionLayout.setSelectedLanguage(selectedLang);
@@ -504,22 +491,14 @@ public class DetailsView extends CvView {
 				
 				
 				initTopViewSection();
-//				initTopEditSection();
 				initBottomViewSection();
 				
-//				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLang))
-//					editButton.setVisible( true );
-//				else
-//					editButton.setVisible( false );
-				
-//				actionPanel.conceptSelectedChange( null );
 				setCode( null );
 				updateMessageStrings(locale);
 				refreshCvActionButton();
 				
 				// clear cvConcept selection and button
-//				detailTreeGrid.asSingleSelect().clear();
-				detailTreeGridNew.asSingleSelect().clear();
+				detailTreeGrid.asSingleSelect().clear();
 				editorCodeActionLayout.clearCode();
 				refreshCodeActionButton();
 			});
@@ -640,33 +619,33 @@ public class DetailsView extends CvView {
 		
 		setActiveTab();
 			
-		detailTreeGridNew = new TreeGrid<>(CodeDTO.class);
-		detailTreeGridNew.addStyleNames("undefined-height");
-		detailTreeGridNew.removeAllColumns();
-		detailTreeGridNew.setHeight("800px");
-		detailTreeGridNew.setWidthUndefined();
+		detailTreeGrid = new TreeGrid<>(CodeDTO.class);
+		detailTreeGrid.addStyleNames("undefined-height");
+		detailTreeGrid.removeAllColumns();
+		detailTreeGrid.setHeight("800px");
+		detailTreeGrid.setWidthUndefined();
 		
 		updateDetailGrid();	
 		
-		detailTreeGridNew.setSelectionMode( SelectionMode.SINGLE );
+		detailTreeGrid.setSelectionMode( SelectionMode.SINGLE );
 		
-		detailTreeGridNew.addColumn(code -> code.getNotation())
+		detailTreeGrid.addColumn(code -> code.getNotation())
 			.setCaption("Code")
 			.setExpandRatio(1)
 			.setId("code");
 	
-		detailTreeGridNew.addColumn(code -> code.getTitleByLanguage( sourceLanguage ))
+		detailTreeGrid.addColumn(code -> code.getTitleByLanguage( sourceLanguage ))
 			.setCaption(i18n.get("view.detail.cvconcept.column.sl.title", locale))
 			.setExpandRatio(1)
 			.setId("prefLabelSl");
 
 		if( !selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() ) ))
-			detailTreeGridNew.addColumn(code -> code.getTitleByLanguage(selectedLang))
+			detailTreeGrid.addColumn(code -> code.getTitleByLanguage(selectedLang))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 				.setExpandRatio(1)
 				.setId("prefLabelTl");// Component(prefLanguageEditor,
 		
-		detailTreeGridNew.addColumn(code -> {
+		detailTreeGrid.addColumn(code -> {
 					return new MLabel( code.getDefinitionByLanguage( sourceLanguage )).withStyleName( "word-brake-normal" );
 				}, new ComponentRenderer())
 				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
@@ -674,34 +653,31 @@ public class DetailsView extends CvView {
 				.setId("definitionSl");
 		
 		if( !selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() ) ))
-			detailTreeGridNew.addColumn(code -> {
+			detailTreeGrid.addColumn(code -> {
 				return new MLabel( code.getDefinitionByLanguage(selectedLang)).withStyleName( "word-brake-normal" );
 			}, new ComponentRenderer())
 			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString() ))
 			.setExpandRatio(3)
 			.setId("definitionTl");
 		
-		detailTreeGridNew.setSizeFull();
+		detailTreeGrid.setSizeFull();
 		
 		
-		detailTreeGridNew.asSingleSelect().addValueChangeListener( event -> {		
+		detailTreeGrid.asSingleSelect().addValueChangeListener( event -> {		
 			if (event.getValue() != null) {
 				code = event.getValue();
 				
-//				editorCodeActionLayout.setCvConcept( cvItem.getCvConcept() );
 				editorCodeActionLayout.setCurrentCode(code);
 				editorCodeActionLayout.setCurrentConcept(null);
 				
 				// get concept
 				ConceptDTO.getConceptFromCode(currentVersion.getConcepts(), code.getId()).ifPresent( conceptDTO -> {
 					if( conceptDTO.isPersisted()) {
-						currentConcept = conceptDTO;
 						editorCodeActionLayout.setCurrentConcept(conceptDTO);
 					} else {
 						// query in database for updated one
 						ConceptDTO conceptFromDb = conceptService.findOneByCodeNotationAndId( code.getNotation(), code.getId() );
 						if( conceptFromDb != null ) {
-							currentConcept = conceptFromDb;
 							editorCodeActionLayout.setCurrentConcept(conceptFromDb);
 						}
 					}
@@ -721,23 +697,13 @@ public class DetailsView extends CvView {
 		
 		// select row programatically
 		if(code != null ) {
-			detailTreeGridNew.select( code);
-			//detailTreeGridNew.scrollTo( 13 );
-
+			detailTreeGrid.select( code);
 		}
 		
-		detailTreeGridNew.getColumns().stream().forEach( column -> column.setSortable( false ));
+		detailTreeGrid.getColumns().stream().forEach( column -> column.setSortable( false ));
 				
-		detailLayout.addComponents(detailTreeGridNew);
-		
-		
-		
-		
-		
-		//detailLayout.setMargin(false);
-		//detailLayout.setSpacing(false);
+		detailLayout.addComponents(detailTreeGrid);
 		detailLayout.setSizeFull();
-		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
 		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService);
 		versionContentLayout.add( versionLayout );
@@ -798,39 +764,26 @@ public class DetailsView extends CvView {
 	}
 	
 	private void enableTreeGridDragAndDropSort() {		
-//		dragSource = new TreeGridDragSource<>(detailTreeGrid);
-		dragSourceNew = new TreeGridDragSource<>(detailTreeGridNew);
+		dragSource = new TreeGridDragSource<>(detailTreeGrid);
 		
 		// set allowed effects
-//		dragSource.setEffectAllowed(EffectAllowed.MOVE);
-		dragSourceNew.setEffectAllowed(EffectAllowed.MOVE);
+		dragSource.setEffectAllowed(EffectAllowed.MOVE);
 	     
-//		dragSource.addGridDragStartListener(event ->
-//			// Keep reference to the dragged items
-//			draggedItems = event.getDraggedItems()
-//		);
-		dragSourceNew.addGridDragStartListener(event ->
+		dragSource.addGridDragStartListener(event ->
 			// Keep reference to the dragged items
-			draggedItemsNew = event.getDraggedItems()
+			draggedItems = event.getDraggedItems()
 		);
 	  
-//		dropTarget = new TreeGridDropTarget<>(detailTreeGrid, DropMode.BETWEEN);
-//		dropTarget.setDropEffect(DropEffect.MOVE);
-		
-		dropTargetNew = new TreeGridDropTarget<>(detailTreeGridNew, DropMode.BETWEEN);
-		dropTargetNew.setDropEffect(DropEffect.MOVE);
+		dropTarget = new TreeGridDropTarget<>(detailTreeGrid, DropMode.BETWEEN);
+		dropTarget.setDropEffect(DropEffect.MOVE);
 	     
-//		dropTarget.addTreeGridDropListener(event -> {
-		dropTargetNew.addTreeGridDropListener(event -> {
+		dropTarget.addTreeGridDropListener(event -> {
 			// Accepting dragged items from another Grid in the same UI
 	        event.getDragSourceExtension().ifPresent(source -> {
 	            if (source instanceof TreeGridDragSource) {
             		if (event.getDropTargetRow().isPresent()) {
-//	                	CVConcept targetRow = event.getDropTargetRow().get();
-//	                	CVConcept draggedRow = draggedItems.iterator().next();
-            			
             			CodeDTO targetRow = event.getDropTargetRow().get();
-            			CodeDTO draggedRow = draggedItemsNew.iterator().next();
+            			CodeDTO draggedRow = draggedItems.iterator().next();
 	                	
 	                	// check if code drag and drop to itself
 	                	if( targetRow.equals(draggedRow) ) {
@@ -848,10 +801,8 @@ public class DetailsView extends CvView {
 	                				if(selectedOptionNumber == null )
 	                					return;
 	                				
-//                					CVConcept draggedNodeParent = cvCodeTreeData.getParent(draggedRow);
-//                					CVConcept targetNodeParent = cvCodeTreeData.getParent(targetRow);
-	                				CodeDTO draggedNodeParent =  cvCodeTreeDataNew.getParent( draggedRow );
-	                				CodeDTO targetNodeParent = cvCodeTreeDataNew.getParent(targetRow);
+	                				CodeDTO draggedNodeParent =  cvCodeTreeData.getParent( draggedRow );
+	                				CodeDTO targetNodeParent = cvCodeTreeData.getParent(targetRow);
                 					boolean parentSame = true;
                 					
 	                				if( selectedOptionNumber == 0 ) { // move as next sibling
@@ -868,36 +819,16 @@ public class DetailsView extends CvView {
 	                					// the nodes need to be from the same parent
 	                					if( !Objects.equals( draggedNodeParent, targetNodeParent)){
 	                						//add code as target parent node first
-	                						cvCodeTreeDataNew.setParent(draggedRow, targetNodeParent);
+	                						cvCodeTreeData.setParent(draggedRow, targetNodeParent);
 	                						parentSame=false;
 	                					}
 
 	                					// update tree in vaadin UI
-	                					cvCodeTreeDataNew.moveAfterSibling(draggedRow, targetRow);
-	                					dataProviderNew.refreshAll();
+	                					cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
+	                					dataProvider.refreshAll();
 	                					
 	                					// save on DB
-            							codeService.storeCodeTree(cvCodeTreeDataNew);
-	                					
-//	                					Integer targetNodeLevel = event.getDropTargetRowDepth().get();
-//	                					
-//	                					if( targetNodeLevel == 0 ) { // root concept, reorder
-//	                						
-//	                						stardatDDIService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeDataNew.getRootItems());
-//	                					} else { // reorder narrower
-//	                						
-//	                						stardatDDIService.storeNarrowerConcept( targetNodeParent, cvCodeTreeDataNew.getChildren( targetNodeParent ));
-//	                					}
-//	                					  
-//	                					// dragged node not from topConcepts, need to reorder the narrower list
-//	                					// from previous parent
-//	                					if( !parentSame ) {
-//		                					if( draggedNodeParent != null ) {
-//		                						stardatDDIService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeDataNew.getChildren( draggedNodeParent ));
-//		                					} else {
-//		                						stardatDDIService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeDataNew.getRootItems());
-//		                					}
-//	                					}
+            							codeService.storeCodeTree(cvCodeTreeData);
 	                				} 
 	                				else if (selectedOptionNumber == 1) { //move as child
 	                					// Possibility
@@ -912,23 +843,14 @@ public class DetailsView extends CvView {
 	                						draggedRow.setNotation( targetRow.getNotation() + "." + draggedRow.getNotation());
 	                					}
 	                					
-            							cvCodeTreeDataNew.setParent(draggedRow, targetRow);
-            							dataProviderNew.refreshAll();
-            							detailTreeGridNew.expand(draggedRow, targetRow);
+            							cvCodeTreeData.setParent(draggedRow, targetRow);
+            							dataProvider.refreshAll();
+            							detailTreeGrid.expand(draggedRow, targetRow);
             							
             							// save on DB
-            							codeService.storeCodeTree(cvCodeTreeDataNew);
-            							
-//            							// update topconcept, if dragged top concept is null
-//            							if( draggedNodeParent == null ) { // dragged node was topconcept
-//            								stardatDDIService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeDataNew.getRootItems());
-//            							} else {
-//            								stardatDDIService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeDataNew.getChildren( draggedNodeParent ));
-//            							}
-//            							// update new parent child order
-//            							stardatDDIService.storeNarrowerConcept( targetRow, cvCodeTreeDataNew.getChildren( targetRow ));
+            							codeService.storeCodeTree(cvCodeTreeData);
 	                				}
-	                				draggedItemsNew = null;
+	                				draggedItems = null;
 	                			})
 	                	);
 	                }
@@ -939,43 +861,22 @@ public class DetailsView extends CvView {
 
 	@SuppressWarnings("unchecked")
 	public void updateDetailGrid() {		
-//		dataProvider = (TreeDataProvider<CVConcept>) detailTreeGrid.getDataProvider();
-//		cvCodeTreeData = dataProvider.getTreeData();
-//		cvCodeTreeData.clear();
-//		// assign the tree structure
-//		List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvItem.getCvScheme().getContainerId(), DDIElement.CVCONCEPT);
-//		CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvItem.getCvScheme() , cvCodeTreeData);
-//		
-//		cvItem.setCvConceptTreeData(cvCodeTreeData);
-//		// refresh tree
-//		dataProvider.refreshAll();
-//		// expand all nodes
-//		detailTreeGrid.expand( cvItem.getFlattenedCvConceptStreams().collect(Collectors.toList()));
-//		// auto select nodes 
-//		CVConcept currentCvConcept = cvItem.getCVConceptMap().get( cvItem.getCurrentConceptId());
-//		if( currentCvConcept != null ) {
-//			cvItem.setCvConcept(currentCvConcept);
-//		}
-//		
-		/*--------------------------*/
-		detailTreeGridNew.asSingleSelect().clear();
+		detailTreeGrid.asSingleSelect().clear();
 		editorCodeActionLayout.setCurrentConcept(null);
 		refreshCodeActionButton();
 		
 		
-		dataProviderNew  = (TreeDataProvider<CodeDTO>) detailTreeGridNew.getDataProvider();
-		cvCodeTreeDataNew = dataProviderNew.getTreeData();
-		cvCodeTreeDataNew.clear();
+		dataProvider  = (TreeDataProvider<CodeDTO>) detailTreeGrid.getDataProvider();
+		cvCodeTreeData = dataProvider.getTreeData();
+		cvCodeTreeData.clear();
 		// assign the tree structure
 		List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
-		CvCodeTreeUtils.buildCvConceptTree( codeDTOs , cvCodeTreeDataNew);
-		cvItem.setCvCodeTreeData(cvCodeTreeDataNew);
+		CvCodeTreeUtils.buildCvConceptTree( codeDTOs , cvCodeTreeData);
+		cvItem.setCvCodeTreeData(cvCodeTreeData);
 		// refresh tree
-		dataProviderNew.refreshAll();
+		dataProvider.refreshAll();
 		// expand all nodes
-		detailTreeGridNew.expand( codeDTOs );
-		
-		// TODO: check missing
+		detailTreeGrid.expand( codeDTOs );
 	}
 
 
@@ -994,7 +895,7 @@ public class DetailsView extends CvView {
 	}
 
 	public Grid<CodeDTO> getDetailGrid() {
-		return detailTreeGridNew;
+		return detailTreeGrid;
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )
@@ -1027,10 +928,10 @@ public class DetailsView extends CvView {
 						if( dialog.isConfirmed() ) {
 							
 							// delete Code and Concepts
-							codeService.deleteCodeTree(cvCodeTreeDataNew, code);
-							cvCodeTreeDataNew.removeItem( code );
+							codeService.deleteCodeTree(cvCodeTreeData, code);
+							cvCodeTreeData.removeItem( code );
 							
-							detailTreeGridNew.getDataProvider().refreshAll();
+							detailTreeGrid.getDataProvider().refreshAll();
 //							actionPanel.conceptSelectedChange( null );
 							
 							// save change log
@@ -1049,9 +950,7 @@ public class DetailsView extends CvView {
 							vocabularyService.index(vocabulary);
 							
 							setCode( null );
-							currentConcept = null;
 							editorCodeActionLayout.clearCode();
-							
 							
 							refreshCodeActionButton();
 						}
@@ -1135,13 +1034,13 @@ public class DetailsView extends CvView {
 //		if( detailTreeGrid.getColumn("definitionTl") != null )
 //			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
 //		
-		detailTreeGridNew.getColumn("code").setCaption( "Code" );
-		detailTreeGridNew.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
-		if( detailTreeGridNew.getColumn("prefLabelTl") != null )
-			detailTreeGridNew.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang) );
-		detailTreeGridNew.getColumn("definitionSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.definition", locale) );
-		if( detailTreeGridNew.getColumn("definitionTl") != null )
-			detailTreeGridNew.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
+		detailTreeGrid.getColumn("code").setCaption( "Code" );
+		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
+		if( detailTreeGrid.getColumn("prefLabelTl") != null )
+			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang) );
+		detailTreeGrid.getColumn("definitionSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.definition", locale) );
+		if( detailTreeGrid.getColumn("definitionTl") != null )
+			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
 		
 //		actionPanel.updateMessageStrings(locale);
 	}
