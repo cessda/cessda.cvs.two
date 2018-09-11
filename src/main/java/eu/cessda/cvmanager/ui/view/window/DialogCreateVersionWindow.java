@@ -329,18 +329,7 @@ public class DialogCreateVersionWindow extends MWindow {
 			
 			VersionDTO newVersion = VersionDTO.clone(currentVersion, SecurityUtils.getLoggedUser().getId(), versionNumber, agency.getLicenseId(), agency.getUri() );
 			newVersion.setDiscussionNotes( discussionArea.getValue() );
-			
-			
-			CVScheme newCvScheme = new CVScheme();
-			newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-			newCvScheme.createId();
-			newCvScheme.setContainerId(newCvScheme.getId());
-			
-			if( slVersioning ) {
-				newVersion.setUri( newCvScheme.getContainerId() );
-				newVersion.setUriSl( newVersion.getUriSl());
-			}
-			
+
 			newVersion = versionService.save(newVersion);
 			// save concepts
 			for( CodeDTO code: codes) {

@@ -267,11 +267,12 @@ public class DetailView2 extends CvManagerView {
 
 		if (event.getParameters() != null) {
 			try {
+				Map<String, String> mappedParams = new HashMap<>();
 				String[] itemPath = event.getParameters().split("\\?");
 				String[] itemPathPart = itemPath[0].split("/");
 				if(itemPath.length > 1) {
 					List<NameValuePair> params = URLEncodedUtils.parse( itemPath[1],  Charset.forName("UTF-8"));
-					Map<String, String> mappedParams = params.stream().collect(
+					mappedParams = params.stream().collect(
 					        Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
 					String selectedLanguage = mappedParams.get("lang");
 					if( selectedLanguage != null ) {
@@ -286,9 +287,10 @@ public class DetailView2 extends CvManagerView {
 					activeTab = "detail";
 				}
 				LoginView.NAVIGATETO_VIEWNAME = DetailView2.VIEW_NAME + "/" + itemPathPart[0];
-				cvItem.setCurrentCvId(itemPathPart[0]);
-				if( itemPathPart.length > 1 )
-					cvItem.setCurrentConceptId(itemPathPart[1]);
+				if( itemPathPart.length > 0 )
+					cvItem.setCurrentNotation(itemPathPart[0]);
+				if( mappedParams.get("url") != null)
+					cvItem.setCurrentCvId( mappedParams.get("url") );
 				
 				setDetails() ;
 
@@ -329,33 +331,34 @@ public class DetailView2 extends CvManagerView {
 
 	private void refreshCvScheme() {
 		languageLayout.removeAllComponents();
+		List<DDIStore> ddiSchemes = null;
+		if( cvItem.getCurrentCvId() != null ) {
+			ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
+		}
 		
-		List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
-		
-		// find in Vocabulary entity as well
-		setVocabulary(  vocabularyService.getByUri( cvItem.getCurrentCvId() ) );
+		if( ddiSchemes == null ) {
+			if( cvItem.getCurrentNotation() != null ) {
+				vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
+				
+				if(vocabulary != null ) {
+					ddiSchemes = stardatDDIService.findByIdAndElementType( vocabulary.getUri(), DDIElement.CVSCHEME);
+				}
+				
+			}
+		}else {
+			vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
+		}
 		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
 			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
 		}
 		
-		//TODO, remove this "if" after all vocabularies belong to agency
-		if( getVocabulary() == null ) {
-			
-			List<CVEditor> owners = cvItem.getCvScheme().getEditor();
-			if( owners != null && !owners.isEmpty() )
-				setAgency( agencyService.findByName( owners.get( 0 ).getName()));
-			
-			if( getAgency() == null)
-				setAgency( agencyService.findOne(1L) );
-			
-			setVocabulary( VocabularyDTO.generateFromCVScheme( cvItem.getCvScheme()) );
-			
-			getVocabulary().setAgencyId( getAgency().getId());
-			getVocabulary().setAgencyName( getAgency().getName());
-		} else {
-			setAgency( agencyService.findByName( getVocabulary().getAgencyName()));
-		}
+		String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
+		if( owner != null && !owner.isEmpty() )
+			setAgency( agencyService.findByName( owner));
+		
+		if( getAgency() == null)
+			setAgency( agencyService.findOne(1L) );
 		
 		// update breadcrumb
 		getBreadcrumbs()

@@ -59,6 +59,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.utils.VersionUtils;
 
 public class VersionLayout extends MCssLayout implements Translatable {
 	
@@ -123,8 +124,8 @@ public class VersionLayout extends MCssLayout implements Translatable {
 					//only show equal or lower version
 					if( version.getNumber() == null )
 						showSlVersion = true;
-					else //TODO: change with version number comparator
-						if(orderedVer.getNumber().indexOf( version.getNumber() ) == 0) 
+					else 
+						if( VersionUtils.compareVersion(orderedVer.getNumber(), version.getNumber()) <= 0) 
 							showSlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showSlVersion) {
@@ -145,7 +146,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 					if( version.getNumber() == null )
 						showTlVersion = true;
 					else
-						if( orderedVer.getNumber() != null && orderedVer.getNumber().indexOf( version.getNumber() ) == 0) 
+						if( VersionUtils.compareVersion(orderedVer.getNumber(), version.getNumber()) <= 0) 
 							showTlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showTlVersion)
@@ -188,6 +189,9 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		changeVersion
 			.withValue("<h2>Changes since previous version</h2>" +
 				versionDTO.getVersionChanges());
+		
+		if( versionDTO.getVersionChanges() == null )
+			changeVersion.setVisible( false );
 		
 		versionLayout
 			.withStyleName( "version-item" )

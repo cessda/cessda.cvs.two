@@ -185,7 +185,6 @@ public class DetailView extends CvView {
 	private MLabel lVersion3 = new MLabel();
 	private MLabel lDate3 = new MLabel();
 	
-	private boolean enableTreeDragAndDrop;
 	
 	private VersionDTO currentVersion;
 	private ConceptDTO currentConcept;
@@ -705,9 +704,6 @@ public class DetailView extends CvView {
             }
 		});
 		
-		if(enableTreeDragAndDrop)
-			enableTreeGridDragAndDropSort();
-		
 		// select row programatically
 		if(cvItem.getCvConcept() != null ) {
 			detailTreeGrid.select( cvItem.getCvConcept());
@@ -776,112 +772,7 @@ public class DetailView extends CvView {
 			detailTab.setSelectedTab(0);
 	}
 	
-	private void enableTreeGridDragAndDropSort() {		
-		dragSource = new TreeGridDragSource<>(detailTreeGrid);
-		
-		// set allowed effects
-		dragSource.setEffectAllowed(EffectAllowed.MOVE);
-	     
-		dragSource.addGridDragStartListener(event ->
-			// Keep reference to the dragged items
-			draggedItems = event.getDraggedItems()
-		);
-	  
-		dropTarget = new TreeGridDropTarget<>(detailTreeGrid, DropMode.BETWEEN);
-		dropTarget.setDropEffect(DropEffect.MOVE);
-	     
-		dropTarget.addTreeGridDropListener(event -> {
-			// Accepting dragged items from another Grid in the same UI
-	        event.getDragSourceExtension().ifPresent(source -> {
-	            if (source instanceof TreeGridDragSource) {
-            		if (event.getDropTargetRow().isPresent()) {
-	                	CVConcept targetRow = event.getDropTargetRow().get();
-	                	CVConcept draggedRow = draggedItems.iterator().next();
-	                	// check if code drag and drop to itself
-	                	if( targetRow.equals(draggedRow) ) {
-	                		return;
-	                	}
-	                	List<Button> optionButtons = new ArrayList<>();
-	                	optionButtons.add( new Button( "As next sibling" )); // option 0
-	                	optionButtons.add( new Button( "As child" ));        // option 1
-	                	
-	                	getUI().addWindow( new DialogMultipleOption("Code move options", "Move the code <strong>\"" + 
-	                	(draggedRow.getNotation() == null ? draggedRow.getPrefLabelByLanguage( sourceLanguage.toString() ): draggedRow.getNotation()) + "\"</strong> as a next sibling or as a child of <strong>\"" + 
-        						(targetRow.getNotation() == null ? targetRow.getPrefLabelByLanguage( sourceLanguage.toString() ): targetRow.getNotation())+ "\"</strong>?", optionButtons, 
-	                			windowoption ->  {
-	                				Integer selectedOptionNumber = windowoption.getSelectedOptionNumber();
-	                				if(selectedOptionNumber == null )
-	                					return;
-	                				
-                					CVConcept draggedNodeParent = cvCodeTreeData.getParent(draggedRow);
-                					CVConcept targetNodeParent = cvCodeTreeData.getParent(targetRow);
-                					boolean parentSame = true;
-                					
-	                				if( selectedOptionNumber == 0 ) { // move as next sibling
-	                					// Possibility
-	                					// -- within same parent
-	                					// move between siblings in root node (top concepts level)  - checked Ok
-	                					// move between siblings in x-parent node (parent as child concept level) - checked Ok
-	                					// -- different parent
-	                					// move from child concept to top concept  - checked Ok
-	                					// move from top concept to child concept  - checked Ok
-	                					
-	                					
-	                					// in order to be able to move as next sibling 
-	                					// the nodes need to be from the same parent
-	                					if( !Objects.equals( draggedNodeParent, targetNodeParent)){
-	                						//add code as target parent node first
-	                						cvCodeTreeData.setParent(draggedRow, targetNodeParent);
-	                						parentSame=false;
-	                					}
-
-	                					// update tree in vaadin UI
-	                					cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
-	                					dataProvider.refreshAll();
-	                					
-	                					Integer targetNodeLevel = event.getDropTargetRowDepth().get();
-	                					
-	                					if( targetNodeLevel == 0 ) { // root concept, reorder
-	                						stardatDDIService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeData.getRootItems());
-	                					} else { // reorder narrower
-	                						stardatDDIService.storeNarrowerConcept( targetNodeParent, cvCodeTreeData.getChildren( targetNodeParent ));
-	                					}
-	                					  
-	                					// dragged node not from topConcepts, need to reorder the narrower list
-	                					// from previous parent
-	                					if( !parentSame ) {
-		                					if( draggedNodeParent != null ) {
-		                						stardatDDIService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeData.getChildren( draggedNodeParent ));
-		                					} else {
-		                						stardatDDIService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeData.getRootItems());
-		                					}
-	                					}
-	                				} 
-	                				else if (selectedOptionNumber == 1) { //move as child
-	                					// Possibility
-	                					// as topconcept to child from root/leaf concept
-	                					// as child child to  child from root/leaf concept (only concept narrower affected)
-            							cvCodeTreeData.setParent(draggedRow, targetRow);
-            							dataProvider.refreshAll();
-            							detailTreeGrid.expand(draggedRow, targetRow);
-            							
-            							// update topconcept, if dragged top concept is null
-            							if( draggedNodeParent == null ) { // dragged node was topconcept
-            								stardatDDIService.storeTopConcept(cvItem.getCvScheme(), cvCodeTreeData.getRootItems());
-            							} else {
-            								stardatDDIService.storeNarrowerConcept( draggedNodeParent, cvCodeTreeData.getChildren( draggedNodeParent ));
-            							}
-            							// update new parent child order
-            							stardatDDIService.storeNarrowerConcept( targetRow, cvCodeTreeData.getChildren( targetRow ));
-	                				}
-	                				draggedItems = null;
-	                			})
-	                	);
-	                }
-	            }
-	        });
-	     });
-	}
+	
 
 	@SuppressWarnings("unchecked")
 	public void updateDetailGrid() {		
@@ -937,27 +828,6 @@ public class DetailView extends CvView {
 				updateDetailGrid();
 				
 				break;
-
-//			case CVCONCEPT_TRANSLATION_DIALOG:
-//				if( cvCodeTreeData == null || cvCodeTreeData.getRootItems().isEmpty()) {
-//					Notification.show("Please add code first");
-//				} else if( cvItem.getCvScheme().getLanguagesByTitle().size() == 1) {
-//					Notification.show("Please add CV translation first");
-//				}
-//				else {
-//					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), getVocabulary(), getAgency(), code, i18n, UI.getCurrent().getLocale());
-//					getUI().addWindow( windowTranslate );
-//				}
-//				break;
-			case CVCONCEPT_ADDCHILD_DIALOG:
-				CVConcept childConcept = new CVConcept();
-				childConcept.loadSkeleton(childConcept.getDefaultDialect());
-				childConcept.createId();
-				childConcept.setContainerId( cvItem.getCvScheme().getContainerId());
-
-				DialogAddCodeWindow2 dialogAddCodeWindow2 = new DialogAddCodeWindow2(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
-				getUI().addWindow( dialogAddCodeWindow2 );
-				break;
 			case CVCONCEPT_DELETED:
 				
 				ConfirmDialog.show( this.getUI(), "Confirm",
@@ -1000,10 +870,6 @@ public class DetailView extends CvView {
 					}
 
 				);
-				break;
-			case CVCONCEPT_SORT:
-				enableTreeDragAndDrop = (boolean)event.getPayload();
-				initBottomViewSection();
 				break;
 			default:
 				break;

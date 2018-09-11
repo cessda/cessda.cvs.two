@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.component;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 
@@ -24,6 +26,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailView2;
 
 public class CvSchemeComponent extends CustomComponent {
@@ -132,12 +135,18 @@ public class CvSchemeComponent extends CustomComponent {
 	}
 
 	private void setContent(String language) {
-		enTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
-				+ cvScheme.getContainerId() + "'>" + cvScheme.getTitleByLanguage("en") + "</a>");
+		String baseUrl = configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/" + cvScheme.getCode() + "?url=";
+		try {
+			baseUrl += URLEncoder.encode( cvScheme.getContainerId(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			baseUrl += cvScheme.getContainerId();
+			e.printStackTrace();
+		}
+		
+		enTitle.setValue("<a href='" + baseUrl + "'>" + cvScheme.getTitleByLanguage("en") + "</a>");
 //		log.info("URL is: " + enTitle.getValue());
 
-		olTitle.setValue("<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
-				+ cvScheme.getContainerId() + "'>" + cvScheme.getCode() + "</a>");
+		olTitle.setValue("<a href='" + baseUrl + "'>" + cvScheme.getCode() + "</a>");
 		desc.setValue(cvScheme.getDescriptionByLanguage(language));
 		version.setValue("Version: " + cvScheme.getVersion().getPublicationVersion() + " "
 				+ (language.equals("en") ? "" : "_" + language) + "<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"

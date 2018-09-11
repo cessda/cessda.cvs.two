@@ -1017,26 +1017,6 @@ public class DetailsView extends CvView {
 				setDetails();
 				break;
 
-//			case CVCONCEPT_TRANSLATION_DIALOG:
-//				if( cvCodeTreeData == null || cvCodeTreeData.getRootItems().isEmpty()) {
-//					Notification.show("Please add code first");
-//				} else if( cvItem.getCvScheme().getLanguagesByTitle().size() == 1) {
-//					Notification.show("Please add CV translation first");
-//				}
-//				else {
-//					Window windowTranslate = new DialogTranslateCodeWindow(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), cvItem.getCvConcept(), getVocabulary(), getAgency(), code, i18n, UI.getCurrent().getLocale());
-//					getUI().addWindow( windowTranslate );
-//				}
-//				break;
-			case CVCONCEPT_ADDCHILD_DIALOG:
-				CVConcept childConcept = new CVConcept();
-				childConcept.loadSkeleton(childConcept.getDefaultDialect());
-				childConcept.createId();
-				childConcept.setContainerId( cvItem.getCvScheme().getContainerId());
-
-				DialogAddCodeWindow2 dialogAddCodeWindow2 = new DialogAddCodeWindow2(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
-				getUI().addWindow( dialogAddCodeWindow2 );
-				break;
 			case CVCONCEPT_DELETED:
 				
 				ConfirmDialog.show( this.getUI(), "Confirm",
@@ -1049,7 +1029,6 @@ public class DetailsView extends CvView {
 							// delete Code and Concepts
 							codeService.deleteCodeTree(cvCodeTreeDataNew, code);
 							cvCodeTreeDataNew.removeItem( code );
-
 							
 							detailTreeGridNew.getDataProvider().refreshAll();
 //							actionPanel.conceptSelectedChange( null );

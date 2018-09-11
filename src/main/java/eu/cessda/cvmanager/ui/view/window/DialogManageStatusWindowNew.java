@@ -784,6 +784,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private void storeCvConceptTree(TreeData<CVConcept> cvConceptTree, CVScheme newCvScheme) {
 		List<CVConcept> rootItems = cvConceptTree.getRootItems();
 		for(CVConcept topCvConcept : rootItems) {
+			System.out.println("Store CV-concept:" + topCvConcept.getNotation());
 			DDIStore ddiStoreTopCvConcept = stardatDDIService.saveElement(topCvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code " + topCvConcept.getNotation());
 			newCvScheme.addOrderedMemberList(ddiStoreTopCvConcept.getElementId());
 			
@@ -798,6 +799,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 
 	private void storeCvConceptTreeChild(TreeData<CVConcept> cvConceptTree, CVConcept cCvConcept,
 			CVConcept topCvConcept) {
+		System.out.println("Store CV-concept c:" + cCvConcept.getNotation());
 		// store cvConcept
 		DDIStore ddiStoreCvConcept = stardatDDIService.saveElement(cCvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code " + cCvConcept.getNotation());
 		// store narrower
