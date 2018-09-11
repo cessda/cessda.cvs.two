@@ -642,7 +642,7 @@ public class DetailView extends CvView {
 //			.setExpandRatio(1)
 //			.setId("prefLabelSl");
 
-		if( !selectedLang.equals( Language.valueOfEnum( "english" ) ))
+//		if( !selectedLang.equals( Language.valueOfEnum( "english" ) ))
 			detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang.toString()))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 				//.setEditorBinding(prefLabelBinding)
@@ -657,7 +657,7 @@ public class DetailView extends CvView {
 //				.setExpandRatio(3)
 //				.setId("definitionSl");
 		
-		if( !selectedLang.equals( Language.valueOfEnum( "english" ) ))
+//		if( !selectedLang.equals( Language.valueOfEnum( "english" ) ))
 			detailTreeGrid.addColumn(concept -> {
 				return new MLabel( concept.getDescriptionByLanguage(selectedLang.toString())).withStyleName( "word-brake-normal" );
 			}, new ComponentRenderer())

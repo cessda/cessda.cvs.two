@@ -198,7 +198,7 @@ public class CvCodeTreeUtils{
 			for( String langString: topCode.getLanguages()) {
 				Language lang = Language.getEnum(langString);
 				topCVConcept.setPrefLabelByLanguage(lang.toString(), topCode.getTitleByLanguage(lang));
-				topCVConcept.setDescriptionByLanguage(lang.toString(), topCode.getTitleByLanguage(lang));
+				topCVConcept.setDescriptionByLanguage(lang.toString(), topCode.getDefinitionByLanguage(lang));
 			}
 			// add root entry
 			topCVConcept.save();
@@ -223,7 +223,7 @@ public class CvCodeTreeUtils{
 		for( String langString: childCode.getLanguages()) {
 			Language lang = Language.getEnum(langString);
 			newCVConcept.setPrefLabelByLanguage(lang.toString(), childCode.getTitleByLanguage(lang));
-			newCVConcept.setDescriptionByLanguage(lang.toString(), childCode.getTitleByLanguage(lang));
+			newCVConcept.setDescriptionByLanguage(lang.toString(), childCode.getDefinitionByLanguage(lang));
 		}
 		// add narrower entry
 		newCVConcept.save();

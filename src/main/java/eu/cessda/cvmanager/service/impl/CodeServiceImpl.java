@@ -202,7 +202,10 @@ public class CodeServiceImpl implements CodeService {
 			
 			deleteCodeTree(treeData, c);
 		});
-		
+		// delete direct concept
+		List<ConceptDTO> concepts = conceptService.findAllByCode( code.getId());
+		for( ConceptDTO concept: concepts)
+			conceptService.delete( concept.getId());
 		
 		delete(code);
 	}
