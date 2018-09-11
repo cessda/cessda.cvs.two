@@ -84,6 +84,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.VocabularyChange;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
@@ -136,6 +137,7 @@ public class DetailView extends CvView {
 	private final LicenseService licenseService;
 	
 	private Language selectedLang = Language.ENGLISH;
+	private List<CodeDTO> codeDTOs = new ArrayList<>();
 
 	private MCssLayout topSection = new MCssLayout().withFullWidth();
 	private MCssLayout topViewSection = new MCssLayout().withFullWidth();
@@ -184,12 +186,11 @@ public class DetailView extends CvView {
 	
 	private MLabel versionLabel = new MLabel();
 
-	
-	private TreeGrid<CVConcept> detailTreeGrid = new TreeGrid<>(CVConcept.class);
+	private TreeGrid<CodeDTO> detailTreeGrid = new TreeGrid<>(CodeDTO.class);
 
-	private TreeData<CVConcept> cvCodeTreeData;
+	private TreeData<CodeDTO> cvCodeTreeData;
 	private MCssLayout languageLayout = new MCssLayout();
-	private TreeDataProvider<CVConcept> dataProvider;
+	private TreeDataProvider<CodeDTO> dataProvider;
 	
 	private VersionLayout versionLayout;
 	private ExportLayout exportLayoutContent;
@@ -218,7 +219,6 @@ public class DetailView extends CvView {
 		this.conceptService = conceptService;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.licenseService = licenseService;
-		eventBus.subscribe( this, DetailView.VIEW_NAME );
 	}
 
 	@PostConstruct
@@ -359,6 +359,8 @@ public class DetailView extends CvView {
 				
 				cvItem.setCurrentLanguage(e.getButton().getCaption().toLowerCase());
 				setSelectedLang( Language.getEnum( e.getButton().getCaption().toLowerCase()) );
+				
+				vocabulary.getLatestVersionByLanguage(e.getButton().getCaption()).ifPresent( c -> currentVersion = c );
 
 				versionLabel.setValue( currentVersion.getNumber() + (selectedLang.equals( sourceLanguage ) ? ""
 						: "-" + selectedLang.toString())  + 
@@ -370,8 +372,6 @@ public class DetailView extends CvView {
 				setCode( null );
 				updateMessageStrings(locale);
 				
-				// clear cvConcept selection and button
-				detailTreeGrid.asSingleSelect().clear();
 			});
 			languageLayout.add(langButton);
 			if( item.equals(sourceLanguage.toString())) {
@@ -527,7 +527,7 @@ public class DetailView extends CvView {
 		
 		setActiveTab();
 		
-		detailTreeGrid = new TreeGrid<>(CVConcept.class);
+		detailTreeGrid = new TreeGrid<>(CodeDTO.class);
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
 		detailTreeGrid.setHeight("800px");
@@ -537,35 +537,35 @@ public class DetailView extends CvView {
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.NONE );
 		
-		detailTreeGrid.addColumn(concept -> concept.getNotation())
+		detailTreeGrid.addColumn(code -> code.getNotation())
 			.setCaption("Code")
 			.setExpandRatio(1)
 			.setId("code");
 	
-		detailTreeGrid.addColumn(concept -> concept.getPrefLabelByLanguage(selectedLang.toString()))
+		detailTreeGrid.addColumn(code -> code.getTitleByLanguage(selectedLang))
 			.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 			.setExpandRatio(1)
-			.setId("prefLabelTl");// Component(prefLanguageEditor,
+			.setId("prefLabelTl");
 
-		detailTreeGrid.addColumn(concept -> {
-				return new MLabel( concept.getDescriptionByLanguage(selectedLang.toString())).withStyleName( "word-brake-normal" );
-			}, new ComponentRenderer())
+		detailTreeGrid.addColumn(code -> {
+			return new MLabel( code.getDefinitionByLanguage(selectedLang)).withStyleName( "word-brake-normal" );
+		}, new ComponentRenderer())
 			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString() ))
 			.setExpandRatio(3)
 			.setId("definitionTl");
 		
 		detailTreeGrid.setSizeFull();
 		
-		// select row programatically
-		if(cvItem.getCvConcept() != null ) {
-			detailTreeGrid.select( cvItem.getCvConcept());
-			//detailTreeGrid.scrollTo( 13 );
-			
-			// get code
-			code = codeService.getByUri( cvItem.getCvConcept().getContainerId());
-			if( code == null )
-				code = CodeDTO.generateFromCVConcept( cvItem.getCvConcept() );
-		}
+//		// select row programatically
+//		if(code != null ) {
+//			detailTreeGrid.select( code);
+//			//detailTreeGrid.scrollTo( 13 );
+//			
+//			// get code
+//			code = codeService.getByUri( cvItem.getCvConcept().getContainerId());
+//			if( code == null )
+//				code = CodeDTO.generateFromCVConcept( cvItem.getCvConcept() );
+//		}
 		
 		detailTreeGrid.getColumns().stream().forEach( column -> column.setSortable( false ));
 				
@@ -627,24 +627,27 @@ public class DetailView extends CvView {
 	
 
 	@SuppressWarnings("unchecked")
-	public void updateDetailGrid() {		
-		dataProvider = (TreeDataProvider<CVConcept>) detailTreeGrid.getDataProvider();
+	public void updateDetailGrid() {				
+		dataProvider  = (TreeDataProvider<CodeDTO>) detailTreeGrid.getDataProvider();
 		cvCodeTreeData = dataProvider.getTreeData();
 		cvCodeTreeData.clear();
 		// assign the tree structure
-		List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvItem.getCvScheme().getContainerId(), DDIElement.CVCONCEPT);
-		CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvItem.getCvScheme(), cvCodeTreeData);
 		
-		cvItem.setCvConceptTreeData(cvCodeTreeData);
+		if( currentVersion.getItemType().equals(ItemType.SL.toString()))
+			codeDTOs = codeService.findByVocabularyAndVersion(vocabulary.getId(), currentVersion.getId());
+		else {
+			// find SL versionId first
+			vocabulary.getVersionByUri( currentVersion.getUriSl()).ifPresent( slVersion -> {
+				codeDTOs = codeService.findByVocabularyAndVersion(vocabulary.getId(), slVersion.getId());
+			});
+			
+		}
+		CvCodeTreeUtils.buildCvConceptTree( codeDTOs , cvCodeTreeData);
+		cvItem.setCvCodeTreeData(cvCodeTreeData);
 		// refresh tree
 		dataProvider.refreshAll();
 		// expand all nodes
-		detailTreeGrid.expand( cvItem.getFlattenedCvConceptStreams().collect(Collectors.toList()));
-		// auto select nodes 
-		CVConcept currentCvConcept = cvItem.getCVConceptMap().get( cvItem.getCurrentConceptId());
-		if( currentCvConcept != null ) {
-			cvItem.setCvConcept(currentCvConcept);
-		}
+		detailTreeGrid.expand( codeDTOs );
 	}
 
 
@@ -660,72 +663,6 @@ public class DetailView extends CvView {
 	public void resetGrid( DDIStore ddiStore ) {
 		cvItem.setCurrentCvId( ddiStore.getParentIdentifier() );
 		setDetails();
-	}
-
-	public Grid<CVConcept> getDetailGrid() {
-		return detailTreeGrid;
-	}
-	
-	@EventBusListenerMethod( scope = EventScope.UI )
-	public void eventHandle( CvManagerEvent.Event event)
-	{
-		switch(event.getType()) {
-			case CVSCHEME_UPDATED:
-				super.updateBreadcrumb();
-				setDetails();
-				break;
-			case CVCONCEPT_CREATED:
-				// refresh vocabulary
-				vocabulary = vocabularyService.findOne( vocabulary.getId());
-				updateDetailGrid();
-				
-				break;
-			case CVCONCEPT_DELETED:
-				
-				ConfirmDialog.show( this.getUI(), "Confirm",
-				"Are you sure you want to delete the concept \"" + cvItem.getCvConcept().getPrefLabelByLanguage( configService.getDefaultSourceLanguage() ) + "\"?", "yes",
-				"cancel",
-		
-					dialog -> {
-						if( dialog.isConfirmed() ) {
-							stardatDDIService.deleteConceptTree(cvCodeTreeData, cvItem.getCvConcept());
-							cvCodeTreeData.removeItem( cvItem.getCvConcept() );
-							
-							cvItem.setCvConcept( null );
-//							editorCodeActionLayout.clearCode();
-//							refreshCodeActionButton();
-							
-							if( code.isPersisted()) {
-								codeService.deleteCodeTree(code, vocabulary.getId());
-							}
-							
-							detailTreeGrid.getDataProvider().refreshAll();
-//							actionPanel.conceptSelectedChange( null );
-							
-							// save change log
-							VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-							changeDTO.setVocabularyId( vocabulary.getId());
-//							changeDTO.setVersionId( editorCodeActionLayout.getCurrentVersion().getId()); 
-							changeDTO.setChangeType( "Code deleted" );
-							changeDTO.setDescription( "Code " + code.getNotation() + " added");
-							changeDTO.setDate( LocalDateTime.now() );
-							UserDetails loggedUser = SecurityUtils.getLoggedUser();
-							changeDTO.setUserId( loggedUser.getId() );
-							changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-							vocabularyChangeService.save(changeDTO);
-							
-							// reindex
-							vocabularyService.index(vocabulary);
-							
-							setCode( null );
-						}
-					}
-
-				);
-				break;
-			default:
-				break;
-		}
 	}
 	
 	private void applyButtonStyle(Button pressedButton) {

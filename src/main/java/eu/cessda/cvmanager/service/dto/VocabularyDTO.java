@@ -1429,6 +1429,12 @@ public class VocabularyDTO implements Serializable {
 		return versionDTOs;
 	}
 	
+	public Optional<VersionDTO> getVersionByUri(String targetUri) {
+		return versions.stream()
+				.filter( p -> targetUri.equalsIgnoreCase( p.getUri() ))
+				.findFirst();
+	}
+	
 	public Optional<VersionDTO> getLatestVersionByLanguage(Language language) {
 		return getLatestVersionByLanguage(language.toString(), null);
 	}

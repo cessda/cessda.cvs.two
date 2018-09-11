@@ -432,7 +432,6 @@ public class DetailsView extends CvView {
 		
 		currentVersion = currentSLVersion;
 		
-		// TODO change this implementation 
 		languages.forEach(item -> {
 			Language eachLanguage = Language.getEnum(item);
 			
@@ -616,7 +615,6 @@ public class DetailsView extends CvView {
 		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale)).setId("license");
 		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale)).setId("export");
 		
-		
 		setActiveTab();
 			
 		detailTreeGrid = new TreeGrid<>(CodeDTO.class);
@@ -643,7 +641,7 @@ public class DetailsView extends CvView {
 			detailTreeGrid.addColumn(code -> code.getTitleByLanguage(selectedLang))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 				.setExpandRatio(1)
-				.setId("prefLabelTl");// Component(prefLanguageEditor,
+				.setId("prefLabelTl");
 		
 		detailTreeGrid.addColumn(code -> {
 					return new MLabel( code.getDefinitionByLanguage( sourceLanguage )).withStyleName( "word-brake-normal" );
@@ -864,7 +862,6 @@ public class DetailsView extends CvView {
 		detailTreeGrid.asSingleSelect().clear();
 		editorCodeActionLayout.setCurrentConcept(null);
 		refreshCodeActionButton();
-		
 		
 		dataProvider  = (TreeDataProvider<CodeDTO>) detailTreeGrid.getDataProvider();
 		cvCodeTreeData = dataProvider.getTreeData();

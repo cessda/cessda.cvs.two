@@ -164,11 +164,6 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
 		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
 		
-//		infoVersion
-//		.withValue("<h2>Source language</h2>" +
-//				"<a href='" + baseUrl  + versionDTO.getUri() + "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
-//				" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate());
-	
 		try {
 			cvUrl = baseUrl + URLEncoder.encode(versionDTO.getUri(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -212,10 +207,17 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML);
 		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML);
 		
+		try {
+			cvUrl = baseUrl + URLEncoder.encode(versionDTO.getUri(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			cvUrl = baseUrl + versionDTO.getUri();
+			e.printStackTrace();
+		}
+		
 		infoVersion
 			.withValue("<h2>" +
-					versionDTO.getLanguage() + ": " + versionDTO.getNumber() +
-					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + versionDTO.getPublicationDate() + "</h2>");
+					"<a href='" + cvUrl + "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
+					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication: " + versionDTO.getPublicationDate() + "</h2>");
 		
 		noteVersion
 			.withValue("<h2>Version notes</h2>" +
