@@ -13,6 +13,7 @@ import com.vaadin.data.TreeData;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -950,6 +951,13 @@ public class CodeDTO implements Serializable {
 	public void setVersionNumber(String versionNumber) {
 		this.versionNumber = versionNumber;
 	}
+	
+//	public static List<CodeDTO> mergeWithVersionConcepts(List<CodeDTO> codeDTOs, Set<ConceptDTO> concepts){
+//		List<CodeDTO> codes = new ArrayList<>();
+//		for( CodeDTO )
+//		
+//		return codes;
+//	}
 
 	public static CodeDTO generateFromCVConcept ( CodeDTO code, CVConcept cvConcept) {
     	if( code == null) {

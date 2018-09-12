@@ -16557,7 +16557,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .content {
-	min-height: 40vh;
+	min-height: 450px;
 }
 
 .mytheme .v-horizontal {
@@ -17194,16 +17194,34 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: normal;
 }
 
-.mytheme .langbutton {
+.mytheme .langbutton, .mytheme .langbutton-publish {
 	font-size: 12px;
 	padding: 0 8px;
 	line-height: 10px;
 	margin: 0 0 0 10px;
 	height: 24px;
-	float: right;
 	border: none;
 	box-shadow: none;
 	background-image: none;
+}
+
+.mytheme .langbutton {
+	float: right;
+}
+
+.mytheme .sub-button-menu {
+	font-size: 12px;
+	padding: 0 8px;
+	line-height: 10px;
+	margin: 0 0 0 10px;
+	height: 24px;
+	border: none;
+	box-shadow: none;
+	background-image: none;
+}
+
+.mytheme .sub-button-menu:hover {
+	background-color: #eee;
 }
 
 .mytheme .marginright20 {
@@ -17936,6 +17954,33 @@ div.v-layout.v-horizontal.v-widget {
 	max-height: 200px;
 }
 
+.mytheme .language-menu {
+	color: #fff;
+	margin-top: 5px;
+	margin-bottom: -2px;
+	line-height: 24px;
+}
+
+.mytheme .language-menu i {
+	padding-top: 0;
+	padding-right: 10px;
+}
+
+.mytheme .language-menu .language-submenu {
+	display: block;
+	position: absolute;
+	z-index: 200;
+	list-style: none;
+	line-height: 2em;
+	overflow: hidden;
+	max-height: 0;
+	transition: max-height 0.7s ease-in;
+}
+
+.mytheme .language-menu:hover .language-submenu {
+	max-height: 200px;
+}
+
 .mytheme .box-widget {
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
@@ -18047,6 +18092,11 @@ div.v-layout.v-horizontal.v-widget {
 	text-align: right;
 	border: none;
 	background: transparent;
+}
+
+.mytheme .align-right {
+	text-align: right;
+	padding-right: 30px;
 }
 
 @media (min-width: 992px) {

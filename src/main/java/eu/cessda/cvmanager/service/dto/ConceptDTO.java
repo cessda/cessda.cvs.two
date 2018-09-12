@@ -6,7 +6,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Lob;
 
 /**
@@ -36,6 +35,11 @@ public class ConceptDTO implements Serializable {
     private Long versionId;
     
     private Long previousConcept;
+    
+    // if null, then it is top concept
+    private String parent;
+    
+    private Integer position;
     
     public Long getId() {
         return id;
@@ -131,6 +135,22 @@ public class ConceptDTO implements Serializable {
 	public void setPreviousConcept(Long previousConcept) {
 		this.previousConcept = previousConcept;
 	}
+	
+	public String getParent() {
+		return parent;
+	}
+
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
 
 	public boolean isPersisted() {
 		return id != null;
@@ -151,7 +171,8 @@ public class ConceptDTO implements Serializable {
 		newConcept.setTitle( targetConcept.getTitle() );
 		newConcept.setDefinition( targetConcept.getDefinition() );
 		newConcept.setPreviousConcept( targetConcept.getId());
-		
+		newConcept.setPosition( targetConcept.getPosition());
+		newConcept.setParent( targetConcept.getParent());
 		// note the codeId and versionId need to be added later
 		
 		return newConcept;

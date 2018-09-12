@@ -967,7 +967,7 @@ $v-selection-item-border-radius: 0;
 		
 	 }
 	 .content{
-	 	min-height:40vh;
+	 	min-height: 450px;
 	 }
 	 
 	 .v-horizontal{
@@ -1628,16 +1628,31 @@ $v-selection-item-border-radius: 0;
  		white-space: normal;
   	}
 
- 	.langbutton{
+ 	.langbutton, .langbutton-publish{
 		font-size: 12px;
 	    padding: 0 8px;
 	    line-height: 10px;
 	    margin: 0 0 0 10px;
 	    height: 24px;
-	    float: right;
 	    border: none;
     	box-shadow: none;
     	background-image: none;
+ 	}
+ 	.langbutton{
+ 		float: right;
+ 	}
+ 	.sub-button-menu{
+ 		font-size: 12px;
+	    padding: 0 8px;
+	    line-height: 10px;
+	    margin: 0 0 0 10px;
+	    height: 24px;
+	    border: none;
+    	box-shadow: none;
+    	background-image: none;
+ 	}
+ 	.sub-button-menu:hover{
+ 		background-color:#eee;
  	}
  	.marginright20{
  		margin-right: 20px;
@@ -2305,6 +2320,31 @@ $v-selection-item-border-radius: 0;
 		max-height: 200px;
 	}
 	
+	.language-menu{
+		color:#fff;
+	    margin-top: 5px;
+	    margin-bottom: -2px;
+	    line-height: 24px;
+	    i{
+	    	padding-top: 0;
+    	    padding-right: 10px;
+	    }
+	    .language-submenu {
+			display: block;
+			position: absolute;
+			z-index: 200;
+			list-style: none;
+			line-height: 2em;
+			overflow: hidden;
+		    max-height:0;
+		    transition: max-height 0.7s ease-in; 
+		}
+	}
+	
+	.language-menu:hover .language-submenu {
+		max-height: 200px;
+	}
+	
 	.box-widget{
 		box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 	}
@@ -2402,5 +2442,9 @@ $v-selection-item-border-radius: 0;
 		text-align: right;
 		border: none;
 		background: transparent;
+	}
+	.align-right{
+		text-align:right;
+		padding-right: 30px;
 	}
 }

@@ -52,10 +52,13 @@ public class Concept implements Serializable{
     @Column(name = "previous_concept")
     private Long previousConcept;
     
-//    @ManyToMany(mappedBy = "concepts")
-//    @JsonIgnore
-//    private Set<Version> versions = new HashSet<>();
-//    
+ // if null, then it is top concept
+    @Column(name = "parent", length = 240)
+    private String parent;
+    
+    @Column(name = "\"position\"")
+    private Integer position;
+    
     @ManyToOne
     private Version version;
 
@@ -99,31 +102,6 @@ public class Concept implements Serializable{
 		this.definition = definition;
 	}
 
-//    public Set<Version> getVersions() {
-//        return versions;
-//    }
-//
-//    public Concept versions(Set<Version> versions) {
-//        this.versions = versions;
-//        return this;
-//    }
-//
-//    public Concept addVersion(Version version) {
-//        this.versions.add(version);
-//        version.getConcepts().add(this);
-//        return this;
-//    }
-//
-//    public Concept removeVersion(Version version) {
-//        this.versions.remove(version);
-//        version.getConcepts().remove(this);
-//        return this;
-//    }
-//
-//    public void setVersions(Set<Version> versions) {
-//        this.versions = versions;
-//    }
-
 	public Long getCodeId() {
 		return codeId;
 	}
@@ -146,5 +124,21 @@ public class Concept implements Serializable{
 
 	public void setVersion(Version version) {
 		this.version = version;
+	}
+	
+	public String getParent() {
+		return parent;
+	}
+
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
 	}
 }

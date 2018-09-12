@@ -149,48 +149,11 @@ public class DialogCreateVersionWindow extends MWindow {
 //		String buttonSuffix = ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase();
 		if( selectedLanguage.equals(sourceLanguage))
 			slVersioning = true;
-//		Map<String, List<VersionDTO>> orderedLanguageVersionMap = null;
-//		if( selectedLanguage.equals(sourceLanguage)) {
-//			slVersioning = true;
-//			orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
-//		}
-//		else {
-//			orderedLanguageVersionMap = versionService.getOrderedLanguageSpecificVersionMap(vocabulary.getId(), selectedLanguage);
-//		}
-//		orderedLanguageVersionMap.forEach( (k,v) -> cloneVersions.add( new CloneVersion(k, v, currentVersion)));
 		
 		// increment the recommended version number
 		int lastDotIndex = recommendVersionNumber.lastIndexOf(".");
 		String lastNumber = recommendVersionNumber.substring( lastDotIndex + 1);
 		recommendVersionNumber = recommendVersionNumber.substring(0, lastDotIndex + 1) + (Integer.parseInt(lastNumber) + 1);
-//		versionNumberField.setValue( recommendVersionNumber );
-		
-//		versionGrid
-//			.withFullWidth()
-//			.withHeight("200px")
-//			.setItems(cloneVersions);
-//		
-//		versionGrid.removeAllColumns();
-//		versionGrid.addColumn( cVersion -> {
-//				return cVersion.getCloneCb();
-//			}, new ComponentRenderer())
-//			.setCaption("Clone")
-//			.setExpandRatio( 1 )
-//			.setId("cloneClm");
-//		versionGrid.addColumn( cVersion -> cVersion.getLanguage())
-//			.setCaption("Language")
-//			.setExpandRatio( 2 )
-//			.setId("languageClm");
-//		versionGrid.addColumn( cVersion -> cVersion.getType())
-//			.setCaption("Type")
-//			.setExpandRatio( 1 )
-//			.setId("typeClm");
-//		versionGrid.addColumn( cVersion -> {
-//			return cVersion.getVersionOption();
-//			}, new ComponentRenderer())
-//			.setCaption("Version")
-//			.setExpandRatio( 1 )
-//			.setId("versionClm");
 		
 		cloneBlockTitle
 			.withFullWidth()
@@ -312,12 +275,6 @@ public class DialogCreateVersionWindow extends MWindow {
 
 	
 	private void createNewVersion() {
-			// get all checked version and perform cloning
-//			for(CloneVersion cv: cloneVersions) {
-				// clone the version
-//				if( cv.getCloneCb().getValue() == true) {
-		
-		
 			// get workflow codes
 			List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
 			
@@ -361,86 +318,4 @@ public class DialogCreateVersionWindow extends MWindow {
 	public void closeDialog() {
 		this.close();
 	}
-	
-	
-	class CloneVersion{
-		private boolean clone;
-		private String language;
-		private String Type;
-		private VersionDTO version;
-		private List<VersionDTO> versions;
-		private MCheckBox cloneCb = new MCheckBox();
-		private ComboBox<VersionDTO> versionOption = new ComboBox<>();
-		
-		public CloneVersion(String language, List<VersionDTO> versions, VersionDTO currentVersion) {
-			
-			if( this.versions != null && !this.versions.isEmpty() )
-				return;
-			
-			this.language = language;
-			this.versions = versions;
-			this.clone = true;
-			this.version = versions.get(0);
-			this.Type = version.getItemType();
-			this.cloneCb.setValue( true );
-			this.versionOption.setItems( versions );
-			this.versionOption.setWidth("100%");
-			this.versionOption.setItemCaptionGenerator( vers -> {
-				return vers.getNumber() + " (" + vers.getStatus() + ")";
-			});
-			this.versionOption.setValue( version );
-			this.versionOption.setEmptySelectionAllowed( false );
-			this.versionOption.setTextInputAllowed( false );
-			this.versionOption.addValueChangeListener( e -> {
-				if( e.getValue() != null )
-					this.version = e.getValue();
-			});
-			if( currentVersion.getLanguage().equals( language )) {
-				this.cloneCb.setReadOnly( true );
-			}
-		}
-		public boolean isClone() {
-			return clone;
-		}
-		public void setClone(boolean clone) {
-			this.clone = clone;
-		}
-		public String getLanguage() {
-			return language;
-		}
-		public void setLanguage(String language) {
-			this.language = language;
-		}
-		public String getType() {
-			return Type;
-		}
-		public void setType(String type) {
-			Type = type;
-		}
-		public VersionDTO getVersion() {
-			return version;
-		}
-		public void setVersion(VersionDTO version) {
-			this.version = version;
-		}
-		public List<VersionDTO> getVersions() {
-			return versions;
-		}
-		public void setVersions(List<VersionDTO> versions) {
-			this.versions = versions;
-		}
-		public MCheckBox getCloneCb() {
-			return cloneCb;
-		}
-		public void setCloneCb(MCheckBox cloneCb) {
-			this.cloneCb = cloneCb;
-		}
-		public ComboBox<VersionDTO> getVersionOption() {
-			return versionOption;
-		}
-		public void setVersionOption(ComboBox<VersionDTO> versionOption) {
-			this.versionOption = versionOption;
-		}
-	}
-
 }

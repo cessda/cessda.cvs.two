@@ -5,9 +5,11 @@ import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -49,6 +51,7 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import com.vaadin.data.Binder;
 import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
@@ -64,6 +67,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.Image;
@@ -180,17 +184,22 @@ public class DetailView extends CvView {
 	private MLabel lVersion3 = new MLabel();
 	private MLabel lDate3 = new MLabel();
 	
+	private LanguageMenu langMenu;
+	
 	
 	private VersionDTO currentVersion;
 	private VersionDTO latestSlVersion;
 	
 	private MLabel versionLabel = new MLabel();
 
-	private TreeGrid<CodeDTO> detailTreeGrid = new TreeGrid<>(CodeDTO.class);
+	private List<MButton> langButtons = new ArrayList<>();
+	private Map<VersionDTO,MButton> langSubButtons = new HashMap<>();
+	
+	private TreeGrid<ConceptDTO> detailTreeGrid = new TreeGrid<>(ConceptDTO.class);
 
-	private TreeData<CodeDTO> cvCodeTreeData;
+	private TreeData<ConceptDTO> cvCodeTreeData;
 	private MCssLayout languageLayout = new MCssLayout();
-	private TreeDataProvider<CodeDTO> dataProvider;
+	private TreeDataProvider<ConceptDTO> dataProvider;
 	
 	private VersionLayout versionLayout;
 	private ExportLayout exportLayoutContent;
@@ -324,6 +333,7 @@ public class DetailView extends CvView {
 			vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
 		}
 		
+		
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
 			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
 		}
@@ -337,52 +347,16 @@ public class DetailView extends CvView {
 		
 		// get all available licenses
 		licenses = licenseService.findAll();
-		
-		Set<String> languages = vocabulary.getLanguagesPublished();
-		
+				
 		sourceLanguage = Language.valueOfEnum( vocabulary.getSourceLanguage());
 		selectedLang = Language.valueOfEnum( currentVersion.getLanguage());
 		
-		languages.forEach(item -> {
-			
-			MButton langButton = new MButton(item.toUpperCase());
-			langButton.withStyleName("langbutton");
-			
-			if( item.equalsIgnoreCase( sourceLanguage.toString() ))
-				langButton.addStyleName( "button-source-language" );
-			
-			if( item.equalsIgnoreCase( selectedLang.toString() ))
-				langButton.addStyleName( "button-language-selected" );
-			
-			langButton.addClickListener(e -> {
-				applyButtonStyle(e.getButton());
-				
-				cvItem.setCurrentLanguage(e.getButton().getCaption().toLowerCase());
-				setSelectedLang( Language.getEnum( e.getButton().getCaption().toLowerCase()) );
-				
-				vocabulary.getLatestVersionByLanguage(e.getButton().getCaption()).ifPresent( c -> currentVersion = c );
-
-				versionLabel.setValue( currentVersion.getNumber() + (selectedLang.equals( sourceLanguage ) ? ""
-						: "-" + selectedLang.toString())  + 
-						( currentVersion.getStatus().equals( Status.PUBLISHED.toString() ) ? "":" (" + currentVersion.getStatus() + ")"));
-				
-				initTopViewSection();
-				initBottomViewSection();
-				
-				setCode( null );
-				updateMessageStrings(locale);
-				
-			});
-			languageLayout.add(langButton);
-			if( item.equals(sourceLanguage.toString())) {
-				langButton.addStyleName("font-bold");
-				langButton.setDescription( "source language" );
-			}
-			if( item.equals( selectedLang.toString() ) ) {
-//				editorCvActionLayout.setSelectedLanguage( Language.getEnum( item) );
-				langButton.click();
-			}
-		});
+		orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
+		langMenu = new LanguageMenu(orderedLanguageVersionMap, currentVersion);
+		languageLayout.add(langMenu);
+		
+		updateDetailContent();
+		
 	}
 
 	private void initTopViewSection() {
@@ -527,7 +501,7 @@ public class DetailView extends CvView {
 		
 		setActiveTab();
 		
-		detailTreeGrid = new TreeGrid<>(CodeDTO.class);
+		detailTreeGrid = new TreeGrid<>(ConceptDTO.class);
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
 		detailTreeGrid.setHeight("800px");
@@ -542,13 +516,13 @@ public class DetailView extends CvView {
 			.setExpandRatio(1)
 			.setId("code");
 	
-		detailTreeGrid.addColumn(code -> code.getTitleByLanguage(selectedLang))
+		detailTreeGrid.addColumn(concept -> concept.getTitle())
 			.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 			.setExpandRatio(1)
 			.setId("prefLabelTl");
 
-		detailTreeGrid.addColumn(code -> {
-			return new MLabel( code.getDefinitionByLanguage(selectedLang)).withStyleName( "word-brake-normal" );
+		detailTreeGrid.addColumn(concept -> {
+			return new MLabel( concept.getDefinition()).withStyleName( "word-brake-normal" );
 		}, new ComponentRenderer())
 			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString() ))
 			.setExpandRatio(3)
@@ -599,7 +573,6 @@ public class DetailView extends CvView {
 			if( tabsheet.getTab(tab).getId().equals("export")) {
 				vocabulary = vocabularyService.findOne(currentVersion.getVocabularyId());
 				// get all version put it on the map
-				orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
 				exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
 			}
 			else if (tabsheet.getTab(tab).getId().equals("version")) {
@@ -628,26 +601,16 @@ public class DetailView extends CvView {
 
 	@SuppressWarnings("unchecked")
 	public void updateDetailGrid() {				
-		dataProvider  = (TreeDataProvider<CodeDTO>) detailTreeGrid.getDataProvider();
+		dataProvider  = (TreeDataProvider<ConceptDTO>) detailTreeGrid.getDataProvider();
 		cvCodeTreeData = dataProvider.getTreeData();
 		cvCodeTreeData.clear();
 		// assign the tree structure
 		
-		if( currentVersion.getItemType().equals(ItemType.SL.toString()))
-			codeDTOs = codeService.findByVocabularyAndVersion(vocabulary.getId(), currentVersion.getId());
-		else {
-			// find SL versionId first
-			vocabulary.getVersionByUri( currentVersion.getUriSl()).ifPresent( slVersion -> {
-				codeDTOs = codeService.findByVocabularyAndVersion(vocabulary.getId(), slVersion.getId());
-			});
-			
-		}
-		CvCodeTreeUtils.buildCvConceptTree( codeDTOs , cvCodeTreeData);
-		cvItem.setCvCodeTreeData(cvCodeTreeData);
+		CvCodeTreeUtils.buildConceptTree( currentVersion.getConcepts(), cvCodeTreeData);
 		// refresh tree
 		dataProvider.refreshAll();
 		// expand all nodes
-		detailTreeGrid.expand( codeDTOs );
+		detailTreeGrid.expand( currentVersion.getConcepts() );
 	}
 
 
@@ -665,17 +628,7 @@ public class DetailView extends CvView {
 		setDetails();
 	}
 	
-	private void applyButtonStyle(Button pressedButton) {
 
-		Iterator<Component> iterate = languageLayout.iterator();
-		while (iterate.hasNext()) {
-			Component c = (Component) iterate.next();
-			if( c instanceof  Button) {
-				((Button) c).removeStyleName("button-language-selected");
-			}
-		}
-		pressedButton.addStyleName("button-language-selected");
-	}
 
 	@Override
 	public void afterViewChange(ViewChangeEvent arg0) {
@@ -733,5 +686,144 @@ public class DetailView extends CvView {
 			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
 		
 //		actionPanel.updateMessageStrings(locale);
+	}
+	
+	class LanguageMenu extends CustomComponent{
+		private static final long serialVersionUID = 1L;
+		private Map<String, List<VersionDTO>> versionMaps;
+		
+		private MCssLayout langLayout = new MCssLayout();
+		
+		private Long targetVersionId;
+		
+		public LanguageMenu(Map<String, List<VersionDTO>> versionMap, VersionDTO targetVersion) {
+			// filter out versions that not related to current SL version
+			this.versionMaps = getFilteredVersionMap(targetVersion, versionMap);
+			this.targetVersionId = targetVersion.getId();
+			
+			langButtons.clear();
+			
+			for( Map.Entry<String, List<VersionDTO>> entry : versionMaps.entrySet()){
+				langLayout.add( generateLanguageMenu( entry.getKey(), entry.getValue()));
+			}
+			
+			setStyleName("align-right");
+			setCompositionRoot( langLayout );
+		}
+		
+		private MCssLayout generateLanguageMenu( String langIso, List<VersionDTO> versions) {
+			MCssLayout languageMenu = new MCssLayout();
+			MCssLayout languageSubMenu = new MCssLayout();
+			MButton languageButton = new MButton( langIso.toUpperCase() );
+			langButtons.add(languageButton);
+			
+			languageButton.withStyleName("langbutton-publish");
+			if( langIso.equalsIgnoreCase( sourceLanguage.toString() )) {
+				languageButton.addStyleNames( "button-source-language", "font-bold" );
+				languageButton.setDescription( "source language" );
+			}
+			
+			if( langIso.equalsIgnoreCase( selectedLang.toString() ))
+				languageButton.addStyleName( "button-language-selected" );
+			
+			languageButton.addClickListener( e-> {
+				currentVersion = versions.get(0);
+
+				updateDetailContent();
+			});
+			
+			for(VersionDTO version : versions) {
+				MButton versionButton = new MButton( version.getNumber() );
+				langSubButtons.put(version,versionButton);
+				versionButton.withStyleName( "sub-button-menu" );
+				if( version.getId().longValue() == targetVersionId.longValue()) {
+					versionButton.withIcon( VaadinIcons.CHECK );
+				}
+				versionButton.addClickListener( e -> {
+					currentVersion = version;
+					
+					updateDetailContent();
+				});
+				
+				languageSubMenu.add( versionButton );
+			}
+			
+			languageSubMenu
+				.withStyleName("language-submenu");
+		
+			languageMenu
+				.withStyleName("language-menu")
+				.add( languageButton, languageSubMenu);
+			
+			return languageMenu;
+		}
+		
+		private Map<String, List<VersionDTO>> getFilteredVersionMap ( VersionDTO pivotVersion , Map<String, List<VersionDTO>> versionMap) {
+			Map<String, List<VersionDTO>> filteredVersionMap = new LinkedHashMap<>();
+			if( pivotVersion == null ) {
+				//get latest SL version
+				for(Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
+					pivotVersion = entry.getValue().get(0);
+					//break after first loop since SL version is always in the first entry
+					break;
+				}
+			}
+			
+			// always get one SL version
+			if( pivotVersion.getItemType().equals( ItemType.TL.toString())) {
+				if(vocabulary.getVersionByUri( pivotVersion.getUriSl()).isPresent())
+					pivotVersion = vocabulary.getVersionByUri( pivotVersion.getUriSl()).get();
+			}
+			
+			for(Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
+				if( entry.getKey().equals( pivotVersion.getLanguage() ) )
+					filteredVersionMap.put( entry.getKey(), Arrays.asList(pivotVersion));
+				else {
+					// get only SL that within SL version
+					List<VersionDTO> oldValue = entry.getValue();
+					List<VersionDTO> newValue = new ArrayList<>();
+					for(VersionDTO eachVersion: oldValue) {
+						if( !eachVersion.getStatus().equals(Status.PUBLISHED.toString())) // only show published one
+							continue;
+						if( eachVersion.getUriSl() != null && eachVersion.getUriSl().equals(pivotVersion.getUri()))
+							newValue.add(eachVersion);
+					}
+					if( !newValue.isEmpty() ) {
+						filteredVersionMap.put( entry.getKey(), newValue);
+					}
+				}
+
+			}
+			
+			return filteredVersionMap;
+		}
+	}
+	
+	private void updateDetailContent() {
+		cvItem.setCurrentLanguage( currentVersion.getLanguage());
+		setSelectedLang( Language.getEnum( currentVersion.getLanguage()) );
+		
+		langButtons.forEach( b -> {
+			if( b.getCaption().equalsIgnoreCase( currentVersion.getLanguage()))
+				b.addStyleName("button-language-selected");
+			else
+				b.removeStyleName("button-language-selected");
+		});
+		
+		langSubButtons.forEach( (k, v) -> {
+			if( k.equals( currentVersion))
+				v.withIcon( VaadinIcons.CHECK );
+			else
+				v.setIcon(null);
+		});
+		
+		versionLabel.setValue( currentVersion.getNumber() + (selectedLang.equals( sourceLanguage ) ? ""
+				: "-" + selectedLang.toString()) );
+		
+		initTopViewSection();
+		initBottomViewSection();
+		
+		setCode( null );
+		updateMessageStrings(locale);
 	}
 }

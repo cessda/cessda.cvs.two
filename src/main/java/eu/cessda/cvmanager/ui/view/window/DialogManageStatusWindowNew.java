@@ -497,6 +497,9 @@ public class DialogManageStatusWindowNew extends MWindow {
 							}
 							
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
+								// get workflow codes
+								List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+								
 								vocabulary.setStatuses( vocabulary.getLatestStatuses() );
 								
 								// add version number to URI
@@ -524,6 +527,12 @@ public class DialogManageStatusWindowNew extends MWindow {
 								// update concept uri
 								for(ConceptDTO concept : currentVersion.getConcepts()) {
 									concept.setUri( concept.getUri() + "/" + versionNumber);
+									// update concept parent and position based on workflow code
+									codes.stream().filter( c -> concept.getNotation().equals( c.getNotation())).findFirst().ifPresent( c -> {
+										concept.setParent( c.getParent());
+										concept.setPosition( c.getPosition());
+									});
+									
 									conceptService.save( concept );
 								}
 								
@@ -539,8 +548,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 									vocabulary.setLanguagesPublished( null);
 									vocabulary.addLanguagePublished( sourceLanguage.toString());
 									
-									// get workflow codes
-									List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
 									
 									String cvUriLink = agency.getUri();
 									if(cvUriLink == null )
@@ -555,7 +562,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 										newVersion.setUriSl( vocabulary.getUri());
 										newVersion = versionService.save(newVersion);
 										
-										// save concepts
+										// save concepts with workflow codes ID
 										for( CodeDTO code: codes) {
 											ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getNotation()).ifPresent( c -> c.setCodeId( code.getId()));
 										}
@@ -568,6 +575,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 									}
 								} else {
 									// if TL is published
+									currentVersion.setUriSl( vocabulary.getUri());
+									currentVersion = versionService.save(currentVersion);
 									
 									vocabulary.addLanguagePublished( selectedLanguage.toString());
 								}

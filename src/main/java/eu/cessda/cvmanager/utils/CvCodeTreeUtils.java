@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
@@ -16,6 +18,7 @@ import com.vaadin.data.TreeData;
 
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
 
 public class CvCodeTreeUtils{
 	private static List<String> conceptToBeRemoved = null;
@@ -160,6 +163,30 @@ public class CvCodeTreeUtils{
 						conceptToBeRemoved.add(concept.getId());
 				}
 			});
+		}
+	}
+	
+	/**
+	 * Generate a tree from concepts by sorting based on position first
+	 */
+	public static void buildConceptTree(Set<ConceptDTO> concepts, TreeData<ConceptDTO> cvCodeTree) {
+		cvCodeTree.clear();
+		
+		// sort concept first
+		List<ConceptDTO> sortedConcepts = concepts.stream()
+				.sorted( ( c1, c2) -> c1.getPosition().compareTo( c2.getPosition() ))
+				.collect( Collectors.toList());
+	
+		Map<String, ConceptDTO> conceptMaps = new HashMap<>();
+		for(ConceptDTO concept : sortedConcepts) {
+			if( concept.getParent() == null ) { // if root concept
+				cvCodeTree.addRootItems( concept );
+			} else { // if child
+				// find parent concept
+				ConceptDTO parentCode = conceptMaps.get( concept.getParent() );
+				cvCodeTree.addItem(parentCode, concept);
+			}
+			conceptMaps.put( concept.getNotation(), concept);
 		}
 	}
 
