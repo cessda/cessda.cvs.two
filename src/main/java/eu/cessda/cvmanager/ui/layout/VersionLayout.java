@@ -37,6 +37,7 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
@@ -103,10 +104,10 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	public void refreshContent( VersionDTO version ) {
 		this.removeAllComponents();
 		if( version.getItemType().equals(ItemType.SL.toString())) {
-			this.add( new MLabel("<h2>Source</h2>").withFullWidth().withContentMode( ContentMode.HTML));
+			this.add( new MLabel("<h3>Source</h3>").withFullWidth().withContentMode( ContentMode.HTML));
 		}
 		else {
-			this.add( new MLabel("<h2>Translation</h2>").withFullWidth().withContentMode( ContentMode.HTML));
+			this.add( new MLabel("<h3>Translation</h3>").withFullWidth().withContentMode( ContentMode.HTML));
 		}
 		
 		
@@ -129,7 +130,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 							showSlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showSlVersion) {
-						this.add( generateVersionSl(orderedVer, expandLayout));
+						this.add( generateVersion(orderedVer, expandLayout));
 						expandLayout = false;
 					}
 				}
@@ -150,20 +151,43 @@ public class VersionLayout extends MCssLayout implements Translatable {
 							showTlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showTlVersion)
-						this.add( generateVersionTl(orderedVer, showTlVersion));
+						this.add( generateVersion(orderedVer, showTlVersion));
 				}
 			}
 		}
 	}
 	
-	public MCssLayout generateVersionSl( VersionDTO versionDTO, boolean expand) {
+	public MCssLayout generateVersion( VersionDTO versionDTO, boolean expand) {
 		MCssLayout versionLayout = new MCssLayout();
+		MCssLayout panelHead = new MCssLayout();
+		MButton toggleButton = new MButton().withStyleName("nostyle-button","pull-left");
+		MLabel infoVersion = new MLabel().withContentMode( ContentMode.HTML);
+		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth().withVisible( false );
+		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth().withVisible( false );
 		String cvUrl = null;
 		
-		MLabel infoVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
-		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
-		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
+		toggleButton
+			.withIcon( VaadinIcons.PLUS)
+			.addClickListener( e ->{
+				if( e.getButton().getIcon().equals( VaadinIcons.PLUS)) {
+					e.getButton().setIcon( VaadinIcons.MINUS);
+					noteVersion.setVisible( true );
+					if( versionDTO.getVersionChanges() != null )
+						changeVersion.setVisible( true );
+				} else {
+					e.getButton().setIcon( VaadinIcons.PLUS);
+					noteVersion.setVisible( false );
+					changeVersion.setVisible( false );
+				}
+			});
 		
+		if( expand) 
+			toggleButton.click();
+			
+		panelHead
+			.withFullWidth()
+			.add( toggleButton, infoVersion);
+
 		try {
 			cvUrl = baseUrl + URLEncoder.encode(versionDTO.getUri(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -185,52 +209,12 @@ public class VersionLayout extends MCssLayout implements Translatable {
 			.withValue("<h2>Changes since previous version</h2>" +
 				versionDTO.getVersionChanges());
 		
-		if( versionDTO.getVersionChanges() == null )
-			changeVersion.setVisible( false );
+		
 		
 		versionLayout
 			.withStyleName( "version-item" )
 			.add(
-				infoVersion,
-				noteVersion,
-				changeVersion
-			);
-		
-		return versionLayout;
-	}
-	
-	public MCssLayout generateVersionTl( VersionDTO versionDTO, boolean expand ) {
-		MCssLayout versionLayout = new MCssLayout();
-		String cvUrl = null;
-		
-		MLabel infoVersion = new MLabel().withContentMode( ContentMode.HTML);
-		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML);
-		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML);
-		
-		try {
-			cvUrl = baseUrl + URLEncoder.encode(versionDTO.getUri(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			cvUrl = baseUrl + versionDTO.getUri();
-			e.printStackTrace();
-		}
-		
-		infoVersion
-			.withValue("<h2>" +
-					"<a href='" + cvUrl + "'>" +versionDTO.getLanguage() + ": " + versionDTO.getNumber() +"</a> " +
-					" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication: " + versionDTO.getPublicationDate() + "</h2>");
-		
-		noteVersion
-			.withValue("<h2>Version notes</h2>" +
-				versionDTO.getVersionNotes());
-		
-		changeVersion
-			.withValue("<h2>Changes since previous version</h2>" +
-					versionDTO.getVersionChanges());
-		
-		versionLayout
-			.withStyleName( "version-item" )
-			.add(
-				infoVersion,
+				panelHead,
 				noteVersion,
 				changeVersion
 			);

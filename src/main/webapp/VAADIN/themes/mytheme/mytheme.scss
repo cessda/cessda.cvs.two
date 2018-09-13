@@ -2422,17 +2422,16 @@ $v-selection-item-border-radius: 0;
 	.version-item{
 		width:100%;
 		margin-bottom:8px;
+		>.v-label{
+			padding-left:30px;
+		}
 	}
 	.version-item h2{
 		font-weight:600;
 		font-size:1.2rem;
 		padding:0;
 		margin:0;
-		margin-top:2px !important;
-	}
-	.version-item .v-label{
-		width:100%;
-		margin-bottom:4px;
+		margin:2px 0 0 0 !important;
 	}
 	
 	.yscroll{
@@ -2457,5 +2456,15 @@ $v-selection-item-border-radius: 0;
 	.align-right{
 		text-align:right;
 		padding-right: 30px;
+	}
+	.nostyle-button{
+		font-size: 12px;
+	    padding: 0 8px;
+	    line-height: 10px;
+	    margin: 0;
+	    height: 24px;
+	    border: none;
+	    box-shadow: none;
+	    background-image: none;
 	}
 }

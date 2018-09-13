@@ -136,10 +136,6 @@ public class Version implements Serializable{
     @Column(name = "ddi_usage")
     private String ddiUsage;
     
-//    @ManyToMany(mappedBy = "versions")
-//    @JsonIgnore
-//    private List<Vocabulary> vocabularies;
-    
     @ManyToOne
     private Vocabulary vocabulary;
     
@@ -148,12 +144,6 @@ public class Version implements Serializable{
     @ElementCollection( targetClass=String.class )
     @Field(type = FieldType.Keyword)
     private List<String> restrictRoles;
-    
-//    @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH  })
-//    @JoinTable(name = "version_concept",
-//               joinColumns = @JoinColumn(name="version_id", referencedColumnName="id"),
-//               inverseJoinColumns = @JoinColumn(name="concept_id", referencedColumnName="id"))
-//    private Set<Concept> concepts = new HashSet<>();
     
     @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH },
     		mappedBy = "version", orphanRemoval = true)
