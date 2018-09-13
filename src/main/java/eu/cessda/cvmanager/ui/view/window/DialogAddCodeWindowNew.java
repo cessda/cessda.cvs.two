@@ -271,7 +271,21 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 			code.setUri( code.getNotation() );
 			concept.setNotation( notation.getValue() );
 			
-			code = codeService.save(code);
+//			code = codeService.save(code);
+			
+			List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
+			// re-save tree structure 
+			TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
+			codeTreeData.addRootItems(code);
+			
+			List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
+			for( CodeDTO eachCode: newCodeDTOs) {
+				if( !eachCode.isPersisted())
+					code = codeService.save(eachCode);
+				else
+					codeService.save(eachCode);
+			}
+			
 		} else {
 			code.setNotation( parentCode.getNotation() + "." + notation.getValue());
 			code.setUri( code.getNotation() );

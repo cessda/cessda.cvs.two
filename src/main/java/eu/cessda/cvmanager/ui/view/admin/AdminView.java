@@ -89,6 +89,9 @@ public class AdminView extends CvAdminView {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		super.enter(event);
+		
+		topMenuButtonUpdateActive(3);
+		
 		if ( event.getParameters() != null )
 		{
 			try

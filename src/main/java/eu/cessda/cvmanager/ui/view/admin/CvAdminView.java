@@ -18,6 +18,7 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
+import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.navigator.MView;
@@ -148,6 +149,16 @@ public abstract class CvAdminView extends MVerticalLayout implements MView, Tran
 		
 	}
 
+	public void topMenuButtonUpdateActive(int activeIndex) {
+		int i=0;
+		for( MButton button : ((CVManagerUI) getUI()).getMenuButtons()) {
+			if( activeIndex == i )
+				button.addStyleName("active");
+			else
+				button.removeStyleName("active");
+			i++;
+		}
+	}
 
 	public EventBus.UIEventBus getEventBus() {
 		return eventBus;
