@@ -5,7 +5,6 @@ import java.util.Locale;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -19,6 +18,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
 import eu.cessda.cvmanager.domain.Vocabulary;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
@@ -44,6 +44,7 @@ import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindowNew;
 import eu.cessda.cvmanager.ui.view.window.DialogCreateVersionWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindowNew;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -292,7 +293,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	public boolean hasActionRight() {
 		
 		boolean hasAction = false;
-		if( !SecurityUtils.isAuthenticated() ) {
+		if( !CvManagerSecurityUtils.isAuthenticated() ) {
 			setVisible( false );
 		}
 		else {
@@ -314,7 +315,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 			setVisible( true );
 			hasAction = true;
 			// check add CV button
-			if( SecurityUtils.isCurrentUserAllowCreateCvSl() )
+			if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl() )
 				buttonAddCv.setVisible( true );
 			
 			if( currentVersion != null )  {
@@ -322,26 +323,31 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 			// check edit CV button
 				
 				if(currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
-					if( SecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) ) {
+					
+					if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
+						buttonAddCv.setVisible( true );
+						if( currentVersion.getItemType().equals(ItemType.SL.toString()))
+							buttonNewVersion.setVisible( true );
+					} else if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) ) {
 						buttonAddTranslation.setVisible( true );
-						buttonNewVersion.setVisible( true );
+						if( currentVersion.getItemType().equals(ItemType.TL.toString()))
+							buttonNewVersion.setVisible( true );
 					}
 				}
-				else {
-					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage))
-						buttonEditCv.setVisible( true );
-					
-					if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
-						if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) {
+				else {						
+					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
+						if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
 							buttonReviewInitial.setVisible( true );
+							buttonEditCv.setVisible( true );
 						}
-					} else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() )) {
-						if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) 
+						else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() )) {
 							buttonReviewFinal.setVisible( true );
-						
-					} else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() )) {
-						if( SecurityUtils.isCurrentUserAllowCreateCvSl( agency ) ) 
+							buttonEditCv.setVisible( true );
+						}
+						else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() )) {
 							buttonPublishCv.setVisible( true );
+							buttonEditCv.setVisible( true );
+						}
 					}
 				}
 			}

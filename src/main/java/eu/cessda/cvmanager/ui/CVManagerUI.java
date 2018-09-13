@@ -3,8 +3,10 @@
  */
 package eu.cessda.cvmanager.ui;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -106,9 +108,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private MCssLayout headerBottom = new MCssLayout();
 	private CustomLayout footer = new CustomLayout("footer");
 
-	private MButton home = new MButton("Home", this::gotoHome);
+	private MButton home = new MButton("Home", this::goToDiscovery);
 
-	private MButton searchCVs = new MButton("Search CVs", this::gotoSearchCvs);
+	private List<MButton> menuButtons = new ArrayList<>();
+	private MButton searchCVs = new MButton("Editor Search", this::gotoSearchCvs);
 	
 	private MButton agencyButton = new MButton("Agency", this::goToAgency);
 	private MButton adminButton = new MButton("Admin", this::goToAdmin);
@@ -194,12 +197,14 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		String uriQuery = Page.getCurrent().getLocation().toString();
 		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
 				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ) && !uriQuery.contains( "#!" + DetailsView.VIEW_NAME )  && 
-				!uriQuery.contains( "#!" + AdminView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorSearchView.VIEW_NAME ))
-			navigator.navigateTo(EditorSearchView.VIEW_NAME);
+				!uriQuery.contains( "#!" + AdminView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorSearchView.VIEW_NAME )) {
+			navigator.navigateTo(DiscoveryView.VIEW_NAME);
+		}
 		navigator.addViewChangeListener(viewChangeListener);
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			userInfoLayout.setVisible(true);
+			searchCVs.setVisible(true);
 			
 			if( SecurityUtils.isCurrentUserAgencyAdmin())
 				adminButton.setVisible(true);
@@ -208,6 +213,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			userInfoLayout.setVisible(false);
 			adminButton.setVisible(false);
 			logIn.setVisible(true);
+			searchCVs.setVisible(false);
 		}
 
 		eventBus.subscribe(this);
@@ -257,7 +263,6 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		userSubMenu
 			.withId("user-submenu")
 			.add(
-				adminButton,
 				logout
 			);
 
@@ -374,6 +379,12 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 					.withStyleName( "container" )
 					.add( headerMiddleContent )
 			);
+		
+		menuButtons.clear();
+		menuButtons.add( home );
+		menuButtons.add( searchCVs );
+		menuButtons.add(agencyButton);
+		menuButtons.add( adminButton );
 
 		headerBottom
 			.withFullWidth()
@@ -383,13 +394,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 					.withStyleName( "container" )
 					.add(
 						home,
-						// signUp,
-						// listAllCv,
 						searchCVs,
 						agencyButton,
-						discoverButton
-						
-						// editorCVs,
+//						discoverButton,
+						adminButton
 					)
 			);
 		
@@ -506,9 +514,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		setUserDetail( SecurityUtils.getCurrentUserDetails().get());
 		// if( securityService.isAuthenticate()){
 		System.out.println("User logged in!");
-		// newDataset.setVisible( true );
-		// browse.setVisible( true );
 		userInfoLayout.setVisible(true);
+		searchCVs.setVisible(true);
 		usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
 		
 		System.out.println(SecurityUtils.isCurrentUserAgencyAdmin());
@@ -517,8 +524,6 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			adminButton.setVisible(true);
 		
 		logIn.setVisible(false);
-		// signUp.setVisible( false );
-		// }
 	}
 
 	@Override
@@ -549,4 +554,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	public void clearSearch() {
 		searchTf.setValue("");
 	}
+
+	public List<MButton> getMenuButtons() {
+		return menuButtons;
+	}
+	
+	
 }

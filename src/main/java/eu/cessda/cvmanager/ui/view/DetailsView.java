@@ -285,6 +285,12 @@ public class DetailsView extends CvView {
 	public void enter(ViewChangeEvent event) {
 		super.enter(event);
 		
+		if(!authorizeViewAccess())
+			return;
+		
+		// activate home button
+		topMenuButtonUpdateActive(1);
+		
 		// set the default value for parameters
 		selectedLang = null;
 		activeTab = "detail";
@@ -801,7 +807,6 @@ public class DetailsView extends CvView {
 	                				
 	                				CodeDTO draggedNodeParent =  cvCodeTreeData.getParent( draggedRow );
 	                				CodeDTO targetNodeParent = cvCodeTreeData.getParent(targetRow);
-                					boolean parentSame = true;
                 					
 	                				if( selectedOptionNumber == 0 ) { // move as next sibling
 	                					// Possibility
@@ -818,7 +823,6 @@ public class DetailsView extends CvView {
 	                					if( !Objects.equals( draggedNodeParent, targetNodeParent)){
 	                						//add code as target parent node first
 	                						cvCodeTreeData.setParent(draggedRow, targetNodeParent);
-	                						parentSame=false;
 	                					}
 
 	                					// update tree in vaadin UI

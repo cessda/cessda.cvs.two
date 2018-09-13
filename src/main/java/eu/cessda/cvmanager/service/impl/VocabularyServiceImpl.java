@@ -208,6 +208,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         log.debug("Request to delete Vocabulary : {}", id);
         vocabularyRepository.deleteById(id);
         vocabularySearchRepository.deleteById( id );
+        vocabularyPublishSearchRepository.deleteById( id );
     }
     
 	@Override

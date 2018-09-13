@@ -180,6 +180,12 @@ public class EditorSearchView extends CvView {
 	public void enter(ViewChangeEvent event) {
 		super.enter(event);
 		
+		if(!authorizeViewAccess())
+			return;
+		
+		// activate home button
+		topMenuButtonUpdateActive(1);
+		
 		locale = UI.getCurrent().getLocale();
 		
 		updateMessageStrings(locale);

@@ -188,6 +188,7 @@ public class DetailView extends CvView {
 	
 	
 	private VersionDTO currentVersion;
+	private VersionDTO currentSlVersion;
 	private VersionDTO latestSlVersion;
 	
 	private MLabel versionLabel = new MLabel();
@@ -297,6 +298,9 @@ public class DetailView extends CvView {
 	
 	
 	private void setDetails() {
+		// activate home button
+		topMenuButtonUpdateActive(0);
+				
 		refreshCvScheme();
 		
 		// update breadcrumb
@@ -331,6 +335,10 @@ public class DetailView extends CvView {
 			// find in Vocabulary entity as well
 			currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
 			vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
+			if( !currentVersion.getItemType().equals( ItemType.SL.toString()))
+				vocabulary.getVersionByUri( currentVersion.getUriSl()).ifPresent( c -> currentSlVersion = c );
+			else
+				currentSlVersion = currentVersion;
 		}
 		
 		
@@ -338,10 +346,11 @@ public class DetailView extends CvView {
 			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
 		}
 		
+		if(  cvItem.getCvScheme() != null ) {
 		String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
-		if( owner != null && !owner.isEmpty() )
-			setAgency( agencyService.findByName( owner));
-		
+			if( owner != null && !owner.isEmpty() )
+				setAgency( agencyService.findByName( owner));
+		}
 		if( getAgency() == null)
 			setAgency( agencyService.findOne(1L) );
 		
@@ -409,8 +418,8 @@ public class DetailView extends CvView {
 
 		MLabel topTitle = new MLabel();
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
-				.withValue(cvItem.getCvScheme().getOwnerAgency().get(0).getName() + " Controlled Vocabulary for "
-						+ cvItem.getCvScheme().getTitleByLanguage( sourceLanguage.toString() ) + "</strong>");
+				.withValue( agency.getName() + " Controlled Vocabulary for "
+						+ currentVersion.getTitle() + "</strong>");
 
 		MLabel logoLabel = new MLabel()
 			.withContentMode( ContentMode.HTML )
@@ -424,25 +433,25 @@ public class DetailView extends CvView {
 
 		MCssLayout titleSmall = new MCssLayout();
 		titleSmall.withFullWidth().add( lTitle.withWidth("140px").withStyleName("leftPart"),
-				new MLabel(cvItem.getCvScheme().getTitleByLanguage( sourceLanguage.toString() )).withStyleName("rightPart"));
+				new MLabel( currentSlVersion.getTitle()).withStyleName("rightPart"));
 
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
-				new MLabel(cvItem.getCvScheme().getDescriptionByLanguage( sourceLanguage.toString() )).withStyleName("rightPart"));
+				new MLabel(currentSlVersion.getDefinition()).withStyleName("rightPart"));
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode.withWidth("140px").withStyleName("leftPart"),
-				new MLabel(cvItem.getCvScheme().getCode()).withStyleName("rightPart"));
+				new MLabel(currentVersion.getNotation()).withStyleName("rightPart"));
 
 		MCssLayout titleSmallOl = new MCssLayout();
 		titleSmallOl.withFullWidth().add(
 				lTitleOl.withWidth("140px").withStyleName("leftPart"),
-				new MLabel(cvItem.getCvScheme().getTitleByLanguage(selectedLang.toString())).withStyleName("rightPart"));
+				new MLabel(currentVersion.getTitle()).withStyleName("rightPart"));
 
 		MCssLayout descriptionOl = new MCssLayout();
 		descriptionOl.withFullWidth().add(
 				lDefinitionOl.withWidth("140px").withStyleName("leftPart"),
-				new MLabel(cvItem.getCvScheme().getDescriptionByLanguage(selectedLang.toString())).withStyleName("rightPart"));
+				new MLabel(currentVersion.getDefinition()).withStyleName("rightPart"));
 
 		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);

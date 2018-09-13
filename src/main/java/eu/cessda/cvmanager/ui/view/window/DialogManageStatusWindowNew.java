@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,6 +49,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -597,15 +600,18 @@ public class DialogManageStatusWindowNew extends MWindow {
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
 								publishCv(vocabulary, currentVersion);
 								vocabularyService.indexPublish(vocabulary, currentVersion);
+								// navigate to the Publication detail
+								String uri = null;
+								try {
+									uri = URLEncoder.encode(currentVersion.getUri(), "UTF-8");
+								} catch (UnsupportedEncodingException e) {
+									uri = currentVersion.getUri();
+									e.printStackTrace();
+								}
+								UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation()+ "?url=" +  uri);
 							}
-							
-//							// save to flatDB
-//							cvScheme.setStatus( nextStatus );
-//							cvScheme.save();
-//						
-//							DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
-//							
-							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+							else	
+								eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 							closeDialog();
 						}
 					}

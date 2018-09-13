@@ -8,13 +8,17 @@ import javax.annotation.PostConstruct;
 
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
+import org.gesis.wts.ui.view.AccessDeniedView;
+import org.gesis.wts.ui.view.LoginView;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
+import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.navigator.MView;
@@ -66,6 +70,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected MCssLayout topPanel = new MCssLayout();
 	protected MCssLayout sidePanel = new MCssLayout();
 	protected MCssLayout mainContainer = new MCssLayout();
+	private String viewName;
 	
 	public CvView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
@@ -80,7 +85,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
 		this.vocabularySearchRepository = vocabularySearchRepository;
-		
+		this.viewName = actionType;
 		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
 		this.eventBus.subscribe( this );
@@ -133,6 +138,26 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 				breadcrumbs.addItem( k, v );
 			});
 		}
+	}
+	
+	public void topMenuButtonUpdateActive(int activeIndex) {
+		int i=0;
+		for( MButton button : ((CVManagerUI) getUI()).getMenuButtons()) {
+			if( activeIndex == i )
+				button.addStyleName("active");
+			else
+				button.removeStyleName("active");
+			i++;
+		}
+	}
+	
+	protected boolean authorizeViewAccess() {
+		if( !SecurityUtils.isAuthenticated()) {
+			LoginView.NAVIGATETO_VIEWNAME = viewName;
+			UI.getCurrent().getNavigator().navigateTo(AccessDeniedView.NAME);
+			return false;
+		}
+		return true;
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )

@@ -164,6 +164,9 @@ public class DiscoveryView extends CvView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		// activate home button
+		topMenuButtonUpdateActive(0);
+				
 		super.enter(event);
 		
 		locale = UI.getCurrent().getLocale();
