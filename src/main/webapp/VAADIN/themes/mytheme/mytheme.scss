@@ -2467,4 +2467,13 @@ $v-selection-item-border-radius: 0;
 	    box-shadow: none;
 	    background-image: none;
 	}
+	.agency {
+		margin-bottom:15px;
+		.v-button-link{
+			padding:0;
+		}
+	}
+	.margin-right15px{
+		margin-right:15px;
+	}
 }

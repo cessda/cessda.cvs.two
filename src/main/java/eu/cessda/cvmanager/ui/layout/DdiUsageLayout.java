@@ -18,6 +18,7 @@ import com.vaadin.ui.RichTextArea;
 
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class DdiUsageLayout extends MCssLayout implements Translatable {
 	
@@ -25,6 +26,7 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 	private final I18N i18n;
 	private final Locale locale;
 	private final VersionDTO version;
+	private final AgencyDTO agency;
 	private final VersionService versionService;
 	
 	private enum LayoutMode{ READ, EDIT };
@@ -49,6 +51,7 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 		this.i18n = i18n;
 		this.locale = locale;
 		this.version = versionDTO;
+		this.agency = agencyDTO;
 		this.versionService = versionService;
 		this.readOnly = readOnly;
 		
@@ -65,7 +68,7 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 			.withVisible( false )
 			.addClickListener( e -> switchMode( LayoutMode.EDIT));
 		
-		if( SecurityUtils.isAuthenticated() && SecurityUtils.isUserAdmin() && !readOnly) {
+		if( CvManagerSecurityUtils.isAuthenticated() && CvManagerSecurityUtils.isCurrentUserAllowToEditMetadata(agency, version) && !readOnly) {
 			editSwitchButton.setVisible( true );
 		} else {
 			editSwitchButton.setVisible( false );

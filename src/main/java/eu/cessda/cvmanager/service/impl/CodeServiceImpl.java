@@ -15,6 +15,7 @@ import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.mapper.CodeMapper;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
@@ -193,19 +194,23 @@ public class CodeServiceImpl implements CodeService {
 	}
 
 	@Override
-	public void deleteCodeTree(TreeData<CodeDTO> treeData, CodeDTO code) {
+	public void deleteCodeTree(TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO version) {
 		treeData.getChildren(code).forEach( c -> {
 			// delete also related concept
 			List<ConceptDTO> concepts = conceptService.findAllByCode( c.getId());
-			for( ConceptDTO concept: concepts)
+			for( ConceptDTO concept: concepts) {
+				version.getConcepts().remove(concept);
 				conceptService.delete( concept.getId());
+			}
 			
-			deleteCodeTree(treeData, c);
+			deleteCodeTree(treeData, c, version);
 		});
 		// delete direct concept
 		List<ConceptDTO> concepts = conceptService.findAllByCode( code.getId());
-		for( ConceptDTO concept: concepts)
+		for( ConceptDTO concept: concepts) {
+			version.getConcepts().remove(concept);
 			conceptService.delete( concept.getId());
+		}
 		
 		delete(code);
 	}

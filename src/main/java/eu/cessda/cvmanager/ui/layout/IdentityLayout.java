@@ -22,6 +22,7 @@ import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class IdentityLayout extends MCssLayout implements Translatable {
 	
@@ -90,7 +91,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			.withVisible( false )
 			.addClickListener( e -> switchMode( LayoutMode.EDIT));
 		
-		if( SecurityUtils.isAuthenticated() && SecurityUtils.isUserAdmin() && !readOnly) {
+		if(  CvManagerSecurityUtils.isAuthenticated() && CvManagerSecurityUtils.isCurrentUserAllowToEditMetadata(agency, version) && !readOnly) {
 			editSwitchButton.setVisible( true );
 		} else {
 			editSwitchButton.setVisible( false );

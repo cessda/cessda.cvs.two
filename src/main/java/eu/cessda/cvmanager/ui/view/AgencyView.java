@@ -45,6 +45,7 @@ import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 import eu.cessda.cvmanager.ui.layout.AgencyActionLayout;
 import eu.cessda.cvmanager.ui.layout.AgencyDetailLayout;
 import eu.cessda.cvmanager.ui.layout.AgencyOwnLayout;
@@ -75,8 +76,6 @@ public class AgencyView extends CvView {
 	private MTextField searchTf = new MTextField();
 	private MButton clearSearchButton = new MButton();
 	
-	private MHorizontalLayout mainContent = new MHorizontalLayout();
-
 //	This view compose of 3 layouts:
 //	1. Agency own layout
 //	2. Agency search layout
@@ -86,8 +85,6 @@ public class AgencyView extends CvView {
 	private AgencyDetailLayout aDetailLayout;
 	private AgencyActionLayout aActionLayout;
 	
-	private ViewMode viewMode;
-
 	// The opened search hit at the results grid (null at the beginning)
 
 	public AgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
@@ -177,6 +174,13 @@ public class AgencyView extends CvView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		super.enter(event);
+		
+		setBreadcrumb( null );
+		
+		// activate home button
+		topMenuButtonUpdateActive(2);
+		
 		if ( event.getParameters() != null )
 		{
 			try
@@ -185,7 +189,7 @@ public class AgencyView extends CvView {
 				String[] path = uriPath.split("\\?")[0].split("/");
 				
 				if( path.length > 0 && !path[0].isEmpty()) { // if contains agency Id
-					setAgency(agencyService.findOne(Long.parseLong( path[0])), ViewMode.DETAIL);
+					setAgency(agencyService.findByName( path[0]), ViewMode.DETAIL);
 				} else {
 					setAgency( null , ViewMode.INITIAL);
 				}
@@ -226,7 +230,6 @@ public class AgencyView extends CvView {
 	
 	public void setAgency( AgencyDTO agency, ViewMode viewMode) {
 		this.agency = agency;
-		this.viewMode = viewMode;
 		
 		aActionLayout.setAgency(agency);
 		aActionLayout.hasActionRight();
@@ -301,6 +304,17 @@ public class AgencyView extends CvView {
 		this.searchTf = searchTf;
 	}
 	
+	public void setBreadcrumb( AgencyDTO agencyDto ) {
+		breadcrumbs.clear();
+		if( agencyDto == null) {
+			breadcrumbs
+				.build();
+		} else {
+			breadcrumbs
+				.addItem(agencyDto.getName(), "agency/" + agencyDto.getName())
+				.build();
+		}
+	}
 	
 
 }

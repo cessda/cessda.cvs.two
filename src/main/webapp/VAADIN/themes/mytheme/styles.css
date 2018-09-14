@@ -18124,6 +18124,18 @@ div.v-layout.v-horizontal.v-widget {
 	background-image: none;
 }
 
+.mytheme .agency {
+	margin-bottom: 15px;
+}
+
+.mytheme .agency .v-button-link {
+	padding: 0;
+}
+
+.mytheme .margin-right15px {
+	margin-right: 15px;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;

@@ -512,6 +512,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 								currentVersion.setNumber( versionNumberField.getValue());
 								currentVersion.setPublicationDate( LocalDate.now());
 								currentVersion.setLicenseId( agency.getLicenseId());
+								currentVersion.setVersionChanges( versionChanges.getValue() );
 								
 								String urn =  agency.getCanonicalUri();
 								if(urn == null) {

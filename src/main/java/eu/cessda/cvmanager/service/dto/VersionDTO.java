@@ -89,9 +89,13 @@ public class VersionDTO implements Serializable {
     
     private Long licenseId;
     
-    private String identity;
+    private String citation;
     
     private String ddiUsage;
+    
+    private String translateAgency;
+    
+    private String translateAgencyLink;
     
     private Long vocabularyId;
 
@@ -341,12 +345,12 @@ public class VersionDTO implements Serializable {
 		this.licenseId = licenseId;
 	}
 
-	public String getIdentity() {
-		return identity;
+	public String getCitation() {
+		return citation;
 	}
 
-	public void setIdentity(String identity) {
-		this.identity = identity;
+	public void setCitation(String citation) {
+		this.citation = citation;
 	}
 
 	public String getDdiUsage() {
@@ -355,6 +359,22 @@ public class VersionDTO implements Serializable {
 
 	public void setDdiUsage(String ddiUsage) {
 		this.ddiUsage = ddiUsage;
+	}
+	
+	public String getTranslateAgency() {
+		return translateAgency;
+	}
+
+	public void setTranslateAgency(String translateAgency) {
+		this.translateAgency = translateAgency;
+	}
+
+	public String getTranslateAgencyLink() {
+		return translateAgencyLink;
+	}
+
+	public void setTranslateAgencyLink(String translateAgencyLink) {
+		this.translateAgencyLink = translateAgencyLink;
 	}
 	
 	@Override
@@ -471,7 +491,8 @@ public class VersionDTO implements Serializable {
 		newVersion.setSummary( targetVersion.getSummary());
 		newVersion.setLicenseId(agencylicenseId);
 		newVersion.setDdiUsage( targetVersion.getDdiUsage() );
-		newVersion.setIdentity( targetVersion.getIdentity() );
+		newVersion.setTranslateAgency( targetVersion.getTranslateAgency() );
+		newVersion.setTranslateAgencyLink( targetVersion.getTranslateAgencyLink() );
 		// clone concepts as well
 		for(ConceptDTO targetConcept: targetVersion.getConcepts()) {
 			ConceptDTO newConcept = ConceptDTO.clone(targetConcept, agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage());

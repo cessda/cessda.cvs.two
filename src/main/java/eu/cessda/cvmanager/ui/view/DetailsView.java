@@ -359,7 +359,7 @@ public class DetailsView extends CvView {
 		
 		// update breadcrumb
 		breadcrumbs
-			.addItem(getAgency().getName(), "agency")
+			.addItem(getAgency().getName(), "agency/" + agency.getName())
 			.addItem( currentVersion.getNotation() + " " + (currentVersion.getNumber() == null ? "":currentVersion.getNumber()) + " (" + currentVersion.getStatus() + ")", null)
 			.build();
 
@@ -929,7 +929,7 @@ public class DetailsView extends CvView {
 						if( dialog.isConfirmed() ) {
 							
 							// delete Code and Concepts
-							codeService.deleteCodeTree(cvCodeTreeData, code);
+							codeService.deleteCodeTree( cvCodeTreeData, code, currentVersion);
 							cvCodeTreeData.removeItem( code );
 							
 							detailTreeGrid.getDataProvider().refreshAll();

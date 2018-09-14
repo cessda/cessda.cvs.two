@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import com.vaadin.data.TreeData;
 
 import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 
 /**
  * Service Interface for managing Code.
@@ -87,7 +88,7 @@ public interface CodeService {
 	
 	void deleteCodeTree( CodeDTO pivotCode, Long vocabularyId);
 	
-	void deleteCodeTree( TreeData<CodeDTO> treeData, CodeDTO code);
+	void deleteCodeTree( TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO currentVersion);
 	
 	void storeCodeTree( TreeData<CodeDTO> treeData);
 }

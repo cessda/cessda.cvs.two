@@ -47,7 +47,6 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 	
 	private AgencyDTO agency;
 	
-	private Image logo;
 	private final String logoPath = "img/noimage.png";
 	
 	private MCssLayout layout = new MCssLayout();
@@ -143,6 +142,10 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 	public void setAgency(AgencyDTO agency) {
 		this.agency = agency;
 		
+		// update breadcrumb
+		agencyView.setBreadcrumb(agency);
+
+		
 		setHeaderContent();
 		
 		// filter to current agency
@@ -173,12 +176,12 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 	}
 
 	private void setHeaderContent() {
-		Resource res = new ThemeResource(logoPath);
-		if( agency.getLogopath() != null && !agency.getLogopath().isEmpty())
-			res = new ThemeResource(agency.getLogopath());
+		MLabel logoLabel = new MLabel()
+				.withContentMode( ContentMode.HTML )
+				.withWidth("200px");
 		
-		logo = new Image(null, res);
-		logo.setWidth("200px");
+		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
+			logoLabel.setValue(  "<img style=\"width:200px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
 		
 		headTitle
 			.withContentMode( ContentMode.HTML )
@@ -187,8 +190,8 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 		logoLayout.removeAllComponents();
 		
 		logoLayout
-			.withStyleName( "pull-left" )
-			.add( logo );
+			.withStyleName( "pull-left", "margin-right15px" )
+			.add( logoLabel );
 	}
 
 	@Override

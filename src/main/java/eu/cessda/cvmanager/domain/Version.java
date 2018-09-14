@@ -72,13 +72,13 @@ public class Version implements Serializable{
     @Column(name = "summary")
     private String summary;
     
-    @Column(name = "uri", length = 240)
+    @Column(name = "uri", length = 255)
     private String uri;
     
-    @Column(name = "canonical_uri", length = 240)
+    @Column(name = "canonical_uri", length = 255)
     private String canonicalUri;
     
-    @Column(name = "uri_sl", length = 240)
+    @Column(name = "uri_sl", length = 255)
     private String uriSl;
     
     // Start SL or TL Vocabulary
@@ -129,12 +129,18 @@ public class Version implements Serializable{
     private Long licenseId;
     
     @Lob
-    @Column(name = "identity")
-    private String identity;
+    @Column(name = "citation")
+    private String citation;
     
     @Lob
     @Column(name = "ddi_usage")
     private String ddiUsage;
+    
+    @Column(name = "translate_agency", length = 255)
+    private String translateAgency;
+    
+    @Column(name = "translate_agency_link", length = 255)
+    private String translateAgencyLink;
     
     @ManyToOne
     private Vocabulary vocabulary;
@@ -372,13 +378,13 @@ public class Version implements Serializable{
 	public void setLicenseId(Long licenseId) {
 		this.licenseId = licenseId;
 	}
-	
-	public String getIdentity() {
-		return identity;
+
+	public String getCitation() {
+		return citation;
 	}
 
-	public void setIdentity(String identity) {
-		this.identity = identity;
+	public void setCitation(String citation) {
+		this.citation = citation;
 	}
 
 	public String getDdiUsage() {
@@ -387,6 +393,22 @@ public class Version implements Serializable{
 
 	public void setDdiUsage(String ddiUsage) {
 		this.ddiUsage = ddiUsage;
+	}
+	
+	public String getTranslateAgency() {
+		return translateAgency;
+	}
+
+	public void setTranslateAgency(String translateAgency) {
+		this.translateAgency = translateAgency;
+	}
+
+	public String getTranslateAgencyLink() {
+		return translateAgencyLink;
+	}
+
+	public void setTranslateAgencyLink(String translateAgencyLink) {
+		this.translateAgencyLink = translateAgencyLink;
 	}
 
 	@Override

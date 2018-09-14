@@ -99,6 +99,12 @@ public class DialogAddLanguageWindowNew extends MWindow {
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
 	
+	private MCssLayout translatorAgencyBox = new MCssLayout();
+	private MLabel lTranslatorAgency = new MLabel( "Translator Agency" );
+	private MLabel lTranslatorAgencyLink = new MLabel( "Translator Agency Link" );
+	private MTextField translatorAgency = new MTextField();
+	private MTextField translatorAgencyLink = new MTextField();
+	
 	private CVScheme cvScheme;
 	private Language language;
 
@@ -232,8 +238,21 @@ public class DialogAddLanguageWindowNew extends MWindow {
 						lChangeDesc, changeDesc
 					).withExpand( lChangeDesc, 0.15f).withExpand( changeDesc, 0.85f)
 			);
-	
 		
+		translatorAgencyBox
+			.withFullWidth()
+			.add( 
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+						lTranslatorAgency, translatorAgency.withFullWidth()
+					).withExpand( lTranslatorAgency, 0.15f).withExpand( translatorAgency, 0.85f),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+						lTranslatorAgencyLink, translatorAgencyLink.withFullWidth()
+					).withExpand( lTranslatorAgencyLink, 0.15f).withExpand( translatorAgencyLink, 0.85f)
+			);
 		layout
 			.withHeight("98%")
 			.withStyleName("dialog-content")
@@ -300,6 +319,7 @@ public class DialogAddLanguageWindowNew extends MWindow {
 		} else {
 			layout
 				.add(
+					translatorAgencyBox,
 					new MHorizontalLayout()
 						.withFullWidth()
 						.add( storeCode,
@@ -310,11 +330,13 @@ public class DialogAddLanguageWindowNew extends MWindow {
 						.withExpand(cancelButton, 0.1f)
 						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 				)
-				.withExpand(layout.getComponent(0), 0.06f)
-				.withExpand(layout.getComponent(1), 0.5f)
-				.withExpand(layout.getComponent(2), 0.06f)
-				.withExpand(layout.getComponent(3), 0.5f)
-				.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
+				.withExpand(layout.getComponent(0), 0.05f)
+				.withExpand(layout.getComponent(1), 0.4f)
+				.withExpand(layout.getComponent(2), 0.05f)
+				.withExpand(layout.getComponent(3), 0.4f)
+				.withExpand(layout.getComponent(4), 0.1f)
+				.withExpand(layout.getComponent(5), 0.1f)
+				.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
 		}
 		
 		this
@@ -360,6 +382,8 @@ public class DialogAddLanguageWindowNew extends MWindow {
 			version.setPreviousVersion( 0L );
 			version.setInitialVersion( 0L );
 			version.setVocabularyId( vocabulary.getId());
+			version.setTranslateAgency( translatorAgency.getValue() );
+			version.setTranslateAgencyLink( translatorAgencyLink.getValue());
 			
 			// get previous version
 			VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), Status.PUBLISHED.toString())

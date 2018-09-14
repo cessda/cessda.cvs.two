@@ -305,7 +305,7 @@ public class DetailView extends CvView {
 		
 		// update breadcrumb
 		breadcrumbs
-			.addItem(getAgency().getName(), "agency")
+			.addItem(getAgency().getName(), "agency/" + agency.getName())
 			.addItem( vocabulary.getNotation() + " " + currentVersion.getNumber(), null)
 			.build();
 

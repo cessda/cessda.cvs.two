@@ -406,4 +406,32 @@ public final class CvManagerSecurityUtils {
     				return false;
         		}).orElse( false);
     }
+    
+    /**
+     * Determine whether user allowed to add CV translation, user needs TL role in specific agency
+     * @param agency
+     * @return
+     */
+    public static boolean isCurrentUserAllowToEditMetadata( AgencyDTO agency, VersionDTO version ) {
+    	if( agency == null || !isAuthenticated())
+    		return false;
+    	// admin
+    	if( isCurrentUserAgencyAdmin(agency))
+    		return true;
+    	
+    	Optional<List<UserAgencyDTO>> userAgencyByAgencyAndLanguage = getUserAgencyByAgencyAndLanguage(agency, version.getLanguage());
+    	
+    	if(!userAgencyByAgencyAndLanguage.isPresent())
+    		return false;
+    	    	
+    	// check for role and current status
+    	return Optional.of( userAgencyByAgencyAndLanguage.get() )
+        		.map( uas -> {
+        			for( UserAgencyDTO userAgency : uas) {
+    					if( userAgency.getAgencyRole().equals( AgencyRole.ADMIN_SL) || userAgency.getAgencyRole().equals( AgencyRole.ADMIN_TL))
+    						return true;
+        			};
+    				return false;
+        		}).orElse( false);
+    }
 }

@@ -689,7 +689,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 				code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), latestSLversion.getLanguage());
 				codesUpdated.add(code);
 			}
-			vocabulary = save(vocabulary);
+//			vocabulary = save(vocabulary);
 			vocabulary.setCodes(codesUpdated);
 		}
 		
