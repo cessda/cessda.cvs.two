@@ -17,6 +17,7 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.TextArea;
 
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -49,6 +50,11 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 	private MLabel canonicalUri = new MLabel().withContentMode( ContentMode.HTML );
 	private MLabel canonicalUriVersion = new MLabel().withContentMode( ContentMode.HTML );
 	private MLabel agencyValue = new MLabel().withContentMode( ContentMode.HTML );
+	private MLabel agencyTransalteValue = new MLabel().withContentMode( ContentMode.HTML );
+	
+	private MTextField translatorAgency = new MTextField( "Agency translator" );
+	private MTextField translatorAgencyLink = new MTextField( "Agency translator link" );
+	
 	private boolean readOnly;
 	
 	public IdentityLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
@@ -105,6 +111,8 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			.addClickListener( e -> {
 				String uriCv = urnEdit.getValue() + version.getNotation()  + ":" + version.getNumber() + "-" + version.getLanguage();
 				version.setCanonicalUri(uriCv);
+				version.setTranslateAgency( translatorAgency.getValue());
+				version.setTranslateAgencyLink( translatorAgencyLink.getValue());
 				versionService.save(version);
 				refreshInfo();
 				switchMode( LayoutMode.READ);
@@ -119,16 +127,25 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		agencyValue
 			.setValue("&nbsp; <a href='" + baseUrl + "'>" + agency.getName()  +"</a> ");
 		
+		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null) {
+			agencyTransalteValue.setVisible( true );
+			agencyTransalteValue.setCaption("Agency Translator");
+			agencyTransalteValue.setValue("&nbsp; <a href='" + version.getTranslateAgencyLink() + "'>" + version.getTranslateAgency()  +"</a> ");
+			translatorAgency.setValue( version.getTranslateAgency());
+			translatorAgencyLink.setValue( version.getTranslateAgencyLink());
+		}
 		
 		formLayout
 			.addComponents(
 				canonicalUri,
 				canonicalUriVersion,
-				editSwitchButton,
 				urnEdit,
-				buttonLayout,
-				
-				agencyValue
+				agencyValue,
+				agencyTransalteValue,
+				translatorAgency,
+				translatorAgencyLink,
+				editSwitchButton,
+				buttonLayout
 			);
 		
 		this
@@ -142,12 +159,18 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			editSwitchButton.setVisible( true );
 			canonicalUri.setVisible( true );
 			canonicalUriVersion.setVisible( true );
+			agencyTransalteValue.setVisible( true );
+			translatorAgency.setVisible( false );
+			translatorAgencyLink.setVisible( false );
 			urnEdit.setVisible( false );
 			buttonLayout.setVisible( false );
 		} else {
 			editSwitchButton.setVisible( false );
 			canonicalUri.setVisible( false );
 			canonicalUriVersion.setVisible( false );
+			agencyTransalteValue.setVisible( false );
+			translatorAgency.setVisible( true );
+			translatorAgencyLink.setVisible( true );
 			urnEdit.setVisible( true );
 			buttonLayout.setVisible( true );
 		}
@@ -166,6 +189,12 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			int index2 = cvCanonicalUri.lastIndexOf(":");
 			if( index2 > 0)
 				urnEdit.setValue( cvCanonicalUri.substring(0, index2) );
+		}
+		
+		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null) {
+			agencyTransalteValue.setVisible( true );
+			agencyTransalteValue.setCaption("Agency translator");
+			agencyTransalteValue.setValue("&nbsp; <a href='" + version.getTranslateAgencyLink() + "'>" + version.getTranslateAgency()  +"</a> ");
 		}
 	}
 

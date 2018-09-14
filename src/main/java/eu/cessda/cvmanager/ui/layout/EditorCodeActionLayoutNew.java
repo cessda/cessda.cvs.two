@@ -42,6 +42,7 @@ import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindowNew;
 import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindowNew;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -261,7 +262,7 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 		} else {
 			hasAction = true;
 
-			if( selectedLanguage.equals( sourceLanguage) && SecurityUtils.isCurrentUserAllowCreateCvSl() ) {
+			if( selectedLanguage.equals( sourceLanguage) && CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion ) ) {
 				buttonCodeAdd.setVisible( true );
 				VersionDTO latestSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getLatestVersions());
 				if( latestSLVersion.getConcepts() != null && latestSLVersion.getConcepts().size() > 1 )
@@ -278,7 +279,7 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 			if( currentCode != null ) {
 				// if specific concept is already there
 				if( currentConcept != null ) {
-					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
+					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 						buttonCodeEdit.setVisible( true );
 						buttonCodeAddTranslation.setVisible( false );
 					}else {
@@ -286,7 +287,7 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 					}
 					
 					if( selectedLanguage.equals( sourceLanguage) ) {
-						if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
+						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 							buttonCodeAddChild.setVisible( true );
 							buttonCodeDelete.setVisible( true );
 						}else {
@@ -295,7 +296,7 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 						}
 					}
 				} else {
-					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
+					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 						buttonCodeAddTranslation.setVisible( true );
 						buttonCodeEdit.setVisible( false );
 					}else {
@@ -303,7 +304,7 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 					}
 					
 					if( selectedLanguage.equals( sourceLanguage) ) {
-						if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
+						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 							buttonCodeAddChild.setVisible( true );
 							buttonCodeDelete.setVisible( true );
 						}else {
@@ -318,47 +319,6 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 				buttonCodeAddChild.setVisible( false );
 				buttonCodeDelete.setVisible( false );
 			}
-			
-//			if( currentCode != null && currentConcept != null) {
-//				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
-//					buttonCodeEdit.setVisible( true );
-//					buttonCodeAddTranslation.setVisible( false );
-//				}else {
-//					buttonCodeEdit.setVisible( false );
-//				}
-//				
-//				if( selectedLanguage.equals( sourceLanguage) ) {
-//					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
-//						buttonCodeAddChild.setVisible( true );
-//						buttonCodeDelete.setVisible( true );
-//					}else {
-//						buttonCodeAddChild.setVisible( false );
-//						buttonCodeDelete.setVisible( false );
-//					}
-//				}
-//			} else if( cvConcept != null && currentCode != null && currentConcept == null) {
-//				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
-//					buttonCodeAddTranslation.setVisible( true );
-//					buttonCodeEdit.setVisible( false );
-//				}else {
-//					buttonCodeAddTranslation.setVisible( false );
-//				}
-//				
-//				if( selectedLanguage.equals( sourceLanguage) ) {
-//					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
-//						buttonCodeAddChild.setVisible( true );
-//						buttonCodeDelete.setVisible( true );
-//					}else {
-//						buttonCodeAddChild.setVisible( false );
-//						buttonCodeDelete.setVisible( false );
-//					}
-//				}
-//			} else {
-//				buttonCodeEdit.setVisible( false );
-//				buttonCodeAddTranslation.setVisible( false );
-//				buttonCodeAddChild.setVisible( false );
-//				buttonCodeDelete.setVisible( false );
-//			}
 		}
 		
 		

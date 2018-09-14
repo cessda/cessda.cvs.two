@@ -46,6 +46,7 @@ import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
 import eu.cessda.cvmanager.ui.view.publication.PaginationBar;
 import eu.cessda.cvmanager.ui.view.publication.VocabularyGridRow;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 
 @UIScope
@@ -197,7 +198,7 @@ public class EditorSearchView extends CvView {
 		refreshSearchResult();
 		
 		// action block check
-		if( !SecurityUtils.isCurrentUserAllowCreateCvSl() )
+		if( !CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl() )
 			editorSearchActionLayout.setVisible( false );
 		else
 			editorSearchActionLayout.setVisible( true );

@@ -242,7 +242,7 @@ public final class CvManagerSecurityUtils {
     	
     	if( getCurrentUserUserAgencies().isPresent() ) {
     		for( UserAgencyDTO userAgency :  getCurrentUserUserAgencies().get()) {
-				if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN) ||  userAgency.getAgencyRole().equals(AgencyRole.ADMIN_SL) || userAgency.getAgencyRole().equals(AgencyRole.CONTRIBUTOR_SL))
+				if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN) ||  userAgency.getAgencyRole().equals(AgencyRole.ADMIN_SL))
 					return true;
 			};
     	}
@@ -268,7 +268,7 @@ public final class CvManagerSecurityUtils {
     	return Optional.of( getUserAgencyByAgency(agency).get() )
     		.map( uas -> {
     			for( UserAgencyDTO userAgency : uas) {
-    				if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN_SL) || userAgency.getAgencyRole().equals(AgencyRole.CONTRIBUTOR_SL))
+    				if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN_SL))
     					return true;
     			};
 				return false;
@@ -292,7 +292,7 @@ public final class CvManagerSecurityUtils {
     		Optional.of( userAgencies )
     		.map( uas -> {
     			for( UserAgencyDTO userAgency : uas) {
-    				if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN) ||  userAgency.getAgencyRole().equals(AgencyRole.ADMIN_TL) || userAgency.getAgencyRole().equals(AgencyRole.CONTRIBUTOR_TL))
+    				if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN) ||  userAgency.getAgencyRole().equals(AgencyRole.ADMIN_TL))
     					return true;
     			};
     			return false;
@@ -320,7 +320,7 @@ public final class CvManagerSecurityUtils {
     	return Optional.of( getUserAgencyByAgency(agency).get() )
         		.map( uas -> {
         			for( UserAgencyDTO userAgency : uas) {
-        				if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN_TL) || userAgency.getAgencyRole().equals(AgencyRole.CONTRIBUTOR_TL))
+        				if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN_TL))
         					return true;
         			};
     				return false;
@@ -408,7 +408,7 @@ public final class CvManagerSecurityUtils {
     }
     
     /**
-     * Determine whether user allowed to add CV translation, user needs TL role in specific agency
+     * Determine whether user allowed to edit Agency Specific Metadata on the Cv, user needs TL role in specific agency
      * @param agency
      * @return
      */
@@ -434,4 +434,5 @@ public final class CvManagerSecurityUtils {
     				return false;
         		}).orElse( false);
     }
+ 
 }

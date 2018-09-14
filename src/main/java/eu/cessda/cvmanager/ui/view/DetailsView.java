@@ -112,12 +112,14 @@ import eu.cessda.cvmanager.ui.layout.ExportLayout;
 import eu.cessda.cvmanager.ui.layout.IdentityLayout;
 import eu.cessda.cvmanager.ui.layout.LicenseLayout;
 import eu.cessda.cvmanager.ui.layout.VersionLayout;
+import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow2;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogMultipleOption;
 import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 @UIScope
 @SpringView(name = DetailsView.VIEW_NAME)
@@ -346,6 +348,11 @@ public class DetailsView extends CvView {
 
 		} else {
 			Notification.show("Unable to get the vocabulary detail");
+			if( !CvManagerSecurityUtils.isAuthenticated() )
+				UI.getCurrent().getNavigator().navigateTo( DiscoveryView.VIEW_NAME);
+			else
+				UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME);
+			return;
 		}
 		
 	}

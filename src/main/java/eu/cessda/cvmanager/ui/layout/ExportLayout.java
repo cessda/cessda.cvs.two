@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -150,13 +151,13 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			.setCaption("Version")
 			.setExpandRatio( 2 )
 			.setId("versionClm");
-		if( publishView )
-			exportGrid.addColumn( cVersion -> {
-				return cVersion.getExportSkosCb();
-				}, new ComponentRenderer())
-				.setCaption("Skos")
-				.setExpandRatio( 1 )
-				.setId("skosClm");
+//		if( publishView )
+//			exportGrid.addColumn( cVersion -> {
+//				return cVersion.getExportSkosCb();
+//				}, new ComponentRenderer())
+//				.setCaption("Skos")
+//				.setExpandRatio( 1 )
+//				.setId("skosClm");
 		exportGrid.addColumn( cVersion -> {
 			return cVersion.getExportPdfCb();
 			}, new ComponentRenderer())
@@ -177,15 +178,15 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 		sectionLayout
 			.withFullSize()
-			.add( gridLayout, exportSkos, exportPdf , exportHtml);
+			.add( gridLayout/*, exportSkos*/, exportPdf , exportHtml);
 		
 		this
 			.withFullWidth()
 			.add( sectionLayout);
-		if( publishView ) {
-			OnDemandFileDownloader onDemandSkosFileDownloader = new OnDemandFileDownloader( createOnDemandResource( DownloadType.SKOS ));
-			onDemandSkosFileDownloader.extend(exportSkos);
-		}
+//		if( publishView ) {
+//			OnDemandFileDownloader onDemandSkosFileDownloader = new OnDemandFileDownloader( createOnDemandResource( DownloadType.SKOS ));
+//			onDemandSkosFileDownloader.extend(exportSkos);
+//		}
 		OnDemandFileDownloader onDemandSkosFileDownloaderPdf = new OnDemandFileDownloader( createOnDemandResource( DownloadType.PDF ));
 		onDemandSkosFileDownloaderPdf.extend(exportPdf);
 		
@@ -194,10 +195,10 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	}
 	
 	public void updateGrid( VersionDTO pivotVersion , Map<String, List<VersionDTO>> versionMap ) {
-		orderedLanguageVersionMap.clear();
+		orderedLanguageVersionMap = versionMap;
 		exportCvItems.clear();
 
-		Map<String, List<VersionDTO>> filteredVersionMap = getFilteredVersionMap(null, versionMap);
+		Map<String, List<VersionDTO>> filteredVersionMap = getFilteredVersionMap(pivotVersion, orderedLanguageVersionMap);
 		filteredVersionMap.forEach( (k,v) -> exportCvItems.add( new ExportCV(k, v)));
 		
 		if(pivotVersion.getLicenseId() != null) {
@@ -226,44 +227,32 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			}
 		}
 		
-		if( pivotVersion.getItemType().equals( ItemType.SL.toString())) {
-			
-			for(Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
-				if( entry.getKey().equals( pivotVersion.getLanguage() ) )
-					filteredVersionMap.put( entry.getKey(), entry.getValue());
-				else {
-					// get only SL that within SL version
-					List<VersionDTO> oldValue = entry.getValue();
-					List<VersionDTO> newValue = new ArrayList<>();
-					for(VersionDTO eachVersion: oldValue) {
-						if( publishView && !eachVersion.getStatus().equals(Status.PUBLISHED.toString())) // only show publised one
-							continue;
-						if( eachVersion.getUriSl() != null && eachVersion.getUriSl().equals(pivotVersion.getUri()))
-							newValue.add(eachVersion);
-					}
-					if( !newValue.isEmpty() ) {
-						filteredVersionMap.put( entry.getKey(), newValue);
-					}
-				}
+		// always get one SL version
+		if( pivotVersion.getItemType().equals( ItemType.TL.toString())) {
+			if(vocabulary.getVersionByUri( pivotVersion.getUriSl()).isPresent())
+				pivotVersion = vocabulary.getVersionByUri( pivotVersion.getUriSl()).get();
+		}
 
-			}
-			
-		} else {
-			if( publishView) {
-				List<VersionDTO> oldValue = filteredVersionMap.get( pivotVersion.getLanguage() );
+		for(Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
+			if( entry.getKey().equals( pivotVersion.getLanguage() ) )
+				filteredVersionMap.put( entry.getKey(), Arrays.asList(pivotVersion));
+			else {
+				// get only SL that within SL version
+				List<VersionDTO> oldValue = entry.getValue();
 				List<VersionDTO> newValue = new ArrayList<>();
 				for(VersionDTO eachVersion: oldValue) {
 					if( publishView && !eachVersion.getStatus().equals(Status.PUBLISHED.toString())) // only show publised one
 						continue;
+					if( eachVersion.getUriSl() != null && eachVersion.getUriSl().equals(pivotVersion.getUri()))
 						newValue.add(eachVersion);
 				}
 				if( !newValue.isEmpty() ) {
-					filteredVersionMap.put( pivotVersion.getLanguage(), newValue);
+					filteredVersionMap.put( entry.getKey(), newValue);
 				}
 			}
-			else
-				filteredVersionMap.put( pivotVersion.getLanguage(), versionMap.get( pivotVersion.getLanguage()));
+
 		}
+			
 		
 		return filteredVersionMap;
 	}
@@ -479,6 +468,9 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			this.versionOption.setTextInputAllowed( false );
 			
 			this.type = versions.get(0).getItemType();
+			if( this.type.equals(ItemType.SL.toString())) {
+				this.versionOption.setReadOnly( true );
+			}
 		}
 		public Map<DownloadType, VersionDTO> getFotmatVersionMap(){
 			Map<DownloadType, VersionDTO> formatVersionMap = new HashMap<>();

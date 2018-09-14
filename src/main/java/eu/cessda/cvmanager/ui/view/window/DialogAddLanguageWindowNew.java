@@ -140,7 +140,6 @@ public class DialogAddLanguageWindowNew extends MWindow {
 			languageCb.setReadOnly( true );
 		}
 		else {
-			// TODO: use list language from vocabulary if possible
 			List<Language> availableLanguages = new ArrayList<>();
 			Set<Language> userLanguages = new HashSet<>();
 			if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {

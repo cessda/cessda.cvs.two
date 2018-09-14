@@ -1,10 +1,15 @@
 package eu.cessda.cvmanager.ui.layout;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -329,7 +334,21 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 						if( currentVersion.getItemType().equals(ItemType.SL.toString()))
 							buttonNewVersion.setVisible( true );
 					} else if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) ) {
-						buttonAddTranslation.setVisible( true );
+						List<Language> availableLanguages = new ArrayList<>();
+						Set<Language> userLanguages = new HashSet<>();
+						SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
+							userLanguages.addAll(languages);
+						});
+						availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
+						
+						Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+						// remove with sourceLanguage option if exist
+						availableLanguages.remove( sourceLang );
+						
+						if(availableLanguages.isEmpty())
+							buttonAddTranslation.setVisible( false );
+						else
+							buttonAddTranslation.setVisible( true );
 						if( currentVersion.getItemType().equals(ItemType.TL.toString()))
 							buttonNewVersion.setVisible( true );
 					}

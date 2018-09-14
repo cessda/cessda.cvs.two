@@ -25,6 +25,7 @@ import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindowNew;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class EditorSearchActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -66,10 +67,12 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 		
 		updateMessageStrings(locale);
 		
-		getInnerContainer()
-			.add(
-				buttonAddCv
-			);
+		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl()) {
+			getInnerContainer()
+				.add(
+					buttonAddCv
+				);
+		}
 	}
 
 	private void doCvAdd( ClickEvent event ) {

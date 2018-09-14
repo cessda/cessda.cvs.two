@@ -525,7 +525,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 									(currentVersion.getSummary() == null ? "":currentVersion.getSummary()) +
 									"<strong>" + currentVersion.getNumber() + "</strong>"+
 									" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + currentVersion.getPublicationDate() +
-									"<br/>Notes:<br/>" + currentVersion.getVersionNotes() + "<br/>Changes:<br/>" + currentVersion.getVersionChanges() + "<br/><br/>"
+									"<br/>Notes:<br/>" + currentVersion.getVersionNotes() + (currentVersion.getVersionChanges() == null ? "":"<br/>Changes:<br/>" + currentVersion.getVersionChanges()) + "<br/><br/>"
 								);
 								
 								// update concept uri

@@ -46,6 +46,7 @@ public class AgencyForm extends FormLayout {
     private MLabel licensePreview = new MLabel().withContentMode( ContentMode.HTML);
     private List<LicenseDTO> licenses;
     private UploadAgencyLogo uploadAgencyLogo = new UploadAgencyLogo();
+    private String agencyNameTemp;
 
     public AgencyForm(ManageAgencyLayout manageAgencyLayout, AgencyService agencyService, List<LicenseDTO> licenses) {
         this.manageAgencyLayout = manageAgencyLayout;
@@ -64,7 +65,7 @@ public class AgencyForm extends FormLayout {
         		licensePreview.setValue("");
         });
                 
-        name.withFullWidth();
+        name.withFullWidth().setReadOnly( true );
         description.withFullWidth();
         link.withFullWidth();
         uri.withFullWidth();
@@ -94,6 +95,7 @@ public class AgencyForm extends FormLayout {
 
     public void setAgencyDTO(AgencyDTO agencyDTO) {
         this.agencyDTO = agencyDTO;
+        agencyNameTemp = agencyDTO.getName();
         binder.setBean(agencyDTO);
         
         uploadAgencyLogo.init(agencyDTO);
@@ -138,6 +140,9 @@ public class AgencyForm extends FormLayout {
     		agencyDTO.setLicenseId( null );
     	agencyService.save(agencyDTO);
         manageAgencyLayout.updateList();
+        
+        // TODO: Update CV if agency name changed
+        
         setVisible(false);
     }
     

@@ -204,10 +204,10 @@ public class VersionLayout extends MCssLayout implements Translatable {
 			.withValue("<h2>Version notes</h2>" +
 				versionDTO.getVersionNotes());
 		
-		
-		changeVersion
-			.withValue("<h2>Changes since previous version</h2>" +
-				versionDTO.getVersionChanges());
+		if( versionDTO.getVersionChanges() != null)
+			changeVersion
+				.withValue("<h2>Changes since previous version</h2>" +
+					versionDTO.getVersionChanges().replaceAll("(\r\n|\n)", "<br />"));
 		
 		
 		

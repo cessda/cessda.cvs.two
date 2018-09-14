@@ -97,8 +97,6 @@ public class SearchView extends CvManagerView {
 
 	@PostConstruct
 	public void init() {
-		LoginView.NAVIGATETO_VIEWNAME = SearchView.VIEW_NAME;
-
 		// the layout that contains the three zones: filters, search box, and
 		// results
 		this.globalContainer.setSpacing(false);
