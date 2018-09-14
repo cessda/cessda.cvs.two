@@ -837,7 +837,7 @@ public class DetailsView extends CvView {
 	                					dataProvider.refreshAll();
 	                					
 	                					// save on DB
-            							codeService.storeCodeTree(cvCodeTreeData);
+            							codeService.storeCodeTree(cvCodeTreeData, currentVersion.getConcepts());
 	                				} 
 	                				else if (selectedOptionNumber == 1) { //move as child
 	                					// Possibility
@@ -857,7 +857,7 @@ public class DetailsView extends CvView {
             							detailTreeGrid.expand(draggedRow, targetRow);
             							
             							// save on DB
-            							codeService.storeCodeTree(cvCodeTreeData);
+            							codeService.storeCodeTree(cvCodeTreeData, currentVersion.getConcepts());
 	                				}
 	                				draggedItems = null;
 	                			})

@@ -25,6 +25,8 @@ import java.util.ArrayList;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -256,30 +258,46 @@ public class CodeServiceImpl implements CodeService {
 	}
 
 	@Override
-	public void storeCodeTree( TreeData<CodeDTO> codeTree){
+	public void storeCodeTree( TreeData<CodeDTO> codeTree, Set<ConceptDTO> concepts){
 		int position = 0;
 		for(CodeDTO codeRoot: codeTree.getRootItems()) {
 			codeRoot.setPosition(position);
 			codeRoot.setParent( null );
-			
+			// update concept as well
+			Optional<ConceptDTO> conceptOpt = concepts.stream().filter( p -> codeRoot.getId().longValue() == p.getCodeId().longValue()).findFirst();
+			if( conceptOpt.isPresent() ) {
+				ConceptDTO concept = conceptOpt.get();
+				concept.setNotation( codeRoot.getNotation());
+				concept.setPosition(position);
+				conceptService.save(concept);
+			}
 			// store top code
 			save(codeRoot);
 			position++;
 			if( !codeTree.getChildren( codeRoot).isEmpty())
-				position = traverseChildCode(  codeTree, codeRoot, codeTree.getChildren(codeRoot), position );
+				position = traverseChildCode(  codeTree, codeRoot, codeTree.getChildren(codeRoot), position, concepts );
 		};
 	}
 	
 	private int traverseChildCode( TreeData<CodeDTO> codeTree,
-			CodeDTO codeParent, List<CodeDTO> codesChild, Integer position) {
+			CodeDTO codeParent, List<CodeDTO> codesChild, Integer position, Set<ConceptDTO> concepts) {
 		for(CodeDTO code: codesChild) {
 			code.setPosition(position);
 			code.setParent( codeParent.getNotation());
+			// update concept as well
+			Optional<ConceptDTO> conceptOpt = concepts.stream().filter( p -> code.getId().longValue() == p.getCodeId().longValue()).findFirst();
+			if( conceptOpt.isPresent() ) {
+				ConceptDTO concept = conceptOpt.get();
+				concept.setNotation( code.getNotation());
+				concept.setParent( code.getParent() );
+				concept.setPosition(position);
+				conceptService.save(concept);
+			}
 			// store code
 			save(code);
 			position++;
 			if( !codeTree.getChildren( code ).isEmpty())
-				position = traverseChildCode(  codeTree, code, codeTree.getChildren( code ), position );
+				position = traverseChildCode(  codeTree, code, codeTree.getChildren( code ), position, concepts );
 		};
 		return position;
 	}

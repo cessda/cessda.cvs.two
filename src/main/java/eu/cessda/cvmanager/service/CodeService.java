@@ -1,6 +1,7 @@
 package eu.cessda.cvmanager.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import com.vaadin.data.TreeData;
 
 import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 
 /**
@@ -90,5 +92,5 @@ public interface CodeService {
 	
 	void deleteCodeTree( TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO currentVersion);
 	
-	void storeCodeTree( TreeData<CodeDTO> treeData);
+	void storeCodeTree( TreeData<CodeDTO> treeData, Set<ConceptDTO> concepts);
 }
