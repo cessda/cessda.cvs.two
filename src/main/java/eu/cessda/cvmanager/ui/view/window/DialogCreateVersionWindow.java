@@ -211,12 +211,12 @@ public class DialogCreateVersionWindow extends MWindow {
 		
 		versionHistoryLayout
 			.withFullWidth()
-			.withHeight("100px")
+			.withHeight("170px")
 			.withStyleName( "yscroll","white-bg" );
 		
 		versionHistoryLayout
 			.add(
-				new MLabel( currentVersion.getSummary() == null ? "no prior version" : currentVersion.getSummary() ).withContentMode( ContentMode.HTML )
+				new MLabel( currentVersion.getSummary() == null ? "no prior version" : currentVersion.getSummary().replaceAll("(\r\n|\n)", "<br />") ).withContentMode( ContentMode.HTML )
 			);
 		
 		versionNotesLabel
@@ -290,6 +290,9 @@ public class DialogCreateVersionWindow extends MWindow {
 			
 			VersionDTO newVersion = VersionDTO.clone(currentVersion, SecurityUtils.getLoggedUser().getId(), versionNumber, agency.getLicenseId(), agency.getUri() );
 			newVersion.setDiscussionNotes( discussionArea.getValue() );
+			
+			if (currentVersion.getItemType().equals( ItemType.TL.toString()))
+				newVersion.setUriSl( currentVersion.getUriSl());
 
 			newVersion = versionService.save(newVersion);
 			// save concepts
