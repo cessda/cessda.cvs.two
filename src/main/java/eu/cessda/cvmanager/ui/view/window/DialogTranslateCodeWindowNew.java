@@ -1,21 +1,12 @@
 package eu.cessda.cvmanager.ui.view.window;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
-import java.util.Set;
-
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.security.UserDetails;
-import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -28,16 +19,13 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
@@ -53,9 +41,7 @@ import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
-import eu.cessda.cvmanager.ui.view.EditorView;
 
 public class DialogTranslateCodeWindowNew extends MWindow {
 
@@ -96,9 +82,6 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 	
 	private Language language;
 	private Language sourceLang;
-
-	private CVScheme cvScheme;
-	private CVConcept cvConcept;
 	
 	private VocabularyDTO vocabulary;
 	private VersionDTO version;
@@ -115,8 +98,6 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, VocabularyChangeService vocabularyChangeService, I18N i18n, Locale locale) {
 		super( "Add Code Translation");
 		this.i18n = i18n;
-		this.cvScheme = cvScheme;
-		this.cvConcept = conceptCode;
 		this.language = sLanguage;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyService = vocabularyService;
@@ -157,7 +138,7 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 		
 		lTitle.withStyleName( "required" );
 		lLanguage.withStyleName( "required" );
-		lDescription.withStyleName( "required" );
+//		lDescription.withStyleName( "required" );
 		
 		languageCb.setItems( this.language );
 		languageCb.setValue( this.language  );
@@ -326,7 +307,7 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 
 		binder
 			.forField( description )
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
+//			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
 			.bind(  concept -> concept.getDefinition(),
 				(concept, value) -> concept.setDefinition(value));
 		

@@ -325,8 +325,9 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.withValue("Publish and Version");
 		
 		versionInfo
+			.withContentMode( ContentMode.HTML)
 			.withFullWidth()
-			.withValue("Please make sure that version info and version number are correct");
+			.withValue("<strong>Please make sure that version info and version number are correct.</strong>");
 		
 		versionHistoryLayout
 			.withFullWidth()
@@ -380,8 +381,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 		versionButtonLayout
 		.withStyleName("button-layout")
 		.add(
-				versionNumberLabel,
-				versionNumberField,
 				buttonPublishCv,
 				buttonSave,
 				cancelButton
@@ -414,13 +413,15 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.withFullWidth()
 			.add(
 				versionTitle,
-				versionInfo,
 				versionHistoryLayout,
 				versionNotesLabel,
 				versionNotes,
 				versionChangesLabel,
 				versionChanges,
+				versionNumberLabel,
+				versionNumberField,
 				tlCloneInfoLayout,
+				versionInfo,
 				versionButtonLayout
 			);
 		
@@ -531,7 +532,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 								
 								// add summary
 								currentVersion.setSummary(
-									(currentVersion.getSummary() == null ? "":currentVersion.getSummary()) +
+									(currentVersion.getSummary() == null ? "":currentVersion.getSummary().replaceAll("(\r\n|\n)", "<br />")) +
 									"<strong>" + currentVersion.getNumber() + "</strong>"+
 									" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + currentVersion.getPublicationDate() +
 									"<br/>Notes:<br/>" + currentVersion.getVersionNotes() + (versionChanges.getValue() != null && !versionChanges.getValue().isEmpty() ? "<br/>Changes:<br/>" + currentVersion.getVersionChanges() : "") + "<br/><br/>"

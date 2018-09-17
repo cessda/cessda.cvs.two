@@ -355,7 +355,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 
 		binder
 			.forField( description )
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
+//			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
 			.bind( c -> c.getDefinition(),
 					(c, value) -> c.setDefinition( value));
 		
@@ -367,7 +367,7 @@ public class DialogAddCodeWindowNew extends MWindow implements Translatable{
 	public void updateMessageStrings(Locale locale) {
 		lNotation.withValue( i18n.get( "dialog.detail.code.add.form.notation" , locale)).withStyleName( "required" );
 		lTitle.withValue( i18n.get( "dialog.detail.code.add.form.title" , locale)).withStyleName( "required" );
-		lDescription.withValue( i18n.get( "dialog.detail.code.add.form.definition" , locale)).withStyleName( "required" );
+		lDescription.withValue( i18n.get( "dialog.detail.code.add.form.definition" , locale));
 		lLanguage.withValue( i18n.get( "dialog.detail.code.add.form.language" , locale));
 	}
 	

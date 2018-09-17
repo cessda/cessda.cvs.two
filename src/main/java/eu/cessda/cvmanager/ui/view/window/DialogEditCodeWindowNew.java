@@ -159,7 +159,7 @@ public class DialogEditCodeWindowNew extends MWindow {
 		
 		lTitle.withStyleName( "required" );
 		lLanguage.withStyleName( "required" );
-		lDescription.withStyleName( "required" );
+//		lDescription.withStyleName( "required" );
 		
 		preferedLabel.setCaption( "Descriptive term (" + language + ")*");
 		description.setCaption( "Definition ("+ language +")*");
@@ -234,8 +234,7 @@ public class DialogEditCodeWindowNew extends MWindow {
 			);
 		
 		// check if current version is the initial version
-		List<VersionDTO> versionsByLanguage = vocabulary.getVersionsByLanguage( vocabulary.getSourceLanguage() );
-		if( versionsByLanguage.size() == 1) {
+		if( this.concept.getPreviousConcept() == null) {
 			changeBox.setVisible( false );
 		}
 		
@@ -354,6 +353,7 @@ public class DialogEditCodeWindowNew extends MWindow {
 			.withExpand(layout.getComponent(1), 0.06f)
 			.withExpand(layout.getComponent(2), 0.4f)
 			.withExpand(layout.getComponent(3), 0.2f)
+			.withExpand(layout.getComponent(4), 0.3f)
 			.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
 		}
 		
@@ -367,16 +367,6 @@ public class DialogEditCodeWindowNew extends MWindow {
 	private void saveCode() {
 		if(!isInputValid())
 			return;
-		
-//		if( changeCb.getValue() == null ) {
-//			Notification.show("Please select the change type!");
-//			return;
-//		}
-//		
-		// CVConcept cv = binder.getBean();
-//		log.trace(cvConcept.getPrefLabelByLanguage(language.toString()));
-//		cvConcept.save();
-//		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update code");
 		// store the code and index
 		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
 		codeService.save(code);
@@ -386,7 +376,7 @@ public class DialogEditCodeWindowNew extends MWindow {
 		conceptService.save(concept);
 		
 		// save changes log
-		if( changeBox.isVisible() ) {
+		if( changeBox.isVisible() &&  changeCb.getValue() != null) {
 			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
 			changeDTO.setVocabularyId( vocabulary.getId());
 			changeDTO.setVersionId( version.getId()); 
@@ -427,7 +417,7 @@ public class DialogEditCodeWindowNew extends MWindow {
 
 		binder
 			.forField( description )
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
+//			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
 			.bind( code -> code.getDefinitionByLanguage( language ),
 					(code, value) -> code.setDefinitionByLanguage(value, language));
 		

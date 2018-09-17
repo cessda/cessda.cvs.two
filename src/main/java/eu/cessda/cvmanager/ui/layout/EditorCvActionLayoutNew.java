@@ -1,6 +1,7 @@
 package eu.cessda.cvmanager.ui.layout;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -328,14 +329,31 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 			// check edit CV button
 				
 				if(currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
-					
+					List<Language> availableLanguages = new ArrayList<>();
+					Set<Language> userLanguages = new HashSet<>();
 					if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
 						buttonAddCv.setVisible( true );
 						if( currentVersion.getItemType().equals(ItemType.SL.toString()))
 							buttonNewVersion.setVisible( true );
+						
+						if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
+							userLanguages.addAll( Arrays.asList( Language.values() ) );
+							
+							availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
+							
+							Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+							// remove with sourceLanguage option if exist
+							availableLanguages.remove( sourceLang );
+							
+							if(availableLanguages.isEmpty())
+								buttonAddTranslation.setVisible( false );
+							else
+								buttonAddTranslation.setVisible( true );
+						}
+						
 					} else if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) ) {
-						List<Language> availableLanguages = new ArrayList<>();
-						Set<Language> userLanguages = new HashSet<>();
+						
+
 						SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
 							userLanguages.addAll(languages);
 						});
