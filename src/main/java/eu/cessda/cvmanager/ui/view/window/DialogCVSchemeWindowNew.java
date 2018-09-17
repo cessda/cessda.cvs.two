@@ -70,8 +70,6 @@ public class DialogCVSchemeWindowNew extends MWindow {
 	private final AgencyService agencyService;
 	private final VersionService versionService;
 	private final VocabularyService vocabularyService;
-	private final StardatDDIService stardatDDIService;
-	private final VocabularySearchRepository vocabularySearchRepository;
 	private final VocabularyChangeService vocabularyChangeService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
@@ -113,10 +111,8 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		super( version.isPersisted() ?"Edit Vocabulary": "Add Vocabulary");
 		this.agencyService = agencyService;
 		this.cvScheme = cvScheme;
-		this.stardatDDIService = stardatDDIService;
 		this.versionService = versionService;
 		this.vocabularyService = vocabularyService;
-		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.vocabulary = vocabulary;
 		this.version = version;
 		this.agency = agency;
@@ -400,7 +396,10 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			
 			version.setVocabularyId( vocabulary.getId() );
 			version = versionService.save( version );
+			
+			// save initial version
 			version.setInitialVersion( version.getId() );
+			version = versionService.save( version );
 			
 			vocabulary.addVersions(version);
 			vocabulary.addVers(version);

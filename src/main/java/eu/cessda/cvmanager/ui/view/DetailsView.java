@@ -364,6 +364,11 @@ public class DetailsView extends CvView {
 		
 		refreshCvScheme();
 		
+		if( vocabulary == null ) {
+			UI.getCurrent().getNavigator().navigateTo( DiscoveryView.VIEW_NAME);
+			return;
+		}
+		
 		// update breadcrumb
 		breadcrumbs
 			.addItem(getAgency().getName(), "agency/" + agency.getName())

@@ -67,12 +67,12 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 		
 		updateMessageStrings(locale);
 		
-		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl()) {
+//		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl()) {
 			getInnerContainer()
 				.add(
 					buttonAddCv
 				);
-		}
+//		}
 	}
 
 	private void doCvAdd( ClickEvent event ) {

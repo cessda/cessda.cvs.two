@@ -265,8 +265,12 @@ public class DialogCreateVersionWindow extends MWindow {
 				versioningBlock
 				);
 		
+		if( currentVersion.isInitialVersion())
+			this.withHeight("580px");
+		else
+			this.withHeight("800px");
+		
 		this
-			.withHeight("800px")
 			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);

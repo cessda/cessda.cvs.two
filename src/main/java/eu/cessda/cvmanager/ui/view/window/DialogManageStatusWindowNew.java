@@ -3,26 +3,18 @@ package eu.cessda.cvmanager.ui.view.window;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.CVVersion;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,30 +26,18 @@ import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
-import com.vaadin.data.Binder;
 import com.vaadin.data.TreeData;
-import com.vaadin.data.provider.Query;
-import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Button.ClickEvent;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.model.CvItem;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
@@ -70,7 +50,6 @@ import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
@@ -163,27 +142,30 @@ public class DialogManageStatusWindowNew extends MWindow {
 	}
 
 	private void init() {
-//		String buttonSuffix = ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase();
+		List<VocabularyChangeDTO> changes = null;
 		
 		changeListTitle
 			.withFullWidth()
 			.withStyleName("section-header")
 			.withValue( "Change logs" );
-		
-		List<VocabularyChangeDTO> changes = vocabularyChangeService.findAllByVocabularyVersionId( vocabulary.getId(), currentVersion.getId());
-		changesGrid.setItems(changes);
-		changesGrid
-			.withFullWidth()
-			.withHeight("240px")
-			.setColumns("date", "changeType", "description", "userName");
-		
-		changeListBlock
-		.withStyleName("section-block")
-			.withFullWidth()
-			.add( 
-				changeListTitle,
-				changesGrid
-			);
+		if(currentVersion.isInitialVersion())
+			changeListBlock.setVisible( false );
+		else {
+			changes = vocabularyChangeService.findAllByVocabularyVersionId( vocabulary.getId(), currentVersion.getId());
+			changesGrid.setItems(changes);
+			changesGrid
+				.withFullWidth()
+				.withHeight("240px")
+				.setColumns("date", "changeType", "description");
+			
+			changeListBlock
+			.withStyleName("section-block")
+				.withFullWidth()
+				.add( 
+					changeListTitle,
+					changesGrid
+				);
+		}
 		
 		discussionTitle
 			.withFullWidth()
@@ -267,7 +249,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			statusBlock.setVisible( false );
 			buttonDiscussionSave.setVisible( false );
 			versionBlock.setVisible( true );
-			discussionArea.addStyleName("height-100");
+			discussionArea.addStyleName("height-200");
 			
 			// prepare the version number
 			// get latest published
@@ -291,7 +273,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 					});
 				}
 			});
-
+			
 			// If publishing SL
 			if( currentVersion.getItemType().equals(ItemType.SL.toString())){
 				// get available TL, get language first and then get the latest TL
@@ -301,18 +283,31 @@ public class DialogManageStatusWindowNew extends MWindow {
 						continue;
 					latestTlVersions.add( vocabulary.getLatestVersionByLanguage(lang).get());
 				}
-				StringBuilder versionChangesContent = new StringBuilder();
-				for( VocabularyChangeDTO vc : changes) {
-					versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
-				}
-				versionChanges.setValue(versionChangesContent.toString());
+			} 
+			
+			// version changes extracts
+			if(currentVersion.isInitialVersion()) {
+				versionChanges.setVisible( false );
+				versionHistoryLayout.setVisible( false );
+				versionChangesLabel.setVisible( false );
 			} else {
-				StringBuilder versionChangesContent = new StringBuilder();
-				for( VocabularyChangeDTO vc : changes) {
-					versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
+				// If publishing SL
+				if( currentVersion.getItemType().equals(ItemType.SL.toString())){
+					StringBuilder versionChangesContent = new StringBuilder();
+					for( VocabularyChangeDTO vc : changes) {
+						versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
+					}
+					versionChanges.setValue(versionChangesContent.toString());
+				} else {
+					StringBuilder versionChangesContent = new StringBuilder();
+					for( VocabularyChangeDTO vc : changes) {
+						versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
+					}
+					versionChanges.setValue(versionChangesContent.toString());
 				}
-				versionChanges.setValue(versionChangesContent.toString());
 			}
+
+			
 		}
 		
 		buttonPublishCv
@@ -335,7 +330,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 		
 		versionHistoryLayout
 			.withFullWidth()
-			.withHeight("100px")
+			.withHeight("200px")
 			.withStyleName( "yscroll","white-bg" )
 			.add(
 				new MLabel("Version History").withStyleName( "section-header" ).withFullWidth()
@@ -439,8 +434,22 @@ public class DialogManageStatusWindowNew extends MWindow {
 				versionBlock
 				);
 		
+		if( currentVersion.getStatus().equals(Status.DRAFT.toString()) ||
+			currentVersion.getStatus().equals(Status.INITIAL_REVIEW.toString())) {
+			if( currentVersion.isInitialVersion())
+				this.withHeight("460px");
+			else
+				this.withHeight("745px");
+				
+		}
+		else {
+			if( currentVersion.isInitialVersion())
+				this.withHeight("640px");
+			else
+				this.withHeight("800px");
+		}
+		
 		this
-			.withHeight("800px")
 			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
@@ -525,7 +534,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 									(currentVersion.getSummary() == null ? "":currentVersion.getSummary()) +
 									"<strong>" + currentVersion.getNumber() + "</strong>"+
 									" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + currentVersion.getPublicationDate() +
-									"<br/>Notes:<br/>" + currentVersion.getVersionNotes() + (currentVersion.getVersionChanges() == null ? "":"<br/>Changes:<br/>" + currentVersion.getVersionChanges()) + "<br/><br/>"
+									"<br/>Notes:<br/>" + currentVersion.getVersionNotes() + (versionChanges.getValue() != null && !versionChanges.getValue().isEmpty() ? "<br/>Changes:<br/>" + currentVersion.getVersionChanges() : "") + "<br/><br/>"
 								);
 								
 								// update concept uri
@@ -562,7 +571,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 									// clone any latest TL if exist
 									for( VersionDTO targetTLversion : latestTlVersions ) {
 										// create new version
-										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), null, agency.getLicenseId(), cvUriLink);
+										VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), currentVersion.getNumber() + ".1", agency.getLicenseId(), cvUriLink);
 										newVersion.setUriSl( vocabulary.getUri());
 										newVersion = versionService.save(newVersion);
 										

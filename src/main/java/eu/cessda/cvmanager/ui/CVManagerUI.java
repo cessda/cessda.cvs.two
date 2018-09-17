@@ -152,7 +152,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		breadCrumb
 			.withBaseUrl( configurationService.getServerContextPath() )
 			.withBasePageName("Home")
-			.withBasePageUrl( EditorSearchView.VIEW_NAME);
+			.withBasePageUrl( DiscoveryView.VIEW_NAME);
 
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
@@ -348,13 +348,13 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.withValueChangeMode( ValueChangeMode.LAZY)
 			.withValueChangeTimeout( 200 )
 			.addTextChangeListener( e -> {
-				if( navigator.getCurrentView().toString().indexOf( "DiscoveryView" ) > 0 ) {
+				if( navigator.getCurrentView().toString().indexOf( "EditorSearchView" ) > 0 ) {
 //					navigator.navigateTo(DiscoveryView.VIEW_NAME);
-					eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
-				} else {
-					if( navigator.getCurrentView().toString().indexOf( "EditorSearchView" ) < 0 && !e.getValue().isEmpty())
-						navigator.navigateTo(EditorSearchView.VIEW_NAME);
 					eventBus.publish(EventScope.UI, EditorSearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_EDITOR_SEARCH, e.getValue()) );
+				} else {
+					if( navigator.getCurrentView().toString().indexOf( "DiscoveryView" ) < 0 && !e.getValue().isEmpty())
+						navigator.navigateTo(DiscoveryView.VIEW_NAME);
+					eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
 				}
 				if( e.getValue() != null && e.getValue().length() > 0)
 					clearSearchButton.setVisible( true );

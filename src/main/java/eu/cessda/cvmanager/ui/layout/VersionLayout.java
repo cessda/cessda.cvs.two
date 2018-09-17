@@ -150,8 +150,10 @@ public class VersionLayout extends MCssLayout implements Translatable {
 						if( VersionUtils.compareVersion(orderedVer.getNumber(), version.getNumber()) <= 0) 
 							showTlVersion = true;
 					
-					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showTlVersion)
+					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showTlVersion) {
 						this.add( generateVersion(orderedVer, showTlVersion));
+						expandLayout = false;
+					}
 				}
 			}
 		}
@@ -204,7 +206,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 			.withValue("<h2>Version notes</h2>" +
 				versionDTO.getVersionNotes());
 		
-		if( versionDTO.getVersionChanges() != null)
+		if( versionDTO.getVersionChanges() != null && !versionDTO.getVersionChanges().isEmpty())
 			changeVersion
 				.withValue("<h2>Changes since previous version</h2>" +
 					versionDTO.getVersionChanges().replaceAll("(\r\n|\n)", "<br />"));

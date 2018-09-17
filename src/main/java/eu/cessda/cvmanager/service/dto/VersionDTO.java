@@ -377,6 +377,17 @@ public class VersionDTO implements Serializable {
 		this.translateAgencyLink = translateAgencyLink;
 	}
 	
+	public boolean isInitialVersion() {
+		if(isPersisted()) {
+			if( initialVersion.longValue() == id.longValue())
+				return true;
+		} else {
+			if( initialVersion == null )
+				return false;
+		}
+		return false;
+	}
+	
 	@Override
     public String toString() {
         return "VersionDTO{" +
