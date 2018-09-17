@@ -82,6 +82,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.VocabularyChange;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
@@ -184,6 +185,7 @@ public class DetailsView extends CvView {
 	
 	private VersionDTO currentVersion;
 	private VersionDTO currentSLVersion;
+	private ConceptDTO currentConcept;
 	
 	private MLabel versionLabel = new MLabel();
 	
@@ -410,7 +412,7 @@ public class DetailsView extends CvView {
 		vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
 		
 		if( vocabulary == null ) {
-			Notification.show("Unable to find vocabulary");
+//			Notification.show("Unable to find vocabulary");
 			return;
 		}
 		
@@ -685,16 +687,19 @@ public class DetailsView extends CvView {
 				
 				editorCodeActionLayout.setCurrentCode(code);
 				editorCodeActionLayout.setCurrentConcept(null);
+				currentConcept = null;
 				
 				// get concept
 				ConceptDTO.getConceptFromCode(currentVersion.getConcepts(), code.getId()).ifPresent( conceptDTO -> {
 					if( conceptDTO.isPersisted()) {
 						editorCodeActionLayout.setCurrentConcept(conceptDTO);
+						currentConcept = conceptDTO;
 					} else {
 						// query in database for updated one
 						ConceptDTO conceptFromDb = conceptService.findOneByCodeNotationAndId( code.getNotation(), code.getId() );
 						if( conceptFromDb != null ) {
 							editorCodeActionLayout.setCurrentConcept(conceptFromDb);
+							currentConcept = conceptFromDb;
 						}
 					}
 				});
@@ -877,6 +882,8 @@ public class DetailsView extends CvView {
 	public void updateDetailGrid() {		
 		detailTreeGrid.asSingleSelect().clear();
 		editorCodeActionLayout.setCurrentConcept(null);
+		currentConcept = null;
+		
 		refreshCodeActionButton();
 		
 		dataProvider  = (TreeDataProvider<CodeDTO>) detailTreeGrid.getDataProvider();
@@ -934,18 +941,25 @@ public class DetailsView extends CvView {
 			case CVCONCEPT_DELETED:
 				
 				ConfirmDialog.show( this.getUI(), "Confirm",
-				"Are you sure you want to delete the concept \"" + code.getNotation() + "\"?", "yes",
+				"Are you sure you want to delete the concept \"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")" +"?", "yes",
 				"cancel",
-		
+						
 					dialog -> {
 						if( dialog.isConfirmed() ) {
 							
-							// delete Code and Concepts
-							codeService.deleteCodeTree( cvCodeTreeData, code, currentVersion);
-							cvCodeTreeData.removeItem( code );
+							if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
+								// delete Code and Concepts
+								codeService.deleteCodeTree( cvCodeTreeData, code, currentVersion);
+								cvCodeTreeData.removeItem( code );
+								setCode( null );
+							} else {
+								// clear Code on specific TL and remove TL Concepts
+								codeService.deleteCodeTreeTl( cvCodeTreeData, code, currentVersion);
+							}
+							currentConcept = null;
+							editorCodeActionLayout.clearCode();
 							
 							detailTreeGrid.getDataProvider().refreshAll();
-//							actionPanel.conceptSelectedChange( null );
 							
 							// save change log
 							VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
@@ -962,10 +976,13 @@ public class DetailsView extends CvView {
 							// reindex
 							vocabularyService.index(vocabulary);
 							
-							setCode( null );
-							editorCodeActionLayout.clearCode();
-							
 							refreshCodeActionButton();
+							
+							// there is no way to update existing tree without add/delete,
+							// refresh entire block
+							if( currentVersion.getItemType().equals(ItemType.TL.toString())) {
+								initBottomViewSection();
+							}
 						}
 					}
 

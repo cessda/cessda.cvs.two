@@ -260,6 +260,13 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 		if( !SecurityUtils.isAuthenticated() || currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
 			setVisible( false );
 		} else {
+			buttonCodeEdit.setVisible( false );
+			buttonCodeAdd.setVisible( false );
+			buttonCodeAddTranslation.setVisible( false );
+			buttonCodeAddChild.setVisible( false );
+			buttonCodeDelete.setVisible( false );
+			buttonCodeSort.setVisible( false );
+			
 			hasAction = true;
 
 			if( selectedLanguage.equals( sourceLanguage) && CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion ) ) {
@@ -267,57 +274,35 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 				VersionDTO latestSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getLatestVersions());
 				if( latestSLVersion.getConcepts() != null && latestSLVersion.getConcepts().size() > 1 )
 					buttonCodeSort.setVisible( true );
-				else
-					buttonCodeSort.setVisible( false );
-			}
-			else {
-				buttonCodeAdd.setVisible( false );
-				buttonCodeSort.setVisible( false );
-			}
-			
+			}		
 			
 			if( currentCode != null ) {
 				// if specific concept is already there
 				if( currentConcept != null ) {
 					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 						buttonCodeEdit.setVisible( true );
-						buttonCodeAddTranslation.setVisible( false );
-					}else {
-						buttonCodeEdit.setVisible( false );
 					}
-					
 					if( selectedLanguage.equals( sourceLanguage) ) {
 						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 							buttonCodeAddChild.setVisible( true );
 							buttonCodeDelete.setVisible( true );
-						}else {
-							buttonCodeAddChild.setVisible( false );
-							buttonCodeDelete.setVisible( false );
+						}
+					} else {
+						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
+							buttonCodeDelete.setVisible( true );
 						}
 					}
 				} else {
 					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 						buttonCodeAddTranslation.setVisible( true );
-						buttonCodeEdit.setVisible( false );
-					}else {
-						buttonCodeAddTranslation.setVisible( false );
 					}
-					
 					if( selectedLanguage.equals( sourceLanguage) ) {
 						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 							buttonCodeAddChild.setVisible( true );
 							buttonCodeDelete.setVisible( true );
-						}else {
-							buttonCodeAddChild.setVisible( false );
-							buttonCodeDelete.setVisible( false );
 						}
 					}
 				}
-			} else {
-				buttonCodeEdit.setVisible( false );
-				buttonCodeAddTranslation.setVisible( false );
-				buttonCodeAddChild.setVisible( false );
-				buttonCodeDelete.setVisible( false );
 			}
 		}
 		

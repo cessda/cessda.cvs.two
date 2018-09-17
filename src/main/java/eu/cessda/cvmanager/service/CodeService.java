@@ -92,5 +92,7 @@ public interface CodeService {
 	
 	void deleteCodeTree( TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO currentVersion);
 	
+	void deleteCodeTreeTl( TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO currentVersion);
+	
 	void storeCodeTree( TreeData<CodeDTO> treeData, Set<ConceptDTO> concepts);
 }

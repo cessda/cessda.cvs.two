@@ -197,14 +197,7 @@ public class CodeServiceImpl implements CodeService {
 
 	@Override
 	public void deleteCodeTree(TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO version) {
-		treeData.getChildren(code).forEach( c -> {
-			// delete also related concept
-			List<ConceptDTO> concepts = conceptService.findAllByCode( c.getId());
-			for( ConceptDTO concept: concepts) {
-				version.getConcepts().remove(concept);
-				conceptService.delete( concept.getId());
-			}
-			
+		treeData.getChildren(code).forEach( c -> {			
 			deleteCodeTree(treeData, c, version);
 		});
 		// delete direct concept
@@ -215,6 +208,24 @@ public class CodeServiceImpl implements CodeService {
 		}
 		
 		delete(code);
+	}
+	
+	@Override
+	public void deleteCodeTreeTl(TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO version) {
+		treeData.getChildren(code).forEach( c -> {
+			// delete also related concept
+			deleteCodeTreeTl(treeData, c, version);
+		});
+		
+		// delete direct concept
+		List<ConceptDTO> concepts = conceptService.findAllByCode( code.getId());
+		for( ConceptDTO concept: concepts) {
+			version.getConcepts().remove(concept);
+			conceptService.delete( concept.getId());
+		}
+		// clear title definition on that specific code
+		code.setTitleDefinition(null, null, version.getLanguage());
+		save(code);
 	}
 
 	@Override
