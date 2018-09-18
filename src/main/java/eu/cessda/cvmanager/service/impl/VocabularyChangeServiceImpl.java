@@ -46,6 +46,8 @@ public class VocabularyChangeServiceImpl implements VocabularyChangeService {
      */
     @Override
     public VocabularyChangeDTO save(VocabularyChangeDTO vocabularyChangeDTO) {
+    	if( vocabularyChangeDTO.getChangeType() == null )
+    		return vocabularyChangeDTO;
         log.debug("Request to save VocabularyChange : {}", vocabularyChangeDTO);
         VocabularyChange vocabularyChange = vocabularyChangeMapper.toEntity(vocabularyChangeDTO);
         vocabularyChange = vocabularyChangeRepository.save(vocabularyChange);

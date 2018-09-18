@@ -381,10 +381,7 @@ public class VersionDTO implements Serializable {
 		if(isPersisted()) {
 			if( initialVersion.longValue() == id.longValue())
 				return true;
-		} else {
-			if( initialVersion == null )
-				return false;
-		}
+		} 
 		return false;
 	}
 	

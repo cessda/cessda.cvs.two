@@ -388,10 +388,10 @@ public final class CvManagerSecurityUtils {
     	if(!userAgencyByAgencyAndLanguage.isPresent())
     		return false;
     	
-    	for(UserAgencyDTO ua : userAgencyByAgencyAndLanguage.get()) {
-    		System.out.println("User_Agency :" + ua.getLastName() + " " + ua.getAgencyName() + " " + ua.getAgencyRole().name());
-    	}
-    	
+//    	for(UserAgencyDTO ua : userAgencyByAgencyAndLanguage.get()) {
+//    		System.out.println("User_Agency :" + ua.getLastName() + " " + ua.getAgencyName() + " " + ua.getAgencyRole().name());
+//    	}
+//    	
     	// check for role and current status
     	return Optional.of( userAgencyByAgencyAndLanguage.get() )
         		.map( uas -> {

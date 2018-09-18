@@ -1512,10 +1512,10 @@ public class VocabularyDTO implements Serializable {
 					if( targetCode == null ) {
 						CodeDTO newCode = new CodeDTO();
 						newCode.setNotation( concept.getNotation());
-						newCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum);
+						newCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum, false);
 						codeMap.put(concept.getNotation(), newCode);
 					} else {
-						targetCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum);
+						targetCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum, false);
 					}
 				};
 			}

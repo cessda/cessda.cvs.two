@@ -29,7 +29,7 @@ public class VocabularyChange implements Serializable {
 
     @NotNull
     @Size(max = 60)
-    @Column(name = "change_type", length = 60, nullable = false)
+    @Column(name = "change_type", length = 60)
     private String changeType;
 
     @Lob

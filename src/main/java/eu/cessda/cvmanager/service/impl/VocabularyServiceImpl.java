@@ -651,8 +651,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 
 	@Override
 	public void index(VocabularyDTO vocabulary) {
-		// index nested object as well
-		// get version
+		// query vocabulary, make sure everything is up to date
+		vocabulary = findOne( vocabulary.getId());
+		// get versions
 		vocabulary.setVers( vocabulary.getLatestVersions());
 		// set languages
 		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
@@ -663,15 +664,12 @@ public class VocabularyServiceImpl implements VocabularyService {
 		// Apply filter in case latest SL version is a draft
 		// Since SL need to be published first,
 		// before it is possible for TL to be added or edited
-		
-		
-		
-		
-		
+
 		// if the latest version of the SL is not yet published
 		// then remove any TL information, before re-indexing
 		// check if the latest SL is not yet published yet.
 		VersionDTO latestSLversion = vocabulary.getLatestVersionByLanguage( vocabulary.getSourceLanguage() ).get();
+		// if not yet published
 		if( !latestSLversion.getStatus().equals( Status.PUBLISHED.toString()) ) {
 			// clear vocabulary and assign only with SL version
 			vocabulary.clearContent();
@@ -689,7 +687,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 				code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), latestSLversion.getLanguage());
 				codesUpdated.add(code);
 			}
-//			vocabulary = save(vocabulary);
+			vocabulary = save(vocabulary);
 			vocabulary.setCodes(codesUpdated);
 		}
 		
@@ -703,8 +701,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 		vocabularyPublishSearchRepository.save( vocab );
 	}
 
-	@Override
-	public String createNewVersion(VocabularyDTO vocabulary, CvItem cvItem, Language language) {
+//	@Override
+//	public String createNewVersion(VocabularyDTO vocabulary, CvItem cvItem, Language language) {
 		// Flatdb - Clone for versioning
 		// 1. Clone CvScheme by creating new cvScheme
 		
@@ -765,48 +763,48 @@ public class VocabularyServiceImpl implements VocabularyService {
 //		vocabulary.setStatus( Status.DRAFT.toString() );
 		
 		// add new version
-		VersionDTO version = VersionDTO.getLatestSourceVersion( vocabulary.getVersions());
-		version.setPreviousVersion( version.getId() );
-		version.setId( null );
+//		VersionDTO version = VersionDTO.getLatestSourceVersion( vocabulary.getVersions());
+//		version.setPreviousVersion( version.getId() );
+//		version.setId( null );
 //		version.setUri( );
-		version.setNumber("1.1");
-		version.setStatus( Status.DRAFT.toString() );
-		version.setInitialVersion( 0L );
-		
-		vocabulary.addVersions(version);
-		vocabulary.addVers(version);
-		
-		// save to database
-		vocabulary = save(vocabulary);
-		
-		// index
-		index(vocabulary);
-		
-		return vocabulary.getNotation();
-	}
+//		version.setNumber("1.1");
+//		version.setStatus( Status.DRAFT.toString() );
+//		version.setInitialVersion( 0L );
+//		
+//		vocabulary.addVersions(version);
+//		vocabulary.addVers(version);
+//		
+//		// save to database
+//		vocabulary = save(vocabulary);
+//		
+//		// index
+//		index(vocabulary);
+//		
+//		return vocabulary.getNotation();
+//	}
 
-	private void cloneChildConcept(CVScheme newCvScheme, TreeData<CVConcept> cvConceptTreeData, CVConcept parentConcept, CVConcept newParentConcept) {
-		for( CVConcept childConcept : cvConceptTreeData.getChildren(parentConcept)){
-			
-			CVConcept newChildConcept = new CVConcept();
-			newChildConcept.loadSkeleton(newChildConcept.getDefaultDialect());
-			newChildConcept.createId();
-			newChildConcept.setNotation( childConcept.getNotation());
-			newChildConcept.setPrefLabel( childConcept.getPrefLabel() );
-			newChildConcept.setDescription( childConcept.getDescription() );
-			
-			
-			newChildConcept.setContainerId( newCvScheme.getContainerId());
-			newChildConcept.save();
-			DDIStore ddiStore = stardatDDIService.saveElement(newChildConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Clone child concept");
-			
-			newParentConcept.addOrderedNarrowerList( ddiStore.getElementId() );
-			newParentConcept.save();
-			DDIStore ddiStoreParentConcept = stardatDDIService.saveElement(newParentConcept.ddiStore, "User", "Add Code narrower");
-			
-			cloneChildConcept(newCvScheme, cvConceptTreeData, childConcept, newChildConcept);
-		}
-	}
+//	private void cloneChildConcept(CVScheme newCvScheme, TreeData<CVConcept> cvConceptTreeData, CVConcept parentConcept, CVConcept newParentConcept) {
+//		for( CVConcept childConcept : cvConceptTreeData.getChildren(parentConcept)){
+//			
+//			CVConcept newChildConcept = new CVConcept();
+//			newChildConcept.loadSkeleton(newChildConcept.getDefaultDialect());
+//			newChildConcept.createId();
+//			newChildConcept.setNotation( childConcept.getNotation());
+//			newChildConcept.setPrefLabel( childConcept.getPrefLabel() );
+//			newChildConcept.setDescription( childConcept.getDescription() );
+//			
+//			
+//			newChildConcept.setContainerId( newCvScheme.getContainerId());
+//			newChildConcept.save();
+//			DDIStore ddiStore = stardatDDIService.saveElement(newChildConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Clone child concept");
+//			
+//			newParentConcept.addOrderedNarrowerList( ddiStore.getElementId() );
+//			newParentConcept.save();
+//			DDIStore ddiStoreParentConcept = stardatDDIService.saveElement(newParentConcept.ddiStore, "User", "Add Code narrower");
+//			
+//			cloneChildConcept(newCvScheme, cvConceptTreeData, childConcept, newChildConcept);
+//		}
+//	}
 
 	@Override
 	public void detach(VocabularyDTO vocabularyDTO) {

@@ -238,9 +238,9 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		
 					dialog -> {
 						if( dialog.isConfirmed() ) {
-							String newCvLink = vocabularyService.createNewVersion(vocabulary, cvItem, selectedLanguage);
-							
-							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + newCvLink);
+//							String newCvLink = vocabularyService.createNewVersion(vocabulary, cvItem, selectedLanguage);
+//							
+//							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + newCvLink);
 						}
 					}
 				);

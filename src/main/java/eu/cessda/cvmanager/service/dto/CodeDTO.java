@@ -365,11 +365,15 @@ public class CodeDTO implements Serializable {
     	return this;
     }
     
+    public CodeDTO setTitleDefinition( String title, String definition, Language language) {
+    	return setTitleDefinition(title, definition, language, false);
+    }
+    
     public CodeDTO setTitleDefinition( String title, String definition, String language) {
-    	return setTitleDefinition(title, definition, Language.getEnum(language));
+    	return setTitleDefinition(title, definition, Language.getEnum(language), false);
     }
 
-    public CodeDTO setTitleDefinition( String title, String definition, Language language) {
+    public CodeDTO setTitleDefinition( String title, String definition, Language language, boolean isRemoveLanguage) {
     	switch (language) {
     		case CZECH:
     			setTitleCs(title);
@@ -440,7 +444,10 @@ public class CodeDTO implements Serializable {
     			setDefinitionSv(definition);
     			break;
     	}
-    	addLanguage(language.toString());
+    	if(isRemoveLanguage)
+    		removeLanguage(language.toString());
+    	else
+    		addLanguage(language.toString());
     	return this;
     }
     
@@ -550,6 +557,12 @@ public class CodeDTO implements Serializable {
 			languages = new HashSet<>();
 		this.languages.add(language);
 		return this;
+	}
+	
+	public void removeLanguage(String language) {
+		if(languages == null)
+			return;
+		this.languages.remove(language);
 	}
 	
 	 public String getParent() {

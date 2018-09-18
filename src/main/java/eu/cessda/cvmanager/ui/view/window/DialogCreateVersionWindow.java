@@ -226,20 +226,11 @@ public class DialogCreateVersionWindow extends MWindow {
 		
 		versionNotes.setWidth("100%");
 		versionNotes.setHeight("100px");
-//		
-//		versionNumberLabel
-//			.withStyleName("section-header","pull-left")
-//			.withValue("Version Number: ");
-//		
-//		versionNumberField
-//			.withStyleName("pull-left")
-//			.setWidth("80px");
-		
+
 		versionButtonLayout
 		.withStyleName("button-layout")
 		.add(
-//				versionNumberLabel,
-//				versionNumberField,
+
 				buttonPublishCv,
 				cancelButton
 		);
@@ -306,11 +297,7 @@ public class DialogCreateVersionWindow extends MWindow {
 			}
 			
 			vocabulary.addVersions(newVersion);
-					
-					
-					
-//				}
-//			}
+
 			// save whole vocabulary
 			vocabulary = vocabularyService.save(vocabulary);
 			

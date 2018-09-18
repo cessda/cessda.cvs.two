@@ -946,6 +946,7 @@ public class DetailsView extends CvView {
 						
 					dialog -> {
 						if( dialog.isConfirmed() ) {
+							String notationCode = code.getNotation();
 							
 							if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
 								// delete Code and Concepts
@@ -966,7 +967,7 @@ public class DetailsView extends CvView {
 							changeDTO.setVocabularyId( vocabulary.getId());
 							changeDTO.setVersionId( editorCodeActionLayout.getCurrentVersion().getId()); 
 							changeDTO.setChangeType( "Code deleted" );
-							changeDTO.setDescription( "Code " + code.getNotation() + " deleted");
+							changeDTO.setDescription( "Code " + notationCode + " deleted");
 							changeDTO.setDate( LocalDateTime.now() );
 							UserDetails loggedUser = SecurityUtils.getLoggedUser();
 							changeDTO.setUserId( loggedUser.getId() );
