@@ -65,6 +65,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
@@ -262,7 +263,24 @@ public class DetailsView extends CvView {
 				languageLayout, 
 				bottomSection
 			);
-
+		JavaScript.getCurrent().execute(
+				"function offset(el) {" + 
+				"    var rect = el.getBoundingClientRect()," + 
+				"    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft," + 
+				"    scrollTop = window.pageYOffset || document.documentElement.scrollTop;" + 
+				"    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + 
+				"}" + 
+				"var mainContainer=document.getElementById('main-container'); " +
+				"var sidePanel = document.getElementById('side-panel');" + 
+				"var sidePanelOffset = offset(sidePanel);" + 
+				"mainContainer.addEventListener('scroll', function() { " +
+					"if( mainContainer.scrollTop > sidePanelOffset.top && Math.max(document.documentElement.clientWidth, window.innerWidth || 0) > 792){" +
+						"sidePanel.style.position='fixed';sidePanel.style.top='0';" +
+					"}else{" +
+						"sidePanel.style.position='static';" +
+					"}" +
+				"});"
+				);
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )

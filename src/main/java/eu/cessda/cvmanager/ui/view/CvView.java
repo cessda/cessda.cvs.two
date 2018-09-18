@@ -99,7 +99,8 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 			.withStyleName( "top-panel" );
 
 		sidePanel
-			.withStyleName( "side-panel" );
+			.withStyleName( "side-panel" )
+			.setId("side-panel");
 		
 		mainContainer
 			.withStyleName( "main-container" );

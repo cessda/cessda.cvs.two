@@ -17831,10 +17831,6 @@ div.v-layout.v-horizontal.v-widget {
 	margin: 5px;
 }
 
-.mytheme .side-panel-action {
-	position: fixed;
-}
-
 .mytheme .main-container {
 	display: block;
 	margin-left: 260px;
@@ -18162,9 +18158,6 @@ div.v-layout.v-horizontal.v-widget {
 		width: 100% !important;
 		margin: 5px 0 !important;
 		padding: 5px 0 !important;
-	}
-	.side-panel-action {
-		position: static !important;
 	}
 	.main-container {
 		margin-left: 0 !important;

@@ -184,6 +184,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 		// main UI properties
 		setStyleName("mainlayout");
+		setId("main-container");
 		setContent(root);
 
 		// navigator properties
