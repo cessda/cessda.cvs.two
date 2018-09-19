@@ -1482,14 +1482,24 @@ public class VocabularyDTO implements Serializable {
 			return vers.stream().findFirst();
 	}
 	
-	public List<VersionDTO> getLatestVersionGroup( boolean isTlPublished){
-		List<VersionDTO> versionsGroup = new ArrayList<>();
-		//  First get latest published SL
-		Optional<VersionDTO> latestSlVersionOpt = versions.stream()
+	public Optional<VersionDTO> getLatestSlVersion( boolean isPublished){
+		if(isPublished)
+			return versions.stream()
 			.filter( p -> Status.PUBLISHED.toString().equals( p.getStatus()) )
 			.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
 			.filter( p -> sourceLanguage.equals( p.getLanguage() ))
 			.findFirst();
+		else
+			return versions.stream()
+				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+				.filter( p -> sourceLanguage.equals( p.getLanguage() ))
+				.findFirst();
+	}
+	
+	public List<VersionDTO> getLatestVersionGroup( boolean isTlPublished){
+		List<VersionDTO> versionsGroup = new ArrayList<>();
+		//  First get latest published SL
+		Optional<VersionDTO> latestSlVersionOpt = getLatestSlVersion( true );
 		
 		if( latestSlVersionOpt.isPresent() ) {
 			VersionDTO latestSlVersion = latestSlVersionOpt.get();

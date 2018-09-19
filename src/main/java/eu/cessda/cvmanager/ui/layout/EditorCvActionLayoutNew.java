@@ -27,6 +27,7 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
@@ -171,6 +172,12 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 			.withVisible( false )
 			.addClickListener( this::dropVersion );
 		
+		buttonWithdrawnCv
+			.withFullWidth()
+			.withStyleName("action-button", ValoTheme.BUTTON_DANGER)
+			.withVisible( false )
+			.addClickListener( this::withdrawnVocabulary );
+		
 		separatorLabel.withFullWidth().setVisible( false );
 				
 		getInnerContainer()
@@ -183,8 +190,10 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 				buttonAddTranslation,
 				buttonNewVersion,
 				separatorLabel,
-				buttonDropVersion
+				buttonDropVersion,
+				buttonWithdrawnCv
 			);
+		
 	}
 
 	private void doCvAdd( ClickEvent event ) {
@@ -362,6 +371,21 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 		);
 	}
 	
+	private void withdrawnVocabulary(ClickEvent event ) {
+		ConfirmDialog.show( this.getUI(), "Confirm",
+		"Are you sure you want to withdrawn the CV \"" + currentVersion.getNotation() + "\" ("+ currentVersion.getNumber() +")" +"?", "yes",
+		"cancel",
+				
+			dialog -> {
+				if( dialog.isConfirmed() ) {
+					vocabularyService.withdrawn(vocabulary);
+					UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
+				}
+			}
+
+		);
+	}
+	
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		String buttonSuffix = (isCurrentSL ? " SL " : " TL ") + selectedLanguage.toString();
@@ -373,6 +397,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 		buttonPublishCv.withCaption( "Publish" + buttonSuffix);
 		buttonNewVersion.withCaption( "Create new Version ");
 		buttonDropVersion.withCaption( "Drop Version" );
+		buttonWithdrawnCv.withCaption( "Withdrawn Vocabulary" );
 	}
 
 	public AgencyDTO getAgency() {
@@ -459,6 +484,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 			buttonNewVersion.setVisible( false );
 			separatorLabel.setVisible( false );
 			buttonDropVersion.setVisible( false );
+			buttonWithdrawnCv.setVisible( false );
 			
 			if( sourceLanguage.equals(selectedLanguage))
 				isCurrentSL = true;
@@ -482,9 +508,10 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 					Set<Language> userLanguages = new HashSet<>();
 					if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
 						buttonAddCv.setVisible( true );
-						if( currentVersion.getItemType().equals(ItemType.SL.toString()))
+						if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
 							buttonNewVersion.setVisible( true );
-						
+							buttonWithdrawnCv.setVisible( true );
+						}
 						if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
 							userLanguages.addAll( Arrays.asList( Language.values() ) );
 							

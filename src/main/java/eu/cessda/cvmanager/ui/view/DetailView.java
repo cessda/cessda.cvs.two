@@ -148,7 +148,9 @@ public class DetailView extends CvView {
 	private MCssLayout topViewSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomViewSection = new MCssLayout().withFullWidth();
+	
 	private MCssLayout newerVersionAvailable = new MCssLayout();
+	private MCssLayout vocabularyIsWithdrawn = new MCssLayout();
 	
 	// the tabs
 	private TabSheet detailTab = new TabSheet();
@@ -187,7 +189,6 @@ public class DetailView extends CvView {
 	
 	private LanguageMenu langMenu;
 	private String highlightCode;
-	
 	
 	private VersionDTO currentVersion;
 	private VersionDTO currentSlVersion;
@@ -306,6 +307,8 @@ public class DetailView extends CvView {
 				
 		refreshCvScheme();
 		
+		
+		
 		// update breadcrumb
 		breadcrumbs
 			.addItem(getAgency().getName(), "agency/" + agency.getName())
@@ -329,8 +332,12 @@ public class DetailView extends CvView {
 				vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
 				
 				if(vocabulary != null ) {
-					ddiSchemes = stardatDDIService.findByIdAndElementType( vocabulary.getUri(), DDIElement.CVSCHEME);
-					currentVersion = versionService.getByUri( vocabulary.getUri() );
+					Optional<VersionDTO> slVer = vocabulary.getLatestSlVersion( true );
+					if( slVer.isPresent() ) {
+						currentSlVersion = slVer.get();
+						currentVersion = currentSlVersion;
+						ddiSchemes = stardatDDIService.findByIdAndElementType( currentVersion.getUri(), DDIElement.CVSCHEME);
+					}
 				}
 				
 			}
@@ -374,8 +381,7 @@ public class DetailView extends CvView {
 	private void initTopViewSection() {
 		topViewSection.removeAllComponents();
 		
-		
-		if( SecurityUtils.isAuthenticated()) {
+		if( SecurityUtils.isAuthenticated() && !vocabulary.isWithdrawn()) {
 			String baseUrl = configService.getServerContextPath() + "/#!" + DetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
 			topViewSection.add( new MLabel()
 					.withContentMode( ContentMode.HTML)
@@ -384,6 +390,22 @@ public class DetailView extends CvView {
 						" " +
 								"<a href='" + baseUrl + "'> View in Editor</a> "
 					) );
+		}
+		
+		if( vocabulary.isWithdrawn()) {
+			vocabularyIsWithdrawn.removeAllComponents();
+			vocabularyIsWithdrawn
+				.withWidth("100%")
+				.withStyleName( "alert alert-danger" )
+				.add(
+					new MLabel()
+						.withContentMode( ContentMode.HTML)
+						.withValue(
+							"Warning! This CV \"" + vocabulary.getNotation() + "\" has been withdrawn."
+						)
+				);
+			
+			topViewSection.add( vocabularyIsWithdrawn );
 		}
 		
 		vocabulary

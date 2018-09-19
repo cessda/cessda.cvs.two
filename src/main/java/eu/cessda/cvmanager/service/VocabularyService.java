@@ -88,7 +88,13 @@ public interface VocabularyService {
 	
 	void index( VocabularyDTO vocabulary);
 	
-	void indexPublish( VocabularyDTO vocabulary, VersionDTO currentVersion);	
+	void indexPublish( VocabularyDTO vocabulary, VersionDTO currentVersion);
+	
+	VocabularyDTO withdrawn( VocabularyDTO vocabulary );
+	
+	VocabularyDTO restore( VocabularyDTO vocabulary );
+	
+	void completeDelete( VocabularyDTO vocabulary );
 //	/**
 //	 * Create new version of the Vocabulary
 //	 * 

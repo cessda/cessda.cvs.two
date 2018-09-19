@@ -18087,7 +18087,7 @@ div.v-layout.v-horizontal.v-widget {
 	overflow-y: scroll;
 }
 
-.mytheme .alert-warning {
+.mytheme .alert-warning, .mytheme .alert-danger {
 	font-size: 1.5em;
 	text-align: center;
 }

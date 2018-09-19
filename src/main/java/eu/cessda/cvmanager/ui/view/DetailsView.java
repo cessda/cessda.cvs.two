@@ -214,6 +214,8 @@ public class DetailsView extends CvView {
 	
 	private String highlightCode;
 	
+	private MCssLayout vocabularyIsWithdrawn = new MCssLayout();
+	
 	private EditorCvActionLayoutNew editorCvActionLayout;
 	private EditorCodeActionLayoutNew editorCodeActionLayout;
 
@@ -374,6 +376,10 @@ public class DetailsView extends CvView {
 			return;
 		}
 		
+		if( vocabulary.isWithdrawn()) {
+			return;
+		}
+		
 		// update breadcrumb
 		breadcrumbs
 			.addItem(getAgency().getName(), "agency/" + agency.getName())
@@ -416,6 +422,25 @@ public class DetailsView extends CvView {
 		
 		if( vocabulary == null ) {
 //			Notification.show("Unable to find vocabulary");
+			return;
+		}
+		// check for withdrawn vocabulary
+		
+		if( vocabulary.isWithdrawn()) {
+			vocabularyIsWithdrawn.removeAllComponents();
+			vocabularyIsWithdrawn
+				.withWidth("100%")
+				.withStyleName( "alert alert-danger" )
+				.add(
+					new MLabel()
+						.withContentMode( ContentMode.HTML)
+						.withValue(
+							"Unable to access withdrawn CV \"" + vocabulary.getNotation() + "\""
+						)
+				);
+			
+			topSection.add( vocabularyIsWithdrawn );
+			sidePanel.setVisible( false );
 			return;
 		}
 		

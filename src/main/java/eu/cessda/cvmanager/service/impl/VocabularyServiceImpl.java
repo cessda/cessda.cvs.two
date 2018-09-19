@@ -23,6 +23,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.dto.AgencyDTO;
@@ -53,12 +54,16 @@ import eu.cessda.cvmanager.repository.VocabularyRepository;
 import eu.cessda.cvmanager.repository.search.VocabularyPublishSearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ElasticsearchTemplate2;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyPublishMapper;
@@ -98,11 +103,15 @@ public class VocabularyServiceImpl implements VocabularyService {
     
     private final CodeService codeService;
     
-    private final VersionRepository versionRepository;
+    private final ConceptService conceptService;
+    
+    private final VersionService versionService;
 
     private final VocabularyRepository vocabularyRepository;
 
     private final VocabularyMapper vocabularyMapper;
+    
+    private final VocabularyChangeService vocabularyChangeService;
     
     private final VocabularyPublishMapper vocabularyPublishMapper;
 
@@ -118,17 +127,20 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     public VocabularyServiceImpl(VocabularyRepository vocabularyRepository, VocabularyMapper vocabularyMapper, 
     		VocabularySearchRepository vocabularySearchRepository, ElasticsearchTemplate2 elasticsearchTemplate,
-    		VocabularyPublishMapper vocabularyPublishMapper, VersionRepository versionRepository, CodeService codeService,
-    		VocabularyPublishSearchRepository vocabularyPublishSearchRepository, StardatDDIService stardatDDIService) {
+    		VocabularyPublishMapper vocabularyPublishMapper, VersionService versionService, CodeService codeService,
+    		VocabularyPublishSearchRepository vocabularyPublishSearchRepository, StardatDDIService stardatDDIService,
+    		ConceptService conceptService, VocabularyChangeService vocabularyChangeService) {
     	this.codeService = codeService;
         this.vocabularyRepository = vocabularyRepository;
         this.vocabularyMapper = vocabularyMapper;
         this.vocabularyPublishMapper = vocabularyPublishMapper;
         this.vocabularySearchRepository = vocabularySearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
-        this.versionRepository = versionRepository;
+        this.versionService = versionService;
         this.vocabularyPublishSearchRepository = vocabularyPublishSearchRepository;
         this.stardatDDIService = stardatDDIService;
+        this.conceptService = conceptService;
+        this.vocabularyChangeService = vocabularyChangeService;
     }
 
     /**
@@ -259,8 +271,58 @@ public class VocabularyServiceImpl implements VocabularyService {
 		return vocabularyRepository.existsByNotation( notation );
 	}
 	
+	@Override
+	public VocabularyDTO withdrawn(VocabularyDTO vocabulary) {
+		vocabulary.setWithdrawn( true );
+		vocabulary = save(vocabulary);
+		
+		// remove vocabulary from both index
+		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
+		vocabularySearchRepository.delete(vocab);
+		VocabularyPublish vocabPublish = vocabularyPublishMapper.toEntity( vocabulary);
+		vocabularyPublishSearchRepository.delete(vocabPublish);
+		
+		return vocabulary;
+	}
 	
-	
+	@Override
+	public VocabularyDTO restore(VocabularyDTO vocabulary) {
+		vocabulary.setWithdrawn( true );
+		vocabulary = save(vocabulary);
+		
+		// reindex for publication and editor
+		VocabularyPublish vocabPublish = vocabularyPublishMapper.toEntity( vocabulary);
+		vocabularyPublishSearchRepository.save(vocabPublish);
+		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
+		vocabularySearchRepository.save(vocab);
+		
+		return vocabulary;
+	}
+
+	@Override
+	public void completeDelete(VocabularyDTO vocabulary) {
+		vocabulary = findOne( vocabulary.getId());
+		for(VersionDTO version : vocabulary.getVersions()) {
+			if( version.getItemType().equals(ItemType.SL.toString()) && version.getStatus().equals(Status.PUBLISHED.toString())) {
+				List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(version.getUri(), DDIElement.CVSCHEME);
+				CVScheme scheme = new CVScheme(ddiSchemes.get(0));
+				stardatDDIService.deleteScheme( scheme );
+			}
+			for( ConceptDTO concept : version.getConcepts())
+				conceptService.delete( concept.getId());
+			
+			for( VocabularyChangeDTO vc : vocabularyChangeService.findAllByVocabularyVersionId( vocabulary.getId(), version.getId()))
+				vocabularyChangeService.delete( vc.getId());
+			
+			versionService.delete( version.getId());
+		}
+		// remove all codes
+		for( CodeDTO code : codeService.findByVocabulary( vocabulary.getId()))
+			codeService.delete(code);
+		
+		// remove all vocabulary in DB
+		delete( vocabulary.getId());
+	}
 	
 	/**
 	 *  Main search method
@@ -713,6 +775,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 	public void indexPublish(VocabularyDTO vocabulary, VersionDTO version) {
 		// resave codes
 		vocabulary = findOne( vocabulary.getId());
+		
+		// set vocabulary with latest Published version from SL and TL
+		List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup( true );
+		
+		vocabulary.clearContent();
+		for(VersionDTO ver : latestVersions) {
+			vocabulary.addLanguage( ver.getLanguage());
+			vocabulary.setTitleDefinition( ver.getTitle(), ver.getDefinition(), ver.getLanguage());
+			vocabulary.setVersionByLanguage( ver.getLanguage(), ver.getNumber());
+		}
+		
 		// get latest published codes
 		List<CodeDTO> publishedCodes = codeService.findByVocabularyAndVersion(vocabulary.getId(), version.getId());
 		vocabulary.setCodes( new HashSet<CodeDTO>(publishedCodes) );
@@ -830,4 +903,5 @@ public class VocabularyServiceImpl implements VocabularyService {
 	public void detach(VocabularyDTO vocabularyDTO) {
 		em.detach( vocabularyMapper.toEntity(vocabularyDTO));
 	}
+
 }
