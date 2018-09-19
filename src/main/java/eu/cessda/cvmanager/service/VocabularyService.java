@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.service.dto.AgencyDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -71,6 +72,10 @@ public interface VocabularyService {
      * @return the list of entities
      */
     Page<VocabularyDTO> search(String query, Pageable pageable);
+    
+    Page<VocabularyDTO> findAllWithdrawn(Pageable pageable);
+    
+    Page<VocabularyDTO> findAllWithdrawn(Long agencyId, Pageable pageable);
     
     void detach( VocabularyDTO vocabularyDTO);
     

@@ -151,6 +151,8 @@ public abstract class CvAdminView extends MVerticalLayout implements MView, Tran
 
 	public void topMenuButtonUpdateActive(int activeIndex) {
 		int i=0;
+		if( ((CVManagerUI) getUI()) == null)
+			return;
 		for( MButton button : ((CVManagerUI) getUI()).getMenuButtons()) {
 			if( activeIndex == i )
 				button.addStyleName("active");

@@ -41,9 +41,9 @@ import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 public abstract class CvView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -8769292972079523949L;
-	public static enum ActionType{
-		ADMIN, DISCOVER, EDITORSEARCH, DETAIL, DETAILS, AGENCY// this should be similar to view names
-	}
+//	public static enum ActionType{
+//		ADMIN, DISCOVER, EDITORSEARCH, DETAIL, DETAILS, AGENCY, WITHDRAWNDETAILS// this should be similar to view names
+//	}
 	
 	protected final I18N i18n;
 	protected final EventBus.UIEventBus eventBus;
@@ -58,7 +58,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	
 	protected Locale locale = UI.getCurrent().getLocale();
 	
-	private final ActionType actionType;
+//	private final ActionType actionType;
 	protected CvItem cvItem = new CvItem();
 	protected AgencyDTO agency;
 	protected VocabularyDTO vocabulary;
@@ -86,7 +86,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		this.codeService = codeService;
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.viewName = actionType;
-		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
+//		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
 		this.eventBus.subscribe( this );
 	}
@@ -176,9 +176,9 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		return stardatDDIService;
 	}
 
-	public ActionType getActionType() {
-		return actionType;
-	}
+//	public ActionType getActionType() {
+//		return actionType;
+//	}
 
 	public CvItem getCvItem() {
 		return cvItem;

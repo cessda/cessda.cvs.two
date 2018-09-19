@@ -28,6 +28,8 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.LicenseService;
 import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
+import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.ui.layout.WithdrawnCvLayout;
 
 @UIScope
 @SpringView(name = AdminView.VIEW_NAME)
@@ -40,7 +42,8 @@ public class AdminView extends CvAdminView {
 		MANAGE_AGENCY,
 		MANAGE_USER_AGENCY,
 		MANAGE_USER_ROLE, 
-		MANAGE_LICENSE
+		MANAGE_LICENSE,
+		LIST_WITHDRAWN_CV
 	};
 	
 //	Autowired
@@ -50,6 +53,7 @@ public class AdminView extends CvAdminView {
 	private final UserAgencyService userAgencyService;
 	private final MetadataFieldService metadataFieldService;
 	private final MetadataValueService metadataValueService;
+	private final VocabularyService vocabularyService;
 	private final LicenseService licenseService;
 	private final BCryptPasswordEncoder encrypt;
 	
@@ -57,7 +61,7 @@ public class AdminView extends CvAdminView {
 	
 	public AdminView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			SecurityService securityService, UserService userService, RoleService roleService, 
-			AgencyService agencyService, LicenseService licenseService,
+			AgencyService agencyService, LicenseService licenseService, VocabularyService vocabularyService,
 			MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
 			UserAgencyService userAgencyService, BCryptPasswordEncoder encrypt) {
 		super(i18n, eventBus, configService, securityService, agencyService, AdminView.VIEW_NAME);
@@ -68,6 +72,7 @@ public class AdminView extends CvAdminView {
 		this.userAgencyService = userAgencyService;
 		this.metadataFieldService = metadataFieldService;
 		this.metadataValueService = metadataValueService;
+		this.vocabularyService = vocabularyService;
 		this.encrypt = encrypt;
 		
 		eventBus.subscribe(this, AdminView.VIEW_NAME);
@@ -163,6 +168,9 @@ public class AdminView extends CvAdminView {
 				break;
 			case MANAGE_LICENSE:
 				mainContainer.add( new ManageLicenseLayout(i18n, licenseService));
+				break;
+			case LIST_WITHDRAWN_CV:
+				mainContainer.add( new WithdrawnCvLayout(i18n, vocabularyService, agencyService, configService));
 				break;
 		}
 	}

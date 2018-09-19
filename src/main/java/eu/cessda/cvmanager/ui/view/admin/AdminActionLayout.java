@@ -70,6 +70,7 @@ public class AdminActionLayout extends ResponsiveBlock{
 	private MButton buttonManageUserAgency = new MButton("Manage User Agency");
 	private MButton buttonManageUserRole = new MButton("Manage User Role");
 	private MButton buttonManageLicense = new MButton("Manage License");
+	private MButton buttonWitdrawnCvs = new MButton("Withdrawn CVs");
 	
 	public AdminActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 
 			AdminView adminView, AgencyDTO agency, UserService userService, RoleService roleService, AgencyService agencyService,
@@ -114,6 +115,12 @@ public class AdminActionLayout extends ResponsiveBlock{
 			.withVisible( false )
 			.addClickListener( this::doManageLicense );
 		
+		buttonWitdrawnCvs
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::doWithdrawnList );
+		
 		getInnerContainer()
 			.add(
 				buttonManageUser,
@@ -122,7 +129,8 @@ public class AdminActionLayout extends ResponsiveBlock{
 				new MLabel("<hr/>").withContentMode( ContentMode.HTML ),
 				buttonManageUserRole,
 				new MLabel("<hr/>").withContentMode( ContentMode.HTML ),
-				buttonManageLicense
+				buttonManageLicense,
+				buttonWitdrawnCvs
 			);
 	}
 
@@ -146,6 +154,10 @@ public class AdminActionLayout extends ResponsiveBlock{
 		adminView.setMainContent( AdminContent.MANAGE_LICENSE );
 	}
 	
+	private void doWithdrawnList(ClickEvent event ) {
+		adminView.setMainContent( AdminContent.LIST_WITHDRAWN_CV );
+	}
+	
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		buttonManageUser.withCaption( "Manage Member" );
@@ -164,6 +176,7 @@ public class AdminActionLayout extends ResponsiveBlock{
 			buttonManageUserAgency.setVisible( true );
 			buttonManageUserRole.setVisible( true );
 			buttonManageLicense.setVisible( true );
+			buttonWitdrawnCvs.setVisible( true );
 		}
 		
 		return hasAction;

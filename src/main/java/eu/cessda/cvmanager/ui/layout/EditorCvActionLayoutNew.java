@@ -510,6 +510,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 						buttonAddCv.setVisible( true );
 						if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
 							buttonNewVersion.setVisible( true );
+							separatorLabel.setVisible( true );
 							buttonWithdrawnCv.setVisible( true );
 						}
 						if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {

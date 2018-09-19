@@ -24,6 +24,7 @@ import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.gesis.wts.domain.Agency;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.dto.AgencyDTO;
@@ -245,6 +246,22 @@ public class VocabularyServiceImpl implements VocabularyService {
         Page<Vocabulary> result = vocabularySearchRepository.search(queryStringQuery(query), pageable);
         return result.map(vocabularyMapper::toDto);
     }
+    
+
+	@Override
+	@Transactional(readOnly = true)
+	public Page<VocabularyDTO> findAllWithdrawn(Pageable pageable) {
+		  log.debug("Request to get all withdrawn Vocabularies");
+	      return vocabularyRepository.findAllWithdrawn(pageable)
+                .map(vocabularyMapper::toDto);
+	}
+	
+	@Override
+	public Page<VocabularyDTO> findAllWithdrawn(Long agencyId, Pageable pageable) {
+		log.debug("Request to get all withdrawn Vocabularies by agencyId " + agencyId);
+	      return vocabularyRepository.findAllWithdrawn(agencyId, pageable)
+              .map(vocabularyMapper::toDto);
+	}
 
 	@Override
 	public VocabularyDTO getByUri(String cvUri) {
@@ -287,7 +304,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	
 	@Override
 	public VocabularyDTO restore(VocabularyDTO vocabulary) {
-		vocabulary.setWithdrawn( true );
+		vocabulary.setWithdrawn( false );
 		vocabulary = save(vocabulary);
 		
 		// reindex for publication and editor
