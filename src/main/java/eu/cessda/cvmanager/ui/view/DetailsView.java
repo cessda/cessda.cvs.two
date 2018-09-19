@@ -212,6 +212,8 @@ public class DetailsView extends CvView {
 	private String activeTab;
 	private String versionNumber;
 	
+	private String highlightCode;
+	
 	private EditorCvActionLayoutNew editorCvActionLayout;
 	private EditorCodeActionLayoutNew editorCodeActionLayout;
 
@@ -263,24 +265,6 @@ public class DetailsView extends CvView {
 				languageLayout, 
 				bottomSection
 			);
-		JavaScript.getCurrent().execute(
-				"function offset(el) {" + 
-				"    var rect = el.getBoundingClientRect()," + 
-				"    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft," + 
-				"    scrollTop = window.pageYOffset || document.documentElement.scrollTop;" + 
-				"    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + 
-				"}" + 
-				"var mainContainer=document.getElementById('main-container'); " +
-				"var sidePanel = document.getElementById('side-panel');" + 
-				"var sidePanelOffset = offset(sidePanel);" + 
-				"mainContainer.addEventListener('scroll', function() { " +
-					"if( mainContainer.scrollTop > sidePanelOffset.top && Math.max(document.documentElement.clientWidth, window.innerWidth || 0) > 792){" +
-						"sidePanel.style.position='fixed';sidePanel.style.top='0';" +
-					"}else{" +
-						"sidePanel.style.position='static';" +
-					"}" +
-				"});"
-				);
 	}
 	
 	@EventBusListenerMethod( scope = EventScope.UI )
@@ -350,7 +334,10 @@ public class DetailsView extends CvView {
 					else
 						versionNumber = null;
 					
-					
+					if(  mappedParams.get("code") != null )
+						highlightCode = mappedParams.get("code");
+					else
+						highlightCode = null;
 				}
 				
 				
@@ -529,6 +516,7 @@ public class DetailsView extends CvView {
 				
 				initTopViewSection();
 				initBottomViewSection();
+				executeJavascriptFunction();
 				
 				setCode( null );
 				updateMessageStrings(locale);
@@ -682,7 +670,9 @@ public class DetailsView extends CvView {
 				.setId("prefLabelTl");
 		
 		detailTreeGrid.addColumn(code -> {
-					return new MLabel( code.getDefinitionByLanguage( sourceLanguage )).withStyleName( "word-brake-normal" );
+					MLabel definitionLabel = new MLabel( code.getDefinitionByLanguage( sourceLanguage )).withStyleName( "word-brake-normal" );
+					definitionLabel.setId( "code-" + code.getNotation().replace(".", "-"));
+					return definitionLabel;
 				}, new ComponentRenderer())
 				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
 				.setExpandRatio(3)
@@ -789,6 +779,59 @@ public class DetailsView extends CvView {
 		bottomViewSection.add(detailTab);
 	}
 
+	private void executeJavascriptFunction() {
+		// scroll code, if code available in url
+		if( highlightCode != null ) {
+			JavaScript.getCurrent().execute(
+				"function offset(el) {" + 
+				"    var rect = el.getBoundingClientRect()," + 
+				"    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft," + 
+				"    scrollTop = window.pageYOffset || document.documentElement.scrollTop;" + 
+				"    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + 
+				"}" + 
+				"var mainContainer=document.getElementById('main-container'); " +
+				"var sidePanel = document.getElementById('side-panel');" + 
+				"var sidePanelOffset = offset(sidePanel);" + 
+				"mainContainer.addEventListener('scroll', function() { " +
+					"if( mainContainer.scrollTop > sidePanelOffset.top && Math.max(document.documentElement.clientWidth, window.innerWidth || 0) > 792){" +
+						"sidePanel.style.position='fixed';sidePanel.style.top='0';" +
+					"}else{" +
+						"sidePanel.style.position='static';" +
+					"}" +
+				"});" +
+				"setTimeout( scrollPage, 1000);" +
+				"function scrollPage(){" +
+					"var codeRow = document.getElementById('code-"+ highlightCode +"'); " +
+					"codeRow.parentNode.parentNode.parentNode.classList.add('code-highlight');" +
+					"setTimeout( function(){ codeRow.parentNode.parentNode.parentNode.classList.remove('code-highlight');}, 2000);" +
+					"var codeRowOffset = offset(codeRow);" + 
+					"console.log(codeRowOffset.top);" + 
+					"mainContainer.scrollTop = codeRowOffset.top;" +
+				"}"
+				);
+			highlightCode = null;
+		} else {
+			JavaScript.getCurrent().execute(
+					"function offset(el) {" + 
+					"    var rect = el.getBoundingClientRect()," + 
+					"    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft," + 
+					"    scrollTop = window.pageYOffset || document.documentElement.scrollTop;" + 
+					"    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + 
+					"}" + 
+					"var mainContainer=document.getElementById('main-container'); " +
+					"var sidePanel = document.getElementById('side-panel');" + 
+					"var sidePanelOffset = offset(sidePanel);" + 
+					"mainContainer.addEventListener('scroll', function() { " +
+						"if( mainContainer.scrollTop > sidePanelOffset.top && Math.max(document.documentElement.clientWidth, window.innerWidth || 0) > 792){" +
+							"sidePanel.style.position='fixed';sidePanel.style.top='0';" +
+						"}else{" +
+							"sidePanel.style.position='static';" +
+						"}" +
+					"});"
+					);
+		}
+	}
+	
 	private void setActiveTab() {
 		if( activeTab != null) {
 			switch( activeTab) {

@@ -18132,6 +18132,10 @@ div.v-layout.v-horizontal.v-widget {
 	margin-right: 15px;
 }
 
+.mytheme .code-highlight td {
+	background-color: #ff0;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;
