@@ -87,7 +87,7 @@ import eu.cessda.cvmanager.utils.FileUtils;
 @StyleSheet({"http://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900"})
 @Theme("mytheme")
 @SpringUI
-@PreserveOnRefresh
+//@PreserveOnRefresh
 @EnableEventBus
 
 public class CVManagerUI extends TranslatableUI implements Translatable {
