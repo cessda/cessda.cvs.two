@@ -610,7 +610,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 							// index elastic for the publication site
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
 								publishCv(vocabulary, currentVersion);
-								vocabularyService.indexPublish(vocabulary, currentVersion);
 								// navigate to the Publication detail
 								String uri = null;
 								try {
@@ -636,12 +635,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 		// get latest version
 		vocabulary.setVers( vocabulary.getLatestVersions( Status.PUBLISHED.toString() ));
 		
-		// set languages from latest version
-//		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
-		// set published languages across versions
-		// update/generate vocabulary content
-//		// 1. clear vocabulary DTO first before replacing content
-//		vocabulary.clearContent();
 		// 1. generate vocabulary content from the latest versions
 		for( VersionDTO versionDTO : vocabulary.getVers()) {
 			if( versionDTO.getItemType().equals( ItemType.SL.toString()))
@@ -714,13 +707,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 				newCvScheme.setId( currentVersion.getUri());
 				newCvScheme.setContainerId(newCvScheme.getId());
 				newCvScheme.setStatus( Status.PUBLISHED.toString() );
-				
-//				// issue in CV version
-//				CVVersion cvVersion = new CVVersion();
-//				cvVersion.setContainerId( newCvScheme.getContainerId());
-//				cvVersion.setType( currentVersion.getNumber() );
-//				
-//				newCvScheme.setVersion(cvVersion);
 				
 				
 				// Store also Owner Agency, Vocabulary and codes
@@ -805,6 +791,9 @@ public class DialogManageStatusWindowNew extends MWindow {
 				}
 			}
 		}
+		
+		// indexing published codes
+		vocabularyService.indexPublish(vocabulary, slLatestVersion);
 	}
 	
 	private void storeCvConceptTree(TreeData<CVConcept> cvConceptTree, CVScheme newCvScheme) {

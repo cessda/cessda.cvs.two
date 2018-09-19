@@ -71,6 +71,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.Image;
+import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
@@ -185,6 +186,7 @@ public class DetailView extends CvView {
 	private MLabel lDate3 = new MLabel();
 	
 	private LanguageMenu langMenu;
+	private String highlightCode;
 	
 	
 	private VersionDTO currentVersion;
@@ -284,7 +286,8 @@ public class DetailView extends CvView {
 					cvItem.setCurrentNotation(itemPathPart[0]);
 				if( mappedParams.get("url") != null)
 					cvItem.setCurrentCvId( mappedParams.get("url") );
-
+				if(  mappedParams.get("code") != null )
+					highlightCode = mappedParams.get("code");
 				
 				setDetails() ;
 
@@ -508,8 +511,6 @@ public class DetailView extends CvView {
 		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale)).setId("license");
 		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale)).setId("export");
 		
-		setActiveTab();
-		
 		detailTreeGrid = new TreeGrid<>(ConceptDTO.class);
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
@@ -531,24 +532,15 @@ public class DetailView extends CvView {
 			.setId("prefLabelTl");
 
 		detailTreeGrid.addColumn(concept -> {
-			return new MLabel( concept.getDefinition()).withStyleName( "word-brake-normal" );
+			MLabel definitionLabel = new MLabel( concept.getDefinition()).withStyleName( "word-brake-normal" );
+			definitionLabel.setId( "code-" + concept.getNotation().replace(".", "-"));
+			return definitionLabel;
 		}, new ComponentRenderer())
 			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString() ))
 			.setExpandRatio(3)
 			.setId("definitionTl");
 		
 		detailTreeGrid.setSizeFull();
-		
-//		// select row programatically
-//		if(code != null ) {
-//			detailTreeGrid.select( code);
-//			//detailTreeGrid.scrollTo( 13 );
-//			
-//			// get code
-//			code = codeService.getByUri( cvItem.getCvConcept().getContainerId());
-//			if( code == null )
-//				code = CodeDTO.generateFromCVConcept( cvItem.getCvConcept() );
-//		}
 		
 		detailTreeGrid.getColumns().stream().forEach( column -> column.setSortable( false ));
 				
@@ -591,13 +583,54 @@ public class DetailView extends CvView {
 		});
 
 		bottomViewSection.add(detailTab);
+		
+		setActiveTab();
+		
+		executeJavascriptFunction();
+	}
+	
+	private void executeJavascriptFunction() {
+		// scroll code, if code available in url
+		if( highlightCode != null ) {
+			JavaScript.getCurrent().execute(
+				"function offset(el) {" + 
+				"    var rect = el.getBoundingClientRect()," + 
+				"    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft," + 
+				"    scrollTop = window.pageYOffset || document.documentElement.scrollTop;" + 
+				"    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + 
+				"}" + 
+				"var mainContainer=document.getElementById('main-container'); " +
+//				"var sidePanel = document.getElementById('side-panel');" + 
+//				"var sidePanelOffset = offset(sidePanel);" + 
+//				"mainContainer.addEventListener('scroll', function() { " +
+//					"if( mainContainer.scrollTop > sidePanelOffset.top && Math.max(document.documentElement.clientWidth, window.innerWidth || 0) > 792){" +
+//						"sidePanel.style.position='fixed';sidePanel.style.top='0';" +
+//					"}else{" +
+//						"sidePanel.style.position='static';" +
+//					"}" +
+//				"});" +
+				"setTimeout( scrollPage, 1000);" +
+				"function scrollPage(){" +
+					"var codeRow = document.getElementById('code-"+ highlightCode +"'); " +
+					"codeRow.parentNode.parentNode.parentNode.classList.add('code-highlight');" +
+					"setTimeout( function(){ codeRow.parentNode.parentNode.parentNode.classList.remove('code-highlight');}, 2000);" +
+					"var codeRowOffset = offset(codeRow);" + 
+					"console.log(codeRowOffset.top);" + 
+					"mainContainer.scrollTop = codeRowOffset.top;" +
+				"}"
+				);
+			highlightCode = null;
+		}
 	}
 
 	private void setActiveTab() {
 		if( activeTab != null) {
 			switch( activeTab) {
 				case "download":
-					detailTab.setSelectedTab(4);
+					vocabulary = vocabularyService.findOne(currentVersion.getVocabularyId());
+					// get all version put it on the map
+					exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
+					detailTab.setSelectedTab(5);
 					break;
 				default:
 					detailTab.setSelectedTab(0);

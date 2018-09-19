@@ -197,7 +197,7 @@ public class VocabularyGridRowPublish extends CustomComponent {
 					codeDefinition = "";
 				if( codeTitle != null ) {
 					codeList.add(
-						new MLabel( "<a href=\"" + baseUrl + "?code=" + code.getNotation() + "\">" + codeTitle + "</a>" 
+						new MLabel( "<a href=\"" + baseUrl + "&code=" + code.getNotation().replace(".", "-") + "\">" + codeTitle + "</a>" 
 								+ " " + codeDefinition )
 						.withContentMode( ContentMode.HTML )
 						.withFullWidth()

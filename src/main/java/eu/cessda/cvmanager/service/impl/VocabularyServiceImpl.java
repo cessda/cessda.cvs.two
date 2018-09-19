@@ -659,7 +659,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVers() ));
 		// get codes
 		List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
-		vocabulary.setCodes( new HashSet<>( codes ));
+		
 		
 		// Apply filter in case latest SL version is a draft
 		// Since SL need to be published first,
@@ -675,7 +675,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			vocabulary.clearContent();
 			vocabulary.addLanguage( latestSLversion.getLanguage());
 			vocabulary.setTitleDefinition( latestSLversion.getTitle(), latestSLversion.getDefinition(), latestSLversion.getLanguage());
-		
+			vocabulary.setVersionByLanguage(latestSLversion.getLanguage(), latestSLversion.getNumber());
 			// clear codes and assign with concepts from SL version
 			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
 			Set<CodeDTO> codesUpdated = new HashSet<>();
@@ -689,6 +689,20 @@ public class VocabularyServiceImpl implements VocabularyService {
 			}
 			vocabulary = save(vocabulary);
 			vocabulary.setCodes(codesUpdated);
+		} else {
+			// set vocabulary with all value from latest version
+			List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup( false );
+			
+			vocabulary.clearContent();
+			for(VersionDTO ver : latestVersions) {
+				vocabulary.addLanguage( ver.getLanguage());
+				vocabulary.setTitleDefinition( ver.getTitle(), ver.getDefinition(), ver.getLanguage());
+				vocabulary.setVersionByLanguage( ver.getLanguage(), ver.getNumber());
+			}
+			
+			vocabulary = save(vocabulary);
+			// assign vocabulary with workflow codes
+			vocabulary.setCodes( new HashSet<>( codes ));
 		}
 		
 		Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
@@ -697,6 +711,12 @@ public class VocabularyServiceImpl implements VocabularyService {
 	
 	@Override
 	public void indexPublish(VocabularyDTO vocabulary, VersionDTO version) {
+		// resave codes
+		vocabulary = findOne( vocabulary.getId());
+		// get latest published codes
+		List<CodeDTO> publishedCodes = codeService.findByVocabularyAndVersion(vocabulary.getId(), version.getId());
+		vocabulary.setCodes( new HashSet<CodeDTO>(publishedCodes) );
+		
 		VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
 		vocabularyPublishSearchRepository.save( vocab );
 	}

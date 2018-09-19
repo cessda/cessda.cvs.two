@@ -349,11 +349,14 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.withValueChangeMode( ValueChangeMode.LAZY)
 			.withValueChangeTimeout( 200 )
 			.addTextChangeListener( e -> {
-				if( navigator.getCurrentView().toString().indexOf( "EditorSearchView" ) > 0 ) {
-//					navigator.navigateTo(DiscoveryView.VIEW_NAME);
+				System.out.println( EditorSearchView.class.getName() );
+				if( navigator.getCurrentView().toString().indexOf( EditorSearchView.class.getSimpleName() ) > 0 || 
+						navigator.getCurrentView().toString().indexOf( DetailsView.class.getSimpleName() ) > 0 ) {
+					if( navigator.getCurrentView().toString().indexOf( EditorSearchView.class.getSimpleName() ) < 0 && !e.getValue().isEmpty())
+						navigator.navigateTo(EditorSearchView.VIEW_NAME);
 					eventBus.publish(EventScope.UI, EditorSearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_EDITOR_SEARCH, e.getValue()) );
 				} else {
-					if( navigator.getCurrentView().toString().indexOf( "DiscoveryView" ) < 0 && !e.getValue().isEmpty())
+					if( navigator.getCurrentView().toString().indexOf( DiscoveryView.class.getSimpleName() ) < 0 && !e.getValue().isEmpty())
 						navigator.navigateTo(DiscoveryView.VIEW_NAME);
 					eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
 				}

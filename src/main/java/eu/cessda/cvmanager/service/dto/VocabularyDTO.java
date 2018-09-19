@@ -447,6 +447,10 @@ public class VocabularyDTO implements Serializable {
     	return this;
     }
     
+    public VocabularyDTO setVersionByLanguage(String langIso, String versionNumber) {
+    	return setVersionByLanguage(Language.getEnum( langIso ), versionNumber);
+    }
+    
 	public VocabularyDTO setVersionByLanguage(Language language, String versionNumber) {
 		switch (language) {
 			case CZECH:
@@ -1476,6 +1480,46 @@ public class VocabularyDTO implements Serializable {
 		
 		else
 			return vers.stream().findFirst();
+	}
+	
+	public List<VersionDTO> getLatestVersionGroup( boolean isTlPublished){
+		List<VersionDTO> versionsGroup = new ArrayList<>();
+		//  First get latest published SL
+		Optional<VersionDTO> latestSlVersionOpt = versions.stream()
+			.filter( p -> Status.PUBLISHED.toString().equals( p.getStatus()) )
+			.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+			.filter( p -> sourceLanguage.equals( p.getLanguage() ))
+			.findFirst();
+		
+		if( latestSlVersionOpt.isPresent() ) {
+			VersionDTO latestSlVersion = latestSlVersionOpt.get();
+			versionsGroup.add( latestSlVersion );
+			
+			// get TL version by uri_sl
+			List<VersionDTO> tlVersions = null;
+			if( isTlPublished ) {
+				tlVersions = versions.stream()
+					.filter( p -> Status.PUBLISHED.toString().equals( p.getStatus()) )
+					.filter( p -> latestSlVersion.getUri().equals( p.getUriSl() ))
+					.collect( Collectors.toList());
+			}
+			else {
+				tlVersions = versions.stream()
+					.filter( p -> latestSlVersion.getUri().equals( p.getUriSl() ))
+					.collect( Collectors.toList());
+			}
+			
+			Set<String> tlLanguages = new HashSet<>();
+			for( VersionDTO versionTl : tlVersions) {
+				if( tlLanguages.contains( versionTl.getLanguage()))
+					continue;
+				
+				versionsGroup.add(versionTl);
+				tlLanguages.add( versionTl.getLanguage());
+			}
+		}
+		
+		return versionsGroup;
 	}
 	
 	public List<VersionDTO> getVersionsByLanguage( String language){

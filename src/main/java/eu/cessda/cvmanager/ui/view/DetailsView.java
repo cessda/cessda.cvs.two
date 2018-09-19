@@ -336,8 +336,6 @@ public class DetailsView extends CvView {
 					
 					if(  mappedParams.get("code") != null )
 						highlightCode = mappedParams.get("code");
-					else
-						highlightCode = null;
 				}
 				
 				
@@ -536,7 +534,6 @@ public class DetailsView extends CvView {
 				langButton.setDescription( "source language" );
 			}
 			if( eachLanguage.equals( selectedLang ) ) {
-//				editorCvActionLayout.setSelectedLanguage( Language.getEnum( item) );
 				langButton.click();
 			}
 			
@@ -640,8 +637,6 @@ public class DetailsView extends CvView {
 		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale)).setId("identify");
 		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale)).setId("license");
 		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale)).setId("export");
-		
-		setActiveTab();
 			
 		detailTreeGrid = new TreeGrid<>(CodeDTO.class);
 		detailTreeGrid.addStyleNames("undefined-height");
@@ -777,6 +772,8 @@ public class DetailsView extends CvView {
 		});
 		
 		bottomViewSection.add(detailTab);
+		
+		setActiveTab();
 	}
 
 	private void executeJavascriptFunction() {
@@ -836,7 +833,11 @@ public class DetailsView extends CvView {
 		if( activeTab != null) {
 			switch( activeTab) {
 				case "download":
-					detailTab.setSelectedTab(4);
+					vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
+					// get all version put it on the map
+					orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
+					exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
+					detailTab.setSelectedTab(5);
 					break;
 				default:
 					detailTab.setSelectedTab(0);
