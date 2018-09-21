@@ -384,6 +384,8 @@ public class DialogAddLanguageWindowNew extends MWindow {
 			version.setTranslateAgency( translatorAgency.getValue() );
 			version.setTranslateAgencyLink( translatorAgencyLink.getValue());
 			
+			version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId());
+			
 			// get previous version
 			VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), Status.PUBLISHED.toString())
 			.ifPresent( prevVersion ->{

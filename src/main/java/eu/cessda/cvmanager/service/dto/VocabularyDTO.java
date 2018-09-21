@@ -1415,6 +1415,14 @@ public class VocabularyDTO implements Serializable {
 		return vocabulary;
 	}
 	
+	public VersionDTO getVersionById( Long versionId ) {
+		Optional<VersionDTO> findFirst = versions.stream().filter( p -> p.getId().longValue() == versionId.longValue()).findFirst();
+		if(findFirst.isPresent())
+			return findFirst.get();
+		else
+			return null;
+	}
+	
 	public Set<String> getLatestStatuses(){
 		Set<String> latestStatuses = new HashSet<>();
 		getLatestVersions().forEach( v -> latestStatuses.add(v.getStatus()));

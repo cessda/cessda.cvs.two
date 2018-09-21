@@ -105,6 +105,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
+import eu.cessda.cvmanager.ui.layout.CvComparatorLayout;
 import eu.cessda.cvmanager.ui.layout.DdiUsageLayout;
 import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayout;
 import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayoutNew;
@@ -770,7 +771,6 @@ public class DetailsView extends CvView {
 		exportLayout.add(exportLayoutContent);
 		exportLayout.setSizeFull();
 		
-
 		detailTab.addSelectedTabChangeListener( e -> {
 			TabSheet tabsheet = e.getTabSheet();
 			 // Find the tab (here we know it's a layout)

@@ -29,6 +29,7 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.TreeData;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
@@ -50,6 +51,7 @@ import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.ui.layout.CvComparatorLayout;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
@@ -115,6 +117,13 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private List<VersionDTO> latestTlVersions = new ArrayList<>();
 	private String versionNumberSL = "1.0";
 	private String versionNumberTL = "1.0.1";
+	
+	private MCssLayout comparatorBlock = new MCssLayout();
+	private MCssLayout comparatorContainer = new MCssLayout().withFullWidth();
+	private MCssLayout comparatorContent = new MCssLayout().withFullWidth();
+	private MLabel comparatorBlockHead = new MLabel();
+	private CvComparatorLayout comparatorLayout;
+	private MButton comparatorLayoutToggle = new MButton("Show comparison with previous version");
 
 	public DialogManageStatusWindowNew(StardatDDIService stardatDDIService,  
 			CodeService codeService, ConceptService conceptService, 
@@ -143,6 +152,24 @@ public class DialogManageStatusWindowNew extends MWindow {
 
 	private void init() {
 		List<VocabularyChangeDTO> changes = null;
+		comparatorLayout = new CvComparatorLayout(conceptService);
+		comparatorBlockHead
+			.withFullWidth()
+			.withStyleName("section-header")
+			.withValue( "Compare versions" );
+		comparatorContainer
+			.withStyleName("comparator-container")
+			.add(
+				comparatorLayoutToggle,
+				comparatorContent
+			);
+		comparatorBlock
+			.withStyleName("section-block")
+			.withFullWidth()
+			.add( 
+				comparatorBlockHead,
+				comparatorContainer
+			);
 		
 		changeListTitle
 			.withFullWidth()
@@ -232,6 +259,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			versionBlock.setVisible( false );
 			buttonReviewInitial.setVisible( true );
 			buttonReviewFinal.setVisible( false );
+			comparatorBlock.setVisible( false );
 			discussionArea.addStyleName("height-200");
 			statusInfo.setValue("Change CV' " + currentVersion.getItemType() + " " + "\"" + currentVersion.getTitle() + "\"" +
 					" from DRAFT to INITIAL_REVIEW" );
@@ -241,6 +269,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			versionBlock.setVisible( false );
 			buttonReviewInitial.setVisible( false );
 			buttonReviewFinal.setVisible( true );
+			comparatorBlock.setVisible( false );
 			discussionArea.addStyleName("height-200");
 			statusInfo.setValue("Change CV' " + currentVersion.getItemType() + " " + "\"" + currentVersion.getTitle() + "\"" +
 					" from INITIAL_REVIEW to FINAL_REVIEW" );
@@ -250,7 +279,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			buttonDiscussionSave.setVisible( false );
 			versionBlock.setVisible( true );
 			discussionArea.addStyleName("height-200");
-			
+			comparatorBlock.setVisible( true );
 			// prepare the version number
 			// get latest published
 			vocabulary.getLatestVersionByLanguage( vocabulary.getSourceLanguage(), null, Status.PUBLISHED.toString()).ifPresent( slPublish -> {
@@ -290,6 +319,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 				versionChanges.setVisible( false );
 				versionHistoryLayout.setVisible( false );
 				versionChangesLabel.setVisible( false );
+				comparatorBlock.setVisible( false );
 			} else {
 				// If publishing SL
 				if( currentVersion.getItemType().equals(ItemType.SL.toString())){
@@ -425,12 +455,37 @@ public class DialogManageStatusWindowNew extends MWindow {
 				versionButtonLayout
 			);
 		
+		comparatorContent
+			.add(comparatorLayout );
+		
+		comparatorLayout.setVisible( false );
+		
+		if( currentVersion.isInitialVersion()) {
+			comparatorLayoutToggle.setVisible( false );
+			
+		} else {
+			comparatorLayoutToggle.addClickListener( e -> {
+				if( comparatorLayout.isVisible()) {
+					comparatorLayout.setVisible( false );
+					e.getButton().setCaption("Show comparison with previous version");
+				} else {
+					if( !comparatorLayout.isVersionCompared()) {
+						VersionDTO prevVersion = vocabulary.getVersionById( currentVersion.getPreviousVersion());
+						comparatorLayout.compareVersion(prevVersion, currentVersion);
+					}
+					comparatorLayout.setVisible( true );
+					e.getButton().setCaption("Hide comparison with previous version");
+				}
+					
+			});
+		}
 		layout
 			.withFullWidth()
 			.withStyleName("dialog-content")
 			.add(
 				changeListBlock,
 				discussionBlock,
+				comparatorBlock,
 				statusBlock,
 				versionBlock
 				);
@@ -451,7 +506,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 		}
 		
 		this
-			.withWidth("1024px")
+			.withWidth(Page.getCurrent().getBrowserWindowWidth() * 0.98 + "px")
 			.withModal( true )
 			.withContent(layout);
 	}

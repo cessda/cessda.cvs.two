@@ -136,7 +136,6 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		
 		exportGrid.addStyleNames("export-grid");
 		exportGrid.removeAllColumns();		
-		exportGrid.setHeight("300px");
 		exportGrid
 			.withFullWidth()
 			.withHeight("200px");

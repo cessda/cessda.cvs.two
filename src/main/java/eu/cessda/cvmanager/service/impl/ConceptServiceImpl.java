@@ -112,7 +112,7 @@ public class ConceptServiceImpl implements ConceptService {
 	@Override
 	public List<ConceptDTO> findAllByCode(Long codeId) {
 		
-		return conceptRepository.findAllByVocabulary( codeId ).stream()
+		return conceptRepository.findAllByCode( codeId ).stream()
 	            .map(conceptMapper::toDto)
 	            .collect(Collectors.toCollection(LinkedList::new));
 	}
@@ -121,5 +121,12 @@ public class ConceptServiceImpl implements ConceptService {
 	public ConceptDTO findOneByCodeNotationAndId(String notation, Long codeId) {
 		Concept concept = conceptRepository.findOneByCodeNotationAndId(notation, codeId);
         return conceptMapper.toDto(concept);
+	}
+
+	@Override
+	public List<ConceptDTO> findByVersion(Long versionId) {
+		return conceptRepository.findByVersion( versionId ).stream()
+	            .map(conceptMapper::toDto)
+	            .collect(Collectors.toCollection(LinkedList::new));
 	}
 }

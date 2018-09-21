@@ -17284,6 +17284,10 @@ div.v-layout.v-horizontal.v-widget {
 	background-image: none;
 }
 
+.mytheme .v-window-contents > .v-scrollable {
+	margin-top: 12px;
+}
+
 .mytheme .search-grid {
 	float: left;
 	height: auto !important;
@@ -18132,8 +18136,60 @@ div.v-layout.v-horizontal.v-widget {
 	margin-right: 15px;
 }
 
+.mytheme .comparator-container {
+	background-color: #fff;
+}
+
 .mytheme .code-highlight td {
 	background-color: #ff0;
+}
+
+.mytheme .col-compare-head {
+	padding: 10px;
+	font-weight: 700;
+}
+
+.mytheme .col-compare-previous {
+	background-color: #f7f7f7;
+	padding-left: 4px !important;
+	padding-right: 4px !important;
+}
+
+.mytheme .col-compare-current {
+	padding-left: 4px !important;
+	padding-right: 4px !important;
+}
+
+.mytheme .row-compare-head {
+	border-top: 1px solid #CCCCCC !important;
+	border-bottom: 2px solid #CCCCCC !important;
+}
+
+.mytheme .row-compare {
+	border-bottom: 1px solid #efefef;
+	border-top: 1px solid #ececec;
+}
+
+.mytheme .row-compare-end {
+	border-bottom: 1px solid #efefef;
+	border-bottom: 2px solid #CCCCCC !important;
+	margin-bottom: 15px;
+}
+
+.mytheme .col-compare-small {
+	width: 14%;
+}
+
+.mytheme .col-compare-large {
+	width: 22%;
+}
+
+.mytheme .col-compare-extra-large {
+	width: 43%;
+}
+
+.mytheme .label-highlight > span {
+	background-color: #f7f790;
 }
 
 @media (min-width: 992px) {

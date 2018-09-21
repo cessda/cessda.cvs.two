@@ -1706,6 +1706,9 @@ $v-selection-item-border-radius: 0;
 		background-color:rgba(125, 125, 125, 0.2);
 		background-image:none;
    	}
+   	.v-window-contents > .v-scrollable {
+	    margin-top: 12px;
+	}
    .search-grid{
    		float:left;
    		height: auto !important;
@@ -2476,10 +2479,54 @@ $v-selection-item-border-radius: 0;
 	.margin-right15px{
 		margin-right:15px;
 	}
+	.comparator-container{
+		background-color:#fff;
+	}
 	
 	.code-highlight {
 		td{
 			background-color:#ff0;
 		}
+	}
+	.col-compare-head{
+		padding: 10px;
+		font-weight:700;
+	}
+	.col-compare-block{
+	}
+	.col-compare-previous{
+		background-color:#f7f7f7;
+		padding-left: 4px !important;
+    	padding-right: 4px !important;
+	}
+	.col-compare-current{
+		padding-left: 4px !important;
+    	padding-right: 4px !important;
+	}
+	.row-compare-head{
+		border-top: 1px solid #CCCCCC !important;
+		border-bottom: 2px solid #CCCCCC !important;
+	}
+	.row-compare{
+		border-bottom: 1px solid #efefef;
+    	border-top: 1px solid #ececec;
+	}
+	.row-compare-end{
+		border-bottom: 1px solid #efefef;
+    	border-bottom: 2px solid #CCCCCC !important;
+    	margin-bottom: 15px;
+	}
+	.col-compare-small{
+		width:14%;
+	}
+	.col-compare-large{
+		width:22%;
+	}
+	.col-compare-extra-large{
+		width:43%;
+	}
+	
+	.label-highlight>span{
+	 	background-color:#f7f790;
 	}
 }
