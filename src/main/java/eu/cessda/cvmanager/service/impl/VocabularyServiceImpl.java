@@ -920,5 +920,10 @@ public class VocabularyServiceImpl implements VocabularyService {
 	public void detach(VocabularyDTO vocabularyDTO) {
 		em.detach( vocabularyMapper.toEntity(vocabularyDTO));
 	}
+	
+	@Override
+	public void refresh(VocabularyDTO vocabularyDTO) {
+		em.refresh( vocabularyMapper.toEntity(vocabularyDTO));
+	}
 
 }

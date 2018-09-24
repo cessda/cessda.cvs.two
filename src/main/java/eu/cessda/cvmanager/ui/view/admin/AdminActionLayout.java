@@ -67,9 +67,9 @@ public class AdminActionLayout extends ResponsiveBlock{
 	
 	private MButton buttonManageUser = new MButton("Manage User");
 	private MButton buttonManageAgency = new MButton("Manage Agency");
-	private MButton buttonManageUserAgency = new MButton("Manage User Agency");
-	private MButton buttonManageUserRole = new MButton("Manage User Role");
-	private MButton buttonManageLicense = new MButton("Manage License");
+	private MButton buttonManageUserAgency = new MButton("Manage agency role");
+	private MButton buttonManageUserRole = new MButton("Manage system role");
+	private MButton buttonManageLicense = new MButton("Manage license");
 	private MButton buttonWitdrawnCvs = new MButton("Withdrawn CVs");
 	
 	public AdminActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 

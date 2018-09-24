@@ -386,7 +386,7 @@ public class VersionDTO implements Serializable {
 	}
 	
 	public List<ConceptDTO> getSortedConcepts(){
-		return new ArrayList<>( concepts );//concepts.stream().sorted(( c1, c2) -> c1.getPosition().compareTo( c2.getPosition() )).collect( Collectors.toList());
+		return concepts.stream().sorted(( c1, c2) -> c1.getPosition().compareTo( c2.getPosition() )).collect( Collectors.toList());
 	}
 
 	

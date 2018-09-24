@@ -50,8 +50,7 @@ public class Vocabulary extends VocabularyBase{
 //               inverseJoinColumns = @JoinColumn(name="version_id", referencedColumnName="id"))
 //    private Set<Version> versions = new HashSet<>();
     
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH },
-    		mappedBy = "vocabulary", orphanRemoval = true)
+    @OneToMany(mappedBy = "vocabulary")
     private Set<Version> versions = new HashSet<>();
     
 	

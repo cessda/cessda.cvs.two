@@ -207,6 +207,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.addClickListener( e -> {
 				currentVersion.setDiscussionNotes( discussionArea.getValue() );
 				currentVersion = versionService.save(currentVersion);
+//				vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
 				Notification.show("Notes/Discussion is saved!");
 			});
 		
@@ -642,6 +643,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 										
 										vocabulary.addVersions(newVersion);
 									}
+									// save current version
+									currentVersion = versionService.save(currentVersion);
 								} else {
 									// if TL is published
 									currentVersion.setUriSl( vocabulary.getUri());
@@ -655,6 +658,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 							}
 							
 							// save to database
+							// prevent saving versions automatically
+//							vocabulary.setVersions( null );
 							vocabulary = vocabularyService.save(vocabulary);
 							
 							// index for editor

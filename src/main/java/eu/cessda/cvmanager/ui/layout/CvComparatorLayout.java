@@ -136,7 +136,7 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 		versionCurrent = version2;
 		
 		headLabel2.setValue("<strong>" + version1.getNumber() + "</strong>");
-		headLabel3.setValue("<strong>" + version2.getNumber() + "</strong>");
+		headLabel3.setValue("<strong>" + "Current" + "</strong>");
 		
 		titlePrev.setValue( "<span>" + version1.getTitle() + "</span>" );
 		titleCurrent.setValue( "<span>" + version2.getTitle() + "</span>" );
@@ -207,11 +207,11 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 				new MCssLayout().withFullWidth().withStyleName("row-compare-head")
 				.add(
 					new MLabel( "Code v" + versionOld.getNumber() ).withStyleName( "col-compare-head","col-compare-small", "col-compare-previous"),
-					new MLabel( "Code v" + versionCurrent.getNumber() ).withStyleName( "col-compare-head","col-compare-small", "col-compare-current"),
+					new MLabel( "Code " + "(Current)" ).withStyleName( "col-compare-head","col-compare-small", "col-compare-current"),
 					new MLabel( "Term v" + versionOld.getNumber() ).withStyleName( "col-compare-head","col-compare-small", "col-compare-previous"),
-					new MLabel( "Term v" + versionCurrent.getNumber() ).withStyleName( "col-compare-head","col-compare-small", "col-compare-current"),
+					new MLabel( "Term " + "(Current)" ).withStyleName( "col-compare-head","col-compare-small", "col-compare-current"),
 					new MLabel( "Definition v" + versionOld.getNumber() ).withStyleName( "col-compare-head","col-compare-large", "col-compare-previous"),
-					new MLabel( "Definition v" + versionCurrent.getNumber() ).withStyleName( "col-compare-head","col-compare-large", "col-compare-current")
+					new MLabel( "Definition " + "(Current)" ).withStyleName( "col-compare-head","col-compare-large", "col-compare-current")
 				)
 			);
 				

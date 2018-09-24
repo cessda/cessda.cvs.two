@@ -151,8 +151,7 @@ public class Version implements Serializable{
     @Field(type = FieldType.Keyword)
     private List<String> restrictRoles;
     
-    @OneToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH },
-    		mappedBy = "version", orphanRemoval = true)
+    @OneToMany(mappedBy = "version")
     private Set<Concept> concepts = new HashSet<>();
 
 	public Long getId() {

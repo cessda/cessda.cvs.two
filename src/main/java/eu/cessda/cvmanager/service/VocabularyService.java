@@ -79,6 +79,8 @@ public interface VocabularyService {
     
     void detach( VocabularyDTO vocabularyDTO);
     
+    void refresh( VocabularyDTO vocabularyDTO);
+    
     EsQueryResultDetail search (EsQueryResultDetail esQueryResultDetail);
     
     EsQueryResultDetail searchPublished (EsQueryResultDetail esQueryResultDetail);

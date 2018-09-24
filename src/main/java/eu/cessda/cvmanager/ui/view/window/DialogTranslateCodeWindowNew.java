@@ -260,6 +260,7 @@ public class DialogTranslateCodeWindowNew extends MWindow {
 		concept.setNotation( code.getNotation() );
 		concept.setTitle( preferedLabel.getValue() );
 		concept.setDefinition( description.getValue() );
+		concept.setPosition( code.getPosition() );
 		
 		// store concept
 		if( !concept.isPersisted()) {

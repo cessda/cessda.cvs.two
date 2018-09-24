@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -58,6 +59,7 @@ import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.LicenseDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -338,6 +340,18 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 	private File generateExportFile( DownloadType type, List<VersionDTO> exportVersions) throws Exception {
 		Map<String, Object> map = new HashMap<>();
+		// sort code
+		for( VersionDTO versionExp : exportVersions) {
+//			Set<ConceptDTO> orderedConcepts = new LinkedHashSet<>();
+			for( ConceptDTO concept : versionExp.getConcepts()) {
+				if( concept.getPosition() == null)
+					concept.setPosition(999);
+			}
+			versionExp.setConcepts( 
+					versionExp.getConcepts().stream()
+					.sorted((c1,c2) -> c1.getPosition().compareTo(c2.getPosition()))
+					.collect(Collectors.toCollection(LinkedHashSet::new)));
+		}
 		map.put("versions", exportVersions);
 		map.put("agency", agency);
 		map.put("license", license);

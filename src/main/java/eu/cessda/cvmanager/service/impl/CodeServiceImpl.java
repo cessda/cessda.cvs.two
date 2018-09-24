@@ -281,6 +281,14 @@ public class CodeServiceImpl implements CodeService {
 				concept.setNotation( codeRoot.getNotation());
 				concept.setPosition(position);
 				conceptService.save(concept);
+				// get TL concepts as well (change position)
+				List<ConceptDTO> otherConcepts = conceptService.findAllByCode( codeRoot.getId());
+				for(ConceptDTO otherConcept: otherConcepts) {
+					if( otherConcept.getPosition() != position) {
+						otherConcept.setPosition(position);
+						conceptService.save(otherConcept);
+					}
+				}
 			}
 			// store top code
 			save(codeRoot);
@@ -303,6 +311,14 @@ public class CodeServiceImpl implements CodeService {
 				concept.setParent( code.getParent() );
 				concept.setPosition(position);
 				conceptService.save(concept);
+				// get TL concepts as well (change position)
+				List<ConceptDTO> otherConcepts = conceptService.findAllByCode( code.getId());
+				for(ConceptDTO otherConcept: otherConcepts) {
+					if( otherConcept.getPosition() != position) {
+						otherConcept.setPosition(position);
+						conceptService.save(otherConcept);
+					}
+				}
 			}
 			// store code
 			save(code);

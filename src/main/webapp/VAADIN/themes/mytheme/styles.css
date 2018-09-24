@@ -17731,8 +17731,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .button-language-selected {
-	background-image: -webkit-linear-gradient(top, #fafafa 2%, #dadada 98%);
-	background-image: linear, to bottom, #fafafa 2%, #dadada 98%;
+	background-image: -webkit-linear-gradient(top, #fafafa 2%, #c7c7c7 98%);
+	background-image: linear, to bottom, #fafafa 2%, #c7c7c7 98%;
 }
 
 .mytheme .status-draft {
