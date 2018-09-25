@@ -127,12 +127,14 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		agencyValue
 			.setValue("&nbsp; <a href='" + baseUrl + "'>" + agency.getName()  +"</a> ");
 		
-		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null) {
+		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null && !version.getTranslateAgency().isEmpty()) {
 			agencyTransalteValue.setVisible( true );
 			agencyTransalteValue.setCaption("Agency Translator");
 			agencyTransalteValue.setValue("&nbsp; <a href='" + version.getTranslateAgencyLink() + "'>" + version.getTranslateAgency()  +"</a> ");
 			translatorAgency.setValue( version.getTranslateAgency());
 			translatorAgencyLink.setValue( version.getTranslateAgencyLink());
+		} else {
+			agencyTransalteValue.setVisible(false);
 		}
 		
 		formLayout
@@ -191,11 +193,12 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 				urnEdit.setValue( cvCanonicalUri.substring(0, index2) );
 		}
 		
-		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null) {
+		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null && !version.getTranslateAgency().isEmpty()) {
 			agencyTransalteValue.setVisible( true );
 			agencyTransalteValue.setCaption("Agency translator");
 			agencyTransalteValue.setValue("&nbsp; <a href='" + version.getTranslateAgencyLink() + "'>" + version.getTranslateAgency()  +"</a> ");
-		}
+		} else
+			agencyTransalteValue.setVisible( false );
 	}
 
 

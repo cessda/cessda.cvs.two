@@ -48,7 +48,7 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 //	private MGrid<ConceptCompare> conceptGrid = new MGrid<>( ConceptCompare.class ).withFullWidth();
 	
 	private MCssLayout buttonLayout = new MCssLayout().withFullWidth();
-	private MButton showOnlyChanges = new MButton( "Show only code changes" ).withStyleName("pulll-left");
+	private MButton showOnlyChanges = new MButton( "Show all codes" ).withStyleName("pulll-left");
 	
 	private List<ConceptCompare> allComparation = new ArrayList<>();
 	private List<ConceptCompare> changesComparation = new ArrayList<>();
@@ -60,7 +60,7 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 	private VersionDTO versionOld;
 	private VersionDTO versionCurrent;
 	
-	private boolean showAllCode = true;
+	private boolean showAllCode = false;
 	
 	private MLabel changesLogHead = new MLabel("<strong>Changes Logs:</strong>").withContentMode( ContentMode.HTML).withFullWidth();
 	private MLabel changesLogLabel = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
@@ -193,7 +193,7 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 		});
 		
 		// set the grid
-		updateGrid( true );
+		updateGrid( false );
 		
 	}
 	

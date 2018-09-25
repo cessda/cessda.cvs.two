@@ -33,6 +33,7 @@ import com.vaadin.server.Page;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -105,9 +106,15 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private MLabel versionChangesLabel = new MLabel();
 	private TextArea versionChanges = new TextArea();
 	private MLabel versionNumberLabel = new MLabel();
-	private MTextField versionNumberField = new MTextField();
+//	private MTextField versionNumberField = new MTextField();
 	private MCssLayout tlCloneInfoLayout = new MCssLayout();
 	private MCssLayout versionButtonLayout = new MCssLayout();
+	
+	private MLabel versionSeparator1 = new MLabel("<strong>.</strong>").withContentMode( ContentMode.HTML );
+	private MLabel versionSeparator2 = new MLabel("<strong>.</strong>").withContentMode( ContentMode.HTML );
+	private MTextField versionNumberField1 = new MTextField().withWidth("30px");
+	private MTextField versionNumberField2 = new MTextField().withWidth("30px");
+	private MTextField versionNumberField3 = new MTextField().withWidth("30px");
 	
 	private MButton buttonPublishCv = new MButton("Publish");
 	private MButton buttonSave = new MButton("Save");
@@ -117,6 +124,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private List<VersionDTO> latestTlVersions = new ArrayList<>();
 	private String versionNumberSL = "1.0";
 	private String versionNumberTL = "1.0.1";
+	private String versionNumberPastSl = "0.9";
+	private String versionNumberPastTl = "1.0.0";
 	
 	private MCssLayout comparatorBlock = new MCssLayout();
 	private MCssLayout comparatorContainer = new MCssLayout().withFullWidth();
@@ -151,6 +160,15 @@ public class DialogManageStatusWindowNew extends MWindow {
 	}
 
 	private void init() {
+		versionNumberField1.addValueChangeListener( e -> {
+			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^\\d.]", ""));
+		});
+		versionNumberField2.addValueChangeListener( e -> {
+			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^\\d.]", ""));
+		});
+		versionNumberField3.addValueChangeListener( e -> {
+			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^\\d.]", ""));
+		});
 		List<VocabularyChangeDTO> changes = null;
 		comparatorLayout = new CvComparatorLayout(conceptService);
 		comparatorBlockHead
@@ -285,6 +303,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 			// get latest published
 			vocabulary.getLatestVersionByLanguage( vocabulary.getSourceLanguage(), null, Status.PUBLISHED.toString()).ifPresent( slPublish -> {
 				versionNumberSL = slPublish.getNumber();
+				versionNumberPastSl = versionNumberSL;
 				if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
 					int lastDotIndex = versionNumberSL.lastIndexOf(".");
 					String lastNumber = versionNumberSL.substring( lastDotIndex + 1);
@@ -292,17 +311,37 @@ public class DialogManageStatusWindowNew extends MWindow {
 				}
 				else {
 					versionNumberTL = versionNumberSL + ".1";
+					versionNumberPastTl = versionNumberSL + ".0";
 					vocabulary.getLatestVersionByLanguage( currentVersion.getLanguage(), null, Status.PUBLISHED.toString()).ifPresent( tlPublish -> {
 						String latestTLPublishNumber = tlPublish.getNumber();
 						if( VersionUtils.compareVersion(latestTLPublishNumber,  versionNumberSL ) > 0 ) {
 							int lastDotIndex2 = latestTLPublishNumber.lastIndexOf(".");
 							String lastNumber2 = latestTLPublishNumber.substring( lastDotIndex2 + 1);
 							versionNumberTL = latestTLPublishNumber.substring(0, lastDotIndex2 + 1) + (Integer.parseInt(lastNumber2) + 1);
+							versionNumberPastTl = latestTLPublishNumber;
 						}
 						
 					});
 				}
 			});
+			
+			if( sourceLanguage.equals( selectedLanguage )) {
+				versionNumberField3.setVisible( false );
+				versionSeparator2.setVisible( false );
+				if( currentVersion.getNumber() != null ) {
+					versionNumberSL = currentVersion.getNumber();
+				}
+				int indexDot = versionNumberSL.indexOf(".");
+				versionNumberField1.setValue( versionNumberSL.substring(0, indexDot));
+				versionNumberField2.setValue( versionNumberSL.substring(indexDot + 1, versionNumberSL.length()));
+			}
+			else {
+				versionNumberField1.setVisible( false );
+				versionNumberField2.setVisible( false );
+				int indexDot = versionNumberTL.lastIndexOf(".");
+				versionSeparator1.setValue( "<strong>" + versionNumberTL.substring(0, indexDot) + "</strong>");
+				versionNumberField3.setValue( versionNumberTL.substring(indexDot + 1, versionNumberTL.length()));
+			}
 			
 			// If publishing SL
 			if( currentVersion.getItemType().equals(ItemType.SL.toString())){
@@ -393,18 +432,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 			.withStyleName("section-header","pull-left")
 			.withValue("Version Number: ");
 		
-		versionNumberField
-			.withStyleName("pull-left")
-			.setWidth("80px");
 		
-		if( sourceLanguage.equals( selectedLanguage )) {
-			if( currentVersion.getNumber() == null )
-				versionNumberField.setValue( versionNumberSL );
-			else
-				versionNumberField.setValue( currentVersion.getNumber());
-		}
-		else
-			versionNumberField.setValue( versionNumberTL);
+
 
 		if( currentVersion.getVersionNotes() != null )
 			versionNotes.setValue( currentVersion.getVersionNotes() );
@@ -450,7 +479,11 @@ public class DialogManageStatusWindowNew extends MWindow {
 				versionChangesLabel,
 				versionChanges,
 				versionNumberLabel,
-				versionNumberField,
+				versionNumberField1,
+				versionSeparator1,
+				versionNumberField2,
+				versionSeparator2,
+				versionNumberField3,
 				tlCloneInfoLayout,
 				versionInfo,
 				versionButtonLayout
@@ -516,17 +549,59 @@ public class DialogManageStatusWindowNew extends MWindow {
 		currentVersion.setDiscussionNotes( discussionArea.getValue() );
 		currentVersion.setVersionNotes( versionNotes.getValue() );
 		currentVersion.setVersionChanges( versionChanges.getValue() );
-		currentVersion.setNumber( versionNumberField.getValue() );
+		currentVersion.setNumber( getVersionNumber() );
 		currentVersion = versionService.save(currentVersion);
 		Notification.show("Changes are saved!");
 		close();
 	}
 	
+	private String getVersionNumber() {
+		if( sourceLanguage.equals( selectedLanguage )) {
+			return versionNumberField1.getValue() + "." + versionNumberField2.getValue();
+		}else {
+			int indexDot = versionNumberTL.lastIndexOf(".");
+			return versionNumberTL.substring(0, indexDot) + "." + versionNumberField3.getValue();
+		}
+	}
+	
+	private boolean isVersionNumberEmpty() {
+		if( sourceLanguage.equals( selectedLanguage )) {
+			if( (versionNumberField1.getValue() != null && !versionNumberField1.isEmpty()) &&
+					(versionNumberField2.getValue() != null && !versionNumberField2.isEmpty()))
+				return false;
+			return true;
+		}else {
+			if( (versionNumberField3.getValue() != null && !versionNumberField3.isEmpty()))
+				return false;
+			return true;
+		}
+	}
+	
 	private void forwardToPublish() {
-		if( versionNotes.getValue() == null || versionNotes.getValue().isEmpty() || versionNumberField.getValue() == null || versionNumberField.getValue().isEmpty()) {
-			Notification.show("Version Notes and Version number can not be empty");
+		if( versionChanges.isVisible() && (versionChanges.getValue() == null || versionChanges.getValue().isEmpty())) {
+			Notification.show("Version Changes can not be empty");
 			return;
 		}
+		
+		if( isVersionNumberEmpty()) {
+			Notification.show("Version Number can not be empty");
+			return;
+		}
+			
+		if( sourceLanguage.equals( selectedLanguage )) {
+			System.out.println( getVersionNumber() + "  " + versionNumberPastSl + "  " + VersionUtils.compareVersion( getVersionNumber(), versionNumberPastSl));
+
+			if( VersionUtils.compareVersion(getVersionNumber(), versionNumberPastSl) <= 0) {
+				Notification.show("Version Number is lower or simillar with the last version");
+				return;
+			}
+		} else {
+			if( VersionUtils.compareVersion( getVersionNumber(), versionNumberPastTl) <= 0) {
+				Notification.show("Version Number is lower or simillar with the last version");
+				return;
+			}
+		}
+		
 		forwardStatus();
 	}
 
@@ -557,7 +632,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 		
 					dialog -> {
 						if( dialog.isConfirmed() ) {
-							String versionNumber = versionNumberField.getValue();
+							String versionNumber = getVersionNumber();
 								
 							currentVersion.setStatus( nextStatus );
 							
@@ -575,7 +650,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 								currentVersion.setUri( currentVersion.getUri() + "/" + versionNumber);
 								
 								currentVersion.setVersionNotes( versionNotes.getValue());
-								currentVersion.setNumber( versionNumberField.getValue());
+								currentVersion.setNumber( getVersionNumber());
 								currentVersion.setPublicationDate( LocalDate.now());
 								currentVersion.setLicenseId( agency.getLicenseId());
 								currentVersion.setVersionChanges( versionChanges.getValue() );
@@ -607,10 +682,10 @@ public class DialogManageStatusWindowNew extends MWindow {
 								}
 								
 								
-								vocabulary.setVersionByLanguage(selectedLanguage, versionNumberField.getValue());
+								vocabulary.setVersionByLanguage(selectedLanguage, getVersionNumber());
 								// if SL is published
 								if( selectedLanguage.equals( sourceLanguage )) {
-									vocabulary.setVersionNumber( versionNumberField.getValue() );
+									vocabulary.setVersionNumber( getVersionNumber() );
 									// only set Uri everytime SL published
 									vocabulary.setUri( currentVersion.getUri());
 									vocabulary.setPublicationDate( LocalDate.now());
