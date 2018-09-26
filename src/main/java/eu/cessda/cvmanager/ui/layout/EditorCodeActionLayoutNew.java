@@ -209,7 +209,7 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 		buttonCodeEdit.withCaption( "Edit Code" );
 		buttonCodeAddTranslation.withCaption( i18n.get("view.action.button.cvconcept.translation", locale));
 		buttonCodeAddChild.withCaption( "Add Child" );
-		buttonCodeDelete.withCaption( i18n.get("view.action.button.cvconcept.delete", locale));
+		buttonCodeDelete.withCaption( "Delete Code");
 		buttonCodeSort.withCaption( enableSort ? "Disable order code" : "Enable order code" );
 	}
 
@@ -235,6 +235,15 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 
 	public void setCurrentVersion(VersionDTO currentVersion) {
 		this.currentVersion = currentVersion;
+		if( this.currentVersion != null ) {
+			if( this.currentVersion.getItemType().equals(ItemType.SL.toString())) {
+				buttonCodeDelete.withCaption( "Delete Code");
+				buttonCodeEdit.withCaption( "Edit Code" );
+			}else {
+				buttonCodeDelete.withCaption( "Remove Translation");
+				buttonCodeEdit.withCaption( "Edit Translation" );
+			}
+		}
 	}
 
 	public ConceptDTO getCurrentConcept() {
@@ -253,8 +262,7 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 		this.vocabulary = vocabulary;
 	}
 	
-	public boolean hasActionRight() {
-		
+	public boolean hasActionRight() {		
  		boolean hasAction = false;
  		// if user is not authenticated and the current version is already published
 		if( !SecurityUtils.isAuthenticated() || currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {

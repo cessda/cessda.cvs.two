@@ -261,7 +261,10 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 					List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
 					Optional<VersionDTO> latestVers = vocabulary.getLatestVersionByLanguage(currentVersion.getLanguage(), null, Status.PUBLISHED.toString());
 					if( latestVers.isPresent()) { // there is already exist published version
+						boolean reindexPublication = false;
 						if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
+							if( currentVersion.getStatus().equals(Status.PUBLISHED.toString()))
+								reindexPublication = true;
 							// remove workflow codes on vocabulary
 							for( CodeDTO code : workflowCodes )
 								codeService.delete(code);
@@ -291,11 +294,16 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 							// reindex editor search
 							vocabularyService.index(vocabulary);
 							
+							if(reindexPublication)
+								vocabularyService.indexPublish(vocabulary, latestVers.get());
+							
 							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation());
 						} 
 						else // TL version which is not initial version
 						{
+							if( currentVersion.getStatus().equals(Status.PUBLISHED.toString()))
+								reindexPublication = true;
 							// clear the code in certain language
 							for(CodeDTO eachCode : workflowCodes) {
 								eachCode.setTitleDefinition( null, null, currentVersion.getLanguage());
@@ -321,6 +329,8 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 							
 							// reindex editor search
 							vocabularyService.index(vocabulary);
+							if(reindexPublication)
+								vocabularyService.indexPublish(vocabulary, latestVers.get());
 							
 							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation());
@@ -530,6 +540,8 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 								buttonAddTranslation.setVisible( false );
 							else
 								buttonAddTranslation.setVisible( true );
+							
+							buttonDropVersion.setVisible( true );
 						}
 						
 					} 
