@@ -1017,10 +1017,17 @@ public class VocabularyDTO implements Serializable {
 		this.versions = versions;
 	}
 	
-	public VocabularyDTO addVersions(VersionDTO version) {
+	public VocabularyDTO addVersion(VersionDTO version) {
     	if( this.versions == null )
     		this.versions  = new HashSet<>();
         this.versions.add( version );
+        return this;
+    }
+	
+	public VocabularyDTO removeVersion(VersionDTO version) {
+    	if( this.versions == null )
+    		return this;
+        this.versions.remove( version );
         return this;
     }
 

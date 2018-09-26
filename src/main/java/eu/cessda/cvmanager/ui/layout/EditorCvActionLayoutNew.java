@@ -281,11 +281,12 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 								conceptService.delete( c.getId());
 							}
 							// remove version
+							vocabulary.removeVersion(currentVersion);
 							versionService.delete( currentVersion.getId());
 							
-//							vocabulary.getLanguages().clear();
-//							vocabulary.addLanguage(latestVers.get().getLanguage());
-//							vocabulary = vocabularyService.save(vocabulary);
+							vocabulary.getLanguages().clear();
+							vocabulary.addLanguage(latestVers.get().getLanguage());
+							vocabulary = vocabularyService.save(vocabulary);
 							
 							// reindex editor search
 							vocabularyService.index(vocabulary);
@@ -315,6 +316,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 								conceptService.delete( c.getId());
 							}
 							// remove version
+							vocabulary.removeVersion(currentVersion);
 							versionService.delete( currentVersion.getId());
 							
 							// reindex editor search
@@ -334,6 +336,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 								conceptService.delete( c.getId());
 							}
 							// remove version
+							vocabulary.removeVersion(currentVersion);
 							versionService.delete( currentVersion.getId());
 
 							// remove  vocabulary in DB
@@ -351,6 +354,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 								conceptService.delete( c.getId());
 							}
 							// remove version
+							vocabulary.removeVersion(currentVersion);
 							versionService.delete( currentVersion.getId());
 							
 							vocabulary.getLanguages().remove( currentVersion.getLanguage());

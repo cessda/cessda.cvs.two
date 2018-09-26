@@ -296,7 +296,7 @@ public class DialogCreateVersionWindow extends MWindow {
 				conceptService.save(newConcept);
 			}
 			
-			vocabulary.addVersions(newVersion);
+			vocabulary.addVersion(newVersion);
 
 			// save whole vocabulary
 			vocabulary = vocabularyService.save(vocabulary);

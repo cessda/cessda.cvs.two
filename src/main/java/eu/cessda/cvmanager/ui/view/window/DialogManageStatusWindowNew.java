@@ -716,7 +716,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 											conceptService.save(newConcept);
 										}
 										
-										vocabulary.addVersions(newVersion);
+										vocabulary.addVersion(newVersion);
 									}
 									// save current version
 									currentVersion = versionService.save(currentVersion);

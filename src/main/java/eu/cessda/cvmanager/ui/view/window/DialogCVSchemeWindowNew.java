@@ -391,7 +391,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			version.setInitialVersion( version.getId() );
 			version = versionService.save( version );
 			
-			vocabulary.addVersions(version);
+			vocabulary.addVersion(version);
 			vocabulary.addVers(version);
 		} else {
 			

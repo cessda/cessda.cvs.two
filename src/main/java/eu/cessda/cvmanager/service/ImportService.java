@@ -168,7 +168,7 @@ public class ImportService {
 					version.addConcept(concept);
 				};
 				
-				vocabulary.addVersions(version);
+				vocabulary.addVersion(version);
 			}
 			
 			// reindex nested codes

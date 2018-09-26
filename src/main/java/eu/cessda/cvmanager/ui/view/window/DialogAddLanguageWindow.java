@@ -351,7 +351,7 @@ public class DialogAddLanguageWindow extends MWindow {
 			
 			version = versionService.save(version);
 			
-			vocabulary.addVersions(version);
+			vocabulary.addVersion(version);
 			vocabulary.addVers(version);
 		} else {
 			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
