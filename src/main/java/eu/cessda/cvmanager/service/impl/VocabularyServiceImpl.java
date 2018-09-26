@@ -276,7 +276,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	}
 	
 	@Override
-	public VocabularyDTO withdrawn(VocabularyDTO vocabulary) {
+	public VocabularyDTO withdraw(VocabularyDTO vocabulary) {
 		vocabulary.setWithdrawn( true );
 		vocabulary = save(vocabulary);
 		

@@ -97,7 +97,7 @@ public interface VocabularyService {
 	
 	void indexPublish( VocabularyDTO vocabulary, VersionDTO currentVersion);
 	
-	VocabularyDTO withdrawn( VocabularyDTO vocabulary );
+	VocabularyDTO withdraw( VocabularyDTO vocabulary );
 	
 	VocabularyDTO restore( VocabularyDTO vocabulary );
 	

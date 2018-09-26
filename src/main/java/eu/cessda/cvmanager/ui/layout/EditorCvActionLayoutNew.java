@@ -95,7 +95,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	private MButton buttonReviewInitial= new MButton();
 	private MButton buttonReviewFinal = new MButton("Final Review");
 	private MButton buttonPublishCv = new MButton();
-	private MButton buttonWithdrawnCv = new MButton();
+	private MButton buttonWithdrawCv = new MButton();
 	
 	private MLabel separatorLabel = new MLabel("<hr style=\"margin:5px\"/>").withContentMode( ContentMode.HTML );
 	
@@ -172,11 +172,11 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 			.withVisible( false )
 			.addClickListener( this::dropVersion );
 		
-		buttonWithdrawnCv
+		buttonWithdrawCv
 			.withFullWidth()
 			.withStyleName("action-button", ValoTheme.BUTTON_DANGER)
 			.withVisible( false )
-			.addClickListener( this::withdrawnVocabulary );
+			.addClickListener( this::withdrawVocabulary );
 		
 		separatorLabel.withFullWidth().setVisible( false );
 				
@@ -191,7 +191,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 				buttonNewVersion,
 				separatorLabel,
 				buttonDropVersion,
-				buttonWithdrawnCv
+				buttonWithdrawCv
 			);
 		
 	}
@@ -375,14 +375,14 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 		);
 	}
 	
-	private void withdrawnVocabulary(ClickEvent event ) {
+	private void withdrawVocabulary(ClickEvent event ) {
 		ConfirmDialog.show( this.getUI(), "Confirm",
-		"Are you sure you want to withdrawn the CV \"" + currentVersion.getNotation() + "\" ("+ currentVersion.getNumber() +")" +"?", "yes",
+		"Are you sure you want to withdraw the CV \"" + currentVersion.getNotation() + "\" ("+ currentVersion.getNumber() +")" +"?", "yes",
 		"cancel",
 				
 			dialog -> {
 				if( dialog.isConfirmed() ) {
-					vocabularyService.withdrawn(vocabulary);
+					vocabularyService.withdraw(vocabulary);
 					UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
 				}
 			}
@@ -401,7 +401,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 		buttonPublishCv.withCaption( "Publish" + buttonSuffix);
 		buttonNewVersion.withCaption( "Create new Version ");
 		buttonDropVersion.withCaption( "Drop Version" );
-		buttonWithdrawnCv.withCaption( "Withdrawn Vocabulary" );
+		buttonWithdrawCv.withCaption( "Withdraw Vocabulary" );
 	}
 
 	public AgencyDTO getAgency() {
@@ -488,7 +488,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 			buttonNewVersion.setVisible( false );
 			separatorLabel.setVisible( false );
 			buttonDropVersion.setVisible( false );
-			buttonWithdrawnCv.setVisible( false );
+			buttonWithdrawCv.setVisible( false );
 			
 			if( sourceLanguage.equals(selectedLanguage))
 				isCurrentSL = true;
@@ -515,7 +515,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 						if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
 							buttonNewVersion.setVisible( true );
 							separatorLabel.setVisible( true );
-							buttonWithdrawnCv.setVisible( true );
+							buttonWithdrawCv.setVisible( true );
 						}
 						if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
 							userLanguages.addAll( Arrays.asList( Language.values() ) );
