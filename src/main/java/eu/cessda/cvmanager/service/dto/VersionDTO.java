@@ -6,11 +6,14 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -99,6 +102,7 @@ public class VersionDTO implements Serializable {
     
     private Long vocabularyId;
 
+    @JsonIgnore
     private Set<ConceptDTO> concepts = new HashSet<>();
 
     public Long getId() {
@@ -385,8 +389,19 @@ public class VersionDTO implements Serializable {
 		return false;
 	}
 	
+	@JsonIgnore
 	public List<ConceptDTO> getSortedConcepts(){
-		return concepts.stream().sorted(( c1, c2) -> c1.getPosition().compareTo( c2.getPosition() )).collect( Collectors.toList());
+		if( concepts == null )
+			return null;
+		return concepts.stream().sorted(Comparator.nullsLast(( c1, c2) -> { 
+			if( c1.getPosition() == null && c2.getPosition() == null )
+				return 0;
+			else if( c1.getPosition() == null  )
+				return -1;
+			else if( c2.getPosition() == null  )
+				return 1;
+			return c1.getPosition().compareTo( c2.getPosition() );
+		})).collect( Collectors.toList());
 	}
 
 	

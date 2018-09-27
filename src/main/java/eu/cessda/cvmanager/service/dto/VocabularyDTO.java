@@ -7,6 +7,8 @@ import javax.validation.constraints.*;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import eu.cessda.cvmanager.domain.Concept;
 import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -80,10 +82,13 @@ public class VocabularyDTO implements Serializable {
     @NotNull
     private String agencyName;
     
+    @JsonIgnore
     private Set<CodeDTO> codes = new HashSet<>();
     
+    @JsonIgnore
     private Set<VersionDTO> vers = new HashSet<>();
     
+    @JsonIgnore
     private Set<VersionDTO> versions = new HashSet<>();
     
     private Language selectedLang;
@@ -1436,6 +1441,7 @@ public class VocabularyDTO implements Serializable {
 		return latestStatuses;
 	}
 	
+	@JsonIgnore
 	public Set<VersionDTO> getLatestVersions(){
 		return getLatestVersions( null );
 	}

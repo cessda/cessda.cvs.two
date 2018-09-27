@@ -737,7 +737,13 @@ public class VocabularyServiceImpl implements VocabularyService {
 		// if the latest version of the SL is not yet published
 		// then remove any TL information, before re-indexing
 		// check if the latest SL is not yet published yet.
-		VersionDTO latestSLversion = vocabulary.getLatestVersionByLanguage( vocabulary.getSourceLanguage() ).get();
+		Optional<VersionDTO> latestVersionByLanguage = vocabulary.getLatestVersionByLanguage( vocabulary.getSourceLanguage() );
+		VersionDTO latestSLversion = null;
+		if( latestVersionByLanguage.isPresent())
+			latestSLversion = latestVersionByLanguage.get();
+		else
+			return;
+		
 		// if not yet published
 		if( !latestSLversion.getStatus().equals( Status.PUBLISHED.toString()) ) {
 			// clear vocabulary and assign only with SL version

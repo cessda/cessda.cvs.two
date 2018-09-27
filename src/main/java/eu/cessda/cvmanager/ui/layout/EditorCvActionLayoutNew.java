@@ -263,8 +263,17 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 					if( latestVers.isPresent()) { // there is already exist published version
 						boolean reindexPublication = false;
 						if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
-							if( currentVersion.getStatus().equals(Status.PUBLISHED.toString()))
+							if( currentVersion.getStatus().equals(Status.PUBLISHED.toString())) {
 								reindexPublication = true;
+							
+								// check if it is the only SL version, if yes delete everything
+								if( currentVersion.getInitialVersion().longValue() == currentVersion.getId().longValue()) {
+									vocabularyService.completeDelete(vocabulary);
+									UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
+									return;
+								}
+									
+							}
 							// remove workflow codes on vocabulary
 							for( CodeDTO code : workflowCodes )
 								codeService.delete(code);
@@ -290,7 +299,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 							vocabulary.getLanguages().clear();
 							vocabulary.addLanguage(latestVers.get().getLanguage());
 							vocabulary = vocabularyService.save(vocabulary);
-							
+														
 							// reindex editor search
 							vocabularyService.index(vocabulary);
 							
