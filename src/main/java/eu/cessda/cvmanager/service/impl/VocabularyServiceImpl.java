@@ -70,6 +70,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -717,6 +718,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 
 	@Override
 	public void index(VocabularyDTO vocabulary) {
+		if( vocabulary.isWithdrawn())
+			return;
 		// query vocabulary, make sure everything is up to date
 		vocabulary = findOne( vocabulary.getId());
 		// get versions
@@ -777,8 +780,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 	
 	@Override
 	public void indexPublish(VocabularyDTO vocabulary, VersionDTO version) {
+		if( vocabulary.isWithdrawn())
+			return;
 		// resave codes
 		vocabulary = findOne( vocabulary.getId());
+		
+		if( version == null || version.getItemType().equals( ItemType.TL.toString())) {
+			// find latest available published SL
+			Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion(true);
+			if( latestSlVersion.isPresent())
+				version = latestSlVersion.get();
+		}
 		
 		// set vocabulary with latest Published version from SL and TL
 		List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup( true );

@@ -91,6 +91,14 @@ public class ManageImportView extends CvManagerAdminView {
 		MButton importStardatDDI = new MButton( "Imports stardatDDI to DB" );
 		importStardatDDI.addClickListener( e -> importService.importFromStardat());
 		
+		MButton reIndexButton = new MButton( "Re-index DB" );
+		reIndexButton.addClickListener( e -> {
+			vocabularyService.findAll().forEach( v -> {
+				vocabularyService.index(v);
+				vocabularyService.indexPublish(v, null);
+			});
+		});
+		
 		MButton dropContent = new MButton( "Drop database content and index" );
 		dropContent.addStyleName( ValoTheme.BUTTON_DANGER);
 		dropContent.addClickListener( e -> {
@@ -130,6 +138,8 @@ public class ManageImportView extends CvManagerAdminView {
 
         layout.addComponents(pageTitle, 
         		importStardatDDI , 
+        		new MLabel().withFullWidth(),
+        		reIndexButton,
         		new MLabel().withFullWidth(),
         		new MLabel().withFullWidth(),
         		dropContent);
