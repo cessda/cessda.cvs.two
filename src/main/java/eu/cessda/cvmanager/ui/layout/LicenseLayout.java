@@ -23,7 +23,7 @@ import com.vaadin.ui.TextArea;
 
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.dto.LicenseDTO;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
@@ -52,14 +52,14 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 	private MButton cancelButton = new MButton( "Cancel" );
 	private boolean readOnly;
 	
-	private ComboBox<LicenseDTO> licensesCb = new ComboBox<>( "Edit License" );
+	private ComboBox<LicenceDTO> licensesCb = new ComboBox<>( "Edit Licence" );
     private MLabel licensePreview = new MLabel().withContentMode( ContentMode.HTML);
     
     private RichTextArea citationEditor = new RichTextArea( "Edit Citation" );
 	
 	public LicenseLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VersionDTO versionDTO,
-			VersionService versionService, List<LicenseDTO> licenses,
+			VersionService versionService, List<LicenceDTO> licenses,
 			boolean readOnly) {
 		super();
 		this.i18n = i18n;
@@ -190,7 +190,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 	    return document.body().html();
 	}
 	
-    private void setLicensePreview( LicenseDTO licenseDto ) {
+    private void setLicensePreview( LicenceDTO licenseDto ) {
     	if( licenseDto.isPersisted())
     		licensePreview.setValue( "<p>"
     			+ "<img style=\"width:120px\" alt=\"" + licenseDto.getName() + "\" style=\"border-width:0\" src=\"" + licenseDto.getLogoLink() + "\">"

@@ -22,8 +22,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.service.LicenseService;
-import eu.cessda.cvmanager.service.dto.LicenseDTO;
+import eu.cessda.cvmanager.service.LicenceService;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
 
 
 
@@ -33,25 +33,25 @@ public class ManageLicenseLayout extends MCssLayout implements Translatable {
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	// autowired
-	private final LicenseService licenseService;
+	private final LicenceService licenceService;
 
 	// components
 	private MLabel pageTitle = new MLabel();
-	private Grid<LicenseDTO> grid = new Grid<>(LicenseDTO.class);
+	private Grid<LicenceDTO> grid = new Grid<>(LicenceDTO.class);
 	private MTextField filterText = new MTextField();
 	private LicenseForm form;
 
-	public ManageLicenseLayout(I18N i18n, LicenseService licenseService) {
+	public ManageLicenseLayout(I18N i18n, LicenceService licenceService) {
 		super();
-		this.licenseService = licenseService;
-		this.form = new LicenseForm(this, this.licenseService);
+		this.licenceService = licenceService;
+		this.form = new LicenseForm(this, this.licenceService);
 		init();
 	}
 
 	private void init() {
 		pageTitle
 			.withContentMode(ContentMode.HTML)
-			.withValue("<h2>Manage License</h2>");
+			.withValue("<h2>Manage Licence</h2>");
 		
 		filterText.withPlaceholder("filter by name / licensename ...")
 			.withWidth("300px")
@@ -70,7 +70,7 @@ public class ManageLicenseLayout extends MCssLayout implements Translatable {
 	    addBtn.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
 	    addBtn.addClickListener(e -> {
 	        grid.asSingleSelect().clear();
-	        form.setLicenseDTO(new LicenseDTO());
+	        form.setLicenseDTO(new LicenceDTO());
 	    });
 	    
 	    MCssLayout toolbar = new MCssLayout(filtering, addBtn);
@@ -102,8 +102,8 @@ public class ManageLicenseLayout extends MCssLayout implements Translatable {
 	}
 	
 	public void updateList() {
-		List<LicenseDTO> licenseDTOs = licenseService.findAll();
-		grid.setItems(licenseDTOs);
+		List<LicenceDTO> licenceDTOs = licenceService.findAll();
+		grid.setItems(licenceDTOs);
 	}
 	
 	@Override

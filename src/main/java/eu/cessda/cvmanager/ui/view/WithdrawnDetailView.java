@@ -55,14 +55,14 @@ import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.LicenseService;
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
-import eu.cessda.cvmanager.service.dto.LicenseDTO;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.ui.layout.DdiUsageLayout;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
@@ -84,7 +84,7 @@ public class WithdrawnDetailView extends CvView {
 	private final VocabularyService vocabularyService;
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
-	private final LicenseService licenseService;
+	private final LicenceService licenceService;
 	
 	private Language selectedLang = Language.ENGLISH;
 	private List<CodeDTO> codeDTOs = new ArrayList<>();
@@ -157,7 +157,7 @@ public class WithdrawnDetailView extends CvView {
 	private LicenseLayout licenseLayoutContent;
 	
 	private Map<String, List<VersionDTO>> orderedLanguageVersionMap;
-	private List<LicenseDTO> licenses;
+	private List<LicenceDTO> licenses;
 	private Language sourceLanguage;
 	private String activeTab;
 	
@@ -167,7 +167,7 @@ public class WithdrawnDetailView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, 
 			VocabularySearchRepository vocabularySearchRepository, TemplateEngine templateEngine,
-			VocabularyChangeService vocabularyChangeService, LicenseService licenseService) {
+			VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
 				codeService, vocabularySearchRepository, WithdrawnDetailView.VIEW_NAME);
 		this.templateEngine = templateEngine;
@@ -175,7 +175,7 @@ public class WithdrawnDetailView extends CvView {
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
 		this.vocabularyChangeService = vocabularyChangeService;
-		this.licenseService = licenseService;
+		this.licenceService = licenceService;
 	}
 
 	@PostConstruct
@@ -312,7 +312,7 @@ public class WithdrawnDetailView extends CvView {
 			setAgency( agencyService.findOne(1L) );
 		
 		// get all available licenses
-		licenses = licenseService.findAll();
+		licenses = licenceService.findAll();
 				
 		sourceLanguage = Language.valueOfEnum( vocabulary.getSourceLanguage());
 		selectedLang = Language.valueOfEnum( currentVersion.getLanguage());

@@ -60,7 +60,7 @@ import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
-import eu.cessda.cvmanager.service.dto.LicenseDTO;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 
@@ -98,8 +98,8 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private final VocabularyDTO vocabulary;
 	private final AgencyDTO agency;
 	
-	private List<LicenseDTO> licenses;
-	private LicenseDTO license;
+	private List<LicenceDTO> licenses;
+	private LicenceDTO license;
 	
 	private Set<String> filteredTag = new HashSet<>();
 	private MGrid<ExportCV> exportGrid = new MGrid<>( ExportCV.class );
@@ -116,7 +116,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, VocabularyDTO vocabulary, AgencyDTO agency,
 			VersionService versionService, ConfigurationService configurationService,
-			List<LicenseDTO> licenses, TemplateEngine templateEngine, boolean isPublished) {
+			List<LicenceDTO> licenses, TemplateEngine templateEngine, boolean isPublished) {
 		this.i18n = i18n;
 		this.locale = locale;
 		this.eventBus = eventBus;

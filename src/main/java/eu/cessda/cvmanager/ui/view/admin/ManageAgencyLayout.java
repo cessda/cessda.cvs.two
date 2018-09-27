@@ -24,7 +24,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.service.LicenseService;
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.ui.component.UploadExample;
 
 public class ManageAgencyLayout extends MCssLayout implements Translatable {
@@ -41,10 +41,10 @@ public class ManageAgencyLayout extends MCssLayout implements Translatable {
 	private MTextField filterText = new MTextField();
 	private AgencyForm form;
 
-	public ManageAgencyLayout(I18N i18n, AgencyService agencyService, LicenseService licenseService) {
+	public ManageAgencyLayout(I18N i18n, AgencyService agencyService, LicenceService licenceService) {
 		super();
 		this.agencyService = agencyService;
-		this.form = new AgencyForm(this, agencyService, licenseService.findAll());
+		this.form = new AgencyForm(this, agencyService, licenceService.findAll());
 		init();
 	}
 

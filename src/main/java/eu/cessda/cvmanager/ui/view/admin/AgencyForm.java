@@ -21,7 +21,7 @@ import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.service.dto.LicenseDTO;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.ui.component.UploadAgencyLogo;
 import eu.cessda.cvmanager.ui.component.UploadExample;
 
@@ -42,13 +42,13 @@ public class AgencyForm extends FormLayout {
     private ManageAgencyLayout manageAgencyLayout;
     private Binder<AgencyDTO> binder = new Binder<>(AgencyDTO.class);
     
-    private ComboBox<LicenseDTO> licensesCb = new ComboBox<>( "License" );
+    private ComboBox<LicenceDTO> licensesCb = new ComboBox<>( "Licence" );
     private MLabel licensePreview = new MLabel().withContentMode( ContentMode.HTML);
-    private List<LicenseDTO> licenses;
+    private List<LicenceDTO> licenses;
     private UploadAgencyLogo uploadAgencyLogo = new UploadAgencyLogo();
     private String agencyNameTemp;
 
-    public AgencyForm(ManageAgencyLayout manageAgencyLayout, AgencyService agencyService, List<LicenseDTO> licenses) {
+    public AgencyForm(ManageAgencyLayout manageAgencyLayout, AgencyService agencyService, List<LicenceDTO> licenses) {
         this.manageAgencyLayout = manageAgencyLayout;
         this.agencyService = agencyService;
         this.licenses = licenses;
@@ -146,7 +146,7 @@ public class AgencyForm extends FormLayout {
         setVisible(false);
     }
     
-    private void setLicensePreview( LicenseDTO licenseDto ) {
+    private void setLicensePreview( LicenceDTO licenseDto ) {
     	if( licenseDto.isPersisted())
     		licensePreview.setValue( "<p>"
     			+ "<img style=\"width:120px\" alt=\"" + licenseDto.getName() + "\" style=\"border-width:0\" src=\"" + licenseDto.getLogoLink() + "\">"

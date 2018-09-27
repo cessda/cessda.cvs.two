@@ -92,14 +92,14 @@ import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.LicenseService;
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
-import eu.cessda.cvmanager.service.dto.LicenseDTO;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -139,7 +139,7 @@ public class DetailsView extends CvView {
 	private final CodeService codeService;
 	private final ConceptService conceptService;
 	private final VocabularyChangeService vocabularyChangeService;
-	private final LicenseService licenseService;
+	private final LicenceService licenceService;
 
 	private Language selectedLang = Language.ENGLISH;
 
@@ -191,7 +191,7 @@ public class DetailsView extends CvView {
 	
 	private MLabel versionLabel = new MLabel();
 	
-	private List<LicenseDTO> licenses;
+	private List<LicenceDTO> licenses;
 	
 	private TreeGrid<CodeDTO> detailTreeGrid = new TreeGrid<>(CodeDTO.class);
 	private TreeGridDragSource<CodeDTO> dragSource;
@@ -224,7 +224,7 @@ public class DetailsView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			VocabularySearchRepository vocabularySearchRepository, TemplateEngine templateEngine,
-			VocabularyChangeService vocabularyChangeService, LicenseService licenseService) {
+			VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, vocabularySearchRepository, DetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
@@ -233,7 +233,7 @@ public class DetailsView extends CvView {
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		this.vocabularyChangeService = vocabularyChangeService;
-		this.licenseService = licenseService;
+		this.licenceService = licenceService;
 		eventBus.subscribe( this, DetailsView.VIEW_NAME );
 	}
 
@@ -448,7 +448,7 @@ public class DetailsView extends CvView {
 		agency = agencyService.findByName( getVocabulary().getAgencyName());
 		
 		// get all available licenses
-			licenses = licenseService.findAll();
+			licenses = licenceService.findAll();
 				
 		Set<String> languages = vocabulary.getLanguages();
 		

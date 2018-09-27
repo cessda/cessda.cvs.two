@@ -25,7 +25,7 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.LicenseService;
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.service.VocabularyService;
@@ -54,21 +54,21 @@ public class AdminView extends CvAdminView {
 	private final MetadataFieldService metadataFieldService;
 	private final MetadataValueService metadataValueService;
 	private final VocabularyService vocabularyService;
-	private final LicenseService licenseService;
+	private final LicenceService licenceService;
 	private final BCryptPasswordEncoder encrypt;
 	
 	private AdminActionLayout adminActionLayout;
 	
 	public AdminView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			SecurityService securityService, UserService userService, RoleService roleService, 
-			AgencyService agencyService, LicenseService licenseService, VocabularyService vocabularyService,
+			AgencyService agencyService, LicenceService licenceService, VocabularyService vocabularyService,
 			MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
 			UserAgencyService userAgencyService, BCryptPasswordEncoder encrypt) {
 		super(i18n, eventBus, configService, securityService, agencyService, AdminView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
 		this.agencyService = agencyService;
-		this.licenseService = licenseService;
+		this.licenceService = licenceService;
 		this.userAgencyService = userAgencyService;
 		this.metadataFieldService = metadataFieldService;
 		this.metadataValueService = metadataValueService;
@@ -158,7 +158,7 @@ public class AdminView extends CvAdminView {
 				mainContainer.add( new ManageUserLayout(i18n, userService, encrypt) );
 				break;
 			case MANAGE_AGENCY:
-				mainContainer.add( new ManageAgencyLayout(i18n, agencyService, licenseService) );
+				mainContainer.add( new ManageAgencyLayout(i18n, agencyService, licenceService) );
 				break;
 			case MANAGE_USER_AGENCY:
 				mainContainer.add( new ManageUserAgencyLayout(i18n, userAgencyService, userService, agencyService) );
@@ -167,7 +167,7 @@ public class AdminView extends CvAdminView {
 				mainContainer.add( new ManageUserRoleLayout(i18n, userService, roleService));
 				break;
 			case MANAGE_LICENSE:
-				mainContainer.add( new ManageLicenseLayout(i18n, licenseService));
+				mainContainer.add( new ManageLicenseLayout(i18n, licenceService));
 				break;
 			case LIST_WITHDRAWN_CV:
 				mainContainer.add( new WithdrawnCvLayout(i18n, vocabularyService, agencyService, configService));

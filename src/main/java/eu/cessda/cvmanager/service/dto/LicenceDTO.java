@@ -1,36 +1,29 @@
-package eu.cessda.cvmanager.domain;
+package eu.cessda.cvmanager.service.dto;
 
-import javax.persistence.*;
 import javax.validation.constraints.*;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.Objects;
 
+import java.io.Serializable;
+
 /**
- * A LicenseDTO.
+ * A LicenceDTO.
  */
-@Entity
-@Table(name = "license")
-public class License implements Serializable {
+public class LicenceDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull
     @Size(max = 255)
-    @Column(name = "name", length = 255, nullable = false)
     private String name;
 
+    @NotNull
     @Size(max = 255)
-    @Column(name = "link", length = 255)
     private String link;
     
+    @NotNull
     @Size(max = 255)
-    @Column(name = "logo_link", length = 255)
     private String logoLink;
 
 	public Long getId() {
@@ -73,7 +66,7 @@ public class License implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        License licanse = (License) o;
+        LicenceDTO licanse = (LicenceDTO) o;
         if (licanse.getId() == null || getId() == null) {
             return false;
         }
@@ -94,5 +87,11 @@ public class License implements Serializable {
             ", logoLink=" + getLogoLink() +
             "}";
     }
+
+	public boolean isPersisted() {
+		if( getId() == null )
+			return false;
+		return true;
+	}
 }
 

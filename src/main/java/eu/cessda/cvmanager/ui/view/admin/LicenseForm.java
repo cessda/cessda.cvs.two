@@ -16,8 +16,8 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.service.LicenseService;
-import eu.cessda.cvmanager.service.dto.LicenseDTO;
+import eu.cessda.cvmanager.service.LicenceService;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
 
 public class LicenseForm extends FormLayout {
 
@@ -30,15 +30,15 @@ public class LicenseForm extends FormLayout {
     
     private MLabel preview = new MLabel().withContentMode( ContentMode.HTML);
 
-    private final LicenseService licenseService;
+    private final LicenceService licenceService;
 	
-    private LicenseDTO licenseDTO;
+    private LicenceDTO licenceDTO;
     private ManageLicenseLayout manageLicenseLayout;
-    private Binder<LicenseDTO> binder = new Binder<>(LicenseDTO.class);
+    private Binder<LicenceDTO> binder = new Binder<>(LicenceDTO.class);
 
-    public LicenseForm(ManageLicenseLayout manageAgencyLayout, LicenseService agencyService) {
+    public LicenseForm(ManageLicenseLayout manageAgencyLayout, LicenceService agencyService) {
         this.manageLicenseLayout = manageAgencyLayout;
-        this.licenseService = agencyService;
+        this.licenceService = agencyService;
         
         name.withFullWidth();
         link.withFullWidth();
@@ -58,25 +58,25 @@ public class LicenseForm extends FormLayout {
         delete.addClickListener(e -> this.delete());
     }
 
-    public void setLicenseDTO(LicenseDTO licenseDTO) {
-        this.licenseDTO = licenseDTO;
-        binder.setBean(licenseDTO);
+    public void setLicenseDTO(LicenceDTO licenceDTO) {
+        this.licenceDTO = licenceDTO;
+        binder.setBean(licenceDTO);
         
-        setLicensePreview( licenseDTO );
+        setLicensePreview( licenceDTO );
 
         // Show delete button for only customers already in the database
-        delete.setVisible(licenseDTO.isPersisted());
+        delete.setVisible(licenceDTO.isPersisted());
         setVisible(true);
         name.selectAll();
     }
 
     private void delete() {
     	ConfirmDialog.show( this.getUI(), "Confirm",
-			"Are you sure you want to delete \"" + licenseDTO.getName() + "\"?", "yes",
+			"Are you sure you want to delete \"" + licenceDTO.getName() + "\"?", "yes",
 			"cancel",
 				dialog -> {
 					if( dialog.isConfirmed() ) {
-						licenseService.delete(licenseDTO.getId());
+						licenceService.delete(licenceDTO.getId());
 				        manageLicenseLayout.updateList();
 				        setVisible(false);
 					}
@@ -85,7 +85,7 @@ public class LicenseForm extends FormLayout {
     
     }
     
-    private void setLicensePreview( LicenseDTO licenseDto ) {
+    private void setLicensePreview( LicenceDTO licenseDto ) {
     	if( licenseDto.isPersisted())
     		preview.setValue( "<br/><h2>Preview</h2><p>"
     			+ "<img alt=\"" + licenseDto.getName() + "\" style=\"border-width:0\" src=\"" + licenseDto.getLogoLink() + "\">"
@@ -97,13 +97,13 @@ public class LicenseForm extends FormLayout {
     }
 
     private void save() {
-    	licenseService.save(licenseDTO);
+    	licenceService.save(licenceDTO);
         manageLicenseLayout.updateList();
         setVisible(false);
     }
 
-	public LicenseDTO getLicenseDTO() {
-		return licenseDTO;
+	public LicenceDTO getLicenseDTO() {
+		return licenceDTO;
 	}
 
 }

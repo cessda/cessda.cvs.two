@@ -1,10 +1,10 @@
 package eu.cessda.cvmanager.service.impl;
 
-import eu.cessda.cvmanager.service.LicenseService;
-import eu.cessda.cvmanager.domain.License;
-import eu.cessda.cvmanager.repository.LicenseRepository;
-import eu.cessda.cvmanager.service.dto.LicenseDTO;
-import eu.cessda.cvmanager.service.mapper.LicenseMapper;
+import eu.cessda.cvmanager.service.LicenceService;
+import eu.cessda.cvmanager.domain.Licence;
+import eu.cessda.cvmanager.repository.LicenceRepository;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
+import eu.cessda.cvmanager.service.mapper.LicenceMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -20,36 +20,36 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Service Implementation for managing License.
+ * Service Implementation for managing Licence.
  */
 @Service
 @Transactional
-public class LicenseServiceImpl implements LicenseService {
+public class LicenceServiceImpl implements LicenceService {
 
-    private final Logger log = LoggerFactory.getLogger(LicenseServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger(LicenceServiceImpl.class);
 
-    private final LicenseRepository licenseRepository;
+    private final LicenceRepository licenceRepository;
 
-    private final LicenseMapper licenseMapper;
+    private final LicenceMapper licenceMapper;
 
 
-    public LicenseServiceImpl(LicenseRepository licenseRepository, LicenseMapper licenseMapper) {
-        this.licenseRepository = licenseRepository;
-        this.licenseMapper = licenseMapper;
+    public LicenceServiceImpl(LicenceRepository licenceRepository, LicenceMapper licenceMapper) {
+        this.licenceRepository = licenceRepository;
+        this.licenceMapper = licenceMapper;
     }
 
     /**
      * Save a license.
      *
-     * @param licenseDTO the entity to save
+     * @param licenceDTO the entity to save
      * @return the persisted entity
      */
     @Override
-    public LicenseDTO save(LicenseDTO licenseDTO) {
-        log.debug("Request to save License : {}", licenseDTO);
-        License license = licenseMapper.toEntity(licenseDTO);
-        license = licenseRepository.save(license);
-        LicenseDTO result = licenseMapper.toDto(license);
+    public LicenceDTO save(LicenceDTO licenceDTO) {
+        log.debug("Request to save Licence : {}", licenceDTO);
+        Licence licence = licenceMapper.toEntity(licenceDTO);
+        licence = licenceRepository.save(licence);
+        LicenceDTO result = licenceMapper.toDto(licence);
 //        licenseSearchRepository.save(license);
         return result;
     }
@@ -62,10 +62,10 @@ public class LicenseServiceImpl implements LicenseService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<LicenseDTO> findAll() {
+    public List<LicenceDTO> findAll() {
         log.debug("Request to get all Licenses");
-        return licenseRepository.findAll().stream()
-            .map(licenseMapper::toDto)
+        return licenceRepository.findAll().stream()
+            .map(licenceMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
@@ -77,10 +77,10 @@ public class LicenseServiceImpl implements LicenseService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<LicenseDTO> findAll(Pageable pageable) {
+    public Page<LicenceDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Licenses");
-        return licenseRepository.findAll(pageable)
-            .map(licenseMapper::toDto);
+        return licenceRepository.findAll(pageable)
+            .map(licenceMapper::toDto);
     }
 
     /**
@@ -91,10 +91,10 @@ public class LicenseServiceImpl implements LicenseService {
      */
     @Override
     @Transactional(readOnly = true)
-    public LicenseDTO findOne(Long id) {
-        log.debug("Request to get License : {}", id);
-        License license = licenseRepository.getOne(id);
-        return licenseMapper.toDto(license);
+    public LicenceDTO findOne(Long id) {
+        log.debug("Request to get Licence : {}", id);
+        Licence licence = licenceRepository.getOne(id);
+        return licenceMapper.toDto(licence);
     }
 
     /**
@@ -104,8 +104,8 @@ public class LicenseServiceImpl implements LicenseService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete License : {}", id);
-        licenseRepository.deleteById(id);
+        log.debug("Request to delete Licence : {}", id);
+        licenceRepository.deleteById(id);
 //        licenseSearchRepository.delete(id);
     }
 
@@ -118,9 +118,9 @@ public class LicenseServiceImpl implements LicenseService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Page<LicenseDTO> search(String query, Pageable pageable) {
+    public Page<LicenceDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Licenses for query {}", query);
-//        Page<License> result = licenseSearchRepository.search(queryStringQuery(query), pageable);
-        return null;//result.map(licenseMapper::toDto);
+//        Page<Licence> result = licenseSearchRepository.search(queryStringQuery(query), pageable);
+        return null;//result.map(licenceMapper::toDto);
     }
 }

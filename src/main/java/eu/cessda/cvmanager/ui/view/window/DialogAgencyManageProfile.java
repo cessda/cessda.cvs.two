@@ -51,7 +51,7 @@ public class DialogAgencyManageProfile extends MWindow implements Translatable{
 	
 	private MTextField name = new MTextField("Name");
     private MTextField description = new MTextField("Description");
-    private RichTextArea license = new RichTextArea("LicenseDTO");
+    private RichTextArea license = new RichTextArea("LicenceDTO");
     private RichTextArea copyright = new RichTextArea("Copyright");
     private MButton save = new MButton("Save");
     private MButton cancel = new MButton("Cancel");
