@@ -24,7 +24,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
  * REST controller for managing Vocabullary.
  */
 @RestController
-@RequestMapping("/cv")
+@RequestMapping("/v1")
 public class VocabularyResource {
 	private final Logger log = LoggerFactory.getLogger( VocabularyResource.class );
 	
@@ -38,10 +38,11 @@ public class VocabularyResource {
 	
 	
 	/**
-     * GET   : get all the vocabularies (RAW).
+     * GET   : get all the vocabularies .
      *
+     * @return map of Agencies and CVs code
      */
-    @GetMapping("")
+    @GetMapping("/Vocabulary")
     public Map<String,List<String>> getAllVocabularies() {
         log.debug("REST request to get all Vocabularies");
         Map<String,List<String>> agencyCvMap = new LinkedHashMap<>();
@@ -71,7 +72,7 @@ public class VocabularyResource {
      * @param cvCode the cv short definition/notation
      * @return set of published languages in a Cv
      */
-    @GetMapping("/{cvCode}")
+    @GetMapping("/VocabularyLanguages/{cvCode}")
     public List<String> getVocabularyIsoLanguages( @PathVariable String cvCode ) {
     	log.debug("REST request to get Vocabulary and language");
         List<String> cvLanguages = new ArrayList<>();
@@ -87,7 +88,7 @@ public class VocabularyResource {
      * @param languageIso the Cv language (iso format)
      * @return set of available versions in a Cv
      */
-    @GetMapping("/{cvCode}/{languageIso}")
+    @GetMapping("/VocabularyLanguages/{cvCode}/{languageIso}")
     public List<String> getVocabularyVersions( @PathVariable String cvCode, @PathVariable String languageIso ) {
     	log.debug("REST request to get Vocabulary and language");
         List<String> cvLangVersions = new ArrayList<>();
@@ -109,7 +110,7 @@ public class VocabularyResource {
      * @param version the Cv version number 
      * @return detail of CV in specific language and version
      */
-    @GetMapping("/{cvCode}/{languageIso}/{version}")
+    @GetMapping("/VocabularyDetails/{cvCode}/{languageIso}/{version}")
     public VersionDTO getVocabularyDetails( @PathVariable String cvCode, @PathVariable String languageIso, @PathVariable String version ) {
     	log.debug("REST request to get Vocabulary and language");
     	VersionDTO versionDTO = versionService.findOneByNotationLangVersion( cvCode, languageIso, version );
@@ -121,7 +122,7 @@ public class VocabularyResource {
      * GET  /raw : get all the vocabularies (RAW).
      *
      */
-    @GetMapping("/raw")
+    @GetMapping("/Vocabulary/SKOS")
     public List<VocabularyDTO> getAllVocabulariesRaw() {
         log.debug("REST request to get all Vocabularies");
         
