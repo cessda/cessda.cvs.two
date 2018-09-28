@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
@@ -27,9 +28,11 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 public class VocabularyResource {
 	private final Logger log = LoggerFactory.getLogger( VocabularyResource.class );
 	
+	private final VersionService versionService;
 	private final VocabularyService vocabularService;
 	
-	public VocabularyResource( VocabularyService vocabularService ) {
+	public VocabularyResource( VocabularyService vocabularService, VersionService versionService ) {
+		this.versionService = versionService;
 		this.vocabularService = vocabularService;
 	}
 	
@@ -79,7 +82,7 @@ public class VocabularyResource {
     }
     
     /**
-     * GET   : get list of available lversion from a Cv
+     * GET   : get list of available version numbers from a Cv
      * @param cvCode the cv short definition/notation
      * @param languageIso the Cv language (iso format)
      * @return set of available versions in a Cv
@@ -97,6 +100,21 @@ public class VocabularyResource {
 	         .collect( Collectors.toList());
         
         return cvLangVersions;
+    }
+    
+    /**
+     * GET   : get the detail of a CV in specific language and version
+     * @param cvCode the cv short definition/notation
+     * @param languageIso the Cv language (iso format)
+     * @param version the Cv version number 
+     * @return detail of CV in specific language and version
+     */
+    @GetMapping("/{cvCode}/{languageIso}/{version}")
+    public VersionDTO getVocabularyDetails( @PathVariable String cvCode, @PathVariable String languageIso, @PathVariable String version ) {
+    	log.debug("REST request to get Vocabulary and language");
+    	VersionDTO versionDTO = versionService.findOneByNotationLangVersion( cvCode, languageIso, version );
+
+        return versionDTO;
     }
 	
 	/**

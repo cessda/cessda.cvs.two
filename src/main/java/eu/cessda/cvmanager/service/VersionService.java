@@ -64,4 +64,6 @@ public interface VersionService {
     Map<String, List<VersionDTO>> getOrderedLanguageVersionMap( Long vocabularyId , String status);
     Map<String, List<VersionDTO>> getOrderedLanguageSpecificVersionMap( Long vocabularyId, Language language );
     Map<String, List<VersionDTO>> getOrderedLanguageSpecificVersionMap( Long vocabularyId, Language language , String status);
+
+	VersionDTO findOneByNotationLangVersion(String cvCode, String languageIso, String version);
 }

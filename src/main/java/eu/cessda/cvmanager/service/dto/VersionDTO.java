@@ -389,7 +389,6 @@ public class VersionDTO implements Serializable {
 		return false;
 	}
 	
-	@JsonIgnore
 	public List<ConceptDTO> getSortedConcepts(){
 		if( concepts == null )
 			return null;

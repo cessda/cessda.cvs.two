@@ -191,5 +191,11 @@ public class VersionServiceImpl implements VersionService {
 		return versionMapper.toDto( version );
 	}
 
+	@Override
+	public VersionDTO findOneByNotationLangVersion(String notation, String languageIso, String versionNumber) {
+		Version version = versionRepository.findOneByNotationLangVersion(notation, languageIso, versionNumber);
+		return versionMapper.toDto( version );
+	}
+
 
 }
