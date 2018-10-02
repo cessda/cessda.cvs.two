@@ -206,6 +206,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			userInfoLayout.setVisible(true);
 			searchCVs.setVisible(true);
+			agencyButton.setVisible( true );
 			
 			if( SecurityUtils.isCurrentUserAgencyAdmin())
 				adminButton.setVisible(true);
@@ -215,6 +216,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			adminButton.setVisible(false);
 			logIn.setVisible(true);
 			searchCVs.setVisible(false);
+			agencyButton.setVisible( false );
 		}
 
 		eventBus.subscribe(this);
@@ -520,6 +522,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		System.out.println("User logged in!");
 		userInfoLayout.setVisible(true);
 		searchCVs.setVisible(true);
+		agencyButton.setVisible( true );
 		usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
 		
 		System.out.println(SecurityUtils.isCurrentUserAgencyAdmin());
