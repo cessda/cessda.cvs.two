@@ -622,15 +622,7 @@ public class DetailView extends CvView {
 				"    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + 
 				"}" + 
 				"var mainContainer=document.getElementById('main-container'); " +
-//				"var sidePanel = document.getElementById('side-panel');" + 
-//				"var sidePanelOffset = offset(sidePanel);" + 
-//				"mainContainer.addEventListener('scroll', function() { " +
-//					"if( mainContainer.scrollTop > sidePanelOffset.top && Math.max(document.documentElement.clientWidth, window.innerWidth || 0) > 792){" +
-//						"sidePanel.style.position='fixed';sidePanel.style.top='0';" +
-//					"}else{" +
-//						"sidePanel.style.position='static';" +
-//					"}" +
-//				"});" +
+				"mainContainer.scrollTop = 0;" +
 				"setTimeout( scrollPage, 1000);" +
 				"function scrollPage(){" +
 					"var codeRow = document.getElementById('code-"+ highlightCode +"'); " +
@@ -642,6 +634,11 @@ public class DetailView extends CvView {
 				"}"
 				);
 			highlightCode = null;
+		} else {
+			JavaScript.getCurrent().execute(
+				"var mainContainer=document.getElementById('main-container'); " +
+				"mainContainer.scrollTop = 0;"
+			);
 		}
 	}
 
