@@ -363,7 +363,7 @@ public final class CvManagerSecurityUtils {
     	return Optional.ofNullable( getCurrentUserDetails().get() )
     	    	.map( userdetail -> {
     	    		return userdetail.getUserAgencyDtos().stream()
-    	    				.filter( p -> p.getAgencyId().longValue() == agency.getId().longValue())
+    	    				.filter( p -> p.getAgencyId().equals( agency.getId() ))
     	    				.filter( p -> p.getAgencyRole().equals( AgencyRole.ADMIN_SL) || p.getAgencyRole().equals( AgencyRole.ADMIN_TL) || 
     	    						p.getAgencyRole().equals( AgencyRole.CONTRIBUTOR_SL) || p.getAgencyRole().equals( AgencyRole.CONTRIBUTOR_TL) )
     	    				.filter( p -> p.getLanguage().equals(language))

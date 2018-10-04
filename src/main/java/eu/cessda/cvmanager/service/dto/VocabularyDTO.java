@@ -1428,7 +1428,7 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public VersionDTO getVersionById( Long versionId ) {
-		Optional<VersionDTO> findFirst = versions.stream().filter( p -> p.getId().longValue() == versionId.longValue()).findFirst();
+		Optional<VersionDTO> findFirst = versions.stream().filter( p -> p.getId().equals(versionId)).findFirst();
 		if(findFirst.isPresent())
 			return findFirst.get();
 		else
@@ -1563,7 +1563,7 @@ public class VocabularyDTO implements Serializable {
 	public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {
 		if( docId == null )
 			return Optional.empty();
-		return vocabs.stream().filter( voc -> voc.getId() == Long.parseLong(docId)).findFirst();
+		return vocabs.stream().filter( voc -> voc.getId().equals( Long.parseLong(docId))).findFirst();
 	}
 	
 	public Set<CodeDTO> generateCodesFromLatestVersion(){

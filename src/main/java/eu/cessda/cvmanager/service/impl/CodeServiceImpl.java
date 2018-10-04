@@ -275,7 +275,7 @@ public class CodeServiceImpl implements CodeService {
 			codeRoot.setPosition(position);
 			codeRoot.setParent( null );
 			// update concept as well
-			Optional<ConceptDTO> conceptOpt = concepts.stream().filter( p -> codeRoot.getId().longValue() == p.getCodeId().longValue()).findFirst();
+			Optional<ConceptDTO> conceptOpt = concepts.stream().filter( p -> codeRoot.getId().equals( p.getCodeId() )).findFirst();
 			if( conceptOpt.isPresent() ) {
 				ConceptDTO concept = conceptOpt.get();
 				concept.setNotation( codeRoot.getNotation());
@@ -304,7 +304,7 @@ public class CodeServiceImpl implements CodeService {
 			code.setPosition(position);
 			code.setParent( codeParent.getNotation());
 			// update concept as well
-			Optional<ConceptDTO> conceptOpt = concepts.stream().filter( p -> code.getId().longValue() == p.getCodeId().longValue()).findFirst();
+			Optional<ConceptDTO> conceptOpt = concepts.stream().filter( p -> code.getId().equals( p.getCodeId() )).findFirst();
 			if( conceptOpt.isPresent() ) {
 				ConceptDTO concept = conceptOpt.get();
 				concept.setNotation( code.getNotation());

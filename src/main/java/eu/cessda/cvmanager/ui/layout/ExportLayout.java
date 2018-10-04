@@ -203,7 +203,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		filteredVersionMap.forEach( (k,v) -> exportCvItems.add( new ExportCV(k, v)));
 		
 		if(pivotVersion.getLicenseId() != null) {
-			licenses.stream().filter( p -> p.getId().longValue() == pivotVersion.getLicenseId().longValue()).findFirst().ifPresent( 
+			licenses.stream().filter( p -> p.getId().equals( pivotVersion.getLicenseId() )).findFirst().ifPresent( 
 	       			 license -> {
 	       				 this.license = license;
 	       			 });

@@ -70,7 +70,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 		this.readOnly = readOnly;
 		licensesCb.setItems( licenses );
 		if( version.getLicenseId() != null) 
-       	 licenses.stream().filter( p -> p.getId().longValue() == version.getLicenseId().longValue()).findFirst().ifPresent( 
+       	 licenses.stream().filter( p -> p.getId().equals( version.getLicenseId() )).findFirst().ifPresent( 
        			 license -> {
        				 licensesCb.setValue(license);
        				 setLicensePreview(license);

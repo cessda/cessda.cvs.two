@@ -267,7 +267,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 								reindexPublication = true;
 							
 								// check if it is the only SL version, if yes delete everything
-								if( currentVersion.getInitialVersion().longValue() == currentVersion.getId().longValue()) {
+								if( currentVersion.getInitialVersion().equals( currentVersion.getId() )) {
 									vocabularyService.completeDelete(vocabulary);
 									UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
 									return;

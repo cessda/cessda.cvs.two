@@ -157,7 +157,7 @@ public class ConceptDTO implements Serializable {
 	}
 	
 	public static Optional<ConceptDTO> getConceptFromCode( Set<ConceptDTO> concepts, Long codeId){
-		return concepts.stream().filter( c -> c.getCodeId().longValue() == codeId.longValue()).findFirst();
+		return concepts.stream().filter( c -> c.getCodeId().equals(codeId)).findFirst();
 	}
 	
 	public static Optional<ConceptDTO> getConceptFromCode( Set<ConceptDTO> concepts, String notation){
@@ -179,7 +179,7 @@ public class ConceptDTO implements Serializable {
 	}
 	
 	public static ConceptDTO getConceptById( Set<ConceptDTO> concepts, Long conceptId) {
-		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getId().longValue() == conceptId.longValue()).findFirst();
+		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getId().equals(conceptId)).findFirst();
 		if(findFirst.isPresent())
 			return findFirst.get();
 		else

@@ -736,7 +736,7 @@ public class WithdrawnDetailView extends CvView {
 				MButton versionButton = new MButton( version.getNumber() );
 				langSubButtons.put(version,versionButton);
 				versionButton.withStyleName( "sub-button-menu" );
-				if( version.getId().longValue() == targetVersionId.longValue()) {
+				if( version.getId().equals( targetVersionId )) {
 					versionButton.withIcon( VaadinIcons.CHECK );
 				}
 				versionButton.addClickListener( e -> {

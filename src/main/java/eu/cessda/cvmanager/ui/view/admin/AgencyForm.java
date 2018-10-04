@@ -105,7 +105,7 @@ public class AgencyForm extends FormLayout {
         licensesCb.setValue( null );
         
         if( agencyDTO.getLicenseId() != null) 
-        	 licenses.stream().filter( p -> p.getId().longValue() == agencyDTO.getLicenseId().longValue()).findFirst().ifPresent( 
+        	 licenses.stream().filter( p -> p.getId().equals( agencyDTO.getLicenseId())).findFirst().ifPresent( 
         			 license -> {
         				 licensesCb.setValue(license);
         				 setLicensePreview(license);
