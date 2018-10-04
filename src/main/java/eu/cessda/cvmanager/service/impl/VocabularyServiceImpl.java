@@ -310,8 +310,10 @@ public class VocabularyServiceImpl implements VocabularyService {
 		for(VersionDTO version : vocabulary.getVersions()) {
 			if( version.getItemType().equals(ItemType.SL.toString()) && version.getStatus().equals(Status.PUBLISHED.toString())) {
 				List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(version.getUri(), DDIElement.CVSCHEME);
-				CVScheme scheme = new CVScheme(ddiSchemes.get(0));
-				stardatDDIService.deleteScheme( scheme );
+				if( ddiSchemes != null && !ddiSchemes.isEmpty() ) {
+					CVScheme scheme = new CVScheme(ddiSchemes.get(0));
+					stardatDDIService.deleteScheme( scheme );
+				}
 			}
 			for( ConceptDTO concept : version.getConcepts())
 				conceptService.delete( concept.getId());
