@@ -812,6 +812,7 @@ public class DetailsView extends CvView {
 				"    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + 
 				"}" + 
 				"var mainContainer=document.getElementById('main-container'); " +
+				"mainContainer.scrollTop = 0;" +
 				"var sidePanel = document.getElementById('side-panel');" + 
 				"var sidePanelOffset = offset(sidePanel);" + 
 				"mainContainer.addEventListener('scroll', function() { " +
@@ -841,6 +842,7 @@ public class DetailsView extends CvView {
 					"    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + 
 					"}" + 
 					"var mainContainer=document.getElementById('main-container'); " +
+					"mainContainer.scrollTop = 0;" +
 					"var sidePanel = document.getElementById('side-panel');" + 
 					"var sidePanelOffset = offset(sidePanel);" + 
 					"mainContainer.addEventListener('scroll', function() { " +

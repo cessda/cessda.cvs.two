@@ -288,7 +288,8 @@ public class DialogCreateVersionWindow extends MWindow {
 			newVersion = versionService.save(newVersion);
 			// save concepts
 			for( CodeDTO code: codes) {
-				ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getNotation()).ifPresent( c -> c.setCodeId( code.getId()));
+				ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getNotation())
+				.ifPresent( c -> c.setCodeId( code.getId()));
 			}
 			
 			for( ConceptDTO newConcept: newVersion.getConcepts()) {

@@ -709,8 +709,13 @@ public class DialogManageStatusWindowNew extends MWindow {
 										
 										// save concepts with workflow codes ID
 										for( CodeDTO code: codes) {
-											ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getNotation()).ifPresent( c -> c.setCodeId( code.getId()));
+											ConceptDTO
+												.getConceptFromCode(newVersion.getConcepts(), code.getNotation())
+												.ifPresent( c ->{ 
+													c.setCodeId( code.getId());
+												});
 										}
+										// save versionId property
 										for( ConceptDTO newConcept: newVersion.getConcepts()) {
 											newConcept.setVersionId( newVersion.getId());
 											conceptService.save(newConcept);
