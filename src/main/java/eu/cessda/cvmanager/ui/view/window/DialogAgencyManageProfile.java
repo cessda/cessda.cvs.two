@@ -32,9 +32,12 @@ import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.ui.component.AgencyMemberGridComponent;
+import eu.cessda.cvmanager.ui.view.admin.AgencyForm;
+import eu.cessda.cvmanager.ui.view.admin.AgencyManageProfile;
 import eu.cessda.cvmanager.ui.view.form.AgencyMemberForm;
 
 public class DialogAgencyManageProfile extends MWindow implements Translatable{
@@ -45,44 +48,35 @@ public class DialogAgencyManageProfile extends MWindow implements Translatable{
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
 	private final AgencyService agencyService;
-	private final MetadataFieldService metadataFieldService;
-	private final MetadataValueService metadataValueService;
+	private final LicenceService licenceService;
 	private final Locale locale;
 	
-	private MTextField name = new MTextField("Name");
-    private MTextField description = new MTextField("Description");
-    private RichTextArea license = new RichTextArea("LicenceDTO");
-    private RichTextArea copyright = new RichTextArea("Copyright");
-    private MButton save = new MButton("Save");
-    private MButton cancel = new MButton("Cancel");
 	
 	private MFormLayout layout = new MFormLayout();
 	private AgencyDTO agency;
+	private AgencyManageProfile agencyManageProfile;
 
 	public DialogAgencyManageProfile(UIEventBus eventBus, AgencyDTO agency, AgencyService agencyService, 
-			MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-			I18N i18n, Locale locale) {
+			LicenceService licenceService, I18N i18n, Locale locale) {
 		
 		super( "Manage "  + agency.getName() + " profile and metadata");
 		
 		this.eventBus = eventBus;
 		this.agency = agency;
 		this.agencyService = agencyService;
-		this.metadataFieldService = metadataFieldService;
-		this.metadataValueService = metadataValueService;
+		this.licenceService =licenceService;
 		this.i18n = i18n;
 		this.locale = locale;
 		
-		initLayout();
-		
-		HorizontalLayout buttons = new HorizontalLayout(save, cancel);
+		agencyManageProfile = new AgencyManageProfile( this, agencyService, licenceService.findAll());
+		agencyManageProfile.setAgencyDTO(agency);
 		 
 		layout
 			.withHeight("96%")
 			.withWidth("100%")
 			.withStyleName("dialog-content")
 			.addComponents( 
-				name, description, copyright, license, buttons
+				agencyManageProfile
 			);
 		this
 			.withHeight("650px")
@@ -94,17 +88,7 @@ public class DialogAgencyManageProfile extends MWindow implements Translatable{
 	}
 	
 	private void initLayout() {
-		name
-			.withFullWidth()
-			.withValue( agency.getName());
-		description
-			.withFullWidth()
-			.withValue( agency.getDescription());
-		license.setValue( agency.getLicense() );
-		license.setWidth("100%");
-		license.setHeight("100px");
-		copyright
-			.setValue( agency.getCopyright()  );
+
 	}
 
 	@Override

@@ -83,7 +83,7 @@ public class UploadAgencyLogo extends CustomComponent {
 
             		java.awt.Image image = ImageIO.read( file );
 
-                    BufferedImage bi = this.createResizedCopy(image, 240, 120, false);
+                    BufferedImage bi = this.createResizedCopy(image, 240, 100, false);
                     
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     ImageIO.write(bi, "png", baos);

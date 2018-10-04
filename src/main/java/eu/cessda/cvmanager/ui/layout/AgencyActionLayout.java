@@ -29,6 +29,7 @@ import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.service.StardatDDIService;
@@ -59,8 +60,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	private final RoleService roleService;
 	private final AgencyService agencyService;
 	private final UserAgencyService userAgencyService;
-	private final MetadataFieldService metadataFieldService;
-	private final MetadataValueService metadataValueService;
+	private final LicenceService licenceService;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -80,16 +80,14 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	
 	public AgencyActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 
 			AgencyDTO agency, UserService userService, RoleService roleService, AgencyService agencyService,
-			MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-			UserAgencyService userAgencyService) {
+			LicenceService licenceService, UserAgencyService userAgencyService) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.eventBus = eventBus;
 		this.agency = agency;
 		this.userService = userService;
 		this.roleService = roleService;
-		this.metadataFieldService = metadataFieldService;
-		this.metadataValueService = metadataValueService;
+		this.licenceService = licenceService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
 		this.i18n = i18n;
@@ -122,7 +120,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	}
 	
 	private void doManageProfile(ClickEvent event ) {
-		Window window = new DialogAgencyManageProfile(eventBus, agency, agencyService, metadataFieldService, metadataValueService, i18n, locale);
+		Window window = new DialogAgencyManageProfile(eventBus, agency, agencyService, licenceService, i18n, locale);
 		getUI().addWindow(window);
 	}
 	

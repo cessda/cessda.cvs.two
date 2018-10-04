@@ -193,7 +193,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
     private void setLicensePreview( LicenceDTO licenseDto ) {
     	if( licenseDto.isPersisted())
     		licensePreview.setValue( "<p>"
-    			+ "<img style=\"width:120px\" alt=\"" + licenseDto.getName() + "\" style=\"border-width:0\" src=\"" + licenseDto.getLogoLink() + "\">"
+    			+ "<img style=\"max-width:120px\" alt=\"" + licenseDto.getName() + "\" style=\"border-width:0\" src=\"" + licenseDto.getLogoLink() + "\">"
     			+ "&nbsp;&nbsp;&nbsp;<span>This work is licensed under a "
     			+ "<a rel=\"license\" href=\"" + licenseDto.getLink() + "\">" + licenseDto.getName() + "</a>.</span>"
     			+ "</p>" );

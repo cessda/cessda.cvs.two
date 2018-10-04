@@ -581,7 +581,7 @@ public class DetailsView extends CvView {
 			.withWidth("120px");
 			
 		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
-			logoLabel.setValue(  "<img style=\"width:120px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
+			logoLabel.setValue(  "<img style=\"max-width:120px;max-height:80px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
 			
 		MCssLayout topHead = new MCssLayout();
 		topHead.withFullWidth().add( logoLabel, topTitle);

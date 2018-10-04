@@ -1,6 +1,5 @@
 package eu.cessda.cvmanager.ui.view.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.gesis.wts.service.AgencyService;
@@ -16,16 +15,18 @@ import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.JavaScript;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.ui.component.UploadAgencyLogo;
 import eu.cessda.cvmanager.ui.component.UploadExample;
+import eu.cessda.cvmanager.ui.view.AgencyView;
+import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageProfile;
 
-public class AgencyForm extends FormLayout {
+public class AgencyManageProfile extends FormLayout {
 
 	private static final long serialVersionUID = 1L;
 	private MTextField name = new MTextField("Name");
@@ -35,11 +36,10 @@ public class AgencyForm extends FormLayout {
     private MTextField canonicalUri = new MTextField("CV Canonical URI").withPlaceholder("e.g. urn:ddi-cv:");
     private Button save = new Button("Save");
     private Button cancel = new Button("Cancel");
-    private Button delete = new Button("Delete");
+//    private Button delete = new Button("Delete");
     
     private final AgencyService agencyService;
     private AgencyDTO agencyDTO;
-    private ManageAgencyLayout manageAgencyLayout;
     private Binder<AgencyDTO> binder = new Binder<>(AgencyDTO.class);
     
     private ComboBox<LicenceDTO> licensesCb = new ComboBox<>( "Licence" );
@@ -47,12 +47,13 @@ public class AgencyForm extends FormLayout {
     private List<LicenceDTO> licenses;
     private UploadAgencyLogo uploadAgencyLogo = new UploadAgencyLogo();
     private String agencyNameTemp;
+    private DialogAgencyManageProfile dialogAgencyManageProfile;
 
-    public AgencyForm(ManageAgencyLayout manageAgencyLayout, AgencyService agencyService, List<LicenceDTO> licenses) {
-        this.manageAgencyLayout = manageAgencyLayout;
+    public AgencyManageProfile( DialogAgencyManageProfile dialogAgencyManageProfile, AgencyService agencyService, List<LicenceDTO> licenses) {
         this.agencyService = agencyService;
         this.licenses = licenses;
 //        uploadExample.init("advanced");
+        this.dialogAgencyManageProfile = dialogAgencyManageProfile;
         
         licensesCb.setItems( licenses );
         licensesCb.setWidth( "100%" );
@@ -72,8 +73,8 @@ public class AgencyForm extends FormLayout {
         canonicalUri.withFullWidth();
 
         setSizeUndefined();
-        setWidth("500px");
-        MCssLayout buttons = new MCssLayout(save, cancel, delete);
+        setSizeFull();
+        MCssLayout buttons = new MCssLayout(save, cancel/*, delete*/);
         buttons.withFullWidth();
         
 	    uploadAgencyLogo.setCaption("Logo");
@@ -83,14 +84,14 @@ public class AgencyForm extends FormLayout {
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(KeyCode.ENTER);
         
-        delete.addStyleNames(ValoTheme.BUTTON_DANGER, "pull-right");
+//        delete.addStyleNames(ValoTheme.BUTTON_DANGER, "pull-right");
         
 
         binder.bindInstanceFields(this);
 
         save.addClickListener(e -> this.save());
-        cancel.addClickListener( e -> this.setVisible( false ));
-        delete.addClickListener(e -> this.delete());
+        cancel.addClickListener( e -> dialogAgencyManageProfile.close());
+//        delete.addClickListener(e -> this.delete());
     }
 
     public void setAgencyDTO(AgencyDTO agencyDTO) {
@@ -113,7 +114,7 @@ public class AgencyForm extends FormLayout {
         
 
         // Show delete button for only customers already in the database
-        delete.setVisible(agencyDTO.isPersisted());
+//        delete.setVisible(agencyDTO.isPersisted());
         setVisible(true);
         name.selectAll();
     }
@@ -125,7 +126,6 @@ public class AgencyForm extends FormLayout {
 				dialog -> {
 					if( dialog.isConfirmed() ) {
 						agencyService.delete(agencyDTO.getId());
-				        manageAgencyLayout.updateList();
 				        setVisible(false);
 					}
 				}
@@ -139,11 +139,14 @@ public class AgencyForm extends FormLayout {
     	else
     		agencyDTO.setLicenseId( null );
     	agencyService.save(agencyDTO);
-        manageAgencyLayout.updateList();
         
         // TODO: Update CV if agency name changed
         
-        setVisible(false);
+//        setVisible(false);
+        dialogAgencyManageProfile.close();
+        //redirect
+        UI.getCurrent().getNavigator().navigateTo( AgencyView.VIEW_NAME );
+        
     }
     
     private void setLicensePreview( LicenceDTO licenseDto ) {

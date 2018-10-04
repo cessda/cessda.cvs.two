@@ -41,6 +41,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.service.StardatDDIService;
@@ -67,8 +68,7 @@ public class AgencyView extends CvView {
 	private final AgencyService agencyService;
 	private final RoleService roleService;
 	private final UserAgencyService userAgencyService;
-	private final MetadataFieldService metadataFieldService;
-	private final MetadataValueService metadataValueService;
+	private final LicenceService licenceService;
 	
 	private MCssLayout searchTopLayout = new MCssLayout();
 	private MLabel resultInfo = new MLabel();
@@ -90,15 +90,13 @@ public class AgencyView extends CvView {
 	public AgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, 
 			UserService userService, RoleService roleService, AgencyService agencyService, 
-			MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-			UserAgencyService userAgencyService, VocabularyService vocabularyService, CodeService codeService) {
+			LicenceService licenceService, UserAgencyService userAgencyService, VocabularyService vocabularyService, CodeService codeService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, null, AgencyView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
-		this.metadataFieldService = metadataFieldService;
-		this.metadataValueService = metadataValueService;
+		this.licenceService = licenceService;
 		
 		eventBus.subscribe(this, AgencyView.VIEW_NAME);
 	}
@@ -108,8 +106,7 @@ public class AgencyView extends CvView {
 		LoginView.NAVIGATETO_VIEWNAME = AgencyView.VIEW_NAME;
 				
 		aActionLayout = new AgencyActionLayout( "block.action.agency" , "block.action.agency.show" , 
-				i18n, eventBus, agency, userService, roleService, agencyService, metadataFieldService, 
-				metadataValueService, userAgencyService);
+				i18n, eventBus, agency, userService, roleService, agencyService, licenceService, userAgencyService);
 //		aOwnLayout = new AgencyOwnLayout(i18n, eventBus, this, agencyService, configService); 
 		aSearchLayout = new AgencySearchLayout(i18n, eventBus, this, agencyService, configService);
 		aDetailLayout = new AgencyDetailLayout(i18n, eventBus, this, agencyService, configService, vocabularyService, stardatDDIService, configService); 

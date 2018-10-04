@@ -181,7 +181,7 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 				.withWidth("200px");
 		
 		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
-			logoLabel.setValue(  "<img style=\"width:200px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
+			logoLabel.setValue(  "<img style=\"max-width:200px;max-height:100px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
 		
 		headTitle
 			.withContentMode( ContentMode.HTML )
