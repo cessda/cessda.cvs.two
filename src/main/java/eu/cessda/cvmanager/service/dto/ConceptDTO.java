@@ -160,7 +160,9 @@ public class ConceptDTO implements Serializable {
 		if( codeId == null)
 			return Optional.empty();
 		
-		return concepts.stream().filter( c -> c.getCodeId().equals(codeId)).findFirst();
+		return concepts.stream()
+				.filter( c -> c.getCodeId() != null)
+				.filter( c -> c.getCodeId().equals(codeId)).findFirst();
 	}
 	
 	public static Optional<ConceptDTO> getConceptFromCode( Set<ConceptDTO> concepts, String notation){

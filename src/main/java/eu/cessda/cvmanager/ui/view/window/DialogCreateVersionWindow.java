@@ -289,10 +289,15 @@ public class DialogCreateVersionWindow extends MWindow {
 			// save concepts
 			for( CodeDTO code: codes) {
 				ConceptDTO.getConceptFromCode(newVersion.getConcepts(), code.getNotation())
-				.ifPresent( c -> c.setCodeId( code.getId()));
+				.ifPresent( 
+						c -> c.setCodeId( code.getId())
+				);
 			}
 			
 			for( ConceptDTO newConcept: newVersion.getConcepts()) {
+				// remove corrupt concepts
+				if( newConcept.getCodeId() == null)
+					continue;
 				newConcept.setVersionId( newVersion.getId());
 				conceptService.save(newConcept);
 			}
