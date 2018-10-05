@@ -2090,7 +2090,15 @@ div.v-layout.v-horizontal.v-widget {
 	display: flex;
 }
 
-.mytheme .section-footer .footer-top .line-break {
+.mytheme .section-footer .footer-top .column {
+	display: block;
+	flex-basis: 0;
+	flex-grow: 1;
+	flex-shrink: 1;
+	padding: 0.75rem;
+}
+
+.mytheme .section-footer .footer-top .column .line-break {
 	border-bottom: 1px solid #444;
 	position: absolute;
 	right: 0;
@@ -2098,39 +2106,31 @@ div.v-layout.v-horizontal.v-widget {
 	width: 70%;
 }
 
-.mytheme .section-footer .footer-top .logo-footer a img {
-	width: 70%;
-}
-
-.mytheme .section-footer .footer-top .footer-content p {
+.mytheme .section-footer .footer-top .column .footer-content p {
 	display: inline-block;
 }
 
-.mytheme .section-footer .footer-top .footer-content .footer-social {
+.mytheme .section-footer .footer-top .column .footer-content .footer-social {
 	display: inline-block;
 	padding-top: 20px;
 }
 
-.mytheme .section-footer .footer-top .footer-content .footer-social li {
+.mytheme .section-footer .footer-top .column .footer-content .footer-social li {
 	display: inline-block;
 }
 
-.mytheme .section-footer .footer-top .footer-content .footer-social li a {
+.mytheme .section-footer .footer-top .column .footer-content .footer-social li a {
 	color: #666;
 	font-size: 130%;
 	padding: 5px;
 }
 
-.mytheme .section-footer .footer-top .footer-content .footer-social li a:hover {
+.mytheme .section-footer .footer-top .column .footer-content .footer-social li a:hover {
 	-webkit-transition: 0.5s ease-out;
 	-moz-transition: 10.5s ease-out;
 	-o-transition: 0.5s ease-out;
 	transition: 0.5s ease-out;
 	color: #85C4EC;
-}
-
-.mytheme .section-footer .footer-down {
-	margin-top: 30px;
 }
 
 .mytheme .section-footer .footer-down h3 {
@@ -2181,6 +2181,8 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .section-footer .footer-down .menu-footer ul li a {
 	text-decoration: none;
 	color: #666;
+	text-transform: uppercase;
+	font-weight: 500;
 }
 
 .mytheme .section-footer .footer-down .menu-footer ul li a:hover {
@@ -2272,8 +2274,8 @@ div.v-layout.v-horizontal.v-widget {
 	margin-bottom: 50px;
 }
 
-.mytheme .pdb-50 {
-	padding-bottom: 50px;
+.mytheme .pdb-20 {
+	padding-bottom: 20px;
 }
 
 .mytheme.v-app, .mytheme.v-app-loading {
