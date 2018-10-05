@@ -29,8 +29,12 @@
 }
 @media (max-width: 792px){
 	.header-cessda .primary-header{
+		text-align: right !important;
 		.col-md-6{
 	      	width: 100%;
+	    }
+	    .social{
+	    	display:none !important;
 	    }
     }
     .facet-filter{

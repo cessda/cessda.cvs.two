@@ -41,6 +41,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Viewport;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
@@ -84,8 +85,9 @@ import eu.cessda.cvmanager.utils.FileUtils;
  */
 
 @Viewport("initial-scale=1, maximum-scale=1")
-@StyleSheet({"http://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900"})
+//@StyleSheet({"http://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900"})
 @Theme("mytheme")
+@Title("CESSDA Vocabularies")
 @SpringUI
 //@PreserveOnRefresh
 @EnableEventBus
@@ -148,6 +150,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	@Override
 	protected void initUI(VaadinRequest request) {
 		setLocale(Locale.ENGLISH);
+		
 		
 		breadCrumb
 			.withBaseUrl( configurationService.getServerContextPath() )
@@ -287,16 +290,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 				new MLabel()
 					.withContentMode( ContentMode.HTML)
 					.withStyleName( "col-md-6 social text-center" )
-					.withValue(  "		<div class=\"email\">\n" + 
-							"			<a href=\"mailto:cessda@cessda.net\"><i class=\"fa fa-envelope\"></i> cessda@cessda.net</a>\n" + 
-							"		</div>" +
-							"	<ul>\n" + 
-							"		<li><a href=\"https://www.facebook.com/Cessda-463858013634628/\" target=\"_blank\"><i class=\"fa fa-facebook\"></i></a></li>\n" + 
-							"		<li><a href=\"https://twitter.com/CESSDA_Data/\" target=\"_blank\"><i class=\"fa fa-twitter\"></i></a></li>\n" + 
-							"		<li><a href=\"https://www.linkedin.com/company/9392869\" target=\"_blank\"><i class=\"fa fa-linkedin\"></i></a></li>\n" + 
-							"		<li><a href=\"https://www.instagram.com/cessda_data/\" target=\"_blank\"><i class=\"fa fa-instagram\"></i></a></li>\n" + 
-							"		<li><a href=\"https://plus.google.com/112779581489694492154\" target=\"_blank\"><i class=\"fa fa-google-plus\"></i></a></li>\n" + 
-							"	</ul>" ),
+					.withValue(  "<div class=\"email\"><span>Consortium of European Social Science Data Archives</span></div>" ),
 				new MCssLayout()
 					.withStyleName( "col-md-6 log-in pull-right" )
 					.add(
@@ -322,8 +316,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 				new MCssLayout()
 					.withStyleName("col-md-4")
 					.add(
-							logo,
-							new MLabel("CV Manager").withFullWidth().withContentMode(ContentMode.HTML).withStyleName("sublogo")
+							logo
 						),
 					new MCssLayout()
 					.withStyleName("col-md-8 text-center")
