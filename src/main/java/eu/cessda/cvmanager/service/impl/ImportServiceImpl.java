@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -37,6 +38,7 @@ import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.manager.WorkflowManager;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
@@ -70,8 +72,34 @@ public class ImportServiceImpl implements ImportService{
 
 	@Override
 	public VersionDTO createCv(Cv cv) {
-		// TODO Auto-generated method stub
-		return null;
+		// First find agency
+		AgencyDTO agency = agencyService.findByName( cv.getAgency());
+		if( agency == null ) {
+			throw new IllegalArgumentException("The agency is not found");
+		}
+		// Validate Cv
+		if( vocabularyService.getByNotation( cv.getCode()) != null ) {
+			throw new IllegalArgumentException("The Cv is already exist");
+		}
+		VersionDTO version = null;
+		
+		// process Cv based on type (SL or TL)
+		// SL means create both Vocabulary and SL Version
+		// TL means create TL version and get existing vocabulary
+		if(cv.getType().equals( ItemType.SL.toString())) { // SL version
+			// create new vocabulary
+			VocabularyDTO newVocabulary = WorkflowManager.createVocabulary(agency, cv);
+			Optional<VersionDTO> latestSlVersion = newVocabulary.getLatestSlVersion(false);
+			if(latestSlVersion.isPresent())
+				version = latestSlVersion.get();
+		} else  // TL version
+		{
+			// find vocabulary
+			
+			// add version
+		}
+		
+		return version;
 	}
 
 

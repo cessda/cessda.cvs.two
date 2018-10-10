@@ -724,6 +724,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			return;
 		// query vocabulary, make sure everything is up to date
 		vocabulary = findOne( vocabulary.getId());
+		vocabulary.setVersions( new LinkedHashSet<>(versionService.findAllByVocabulary( vocabulary.getId())));
 		// get versions
 		vocabulary.setVers( vocabulary.getLatestVersions());
 		// set languages
@@ -748,6 +749,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 		// if not yet published
 		if( !latestSLversion.getStatus().equals( Status.PUBLISHED.toString()) ) {
+			//set latest concept to SL version
+			latestSLversion.setConcepts( new LinkedHashSet<>( conceptService.findByVersion( latestSLversion.getId())));
 			// clear vocabulary and assign only with SL version
 			vocabulary.clearContent();
 			vocabulary.addLanguage( latestSLversion.getLanguage());
