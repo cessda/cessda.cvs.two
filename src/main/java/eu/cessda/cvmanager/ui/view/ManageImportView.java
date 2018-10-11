@@ -30,7 +30,6 @@ import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.ImportService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -39,6 +38,7 @@ import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
+import eu.cessda.cvmanager.service.impl.ImportServiceImpl;
 
 @UIScope
 @SpringView(name = ManageImportView.VIEW_NAME)
@@ -55,14 +55,14 @@ public class ManageImportView extends CvManagerAdminView {
 	private final VocabularyChangeService vocabularyChangeService;
 	
 	// autowired
-	private final ImportService importService;
+	private final ImportServiceImpl importServiceImpl;
 
 	// components
 	private MLabel pageTitle = new MLabel();
 	private MVerticalLayout layout = new MVerticalLayout();
 
 	public ManageImportView(I18N i18n, EventBus.UIEventBus eventBus, 
-			SecurityService securityService, ImportService importService,
+			SecurityService securityService, ImportServiceImpl importServiceImpl,
 			BCryptPasswordEncoder encrypt, VocabularyService vocabularyService,
 			StardatDDIService stardatDDIService, CodeService codeService,
 			VersionService versionService, VocabularyChangeService vocabularyChangeService,
@@ -76,7 +76,7 @@ public class ManageImportView extends CvManagerAdminView {
 		this.versionService = versionService;
 		this.vocabularyChangeService = vocabularyChangeService;
 		
-		this.importService = importService;
+		this.importServiceImpl = importServiceImpl;
 	}
 
 	@PostConstruct
@@ -89,7 +89,7 @@ public class ManageImportView extends CvManagerAdminView {
 			.withFullSize();
 		
 		MButton importStardatDDI = new MButton( "Imports stardatDDI to DB" );
-		importStardatDDI.addClickListener( e -> importService.importFromStardat());
+		importStardatDDI.addClickListener( e -> importServiceImpl.importFromStardat());
 		
 		MButton reIndexButton = new MButton( "Re-index DB" );
 		reIndexButton.addClickListener( e -> {
