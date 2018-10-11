@@ -77,16 +77,17 @@ public class ImportServiceImpl implements ImportService{
 		if( agency == null ) {
 			throw new IllegalArgumentException("The agency is not found");
 		}
-		// Validate Cv
-		if( vocabularyService.getByNotation( cv.getCode()) != null ) {
-			throw new IllegalArgumentException("The Cv is already exist");
-		}
+		
 		VersionDTO version = null;
 		
 		// process Cv based on type (SL or TL)
 		// SL means create both Vocabulary and SL Version
 		// TL means create TL version and get existing vocabulary
 		if(cv.getType().equals( ItemType.SL.toString())) { // SL version
+			// Validate Cv
+			if( vocabularyService.getByNotation( cv.getCode()) != null ) {
+				throw new IllegalArgumentException("The Cv is already exist");
+			}
 			// create new vocabulary
 			VocabularyDTO newVocabulary = WorkflowManager.createVocabulary(agency, cv);
 			Optional<VersionDTO> latestSlVersion = newVocabulary.getLatestSlVersion(false);
@@ -95,8 +96,18 @@ public class ImportServiceImpl implements ImportService{
 		} else  // TL version
 		{
 			// find vocabulary
+			VocabularyDTO vocabulary = vocabularyService.getByNotation( cv.getCode());
+			// check whether vocabulary already exist
+			if( vocabulary == null ) {
+				throw new IllegalArgumentException("Unable to find vocabulary");
+			}
 			
 			// add version
+			vocabulary = WorkflowManager.addVocabularyTranslation(vocabulary, agency, cv);
+			
+			Optional<VersionDTO> latestVersionByLanguage = vocabulary.getLatestVersionByLanguage( cv.getLanguage());
+			if(latestVersionByLanguage.isPresent())
+				version = latestVersionByLanguage.get();
 		}
 		
 		return version;

@@ -641,8 +641,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 							}
 							
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
-								// get workflow codes
-								List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+								
 								
 								vocabulary.setStatuses( vocabulary.getLatestStatuses() );
 								
@@ -669,6 +668,10 @@ public class DialogManageStatusWindowNew extends MWindow {
 									"<br/>Notes:<br/>" + currentVersion.getVersionNotes() + (versionChanges.getValue() != null && !versionChanges.getValue().isEmpty() ? "<br/>Changes:<br/>" + currentVersion.getVersionChanges() : "") + "<br/><br/>"
 								);
 								
+								// TODO: probably only neeed this on SL publication
+								// get workflow codes
+								List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+								
 								// update concept uri
 								for(ConceptDTO concept : currentVersion.getConcepts()) {
 									concept.setUri( concept.getUri() + "/" + versionNumber);
@@ -680,7 +683,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 									
 									conceptService.save( concept );
 								}
-								
+								////////////////////
 								
 								vocabulary.setVersionByLanguage(selectedLanguage, getVersionNumber());
 								// if SL is published
