@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.service;
 
+import java.util.Map;
+
 import eu.cessda.cvmanager.domain.Cv;
 import eu.cessda.cvmanager.domain.CvCode;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -13,6 +15,8 @@ public interface ImportService {
      * Import all CVs from Stardat DDI-flatDB to the CV-Manager
      */
 	void importFromStardat();
+	
+	Map<String, Object> createCvBatch( Cv... cvs);
 
 	/**
 	 * Create a new Vocabulary and a new Version for SL

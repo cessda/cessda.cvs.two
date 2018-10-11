@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.service.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -25,18 +26,13 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
  */
 @RestController
 @RequestMapping
-("/import")
+("/v1/import")
 public class ImportWebService {
 	private final Logger log = LoggerFactory.getLogger( ImportWebService.class );
-	
-	private final VersionService versionService;
-	private final VocabularyService vocabularService;
+
 	private final ImportService importService;
 	
-	public ImportWebService( VocabularyService vocabularService, VersionService versionService,
-			ImportService importService) {
-		this.versionService = versionService;
-		this.vocabularService = vocabularService;
+	public ImportWebService( ImportService importService) {
 		this.importService = importService;
 	}
 	
@@ -44,6 +40,12 @@ public class ImportWebService {
 	@Transactional
 	public ResponseEntity<VersionDTO> createCv(@Valid @RequestBody Cv cv) throws URISyntaxException{
 		VersionDTO newVersion = importService.createCv(cv);
-		return ResponseEntity.created(new URI("/api/ul-events/" + newVersion.getId())).body(newVersion);
+		return ResponseEntity.created(new URI("/v1/VocabularyDetails/" + newVersion.getNotation() + "/" + newVersion.getLanguage() + "/" + newVersion.getNumber())).body(newVersion);
+	}
+	
+	@PostMapping("/batchcv")
+	@Transactional
+	public ResponseEntity<Map<String, Object>> createCv(@Valid @RequestBody Cvs cvs) throws URISyntaxException{
+		return ResponseEntity.created(new URI("/v1/Vocabulary")).body(importService.createCvBatch(cvs.getCvs()));
 	}
 }

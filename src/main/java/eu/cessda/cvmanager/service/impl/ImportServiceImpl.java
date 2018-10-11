@@ -3,7 +3,9 @@ package eu.cessda.cvmanager.service.impl;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -111,6 +113,36 @@ public class ImportServiceImpl implements ImportService{
 		}
 		
 		return version;
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Map<String, Object> createCvBatch(Cv... cvs) {
+		Map<String, Object> agencyMap = new LinkedHashMap<>();
+		for( Cv cv : cvs) {
+			VersionDTO version = createCv(cv);
+			Object vocabMap = agencyMap.get(cv.getAgency());
+			if( vocabMap == null ) {
+				// put new item into the map
+				vocabMap = new LinkedHashMap<>();
+				Map<String,String> versionMap = new LinkedHashMap<>();
+				versionMap.put(version.getLanguage(), version.getNumber());
+				
+				((Map<String, Object>) vocabMap).put( version.getNotation(), versionMap);
+				agencyMap.put( cv.getAgency(), vocabMap );
+			} else {
+				Object versionMap = ((Map<String, Object>) vocabMap).get( version.getNotation());
+				if( versionMap == null ) {
+					versionMap = new LinkedHashMap<>();
+					((Map<String, String>) versionMap).put(version.getLanguage(), version.getNumber());
+					((Map<String, Object>) vocabMap).put( version.getNotation(), versionMap);
+				} else {
+					((Map<String, String>) versionMap).put(version.getLanguage(), version.getNumber());
+				}
+			}	
+		}
+		
+		return agencyMap;
 	}
 
 
