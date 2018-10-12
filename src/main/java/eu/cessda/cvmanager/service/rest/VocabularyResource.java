@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.utils.VersionUtils;
 
 /**
  * REST controller for managing Vocabullary.
@@ -42,25 +44,49 @@ public class VocabularyResource {
      *
      * @return map of Agencies and CVs code
      */
-    @GetMapping("/Vocabulary")
-    public Map<String,List<String>> getAllVocabularies() {
+    @SuppressWarnings("unchecked")
+	@GetMapping("/Vocabulary")
+    public Map<String,Object> getAllVocabularies() {
+    	// example structure:
+    	// e.g:
+//    	"DDI":{
+//    		"AnalysisUnit":{
+//                "en":{
+//    				"1.0":"/v1/Vocabulary/AnalysisUnit/en/1.0",
+//    				"1.1":"/v1/Vocabulary/AnalysisUnit/en/1.1"
+//    			}
+//    		}
+//    	}
         log.debug("REST request to get all Vocabularies");
-        Map<String,List<String>> agencyCvMap = new LinkedHashMap<>();
+        Map<String,Object> agencyCvMap = new TreeMap<>();
         
-        List<VocabularyDTO> findAll = vocabularService.findAll();
-        for( VocabularyDTO voc : findAll) {
+        List<VocabularyDTO> vocabularies = vocabularService.findAll();
+        
+        vocabularies = vocabularies.stream().sorted((c1,c2) -> c1.getNotation().compareTo( c2.getNotation())).collect( Collectors.toList());
+        
+        for( VocabularyDTO voc : vocabularies) {
         	if( voc.isWithdrawn() )
         		continue;
-        	List<String> notations = agencyCvMap.get( voc.getAgencyName());
-        	if( notations == null ) {
-        		notations = new ArrayList<>();
-        		agencyCvMap.put(voc.getAgencyName(), notations);
+        	Object vocabMap = agencyCvMap.get( voc.getAgencyName());
+        	if( vocabMap == null ) {
+        		vocabMap = new LinkedHashMap<>();
+        		agencyCvMap.put(voc.getAgencyName(), vocabMap);
         	}
-        	notations.add( voc.getNotation() );
-        }
-        
-        for(Map.Entry<String, List<String>> entry : agencyCvMap.entrySet()) {
-        	entry.setValue( entry.getValue().stream().sorted().collect( Collectors.toList()) );
+        	List<VersionDTO> versions =  voc.getVersions().stream().sorted( (c1, c2) -> VersionUtils.compareVersion( c1.getNumber(), c2.getNumber())).collect( Collectors.toList());
+        	for( VersionDTO version : versions) {
+        		Object langMap = ((Map<String, Object>) vocabMap).get( version.getNotation() );
+        		if(langMap == null ) {
+        			langMap = new LinkedHashMap<>();
+        			((Map<String, Object>) vocabMap).put( version.getNotation(), langMap);
+        		}
+        		Object versionMap = ((Map<String, Object>) langMap).get( version.getLanguage() + "(" + version.getItemType() + ")" );
+        		if( versionMap == null ) {
+        			versionMap = new LinkedHashMap<>();
+        			((Map<String, Object>) langMap).put(version.getLanguage() + "(" + version.getItemType() + ")", versionMap);
+        		}
+        		((Map<String, Object>) versionMap).put( version.getNumber(), "/v1/VocabularyDetails/" + version.getNotation() + "/" + version.getLanguage() + "/" + version.getNumber());
+        	}
+        	
         }
                 
         return agencyCvMap;
