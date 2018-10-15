@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
@@ -69,6 +70,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private final StardatDDIService stardatDDIService;
 	private final CodeService codeService;
 	private final ConceptService conceptService;
+	private final ConfigurationService configService;
 	private final VocabularyService vocabularyService;
 	
 	private AgencyDTO agency;
@@ -135,7 +137,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private MButton comparatorLayoutToggle = new MButton("Show comparison with previous version");
 
 	public DialogManageStatusWindowNew(StardatDDIService stardatDDIService,  
-			CodeService codeService, ConceptService conceptService, 
+			CodeService codeService, ConceptService conceptService, ConfigurationService configService,
 			VocabularyService vocabularyService, VersionService versionService,
 			CVScheme cvScheme, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, 
 			Language selectedLanguage, Language sourceLanguage, AgencyDTO agencyDTO, 
@@ -144,6 +146,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 		this.stardatDDIService = stardatDDIService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
+		this.configService = configService;
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
 		this.cvScheme = cvScheme;
@@ -641,8 +644,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 							}
 							
 							if( nextStatus.equals( Status.PUBLISHED.toString())) {
-								
-								
 								vocabulary.setStatuses( vocabulary.getLatestStatuses() );
 								
 								// add version number to URI
@@ -653,6 +654,14 @@ public class DialogManageStatusWindowNew extends MWindow {
 								currentVersion.setPublicationDate( LocalDate.now());
 								currentVersion.setLicenseId( agency.getLicenseId());
 								currentVersion.setVersionChanges( versionChanges.getValue() );
+								
+								String detailUrl = configService.getServerBaseUrl() + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
+								try {
+									detailUrl += URLEncoder.encode(currentVersion.getUri(), "UTF-8");
+								} catch (UnsupportedEncodingException e) {
+									detailUrl += currentVersion.getUri();
+									e.printStackTrace();
+								}
 								
 								String urn =  agency.getCanonicalUri();
 								if(urn == null) {
@@ -696,6 +705,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 									vocabulary.setLanguagesPublished( null);
 									vocabulary.addLanguagePublished( sourceLanguage.toString());
 									
+									currentVersion.setCitation( VersionDTO.generateCitation(currentVersion, null, agency.getName(), detailUrl));
 									
 									String cvUriLink = agency.getUri();
 									if(cvUriLink == null )
@@ -731,6 +741,11 @@ public class DialogManageStatusWindowNew extends MWindow {
 								} else {
 									// if TL is published
 									currentVersion.setUriSl( vocabulary.getUri());
+									// set citation
+									Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
+									if( latestSlVersion.isPresent() )
+										currentVersion.setCitation( VersionDTO.generateCitation(currentVersion, latestSlVersion.get(), agency.getName(), detailUrl));
+									
 									currentVersion = versionService.save(currentVersion);
 									
 									vocabulary.addLanguagePublished( selectedLanguage.toString());

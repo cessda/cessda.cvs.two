@@ -41,6 +41,7 @@ import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -68,6 +69,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	private final AgencyService agencyService;
 	private final CodeService codeService;
 	private final ConceptService conceptService;
+	private final ConfigurationService configService;
 	private final VocabularyService vocabularyService;
 	private final VocabularySearchRepository vocabularySearchRepository;
 	private final VersionService versionService;
@@ -106,7 +108,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	
 	public EditorCvActionLayoutNew(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService, 
-			ConceptService conceptService, CodeService codeService, 
+			ConceptService conceptService, CodeService codeService, ConfigurationService configService,
 			VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus, 
 			VocabularyChangeService vocabularyChangeService) {
 		super(titleHeader, showHeader, i18n);
@@ -114,6 +116,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 		this.stardatDDIService = stardatDDIService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
+		this.configService = configService;
 		this.agencyService = agencyService;
 		this.versionService = versionService;
 		this.vocabularyService = vocabularyService;
@@ -230,7 +233,7 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	}
 	
 	public void changeStatus(ClickEvent event ) {
-		Window window = new DialogManageStatusWindowNew(stardatDDIService, codeService, conceptService, vocabularyService, versionService, 
+		Window window = new DialogManageStatusWindowNew(stardatDDIService, codeService, conceptService, configService, vocabularyService, versionService, 
 				cvScheme, vocabulary, currentVersion, selectedLanguage, sourceLanguage, 
 				agency, eventBus, vocabularyChangeService);
 		getUI().addWindow(window);

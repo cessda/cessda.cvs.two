@@ -528,4 +528,39 @@ public class VersionDTO implements Serializable {
 		
 		return newVersion;
 	}
+	
+	public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName, String detailUrl) {
+		StringBuilder citation = new StringBuilder();
+		
+		/*
+Format for SL:
+Agency. (Publication year). CV Long Name (Version number) [Controlled vocabulary]. Publishing agency. urn. Retrieved from: URL in CV Manager.
+-- [Controlled vocabulary] text is the same for all. Publishing agency is always CESSDA for DDI and CESSDA vocs.
+
+For example: 
+DDI Alliance (2018). Time Method (1.4) [Controlled vocabulary]. CESSDA. urn:ddi-cv:AnalysisUnit:1.0. Retrieved from: vocabularies.cessda.eu/TimeMethod_1.0/en.
+
+
+TL format
+Agency. (Publication year). CV Long Name in TL [SL Long Name]  (TL Version number; Translating agency, Transl) [Controlled vocabulary]. Publishing agency. urn of SL. Retrieved from: URL from CV Manager.
+---the text 'Transl.' is the same for all TLs, even thought the translating agency name changes. urn is the SL urn even for TL.
+
+DDI Alliance. (2018). Erhebungsdesign [Time Method] (Version 1.2.1; GESIS, Transl.) [Controlled vocabulary]. CESSDA. urn: ddi-cv:TimeMethod:1.2. Retrieved from: http://vocabularies.cessda.eu/TimeMethod_1.2.1/de.htm
+
+"
+		 */
+		citation.append( agencyName );
+		citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
+		if( versionDto.getItemType().equals( ItemType.SL.toString()) ) {
+			citation.append( versionDto.getTitle() + " (" + versionDto.getNumber() + ") [Controlled vocabulary]. ");
+		}
+		else {
+			citation.append( versionDto.getTitle() + "[" + versionDtoSl.getTitle()+ "]" + " (" + versionDto.getNumber() +
+			(versionDto.getTranslateAgency() == null ? "": "; " + versionDto.getTranslateAgency() ) + ") [Controlled vocabulary]. ");
+		}
+		citation.append( versionDto.getCanonicalUri() + ". ");
+		citation.append( "Retrieved from: " + detailUrl);
+		
+		return citation.toString();
+	}
 }

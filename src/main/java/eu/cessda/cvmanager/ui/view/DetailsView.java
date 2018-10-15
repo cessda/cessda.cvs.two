@@ -138,6 +138,7 @@ public class DetailsView extends CvView {
 	private final VersionService versionService;
 	private final CodeService codeService;
 	private final ConceptService conceptService;
+	private final ConfigurationService configService;
 	private final VocabularyChangeService vocabularyChangeService;
 	private final LicenceService licenceService;
 
@@ -232,6 +233,7 @@ public class DetailsView extends CvView {
 		this.versionService = versionService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
+		this.configService = configService;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.licenceService = licenceService;
 		eventBus.subscribe( this, DetailsView.VIEW_NAME );
@@ -242,7 +244,7 @@ public class DetailsView extends CvView {
 		
 		editorCvActionLayout = new EditorCvActionLayoutNew("block.action.cv", "block.action.cv.show", i18n, 
 				stardatDDIService, agencyService, vocabularyService, versionService, conceptService, codeService, 
-				vocabularySearchRepository, eventBus, vocabularyChangeService);
+				configService, vocabularySearchRepository, eventBus, vocabularyChangeService);
 		
 		editorCodeActionLayout = new EditorCodeActionLayoutNew("block.action.code", "block.action.code.show", i18n,
 				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
