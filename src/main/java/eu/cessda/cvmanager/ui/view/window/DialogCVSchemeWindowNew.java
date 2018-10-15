@@ -83,6 +83,8 @@ public class DialogCVSchemeWindowNew extends MWindow {
 	private MLabel lChangeDesc = new MLabel( "Description" );
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
+	private MLabel versionNotesLabel = new MLabel("Notes");
+	private TextArea versionNotes = new TextArea();
 	
 	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
 	private Language language;
@@ -223,6 +225,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		
 		tfTitle.withFullWidth();
 		description.setSizeFull();
+		versionNotes.setSizeFull();
 
 		storeCode.addClickListener(event -> {
 			saveCV();
@@ -286,15 +289,24 @@ public class DialogCVSchemeWindowNew extends MWindow {
 						lTitle, tfTitle
 					).withExpand( lTitle, 0.15f).withExpand( tfTitle, 0.85f),
 				new MHorizontalLayout()
-				.withFullWidth()
-				.withHeight("100%")
-				.add(
-					lDescription, description
-				).withExpand( lDescription, 0.15f).withExpand( description, 0.85f)
+					.withFullWidth()
+					.withHeight("100%")
+					.add(
+						lDescription, description
+					).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.withHeight("100%")
+					.add(
+						versionNotesLabel, versionNotes
+					).withExpand( versionNotesLabel, 0.15f).withExpand( versionNotes, 0.85f)
 				
 			);
 
 		if( version.isPersisted() ) {
+			if( version.getVersionNotes() != null )
+				versionNotes.setValue( version.getVersionNotes());
+			
 			layout
 			.add(
 				changeBox,
@@ -433,6 +445,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		version.setNotation( tfCode.getValue() );
 		version.setTitle( tfTitle.getValue() );
 		version.setDefinition( description.getValue() );
+		version.setVersionNotes( versionNotes.getValue() );
 		
 		System.out.println( vocabularyService.existsByNotation( tfCode.getValue() ));
 		
@@ -446,16 +459,22 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		}
 		
 		binder
-		.forField( tfTitle)
-		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-		.bind(v -> v.getTitle(),
-			(v, value) -> v.setTitle( value));
+			.forField( tfTitle)
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind(v -> v.getTitle(),
+				(v, value) -> v.setTitle( value));
 
 		binder
-		.forField( description)
-		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
-		.bind(v -> v.getDefinition(),
-			(v, value) -> v.setDefinition( value ));
+			.forField( description )
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
+			.bind(v -> v.getDefinition(),
+				(v, value) -> v.setDefinition( value ));
+		
+		binder
+			.forField( versionNotes )
+			.bind( v -> v.getVersionNotes(),
+				(v, value) -> v.setVersionNotes( value ));
+		
 		
 		binder.validate();
 		return binder.isValid();
