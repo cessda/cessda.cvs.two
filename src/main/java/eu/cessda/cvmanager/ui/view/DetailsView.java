@@ -769,7 +769,7 @@ public class DetailsView extends CvView {
 		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenses, false);
 		licenseLayout.add( licenseLayoutContent );
 		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, licenses, templateEngine, false);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, stardatDDIService, licenses, templateEngine, false);
 		exportLayout.add(exportLayoutContent);
 		exportLayout.setSizeFull();
 		

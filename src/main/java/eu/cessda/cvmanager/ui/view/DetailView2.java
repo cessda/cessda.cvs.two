@@ -254,7 +254,7 @@ public class DetailView2 extends CvManagerView {
 			editButton.setVisible( true );
 		else
 			editButton.setVisible( false );
-		actionPanel.setVisible( true );
+//		actionPanel.setVisible( true );
 	}
 	
 	@Override
@@ -263,7 +263,7 @@ public class DetailView2 extends CvManagerView {
 		
 		locale = UI.getCurrent().getLocale();
 		setOldView(event.getOldView());
-		actionPanel.conceptSelectedChange( null );
+//		actionPanel.conceptSelectedChange( null );
 
 		if (event.getParameters() != null) {
 			try {
@@ -300,16 +300,16 @@ public class DetailView2 extends CvManagerView {
 
 		}
 		
-		updateActionPanel();
+//		updateActionPanel();
 	}
 	
-	@Override
-	protected void updateActionPanel() {
-		actionPanel.setSlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvSl( getAgency()) );
-		actionPanel.setTlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvTl( getAgency() ) );
-		
-		super.updateActionPanel();
-	}
+//	@Override
+//	protected void updateActionPanel() {
+//		actionPanel.setSlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvSl( getAgency()) );
+//		actionPanel.setTlRoleActionButtonVisible( SecurityUtils.isCurrentUserAllowCreateCvTl( getAgency() ) );
+//		
+//		super.updateActionPanel();
+//	}
 	
 	private void setDetails() {
 		setFormMode(FormMode.view);
@@ -377,7 +377,7 @@ public class DetailView2 extends CvManagerView {
 				
 				cvItem.setCurrentLanguage(e.getButton().getCaption().toLowerCase());
 				setSelectedLang( Language.getEnum( e.getButton().getCaption().toLowerCase()) );
-				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
+//				actionPanel.languageSelectionChange( configService.getDefaultSourceLanguage(), cvItem.getCurrentLanguage());
 				
 				setFormMode(FormMode.view);
 				
@@ -390,7 +390,7 @@ public class DetailView2 extends CvManagerView {
 				else
 					editButton.setVisible( false );
 				
-				actionPanel.conceptSelectedChange( null );
+//				actionPanel.conceptSelectedChange( null );
 				setCode( null );
 				updateMessageStrings(locale);
 			});
@@ -746,7 +746,7 @@ public class DetailView2 extends CvManagerView {
 		detailTreeGrid.asSingleSelect().addValueChangeListener( event -> {		
 			if (event.getValue() != null) {
 				cvItem.setCvConcept( event.getValue() );
-				actionPanel.conceptSelectedChange( cvItem.getCvConcept() );
+//				actionPanel.conceptSelectedChange( cvItem.getCvConcept() );
 				
 				// get code
 				code = codeService.getByUri( cvItem.getCvConcept().getContainerId());
@@ -758,8 +758,8 @@ public class DetailView2 extends CvManagerView {
             }
 		});
 		
-		if(enableTreeDragAndDrop && actionPanel.isEnableSort())
-			enableTreeGridDragAndDropSort();
+//		if(enableTreeDragAndDrop && actionPanel.isEnableSort())
+//			enableTreeGridDragAndDropSort();
 		
 		// select row programatically
 		if(cvItem.getCvConcept() != null ) {
@@ -1048,7 +1048,7 @@ public class DetailView2 extends CvManagerView {
 								codeService.delete( code );
 							
 							detailTreeGrid.getDataProvider().refreshAll();
-							actionPanel.conceptSelectedChange( null );
+//							actionPanel.conceptSelectedChange( null );
 							setCode( null );
 						}
 					}
@@ -1130,6 +1130,6 @@ public class DetailView2 extends CvManagerView {
 		if( detailTreeGrid.getColumn("definitionTl") != null )
 			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
 		
-		actionPanel.updateMessageStrings(locale);
+//		actionPanel.updateMessageStrings(locale);
 	}
 }

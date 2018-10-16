@@ -13,6 +13,7 @@ import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
+import org.gesis.stardat.entity.CVVersion;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
@@ -830,6 +831,13 @@ public class DialogManageStatusWindowNew extends MWindow {
 			if (cvScheme != null && cvScheme.getContainerId().equals( currentVersion.getUri())) {
 				cvScheme.setStatus( nextStatus );
 				cvScheme.setOrderedMemberList( null );
+				
+				CVVersion cvVersion = new CVVersion();
+				cvVersion.setPublicationDate( version.getPublicationDate());
+				cvVersion.setPublicationVersion( version.getNumber() );
+				
+				cvScheme.setVersion(cvVersion);
+				
 				cvScheme.save();
 				DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
 				//refresh cvScheme
@@ -876,8 +884,13 @@ public class DialogManageStatusWindowNew extends MWindow {
 				CVEditor cvEditor = new CVEditor();
 				cvEditor.setName( agency.getName());
 				cvEditor.setLogoPath( agency.getLogopath());
-				
 				editorSet.add( cvEditor );
+				
+				CVVersion cvVersion = new CVVersion();
+				cvVersion.setPublicationDate( version.getPublicationDate());
+				cvVersion.setPublicationVersion( version.getNumber() );
+				
+				newCvScheme.setVersion(cvVersion);
 				newCvScheme.setOwnerAgency((ArrayList<CVEditor>) editorSet);
 				
 				newCvScheme.setCode( vocabulary.getNotation());

@@ -381,7 +381,7 @@ public class HomeView extends CvManagerView {
 	public void updateMessageStrings(Locale locale) {
 		searchBox.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
 
-		actionPanel.updateMessageStrings(locale);
+//		actionPanel.updateMessageStrings(locale);
 	}
 
 	public ArrayList<CVScheme> getHits() {

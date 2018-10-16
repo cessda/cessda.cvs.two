@@ -27,6 +27,10 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.gesis.stardat.ddiflatdb.client.DDIStore;
+import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVScheme;
+import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.thymeleaf.TemplateEngine;
@@ -41,6 +45,7 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import com.vaadin.data.TreeData;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
@@ -58,11 +63,14 @@ import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamRes
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
+import javassist.tools.rmi.ObjectNotFoundException;
 
 public class ExportLayout  extends MCssLayout implements Translatable {
 	
@@ -97,6 +105,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
 	private final VocabularyDTO vocabulary;
 	private final AgencyDTO agency;
+	private final StardatDDIService stardatDDIService;
 	
 	private List<LicenceDTO> licenses;
 	private LicenceDTO license;
@@ -115,7 +124,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private int year = LocalDate.now().getYear();
 	
 	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, VocabularyDTO vocabulary, AgencyDTO agency,
-			VersionService versionService, ConfigurationService configurationService,
+			VersionService versionService, ConfigurationService configurationService, StardatDDIService stardatDDIService,
 			List<LicenceDTO> licenses, TemplateEngine templateEngine, boolean isPublished) {
 		this.i18n = i18n;
 		this.locale = locale;
@@ -128,6 +137,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		this.templateEngine = templateEngine;
 		this.publishView = isPublished;
 		this.licenses = licenses;
+		this.stardatDDIService = stardatDDIService;
 		
 		initLayout();
 	}
@@ -152,13 +162,13 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			.setCaption("Version")
 			.setExpandRatio( 2 )
 			.setId("versionClm");
-//		if( publishView )
-//			exportGrid.addColumn( cVersion -> {
-//				return cVersion.getExportSkosCb();
-//				}, new ComponentRenderer())
-//				.setCaption("Skos")
-//				.setExpandRatio( 1 )
-//				.setId("skosClm");
+		if( publishView )
+			exportGrid.addColumn( cVersion -> {
+				return cVersion.getExportSkosCb();
+				}, new ComponentRenderer())
+				.setCaption("Skos")
+				.setExpandRatio( 1 )
+				.setId("skosClm");
 		exportGrid.addColumn( cVersion -> {
 			return cVersion.getExportPdfCb();
 			}, new ComponentRenderer())
@@ -179,15 +189,15 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 		sectionLayout
 			.withFullSize()
-			.add( gridLayout/*, exportSkos*/, exportPdf , exportHtml);
+			.add( gridLayout, exportSkos, exportPdf , exportHtml);
 		
 		this
 			.withFullWidth()
 			.add( sectionLayout);
-//		if( publishView ) {
-//			OnDemandFileDownloader onDemandSkosFileDownloader = new OnDemandFileDownloader( createOnDemandResource( DownloadType.SKOS ));
-//			onDemandSkosFileDownloader.extend(exportSkos);
-//		}
+		if( publishView ) {
+			OnDemandFileDownloader onDemandSkosFileDownloader = new OnDemandFileDownloader( createOnDemandResource( DownloadType.SKOS ));
+			onDemandSkosFileDownloader.extend(exportSkos);
+		}
 		OnDemandFileDownloader onDemandSkosFileDownloaderPdf = new OnDemandFileDownloader( createOnDemandResource( DownloadType.PDF ));
 		onDemandSkosFileDownloaderPdf.extend(exportPdf);
 		
@@ -298,7 +308,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 							return new ByteArrayInputStream( generateSKOSxml( downloadType, exportVersions ).getBytes(StandardCharsets.UTF_8.name()));
 					}
                     
-                } catch (IOException e) {
+                } catch (IOException | ObjectNotFoundException e) {
                     e.printStackTrace();
                     return null;
                 }
@@ -312,11 +322,34 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		};
 	}
 	
-	private String generateSKOSxml( DownloadType type, List<VersionDTO> exportVersions) {
+	private String generateSKOSxml( DownloadType type, List<VersionDTO> exportVersions) throws ObjectNotFoundException {
 
 		configurationService.getPropertyByKeyAsSet("cvmanager.export.filterTag", ",").ifPresent( c -> filteredTag = c );
 		
 		Set<String> filteredLanguages = new HashSet<>();
+		
+		if( type.equals( DownloadType.SKOS )) {
+			// get CvItem from selected sl
+			exportVersions.stream().filter( v -> v.getItemType().equals( ItemType.SL.toString())).findFirst().ifPresent( v -> {
+				List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType( v.getUri(), DDIElement.CVSCHEME);
+				if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
+					cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
+					
+					TreeData<CVConcept> cvCodeTreeData = new TreeData<>();
+					List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvItem.getCvScheme().getContainerId(), DDIElement.CVCONCEPT);
+					CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvItem.getCvScheme(), cvCodeTreeData);
+					
+					cvItem.setCvConceptTreeData(cvCodeTreeData);
+					
+				}
+			});
+
+			if(cvItem.getCvScheme() == null ) {
+				Notification.show("Error: unable to find CV-Scheme XML");
+				throw new ObjectNotFoundException("Error: unable to find CV-Scheme XML");
+			}
+				
+		}
 		
 		StringJoiner skosXml = new StringJoiner("\n\n");
 		skosXml.add( 
