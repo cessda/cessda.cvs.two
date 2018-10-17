@@ -414,7 +414,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													
 	private Set<String> getFilteredLanguages() {
 		return exportCvItems.stream()
-			.filter( f -> f.exportSkosCb.getValue() == true)
+			.filter( f -> f.exportSkosCb.getValue() == false)
 			.map( x -> x.language )
 			.collect( Collectors.toSet());
 	}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													
