@@ -97,8 +97,8 @@ public class DialogCVSchemeWindowNew extends MWindow {
 
 	public DialogCVSchemeWindowNew(StardatDDIService stardatDDIService, AgencyService agencyService, 
 			VocabularyService vocabularyService, VersionService versionService,
-			VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, 
-			VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, I18N i18n, Language selectedLanguage,
+			CVScheme cvScheme,  VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, 
+			I18N i18n, Language selectedLanguage,
 			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super( version.isPersisted() ?"Edit Vocabulary": "Add Vocabulary");
 		this.agencyService = agencyService;

@@ -91,7 +91,7 @@ public class AgencyView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, 
 			UserService userService, RoleService roleService, AgencyService agencyService, 
 			LicenceService licenceService, UserAgencyService userAgencyService, VocabularyService vocabularyService, CodeService codeService) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, null, AgencyView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, AgencyView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
 		this.agencyService = agencyService;

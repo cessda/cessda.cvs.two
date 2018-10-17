@@ -18198,6 +18198,15 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #f7f790;
 }
 
+.mytheme .center-mainmenu {
+	text-align: center;
+	margin: 0;
+}
+
+.mytheme .content-mainmenu {
+	max-width: 1140px;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;

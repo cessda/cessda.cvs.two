@@ -89,8 +89,8 @@ public class DiscoveryView extends CvView {
 
 	public DiscoveryView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, CodeService codeService, VocabularySearchRepository vocabularySearchRepository) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService,  codeService, vocabularySearchRepository, DiscoveryView.VIEW_NAME);
+			VocabularyService vocabularyService, CodeService codeService) {
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService,  codeService, DiscoveryView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
 		eventBus.subscribe(this, DiscoveryView.VIEW_NAME);
 	}

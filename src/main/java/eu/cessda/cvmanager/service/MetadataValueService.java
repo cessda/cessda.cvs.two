@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.service;
 
+import eu.cessda.cvmanager.domain.enumeration.ObjectType;
 import eu.cessda.cvmanager.service.dto.MetadataValueDTO;
 
 import java.util.List;
@@ -52,4 +53,6 @@ public interface MetadataValueService {
      * @return the list of entities
      */
     Page<MetadataValueDTO> search(String query, Pageable pageable);
+    
+    List<MetadataValueDTO> findByMetadataField(String fieldKey, ObjectType objectType);
 }

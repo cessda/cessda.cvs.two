@@ -2,9 +2,15 @@ package eu.cessda.cvmanager.service.impl;
 
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.domain.MetadataValue;
+import eu.cessda.cvmanager.domain.enumeration.ObjectType;
 import eu.cessda.cvmanager.repository.MetadataValueRepository;
 import eu.cessda.cvmanager.service.dto.MetadataValueDTO;
 import eu.cessda.cvmanager.service.mapper.MetadataValueMapper;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -102,4 +108,12 @@ public class MetadataValueServiceImpl implements MetadataValueService {
 //        Page<MetadataValue> result = metadataValueSearchRepository.search(queryStringQuery(query), pageable);
         return null;//result.map(metadataValueMapper::toDto);
     }
+
+	@Override
+	public List<MetadataValueDTO> findByMetadataField(String fieldKey, ObjectType objectType) {
+		log.debug("Request to get all MetadataValueDTO findByMetadataField");
+        return metadataValueRepository.findByMetadataField(fieldKey, objectType).stream()
+            .map(metadataValueMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+	}
 }

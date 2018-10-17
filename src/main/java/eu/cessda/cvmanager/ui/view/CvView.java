@@ -53,8 +53,6 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected final AgencyService agencyService;
 	protected final VocabularyService vocabularyService;
 	protected final CodeService codeService;
-	// Elasticsearch repo for Editor
-	protected final VocabularySearchRepository vocabularySearchRepository;
 	
 	protected Locale locale = UI.getCurrent().getLocale();
 	
@@ -74,7 +72,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	
 	public CvView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
+			VocabularyService vocabularyService, CodeService codeService,
 			String actionType ) {
 		this.i18n = i;
 		this.eventBus = eventBus;
@@ -84,7 +82,6 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
-		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.viewName = actionType;
 //		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
