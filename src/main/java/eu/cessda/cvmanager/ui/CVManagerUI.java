@@ -68,6 +68,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
+import eu.cessda.cvmanager.ui.view.AboutView;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.DetailsView;
@@ -111,6 +112,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private CustomLayout footer = new CustomLayout("footer");
 
 	private MButton home = new MButton("Home", this::goToDiscovery);
+	private MButton about = new MButton("About", this::goToAbout);
 
 	private List<MButton> menuButtons = new ArrayList<>();
 	private MButton searchCVs = new MButton("Editor Search", this::gotoSearchCvs);
@@ -326,6 +328,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 					);
 
 		home.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
+		about.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		// listAllCv.withStyleName( ValoTheme.BUTTON_LINK + " pull-left");
 		searchCVs.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		// editorCVs.withStyleName( ValoTheme.BUTTON_LINK + " pull-left");
@@ -384,6 +387,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		menuButtons.add( searchCVs );
 		menuButtons.add(agencyButton);
 		menuButtons.add( adminButton );
+		menuButtons.add( about );
 
 		headerBottom
 			.withFullWidth()
@@ -396,7 +400,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 						searchCVs,
 						agencyButton,
 //						discoverButton,
-						adminButton
+						adminButton,
+						about
 					)
 			);
 		
@@ -465,6 +470,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	
 	public void goToDiscovery(ClickEvent event) {
 		navigator.navigateTo(DiscoveryView.VIEW_NAME);
+	}
+	
+	public void goToAbout(ClickEvent event) {
+		navigator.navigateTo(AboutView.VIEW_NAME);
 	}
 	
 	public void goToAdmin(ClickEvent event) {

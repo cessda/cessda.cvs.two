@@ -95,9 +95,9 @@ public class EditorSearchView extends CvView {
 
 	public EditorSearchView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
+			VocabularyService vocabularyService, VersionService versionService, CodeService codeService,
 			VocabularyChangeService vocabularyChangeService) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, vocabularySearchRepository, EditorSearchView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, EditorSearchView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.versionService = versionService;
@@ -110,7 +110,7 @@ public class EditorSearchView extends CvView {
 		paginationBar = new PaginationBar( paggingListener , i18n);
 		filterLayout = new FiltersLayout( "block.filter", "block.filter.show", null, this, filterListener, i18n );
 		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, 
-				versionService, vocabularySearchRepository, eventBus, vocabularyChangeService);
+				versionService, eventBus, vocabularyChangeService);
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
 		
 		// button style
