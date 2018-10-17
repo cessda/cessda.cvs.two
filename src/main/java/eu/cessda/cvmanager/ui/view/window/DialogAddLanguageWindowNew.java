@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -74,7 +75,7 @@ public class DialogAddLanguageWindowNew extends MWindow {
 	private final StardatDDIService stardatDDIService;
 	private final VocabularyService vocabularyService;
 
-	private Binder<CVScheme> binder = new Binder<CVScheme>();
+	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
 	private MLabel lTitle = new MLabel( "Title" );
@@ -169,17 +170,23 @@ public class DialogAddLanguageWindowNew extends MWindow {
 		lDescription.withStyleName( "required" );
 		
 		
+		// get version SL
+		VersionDTO slVersion = null;
+		
+		Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
+		if(latestSlVersion.isPresent())
+			slVersion = latestSlVersion.get();
 		
 		sourceTitle
 			.withFullWidth()
 			.withReadOnly( true)
-			.setValue( cvScheme.getTitleByLanguage( "en" ) );
+			.setValue( slVersion.getTitle() );
 		sourceLanguage
 			.withReadOnly( true)
 			.setValue( "English" );
 		sourceDescription.setReadOnly( true );
 		sourceDescription.setSizeFull();
-		sourceDescription.setValue( cvScheme.getDescriptionByLanguage( "en" ) );
+		sourceDescription.setValue( slVersion.getDefinition() );
 		
 		tfTitle.withFullWidth();
 		description.setSizeFull();
@@ -207,7 +214,7 @@ public class DialogAddLanguageWindowNew extends MWindow {
 
 		setCvScheme(cvScheme);;
 
-		binder.setBean(getCvScheme());
+		binder.setBean( version );
 
 		storeCode.addClickListener(event -> {
 			saveCV();
@@ -439,50 +446,23 @@ public class DialogAddLanguageWindowNew extends MWindow {
 	}
 	
 	private boolean isInputValid() {
-		getCvScheme().setTitleByLanguage(language.toString(), tfTitle.getValue());
-		getCvScheme().setDescriptionByLanguage(language.toString(), description.getValue());
+		version.setTitle( tfTitle.getValue() );
+		version.setDefinition( description.getValue() );
 		
 		binder
-		.forField( tfTitle)
-		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-		.bind(concept -> getTitleByLanguage(concept),
-			(concept, value) -> setTitleByLanguage(concept, value));
+			.forField( tfTitle)
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind(v -> v.getTitle(),
+				(v, value) -> v.setTitle( value));
 
 		binder
-		.forField( description)
-		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
-		.bind(concept -> getDescriptionByLanguage(concept),
-			(concept, value) -> setDescriptionByLanguage(concept, value));
+			.forField( description)
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
+			.bind(v -> v.getDefinition(),
+				(v, value) -> v.setDefinition( value ));
 		
 		binder.validate();
 		return binder.isValid();
-	}
-	
-	private CVScheme setTitleByLanguage(CVScheme concept, String value) {
-
-		concept.setTitleByLanguage(language.toString(), value);
-		return concept;
-	}
-
-	private String getTitleByLanguage(CVScheme concept) {
-		if( language == null )
-			return "";
-
-		return concept.getTitleByLanguage(language.toString());
-
-	}
-	
-	private Object setDescriptionByLanguage(CVScheme concept, String value) {
-		concept.setDescriptionByLanguage(language.toString(), value);
-		return null;
-	}
-
-	private String getDescriptionByLanguage(CVScheme concept) {
-		if( language == null )
-			return "";
-		
-		return concept.getDescriptionByLanguage(language.toString());
-
 	}
 	
 	public CVScheme getCvScheme() {
@@ -492,13 +472,4 @@ public class DialogAddLanguageWindowNew extends MWindow {
 	public void setCvScheme(CVScheme cvScheme) {
 		this.cvScheme = cvScheme;
 	}
-
-//	public EditorView getTheView() {
-//		return theView;
-//	}
-//
-//	public void setTheView(EditorView theView) {
-//		this.theView = theView;
-//	}
-
 }

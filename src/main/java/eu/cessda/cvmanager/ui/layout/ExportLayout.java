@@ -326,7 +326,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 
 		configurationService.getPropertyByKeyAsSet("cvmanager.export.filterTag", ",").ifPresent( c -> filteredTag = c );
 		
-		Set<String> filteredLanguages = new HashSet<>();
+		Set<String> filteredLanguages = getFilteredLanguages();
 		
 		if( type.equals( DownloadType.SKOS )) {
 			// get CvItem from selected sl
@@ -376,6 +376,8 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		// sort code
 		for( VersionDTO versionExp : exportVersions) {
 //			Set<ConceptDTO> orderedConcepts = new LinkedHashSet<>();
+			// change language format for printing
+			versionExp.setLanguage( Language.valueOfEnum( versionExp.getLanguage()).toStringCapitalized());
 			for( ConceptDTO concept : versionExp.getConcepts()) {
 				if( concept.getPosition() == null)
 					concept.setPosition(999);
@@ -409,21 +411,13 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		return title.toString();
 	}
 	
-//
-//	private Set<String> getFilteredLanguages( DownloadType type, boolean checked) {
-//		Stream<ExportCV> exportCvStream = null;
-//		
-//		if( type == DownloadType.PDF)
-//			exportCvStream = exportCvItems.stream().filter( f -> checked ? f.exportPdf : !f.exportPdf );
-//		else if( type == DownloadType.HTML )
-//			exportCvStream = exportCvItems.stream().filter( f -> checked ? f.exportHtlm : !f.exportHtlm );
-//		else
-//			exportCvStream = exportCvItems.stream().filter( f -> checked ? f.exportSkos : !f.exportSkos );
-//		return exportCvStream
-//			.map( x -> x.language )
-//			.collect( Collectors.toSet());
-//		return null;
-//	}
+																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													
+	private Set<String> getFilteredLanguages() {
+		return exportCvItems.stream()
+			.filter( f -> f.exportSkosCb.getValue() == true)
+			.map( x -> x.language )
+			.collect( Collectors.toSet());
+	}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													
 
 	
 	private File generateFileByThymeleafTemplate(String fileName, String templateName, Map<String, Object> map, DownloadType type) throws Exception {

@@ -122,18 +122,20 @@ div.CodeList {
 		        <dd th:text="${version.notation}"></dd>
 		        <dt>Long Name:</dt>
 		        <dd th:text="${version.title}"></dd>
+		        <dt>Language:</dt>
+		        <dd th:text="${version.language}"></dd>
 		        <dt th:if="${version.number != null}">Version:</dt>
 		        <dd th:if="${version.number != null}"th:text="${version.number}">1.0</dd>
-		        <dt th:if="${version.versionNotes != null}">Version Notes:</dt>
+		        <dt th:if="${version.versionNotes != null and version.versionNotes != ''}">Version Notes:</dt>
 		        <dd th:if="${version.versionNotes != null}" th:text="${version.versionNotes}"></dd>
 		        <dt th:if="${version.versionChanges != null}">Version Changes:</dt>
 		        <dd th:if="${version.versionChanges != null}" th:text="${version.versionChanges}"></dd>
 		        <dt th:if="${version.canonicalUri != null}">Canonical URI of this version:</dt>
 		        <dd th:if="${version.canonicalUri != null}" th:text="${version.canonicalUri}"></dd>
 		        
-		        <dt>Agency Name: </dt>
+		        <dt>Agency: </dt>
 		        <dd>
-		          <a href="http://www.ddialliance.org/">DDI Alliance</a>
+		          <a th:href="${agency.link}" th:text="${agency.name}"></a>
 		        </dd>
 		      </dl>
 		    </div>
