@@ -2,7 +2,7 @@ pipeline {
   environment {
     project_name = "cessda-development"
     client = "cessda"
-    app_name = "cessda-gui"
+    app_name = "cvmanager-gui"
     env_name = "dev"
     feSvc_name = "${client}-${app_name}-service"
     image_tag = "eu.gcr.io/${project_name}/${app_name}:${env.BRANCH_NAME}-v${env.BUILD_NUMBER}"
