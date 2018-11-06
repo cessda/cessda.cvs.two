@@ -29,12 +29,13 @@ pipeline {
       }
     }
     stage('Build Project and start Sonar scan') {
-      steps {
+     steps {
         withSonarQubeEnv('cessda-sonar') {
-          sh 'mvn clean install -U docker:build -DskipTests -Pdocker-compose}'
+          sh 'mvn clean install -U docker:build -DskipTests -Pdocker-compose}' // image tag specified in docker-compose.yaml
+  //        sh 'mvn clean install sonar:sonar -Dsonar.projectName=$JOB_NAME -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN}'
           sleep 5
-          }
-    }
+        }
+      }
     stage('Check Requirements and Deployments') {
       steps {
         dir('./infrastructure/gcp/') {
