@@ -1,8 +1,14 @@
-FROM openjdk:8-jre
+# OpenJDK Base Container
+# FROM openjdk:8-jre
+FROM eu.gcr.io/cessda-development/cessda-java:latest
 
+# Container Information
+MAINTAINER CESSDA-ERIC "support@cessda.eu"
+
+
+# Create Volume tmp and add JAR artifacts
 VOLUME /tmp
-
-RUN addgroup cessda 
+RUN addgroup cessda
 RUN adduser --ingroup cessda --disabled-password --disabled-login cessda
 WORKDIR /@project.artifactId@
 
