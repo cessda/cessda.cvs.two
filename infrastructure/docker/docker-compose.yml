@@ -11,7 +11,7 @@ services:
     ports:
      - 8080:@server.port@
     networks:
-     - cessda-cvmanager
+     - cvmanager-gui
 
 networks:
   cessda-cvmanager:
