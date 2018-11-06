@@ -29,7 +29,6 @@ pipeline {
     }
     stage('Build Project and start Sonar scan') {
       steps {
-      // image tag specified in docker-compose.yaml
         withSonarQubeEnv('cessda-sonar') {
           sh 'mvn clean install -U docker:build -DskipTests -Pdocker-compose}'
           sleep 5
