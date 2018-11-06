@@ -83,8 +83,8 @@ public class DialogCVSchemeWindowNew extends MWindow {
 	private MLabel lChangeDesc = new MLabel( "Description" );
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
-	private MLabel versionNotesLabel = new MLabel("Notes");
-	private TextArea versionNotes = new TextArea();
+	private MLabel notesLabel = new MLabel("Notes");
+	private TextArea notes = new TextArea();
 	
 	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
 	private Language language;
@@ -154,6 +154,9 @@ public class DialogCVSchemeWindowNew extends MWindow {
 				agency = null;
 			}
 		});
+		
+		if( vocabulary.getNotes() != null )
+			notes.setValue( vocabulary.getNotes());
 		
 		if( vocabulary.isPersisted())
 			isUpdated = true;
@@ -225,7 +228,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		
 		tfTitle.withFullWidth();
 		description.setSizeFull();
-		versionNotes.setSizeFull();
+		notes.setSizeFull();
 
 		storeCode.addClickListener(event -> {
 			saveCV();
@@ -298,14 +301,13 @@ public class DialogCVSchemeWindowNew extends MWindow {
 					.withFullWidth()
 					.withHeight("100%")
 					.add(
-						versionNotesLabel, versionNotes
-					).withExpand( versionNotesLabel, 0.15f).withExpand( versionNotes, 0.85f)
+						notesLabel, notes
+					).withExpand( notesLabel, 0.15f).withExpand( notes, 0.85f)
 				
 			);
 
 		if( version.isPersisted() ) {
-			if( version.getVersionNotes() != null )
-				versionNotes.setValue( version.getVersionNotes());
+			
 			
 			layout
 			.add(
@@ -358,9 +360,8 @@ public class DialogCVSchemeWindowNew extends MWindow {
 	private void saveCV() {
 		if(!isInputValid())
 			return;
-		
-		// save on database
-		// new item
+		System.out.println("notes " + notes.getValue());
+		vocabulary.setNotes( notes.getValue() );
 		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
 		
 		version.setTitle( tfTitle.getValue());
@@ -445,7 +446,6 @@ public class DialogCVSchemeWindowNew extends MWindow {
 		version.setNotation( tfCode.getValue() );
 		version.setTitle( tfTitle.getValue() );
 		version.setDefinition( description.getValue() );
-		version.setVersionNotes( versionNotes.getValue() );
 		
 		System.out.println( vocabularyService.existsByNotation( tfCode.getValue() ));
 		
@@ -469,12 +469,6 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
 			.bind(v -> v.getDefinition(),
 				(v, value) -> v.setDefinition( value ));
-		
-		binder
-			.forField( versionNotes )
-			.bind( v -> v.getVersionNotes(),
-				(v, value) -> v.setVersionNotes( value ));
-		
 		
 		binder.validate();
 		return binder.isValid();
