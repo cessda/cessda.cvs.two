@@ -20,7 +20,7 @@ pipeline {
        echo "image_tag = ${image_tag}"
        }
       }
-      stage('Prepare Application') {
+    stage('Prepare Application') {
       steps {
         dir('./infrastructure/gcp/') {
           sh("bash ${app_name}-registration.sh")
