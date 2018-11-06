@@ -19,7 +19,7 @@ pipeline {
        echo "feSvc_name = ${feSvc_name}"
        echo "image_tag = ${image_tag}"
        }
-      }
+    }
     stage('Prepare Application') {
       steps {
         dir('./infrastructure/gcp/') {
@@ -28,13 +28,12 @@ pipeline {
       }
     }
     stage('Build Project and start Sonar scan') {
-		  steps {
+      steps {
         withSonarQubeEnv('cessda-sonar') {
-          sh 'mvn clean install -U docker:build -DskipTests -Pdocker-compose}' // image tag specified in docker-compose.yaml
-  //        sh 'mvn clean install sonar:sonar -Dsonar.projectName=$JOB_NAME -Dsonar.host.url=${SONAR_HOST_URL} -Dsonar.login=${SONAR_AUTH_TOKEN}'
+          sh 'mvn clean install -U docker:build -DskipTests -Pdocker-compose}'
           sleep 5
-        }
-      }
+          }
+    }
     stage('Check Requirements and Deployments') {
       steps {
         dir('./infrastructure/gcp/') {
