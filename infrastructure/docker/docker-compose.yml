@@ -6,8 +6,8 @@ version: '3.2'
 
 services:
   cvmanager-app:
-    image: @docker.registry.uri@/cessda/@project.artifactId@:@project.version@
-    container_name: cvmanager-app
+    image: @docker.registry.uri@/@project-artifactId@:@project.version@
+    container_name: cvmanager-gui
     ports:
      - 8080:@server.port@
     networks:
