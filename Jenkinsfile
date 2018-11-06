@@ -10,7 +10,6 @@ pipeline {
 
   agent any
 
-
   stages {
     stage('Check environment') {
       steps {
@@ -31,7 +30,7 @@ pipeline {
     stage('Build Project and start Sonar scan') {
      steps {
         withSonarQubeEnv('cessda-sonar') {
-          sh 'mvn clean install -U docker:build -DskipTests -Pdocker-compose}' // image tag specified in docker-compose.yaml
+          sh 'mvn clean install -U docker:build -DskipTests -Pdocker-compose}'
           sleep 5
         }
       }
