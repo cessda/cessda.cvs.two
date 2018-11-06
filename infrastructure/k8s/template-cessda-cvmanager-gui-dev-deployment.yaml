@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: DEPLOYMENTNAME
-        image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
+        image: eu.gcr.io/cessda-development/cvmanager:ENVIRONMENT-latest
+        #image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
         ports:
         - containerPort: 8080
           name: frontend-cport

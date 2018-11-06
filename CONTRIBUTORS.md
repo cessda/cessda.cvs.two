@@ -1,5 +1,15 @@
-# Project Name
+**Project Name**
 
-## First Name - Last Name ##
+*Given Name - Family Name*
 
-Descritption of the person role
+Description of the person's role
+
+
+*Given Name - Family Name*
+
+Description of the person's role
+
+
+*Given Name - Family Name*
+
+Description of the person's role
