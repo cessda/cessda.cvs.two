@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
+<project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>eu.cessda.cvmanager</groupId>
-	<artifactId>cessda.cvmanager</artifactId>
+	<artifactId>cvmanager-gui</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>cessda.cvmanager</name>
-	<description>CESSDA CV Manager</description>
+	<name>cvmanager-gui</name>
+	<description>CESSDA CV Manager GUI</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
@@ -30,7 +30,7 @@
 		<sonar.host.url>http://104.155.63.80:9000/</sonar.host.url>
 		<sonar.login>2f2cc09e66386ee2bbb36f0579d064e42e5d02fb</sonar.login>
 		<!--<sonar.password>replace-me</sonar.password>-->
-		<sonar.projectName>cessda.cvmanager.alpha</sonar.projectName>
+		<sonar.projectName>cessda.cvmanager.beta</sonar.projectName>
 		<sonar-maven-plugin.version>3.0.2</sonar-maven-plugin.version>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
@@ -53,7 +53,7 @@
 			<id>vaadin-addons</id>
 			<url>http://maven.vaadin.com/vaadin-addons</url>
 		</repository>
-		<!-- 
+		<!--
 		<repository>
 			  <id>vaadin-prereleases</id>
 			  <name>Vaadin Pre-releases</name>
@@ -66,7 +66,7 @@
     		<id>gesis-${gesis.repository.visibility}</id>
     		<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}</url>
   		</pluginRepository>
-  		<!-- 
+  		<!--
   		 <pluginRepository>
 			  <id>vaadin-prereleases</id>
 			  <name>Vaadin Pre-releases</name>
@@ -81,7 +81,7 @@
 			<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}-releases</url>
 		</repository>
 		<snapshotRepository>
-			<id>gesis-${gesis.repository.visibility}-snapshots</id> 
+			<id>gesis-${gesis.repository.visibility}-snapshots</id>
 			<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}-snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
@@ -115,7 +115,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+
 		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -140,7 +140,7 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-		
+
 		<dependency>
    			<groupId>org.vaadin.addon</groupId>
    			<artifactId>confirmdialog</artifactId>
@@ -173,25 +173,25 @@
 			<groupId>org.gesis.stardat</groupId>
 			<artifactId>stardat-ddiflatdb-rest</artifactId>
 			<version>0.8.0-SNAPSHOT</version>
-			
+
 		</dependency>
 		<dependency>
 			<groupId>org.gesis.stardat</groupId>
 			<artifactId>stardat-ddi-entities</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>org.vaadin</groupId>
 		    <artifactId>viritin</artifactId>
 		    <version>2.4</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -239,13 +239,13 @@
             <artifactId>flying-saucer-pdf</artifactId>
             <version>9.1.15</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-jdk8</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-        
+
         <dependency>
             <groupId>org.gesis.wts</groupId>
             <artifactId>usermanagement</artifactId>
@@ -257,23 +257,23 @@
 		        </exclusion>
 		    </exclusions>
         </dependency>
-        
+
         <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
 		</dependency>
-        
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
-        
+
         <dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.7</version>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>com.fasterxml.jackson.module</groupId>
 		    <artifactId>jackson-module-parameter-names</artifactId>
@@ -286,13 +286,13 @@
 		    <groupId>com.fasterxml.jackson.datatype</groupId>
 		    <artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>org.jsoup</groupId>
 		    <artifactId>jsoup</artifactId>
 		    <version>1.11.3</version>
 		</dependency>
-		
+
 		<dependency>
 		    <groupId>com.auth0</groupId>
 		    <artifactId>java-jwt</artifactId>
@@ -331,7 +331,7 @@
 					<artifactId>git-commit-id-plugin</artifactId>
 					<version>2.2.4</version>
 				</plugin>
-				
+
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -363,7 +363,7 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
-		
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -388,7 +388,7 @@
                     </annotationProcessorPaths>
 				</configuration>
 			</plugin>
-			
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -397,7 +397,7 @@
                     <downloadJavadocs>true</downloadJavadocs>
                 </configuration>
             </plugin>
-			
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -444,7 +444,7 @@
 				<configuration>
 					<images>
 						<image>
-							<name>${docker.registry.uri}/cessda/${project.artifactId}</name>
+							<name>${docker.registry.uri}/cvmanager-gui/${project.artifactId}:{project.version}</name>
 							<build>
 								<dockerFileDir>${project.basedir}/target/docker/generated</dockerFileDir>
 								<assembly>
@@ -500,7 +500,7 @@
 							<goal>update-theme</goal>
 							<goal>update-widgetset</goal>
 							-->
-							<!-- 
+							<!--
 							<goal>compile-theme</goal>
 							<goal>compile</goal>
 							-->
@@ -560,7 +560,7 @@
 		</resources>
 	</build>
 
-	
+
 	<profiles>
 		 <profile>
             <id>local</id>
@@ -625,7 +625,7 @@
                 <tomcat.url>http://10.6.13.128:9090/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <!-- 
+                <!--
                 <server.servlet.contextPath>/cvmanager-test</server.servlet.contextPath>
                 <ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
 				<spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager-security?useSSL=false</spring.datasource.url>
