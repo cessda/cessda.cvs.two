@@ -444,7 +444,7 @@
 				<configuration>
 					<images>
 						<image>
-							<name>${docker.registry.uri}/cvmanager-gui/${project.artifactId}:{project.version}</name>
+							<name>${docker.registry.uri}/cvmanager-gui/${project.artifactId}:${project.version}</name>
 							<build>
 								<dockerFileDir>${project.basedir}/target/docker/generated</dockerFileDir>
 								<assembly>
