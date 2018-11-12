@@ -534,7 +534,7 @@
 		</plugins>
 		<resources>
 			<resource>
-				<directory>src/main/resources/docker</directory>
+				<directory>infrastructure/docker</directory>
 				<filtering>true</filtering>
 				<targetPath>${project.basedir}/target/docker/generated</targetPath>
 				<includes>
