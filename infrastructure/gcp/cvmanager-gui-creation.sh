@@ -71,6 +71,8 @@ if gcloud compute disks list 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$
   else
     gcloud compute disks create $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-disk --size 10GB > /dev/null 2>&1
     echo "$P_DISK2 disk created"
+fi;
+
 
 #Persistent Volume Creation (Split)
 if kubectl get pv -n $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv" > /dev/null 2>&1;
