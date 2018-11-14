@@ -1,4 +1,4 @@
-DISK2#!/bin/bash
+#!/bin/bash
 
 #############################
 #          CESSDA           #
@@ -65,7 +65,7 @@ fi;
 ### Split Storage Setup ###
 
 # Disk Creation (Split)
-f gcloud compute disks list 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-disk.*READY" > /dev/null 2>&1;
+if gcloud compute disks list 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-disk.*READY" > /dev/null 2>&1;
   then
     echo "$P_DISK2 disk already exists"
   else
@@ -73,7 +73,7 @@ f gcloud compute disks list 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$E
     echo "$P_DISK2 disk created"
 
 #Persistent Volume Creation (Split)
-f kubectl get pv -n $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv" > /dev/null 2>&1;
+if kubectl get pv -n $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv" > /dev/null 2>&1;
   then
     echo "$P_DISK2 Persistent Volume already exist"
   else
