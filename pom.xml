@@ -6,7 +6,7 @@
 
 	<groupId>eu.cessda.cvmanager</groupId>
 	<artifactId>cvmanager-gui</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${env.BRANCH_NAME}-v${env.BUILD_NUMBER}</version>
 	<packaging>war</packaging>
 	<name>cvmanager-gui</name>
 	<description>CESSDA CV Manager GUI</description>
