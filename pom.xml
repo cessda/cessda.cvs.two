@@ -6,7 +6,7 @@
 
 	<groupId>eu.cessda.cvmanager</groupId>
 	<artifactId>cvmanager-gui</artifactId>
-	<version>${env.BRANCH_NAME}-v${env.BUILD_NUMBER}</version>
+	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>cvmanager-gui</name>
 	<description>CESSDA CV Manager GUI</description>
@@ -21,6 +21,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<version.number>${env.BRANCH_NAME}-v${env.BUILD_NUMBER}</version.number>
 		<java.version>1.8</java.version>
 		<vaadin.version>8.5.1</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
@@ -444,7 +445,7 @@
 				<configuration>
 					<images>
 						<image>
-							<name>${docker.registry.uri}/cvmanager-gui/${project.artifactId}:${project.version}</name>
+							<name>${docker.registry.uri}/${project.artifactId}:${project.version.number}</name>
 							<build>
 								<dockerFileDir>${project.basedir}/target/docker/generated</dockerFileDir>
 								<assembly>
