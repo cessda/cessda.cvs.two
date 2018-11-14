@@ -21,7 +21,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<version.number>${env.BRANCH_NAME}-v${env.BUILD_NUMBER}</version.number>
+		<project.version.number>${env.BRANCH_NAME}-v${env.BUILD_NUMBER}</project.version.number>
 		<java.version>1.8</java.version>
 		<vaadin.version>8.5.1</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
