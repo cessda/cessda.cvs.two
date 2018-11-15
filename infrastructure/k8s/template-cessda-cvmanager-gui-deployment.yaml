@@ -25,7 +25,7 @@ spec:
           name: frontend-cport
         resources:
           limits:
-            memory: "16Gi"
+            memory: "8Gi"
           requests:
-            memory: "4Mi"
+            memory: "2Mi"
         imagePullPolicy: Always

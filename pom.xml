@@ -579,7 +579,7 @@
 				<spring.datasource.username>cessda</spring.datasource.username>
 				<spring.datasource.password>cessda01</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
-				<spring.data.elasticsearch.cluster-nodes>localhost:9200</spring.data.elasticsearch.cluster-nodes>
+				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
             <build>
           		<plugins>
@@ -617,7 +617,7 @@
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
-				<spring.data.elasticsearch.cluster-nodes>cessda-cvmanager-es-dev:9200</spring.data.elasticsearch.cluster-nodes>
+				<spring.data.elasticsearch.cluster-nodes>10.63.244.0:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
         </profile>
         <profile>
@@ -640,7 +640,7 @@
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
-				<spring.data.elasticsearch.cluster-nodes>localhost:9200</spring.data.elasticsearch.cluster-nodes>
+				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
             <build>
           		<plugins>
@@ -670,7 +670,7 @@
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
-				<spring.data.elasticsearch.cluster-nodes>localhost:9200</spring.data.elasticsearch.cluster-nodes>
+				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
             <build>
           		<plugins>
