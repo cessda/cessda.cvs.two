@@ -11,6 +11,7 @@ pipeline {
   agent any
 
   stages {
+  /*
   stage('Check environment') {
     steps {
       echo "Check environment"
@@ -42,6 +43,7 @@ pipeline {
         sh("gcloud container images add-tag ${image_tag} eu.gcr.io/${project_name}/${app_name}:latest")
       }
     }
+    */
     stage('Check Requirements and Deployments') {
       steps {
         dir('./infrastructure/gcp/') {
