@@ -23,9 +23,4 @@ spec:
         ports:
         - containerPort: 8080
           name: frontend-cport
-        resources:
-          limits:
-            memory: "16Gi"
-          requests:
-            memory: "8Gi"
         imagePullPolicy: Always
