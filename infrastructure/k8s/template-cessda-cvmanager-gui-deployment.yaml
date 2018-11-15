@@ -14,7 +14,8 @@ spec:
     spec:
       containers:
       - name: DEPLOYMENTNAME
-        image: eu.gcr.io/cessda-development/cvmanager:ENVIRONMENT-latest
+       # need to fix this (and push) as cannot distinguish between dev, staging, live
+        image: eu.gcr.io/cessda-development/cvmanager-gui:latest
         #image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
         env:
         - name: DC_ENV
