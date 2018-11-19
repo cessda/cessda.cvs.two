@@ -45,7 +45,7 @@ if kubectl get pv -n $CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT 2> /dev/null | grep 
   then
     echo "$P_DISK1 Persistent Volume already exist"
   else
-    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv/g; s/NAMESPACE/$NAMESPACE/g; s/DISKNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-disk/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK1-pv.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv.yaml
+    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv/g; s/NAMESPACE/$NAMESPACE/g; s/DISKNAME/$CLIENT-$PRODUCT-$ENVIRONMENT-$P_DISK1-disk/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK1-pv.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv.yaml
     kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv.yaml
     rm -rf ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv.yaml
     echo "$P_DISK1 Persistent Volume created"
@@ -90,7 +90,7 @@ if kubectl get pvc -n $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT 2> /dev/null | grep
   then
     echo "$P_DISK2 Persistent Volume Claim already exist"
   else
-    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv/g; s/NAMESPACE/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT/g; s/PVCNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK2-pvc.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc.yaml
+    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv/g; s/NAMESPACE/$NAMESPACE/g; s/PVCNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK2-pvc.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc.yaml
     kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc.yaml
     rm -rf ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc.yaml
     echo "$P_DISK2 Persistent Volume Claim created"
