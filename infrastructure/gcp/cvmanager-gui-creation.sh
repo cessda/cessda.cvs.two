@@ -1,4 +1,4 @@
-DISK2#!/bin/bash
+#!/bin/bash
 
 #############################
 #          CESSDA           #
@@ -36,7 +36,7 @@ if gcloud compute disks list 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK1-$
   then
     echo "$P_DISK1 disk already exists"
   else
-    gcloud compute disks create $CLIENT-$PRODUCT-$ENVIRONMENT-$P_DISK1-disk --size 10GB > /dev/null 2>&1
+    gcloud compute disks create $CLIENT-$PRODUCT-$ENVIRONMENT-$P_DISK1-disk --size 10GB
     echo "$P_DISK1 disk created"
 fi;
 
@@ -45,8 +45,8 @@ if kubectl get pv -n $CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT 2> /dev/null | grep 
   then
     echo "$P_DISK1 Persistent Volume already exist"
   else
-    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv/g; s/NAMESPACE/$NAMESPACE/g; s/DISKNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-disk/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK1-pv.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv.yaml
-    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv.yaml > /dev/null 2>&1
+    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv/g; s/NAMESPACE/$NAMESPACE/g; s/DISKNAME/$CLIENT-$PRODUCT-$ENVIRONMENT-$P_DISK1-disk/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK1-pv.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv.yaml
+    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv.yaml
     rm -rf ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv.yaml
     echo "$P_DISK1 Persistent Volume created"
 fi;
@@ -56,8 +56,8 @@ if kubectl get pvc -n $CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT 2> /dev/null | grep
   then
     echo "$P_DISK1 Persistent Volume Claim already exist"
   else
-    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv/g; s/NAMESPACE/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT/g; s/PVCNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pvc/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK1-pvc.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pvc.yaml
-    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pvc.yaml > /dev/null 2>&1
+    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pv/g; s/NAMESPACE/$NAMESPACE/g; s/PVCNAME/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pvc/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK1-pvc.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pvc.yaml
+    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pvc.yaml
     rm -rf ../k8s/$CLIENT-$PRODUCT-$P_DISK1-$ENVIRONMENT-pvc.yaml
     echo "$P_DISK1 Persistent Volume Claim created"
 fi;
@@ -65,20 +65,22 @@ fi;
 ### Split Storage Setup ###
 
 # Disk Creation (Split)
-f gcloud compute disks list 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-disk.*READY" > /dev/null 2>&1;
+if gcloud compute disks list 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-disk.*READY" > /dev/null 2>&1;
   then
     echo "$P_DISK2 disk already exists"
   else
-    gcloud compute disks create $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-disk --size 10GB > /dev/null 2>&1
+    gcloud compute disks create $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-disk --size 10GB
     echo "$P_DISK2 disk created"
+fi;
+
 
 #Persistent Volume Creation (Split)
-f kubectl get pv -n $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv" > /dev/null 2>&1;
+if kubectl get pv -n $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT 2> /dev/null | grep -E "$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv" > /dev/null 2>&1;
   then
     echo "$P_DISK2 Persistent Volume already exist"
   else
     sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv/g; s/NAMESPACE/$NAMESPACE/g; s/DISKNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-disk/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK2-pv.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv.yaml
-    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv.yaml > /dev/null 2>&1
+    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv.yaml
     rm -rf ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv.yaml
     echo "$P_DISK2 Persistent Volume created"
 fi;
@@ -88,8 +90,8 @@ if kubectl get pvc -n $CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT 2> /dev/null | grep
   then
     echo "$P_DISK2 Persistent Volume Claim already exist"
   else
-    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv/g; s/NAMESPACE/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT/g; s/PVCNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK2-pvc.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc.yaml
-    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc.yaml > /dev/null 2>&1
+    sed "s/PVNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pv/g; s/NAMESPACE/$NAMESPACE/g; s/PVCNAME/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc/g" ../k8s/template-$CLIENT-$PRODUCT-$P_DISK2-pvc.yaml > ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc.yaml
+    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc.yaml
     rm -rf ../k8s/$CLIENT-$PRODUCT-$P_DISK2-$ENVIRONMENT-pvc.yaml
     echo "$P_DISK2 Persistent Volume Claim created"
 fi;
@@ -119,11 +121,12 @@ fi;
 # Deployment
 if kubectl get deployment $CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT -n $NAMESPACE > /dev/null 2>&1;
   then
-    echo "Deployment already exists, it will be destroyed to perform the new deployment"
+    echo "Deployment already exists in namespace $NAMESPACE, it will be destroyed to perform the new deployment"
     kubectl delete deployment $CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT -n $NAMESPACE > /dev/null 2>&1
     kubectl create -f ../k8s/$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT-deployment.yaml
     echo "Deployment created"
   else
+    echo "Deployment does not exist in namespace $NAMESPACE, it will be created"
     kubectl create -f ../k8s/$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT-deployment.yaml
     echo "Deployment created"
 fi;
