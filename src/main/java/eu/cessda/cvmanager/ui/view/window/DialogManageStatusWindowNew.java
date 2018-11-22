@@ -365,19 +365,24 @@ public class DialogManageStatusWindowNew extends MWindow {
 				versionChangesLabel.setVisible( false );
 				comparatorBlock.setVisible( false );
 			} else {
-				// If publishing SL
-				if( currentVersion.getItemType().equals(ItemType.SL.toString())){
-					StringBuilder versionChangesContent = new StringBuilder();
-					for( VocabularyChangeDTO vc : changes) {
-						versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
+				if( currentVersion.getVersionChanges() != null && !currentVersion.getVersionChanges().isEmpty()) {
+					versionChanges.setValue( currentVersion.getVersionChanges() );
+				}
+				else {
+					// If publishing SL
+					if( currentVersion.getItemType().equals(ItemType.SL.toString())){
+						StringBuilder versionChangesContent = new StringBuilder();
+						for( VocabularyChangeDTO vc : changes) {
+							versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
+						}
+						versionChanges.setValue(versionChangesContent.toString());
+					} else {
+						StringBuilder versionChangesContent = new StringBuilder();
+						for( VocabularyChangeDTO vc : changes) {
+							versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
+						}
+						versionChanges.setValue(versionChangesContent.toString());
 					}
-					versionChanges.setValue(versionChangesContent.toString());
-				} else {
-					StringBuilder versionChangesContent = new StringBuilder();
-					for( VocabularyChangeDTO vc : changes) {
-						versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
-					}
-					versionChanges.setValue(versionChangesContent.toString());
 				}
 			}
 
