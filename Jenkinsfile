@@ -27,7 +27,6 @@ pipeline {
         }
       }
     }
-    /* TODO reinstate this section
     stage('Build Project and start Sonar scan') {
 		  steps {
         withSonarQubeEnv('cessda-sonar') {
@@ -43,7 +42,6 @@ pipeline {
         sh("gcloud container images add-tag ${image_tag} eu.gcr.io/${project_name}/${app_name}:latest")
       }
     }
-    */
     stage('Check Requirements and Deployments') {
       steps {
         dir('./infrastructure/gcp/') {
