@@ -612,8 +612,8 @@
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <server.servlet.contextPath>/cvmanager</server.servlet.contextPath>
 				<server.port>8080</server.port>
-				<ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
-                <spring.datasource.url>jdbc:mysql://104.155.73.84:3306/cvmanager-security?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
+				<ddiflatdb.rest.url>http://35.205.146.149:8080</ddiflatdb.rest.url>
+                <spring.datasource.url>jdbc:mysql://35.205.135.246:3306/cvmanager-security?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
