@@ -617,7 +617,7 @@
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
-				<spring.data.elasticsearch.cluster-nodes>10.63.252.176:9300</spring.data.elasticsearch.cluster-nodes>
+				<spring.data.elasticsearch.cluster-nodes>35.195.97.58:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
         </profile>
         <profile>
