@@ -43,7 +43,8 @@ public class AdminView extends CvAdminView {
 		MANAGE_USER_AGENCY,
 		MANAGE_USER_ROLE, 
 		MANAGE_LICENSE,
-		LIST_WITHDRAWN_CV
+		LIST_WITHDRAWN_CV, 
+		IMPORT_CSV
 	};
 	
 //	Autowired
@@ -171,6 +172,9 @@ public class AdminView extends CvAdminView {
 				break;
 			case LIST_WITHDRAWN_CV:
 				mainContainer.add( new WithdrawnCvLayout(i18n, vocabularyService, agencyService, configService));
+				break;
+			case IMPORT_CSV:
+				mainContainer.add( new CsvImportLayout(i18n));
 				break;
 		}
 	}
