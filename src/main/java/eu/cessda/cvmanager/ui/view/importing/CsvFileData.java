@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view.admin;
+package eu.cessda.cvmanager.ui.view.importing;
 
 import java.util.List;
 import java.util.Map;

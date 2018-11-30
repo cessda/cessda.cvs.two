@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view.admin;
+package eu.cessda.cvmanager.ui.view.importing;
 
 import java.util.Objects;
 
@@ -9,7 +9,7 @@ public class CsvRow {
 
     private String term;
     private String definition;
-    private String valueOfcode;
+    private String notation;
 
     public String getTerm() {
         return term;
@@ -27,12 +27,12 @@ public class CsvRow {
         this.definition = definition;
     }
 
-    public String getValueOfCode() {
-        return valueOfcode;
+    public String getNotation() {
+        return notation;
     }
 
-    public void setValueOfcode(String valueOfcode) {
-        this.valueOfcode = valueOfcode;
+    public void setNotation(String notation) {
+        this.notation = notation;
     }
 
     @Override
@@ -42,11 +42,11 @@ public class CsvRow {
         CsvRow that = (CsvRow) o;
         return term.equals(that.term) &&
                 definition.equals(that.definition) &&
-                valueOfcode.equals(that.valueOfcode);
+                notation.equals(that.notation);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(term, definition, valueOfcode);
+        return Objects.hash(term, definition, notation);
     }
 }

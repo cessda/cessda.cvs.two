@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view.admin;
+package eu.cessda.cvmanager.ui.view.importing;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -177,7 +177,7 @@ public class CsvFileUtil {
 
         analysisUnit.setTerm(currentLine[titleIndex]);
         analysisUnit.setDefinition(currentLine[definitionIndex]);
-        analysisUnit.setValueOfcode(currentLine[valueOfCodeIndex]);
+        analysisUnit.setNotation(currentLine[valueOfCodeIndex]);
 
         return analysisUnit;
     }
@@ -195,7 +195,7 @@ public class CsvFileUtil {
         CsvRow analysisUnit = new CsvRow();
         analysisUnit.setTerm(currentLine[0]);
         analysisUnit.setDefinition(currentLine[definitionIndex]);
-        analysisUnit.setValueOfcode(currentLine[valueOfCodeIndex]);
+        analysisUnit.setNotation(currentLine[valueOfCodeIndex]);
 
         return analysisUnit;
     }

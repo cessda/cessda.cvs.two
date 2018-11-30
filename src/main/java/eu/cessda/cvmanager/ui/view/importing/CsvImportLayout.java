@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view.admin;
+package eu.cessda.cvmanager.ui.view.importing;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.gesis.wts.domain.enumeration.Language;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,11 +20,13 @@ import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.data.ValueProvider;
+import com.vaadin.data.provider.Query;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.ContentMode;
@@ -44,6 +47,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.dto.LicenceDTO;
+import eu.cessda.cvmanager.ui.view.window.DialogImportCsvCodeWindow;
 
 
 
@@ -52,8 +56,8 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
 	
 	 private File tempCsvFile;
 
-    private Grid<CsvRow> csvGrid;
-    private ComboBox languageComboBox;
+    private MGrid<CsvRow> csvGrid = new MGrid<>(CsvRow.class);
+    private MLabel languageComboBox;
     private CsvFileData csvFileData;
 
     private TextField termTextField;
@@ -61,13 +65,16 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
     private TextField valueOfCodeTextField;
 
     private Upload upload;
-
-    static final String NAME = "import";
+    private Language selectedLanguage;
 
     private List<String[]> rawDataList;
+    private DialogImportCsvCodeWindow dialogWindow;
+    private List<CsvRow> csvRows = new ArrayList<>();
 
-	public CsvImportLayout(I18N i18n) {
+	public CsvImportLayout(I18N i18n, Language selectedLanguage, DialogImportCsvCodeWindow dialogWindow) {
 		super();
+		this.selectedLanguage = selectedLanguage;
+		this.dialogWindow = dialogWindow;
 		init();
 	}
 
@@ -89,8 +96,6 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
               return null;
           }
       });
-
-      upload.setEnabled(false);
 
       HorizontalLayout textFieldsHLayout = new HorizontalLayout();
 
@@ -117,6 +122,8 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
               csvGrid.setVisible(true);
 
               upload.setVisible(false);
+              textFieldsHLayout.setVisible(false);
+              dialogWindow.getImportButton().setVisible( true );
 
               HasValue.ValueChangeListener<String> valueChangeListener = valueChangeEvent -> {
                   String termIndex = termTextField.getValue();
@@ -131,7 +138,7 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
                   int updatedDefinitionColumnIndex = Integer.valueOf(definitionIndex);
                   int updatedValueOfCodeColumnIndex = Integer.valueOf(valueOfCodeIndex);
 
-                  List<CsvRow> csvRows = new ArrayList<>();
+                 
 
                   for (String[] currentLine : rawDataList) {
                       csvRows.add(csvFileUtil.createCsvRow(currentLine, updatedTermColumnIndex, updatedDefinitionColumnIndex, updatedValueOfCodeColumnIndex));
@@ -154,7 +161,6 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
       });
 
       /* Table to show the contents of the file */
-      csvGrid = new Grid<>();
       csvGrid.setSizeFull();
       csvGrid.setVisible(false);
       csvGrid.setHeightByRows(13);
@@ -162,37 +168,23 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
       csvGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
       csvGrid.getEditor().setEnabled(true);
 
-      csvGrid.addColumn(CsvRow::getTerm).setId("term");
-      csvGrid.addColumn(CsvRow::getDefinition).setId("definition");
+      
 
-      csvGrid.addColumn((ValueProvider<CsvRow, String>) analysisUnit -> {
-          String valueOfCode = analysisUnit.getValueOfCode();
+      languageComboBox = new MLabel(Language.getEnumNameCapitalized(selectedLanguage.toString()));
+      languageComboBox.setCaption("Language");
+      languageComboBox.withWidth("200px");
 
-          if (Objects.isNull(valueOfCode) || "".equals(valueOfCode))
-
-          if (valueOfCode.contains(".")) {
-              String[] rows = valueOfCode.split("\\.");
-
-              return "<div><font size=\"1\">" + rows[0] + "<br/>" + "&nbsp;&nbsp;" + rows[1] + "</font></div>";
-          }
-
-          return valueOfCode;
-      }, new HtmlRenderer()).setId("valueOfCode");
-
-      languageComboBox = new ComboBox("Language");
-      languageComboBox.setEmptySelectionAllowed(false);
-
-      languageComboBox.setItems(Language.getAllEnumCapitalized());
-//      languageComboBox.setSelectedItem(Language.get);
-
-      termTextField = new TextField("Term");
+      termTextField = new TextField("Term column number");
       termTextField.setRequiredIndicatorVisible(true);
+      termTextField.setValue("0");
 
-      definitionTextField = new TextField("Definition");
+      definitionTextField = new TextField("Definition colum number");
       definitionTextField.setRequiredIndicatorVisible(true);
+      definitionTextField.setValue("1");
 
-      valueOfCodeTextField = new TextField("Code");
+      valueOfCodeTextField = new TextField("Code column number ");
       valueOfCodeTextField.setRequiredIndicatorVisible(true);
+      valueOfCodeTextField.setValue("2");
 
       textFieldsHLayout.addComponents(termTextField, definitionTextField, valueOfCodeTextField);
 
@@ -336,6 +328,25 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
      * Update {@link #csvGrid} content by selected language.
      */
     private void updateCsvGrid() {
+    	csvGrid.removeAllColumns();
+    	
+    	csvGrid.addColumn(CsvRow::getTerm).setId("term");
+        csvGrid.addColumn(CsvRow::getDefinition).setId("definition");
+
+        csvGrid.addColumn((ValueProvider<CsvRow, String>) csvRow -> {
+            String valueOfCode = csvRow.getNotation();
+
+            if (Objects.isNull(valueOfCode) || "".equals(valueOfCode))
+
+            if (valueOfCode.contains(".")) {
+                String[] rows = valueOfCode.split("\\.");
+
+                return "<div><font size=\"1\">" + rows[0] + "<br/>" + "&nbsp;&nbsp;" + rows[1] + "</font></div>";
+            }
+
+            return valueOfCode;
+        }, new HtmlRenderer()).setId("valueOfCode");
+        
         Map<String, List<CsvRow>> analysisUnitMap = csvFileData.getCsvRowMap();
 
         List<CsvRow> selectedLanguageCsvRows = analysisUnitMap.get(Language.ENGLISH.toString());
@@ -361,4 +372,10 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
 		
 	}
 
+	public List<CsvRow> getCsvRows() {
+		return csvGrid.getDataProvider()
+	        .fetch(new Query<>())
+	        .collect(Collectors.toList());
+	}
+	
 }

@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 
+import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.RoleService;
@@ -30,6 +31,7 @@ import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.ui.layout.WithdrawnCvLayout;
+import eu.cessda.cvmanager.ui.view.importing.CsvImportLayout;
 
 @UIScope
 @SpringView(name = AdminView.VIEW_NAME)
@@ -43,8 +45,7 @@ public class AdminView extends CvAdminView {
 		MANAGE_USER_AGENCY,
 		MANAGE_USER_ROLE, 
 		MANAGE_LICENSE,
-		LIST_WITHDRAWN_CV, 
-		IMPORT_CSV
+		LIST_WITHDRAWN_CV
 	};
 	
 //	Autowired
@@ -172,9 +173,6 @@ public class AdminView extends CvAdminView {
 				break;
 			case LIST_WITHDRAWN_CV:
 				mainContainer.add( new WithdrawnCvLayout(i18n, vocabularyService, agencyService, configService));
-				break;
-			case IMPORT_CSV:
-				mainContainer.add( new CsvImportLayout(i18n));
 				break;
 		}
 	}

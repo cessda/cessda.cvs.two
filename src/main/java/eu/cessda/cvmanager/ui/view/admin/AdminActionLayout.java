@@ -71,7 +71,6 @@ public class AdminActionLayout extends ResponsiveBlock{
 	private MButton buttonManageUserRole = new MButton("Manage system role");
 	private MButton buttonManageLicense = new MButton("Manage license");
 	private MButton buttonWitdrawnCvs = new MButton("Withdrawn CVs");
-	private MButton buttonImportCsv = new MButton("Import Csv");
 	
 	public AdminActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 
 			AdminView adminView, AgencyDTO agency, UserService userService, RoleService roleService, AgencyService agencyService,
@@ -122,12 +121,6 @@ public class AdminActionLayout extends ResponsiveBlock{
 			.withVisible( false )
 			.addClickListener( this::doWithdrawnList );
 		
-		buttonImportCsv
-			.withFullWidth()
-			.withStyleName("action-button")
-			.withVisible( false )
-			.addClickListener( this::doImportCsv );
-		
 		getInnerContainer()
 			.add(
 				buttonManageUser,
@@ -137,8 +130,7 @@ public class AdminActionLayout extends ResponsiveBlock{
 				buttonManageUserRole,
 				new MLabel("<hr/>").withContentMode( ContentMode.HTML ),
 				buttonManageLicense,
-				buttonWitdrawnCvs,
-				buttonImportCsv
+				buttonWitdrawnCvs
 			);
 	}
 
@@ -165,11 +157,6 @@ public class AdminActionLayout extends ResponsiveBlock{
 	private void doWithdrawnList(ClickEvent event ) {
 		adminView.setMainContent( AdminContent.LIST_WITHDRAWN_CV );
 	}
-	
-	private void doImportCsv(ClickEvent event ) {
-		adminView.setMainContent( AdminContent.IMPORT_CSV );
-	}
-	
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		buttonManageUser.withCaption( "Manage Member" );
@@ -189,7 +176,6 @@ public class AdminActionLayout extends ResponsiveBlock{
 			buttonManageUserRole.setVisible( true );
 			buttonManageLicense.setVisible( true );
 			buttonWitdrawnCvs.setVisible( true );
-			buttonImportCsv.setVisible( true );
 		}
 		
 		return hasAction;
