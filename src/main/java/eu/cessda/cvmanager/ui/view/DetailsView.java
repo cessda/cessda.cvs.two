@@ -103,6 +103,7 @@ import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.CsvRowToConceptDTOMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.layout.CvComparatorLayout;
@@ -141,6 +142,7 @@ public class DetailsView extends CvView {
 	private final ConfigurationService configService;
 	private final VocabularyChangeService vocabularyChangeService;
 	private final LicenceService licenceService;
+	private final CsvRowToConceptDTOMapper csvRowToConceptDTOMapper;
 
 	private Language selectedLang = Language.ENGLISH;
 
@@ -211,7 +213,8 @@ public class DetailsView extends CvView {
 	public DetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
-			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
+			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
+			CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, DetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
@@ -222,6 +225,7 @@ public class DetailsView extends CvView {
 		this.configService = configService;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.licenceService = licenceService;
+		this.csvRowToConceptDTOMapper = csvRowToConceptDTOMapper;
 		eventBus.subscribe( this, DetailsView.VIEW_NAME );
 	}
 
@@ -234,7 +238,7 @@ public class DetailsView extends CvView {
 		
 		editorCodeActionLayout = new EditorCodeActionLayoutNew("block.action.code", "block.action.code.show", i18n,
 				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
-				vocabularyChangeService);
+				vocabularyChangeService, csvRowToConceptDTOMapper);
 		
 
 		languageLayout.withFullWidth();

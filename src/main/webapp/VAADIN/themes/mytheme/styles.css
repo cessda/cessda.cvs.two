@@ -18208,6 +18208,14 @@ div.v-layout.v-horizontal.v-widget {
 	max-width: 1140px;
 }
 
+.mytheme .import-dialog {
+	overflow-y: hidden;
+}
+
+.mytheme .import-dialog .v-caption {
+	display: block;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;

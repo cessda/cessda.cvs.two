@@ -2556,5 +2556,10 @@ $v-selection-item-border-radius: 0;
 		width:100%;
 		max-width:1140px;
 	}
-	
+	.import-dialog{
+		overflow-y:hidden;
+		.v-caption{
+			display:block;
+		}
+	}
 }
