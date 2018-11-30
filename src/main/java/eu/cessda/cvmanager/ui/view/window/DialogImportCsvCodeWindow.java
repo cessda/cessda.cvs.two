@@ -138,32 +138,90 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 
 	private void saveCode() {
 		for(CsvRow csvRow: csvImportLayout.getCsvRows()) {
-			ConceptDTO newConcept = csvRowToConceptDTOMapper.toDto(csvRow);
-			System.out.println( newConcept.toString() );
+			concept = csvRowToConceptDTOMapper.toDto(csvRow);
+			// Check imput
+			if(concept.getNotation() == null || concept.getNotation().isEmpty())
+				continue;
+			
+			// remove any non a-z
+			// TODO: determine parent
+			concept.setNotation( concept.getNotation().replaceAll("[^A-Za-z]", ""));
+			
+			if(concept.getTitle() == null || concept.getTitle().isEmpty())
+				continue;
+			
+			String uri = version.getUri();
+			int lastIndex = uri.lastIndexOf("/");
+			if( lastIndex == -1) {
+				uri = ConfigurationService.DEFAULT_CV_LINK;
+				if(!uri.endsWith("/"))
+					uri += "/";
+				uri += version.getNotation();
+			} else {
+				uri = uri.substring(0, lastIndex);
+			}
+				
+			code = new CodeDTO();
+			code.setNotation( concept.getNotation() );
+			code.setUri( code.getNotation() );
+			code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), language);
+			
+			concept.setUri( uri + "#" + concept.getNotation() + "/" + language.toString());
+			
+			if( !code.isPersisted() ) {
+				code.setSourceLanguage( language.toString());
+				code.setVocabularyId( vocabulary.getId() );
+			}
+			
+			// save the code
+			if( parentCode == null) {
+				
+				List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
+				// re-save tree structure 
+				TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
+				codeTreeData.addRootItems(code);
+				
+				List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
+				for( CodeDTO eachCode: newCodeDTOs) {
+					if( !eachCode.isPersisted())
+						code = codeService.save(eachCode);
+					else
+						codeService.save(eachCode);
+				}
+				
+			}
+			
+			// save to concept
+			if( !concept.isPersisted()) {
+				vocabulary.addCode(code);
+				concept.setCodeId( code.getId());
+				concept.setVersionId( version.getId() );
+				concept.setPosition( version.getConcepts().size());
+				concept = conceptService.save(concept);
+				version.addConcept(concept);
+				version = versionService.save(version);
+			}
+
+			// save change log
+			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
+			changeDTO.setVocabularyId( vocabulary.getId());
+			changeDTO.setVersionId( version.getId()); 
+			changeDTO.setChangeType( "Code added" );
+			changeDTO.setDescription( concept.getNotation());
+			changeDTO.setDate( LocalDateTime.now() );
+			UserDetails loggedUser = SecurityUtils.getLoggedUser();
+			changeDTO.setUserId( loggedUser.getId() );
+			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
+			vocabularyChangeService.save(changeDTO);
 		}
 		
-//		if(!isInputValid())
-//			return;
-		
-//		
-//		// save change log
-//		VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-//		changeDTO.setVocabularyId( vocabulary.getId());
-//		changeDTO.setVersionId( version.getId()); 
-//		changeDTO.setChangeType( "Code added" );
-//		changeDTO.setDescription( concept.getNotation());
-//		changeDTO.setDate( LocalDateTime.now() );
-//		UserDetails loggedUser = SecurityUtils.getLoggedUser();
-//		changeDTO.setUserId( loggedUser.getId() );
-//		changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-//		vocabularyChangeService.save(changeDTO);
 		
 
-//		// indexing editor
-//		vocabularyService.index(vocabulary);
-//		
-//		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
-//		this.close();
+		// indexing editor
+		vocabularyService.index(vocabulary);
+		
+		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
+		this.close();
 	}
 
 

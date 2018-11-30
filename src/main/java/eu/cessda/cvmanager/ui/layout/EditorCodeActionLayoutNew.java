@@ -325,7 +325,7 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 				} else {
 					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 						buttonCodeAddTranslation.setVisible( true );
-						buttonCodeImport.setVisible( true );
+//						buttonCodeImport.setVisible( true );
 					}
 					if( selectedLanguage.equals( sourceLanguage) ) {
 						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
