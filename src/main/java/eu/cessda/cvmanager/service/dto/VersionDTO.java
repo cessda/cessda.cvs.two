@@ -538,7 +538,7 @@ Agency. (Publication year). CV Long Name (Version number) [Controlled vocabulary
 -- [Controlled vocabulary] text is the same for all. Publishing agency is always CESSDA for DDI and CESSDA vocs.
 
 For example: 
-DDI Alliance (2018). Time Method (1.4) [Controlled vocabulary]. CESSDA. urn:ddi-cv:AnalysisUnit:1.0. Retrieved from: vocabularies.cessda.eu/TimeMethod_1.0/en.
+DDI Alliance (2018). Time Method (1.4) [Controlled vocabulary]. CESSDA. urn:ddi-cv:CsvRow:1.0. Retrieved from: vocabularies.cessda.eu/TimeMethod_1.0/en.
 
 
 TL format

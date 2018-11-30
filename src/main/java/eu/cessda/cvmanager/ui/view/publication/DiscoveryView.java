@@ -210,8 +210,6 @@ public class DiscoveryView extends CvView {
 		// results.setRowHeight( 135.0 );
 		cvGrid.getColumn("cvColumn").setExpandRatio(1);
 
-		
-		
 	}
 
 	@Override

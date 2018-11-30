@@ -3,12 +3,14 @@ package eu.cessda.cvmanager.service.controller;
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.gesis.stardat.entity.LanguageLabel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,16 +53,18 @@ public class CVController {
 			CVConcept concept = new CVConcept(store);
 
 			// TODO needs to be code?
-			if (concept.getPrefLabelByLanguage("en").toLowerCase().contains(query.toLowerCase())) {
+			if (concept.getPrefLabelByLanguage(language).toLowerCase().contains(query.toLowerCase())) {
 				Code code = new Code();
 
 				ContentType url = new ContentType(ContentType.TYPE_URI);
-				url.setValue("http://lod.cessda.eu/" + store.getElementId());
+				url.setValue( store.getElementId());
 				code.setUrl(url);
 
 				ContentType theCode = new ContentType(ContentType.TYPE_LITERAL);
 				theCode.setValue(concept.getNotation());
 				code.setCode(theCode);
+				
+				
 
 				theCode = new ContentType(ContentType.TYPE_LITERAL);
 				theCode.setValue(concept.getPrefLabelByLanguage("en"));
@@ -70,10 +74,14 @@ public class CVController {
 				theCode.setValue(concept.getPrefLabelByLanguage(language));
 				code.setLanguagePrefLabel(theCode);
 
-				theCode = new ContentType(ContentType.TYPE_LITERAL);
-				theCode.setValue(concept.getDescriptionByLanguage("en"));
-				code.setDescription(theCode);
-
+				
+				Optional<LanguageLabel> langLabel = concept.getDescription().stream().filter( ll -> ll.getLabelLanguage().equals(language)).findFirst();
+				if( langLabel.isPresent() ) {
+					theCode = new ContentType(ContentType.TYPE_LITERAL);
+					theCode.setValue(langLabel.get().getLabel());
+					code.setDescription(theCode);
+				}
+				
 				theCode = new ContentType(ContentType.TYPE_LITERAL);
 				theCode.setValue(language);
 				code.setLanguage(theCode);

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: SPLIT-PVCNAME
+  name: ddi-PVCNAME
   namespace: NAMESPACE
 spec:
   storageClassName: manual

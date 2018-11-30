@@ -6,7 +6,7 @@ metadata:
     app: DEPLOYMENTNAME
   namespace: NAMESPACE
 spec:
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
@@ -14,7 +14,13 @@ spec:
     spec:
       containers:
       - name: DEPLOYMENTNAME
-        image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
+       # need to fix this (and push) as cannot distinguish between dev, staging, live
+        image: eu.gcr.io/cessda-development/cvmanager-gui:latest
+        #image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
+        env:
+        - name: DC_ENV
+          value: ENVIRONMENT
         ports:
         - containerPort: 8080
           name: frontend-cport
+        imagePullPolicy: Always

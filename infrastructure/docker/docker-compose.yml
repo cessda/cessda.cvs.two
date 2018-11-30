@@ -1,0 +1,12 @@
+#
+# @code-generation-comment@
+#
+
+version: '3.2'
+
+services:
+  cvmanager-app:
+    image: @docker.registry.uri@/cvmanager-gui/@project-artifactId@:@project.version@
+    container_name: cvmanager-gui
+    ports:
+     - 8080:@server.port@
