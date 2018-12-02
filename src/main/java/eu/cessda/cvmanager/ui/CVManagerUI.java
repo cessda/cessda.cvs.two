@@ -149,6 +149,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		this.i18n = i18n;
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	protected void initUI(VaadinRequest request) {
 		setLocale(Locale.ENGLISH);
@@ -161,6 +162,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
+		this.getUI().getCurrent().setPollInterval( 5000 );
 
 		addHeader();
 
