@@ -342,12 +342,15 @@ public class DetailView extends CvView {
 		}
 		
 		if(  cvItem.getCvScheme() != null ) {
-		String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
+			String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
 			if( owner != null && !owner.isEmpty() )
 				setAgency( agencyService.findByName( owner));
 		}
+		else
+			agency = agencyService.findByName( getVocabulary().getAgencyName());
+		
 		if( getAgency() == null)
-			setAgency( agencyService.findOne(1L) );
+			setAgency( agencyService.findByName( "CESSDA" ));
 		
 		// get all available licenses
 		licenses = licenceService.findAll();
