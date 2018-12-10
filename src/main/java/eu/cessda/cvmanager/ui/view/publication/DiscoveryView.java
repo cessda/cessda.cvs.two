@@ -38,14 +38,12 @@ import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.CvView;
 import eu.cessda.cvmanager.ui.view.EditorSearchView;
@@ -78,8 +76,6 @@ public class DiscoveryView extends CvView {
 	private PaginationBar paginationBar;
 	private EsQueryResultDetail esQueryResultDetail = new EsQueryResultDetail( DiscoveryView.VIEW_NAME );
 	
-	private ArrayList<CVScheme> hits = new ArrayList<>();
-
 	private final FiltersLayout.FilterListener filterListener = ( fieldName, activeFilters) -> {
 		esQueryResultDetail.resetPaging();
 		esQueryResultDetail.getEsFilterByField( fieldName ).ifPresent( esFilter -> esFilter.setValues( activeFilters ));
@@ -93,11 +89,8 @@ public class DiscoveryView extends CvView {
 
 	public DiscoveryView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
-			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
-			PublishedVocabularyMapper publishedVocabularyMapper,
-			PublishedVocabularySearchRepository publishedVocabularySearchRepository) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, publishedVocabularyMapper, publishedVocabularySearchRepository, DiscoveryView.VIEW_NAME);
+			VocabularyService vocabularyService, CodeService codeService) {
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService,  codeService, DiscoveryView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
 		eventBus.subscribe(this, DiscoveryView.VIEW_NAME);
 	}
@@ -171,6 +164,9 @@ public class DiscoveryView extends CvView {
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		// activate home button
+		topMenuButtonUpdateActive(0);
+				
 		super.enter(event);
 		
 		locale = UI.getCurrent().getLocale();
@@ -204,14 +200,16 @@ public class DiscoveryView extends CvView {
 		cvGrid.removeAllColumns();
 		cvGrid.setHeaderVisible(false);
 		cvGrid.addColumn(voc -> {
-			agency = agencyService.findOne( voc.getAgencyId() );
-			return new VocabularyGridRow(voc, agency, configService);
+			agency = agencyMap.get( voc.getAgencyId() );
+			if( agency == null ) {
+				agency = agencyService.findOne( voc.getAgencyId() );
+				agencyMap.put( agency.getId(), agency);
+			}
+			return new VocabularyGridRowPublish(voc, agency, configService);
 		}, new ComponentRenderer()).setId("cvColumn");
 		// results.setRowHeight( 135.0 );
 		cvGrid.getColumn("cvColumn").setExpandRatio(1);
 
-		
-		
 	}
 
 	@Override
@@ -231,13 +229,6 @@ public class DiscoveryView extends CvView {
 //		searchTextField.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
 	}
 
-	public ArrayList<CVScheme> getHits() {
-		return hits;
-	}
-
-	public void setHits(ArrayList<CVScheme> hits) {
-		this.hits = hits;
-	}
 
 	public EsQueryResultDetail getEsQueryResultDetail() {
 		return esQueryResultDetail;

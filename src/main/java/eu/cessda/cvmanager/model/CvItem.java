@@ -9,13 +9,17 @@ import org.gesis.stardat.entity.CVScheme;
 
 import com.vaadin.data.TreeData;
 
+import eu.cessda.cvmanager.service.dto.CodeDTO;
+
 public class CvItem {
 	private CVScheme cvScheme;
 	// for selected concept
 	private CVConcept cvConcept;
-	private TreeData<CVConcept> cvCodeTreeData;
+	private TreeData<CVConcept> cvConceptTreeData;
+	private TreeData<CodeDTO> cvCodeTreeData;
 	
 	private String currentCvId;
+	private String currentNotation;
 	private String currentConceptId;
 	private String currentLanguage;
 	
@@ -25,15 +29,15 @@ public class CvItem {
 	public void setCvScheme(CVScheme cvScheme) {
 		this.cvScheme = cvScheme;
 	}
-	public TreeData<CVConcept> getCvCodeTreeData() {
-		return cvCodeTreeData;
+	public TreeData<CVConcept> getCvConceptTreeData() {
+		return cvConceptTreeData;
 	}
-	public void setCvCodeTreeData(TreeData<CVConcept> cvCodeTreeData) {
-		this.cvCodeTreeData = cvCodeTreeData;
+	public void setCvConceptTreeData(TreeData<CVConcept> cvCodeTreeData) {
+		this.cvConceptTreeData = cvCodeTreeData;
 	}
 
 	public Stream<CVConcept> getFlattenedCvConceptStreams(){
-		return cvCodeTreeData
+		return cvConceptTreeData
 				.getRootItems()
 				.stream()
 				.flatMap( x -> flattened(x));
@@ -48,11 +52,17 @@ public class CvItem {
 	private Stream<CVConcept> flattened( CVConcept cvConcept){
 		return Stream.concat(
 				Stream.of( cvConcept ), 
-				cvCodeTreeData
+				cvConceptTreeData
 					.getChildren(cvConcept)
 						.stream()
 						.flatMap( x -> flattened(x)) 
 				);
+	}
+	public String getCurrentNotation() {
+		return currentNotation;
+	}
+	public void setCurrentNotation(String currentNotation) {
+		this.currentNotation = currentNotation;
 	}
 	public String getCurrentCvId() {
 		return currentCvId;
@@ -78,5 +88,11 @@ public class CvItem {
 	public void setCvConcept(CVConcept cvConcept) {
 		this.cvConcept = cvConcept;
 	}
-
+	public TreeData<CodeDTO> getCvCodeTreeData() {
+		return cvCodeTreeData;
+	}
+	public void setCvCodeTreeData(TreeData<CodeDTO> cvCodeTreeData) {
+		this.cvCodeTreeData = cvCodeTreeData;
+	}
+	
 }

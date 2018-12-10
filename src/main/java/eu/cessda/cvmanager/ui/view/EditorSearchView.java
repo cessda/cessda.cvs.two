@@ -7,7 +7,6 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
@@ -20,40 +19,34 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.layout.EditorSearchActionLayout;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
 import eu.cessda.cvmanager.ui.view.publication.PaginationBar;
 import eu.cessda.cvmanager.ui.view.publication.VocabularyGridRow;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 
 @UIScope
@@ -65,6 +58,7 @@ public class EditorSearchView extends CvView {
 	public static final String FIELD_SORT = "notation";
 	private Locale locale = UI.getCurrent().getLocale();
 	private final VocabularyService vocabularyService;
+	private final VersionService versionService;
 
 	// main container
 	private MCssLayout resultLayout = new MCssLayout();
@@ -85,7 +79,7 @@ public class EditorSearchView extends CvView {
 	private PaginationBar paginationBar;
 	private EsQueryResultDetail esQueryResultDetail = new EsQueryResultDetail( EditorSearchView.VIEW_NAME );
 	
-	private ArrayList<CVScheme> hits = new ArrayList<>();
+	private final VocabularyChangeService vocabularyChangeService;
 
 	private final FiltersLayout.FilterListener filterListener = ( fieldName, activeFilters) -> {
 		esQueryResultDetail.resetPaging();
@@ -101,12 +95,12 @@ public class EditorSearchView extends CvView {
 
 	public EditorSearchView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper, 
-			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
-			PublishedVocabularyMapper publishedVocabularyMapper,
-			PublishedVocabularySearchRepository publishedVocabularySearchRepository) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, vocabularyMapper, codeService, vocabularySearchRepository, publishedVocabularyMapper, publishedVocabularySearchRepository, EditorSearchView.VIEW_NAME);
+			VocabularyService vocabularyService, VersionService versionService, CodeService codeService,
+			VocabularyChangeService vocabularyChangeService) {
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, EditorSearchView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
+		this.vocabularyChangeService = vocabularyChangeService;
+		this.versionService = versionService;
 		eventBus.subscribe(this, EditorSearchView.VIEW_NAME);
 	}
 
@@ -115,7 +109,8 @@ public class EditorSearchView extends CvView {
 		LoginView.NAVIGATETO_VIEWNAME = EditorSearchView.VIEW_NAME;
 		paginationBar = new PaginationBar( paggingListener , i18n);
 		filterLayout = new FiltersLayout( "block.filter", "block.filter.show", null, this, filterListener, i18n );
-		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, vocabularyMapper, vocabularySearchRepository, eventBus);
+		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, 
+				versionService, eventBus, vocabularyChangeService);
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
 		
 		// button style
@@ -186,6 +181,12 @@ public class EditorSearchView extends CvView {
 	public void enter(ViewChangeEvent event) {
 		super.enter(event);
 		
+		if(!authorizeViewAccess())
+			return;
+		
+		// activate home button
+		topMenuButtonUpdateActive(1);
+		
 		locale = UI.getCurrent().getLocale();
 		
 		updateMessageStrings(locale);
@@ -197,7 +198,7 @@ public class EditorSearchView extends CvView {
 		refreshSearchResult();
 		
 		// action block check
-		if( !SecurityUtils.isCurrentUserAllowCreateCvSl() )
+		if( !CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl() )
 			editorSearchActionLayout.setVisible( false );
 		else
 			editorSearchActionLayout.setVisible( true );
@@ -223,14 +224,15 @@ public class EditorSearchView extends CvView {
 		cvGrid.removeAllColumns();
 		cvGrid.setHeaderVisible(false);
 		cvGrid.addColumn(voc -> {
-			agency = agencyService.findOne( voc.getAgencyId() );
+			agency = agencyMap.get( voc.getAgencyId() );
+			if( agency == null ) {
+				agency = agencyService.findOne( voc.getAgencyId() );
+				agencyMap.put( agency.getId(), agency);
+			}
 			return new VocabularyGridRow(voc, agency, configService);
 		}, new ComponentRenderer()).setId("cvColumn");
 		// results.setRowHeight( 135.0 );
 		cvGrid.getColumn("cvColumn").setExpandRatio(1);
-
-		
-		
 	}
 
 	@Override
@@ -248,14 +250,6 @@ public class EditorSearchView extends CvView {
 	@Override
 	public void updateMessageStrings(Locale locale) {
 //		searchTextField.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
-	}
-
-	public ArrayList<CVScheme> getHits() {
-		return hits;
-	}
-
-	public void setHits(ArrayList<CVScheme> hits) {
-		this.hits = hits;
 	}
 
 	public EsQueryResultDetail getEsQueryResultDetail() {

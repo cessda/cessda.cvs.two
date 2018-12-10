@@ -1,0 +1,51 @@
+package eu.cessda.cvmanager.service.rest;
+
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Map;
+
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import eu.cessda.cvmanager.domain.Cv;
+import eu.cessda.cvmanager.service.ImportService;
+import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
+
+/**
+ * REST controller for managing Import.
+ */
+@RestController
+@RequestMapping
+("/v1/import")
+public class ImportWebService {
+	private final Logger log = LoggerFactory.getLogger( ImportWebService.class );
+
+	private final ImportService importService;
+	
+	public ImportWebService( ImportService importService) {
+		this.importService = importService;
+	}
+	
+	@PostMapping("/cv")
+	@Transactional
+	public ResponseEntity<VersionDTO> createCv(@Valid @RequestBody Cv cv) throws URISyntaxException{
+		VersionDTO newVersion = importService.createCv(cv);
+		return ResponseEntity.created(new URI("/v1/VocabularyDetails/" + newVersion.getNotation() + "/" + newVersion.getLanguage() + "/" + newVersion.getNumber())).body(newVersion);
+	}
+	
+	@PostMapping("/batchcv")
+	@Transactional
+	public ResponseEntity<Map<String, Object>> createCv(@Valid @RequestBody Cvs cvs) throws URISyntaxException{
+		return ResponseEntity.created(new URI("/v1/Vocabulary")).body(importService.createCvBatch(cvs.getCvs()));
+	}
+}

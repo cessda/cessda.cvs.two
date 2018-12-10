@@ -16,6 +16,7 @@ public interface VocabularyMapper extends EntityMapper<VocabularyDTO, Vocabulary
 		@Mapping(source = "vers", target = "vers"),
 		@Mapping(source = "codes", target = "codes"),
 		@Mapping(source = "languages", target = "languages"),
+		@Mapping(source = "languagesPublished", target = "languagesPublished")
 	})
     VocabularyDTO toDto(Vocabulary vocabulary);
 
@@ -23,6 +24,7 @@ public interface VocabularyMapper extends EntityMapper<VocabularyDTO, Vocabulary
     	@Mapping(source = "vers", target = "vers"),
 	    @Mapping(source = "codes", target = "codes"),
 	    @Mapping(source = "languages", target = "languages"),
+		@Mapping(source = "languagesPublished", target = "languagesPublished")
     })
     Vocabulary toEntity(VocabularyDTO vocabularyDTO);
 

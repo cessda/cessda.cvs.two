@@ -66,7 +66,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 	
 	protected MVerticalLayout mainContainer = new MVerticalLayout();
 	protected MHorizontalLayout columnContainer = new MHorizontalLayout();
-	protected ActionPanel actionPanel;
+//	protected ActionPanel actionPanel;
 	protected MVerticalLayout rightContainer = new MVerticalLayout();
 	private Breadcrumbs breadcrumbs;
 	
@@ -83,9 +83,9 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 		this.codeService = codeService;
 		
 		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
-		
-		actionPanel = new ActionPanel( this,  agencyService, vocabularyService);
-		actionPanel.setWidth("240px");
+//		
+//		actionPanel = new ActionPanel( this,  agencyService, vocabularyService);
+//		actionPanel.setWidth("240px");
 		
 		this.eventBus.subscribe( this );
 	}
@@ -103,7 +103,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 			.withFullWidth()
 			.withSpacing( false )
 			.withMargin( false )
-			.add( actionPanel,
+			.add(// actionPanel,
 				rightContainer
 			)
 			.withExpand( rightContainer, 1f );
@@ -120,7 +120,7 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 			.withUndefinedHeight()
 			.add( mainContainer );
 		
-		updateActionPanel();
+//		updateActionPanel();
 	}
 	
 	@Override
@@ -134,32 +134,32 @@ public abstract class CvManagerView extends MVerticalLayout implements MView, Tr
 			.clear();
 	}
 	
-	@EventBusListenerMethod( scope = EventScope.UI )
-	public void onAuthenticate( LoginSucceedEvent event )
-	{
-		updateActionPanel();
-	}
+//	@EventBusListenerMethod( scope = EventScope.UI )
+//	public void onAuthenticate( LoginSucceedEvent event )
+//	{
+//		updateActionPanel();
+//	}
 	
-	protected void updateActionPanel() {
-
-		if( SecurityContextHolder.getContext().getAuthentication() == null && !securityService.rememberMeLogin()) {
-			actionPanel.setVisible( false );
-			return;
-		}
-		
-		boolean setActionPanelVisible = false;
-		Iterator<Component> iterator = actionPanel.getActionLayout().iterator();
-		while ( iterator.hasNext()) {
-			Component comp = iterator.next();
-			if( comp instanceof Button ) {
-				if( comp.isVisible()) {
-					setActionPanelVisible = true;
-					break;
-				}
-			}
-		};
-		actionPanel.setVisible( setActionPanelVisible );
-	}
+//	protected void updateActionPanel() {
+//
+//		if( SecurityContextHolder.getContext().getAuthentication() == null && !securityService.rememberMeLogin()) {
+//			actionPanel.setVisible( false );
+//			return;
+//		}
+//		
+//		boolean setActionPanelVisible = false;
+//		Iterator<Component> iterator = actionPanel.getActionLayout().iterator();
+//		while ( iterator.hasNext()) {
+//			Component comp = iterator.next();
+//			if( comp instanceof Button ) {
+//				if( comp.isVisible()) {
+//					setActionPanelVisible = true;
+//					break;
+//				}
+//			}
+//		};
+//		actionPanel.setVisible( setActionPanelVisible );
+//	}
 
 	public EventBus.UIEventBus getEventBus() {
 		return eventBus;

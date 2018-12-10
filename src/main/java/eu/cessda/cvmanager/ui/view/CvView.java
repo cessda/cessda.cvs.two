@@ -6,35 +6,28 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
-import org.gesis.stardat.ddiflatdb.client.RestClient;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
+import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
-import org.gesis.wts.ui.view.admin.CvManagerAdminView.ActionType;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.gesis.wts.ui.view.AccessDeniedView;
+import org.gesis.wts.ui.view.LoginView;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
+import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.navigator.MView;
 
-import com.vaadin.navigator.View;
+
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.MarginInfo;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
-import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.model.CvItem;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
@@ -42,17 +35,15 @@ import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 
 public abstract class CvView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -8769292972079523949L;
-	public static enum ActionType{
-		DISCOVER, EDITORSEARCH, DETAIL// this should be similar to view names
-	}
+//	public static enum ActionType{
+//		ADMIN, DISCOVER, EDITORSEARCH, DETAIL, DETAILS, AGENCY, WITHDRAWNDETAILS// this should be similar to view names
+//	}
 	
 	protected final I18N i18n;
 	protected final EventBus.UIEventBus eventBus;
@@ -60,18 +51,12 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected final StardatDDIService stardatDDIService;
 	protected final SecurityService securityService;
 	protected final AgencyService agencyService;
-	protected final VocabularyMapper vocabularyMapper;
 	protected final VocabularyService vocabularyService;
-	protected final PublishedVocabularyMapper publishedVocabularyMapper;
 	protected final CodeService codeService;
-	// Elasticsearch repo for Editor
-	protected final VocabularySearchRepository vocabularySearchRepository;
-	// Elasticsearch repo for Published
-	protected final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
 	
 	protected Locale locale = UI.getCurrent().getLocale();
 	
-	private final ActionType actionType;
+//	private final ActionType actionType;
 	protected CvItem cvItem = new CvItem();
 	protected AgencyDTO agency;
 	protected VocabularyDTO vocabulary;
@@ -83,12 +68,12 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	protected MCssLayout topPanel = new MCssLayout();
 	protected MCssLayout sidePanel = new MCssLayout();
 	protected MCssLayout mainContainer = new MCssLayout();
+	private String viewName;
 	
 	public CvView(I18N i, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VocabularyMapper vocabularyMapper,
-			CodeService codeService, VocabularySearchRepository vocabularySearchRepository,
-			PublishedVocabularyMapper publishedVocabularyMapper, PublishedVocabularySearchRepository publishedVocabularySearchRepository, String actionType ) {
+			VocabularyService vocabularyService, CodeService codeService,
+			String actionType ) {
 		this.i18n = i;
 		this.eventBus = eventBus;
 		this.configService = configService;
@@ -96,13 +81,9 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		this.securityService = securityService;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
-		this.vocabularyMapper = vocabularyMapper;
 		this.codeService = codeService;
-		this.vocabularySearchRepository = vocabularySearchRepository;
-		this.publishedVocabularyMapper = publishedVocabularyMapper;
-		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
-		
-		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
+		this.viewName = actionType;
+//		this.actionType = ActionType.valueOf(actionType.replaceAll("[^A-Za-z]", "").toUpperCase());
 		
 		this.eventBus.subscribe( this );
 	}
@@ -115,7 +96,8 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 			.withStyleName( "top-panel" );
 
 		sidePanel
-			.withStyleName( "side-panel" );
+			.withStyleName( "side-panel" )
+			.setId("side-panel");
 		
 		mainContainer
 			.withStyleName( "main-container" );
@@ -156,6 +138,26 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		}
 	}
 	
+	public void topMenuButtonUpdateActive(int activeIndex) {
+		int i=0;
+		for( MButton button : ((CVManagerUI) getUI()).getMenuButtons()) {
+			if( activeIndex == i )
+				button.addStyleName("active");
+			else
+				button.removeStyleName("active");
+			i++;
+		}
+	}
+	
+	protected boolean authorizeViewAccess() {
+		if( !SecurityUtils.isAuthenticated()) {
+			LoginView.NAVIGATETO_VIEWNAME = viewName;
+			UI.getCurrent().getNavigator().navigateTo(AccessDeniedView.NAME);
+			return false;
+		}
+		return true;
+	}
+	
 	@EventBusListenerMethod( scope = EventScope.UI )
 	public void onAuthenticate( LoginSucceedEvent event )
 	{
@@ -171,9 +173,9 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 		return stardatDDIService;
 	}
 
-	public ActionType getActionType() {
-		return actionType;
-	}
+//	public ActionType getActionType() {
+//		return actionType;
+//	}
 
 	public CvItem getCvItem() {
 		return cvItem;

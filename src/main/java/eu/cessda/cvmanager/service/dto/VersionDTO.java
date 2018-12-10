@@ -6,9 +6,21 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
+
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.Objects;
 import java.util.Optional;
@@ -37,7 +49,6 @@ public class VersionDTO implements Serializable {
 
     private LocalDate publicationDate;
 
-    @NotNull
     @Size(max = 20)
     private String number;
 
@@ -45,6 +56,10 @@ public class VersionDTO implements Serializable {
     private String summary;
 
     private String uri;
+    
+    private String canonicalUri;
+    
+    private String uriSl;
 
     @Size(max = 240)
     private String notation;
@@ -62,7 +77,32 @@ public class VersionDTO implements Serializable {
     private Long creator;
 
     private Long publisher;
+    
+    @Lob
+    private String versionNotes;
+    
+    private String versionChanges;
+    
+    @Lob
+    private String discussionNotes;
+    
+    private String copyright;
+    
+    private String license;
+    
+    private Long licenseId;
+    
+    private String citation;
+    
+    private String ddiUsage;
+    
+    private String translateAgency;
+    
+    private String translateAgencyLink;
+    
+    private Long vocabularyId;
 
+    @JsonIgnore
     private Set<ConceptDTO> concepts = new HashSet<>();
 
     public Long getId() {
@@ -128,6 +168,22 @@ public class VersionDTO implements Serializable {
     public void setUri(String uri) {
         this.uri = uri;
     }
+    
+	public String getCanonicalUri() {
+		return canonicalUri;
+	}
+
+	public void setCanonicalUri(String canonicalUri) {
+		this.canonicalUri = canonicalUri;
+	}
+    
+    public String getUriSl() {
+		return uriSl;
+	}
+
+	public void setUriSl(String uriSl) {
+		this.uriSl = uriSl;
+	}
 
     public String getNotation() {
         return notation;
@@ -200,8 +256,23 @@ public class VersionDTO implements Serializable {
     	this.concepts.add(concept);
     	return this;
     }
+    
+    public Long getVocabularyId() {
+		return vocabularyId;
+	}
 
-    @Override
+	public void setVocabularyId(Long vocabularyId) {
+		this.vocabularyId = vocabularyId;
+	}
+	
+	public boolean isConceptExist(String newConcept) {
+		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getNotation().equals(newConcept)).findFirst();
+		if( findFirst.isPresent())
+			return true;
+		return false;
+	}
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -229,7 +300,110 @@ public class VersionDTO implements Serializable {
 	public void setLastModified(LocalDateTime lastModified) {
 		this.lastModified = lastModified;
 	}
+	
+	public String getVersionNotes() {
+		return versionNotes;
+	}
 
+	public void setVersionNotes(String versionNotes) {
+		this.versionNotes = versionNotes;
+	}
+	
+	public String getVersionChanges() {
+		return versionChanges;
+	}
+
+	public void setVersionChanges(String versionChanges) {
+		this.versionChanges = versionChanges;
+	}
+	
+	public String getDiscussionNotes() {
+		return discussionNotes;
+	}
+
+	public void setDiscussionNotes(String discussionNotes) {
+		this.discussionNotes = discussionNotes;
+	}
+	
+	public String getCopyright() {
+		return copyright;
+	}
+
+	public void setCopyright(String copyright) {
+		this.copyright = copyright;
+	}
+
+	public String getLicense() {
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
+	}
+	
+	public Long getLicenseId() {
+		return licenseId;
+	}
+
+	public void setLicenseId(Long licenseId) {
+		this.licenseId = licenseId;
+	}
+
+	public String getCitation() {
+		return citation;
+	}
+
+	public void setCitation(String citation) {
+		this.citation = citation;
+	}
+
+	public String getDdiUsage() {
+		return ddiUsage;
+	}
+
+	public void setDdiUsage(String ddiUsage) {
+		this.ddiUsage = ddiUsage;
+	}
+	
+	public String getTranslateAgency() {
+		return translateAgency;
+	}
+
+	public void setTranslateAgency(String translateAgency) {
+		this.translateAgency = translateAgency;
+	}
+
+	public String getTranslateAgencyLink() {
+		return translateAgencyLink;
+	}
+
+	public void setTranslateAgencyLink(String translateAgencyLink) {
+		this.translateAgencyLink = translateAgencyLink;
+	}
+	
+	public boolean isInitialVersion() {
+		if(isPersisted()) {
+			if( initialVersion.equals( id ))
+				return true;
+		} 
+		return false;
+	}
+	
+	public List<ConceptDTO> getSortedConcepts(){
+		if( concepts == null )
+			return null;
+		return concepts.stream().sorted(Comparator.nullsLast(( c1, c2) -> { 
+			if( c1.getPosition() == null && c2.getPosition() == null )
+				return 0;
+			else if( c1.getPosition() == null  )
+				return -1;
+			else if( c2.getPosition() == null  )
+				return 1;
+			return c1.getPosition().compareTo( c2.getPosition() );
+		})).collect( Collectors.toList());
+	}
+
+	
 	@Override
     public String toString() {
         return "VersionDTO{" +
@@ -251,23 +425,142 @@ public class VersionDTO implements Serializable {
             "}";
     }
 	
+	public static VersionDTO getLatestSourceVersion( Set<VersionDTO> versionDTOs) {
+		Optional<VersionDTO> latestSourceVersion = versionDTOs
+				.stream()
+				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+				.filter( p -> p.itemType.equals( ItemType.SL.toString()))
+				.findFirst();
+		
+		if( latestSourceVersion.isPresent() )
+			return latestSourceVersion.get();
+		else
+			return null;
+	}
+	
 	public static Optional<VersionDTO> getLatestVersion( Set<VersionDTO> versionDTOs, String language, String status){
 		if( versionDTOs == null || versionDTOs.isEmpty() || language == null)
 			return Optional.empty();
 		
-		Stream<VersionDTO> sortedVersion = versionDTOs
-				.stream()
-				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
-				.filter( p -> language.equalsIgnoreCase( p.language ));
+		if( status != null ) {
+			return versionDTOs.stream()
+					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+					.filter( p -> language.equalsIgnoreCase( p.language ))
+					.filter( p -> status.equalsIgnoreCase( p.status ))
+					.findFirst();
+		}else
+			return versionDTOs
+					.stream()
+					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
+					.filter( p -> language.equalsIgnoreCase( p.language )).findFirst();
 		
-		if( status != null )
-			sortedVersion
-			.filter( p -> status.equalsIgnoreCase( p.status ));
-		
-		return sortedVersion.findFirst();
 	}
-	
+		
 	public boolean isPersisted() {
 		return id != null;
+	}
+	
+	public static Map<String,List<VersionDTO>> generateVersionMap(Set<VersionDTO> versionDTOs){
+		Map<String,List<VersionDTO>> versionMap = new TreeMap<>();
+		
+		// first put into Map, sorted in natural key order
+		for(VersionDTO eachVerDTO : versionDTOs) {
+			String key = eachVerDTO.getItemType() + "_" + eachVerDTO.getLanguage();
+			List<VersionDTO> versionDs = versionMap.get( key );
+			if( versionDs  == null ) {
+				versionDs = new ArrayList<>();
+				versionMap.put( key , versionDs);
+			}
+			versionDs.add(eachVerDTO);
+		}
+		
+		// sort version list
+		for(Map.Entry<String,List<VersionDTO>> eachVersions : versionMap.entrySet()) {
+			List<VersionDTO> eachValues = eachVersions.getValue();
+			
+			eachValues = eachValues.stream()
+						.sorted( (v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion()))
+						.collect( Collectors.toList());
+			versionMap.put( eachVersions.getKey(), eachValues);
+		}
+		
+		return versionMap;
+		
+	}
+	
+	public static String generateVersionInfo(List<VersionDTO> versionDTOs ) {
+		StringBuilder sb = new StringBuilder();
+		for(VersionDTO version: versionDTOs) {
+			sb.append("<strong> V." + version.getNumber() + "</strong></br>");
+			sb.append("Notes:</br>" + version.getVersionNotes() + "</br></br>");
+		}
+		
+		return sb.toString();
+	}
+	
+	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri) {
+		VersionDTO newVersion = new VersionDTO();
+		// generate uri
+		newVersion.setUri( agencyUri + targetVersion.getNotation() + "/" + targetVersion.getLanguage());
+		
+		newVersion.setStatus( Status.DRAFT.toString());
+		newVersion.setItemType( targetVersion.getItemType() );
+		newVersion.setLanguage( targetVersion.getLanguage() );
+//		newVersion.setLastModified( LocalDateTime.now());
+		newVersion.setNumber(versionNumber);
+		newVersion.setNotation( targetVersion.getNotation() );
+		newVersion.setTitle( targetVersion.getTitle() );
+		newVersion.setDefinition( targetVersion.getDefinition() );
+		newVersion.setPreviousVersion( targetVersion.getId() );
+		newVersion.setInitialVersion( targetVersion.getInitialVersion() );
+		newVersion.setCreator( userId );
+		newVersion.setVocabularyId( targetVersion.getVocabularyId());
+		newVersion.setSummary( targetVersion.getSummary());
+		newVersion.setLicenseId(agencylicenseId);
+		newVersion.setDdiUsage( targetVersion.getDdiUsage() );
+		newVersion.setTranslateAgency( targetVersion.getTranslateAgency() );
+		newVersion.setTranslateAgencyLink( targetVersion.getTranslateAgencyLink() );
+		// clone concepts as well
+		for(ConceptDTO targetConcept: targetVersion.getConcepts()) {
+			ConceptDTO newConcept = ConceptDTO.clone(targetConcept, agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage());
+			newVersion.addConcept(newConcept);
+		}
+		
+		return newVersion;
+	}
+	
+	public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName, String detailUrl) {
+		StringBuilder citation = new StringBuilder();
+		
+		/*
+Format for SL:
+Agency. (Publication year). CV Long Name (Version number) [Controlled vocabulary]. Publishing agency. urn. Retrieved from: URL in CV Manager.
+-- [Controlled vocabulary] text is the same for all. Publishing agency is always CESSDA for DDI and CESSDA vocs.
+
+For example: 
+DDI Alliance (2018). Time Method (1.4) [Controlled vocabulary]. CESSDA. urn:ddi-cv:CsvRow:1.0. Retrieved from: vocabularies.cessda.eu/TimeMethod_1.0/en.
+
+
+TL format
+Agency. (Publication year). CV Long Name in TL [SL Long Name]  (TL Version number; Translating agency, Transl) [Controlled vocabulary]. Publishing agency. urn of SL. Retrieved from: URL from CV Manager.
+---the text 'Transl.' is the same for all TLs, even thought the translating agency name changes. urn is the SL urn even for TL.
+
+DDI Alliance. (2018). Erhebungsdesign [Time Method] (Version 1.2.1; GESIS, Transl.) [Controlled vocabulary]. CESSDA. urn: ddi-cv:TimeMethod:1.2. Retrieved from: http://vocabularies.cessda.eu/TimeMethod_1.2.1/de.htm
+
+"
+		 */
+		citation.append( agencyName );
+		citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
+		if( versionDto.getItemType().equals( ItemType.SL.toString()) ) {
+			citation.append( versionDto.getTitle() + " (" + versionDto.getNumber() + ") [Controlled vocabulary]. ");
+		}
+		else {
+			citation.append( versionDto.getTitle() + "[" + versionDtoSl.getTitle()+ "]" + " (" + versionDto.getNumber() +
+			(versionDto.getTranslateAgency() == null ? "": "; " + versionDto.getTranslateAgency() ) + ") [Controlled vocabulary]. ");
+		}
+		citation.append( versionDto.getCanonicalUri() + ". ");
+		citation.append( "Retrieved from: " + detailUrl);
+		
+		return citation.toString();
 	}
 }

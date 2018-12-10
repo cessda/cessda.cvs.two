@@ -24,6 +24,7 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.DetailsView;
 
 public class VocabularyGridRow extends CustomComponent {
 
@@ -46,8 +47,6 @@ public class VocabularyGridRow extends CustomComponent {
 	private MLabel desc = new MLabel();
 	private MLabel version = new MLabel();
 
-//	private MLabel conceptList = new MLabel();
-	private Image logo;
 
 	private transient ConfigurationService configService;
 	private Language currentSelectedLanguage;
@@ -59,7 +58,7 @@ public class VocabularyGridRow extends CustomComponent {
 		this.configService = configService;
 		
 		if( vocabulary.getSourceLanguage() != null) 
-			sourceLanguage = Language.getEnumByName( vocabulary.getSourceLanguage() );
+			sourceLanguage = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 		else
 			sourceLanguage = Language.ENGLISH;
 		
@@ -83,9 +82,8 @@ public class VocabularyGridRow extends CustomComponent {
 		codeList.withFullWidth();
 
 		languageLayout.withUndefinedSize().withStyleName( "pull-right" );
-		String sourceLanguage = configService.getDefaultSourceLanguage();
 		
-		Language.getIsoFromLanguage( vocabulary.getLanguages() ).forEach(item -> {
+		vocabulary.getLanguages().forEach(item -> {
 			MButton langButton = new MButton(item.toUpperCase());
 			langButton.addStyleName( "langbutton" );
 			
@@ -96,12 +94,19 @@ public class VocabularyGridRow extends CustomComponent {
 				langButton.addStyleName( "button-language-selected" );
 			
 			// determine the status
-			vocabulary.getLatestVersionByLanguage( Language.getEnum(item).name().toLowerCase())
+			vocabulary.getLatestVersionByLanguage( item )
 			.ifPresent( versionDTO -> {
-				if( versionDTO.getStatus().equals( Status.DRAFT.toString()))
+				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
 					langButton.addStyleName( "status-draft" );
-				else if( versionDTO.getStatus().equals( Status.REVIEW.toString()))
-					langButton.addStyleName( "status-review" );
+					langButton.setDescription("DRAFT");
+				}
+				else if( versionDTO.getStatus().equals( Status.INITIAL_REVIEW.toString())) {
+					langButton.addStyleName( "status-review-initial" );
+					langButton.setDescription("INITIAL_REVIEW");
+				}else if( versionDTO.getStatus().equals( Status.FINAL_REVIEW.toString())) {
+					langButton.addStyleName( "status-review-final" );
+					langButton.setDescription("FINAL_REVIEW");
+				}
 			});
 			
 			langButton.addClickListener(e -> {
@@ -110,9 +115,9 @@ public class VocabularyGridRow extends CustomComponent {
 				setContent();
 			});
 			languageLayout.add(langButton);
-			if (item.equals(sourceLanguage)) {
+			if (item.equals(sourceLanguage.toString().toUpperCase())) {
 				langButton.addStyleName("font-bold");
-				langButton.setDescription("source language");
+				langButton.setDescription("source language" + (langButton.getDescription() != null && !langButton.getDescription().isEmpty()? " (" + langButton.getDescription() + ")":""));
 				langButton.click();
 			}
 		});
@@ -126,10 +131,17 @@ public class VocabularyGridRow extends CustomComponent {
 			.withFullWidth()
 			.add(languageLayout, titleLayout, desc, version, codeList);
 		
-		logo = new Image(null, new ThemeResource( agency.getLogopath() ));
-		logo.setWidth("120px");
+		MLabel logoLabel = new MLabel()
+			.withContentMode( ContentMode.HTML )
+			.withWidth("120px");
+		
+		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
+			logoLabel.setValue(  "<img style=\"max-width:120px;max-height:80px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
+		
+//		logo = new Image(null, new ThemeResource( agency.getLogopath() ));
+//		logo.setWidth("120px");
 
-		hLayout.withFullWidth().add(logo, vLayout).withExpand(vLayout, 1.0f);
+		hLayout.withFullWidth().add(logoLabel, vLayout).withExpand(vLayout, 1.0f);
 
 		container
 			.withStyleName("itemcontainer")
@@ -139,14 +151,6 @@ public class VocabularyGridRow extends CustomComponent {
 				new MLabel("<hr class=\"fancy-line\"/>").withContentMode( ContentMode.HTML ).withFullSize());
 		// Initial
 		setContent();
-	}
-
-	public Image getLogo() {
-		return logo;
-	}
-
-	public void setLogo(Image logo) {
-		this.logo = logo;
 	}
 
 
@@ -171,14 +175,14 @@ public class VocabularyGridRow extends CustomComponent {
 		if( definition == null )
 			definition = "";
 		
-		String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getUri();
+		String baseUrl = configService.getServerContextPath() + "/#!" + DetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
 		
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
 		log.info("URL is: " + slTitle.getValue());
 
 		tlTitle.setValue("<a href='" + baseUrl  + "'>" + vocabulary.getNotation() + "</a>");
 		desc.setValue( definition );
-		version.setValue("Version: " + vocabulary.getVersionNumber() + " "
+		version.setValue("Version: " + vocabulary.getVersionByLanguage(currentSelectedLanguage) + " "
 				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.toString()) + " <a href='" + baseUrl +"?tab=download"+ "'>Download</a>");
 		
 		if( !vocabulary.getCodes().isEmpty() ) {
@@ -190,9 +194,10 @@ public class VocabularyGridRow extends CustomComponent {
 					codeDefinition = "";
 				if( codeTitle != null ) {
 					codeList.add(
-						new MLabel( "<a href=\"" + baseUrl + "?code=" + code.getNotation() + "\">" + codeTitle + "</a>" 
-								+ " " + codeDefinition)
+						new MLabel( "<a href=\"" + baseUrl + "?code=" + code.getNotation().replace(".", "-") + "\">" + codeTitle + "</a>" 
+								+ " " + codeDefinition )
 						.withContentMode( ContentMode.HTML )
+						.withFullWidth()
 					);
 				}
 			}

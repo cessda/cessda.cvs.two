@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.ui.view.EditorSearchView;
 
 public class EsQueryResultDetail {
 	public static final int pageSize = 10 ;
@@ -28,10 +29,10 @@ public class EsQueryResultDetail {
 	private Page<VocabularyDTO> vocabularies;
 	
 	public EsQueryResultDetail( String viewName) {
-		if( viewName.equals( DiscoveryView.VIEW_NAME))
-			aggFields = new ArrayList<>( Arrays.asList( FiltersLayout.filterFields));
-		else
+		if( viewName.equals( EditorSearchView.VIEW_NAME ))
 			aggFields = new ArrayList<>( Arrays.asList( FiltersLayout.filterEditorFields));
+		else
+			aggFields = new ArrayList<>( Arrays.asList( FiltersLayout.filterFields));
 		
 		// initialize esfilter
 		for( String field: aggFields) {

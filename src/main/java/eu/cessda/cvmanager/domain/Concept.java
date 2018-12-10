@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -30,6 +31,9 @@ public class Concept implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	@Column(name = "uri", length = 255)
+    private String uri;
+	
 	@NotNull
     @Column(name = "notation", length = 240, nullable = false)
     private String notation;
@@ -42,19 +46,21 @@ public class Concept implements Serializable{
     @Column(name = "definition")
     private String definition;
     
-//    @Column(name = "parent")
-//    private Long parent;
-//    
-//    @Column(name = "\"position\"")
-//    private Integer position;
+    @Column(name = "code_id")
+    private Long codeId;
     
-    @OneToMany(mappedBy = "concept")
-    @JsonIgnore
-    private Set<ConceptChange> conceptChanges = new HashSet<>();
+    @Column(name = "previous_concept")
+    private Long previousConcept;
     
-    @ManyToMany(mappedBy = "concepts")
-    @JsonIgnore
-    private Set<Version> versions = new HashSet<>();
+ // if null, then it is top concept
+    @Column(name = "parent", length = 240)
+    private String parent;
+    
+    @Column(name = "\"position\"")
+    private Integer position;
+    
+    @ManyToOne
+    private Version version;
 
 	public Long getId() {
 		return id;
@@ -62,6 +68,14 @@ public class Concept implements Serializable{
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
 	}
 
 	public String getNotation() {
@@ -88,53 +102,43 @@ public class Concept implements Serializable{
 		this.definition = definition;
 	}
 
-	public Set<ConceptChange> getConceptChanges() {
-        return conceptChanges;
-    }
+	public Long getCodeId() {
+		return codeId;
+	}
+	
+	public void setCodeId(Long codeId) {
+		this.codeId = codeId;
+	}
 
-    public Concept conceptChanges(Set<ConceptChange> conceptChanges) {
-        this.conceptChanges = conceptChanges;
-        return this;
-    }
+	public Long getPreviousConcept() {
+		return previousConcept;
+	}
 
-    public Concept addConceptChange(ConceptChange conceptChange) {
-        this.conceptChanges.add(conceptChange);
-        conceptChange.setConcept(this);
-        return this;
-    }
+	public void setPreviousConcept(Long previousConcept) {
+		this.previousConcept = previousConcept;
+	}
 
-    public Concept removeConceptChange(ConceptChange conceptChange) {
-        this.conceptChanges.remove(conceptChange);
-        conceptChange.setConcept(null);
-        return this;
-    }
+	public Version getVersion() {
+		return version;
+	}
 
-    public void setConceptChanges(Set<ConceptChange> conceptChanges) {
-        this.conceptChanges = conceptChanges;
-    }
+	public void setVersion(Version version) {
+		this.version = version;
+	}
+	
+	public String getParent() {
+		return parent;
+	}
 
-    public Set<Version> getVersions() {
-        return versions;
-    }
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
 
-    public Concept versions(Set<Version> versions) {
-        this.versions = versions;
-        return this;
-    }
+	public Integer getPosition() {
+		return position;
+	}
 
-    public Concept addVersion(Version version) {
-        this.versions.add(version);
-        version.getConcepts().add(this);
-        return this;
-    }
-
-    public Concept removeVersion(Version version) {
-        this.versions.remove(version);
-        version.getConcepts().remove(this);
-        return this;
-    }
-
-    public void setVersions(Set<Version> versions) {
-        this.versions = versions;
-    }
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
 }

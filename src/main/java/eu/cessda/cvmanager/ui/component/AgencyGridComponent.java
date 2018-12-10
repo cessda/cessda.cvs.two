@@ -38,22 +38,17 @@ public class AgencyGridComponent extends CustomComponent {
 
 	private MCssLayout container = new MCssLayout();
 	private MHorizontalLayout hLayout = new MHorizontalLayout();
-	private MVerticalLayout vLayout = new MVerticalLayout();
-	private MCssLayout languageLayout = new MCssLayout();
+	private MCssLayout vLayout = new MCssLayout();
 	private MCssLayout titleLayout = new MCssLayout();
 	private MButton enTitle = new MButton();
 	private MLabel desc = new MLabel();
 	private MLabel version = new MLabel();
 
 	private MLabel conceptList = new MLabel();
-	private Image logo;
-
-	private transient ConfigurationService configService;
 
 	public AgencyGridComponent(AgencyView agencyView, AgencyDTO agencyDto, ConfigurationService configService, String keyword) {
 		this.agencyView = agencyView;
 		this.agency = agencyDto;
-		this.configService = configService;
 		this.keyword = keyword;
 		
 		setCompositionRoot(container);
@@ -68,7 +63,7 @@ public class AgencyGridComponent extends CustomComponent {
 			agencyView.getaDetailLayout().setAgency(agency);
 			
 			String url = Page.getCurrent().getUriFragment().toString();
-			url = url.split(AgencyView.VIEW_NAME)[0] + AgencyView.VIEW_NAME + "/" + agency.getId();
+			url = url.split(AgencyView.VIEW_NAME)[0] + AgencyView.VIEW_NAME + "/" + agency.getName();
 			Page.getCurrent().setUriFragment(url, true);
 		});
 		desc.withContentMode(ContentMode.HTML).withFullWidth();
@@ -76,31 +71,25 @@ public class AgencyGridComponent extends CustomComponent {
 		version.withContentMode(ContentMode.HTML);
 		conceptList.withContentMode(ContentMode.HTML);
 
-		languageLayout.withFullWidth();
-
 		titleLayout.withFullWidth().add(enTitle);
 
-		vLayout.withMargin(false).withFullWidth().add(languageLayout, titleLayout, desc, version, conceptList);
+		vLayout
+			.withFullWidth()
+			.add(titleLayout, desc, version, conceptList);
 
-		Resource res = new ThemeResource("img/noimage.png");
-		if( agency.getLogopath() != null && !agency.getLogopath().isEmpty())
-			res = new ThemeResource(agency.getLogopath());
+		MLabel logoLabel = new MLabel()
+				.withContentMode( ContentMode.HTML )
+				.withWidth("120px");
 		
+		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
+			logoLabel.setValue(  "<img style=\"max-width:120px;max-height:80px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
 
-		logo = new Image(null, res);
-		logo.setWidth("100");
+		hLayout.withFullWidth().add(logoLabel, vLayout).withExpand(vLayout, 1.0f);
 
-		hLayout.withFullWidth().add(logo, vLayout).withExpand(logo, 0.13f).withExpand(vLayout, 0.87f);
-
-		container.withStyleName("itemcontainer").withFullWidth().add(hLayout);
-	}
-
-	public Image getLogo() {
-		return logo;
-	}
-
-	public void setLogo(Image logo) {
-		this.logo = logo;
+		container
+			.withStyleName("itemcontainer agency")
+			.withFullWidth()
+			.add(hLayout);
 	}
 
 	public MCssLayout getContainer() {
@@ -109,18 +98,6 @@ public class AgencyGridComponent extends CustomComponent {
 
 	public void setContainer(MCssLayout container) {
 		this.container = container;
-	}
-
-	private void applyButtonStyle(Button pressedButton) {
-
-		Iterator<Component> iterate = languageLayout.iterator();
-		while (iterate.hasNext()) {
-			Component c = iterate.next();
-			if (c instanceof Button) {
-				((Button) c).removeStyleName("button-pressed");
-			}
-		}
-		pressedButton.addStyleName("button-pressed");
 	}
 
 }

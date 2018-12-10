@@ -3,6 +3,9 @@ package eu.cessda.cvmanager.service.dto;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
 import javax.persistence.Lob;
 
 /**
@@ -13,6 +16,9 @@ public class ConceptDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
+	
+	@Size(max = 255)
+	private String uri;
 
     @NotNull
     @Size(max = 240)
@@ -24,10 +30,17 @@ public class ConceptDTO implements Serializable {
     @Lob
     private String definition;
     
-//    private Long parent;
-//    
-//    private Integer position;
-
+    private Long codeId;
+    
+    private Long versionId;
+    
+    private Long previousConcept;
+    
+    // if null, then it is top concept
+    private String parent;
+    
+    private Integer position;
+    
     public Long getId() {
         return id;
     }
@@ -35,6 +48,14 @@ public class ConceptDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+	public String getUri() {
+		return uri;
+	}
+
+	public void setUri(String uri) {
+		this.uri = uri;
+	}
 
     public String getNotation() {
         return notation;
@@ -90,4 +111,83 @@ public class ConceptDTO implements Serializable {
             ", definition='" + getDefinition() + "'" +
             "}";
     }
+    
+	public Long getCodeId() {
+		return codeId;
+	}
+
+	public void setCodeId(Long codeId) {
+		this.codeId = codeId;
+	}
+	
+	public Long getVersionId() {
+		return versionId;
+	}
+
+	public void setVersionId(Long versionId) {
+		this.versionId = versionId;
+	}
+
+	public Long getPreviousConcept() {
+		return previousConcept;
+	}
+
+	public void setPreviousConcept(Long previousConcept) {
+		this.previousConcept = previousConcept;
+	}
+	
+	public String getParent() {
+		return parent;
+	}
+
+	public void setParent(String parent) {
+		this.parent = parent;
+	}
+
+	public Integer getPosition() {
+		return position;
+	}
+
+	public void setPosition(Integer position) {
+		this.position = position;
+	}
+
+	public boolean isPersisted() {
+		return id != null;
+	}
+	
+	public static Optional<ConceptDTO> getConceptFromCode( Set<ConceptDTO> concepts, Long codeId){
+		if( codeId == null)
+			return Optional.empty();
+		
+		return concepts.stream()
+				.filter( c -> c.getCodeId() != null)
+				.filter( c -> c.getCodeId().equals(codeId)).findFirst();
+	}
+	
+	public static Optional<ConceptDTO> getConceptFromCode( Set<ConceptDTO> concepts, String notation){
+		return concepts.stream().filter( c -> c.getNotation().equals(notation)).findFirst();
+	}
+	
+	public static ConceptDTO clone(ConceptDTO targetConcept, String uri) {
+		ConceptDTO newConcept = new ConceptDTO();
+		newConcept.setUri(uri);
+		newConcept.setNotation( targetConcept.getNotation());
+		newConcept.setTitle( targetConcept.getTitle() );
+		newConcept.setDefinition( targetConcept.getDefinition() );
+		newConcept.setPreviousConcept( targetConcept.getId());
+		newConcept.setPosition( targetConcept.getPosition());
+		newConcept.setParent( targetConcept.getParent());
+		// note the codeId and versionId need to be added later
+		
+		return newConcept;
+	}
+	
+	public static ConceptDTO getConceptById( Set<ConceptDTO> concepts, Long conceptId) {
+		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getId().equals(conceptId)).findFirst();
+		if(findFirst.isPresent())
+			return findFirst.get();
+		else
+			return null;
+	}
 }

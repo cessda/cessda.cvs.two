@@ -97,8 +97,6 @@ public class SearchView extends CvManagerView {
 
 	@PostConstruct
 	public void init() {
-		LoginView.NAVIGATETO_VIEWNAME = SearchView.VIEW_NAME;
-
 		// the layout that contains the three zones: filters, search box, and
 		// results
 		this.globalContainer.setSpacing(false);
@@ -144,21 +142,21 @@ public class SearchView extends CvManagerView {
 		super.enter(event);
 		
 		locale = UI.getCurrent().getLocale();
-		updateActionPanel();
+//		updateActionPanel();
 		updateMessageStrings(locale);
 		
 		resetSearch();
 	}
 	
-	@Override
-	protected void updateActionPanel() {
-		if( SecurityUtils.isCurrentUserAllowCreateCvSl()) 
-			actionPanel.getButtonAddCv().setVisible( true );
-		else 
-			actionPanel.getButtonAddCv().setVisible( false );
-		
-		super.updateActionPanel();
-	}
+//	@Override
+//	protected void updateActionPanel() {
+//		if( SecurityUtils.isCurrentUserAllowCreateCvSl()) 
+//			actionPanel.getButtonAddCv().setVisible( true );
+//		else 
+//			actionPanel.getButtonAddCv().setVisible( false );
+//		
+//		super.updateActionPanel();
+//	}
 
 	/**
 	 * Initialize the search box zone, with all necessary components and listeners
@@ -395,7 +393,7 @@ public class SearchView extends CvManagerView {
 	public void updateMessageStrings(Locale locale) {
 		searchBox.setPlaceholder(i18n.get("view.search.query.text.search.prompt", locale));
 
-		actionPanel.updateMessageStrings(locale);
+//		actionPanel.updateMessageStrings(locale);
 	}
 
 	public ArrayList<CVScheme> getHits() {

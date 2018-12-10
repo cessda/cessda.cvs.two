@@ -86,7 +86,7 @@ public class AgencyMemberForm extends FormLayout {
         
         roleOption.addValueChangeListener( e -> {
         	if( e.getValue() != null ) {
-        		if( e.getValue().equals(AgencyRole.VIEW) || e.getValue().equals(AgencyRole.ADMIN) )
+        		if( e.getValue().equals(AgencyRole.ADMIN) )
         			languageOption.setVisible( false );
         		else
         			languageOption.setVisible( true );

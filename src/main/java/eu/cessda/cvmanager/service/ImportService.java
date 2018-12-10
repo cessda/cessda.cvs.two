@@ -1,211 +1,67 @@
 package eu.cessda.cvmanager.service;
 
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVEditor;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
-import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.service.AgencyService;
-import org.gesis.wts.service.dto.AgencyDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import eu.cessda.cvmanager.domain.BaseVocabulary;
-import eu.cessda.cvmanager.domain.PublishedVocabulary;
-import eu.cessda.cvmanager.domain.Version;
-import eu.cessda.cvmanager.domain.Vocabulary;
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.repository.search.PublishedVocabularySearchRepository;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
-import eu.cessda.cvmanager.service.dto.CodeDTO;
-import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.domain.Cv;
+import eu.cessda.cvmanager.domain.CvCode;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.PublishedVocabularyMapper;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
-import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
-@Service
-public class ImportService {
+/**
+ * Service Interface for managing Version.
+ */
+public interface ImportService {
+
+    /**
+     * Import all CVs from Stardat DDI-flatDB to the CV-Manager
+     */
+	void importFromStardat();
 	
-	private final Logger log = LoggerFactory.getLogger(ImportService.class);
+	Map<String, Object> createCvBatch( Cv... cvs);
+
+	/**
+	 * Create a new Vocabulary and a new Version for SL
+	 * and a new Version for TL, depending the cv.type status.
+	 * 
+	 * The newly generated SL version will have a default 2 sections 
+	 * version number of 1.0, unless the Cv "version" attribute has different value. 
+	 * The TL version number will have 3 sections version number and it will follow 
+	 * the SL version number. E.g 1.0.1
+	 * 
+	 * The newly created Cv will be published directly.
+	 * 
+	 * The CV manager linear versioning is not yet supported
+	 * 
+	 * @param cv
+	 * @return The newly created VersionDTO 
+	 */
+	VersionDTO createCv( Cv cv);
 	
-	private final AgencyService agencyService;
-	private final VocabularyService vocabularyService;
-	private final CodeService codeService;
-	private final StardatDDIService stardatDDIService;
-	private final VocabularyMapper vocabularyMapper;
-	private final PublishedVocabularyMapper publishedVocabularyMapper;
-	// Elasticsearch repo for Editor
-	private final VocabularySearchRepository vocabularySearchRepository;
-	// Elasticsearch repo for Published
-	private final PublishedVocabularySearchRepository publishedVocabularySearchRepository;
-	private final VersionService versionService;
-	public ImportService(AgencyService agencyService, VocabularyService vocabularyService, CodeService codeService,
-			StardatDDIService stardatDDIService, VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository,
-			PublishedVocabularySearchRepository publishedVocabularySearchRepository,
-			PublishedVocabularyMapper publishedVocabularyMapper, VersionService versionService) {
-		this.agencyService = agencyService;
-		this.vocabularyService = vocabularyService;
-		this.codeService = codeService;
-		this.stardatDDIService = stardatDDIService;
-		this.vocabularyMapper = vocabularyMapper;
-		this.publishedVocabularyMapper = publishedVocabularyMapper;
-		this.vocabularySearchRepository = vocabularySearchRepository;
-		this.publishedVocabularySearchRepository = publishedVocabularySearchRepository;
-		this.versionService = versionService;
-	}
+	/**
+	 * Update Version entity for either SL or TL, the Version will be updated, 
+	 * based on either by the URI attribute or the code and version number.
+	 * 
+	 * @param cv
+	 * @return The updated VersionDTO 
+	 */
+	VersionDTO updateCv( Cv cv);
 	
-	public void importFromStardat() {
-		List<DDIStore> ddiSchemes = stardatDDIService.findStudyByElementType(DDIElement.CVSCHEME);
-		// prevent duplicated cvscheme
-		Set <String> executedCVSchemeId = new HashSet<>();
-		for (DDIStore scheme : ddiSchemes) {
-			CVScheme cvScheme = new CVScheme( scheme );
-			
-			if( executedCVSchemeId.contains(cvScheme.getId()))
-				continue;
-			
-			executedCVSchemeId.add(cvScheme.getId());
-			
-			// get Vocabulary
-			VocabularyDTO vocabulary = vocabularyService.getByUri( cvScheme.getId() );
-			
-			if( vocabulary == null )
-				vocabulary = vocabularyService.getByNotation( cvScheme.getCode() );
-			
-			if( vocabulary == null ) {
-				vocabulary = VocabularyDTO.generateFromCVScheme(cvScheme);
-				
-				List<CVEditor> owners = cvScheme.getEditor();
-				AgencyDTO agencyDto = null;
-				if( owners != null && !owners.isEmpty() )
-					agencyDto =  agencyService.findByName( owners.get( 0 ).getName());
-				
-				if( agencyDto == null)
-					agencyDto = agencyService.findOne(1L);
-				
-				vocabulary.setAgencyId( agencyDto.getId());
-				vocabulary.setAgencyName( agencyDto.getName());
-			}
-			else
-				vocabulary = VocabularyDTO.generateFromCVScheme(vocabulary, cvScheme);
-			
-			
-			vocabulary.setStatus( Status.DRAFT.toString() );
-			vocabulary.addStatus( Status.DRAFT.toString() );
-			vocabulary.setDiscoverable( true );
-			vocabulary.setPublicationDate( LocalDate.now());
-			
-			// assign version
-			// workaround to prevent save multiple version
-			// TODO: check if version already exist
-			if( !vocabulary.isPersisted()) {
-				for( String lang: vocabulary.getLanguages()) {
-					Language langEnum = Language.getEnumByName(lang);
-					
-					VersionDTO version = null;
-					
-					if( version == null)
-						version = new VersionDTO();
-					
-					version.setStatus( Status.DRAFT.toString() );
-					if( lang.equals( "english")) {
-						version.setItemType( ItemType.SL.toString());
-						version.setNumber( "1.0" );
-					} else {
-						version.setItemType( ItemType.TL.toString());
-						version.setNumber( "0.0.1" );
-					}
-					version.setLanguage( lang);
-					version.setUri( vocabulary.getUri() );
-					version.setNotation( vocabulary.getNotation() );
-					version.setTitle( vocabulary.getTitleByLanguage(langEnum) );
-					version.setDefinition(vocabulary.getDefinitionByLanguage(langEnum) );
-					version.setPreviousVersion( 0L );
-					version.setInitialVersion( 0L );
-					version.setCreator( 1L );
-					version.setPublisher( 1L );
-					
-					System.out.println( version.getNotation() + " - " + version.getUri() + " " + version.getLanguage() + " " + version.getInitialVersion());
-					if( version.getNotation() == null || version.getUri() == null || version.getLanguage() == null ) {
-						System.out.println( "Error: " + vocabulary.getNotation() + " - " + version.getNotation() + " - " + version.getUri() + " " + version.getLanguage());
-					}
-					vocabulary.addVersions(version);
-				}
-			}
-			
-			// get codes
-			List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType( cvScheme.getContainerId(), DDIElement.CVCONCEPT);
-			
-//			for (DDIStore concept : ddiConcepts) {
-//				CVConcept cvConcept = new CVConcept( concept );
-//				
-//				// get Code
-//				CodeDTO code = codeService.getByUri( cvConcept.getContainerId() );
-//				
-//				if( code == null )
-//					code = codeService.getByNotation( cvConcept.getNotation() );
-//				
-//				if( code == null ) {
-//					code = CodeDTO.generateFromCVConcept(cvConcept);
-//					code.setVocabularyId( vocabulary.getId() );
-//				}
-//				else
-//					code = CodeDTO.generateFromCVConcept(code, cvConcept);
-//				
-//				code.setVocabularyId( vocabulary.getId());
-//				codeService.save(code);
-//				
-//			}
-			// assign concepts (structured Code based on Version) to latest version entity
-			List<CodeDTO> codes = CvCodeTreeUtils.getCodeDTOByConceptTree( CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvScheme) );
-			
-			if( !vocabulary.isPersisted()) {
-				for( String lang : vocabulary.getLanguages()){
-					Language langEnum = Language.getEnumByName(lang);
-					
-					VersionDTO.getLatestVersion( vocabulary.getVersions(), lang, null).ifPresent( versionDTO -> {
-						Set<ConceptDTO> conceptsFromCodes = CodeDTO.getConceptsFromCodes(codes, langEnum);
-						versionDTO.setConcepts(conceptsFromCodes);
-					});
-				};
-			}
-			
-			// store vocabulary
-			vocabulary = vocabularyService.save(vocabulary);
-			
-			// store code for indexing
-			for(CodeDTO code: codes){
-				code.setVocabularyId( vocabulary.getId() );
-				
-				CodeDTO codeDB = codeService.getByUri( code.getUri() );
-				if( codeDB != null)
-					code.setId( codeDB.getId());
-				code.setDiscoverable( true );
-				
-				// store code to db
-				code = codeService.save(code);
-				vocabulary.addCode(code);
-			};
-			
-			// reindex nested codes
-			vocabulary.setVers( vocabulary.getVersions());
-			Vocabulary vocab = vocabularyMapper.toEntity( vocabulary);
-			vocabularySearchRepository.save( vocab );
-			
-//			PublishedVocabulary publishedVocabulary = publishedVocabularyMapper.toEntity(vocabulary);
-//			publishedVocabularySearchRepository.save( publishedVocabulary );
-			
-		}
-		log.debug("DDIFlatDB imported to database");
-	}
+	/**
+	 * Set/Replace the Set of Concepts from a specific Version
+	 * 
+	 * @param versionId the id of the version
+	 * @param cvCodes the concepts for replacing the old concepts
+	 * 
+	 * @return VersionDTO
+	 */
+	VersionDTO setCvCode( Long versionId, CvCode... cvCodes);
+	
+	/**
+	 * Set/Replace the Set of Concepts from a specific Version
+	 * 
+	 * @param uri the uri of the version
+	 * @param cvCodes the concepts for replacing the old concepts
+	 * 
+	 * @return VersionDTO
+	 */
+	VersionDTO setCvCode( String uri, CvCode... cvCodes);
 }

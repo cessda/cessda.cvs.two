@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,6 +19,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -42,16 +45,16 @@ public class Version implements Serializable{
     private Long id;
     
     @Column(name = "status", length = 20, nullable = false)
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private String status;
     
     @Column(name = "item_type", length = 20, nullable = false)
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private String itemType;
     
     @Size(max = 20)
     @Column(name = "language", length = 20)
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private String language;
     
     @Column(name = "last_modified")
@@ -62,15 +65,21 @@ public class Version implements Serializable{
     @Field(type = FieldType.Date, format = DateFormat.date)
     private LocalDate publicationDate;
     
-    @Column(name = "number", length = 20, nullable = false)
+    @Column(name = "number", length = 20)
     private String number;
     
     @Lob
     @Column(name = "summary")
     private String summary;
     
-    @Column(name = "uri", length = 240)
+    @Column(name = "uri", length = 255)
     private String uri;
+    
+    @Column(name = "canonical_uri", length = 255)
+    private String canonicalUri;
+    
+    @Column(name = "uri_sl", length = 255)
+    private String uriSl;
     
     // Start SL or TL Vocabulary
     @Column(name = "notation", length = 240)
@@ -84,10 +93,10 @@ public class Version implements Serializable{
     @Column(name = "definition")
     private String definition;
     
-    @Column(name = "previous_version", nullable = false)
+    @Column(name = "previous_version")
     private Long previousVersion;
     
-    @Column(name = "initial_version", nullable = false)
+    @Column(name = "initial_version")
     private Long initialVersion;
     
     @Column(name = "creator")
@@ -96,20 +105,53 @@ public class Version implements Serializable{
     @Column(name = "publisher")
     private Long publisher;
     
-    @ManyToMany(mappedBy = "versions")
-    @JsonIgnore
-    private List<Vocabulary> vocabularies;
+    @Lob
+    @Column(name = "version_notes")
+    private String versionNotes;
+    
+    @Lob
+    @Column(name = "version_changes")
+    private String versionChanges;
+    
+    @Lob
+    @Column(name = "discussion_notes")
+    private String discussionNotes;
+    
+    @Lob
+    @Column(name = "copyright")
+    private String copyright;
+    
+    @Lob
+    @Column(name = "license")
+    private String license;
+    
+    @Column(name = "license_id")
+    private Long licenseId;
+    
+    @Lob
+    @Column(name = "citation")
+    private String citation;
+    
+    @Lob
+    @Column(name = "ddi_usage")
+    private String ddiUsage;
+    
+    @Column(name = "translate_agency", length = 255)
+    private String translateAgency;
+    
+    @Column(name = "translate_agency_link", length = 255)
+    private String translateAgencyLink;
+    
+    @ManyToOne
+    private Vocabulary vocabulary;
     
     // in case only for SL type version
     @Column(name = "restrict_role")
     @ElementCollection( targetClass=String.class )
-    @Field(type = FieldType.keyword)
+    @Field(type = FieldType.Keyword)
     private List<String> restrictRoles;
     
-    @ManyToMany(cascade = { CascadeType.PERSIST })
-    @JoinTable(name = "version_concept",
-               joinColumns = @JoinColumn(name="version_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="concept_id", referencedColumnName="id"))
+    @OneToMany(mappedBy = "version")
     private Set<Concept> concepts = new HashSet<>();
 
 	public Long getId() {
@@ -232,16 +274,24 @@ public class Version implements Serializable{
 		this.definition = definition;
 	}
 
-	public List<Vocabulary> getVocabularies() {
-		return vocabularies;
-	}
-
-	public void setVocabularies(List<Vocabulary> vocabularies) {
-		this.vocabularies = vocabularies;
-	}
-
+//	public List<Vocabulary> getVocabularies() {
+//		return vocabularies;
+//	}
+//
+//	public void setVocabularies(List<Vocabulary> vocabularies) {
+//		this.vocabularies = vocabularies;
+//	}
+	
 	public List<String> getRestrictRoles() {
 		return restrictRoles;
+	}
+
+	public Vocabulary getVocabulary() {
+		return vocabulary;
+	}
+
+	public void setVocabulary(Vocabulary vocabulary) {
+		this.vocabulary = vocabulary;
 	}
 
 	public void setRestrictRoles(List<String> restrictRoles) {
@@ -255,6 +305,22 @@ public class Version implements Serializable{
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
+	
+	public String getCanonicalUri() {
+		return canonicalUri;
+	}
+
+	public void setCanonicalUri(String canonicalUri) {
+		this.canonicalUri = canonicalUri;
+	}
+
+	public String getUriSl() {
+		return uriSl;
+	}
+
+	public void setUriSl(String uriSl) {
+		this.uriSl = uriSl;
+	}
 
 	public Set<Concept> getConcepts() {
 		return concepts;
@@ -264,8 +330,86 @@ public class Version implements Serializable{
 		this.concepts = concepts;
 	}
 	
+	public String getVersionNotes() {
+		return versionNotes;
+	}
+
+	public void setVersionNotes(String versionNotes) {
+		this.versionNotes = versionNotes;
+	}
 	
+	public String getVersionChanges() {
+		return versionChanges;
+	}
+
+	public void setVersionChanges(String versionChanges) {
+		this.versionChanges = versionChanges;
+	}
+
+	public String getDiscussionNotes() {
+		return discussionNotes;
+	}
+
+	public void setDiscussionNotes(String discussionNotes) {
+		this.discussionNotes = discussionNotes;
+	}
 	
+	public String getCopyright() {
+		return copyright;
+	}
+
+	public void setCopyright(String copyright) {
+		this.copyright = copyright;
+	}
+
+	public String getLicense() {
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
+	}
+	
+	public Long getLicenseId() {
+		return licenseId;
+	}
+
+	public void setLicenseId(Long licenseId) {
+		this.licenseId = licenseId;
+	}
+
+	public String getCitation() {
+		return citation;
+	}
+
+	public void setCitation(String citation) {
+		this.citation = citation;
+	}
+
+	public String getDdiUsage() {
+		return ddiUsage;
+	}
+
+	public void setDdiUsage(String ddiUsage) {
+		this.ddiUsage = ddiUsage;
+	}
+	
+	public String getTranslateAgency() {
+		return translateAgency;
+	}
+
+	public void setTranslateAgency(String translateAgency) {
+		this.translateAgency = translateAgency;
+	}
+
+	public String getTranslateAgencyLink() {
+		return translateAgencyLink;
+	}
+
+	public void setTranslateAgencyLink(String translateAgencyLink) {
+		this.translateAgencyLink = translateAgencyLink;
+	}
+
 	@Override
     public String toString() {
         return "Version{" +

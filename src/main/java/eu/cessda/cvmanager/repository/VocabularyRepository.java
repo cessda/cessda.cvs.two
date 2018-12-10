@@ -6,8 +6,12 @@ import org.springframework.stereotype.Repository;
 
 import eu.cessda.cvmanager.domain.Vocabulary;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.util.Streamable;
 
 
 /**
@@ -26,5 +30,11 @@ public interface VocabularyRepository extends JpaRepository<Vocabulary, Long> {
 	Vocabulary findByNotation(@Param("notation") String notation);
 
 	boolean existsByNotation(String notation);
+	
+	@Query( "select DISTINCT v from Vocabulary v where v.withdrawn IS true" )
+	Page<Vocabulary> findAllWithdrawn(Pageable pageable);
+
+	@Query( "select DISTINCT v from Vocabulary v where v.agencyId = :agencyId AND v.withdrawn IS true" )
+	Page<Vocabulary> findAllWithdrawn(@Param("agencyId") Long agencyId, Pageable pageable);
 
 }

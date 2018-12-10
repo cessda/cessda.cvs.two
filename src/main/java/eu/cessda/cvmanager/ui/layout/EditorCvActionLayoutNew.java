@@ -1,0 +1,606 @@
+package eu.cessda.cvmanager.ui.layout;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+
+import org.gesis.stardat.ddiflatdb.client.DDIStore;
+import org.gesis.stardat.entity.CVScheme;
+import org.gesis.stardat.entity.DDIElement;
+import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.security.UserDetails;
+import org.gesis.wts.service.AgencyService;
+import org.gesis.wts.service.dto.AgencyDTO;
+import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.spring.events.EventScope;
+import org.vaadin.spring.events.EventBus.UIEventBus;
+import org.vaadin.spring.i18n.I18N;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.label.MLabel;
+
+import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.JavaScript;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.Window;
+import com.vaadin.ui.themes.ValoTheme;
+import com.vaadin.ui.Button.ClickEvent;
+
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.model.CvItem;
+import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
+import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
+import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.EditorSearchView;
+import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindowNew;
+import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindowNew;
+import eu.cessda.cvmanager.ui.view.window.DialogCreateVersionWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindowNew;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
+import java_cup.version;
+
+public class EditorCvActionLayoutNew extends ResponsiveBlock{
+	private static final long serialVersionUID = 2436346372920594014L;
+	
+	private final StardatDDIService stardatDDIService;
+	private final AgencyService agencyService;
+	private final CodeService codeService;
+	private final ConceptService conceptService;
+	private final ConfigurationService configService;
+	private final VocabularyService vocabularyService;
+	private final VersionService versionService;
+	private final VocabularyChangeService vocabularyChangeService;
+	
+	private AgencyDTO agency;
+	private VocabularyDTO vocabulary;
+		
+	private I18N i18n;
+	private Locale locale = UI.getCurrent().getLocale();
+	private final UIEventBus eventBus;
+	
+	
+	private Language selectedLanguage;
+	private Language sourceLanguage;
+	private VersionDTO currentVersion;
+	
+	private CVScheme cvScheme;
+	private CvItem cvItem;
+	
+	private MButton buttonAddCv = new MButton();
+	private MButton buttonEditCv = new MButton();
+	private MButton buttonAddTranslation = new MButton();
+	
+	private MButton buttonReviewInitial= new MButton();
+	private MButton buttonReviewFinal = new MButton("Final Review");
+	private MButton buttonPublishCv = new MButton();
+	private MButton buttonWithdrawCv = new MButton();
+	
+	private MLabel separatorLabel = new MLabel("<hr style=\"margin:5px\"/>").withContentMode( ContentMode.HTML );
+	
+	private MButton buttonNewVersion = new MButton();
+	private MButton buttonDropVersion = new MButton();
+	private boolean isCurrentSL;
+	
+	
+	public EditorCvActionLayoutNew(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
+			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService, 
+			ConceptService conceptService, CodeService codeService, ConfigurationService configService,
+			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
+		super(titleHeader, showHeader, i18n);
+		this.i18n = i18n;
+		this.stardatDDIService = stardatDDIService;
+		this.codeService = codeService;
+		this.conceptService = conceptService;
+		this.configService = configService;
+		this.agencyService = agencyService;
+		this.versionService = versionService;
+		this.vocabularyService = vocabularyService;
+		this.eventBus = eventBus;
+		this.vocabularyChangeService = vocabularyChangeService;
+		init();
+	}
+
+	private void init() {
+		buttonAddCv
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::doCvAdd );
+		
+		buttonEditCv
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::doCvEdit );
+		
+		buttonAddTranslation
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::doCvAddTranslation );
+		
+		buttonReviewInitial
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::changeStatus );
+		
+		buttonReviewFinal
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::changeStatus );
+		
+		buttonPublishCv
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::changeStatus );
+		
+		buttonNewVersion
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::createNewVersion );
+		
+		buttonDropVersion
+			.withFullWidth()
+			.withStyleName("action-button", ValoTheme.BUTTON_DANGER)
+			.withVisible( false )
+			.addClickListener( this::dropVersion );
+		
+		buttonWithdrawCv
+			.withFullWidth()
+			.withStyleName("action-button", ValoTheme.BUTTON_DANGER)
+			.withVisible( false )
+			.addClickListener( this::withdrawVocabulary );
+		
+		separatorLabel.withFullWidth().setVisible( false );
+				
+		getInnerContainer()
+			.add(
+				buttonAddCv,
+				buttonEditCv,
+				buttonReviewInitial,
+				buttonReviewFinal,
+				buttonPublishCv,
+				buttonAddTranslation,
+				buttonNewVersion,
+				separatorLabel,
+				buttonDropVersion,
+				buttonWithdrawCv
+			);
+		
+	}
+
+	private void doCvAdd( ClickEvent event ) {
+		
+		CVScheme newCvScheme = new CVScheme();
+		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
+		newCvScheme.createId();
+		newCvScheme.setContainerId(newCvScheme.getId());
+		newCvScheme.setStatus( Status.DRAFT.toString() );
+
+		Window window = new DialogCVSchemeWindowNew(stardatDDIService, agencyService, vocabularyService, versionService,
+				newCvScheme, new VocabularyDTO(), new VersionDTO(), agency, i18n, null, 
+				eventBus, vocabularyChangeService);
+		getUI().addWindow(window);
+	}
+	
+	private void doCvEdit( ClickEvent event ) {
+		Window window = null;
+		if( sourceLanguage.equals(selectedLanguage))
+			window = new DialogCVSchemeWindowNew(stardatDDIService, agencyService, vocabularyService, versionService, 
+					 cvScheme, vocabulary, currentVersion, agency, i18n, selectedLanguage, 
+					eventBus, vocabularyChangeService);
+		else
+			window = new DialogAddLanguageWindowNew(stardatDDIService, cvScheme, vocabulary, currentVersion, agency, vocabularyService, 
+					versionService, eventBus, vocabularyChangeService);
+		getUI().addWindow(window);
+	}
+	
+	private void doCvAddTranslation(ClickEvent event ) {
+		
+		Window window = new DialogAddLanguageWindowNew(stardatDDIService, cvScheme, vocabulary, new VersionDTO(), agency, 
+				vocabularyService, versionService, eventBus, vocabularyChangeService);
+		getUI().addWindow(window);
+	}
+	
+	public void changeStatus(ClickEvent event ) {
+		Window window = new DialogManageStatusWindowNew(stardatDDIService, codeService, conceptService, configService, vocabularyService, versionService, 
+				cvScheme, vocabulary, currentVersion, selectedLanguage, sourceLanguage, 
+				agency, eventBus, vocabularyChangeService);
+		getUI().addWindow(window);
+	}
+	
+	/**
+	 * Create new version based on the selected language in the Vocabulary
+	 * @param event
+	 */
+	private void createNewVersion(ClickEvent event ) {
+		Window window = new DialogCreateVersionWindow(stardatDDIService, codeService, conceptService, vocabularyService, versionService, cvScheme, 
+				vocabulary, currentVersion, selectedLanguage, sourceLanguage, agency, eventBus, vocabularyChangeService);
+		getUI().addWindow(window);
+	}
+	
+	/**
+	 * Drop the current workflow (unoublish) version
+	 * @param event
+	 */
+	private void dropVersion(ClickEvent event ) {
+		ConfirmDialog.show( this.getUI(), "Confirm",
+		"Are you sure you want to delete the CV \"" + currentVersion.getNotation() + "\" ("+ currentVersion.getStatus() +")" +"?", "yes",
+		"cancel",
+				
+			dialog -> {
+				if( dialog.isConfirmed() ) {
+					// normalize the code
+					List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
+					Optional<VersionDTO> latestVers = vocabulary.getLatestVersionByLanguage(currentVersion.getLanguage(), null, Status.PUBLISHED.toString());
+					if( latestVers.isPresent()) { // there is already exist published version
+						boolean reindexPublication = false;
+						if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
+							if( currentVersion.getStatus().equals(Status.PUBLISHED.toString())) {
+								reindexPublication = true;
+							
+								// check if it is the only SL version, if yes delete everything
+								if( currentVersion.getInitialVersion().equals( currentVersion.getId() )) {
+									vocabularyService.completeDelete(vocabulary);
+									UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
+									return;
+								}
+									
+							}
+							// remove workflow codes on vocabulary
+							for( CodeDTO code : workflowCodes )
+								codeService.delete(code);
+							// substitute workflow code with the one from previous version
+							List<CodeDTO> latestSLcodes = codeService.findByVocabularyAndVersion( vocabulary.getId(), latestVers.get().getId());
+							Set<CodeDTO> newWorkflowCodes = new LinkedHashSet<>();
+							for(CodeDTO eachCode : latestSLcodes) {
+								CodeDTO newCode = CodeDTO.clone(eachCode);
+								newCode.setArchived( false );
+								newCode = codeService.save( newCode);
+								newWorkflowCodes.add(newCode);
+							}
+							vocabulary.setCodes(newWorkflowCodes);
+							
+							// remove all concepts
+							for(ConceptDTO c : currentVersion.getConcepts()) {
+								conceptService.delete( c.getId());
+							}
+							// remove version
+							vocabulary.removeVersion(currentVersion);
+							versionService.delete( currentVersion.getId());
+							
+							vocabulary.getLanguages().clear();
+							vocabulary.addLanguage(latestVers.get().getLanguage());
+							vocabulary = vocabularyService.save(vocabulary);
+														
+							// reindex editor search
+							vocabularyService.index(vocabulary);
+							
+							if(reindexPublication)
+								vocabularyService.indexPublish(vocabulary, latestVers.get());
+							
+							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation());
+						} 
+						else // TL version which is not initial version
+						{
+							if( currentVersion.getStatus().equals(Status.PUBLISHED.toString()))
+								reindexPublication = true;
+							// clear the code in certain language
+							for(CodeDTO eachCode : workflowCodes) {
+								eachCode.setTitleDefinition( null, null, currentVersion.getLanguage());
+								codeService.save( eachCode );
+							}
+							// replace the content of workflowCodes in certain language
+							Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(workflowCodes);
+							for( ConceptDTO concept : latestVers.get().getConcepts()) {
+								CodeDTO code = codeMap.get( concept.getNotation());
+								if( code == null ) 
+									continue;
+								code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), currentVersion.getLanguage());
+								codeService.save( code );
+							}
+							
+							// remove all concepts
+							for(ConceptDTO c : currentVersion.getConcepts()) {
+								conceptService.delete( c.getId());
+							}
+							// remove version
+							vocabulary.removeVersion(currentVersion);
+							versionService.delete( currentVersion.getId());
+							
+							// reindex editor search
+							vocabularyService.index(vocabulary);
+							if(reindexPublication)
+								vocabularyService.indexPublish(vocabulary, latestVers.get());
+							
+							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation());
+						}
+					} else { // initial version
+						if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
+							// remove codes on vocabulary
+							for( CodeDTO code : codeService.findByVocabulary( vocabulary.getId()))
+								codeService.delete(code);
+							
+							// remove all concepts
+							for(ConceptDTO c : currentVersion.getConcepts()) {
+								conceptService.delete( c.getId());
+							}
+							// remove version
+							vocabulary.removeVersion(currentVersion);
+							versionService.delete( currentVersion.getId());
+
+							// remove  vocabulary in DB
+							vocabularyService.delete( vocabulary.getId());
+							UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
+						} else {
+							// clear workflow codes in certain language
+							for(CodeDTO wfc : workflowCodes) {
+								wfc.setTitleDefinition(null, null, Language.getEnum( currentVersion.getLanguage()), true);
+								codeService.save(wfc);
+							}
+							
+							// remove all concepts
+							for(ConceptDTO c : currentVersion.getConcepts()) {
+								conceptService.delete( c.getId());
+							}
+							// remove version
+							vocabulary.removeVersion(currentVersion);
+							versionService.delete( currentVersion.getId());
+							
+							vocabulary.getLanguages().remove( currentVersion.getLanguage());
+							vocabulary = vocabularyService.save(vocabulary);
+							
+							// reindex editor search
+							vocabularyService.index(vocabulary);
+							
+							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation());
+						}
+					}
+					
+					
+				}
+			}
+
+		);
+	}
+	
+	private void withdrawVocabulary(ClickEvent event ) {
+		ConfirmDialog.show( this.getUI(), "Confirm",
+		"Are you sure you want to withdraw the CV \"" + currentVersion.getNotation() + "\" ("+ currentVersion.getNumber() +")" +"?", "yes",
+		"cancel",
+				
+			dialog -> {
+				if( dialog.isConfirmed() ) {
+					vocabularyService.withdraw(vocabulary);
+					UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
+				}
+			}
+
+		);
+	}
+	
+	@Override
+	public void updateMessageStrings(Locale locale) {
+		String buttonSuffix = (isCurrentSL ? " SL " : " TL ") + selectedLanguage.toString();
+		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));
+		buttonEditCv.withCaption(i18n.get("view.action.button.cvscheme.edit", locale) + buttonSuffix);
+		buttonAddTranslation.withCaption( i18n.get("view.action.button.cvscheme.translation", locale));
+		buttonReviewInitial.withCaption( "Initial Review" +  buttonSuffix );
+		buttonReviewFinal.withCaption( "Final Review" +  buttonSuffix );
+		buttonPublishCv.withCaption( "Publish" + buttonSuffix);
+		buttonNewVersion.withCaption( "Create new Version ");
+		buttonDropVersion.withCaption( "Drop Version" );
+		buttonWithdrawCv.withCaption( "Withdraw Vocabulary" );
+	}
+
+	public AgencyDTO getAgency() {
+		return agency;
+	}
+
+	public void setAgency(AgencyDTO agency) {
+		this.agency = agency;
+	}
+
+	public VocabularyDTO getVocabulary() {
+		return vocabulary;
+	}
+
+	public void setVocabulary(VocabularyDTO vocabulary) {
+		this.vocabulary = vocabulary;
+	}
+
+	public Language getSelectedLanguage() {
+		return selectedLanguage;
+	}
+
+	public void setSelectedLanguage(Language selectedLanguage) {
+		this.selectedLanguage = selectedLanguage;
+	}
+
+	public CVScheme getCvScheme() {
+		return cvScheme;
+	}
+
+	public void setCvScheme(CVScheme cvScheme) {
+		this.cvScheme = cvScheme;
+	}
+
+	public MButton getButtonAddCv() {
+		return buttonAddCv;
+	}
+
+	public MButton getButtonEditCv() {
+		return buttonEditCv;
+	}
+
+	public MButton getButtonAddTranslation() {
+		return buttonAddTranslation;
+	}
+	
+	public Language getSourceLanguage() {
+		return sourceLanguage;
+	}
+
+	public void setSourceLanguage(Language sourceLanguage) {
+		this.sourceLanguage = sourceLanguage;
+	}
+	
+	public VersionDTO getCurrentVersion() {
+		return currentVersion;
+	}
+
+	public void setCurrentVersion(VersionDTO currentVersion) {
+		this.currentVersion = currentVersion;
+	}
+	
+	public CvItem getCvItem() {
+		return cvItem;
+	}
+
+	public void setCvItem(CvItem cvItem) {
+		this.cvItem = cvItem;
+	}
+
+	public boolean hasActionRight() {
+		
+		boolean hasAction = false;
+		if( !CvManagerSecurityUtils.isAuthenticated() ) {
+			setVisible( false );
+		}
+		else {
+			buttonAddCv.setVisible( false );
+			buttonEditCv.setVisible( false );
+			buttonReviewInitial.setVisible( false );
+			buttonReviewFinal.setVisible( false );
+			buttonPublishCv.setVisible( false );
+			buttonAddTranslation.setVisible( false );
+			buttonNewVersion.setVisible( false );
+			separatorLabel.setVisible( false );
+			buttonDropVersion.setVisible( false );
+			buttonWithdrawCv.setVisible( false );
+			
+			if( sourceLanguage.equals(selectedLanguage))
+				isCurrentSL = true;
+			else
+				isCurrentSL = false;
+			
+			updateMessageStrings(locale);
+			
+			setVisible( true );
+			hasAction = true;
+			// check add CV button
+			if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl() )
+				buttonAddCv.setVisible( true );
+			
+			if( currentVersion != null )  {
+			
+			// check edit CV button
+				
+				if(currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
+					List<Language> availableLanguages = new ArrayList<>();
+					Set<Language> userLanguages = new HashSet<>();
+					if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
+						buttonAddCv.setVisible( true );
+						if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
+							buttonNewVersion.setVisible( true );
+							separatorLabel.setVisible( true );
+							buttonWithdrawCv.setVisible( true );
+						}
+						if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
+							userLanguages.addAll( Arrays.asList( Language.values() ) );
+							
+							availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
+							
+							Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+							// remove with sourceLanguage option if exist
+							availableLanguages.remove( sourceLang );
+							
+							if(availableLanguages.isEmpty())
+								buttonAddTranslation.setVisible( false );
+							else
+								buttonAddTranslation.setVisible( true );
+							
+							buttonDropVersion.setVisible( true );
+						}
+						
+					} 
+					
+					if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) ) {
+						
+
+						SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
+							userLanguages.addAll(languages);
+						});
+						availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
+						
+						Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+						// remove with sourceLanguage option if exist
+						availableLanguages.remove( sourceLang );
+						
+						if(availableLanguages.isEmpty())
+							buttonAddTranslation.setVisible( false );
+						else
+							buttonAddTranslation.setVisible( true );
+						if( currentVersion.getItemType().equals(ItemType.TL.toString()))
+							buttonNewVersion.setVisible( true );
+					}
+				}
+				else {						
+					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
+						if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
+							buttonReviewInitial.setVisible( true );
+							buttonEditCv.setVisible( true );
+							separatorLabel.setVisible( true );
+							buttonDropVersion.setVisible( true );
+						}
+						else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() )) {
+							buttonReviewFinal.setVisible( true );
+							buttonEditCv.setVisible( true );
+							separatorLabel.setVisible( true );
+							buttonDropVersion.setVisible( true );
+						}
+						else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() )) {
+							buttonPublishCv.setVisible( true );
+							buttonEditCv.setVisible( true );
+							separatorLabel.setVisible( true );
+							buttonDropVersion.setVisible( true );
+						}
+					}
+				}
+			}
+			
+		}
+		
+		return hasAction;
+	}
+}

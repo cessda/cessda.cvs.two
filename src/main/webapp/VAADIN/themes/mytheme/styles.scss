@@ -18,6 +18,9 @@
 	      	padding-top: 30px;
 	    }
     }
+    .search-hit-info{
+		width:250px;
+	}
 }
 @media (max-width: 992px){
     .header-cessda .col-md-8{
@@ -26,8 +29,12 @@
 }
 @media (max-width: 792px){
 	.header-cessda .primary-header{
+		text-align: right !important;
 		.col-md-6{
 	      	width: 100%;
+	    }
+	    .social{
+	    	display:none !important;
 	    }
     }
     .facet-filter{
@@ -59,6 +66,9 @@
   .header-cessda .header-content .logo a img {
     width: 100%;
   }
+  .search-hit-info{
+		width:250px;
+	}
 }
 
 @media (min-width: 992px){
@@ -192,4 +202,4 @@
   .secondary-footer .privacy div {
     text-align: center !important;
   }
-	}
+}

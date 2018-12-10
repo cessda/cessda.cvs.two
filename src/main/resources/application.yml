@@ -62,7 +62,7 @@ spring:
     encoding: UTF-8
   thymeleaf:
     encoding: UTF-8
-    mode: HTML
+    cache: false
 vaadin:
   servlet:
     heartbeatInterval: '60'

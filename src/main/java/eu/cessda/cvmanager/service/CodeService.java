@@ -1,11 +1,16 @@
 package eu.cessda.cvmanager.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.vaadin.data.TreeData;
+
 import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 
 /**
  * Service Interface for managing Code.
@@ -72,4 +77,22 @@ public interface CodeService {
 	CodeDTO getByNotation(String notation);
 	
 	List<CodeDTO> findByVocabulary( Long vocabularyId);
+	
+	List<CodeDTO> findByVocabularyAndVersionNumber( Long vocabularyId, String versionNumber);
+	
+	List<CodeDTO> findByVocabularyAndVersion( Long vocabularyId, Long versionId);
+	
+	List<CodeDTO> findArchivedByVocabularyAndVersionNumber( Long vocabularyId, String versionNumber);
+	
+	List<CodeDTO> findArchivedByVocabularyAndVersion( Long vocabularyId, Long versionId);
+	
+	List<CodeDTO> findWorkflowCodesByVocabulary( Long vocabularyId );
+	
+	void deleteCodeTree( CodeDTO pivotCode, Long vocabularyId);
+	
+	void deleteCodeTree( TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO currentVersion);
+	
+	void deleteCodeTreeTl( TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO currentVersion);
+	
+	void storeCodeTree( TreeData<CodeDTO> treeData, Set<ConceptDTO> concepts);
 }

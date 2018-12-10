@@ -9,12 +9,17 @@ import org.mapstruct.*;
 /**
  * Mapper for the entity Concept and its DTO ConceptDTO.
  */
-@Mapper(componentModel = "spring", uses = {})
+@Mapper(componentModel = "spring", uses = {VersionMapper.class})
 public interface ConceptMapper extends EntityMapper<ConceptDTO, Concept> {
-
-
-    @Mapping(target = "conceptChanges", ignore = true)
-    @Mapping(target = "versions", ignore = true)
+	
+	@Mappings({
+		@Mapping(source = "version.id", target = "versionId")
+	})
+	ConceptDTO toDto (Concept concept);
+	
+	@Mappings({
+		@Mapping(source = "versionId", target = "version")
+	})
     Concept toEntity(ConceptDTO conceptDTO);
 
     default Concept fromId(Long id) {

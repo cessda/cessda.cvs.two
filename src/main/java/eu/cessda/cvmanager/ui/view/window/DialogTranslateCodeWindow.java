@@ -40,9 +40,13 @@ import com.vaadin.ui.Window;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
 import eu.cessda.cvmanager.ui.view.EditorView;
@@ -50,16 +54,15 @@ import eu.cessda.cvmanager.ui.view.EditorView;
 public class DialogTranslateCodeWindow extends MWindow {
 
 	private static final Logger log = LoggerFactory.getLogger(DialogTranslateCodeWindow.class);
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8118228014482059473L;
+	
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
 	private final StardatDDIService stardatDDIService;
 	private final VocabularyService vocabularyService;
 	private final CodeService codeService;
+	private final VersionService versionService;
+	private final ConceptService conceptService;
 
 	Binder<CVConcept> binder = new Binder<CVConcept>();
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -83,35 +86,48 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private ComboBox<Language> languageCb = new ComboBox<>("Language");
 
 	private Button storeCode = new Button("Save");
+	
+	private Language language;
+	private Language sourceLang;
 
 	private CVScheme cvScheme;
 	private CVConcept cvConcept;
 	
-	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
+	private VersionDTO version;
 	private CodeDTO code;
-	private Language language;
+	private ConceptDTO concept;
+	
 	
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
-	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, CodeService codeService,
-			CVScheme cvScheme, CVConcept cvConcept, VocabularyDTO vocabularyDTO, AgencyDTO agencyDTO, CodeDTO codeDTO, I18N i18n, Locale locale) {
+	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, 
+			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
+			CVScheme cvScheme, CVConcept conceptCode, Language sLanguage, Language sourceLang, VocabularyDTO vocabularyDTO, 
+			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
 		super( "Add Code Translation");
-		this.cvScheme = cvScheme;
-		this.cvConcept = cvConcept;
-		
-		this.eventBus = eventBus;
 		this.i18n = i18n;
-		this.vocabulary = vocabularyDTO;
-		this.agency = agencyDTO;
+		this.cvScheme = cvScheme;
+		this.cvConcept = conceptCode;
+		this.language = sLanguage;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyService = vocabularyService;
-		this.code = codeDTO;
+		this.versionService = versionService;
 		this.codeService = codeService;
+		this.conceptService = conceptService;
 		
-		Language sourceLang = Language.getEnumByName( vocabulary.getSourceLanguage() );
-		
+		this.eventBus = eventBus;
+		this.vocabulary = vocabularyDTO;
+		this.version = versionDTO;
+		this.code = codeDTO;
+		this.concept = conceptDTO;
+		this.sourceLang = sourceLang;
+				
+		init();
+	}
+
+	private void init() {
 		codeText.setValue( cvConcept.getPrefLabelByLanguage( sourceLang.toString() ));
 		codeText.withFullWidth()
 			.withReadOnly( true );
@@ -135,33 +151,12 @@ public class DialogTranslateCodeWindow extends MWindow {
 		lLanguage.withStyleName( "required" );
 		lDescription.withStyleName( "required" );
 		
-		// TODO: use list language from vocabulary if possible
-		List<Language> availableLanguages = new ArrayList<>();
-		Set<Language> userLanguages = new HashSet<>();
-		if( SecurityUtils.isCurrentUserAgencyAdmin( this.agency )) {
-			userLanguages.addAll( Arrays.asList( Language.values() ) );
-		}
-		else {
-			SecurityUtils.getCurrentUserLanguageTlByAgency(  this.agency ).ifPresent( languages -> {
-				userLanguages.addAll(languages);
-			});
-		}
-		
-		if( vocabulary != null ) {
-			availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
-		} else {
-			availableLanguages = Language.getFilteredLanguage(userLanguages, cvScheme.getLanguagesByTitle());
-		}
-		// remove with sourceLanguage option if exist
-		availableLanguages.remove( sourceLang );
-		
-		languageCb.setItems( availableLanguages );
-		languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
-		if( languageCb.getValue() != null )
-			language = languageCb.getValue();
+		languageCb.setItems( this.language );
+		languageCb.setValue( this.language  );
 		
 		languageCb.setEmptySelectionAllowed( false );
 		languageCb.setTextInputAllowed( false );
+		languageCb.setReadOnly( true );
 		languageCb.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
 			private static final long serialVersionUID = 1L;
 			@Override
@@ -169,24 +164,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 				return item.name() + " (" +item.getLanguage() + ")";
 			}
 		});
-		languageCb.addValueChangeListener( e -> {
-			language = e.getValue();
-			
-			preferedLabel.setCaption( "Code (" + language + ")*");
-			description.setCaption( "Definition ("+ language +")*");
-			
-			preferedLabel.setValue( cvConcept.getPrefLabelByLanguage(language.toString()));
-			description.setValue( cvConcept.getDescriptionByLanguage(language.toString()) );
-			
-			if( e.getValue().equals( sourceLang )) {
-				sourceRowA.setVisible( false );
-				sourceRowB.setVisible( false );
-			} else {
-				sourceRowA.setVisible( true );
-				sourceRowB.setVisible( true );
-			}
-		});
-		
+
 		preferedLabel.setCaption( "Code (" + language.toString() + ")*");
 		description.setCaption( "Definition ("+ language.toString() +")*");
 		
@@ -276,10 +254,26 @@ public class DialogTranslateCodeWindow extends MWindow {
 		
 		log.trace(cvConcept.getPrefLabelByLanguage(language.toString()));
 		cvConcept.save();
-		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, "Peter", "minor edit");
+		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "add translation");
 		// store the code and index
 		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
-//		codeService.save(code);
+		codeService.save(code);
+		
+		
+		// store concept
+		if( !concept.isPersisted()) {
+			concept.setCodeId( code.getId());
+			version.addConcept(concept);
+		}
+		concept.setNotation( code.getNotation() );
+		concept.setTitle( preferedLabel.getValue() );
+		concept.setDefinition( description.getValue() );
+		
+		// save vocabulary, version
+		concept = conceptService.save(concept);
+		
+		// indexing editor
+		vocabularyService.index(vocabulary);
 		
 		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
 		
@@ -298,7 +292,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 
 		binder
 			.forField( description )
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
 			.bind( concept -> getDescriptionByLanguage(concept),
 				(concept, value) -> setDescriptionByLanguage(concept, value));
 		

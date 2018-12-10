@@ -12,32 +12,52 @@ import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.label.MLabel;
+import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.FontAwesome;
+import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.LicenceService;
+import eu.cessda.cvmanager.service.MetadataFieldService;
+import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.ui.component.Breadcrumbs;
+import eu.cessda.cvmanager.ui.layout.AgencyActionLayout;
 import eu.cessda.cvmanager.ui.layout.AgencyDetailLayout;
 import eu.cessda.cvmanager.ui.layout.AgencyOwnLayout;
 import eu.cessda.cvmanager.ui.layout.AgencySearchLayout;
+import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
+import eu.cessda.cvmanager.ui.view.publication.PaginationBar;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 
 @UIScope
 @SpringView(name = AgencyView.VIEW_NAME)
-public class AgencyView extends CvManagerView {
+public class AgencyView extends CvView {
 
 	private static final long serialVersionUID = -6014026644497372675L;
 	public static final String VIEW_NAME = "agency";
@@ -48,41 +68,35 @@ public class AgencyView extends CvManagerView {
 	private final AgencyService agencyService;
 	private final RoleService roleService;
 	private final UserAgencyService userAgencyService;
-	private final VocabularyService vocabularyService;
-	private final StardatDDIService stardatDDIService;
-//	private final User
+	private final LicenceService licenceService;
 	
-	private MHorizontalLayout mainContent = new MHorizontalLayout();
-
+	private MCssLayout searchTopLayout = new MCssLayout();
+	private MLabel resultInfo = new MLabel();
+	
+	private MTextField searchTf = new MTextField();
+	private MButton clearSearchButton = new MButton();
+	
 //	This view compose of 3 layouts:
 //	1. Agency own layout
 //	2. Agency search layout
 //	3. Agency details layout
-	private AgencyOwnLayout aOwnLayout;
+//	private AgencyOwnLayout aOwnLayout;
 	private AgencySearchLayout aSearchLayout;
 	private AgencyDetailLayout aDetailLayout;
+	private AgencyActionLayout aActionLayout;
 	
-	private ViewMode viewMode;
-	
-
-	// The opened search hit at the results grid (null at the begining)
-	// private SearchHit selectedItem = null;
+	// The opened search hit at the results grid (null at the beginning)
 
 	public AgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, 
 			UserService userService, RoleService roleService, AgencyService agencyService, 
-			UserAgencyService userAgencyService, VocabularyService vocabularyService, CodeService codeService) {
+			LicenceService licenceService, UserAgencyService userAgencyService, VocabularyService vocabularyService, CodeService codeService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, AgencyView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
-		this.vocabularyService = vocabularyService;
-		this.stardatDDIService = stardatDDIService;
-		
-		aOwnLayout = new AgencyOwnLayout(i18n, eventBus, this, agencyService, configService); 
-		aSearchLayout = new AgencySearchLayout(i18n, eventBus, this, agencyService, configService);
-		aDetailLayout = new AgencyDetailLayout(i18n, eventBus, this, agencyService, configService, vocabularyService, stardatDDIService, configService); 
+		this.licenceService = licenceService;
 		
 		eventBus.subscribe(this, AgencyView.VIEW_NAME);
 	}
@@ -90,20 +104,80 @@ public class AgencyView extends CvManagerView {
 	@PostConstruct
 	public void init() {
 		LoginView.NAVIGATETO_VIEWNAME = AgencyView.VIEW_NAME;
+				
+		aActionLayout = new AgencyActionLayout( "block.action.agency" , "block.action.agency.show" , 
+				i18n, eventBus, agency, userService, roleService, agencyService, licenceService, userAgencyService);
+//		aOwnLayout = new AgencyOwnLayout(i18n, eventBus, this, agencyService, configService); 
+		aSearchLayout = new AgencySearchLayout(i18n, eventBus, this, agencyService, configService);
+		aDetailLayout = new AgencyDetailLayout(i18n, eventBus, this, agencyService, configService, vocabularyService, stardatDDIService, configService); 
 		
-		rightContainer
+		
+		resultInfo
+			.withStyleName("search-hit-info")
+			.withContentMode( ContentMode.HTML );
+		
+		searchTf
+			.withPlaceholder("Find Agency")
+			.withFullWidth()
+			.withValueChangeMode( ValueChangeMode.LAZY)
+			.withValueChangeTimeout( 200 )
+			.addTextChangeListener( e -> {
+				aSearchLayout.updateList();
+				if( e.getValue() != null && e.getValue().length() > 0)
+					clearSearchButton.setVisible( true );
+				else
+					clearSearchButton.setVisible( false );
+			});
+		
+		searchTopLayout
+			.withStyleName("search-option-flex")
+			.add( 
+				resultInfo,
+				searchBox()
+			);
+		
+		topPanel.add( searchTopLayout );
+		sidePanel
+			.add( 
+				aActionLayout
+			);
+		
+		mainContainer
 			.add(
-				aOwnLayout,
+//				aOwnLayout,
 				aSearchLayout, 
 				aDetailLayout
-			)
-			.withExpand(aOwnLayout, 1)
-			.withExpand(aSearchLayout, 1)
-			.withExpand(aDetailLayout, 1);
+			);
+	}
+	
+	private MCssLayout searchBox() {
+		MCssLayout searchContainer = new MCssLayout();
+		clearSearchButton
+			.withIcon(FontAwesome.TIMES)
+			.withStyleName("clear-search-button")
+			.withVisible( false )
+			.addClickListener( e -> {
+				clearSearch();
+			});
+		searchContainer
+			.withStyleName("search-box-secondary")
+			.add( 
+				new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-search fa fa-search\"></i>" ),
+				searchTf,
+				clearSearchButton
+			);
+		return searchContainer;
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
+		super.enter(event);
+		
+		setBreadcrumb( null );
+		
+		// activate home button
+		topMenuButtonUpdateActive(2);
+		
 		if ( event.getParameters() != null )
 		{
 			try
@@ -112,7 +186,7 @@ public class AgencyView extends CvManagerView {
 				String[] path = uriPath.split("\\?")[0].split("/");
 				
 				if( path.length > 0 && !path[0].isEmpty()) { // if contains agency Id
-					setAgency(agencyService.findOne(Long.parseLong( path[0])), ViewMode.DETAIL);
+					setAgency(agencyService.findByName( path[0]), ViewMode.DETAIL);
 				} else {
 					setAgency( null , ViewMode.INITIAL);
 				}
@@ -130,21 +204,8 @@ public class AgencyView extends CvManagerView {
 			}
 
 		}
-		
-		
-		updateActionPanel();
+				
 		updateMessageStrings( getLocale() );
-	}
-	
-	@Override
-	protected void updateActionPanel() {
-		if( agency != null ) {
-			if( SecurityUtils.isCurrentUserAgencyAdmin(agency)) {
-				actionPanel.getButtonManageMember().setVisible( true );
-				actionPanel.setVisible( true );
-			}
-		}
-		super.updateActionPanel();
 	}
 
 
@@ -166,31 +227,36 @@ public class AgencyView extends CvManagerView {
 	
 	public void setAgency( AgencyDTO agency, ViewMode viewMode) {
 		this.agency = agency;
-		this.viewMode = viewMode;
+		
+		aActionLayout.setAgency(agency);
+		aActionLayout.hasActionRight();
 		// check user roles here
 		if (viewMode.equals( ViewMode.INITIAL )) {
-			actionPanel.getButtonManageMember().setVisible( false );
 			aDetailLayout.setVisible( false );
+			sidePanel.setVisible( false );
 			aSearchLayout.setVisible( true );
+			topPanel.setVisible( true );
 			
-			if( SecurityUtils.isAuthenticated()) {
-				aOwnLayout.updateList();
-				aOwnLayout.setVisible( true );
-			}
-			else {
-				aOwnLayout.setVisible( false );
-			}
+//			if( SecurityUtils.isAuthenticated()) {
+//				aOwnLayout.updateList();
+//				aOwnLayout.setVisible( true );
+//			}
+//			else {
+//				aOwnLayout.setVisible( false );
+//			}
 			aSearchLayout.updateList();
 			
 		} else {
-			if( SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN" ) || SecurityUtils.isCurrentUserInRole( "ROLE_ADMIN_AGENCY" ))
-				actionPanel.getButtonManageMember().setVisible( true );
-			else
-				actionPanel.getButtonManageMember().setVisible( false );
 			aDetailLayout.setVisible( true );
+			sidePanel.setVisible( true );
 			aSearchLayout.setVisible( false );
+			topPanel.setVisible( false );
 			aDetailLayout.setAgency(agency);
 		}
+	}
+	
+	public void refreshSearchResult() {
+		aSearchLayout.updateList();
 	}
 	
 
@@ -209,10 +275,43 @@ public class AgencyView extends CvManagerView {
 	@Override
 	public void updateMessageStrings(Locale locale) {
 
-		actionPanel.updateMessageStrings(locale);
 	}
 
 	public AgencyDetailLayout getaDetailLayout() {
 		return aDetailLayout;
 	}
+	
+	public void clearSearch() {
+		searchTf.setValue("");
+	}
+
+	public MLabel getResultInfo() {
+		return resultInfo;
+	}
+
+	public void setResultInfo(MLabel resultInfo) {
+		this.resultInfo = resultInfo;
+	}
+
+	public MTextField getSearchTf() {
+		return searchTf;
+	}
+
+	public void setSearchTf(MTextField searchTf) {
+		this.searchTf = searchTf;
+	}
+	
+	public void setBreadcrumb( AgencyDTO agencyDto ) {
+		breadcrumbs.clear();
+		if( agencyDto == null) {
+			breadcrumbs
+				.build();
+		} else {
+			breadcrumbs
+				.addItem(agencyDto.getName(), "agency/" + agencyDto.getName())
+				.build();
+		}
+	}
+	
+
 }
