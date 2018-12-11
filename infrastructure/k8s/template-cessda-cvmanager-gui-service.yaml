@@ -4,7 +4,7 @@ metadata:
   name: SERVICENAME
   namespace: NAMESPACE
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
   - name: frontend-webui
     port: 80
