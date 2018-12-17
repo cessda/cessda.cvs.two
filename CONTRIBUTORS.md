@@ -1,5 +1,5 @@
 # Project Name
 
-## First Name - Last Name ##
+## Julien Le Hericy ##
 
-Descritption of the person role
+CESSDA MO - Automation and infrastructure

@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: DEPLOYMENTNAME
+  labels:
+    app: DEPLOYMENTNAME
+  namespace: NAMESPACE
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: DEPLOYMENTNAME
+    spec:
+      containers:
+      - name: DEPLOYMENTNAME
+        image: eu.gcr.io/cessda-development/cvmanager-gui:staging-latest
+        #image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
+        imagePullPolicy: Always
+        env:
+        - name: DC_ENV
+          value: ENVIRONMENT
+        ports:
+        - containerPort: 8080
+          name: frontend-cport
+        imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /cvmanager/
+            port: 8080
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /cvmanager/
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 5

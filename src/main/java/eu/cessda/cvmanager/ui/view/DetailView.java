@@ -163,6 +163,7 @@ public class DetailView extends CvView {
 
 	private MLabel lTitle = new MLabel();
 	private MLabel lDefinition = new MLabel();
+	private MLabel lNotes = new MLabel();
 	private MLabel lCode = new MLabel();
 	private MLabel lLang = new MLabel();
 	private MLabel lVersion = new MLabel();
@@ -171,21 +172,6 @@ public class DetailView extends CvView {
 	private MLabel lDefinitionOl = new MLabel();
 	private MLabel lVersionOl = new MLabel();
 	private MLabel lDateOl = new MLabel();
-	
-	private MLabel lTitle2 = new MLabel();
-	private MLabel lDefinition2 = new MLabel();
-	private MLabel lCode2 = new MLabel();
-	private MLabel lLang2 = new MLabel();
-	private MLabel lVersion2 = new MLabel();
-	private MLabel lDate2 = new MLabel();
-	private MLabel lTitleOl2 = new MLabel();
-	private MLabel lDefinitionOl2 = new MLabel();
-	private MLabel lVersionOl2 = new MLabel();
-	private MLabel lDateOl2 = new MLabel();
-	
-	private MLabel lLang3 = new MLabel();
-	private MLabel lVersion3 = new MLabel();
-	private MLabel lDate3 = new MLabel();
 	
 	private LanguageMenu langMenu;
 	private String highlightCode;
@@ -356,12 +342,15 @@ public class DetailView extends CvView {
 		}
 		
 		if(  cvItem.getCvScheme() != null ) {
-		String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
+			String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
 			if( owner != null && !owner.isEmpty() )
 				setAgency( agencyService.findByName( owner));
 		}
+		else
+			agency = agencyService.findByName( getVocabulary().getAgencyName());
+		
 		if( getAgency() == null)
-			setAgency( agencyService.findOne(1L) );
+			setAgency( agencyService.findByName( "CESSDA" ));
 		
 		// get all available licenses
 		licenses = licenceService.findAll();
@@ -463,6 +452,12 @@ public class DetailView extends CvView {
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentSlVersion.getDefinition()).withStyleName("rightPart"));
 
+		MCssLayout notes = new MCssLayout();
+		notes.withFullWidth().add(lNotes.withWidth("140px").withStyleName("leftPart"),
+				new MLabel( vocabulary.getNotes() ).withStyleName("rightPart"));
+		if( vocabulary.getNotes() == null || vocabulary.getNotes().isEmpty() )
+			notes.setVisible( false );
+		
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentVersion.getNotation()).withStyleName("rightPart"));
@@ -505,7 +500,7 @@ public class DetailView extends CvView {
 							new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 				);
 
-		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langVersDateLayout);
+		topViewSection.add(topHead, titleSmall, description, notes, code, titleSmallOl, descriptionOl, langVersDateLayout);
 	}
 
 	private void initBottomViewSection() {
@@ -707,6 +702,7 @@ public class DetailView extends CvView {
 		lTitle.setValue( i18n.get("view.detail.cvscheme.label.sl.title", locale));
 		lDefinition.setValue( i18n.get("view.detail.cvscheme.label.sl.definition", locale));
 		lCode.setValue( i18n.get("view.detail.cvscheme.label.sl.code", locale));
+		lNotes.setValue( i18n.get("view.detail.cvscheme.label.sl.note", locale));
 		lLang.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
 		lVersion.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
 		lDate.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
@@ -714,22 +710,7 @@ public class DetailView extends CvView {
 		lDefinitionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
 		lVersionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
 		lDateOl.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
-		
-		lTitle2.setValue( i18n.get("view.detail.cvscheme.label.sl.title", locale));
-		lDefinition2.setValue( i18n.get("view.detail.cvscheme.label.sl.definition", locale));
-		lCode2.setValue( i18n.get("view.detail.cvscheme.label.sl.code", locale));
-		lLang2.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
-		lVersion2.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
-		lDate2.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
-		lTitleOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.title", locale, selectedLang));
-		lDefinitionOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
-		lVersionOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
-		lDateOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
-		
-		lLang3.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
-		lVersion3.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
-		lDate3.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
-		
+
 		detailTab.getTab(0).setCaption( i18n.get("view.detail.cvconcept.tab.detail", locale));
 		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.version", locale));
 		detailTab.getTab(2).setCaption( i18n.get("view.detail.cvconcept.tab.identity", locale));

@@ -157,7 +157,6 @@ public class AdminActionLayout extends ResponsiveBlock{
 	private void doWithdrawnList(ClickEvent event ) {
 		adminView.setMainContent( AdminContent.LIST_WITHDRAWN_CV );
 	}
-	
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		buttonManageUser.withCaption( "Manage Member" );

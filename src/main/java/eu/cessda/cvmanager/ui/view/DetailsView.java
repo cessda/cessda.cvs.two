@@ -103,6 +103,7 @@ import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.mapper.CsvRowToConceptDTOMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.layout.CvComparatorLayout;
@@ -141,6 +142,7 @@ public class DetailsView extends CvView {
 	private final ConfigurationService configService;
 	private final VocabularyChangeService vocabularyChangeService;
 	private final LicenceService licenceService;
+	private final CsvRowToConceptDTOMapper csvRowToConceptDTOMapper;
 
 	private Language selectedLang = Language.ENGLISH;
 
@@ -160,6 +162,7 @@ public class DetailsView extends CvView {
 
 	private MLabel lTitle = new MLabel();
 	private MLabel lDefinition = new MLabel();
+	private MLabel lNotes = new MLabel();
 	private MLabel lCode = new MLabel();
 	private MLabel lLang = new MLabel();
 	private MLabel lVersion = new MLabel();
@@ -168,21 +171,7 @@ public class DetailsView extends CvView {
 	private MLabel lDefinitionOl = new MLabel();
 	private MLabel lVersionOl = new MLabel();
 	private MLabel lDateOl = new MLabel();
-	
-	private MLabel lTitle2 = new MLabel();
-	private MLabel lDefinition2 = new MLabel();
-	private MLabel lCode2 = new MLabel();
-	private MLabel lLang2 = new MLabel();
-	private MLabel lVersion2 = new MLabel();
-	private MLabel lDate2 = new MLabel();
-	private MLabel lTitleOl2 = new MLabel();
-	private MLabel lDefinitionOl2 = new MLabel();
-	private MLabel lVersionOl2 = new MLabel();
-	private MLabel lDateOl2 = new MLabel();
-	
-	private MLabel lLang3 = new MLabel();
-	private MLabel lVersion3 = new MLabel();
-	private MLabel lDate3 = new MLabel();
+
 	
 	private boolean enableTreeDragAndDrop;
 	
@@ -224,7 +213,8 @@ public class DetailsView extends CvView {
 	public DetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
-			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
+			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
+			CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, DetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
@@ -235,6 +225,7 @@ public class DetailsView extends CvView {
 		this.configService = configService;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.licenceService = licenceService;
+		this.csvRowToConceptDTOMapper = csvRowToConceptDTOMapper;
 		eventBus.subscribe( this, DetailsView.VIEW_NAME );
 	}
 
@@ -247,7 +238,7 @@ public class DetailsView extends CvView {
 		
 		editorCodeActionLayout = new EditorCodeActionLayoutNew("block.action.code", "block.action.code.show", i18n,
 				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
-				vocabularyChangeService);
+				vocabularyChangeService, csvRowToConceptDTOMapper);
 		
 
 		languageLayout.withFullWidth();
@@ -594,6 +585,12 @@ public class DetailsView extends CvView {
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
 				new MLabel( currentSLVersion.getDefinition() ).withStyleName("rightPart"));
+		
+		MCssLayout notes = new MCssLayout();
+		notes.withFullWidth().add(lNotes.withWidth("140px").withStyleName("leftPart"),
+				new MLabel( vocabulary.getNotes() ).withStyleName("rightPart"));
+		if( vocabulary.getNotes() == null || vocabulary.getNotes().isEmpty() )
+			notes.setVisible( false );
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode.withWidth("140px").withStyleName("leftPart"),
@@ -638,7 +635,7 @@ public class DetailsView extends CvView {
 								new MLabel(currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 					);
 
-		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langVersDateLayout);
+		topViewSection.add(topHead, titleSmall, description, notes, code, titleSmallOl, descriptionOl, langVersDateLayout);
 	}
 
 	private void initBottomViewSection() {
@@ -1117,6 +1114,7 @@ public class DetailsView extends CvView {
 		lTitle.setValue( i18n.get("view.detail.cvscheme.label.sl.title", locale));
 		lDefinition.setValue( i18n.get("view.detail.cvscheme.label.sl.definition", locale));
 		lCode.setValue( i18n.get("view.detail.cvscheme.label.sl.code", locale));
+		lNotes.setValue( i18n.get("view.detail.cvscheme.label.sl.note", locale));
 		lLang.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
 		lVersion.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
 		lDate.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
@@ -1124,22 +1122,7 @@ public class DetailsView extends CvView {
 		lDefinitionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
 		lVersionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
 		lDateOl.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
-		
-		lTitle2.setValue( i18n.get("view.detail.cvscheme.label.sl.title", locale));
-		lDefinition2.setValue( i18n.get("view.detail.cvscheme.label.sl.definition", locale));
-		lCode2.setValue( i18n.get("view.detail.cvscheme.label.sl.code", locale));
-		lLang2.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
-		lVersion2.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
-		lDate2.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
-		lTitleOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.title", locale, selectedLang));
-		lDefinitionOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
-		lVersionOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
-		lDateOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
-		
-		lLang3.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
-		lVersion3.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
-		lDate3.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
-		
+
 		detailTab.getTab(0).setCaption( i18n.get("view.detail.cvconcept.tab.detail", locale));
 		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.version", locale));
 		detailTab.getTab(2).setCaption( i18n.get("view.detail.cvconcept.tab.identity", locale));
@@ -1147,14 +1130,6 @@ public class DetailsView extends CvView {
 		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
 		detailTab.getTab(5).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
 		
-//		detailTreeGrid.getColumn("code").setCaption( "Code" );
-//		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
-//		if( detailTreeGrid.getColumn("prefLabelTl") != null )
-//			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang) );
-//		detailTreeGrid.getColumn("definitionSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.definition", locale) );
-//		if( detailTreeGrid.getColumn("definitionTl") != null )
-//			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
-//		
 		detailTreeGrid.getColumn("code").setCaption( "Code" );
 		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
 		if( detailTreeGrid.getColumn("prefLabelTl") != null )

@@ -2553,8 +2553,13 @@ $v-selection-item-border-radius: 0;
 		margin:0;
 	}
 	.content-mainmenu{
-		width:100%
+		width:100%;
 		max-width:1140px;
 	}
-	
+	.import-dialog{
+		overflow-y:hidden;
+		.v-caption{
+			display:block;
+		}
+	}
 }
