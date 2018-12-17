@@ -53,27 +53,13 @@ gcloud container clusters get-credentials $CLIENT-$PRODUCT-$ENVIRONMENT-cc --zon
 
 
 # Deployment
-if kubectl get deployment $CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT -n $NAMESPACE > /dev/null 2>&1;
-  then
-    echo "Deployment already exists in namespace $NAMESPACE, it will be destroyed to perform the new deployment"
-    kubectl delete deployment $CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT -n $NAMESPACE > /dev/null 2>&1
-    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT-deployment.yaml
-    echo "Deployment created"
-  else
-    echo "Deployment does not exist in namespace $NAMESPACE, it will be created"
-    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT-deployment.yaml
-    echo "Deployment created"
-fi;
+kubectl apply -f ../k8s/$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT-deployment.yaml
+echo "Deployment created"
 
 
 # Service
-if kubectl get service $CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT -n $NAMESPACE;
-  then
-    echo "$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT Service already exists"
-  else
-    kubectl create -f ../k8s/$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT-service.yaml
-    echo "$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT Service created"
-fi;
+kubectl apply -f ../k8s/$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT-service.yaml
+echo "$CLIENT-$PRODUCT-$MODULE-$ENVIRONMENT Service created"
 
 
 ### Clean Workspace
