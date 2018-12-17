@@ -25,3 +25,15 @@ spec:
         - containerPort: 8080
           name: frontend-cport
         imagePullPolicy: Always
+        livenessProbe:
+          httpGet:
+            path: /cvmanager/
+            port: 8080
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /cvmanager/
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
