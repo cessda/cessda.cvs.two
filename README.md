@@ -5,13 +5,15 @@ This repository contains all the source code and configuration needed to deploy 
 
 ```bash
 <ROOT>
-+-- infrastructure/		# Deployment scripts and configuration for gcp
-+-- src/				# Java application source code and configuration
-+-- target/			# Target build location
-+-- CONTRIBUTORS.md		# List of contributors to the project
-+-- Jenkinsfile			# Script used by Jenkins to deploy the application to gcp
-+-- pom.xml			# Maven build configuration file
-+-- README.md			# Instructions to build and deploy the application (this file)
+├── infrastructure/		# Deployment scripts and configuration for gcp
+├── src/				# Java application source code and configuration
+├── target/				# Target build location
+├── CONTRIBUTORS.md		# List of contributors to the project
+├── Jenkinsfile			# Script used by Jenkins to deploy the application to gcp
+├── pom.xml				# Maven build configuration file
+├── README.md			# Instructions to build and deploy the application (this file)
+
+```
 
 ## Technology Stack
 
@@ -89,11 +91,11 @@ and `template-<CLIENT>-<PRODUCT>-<MODULE>-service.yaml` (e.g. template-cessda-cv
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for instructions on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See the deployment section for instructions on how to deploy the project on a live system.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+These are a list of dependencies that are required to build and run CVManager
 
 - Java to run the application
 - Maven to build the application
@@ -109,14 +111,14 @@ To create a local dev environment follow these instructions:
 2. Ensure that any required software and dependencies are installed
 3. Build CVManager with mvn clean install -U docker:build -Pdocker-compose
    (optional - use -DskipTests to speed up build)
-4. Use docker-compose up in the directory target/docker/generated to start the application
+4. Use `docker-compose up` in the directory `target/docker/generated` to start the application
 
-The CVManager should be running on http://localhost:8080/CVManager/
+The CVManager should be running on `http://localhost:8080/CVManager/`
 
 
 ## Deployment
 
-Deployment in the live Google Cloud Environment requires a couple of considerations
+Deployment in the live Google Cloud Environment requires a couple of considerations:
 
 1. All deployments to the GCP Kubernetes engine are done via Jenkins
 2. The configuration for the deployment is stored in infrastructure/gcp
