@@ -928,6 +928,16 @@ public class DetailsView extends CvView {
 	                						//add code as target parent node first
 	                						cvCodeTreeData.setParent(draggedRow, targetNodeParent);
 	                					}
+	                					
+	                					// set to the 
+	                					if( draggedRow.getParent() != null ) {
+	                						draggedRow.setNotation( draggedRow.getNotation().substring(draggedRow.getParent().length() + 1));
+	                						draggedRow.setParent( null );
+	                					}
+	                					if( targetNodeParent.getParent() != null ) {
+	                						draggedRow.setParent( targetNodeParent.getParent() );
+	                						draggedRow.setNotation( targetNodeParent.getParent() + "." + draggedRow.getNotation());
+	                					} 
 
 	                					// update tree in vaadin UI
 	                					cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
