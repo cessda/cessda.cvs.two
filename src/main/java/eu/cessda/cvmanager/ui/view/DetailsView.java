@@ -934,7 +934,7 @@ public class DetailsView extends CvView {
 	                						draggedRow.setNotation( draggedRow.getNotation().substring(draggedRow.getParent().length() + 1));
 	                						draggedRow.setParent( null );
 	                					}
-	                					if( targetNodeParent.getParent() != null ) {
+	                					if( targetNodeParent != null && targetNodeParent.getParent() != null ) {
 	                						draggedRow.setParent( targetNodeParent.getParent() );
 	                						draggedRow.setNotation( targetNodeParent.getParent() + "." + draggedRow.getNotation());
 	                					} 

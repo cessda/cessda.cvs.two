@@ -377,7 +377,10 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		for( VersionDTO versionExp : exportVersions) {
 //			Set<ConceptDTO> orderedConcepts = new LinkedHashSet<>();
 			// change language format for printing
-			versionExp.setLanguage( Language.valueOfEnum( versionExp.getLanguage()).toStringCapitalized());
+			// if language length < 5
+			if( versionExp.getLanguage().length() < 5 ) // means language is still in the ISO format
+				versionExp.setLanguage( Language.valueOfEnum( versionExp.getLanguage()).toStringCapitalized());
+			
 			for( ConceptDTO concept : versionExp.getConcepts()) {
 				if( concept.getPosition() == null)
 					concept.setPosition(999);

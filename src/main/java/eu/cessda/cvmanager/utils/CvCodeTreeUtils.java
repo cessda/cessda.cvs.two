@@ -123,15 +123,16 @@ public class CvCodeTreeUtils{
 			cvConceptMap.put(concept.getId(), concept);
 		});
 		// set root concepts - tree level 0
-		cvScheme.getOrderedMemberList().forEach( item -> {
-			CVConcept concept = cvConceptMap.get(item);
-			if( concept != null ) {
-				rootCvConcepts.add( concept );
-				// assign Narrower if exist
-				assignNarrower(cvConceptTree, cvConceptMap, concept, null);
-				cvConceptMap.remove( item ); // remove map item
-			}
-		});
+		if( cvScheme.getOrderedMemberList() != null)
+			cvScheme.getOrderedMemberList().forEach( item -> {
+				CVConcept concept = cvConceptMap.get(item);
+				if( concept != null ) {
+					rootCvConcepts.add( concept );
+					// assign Narrower if exist
+					assignNarrower(cvConceptTree, cvConceptMap, concept, null);
+					cvConceptMap.remove( item ); // remove map item
+				}
+			});
 		cvConceptTree.addRootItems(rootCvConcepts);
 		
 		// set root concept child - tree level 1 
