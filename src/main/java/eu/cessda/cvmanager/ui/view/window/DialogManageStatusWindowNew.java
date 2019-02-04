@@ -878,7 +878,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 				newCvScheme.setId( currentVersion.getUri());
 				newCvScheme.setContainerId(newCvScheme.getId());
 				newCvScheme.setStatus( Status.PUBLISHED.toString() );
-				
+				// reset has top concept
+//				newCvScheme.getOrderedMemberList().clear();
 				
 				// Store also Owner Agency, Vocabulary and codes
 				// store vocabulary content
@@ -975,6 +976,8 @@ public class DialogManageStatusWindowNew extends MWindow {
 	private void storeCvConceptTree(TreeData<CVConcept> cvConceptTree, CVScheme newCvScheme) {
 		List<CVConcept> rootItems = cvConceptTree.getRootItems();
 		for(CVConcept topCvConcept : rootItems) {
+			topCvConcept.setParentId( newCvScheme.getContainerId() );
+			topCvConcept.save();
 			System.out.println("Store CV-concept:" + topCvConcept.getNotation());
 			DDIStore ddiStoreTopCvConcept = stardatDDIService.saveElement(topCvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add Code " + topCvConcept.getNotation());
 			newCvScheme.addOrderedMemberList(ddiStoreTopCvConcept.getElementId());

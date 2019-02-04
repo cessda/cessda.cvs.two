@@ -284,7 +284,7 @@ public class CodeServiceImpl implements CodeService {
 				// get TL concepts as well (change position)
 				List<ConceptDTO> otherConcepts = conceptService.findAllByCode( codeRoot.getId());
 				for(ConceptDTO otherConcept: otherConcepts) {
-					if( otherConcept.getPosition() != position) {
+					if( otherConcept.getPosition() == null || otherConcept.getPosition() != position) {
 						otherConcept.setPosition(position);
 						conceptService.save(otherConcept);
 					}
