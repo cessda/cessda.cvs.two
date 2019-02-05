@@ -505,7 +505,9 @@ public class DialogManageStatusWindowNew extends MWindow {
 		
 		if( currentVersion.isInitialVersion()) {
 			comparatorLayoutToggle.setVisible( false );
-			
+			versionNotes.setVisible( false );
+			versionNotesLabel.setVisible( false );
+			versionInfo.withValue("<strong>Please make sure that version number is correct.</strong>");
 		} else {
 			comparatorLayoutToggle.addClickListener( e -> {
 				if( comparatorLayout.isVisible()) {
@@ -698,7 +700,6 @@ public class DialogManageStatusWindowNew extends MWindow {
 									
 									conceptService.save( concept );
 								}
-								////////////////////
 								
 								vocabulary.setVersionByLanguage(selectedLanguage, getVersionNumber());
 								// if SL is published
