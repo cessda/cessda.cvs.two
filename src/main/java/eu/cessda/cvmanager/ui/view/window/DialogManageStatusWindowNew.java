@@ -45,6 +45,7 @@ import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.I18N;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -406,7 +407,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 		versionInfo
 			.withContentMode( ContentMode.HTML)
 			.withFullWidth()
-			.withValue("<strong>Please make sure that version info and version number are correct.</strong>");
+			.withValue("<strong>\n" + I18N.get( "window.status.publishversion.text" ) + "</strong>");
 		
 		versionHistoryLayout
 			.withFullWidth()
@@ -638,9 +639,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 
 	private void confirmForwardStatus(String confirmInfo) {
 		ConfirmDialog.show( this.getUI(), "Confirm",
-				confirmInfo, "yes",
-				"cancel",
-		
+				confirmInfo, I18N.get("dialog.button.yes"), I18N.get("dialog.button.cancel"),
 					dialog -> {
 						if( dialog.isConfirmed() ) {
 							String versionNumber = getVersionNumber();
