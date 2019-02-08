@@ -52,8 +52,8 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 	private MLabel agencyValue = new MLabel().withContentMode( ContentMode.HTML );
 	private MLabel agencyTransalteValue = new MLabel().withContentMode( ContentMode.HTML );
 	
-	private MTextField translatorAgency = new MTextField( "Agency translator" );
-	private MTextField translatorAgencyLink = new MTextField( "Agency translator link" );
+	private MTextField translatorAgency = new MTextField( "Translating agency" );
+	private MTextField translatorAgencyLink = new MTextField( "Translating agency link" );
 	
 	private boolean readOnly;
 	
@@ -87,7 +87,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		
 		canonicalUri.setCaption("Canonical URI");
 		canonicalUriVersion.setCaption("Canonical URI of this version");
-		agencyValue.setCaption("Agency Name");
+		agencyValue.setCaption("Agency");
 		
 		switchMode( LayoutMode.READ );
 		refreshInfo();
@@ -104,7 +104,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		}
 		
 		urnEdit
-			.withCaption( "Edit canonical URL" )
+			.withCaption( "Edit canonical URI" )
 			.setWidth("100%");
 
 		saveButton
@@ -129,7 +129,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		
 		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null && !version.getTranslateAgency().isEmpty()) {
 			agencyTransalteValue.setVisible( true );
-			agencyTransalteValue.setCaption("Agency Translator");
+			agencyTransalteValue.setCaption("Translating agency");
 			agencyTransalteValue.setValue("&nbsp; <a href='" + version.getTranslateAgencyLink() + "'>" + version.getTranslateAgency()  +"</a> ");
 			translatorAgency.setValue( version.getTranslateAgency());
 			translatorAgencyLink.setValue( version.getTranslateAgencyLink());

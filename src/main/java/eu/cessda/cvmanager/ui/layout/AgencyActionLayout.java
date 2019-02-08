@@ -74,8 +74,8 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	private Language sourceLanguage;
 	private VersionDTO currentVersion;
 	
-	private MButton buttonManageMember = new MButton("Manage Member");
-	private MButton buttonManageProfile = new MButton("Manage Profile");
+	private MButton buttonManageMember = new MButton("Manage member");
+	private MButton buttonManageProfile = new MButton("Manage profile");
 		
 	
 	public AgencyActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 
@@ -126,7 +126,8 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	
 	@Override
 	public void updateMessageStrings(Locale locale) {
-		buttonManageMember.withCaption( "Manage Member" );
+		buttonManageMember.withCaption( i18n.get( "block.action.agency.manageMember" ) );
+		buttonManageProfile.withCaption( i18n.get( "block.action.agency.manageProfile" ));
 	}
 
 	public AgencyDTO getAgency() {

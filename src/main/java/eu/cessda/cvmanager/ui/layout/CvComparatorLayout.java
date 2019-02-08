@@ -283,9 +283,9 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 				throw new IllegalArgumentException();
 			
 			if (conceptPrevious == null && conceptCurrent != null)
-				changesLog = "Concept added: " + conceptCurrent.getNotation() + "\n";
+				changesLog = "Code added: " + conceptCurrent.getNotation() + "\n";
 			else if (conceptPrevious != null && conceptCurrent == null)
-				changesLog = "Concept deleted: " + conceptPrevious.getNotation() + "\n";
+				changesLog = "Code deleted: " + conceptPrevious.getNotation() + "\n";
 			
 			if( conceptPrevious != null ) {
 				codePrevious.setValue( "<span>" + conceptPrevious.getNotation() + "</span>" );

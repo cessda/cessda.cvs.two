@@ -220,7 +220,7 @@ public class DialogManageStatusWindowNew extends MWindow {
 		discussionTitle
 			.withFullWidth()
 			.withStyleName("section-header")
-			.withValue( "Notes / Discussion" );
+			.withValue( I18N.get( "dialog.status.section.discusion.header" ) );
 		
 		discussionArea.setWidth("100%");
 		discussionArea.setValue( currentVersion.getDiscussionNotes() == null ? "":currentVersion.getDiscussionNotes());

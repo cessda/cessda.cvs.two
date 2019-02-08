@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -49,7 +50,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailsView;
 
-public class DialogCVSchemeWindowNew extends MWindow {
+public class DialogCVSchemeWindowNew extends MWindow implements Translatable{
 
 	private static final long serialVersionUID = -8116725336044618619L;
 	private static final Logger log = LoggerFactory.getLogger(DialogCVSchemeWindowNew.class);
@@ -64,9 +65,9 @@ public class DialogCVSchemeWindowNew extends MWindow {
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	private MLabel lAgency = new MLabel( "Agency" );
-	private MLabel lCode = new MLabel( "Code" );
-	private MLabel lTitle = new MLabel( "Title" );
-	private MLabel lDescription = new MLabel( "Definition" );
+	private MLabel lCode = new MLabel( "CV short name" );
+	private MLabel lTitle = new MLabel( "CV name" );
+	private MLabel lDescription = new MLabel( "CV definition" );
 	private MLabel lLanguage = new MLabel( "Language (source)" );
 
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -355,6 +356,7 @@ public class DialogCVSchemeWindowNew extends MWindow {
 			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
+		updateMessageStrings(locale);
 	}
 
 	private void saveCV() {
@@ -491,5 +493,13 @@ public class DialogCVSchemeWindowNew extends MWindow {
 
 	public void setCvScheme(CVScheme cvScheme) {
 		this.cvScheme = cvScheme;
+	}
+
+	@Override
+	public void updateMessageStrings(Locale locale) {
+		lAgency.withValue( i18n.get("dialog.cv.add.agency") );
+		lCode.withValue( i18n.get("dialog.cv.add.title") );
+		lTitle.withValue( i18n.get("dialog.cv.add.definition") );
+		lDescription.withValue( i18n.get("dialog.cv.add.code") );
 	}
 }

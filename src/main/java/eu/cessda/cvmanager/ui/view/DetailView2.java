@@ -828,8 +828,11 @@ public class DetailView2 extends CvManagerView {
 	                	optionButtons.add( new Button( "As next sibling" )); // option 0
 	                	optionButtons.add( new Button( "As child" ));        // option 1
 	                	
-	                	getUI().addWindow( new DialogMultipleOption("Code move options", "Move the code <strong>\"" + (draggedRow.getNotation() == null ? draggedRow.getPrefLabelByLanguage( sourceLanguage ): draggedRow.getNotation()) + "\"</strong> as a next sibling or as a child of <strong>\"" + 
-        						(targetRow.getNotation() == null ? targetRow.getPrefLabelByLanguage( sourceLanguage ): targetRow.getNotation())+ "\"</strong>?", optionButtons, 
+	                	getUI().addWindow( new DialogMultipleOption( 
+	                			i18n.get("dialog.order.code.header"), 
+	                			i18n.get("dialog.order.code.content",
+	                					(draggedRow.getNotation() == null ? draggedRow.getPrefLabelByLanguage( sourceLanguage ): draggedRow.getNotation()),
+            							(targetRow.getNotation() == null ? targetRow.getPrefLabelByLanguage( sourceLanguage ): targetRow.getNotation()) ), optionButtons, 
 	                			windowoption ->  {
 	                				Integer selectedOptionNumber = windowoption.getSelectedOptionNumber();
 	                				if(selectedOptionNumber == null )

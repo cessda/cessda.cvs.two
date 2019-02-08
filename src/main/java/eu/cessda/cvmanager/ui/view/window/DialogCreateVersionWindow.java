@@ -57,6 +57,7 @@ import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.I18N;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -176,10 +177,10 @@ public class DialogCreateVersionWindow extends MWindow {
 		discussionTitle
 			.withFullWidth()
 			.withStyleName("section-header")
-			.withValue( "Notes / Discussion" );
+			.withValue( I18N.get( "dialog.version.create.discusion.header" ));
 		discussionInfo
 			.withFullWidth()
-			.withValue("The discussion notes will be saved if new version is created");
+			.withValue( I18N.get( "dialog.version.create.discusion.text" ));
 		discussionArea.setWidth("100%");
 		discussionArea.setValue( currentVersion.getDiscussionNotes() == null ? "":currentVersion.getDiscussionNotes());
 		

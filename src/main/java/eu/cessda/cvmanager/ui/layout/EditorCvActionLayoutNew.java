@@ -168,13 +168,13 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 		
 		buttonDropVersion
 			.withFullWidth()
-			.withStyleName("action-button", ValoTheme.BUTTON_DANGER)
+			.withStyleName("action-button", "danger-button")
 			.withVisible( false )
 			.addClickListener( this::dropVersion );
 		
 		buttonWithdrawCv
 			.withFullWidth()
-			.withStyleName("action-button", ValoTheme.BUTTON_DANGER)
+			.withStyleName("action-button", "danger-button")
 			.withVisible( false )
 			.addClickListener( this::withdrawVocabulary );
 		
@@ -252,8 +252,10 @@ public class EditorCvActionLayoutNew extends ResponsiveBlock{
 	 */
 	private void dropVersion(ClickEvent event ) {
 		ConfirmDialog.show( this.getUI(), "Confirm",
-		"Are you sure you want to delete the CV \"" + currentVersion.getNotation() + "\" ("+ currentVersion.getStatus() +")" +"?", "yes",
-		"cancel",
+				i18n.get( "dialog.version.drop.content", 
+						"\"" + currentVersion.getNotation() + "\" (" + currentVersion.getLanguage().toUpperCase() + ") ("+ currentVersion.getStatus() +")"),
+				i18n.get("dialog.button.yes"),
+				i18n.get("dialog.button.cancel"),
 				
 			dialog -> {
 				if( dialog.isConfirmed() ) {

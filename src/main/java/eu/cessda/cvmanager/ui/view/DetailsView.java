@@ -1041,8 +1041,9 @@ public class DetailsView extends CvView {
 			case CVCONCEPT_DELETED:
 				
 				ConfirmDialog.show( this.getUI(), "Confirm",
-				"Are you sure you want to delete the concept \"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")" +"?", "yes",
-				"cancel",
+				i18n.get( "dialog.confirm.delete.code", "\"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")"),
+				i18n.get("dialog.button.yes"),
+				i18n.get("dialog.button.cancel"),
 						
 					dialog -> {
 						if( dialog.isConfirmed() ) {

@@ -256,11 +256,11 @@ public class EditorCodeActionLayoutNew extends ResponsiveBlock{
 		this.currentVersion = currentVersion;
 		if( this.currentVersion != null ) {
 			if( this.currentVersion.getItemType().equals(ItemType.SL.toString())) {
-				buttonCodeDelete.withCaption( "Delete Code");
-				buttonCodeEdit.withCaption( "Edit Code" );
+				buttonCodeDelete.withCaption( i18n.get( "block.action.code.delete" ));
+				buttonCodeEdit.withCaption( i18n.get( "block.action.code.edit" ) );
 			}else {
-				buttonCodeDelete.withCaption( "Remove Translation");
-				buttonCodeEdit.withCaption( "Edit Translation" );
+				buttonCodeDelete.withCaption( i18n.get( "block.action.code.delete.tl" ));
+				buttonCodeEdit.withCaption( i18n.get( "block.action.code.edit.tl" ));
 			}
 		}
 	}
