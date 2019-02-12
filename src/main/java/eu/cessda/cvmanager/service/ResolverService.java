@@ -59,4 +59,10 @@ public interface ResolverService {
     ResolverDTO findByResolverURI( String resolverUri );
     
     
+    /**
+     * Simply remove and add all existing URN from published CV version
+     */
+    void registerAllUrn();
+    
+    
 }

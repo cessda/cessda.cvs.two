@@ -25,6 +25,37 @@ public class ResolverDTO implements Serializable {
 
     @NotNull
     private String resolverURI;
+    
+    public static ResolverDTO createUrnResolver() {
+    	return new ResolverDTO()
+    		.withResourceType( ResourceType.VOCABULARY )
+    		.withResolverType( ResolverType.URN );
+    }
+    
+    public ResolverDTO withResourceId( String resourceId ) {
+    	this.resourceId = resourceId;
+    	return this;
+    }
+    
+    public ResolverDTO withResourceType( ResourceType resourceType ) {
+    	this.resourceType = resourceType;
+    	return this;
+    }
+    
+    public ResolverDTO withResourceURL( String resourceUrl ) {
+    	this.resourceURL = resourceUrl;
+    	return this;
+    }
+    
+    public ResolverDTO withResolverType( ResolverType resolverType ) {
+    	this.resolverType = resolverType;
+    	return this;
+    }
+    
+    public ResolverDTO withResolverURI( String resolverUri ) {
+    	this.resolverURI = resolverUri;
+    	return this;
+    }
 
     public Long getId() {
         return id;

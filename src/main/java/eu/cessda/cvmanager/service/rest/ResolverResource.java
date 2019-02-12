@@ -38,10 +38,11 @@ public class ResolverResource {
     }
 
     /**
-     * GET  /resolvers/:id : get the "id" resolver.
+     * GET  /resolvers/:resolverUri : redirect to resourceURL by "resolverUri or URN" resolver.
      *
-     * @param id the id of the resolverDTO to retrieve
-     * @return the ResponseEntity with status 200 (OK) and with body the resolverDTO, or with status 404 (Not Found)
+     * @param resolverUri the resolverUri or URN of the resolverDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and then redirect to resource URL, 
+     * or with status 404 (Not Found)
      */
     @GetMapping("/resolver/{resolverUri}")
     public ResponseEntity<String> findUrnResolver(@PathVariable String resolverUri) {

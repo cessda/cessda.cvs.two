@@ -1,9 +1,14 @@
 package eu.cessda.cvmanager.service.impl;
 
 import eu.cessda.cvmanager.service.ResolverService;
+import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.domain.Resolver;
+import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.repository.ResolverRepository;
 import eu.cessda.cvmanager.service.dto.ResolverDTO;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.ResolverMapper;
 
 import java.util.LinkedList;
@@ -29,12 +34,18 @@ public class ResolverServiceImpl implements ResolverService {
     private final Logger log = LoggerFactory.getLogger(ResolverServiceImpl.class);
 
     private final ResolverRepository resolverRepository;
-
+    
+    private final VocabularyService vocabularyService;
+    private final VersionService versionService;
+    
     private final ResolverMapper resolverMapper;
 
-    public ResolverServiceImpl(ResolverRepository resolverRepository, ResolverMapper resolverMapper) {
+    public ResolverServiceImpl(ResolverRepository resolverRepository, ResolverMapper resolverMapper,
+    		VersionService versionService, VocabularyService vocabularyService) {
         this.resolverRepository = resolverRepository;
         this.resolverMapper = resolverMapper;
+        this.versionService = versionService;
+        this.vocabularyService = vocabularyService;
     }
 
     /**
@@ -118,5 +129,46 @@ public class ResolverServiceImpl implements ResolverService {
         	return resolverMapper.toDto(resolver);
         }
         return null;
+	}
+
+	@Override
+	public void registerAllUrn() {
+		// remove all records
+		resolverRepository.deleteAll();
+		resolverRepository.flush();
+		
+		// insert all available URI
+		for(VocabularyDTO vocab : vocabularyService.findAll()) {
+			boolean baseCvUrnAdded = false;
+			
+			for( VersionDTO version : versionService.findAllByVocabulary( vocab.getId())) {
+				// only register urn of published version
+				if( !version.getStatus().equals( Status.PUBLISHED.toString()))
+					continue;
+				// only register if URN is available
+				if( version.getCanonicalUri() == null || version.getCanonicalUri().isEmpty())
+					continue;
+				
+				if( !baseCvUrnAdded ) {
+					// insert base Vocabulary URN here
+					int index = version.getCanonicalUri().lastIndexOf(":");
+					String cvCanonicalUri = version.getCanonicalUri().substring(0, index);
+					save( 
+						ResolverDTO.createUrnResolver()
+							.withResourceId( vocab.getUri())
+							.withResourceURL( vocab.getNotation() )
+							.withResolverURI( cvCanonicalUri )
+					);
+					baseCvUrnAdded = true;
+				}
+				// insert version resolver
+				save( 
+					ResolverDTO.createUrnResolver()
+						.withResourceId( version.getUri())
+						.withResourceURL( vocab.getNotation() + "?url=" + version.getUri() )
+						.withResolverURI( version.getCanonicalUri())
+				);
+			}
+		}
 	}
 }

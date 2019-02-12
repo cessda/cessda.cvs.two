@@ -46,6 +46,13 @@ public class ManageResolverLayout extends MCssLayout implements Translatable {
 			.withContentMode(ContentMode.HTML)
 			.withValue("<h2>Manage Resolver</h2>");
 		
+		MButton registerBtn = new MButton("Register all CV URN");
+		registerBtn.withStyleName( ValoTheme.BUTTON_DANGER, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
+		registerBtn.addClickListener(e -> {
+	        resolverService.registerAllUrn();
+	        updateList();
+	    });
+		
 	    MButton addBtn = new MButton("+ Add new resolver");
 	    addBtn.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
 	    addBtn.addClickListener(e -> {
@@ -53,7 +60,7 @@ public class ManageResolverLayout extends MCssLayout implements Translatable {
 	        form.setResolverDTO(new ResolverDTO());
 	    });
 	    
-	    MCssLayout toolbar = new MCssLayout(addBtn);
+	    MCssLayout toolbar = new MCssLayout(registerBtn, addBtn);
 	    toolbar.withFullWidth();
 	
 	    resolverGrid
