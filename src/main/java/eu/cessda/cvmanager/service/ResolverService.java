@@ -50,4 +50,13 @@ public interface ResolverService {
      * @param id the id of the entity
      */
     void delete(Long id);
+    
+    /**
+     * Get the resolver by resolverURI
+     * @param resolverUri
+     * @return
+     */
+    ResolverDTO findByResolverURI( String resolverUri );
+    
+    
 }

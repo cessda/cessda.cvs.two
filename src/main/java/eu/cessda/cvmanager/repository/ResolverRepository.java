@@ -3,6 +3,8 @@ package eu.cessda.cvmanager.repository;
 import eu.cessda.cvmanager.domain.Resolver;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.*;
 
 
@@ -12,5 +14,6 @@ import org.springframework.data.jpa.repository.*;
 @SuppressWarnings("unused")
 @Repository
 public interface ResolverRepository extends JpaRepository<Resolver, Long> {
-
+	
+	Optional<Resolver> findByResolverURI( String resolverUri );
 }

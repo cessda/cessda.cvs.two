@@ -108,4 +108,15 @@ public class ResolverServiceImpl implements ResolverService {
         log.debug("Request to delete Resolver : {}", id);
         resolverRepository.deleteById(id);
     }
+
+	@Override
+	public ResolverDTO findByResolverURI(String resolverUri) {
+		log.debug("Request to get Resolver by URI: {}", resolverUri);
+        Optional<Resolver> findById = resolverRepository.findByResolverURI(resolverUri);
+        if( findById.isPresent() ) {
+        	Resolver resolver = findById.get();
+        	return resolverMapper.toDto(resolver);
+        }
+        return null;
+	}
 }

@@ -383,7 +383,7 @@ public class VersionDTO implements Serializable {
 	
 	public boolean isInitialVersion() {
 		if(isPersisted()) {
-			if( initialVersion.equals( id ))
+			if( initialVersion != null && initialVersion.equals( id ))
 				return true;
 		} 
 		return false;
