@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.service.rest;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
+import java.net.URLEncoder;
 
 //
 //import eu.cessda.cvmanager.service.ResolverService;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.ResolverService;
 import eu.cessda.cvmanager.service.dto.ResolverDTO;
+import eu.cessda.cvmanager.ui.view.DetailView;
 
 
 /**
@@ -50,8 +53,12 @@ public class ResolverResource {
         ResolverDTO resolverDTO = resolverService.findByResolverURI(resolverUri);
         if( resolverDTO != null ) {
         	HttpHeaders headers = new HttpHeaders();
-        	headers.setLocation(URI.create( configurationService.getServerContextPath() + "/#!detail/" + resolverDTO.getResourceURL() ));
-        	return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        	try {
+				headers.setLocation(URI.create( configurationService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + URLEncoder.encode( resolverDTO.getResourceURL(), "UTF-8") ));
+				return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
+        	} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "CV with URN: " + resolverUri + " is not found" );
     }

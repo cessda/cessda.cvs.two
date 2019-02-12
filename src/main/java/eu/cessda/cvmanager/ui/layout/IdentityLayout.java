@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.layout;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Locale;
 
 import org.gesis.wts.security.SecurityUtils;
@@ -179,6 +181,8 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 	}
 
 	private void refreshInfo() {
+		String baseUrl = configService.getServerContextPath() + "/v1/resolver/";
+		
 		if( version.getCanonicalUri() == null || version.getCanonicalUri().isEmpty()) {
 			canonicalUri.setVisible( false );
 			canonicalUriVersion.setVisible( false );
@@ -186,8 +190,8 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		else {
 			int index = version.getCanonicalUri().lastIndexOf(":");
 			String cvCanonicalUri = version.getCanonicalUri().substring(0, index);
-			canonicalUri.setValue( cvCanonicalUri );
-			canonicalUriVersion.setValue( version.getCanonicalUri());
+			canonicalUri.setValue( "<a href='" + baseUrl +  cvCanonicalUri + "'>" + cvCanonicalUri + "</a>" );
+			canonicalUriVersion.setValue( "<a href='" + baseUrl +  version.getCanonicalUri() + "'>" + version.getCanonicalUri() + "</a>");
 			int index2 = cvCanonicalUri.lastIndexOf(":");
 			if( index2 > 0)
 				urnEdit.setValue( cvCanonicalUri.substring(0, index2) );
