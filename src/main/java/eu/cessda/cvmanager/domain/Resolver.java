@@ -25,7 +25,7 @@ public class Resolver implements Serializable {
     private Long id;
 
     @Column(name = "resource_id")
-    private Long resourceId;
+    private String resourceId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "resource_type")
@@ -52,16 +52,16 @@ public class Resolver implements Serializable {
         this.id = id;
     }
 
-    public Long getResourceId() {
+    public String getResourceId() {
         return resourceId;
     }
 
-    public Resolver resourceId(Long resourceId) {
+    public Resolver resourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }
 
-    public void setResourceId(Long resourceId) {
+    public void setResourceId(String resourceId) {
         this.resourceId = resourceId;
     }
 

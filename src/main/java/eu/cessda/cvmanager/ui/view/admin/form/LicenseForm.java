@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view.admin;
+package eu.cessda.cvmanager.ui.view.admin.form;
 
 import java.util.UUID;
 
@@ -18,6 +18,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.dto.LicenceDTO;
+import eu.cessda.cvmanager.ui.view.admin.layout.ManageLicenseLayout;
 
 public class LicenseForm extends FormLayout {
 

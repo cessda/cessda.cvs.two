@@ -14,7 +14,7 @@ public class ResolverDTO implements Serializable {
 
     private Long id;
 
-    private Long resourceId;
+    private String resourceId;
 
     private ResourceType resourceType;
 
@@ -34,11 +34,11 @@ public class ResolverDTO implements Serializable {
         this.id = id;
     }
 
-    public Long getResourceId() {
+    public String getResourceId() {
         return resourceId;
     }
 
-    public void setResourceId(Long resourceId) {
+    public void setResourceId(String resourceId) {
         this.resourceId = resourceId;
     }
 
@@ -106,4 +106,10 @@ public class ResolverDTO implements Serializable {
             ", resolverURI='" + getResolverURI() + "'" +
             "}";
     }
+
+	public boolean isPersisted() {
+		if( getId() == null )
+			return false;
+		return true;
+	}
 }

@@ -6,7 +6,10 @@ import eu.cessda.cvmanager.repository.ResolverRepository;
 import eu.cessda.cvmanager.service.dto.ResolverDTO;
 import eu.cessda.cvmanager.service.mapper.ResolverMapper;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +49,21 @@ public class ResolverServiceImpl implements ResolverService {
         Resolver resolver = resolverMapper.toEntity(resolverDTO);
         resolver = resolverRepository.save(resolver);
         return resolverMapper.toDto(resolver);
+    }
+    
+    /**
+     * Get all the resolvers.
+     *
+     * @param pageable the pagination information
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<ResolverDTO> findAll() {
+        log.debug("Request to get all Resolvers");
+        return resolverRepository.findAll().stream()
+            .map(resolverMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 
     /**
