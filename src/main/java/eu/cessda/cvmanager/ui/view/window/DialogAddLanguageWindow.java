@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -42,6 +43,7 @@ import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -52,6 +54,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.CvManagerView;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.DetailsView;
 
 public class DialogAddLanguageWindow extends MWindow {
 
@@ -64,7 +67,6 @@ public class DialogAddLanguageWindow extends MWindow {
 	private final UIEventBus eventBus;
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
-	private final VocabularySearchRepository vocabularySearchRepository;
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
 	private VersionDTO version;
@@ -72,7 +74,7 @@ public class DialogAddLanguageWindow extends MWindow {
 	private final StardatDDIService stardatDDIService;
 	private final VocabularyService vocabularyService;
 
-	private Binder<CVScheme> binder = new Binder<CVScheme>();
+	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
 	private MLabel lTitle = new MLabel( "Title" );
@@ -97,6 +99,12 @@ public class DialogAddLanguageWindow extends MWindow {
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
 	
+	private MCssLayout translatorAgencyBox = new MCssLayout();
+	private MLabel lTranslatorAgency = new MLabel( "Translator Agency" );
+	private MLabel lTranslatorAgencyLink = new MLabel( "Translator Agency Link" );
+	private MTextField translatorAgency = new MTextField();
+	private MTextField translatorAgencyLink = new MTextField();
+	
 	private CVScheme cvScheme;
 	private Language language;
 
@@ -105,8 +113,8 @@ public class DialogAddLanguageWindow extends MWindow {
 
 	public DialogAddLanguageWindow(StardatDDIService stardatDDIService,  CVScheme cvScheme,
 			 VocabularyDTO vocabularyDTO, VersionDTO versionDTO, AgencyDTO agencyDTO, 
-			 VocabularyService vocabularyService, VersionService versionService,
-			 VocabularySearchRepository vocabularySearchRepository, UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
+			 VocabularyService vocabularyService, VersionService versionService, 
+			 UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super("Add Language");
 		this.cvScheme = cvScheme;
 		this.stardatDDIService = stardatDDIService;
@@ -115,7 +123,6 @@ public class DialogAddLanguageWindow extends MWindow {
 		this.version = versionDTO;
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
-		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.eventBus = eventBus;
 		this.vocabularyChangeService = vocabularyChangeService;
 		
@@ -131,7 +138,6 @@ public class DialogAddLanguageWindow extends MWindow {
 			languageCb.setReadOnly( true );
 		}
 		else {
-			// TODO: use list language from vocabulary if possible
 			List<Language> availableLanguages = new ArrayList<>();
 			Set<Language> userLanguages = new HashSet<>();
 			if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
@@ -161,17 +167,23 @@ public class DialogAddLanguageWindow extends MWindow {
 		lDescription.withStyleName( "required" );
 		
 		
+		// get version SL
+		VersionDTO slVersion = null;
+		
+		Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
+		if(latestSlVersion.isPresent())
+			slVersion = latestSlVersion.get();
 		
 		sourceTitle
 			.withFullWidth()
 			.withReadOnly( true)
-			.setValue( cvScheme.getTitleByLanguage( "en" ) );
+			.setValue( slVersion.getTitle() );
 		sourceLanguage
 			.withReadOnly( true)
 			.setValue( "English" );
 		sourceDescription.setReadOnly( true );
 		sourceDescription.setSizeFull();
-		sourceDescription.setValue( cvScheme.getDescriptionByLanguage( "en" ) );
+		sourceDescription.setValue( slVersion.getDefinition() );
 		
 		tfTitle.withFullWidth();
 		description.setSizeFull();
@@ -199,7 +211,7 @@ public class DialogAddLanguageWindow extends MWindow {
 
 		setCvScheme(cvScheme);;
 
-		binder.setBean(getCvScheme());
+		binder.setBean( version );
 
 		storeCode.addClickListener(event -> {
 			saveCV();
@@ -229,8 +241,21 @@ public class DialogAddLanguageWindow extends MWindow {
 						lChangeDesc, changeDesc
 					).withExpand( lChangeDesc, 0.15f).withExpand( changeDesc, 0.85f)
 			);
-	
 		
+		translatorAgencyBox
+			.withFullWidth()
+			.add( 
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+						lTranslatorAgency, translatorAgency.withFullWidth()
+					).withExpand( lTranslatorAgency, 0.15f).withExpand( translatorAgency, 0.85f),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.add(
+						lTranslatorAgencyLink, translatorAgencyLink.withFullWidth()
+					).withExpand( lTranslatorAgencyLink, 0.15f).withExpand( translatorAgencyLink, 0.85f)
+			);
 		layout
 			.withHeight("98%")
 			.withStyleName("dialog-content")
@@ -297,6 +322,7 @@ public class DialogAddLanguageWindow extends MWindow {
 		} else {
 			layout
 				.add(
+					translatorAgencyBox,
 					new MHorizontalLayout()
 						.withFullWidth()
 						.add( storeCode,
@@ -307,11 +333,13 @@ public class DialogAddLanguageWindow extends MWindow {
 						.withExpand(cancelButton, 0.1f)
 						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 				)
-				.withExpand(layout.getComponent(0), 0.06f)
-				.withExpand(layout.getComponent(1), 0.5f)
-				.withExpand(layout.getComponent(2), 0.06f)
-				.withExpand(layout.getComponent(3), 0.5f)
-				.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
+				.withExpand(layout.getComponent(0), 0.05f)
+				.withExpand(layout.getComponent(1), 0.4f)
+				.withExpand(layout.getComponent(2), 0.05f)
+				.withExpand(layout.getComponent(3), 0.4f)
+				.withExpand(layout.getComponent(4), 0.1f)
+				.withExpand(layout.getComponent(5), 0.1f)
+				.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
 		}
 		
 		this
@@ -331,29 +359,64 @@ public class DialogAddLanguageWindow extends MWindow {
 				return;
 			}
 		}
-		
-		getCvScheme().save();
-		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add CV translation");
-		
+
 		version.setTitle( tfTitle.getValue() );
 		version.setDefinition( description.getValue());
 		
 		// store new version
 		if( !version.isPersisted()) {
-			version.setUri( vocabulary.getUri() );
+			String cvUriLink = agency.getUri();
+			if(cvUriLink == null )
+				cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
+			if(!cvUriLink.endsWith("/"))
+				cvUriLink += "/";
+			
+			cvUriLink += vocabulary.getNotation() + "/" + language.toString();
+			
+			version.setUriSl( vocabulary.getUri() );
+			version.setUri( cvUriLink );
+			
 			version.setNotation( vocabulary.getNotation());
-			version.setNumber("0.0.1");
+			version.setNumber( vocabulary.getVersionNumber() + ".1");
 			version.setStatus( Status.DRAFT.toString() );
 			version.setItemType( ItemType.TL.toString());
-			version.setLanguage( language.toString() );
+			version.setLanguage( language.toString());
+			
 			version.setPreviousVersion( 0L );
 			version.setInitialVersion( 0L );
+			version.setVocabularyId( vocabulary.getId());
+			version.setTranslateAgency( translatorAgency.getValue() );
+			version.setTranslateAgencyLink( translatorAgencyLink.getValue());
+			
+			version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId());
+			
+			// get previous version
+			VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), Status.PUBLISHED.toString())
+			.ifPresent( prevVersion ->{
+				version.setPreviousVersion( prevVersion.getId() );
+				version.setInitialVersion( prevVersion.getInitialVersion() );
+				// get last version number from previous version if exist
+				if( prevVersion.getNumber().indexOf( vocabulary.getVersionNumber()) == 0 ) {
+					int lastDotIndex = vocabulary.getVersionNumber().lastIndexOf(".");
+					version.setNumber( vocabulary.getVersionNumber() + "." + (Integer.parseInt(vocabulary.getVersionNumber().substring( lastDotIndex + 1)) + 1));
+				}
+			});
 			
 			version = versionService.save(version);
+			
+			if( version.getInitialVersion() == 0L) {
+				// initial version
+				version.setInitialVersion( version.getId() );
+				version = versionService.save(version);
+			}
+			// update version in vocabulary
+			vocabulary.setVersionByLanguage(language, version.getNumber());
 			
 			vocabulary.addVersion(version);
 			vocabulary.addVers(version);
 		} else {
+			version = versionService.save(version);
+			
 			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
 			changeDTO.setVocabularyId( vocabulary.getId());
 			changeDTO.setVersionId( version.getId()); 
@@ -374,59 +437,29 @@ public class DialogAddLanguageWindow extends MWindow {
 		
 		// index
 		vocabularyService.index(vocabulary);
-		
-		// use eventbus to update detail view
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-		
+
 		close();
-//		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
+		UI.getCurrent().getNavigator().navigateTo( DetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.toString());
 	}
 	
 	private boolean isInputValid() {
-		getCvScheme().setTitleByLanguage(language.toString(), tfTitle.getValue());
-		getCvScheme().setDescriptionByLanguage(language.toString(), description.getValue());
+		version.setTitle( tfTitle.getValue() );
+		version.setDefinition( description.getValue() );
 		
 		binder
-		.forField( tfTitle)
-		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-		.bind(concept -> getTitleByLanguage(concept),
-			(concept, value) -> setTitleByLanguage(concept, value));
+			.forField( tfTitle)
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind(v -> v.getTitle(),
+				(v, value) -> v.setTitle( value));
 
 		binder
-		.forField( description)
-		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
-		.bind(concept -> getDescriptionByLanguage(concept),
-			(concept, value) -> setDescriptionByLanguage(concept, value));
+			.forField( description)
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
+			.bind(v -> v.getDefinition(),
+				(v, value) -> v.setDefinition( value ));
 		
 		binder.validate();
 		return binder.isValid();
-	}
-	
-	private CVScheme setTitleByLanguage(CVScheme concept, String value) {
-
-		concept.setTitleByLanguage(language.toString(), value);
-		return concept;
-	}
-
-	private String getTitleByLanguage(CVScheme concept) {
-		if( language == null )
-			return "";
-
-		return concept.getTitleByLanguage(language.toString());
-
-	}
-	
-	private Object setDescriptionByLanguage(CVScheme concept, String value) {
-		concept.setDescriptionByLanguage(language.toString(), value);
-		return null;
-	}
-
-	private String getDescriptionByLanguage(CVScheme concept) {
-		if( language == null )
-			return "";
-		
-		return concept.getDescriptionByLanguage(language.toString());
-
 	}
 	
 	public CVScheme getCvScheme() {
@@ -436,13 +469,4 @@ public class DialogAddLanguageWindow extends MWindow {
 	public void setCvScheme(CVScheme cvScheme) {
 		this.cvScheme = cvScheme;
 	}
-
-//	public EditorView getTheView() {
-//		return theView;
-//	}
-//
-//	public void setTheView(EditorView theView) {
-//		this.theView = theView;
-//	}
-
 }

@@ -563,4 +563,17 @@ DDI Alliance. (2018). Erhebungsdesign [Time Method] (Version 1.2.1; GESIS, Trans
 		
 		return citation.toString();
 	}
+	
+	public Status getEnumStatus() {
+		return Status.valueOf( getStatus().toUpperCase());
+	}
+	
+	public void createSummary( String versionChanges ) {
+		setSummary(
+			(getSummary() == null ? "":getSummary().replaceAll("(\r\n|\n)", "<br />")) +
+			"<strong>" + getNumber() + "</strong>"+
+			" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + getPublicationDate() +
+			"<br/>Notes:<br/>" + getVersionNotes() + (versionChanges != null && !versionChanges.isEmpty() ? "<br/>Changes:<br/>" + getVersionChanges() : "") + "<br/><br/>"
+		);
+	}
 }

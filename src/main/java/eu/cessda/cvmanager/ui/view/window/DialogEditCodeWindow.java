@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.view.window;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -50,6 +51,7 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.DetailsView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 
 public class DialogEditCodeWindow extends MWindow {
@@ -65,7 +67,7 @@ public class DialogEditCodeWindow extends MWindow {
 	private final ConceptService conceptService;
 	private final VocabularyChangeService vocabularyChangeService;
 
-	Binder<CVConcept> binder = new Binder<CVConcept>();
+	Binder<CodeDTO> binder = new Binder<CodeDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
 	private MLabel lSourceNotation = new MLabel( "Code" );
@@ -133,18 +135,18 @@ public class DialogEditCodeWindow extends MWindow {
 		this.concept = conceptDTO;
 		
 		sourceNotation.withWidth("85%");
-		sourceNotation.setValue( cvConcept.getNotation() == null ? "" : cvConcept.getNotation() );
+		sourceNotation.setValue( code.getNotation() );
 		sourceNotation.setReadOnly( true );
 		
 		notation.withWidth("85%");
 		
-		String sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() ).toString();
+		Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 		
 		sourceTitle.withFullWidth();
-		sourceTitle.setValue( cvConcept.getPrefLabelByLanguage( sourceLang ) );
+		sourceTitle.setValue( code.getTitleByLanguage( sourceLang ) );
 		sourceDescription.setSizeFull();
 		
-		sourceDescription.setValue( cvConcept.getDescriptionByLanguage( sourceLang ) );
+		sourceDescription.setValue( code.getDefinitionByLanguage( sourceLang ) );
 		sourceDescription.setReadOnly( true );
 		sourceTitle.setReadOnly( true );
 		
@@ -157,14 +159,14 @@ public class DialogEditCodeWindow extends MWindow {
 		
 		lTitle.withStyleName( "required" );
 		lLanguage.withStyleName( "required" );
-		lDescription.withStyleName( "required" );
+//		lDescription.withStyleName( "required" );
 		
 		preferedLabel.setCaption( "Descriptive term (" + language + ")*");
 		description.setCaption( "Definition ("+ language +")*");
 		
-		notation.setValue( cvConcept.getNotation() );
-		preferedLabel.setValue( cvConcept.getPrefLabelByLanguage(language.toString()));
-		description.setValue( cvConcept.getDescriptionByLanguage(language.toString()) );
+		notation.setValue( concept.getNotation() );
+		preferedLabel.setValue( concept.getTitle());
+		description.setValue( concept.getDefinition() );
 		
 		
 		languageCb.setItems( language );
@@ -178,8 +180,8 @@ public class DialogEditCodeWindow extends MWindow {
 			preferedLabel.setCaption( "Descriptive term (" + language + ")*");
 			description.setCaption( "Definition ("+ language +")*");
 			
-			preferedLabel.setValue( cvConcept.getPrefLabelByLanguage(language.toString()));
-			description.setValue( cvConcept.getDescriptionByLanguage(language.toString()) );
+			preferedLabel.setValue( code.getTitleByLanguage(language));
+			description.setValue( code.getDefinitionByLanguage(language) );
 			
 			if( e.getValue().equals( sourceLang )) {
 				sourceRow.setVisible( false );
@@ -200,7 +202,7 @@ public class DialogEditCodeWindow extends MWindow {
 		});
 		
 
-		binder.setBean(cvConcept);
+		binder.setBean(code);
 
 		storeCode.addClickListener(event -> {
 			saveCode();
@@ -231,9 +233,14 @@ public class DialogEditCodeWindow extends MWindow {
 					).withExpand( lChangeDesc, 0.15f).withExpand( changeDesc, 0.85f)
 			);
 		
+		// check if current version is the initial version
+		if( this.concept.getPreviousConcept() == null) {
+			changeBox.setVisible( false );
+		}
+		
 		MHorizontalLayout row1 = new MHorizontalLayout();
 		
-		if( !language.equals( Language.getEnum(sourceLang) )) {
+		if( !language.equals( sourceLang) ) {
 			layout
 				.withHeight("98%")
 				.withStyleName("dialog-content")
@@ -346,6 +353,7 @@ public class DialogEditCodeWindow extends MWindow {
 			.withExpand(layout.getComponent(1), 0.06f)
 			.withExpand(layout.getComponent(2), 0.4f)
 			.withExpand(layout.getComponent(3), 0.2f)
+			.withExpand(layout.getComponent(4), 0.3f)
 			.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
 		}
 		
@@ -359,16 +367,6 @@ public class DialogEditCodeWindow extends MWindow {
 	private void saveCode() {
 		if(!isInputValid())
 			return;
-		
-		if( changeCb.getValue() == null ) {
-			Notification.show("Please select the change type!");
-			return;
-		}
-		
-		// CVConcept cv = binder.getBean();
-		log.trace(cvConcept.getPrefLabelByLanguage(language.toString()));
-		cvConcept.save();
-		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update code");
 		// store the code and index
 		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
 		codeService.save(code);
@@ -378,31 +376,32 @@ public class DialogEditCodeWindow extends MWindow {
 		conceptService.save(concept);
 		
 		// save changes log
-		VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-		changeDTO.setVocabularyId( vocabulary.getId());
-		changeDTO.setVersionId( version.getId()); 
-		changeDTO.setChangeType( changeCb.getValue() );
-		changeDTO.setDescription( changeDesc.getValue() == null ? "": changeDesc.getValue() );
-		changeDTO.setDate( LocalDateTime.now() );
-		UserDetails loggedUser = SecurityUtils.getLoggedUser();
-		changeDTO.setUserId( loggedUser.getId() );
-		changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-		
-		vocabularyChangeService.save(changeDTO);
-		
+		if( changeBox.isVisible() &&  changeCb.getValue() != null) {
+			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
+			changeDTO.setVocabularyId( vocabulary.getId());
+			changeDTO.setVersionId( version.getId()); 
+			changeDTO.setChangeType( changeCb.getValue() );
+			changeDTO.setDescription( changeDesc.getValue() == null ? "": changeDesc.getValue() );
+			changeDTO.setDate( LocalDateTime.now() );
+			UserDetails loggedUser = SecurityUtils.getLoggedUser();
+			changeDTO.setUserId( loggedUser.getId() );
+			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
+			
+			vocabularyChangeService.save(changeDTO);
+		}
 		
 		// indexing editor
 		vocabularyService.index(vocabulary);
 		
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
+		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		
 		this.close();
 	}
 	
 	private boolean isInputValid() {
-		cvConcept.setNotation(notation.getValue());
-		cvConcept.setPrefLabelByLanguage(language.toString(), preferedLabel.getValue());
-		cvConcept.setDescriptionByLanguage(language.toString(), description.getValue());
+		code.setNotation(notation.getValue());
+		code.setTitleByLanguage( preferedLabel.getValue(), language);
+		code.setDefinitionByLanguage( description.getValue(), language);
 		
 		binder
 			.forField( notation )
@@ -413,42 +412,17 @@ public class DialogEditCodeWindow extends MWindow {
 		binder
 			.forField( preferedLabel )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( concept -> getPrefLabelByLanguage(concept),
-				(concept, value) -> setPrefLabelByLanguage(concept, value));
+			.bind( code -> code.getTitleByLanguage( language ),
+				(code, value) -> code.setTitleByLanguage(value, language));
 
 		binder
 			.forField( description )
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
-			.bind( concept -> getDescriptionByLanguage(concept),
-				(concept, value) -> setDescriptionByLanguage(concept, value));
+//			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
+			.bind( code -> code.getDefinitionByLanguage( language ),
+					(code, value) -> code.setDefinitionByLanguage(value, language));
 		
 		binder.validate();
 		return binder.isValid();
-	}
-
-	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {
-
-		concept.setPrefLabelByLanguage(language.toString(), value);
-		return concept;
-	}
-
-	private String getPrefLabelByLanguage(CVConcept concept) {
-
-		return concept.getPrefLabelByLanguage(language.toString());
-
-	}
-
-	private Object setDescriptionByLanguage(CVConcept concept, String value) {
-
-		System.out.println("FooBar");
-		concept.setDescriptionByLanguage(language.toString(), value);
-		return null;
-	}
-
-	private String getDescriptionByLanguage(CVConcept concept) {
-
-		return concept.getDescriptionByLanguage(language.toString());
-
 	}
 
 	public void setSelectedLanguage(Language selectedLanguage) {

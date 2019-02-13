@@ -1,19 +1,22 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.Optional;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
+import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.CVVersion;
+import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,37 +28,40 @@ import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
-import com.vaadin.data.Binder;
-import com.vaadin.data.provider.Query;
-import com.vaadin.data.validator.StringLengthValidator;
+import com.vaadin.data.TreeData;
+import com.vaadin.server.Page;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
-import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.model.CvItem;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.I18N;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.CodeDTO;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
+import eu.cessda.cvmanager.service.manager.WorkflowManager;
+import eu.cessda.cvmanager.ui.layout.CvComparatorLayout;
 import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
+import eu.cessda.cvmanager.utils.VersionUtils;
+import eu.cessda.cvmanager.utils.WorkflowUtils;
 
 public class DialogManageStatusWindow extends MWindow {
 
@@ -65,8 +71,7 @@ public class DialogManageStatusWindow extends MWindow {
 	private final UIEventBus eventBus;
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
-	private final StardatDDIService stardatDDIService;
-	private final VocabularyService vocabularyService;
+	private final ConceptService conceptService;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -100,23 +105,42 @@ public class DialogManageStatusWindow extends MWindow {
 	private MCssLayout versionHistoryLayout = new MCssLayout();
 	private MLabel versionNotesLabel = new MLabel();
 	private TextArea versionNotes = new TextArea();
+	private MLabel versionChangesLabel = new MLabel();
+	private TextArea versionChanges = new TextArea();
 	private MLabel versionNumberLabel = new MLabel();
-	private MTextField versionNumberField = new MTextField();
+	private MCssLayout tlCloneInfoLayout = new MCssLayout();
 	private MCssLayout versionButtonLayout = new MCssLayout();
 	
+	private MLabel versionSeparator1 = new MLabel("<strong>.</strong>").withContentMode( ContentMode.HTML );
+	private MLabel versionSeparator2 = new MLabel("<strong>.</strong>").withContentMode( ContentMode.HTML );
+	private MTextField versionNumberField1 = new MTextField().withWidth("30px");
+	private MTextField versionNumberField2 = new MTextField().withWidth("30px");
+	private MTextField versionNumberField3 = new MTextField().withWidth("30px");
+	
 	private MButton buttonPublishCv = new MButton("Publish");
+	private MButton buttonSave = new MButton("Save");
 	private MButton cancelButton = new MButton("Cancel", e -> this.close());
 	
-	private String nextStatus = null;
+	private List<VersionDTO> latestTlVersions = new ArrayList<>();
+	private String versionNumberSL = "1.0";
+	private String versionNumberTL = "1.0.1";
+	private String versionNumberPastSl = "0.9";
+	private String versionNumberPastTl = "1.0.0";
+	
+	private MCssLayout comparatorBlock = new MCssLayout();
+	private MCssLayout comparatorContainer = new MCssLayout().withFullWidth();
+	private MCssLayout comparatorContent = new MCssLayout().withFullWidth();
+	private MLabel comparatorBlockHead = new MLabel();
+	private CvComparatorLayout comparatorLayout;
+	private MButton comparatorLayoutToggle = new MButton("Show comparison with previous version");
 
-	public DialogManageStatusWindow(StardatDDIService stardatDDIService,  
-			VocabularyService vocabularyService, VersionService versionService,
+	public DialogManageStatusWindow(
+			ConceptService conceptService, VersionService versionService,
 			CVScheme cvScheme, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, 
 			Language selectedLanguage, Language sourceLanguage, AgencyDTO agencyDTO, 
 			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super("Manage Status " + ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase());
-		this.stardatDDIService = stardatDDIService;
-		this.vocabularyService = vocabularyService;
+		this.conceptService = conceptService;
 		this.versionService = versionService;
 		this.cvScheme = cvScheme;
 		
@@ -128,37 +152,66 @@ public class DialogManageStatusWindow extends MWindow {
 		
 		this.eventBus = eventBus;
 		this.vocabularyChangeService = vocabularyChangeService;
-		
 		init();
 	}
 
 	private void init() {
-//		String buttonSuffix = ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase();
+		versionNumberField1.addValueChangeListener( e -> {
+			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^\\d.]", ""));
+		});
+		versionNumberField2.addValueChangeListener( e -> {
+			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^\\d.]", ""));
+		});
+		versionNumberField3.addValueChangeListener( e -> {
+			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^\\d.]", ""));
+		});
+		List<VocabularyChangeDTO> changes = null;
+		comparatorLayout = new CvComparatorLayout(conceptService);
+		comparatorBlockHead
+			.withFullWidth()
+			.withStyleName("section-header")
+			.withValue( "Compare versions" );
+		comparatorContainer
+			.withStyleName("comparator-container")
+			.add(
+				comparatorLayoutToggle,
+				comparatorContent
+			);
+		comparatorBlock
+			.withStyleName("section-block")
+			.withFullWidth()
+			.add( 
+				comparatorBlockHead,
+				comparatorContainer
+			);
 		
 		changeListTitle
 			.withFullWidth()
 			.withStyleName("section-header")
 			.withValue( "Change logs" );
-		
-		List<VocabularyChangeDTO> changes = vocabularyChangeService.findAllByVocabularyVersionId( vocabulary.getId(), currentVersion.getId());
-		changesGrid.setItems(changes);
-		changesGrid
-			.withFullWidth()
-			.withHeight("240px")
-			.setColumns("date", "changeType", "description", "userName");
-		
-		changeListBlock
-		.withStyleName("section-block")
-			.withFullWidth()
-			.add( 
-				changeListTitle,
-				changesGrid
-			);
+		if(currentVersion.isInitialVersion())
+			changeListBlock.setVisible( false );
+		else {
+			changes = vocabularyChangeService.findAllByVocabularyVersionId( vocabulary.getId(), currentVersion.getId());
+			changesGrid.setItems(changes);
+			changesGrid
+				.withFullWidth()
+				.withHeight("240px")
+				.setColumns("date", "changeType", "description");
+			
+			changeListBlock
+			.withStyleName("section-block")
+				.withFullWidth()
+				.add( 
+					changeListTitle,
+					changesGrid
+				);
+		}
 		
 		discussionTitle
 			.withFullWidth()
 			.withStyleName("section-header")
-			.withValue( "Notes / Discussion" );
+			.withValue( I18N.get( "dialog.status.section.discusion.header" ) );
 		
 		discussionArea.setWidth("100%");
 		discussionArea.setValue( currentVersion.getDiscussionNotes() == null ? "":currentVersion.getDiscussionNotes());
@@ -168,7 +221,8 @@ public class DialogManageStatusWindow extends MWindow {
 			.addClickListener( e -> {
 				currentVersion.setDiscussionNotes( discussionArea.getValue() );
 				currentVersion = versionService.save(currentVersion);
-				Notification.show("Notes/DIscussion is saved!");
+//				vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
+				Notification.show("Notes/Discussion is saved!");
 			});
 		
 		discussionBlock
@@ -190,11 +244,11 @@ public class DialogManageStatusWindow extends MWindow {
 		buttonReviewInitial
 			.withStyleName("action-button2")
 			.withVisible( false )
-			.addClickListener(this::forwardStatus);
+			.addClickListener(this::forwardCvWorkflowConfirmation);
 		buttonReviewFinal
 			.withStyleName("action-button2")
 			.withVisible( false )
-			.addClickListener(this::forwardStatus);
+			.addClickListener(this::forwardCvWorkflowConfirmation);
 		buttonStatusCancel
 			.withStyleName("action-button2");
 		
@@ -220,6 +274,7 @@ public class DialogManageStatusWindow extends MWindow {
 			versionBlock.setVisible( false );
 			buttonReviewInitial.setVisible( true );
 			buttonReviewFinal.setVisible( false );
+			comparatorBlock.setVisible( false );
 			discussionArea.addStyleName("height-200");
 			statusInfo.setValue("Change CV' " + currentVersion.getItemType() + " " + "\"" + currentVersion.getTitle() + "\"" +
 					" from DRAFT to INITIAL_REVIEW" );
@@ -229,31 +284,111 @@ public class DialogManageStatusWindow extends MWindow {
 			versionBlock.setVisible( false );
 			buttonReviewInitial.setVisible( false );
 			buttonReviewFinal.setVisible( true );
+			comparatorBlock.setVisible( false );
 			discussionArea.addStyleName("height-200");
 			statusInfo.setValue("Change CV' " + currentVersion.getItemType() + " " + "\"" + currentVersion.getTitle() + "\"" +
 					" from INITIAL_REVIEW to FINAL_REVIEW" );
 		}
 		else if( currentVersion.getStatus().equals(Status.FINAL_REVIEW.toString())) {
 			statusBlock.setVisible( false );
+			buttonDiscussionSave.setVisible( false );
 			versionBlock.setVisible( true );
-			discussionArea.addStyleName("height-100");
+			discussionArea.addStyleName("height-200");
+			comparatorBlock.setVisible( true );
+			// prepare the version number
+			// get latest published
+			vocabulary.getLatestVersionByLanguage( vocabulary.getSourceLanguage(), null, Status.PUBLISHED.toString()).ifPresent( slPublish -> {
+				versionNumberSL = slPublish.getNumber();
+				versionNumberPastSl = versionNumberSL;
+				if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
+					int lastDotIndex = versionNumberSL.lastIndexOf(".");
+					String lastNumber = versionNumberSL.substring( lastDotIndex + 1);
+					versionNumberSL = versionNumberSL.substring(0, lastDotIndex + 1) + (Integer.parseInt(lastNumber) + 1);
+				}
+				else {
+					versionNumberTL = versionNumberSL + ".1";
+					versionNumberPastTl = versionNumberSL + ".0";
+					vocabulary.getLatestVersionByLanguage( currentVersion.getLanguage(), null, Status.PUBLISHED.toString()).ifPresent( tlPublish -> {
+						String latestTLPublishNumber = tlPublish.getNumber();
+						if( VersionUtils.compareVersion(latestTLPublishNumber,  versionNumberSL ) > 0 ) {
+							int lastDotIndex2 = latestTLPublishNumber.lastIndexOf(".");
+							String lastNumber2 = latestTLPublishNumber.substring( lastDotIndex2 + 1);
+							versionNumberTL = latestTLPublishNumber.substring(0, lastDotIndex2 + 1) + (Integer.parseInt(lastNumber2) + 1);
+							versionNumberPastTl = latestTLPublishNumber;
+						}
+						
+					});
+				}
+			});
+			
+			if( sourceLanguage.equals( selectedLanguage )) {
+				versionNumberField3.setVisible( false );
+				versionSeparator2.setVisible( false );
+				if( currentVersion.getNumber() != null ) {
+					versionNumberSL = currentVersion.getNumber();
+				}
+				int indexDot = versionNumberSL.indexOf(".");
+				versionNumberField1.setValue( versionNumberSL.substring(0, indexDot));
+				versionNumberField2.setValue( versionNumberSL.substring(indexDot + 1, versionNumberSL.length()));
+			}
+			else {
+				versionNumberField1.setVisible( false );
+				versionNumberField2.setVisible( false );
+				int indexDot = versionNumberTL.lastIndexOf(".");
+				versionSeparator1.setValue( "<strong>" + versionNumberTL.substring(0, indexDot) + "</strong>");
+				versionNumberField3.setValue( versionNumberTL.substring(indexDot + 1, versionNumberTL.length()));
+			}
+			
+			// If publishing SL
+			if( currentVersion.getItemType().equals(ItemType.SL.toString())){
+				// get available TL, get language first and then get the latest TL
+				// The latest TL will be listed as the target TL to be cloned
+				for(String lang : VocabularyDTO.getLanguagesFromVersions( vocabulary.getVersions())) {
+					if( lang.equals( sourceLanguage.toString()))
+						continue;
+					latestTlVersions.add( vocabulary.getLatestVersionByLanguage(lang).get());
+				}
+			} 
+			
+			// version changes extracts
+			if(currentVersion.isInitialVersion()) {
+				versionChanges.setVisible( false );
+				versionHistoryLayout.setVisible( false );
+				versionChangesLabel.setVisible( false );
+				comparatorBlock.setVisible( false );
+			} else {
+				if( currentVersion.getVersionChanges() != null && !currentVersion.getVersionChanges().isEmpty()) {
+					versionChanges.setValue( currentVersion.getVersionChanges() );
+				}
+				else {
+					// If publishing SL
+					if( currentVersion.getItemType().equals(ItemType.SL.toString())){
+						StringBuilder versionChangesContent = new StringBuilder();
+						for( VocabularyChangeDTO vc : changes) {
+							versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
+						}
+						versionChanges.setValue(versionChangesContent.toString());
+					} else {
+						StringBuilder versionChangesContent = new StringBuilder();
+						for( VocabularyChangeDTO vc : changes) {
+							versionChangesContent.append( vc.getChangeType() + ": " + vc.getDescription() + "\n");
+						}
+						versionChanges.setValue(versionChangesContent.toString());
+					}
+				}
+			}
+
+			
 		}
 		
 		buttonPublishCv
 			.withStyleName("action-button2")
 			.addClickListener(this::forwardToPublish);
+		buttonSave
+			.withStyleName("action-button2")
+			.addClickListener(this::saveWithoutPublish);
 		cancelButton
 			.addStyleNames("action-button2");
-		
-		
-//		private MCssLayout versionBlock = new MCssLayout();
-//		private MLabel versionTitle = new MLabel();
-//		private MLabel versionInfo = new MLabel();
-//		private MCssLayout versionHistoryLayout = new MCssLayout();
-//		private TextArea versionNotes = new TextArea();
-//		private MLabel versionNumberLabel = new MLabel();
-//		private MTextField versionNumberField = new MTextField();
-//		private MCssLayout versionButtonLayout = new MCssLayout();
 		
 		versionTitle
 			.withFullWidth()
@@ -261,163 +396,252 @@ public class DialogManageStatusWindow extends MWindow {
 			.withValue("Publish and Version");
 		
 		versionInfo
+			.withContentMode( ContentMode.HTML)
 			.withFullWidth()
-			.withValue("Please make sure that version info and version number are correct");
+			.withValue("<strong>\n" + I18N.get( "window.status.publishversion.text" ) + "</strong>");
 		
 		versionHistoryLayout
 			.withFullWidth()
-			.withHeight("100px")
-			.withStyleName( "white-bg" )
+			.withHeight("200px")
+			.withStyleName( "yscroll","white-bg" )
 			.add(
 				new MLabel("Version History").withStyleName( "section-header" ).withFullWidth()
 			);
 		
-		// TODO: Fix after versioning activated
 		versionHistoryLayout
 			.add(
-				new MLabel("No prior version").withContentMode( ContentMode.HTML )
+				new MLabel( currentVersion.getSummary() == null ? "no prior version" : currentVersion.getSummary() ).withContentMode( ContentMode.HTML )
 			);
-		
+			
 		versionNotesLabel
 			.withFullWidth()
 			.withStyleName("section-header")
 			.withValue("Version Notes");
 		
+		versionChangesLabel
+			.withFullWidth()
+			.withStyleName("section-header")
+			.withValue("Version Changes");
+		
 		versionNotes.setWidth("100%");
-		versionNotes.setHeight("200px");
+		versionNotes.setHeight("160px");
+		
+		versionChanges.setWidth("100%");
+		versionChanges.setHeight("160px");
 		
 		versionNumberLabel
 			.withStyleName("section-header","pull-left")
 			.withValue("Version Number: ");
 		
-		versionNumberField
-			.withStyleName("pull-left")
-			.setWidth("80px");
 		
-		if( sourceLanguage.equals( selectedLanguage ))
-			versionNumberField.setValue("1.0.0");
-		else
-			versionNumberField.setValue("1.0.1");
+
+
+		if( currentVersion.getVersionNotes() != null )
+			versionNotes.setValue( currentVersion.getVersionNotes() );
 		
 		versionButtonLayout
 		.withStyleName("button-layout")
 		.add(
-				versionNumberLabel,
-				versionNumberField,
 				buttonPublishCv,
+				buttonSave,
 				cancelButton
 		);
+		
+		tlCloneInfoLayout
+			.withFullWidth();
+		if( !latestTlVersions.isEmpty()) {
+			StringBuilder sb = new StringBuilder();
+			for(VersionDTO ver : latestTlVersions) {
+				Language verLang = Language.valueOfEnum( ver.getLanguage());
+				sb.append( verLang.toStringCapitalized() + " " + (ver.getNumber() == null ? "" : ver.getNumber() ) + " (" + ver.getStatus() + ") <br/>");
+			}
+			
+			tlCloneInfoLayout
+				.add(
+						new MLabel()
+							.withFullWidth()
+							.withContentMode( ContentMode.HTML)
+							.withValue("<strong>The following TL items will be cloned as draft : </strong>"),
+						new MLabel()
+							.withFullWidth()
+							.withContentMode( ContentMode.HTML)
+							.withValue( sb.toString() )
+				);
+		}
 		
 		versionBlock
 			.withStyleName("section-block")
 			.withFullWidth()
 			.add(
 				versionTitle,
-				versionInfo,
 				versionHistoryLayout,
 				versionNotesLabel,
 				versionNotes,
+				versionChangesLabel,
+				versionChanges,
+				versionNumberLabel,
+				versionNumberField1,
+				versionSeparator1,
+				versionNumberField2,
+				versionSeparator2,
+				versionNumberField3,
+				tlCloneInfoLayout,
+				versionInfo,
 				versionButtonLayout
 			);
 		
+		comparatorContent
+			.add(comparatorLayout );
+		
+		comparatorLayout.setVisible( false );
+		
+		if( currentVersion.isInitialVersion()) {
+			comparatorLayoutToggle.setVisible( false );
+			versionNotes.setVisible( false );
+			versionNotesLabel.setVisible( false );
+			versionInfo.withValue("<strong>Please make sure that version number is correct.</strong>");
+		} else {
+			comparatorLayoutToggle.addClickListener( e -> {
+				if( comparatorLayout.isVisible()) {
+					comparatorLayout.setVisible( false );
+					e.getButton().setCaption("Show comparison with previous version");
+				} else {
+					if( !comparatorLayout.isVersionCompared()) {
+						VersionDTO prevVersion = vocabulary.getVersionById( currentVersion.getPreviousVersion());
+						comparatorLayout.compareVersion(prevVersion, currentVersion);
+					}
+					comparatorLayout.setVisible( true );
+					e.getButton().setCaption("Hide comparison with previous version");
+				}
+					
+			});
+		}
 		layout
 			.withFullWidth()
 			.withStyleName("dialog-content")
 			.add(
 				changeListBlock,
 				discussionBlock,
+				comparatorBlock,
 				statusBlock,
 				versionBlock
 				);
 		
+		if( currentVersion.getStatus().equals(Status.DRAFT.toString()) ||
+			currentVersion.getStatus().equals(Status.INITIAL_REVIEW.toString())) {
+			if( currentVersion.isInitialVersion())
+				this.withHeight("460px");
+			else
+				this.withHeight("745px");
+				
+		}
+		else {
+			if( currentVersion.isInitialVersion())
+				this.withHeight("640px");
+			else
+				this.withHeight("800px");
+		}
+		
 		this
-			.withHeight("800px")
-			.withWidth("1024px")
+			.withWidth(Page.getCurrent().getBrowserWindowWidth() * 0.98 + "px")
 			.withModal( true )
 			.withContent(layout);
 	}
 	
-	private void forwardToPublish() {
-		if( versionNotes.getValue() == null || versionNotes.getValue().isEmpty() || versionNumberField.getValue() == null || versionNumberField.getValue().isEmpty()) {
-			Notification.show("Version Notes and Version number can not be empty");
-			return;
-		}
-		forwardStatus();
-	}
-
-	private void forwardStatus() {
-		String currentStatus = currentVersion.getStatus();
-		
-		String confirmInfo = null;
-		if( currentStatus.equals( Status.DRAFT.toString())) {
-			nextStatus = Status.INITIAL_REVIEW.toString();
-			confirmInfo = "Are you sure that you want to change the state of CV-" + ( sourceLanguage.equals(selectedLanguage) ? "SL " : "TL ") + "\"" + currentVersion.getTitle() + "\" from " + currentStatus + " to " + nextStatus + "?";
-		}
-		else if( currentStatus.equals( Status.INITIAL_REVIEW.toString())) {
-			nextStatus = Status.FINAL_REVIEW.toString();
-			confirmInfo = "Are you sure that you want to change the state of CV-" + ( sourceLanguage.equals(selectedLanguage) ? "SL " : "TL ") + "\"" + currentVersion.getTitle() + "\" from " + currentStatus + " to " + nextStatus + "?";
-		}
-		else if( currentStatus.equals( Status.FINAL_REVIEW.toString())) {
-			nextStatus = Status.PUBLISHED.toString();
-			confirmInfo = "Are you sure that you want to publish CV-" + ( sourceLanguage.equals(selectedLanguage) ? "SL " : "TL ") + "\"" + currentVersion.getTitle() + "\"?"; 
-		}
-
-		confirmForwardStatus(confirmInfo);
-	}
-
-	private void confirmForwardStatus(String confirmInfo) {
-		ConfirmDialog.show( this.getUI(), "Confirm",
-				confirmInfo, "yes",
-				"cancel",
-		
-					dialog -> {
-						if( dialog.isConfirmed() ) {
-							
-							currentVersion.setStatus( nextStatus );
-							vocabulary.setVersionByLanguage(selectedLanguage, nextStatus);
-							
-							if( selectedLanguage.equals( sourceLanguage )) {
-								vocabulary.setStatus( nextStatus);
-							}
-							vocabulary.setStatuses( vocabulary.getLatestStatuses() );
-							vocabulary.addLanguagePublished( selectedLanguage.toString());
-							
-							if( nextStatus.equals( Status.PUBLISHED.toString())) {
-								currentVersion.setVersionNotes( versionNotes.getValue());
-								currentVersion.setNumber( versionNumberField.getValue());
-								currentVersion.setPublicationDate( LocalDate.now());
-								vocabulary.setVersionByLanguage(selectedLanguage, versionNumberField.getValue());
-								if( selectedLanguage.equals( sourceLanguage ))
-									vocabulary.setPublicationDate( LocalDate.now());
-								
-								CVVersion cvVersion = new CVVersion();
-								cvVersion.setPublicationDate( LocalDate.now());
-								cvVersion.setContainerId( cvScheme.getContainerId());
-							}
-							
-							// save to database
-							vocabulary = vocabularyService.save(vocabulary);
-							
-							// index for editor
-							vocabularyService.index(vocabulary);
-							
-							// index for publication
-							if( nextStatus.equals( Status.PUBLISHED.toString()))
-								vocabularyService.indexPublish(vocabulary, currentVersion);
-							
-							// save to flatDB
-							cvScheme.setStatus( nextStatus );
-							cvScheme.save();
-						
-							DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv");
-							
-							eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-							closeDialog();
-						}
-					}
-				);
+	private void saveWithoutPublish() {
+		currentVersion.setDiscussionNotes( discussionArea.getValue() );
+		currentVersion.setVersionNotes( versionNotes.getValue() );
+		currentVersion.setVersionChanges( versionChanges.getValue() );
+		currentVersion.setNumber( getVersionNumber() );
+		currentVersion = versionService.save(currentVersion);
+		Notification.show("Changes are saved!");
+		close();
 	}
 	
+	private String getVersionNumber() {
+		if( sourceLanguage.equals( selectedLanguage )) {
+			return versionNumberField1.getValue() + "." + versionNumberField2.getValue();
+		}else {
+			int indexDot = versionNumberTL.lastIndexOf(".");
+			return versionNumberTL.substring(0, indexDot) + "." + versionNumberField3.getValue();
+		}
+	}
+	
+	private boolean isVersionNumberEmpty() {
+		if( sourceLanguage.equals( selectedLanguage )) {
+			if( (versionNumberField1.getValue() != null && !versionNumberField1.isEmpty()) &&
+					(versionNumberField2.getValue() != null && !versionNumberField2.isEmpty()))
+				return false;
+			return true;
+		}else {
+			if( (versionNumberField3.getValue() != null && !versionNumberField3.isEmpty()))
+				return false;
+			return true;
+		}
+	}
+	
+	private void forwardToPublish() {
+		if( versionChanges.isVisible() && (versionChanges.getValue() == null || versionChanges.getValue().isEmpty())) {
+			Notification.show("Version Changes can not be empty");
+			return;
+		}
+		
+		if( isVersionNumberEmpty()) {
+			Notification.show("Version Number can not be empty");
+			return;
+		}
+			
+		if( sourceLanguage.equals( selectedLanguage )) {
+			System.out.println( getVersionNumber() + "  " + versionNumberPastSl + "  " + VersionUtils.compareVersion( getVersionNumber(), versionNumberPastSl));
+
+			if( VersionUtils.compareVersion(getVersionNumber(), versionNumberPastSl) <= 0) {
+				Notification.show("Version Number is lower or simillar with the last version");
+				return;
+			}
+		} else {
+			if( VersionUtils.compareVersion( getVersionNumber(), versionNumberPastTl) <= 0) {
+				Notification.show("Version Number is lower or simillar with the last version");
+				return;
+			}
+		}
+		
+		forwardCvWorkflowConfirmation();
+	}
+	
+	private void forwardCvWorkflowConfirmation() {
+		Status currentCvStatus = currentVersion.getEnumStatus();
+		Status nextCvStatus =  WorkflowManager.getForwardStatus(currentCvStatus);
+		
+		ConfirmDialog.show( 
+			this.getUI(), 
+			"Confirm",
+			I18N.get(
+				"dialog.confirm.status." + currentCvStatus.toString().toLowerCase() + ".to." + nextCvStatus.toString().toLowerCase(), 
+				(sourceLanguage.equals(selectedLanguage) ? "SL " : "TL ") + "\"" + currentVersion.getTitle() + "\"",
+				currentCvStatus.toString(),
+				nextCvStatus.toString()
+			), 
+			I18N.get("dialog.button.yes"), 
+			I18N.get("dialog.button.cancel"),
+			dialog -> {
+				if( dialog.isConfirmed() ) {
+					doForwardCvWorkflow();
+					closeDialog();
+				}
+		});
+	}
+
+	private void doForwardCvWorkflow() {											
+		currentVersion = WorkflowManager.forwardStatus(vocabulary, currentVersion, agency, cvScheme,
+			 latestTlVersions, getVersionNumber(), versionNotes.getValue(), versionChanges.getValue());
+	
+		if( currentVersion.getStatus().equals( Status.PUBLISHED.toString())) 
+			UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation()+ "?url=" +  currentVersion.getUri());
+		else	
+			eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+					
+	}
+
 	public void closeDialog() {
 		this.close();
 	}

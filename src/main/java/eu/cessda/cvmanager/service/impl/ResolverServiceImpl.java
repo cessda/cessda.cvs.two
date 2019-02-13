@@ -11,6 +11,8 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.ResolverMapper;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -162,12 +164,16 @@ public class ResolverServiceImpl implements ResolverService {
 					baseCvUrnAdded = true;
 				}
 				// insert version resolver
-				save( 
-					ResolverDTO.createUrnResolver()
-						.withResourceId( version.getUri())
-						.withResourceURL( vocab.getNotation() + "?url=" + version.getUri() )
-						.withResolverURI( version.getCanonicalUri())
-				);
+				try {
+					save( 
+						ResolverDTO.createUrnResolver()
+							.withResourceId( version.getUri())
+							.withResourceURL( vocab.getNotation() + "?url=" + URLEncoder.encode( version.getUri(), "UTF-8")  )
+							.withResolverURI( version.getCanonicalUri())
+					);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
