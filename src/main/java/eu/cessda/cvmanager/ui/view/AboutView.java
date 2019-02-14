@@ -26,9 +26,11 @@ import com.vaadin.ui.UI;
 import eu.cessda.cvmanager.domain.enumeration.ObjectType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.MetadataFieldDTO;
 import eu.cessda.cvmanager.service.dto.MetadataValueDTO;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
@@ -41,6 +43,9 @@ public class AboutView extends CvView  {
 	 */
 	private static final long serialVersionUID = -4913971320134365516L;
 	public static final String VIEW_NAME = "about";
+	
+	private static final String ABOUT_FIELD = "system.menu.about";
+	private final MetadataFieldService metadataFieldService;
 	private final MetadataValueService metadataValueService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
@@ -63,10 +68,12 @@ public class AboutView extends CvView  {
 
 	public AboutView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, CodeService codeService, MetadataValueService metadataValueService) {
+			VocabularyService vocabularyService, CodeService codeService, MetadataFieldService metadataFieldService,
+			MetadataValueService metadataValueService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
 				codeService, DetailView.VIEW_NAME);
 		this.metadataValueService = metadataValueService;
+		this.metadataFieldService = metadataFieldService;
 		
 		this.sidePanel.setVisible( false );
 		init();
@@ -74,7 +81,7 @@ public class AboutView extends CvView  {
 	}
 	
 	private void init() {
-		List<MetadataValueDTO> metadataValues = metadataValueService.findByMetadataField("system.menu.about", ObjectType.SYSTEM);
+		List<MetadataValueDTO> metadataValues = metadataValueService.findByMetadataField(ABOUT_FIELD, ObjectType.SYSTEM);
 		if( !metadataValues.isEmpty() ) {
 			aboutContent = metadataValues.get(0);
 		}
@@ -108,9 +115,18 @@ public class AboutView extends CvView  {
 		saveButton
 			.withStyleName("pull-right")
 			.addClickListener( e -> {
+				MetadataFieldDTO metadataField = null;
+				if( !metadataFieldService.existsByMetadataKey(ABOUT_FIELD)) {
+					metadataField = new MetadataFieldDTO();
+					metadataField.setMetadataKey(ABOUT_FIELD);
+					metadataField.setObjectType(ObjectType.SYSTEM);
+					metadataField = metadataFieldService.save(metadataField);
+				} else {
+					metadataField = metadataFieldService.findByMetadataKey(ABOUT_FIELD);
+				}
 				if(aboutContent == null ) {
 					aboutContent = new MetadataValueDTO();
-					aboutContent.setMetadataFieldId(1L);
+					aboutContent.setMetadataFieldId(metadataField.getId());
 				}
 				if( infoEditor.getValue().isEmpty()) {
 					aboutContent.setValue( "" );
@@ -118,7 +134,8 @@ public class AboutView extends CvView  {
 				else {
 					aboutContent.setValue( toXHTML( infoEditor.getValue() ) );
 				}
-				metadataValueService.save(aboutContent);
+				
+				aboutContent = metadataValueService.save(aboutContent);
 				refreshInfo();
 				switchMode( LayoutMode.READ);
 			});
