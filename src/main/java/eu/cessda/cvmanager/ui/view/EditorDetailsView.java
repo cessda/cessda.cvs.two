@@ -861,8 +861,9 @@ public class EditorDetailsView extends CvView {
 	                		return;
 	                	}
 	                	List<Button> optionButtons = new ArrayList<>();
-	                	optionButtons.add( new Button( "As next sibling" )); // option 0
-	                	optionButtons.add( new Button( "As child" ));        // option 1
+	                	optionButtons.add( new Button( "As previous sibling" )); // option 0
+	                	optionButtons.add( new Button( "As next sibling" )); // option 1
+	                	optionButtons.add( new Button( "As child" ));        // option 2
 	                	
 	                	getUI().addWindow( new DialogMultipleOption(
 	                			i18n.get( "dialog.order.code.header" ), 
@@ -877,25 +878,16 @@ public class EditorDetailsView extends CvView {
 	                				
 	                				CodeDTO draggedNodeParent = cvCodeTreeData.getParent( draggedRow );
 	                				CodeDTO targetNodeParent = cvCodeTreeData.getParent(targetRow);
-                					
-	                				if( selectedOptionNumber == 0 ) { // move as next sibling
-	                					// Possibility
-	                					// -- within same parent
-	                					// move between siblings in root node (top concepts level)  - checked Ok
-	                					// move between siblings in x-parent node (parent as child concept level) - checked Ok
-	                					// -- different parent
-	                					// move from child concept to top concept  - checked Ok
-	                					// move from top concept to child concept  - checked Ok
-	                					
-	                					
-	                					// in order to be able to move as next sibling 
+	                				if( selectedOptionNumber == 0 || selectedOptionNumber == 1) { // move as previous oe next sibling
+	                					// in order to be able to move as previous sibling 
 	                					// the nodes need to be from the same parent
 	                					if( !Objects.equals( draggedNodeParent, targetNodeParent)){
-	                						//add code as target parent node first
+	                						// add code as target parent node first
 	                						cvCodeTreeData.setParent(draggedRow, targetNodeParent);
 	                					}
 	                					
-	                					// set to the 
+	                					// now after the node target and node dragged from same parent,
+	                					// set the node position
 	                					if( draggedRow.getParent() != null ) {
 	                						draggedRow.setNotation( draggedRow.getNotation().substring(draggedRow.getParent().length() + 1));
 	                						draggedRow.setParent( null );
@@ -907,12 +899,18 @@ public class EditorDetailsView extends CvView {
 
 	                					// update tree in vaadin UI
 	                					cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
+	                					
+	                					// if move to previous sibling, need to do moveAfterSibling twice
+	                					// to swap the position between target and dragged node
+	                					if( selectedOptionNumber == 0 ) {
+	                						cvCodeTreeData.moveAfterSibling(targetRow, draggedRow);
+	                					}
 	                					dataProvider.refreshAll();
 	                					
 	                					// save on DB
             							codeService.storeCodeTree(cvCodeTreeData, currentVersion.getConcepts());
 	                				} 
-	                				else if (selectedOptionNumber == 1) { //move as child
+	                				else if (selectedOptionNumber == 2) { //move as child
 	                					// Possibility
 	                					// as topconcept to child from root/leaf concept
 	                					// as child child to  child from root/leaf concept (only concept narrower affected)

@@ -51,7 +51,7 @@ public class DialogMultipleOption extends MWindow {
 		
 		this
 			.withHeight("240px")
-			.withWidth("500px")
+			.withWidth("600px")
 			.withResizable(false)
 			.withCenter()
 			.withModal(true)
