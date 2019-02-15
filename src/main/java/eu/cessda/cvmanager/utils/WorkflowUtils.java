@@ -8,7 +8,7 @@ import org.gesis.wts.service.dto.AgencyDTO;
 import eu.cessda.cvmanager.domain.Cv;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 
 public final class WorkflowUtils {
 	private WorkflowUtils() {}
@@ -40,7 +40,7 @@ public final class WorkflowUtils {
 	}
 	
 	public static String generateCvDetailUrl(ConfigurationService configService, String cvNotation, String uri) {
-		String detailUrl = configService.getServerBaseUrl() + configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + cvNotation + "?url=";
+		String detailUrl = configService.getServerBaseUrl() + configService.getServerContextPath() + "/#!" + PublicationDetailsView.VIEW_NAME + "/" + cvNotation + "?url=";
 		try {
 			detailUrl += URLEncoder.encode( uri, "UTF-8");
 		} catch (UnsupportedEncodingException e) {

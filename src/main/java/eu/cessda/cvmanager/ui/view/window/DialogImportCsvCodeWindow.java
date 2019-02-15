@@ -52,8 +52,8 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.CsvRowToConceptDTOMapper;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.ui.view.importing.CsvImportLayout;
 import eu.cessda.cvmanager.ui.view.importing.CsvRow;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
@@ -220,7 +220,7 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 		// indexing editor
 		vocabularyService.index(vocabulary);
 		
-		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
+		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		this.close();
 	}
 

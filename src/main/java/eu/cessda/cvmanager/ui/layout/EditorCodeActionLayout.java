@@ -33,7 +33,7 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.CsvRowToConceptDTOMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogImportCsvCodeWindow;
@@ -200,13 +200,13 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	}
 	
 	private void doDeleteCode(ClickEvent event ) {
-		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_DELETED, null) );
+		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_DELETED, null) );
 	}
 	
 	private void doSortCode(ClickEvent event ) {
 		enableSort = !enableSort;
 		buttonCodeSort.withCaption( enableSort ? "Disable order code" : "Enable order code" );
-		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_SORT, enableSort) );
+		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_SORT, enableSort) );
 	}
 	
 	public void clearCode() {

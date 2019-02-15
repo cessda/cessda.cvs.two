@@ -70,8 +70,8 @@ import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 import eu.cessda.cvmanager.ui.view.AboutView;
 import eu.cessda.cvmanager.ui.view.AgencyView;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.ui.view.EditorSearchView;
 import eu.cessda.cvmanager.ui.view.EditorView;
 import eu.cessda.cvmanager.ui.view.HomeView;
@@ -203,8 +203,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		this.viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
 
 		String uriQuery = Page.getCurrent().getLocation().toString();
-		if( !uriQuery.contains( "#!" + DetailView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
-				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ) && !uriQuery.contains( "#!" + DetailsView.VIEW_NAME )  && 
+		if( !uriQuery.contains( "#!" + PublicationDetailsView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
+				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorDetailsView.VIEW_NAME )  && 
 				!uriQuery.contains( "#!" + AdminView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorSearchView.VIEW_NAME )) {
 			navigator.navigateTo(DiscoveryView.VIEW_NAME);
 		}
@@ -351,7 +351,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.addTextChangeListener( e -> {
 				System.out.println( EditorSearchView.class.getName() );
 				if( navigator.getCurrentView().toString().indexOf( EditorSearchView.class.getSimpleName() ) > 0 || 
-						navigator.getCurrentView().toString().indexOf( DetailsView.class.getSimpleName() ) > 0 ) {
+						navigator.getCurrentView().toString().indexOf( EditorDetailsView.class.getSimpleName() ) > 0 ) {
 					if( navigator.getCurrentView().toString().indexOf( EditorSearchView.class.getSimpleName() ) < 0 && !e.getValue().isEmpty())
 						navigator.navigateTo(EditorSearchView.VIEW_NAME);
 					eventBus.publish(EventScope.UI, EditorSearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_EDITOR_SEARCH, e.getValue()) );

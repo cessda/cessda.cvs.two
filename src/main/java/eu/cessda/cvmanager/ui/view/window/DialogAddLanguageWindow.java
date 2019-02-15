@@ -53,8 +53,8 @@ import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.view.CvManagerView;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class DialogAddLanguageWindow extends MWindow {
 
@@ -439,7 +439,7 @@ public class DialogAddLanguageWindow extends MWindow {
 		vocabularyService.index(vocabulary);
 
 		close();
-		UI.getCurrent().getNavigator().navigateTo( DetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.toString());
+		UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.toString());
 	}
 	
 	private boolean isInputValid() {

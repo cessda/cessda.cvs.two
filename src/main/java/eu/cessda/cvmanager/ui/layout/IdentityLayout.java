@@ -24,7 +24,7 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.ui.view.AgencyView;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class IdentityLayout extends MCssLayout implements Translatable {

@@ -78,8 +78,8 @@ import eu.cessda.cvmanager.ui.layout.VersionLayout;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @UIScope
-@SpringView(name = DetailView.VIEW_NAME)
-public class DetailView extends CvView {
+@SpringView(name = PublicationDetailsView.VIEW_NAME)
+public class PublicationDetailsView extends CvView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "detail";
@@ -155,12 +155,12 @@ public class DetailView extends CvView {
 	private String activeTab;
 	
 
-	public DetailView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public PublicationDetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
-				codeService, DetailView.VIEW_NAME);
+				codeService, PublicationDetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -219,7 +219,7 @@ public class DetailView extends CvView {
 					selectedLang = null;
 					activeTab = "detail";
 				}
-				LoginView.NAVIGATETO_VIEWNAME = DetailView.VIEW_NAME + "/" + itemPathPart[0];
+				LoginView.NAVIGATETO_VIEWNAME = PublicationDetailsView.VIEW_NAME + "/" + itemPathPart[0];
 				if( itemPathPart.length > 0 )
 					cvItem.setCurrentNotation(itemPathPart[0]);
 				if( mappedParams.get("url") != null)
@@ -322,7 +322,7 @@ public class DetailView extends CvView {
 		topViewSection.removeAllComponents();
 		
 		if( SecurityUtils.isAuthenticated() && !vocabulary.isWithdrawn()) {
-			String baseUrl = configService.getServerContextPath() + "/#!" + DetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
+			String baseUrl = configService.getServerContextPath() + "/#!" + EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
 			topViewSection.add( new MLabel()
 					.withContentMode( ContentMode.HTML)
 					.withStyleName("pull-right")
@@ -351,7 +351,7 @@ public class DetailView extends CvView {
 		vocabulary
 		.getLatestVersionByLanguage( sourceLanguage.toString(), null, Status.PUBLISHED.toString())
 		.ifPresent( slVersion -> {
-			String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/";
+			String baseUrl = configService.getServerContextPath() + "/#!" + PublicationDetailsView.VIEW_NAME + "/";
 			latestSlVersion = slVersion;
 			// warning about newer version
 			if( latestSlVersion.getId() > currentVersion.getId()) {

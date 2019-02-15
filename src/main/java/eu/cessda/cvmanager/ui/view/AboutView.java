@@ -71,7 +71,7 @@ public class AboutView extends CvView  {
 			VocabularyService vocabularyService, CodeService codeService, MetadataFieldService metadataFieldService,
 			MetadataValueService metadataValueService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
-				codeService, DetailView.VIEW_NAME);
+				codeService, PublicationDetailsView.VIEW_NAME);
 		this.metadataValueService = metadataValueService;
 		this.metadataFieldService = metadataFieldService;
 		

@@ -41,7 +41,7 @@ import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class DialogTranslateCodeWindow extends MWindow {
 
@@ -291,7 +291,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 		// indexing editor
 		vocabularyService.index(vocabulary);
 		
-		eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
+		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		
 		this.close();
 	}

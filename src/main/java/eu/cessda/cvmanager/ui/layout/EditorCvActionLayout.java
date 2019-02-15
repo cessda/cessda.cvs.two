@@ -52,8 +52,8 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.ui.view.EditorSearchView;
 import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
@@ -308,8 +308,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							if(reindexPublication)
 								vocabularyService.indexPublish(vocabulary, latestVers.get());
 							
-							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation());
+							eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+							UI.getCurrent().getNavigator().navigateTo( PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
 						} 
 						else // TL version which is not initial version
 						{
@@ -343,8 +343,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							if(reindexPublication)
 								vocabularyService.indexPublish(vocabulary, latestVers.get());
 							
-							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation());
+							eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+							UI.getCurrent().getNavigator().navigateTo( PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
 						}
 					} else { // initial version
 						if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
@@ -384,8 +384,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							// reindex editor search
 							vocabularyService.index(vocabulary);
 							
-							eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-							UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + vocabulary.getNotation());
+							eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+							UI.getCurrent().getNavigator().navigateTo( PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
 						}
 					}
 					

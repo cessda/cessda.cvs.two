@@ -68,8 +68,8 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class DialogCreateVersionWindow extends MWindow {
 
@@ -311,9 +311,9 @@ public class DialogCreateVersionWindow extends MWindow {
 			// reindex
 			vocabularyService.index(vocabulary);
 			
-			eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_NEWVERSION, null) );
+			eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_NEWVERSION, null) );
 			close();
-			UI.getCurrent().getNavigator().navigateTo( DetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
+			UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
 	}
 	
 	public void closeDialog() {

@@ -89,8 +89,8 @@ import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 @UIScope
-@SpringView(name = DetailsView.VIEW_NAME)
-public class DetailsView extends CvView {
+@SpringView(name = EditorDetailsView.VIEW_NAME)
+public class EditorDetailsView extends CvView {
 
 	private static final long serialVersionUID = -1095312295254197091L;
 	public static final String VIEW_NAME = "details";
@@ -173,12 +173,12 @@ public class DetailsView extends CvView {
 	private EditorCvActionLayout editorCvActionLayout;
 	private EditorCodeActionLayout editorCodeActionLayout;
 
-	public DetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public EditorDetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
 			CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, DetailsView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, EditorDetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -189,7 +189,7 @@ public class DetailsView extends CvView {
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.licenceService = licenceService;
 		this.csvRowToConceptDTOMapper = csvRowToConceptDTOMapper;
-		eventBus.subscribe( this, DetailsView.VIEW_NAME );
+		eventBus.subscribe( this, EditorDetailsView.VIEW_NAME );
 	}
 
 	@PostConstruct
@@ -297,7 +297,7 @@ public class DetailsView extends CvView {
 				}
 				
 				
-				LoginView.NAVIGATETO_VIEWNAME = DetailsView.VIEW_NAME + "/" + itemPathPart[0];
+				LoginView.NAVIGATETO_VIEWNAME = EditorDetailsView.VIEW_NAME + "/" + itemPathPart[0];
 				cvItem.setCurrentCvId(itemPathPart[0]);
 				cvItem.setCurrentNotation(itemPathPart[0]);
 				if( itemPathPart.length > 1 )

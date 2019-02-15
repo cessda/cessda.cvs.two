@@ -84,8 +84,8 @@ import eu.cessda.cvmanager.ui.view.window.DialogMultipleOption;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @UIScope
-@SpringView(name = DetailView2.VIEW_NAME)
-public class DetailView2 extends CvManagerView {
+@SpringView(name = CvSkosDetailsView.VIEW_NAME)
+public class CvSkosDetailsView extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "detailold";
@@ -175,16 +175,16 @@ public class DetailView2 extends CvManagerView {
 	private String sourceLanguage;
 	private String activeTab;
 
-	public DetailView2( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
+	public CvSkosDetailsView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, TemplateEngine templateEngine) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, DetailView2.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, CvSkosDetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
 		this.versionService = versionService;
-		eventBus.subscribe( this, DetailView2.VIEW_NAME );
+		eventBus.subscribe( this, CvSkosDetailsView.VIEW_NAME );
 	}
 
 	@PostConstruct
@@ -274,7 +274,7 @@ public class DetailView2 extends CvManagerView {
 				} else {
 					activeTab = "detail";
 				}
-				LoginView.NAVIGATETO_VIEWNAME = DetailView2.VIEW_NAME + "/" + itemPathPart[0];
+				LoginView.NAVIGATETO_VIEWNAME = CvSkosDetailsView.VIEW_NAME + "/" + itemPathPart[0];
 				if( itemPathPart.length > 0 )
 					cvItem.setCurrentNotation(itemPathPart[0]);
 				if( mappedParams.get("url") != null)

@@ -48,7 +48,7 @@ import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class DialogCVSchemeWindow extends MWindow implements Translatable{
 
@@ -436,11 +436,11 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 		
 		// use eventbus to update detail view
 		if( isUpdated )
-			eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+			eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 		
 //		eventBus.publish( this, ddiStore);
 		close();
-		UI.getCurrent().getNavigator().navigateTo( DetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
+		UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
 	}
 
 	private boolean isInputValid() {

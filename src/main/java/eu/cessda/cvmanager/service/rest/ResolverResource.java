@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.ResolverService;
 import eu.cessda.cvmanager.service.dto.ResolverDTO;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 
 
 /**
@@ -44,7 +44,7 @@ public class ResolverResource {
         ResolverDTO resolverDTO = resolverService.findByResolverURI(resolverUri);
         if( resolverDTO != null ) {
         	HttpHeaders headers = new HttpHeaders();
-			headers.setLocation(URI.create( configurationService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + resolverDTO.getResourceURL()));
+			headers.setLocation(URI.create( configurationService.getServerContextPath() + "/#!" + PublicationDetailsView.VIEW_NAME + "/" + resolverDTO.getResourceURL()));
 			return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "CV with URN: " + resolverUri + " is not found" );
