@@ -37,7 +37,12 @@ public class StardatDDIService {
 	}	
 
 	public DDIStore saveElement(DDIStore ddiStore, String username, String comment) {
-		return restClient.saveElement( ddiStore, username, comment);
+		try {
+			restClient.saveElement( ddiStore, username, comment);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return ddiStore;
 	}
 	
 	public Long deleteById(Long id, String username, String comment){
