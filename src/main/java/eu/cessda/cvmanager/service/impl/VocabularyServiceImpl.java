@@ -802,6 +802,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 			if( latestSlVersion.isPresent())
 				version = latestSlVersion.get();
 		}
+		// no published SL version
+		if(version == null)
+			return;
 		
 		// set vocabulary with latest Published version from SL and TL
 		List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup( true );
