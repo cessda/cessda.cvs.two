@@ -41,6 +41,15 @@ public class VocabularyDTO implements Serializable {
 		discoverable = false;
 	}
 	
+	public static VocabularyDTO createDraft() {
+		return new VocabularyDTO().withStatus(Status.DRAFT).addStatus( Status.DRAFT.toString());
+	}
+	
+	public VocabularyDTO withStatus(Status status) {
+		this.status = status.toString();
+		return this;
+	}
+	
     private Long id;
     
 	private String status;

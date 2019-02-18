@@ -92,10 +92,10 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private Language language;
 
 	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, 
-			VersionService versionService,CodeService codeService, ConceptService conceptService, CVScheme cvSch, CVConcept newCode, CVConcept parentCvConcept, VocabularyDTO vocabularyDTO,
+			VersionService versionService,CodeService codeService, ConceptService conceptService,  VocabularyDTO vocabularyDTO,
 			VersionDTO versionDTO, CodeDTO codeDTO, CodeDTO parentCodeDTO,ConceptDTO conceptDTO, I18N i18n, Locale locale, VocabularyChangeService vocabularyChangeService) {
-		super( parentCvConcept == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
-				locale, ( parentCvConcept.getNotation() == null? parentCvConcept.getPrefLabelByLanguage( Language.valueOfEnum( versionDTO.getLanguage()).toString()) : parentCvConcept.getNotation() )));
+		super( parentCodeDTO == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
+				locale, parentCodeDTO.getNotation() ));
 		
 		this.eventBus = eventBus;
 		this.i18n = i18n;

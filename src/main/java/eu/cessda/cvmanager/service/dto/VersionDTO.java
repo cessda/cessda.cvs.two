@@ -104,6 +104,17 @@ public class VersionDTO implements Serializable {
 
     @JsonIgnore
     private Set<ConceptDTO> concepts = new HashSet<>();
+    
+    public VersionDTO() {}
+    
+    public static VersionDTO createDraft() {
+		return new VersionDTO().withStatus(Status.DRAFT);
+	}
+	
+	public VersionDTO withStatus(Status status) {
+		this.status = status.toString();
+		return this;
+	}
 
     public Long getId() {
         return id;

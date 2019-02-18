@@ -146,14 +146,9 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	}
 
 	private void doAddCode(ClickEvent event ) {
-		CVConcept newCVConcept = new CVConcept();
-		newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
-		newCVConcept.createId();
-//		newCVConcept.setContainerId( cvScheme.getContainerId());
-
 		Window window = new DialogAddCodeWindow(
 				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
-				conceptService, cvScheme, newCVConcept, null, vocabulary, currentVersion, 
+				conceptService, vocabulary, currentVersion, 
 				new CodeDTO(), null, new ConceptDTO(), i18n, locale, vocabularyChangeService);
 		getUI().addWindow(window);
 	}
@@ -187,14 +182,9 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	}
 	
 	private void doCodeAddChild(ClickEvent event ) {
-		CVConcept newCVConcept = new CVConcept();
-		newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
-		newCVConcept.createId();
-//		newCVConcept.setContainerId( cvScheme.getContainerId());
-		
 		Window window = new DialogAddCodeWindow(
 				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
-				conceptService, cvScheme, newCVConcept, cvConcept, vocabulary, currentVersion, 
+				conceptService, vocabulary, currentVersion, 
 				new CodeDTO(), currentCode, new ConceptDTO(), i18n, locale, vocabularyChangeService);
 		getUI().addWindow( window );
 	}

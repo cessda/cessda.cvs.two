@@ -59,36 +59,15 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 		
 		updateMessageStrings(locale);
 		
-//		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl()) {
-			getInnerContainer()
-				.add(
-					buttonAddCv
-				);
-//		}
+		getInnerContainer()
+			.add(
+				buttonAddCv
+			);
 	}
 
 	private void doCvAdd( ClickEvent event ) {
-		
-//		CVScheme newCvScheme = new CVScheme();
-//		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-//		newCvScheme.createId();
-//		newCvScheme.setContainerId(newCvScheme.getId());
-//		newCvScheme.setStatus( Status.DRAFT.toString() );
-//
-//		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, 
-//				vocabularyMapper, vocabularySearchRepository, newCvScheme, new VocabularyDTO(), 
-//				new VersionDTO(), null, i18n, null, eventBus, vocabularyChangeService);
-//		getUI().addWindow(window);
-		
-		CVScheme newCvScheme = new CVScheme();
-		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-		newCvScheme.createId();
-		newCvScheme.setContainerId(newCvScheme.getId());
-		newCvScheme.setStatus( Status.DRAFT.toString() );
-
-		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService,
-				versionService, newCvScheme, new VocabularyDTO(), new VersionDTO(), null, i18n, null, 
-				eventBus, vocabularyChangeService);
+		Window window = new DialogCVSchemeWindow(i18n, eventBus, agencyService, vocabularyService, 
+				VocabularyDTO.createDraft(), VersionDTO.createDraft(), null, null);
 		getUI().addWindow(window);
 	}
 	

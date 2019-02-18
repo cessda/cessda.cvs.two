@@ -197,25 +197,16 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	}
 
 	private void doCvAdd( ClickEvent event ) {
-		
-		CVScheme newCvScheme = new CVScheme();
-		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-		newCvScheme.createId();
-		newCvScheme.setContainerId(newCvScheme.getId());
-		newCvScheme.setStatus( Status.DRAFT.toString() );
-
-		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, versionService,
-				newCvScheme, new VocabularyDTO(), new VersionDTO(), agency, i18n, null, 
-				eventBus, vocabularyChangeService);
+		Window window = new DialogCVSchemeWindow(i18n, eventBus, agencyService, vocabularyService, 
+				VocabularyDTO.createDraft(), VersionDTO.createDraft(), agency, null);
 		getUI().addWindow(window);
 	}
 	
 	private void doCvEdit( ClickEvent event ) {
 		Window window = null;
 		if( sourceLanguage.equals(selectedLanguage))
-			window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, versionService, 
-					 cvScheme, vocabulary, currentVersion, agency, i18n, selectedLanguage, 
-					eventBus, vocabularyChangeService);
+			window = new DialogCVSchemeWindow(i18n, eventBus, agencyService, vocabularyService, 
+					vocabulary, currentVersion, agency, selectedLanguage);
 		else
 			window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, currentVersion, agency, vocabularyService, 
 					versionService, eventBus, vocabularyChangeService);
