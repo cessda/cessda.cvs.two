@@ -1,20 +1,11 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
-import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
@@ -25,8 +16,6 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.TreeData;
-import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -34,24 +23,16 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
-import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 public class DialogAddCodeWindow extends MWindow implements Translatable{
 
@@ -60,12 +41,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
-	private final StardatDDIService stardatDDIService;
-	private final VocabularyService vocabularyService;
-	private final VersionService versionService;
-	private final ConceptService conceptService;
-	private final CodeService codeService;
-	private final VocabularyChangeService vocabularyChangeService;
+	private static Locale locale = UI.getCurrent().getLocale();
 
 	private Binder<ConceptDTO> binder = new Binder<ConceptDTO>();
 	
@@ -73,7 +49,6 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private MLabel lTitle = new MLabel( "Descriptive term" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language (source)" );
-	
 
 	private MVerticalLayout layout = new MVerticalLayout();
 	private MTextField parentNotation = new MTextField();
@@ -91,9 +66,8 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private CodeDTO parentCode;
 	private Language language;
 
-	public DialogAddCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, VocabularyService vocabularyService, 
-			VersionService versionService,CodeService codeService, ConceptService conceptService,  VocabularyDTO vocabularyDTO,
-			VersionDTO versionDTO, CodeDTO codeDTO, CodeDTO parentCodeDTO,ConceptDTO conceptDTO, I18N i18n, Locale locale, VocabularyChangeService vocabularyChangeService) {
+	public DialogAddCodeWindow(I18N i18n, EventBus.UIEventBus eventBus, VocabularyDTO vocabularyDTO,
+			VersionDTO versionDTO, CodeDTO codeDTO, CodeDTO parentCodeDTO,ConceptDTO conceptDTO) {
 		super( parentCodeDTO == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
 				locale, parentCodeDTO.getNotation() ));
 		
@@ -104,12 +78,6 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		this.code = codeDTO;
 		this.parentCode = parentCodeDTO;
 		this.concept = conceptDTO;
-		this.codeService = codeService;
-		this.conceptService = conceptService;
-		this.stardatDDIService = stardatDDIService;
-		this.vocabularyService = vocabularyService;
-		this.versionService = versionService;
-		this.vocabularyChangeService = vocabularyChangeService;
 
 		language = Language.valueOfEnum( this.version.getLanguage());
 		
@@ -240,98 +208,13 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		if(!isInputValid())
 			return;
 		
-		// generate Uri by inserting notation after cvScheme notation
-		String uri = version.getUri();
-		int lastIndex = uri.lastIndexOf("/");
-		if( lastIndex == -1) {
-			uri = ConfigurationService.DEFAULT_CV_LINK;
-			if(!uri.endsWith("/"))
-				uri += "/";
-			uri += version.getNotation();
-		} else {
-			uri = uri.substring(0, lastIndex);
-		}
-			
-		
-		
-		code.setTitleDefinition( preferedLabel.getValue(), description.getValue(), language);
-		
-		concept.setUri( uri + "#" + notation.getValue() + "/" + language.toString());
-		concept.setTitle( preferedLabel.getValue() );
-		concept.setDefinition( description.getValue() );
-		
-		if( !code.isPersisted() ) {
-			code.setSourceLanguage( language.toString());
-			code.setVocabularyId( vocabulary.getId() );
-		}
-		
-		// save the code
-		if( parentCode == null) {
-			code.setNotation( notation.getValue() );
-			code.setUri( code.getNotation() );
-			concept.setNotation( notation.getValue() );
-			
-//			code = codeService.save(code);
-			
-			List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
-			// re-save tree structure 
-			TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
-			codeTreeData.addRootItems(code);
-			
-			List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
-			for( CodeDTO eachCode: newCodeDTOs) {
-				if( !eachCode.isPersisted())
-					code = codeService.save(eachCode);
-				else
-					codeService.save(eachCode);
-			}
-			
-		} else {
-			code.setNotation( parentCode.getNotation() + "." + notation.getValue());
-			code.setUri( code.getNotation() );
-			concept.setNotation( parentCode.getNotation() + "." + notation.getValue());
-			code.setParent( parentCode.getNotation());
-			
-			List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
-			// re-save tree structure 
-			TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
-			codeTreeData.addItem(parentCode, code);
-			
-			List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
-			for( CodeDTO eachCode: newCodeDTOs) {
-				if( !eachCode.isPersisted())
-					code = codeService.save(eachCode);
-				else
-					codeService.save(eachCode);
-			}
-		}
-		// save to concept
-		if( !concept.isPersisted()) {
-			vocabulary.addCode(code);
-			concept.setCodeId( code.getId());
-			concept.setVersionId( version.getId() );
-			concept.setPosition( version.getConcepts().size());
-			concept = conceptService.save(concept);
-			version.addConcept(concept);
-			version = versionService.save(version);
-		}
+		// store the code
+		WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, 
+				notation.getValue(), preferedLabel.getValue(), description.getValue());
 
 		// save change log
-		VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-		changeDTO.setVocabularyId( vocabulary.getId());
-		changeDTO.setVersionId( version.getId()); 
-		changeDTO.setChangeType( "Code added" );
-		changeDTO.setDescription( concept.getNotation());
-		changeDTO.setDate( LocalDateTime.now() );
-		UserDetails loggedUser = SecurityUtils.getLoggedUser();
-		changeDTO.setUserId( loggedUser.getId() );
-		changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-		vocabularyChangeService.save(changeDTO);
-		
+		WorkspaceManager.storeChangeLog(vocabulary, version, "Code added", concept.getNotation());
 
-		// indexing editor
-		vocabularyService.index(vocabulary);
-		
 		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		this.close();
 	}

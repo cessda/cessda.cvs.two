@@ -166,18 +166,6 @@ public class WorkflowManager {
 		return vocabulary;
 	}
 	
-	public static ConceptDTO addConcept(VersionDTO version, ConceptDTO concept) {
-		// First normalize the code.
-		// The code 
-		if( version.getItemType().equals(ItemType.SL.toString())) {
-			
-		} else {
-			
-		}
-			
-		return concept;
-	}
-	
 	public static String getInitialConceptUri( VersionDTO version ) {
 		String uri = version.getUri();
 		int lastIndex = uri.lastIndexOf("/");
@@ -675,7 +663,7 @@ public class WorkflowManager {
 		newCvScheme.setCode( vocabulary.getNotation());
 		
 		newCvScheme.save();
-		DDIStore ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, "API Import", "Publish Cv");
+		DDIStore ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getLoggedUser().getUsername() , "Publish Cv");
 		//refresh cvScheme
 		newCvScheme = new CVScheme(ddiStore);
 		newCvScheme.setCode( vocabulary.getNotation());

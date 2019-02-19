@@ -26,6 +26,21 @@ public final class WorkflowUtils {
 		return generateAgencyBaseUri(agencyUri) + code + "/" + languageIso;
 	}
 	
+	public static String generateCodeUri( String versionUri, String versionNotation,
+			String notation, String languageIso) {
+		String uri = versionUri;
+		int lastIndex = uri.lastIndexOf("/");
+		if( lastIndex == -1) {
+			uri = ConfigurationService.DEFAULT_CV_LINK;
+			if(!uri.endsWith("/"))
+				uri += "/";
+			uri += versionNotation;
+		} else {
+			uri = uri.substring(0, lastIndex);
+		}
+		return uri + "#" + notation + "/" + languageIso;
+	}
+	
 	/**
 	 * Generate CV version URN
 	 * @param agency

@@ -1,23 +1,17 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
@@ -37,23 +31,13 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 
-import eu.cessda.cvmanager.domain.Vocabulary;
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
-import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
-import eu.cessda.cvmanager.ui.view.CvManagerView;
-import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class DialogAddLanguageWindow extends MWindow {
@@ -67,13 +51,8 @@ public class DialogAddLanguageWindow extends MWindow {
 	private final UIEventBus eventBus;
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
-	private final VersionService versionService;
-	private final VocabularyChangeService vocabularyChangeService;
 	private VersionDTO version;
 	
-	private final StardatDDIService stardatDDIService;
-	private final VocabularyService vocabularyService;
-
 	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
@@ -105,26 +84,18 @@ public class DialogAddLanguageWindow extends MWindow {
 	private MTextField translatorAgency = new MTextField();
 	private MTextField translatorAgencyLink = new MTextField();
 	
-	private CVScheme cvScheme;
 	private Language language;
 
 	
 	//private EditorView theView;
 
-	public DialogAddLanguageWindow(StardatDDIService stardatDDIService,  CVScheme cvScheme,
-			 VocabularyDTO vocabularyDTO, VersionDTO versionDTO, AgencyDTO agencyDTO, 
-			 VocabularyService vocabularyService, VersionService versionService, 
-			 UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
+	public DialogAddLanguageWindow(
+			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, UIEventBus eventBus) {
 		super("Add Language");
-		this.cvScheme = cvScheme;
-		this.stardatDDIService = stardatDDIService;
 		this.agency = agencyDTO;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
-		this.vocabularyService = vocabularyService;
-		this.versionService = versionService;
 		this.eventBus = eventBus;
-		this.vocabularyChangeService = vocabularyChangeService;
 		
 		// assign values if updated and not new TL
 		if( version.isPersisted()) {
@@ -151,9 +122,10 @@ public class DialogAddLanguageWindow extends MWindow {
 			
 			if( vocabulary != null ) {
 				availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
-			} else {
-				availableLanguages = Language.getFilteredLanguage(userLanguages, cvScheme.getLanguagesByTitle());
-			}
+			} 
+//			else {
+//				availableLanguages = Language.getFilteredLanguage(userLanguages, cvScheme.getLanguagesByTitle());
+//			}
 			
 			Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 			// remove with sourceLanguage option if exist
@@ -208,8 +180,6 @@ public class DialogAddLanguageWindow extends MWindow {
 			lTitle.setValue( "Title (" + language + ")");
 			lDescription.setValue( "Definition ("+ language +")");
 		});
-
-		setCvScheme(cvScheme);;
 
 		binder.setBean( version );
 
@@ -359,85 +329,16 @@ public class DialogAddLanguageWindow extends MWindow {
 				return;
 			}
 		}
+		
+		
+		// save TL Vocabulary
+		WorkspaceManager.saveTargetCV(agency, language, vocabulary, version, 
+				tfTitle.getValue(), description.getValue(), translatorAgency.getValue(), translatorAgencyLink.getValue());
 
-		version.setTitle( tfTitle.getValue() );
-		version.setDefinition( description.getValue());
+		// save log if not initial version
+		if( !version.isInitialVersion())
+			WorkspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
 		
-		// store new version
-		if( !version.isPersisted()) {
-			String cvUriLink = agency.getUri();
-			if(cvUriLink == null )
-				cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
-			if(!cvUriLink.endsWith("/"))
-				cvUriLink += "/";
-			
-			cvUriLink += vocabulary.getNotation() + "/" + language.toString();
-			
-			version.setUriSl( vocabulary.getUri() );
-			version.setUri( cvUriLink );
-			
-			version.setNotation( vocabulary.getNotation());
-			version.setNumber( vocabulary.getVersionNumber() + ".1");
-			version.setStatus( Status.DRAFT.toString() );
-			version.setItemType( ItemType.TL.toString());
-			version.setLanguage( language.toString());
-			
-			version.setPreviousVersion( 0L );
-			version.setInitialVersion( 0L );
-			version.setVocabularyId( vocabulary.getId());
-			version.setTranslateAgency( translatorAgency.getValue() );
-			version.setTranslateAgencyLink( translatorAgencyLink.getValue());
-			
-			version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId());
-			
-			// get previous version
-			VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), Status.PUBLISHED.toString())
-			.ifPresent( prevVersion ->{
-				version.setPreviousVersion( prevVersion.getId() );
-				version.setInitialVersion( prevVersion.getInitialVersion() );
-				// get last version number from previous version if exist
-				if( prevVersion.getNumber().indexOf( vocabulary.getVersionNumber()) == 0 ) {
-					int lastDotIndex = vocabulary.getVersionNumber().lastIndexOf(".");
-					version.setNumber( vocabulary.getVersionNumber() + "." + (Integer.parseInt(vocabulary.getVersionNumber().substring( lastDotIndex + 1)) + 1));
-				}
-			});
-			
-			version = versionService.save(version);
-			
-			if( version.getInitialVersion() == 0L) {
-				// initial version
-				version.setInitialVersion( version.getId() );
-				version = versionService.save(version);
-			}
-			// update version in vocabulary
-			vocabulary.setVersionByLanguage(language, version.getNumber());
-			
-			vocabulary.addVersion(version);
-			vocabulary.addVers(version);
-		} else {
-			version = versionService.save(version);
-			
-			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-			changeDTO.setVocabularyId( vocabulary.getId());
-			changeDTO.setVersionId( version.getId()); 
-			changeDTO.setChangeType( changeCb.getValue() );
-			changeDTO.setDescription( changeDesc.getValue() == null ? "": changeDesc.getValue() );
-			changeDTO.setDate( LocalDateTime.now() );
-			UserDetails loggedUser = SecurityUtils.getLoggedUser();
-			changeDTO.setUserId( loggedUser.getId() );
-			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-			
-			vocabularyChangeService.save(changeDTO);
-		}
-		// store the variable and index
-		vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
-		
-		// save to database
-		vocabulary = vocabularyService.save(vocabulary);
-		
-		// index
-		vocabularyService.index(vocabulary);
-
 		close();
 		UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.toString());
 	}
@@ -460,13 +361,5 @@ public class DialogAddLanguageWindow extends MWindow {
 		
 		binder.validate();
 		return binder.isValid();
-	}
-	
-	public CVScheme getCvScheme() {
-		return cvScheme;
-	}
-
-	public void setCvScheme(CVScheme cvScheme) {
-		this.cvScheme = cvScheme;
 	}
 }

@@ -147,9 +147,8 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 
 	private void doAddCode(ClickEvent event ) {
 		Window window = new DialogAddCodeWindow(
-				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
-				conceptService, vocabulary, currentVersion, 
-				new CodeDTO(), null, new ConceptDTO(), i18n, locale, vocabularyChangeService);
+				i18n, eventBus, vocabulary, currentVersion, 
+				new CodeDTO(), null, new ConceptDTO());
 		getUI().addWindow(window);
 	}
 	
@@ -166,9 +165,8 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 			return;
 		
 		Window window = new DialogEditCodeWindow(
-				eventBus, stardatDDIService, vocabularyService, codeService, conceptService, cvScheme, 
-				cvConcept, selectedLanguage, vocabulary, currentVersion, currentCode, 
-				currentConcept, i18n, locale, vocabularyChangeService);
+				i18n, eventBus, selectedLanguage, vocabulary, currentVersion, 
+				currentCode, currentConcept);
 		
 		getUI().addWindow(window);
 	}
@@ -183,9 +181,8 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	
 	private void doCodeAddChild(ClickEvent event ) {
 		Window window = new DialogAddCodeWindow(
-				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
-				conceptService, vocabulary, currentVersion, 
-				new CodeDTO(), currentCode, new ConceptDTO(), i18n, locale, vocabularyChangeService);
+				i18n, eventBus, vocabulary, currentVersion, 
+				new CodeDTO(), currentCode, new ConceptDTO());
 		getUI().addWindow( window );
 	}
 	

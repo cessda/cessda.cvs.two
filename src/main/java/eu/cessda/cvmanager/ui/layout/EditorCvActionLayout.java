@@ -208,15 +208,13 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 			window = new DialogCVSchemeWindow(i18n, eventBus, agencyService, vocabularyService, 
 					vocabulary, currentVersion, agency, selectedLanguage);
 		else
-			window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, currentVersion, agency, vocabularyService, 
-					versionService, eventBus, vocabularyChangeService);
+			window = new DialogAddLanguageWindow(agency, vocabulary, currentVersion, eventBus);
 		getUI().addWindow(window);
 	}
 	
 	private void doCvAddTranslation(ClickEvent event ) {
 		
-		Window window = new DialogAddLanguageWindow(stardatDDIService, cvScheme, vocabulary, new VersionDTO(), agency, 
-				vocabularyService, versionService, eventBus, vocabularyChangeService);
+		Window window = new DialogAddLanguageWindow(agency, vocabulary, new VersionDTO(), eventBus);
 		getUI().addWindow(window);
 	}
 	

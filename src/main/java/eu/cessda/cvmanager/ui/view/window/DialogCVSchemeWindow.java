@@ -341,7 +341,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 			return;
 		
 		// Store new CV
-		WorkspaceManager.addNewCv(agency, language, vocabulary, version, 
+		WorkspaceManager.saveSourceCV(agency, language, vocabulary, version, 
 				tfCode.getValue(), tfTitle.getValue(), description.getValue(), notes.getValue());
 		
 		if( isUpdated && !version.isInitialVersion()) {

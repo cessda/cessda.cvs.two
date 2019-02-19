@@ -1,18 +1,8 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.ddiflatdb.client.RestClient;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -30,29 +20,19 @@ import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
-import eu.cessda.cvmanager.ui.view.EditorView;
 
 public class DialogEditCodeWindow extends MWindow {
 
@@ -61,11 +41,6 @@ public class DialogEditCodeWindow extends MWindow {
 	
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
-	private final StardatDDIService stardatDDIService;
-	private final VocabularyService vocabularyService;
-	private final CodeService codeService;
-	private final ConceptService conceptService;
-	private final VocabularyChangeService vocabularyChangeService;
 
 	Binder<CodeDTO> binder = new Binder<CodeDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -92,9 +67,6 @@ public class DialogEditCodeWindow extends MWindow {
 	private Language language;
 
 	private Button storeCode = new Button("Save");
-
-	private CVScheme cvScheme;
-	private CVConcept cvConcept;
 	
 	private VocabularyDTO vocabulary;
 	private VersionDTO version;
@@ -112,21 +84,11 @@ public class DialogEditCodeWindow extends MWindow {
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
-	public DialogEditCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, 
-			VocabularyService vocabularyService, CodeService codeService, ConceptService conceptService,
-			CVScheme cvScheme, CVConcept conceptCode, Language sLanguage, VocabularyDTO vocabularyDTO, 
-			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale, 
-			VocabularyChangeService vocabularyChangeService) {
+	public DialogEditCodeWindow(I18N i18n, EventBus.UIEventBus eventBus, Language sLanguage, VocabularyDTO vocabularyDTO, 
+			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO) {
 		super( "Edit Code");
 		this.i18n = i18n;
-		this.cvScheme = cvScheme;
-		this.cvConcept = conceptCode;
 		this.language = sLanguage;
-		this.stardatDDIService = stardatDDIService;
-		this.vocabularyService = vocabularyService;
-		this.codeService = codeService;
-		this.conceptService = conceptService;
-		this.vocabularyChangeService = vocabularyChangeService;
 		
 		this.eventBus = eventBus;
 		this.vocabulary = vocabularyDTO;
@@ -138,7 +100,9 @@ public class DialogEditCodeWindow extends MWindow {
 		sourceNotation.setValue( code.getNotation() );
 		sourceNotation.setReadOnly( true );
 		
-		notation.withWidth("85%");
+		notation
+			.withReadOnly( true )
+			.withWidth("85%");
 		
 		Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 		
@@ -367,34 +331,16 @@ public class DialogEditCodeWindow extends MWindow {
 	private void saveCode() {
 		if(!isInputValid())
 			return;
-		// store the code and index
-		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
-		codeService.save(code);
-		// store concept
-		concept.setTitle( preferedLabel.getValue() );
-		concept.setDefinition( description.getValue() );
-		conceptService.save(concept);
+		
+		// store the changes
+		WorkspaceManager.saveCode(vocabulary, version, code,  null, concept, 
+			notation.getValue(), preferedLabel.getValue(), description.getValue());
 		
 		// save changes log
-		if( changeBox.isVisible() &&  changeCb.getValue() != null) {
-			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-			changeDTO.setVocabularyId( vocabulary.getId());
-			changeDTO.setVersionId( version.getId()); 
-			changeDTO.setChangeType( changeCb.getValue() );
-			changeDTO.setDescription( changeDesc.getValue() == null ? "": changeDesc.getValue() );
-			changeDTO.setDate( LocalDateTime.now() );
-			UserDetails loggedUser = SecurityUtils.getLoggedUser();
-			changeDTO.setUserId( loggedUser.getId() );
-			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-			
-			vocabularyChangeService.save(changeDTO);
-		}
-		
-		// indexing editor
-		vocabularyService.index(vocabulary);
-		
+		if( changeBox.isVisible() && changeCb.getValue() != null)
+			WorkspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
+
 		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
-		
 		this.close();
 	}
 	
