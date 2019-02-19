@@ -670,7 +670,7 @@ public class PublicationDetailsView extends CvView {
 		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
 		detailTab.getTab(5).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
 		
-		detailTreeGrid.getColumn("code").setCaption( "Code" );
+		detailTreeGrid.getColumn("code").setCaption( i18n.get("view.detail.cvconcept.column.sl.code", locale) );
 //		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
 		if( detailTreeGrid.getColumn("prefLabelTl") != null )
 			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang) );
