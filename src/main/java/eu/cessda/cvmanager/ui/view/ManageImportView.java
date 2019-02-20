@@ -112,8 +112,8 @@ public class ManageImportView extends CvManagerAdminView {
 									for(VersionDTO version : v.getVersions()) {
 										if( version.getItemType().equals(ItemType.SL.toString()) && version.getStatus().equals(Status.PUBLISHED.toString())) {
 											List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(version.getUri(), DDIElement.CVSCHEME);
-											CVScheme scheme = new CVScheme(ddiSchemes.get(0));
-											stardatDDIService.deleteScheme( scheme );
+											if(ddiSchemes!= null && !ddiSchemes.isEmpty())
+												stardatDDIService.deleteScheme( new CVScheme(ddiSchemes.get(0)) );
 										}
 										for( ConceptDTO concept : version.getConcepts())
 											conceptService.delete( concept.getId());

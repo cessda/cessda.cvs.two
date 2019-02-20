@@ -3,14 +3,11 @@ package eu.cessda.cvmanager.ui.view;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,10 +15,7 @@ import javax.annotation.PostConstruct;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.xml.utils.URI;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
@@ -30,9 +24,7 @@ import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.AgencyService;
-import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.thymeleaf.TemplateEngine;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
@@ -40,55 +32,36 @@ import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 
-import com.vaadin.data.Binder;
 import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Resource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
 import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.JavaScript;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.TreeGrid;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.components.grid.TreeGridDragSource;
 import com.vaadin.ui.components.grid.TreeGridDropTarget;
 import com.vaadin.ui.renderers.ComponentRenderer;
-import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.domain.Version;
-import eu.cessda.cvmanager.domain.VocabularyChange;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.export.utils.SaxParserUtils;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
@@ -102,32 +75,22 @@ import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.CsvRowToConceptDTOMapper;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
-import eu.cessda.cvmanager.ui.CVManagerUI;
-import eu.cessda.cvmanager.ui.layout.CvComparatorLayout;
 import eu.cessda.cvmanager.ui.layout.DdiUsageLayout;
 import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayout;
-import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayoutNew;
 import eu.cessda.cvmanager.ui.layout.EditorCvActionLayout;
-import eu.cessda.cvmanager.ui.layout.EditorCvActionLayoutNew;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
 import eu.cessda.cvmanager.ui.layout.IdentityLayout;
 import eu.cessda.cvmanager.ui.layout.LicenseLayout;
 import eu.cessda.cvmanager.ui.layout.VersionLayout;
 import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
-import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow2;
-import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogMultipleOption;
-import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 @UIScope
-@SpringView(name = DetailsView.VIEW_NAME)
-public class DetailsView extends CvView {
+@SpringView(name = EditorDetailsView.VIEW_NAME)
+public class EditorDetailsView extends CvView {
 
 	private static final long serialVersionUID = -1095312295254197091L;
 	public static final String VIEW_NAME = "details";
@@ -207,15 +170,15 @@ public class DetailsView extends CvView {
 	
 	private MCssLayout vocabularyIsWithdrawn = new MCssLayout();
 	
-	private EditorCvActionLayoutNew editorCvActionLayout;
-	private EditorCodeActionLayoutNew editorCodeActionLayout;
+	private EditorCvActionLayout editorCvActionLayout;
+	private EditorCodeActionLayout editorCodeActionLayout;
 
-	public DetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public EditorDetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
 			CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, DetailsView.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, EditorDetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -226,17 +189,17 @@ public class DetailsView extends CvView {
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.licenceService = licenceService;
 		this.csvRowToConceptDTOMapper = csvRowToConceptDTOMapper;
-		eventBus.subscribe( this, DetailsView.VIEW_NAME );
+		eventBus.subscribe( this, EditorDetailsView.VIEW_NAME );
 	}
 
 	@PostConstruct
 	public void init() {
 		
-		editorCvActionLayout = new EditorCvActionLayoutNew("block.action.cv", "block.action.cv.show", i18n, 
+		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, 
 				stardatDDIService, agencyService, vocabularyService, versionService, conceptService, codeService, 
 				configService, eventBus, vocabularyChangeService);
 		
-		editorCodeActionLayout = new EditorCodeActionLayoutNew("block.action.code", "block.action.code.show", i18n,
+		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
 				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
 				vocabularyChangeService, csvRowToConceptDTOMapper);
 		
@@ -334,7 +297,7 @@ public class DetailsView extends CvView {
 				}
 				
 				
-				LoginView.NAVIGATETO_VIEWNAME = DetailsView.VIEW_NAME + "/" + itemPathPart[0];
+				LoginView.NAVIGATETO_VIEWNAME = EditorDetailsView.VIEW_NAME + "/" + itemPathPart[0];
 				cvItem.setCurrentCvId(itemPathPart[0]);
 				cvItem.setCurrentNotation(itemPathPart[0]);
 				if( itemPathPart.length > 1 )
@@ -898,45 +861,56 @@ public class DetailsView extends CvView {
 	                		return;
 	                	}
 	                	List<Button> optionButtons = new ArrayList<>();
-	                	optionButtons.add( new Button( "As next sibling" )); // option 0
-	                	optionButtons.add( new Button( "As child" ));        // option 1
+	                	optionButtons.add( new Button( "As previous sibling" )); // option 0
+	                	optionButtons.add( new Button( "As next sibling" )); // option 1
+	                	optionButtons.add( new Button( "As child" ));        // option 2
 	                	
-	                	getUI().addWindow( new DialogMultipleOption("Code move options", "Move the code <strong>\"" + 
-	                	(draggedRow.getNotation() == null ? draggedRow.getTitleByLanguage( sourceLanguage ): draggedRow.getNotation()) + "\"</strong> as a next sibling or as a child of <strong>\"" + 
-        						(targetRow.getNotation() == null ? targetRow.getTitleByLanguage( sourceLanguage ): targetRow.getNotation())+ "\"</strong>?", optionButtons, 
+	                	getUI().addWindow( new DialogMultipleOption(
+	                			i18n.get( "dialog.order.code.header" ), 
+	                			i18n.get("dialog.order.code.content", 
+	                					(draggedRow.getNotation() == null ? draggedRow.getTitleByLanguage( sourceLanguage ): draggedRow.getNotation()), 
+	                					(targetRow.getNotation() == null ? targetRow.getTitleByLanguage( sourceLanguage ): targetRow.getNotation())),
+	                			optionButtons, 
 	                			windowoption ->  {
 	                				Integer selectedOptionNumber = windowoption.getSelectedOptionNumber();
 	                				if(selectedOptionNumber == null )
 	                					return;
 	                				
-	                				CodeDTO draggedNodeParent =  cvCodeTreeData.getParent( draggedRow );
+	                				CodeDTO draggedNodeParent = cvCodeTreeData.getParent( draggedRow );
 	                				CodeDTO targetNodeParent = cvCodeTreeData.getParent(targetRow);
-                					
-	                				if( selectedOptionNumber == 0 ) { // move as next sibling
-	                					// Possibility
-	                					// -- within same parent
-	                					// move between siblings in root node (top concepts level)  - checked Ok
-	                					// move between siblings in x-parent node (parent as child concept level) - checked Ok
-	                					// -- different parent
-	                					// move from child concept to top concept  - checked Ok
-	                					// move from top concept to child concept  - checked Ok
-	                					
-	                					
-	                					// in order to be able to move as next sibling 
+	                				if( selectedOptionNumber == 0 || selectedOptionNumber == 1) { // move as previous oe next sibling
+	                					// in order to be able to move as previous sibling 
 	                					// the nodes need to be from the same parent
 	                					if( !Objects.equals( draggedNodeParent, targetNodeParent)){
-	                						//add code as target parent node first
+	                						// add code as target parent node first
 	                						cvCodeTreeData.setParent(draggedRow, targetNodeParent);
 	                					}
+	                					
+	                					// now after the node target and node dragged from same parent,
+	                					// set the node position
+	                					if( draggedRow.getParent() != null ) {
+	                						draggedRow.setNotation( draggedRow.getNotation().substring(draggedRow.getParent().length() + 1));
+	                						draggedRow.setParent( null );
+	                					}
+	                					if( targetNodeParent != null && targetNodeParent.getParent() != null ) {
+	                						draggedRow.setParent( targetNodeParent.getParent() );
+	                						draggedRow.setNotation( targetNodeParent.getParent() + "." + draggedRow.getNotation());
+	                					} 
 
 	                					// update tree in vaadin UI
 	                					cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
+	                					
+	                					// if move to previous sibling, need to do moveAfterSibling twice
+	                					// to swap the position between target and dragged node
+	                					if( selectedOptionNumber == 0 ) {
+	                						cvCodeTreeData.moveAfterSibling(targetRow, draggedRow);
+	                					}
 	                					dataProvider.refreshAll();
 	                					
 	                					// save on DB
             							codeService.storeCodeTree(cvCodeTreeData, currentVersion.getConcepts());
 	                				} 
-	                				else if (selectedOptionNumber == 1) { //move as child
+	                				else if (selectedOptionNumber == 2) { //move as child
 	                					// Possibility
 	                					// as topconcept to child from root/leaf concept
 	                					// as child child to  child from root/leaf concept (only concept narrower affected)
@@ -1028,8 +1002,9 @@ public class DetailsView extends CvView {
 			case CVCONCEPT_DELETED:
 				
 				ConfirmDialog.show( this.getUI(), "Confirm",
-				"Are you sure you want to delete the concept \"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")" +"?", "yes",
-				"cancel",
+				i18n.get( "dialog.confirm.delete.code", "\"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")"),
+				i18n.get("dialog.button.yes"),
+				i18n.get("dialog.button.cancel"),
 						
 					dialog -> {
 						if( dialog.isConfirmed() ) {
@@ -1130,7 +1105,7 @@ public class DetailsView extends CvView {
 		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
 		detailTab.getTab(5).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
 		
-		detailTreeGrid.getColumn("code").setCaption( "Code" );
+		detailTreeGrid.getColumn("code").setCaption( i18n.get("view.detail.cvconcept.column.sl.code", locale)  );
 		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
 		if( detailTreeGrid.getColumn("prefLabelTl") != null )
 			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang) );

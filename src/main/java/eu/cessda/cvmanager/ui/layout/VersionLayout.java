@@ -58,8 +58,8 @@ import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.utils.VersionUtils;
 
 public class VersionLayout extends MCssLayout implements Translatable {
@@ -96,7 +96,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	}
 
 	private void init() {
-		baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
+		baseUrl = configService.getServerContextPath() + "/#!" + PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
 		versionMap = VersionDTO.generateVersionMap( vocabulary.getVersions());
 		
 	}
@@ -173,9 +173,11 @@ public class VersionLayout extends MCssLayout implements Translatable {
 			.addClickListener( e ->{
 				if( e.getButton().getIcon().equals( VaadinIcons.PLUS)) {
 					e.getButton().setIcon( VaadinIcons.MINUS);
-					noteVersion.setVisible( true );
-					if( versionDTO.getVersionChanges() != null )
-						changeVersion.setVisible( true );
+					if( !versionDTO.isInitialVersion() ) {
+						noteVersion.setVisible( true );
+						if( versionDTO.getVersionChanges() != null )
+							changeVersion.setVisible( true );
+					}
 				} else {
 					e.getButton().setIcon( VaadinIcons.PLUS);
 					noteVersion.setVisible( false );
@@ -211,7 +213,9 @@ public class VersionLayout extends MCssLayout implements Translatable {
 				.withValue("<h2>Changes since previous version</h2>" +
 					versionDTO.getVersionChanges().replaceAll("(\r\n|\n)", "<br />"));
 		
-		
+		if( versionDTO.isInitialVersion() ) {
+			noteVersion.setVisible( false );
+		}
 		
 		versionLayout
 			.withStyleName( "version-item" )

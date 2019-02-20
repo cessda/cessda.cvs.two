@@ -1053,7 +1053,7 @@
  */
 
 .v-vaadin-version:after {
-	content: "8.5.1";
+	content: "8.6.2";
 }
 
 .v-widget {
@@ -5037,6 +5037,10 @@ div.v-layout.v-horizontal.v-widget {
 	left: 0;
 }
 
+.mytheme .v-grid-body .v-grid-header > .v-grid-row {
+	position: relative;
+}
+
 .mytheme .v-grid-row {
 	display: block;
 }
@@ -5212,6 +5216,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	border-right: 1px solid #d4d4d4;
+	position: relative;
+	z-index: 11;
 }
 
 .mytheme .v-grid-cell.frozen  + th, .mytheme .v-grid-cell.frozen  + td {
@@ -9677,6 +9683,10 @@ div.v-layout.v-horizontal.v-widget {
 	left: 0;
 }
 
+.mytheme .v-tree8-body .v-tree8-header > .v-tree8-row {
+	position: relative;
+}
+
 .mytheme .v-tree8-row {
 	display: block;
 }
@@ -9852,6 +9862,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	border-right: 1px solid #d4d4d4;
+	position: relative;
+	z-index: 11;
 }
 
 .mytheme .v-tree8-cell.frozen  + th, .mytheme .v-tree8-cell.frozen  + td {
@@ -10753,6 +10765,10 @@ div.v-layout.v-horizontal.v-widget {
 	left: 0;
 }
 
+.mytheme .v-treegrid-body .v-treegrid-header > .v-treegrid-row {
+	position: relative;
+}
+
 .mytheme .v-treegrid-row {
 	display: block;
 }
@@ -10928,6 +10944,8 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
 	border-right: 1px solid #d4d4d4;
+	position: relative;
+	z-index: 11;
 }
 
 .mytheme .v-treegrid-cell.frozen  + th, .mytheme .v-treegrid-cell.frozen  + td {
@@ -13127,6 +13145,14 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-tabsheet-right-aligned-tabs  > .v-tabsheet-tabcontainer {
 	text-align: right;
+}
+
+.mytheme .v-tabsheet-right-aligned-tabs .v-tabsheet-spacertd {
+	display: inline-block !important;
+}
+
+.mytheme .v-tabsheet-right-aligned-tabs .v-tabsheet-scroller {
+	padding-left: 9px;
 }
 
 .mytheme .v-tabsheet-padded-tabbar  > .v-tabsheet-tabcontainer .v-tabsheet-tabs {
@@ -18214,6 +18240,12 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .import-dialog .v-caption {
 	display: block;
+}
+
+.mytheme .danger-button {
+	background-color: #fce5cd !important;
+	background-image: -webkit-linear-gradient(top, #fce5cd 2%, #eacaaa 98%);
+	background-image: linear, to bottom, #fce5cd 2%, #eacaaa 98%;
 }
 
 @media (min-width: 992px) {

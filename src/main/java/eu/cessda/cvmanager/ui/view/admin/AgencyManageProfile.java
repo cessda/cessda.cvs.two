@@ -23,7 +23,7 @@ import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.ui.component.UploadAgencyLogo;
 import eu.cessda.cvmanager.ui.component.UploadExample;
 import eu.cessda.cvmanager.ui.view.AgencyView;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageProfile;
 
 public class AgencyManageProfile extends FormLayout {

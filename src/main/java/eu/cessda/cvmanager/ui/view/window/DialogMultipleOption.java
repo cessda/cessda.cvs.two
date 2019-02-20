@@ -29,7 +29,7 @@ import com.vaadin.ui.TextField;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 
 public class DialogMultipleOption extends MWindow {
 
@@ -51,7 +51,7 @@ public class DialogMultipleOption extends MWindow {
 		
 		this
 			.withHeight("240px")
-			.withWidth("500px")
+			.withWidth("600px")
 			.withResizable(false)
 			.withCenter()
 			.withModal(true)

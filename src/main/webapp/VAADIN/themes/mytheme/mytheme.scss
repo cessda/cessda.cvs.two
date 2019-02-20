@@ -2562,4 +2562,10 @@ $v-selection-item-border-radius: 0;
 			display:block;
 		}
 	}
+	.danger-button{
+		background-color:#fce5cd !important;
+		background-image: -webkit-linear-gradient(top, #fce5cd 2%, #eacaaa 98%);
+		background-image: linear-gradient(to bottom,#fce5cd 2%, #eacaaa 98%);
+	    
+	}
 }

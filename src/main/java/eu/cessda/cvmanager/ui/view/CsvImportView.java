@@ -65,7 +65,7 @@ public class CsvImportView extends CvView  {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, CodeService codeService, MetadataValueService metadataValueService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
-				codeService, DetailView.VIEW_NAME);
+				codeService, PublicationDetailsView.VIEW_NAME);
 		this.metadataValueService = metadataValueService;
 		
 		this.sidePanel.setVisible( false );

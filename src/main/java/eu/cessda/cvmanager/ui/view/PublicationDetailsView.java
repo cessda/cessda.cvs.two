@@ -22,79 +22,42 @@ import javax.annotation.PostConstruct;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.xml.utils.URI;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.AgencyService;
-import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.thymeleaf.TemplateEngine;
-import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 
-import com.vaadin.data.Binder;
 import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Resource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.dnd.DropEffect;
-import com.vaadin.shared.ui.dnd.EffectAllowed;
-import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.Image;
 import com.vaadin.ui.JavaScript;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.TreeGrid;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-import com.vaadin.ui.components.grid.TreeGridDragSource;
-import com.vaadin.ui.components.grid.TreeGridDropTarget;
 import com.vaadin.ui.renderers.ComponentRenderer;
-import com.vaadin.ui.themes.ValoTheme;
 
-import eu.cessda.cvmanager.domain.Version;
-import eu.cessda.cvmanager.domain.VocabularyChange;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.export.utils.SaxParserUtils;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
@@ -107,27 +70,16 @@ import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
-import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.layout.DdiUsageLayout;
-import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayout;
-import eu.cessda.cvmanager.ui.layout.EditorCvActionLayout;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
 import eu.cessda.cvmanager.ui.layout.IdentityLayout;
 import eu.cessda.cvmanager.ui.layout.LicenseLayout;
 import eu.cessda.cvmanager.ui.layout.VersionLayout;
-import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow2;
-import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogMultipleOption;
-import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @UIScope
-@SpringView(name = DetailView.VIEW_NAME)
-public class DetailView extends CvView {
+@SpringView(name = PublicationDetailsView.VIEW_NAME)
+public class PublicationDetailsView extends CvView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "detail";
@@ -203,12 +155,12 @@ public class DetailView extends CvView {
 	private String activeTab;
 	
 
-	public DetailView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public PublicationDetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
-				codeService, DetailView.VIEW_NAME);
+				codeService, PublicationDetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -267,7 +219,7 @@ public class DetailView extends CvView {
 					selectedLang = null;
 					activeTab = "detail";
 				}
-				LoginView.NAVIGATETO_VIEWNAME = DetailView.VIEW_NAME + "/" + itemPathPart[0];
+				LoginView.NAVIGATETO_VIEWNAME = PublicationDetailsView.VIEW_NAME + "/" + itemPathPart[0];
 				if( itemPathPart.length > 0 )
 					cvItem.setCurrentNotation(itemPathPart[0]);
 				if( mappedParams.get("url") != null)
@@ -342,12 +294,15 @@ public class DetailView extends CvView {
 		}
 		
 		if(  cvItem.getCvScheme() != null ) {
-		String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
+			String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
 			if( owner != null && !owner.isEmpty() )
 				setAgency( agencyService.findByName( owner));
 		}
+		else
+			agency = agencyService.findByName( getVocabulary().getAgencyName());
+		
 		if( getAgency() == null)
-			setAgency( agencyService.findOne(1L) );
+			setAgency( agencyService.findByName( "CESSDA" ));
 		
 		// get all available licenses
 		licenses = licenceService.findAll();
@@ -367,7 +322,7 @@ public class DetailView extends CvView {
 		topViewSection.removeAllComponents();
 		
 		if( SecurityUtils.isAuthenticated() && !vocabulary.isWithdrawn()) {
-			String baseUrl = configService.getServerContextPath() + "/#!" + DetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
+			String baseUrl = configService.getServerContextPath() + "/#!" + EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
 			topViewSection.add( new MLabel()
 					.withContentMode( ContentMode.HTML)
 					.withStyleName("pull-right")
@@ -396,7 +351,7 @@ public class DetailView extends CvView {
 		vocabulary
 		.getLatestVersionByLanguage( sourceLanguage.toString(), null, Status.PUBLISHED.toString())
 		.ifPresent( slVersion -> {
-			String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/";
+			String baseUrl = configService.getServerContextPath() + "/#!" + PublicationDetailsView.VIEW_NAME + "/";
 			latestSlVersion = slVersion;
 			// warning about newer version
 			if( latestSlVersion.getId() > currentVersion.getId()) {
@@ -715,7 +670,7 @@ public class DetailView extends CvView {
 		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
 		detailTab.getTab(5).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
 		
-		detailTreeGrid.getColumn("code").setCaption( "Code" );
+		detailTreeGrid.getColumn("code").setCaption( i18n.get("view.detail.cvconcept.column.sl.code", locale) );
 //		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
 		if( detailTreeGrid.getColumn("prefLabelTl") != null )
 			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang) );

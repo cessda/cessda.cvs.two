@@ -46,7 +46,7 @@ public class MetadataValueServiceImpl implements MetadataValueService {
      */
     @Override
     public MetadataValueDTO save(MetadataValueDTO metadataValueDTO) {
-        log.debug("Request to save MetadataValue : {}", metadataValueDTO);
+//        log.debug("Request to save MetadataValue : {}", metadataValueDTO);
         MetadataValue metadataValue = metadataValueMapper.toEntity(metadataValueDTO);
         metadataValue = metadataValueRepository.save(metadataValue);
         MetadataValueDTO result = metadataValueMapper.toDto(metadataValue);

@@ -26,8 +26,8 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Image;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailView2;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.CvSkosDetailsView;
 
 public class CvSchemeComponent extends CustomComponent {
 
@@ -135,7 +135,7 @@ public class CvSchemeComponent extends CustomComponent {
 	}
 
 	private void setContent(String language) {
-		String baseUrl = configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/" + cvScheme.getCode() + "?url=";
+		String baseUrl = configService.getServerContextPath() + "/#!" + CvSkosDetailsView.VIEW_NAME + "/" + cvScheme.getCode() + "?url=";
 		try {
 			baseUrl += URLEncoder.encode( cvScheme.getContainerId(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
@@ -149,7 +149,7 @@ public class CvSchemeComponent extends CustomComponent {
 		olTitle.setValue("<a href='" + baseUrl + "'>" + cvScheme.getCode() + "</a>");
 		desc.setValue(cvScheme.getDescriptionByLanguage(language));
 		version.setValue("Version: " + cvScheme.getVersion().getPublicationVersion() + " "
-				+ (language.equals("en") ? "" : "_" + language) + "<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
+				+ (language.equals("en") ? "" : "_" + language) + "<a href='" + configService.getServerContextPath() + "/#!" + CvSkosDetailsView.VIEW_NAME + "/"
 				+ cvScheme.getContainerId() +"?tab=download"+ "'>Download</a>");
 
 		List<CVConcept> theConceptList = cvScheme.getConceptList();
@@ -170,11 +170,11 @@ public class CvSchemeComponent extends CustomComponent {
 	}
 	
 	private String getMatchesConceptFromKeyword(CVConcept concept, String language) {
-		String conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
+		String conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + CvSkosDetailsView.VIEW_NAME + "/"
 				+ cvScheme.getContainerId() + "/" + concept.getNotation() + "'>" + concept.getPrefLabelByLanguage(language) + "</a>";
 		for (LanguageLabel languagelabel : concept.getPrefLabel()) {
 			if( languagelabel.getLabel().toLowerCase().contains(keyword)) {
-				conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + DetailView2.VIEW_NAME + "/"
+				conceptLink = "<a href='" + configService.getServerContextPath() + "/#!" + CvSkosDetailsView.VIEW_NAME + "/"
 						+ cvScheme.getContainerId() + "/" + concept.getNotation() + "?lang=" + languagelabel.getLanguage() + "'>" +languagelabel.getLabel() + "</a>";
 			}
 		};

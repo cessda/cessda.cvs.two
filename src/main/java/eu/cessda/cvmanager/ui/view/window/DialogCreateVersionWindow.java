@@ -57,6 +57,7 @@ import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.I18N;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -67,8 +68,8 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class DialogCreateVersionWindow extends MWindow {
 
@@ -176,10 +177,10 @@ public class DialogCreateVersionWindow extends MWindow {
 		discussionTitle
 			.withFullWidth()
 			.withStyleName("section-header")
-			.withValue( "Notes / Discussion" );
+			.withValue( I18N.get( "dialog.version.create.discusion.header" ));
 		discussionInfo
 			.withFullWidth()
-			.withValue("The discussion notes will be saved if new version is created");
+			.withValue( I18N.get( "dialog.version.create.discusion.text" ));
 		discussionArea.setWidth("100%");
 		discussionArea.setValue( currentVersion.getDiscussionNotes() == null ? "":currentVersion.getDiscussionNotes());
 		
@@ -310,9 +311,9 @@ public class DialogCreateVersionWindow extends MWindow {
 			// reindex
 			vocabularyService.index(vocabulary);
 			
-			eventBus.publish(EventScope.UI, DetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_NEWVERSION, null) );
+			eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_NEWVERSION, null) );
 			close();
-			UI.getCurrent().getNavigator().navigateTo( DetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
+			UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
 	}
 	
 	public void closeDialog() {

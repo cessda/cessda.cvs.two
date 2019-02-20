@@ -1,5 +1,7 @@
 package eu.cessda.cvmanager.ui.layout;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Locale;
 
 import org.gesis.wts.security.SecurityUtils;
@@ -22,7 +24,7 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.ui.view.AgencyView;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class IdentityLayout extends MCssLayout implements Translatable {
@@ -52,8 +54,8 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 	private MLabel agencyValue = new MLabel().withContentMode( ContentMode.HTML );
 	private MLabel agencyTransalteValue = new MLabel().withContentMode( ContentMode.HTML );
 	
-	private MTextField translatorAgency = new MTextField( "Agency translator" );
-	private MTextField translatorAgencyLink = new MTextField( "Agency translator link" );
+	private MTextField translatorAgency = new MTextField( "Translating agency" );
+	private MTextField translatorAgencyLink = new MTextField( "Translating agency link" );
 	
 	private boolean readOnly;
 	
@@ -87,7 +89,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		
 		canonicalUri.setCaption("Canonical URI");
 		canonicalUriVersion.setCaption("Canonical URI of this version");
-		agencyValue.setCaption("Agency Name");
+		agencyValue.setCaption("Agency");
 		
 		switchMode( LayoutMode.READ );
 		refreshInfo();
@@ -104,7 +106,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		}
 		
 		urnEdit
-			.withCaption( "Edit canonical URL" )
+			.withCaption( "Edit canonical URI" )
 			.setWidth("100%");
 
 		saveButton
@@ -129,7 +131,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		
 		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null && !version.getTranslateAgency().isEmpty()) {
 			agencyTransalteValue.setVisible( true );
-			agencyTransalteValue.setCaption("Agency Translator");
+			agencyTransalteValue.setCaption("Translating agency");
 			agencyTransalteValue.setValue("&nbsp; <a href='" + version.getTranslateAgencyLink() + "'>" + version.getTranslateAgency()  +"</a> ");
 			translatorAgency.setValue( version.getTranslateAgency());
 			translatorAgencyLink.setValue( version.getTranslateAgencyLink());
@@ -179,6 +181,8 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 	}
 
 	private void refreshInfo() {
+		String baseUrl = configService.getServerContextPath() + "/v1/resolver/";
+		
 		if( version.getCanonicalUri() == null || version.getCanonicalUri().isEmpty()) {
 			canonicalUri.setVisible( false );
 			canonicalUriVersion.setVisible( false );
@@ -186,8 +190,8 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		else {
 			int index = version.getCanonicalUri().lastIndexOf(":");
 			String cvCanonicalUri = version.getCanonicalUri().substring(0, index);
-			canonicalUri.setValue( cvCanonicalUri );
-			canonicalUriVersion.setValue( version.getCanonicalUri());
+			canonicalUri.setValue( "<a href='" + baseUrl +  cvCanonicalUri + "'>" + cvCanonicalUri + "</a>" );
+			canonicalUriVersion.setValue( "<a href='" + baseUrl +  version.getCanonicalUri() + "'>" + version.getCanonicalUri() + "</a>");
 			int index2 = cvCanonicalUri.lastIndexOf(":");
 			if( index2 > 0)
 				urnEdit.setValue( cvCanonicalUri.substring(0, index2) );

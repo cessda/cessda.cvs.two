@@ -16,7 +16,6 @@ import javax.annotation.PostConstruct;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.xml.utils.URI;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
@@ -27,7 +26,6 @@ import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
-import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.thymeleaf.TemplateEngine;
@@ -62,15 +60,12 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
 import com.vaadin.ui.Image;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.TreeGrid;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.components.grid.TreeGridDragSource;
 import com.vaadin.ui.components.grid.TreeGridDropTarget;
 import com.vaadin.ui.renderers.ComponentRenderer;
@@ -78,26 +73,19 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.CVManagerUI;
 import eu.cessda.cvmanager.ui.layout.ExportLayout;
-import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow2;
-import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogMultipleOption;
-import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @UIScope
-@SpringView(name = DetailView2.VIEW_NAME)
-public class DetailView2 extends CvManagerView {
+@SpringView(name = CvSkosDetailsView.VIEW_NAME)
+public class CvSkosDetailsView extends CvManagerView {
 
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "detailold";
@@ -187,16 +175,16 @@ public class DetailView2 extends CvManagerView {
 	private String sourceLanguage;
 	private String activeTab;
 
-	public DetailView2( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
+	public CvSkosDetailsView( I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService, 
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, TemplateEngine templateEngine) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, DetailView2.VIEW_NAME);
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, CvSkosDetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
 		this.versionService = versionService;
-		eventBus.subscribe( this, DetailView2.VIEW_NAME );
+		eventBus.subscribe( this, CvSkosDetailsView.VIEW_NAME );
 	}
 
 	@PostConstruct
@@ -286,7 +274,7 @@ public class DetailView2 extends CvManagerView {
 				} else {
 					activeTab = "detail";
 				}
-				LoginView.NAVIGATETO_VIEWNAME = DetailView2.VIEW_NAME + "/" + itemPathPart[0];
+				LoginView.NAVIGATETO_VIEWNAME = CvSkosDetailsView.VIEW_NAME + "/" + itemPathPart[0];
 				if( itemPathPart.length > 0 )
 					cvItem.setCurrentNotation(itemPathPart[0]);
 				if( mappedParams.get("url") != null)
@@ -828,8 +816,11 @@ public class DetailView2 extends CvManagerView {
 	                	optionButtons.add( new Button( "As next sibling" )); // option 0
 	                	optionButtons.add( new Button( "As child" ));        // option 1
 	                	
-	                	getUI().addWindow( new DialogMultipleOption("Code move options", "Move the code <strong>\"" + (draggedRow.getNotation() == null ? draggedRow.getPrefLabelByLanguage( sourceLanguage ): draggedRow.getNotation()) + "\"</strong> as a next sibling or as a child of <strong>\"" + 
-        						(targetRow.getNotation() == null ? targetRow.getPrefLabelByLanguage( sourceLanguage ): targetRow.getNotation())+ "\"</strong>?", optionButtons, 
+	                	getUI().addWindow( new DialogMultipleOption( 
+	                			i18n.get("dialog.order.code.header"), 
+	                			i18n.get("dialog.order.code.content",
+	                					(draggedRow.getNotation() == null ? draggedRow.getPrefLabelByLanguage( sourceLanguage ): draggedRow.getNotation()),
+            							(targetRow.getNotation() == null ? targetRow.getPrefLabelByLanguage( sourceLanguage ): targetRow.getNotation()) ), optionButtons, 
 	                			windowoption ->  {
 	                				Integer selectedOptionNumber = windowoption.getSelectedOptionNumber();
 	                				if(selectedOptionNumber == null )
@@ -1004,14 +995,6 @@ public class DetailView2 extends CvManagerView {
 				
 				break;
 			case CVCONCEPT_ADD_DIALOG:
-				CVConcept newCVConcept = new CVConcept();
-				newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
-				newCVConcept.createId();
-				newCVConcept.setContainerId( cvItem.getCvScheme().getContainerId());
-
-				DialogAddCodeWindow2 dialogAddCodeWindow1 = new DialogAddCodeWindow2(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), newCVConcept, null, getVocabulary(), getAgency(), i18n, UI.getCurrent().getLocale());
-				getUI().addWindow(dialogAddCodeWindow1);
-				
 				break;
 			case CVCONCEPT_TRANSLATION_DIALOG:
 //				if( cvCodeTreeData == null || cvCodeTreeData.getRootItems().isEmpty()) {
@@ -1025,13 +1008,6 @@ public class DetailView2 extends CvManagerView {
 //				}
 				break;
 			case CVCONCEPT_ADDCHILD_DIALOG:
-				CVConcept childConcept = new CVConcept();
-				childConcept.loadSkeleton(childConcept.getDefaultDialect());
-				childConcept.createId();
-				childConcept.setContainerId( cvItem.getCvScheme().getContainerId());
-
-				DialogAddCodeWindow2 dialogAddCodeWindow2 = new DialogAddCodeWindow2(eventBus, stardatDDIService, vocabularyService, codeService, cvItem.getCvScheme(), childConcept, cvItem.getCvConcept(), getVocabulary(), getAgency(),  i18n, UI.getCurrent().getLocale());
-				getUI().addWindow( dialogAddCodeWindow2 );
 				break;
 			case CVCONCEPT_DELETED:
 				

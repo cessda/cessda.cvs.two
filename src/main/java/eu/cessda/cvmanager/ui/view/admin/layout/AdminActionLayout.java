@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.ui.view.admin;
+package eu.cessda.cvmanager.ui.view.admin.layout;
 
 import java.util.Locale;
 
@@ -11,49 +11,20 @@ import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
 import org.gesis.wts.service.dto.AgencyDTO;
-import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button.ClickEvent;
 
-import eu.cessda.cvmanager.domain.Vocabulary;
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.model.CvItem;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.service.dto.CodeDTO;
-import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
-import eu.cessda.cvmanager.ui.view.CvView;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.admin.AdminView;
 import eu.cessda.cvmanager.ui.view.admin.AdminView.AdminContent;
-import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindowNew;
-import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
-import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageProfile;
-import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindowNew;
-import eu.cessda.cvmanager.ui.view.window.DialogCreateVersionWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindowNew;
 
 public class AdminActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -71,6 +42,7 @@ public class AdminActionLayout extends ResponsiveBlock{
 	private MButton buttonManageUserRole = new MButton("Manage system role");
 	private MButton buttonManageLicense = new MButton("Manage license");
 	private MButton buttonWitdrawnCvs = new MButton("Withdrawn CVs");
+	private MButton buttonManageResolver = new MButton("Manage Resolver");
 	
 	public AdminActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 
 			AdminView adminView, AgencyDTO agency, UserService userService, RoleService roleService, AgencyService agencyService,
@@ -121,6 +93,12 @@ public class AdminActionLayout extends ResponsiveBlock{
 			.withVisible( false )
 			.addClickListener( this::doWithdrawnList );
 		
+		buttonManageResolver
+			.withFullWidth()
+			.withStyleName("action-button")
+			.withVisible( false )
+			.addClickListener( this::doManageResolver );
+		
 		getInnerContainer()
 			.add(
 				buttonManageUser,
@@ -130,7 +108,10 @@ public class AdminActionLayout extends ResponsiveBlock{
 				buttonManageUserRole,
 				new MLabel("<hr/>").withContentMode( ContentMode.HTML ),
 				buttonManageLicense,
-				buttonWitdrawnCvs
+				new MLabel("<hr/>").withContentMode( ContentMode.HTML ),
+				buttonWitdrawnCvs,
+				new MLabel("<hr/>").withContentMode( ContentMode.HTML ),
+				buttonManageResolver
 			);
 	}
 
@@ -157,6 +138,11 @@ public class AdminActionLayout extends ResponsiveBlock{
 	private void doWithdrawnList(ClickEvent event ) {
 		adminView.setMainContent( AdminContent.LIST_WITHDRAWN_CV );
 	}
+	
+	private void doManageResolver(ClickEvent event ) {
+		adminView.setMainContent( AdminContent.MANAGE_RESOLVER);
+	}
+	
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		buttonManageUser.withCaption( "Manage Member" );
@@ -176,6 +162,7 @@ public class AdminActionLayout extends ResponsiveBlock{
 			buttonManageUserRole.setVisible( true );
 			buttonManageLicense.setVisible( true );
 			buttonWitdrawnCvs.setVisible( true );
+			buttonManageResolver.setVisible( true );
 		}
 		
 		return hasAction;

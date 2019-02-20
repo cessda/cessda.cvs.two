@@ -1,19 +1,12 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Locale;
-import java.util.Set;
-
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.service.dto.AgencyDTO;
+import org.gesis.wts.security.UserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -26,30 +19,29 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
-import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.EditorView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class DialogTranslateCodeWindow extends MWindow {
 
@@ -63,8 +55,9 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private final CodeService codeService;
 	private final VersionService versionService;
 	private final ConceptService conceptService;
+	private final VocabularyChangeService vocabularyChangeService;
 
-	Binder<CVConcept> binder = new Binder<CVConcept>();
+	Binder<ConceptDTO> binder = new Binder<ConceptDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
 	private MLabel lTitle = new MLabel( "Descriptive term" );
@@ -89,9 +82,6 @@ public class DialogTranslateCodeWindow extends MWindow {
 	
 	private Language language;
 	private Language sourceLang;
-
-	private CVScheme cvScheme;
-	private CVConcept cvConcept;
 	
 	private VocabularyDTO vocabulary;
 	private VersionDTO version;
@@ -105,17 +95,16 @@ public class DialogTranslateCodeWindow extends MWindow {
 	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, 
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			CVScheme cvScheme, CVConcept conceptCode, Language sLanguage, Language sourceLang, VocabularyDTO vocabularyDTO, 
-			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, I18N i18n, Locale locale) {
+			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, VocabularyChangeService vocabularyChangeService, I18N i18n, Locale locale) {
 		super( "Add Code Translation");
 		this.i18n = i18n;
-		this.cvScheme = cvScheme;
-		this.cvConcept = conceptCode;
 		this.language = sLanguage;
 		this.stardatDDIService = stardatDDIService;
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
+		this.vocabularyChangeService = vocabularyChangeService;
 		
 		this.eventBus = eventBus;
 		this.vocabulary = vocabularyDTO;
@@ -128,15 +117,15 @@ public class DialogTranslateCodeWindow extends MWindow {
 	}
 
 	private void init() {
-		codeText.setValue( cvConcept.getPrefLabelByLanguage( sourceLang.toString() ));
+		codeText.setValue( code.getTitleByLanguage( sourceLang ) );
 		codeText.withFullWidth()
 			.withReadOnly( true );
 		
 		sourceTitle.withFullWidth();
-		sourceTitle.setValue( cvConcept.getPrefLabelByLanguage( sourceLang.toString() ) );
+		sourceTitle.setValue( code.getTitleByLanguage( sourceLang ) );
 		sourceDescription.setSizeFull();
 		
-		sourceDescription.setValue( cvConcept.getDescriptionByLanguage( sourceLang.toString() ) );
+		sourceDescription.setValue( code.getDefinitionByLanguage( sourceLang ) );
 		sourceDescription.setReadOnly( true );
 		sourceTitle.setReadOnly( true );
 		
@@ -149,7 +138,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 		
 		lTitle.withStyleName( "required" );
 		lLanguage.withStyleName( "required" );
-		lDescription.withStyleName( "required" );
+//		lDescription.withStyleName( "required" );
 		
 		languageCb.setItems( this.language );
 		languageCb.setValue( this.language  );
@@ -176,7 +165,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 			sourceRowB.setVisible( true );
 		}
 
-		binder.setBean(cvConcept);
+		binder.setBean( concept );
 
 		storeCode.addClickListener(event -> {
 			saveCode();
@@ -251,73 +240,80 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private void saveCode() {
 		if(!isInputValid())
 			return;
-		
-		log.trace(cvConcept.getPrefLabelByLanguage(language.toString()));
-		cvConcept.save();
-		DDIStore ddiStore = stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "add translation");
+		// generate Uri by inserting notation after cvScheme notation
+		String uri = version.getUri();
+		int lastIndex = uri.lastIndexOf("/");
+		if( lastIndex == -1) {
+			uri = ConfigurationService.DEFAULT_CV_LINK;
+			if(!uri.endsWith("/"))
+				uri += "/";
+			uri += version.getNotation();
+		} else {
+			uri = uri.substring(0, lastIndex);
+		}
+			
 		// store the code and index
 		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
 		codeService.save(code);
 		
+		concept.setUri( uri + "#" + code.getNotation() + "/" + language.toString());
+		concept.setNotation( code.getNotation() );
+		concept.setTitle( preferedLabel.getValue() );
+		concept.setDefinition( description.getValue() );
+		concept.setPosition( code.getPosition() );
 		
 		// store concept
 		if( !concept.isPersisted()) {
 			concept.setCodeId( code.getId());
+			concept.setVersionId( version.getId());
+			// save vocabulary, version
+			concept = conceptService.save(concept);
 			version.addConcept(concept);
+			version = versionService.save(version);
+		} else {
+			// save vocabulary, version
+			concept = conceptService.save(concept);
 		}
-		concept.setNotation( code.getNotation() );
-		concept.setTitle( preferedLabel.getValue() );
-		concept.setDefinition( description.getValue() );
 		
-		// save vocabulary, version
-		concept = conceptService.save(concept);
+		// save change log
+		VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
+		changeDTO.setVocabularyId( vocabulary.getId());
+		changeDTO.setVersionId( version.getId()); 
+		changeDTO.setChangeType( "Code added" );
+		changeDTO.setDescription( concept.getNotation());
+		changeDTO.setDate( LocalDateTime.now() );
+		UserDetails loggedUser = SecurityUtils.getLoggedUser();
+		changeDTO.setUserId( loggedUser.getId() );
+		changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
+		vocabularyChangeService.save(changeDTO);
+
 		
 		// indexing editor
 		vocabularyService.index(vocabulary);
 		
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, ddiStore) );
+		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		
 		this.close();
 	}
 	
 	private boolean isInputValid() {
-		cvConcept.setPrefLabelByLanguage(language.toString(), preferedLabel.getValue());
-		cvConcept.setDescriptionByLanguage(language.toString(), description.getValue());
+		concept.setTitle(preferedLabel.getValue());
+		concept.setDefinition(description.getValue());
 		
 		binder
 			.forField( preferedLabel )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( concept -> getPrefLabelByLanguage(concept),
-				(concept, value) -> setPrefLabelByLanguage(concept, value));
+			.bind( concept -> concept.getTitle(),
+				(concept, value) -> concept.setTitle(value));
 
 		binder
 			.forField( description )
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
-			.bind( concept -> getDescriptionByLanguage(concept),
-				(concept, value) -> setDescriptionByLanguage(concept, value));
+//			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
+			.bind(  concept -> concept.getDefinition(),
+				(concept, value) -> concept.setDefinition(value));
 		
 		binder.validate();
 		return binder.isValid();
 	}
 
-	private CVConcept setPrefLabelByLanguage(CVConcept concept, String value) {
-		concept.setPrefLabelByLanguage(language.toString(), value);
-		return concept;
-	}
-
-	private String getPrefLabelByLanguage(CVConcept concept) {
-		return concept.getPrefLabelByLanguage(language.toString());
-
-	}
-
-	private Object setDescriptionByLanguage(CVConcept concept, String value) {
-		concept.setDescriptionByLanguage(language.toString(), value);
-		return null;
-	}
-
-	private String getDescriptionByLanguage(CVConcept concept) {
-
-		return concept.getDescriptionByLanguage(language.toString());
-
-	}
 }

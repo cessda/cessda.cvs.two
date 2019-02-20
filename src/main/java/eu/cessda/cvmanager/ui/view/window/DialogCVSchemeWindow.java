@@ -1,26 +1,19 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVEditor;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.i18n.I18N;
+import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -29,35 +22,26 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
-import com.vaadin.data.HasValue.ValueChangeEvent;
 import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
-import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
-import eu.cessda.cvmanager.domain.Vocabulary;
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
-import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
-public class DialogCVSchemeWindow extends MWindow {
+public class DialogCVSchemeWindow extends MWindow implements Translatable{
 
 	private static final long serialVersionUID = -8116725336044618619L;
 	private static final Logger log = LoggerFactory.getLogger(DialogCVSchemeWindow.class);
@@ -67,15 +51,12 @@ public class DialogCVSchemeWindow extends MWindow {
 	private final UIEventBus eventBus;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
-	private final StardatDDIService stardatDDIService;
-	private final VocabularySearchRepository vocabularySearchRepository;
-	private final VocabularyChangeService vocabularyChangeService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	private MLabel lAgency = new MLabel( "Agency" );
-	private MLabel lCode = new MLabel( "Code" );
-	private MLabel lTitle = new MLabel( "Title" );
-	private MLabel lDescription = new MLabel( "Definition" );
+	private MLabel lCode = new MLabel( "CV short name" );
+	private MLabel lTitle = new MLabel( "CV name" );
+	private MLabel lDescription = new MLabel( "CV definition" );
 	private MLabel lLanguage = new MLabel( "Language (source)" );
 
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -92,32 +73,28 @@ public class DialogCVSchemeWindow extends MWindow {
 	private MLabel lChangeDesc = new MLabel( "Description" );
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
+	private MLabel notesLabel = new MLabel("Notes");
+	private TextArea notes = new TextArea();
 	
-	private Binder<CVScheme> binder = new Binder<CVScheme>();
+	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
 	private Language language;
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
 	private VersionDTO version;
-	private CVScheme cvScheme;
 	
 	private boolean isUpdated = false;
 
-	public DialogCVSchemeWindow(StardatDDIService stardatDDIService, AgencyService agencyService, 
-			VocabularyService vocabularyService, VocabularySearchRepository vocabularySearchRepository, CVScheme cvScheme, 
-			VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, I18N i18n, Language selectedLanguage,
-			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
+	public DialogCVSchemeWindow(I18N i18n, UIEventBus eventBus, AgencyService agencyService, 
+			VocabularyService vocabularyService, VocabularyDTO vocabulary, VersionDTO version, 
+			AgencyDTO agency, Language selectedLanguage) {
 		super( version.isPersisted() ?"Edit Vocabulary": "Add Vocabulary");
 		this.agencyService = agencyService;
-		this.cvScheme = cvScheme;
-		this.stardatDDIService = stardatDDIService;
 		this.vocabularyService = vocabularyService;
-		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.vocabulary = vocabulary;
 		this.version = version;
 		this.agency = agency;
 		this.i18n = i18n;
 		this.eventBus = eventBus;
-		this.vocabularyChangeService = vocabularyChangeService;
 						
 		init();
 	}
@@ -161,6 +138,9 @@ public class DialogCVSchemeWindow extends MWindow {
 				agency = null;
 			}
 		});
+		
+		if( vocabulary.getNotes() != null )
+			notes.setValue( vocabulary.getNotes());
 		
 		if( vocabulary.isPersisted())
 			isUpdated = true;
@@ -215,14 +195,8 @@ public class DialogCVSchemeWindow extends MWindow {
 			else
 				language = null;
 		});
-		
-		
 
-//		setOrginalLanguage(orignalLanguage);
-//		setLanguage(language);
-		setCvScheme(cvScheme);	
-
-		binder.setBean(getCvScheme());
+		binder.setBean( version );
 		
 		tfCode.withFullWidth();
 		tfCode.addValueChangeListener( e -> {
@@ -232,12 +206,19 @@ public class DialogCVSchemeWindow extends MWindow {
 		
 		tfTitle.withFullWidth();
 		description.setSizeFull();
+		notes.setSizeFull();
 
 		storeCode.addClickListener(event -> {
 			saveCV();
 		});
 		
 		Button cancelButton = new Button("Cancel", e -> this.close());
+		
+		// check if current version is the initial version
+		List<VersionDTO> versionsByLanguage = vocabulary.getVersionsByLanguage( vocabulary.getSourceLanguage() );
+		if( versionsByLanguage.size() == 1) {
+			changeBox.setVisible( false );
+		}
 		
 		lChange
 			.withStyleName("change-header");
@@ -289,15 +270,23 @@ public class DialogCVSchemeWindow extends MWindow {
 						lTitle, tfTitle
 					).withExpand( lTitle, 0.15f).withExpand( tfTitle, 0.85f),
 				new MHorizontalLayout()
-				.withFullWidth()
-				.withHeight("100%")
-				.add(
-					lDescription, description
-				).withExpand( lDescription, 0.15f).withExpand( description, 0.85f)
+					.withFullWidth()
+					.withHeight("100%")
+					.add(
+						lDescription, description
+					).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
+				new MHorizontalLayout()
+					.withFullWidth()
+					.withHeight("100%")
+					.add(
+						notesLabel, notes
+					).withExpand( notesLabel, 0.15f).withExpand( notes, 0.85f)
 				
 			);
 
 		if( version.isPersisted() ) {
+			
+			
 			layout
 			.add(
 				changeBox,
@@ -344,158 +333,66 @@ public class DialogCVSchemeWindow extends MWindow {
 			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
+		updateMessageStrings(locale);
 	}
 
 	private void saveCV() {
 		if(!isInputValid())
 			return;
 		
-		if( isUpdated ) {
-			if( changeCb.getValue() == null ) {
-				Notification.show("Please select the change type!");
-				return;
-			}
-		}
-		//agency
-		List<CVEditor> editorSet = getCvScheme().getOwnerAgency();
-		if(editorSet ==  null)
-			editorSet = new ArrayList<>();
-		else
-			editorSet.clear();
-		CVEditor cvEditor = new CVEditor();
-		cvEditor.setName( agency.getName());
-		cvEditor.setLogoPath( agency.getLogopath());
+		// Store new CV
+		WorkspaceManager.saveSourceCV(agency, language, vocabulary, version, 
+				tfCode.getValue(), tfTitle.getValue(), description.getValue(), notes.getValue());
 		
-		editorSet.add( cvEditor );
-		// save on flatDB
-		getCvScheme().setOwnerAgency((ArrayList<CVEditor>) editorSet);
-		getCvScheme().save();
-		
-		DDIStore ddiStore = stardatDDIService.saveElement(getCvScheme().ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Add new CV");
-		
-		// save on database
-		// new item
-		if( !isUpdated )
-		{
-			vocabulary.setUri( ddiStore.getElementId());
-			vocabulary.setNotation( tfCode.getValue() );
-			vocabulary.setVersionNumber("1.0");
-			vocabulary.setAgencyId( agency.getId());
-			vocabulary.setAgencyName( agency.getName());
-			vocabulary.setSourceLanguage( language.toString());
-			vocabulary.setStatus( getCvScheme().getStatus() );
-			vocabulary.addStatus( getCvScheme().getStatus() );
-			vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
-			
-			
-			version.setUri(ddiStore.getElementId());
-			version.setNotation( tfCode.getValue());
-			version.setNumber("1.0");
-			version.setStatus( Status.DRAFT.toString() );
-			version.setItemType( ItemType.SL.toString());
-			version.setLanguage( language.toString() );
-			version.setPreviousVersion( 0L );
-			version.setInitialVersion( 0L );
-			version.setLicenseId( agency.getLicenseId());
-			
-			vocabulary.addVersion(version);
-			vocabulary.addVers(version);
-		} else {
-		
-			vocabulary.setTitleDefinition(tfTitle.getValue(), description.getValue(), language);
-			
-			version.setTitle( tfTitle.getValue());
-			version.setDefinition( description.getValue() );
-			
-			// save to database
-			vocabulary = vocabularyService.save(vocabulary);
-		}
-		
-		// index
-		vocabularyService.index(vocabulary);
-		
-		if( isUpdated ) {
-			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-			changeDTO.setVocabularyId( vocabulary.getId());
-			changeDTO.setVersionId( version.getId()); 
-			changeDTO.setChangeType( changeCb.getValue() );
-			changeDTO.setDescription( changeDesc.getValue() == null ? "": changeDesc.getValue() );
-			changeDTO.setDate( LocalDateTime.now() );
-			UserDetails loggedUser = SecurityUtils.getLoggedUser();
-			changeDTO.setUserId( loggedUser.getId() );
-			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-			
-			vocabularyChangeService.save(changeDTO);
+		if( isUpdated && !version.isInitialVersion()) {
+			// store log 
+			WorkspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
 		} 
 		
 		// use eventbus to update detail view
 		if( isUpdated )
-			eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+			eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
 		
-//		eventBus.publish( this, ddiStore);
 		close();
-		UI.getCurrent().getNavigator().navigateTo( DetailView.VIEW_NAME + "/" + getCvScheme().getContainerId());
+		UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
 	}
 
 	private boolean isInputValid() {
-		getCvScheme().setCode(tfCode.getValue());
-		getCvScheme().setTitleByLanguage(language.toString(), tfTitle.getValue());
-		getCvScheme().setDescriptionByLanguage(language.toString(), description.getValue());
 		
-		System.out.println( vocabularyService.existsByNotation( tfCode.getValue() ));
-		
+		version.setNotation( tfCode.getValue() );
+		version.setTitle( tfTitle.getValue() );
+		version.setDefinition( description.getValue() );
+				
 		// if new item check for duplication
 		if( !isUpdated) {
 			binder
 			.forField( tfCode)
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))
 			.withValidator(p -> !vocabularyService.existsByNotation( p ), "code is already exist")
-			.bind( concept -> concept.getCode(),
-					(concept, value) -> concept.setCode(value));
+			.bind( v -> v.getNotation(),(v, value) -> v.setNotation(value));
 		}
 		
 		binder
-		.forField( tfTitle)
-		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-		.bind(concept -> getTitleByLanguage(concept),
-			(concept, value) -> setTitleByLanguage(concept, value));
+			.forField( tfTitle)
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind(v -> v.getTitle(),
+				(v, value) -> v.setTitle( value));
 
 		binder
-		.forField( description)
-		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
-		.bind(concept -> getDescriptionByLanguage(concept),
-			(concept, value) -> setDescriptionByLanguage(concept, value));
+			.forField( description )
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
+			.bind(v -> v.getDefinition(),
+				(v, value) -> v.setDefinition( value ));
 		
 		binder.validate();
 		return binder.isValid();
 	}
 
-	private CVScheme setTitleByLanguage(CVScheme concept, String value) {
-		concept.setTitleByLanguage( language.toString(), value);
-		return concept;
-	}
-
-	private String getTitleByLanguage(CVScheme concept) {
-
-		return concept.getTitleByLanguage( language.toString());
-
-	}
-
-	private CVScheme setDescriptionByLanguage(CVScheme concept, String value) {
-		concept.setDescriptionByLanguage(language.toString(), value);
-		return concept;
-	}
-
-	private String getDescriptionByLanguage(CVScheme concept) {
-
-		return concept.getDescriptionByLanguage(language.toString());
-	}
-
-	public CVScheme getCvScheme() {
-		return cvScheme;
-	}
-
-	public void setCvScheme(CVScheme cvScheme) {
-		this.cvScheme = cvScheme;
+	@Override
+	public void updateMessageStrings(Locale locale) {
+		lAgency.withValue( i18n.get("dialog.cv.add.agency") );
+		lCode.withValue( i18n.get("dialog.cv.add.code") );
+		lTitle.withValue( i18n.get("dialog.cv.add.title") );
+		lDescription.withValue( i18n.get("dialog.cv.add.definition") );
 	}
 }

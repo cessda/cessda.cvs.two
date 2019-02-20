@@ -38,7 +38,7 @@ public class MetadataField implements Serializable{
     private Long id;
 	
 	@NotNull
-    @Column(name = "metadata_key", length = 240, nullable = false)
+    @Column(name = "metadata_key", length = 240, nullable = false, unique = true)
     private String metadataKey;
     
     @Lob

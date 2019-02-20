@@ -53,7 +53,7 @@ spring:
       hibernate.generate_statistics: false
     show-sql: 'false'
   mail:
-    host: svboexc02.gesis.intra
+    host: MAILRELAY
     properties:
       mail:
         smtp:

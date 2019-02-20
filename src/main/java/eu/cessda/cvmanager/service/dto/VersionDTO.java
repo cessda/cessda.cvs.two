@@ -104,6 +104,17 @@ public class VersionDTO implements Serializable {
 
     @JsonIgnore
     private Set<ConceptDTO> concepts = new HashSet<>();
+    
+    public VersionDTO() {}
+    
+    public static VersionDTO createDraft() {
+		return new VersionDTO().withStatus(Status.DRAFT);
+	}
+	
+	public VersionDTO withStatus(Status status) {
+		this.status = status.toString();
+		return this;
+	}
 
     public Long getId() {
         return id;
@@ -383,7 +394,7 @@ public class VersionDTO implements Serializable {
 	
 	public boolean isInitialVersion() {
 		if(isPersisted()) {
-			if( initialVersion.equals( id ))
+			if( initialVersion != null && initialVersion.equals( id ))
 				return true;
 		} 
 		return false;
@@ -562,5 +573,18 @@ DDI Alliance. (2018). Erhebungsdesign [Time Method] (Version 1.2.1; GESIS, Trans
 		citation.append( "Retrieved from: " + detailUrl);
 		
 		return citation.toString();
+	}
+	
+	public Status getEnumStatus() {
+		return Status.valueOf( getStatus().toUpperCase());
+	}
+	
+	public void createSummary( String versionChanges ) {
+		setSummary(
+			(getSummary() == null ? "":getSummary().replaceAll("(\r\n|\n)", "<br />")) +
+			"<strong>" + getNumber() + "</strong>"+
+			" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + getPublicationDate() +
+			"<br/>Notes:<br/>" + getVersionNotes() + (versionChanges != null && !versionChanges.isEmpty() ? "<br/>Changes:<br/>" + getVersionChanges() : "") + "<br/><br/>"
+		);
 	}
 }
