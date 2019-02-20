@@ -214,7 +214,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	
 	private void doCvAddTranslation(ClickEvent event ) {
 		
-		Window window = new DialogAddLanguageWindow(agency, vocabulary, new VersionDTO(), eventBus);
+		Window window = new DialogAddLanguageWindow(agency, vocabulary, VersionDTO.createDraft(), eventBus);
 		getUI().addWindow(window);
 	}
 	

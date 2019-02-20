@@ -16,6 +16,7 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
+import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
@@ -75,36 +76,13 @@ public class WorkflowManager {
 	}
 	
 	public static VocabularyDTO createVocabulary(AgencyDTO agency, Cv cv) {
-		VocabularyDTO vocabulary = new VocabularyDTO();
-		String cvUriLink = WorkflowUtils.generateCvUri( agency.getUri(), cv.getCode(), cv.getLanguage());
-		
-		vocabulary.setNotation( cv.getCode() );
-		vocabulary.setTitleDefinition(cv.getTerm(), cv.getDefinition(), cv.getLanguage());
-		vocabulary.setVersionNumber("1.0");
-		vocabulary.setAgencyId( agency.getId());
-		vocabulary.setAgencyName( agency.getName());
-		vocabulary.setSourceLanguage( cv.getLanguage());
-		vocabulary.setStatus( Status.DRAFT.toString());
-		vocabulary.addStatus( Status.DRAFT.toString() );
-		vocabulary.setVersionByLanguage(cv.getLanguage(), "1.0");
-		
+		VocabularyDTO vocabulary = VocabularyDTO.createDraft();
 		VersionDTO version = cvMapper.toDto(cv);
-		
-		
-		version.setUri( cvUriLink );
-		version.setNumber("1.0");
 		version.setStatus( Status.DRAFT.toString() );
-		version.setPreviousVersion(0L);
+		Language language = Language.valueOfEnum( cv.getLanguage() );
 		
-		// save to database
-		vocabulary = vocabularyService.save(vocabulary);
-		
-		version.setVocabularyId( vocabulary.getId() );
-		version = versionService.save( version );
-		
-		// save initial version
-		version.setInitialVersion( version.getId() );
-		version = versionService.save( version );
+		WorkspaceManager.saveSourceCV(agency, language, vocabulary, version, 
+				cv.getCode(), cv.getTerm(), cv.getDefinition(), null);
 		
 		// map concept as well
 		if( cv.getCvCodes() != null && cv.getCvCodes().length > 0) {
@@ -113,83 +91,41 @@ public class WorkflowManager {
 				// validate concept, make sure the concept is unique
 				if( conceptNotation.contains( cvCode.getCode()))
 					continue;
-				
 				conceptNotation.add( cvCode.getCode());
 				
 				ConceptDTO concept = cvCodeMapper.toDto(cvCode);
-				// generate Uri by inserting notation after cvScheme notation
-				String uri = version.getUri();
-				int lastIndex = uri.lastIndexOf("/");
-				if( lastIndex == -1) {
-					uri = ConfigurationService.DEFAULT_CV_LINK;
-					if(!uri.endsWith("/"))
-						uri += "/";
-					uri += version.getNotation();
-				} else {
-					uri = uri.substring(0, lastIndex);
-				}
-				
 				CodeDTO code = new CodeDTO();
-				code.setTitleDefinition(concept.getTitle(), concept.getDefinition(), cv.getLanguage());
-
 				if( concept.getParent() != null )
 					code.setParent( concept.getParent());
 				
-				code.setNotation( concept.getNotation() );
-				code.setUri( code.getNotation() );
-				code.setPosition( concept.getPosition());
-				code.setVocabularyId( vocabulary.getId());
-				code.setSourceLanguage( cv.getLanguage() );
-				code = codeService.save(code);
-				
-				vocabulary.addCode(code);
-				concept.setCodeId( code.getId());
-				concept.setVersionId( version.getId() );
-				concept.setUri( uri + "#" + concept.getNotation() + "/" +  cv.getLanguage());
-				concept = conceptService.save(concept);
-				version.addConcept(concept);
-//				version = versionService.save(version);
+				// save code
+				WorkspaceManager.saveCode(vocabulary, version, new CodeDTO(), null, 
+					concept, concept.getNotation(), concept.getTitle(), concept.getDefinition());
 			}
 		}
 		
-		vocabulary.addVersion(version);
-		vocabulary.addVers(version);
 		
-		vocabulary = WorkflowManager.publishSlVersion(vocabulary, agency, version);
-		
-		// index editor
-		vocabularyService.index(vocabulary);
-		
-		// indexing published codes
-		vocabularyService.indexPublish(vocabulary, version);
-		
+		// publish, by assign version with final_review status
+		version.setStatus( Status.FINAL_REVIEW.toString());
+		forwardStatus(vocabulary, version, agency, null, null, "1.0", "", "");
+//		
 		return vocabulary;
 	}
 	
-	public static String getInitialConceptUri( VersionDTO version ) {
-		String uri = version.getUri();
-		int lastIndex = uri.lastIndexOf("/");
-		if( lastIndex == -1) {
-			uri = ConfigurationService.DEFAULT_CV_LINK;
-			if(!uri.endsWith("/"))
-				uri += "/";
-			uri += version.getNotation();
-		} else {
-			uri = uri.substring(0, lastIndex);
-		}
-		return uri;
-	}
-	
+
 	public static VocabularyDTO addVocabularyTranslation(VocabularyDTO vocabulary, AgencyDTO agency, Cv cv) {
 		
 		// check for existing version
 		VersionDTO version = null;
+		Language language = Language.valueOfEnum( cv.getLanguage() );
 		Optional<VersionDTO> versionByLanguage = vocabulary.getLatestVersionByLanguage( cv.getLanguage());
 		if(versionByLanguage.isPresent())
 			version = versionByLanguage.get();
 		
-		if( version == null )
-			version = new VersionDTO();
+		if( version == null ) {
+			version = cvMapper.toDto(cv);
+			version.setStatus( Status.DRAFT.toString() );
+		}
 		
 		// get the SL version
 		VersionDTO slVersion = null;
@@ -199,35 +135,8 @@ public class WorkflowManager {
 		else
 			throw new IllegalArgumentException("Unable to find SL version, please make sure that SL is exist");
 		
-		String cvUriLink = agency.getUri();
-		if(cvUriLink == null )
-			cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
-		if(!cvUriLink.endsWith("/"))
-			cvUriLink += "/";
-		
-		cvUriLink += vocabulary.getNotation() + "/" + cv.getLanguage();
-		
-		version.setUriSl( vocabulary.getUri() );
-		version.setUri( cvUriLink );
-		
-		version.setNotation(cv.getCode());
-		version.setTitle( cv.getTerm() );
-		version.setDefinition( cv.getDefinition() );
-		version.setNumber( slVersion.getNumber() + ".1");
-		version.setStatus( Status.DRAFT.toString() );
-		version.setItemType( ItemType.TL.toString());
-		version.setLanguage( cv.getLanguage());
-		
-		version.setPreviousVersion( 0L );
-		version.setVocabularyId( vocabulary.getId());
-		
-		version = versionService.save(version);
-		version.setInitialVersion( version.getId());
-		version = versionService.save(version);
-		
-		vocabulary.setVersionByLanguage(cv.getLanguage(), version.getNumber());
-		vocabulary.setTitleDefinition(version.getTitle(), version.getDefinition(), version.getLanguage());
-		vocabulary = vocabularyService.save(vocabulary);
+		WorkspaceManager.saveTargetCV(agency, language, vocabulary, version, 
+				cv.getTerm(), cv.getDefinition(), null, null);
 		
 		
 		// map concept as well
@@ -242,171 +151,21 @@ public class WorkflowManager {
 				CodeDTO code = codeMap.get( cvCode.getCode());
 				if( code == null )
 					continue;
-				code.setTitleDefinition( cvCode.getTerm(), cvCode.getDefinition(), version.getLanguage());
-				codeService.save(code);
-				
 				ConceptDTO concept = cvCodeMapper.toDto(cvCode);
-				concept.setCodeId( code.getId());
-				concept.setVersionId( version.getId() );
-				
-				// generate Uri by inserting notation after cvScheme notation
-				String uri = version.getUri();
-				int lastIndex = uri.lastIndexOf("/");
-				if( lastIndex == -1) {
-					uri = ConfigurationService.DEFAULT_CV_LINK;
-					if(!uri.endsWith("/"))
-						uri += "/";
-					uri += version.getNotation();
-				} else {
-					uri = uri.substring(0, lastIndex);
-				}
-				
-				concept.setUri( uri + "#" + concept.getNotation() + "/" +  cv.getLanguage());
-				concept = conceptService.save(concept);
-				version.addConcept(concept);
+				// get parent code if exist
+				CodeDTO parentCode = codeMap.get( code.getParent());
+				// save code
+				WorkspaceManager.saveCode(vocabulary, version, code, parentCode, 
+					concept, concept.getNotation(), concept.getTitle(), concept.getDefinition());
 			}
 		}
 		
-		vocabulary.addVersion(version);
-		vocabulary.addVers(version);
-		
-		vocabulary = WorkflowManager.publishTlVersion(vocabulary, agency, version);
-		
-		// index editor
-		vocabularyService.index(vocabulary);
-		
-		// indexing published codes
-		vocabularyService.indexPublish(vocabulary, version);
-		
+		// publish, by assign version with final_review status
+		version.setStatus( Status.FINAL_REVIEW.toString());
+		forwardStatus(vocabulary, version, agency, null, null, "1.0.1", "", "");
 
 		return vocabulary;
 	}
-
-	/**
-	 * Publish CV SL version directly 
-	 * @param vocabulary
-	 * @param version the SL version
-	 * @return
-	 */
-	private static VocabularyDTO publishSlVersion(VocabularyDTO vocabulary, AgencyDTO agency, VersionDTO version) {
-		
-		version.setStatus( Status.PUBLISHED.toString());
-		
-		// get workflow codes
-		List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
-		
-
-		// add version number to URI
-		version.setUri( version.getUri() + "/" + version.getNumber());
-		
-		version.setPublicationDate( version.getPublicationDate() == null ?  LocalDate.now(): version.getPublicationDate());
-		version.setLicenseId( agency.getLicenseId());
-		version.setCanonicalUri( WorkflowUtils.generateVersionCanonicalURI(agency, version));
-
-		
-		// add summary
-		version.setSummary(
-			(version.getSummary() == null ? "":version.getSummary().replaceAll("(\r\n|\n)", "<br />")) +
-			"<strong>" + version.getNumber() + "</strong>"+
-			" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + version.getPublicationDate() +
-			"<br/>Notes:<br/>" + version.getVersionNotes() + (version.getVersionChanges() != null && !version.getVersionChanges().isEmpty() ? "<br/>Changes:<br/>" + version.getVersionChanges() : "") + "<br/><br/>"
-		);
-		
-		// update concept uri
-		for(ConceptDTO concept : version.getConcepts()) {
-			concept.setUri( concept.getUri() + "/" + version.getNumber());
-			// update concept parent and position based on workflow code
-			codes.stream().filter( c -> concept.getNotation().equals( c.getNotation())).findFirst().ifPresent( c -> {
-				concept.setParent( c.getParent());
-				concept.setPosition( c.getPosition());
-			});
-			
-			conceptService.save( concept );
-		}
-		
-		// save current version
-		version = versionService.save(version);
-		
-		vocabulary.setStatus( Status.PUBLISHED.toString());
-		vocabulary.setVersionByLanguage(version.getLanguage(), version.getNumber());
-		
-		vocabulary.setVersionNumber( version.getNumber() );
-		// only set Uri everytime SL published
-		vocabulary.setUri( version.getUri());
-		vocabulary.setPublicationDate( LocalDate.now());
-		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVersions()) );
-		vocabulary.setLanguagesPublished( null);
-		vocabulary.addLanguagePublished( version.getLanguage());
-
-		vocabulary = vocabularyService.save(vocabulary);
-		
-		// index for editor
-		vocabularyService.index(vocabulary);
-		
-		
-		// clone each code
-		List<CodeDTO> newCodes = new ArrayList<>();
-		for( CodeDTO eachCode : codes ) {
-			//TODO:  probably only need to clone published one
-			CodeDTO newCode = CodeDTO.clone(eachCode);
-			newCode.setArchived( true );
-			newCode.setVersionId(version.getId());
-			newCode.setVersionNumber( version.getNumber() );
-			newCode = codeService.save( newCode);
-			
-			newCodes.add(newCode);
-			
-			// store also the concept "code id changed"
-			if( ConceptDTO.getConceptFromCode( version.getConcepts(), eachCode.getId()).isPresent()  ) {
-				ConceptDTO c = ConceptDTO.getConceptFromCode( version.getConcepts(), eachCode.getId()).get();
-				c.setCodeId( newCode.getId());
-				conceptService.save(c);
-			}
-		}
-		
-		createAndStoreCvScheme(vocabulary, version, agency, newCodes);
-		
-		return vocabulary;
-	}
-
-	
-	
-	private static VocabularyDTO publishTlVersion(VocabularyDTO vocabulary, AgencyDTO agency, VersionDTO version) {
-		version.setStatus( Status.PUBLISHED.toString());
-		// add version number to URI
-		version.setUri( version.getUri() + "/" + version.getNumber());
-		version.setPublicationDate( version.getPublicationDate() == null ?  LocalDate.now(): version.getPublicationDate());
-		version.setLicenseId( agency.getLicenseId());
-		version.setCanonicalUri( WorkflowUtils.generateVersionCanonicalURI(agency, version));
-
-		
-		// add summary
-		version.setSummary(
-			(version.getSummary() == null ? "":version.getSummary().replaceAll("(\r\n|\n)", "<br />")) +
-			"<strong>" + version.getNumber() + "</strong>"+
-			" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + version.getPublicationDate() +
-			"<br/>Notes:<br/>" + version.getVersionNotes() + (version.getVersionChanges() != null && !version.getVersionChanges().isEmpty() ? "<br/>Changes:<br/>" + version.getVersionChanges() : "") + "<br/><br/>"
-		);
-		
-		// update concept uri
-		for(ConceptDTO concept : version.getConcepts()) {
-			concept.setUri( concept.getUri() + "/" + version.getNumber());
-			conceptService.save( concept );
-		}
-		
-		// save current version
-		version = versionService.save(version);
-		
-		vocabulary.setVersionByLanguage(version.getLanguage(), version.getNumber());
-		vocabulary.addLanguagePublished( version.getLanguage());
-		vocabulary = vocabularyService.save(vocabulary);
-		
-		// TODO: Update flatDB
-				
-		return vocabulary;
-	}
-	
-
 	
 	/**
 	 * Get next forwarded status
@@ -559,31 +318,42 @@ public class WorkflowManager {
 						codeService.save(code);
 					}
 					
-					// update CvScheme in FlatDB
-					cvScheme.setTitleByLanguage( version.getLanguage(), version.getTitle());
-					cvScheme.setDescriptionByLanguage( version.getLanguage(), version.getDefinition());
-					cvScheme.save();
-					DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv " + version.getNotation() + " TL" + version.getLanguage());
-					//refresh cvScheme
-					cvScheme = new CVScheme(ddiStore);
-					// save  CvConcept
-					List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
-					Map<String, CVConcept> cvConceptMaps = new HashMap<>();
-					for(DDIStore ddiConcept: ddiConcepts) {
-						CVConcept cvConcept = new CVConcept(ddiConcept);
-						cvConceptMaps.put( cvConcept.getNotation(), cvConcept);
+					if( cvScheme == null ) {
+						// try to get cv scheme if it is null
+						List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(latestSlVersion.getUri(), DDIElement.CVSCHEME);
+						
+						if (ddiSchemes != null && !ddiSchemes.isEmpty())
+							cvScheme = new CVScheme(ddiSchemes.get(0));
 					}
-					for( ConceptDTO concept : version.getConcepts()) {
-						CVConcept cvConcept = cvConceptMaps.get( concept.getNotation() );
-						if( cvConcept == null )
-							continue;
-						cvConcept.setPrefLabelByLanguage( version.getLanguage(),  concept.getTitle());
-						cvConcept.setDescriptionByLanguage( version.getLanguage(), concept.getDefinition());
-						cvConcept.save();
-						try {
-							stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "publish code " + cvConcept.getNotation());
-						} catch (Exception e) {
-							// TODO: handle exception
+					
+					// update CvScheme in FlatDB
+					if( cvScheme != null ) {
+						log.info("update cvscheme");
+						cvScheme.setTitleByLanguage( version.getLanguage(), version.getTitle());
+						cvScheme.setDescriptionByLanguage( version.getLanguage(), version.getDefinition());
+						cvScheme.save();
+						DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv " + version.getNotation() + " TL" + version.getLanguage());
+						//refresh cvScheme
+						cvScheme = new CVScheme(ddiStore);
+						// save  CvConcept
+						List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
+						Map<String, CVConcept> cvConceptMaps = new HashMap<>();
+						for(DDIStore ddiConcept: ddiConcepts) {
+							CVConcept cvConcept = new CVConcept(ddiConcept);
+							cvConceptMaps.put( cvConcept.getNotation(), cvConcept);
+						}
+						for( ConceptDTO concept : version.getConcepts()) {
+							CVConcept cvConcept = cvConceptMaps.get( concept.getNotation() );
+							if( cvConcept == null )
+								continue;
+							cvConcept.setPrefLabelByLanguage( version.getLanguage(),  concept.getTitle());
+							cvConcept.setDescriptionByLanguage( version.getLanguage(), concept.getDefinition());
+							cvConcept.save();
+							try {
+								stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "publish code " + cvConcept.getNotation());
+							} catch (Exception e) {
+								// TODO: handle exception
+							}
 						}
 					}
 				}

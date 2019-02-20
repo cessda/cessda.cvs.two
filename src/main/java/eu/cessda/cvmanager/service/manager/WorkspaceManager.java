@@ -218,43 +218,29 @@ public class WorkspaceManager {
 				isSaveNewSlConcept = true;
 			}
 			
-			// save the code
+			List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
+			TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
+			
 			if( parentCode == null) {	// if root code
+				concept.setNotation( notation );
 				code.setNotation( notation );
 				code.setUri( code.getNotation() );
-				concept.setNotation( notation );
-							
-				List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
-				// re-save tree structure 
-				TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
 				codeTreeData.addRootItems(code);
 				
-				List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
-				for( CodeDTO eachCode: newCodeDTOs) {
-					if( !eachCode.isPersisted())
-						code = codeService.save(eachCode);
-					else
-						codeService.save(eachCode);
-				}
-				
 			} else { // if child code
+				concept.setNotation( parentCode.getNotation() + "." + notation);
 				code.setNotation( parentCode.getNotation() + "." + notation);
 				code.setUri( code.getNotation() );
-				concept.setNotation( parentCode.getNotation() + "." + notation);
 				code.setParent( parentCode.getNotation());
-				
-				List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
-				// re-save tree structure 
-				TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
 				codeTreeData.addItem(parentCode, code);
-				
-				List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
-				for( CodeDTO eachCode: newCodeDTOs) {
-					if( !eachCode.isPersisted())
-						code = codeService.save(eachCode);
-					else
-						codeService.save(eachCode);
-				}
+			}
+			// save changes on position and parent
+			List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
+			for( CodeDTO eachCode: newCodeDTOs) {
+				if( !eachCode.isPersisted())
+					code = codeService.save(eachCode);
+				else
+					codeService.save(eachCode);
 			}
 		
 			if( isSaveNewSlConcept )
