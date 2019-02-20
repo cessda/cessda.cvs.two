@@ -3,7 +3,7 @@ pipeline {
     project_name = "cessda-development"
     client = "cessda"
     app_name = "cvmanager-gui"
-    env_name = "dev"
+    env_name = "live"
     feSvc_name = "${client}-${app_name}-service"
     image_tag = "eu.gcr.io/${project_name}/${app_name}:${env.BRANCH_NAME}-v${env.BUILD_NUMBER}"
   }
@@ -39,7 +39,7 @@ pipeline {
       steps {
 	echo "Push Docker image"
         sh("gcloud docker -- push ${image_tag}")
-        sh("gcloud container images add-tag ${image_tag} eu.gcr.io/${project_name}/${app_name}:latest")
+        sh("gcloud container images add-tag ${image_tag} eu.gcr.io/${project_name}/${app_name}:${env.BRANCH_NAME}-latest")
       }
     }
     stage('Check Requirements and Deployments') {
