@@ -16,8 +16,6 @@ echo "Module: $MODULE"
 echo "Environment: $ENVIRONMENT"
 echo "Zone: $ZONE"
 echo "Namespace: $NAMESPACE"
-echo "Persistent disk 1: $P_DISK1"
-echo "Persistent disk 2: $P_DISK2"
 
 # Kubctl credentials setup
 gcloud container clusters get-credentials $CLIENT-$PRODUCT-$ENVIRONMENT-cc --zone=$ZONE > /dev/null 2>&1
