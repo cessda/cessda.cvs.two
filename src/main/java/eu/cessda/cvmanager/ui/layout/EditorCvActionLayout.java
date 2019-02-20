@@ -236,7 +236,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	}
 	
 	/**
-	 * Drop the current workflow (unoublish) version
+	 * Drop the current workflow (unpublish) version
 	 * @param event
 	 */
 	private void dropVersion(ClickEvent event ) {

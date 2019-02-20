@@ -419,7 +419,7 @@ public class WorkflowManager {
 		
 		// Store also Owner Agency, Vocabulary and codes
 		// store vocabulary content
-		newCvScheme = VocabularyDTO.setCvSchemeByVocabulary(newCvScheme, vocabulary);
+		VocabularyDTO.setCvSchemeByVocabulary(newCvScheme, vocabulary);
 		
 		// store owner agency
 		List<CVEditor> editorSet = new ArrayList<>();
@@ -429,17 +429,10 @@ public class WorkflowManager {
 		
 		editorSet.add( cvEditor );
 		newCvScheme.setOwnerAgency((ArrayList<CVEditor>) editorSet);
-		
 		newCvScheme.setCode( vocabulary.getNotation());
-		
 		newCvScheme.save();
-		DDIStore ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getLoggedUser().getUsername() , "Publish Cv");
-		//refresh cvScheme
-		newCvScheme = new CVScheme(ddiStore);
-		newCvScheme.setCode( vocabulary.getNotation());
-		newCvScheme = new CVScheme( stardatDDIService.saveElement(newCvScheme.ddiStore, "API Import", "Cv add missing nameCode"));
-		
-		 
+		newCvScheme.ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getLoggedUser().getUsername() , "Publish Cv");
+
 		// store complete codeDTOs to CVConcept
 		TreeData<CodeDTO> codeTree = new TreeData<>();
 		CvCodeTreeUtils.buildCvConceptTree(newCodes, codeTree);
@@ -449,7 +442,8 @@ public class WorkflowManager {
 		cvConceptTree = CvCodeTreeUtils.generateCVConceptTreeFromCodeTree(codeTree, newCvScheme);
 		
 		// save all cvConcepts and update cvScheme
-		storeCvConceptTree( cvConceptTree , newCvScheme);
+		if( !cvConceptTree.getRootItems().isEmpty())
+			storeCvConceptTree( cvConceptTree , newCvScheme);
 	}
 
 	private static void doTlCvCloning(VocabularyDTO vocabulary, VersionDTO currentVersion, AgencyDTO agency,
@@ -484,7 +478,7 @@ public class WorkflowManager {
 		List<CVConcept> rootItems = cvConceptTree.getRootItems();
 		for(CVConcept topCvConcept : rootItems) {
 			System.out.println("Store CV-concept:" + topCvConcept.getNotation());
-			DDIStore ddiStoreTopCvConcept = stardatDDIService.saveElement(topCvConcept.ddiStore, "API Import", "Add Code " + topCvConcept.getNotation());
+			DDIStore ddiStoreTopCvConcept = stardatDDIService.saveElement(topCvConcept.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Add Code " + topCvConcept.getNotation());
 			newCvScheme.addOrderedMemberList(ddiStoreTopCvConcept.getElementId());
 			
 			for( CVConcept childCvConcept : cvConceptTree.getChildren(topCvConcept)) {
@@ -493,14 +487,13 @@ public class WorkflowManager {
 		}
 		// store top concept
 		newCvScheme.save();
-		stardatDDIService.saveElement(newCvScheme.ddiStore, "API Import", "Update Top Concept");
+		stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Update Top Concept");
 	}
 
-	private static void storeCvConceptTreeChild(TreeData<CVConcept> cvConceptTree, CVConcept cCvConcept,
-			CVConcept topCvConcept) {
+	private static void storeCvConceptTreeChild(TreeData<CVConcept> cvConceptTree, CVConcept cCvConcept, CVConcept topCvConcept) {
 		System.out.println("Store CV-concept c:" + cCvConcept.getNotation());
 		// store cvConcept
-		DDIStore ddiStoreCvConcept = stardatDDIService.saveElement(cCvConcept.ddiStore, "API Import", "Add Code " + cCvConcept.getNotation());
+		DDIStore ddiStoreCvConcept = stardatDDIService.saveElement(cCvConcept.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Add Code " + cCvConcept.getNotation());
 		// store narrower
 		topCvConcept.addOrderedNarrowerList( ddiStoreCvConcept.getElementId());
 		topCvConcept.save();

@@ -40,7 +40,7 @@ public class Resolver implements Serializable {
     private ResolverType resolverType;
 
     @NotNull
-    @Column(name = "resolver_uri", nullable = false, unique = true)
+    @Column(name = "resolver_uri", nullable = false)
     private String resolverURI;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -1637,7 +1637,7 @@ public class VocabularyDTO implements Serializable {
 				.collect( Collectors.toSet());
 	}
 	
-	public static CVScheme setCvSchemeByVocabulary( CVScheme cvScheme, VocabularyDTO vocabulary) {
+	public static void setCvSchemeByVocabulary( CVScheme cvScheme, VocabularyDTO vocabulary) {
 		// get published languages from vocabulary
 		// TODO: consider getPublishedLanguages
 		for(String lang : vocabulary.getLanguages()) {
@@ -1647,7 +1647,6 @@ public class VocabularyDTO implements Serializable {
 			cvScheme.setTitleByLanguage(languageIso, vocabulary.getTitleByLanguage(eachLanguage));
 			cvScheme.setDescriptionByLanguage(languageIso, vocabulary.getDefinitionByLanguage(eachLanguage));
 		}
-		return cvScheme;
 	}
 	
 }

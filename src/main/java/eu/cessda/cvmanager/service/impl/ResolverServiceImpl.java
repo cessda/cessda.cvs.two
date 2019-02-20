@@ -58,6 +58,11 @@ public class ResolverServiceImpl implements ResolverService {
      */
     @Override
     public ResolverDTO save(ResolverDTO resolverDTO) {
+    	// check on database if found similar Uri then update
+    	ResolverDTO resolverOnDb = findByResolverURI( resolverDTO.getResolverURI() );
+    	if( resolverOnDb != null )
+    		resolverDTO.setId( resolverOnDb.getId());
+    	
         log.debug("Request to save Resolver : {}", resolverDTO);
         Resolver resolver = resolverMapper.toEntity(resolverDTO);
         resolver = resolverRepository.save(resolver);
