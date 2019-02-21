@@ -878,7 +878,7 @@ public class EditorDetailsView extends CvView {
 	                				
 	                				CodeDTO draggedNodeParent = cvCodeTreeData.getParent( draggedRow );
 	                				CodeDTO targetNodeParent = cvCodeTreeData.getParent(targetRow);
-	                				if( selectedOptionNumber == 0 || selectedOptionNumber == 1) { // move as previous oe next sibling
+	                				if( selectedOptionNumber == 0 || selectedOptionNumber == 1) { // move as previous or next sibling
 	                					// in order to be able to move as previous sibling 
 	                					// the nodes need to be from the same parent
 	                					if( !Objects.equals( draggedNodeParent, targetNodeParent)){
@@ -896,6 +896,7 @@ public class EditorDetailsView extends CvView {
 	                						draggedRow.setParent( targetNodeParent.getParent() );
 	                						draggedRow.setNotation( targetNodeParent.getParent() + "." + draggedRow.getNotation());
 	                					} 
+	                					draggedRow.setUri( draggedRow.getNotation() );
 
 	                					// update tree in vaadin UI
 	                					cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
@@ -922,6 +923,7 @@ public class EditorDetailsView extends CvView {
 	                					} else {
 	                						draggedRow.setNotation( targetRow.getNotation() + "." + draggedRow.getNotation());
 	                					}
+	                					draggedRow.setUri( draggedRow.getNotation() );
 	                					
             							cvCodeTreeData.setParent(draggedRow, targetRow);
             							dataProvider.refreshAll();

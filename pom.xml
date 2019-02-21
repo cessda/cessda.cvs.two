@@ -579,7 +579,7 @@
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <server.servlet.contextPath>/cvs</server.servlet.contextPath>
+                <server.servlet.contextPath></server.servlet.contextPath>
 				<server.port>8282</server.port>
 				<ddiflatdb.rest.url>http://localhost:8181/stardat-ddiflatdb</ddiflatdb.rest.url>
 				<spring.datasource.url>jdbc:mysql://localhost:3306/cvmanager?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
@@ -594,7 +594,7 @@
                 		<groupId>org.apache.tomcat.maven</groupId>
                 		<artifactId>tomcat7-maven-plugin</artifactId>
                 		<configuration>
-                    		<path>/cvs</path>
+                    		<path></path>
                     		<url>${tomcat.url}</url>
                     		<username>${tomcat.username}</username>
                     		<password>${tomcat.password}</password>
@@ -617,7 +617,7 @@
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <server.servlet.contextPath>/cvs</server.servlet.contextPath>
+                <server.servlet.contextPath></server.servlet.contextPath>
 				<server.port>8080</server.port>
 				<ddiflatdb.rest.url>http://cessda-cvmanager-storage-dev-microservice:8080</ddiflatdb.rest.url>
                 <spring.datasource.url>jdbc:mysql://cessda-cvmanager-storage-dev-persistence:3306/cvmanager?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
@@ -640,7 +640,7 @@
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>GVM8Sj8FUxBf4gk</spring.datasource.password>
 				-->
-				<server.servlet.contextPath>/cvs</server.servlet.contextPath>
+				<server.servlet.contextPath></server.servlet.contextPath>
 				<server.port>8080</server.port>
 				<ddiflatdb.rest.url>http://cessda-cvmanager-storage-dev-microservice:8080</ddiflatdb.rest.url>
                 <spring.datasource.url>jdbc:mysql://cessda-cvmanager-storage-dev-persistence:3306/cvmanager?useSSL=false</spring.datasource.url>
@@ -671,7 +671,7 @@
             	 <tomcat.url>http://10.6.13.128:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <server.servlet.contextPath>/cvs</server.servlet.contextPath>
+                <server.servlet.contextPath></server.servlet.contextPath>
 				<ddiflatdb.rest.url>http://35.189.239.72:8080</ddiflatdb.rest.url>
                 <spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager?useSSL=false</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
