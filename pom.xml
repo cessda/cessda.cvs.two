@@ -656,7 +656,7 @@
                 		<artifactId>tomcat7-maven-plugin</artifactId>
                 		<version>2.1</version>
                 		<configuration>
-                    		<path>/cvmanager</path>
+                    		<path></path>
                     		<url>${tomcat.url}</url>
                     		<username>${tomcat.username}</username>
                     		<password>${tomcat.password}</password>
@@ -686,7 +686,7 @@
                 		<artifactId>tomcat7-maven-plugin</artifactId>
                 		<version>2.1</version>
                 		<configuration>
-                    		<path>/cvmanager</path>
+                    		<path></path>
                     		<url>${tomcat.url}</url>
                     		<username>${tomcat.username}</username>
                     		<password>${tomcat.password}</password>

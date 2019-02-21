@@ -113,7 +113,7 @@ To create a local dev environment follow these instructions:
    (optional - use -DskipTests to speed up build)
 4. Use `docker-compose up` in the directory `target/docker/generated` to start the application
 
-The CVManager should be running on `http://localhost:8080/CVManager/`
+The CVManager should be running on `http://localhost:8080/`
 
 
 ## Deployment
