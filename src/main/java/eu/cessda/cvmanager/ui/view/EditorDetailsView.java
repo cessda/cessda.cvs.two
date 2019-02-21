@@ -725,7 +725,7 @@ public class EditorDetailsView extends CvView {
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
 		ddiLayout.add(ddiUsageLayout);
 		
-		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenses, false);
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, configService, versionService, licenses, false);
 		licenseLayout.add( licenseLayoutContent );
 		
 		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, stardatDDIService, licenses, templateEngine, false);

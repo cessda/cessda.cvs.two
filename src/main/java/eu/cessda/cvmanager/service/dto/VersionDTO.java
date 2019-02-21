@@ -540,37 +540,46 @@ public class VersionDTO implements Serializable {
 		return newVersion;
 	}
 	
-	public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName, String detailUrl) {
+	public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName) {
 		StringBuilder citation = new StringBuilder();
 		
 		/*
-Format for SL:
-Agency. (Publication year). CV Long Name (Version number) [Controlled vocabulary]. Publishing agency. urn. Retrieved from: URL in CV Manager.
--- [Controlled vocabulary] text is the same for all. Publishing agency is always CESSDA for DDI and CESSDA vocs.
+SL
+DDI Alliance. (2016). Time Method (Version 1.2) [Controlled vocabulary]. CESSDA. 
+urn:ddi:int.ddi.cv:TimeMethod:1.2. Retrieved from: https://vocabularies.cessda.eu/TimeMethod_1.2/en.htm 
+CESSDA. (2018). CESSDA Topic Classification (Version 3.0) [Controlled vocabulary]. 
+urn:ddi:int.cessda.cv:TopicClassification:3.0. 
+Retrieved from: https://vocabularies.cessda.eu/TopicClassification_3.0/en.htm
 
-For example: 
-DDI Alliance (2018). Time Method (1.4) [Controlled vocabulary]. CESSDA. urn:ddi-cv:CsvRow:1.0. Retrieved from: vocabularies.cessda.eu/TimeMethod_1.0/en.
+If a TL version, citation should be (if retrieved from CV Manager) :
 
+DDI Alliance. (2016). Erhebungsdesign [Time Method] (Version 1.2.1; GESIS, Transl.) 
+[Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TimeMethod:1.2. 
+Retrieved from: https://vocabularies.cessda.eu/TimeMethod_1.2.1/de.htm
 
-TL format
-Agency. (Publication year). CV Long Name in TL [SL Long Name]  (TL Version number; Translating agency, Transl) [Controlled vocabulary]. Publishing agency. urn of SL. Retrieved from: URL from CV Manager.
----the text 'Transl.' is the same for all TLs, even thought the translating agency name changes. urn is the SL urn even for TL.
-
-DDI Alliance. (2018). Erhebungsdesign [Time Method] (Version 1.2.1; GESIS, Transl.) [Controlled vocabulary]. CESSDA. urn: ddi-cv:TimeMethod:1.2. Retrieved from: http://vocabularies.cessda.eu/TimeMethod_1.2.1/de.htm
-
+CESSDA. (2018). CESSDAn aihepiiriluokitus [CESSDA Topic Classification] 
+(Version 3.0.1; Finnish Social Science Data Archive, Transl.) 
+[Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. Retrieved from: https://vocabularies.cessda.eu/TopicClassification_3.0.1/fi.htm
 "
 		 */
-		citation.append( agencyName );
-		citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
+		citation.append( agencyName + ". " );
 		if( versionDto.getItemType().equals( ItemType.SL.toString()) ) {
-			citation.append( versionDto.getTitle() + " (" + versionDto.getNumber() + ") [Controlled vocabulary]. ");
+			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
+			citation.append( versionDto.getTitle() + " (Version " + versionDto.getNumber() + ") [Controlled vocabulary]. ");
+			if( !agencyName.toLowerCase().contains("cessda")) {
+				citation.append( "CESSDA. ");
+			}
+			citation.append( versionDto.getCanonicalUri() + ". ");		
 		}
 		else {
-			citation.append( versionDto.getTitle() + "[" + versionDtoSl.getTitle()+ "]" + " (" + versionDto.getNumber() +
-			(versionDto.getTranslateAgency() == null ? "": "; " + versionDto.getTranslateAgency() ) + ") [Controlled vocabulary]. ");
+			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
+			citation.append( versionDto.getTitle() + "[" + versionDtoSl.getTitle()+ "]" + " (Version " + versionDto.getNumber() +
+			(versionDto.getTranslateAgency() == null ? "": "; " + versionDto.getTranslateAgency() ) + ", Transl.) [Controlled vocabulary]. ");
+			if( !agencyName.toLowerCase().contains("cessda")) {
+				citation.append( "CESSDA. ");
+			}
+			citation.append( versionDtoSl.getCanonicalUri() + ". ");		
 		}
-		citation.append( versionDto.getCanonicalUri() + ". ");
-		citation.append( "Retrieved from: " + detailUrl);
 		
 		return citation.toString();
 	}
