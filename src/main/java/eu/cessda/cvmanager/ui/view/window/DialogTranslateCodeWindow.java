@@ -41,6 +41,7 @@ import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class DialogTranslateCodeWindow extends MWindow {
@@ -240,56 +241,13 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private void saveCode() {
 		if(!isInputValid())
 			return;
-		// generate Uri by inserting notation after cvScheme notation
-		String uri = version.getUri();
-		int lastIndex = uri.lastIndexOf("/");
-		if( lastIndex == -1) {
-			uri = ConfigurationService.DEFAULT_CV_LINK;
-			if(!uri.endsWith("/"))
-				uri += "/";
-			uri += version.getNotation();
-		} else {
-			uri = uri.substring(0, lastIndex);
-		}
-			
-		// store the code and index
-		code.setTitleDefinition(preferedLabel.getValue(), description.getValue(), language);
-		codeService.save(code);
 		
-		concept.setUri( uri + "#" + code.getNotation() + "/" + language.toString());
-		concept.setNotation( code.getNotation() );
-		concept.setTitle( preferedLabel.getValue() );
-		concept.setDefinition( description.getValue() );
-		concept.setPosition( code.getPosition() );
-		
-		// store concept
-		if( !concept.isPersisted()) {
-			concept.setCodeId( code.getId());
-			concept.setVersionId( version.getId());
-			// save vocabulary, version
-			concept = conceptService.save(concept);
-			version.addConcept(concept);
-			version = versionService.save(version);
-		} else {
-			// save vocabulary, version
-			concept = conceptService.save(concept);
-		}
-		
-		// save change log
-		VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-		changeDTO.setVocabularyId( vocabulary.getId());
-		changeDTO.setVersionId( version.getId()); 
-		changeDTO.setChangeType( "Code added" );
-		changeDTO.setDescription( concept.getNotation());
-		changeDTO.setDate( LocalDateTime.now() );
-		UserDetails loggedUser = SecurityUtils.getLoggedUser();
-		changeDTO.setUserId( loggedUser.getId() );
-		changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-		vocabularyChangeService.save(changeDTO);
+		// store the code
+		WorkspaceManager.saveCode(vocabulary, version, code, null, concept, 
+				null, preferedLabel.getValue(), description.getValue());
 
-		
-		// indexing editor
-		vocabularyService.index(vocabulary);
+		// save change log
+		WorkspaceManager.storeChangeLog(vocabulary, version, "TL code added", concept.getNotation());
 		
 		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		
