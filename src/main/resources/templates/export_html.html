@@ -113,22 +113,22 @@ div.CodeList {
 		 	  </div>
 		      
 		      <hr />
-		      <h2>Description</h2>
+		      <h2>CV definition</h2>
 		      <p th:text="${version.definition}"></p>
 		      <hr />
 		      <h2>Details</h2>
 		      <dl>
-		        <dt>Short Name:</dt>
+		        <dt>CV short name:</dt>
 		        <dd th:text="${version.notation}"></dd>
-		        <dt>Long Name:</dt>
+		        <dt>CV name:</dt>
 		        <dd th:text="${version.title}"></dd>
 		        <dt>Language:</dt>
 		        <dd th:text="${version.language}"></dd>
 		        <dt th:if="${version.number != null}">Version:</dt>
 		        <dd th:if="${version.number != null}"th:text="${version.number}">1.0</dd>
-		        <dt th:if="${version.versionNotes != null and version.versionNotes != ''}">Version Notes:</dt>
+		        <dt th:if="${version.versionNotes != null and version.versionNotes != ''}">Version notes:</dt>
 		        <dd th:if="${version.versionNotes != null}" th:text="${version.versionNotes}"></dd>
-		        <dt th:if="${version.versionChanges != null}">Version Changes:</dt>
+		        <dt th:if="${version.versionChanges != null}">Version changes:</dt>
 		        <dd th:if="${version.versionChanges != null}" th:text="${version.versionChanges}"></dd>
 		        <dt th:if="${version.canonicalUri != null}">Canonical URI of this version:</dt>
 		        <dd th:if="${version.canonicalUri != null}" th:text="${version.canonicalUri}"></dd>
@@ -146,9 +146,9 @@ div.CodeList {
 		        <caption>Code List</caption>
 		        <thead>
 		          <tr>
-		            <th>Value of the Code</th>
-		            <th>Descriptive Term of the Code</th>
-		            <th>Definition of the Code</th>
+		             <th>Code value</th>
+			         <th>Code descriptive term</th>
+			         <th>Code definition</th>
 		          </tr>
 		        </thead>
 		        <tbody>
