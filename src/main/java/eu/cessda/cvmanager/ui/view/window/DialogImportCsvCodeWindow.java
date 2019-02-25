@@ -1,62 +1,39 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
-import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
-import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.EventScope;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.fields.MTextField;
-import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
-import com.vaadin.data.Binder;
-import com.vaadin.data.TreeData;
-import com.vaadin.data.provider.Query;
-import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ItemCaptionGenerator;
-import com.vaadin.ui.TextArea;
-import com.vaadin.ui.TextField;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.service.mapper.CsvRowToConceptDTOMapper;
-import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.ui.view.importing.CsvImportLayout;
 import eu.cessda.cvmanager.ui.view.importing.CsvRow;
-import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 
@@ -137,88 +114,84 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 	}
 
 	private void saveCode() {
-		for(CsvRow csvRow: csvImportLayout.getCsvRows()) {
-			concept = csvRowToConceptDTOMapper.toDto(csvRow);
-			// Check imput
-			if(concept.getNotation() == null || concept.getNotation().isEmpty())
-				continue;
-			
-			// remove any non a-z
-			// TODO: determine parent
-			concept.setNotation( concept.getNotation().replaceAll("[^A-Za-z]", ""));
-			
-			if(concept.getTitle() == null || concept.getTitle().isEmpty())
-				continue;
-			
-			String uri = version.getUri();
-			int lastIndex = uri.lastIndexOf("/");
-			if( lastIndex == -1) {
-				uri = ConfigurationService.DEFAULT_CV_LINK;
-				if(!uri.endsWith("/"))
-					uri += "/";
-				uri += version.getNotation();
-			} else {
-				uri = uri.substring(0, lastIndex);
-			}
+		// if source language code is added
+		if( vocabulary.getSourceLanguage().equals( language.toString())) {
+			for(CsvRow csvRow: csvImportLayout.getCsvRows()) {
+				// get workspace code map from this vocabulary
+				Map<String, CodeDTO> existWfCodeMap = CodeDTO.getCodeAsMap( codeService.findWorkflowCodesByVocabulary( vocabulary.getId()));
+				// determine if code already available, whether skip or update the code
+				CodeDTO existCode = existWfCodeMap.get(csvRow.getNotation());
+				// skip code that exist
+				if( existCode != null )
+					continue;
 				
-			code = new CodeDTO();
-			code.setNotation( concept.getNotation() );
-			code.setUri( code.getNotation() );
-			code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), language);
-			
-			concept.setUri( uri + "#" + concept.getNotation() + "/" + language.toString());
-			
-			if( !code.isPersisted() ) {
-				code.setSourceLanguage( language.toString());
-				code.setVocabularyId( vocabulary.getId() );
-			}
-			
-			// save the code
-			if( parentCode == null) {
+				CodeDTO newCode = new CodeDTO();
+				concept = csvRowToConceptDTOMapper.toDto(csvRow);
 				
-				List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
-				// re-save tree structure 
-				TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
-				codeTreeData.addRootItems(code);
+				if(concept.getNotation() == null || concept.getNotation().isEmpty() || concept.getTitle() == null || concept.getTitle().isEmpty())
+					continue;
 				
-				List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
-				for( CodeDTO eachCode: newCodeDTOs) {
-					if( !eachCode.isPersisted())
-						code = codeService.save(eachCode);
-					else
-						codeService.save(eachCode);
+				// determine if concept has parent by notation structure
+				if(concept.getNotation().contains(".")) // if has parent
+				{
+					int lastDotIndex = concept.getNotation().lastIndexOf(".");
+					// find parent code
+					CodeDTO parentCode = existWfCodeMap.get( concept.getNotation().substring(0, lastDotIndex));
+					if(parentCode == null )
+						continue;
+					
+					String baseNotation = concept.getNotation().substring( lastDotIndex + 1 );
+					WorkspaceManager.saveCode(vocabulary, version, newCode, parentCode, concept, 
+							baseNotation, concept.getTitle(), concept.getDefinition());
+				} 
+				else { // if top concept
+					WorkspaceManager.saveCode(vocabulary, version, newCode, null, concept, 
+							concept.getNotation(), concept.getTitle(), concept.getDefinition());
 				}
 				
+				// save change log
+				WorkspaceManager.storeChangeLog(vocabulary, version, "Code added", concept.getNotation());
+				
 			}
+		} 
+		// otherwise the translated language
+		else {
+			// get existing published code on specific version
+			Map<String, CodeDTO> existWfCodeMap = CodeDTO.getCodeAsMap( codeService.findWorkflowCodesByVocabulary( vocabulary.getId()));
 			
-			// save to concept
-			if( !concept.isPersisted()) {
-				vocabulary.addCode(code);
-				concept.setCodeId( code.getId());
-				concept.setVersionId( version.getId() );
-				concept.setPosition( version.getConcepts().size());
-				concept = conceptService.save(concept);
-				version.addConcept(concept);
-				version = versionService.save(version);
+			for(CsvRow csvRow: csvImportLayout.getCsvRows()) {
+				// find out, if code from excel exist on the code
+				// if exist then add the TL concept, otherwise ignore
+				
+				concept = csvRowToConceptDTOMapper.toDto(csvRow);
+				
+				if(concept.getNotation() == null || concept.getNotation().isEmpty() || concept.getTitle() == null || concept.getTitle().isEmpty())
+					continue;
+				
+				CodeDTO code = existWfCodeMap.get(concept.getNotation() );
+				// if there is no code, means no SL concept as well, just skip
+				if( code == null )
+					continue;
+				
+				// find parent code
+				if( code.getParent() != null ) {
+					CodeDTO parentCode = existWfCodeMap.get( code.getParent() );
+					if( parentCode == null )
+						continue;
+					
+					WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, 
+							concept.getNotation(), concept.getTitle(), concept.getDefinition());
+				} else {
+					WorkspaceManager.saveCode(vocabulary, version, code, null, concept, 
+							concept.getNotation(), concept.getTitle(), concept.getDefinition());
+				}
+					
+				// save change log
+				WorkspaceManager.storeChangeLog(vocabulary, version, "Code TL added", concept.getNotation());
+				
 			}
-
-			// save change log
-			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-			changeDTO.setVocabularyId( vocabulary.getId());
-			changeDTO.setVersionId( version.getId()); 
-			changeDTO.setChangeType( "Code added" );
-			changeDTO.setDescription( concept.getNotation());
-			changeDTO.setDate( LocalDateTime.now() );
-			UserDetails loggedUser = SecurityUtils.getLoggedUser();
-			changeDTO.setUserId( loggedUser.getId() );
-			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-			vocabularyChangeService.save(changeDTO);
+		
 		}
-		
-		
-
-		// indexing editor
-		vocabularyService.index(vocabulary);
 		
 		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		this.close();

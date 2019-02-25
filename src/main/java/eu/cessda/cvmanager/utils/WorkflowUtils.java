@@ -66,4 +66,11 @@ public final class WorkflowUtils {
 	}
 	
 	
+	public static String generateResolverUri(ConfigurationService configService, String uri) {
+		String resolverUri = configService.getServerBaseUrl() + configService.getServerContextPath() + "/urn/";
+		resolverUri += uri;
+
+		return resolverUri;
+	}
+	
 }

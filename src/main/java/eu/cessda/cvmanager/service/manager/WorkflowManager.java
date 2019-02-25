@@ -217,7 +217,7 @@ public class WorkflowManager {
 				break;
 			case PUBLISHED:
 				String uri =  version.getUri() + "/" + versionNumber;
-				String cvVersionUrl = WorkflowUtils.generateCvDetailUrl(configurationService, vocabulary.getNotation(), uri);
+				
 				
 				version.setUri( uri );
 				version.setVersionNotes( versionNotes);
@@ -229,7 +229,7 @@ public class WorkflowManager {
 				version.createSummary( versionChanges );
 				
 				vocabulary.setVersionByLanguage( version.getLanguage(), versionNumber);
-				
+								
 				// TODO: refactor this
 				// get workflow codes
 				List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
@@ -245,7 +245,7 @@ public class WorkflowManager {
 				}
 				// If it is publishing SL
 				if( isVersionSl ) {
-					version.setCitation( VersionDTO.generateCitation(version, null, agency.getName(), cvVersionUrl));
+					version.setCitation( VersionDTO.generateCitation(version, null, agency.getName()));
 					
 					vocabulary.setVersionNumber( versionNumber );
 					// only set Uri everytime SL published
@@ -266,7 +266,7 @@ public class WorkflowManager {
 					// set citation
 					Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
 					if( latestSlVersion.isPresent() )
-						version.setCitation( VersionDTO.generateCitation(version, latestSlVersion.get(), agency.getName(), cvVersionUrl));
+						version.setCitation( VersionDTO.generateCitation(version, latestSlVersion.get(), agency.getName()));
 					
 					version = versionService.save(version);
 					

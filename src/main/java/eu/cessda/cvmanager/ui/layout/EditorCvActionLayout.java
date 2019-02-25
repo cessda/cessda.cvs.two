@@ -406,12 +406,12 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));
 		buttonEditCv.withCaption(i18n.get("view.action.button.cvscheme.edit", locale) + buttonSuffix);
 		buttonAddTranslation.withCaption( i18n.get("view.action.button.cvscheme.translation", locale));
-		buttonReviewInitial.withCaption( "Initial Review" +  buttonSuffix );
-		buttonReviewFinal.withCaption( "Final Review" +  buttonSuffix );
+		buttonReviewInitial.withCaption( "Initial review" +  buttonSuffix );
+		buttonReviewFinal.withCaption( "Final review" +  buttonSuffix );
 		buttonPublishCv.withCaption( "Publish" + buttonSuffix);
-		buttonNewVersion.withCaption( "Create new Version ");
-		buttonDropVersion.withCaption( "Drop Version" );
-		buttonWithdrawCv.withCaption( "Withdraw Vocabulary" );
+		buttonNewVersion.withCaption( "Create new version ");
+		buttonDropVersion.withCaption( "Drop version" );
+		buttonWithdrawCv.withCaption( "Withdraw vocabulary" );
 	}
 
 	public AgencyDTO getAgency() {

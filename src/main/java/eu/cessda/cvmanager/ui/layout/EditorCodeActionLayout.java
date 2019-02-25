@@ -205,11 +205,11 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		buttonCodeAdd.withCaption( i18n.get("view.action.button.cvconcept.new", locale));
-		buttonCodeImport.withCaption( "Import Codes from CSV" );
-		buttonCodeEdit.withCaption( "Edit Code" );
+		buttonCodeImport.withCaption( i18n.get("view.action.button.cvconcept.import", locale) );
+		buttonCodeEdit.withCaption( i18n.get("view.action.button.cvconcept.edit", locale) );
 		buttonCodeAddTranslation.withCaption( i18n.get("view.action.button.cvconcept.translation", locale));
-		buttonCodeAddChild.withCaption( "Add Child" );
-		buttonCodeDelete.withCaption( "Delete Code");
+		buttonCodeAddChild.withCaption( i18n.get("view.action.button.cvconcept.child", locale) );
+		buttonCodeDelete.withCaption( i18n.get("view.action.button.cvconcept.delete", locale));
 		buttonCodeSort.withCaption( enableSort ? "Disable order code" : "Enable order code" );
 	}
 
@@ -278,12 +278,17 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 			
 			hasAction = true;
 
-			if( selectedLanguage.equals( sourceLanguage) && CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion ) ) {
-				buttonCodeAdd.setVisible( true );
-				buttonCodeImport.setVisible( true );
-				VersionDTO latestSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getLatestVersions());
-				if( latestSLVersion.getConcepts() != null && latestSLVersion.getConcepts().size() > 1 )
-					buttonCodeSort.setVisible( true );
+			if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion ) ) {
+				if( selectedLanguage.equals( sourceLanguage)  ) {
+					buttonCodeAdd.setVisible( true );
+					buttonCodeImport.setVisible( true );
+					VersionDTO latestSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getLatestVersions());
+					if( latestSLVersion.getConcepts() != null && latestSLVersion.getConcepts().size() > 1 )
+						buttonCodeSort.setVisible( true );
+				}
+				else {
+					buttonCodeImport.setVisible( true );
+				}
 			}		
 			
 			if( currentCode != null ) {
@@ -291,7 +296,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 				if( currentConcept != null ) {
 					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 						buttonCodeEdit.setVisible( true );
-						buttonCodeImport.setVisible( true );
+//						buttonCodeImport.setVisible( true );
 					}
 					if( selectedLanguage.equals( sourceLanguage) ) {
 						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {

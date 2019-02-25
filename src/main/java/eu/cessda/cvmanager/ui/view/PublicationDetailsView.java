@@ -527,7 +527,7 @@ public class PublicationDetailsView extends CvView {
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
 		ddiLayout.add(ddiUsageLayout);
 		
-		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenses,  true);
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, configService, versionService, licenses,  true);
 		licenseLayout.add( licenseLayoutContent );
 		
 		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, stardatDDIService, licenses, templateEngine, true);

@@ -22,10 +22,12 @@ import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
 
 import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
+import eu.cessda.cvmanager.utils.WorkflowUtils;
 
 public class LicenseLayout extends MCssLayout implements Translatable {
 	
@@ -35,6 +37,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 	private final VersionDTO version;
 	private final AgencyDTO agency;
 	private final VersionService versionService;
+	private final ConfigurationService configService;
 	
 	private enum LayoutMode{ READ, EDIT };
 	
@@ -42,7 +45,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 	private MLabel copyrightInfo = new MLabel().withContentMode( ContentMode.HTML);
 	
 	private MLabel citationLabel = new MLabel("Citation").withContentMode( ContentMode.HTML).withFullWidth();
-	private MLabel citationInfo = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();;
+	private MLabel citationInfo = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
 	
 	private MCssLayout editLayout = new MCssLayout().withFullSize();
 
@@ -58,7 +61,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
     private RichTextArea citationEditor = new RichTextArea( "Edit Citation" );
 	
 	public LicenseLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
-			AgencyDTO agencyDTO, VersionDTO versionDTO,
+			AgencyDTO agencyDTO, VersionDTO versionDTO, ConfigurationService configService,
 			VersionService versionService, List<LicenceDTO> licenses,
 			boolean readOnly) {
 		super();
@@ -68,6 +71,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 		this.agency= agencyDTO;
 		this.versionService = versionService;
 		this.readOnly = readOnly;
+		this.configService = configService;
 		licensesCb.setItems( licenses );
 		if( version.getLicenseId() != null) 
        	 licenses.stream().filter( p -> p.getId().equals( version.getLicenseId() )).findFirst().ifPresent( 
@@ -82,6 +86,8 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 	
 	private void init() {
 		switchMode( LayoutMode.READ );
+		
+		String resolverUrl = WorkflowUtils.generateResolverUri(configService, version.getCanonicalUri());
 		
 		int year = LocalDate.now().getYear();
 		if( version.getStatus().equals( Status.PUBLISHED.toString())) {
@@ -98,7 +104,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 		citationEditor.setHeight("240px");
 		if( version.getCitation() != null ) {
 			citationEditor.setValue( version.getCitation() );
-			citationInfo.setValue( version.getCitation() );
+			citationInfo.setValue( version.getCitation() + " <a href=\"" + resolverUrl + "\">" + resolverUrl + "</a>");
 		}
 		else{
 			citationLabel.setVisible( false );
@@ -139,7 +145,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 				else {
 					version.setCitation( toXHTML( citationEditor.getValue() ) );
 					citationLabel.setVisible( true );
-					citationInfo.setValue( version.getCitation());
+					citationInfo.setValue( version.getCitation() + " <a href=\"" + resolverUrl + "\">" + resolverUrl + "</a>");
 				}
 				if( licensesCb.getValue() != null)
 		    		version.setLicenseId( licensesCb.getValue().getId() );

@@ -200,7 +200,11 @@ public class WorkspaceManager {
 	public static void saveCode(VocabularyDTO vocabulary, VersionDTO version, 
 			CodeDTO code, CodeDTO parentCode, ConceptDTO concept, 
 			String notation, String term, String definition) {
+		// if notation null, it means the TL concept is saved
+		if( notation == null )
+			notation = code.getNotation();
 		
+		boolean isSaveUpdateSlConcept = vocabulary.getSourceLanguage().equals( version.getLanguage());
 
 		concept.setUri( WorkflowUtils.generateCodeUri(version.getUri(), version.getNotation(), notation, version.getLanguage()));
 		concept.setTitle( term );
@@ -210,45 +214,55 @@ public class WorkspaceManager {
 		
 		// save new concept regardless SL or TL
 		if( !concept.isPersisted()) {
-			boolean isSaveNewSlConcept = false;
 			// in case of the SL, then the code will be new, then set the SL and vocabulary ID
 			if( !code.isPersisted() ) {
 				code.setSourceLanguage( version.getLanguage());
 				code.setVocabularyId( vocabulary.getId() );
-				isSaveNewSlConcept = true;
 			}
 			
-			List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
-			TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
-			
-			if( parentCode == null) {	// if root code
-				concept.setNotation( notation );
-				code.setNotation( notation );
-				code.setUri( code.getNotation() );
-				codeTreeData.addRootItems(code);
+			// saving SL concept
+			if( isSaveUpdateSlConcept ) {
+				List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
+				TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
 				
-			} else { // if child code
-				concept.setNotation( parentCode.getNotation() + "." + notation);
-				code.setNotation( parentCode.getNotation() + "." + notation);
-				code.setUri( code.getNotation() );
-				code.setParent( parentCode.getNotation());
-				codeTreeData.addItem(parentCode, code);
-			}
-			// save changes on position and parent
-			List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
-			for( CodeDTO eachCode: newCodeDTOs) {
-				if( !eachCode.isPersisted())
-					code = codeService.save(eachCode);
-				else
-					codeService.save(eachCode);
-			}
-		
-			if( isSaveNewSlConcept )
+				if( parentCode == null) {	// if root code
+					concept.setNotation( notation );
+					code.setNotation( notation );
+					code.setUri( code.getNotation() );
+					codeTreeData.addRootItems(code);
+					
+				} else { // if child code
+					code.setNotation( parentCode.getNotation() + "." + notation);
+					code.setUri( code.getNotation() );
+					code.setParent( parentCode.getNotation());
+					codeTreeData.addItem(parentCode, code);
+					
+					concept.setNotation( parentCode.getNotation() + "." + notation);
+					concept.setParent(parentCode.getNotation());
+				}
+				
+				// save changes on position and parent
+				List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
+				for( CodeDTO eachCode: newCodeDTOs) {
+					if( !eachCode.isPersisted())
+						code = codeService.save(eachCode);
+					else
+						codeService.save(eachCode);
+				}
+				
+				concept.setPosition( version.getConcepts().size());
+				
 				vocabulary.addCode(code);
+			} 
+			else { // save TL concept
+				concept.setPosition( code.getPosition() );
+				concept.setParent( code.getParent());
+				code = codeService.save(code);
+			}
 			
 			concept.setCodeId( code.getId());
 			concept.setVersionId( version.getId() );
-			concept.setPosition( version.getConcepts().size());
+			
 			concept = conceptService.save(concept);
 			
 			version.addConcept(concept);
