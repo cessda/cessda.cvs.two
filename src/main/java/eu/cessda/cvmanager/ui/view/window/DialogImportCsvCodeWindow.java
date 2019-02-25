@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.view.window;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 import org.gesis.wts.domain.enumeration.Language;
 import org.slf4j.Logger;
@@ -115,11 +116,10 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 	private void saveCode() {
 		// if source language code is added
 		if( vocabulary.getSourceLanguage().equals( language.toString())) {
-			// get workspace code map from this vocabulary
-			
 			for(CsvRow csvRow: csvImportLayout.getCsvRows()) {
-				// determine if code already available, whether skip or update the code
+				// get workspace code map from this vocabulary
 				Map<String, CodeDTO> existWfCodeMap = CodeDTO.getCodeAsMap( codeService.findWorkflowCodesByVocabulary( vocabulary.getId()));
+				// determine if code already available, whether skip or update the code
 				CodeDTO existCode = existWfCodeMap.get(csvRow.getNotation());
 				// skip code that exist
 				if( existCode != null )
@@ -157,11 +157,38 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 		// otherwise the translated language
 		else {
 			// get existing published code on specific version
-			Map<String, CodeDTO> existSlCodeMap = CodeDTO.getCodeAsMap( codeService.findArchivedByVocabularyAndVersion(vocabulary.getId(), version.getId()));
+			Map<String, CodeDTO> existWfCodeMap = CodeDTO.getCodeAsMap( codeService.findWorkflowCodesByVocabulary( vocabulary.getId()));
 			
 			for(CsvRow csvRow: csvImportLayout.getCsvRows()) {
 				// find out, if code from excel exist on the code
 				// if exist then add the TL concept, otherwise ignore
+				
+				concept = csvRowToConceptDTOMapper.toDto(csvRow);
+				
+				if(concept.getNotation() == null || concept.getNotation().isEmpty() || concept.getTitle() == null || concept.getTitle().isEmpty())
+					continue;
+				
+				CodeDTO code = existWfCodeMap.get(concept.getNotation() );
+				// if there is no code, means no SL concept as well, just skip
+				if( code == null )
+					continue;
+				
+				// find parent code
+				if( code.getParent() != null ) {
+					CodeDTO parentCode = existWfCodeMap.get( code.getParent() );
+					if( parentCode == null )
+						continue;
+					
+					WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, 
+							concept.getNotation(), concept.getTitle(), concept.getDefinition());
+				} else {
+					WorkspaceManager.saveCode(vocabulary, version, code, null, concept, 
+							concept.getNotation(), concept.getTitle(), concept.getDefinition());
+				}
+					
+				// save change log
+				WorkspaceManager.storeChangeLog(vocabulary, version, "Code TL added", concept.getNotation());
+				
 			}
 		
 		}

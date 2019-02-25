@@ -278,12 +278,17 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 			
 			hasAction = true;
 
-			if( selectedLanguage.equals( sourceLanguage) && CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion ) ) {
-				buttonCodeAdd.setVisible( true );
-				buttonCodeImport.setVisible( true );
-				VersionDTO latestSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getLatestVersions());
-				if( latestSLVersion.getConcepts() != null && latestSLVersion.getConcepts().size() > 1 )
-					buttonCodeSort.setVisible( true );
+			if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion ) ) {
+				if( selectedLanguage.equals( sourceLanguage)  ) {
+					buttonCodeAdd.setVisible( true );
+					buttonCodeImport.setVisible( true );
+					VersionDTO latestSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getLatestVersions());
+					if( latestSLVersion.getConcepts() != null && latestSLVersion.getConcepts().size() > 1 )
+						buttonCodeSort.setVisible( true );
+				}
+				else {
+					buttonCodeImport.setVisible( true );
+				}
 			}		
 			
 			if( currentCode != null ) {
@@ -291,7 +296,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 				if( currentConcept != null ) {
 					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 						buttonCodeEdit.setVisible( true );
-						buttonCodeImport.setVisible( true );
+//						buttonCodeImport.setVisible( true );
 					}
 					if( selectedLanguage.equals( sourceLanguage) ) {
 						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
@@ -306,7 +311,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 				} else {
 					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 						buttonCodeAddTranslation.setVisible( true );
-						buttonCodeImport.setVisible( true );
+//						buttonCodeImport.setVisible( true );
 					}
 					if( selectedLanguage.equals( sourceLanguage) ) {
 						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
