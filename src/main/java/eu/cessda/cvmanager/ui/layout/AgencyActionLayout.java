@@ -149,11 +149,18 @@ public class AgencyActionLayout extends ResponsiveBlock{
 			setVisible( false );
 		}
 		else {
-			setVisible( true );
-			hasAction = true;
-			buttonManageMember.setVisible( true );
-			buttonManageProfile.setVisible( true );
+			buttonManageMember.setVisible( false );
+			buttonManageProfile.setVisible( false );
 			
+			if( SecurityUtils.isCurrentUserAllowCreateCvSl(agency)) {
+				buttonManageMember.setVisible( true );
+				buttonManageProfile.setVisible( true );
+			}
+			
+			if( buttonManageMember.isVisible() ) {
+				setVisible( true );
+				hasAction = true;
+			}
 		}
 		
 		return hasAction;

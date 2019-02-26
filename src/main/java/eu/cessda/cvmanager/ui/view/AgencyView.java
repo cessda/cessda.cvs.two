@@ -229,7 +229,11 @@ public class AgencyView extends CvView {
 		this.agency = agency;
 		
 		aActionLayout.setAgency(agency);
-		aActionLayout.hasActionRight();
+		if( !aActionLayout.hasActionRight()) {
+			mainContainer.addStyleName("margin-left10");
+		} else {
+			mainContainer.removeStyleName("margin-left10");
+		}
 		// check user roles here
 		if (viewMode.equals( ViewMode.INITIAL )) {
 			aDetailLayout.setVisible( false );
