@@ -579,7 +579,7 @@
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <server.servlet.contextPath></server.servlet.contextPath>
+                <server.servlet.contextPath>/cvmanager</server.servlet.contextPath>
 				<server.port>8282</server.port>
 				<ddiflatdb.rest.url>http://localhost:8181/stardat-ddiflatdb</ddiflatdb.rest.url>
 				<spring.datasource.url>jdbc:mysql://localhost:3306/cvmanager?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
@@ -612,88 +612,19 @@
         </profile>
         <profile>
             <id>docker-compose</id>
-
             <properties>
                 <tomcat.url>http://localhost:8080/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <server.servlet.contextPath></server.servlet.contextPath>
+                <server.servlet.contextPath>/cvmanager</server.servlet.contextPath>
 				<server.port>8080</server.port>
 				<ddiflatdb.rest.url>http://cessda-cvmanager-storage-dev-microservice:8080</ddiflatdb.rest.url>
-                <spring.datasource.url>jdbc:mysql://cessda-cvmanager-storage-dev-persistence:3306/cvmanager?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
+                <spring.datasource.url>jdbc:mysql://cessda-cvmanager-storage-dev-persistence:3306/cvmanager-security?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
 				<spring.data.elasticsearch.cluster-nodes>cessda-cvmanager-es-live-cluster:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
-        </profile>
-        <profile>
-            <id>test</id>
-            <properties>
-                <tomcat.url>http://10.6.13.128:9090/manager/text</tomcat.url>
-                <tomcat.username>admin</tomcat.username>
-                <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <!--
-                <server.servlet.contextPath>/cvmanager-test</server.servlet.contextPath>
-                <ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
-				<spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager?useSSL=false</spring.datasource.url>
-				<spring.datasource.username>root</spring.datasource.username>
-				<spring.datasource.password>GVM8Sj8FUxBf4gk</spring.datasource.password>
-				-->
-				<server.servlet.contextPath></server.servlet.contextPath>
-				<server.port>8080</server.port>
-				<ddiflatdb.rest.url>http://cessda-cvmanager-storage-dev-microservice:8080</ddiflatdb.rest.url>
-                <spring.datasource.url>jdbc:mysql://cessda-cvmanager-storage-dev-persistence:3306/cvmanager?useSSL=false</spring.datasource.url>
-				<spring.datasource.username>root</spring.datasource.username>
-				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
-				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
-				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
-            </properties>
-            <build>
-          		<plugins>
-          	  		<plugin>
-                		<groupId>org.apache.tomcat.maven</groupId>
-                		<artifactId>tomcat7-maven-plugin</artifactId>
-                		<version>2.1</version>
-                		<configuration>
-                    		<path></path>
-                    		<url>${tomcat.url}</url>
-                    		<username>${tomcat.username}</username>
-                    		<password>${tomcat.password}</password>
-                		</configuration>
-              		</plugin>
-              	</plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>production</id>
-            <properties>
-            	 <tomcat.url>http://10.6.13.128:8080/manager/text</tomcat.url>
-                <tomcat.username>admin</tomcat.username>
-                <tomcat.password>Admin4Tomcat8</tomcat.password>
-                <server.servlet.contextPath></server.servlet.contextPath>
-				<ddiflatdb.rest.url>http://35.189.239.72:8080</ddiflatdb.rest.url>
-                <spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager?useSSL=false</spring.datasource.url>
-				<spring.datasource.username>root</spring.datasource.username>
-				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
-				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
-				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
-            </properties>
-            <build>
-          		<plugins>
-          	  		<plugin>
-                		<groupId>org.apache.tomcat.maven</groupId>
-                		<artifactId>tomcat7-maven-plugin</artifactId>
-                		<version>2.1</version>
-                		<configuration>
-                    		<path></path>
-                    		<url>${tomcat.url}</url>
-                    		<username>${tomcat.username}</username>
-                    		<password>${tomcat.password}</password>
-                		</configuration>
-              		</plugin>
-              	</plugins>
-            </build>
         </profile>
     </profiles>
 
