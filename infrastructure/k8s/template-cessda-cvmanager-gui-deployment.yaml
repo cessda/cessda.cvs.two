@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: DEPLOYMENTNAME
-        image: eu.gcr.io/cessda-development/cvmanager-gui:master-latest
+        image: eu.gcr.io/cessda-development/cvmanager-gui:dev-latest
         #image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
         imagePullPolicy: Always
         env:
