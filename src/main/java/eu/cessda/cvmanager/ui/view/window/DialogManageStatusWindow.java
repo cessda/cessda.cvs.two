@@ -1,7 +1,10 @@
 package eu.cessda.cvmanager.ui.view.window;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
@@ -105,6 +108,7 @@ public class DialogManageStatusWindow extends MWindow {
 	private String versionNumberTL = "1.0.1";
 	private String versionNumberPastSl = "0.9";
 	private String versionNumberPastTl = "1.0.0";
+	private VersionDTO latestPublishedSl;
 	
 	private MCssLayout comparatorBlock = new MCssLayout();
 	private MCssLayout comparatorContainer = new MCssLayout().withFullWidth();
@@ -285,6 +289,7 @@ public class DialogManageStatusWindow extends MWindow {
 					versionNumberSL = versionNumberSL.substring(0, lastDotIndex + 1) + (Integer.parseInt(lastNumber) + 1);
 				}
 				else {
+					latestPublishedSl = slPublish;
 					versionNumberTL = versionNumberSL + ".1";
 					versionNumberPastTl = versionNumberSL + ".0";
 					vocabulary.getLatestVersionByLanguage( currentVersion.getLanguage(), null, Status.PUBLISHED.toString()).ifPresent( tlPublish -> {
@@ -560,6 +565,28 @@ public class DialogManageStatusWindow extends MWindow {
 	}
 	
 	private void forwardToPublish() {
+		// check if publishing TL, if all codes are translated
+		if( latestPublishedSl != null && !vocabulary.getSourceLanguage().equals(currentVersion.getLanguage())) {
+			Set<String> missingTranslationTL = getMissingTranslatedCode(latestPublishedSl, currentVersion);
+			if( !missingTranslationTL.isEmpty() ) {
+				ConfirmDialog.show( 
+						this.getUI(), 
+						"Codes Translation Missing",
+						"The descriptive term translations are missing on the following codes \""+ 
+						String.join("\", \"", missingTranslationTL )+"\". "
+						+ "Translating all descriptive terms is mandatory for publication. "
+						+ "Use export/download if you want to produce a copy of an unfinished translation.", 
+						"Ok", 
+						"Close",
+						dialog -> {
+							if( dialog.isConfirmed() ) {
+								closeDialog();
+							}
+					});
+				return;
+			}
+		}
+		
 		if( versionChanges.isVisible() && (versionChanges.getValue() == null || versionChanges.getValue().isEmpty())) {
 			Notification.show("Version Changes can not be empty");
 			return;
@@ -623,6 +650,19 @@ public class DialogManageStatusWindow extends MWindow {
 
 	public void closeDialog() {
 		this.close();
+	}
+	
+	private Set<String> getMissingTranslatedCode(VersionDTO versionSL, VersionDTO versionTL) {
+		if( versionSL == null || versionSL.getConcepts() == null ||
+				versionTL == null || versionTL.getConcepts() == null)
+			return Collections.emptySet();
+		if(versionSL.getConcepts().size() != versionTL.getConcepts().size()) {
+			Set<String> notationSLs = versionSL.getConcepts().stream().map( c -> c.getNotation()).collect( Collectors.toSet());
+			Set<String> notationTLs = versionTL.getConcepts().stream().map( c -> c.getNotation()).collect( Collectors.toSet());
+			notationSLs.removeAll(notationTLs);
+			return notationSLs;
+		}
+		return Collections.emptySet();
 	}
 
 }
