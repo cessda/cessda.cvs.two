@@ -255,6 +255,7 @@ public class WorkspaceManager {
 				vocabulary.addCode(code);
 			} 
 			else { // save TL concept
+				concept.setNotation( notation );
 				concept.setPosition( code.getPosition() );
 				concept.setParent( code.getParent());
 				code = codeService.save(code);
