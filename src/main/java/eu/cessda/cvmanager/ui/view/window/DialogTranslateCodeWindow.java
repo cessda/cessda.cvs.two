@@ -244,7 +244,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 		
 		// store the code
 		WorkspaceManager.saveCode(vocabulary, version, code, null, concept, 
-				null, preferedLabel.getValue(), description.getValue());
+				concept.getNotation(), preferedLabel.getValue(), description.getValue());
 
 		// save change log
 		WorkspaceManager.storeChangeLog(vocabulary, version, "TL code added", concept.getNotation());
