@@ -210,10 +210,14 @@ public class WorkflowManager {
 			case INITIAL_REVIEW:
 				// just save after change status
 				version = versionService.save(version);
+				// index for editor
+				vocabularyService.index(vocabulary);
 				break;
 			case FINAL_REVIEW:
 				// just save after change status
 				version = versionService.save(version);
+				// index for editor
+				vocabularyService.index(vocabulary);
 				break;
 			case PUBLISHED:
 				String uri =  version.getUri() + "/" + versionNumber;

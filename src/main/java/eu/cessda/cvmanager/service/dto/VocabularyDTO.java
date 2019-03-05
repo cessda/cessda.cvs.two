@@ -687,6 +687,14 @@ public class VocabularyDTO implements Serializable {
 		return this;
 	}
 	
+	public VocabularyDTO clearStatuses() {
+		if(this.statuses == null)
+			this.statuses = new HashSet<>();
+		else
+			this.statuses.clear();
+		return this;
+	}
+	
     public LocalDate getPublicationDate() {
 		return publicationDate;
 	}
