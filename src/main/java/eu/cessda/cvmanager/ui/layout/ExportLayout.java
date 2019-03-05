@@ -394,6 +394,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		map.put("agency", agency);
 		map.put("license", license);
 		map.put("year", year);
+		map.put("baseUrl", configurationService.getServerBaseUrl() + configurationService.getServerContextPath());
 		
 		return generateFileByThymeleafTemplate(generateOnDemandFileName( type , false), "export", map, type);
 	}

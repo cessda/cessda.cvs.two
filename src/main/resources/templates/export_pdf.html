@@ -186,6 +186,10 @@ div.CodeList {
 						<a rel="license" th:href="${license.link}" th:text="${license.name}"></a>.
 					</span>
 				</p>
+				<p>Citation:
+					<span th:text="${version.citation}"></span> Retrieved from: 
+					<a th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${baseUrl + '/urn/' + version.canonicalUri}"></a> 
+				</p>
     		</div>
     	
     	</div>
