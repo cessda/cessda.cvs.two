@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.vaadin.spring.events.EventBus;
@@ -69,6 +70,7 @@ public class AgencyView extends CvView {
 	private final RoleService roleService;
 	private final UserAgencyService userAgencyService;
 	private final LicenceService licenceService;
+	private final BCryptPasswordEncoder encrypt;
 	
 	private MCssLayout searchTopLayout = new MCssLayout();
 	private MLabel resultInfo = new MLabel();
@@ -90,13 +92,15 @@ public class AgencyView extends CvView {
 	public AgencyView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, 
 			UserService userService, RoleService roleService, AgencyService agencyService, 
-			LicenceService licenceService, UserAgencyService userAgencyService, VocabularyService vocabularyService, CodeService codeService) {
+			LicenceService licenceService, UserAgencyService userAgencyService, 
+			BCryptPasswordEncoder encrypt, VocabularyService vocabularyService, CodeService codeService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, AgencyView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
 		this.licenceService = licenceService;
+		this.encrypt = encrypt;
 		
 		eventBus.subscribe(this, AgencyView.VIEW_NAME);
 	}
@@ -106,7 +110,7 @@ public class AgencyView extends CvView {
 		LoginView.NAVIGATETO_VIEWNAME = AgencyView.VIEW_NAME;
 				
 		aActionLayout = new AgencyActionLayout( "block.action.agency" , "block.action.agency.show" , 
-				i18n, eventBus, agency, userService, roleService, agencyService, licenceService, userAgencyService);
+				i18n, eventBus, agency, userService, roleService, agencyService, licenceService, userAgencyService, encrypt);
 //		aOwnLayout = new AgencyOwnLayout(i18n, eventBus, this, agencyService, configService); 
 		aSearchLayout = new AgencySearchLayout(i18n, eventBus, this, agencyService, configService);
 		aDetailLayout = new AgencyDetailLayout(i18n, eventBus, this, agencyService, configService, vocabularyService, stardatDDIService, configService); 
@@ -214,7 +218,8 @@ public class AgencyView extends CvView {
 	{
 		switch(event.getType()) {
 			case AGENCY_MANAGE_MEMBER:
-				Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, i18n, locale);
+				Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, 
+						agencyService, userAgencyService, encrypt, i18n, locale);
 				getUI().addWindow(window);
 				break;
 			case AGENCY_SEARCH_MODE:

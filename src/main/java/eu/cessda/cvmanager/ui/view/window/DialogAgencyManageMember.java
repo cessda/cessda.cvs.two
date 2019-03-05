@@ -12,6 +12,7 @@ import org.gesis.wts.service.dto.UserAgencyDTO;
 import org.gesis.wts.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
@@ -41,17 +42,18 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 	private final RoleService roleService;
 	private final AgencyService agencyService;
 	private final UserAgencyService userAgencyService;
+	private final BCryptPasswordEncoder encrypt;
 	private final Locale locale;
 	
 	private MCssLayout layout = new MCssLayout();
 	private Grid<UserDTO> grid = new Grid<>(UserDTO.class);
-	private MTextField filterText = new MTextField();
 	private AgencyMemberForm form;
 	private AgencyDTO agency;
+	private MButton addBtn = new MButton(" + Add new members");
 
 	public DialogAgencyManageMember(UIEventBus eventBus, AgencyDTO agency, UserService userService,
 			RoleService roleService, AgencyService agencyService, UserAgencyService userAgencyService,
-			I18N i18n, Locale locale) {
+			BCryptPasswordEncoder encrypt, I18N i18n, Locale locale) {
 		
 		super( "Manage "  + agency.getName() + " members, roles and languages");
 		
@@ -61,19 +63,22 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 		this.roleService = roleService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
+		this.encrypt = encrypt;
 		this.i18n = i18n;
 		this.locale = locale;
 		
-		this.form = new AgencyMemberForm( this, userAgencyService, userService, agencyService);
+		this.form = new AgencyMemberForm( this, userAgencyService, userService, agencyService, encrypt, i18n, locale);
 		
 		initLayout();
 	}
 	
 	private void initLayout() {
-		MButton addBtn = new MButton(" + Add new member");
+		
         addBtn.withStyleName( ValoTheme.BUTTON_PRIMARY, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-normal");
         addBtn.addClickListener(e -> {
+        	addBtn.setVisible( false );
             form.setUserLayoutVisible( true );
+            form.activateAddUserForm( false );
             
             UserAgencyDTO uAgency = new UserAgencyDTO();
             uAgency.setAgencyId( agency.getId());
@@ -81,6 +86,7 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
                         
             form.setUserAgencyDTO( uAgency );
         });
+        
         
         MCssLayout toolbar = new MCssLayout(addBtn);
         toolbar.withFullWidth();
@@ -138,6 +144,12 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 
 	public void setGrid(Grid<UserDTO> grid) {
 		this.grid = grid;
+	}
+	
+	
+
+	public MButton getAddBtn() {
+		return addBtn;
 	}
 
 	@Override
