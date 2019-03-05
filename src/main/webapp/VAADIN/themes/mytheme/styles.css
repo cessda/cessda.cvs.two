@@ -1,12 +1,12 @@
 /**
  * Checks if a list contains a certain value.
- * 
+ *
  * @param {list} $list - the list to check
  * @param {value} $var - the value to search for
  * @param {bool} $recursive (false) - should any contained lists be checked for the value
- * 
+ *
  * @return {bool} true if the value is found from the list, false otherwise
- * 
+ *
  * @group lists
  */
 
@@ -283,9 +283,9 @@
 
 /**
  * Outputs cross-browser Valo-specific linear gradient background-image declarations.
- * 
+ *
  * @group style
- * 
+ *
  * @param {color} $color ($v-background-color) - The base color for the gradient color stops
  * @param {list} $gradient ($v-gradient) - Valo-specific gradient value. See the documentation for $v-gradient.
  * @param {color} $fallback (null) - A fallback color for browser which do not support linear gradients (IE8 and IE9 in particular). If null, the base $color is used instead.
@@ -307,11 +307,11 @@
 
 /**
  * Ouput selectors and properties to vertically center elements inside their parent.
- * 
+ *
  * @param {string} $to-align (()) - The selector to match the elements which you wish to align vertically. The targeted elements should be inline or inline-block elements.
  * @param {string} $align (middle) - The vertical-align value, e.g. top, middle, bottom
  * @param {string} $pseudo-element (after) - Which pseudo element to use for the vertical align guide
- * 
+ *
  * @group util
  */
 
@@ -522,7 +522,7 @@
 
 /**
  * Outputs the context menu selectors and styles, which is used by Table and Tree for instance.
- * 
+ *
  * @requires {mixin} valo-selection-item-style
  * @requires {mixin} valo-selection-item-selected-style
  */
@@ -544,7 +544,7 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-absolutelayout) - 
+ * @param {string} $primary-stylename (v-absolutelayout) -
  *
  * @group absolutelayout
  */
@@ -567,16 +567,16 @@
  */
 
 /**
- * A list of colors for custom event colors. Can be an empty list of you don't 
+ * A list of colors for custom event colors. Can be an empty list of you don't
  * need any custom event colors.
- * 
+ *
  * @example javascript
  * // Java code
  * // 'event' is an instance of EditableCalendarEvent
  * event.setStyleName("color1"); // 1st color in the list
  * event.setStyleName("color2"); // 2nd color in the list
  * // etc.
- * 
+ *
  * @group calendar
  */
 
@@ -610,14 +610,14 @@
 /**
  * The amount of spacing between different widgets in a component group.
  * If null, a computed value is used ($v-border size * -1, or 1px if $v-border size is 0)
- * 
+ *
  * @group csslayout
  */
 
 /**
  *
  *
- * @param {string} $primary-stylename (v-customcomponent) - 
+ * @param {string} $primary-stylename (v-customcomponent) -
  *
  * @group customcomponent
  */
@@ -625,7 +625,7 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-customlayout) - 
+ * @param {string} $primary-stylename (v-customlayout) -
  *
  * @group customlayout
  */
@@ -641,16 +641,16 @@
 
 /**
  * Outputs the styles and selectors for the DragAndDropWrapper component.
- * 
+ *
  * @param {string} $primary-stylename (v-ddwrapper) - the primary style name for the selectors
- * 
+ *
  * @group drag-n-drop
  */
 
 /**
  *
  *
- * @param {string} $primary-stylename (v-form) - 
+ * @param {string} $primary-stylename (v-form) -
  *
  * @group form
  */
@@ -717,14 +717,14 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-gridlayout) - 
+ * @param {string} $primary-stylename (v-gridlayout) -
  *
  * @group gridlayout
  */
 
 /**
  * The font weight for headers.
- * 
+ *
  * @group label
  */
 
@@ -736,7 +736,7 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-loginform) - 
+ * @param {string} $primary-stylename (v-loginform) -
  *
  * @group loginform
  */
@@ -744,8 +744,8 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-menubar) - 
- * @param {bool} $include-additional-styles - 
+ * @param {string} $primary-stylename (v-menubar) -
+ * @param {bool} $include-additional-styles -
  *
  * @group menubar
  */
@@ -753,7 +753,7 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-nativebutton) - 
+ * @param {string} $primary-stylename (v-nativebutton) -
  *
  * @group nativebutton
  */
@@ -761,7 +761,7 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-select) - 
+ * @param {string} $primary-stylename (v-select) -
  *
  * @group nativeselect
  */
@@ -774,8 +774,8 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-select-optiongroup) - 
- * @param {bool} $include-additional-styles - 
+ * @param {string} $primary-stylename (v-select-optiongroup) -
+ * @param {bool} $include-additional-styles -
  *
  * @group optiongroup
  */
@@ -832,8 +832,8 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-splitpanel) - 
- * @param {bool} $include-additional-styles - 
+ * @param {string} $primary-stylename (v-splitpanel) -
+ * @param {bool} $include-additional-styles -
  *
  * @group splitpanel
  */
@@ -971,7 +971,7 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-treetable) - 
+ * @param {string} $primary-stylename (v-treetable) -
  *
  * @group treetable
  */
@@ -979,7 +979,7 @@
 /**
  *
  *
- * @param {string} $primary-stylename (v-select-twincol) - 
+ * @param {string} $primary-stylename (v-select-twincol) -
  *
  * @group twin-column-select
  */
@@ -2314,7 +2314,7 @@ div.v-layout.v-horizontal.v-widget {
 	text-align: center;
 	left: 0;
 	right: 0;
-	content: "CESSDA CV Manager";
+	content: "CESSDA Vocabulary Service";
 }
 
 .mytheme .v-loading-indicator {
@@ -2811,8 +2811,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -2904,8 +2904,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #eceff4;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #2e4678;
 	border-top-color: #344e81;
@@ -2948,8 +2948,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #eaf4e9;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #227719;
 	border-top-color: #26801b;
@@ -2989,8 +2989,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #f9f0ef;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #bb382e;
 	border-top-color: #bc3e34;
@@ -3127,10 +3127,10 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-button-tiny {
 	height: 23px;
 	padding: 0 11px;
-	
-	
+
+
 	font-size: 11px;
-	
+
 	border-radius: 3px;
 }
 
@@ -3145,10 +3145,10 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-button-small {
 	height: 26px;
 	padding: 0 12px;
-	
-	
+
+
 	font-size: 12px;
-	
+
 	border-radius: 3px;
 }
 
@@ -3163,10 +3163,10 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-button-large {
 	height: 36px;
 	padding: 0 16px;
-	
-	
+
+
 	font-size: 17px;
-	
+
 	border-radius: 3px;
 }
 
@@ -3181,10 +3181,10 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-button-huge {
 	height: 48px;
 	padding: 0 21px;
-	
-	
+
+
 	font-size: 23px;
-	
+
 	border-radius: 3px;
 }
 
@@ -3312,8 +3312,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 7px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -3440,8 +3440,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 6px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -3568,8 +3568,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 8px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -3659,7 +3659,7 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 30px;
@@ -4149,7 +4149,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-filterselect-tiny {
 	height: 23px;
-	
+
 	font-size: 11px;
 }
 
@@ -4166,14 +4166,14 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 23px;
-	
+
 	padding: 3px 4px;
-	
-	
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -4193,7 +4193,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-filterselect-tiny span.v-icon {
-	
+
 	width: 23px;
 	line-height: 1;
 	padding-top: 0.12em;
@@ -4270,7 +4270,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-filterselect-compact, .mytheme .v-filterselect-small {
 	height: 26px;
-	
+
 }
 
 .mytheme .v-filterselect-compact [class*="input"], .mytheme .v-filterselect-small [class*="input"] {
@@ -4286,14 +4286,14 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 26px;
-	
+
 	padding: 3px 5px;
-	
-	
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -4313,7 +4313,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-filterselect-compact span.v-icon, .mytheme .v-filterselect-small span.v-icon {
-	
+
 	width: 26px;
 	line-height: 1;
 	padding-top: 0.12em;
@@ -4394,7 +4394,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-filterselect-large {
 	height: 36px;
-	
+
 	font-size: 17px;
 }
 
@@ -4411,14 +4411,14 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 36px;
-	
+
 	padding: 4px 6px;
-	
-	
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -4438,7 +4438,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-filterselect-large span.v-icon {
-	
+
 	width: 36px;
 	line-height: 1;
 	padding-top: 0.12em;
@@ -4515,7 +4515,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-filterselect-huge {
 	height: 48px;
-	
+
 	font-size: 23px;
 }
 
@@ -4532,14 +4532,14 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 48px;
-	
+
 	padding: 5px 8px;
-	
-	
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -4559,7 +4559,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-filterselect-huge span.v-icon {
-	
+
 	width: 48px;
 	line-height: 1;
 	padding-top: 0.12em;
@@ -4878,13 +4878,13 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 30px;
 	border-radius: 0;
 	padding: 3px 5px;
-	
+
 	-webkit-box-shadow: none;
 	box-shadow: none;
 	-webkit-transition: box-shadow 180ms, border 180ms;
@@ -5253,7 +5253,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-grid-row-focused > td {
-	
+
 }
 
 .mytheme .v-grid-header th {
@@ -5263,7 +5263,7 @@ div.v-layout.v-horizontal.v-widget {
 	font-weight: inherit;
 	border-left: 1px solid #d4d4d4;
 	border-bottom: 1px solid #d4d4d4;
-	
+
 	text-align: left;
 }
 
@@ -5324,7 +5324,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-left: 1px solid #d4d4d4;
 	border-top: 1px solid #d4d4d4;
 	border-bottom: none;
-	
+
 }
 
 .mytheme .v-grid-footer td:first-child {
@@ -5854,7 +5854,7 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 30px;
@@ -5972,14 +5972,14 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 23px;
 	border-radius: 0;
 	padding: 3px 4px;
-	
-	
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -5998,14 +5998,14 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 26px;
 	border-radius: 0;
 	padding: 3px 5px;
-	
-	
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -6027,14 +6027,14 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 36px;
 	border-radius: 0;
 	padding: 4px 6px;
-	
-	
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -6053,14 +6053,14 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 48px;
 	border-radius: 0;
 	padding: 5px 8px;
-	
-	
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -6321,7 +6321,7 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 30px;
@@ -6412,15 +6412,15 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 23px;
 	border-radius: 0;
 	padding: 5px;
-	
-	
-	
+
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -6442,15 +6442,15 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 26px;
 	border-radius: 0;
 	padding: 5px;
-	
-	
-	
+
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -6472,15 +6472,15 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 36px;
 	border-radius: 0;
 	padding: 5px;
-	
-	
-	
+
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -6502,15 +6502,15 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 48px;
 	border-radius: 0;
 	padding: 5px;
-	
-	
-	
+
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -6548,7 +6548,7 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 30px;
@@ -7220,15 +7220,15 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 23px;
 	border-radius: 0;
 	padding: 3px 4px;
-	
-	
-	
+
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -7326,15 +7326,15 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 26px;
 	border-radius: 0;
 	padding: 3px 5px;
-	
-	
-	
+
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -7437,15 +7437,15 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 36px;
 	border-radius: 0;
 	padding: 4px 6px;
-	
-	
-	
+
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -7544,15 +7544,15 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 48px;
 	border-radius: 0;
 	padding: 5px 8px;
-	
-	
-	
+
+
+
 	-webkit-transition: box-shadow 180ms, border 180ms;
 	-moz-transition: box-shadow 180ms, border 180ms;
 	transition: box-shadow 180ms, border 180ms;
@@ -7856,7 +7856,7 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #191919;
 	font-weight: 500;
-	
+
 	cursor: default;
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
@@ -7936,7 +7936,7 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 12px;
 	color: inherit;
 	font-weight: 500;
-	
+
 	cursor: pointer;
 	border-radius: 0;
 	border: 1px solid #c5c5c5;
@@ -8033,9 +8033,9 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-menubar > .v-menubar-menuitem-selected {
 	color: #eceff4;
-	
-	
-	
+
+
+
 	border-radius: 0;
 	border: 1px solid #2e4678;
 	border-top-color: #344e81;
@@ -8183,9 +8183,9 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme .v-menubar-small {
 	height: 26px;
 	padding: 0 12px;
-	
+
 	font-weight: 500;
-	
+
 	cursor: default;
 	border-radius: 3px;
 	padding: 0;
@@ -8334,8 +8334,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 7px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -8495,8 +8495,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 6px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -8622,8 +8622,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 6px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -8783,8 +8783,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 8px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -8910,8 +8910,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 8px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -9899,7 +9899,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-tree8-row-focused > td {
-	
+
 }
 
 .mytheme .v-tree8-header th {
@@ -9909,7 +9909,7 @@ div.v-layout.v-horizontal.v-widget {
 	font-weight: inherit;
 	border-left: 1px solid #d4d4d4;
 	border-bottom: 1px solid #d4d4d4;
-	
+
 	text-align: left;
 }
 
@@ -9970,7 +9970,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-left: 1px solid #d4d4d4;
 	border-top: 1px solid #d4d4d4;
 	border-bottom: none;
-	
+
 }
 
 .mytheme .v-tree8-footer td:first-child {
@@ -10981,7 +10981,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-treegrid-row-focused > td {
-	
+
 }
 
 .mytheme .v-treegrid-header th {
@@ -10991,7 +10991,7 @@ div.v-layout.v-horizontal.v-widget {
 	font-weight: inherit;
 	border-left: 1px solid #d4d4d4;
 	border-bottom: 1px solid #d4d4d4;
-	
+
 	text-align: left;
 }
 
@@ -11052,7 +11052,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-left: 1px solid #d4d4d4;
 	border-top: 1px solid #d4d4d4;
 	border-bottom: none;
-	
+
 }
 
 .mytheme .v-treegrid-footer td:first-child {
@@ -11933,8 +11933,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -12046,8 +12046,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme tbody.v-drag-element tr {
 	display: block;
-	
-	
+
+
 	-webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 	border-radius: 3px;
@@ -12301,8 +12301,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -12361,8 +12361,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -12414,8 +12414,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -12488,8 +12488,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -12557,8 +12557,8 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #3b5998;
 	background-image: -webkit-linear-gradient(top, #4263a4 2%, #2f4982 98%);
 	background-image: linear-gradient(to bottom,#4263a4 2%, #2f4982 98%);
-	
-	
+
+
 	border: 1px solid #2e4678;
 	box-sizing: border-box;
 	max-width: 100%;
@@ -12585,8 +12585,8 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #3b5998;
 	background-image: -webkit-linear-gradient(top, #4263a4 2%, #2f4982 98%);
 	background-image: linear-gradient(to bottom,#4263a4 2%, #2f4982 98%);
-	
-	
+
+
 	border: 1px solid #2e4678;
 	box-sizing: border-box;
 	max-width: 100%;
@@ -12641,7 +12641,7 @@ div.v-layout.v-horizontal.v-widget {
 	margin: 13px 9px;
 	white-space: nowrap;
 	overflow: hidden;
-	
+
 }
 
 .mytheme .v-slider-base:before {
@@ -12661,8 +12661,8 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #3b5998;
 	background-image: -webkit-linear-gradient(top, #4263a4 2%, #2f4982 98%);
 	background-image: linear-gradient(to bottom,#4263a4 2%, #2f4982 98%);
-	
-	
+
+
 	border: 1px solid #2e4678;
 	box-sizing: border-box;
 	max-width: 100%;
@@ -12689,8 +12689,8 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 13px;
 	color: #191919;
 	font-weight: 500;
-	
-	
+
+
 	border-radius: 3px;
 	border: 1px solid #c5c5c5;
 	border-top-color: #c5c5c5;
@@ -14174,13 +14174,13 @@ div.v-layout.v-horizontal.v-widget {
 	font-size: 2.4em;
 	margin-top: 1.4em;
 	margin-bottom: 1em;
-	
+
 	letter-spacing: -0.03em;
 }
 
 .mytheme h2, .mytheme .v-label-h2 {
 	font-size: 1.6em;
-	
+
 	margin-top: 1.6em;
 	margin-bottom: 0.77em;
 	letter-spacing: -0.02em;
@@ -14188,7 +14188,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme h3, .mytheme .v-label-h3 {
 	font-size: 1.2em;
-	
+
 	margin-top: 1.8em;
 	margin-bottom: 0.77em;
 	letter-spacing: 0;
@@ -14526,7 +14526,7 @@ div.v-layout.v-horizontal.v-widget {
 	user-select: text;
 	margin: 0;
 	font: inherit;
-	
+
 	font-weight: 400;
 	line-height: normal;
 	height: 30px;

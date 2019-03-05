@@ -1,4 +1,4 @@
-# CESSDA CVMANAGER
+# CESSDA Vocabulary Service
 This repository contains all the source code and configuration needed to deploy the CESSDA CVManager application
 
 ##Project Structure
@@ -30,9 +30,9 @@ Several frameworks and languages are used in this application.
 
 ## Naming
 
-There is a unfortunate lack of alignment between product (tool/service) names and repository names, which can make the setting of variable values unclear. 
+There is a unfortunate lack of alignment between product (tool/service) names and repository names, which can make the setting of variable values unclear.
 
-Both the `Jenkins file` and `gcp.conf` contain variable declarations, but these variable names and values serve different purposes during the build and deployment process. 
+Both the `Jenkins file` and `gcp.conf` contain variable declarations, but these variable names and values serve different purposes during the build and deployment process.
 
 
 
@@ -51,10 +51,10 @@ Both the `Jenkins file` and `gcp.conf` contain variable declarations, but these 
 
 
 ### gcp.config
-The gcp.config contains a number of variables, some of which are (more or less) fixed for all CESSDA projects, 
+The gcp.config contains a number of variables, some of which are (more or less) fixed for all CESSDA projects,
 other which need to be set per project, per module and per branch.
 
-The following are stable for the time being, but all are changable if required, with NET enabling different deployment options within a specified GCP project, 
+The following are stable for the time being, but all are changable if required, with NET enabling different deployment options within a specified GCP project,
 and PROJECT and CLIENT allowing e.g. the possibility to host products for third parties within different GCP projects.
 
 
@@ -139,4 +139,3 @@ Please read [CESSDA Guideline for developers] (https://bitbucket.org/cessda/cess
 * **First Name - Last Name** - *Initial work*
 
 You can find the list of all contributors [here](CONTRIBUTORS.md)
-
