@@ -142,7 +142,7 @@ CVManager runs on a web platform called Vaadim, which is split into two separate
 
 The key thing of note here is that, unusually for a web server, the Vaadim server is stateful. This means when multiple instances of the application server are running for load balancing purposes the load balancer must be aware of which client is connected to each individual server and make sure that it is always the same server.
 
-![Cause](images/cause.png)
+![Cause](images/Cause.png)
 
 The issue was caused because Kubernetes was not aware of sessions and there were two replicas of the CVManager application running. Kubernetes randomly redirected from one server to another on each request. Normally this is not an issue as most web servers are stateless, but in this case it caused Vaadim to drop the sessions if the request was directed to a different server than where it originated.
 
@@ -150,7 +150,7 @@ The issue was caused because Kubernetes was not aware of sessions and there were
 
 The number of replicas of the CVManager application was reduced from 2 to 1. This means the session will always be directed to the same server as only one exists. However, this fix does reduce the scalability of the application.
 
-![Fix](images/fix.png)
+![Fix](images/Fix.png)
 
 To have multiple instances of the CVManager server running, headless services should be used and the DNS names of the pods directly inserted into the HAProxy configuration. HAProxy is aware of HTTP sessions and should redirect the appropriate requests to the correct servers, preventing this session expiration issue.
 
