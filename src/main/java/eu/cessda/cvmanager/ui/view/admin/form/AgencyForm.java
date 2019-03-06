@@ -66,7 +66,7 @@ public class AgencyForm extends FormLayout {
         		licensePreview.setValue("");
         });
                 
-        name.withFullWidth().setReadOnly( true );
+        name.withFullWidth();
         description.withFullWidth();
         link.withFullWidth();
         uri.withFullWidth();

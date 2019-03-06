@@ -247,15 +247,29 @@ public class AgencyMemberGridComponent extends CustomComponent {
 			.withStyleName( ValoTheme.BUTTON_DANGER, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-large");
 		
 		bDelete.addClickListener( e -> {
-			if( agencyMembers.size() > 1) {
-				userAgencyService.delete( userRole.getId() );
-				refresh();
-			} else { // the last user-agency relation
-				//remove from agency
-				agencyMembers.stream().forEach( item -> userAgencyService.delete( item.getId()));
-				// ask parent to refresh
-				dialogAgencyMember.updateList();
-			}
+			ConfirmDialog.show( 
+					this.getUI(), 
+					"Delete member role",
+					"Are you sure to delete the role of \"" + userRole.getAgencyRole() + 
+					(userRole.getLanguage() != null ?  "(" + userRole.getLanguage().toString().toUpperCase() + ") " : "" )+
+					"\" from \"" + userRole.getLastName() + "\"", 
+					"Yes", 
+					"Cancel",
+					dialog -> {
+						if( dialog.isConfirmed() ) {
+
+							if( agencyMembers.size() > 1) {
+								userAgencyService.delete( userRole.getId() );
+								refresh();
+							} else { // the last user-agency relation
+								//remove from agency
+								agencyMembers.stream().forEach( item -> userAgencyService.delete( item.getId()));
+								// ask parent to refresh
+								dialogAgencyMember.updateList();
+							}
+						}
+				});
+			
 		});
 		return bDelete;
 	}
