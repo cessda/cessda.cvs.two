@@ -543,25 +543,6 @@ public class VersionDTO implements Serializable {
 	public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName) {
 		StringBuilder citation = new StringBuilder();
 		
-		/*
-SL
-DDI Alliance. (2016). Time Method (Version 1.2) [Controlled vocabulary]. CESSDA. 
-urn:ddi:int.ddi.cv:TimeMethod:1.2. Retrieved from: https://vocabularies.cessda.eu/TimeMethod_1.2/en.htm 
-CESSDA. (2018). CESSDA Topic Classification (Version 3.0) [Controlled vocabulary]. 
-urn:ddi:int.cessda.cv:TopicClassification:3.0. 
-Retrieved from: https://vocabularies.cessda.eu/TopicClassification_3.0/en.htm
-
-If a TL version, citation should be (if retrieved from CV Manager) :
-
-DDI Alliance. (2016). Erhebungsdesign [Time Method] (Version 1.2.1; GESIS, Transl.) 
-[Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TimeMethod:1.2. 
-Retrieved from: https://vocabularies.cessda.eu/TimeMethod_1.2.1/de.htm
-
-CESSDA. (2018). CESSDAn aihepiiriluokitus [CESSDA Topic Classification] 
-(Version 3.0.1; Finnish Social Science Data Archive, Transl.) 
-[Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. Retrieved from: https://vocabularies.cessda.eu/TopicClassification_3.0.1/fi.htm
-"
-		 */
 		citation.append( agencyName + ". " );
 		if( versionDto.getItemType().equals( ItemType.SL.toString()) ) {
 			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");

@@ -54,6 +54,7 @@ import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.renderers.ComponentRenderer;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -394,7 +395,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		map.put("agency", agency);
 		map.put("license", license);
 		map.put("year", year);
-		map.put("baseUrl", configurationService.getServerBaseUrl() + configurationService.getServerContextPath());
+		map.put("baseUrl", UI.getCurrent().getPage().getLocation().getScheme() + "://" + configurationService.getServerBaseUrl() + configurationService.getServerContextPath());
 		
 		return generateFileByThymeleafTemplate(generateOnDemandFileName( type , false), "export", map, type);
 	}

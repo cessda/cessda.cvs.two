@@ -20,6 +20,7 @@ import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.ConfigurationService;
@@ -87,7 +88,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 	private void init() {
 		switchMode( LayoutMode.READ );
 		
-		String resolverUrl = WorkflowUtils.generateResolverUri(configService, version.getCanonicalUri());
+		String resolverUrl = UI.getCurrent().getPage().getLocation().getScheme() + "://" + WorkflowUtils.generateResolverUri(configService, version.getCanonicalUri());
 		
 		int year = LocalDate.now().getYear();
 		if( version.getStatus().equals( Status.PUBLISHED.toString())) {
