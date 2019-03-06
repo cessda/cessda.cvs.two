@@ -139,6 +139,9 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			agencyTransalteValue.setVisible(false);
 		}
 		
+		// issue #93 - Finalize machine-produced citation
+		canonicalUriVersion.withVisible( false );
+		
 		formLayout
 			.addComponents(
 				canonicalUri,

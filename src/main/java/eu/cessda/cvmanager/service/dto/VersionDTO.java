@@ -554,7 +554,7 @@ public class VersionDTO implements Serializable {
 		}
 		else {
 			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
-			citation.append( versionDto.getTitle() + "[" + versionDtoSl.getTitle()+ "]" + " (Version " + versionDto.getNumber() +
+			citation.append( versionDto.getTitle() + " [" + versionDtoSl.getTitle()+ "]" + " (Version " + versionDto.getNumber() +
 			(versionDto.getTranslateAgency() == null ? "": "; " + versionDto.getTranslateAgency() ) + ", Transl.) [Controlled vocabulary]. ");
 			if( !agencyName.toLowerCase().contains("cessda")) {
 				citation.append( "CESSDA. ");
