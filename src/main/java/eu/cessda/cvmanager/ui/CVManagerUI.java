@@ -19,9 +19,6 @@ import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.ui.view.AccessDeniedView;
 import org.gesis.wts.ui.view.ErrorView;
 import org.gesis.wts.ui.view.LoginView;
-import org.gesis.wts.ui.view.admin.ManageUserAgencyView;
-import org.gesis.wts.ui.view.admin.ManageUserView;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.EventScope;
@@ -34,23 +31,19 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
-import org.vaadin.viritin.layouts.MMarginInfo;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.annotations.PreserveOnRefresh;
-import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Viewport;
-import com.vaadin.annotations.Widgetset;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
+import com.vaadin.server.Resource;
+import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.spring.annotation.SpringUI;
@@ -59,14 +52,13 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CustomLayout;
+import com.vaadin.ui.Embedded;
 import com.vaadin.ui.ItemCaptionGenerator;
-import com.vaadin.ui.PopupView;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.LanguageSwitchedEvent;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 import eu.cessda.cvmanager.ui.view.AboutView;
 import eu.cessda.cvmanager.ui.view.AgencyView;
@@ -74,16 +66,9 @@ import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.ui.view.EditorSearchView;
 import eu.cessda.cvmanager.ui.view.EditorView;
-import eu.cessda.cvmanager.ui.view.HomeView;
-import eu.cessda.cvmanager.ui.view.SearchView;
 import eu.cessda.cvmanager.ui.view.admin.AdminView;
 import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
-import eu.cessda.cvmanager.utils.FileUtils;
 
-/**
- * @author klascr
- *
- */
 
 @Viewport("initial-scale=1, maximum-scale=1")
 //@StyleSheet({"http://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900"})
@@ -309,9 +294,13 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 					)
 			);
 		
-		MLabel logo = new MLabel();
-		logo.withContent(FileUtils.getSiteLogo()).withContentMode(ContentMode.HTML).withFullWidth();
-			
+		// A resource reference to some object
+		Resource res = new ThemeResource("img/logo/cessda_logo_cvs.svg");
+
+		// Display the object
+		Embedded embeddedLogo = new Embedded(null, res);
+		embeddedLogo.setWidth("100%");
+
 		MCssLayout headerMiddleContent = new MCssLayout();
 		headerMiddleContent
 			.withStyleName( "row header-content" )
@@ -320,7 +309,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 				new MCssLayout()
 					.withStyleName("col-md-4")
 					.add(
-							logo
+							embeddedLogo
 						),
 					new MCssLayout()
 					.withStyleName("col-md-8 text-center")
