@@ -253,8 +253,8 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 	private MCssLayout generateCodeRow( ConceptCompare cc) {
 		MCssLayout layout = new MCssLayout().withFullWidth().withStyleName("row-compare");
 		layout.add(
-				cc.getCodePrevious(),
-				cc.getCodeCurrent(),
+				cc.getCodePrevious().withStyleName("break-word"),
+				cc.getCodeCurrent().withStyleName("break-word"),
 				cc.getTermPrevious(),
 				cc.getTermCurrent(),
 				cc.getDefinitionPrevious(),

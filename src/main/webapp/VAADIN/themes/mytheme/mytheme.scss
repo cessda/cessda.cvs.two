@@ -2568,4 +2568,17 @@ $v-selection-item-border-radius: 0;
 		background-image: linear-gradient(to bottom,#fce5cd 2%, #eacaaa 98%);
 
 	}
+	.break-word{
+	    white-space: -moz-pre-wrap;
+	    white-space: -hp-pre-wrap;
+	    white-space: -o-pre-wrap;
+	    white-space: -pre-wrap;
+	    white-space: pre-wrap;
+	    white-space: pre-line;
+	    word-break: break-all;
+	    word-wrap: break-word;
+    }
+    .reset-password-form, .v-caption-reset-password-form{
+    	margin:30px 0 0 0;
+    }
 }

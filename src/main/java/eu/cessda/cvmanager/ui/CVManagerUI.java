@@ -19,6 +19,7 @@ import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.ui.view.AccessDeniedView;
 import org.gesis.wts.ui.view.ErrorView;
 import org.gesis.wts.ui.view.LoginView;
+import org.gesis.wts.ui.view.ResetPasswordView;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.EventScope;
@@ -190,7 +191,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		String uriQuery = Page.getCurrent().getLocation().toString();
 		if( !uriQuery.contains( "#!" + PublicationDetailsView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
 				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorDetailsView.VIEW_NAME )  && 
-				!uriQuery.contains( "#!" + AdminView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorSearchView.VIEW_NAME )) {
+				!uriQuery.contains( "#!" + AdminView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorSearchView.VIEW_NAME ) &&
+				!uriQuery.contains( "#!" + ResetPasswordView.NAME )) {
 			navigator.navigateTo(DiscoveryView.VIEW_NAME);
 		}
 		navigator.addViewChangeListener(viewChangeListener);
