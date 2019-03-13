@@ -251,7 +251,7 @@
         <dependency>
             <groupId>org.gesis.wts</groupId>
             <artifactId>usermanagement</artifactId>
-            <version>0.0.4-SNAPSHOT</version>
+            <version>0.0.5-SNAPSHOT</version>
             <exclusions>
 		        <exclusion>
 		            <groupId>org.mapstruct</groupId>

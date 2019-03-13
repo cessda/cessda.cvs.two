@@ -474,6 +474,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	}
 
 	public void doLogin(ClickEvent event) {
+		LoginView.NAVIGATETO_VIEWNAME = DiscoveryView.VIEW_NAME;
 		getNavigator().navigateTo(LoginView.NAME);
 	}
 

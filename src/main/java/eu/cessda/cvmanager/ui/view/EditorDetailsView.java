@@ -1003,6 +1003,10 @@ public class EditorDetailsView extends CvView {
 
 			case CVCONCEPT_DELETED:
 				
+				// get the editor's codes
+				List<CodeDTO> wCodeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+				// TODO: Find if code has children
+				
 				ConfirmDialog.show( this.getUI(), "Confirm",
 				i18n.get( "dialog.confirm.delete.code", "\"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")"),
 				i18n.get("dialog.button.yes"),
