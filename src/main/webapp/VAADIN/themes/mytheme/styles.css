@@ -18263,6 +18263,11 @@ div.v-layout.v-horizontal.v-widget {
 	margin: 30px 0 0 0;
 }
 
+.mytheme .member-password-block {
+	width: 250px;
+	float: right;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;
