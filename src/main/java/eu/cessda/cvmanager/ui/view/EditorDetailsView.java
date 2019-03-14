@@ -9,6 +9,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -1005,10 +1006,27 @@ public class EditorDetailsView extends CvView {
 				
 				// get the editor's codes
 				List<CodeDTO> wCodeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
-				// TODO: Find if code has children
-				
+				// Find if code has children
+				List<CodeDTO> childWCodeDTOs = wCodeDTOs
+						.stream()
+						.filter( p -> p.getParent() != null )
+						.filter( p -> p.getParent().equals( code.getNotation()))
+						.collect( Collectors.toList());
+				String popUpDialogMessageKey = null;
+				if( childWCodeDTOs.isEmpty()) {
+					if( currentVersion.getItemType().equals(ItemType.SL.toString()))
+						popUpDialogMessageKey = "dialog.confirm.delete.code";
+					else
+						popUpDialogMessageKey = "dialog.confirm.delete.code.tl";
+				}else {
+					if( currentVersion.getItemType().equals(ItemType.SL.toString()))
+						popUpDialogMessageKey = "dialog.confirm.delete.code.and.child";
+					else
+						popUpDialogMessageKey = "dialog.confirm.delete.code.tl.and.child";
+				}
+					
 				ConfirmDialog.show( this.getUI(), "Confirm",
-				i18n.get( "dialog.confirm.delete.code", "\"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")"),
+				i18n.get( popUpDialogMessageKey, "\"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")"),
 				i18n.get("dialog.button.yes"),
 				i18n.get("dialog.button.cancel"),
 						
