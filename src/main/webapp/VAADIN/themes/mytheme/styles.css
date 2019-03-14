@@ -18111,6 +18111,17 @@ div.v-layout.v-horizontal.v-widget {
 	padding-left: 30px;
 }
 
+.mytheme .version-item  > .v-button {
+	padding-left: 30px;
+	font-weight: 500;
+	font-size: 1.2rem;
+	color: #333 !important;
+}
+
+.mytheme .version-item  > .compare-version {
+	padding-left: 30px;
+}
+
 .mytheme .version-item h2 {
 	font-weight: 600;
 	font-size: 1.2rem;

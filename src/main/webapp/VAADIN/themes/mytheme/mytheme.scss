@@ -2447,6 +2447,15 @@ $v-selection-item-border-radius: 0;
 		>.v-label{
 			padding-left:30px;
 		}
+		>.v-button{
+			padding-left:30px;
+			font-weight: 500;
+    		font-size: 1.2rem;
+    		color: #333 !important;
+		}
+		>.compare-version{
+			padding-left:30px;
+		}
 	}
 	.version-item h2{
 		font-weight:600;
