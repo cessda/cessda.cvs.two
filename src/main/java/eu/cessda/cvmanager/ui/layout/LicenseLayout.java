@@ -105,7 +105,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 		citationEditor.setHeight("240px");
 		if( version.getCitation() != null ) {
 			citationEditor.setValue( version.getCitation() );
-			citationInfo.setValue( version.getCitation() + " <br/>Available from: <a href=\"" + resolverUrl + "\">" + resolverUrl + "</a>");
+			citationInfo.setValue( version.getCitationPreview() + " <br/>Available from: <a href=\"" + resolverUrl + "\">" + resolverUrl + "</a>");
 		}
 		else{
 			citationLabel.setVisible( false );
@@ -146,7 +146,7 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 				else {
 					version.setCitation( toXHTML( citationEditor.getValue() ) );
 					citationLabel.setVisible( true );
-					citationInfo.setValue( version.getCitation() + 
+					citationInfo.setValue( version.getCitationPreview() + 
 							" <br/>Available from: <a href=\"" + resolverUrl + "\">" + resolverUrl + "</a>");
 				}
 				if( licensesCb.getValue() != null)

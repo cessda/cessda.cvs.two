@@ -364,7 +364,9 @@ public class WorkflowManager {
 				
 				// add URN to resolver
 				try {
-					resolverService.save( 
+					// only store SL version, since TL can be resolve from SL
+					if( isVersionSl )
+						resolverService.save( 
 							ResolverDTO.createUrnResolver()
 								.withResourceId( version.getUri())
 								.withResourceURL( vocabulary.getNotation() + "?url=" + URLEncoder.encode( version.getUri(), "UTF-8")  )

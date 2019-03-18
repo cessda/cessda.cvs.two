@@ -181,7 +181,18 @@ public class VersionDTO implements Serializable {
     }
 
 	public String getCanonicalUri() {
-		return canonicalUri;
+		if( canonicalUri == null )
+			return null;
+		
+		String formattedUrn = removeLanguageInformation(canonicalUri);
+		// format any TL URN to SL
+		int index = canonicalUri.lastIndexOf(":");
+		if( formattedUrn.substring(index + 1).chars().filter( ch -> ch == '.').count() == 2L) {
+			// remove last dot
+			index = canonicalUri.lastIndexOf(".");
+			formattedUrn = formattedUrn.substring(0, index);
+		}
+		return formattedUrn;
 	}
 
 	public void setCanonicalUri(String canonicalUri) {
@@ -362,6 +373,10 @@ public class VersionDTO implements Serializable {
 
 	public String getCitation() {
 		return citation;
+	}
+	
+	public String getCitationPreview() {
+		return citation.replaceFirst(title, "<i>" + title + "</i>");
 	}
 
 	public void setCitation(String citation) {
@@ -554,7 +569,7 @@ public class VersionDTO implements Serializable {
 		else {
 			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
 			citation.append( versionDto.getTitle() + " [" + versionDtoSl.getTitle()+ "]" + " (Version " + versionDto.getNumber() +
-			(versionDto.getTranslateAgency() == null ? "": "; " + versionDto.getTranslateAgency() ) + ", Transl.) [Controlled vocabulary]. ");
+			(versionDto.getTranslateAgency() != null && !versionDto.getTranslateAgency().isEmpty() ? "; " + versionDto.getTranslateAgency() + ", Transl." : "") + ") [Controlled vocabulary]. ");
 			if( !agencyName.toLowerCase().contains("cessda")) {
 				citation.append( "CESSDA. ");
 			}
@@ -575,5 +590,16 @@ public class VersionDTO implements Serializable {
 			" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + getPublicationDate() +
 			"<br/>Notes:<br/>" + getVersionNotes() + (versionChanges != null && !versionChanges.isEmpty() ? "<br/>Changes:<br/>" + getVersionChanges() : "") + "<br/><br/>"
 		);
+	}
+	
+	private static String removeLanguageInformation(String canonicalUrlInput) {
+		if( canonicalUrlInput == null )
+			return null;
+		// find last dash from canonicalURI
+		int lastDashPosition = canonicalUrlInput.lastIndexOf( "-" );
+		// if found and
+		if( lastDashPosition == -1 || lastDashPosition < 20)
+			return canonicalUrlInput;
+		return canonicalUrlInput.substring(0, lastDashPosition);
 	}
 }

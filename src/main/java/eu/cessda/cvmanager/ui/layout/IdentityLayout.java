@@ -139,9 +139,6 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			agencyTransalteValue.setVisible(false);
 		}
 		
-		// issue #93 - Finalize machine-produced citation
-		canonicalUriVersion.withVisible( false );
-		
 		formLayout
 			.addComponents(
 				canonicalUri,
@@ -184,7 +181,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 	}
 
 	private void refreshInfo() {
-		String baseUrl = configService.getServerContextPath() + "/v1/resolver/";
+		String baseUrl = configService.getServerContextPath() + "/urn/";
 		
 		if( version.getCanonicalUri() == null || version.getCanonicalUri().isEmpty()) {
 			canonicalUri.setVisible( false );
@@ -193,8 +190,9 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		else {
 			int index = version.getCanonicalUri().lastIndexOf(":");
 			String cvCanonicalUri = version.getCanonicalUri().substring(0, index);
+			String ccUriVersion =  version.getCanonicalUri();
 			canonicalUri.setValue( "<a href='" + baseUrl +  cvCanonicalUri + "'>" + cvCanonicalUri + "</a>" );
-			canonicalUriVersion.setValue( "<a href='" + baseUrl +  version.getCanonicalUri() + "'>" + version.getCanonicalUri() + "</a>");
+			canonicalUriVersion.setValue( "<a href='" + baseUrl +  ccUriVersion + "'>" + ccUriVersion + "</a>");
 			int index2 = cvCanonicalUri.lastIndexOf(":");
 			if( index2 > 0)
 				urnEdit.setValue( cvCanonicalUri.substring(0, index2) );

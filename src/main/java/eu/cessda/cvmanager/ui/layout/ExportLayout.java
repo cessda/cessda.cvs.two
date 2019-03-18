@@ -374,6 +374,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 	private File generateExportFile( DownloadType type, List<VersionDTO> exportVersions) throws Exception {
 		Map<String, Object> map = new HashMap<>();
+		String cvUrn = null;
 		// sort code
 		for( VersionDTO versionExp : exportVersions) {
 //			Set<ConceptDTO> orderedConcepts = new LinkedHashSet<>();
@@ -391,6 +392,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 					.sorted((c1,c2) -> c1.getPosition().compareTo(c2.getPosition()))
 					.collect(Collectors.toCollection(LinkedHashSet::new)));
 		}
+		map.put("cvUrn", cvUrn);
 		map.put("versions", exportVersions);
 		map.put("agency", agency);
 		map.put("license", license);

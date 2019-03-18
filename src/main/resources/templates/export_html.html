@@ -109,7 +109,12 @@ div.CodeList {
   		
 		    <div class="page">	
 		      <div style="width: 100%;">
-		    	<h1 th:text="${agency.name + ' Controlled Vocabulary for ' + version.notation}"></h1>
+		        <div style="width:130px;float:left;padding-right:15px">
+		      		<img style="width:120px" th:src="@{${agency.logo}}"/>
+		    	</div>
+		    	<div>
+		    	  <h1 th:text="${agency.name + ' Controlled Vocabulary for ' + version.notation}"></h1>
+		    	</div>
 		 	  </div>
 		      
 		      <hr />
@@ -130,8 +135,14 @@ div.CodeList {
 		        <dd th:if="${version.versionNotes != null}" th:text="${version.versionNotes}"></dd>
 		        <dt th:if="${version.versionChanges != null}">Version changes:</dt>
 		        <dd th:if="${version.versionChanges != null}" th:text="${version.versionChanges}"></dd>
+		        <dt th:if="${version.canonicalUri != null}">Canonical URI:</dt>
+		        <dd>
+		        	<a rel="canonical URN" th:href="${baseUrl + '/urn/' + cvUrn}" th:text="${cvUrn}"></a>
+		        </dd>
 		        <dt th:if="${version.canonicalUri != null}">Canonical URI of this version:</dt>
-		        <dd th:if="${version.canonicalUri != null}" th:text="${version.canonicalUri}"></dd>
+		        <dd>
+		        	<a rel="canonical URN this version" th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${version.canonicalUri}"></a>
+		        </dd>
 		        
 		        <dt>Agency: </dt>
 		        <dd>
@@ -178,10 +189,10 @@ div.CodeList {
 				</span>
 			</p>
     		<p>Citation:
-				<span th:text="${version.citation}"></span> Available from: 
+				<span th:utext="${version.citationPreview}"></span> Available from: 
 				<a th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${baseUrl + '/urn/' + version.canonicalUri}"></a> 
 			</p>
-    	
+    	<br/><br/><br/><br/><br/><br/>
     	</div>
   </body>
 </html>

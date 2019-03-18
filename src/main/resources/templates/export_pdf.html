@@ -135,8 +135,14 @@ div.CodeList {
 		        <dd th:if="${version.versionNotes != null}" th:text="${version.versionNotes}"></dd>
 		        <dt th:if="${version.versionChanges != null}">Version changes:</dt>
 		        <dd th:if="${version.versionChanges != null}" th:text="${version.versionChanges}"></dd>
+		        <dt th:if="${version.canonicalUri != null}">Canonical URI:</dt>
+		        <dd>
+		        	<a rel="canonical URN" th:href="${baseUrl + '/urn/' + cvUrn}" th:text="${cvUrn}"></a>
+		        </dd>
 		        <dt th:if="${version.canonicalUri != null}">Canonical URI of this version:</dt>
-		        <dd th:if="${version.canonicalUri != null}" th:text="${version.canonicalUri}"></dd>
+		        <dd>
+		        	<a rel="canonical URN this version" th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${version.canonicalUri}"></a>
+		        </dd>
 		        
 		        <dt>Agency: </dt>
 		        <dd>
@@ -179,15 +185,17 @@ div.CodeList {
 		    <h2>Copyright and License</h2>
 			    <p>Copyright © <a th:href="${agency.link}" th:text="${agency.name}"></a> <span th:text="${year}"></span>.</p>
 			    <p th:if="${license != null}">
+			    <!-- 
 			    	<a rel="license" th:href="${license.link}">
 			    	<img style="border-width:0;width:140px" th:attr="src=${license.logoLink},title=${license.name},alt=${license.name}" />
 			    	</a>
+			   	-->
 					<span>This work is licensed under a 
 						<a rel="license" th:href="${license.link}" th:text="${license.name}"></a>.
 					</span>
 				</p>
 				<p>Citation:
-					<span th:text="${version.citation}"></span> Available from: 
+					<span th:utext="${version.citationPreview}"></span> Available from: 
 					<a th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${baseUrl + '/urn/' + version.canonicalUri}"></a> 
 				</p>
     		</div>

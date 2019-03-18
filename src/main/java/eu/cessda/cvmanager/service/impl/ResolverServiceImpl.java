@@ -152,6 +152,9 @@ public class ResolverServiceImpl implements ResolverService {
 				// only register urn of published version
 				if( !version.getStatus().equals( Status.PUBLISHED.toString()))
 					continue;
+				// only register the SL one
+				if( !version.getLanguage().equals( vocab.getSourceLanguage()))
+					continue;
 				// only register if URN is available
 				if( version.getCanonicalUri() == null || version.getCanonicalUri().isEmpty())
 					continue;
