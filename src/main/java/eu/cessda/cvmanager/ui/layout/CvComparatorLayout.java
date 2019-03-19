@@ -35,12 +35,12 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 	private MLabel headLabel3 = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","col-compare-current", "col-compare-head");
 	
 	private MCssLayout rowCompareTitle = new MCssLayout().withFullWidth().withStyleName("row-compare");
-	private MLabel titleLabel = new MLabel( "<strong>Title</strong>" ).withContentMode( ContentMode.HTML).withStyleName("col-compare-small");
+	private MLabel titleLabel = new MLabel( "<strong>CV name</strong>" ).withContentMode( ContentMode.HTML).withStyleName("col-compare-small");
 	private MLabel titlePrev = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","word-brake-normal","col-compare-previous");
 	private MLabel titleCurrent = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","word-brake-normal","col-compare-current");
 	
 	private MCssLayout rowCompareDefinition = new MCssLayout().withFullWidth().withStyleName("row-compare-end");
-	private MLabel definitionLabel = new MLabel( "<strong>Definition</strong>" ).withContentMode( ContentMode.HTML).withStyleName("col-compare-small");
+	private MLabel definitionLabel = new MLabel( "<strong>CV definition</strong>" ).withContentMode( ContentMode.HTML).withStyleName("col-compare-small");
 	private MLabel definitionPrev = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","word-brake-normal","col-compare-previous");
 	private MLabel definitionCurrent = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","word-brake-normal","col-compare-current");
 	
@@ -158,7 +158,7 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 		if( !version1.getTitle().equals( version2.getTitle() )) {
 			titlePrev.addStyleName("label-highlight");
 			titleCurrent.addStyleName("label-highlight");
-			changeLogsCv.append("CV Long Name changed: " + version2.getTitle() + "\n");
+			changeLogsCv.append("CV long name changed: " + version2.getTitle() + "\n");
 		}
 		
 		if( !version1.getDefinition().equals( version2.getDefinition() )) {
