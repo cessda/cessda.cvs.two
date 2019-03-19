@@ -18279,6 +18279,10 @@ div.v-layout.v-horizontal.v-widget {
 	float: right;
 }
 
+.mytheme .social > .email a {
+	color: #fff !important;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;

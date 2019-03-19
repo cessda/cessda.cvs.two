@@ -281,7 +281,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 				new MLabel()
 					.withContentMode( ContentMode.HTML)
 					.withStyleName( "col-md-6 social text-center" )
-					.withValue(  "<div class=\"email\"><span>Consortium of European Social Science Data Archives</span></div>" ),
+					.withValue(  "<div class=\"email\"><span>" + i18n.get("view.home.cessda.link") + "</span></div>" ),
 				new MCssLayout()
 					.withStyleName( "col-md-6 log-in pull-right" )
 					.add(
