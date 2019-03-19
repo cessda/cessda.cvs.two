@@ -227,7 +227,6 @@ public class WorkflowManager {
 				version.setVersionNotes( versionNotes);
 				version.setNumber( versionNumber );
 				version.setPublicationDate( LocalDate.now());
-				version.setLicenseId( agency.getLicenseId());
 				version.setVersionChanges( versionChanges );
 				version.setCanonicalUri(WorkflowUtils.generateVersionCanonicalURI(agency, version));
 				version.createSummary( versionChanges );
@@ -458,7 +457,8 @@ public class WorkflowManager {
 		for( VersionDTO targetTLversion : latestTlVersions ) {
 			// create new version
 			VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), 
-					currentVersion.getNumber() + ".1", agency.getLicenseId(), WorkflowUtils.generateAgencyBaseUri( agency.getUri()));
+					currentVersion.getNumber() + ".1", currentVersion.getLicenseId(), 
+					WorkflowUtils.generateAgencyBaseUri( agency.getUri()), currentVersion.getDdiUsage());
 			newVersion.setUriSl( vocabulary.getUri());
 			newVersion = versionService.save(newVersion);
 			

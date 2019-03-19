@@ -524,7 +524,8 @@ public class VersionDTO implements Serializable {
 		return sb.toString();
 	}
 
-	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri) {
+	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri,
+			String ddiUsage) {
 		VersionDTO newVersion = new VersionDTO();
 		// generate uri
 		newVersion.setUri( agencyUri + targetVersion.getNotation() + "/" + targetVersion.getLanguage());
@@ -543,7 +544,10 @@ public class VersionDTO implements Serializable {
 		newVersion.setVocabularyId( targetVersion.getVocabularyId());
 		newVersion.setSummary( targetVersion.getSummary());
 		newVersion.setLicenseId(agencylicenseId);
-		newVersion.setDdiUsage( targetVersion.getDdiUsage() );
+		if( ddiUsage != null )
+			newVersion.setDdiUsage( ddiUsage );
+		else
+			newVersion.setDdiUsage( targetVersion.getDdiUsage() );
 		newVersion.setTranslateAgency( targetVersion.getTranslateAgency() );
 		newVersion.setTranslateAgencyLink( targetVersion.getTranslateAgencyLink() );
 		// clone concepts as well

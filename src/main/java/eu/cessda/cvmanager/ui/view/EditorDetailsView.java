@@ -198,7 +198,7 @@ public class EditorDetailsView extends CvView {
 		
 		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, 
 				stardatDDIService, agencyService, vocabularyService, versionService, conceptService, codeService, 
-				configService, eventBus, vocabularyChangeService);
+				configService, eventBus, vocabularyChangeService, licenceService);
 		
 		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
 				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,

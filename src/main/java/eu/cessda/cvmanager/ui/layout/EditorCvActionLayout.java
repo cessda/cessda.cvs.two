@@ -42,6 +42,7 @@ import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -73,6 +74,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private final VocabularyService vocabularyService;
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
+	private final LicenceService licenceService;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -108,7 +110,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	public EditorCvActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService, 
 			ConceptService conceptService, CodeService codeService, ConfigurationService configService,
-			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
+			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
@@ -120,6 +122,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		this.vocabularyService = vocabularyService;
 		this.eventBus = eventBus;
 		this.vocabularyChangeService = vocabularyChangeService;
+		this.licenceService = licenceService;
 		init();
 	}
 
@@ -221,7 +224,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	public void changeStatus(ClickEvent event ) {
 		Window window = new DialogManageStatusWindow(conceptService, versionService, 
 				cvScheme, vocabulary, currentVersion, selectedLanguage, sourceLanguage, 
-				agency, eventBus, vocabularyChangeService);
+				agency, eventBus, vocabularyChangeService, licenceService);
 		getUI().addWindow(window);
 	}
 	

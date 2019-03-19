@@ -140,8 +140,13 @@ public class DialogAddLanguageWindow extends MWindow {
 		VersionDTO slVersion = null;
 		
 		Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
-		if(latestSlVersion.isPresent())
+		if(latestSlVersion.isPresent()) {
 			slVersion = latestSlVersion.get();
+			// copy license and ddi usage
+			version.setDdiUsage( slVersion.getDdiUsage());
+			version.setLicense( slVersion.getLicense());
+			version.setLicenseId( slVersion.getLicenseId() );
+		}
 		
 		sourceTitle
 			.withFullWidth()
