@@ -271,26 +271,48 @@ public class DialogAddLanguageWindow extends MWindow {
 			);
 
 		if( version.isPersisted() ) {
-			layout
-			.add(
-				changeBox,
-				new MHorizontalLayout()
-					.withFullWidth()
-					.add( storeCode,
-						cancelButton
-					)
-					.withExpand(storeCode, 0.8f)
-					.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
-					.withExpand(cancelButton, 0.1f)
-					.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
-			)
-			.withExpand(layout.getComponent(0), 0.05f)
-			.withExpand(layout.getComponent(1), 0.35f)
-			.withExpand(layout.getComponent(2), 0.05f)
-			.withExpand(layout.getComponent(3), 0.35f)
-			.withExpand(layout.getComponent(4), 0.1f)
-			.withExpand(layout.getComponent(5), 0.1f)
-			.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
+			if( version.isInitialVersion() ) {
+				layout
+				.add(
+					new MHorizontalLayout()
+						.withFullWidth()
+						.add( storeCode,
+							cancelButton
+						)
+						.withExpand(storeCode, 0.8f)
+						.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
+						.withExpand(cancelButton, 0.1f)
+						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
+				)
+				.withExpand(layout.getComponent(0), 0.05f)
+				.withExpand(layout.getComponent(1), 0.35f)
+				.withExpand(layout.getComponent(2), 0.05f)
+				.withExpand(layout.getComponent(3), 0.35f)
+				.withExpand(layout.getComponent(4), 0.2f)
+				.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
+			} else {
+				layout
+				.add(
+					changeBox,
+					new MHorizontalLayout()
+						.withFullWidth()
+						.add( storeCode,
+							cancelButton
+						)
+						.withExpand(storeCode, 0.8f)
+						.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
+						.withExpand(cancelButton, 0.1f)
+						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
+				)
+				.withExpand(layout.getComponent(0), 0.05f)
+				.withExpand(layout.getComponent(1), 0.35f)
+				.withExpand(layout.getComponent(2), 0.05f)
+				.withExpand(layout.getComponent(3), 0.35f)
+				.withExpand(layout.getComponent(4), 0.1f)
+				.withExpand(layout.getComponent(5), 0.1f)
+				.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
+			}
+			
 		} else {
 			layout
 				.add(
