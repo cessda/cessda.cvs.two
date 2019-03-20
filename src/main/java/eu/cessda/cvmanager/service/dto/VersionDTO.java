@@ -589,10 +589,11 @@ public class VersionDTO implements Serializable {
 
 	public void createSummary( String versionChanges ) {
 		setSummary(
-			(getSummary() == null ? "":getSummary().replaceAll("(\r\n|\n)", "<br />")) +
 			"<strong>" + getNumber() + "</strong>"+
 			" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + getPublicationDate() +
-			"<br/>Notes:<br/>" + getVersionNotes() + (versionChanges != null && !versionChanges.isEmpty() ? "<br/>Changes:<br/>" + getVersionChanges() : "") + "<br/><br/>"
+			"<br/>Notes:<br/>" + getVersionNotes() + (versionChanges != null && !versionChanges.isEmpty() ? "<br/>Changes:<br/>" + getVersionChanges() : "") 
+			+ "<br/><br/>" +
+			(getSummary() == null ? "":getSummary().replaceAll("(\r\n|\n)", "<br />")) 
 		);
 	}
 	
