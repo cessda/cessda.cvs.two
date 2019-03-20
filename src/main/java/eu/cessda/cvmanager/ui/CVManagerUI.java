@@ -64,6 +64,7 @@ import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 import eu.cessda.cvmanager.ui.view.AboutView;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.UserGuideView;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.ui.view.EditorSearchView;
 import eu.cessda.cvmanager.ui.view.EditorView;
@@ -99,6 +100,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private MButton home = new MButton("Home", this::goToDiscovery);
 	private MButton about = new MButton("About", this::goToAbout);
+	private MButton userGuide = new MButton("User Guide", this::goToUserGuide);
 
 	private List<MButton> menuButtons = new ArrayList<>();
 	private MButton searchCVs = new MButton("Editor Search", this::gotoSearchCvs);
@@ -201,6 +203,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			userInfoLayout.setVisible(true);
 			searchCVs.setVisible(true);
 			agencyButton.setVisible( true );
+			userGuide.setVisible( true );
 			
 			if( SecurityUtils.isCurrentUserAgencyAdmin())
 				adminButton.setVisible(true);
@@ -211,6 +214,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			logIn.setVisible(true);
 			searchCVs.setVisible(false);
 			agencyButton.setVisible( false );
+			userGuide.setVisible( false );
 		}
 
 		eventBus.subscribe(this);
@@ -322,9 +326,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 		home.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		about.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
-		// listAllCv.withStyleName( ValoTheme.BUTTON_LINK + " pull-left");
+		userGuide.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		searchCVs.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
-		// editorCVs.withStyleName( ValoTheme.BUTTON_LINK + " pull-left");
 		agencyButton.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		discoverButton.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		adminButton.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
@@ -381,6 +384,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		menuButtons.add(agencyButton);
 		menuButtons.add( adminButton );
 		menuButtons.add( about );
+		menuButtons.add( userGuide );
 
 		headerBottom
 			.withFullWidth()
@@ -394,7 +398,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 						agencyButton,
 //						discoverButton,
 						adminButton,
-						about
+						about,
+						userGuide
 					)
 			);
 		
@@ -469,6 +474,10 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		navigator.navigateTo(AboutView.VIEW_NAME);
 	}
 	
+	public void goToUserGuide(ClickEvent event) {
+		navigator.navigateTo(UserGuideView.VIEW_NAME);
+	}
+	
 	public void goToAdmin(ClickEvent event) {
 		navigator.navigateTo(AdminView.VIEW_NAME);
 	}
@@ -519,6 +528,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		userInfoLayout.setVisible(true);
 		searchCVs.setVisible(true);
 		agencyButton.setVisible( true );
+		userGuide.setVisible( true );
 		usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
 		
 		System.out.println(SecurityUtils.isCurrentUserAgencyAdmin());
