@@ -361,7 +361,7 @@ public class AgencyMemberGridComponent extends CustomComponent {
 		summaryName
 			.withWidth( "35%" )
 			.withContentMode( ContentMode.HTML )
-			.withValue( "<strong>" +member.getFirstName() + " " + member.getLastName() + "</strong>");
+			.withValue( "<strong>" +member.getFirstName() + " " + member.getLastName() + "</strong><br/><i>" + member.getUsername() + "</i>");
 	}
 	
 	private void refresh() {

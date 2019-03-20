@@ -572,22 +572,28 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 				else {						
 					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 						if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
-							buttonReviewInitial.setVisible( true );
 							buttonEditCv.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonDropVersion.setVisible( true );
+							if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
+								buttonReviewInitial.setVisible( true );
+								separatorLabel.setVisible( true );
+								buttonDropVersion.setVisible( true );
+							}
 						}
 						else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() )) {
-							buttonReviewFinal.setVisible( true );
 							buttonEditCv.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonDropVersion.setVisible( true );
+							if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
+								buttonReviewFinal.setVisible( true );
+								separatorLabel.setVisible( true );
+								buttonDropVersion.setVisible( true );
+							}
 						}
 						else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() )) {
-							buttonPublishCv.setVisible( true );
-							buttonEditCv.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonDropVersion.setVisible( true );
+							if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
+								buttonPublishCv.setVisible( true );
+								buttonEditCv.setVisible( true );
+								separatorLabel.setVisible( true );
+								buttonDropVersion.setVisible( true );
+							}
 						}
 					}
 				}

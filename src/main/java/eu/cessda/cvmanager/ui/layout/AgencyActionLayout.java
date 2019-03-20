@@ -24,6 +24,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageProfile;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class AgencyActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -155,7 +156,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 			buttonManageMember.setVisible( false );
 			buttonManageProfile.setVisible( false );
 			
-			if( SecurityUtils.isCurrentUserAllowCreateCvSl(agency)) {
+			if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl(agency)) {
 				buttonManageMember.setVisible( true );
 				buttonManageProfile.setVisible( true );
 			}
