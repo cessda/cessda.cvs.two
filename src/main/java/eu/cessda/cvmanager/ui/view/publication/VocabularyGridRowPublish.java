@@ -179,6 +179,8 @@ public class VocabularyGridRowPublish extends CustomComponent {
 			baseUrl += vocabulary.getUri();
 			e.printStackTrace();
 		}
+		if(currentSelectedLanguage != null )
+			baseUrl += "&lang=" + currentSelectedLanguage;
 		
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
 		log.info("URL is: " + slTitle.getValue());

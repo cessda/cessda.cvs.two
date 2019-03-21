@@ -207,7 +207,11 @@ public class PublicationDetailsView extends CvView {
 					String selectedLanguage = mappedParams.get("lang");
 					if( selectedLanguage != null ) {
 						cvItem.setCurrentLanguage( mappedParams.get("lang") );
-						selectedLang = Language.getEnum( selectedLanguage );
+						try {
+							selectedLang = Language.getEnum( selectedLanguage );
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					} else {
 						selectedLang = null;
 					}
@@ -278,10 +282,15 @@ public class PublicationDetailsView extends CvView {
 				}
 				
 			}
-		} else {
-			// find in Vocabulary entity as well
+		} else {			
 			currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
 			vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
+			// find correct version by selected language
+			if( selectedLang != null && !vocabulary.getSourceLanguage().equals( selectedLang.getLanguage())) {
+				vocabulary.getVersionByUriSlAndLangauge( cvItem.getCurrentCvId(), selectedLang.getLanguage())
+				.ifPresent( ver -> currentVersion = ver);
+			}
+			
 			if( !currentVersion.getItemType().equals( ItemType.SL.toString()))
 				vocabulary.getVersionByUri( currentVersion.getUriSl()).ifPresent( c -> currentSlVersion = c );
 			else

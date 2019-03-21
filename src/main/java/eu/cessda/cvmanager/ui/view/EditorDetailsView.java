@@ -282,7 +282,11 @@ public class EditorDetailsView extends CvView {
 					String selectedLanguage = mappedParams.get("lang");
 					if( selectedLanguage != null ) {
 						cvItem.setCurrentLanguage( mappedParams.get("lang") );
-						selectedLang = Language.getEnum( selectedLanguage );
+						try {
+							selectedLang = Language.getEnum( selectedLanguage );
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 					if(  mappedParams.get("tab") != null )
 						activeTab = mappedParams.get("tab");
@@ -381,8 +385,8 @@ public class EditorDetailsView extends CvView {
 //			Notification.show("Unable to find vocabulary");
 			return;
 		}
-		// check for withdrawn vocabulary
 		
+		// check for withdrawn vocabulary
 		if( vocabulary.isWithdrawn()) {
 			vocabularyIsWithdrawn.removeAllComponents();
 			vocabularyIsWithdrawn
@@ -435,7 +439,13 @@ public class EditorDetailsView extends CvView {
 			}
 		}
 		
-		currentVersion = currentSLVersion;
+		// find correct version by selected language
+		if( selectedLang != null && !vocabulary.getSourceLanguage().equals( selectedLang.getLanguage())) {
+			vocabulary.getVersionByUriSlAndLangauge( cvItem.getCurrentCvId(), selectedLang.getLanguage())
+			.ifPresent( ver -> currentVersion = ver);
+		} else {
+			currentVersion = currentSLVersion;
+		}
 		
 		languages.forEach(item -> {
 			Language eachLanguage = Language.getEnum(item);

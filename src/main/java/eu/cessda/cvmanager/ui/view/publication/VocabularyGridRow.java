@@ -177,13 +177,17 @@ public class VocabularyGridRow extends CustomComponent {
 		
 		String baseUrl = configService.getServerContextPath() + "/#!" + EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
 		
+		if(currentSelectedLanguage != null )
+			baseUrl += "?lang=" + currentSelectedLanguage;
+		
+		
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
 		log.info("URL is: " + slTitle.getValue());
 
 		tlTitle.setValue("<a href='" + baseUrl  + "'>" + vocabulary.getNotation() + "</a>");
 		desc.setValue( definition );
 		version.setValue("Version: " + vocabulary.getVersionByLanguage(currentSelectedLanguage) + " "
-				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.toString()) + " <a href='" + baseUrl +"?tab=download"+ "'>Download</a>");
+				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.toString()) + " <a href='" + baseUrl +"&tab=download"+ "'>Download</a>");
 		
 		if( !vocabulary.getCodes().isEmpty() ) {
 			codeList.setVisible( true );

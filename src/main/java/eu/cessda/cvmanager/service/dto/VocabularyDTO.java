@@ -1520,6 +1520,20 @@ public class VocabularyDTO implements Serializable {
 			return vers.stream().findFirst();
 	}
 	
+	public Optional<VersionDTO> getVersionByUriSlAndLangauge( String uriSl, String language){
+		if( language.equals( sourceLanguage )) {
+			return versions.stream()
+				.filter( p -> p.getUri().equals(uriSl))
+				.findFirst();
+		}
+		return versions.stream()
+			.filter( p -> p.getUriSl() != null )
+			.filter( p -> p.getUriSl().equals(uriSl))
+			.filter( p -> language.equals( p.getLanguage() ))
+			.findFirst();
+
+	}
+	
 	public Optional<VersionDTO> getLatestSlVersion( boolean isPublished){
 		if(isPublished)
 			return versions.stream()
