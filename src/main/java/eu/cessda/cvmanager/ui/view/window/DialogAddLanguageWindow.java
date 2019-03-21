@@ -88,7 +88,7 @@ public class DialogAddLanguageWindow extends MWindow {
 
 	public DialogAddLanguageWindow(
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, UIEventBus eventBus) {
-		super("Add Language");
+		super(versionDTO.isPersisted()?"Edit CV Translation (" + versionDTO.getLanguage() + ")":"Add CV Translation (" + versionDTO.getLanguage()+ ")");
 		this.agency = agencyDTO;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
@@ -197,7 +197,9 @@ public class DialogAddLanguageWindow extends MWindow {
 		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.cvChangeTypes));
 		changeCb.setTextInputAllowed(false);
 	//	changeCb.setEmptySelectionAllowed(false);
-		changeDesc.setWidth("100%");
+		changeDesc
+			.withWidth("100%")
+			.withValue( version.getTitle() );
 		changeBox
 			.withStyleName("change-block")
 			.add( 

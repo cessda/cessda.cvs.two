@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.view.window;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.RoleService;
@@ -124,13 +125,16 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 		// first get all useragency member
 		List<UserDTO> members = userService.findAllByAgencyId( agency.getId() );
 		
+		
 		grid.setItems( members );
 		
 		grid.removeAllColumns();
 
 		grid.addColumn( member -> {
-			return new AgencyMemberGridComponent( this, member, agency, 
-					userAgencyService.findByUser( member.getId() ),
+			List<UserAgencyDTO> uas = userAgencyService.findByUser( member.getId() ) .stream()
+						.filter( ua -> ua.getAgencyId().equals( agency.getId()))
+						.collect( Collectors.toList());
+			return new AgencyMemberGridComponent( this, member, agency, uas,
 					userService, roleService, agencyService, userAgencyService,
 					i18n, locale);
 		}, new ComponentRenderer()).setId("agencyMember");

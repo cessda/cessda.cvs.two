@@ -192,7 +192,9 @@ public class DialogEditCodeWindow extends MWindow {
 		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.codeChangeTypes));
 		changeCb.setTextInputAllowed(false);
 	//	changeCb.setEmptySelectionAllowed(false);
-		changeDesc.setWidth("100%");
+		changeDesc
+			.withFullWidth()
+			.withValue( this.concept.getTitle() );
 		changeBox
 			.withStyleName("change-block")
 			.add( 
