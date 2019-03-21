@@ -17461,6 +17461,7 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: pre-line;
 	word-break: break-all;
 	word-wrap: break-word;
+	padding-right: 10px;
 }
 
 .mytheme .v-window-header {
