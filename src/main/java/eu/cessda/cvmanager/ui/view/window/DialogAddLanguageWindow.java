@@ -197,9 +197,7 @@ public class DialogAddLanguageWindow extends MWindow {
 		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.cvChangeTypes));
 		changeCb.setTextInputAllowed(false);
 	//	changeCb.setEmptySelectionAllowed(false);
-		changeDesc
-			.withWidth("100%")
-			.withValue( version.getTitle() );
+
 		changeBox
 			.withStyleName("change-block")
 			.add( 
@@ -293,6 +291,9 @@ public class DialogAddLanguageWindow extends MWindow {
 				.withExpand(layout.getComponent(4), 0.2f)
 				.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
 			} else {
+				changeDesc
+					.withWidth("100%")
+					.withValue( version.getTitle());
 				layout
 				.add(
 					changeBox,
