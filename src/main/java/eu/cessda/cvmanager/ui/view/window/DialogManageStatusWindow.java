@@ -397,7 +397,9 @@ public class DialogManageStatusWindow extends MWindow {
 		versionInfo
 			.withContentMode( ContentMode.HTML)
 			.withFullWidth()
-			.withValue("<strong>\n" + I18N.get( "window.status.publishversion.text" ) + "</strong>");
+			.withValue("<strong>\n" + 
+			I18N.get( sourceLanguage.equals( selectedLanguage ) ? "window.status.publishversion.text.sl": "window.status.publishversion.text.tl" ) 
+			+ "</strong>");
 		
 		versionHistoryLayout
 			.withFullWidth()
@@ -510,7 +512,7 @@ public class DialogManageStatusWindow extends MWindow {
 			comparatorLayoutToggle.setVisible( false );
 			versionNotes.setVisible( false );
 			versionNotesLabel.setVisible( false );
-			versionInfo.withValue("<strong>Please make sure that version number is correct.</strong>");
+			versionInfo.withValue("<strong>" + I18N.get("window.status.publishversion.initial.text") + "</strong>");
 		} else {
 			comparatorLayoutToggle.addClickListener( e -> {
 				if( comparatorLayout.isVisible()) {
