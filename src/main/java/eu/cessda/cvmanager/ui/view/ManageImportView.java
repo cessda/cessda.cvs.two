@@ -28,6 +28,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.repository.search.VocabularyPublishSearchRepository;
+import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
@@ -53,6 +55,8 @@ public class ManageImportView extends CvManagerAdminView {
 	private final VersionService versionService;
 	private final ConceptService conceptService;
 	private final VocabularyChangeService vocabularyChangeService;
+	private final VocabularySearchRepository vocabularySearchRepository;
+	private final VocabularyPublishSearchRepository vocabularyPublishSearchRepository;
 	
 	// autowired
 	private final ImportServiceImpl importServiceImpl;
@@ -66,7 +70,8 @@ public class ManageImportView extends CvManagerAdminView {
 			BCryptPasswordEncoder encrypt, VocabularyService vocabularyService,
 			StardatDDIService stardatDDIService, CodeService codeService,
 			VersionService versionService, VocabularyChangeService vocabularyChangeService,
-			ConceptService conceptService) {
+			ConceptService conceptService, VocabularySearchRepository vocabularySearchRepository,
+			VocabularyPublishSearchRepository vocabularyPublishSearchRepository) {
 		super(VIEW_NAME, i18n, eventBus, securityService, CvManagerAdminView.ActionType.DEFAULT.toString());
 		eventBus.subscribe(this, ManageImportView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
@@ -75,6 +80,8 @@ public class ManageImportView extends CvManagerAdminView {
 		this.conceptService = conceptService;
 		this.versionService = versionService;
 		this.vocabularyChangeService = vocabularyChangeService;
+		this.vocabularySearchRepository = vocabularySearchRepository;
+		this.vocabularyPublishSearchRepository = vocabularyPublishSearchRepository;
 		
 		this.importServiceImpl = importServiceImpl;
 	}
@@ -93,6 +100,8 @@ public class ManageImportView extends CvManagerAdminView {
 		
 		MButton reIndexButton = new MButton( "Re-index DB" );
 		reIndexButton.addClickListener( e -> {
+			vocabularySearchRepository.deleteAll();
+			vocabularyPublishSearchRepository.deleteAll();
 			vocabularyService.findAll().forEach( v -> {
 				vocabularyService.index(v);
 				vocabularyService.indexPublish(v, null);
