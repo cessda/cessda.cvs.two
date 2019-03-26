@@ -98,6 +98,14 @@ public class ManageImportView extends CvManagerAdminView {
 		MButton importStardatDDI = new MButton( "Imports stardatDDI to DB" );
 		importStardatDDI.addClickListener( e -> importServiceImpl.importFromStardat());
 		
+		MButton deleteIndexButton = new MButton( "Delete ES Index" );
+		deleteIndexButton
+		.withStyleName( ValoTheme.BUTTON_DANGER)
+		.addClickListener( e -> {
+			vocabularySearchRepository.deleteAll();
+			vocabularyPublishSearchRepository.deleteAll();
+		});
+		
 		MButton reIndexButton = new MButton( "Re-index DB" );
 		reIndexButton.addClickListener( e -> {
 			vocabularySearchRepository.deleteAll();
@@ -148,6 +156,7 @@ public class ManageImportView extends CvManagerAdminView {
         layout.addComponents(pageTitle, 
         		importStardatDDI , 
         		new MLabel().withFullWidth(),
+        		deleteIndexButton,
         		reIndexButton,
         		new MLabel().withFullWidth(),
         		new MLabel().withFullWidth(),
