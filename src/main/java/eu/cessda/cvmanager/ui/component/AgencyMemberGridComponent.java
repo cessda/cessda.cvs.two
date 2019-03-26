@@ -365,7 +365,9 @@ public class AgencyMemberGridComponent extends CustomComponent {
 	}
 	
 	private void refresh() {
-		agencyMembers = userAgencyService.findByUser( member.getId() );
+		agencyMembers = userAgencyService.findByUser( member.getId() ) .stream()
+				.filter( ua -> ua.getAgencyId().equals( agency.getId()))
+				.collect( Collectors.toList());
 		initLayout();
 	}
 	
