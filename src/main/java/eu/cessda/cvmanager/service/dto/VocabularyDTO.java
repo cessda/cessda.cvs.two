@@ -525,6 +525,7 @@ public class VocabularyDTO implements Serializable {
 	
 	public void clearContent() {
 		setLanguages( null );
+		setStatus( null );
 		setVersionCs(null);
 		setVersionDa(null);
 		setVersionNl(null);
