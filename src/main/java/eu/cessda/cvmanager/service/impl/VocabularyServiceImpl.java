@@ -780,7 +780,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			
 			vocabulary.clearContent();
 			for(VersionDTO ver : latestVersions) {
-				if( ver.getItemType().equals(ItemType.SL.toString()))
+				if( vocabulary.getStatus() == null && ver.getItemType().equals(ItemType.SL.toString()))
 					vocabulary.setStatus( ver.getStatus() );
 				vocabulary.addLanguage( ver.getLanguage());
 				vocabulary.setTitleDefinition( ver.getTitle(), ver.getDefinition(), ver.getLanguage());
