@@ -33,6 +33,7 @@ import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Viewport;
@@ -72,7 +73,7 @@ import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
 
 
 @Viewport("initial-scale=1, maximum-scale=1")
-//@StyleSheet({"http://fonts.googleapis.com/css?family=Roboto:100,200,300,400,500,600,700,800,900"})
+@StyleSheet({"https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,200,300,400,500,600,700,800,900"})
 @Theme("mytheme")
 @Title("CESSDA Vocabularies")
 @SpringUI
@@ -283,7 +284,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.add(
 				new MLabel()
 					.withContentMode( ContentMode.HTML)
-					.withStyleName( "col-md-6 social text-center" )
+					.withStyleName( "col-md-6 social" )
 					.withValue(  "<div class=\"email\"><span>" + i18n.get("view.home.cessda.link") + "</span></div>" ),
 				new MCssLayout()
 					.withStyleName( "col-md-6 log-in pull-right" )
@@ -312,7 +313,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.withFullWidth()
 			.add(
 				new MCssLayout()
-					.withStyleName("col-md-4")
+					.withStyleName("col-md-4 logo")
 					.add(
 							embeddedLogo
 						),
@@ -429,7 +430,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		searchContainer
 			.withStyleName("search-box")
 			.add( 
-				new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-search fa fa-search\"></i>" ),
+				new MLabel().withContentMode( ContentMode.HTML )
+				.withValue( "<i class=\"icon-search fa fa-search\"></i>" ),
 				searchTf,
 				clearSearchButton
 			);

@@ -227,7 +227,7 @@ public class EditorSearchView extends CvView {
 		// set filter and pagination bar
 		filterLayout.setFacetFilter(esQueryResultDetail);
 		paginationBar.updateState(esQueryResultDetail);
-		resultInfo.setValue( "<h3 class=\"result-info\"><strong>" + esQueryResultDetail.getVocabularies().getTotalElements() + " results found</strong></h3>");
+		resultInfo.withStyleName("result-info").setValue( esQueryResultDetail.getVocabularies().getTotalElements() + " results found" );
 		
 		// update the result list
 		cvGrid.setDataProvider( new ListDataProvider<>( esQueryResultDetail.getVocabularies().getContent() ));
