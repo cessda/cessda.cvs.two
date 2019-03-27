@@ -95,7 +95,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-These are a list of dependencies that are required to build and run CVManager
+These are a list of dependencies that are required to build and run the CESSDA Vocabulary Service
 
 - Java to run the application
 - Maven to build the application
@@ -109,11 +109,11 @@ To create a local dev environment follow these instructions:
 
 1. Clone the repository to your local workspace
 2. Ensure that any required software and dependencies are installed
-3. Build CVManager with mvn clean install -U docker:build -Pdocker-compose
+3. Build the CESSDA Vocabulary Service with mvn clean install -U docker:build -Pdocker-compose
    (optional - use -DskipTests to speed up build)
 4. Use `docker-compose up` in the directory `target/docker/generated` to start the application
 
-The CVManager should be running on `http://localhost:8080/`
+The CESSDA Vocabulary Service should be running on `http://localhost:8080/`
 
 
 ## Deployment

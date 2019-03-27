@@ -25,7 +25,7 @@ Option 2) will also withdraw the other language versions. Both for SL and TL, ex
 
 Rules for creating code terms for SL vocabularies
 (adapted from original rules created by Joachim Wackerow)
-Code terms within CV Manager are the CV short name and the Code value.
+Code terms within CESSDA Vocabulary Service are the CV short name and the Code value.
 
 Code terms should be self-describing and are based on the human-readable term in question.
 
