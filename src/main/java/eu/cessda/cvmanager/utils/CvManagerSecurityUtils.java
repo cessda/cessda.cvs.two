@@ -1,10 +1,12 @@
 package eu.cessda.cvmanager.utils;
 
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.gesis.wts.domain.enumeration.AgencyRole;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.AuthoritiesConstants;
@@ -437,6 +439,11 @@ public final class CvManagerSecurityUtils {
         			};
     				return false;
         		}).orElse( false);
+    }
+    
+    public static String generateSecureRandomPassword(int randomStrLength) {
+    	char[] possibleCharacters = (new String("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789")).toCharArray();
+    	return RandomStringUtils.random( randomStrLength, 0, possibleCharacters.length-1, false, false, possibleCharacters, new SecureRandom() );
     }
  
 }

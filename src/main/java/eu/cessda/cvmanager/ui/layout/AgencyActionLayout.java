@@ -2,8 +2,6 @@ package eu.cessda.cvmanager.ui.layout;
 
 import java.util.Locale;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
@@ -11,8 +9,7 @@ import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
 import org.gesis.wts.service.dto.AgencyDTO;
-import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.spring.events.EventScope;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
@@ -21,37 +18,13 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
-import eu.cessda.cvmanager.domain.Vocabulary;
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.model.CvItem;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.LicenceService;
-import eu.cessda.cvmanager.service.MetadataFieldService;
-import eu.cessda.cvmanager.service.MetadataValueService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
-import eu.cessda.cvmanager.ui.view.CvView;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindowNew;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageProfile;
-import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindowNew;
-import eu.cessda.cvmanager.ui.view.window.DialogCreateVersionWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindowNew;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class AgencyActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -61,6 +34,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	private final AgencyService agencyService;
 	private final UserAgencyService userAgencyService;
 	private final LicenceService licenceService;
+	private final BCryptPasswordEncoder encrypt;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -74,13 +48,13 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	private Language sourceLanguage;
 	private VersionDTO currentVersion;
 	
-	private MButton buttonManageMember = new MButton("Manage Member");
-	private MButton buttonManageProfile = new MButton("Manage Profile");
+	private MButton buttonManageMember = new MButton("Manage member");
+	private MButton buttonManageProfile = new MButton("Manage profile");
 		
 	
 	public AgencyActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 
 			AgencyDTO agency, UserService userService, RoleService roleService, AgencyService agencyService,
-			LicenceService licenceService, UserAgencyService userAgencyService) {
+			LicenceService licenceService, UserAgencyService userAgencyService, BCryptPasswordEncoder encrypt) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.eventBus = eventBus;
@@ -91,6 +65,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
 		this.i18n = i18n;
+		this.encrypt = encrypt;
 		init();
 	}
 
@@ -115,7 +90,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	}
 
 	private void doManageMember(ClickEvent event ) {
-		Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, i18n, locale);
+		Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, encrypt, i18n, locale);
 		getUI().addWindow(window);
 	}
 	
@@ -126,7 +101,8 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	
 	@Override
 	public void updateMessageStrings(Locale locale) {
-		buttonManageMember.withCaption( "Manage Member" );
+		buttonManageMember.withCaption( i18n.get( "block.action.agency.manageMember" ) );
+		buttonManageProfile.withCaption( i18n.get( "block.action.agency.manageProfile" ));
 	}
 
 	public AgencyDTO getAgency() {
@@ -177,11 +153,18 @@ public class AgencyActionLayout extends ResponsiveBlock{
 			setVisible( false );
 		}
 		else {
-			setVisible( true );
-			hasAction = true;
-			buttonManageMember.setVisible( true );
-			buttonManageProfile.setVisible( true );
+			buttonManageMember.setVisible( false );
+			buttonManageProfile.setVisible( false );
 			
+			if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl(agency)) {
+				buttonManageMember.setVisible( true );
+				buttonManageProfile.setVisible( true );
+			}
+			
+			if( buttonManageMember.isVisible() ) {
+				setVisible( true );
+				hasAction = true;
+			}
 		}
 		
 		return hasAction;

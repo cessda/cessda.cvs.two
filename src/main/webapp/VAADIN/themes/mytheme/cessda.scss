@@ -1,7 +1,7 @@
 @mixin cessda {
 	.header-cessda {
 	  .header-content {
-	    padding: 10px 0 5px 0;
+	    padding: 0;
 	    h2 {
 	      font-size: 85%;
 	    }
@@ -36,33 +36,23 @@
 	    }
 	  }
 	  .primary-header {
-	    height:50px;
-	    background: #85C4EC;
+	    background-color: #4e4d56;
+    	height: 36px;
 	    text-align:center;
 	    .log-in .login {
-	      background: #B2D3ED;
-	          	background: #B2D3ED;
-			    padding: 10px 13px 5px 13px;
-			    float: right;
-			    font-weight:800;
-			    font-size:14px;
-			    height: 50px;
+	      	background-color: #4e4d56;
+    		height: 36px;
+    		float:right;
+		    font-size: 14px;
 	      a {
 	        color: #fff;
-	        &:hover {
-	          color: #222;
-	          -webkit-transition: 0.5s ease-out;
-	          -moz-transition: 0.5s ease-out;
-	          -o-transition: 0.5s ease-out;
-	          transition: 0.5s ease-out;
-	        }
+            transition: all 0.3s;
+    		border-bottom: 1px solid transparent;
 	      }
 	    }
 	    .email {
-	      	padding: 12px 15px 0 25px;
+	      	padding: 0;
 		    color: #ffffff;
-		    font-weight: 700;
-		    font-size: 15px;
 	    }
 	    .social {
 	      font-size: 120%;
@@ -99,9 +89,7 @@
 	    text-align: center;
 	  }
 	  .menu-bg {
-	    background: #444;
-	    padding-top: 10px;
-	    padding-bottom: 10px;
+	    background-color: #2b5a9b;
 	    text-align:center;
 	    .main-menu {
 	      width: 100%;
@@ -353,7 +341,7 @@
 	}
 	
 	.section-footer {
-	  background: #eee;
+	  background: #f8f8f8;
 	  padding-top: 20px;
 	  .footer-top {
 		    position: relative;

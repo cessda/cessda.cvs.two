@@ -29,7 +29,7 @@ public interface ImportService {
 	 *
 	 * The newly created Cv will be published directly.
 	 *
-	 * The Vocabulary Service linear versioning is not yet supported
+	 * The CESSDA Vocabulary Service linear versioning is not yet supported
 	 *
 	 * @param cv
 	 * @return The newly created VersionDTO

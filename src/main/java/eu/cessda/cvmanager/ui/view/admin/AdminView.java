@@ -29,8 +29,13 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
+import eu.cessda.cvmanager.service.ResolverService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.ui.layout.WithdrawnCvLayout;
+import eu.cessda.cvmanager.ui.view.admin.layout.AdminActionLayout;
+import eu.cessda.cvmanager.ui.view.admin.layout.ManageAgencyLayout;
+import eu.cessda.cvmanager.ui.view.admin.layout.ManageLicenseLayout;
+import eu.cessda.cvmanager.ui.view.admin.layout.ManageResolverLayout;
 import eu.cessda.cvmanager.ui.view.importing.CsvImportLayout;
 
 @UIScope
@@ -45,7 +50,8 @@ public class AdminView extends CvAdminView {
 		MANAGE_USER_AGENCY,
 		MANAGE_USER_ROLE, 
 		MANAGE_LICENSE,
-		LIST_WITHDRAWN_CV
+		LIST_WITHDRAWN_CV, 
+		MANAGE_RESOLVER
 	};
 	
 //	Autowired
@@ -58,6 +64,7 @@ public class AdminView extends CvAdminView {
 	private final VocabularyService vocabularyService;
 	private final LicenceService licenceService;
 	private final BCryptPasswordEncoder encrypt;
+	private final ResolverService resolverService;
 	
 	private AdminActionLayout adminActionLayout;
 	
@@ -65,7 +72,8 @@ public class AdminView extends CvAdminView {
 			SecurityService securityService, UserService userService, RoleService roleService, 
 			AgencyService agencyService, LicenceService licenceService, VocabularyService vocabularyService,
 			MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-			UserAgencyService userAgencyService, BCryptPasswordEncoder encrypt) {
+			UserAgencyService userAgencyService, BCryptPasswordEncoder encrypt,
+			ResolverService resolverService) {
 		super(i18n, eventBus, configService, securityService, agencyService, AdminView.VIEW_NAME);
 		this.userService = userService;
 		this.roleService = roleService;
@@ -76,6 +84,7 @@ public class AdminView extends CvAdminView {
 		this.metadataValueService = metadataValueService;
 		this.vocabularyService = vocabularyService;
 		this.encrypt = encrypt;
+		this.resolverService = resolverService;
 		
 		eventBus.subscribe(this, AdminView.VIEW_NAME);
 	}
@@ -174,6 +183,11 @@ public class AdminView extends CvAdminView {
 			case LIST_WITHDRAWN_CV:
 				mainContainer.add( new WithdrawnCvLayout(i18n, vocabularyService, agencyService, configService));
 				break;
+			case MANAGE_RESOLVER:
+				mainContainer.add( new ManageResolverLayout(i18n, resolverService ));
+				break;
+			default:
+				mainContainer.add( new ManageUserLayout(i18n, userService, encrypt) );
 		}
 	}
 	

@@ -41,6 +41,15 @@ public class VocabularyDTO implements Serializable {
 		discoverable = false;
 	}
 	
+	public static VocabularyDTO createDraft() {
+		return new VocabularyDTO().withStatus(Status.DRAFT).addStatus( Status.DRAFT.toString());
+	}
+	
+	public VocabularyDTO withStatus(Status status) {
+		this.status = status.toString();
+		return this;
+	}
+	
     private Long id;
     
 	private String status;
@@ -516,6 +525,7 @@ public class VocabularyDTO implements Serializable {
 	
 	public void clearContent() {
 		setLanguages( null );
+		setStatuses( null );
 		setVersionCs(null);
 		setVersionDa(null);
 		setVersionNl(null);
@@ -675,6 +685,14 @@ public class VocabularyDTO implements Serializable {
 		if(this.statuses == null)
 			this.statuses = new HashSet<>();
 		this.statuses.add( status );
+		return this;
+	}
+	
+	public VocabularyDTO clearStatuses() {
+		if(this.statuses == null)
+			this.statuses = new HashSet<>();
+		else
+			this.statuses.clear();
 		return this;
 	}
 	
@@ -1503,6 +1521,20 @@ public class VocabularyDTO implements Serializable {
 			return vers.stream().findFirst();
 	}
 	
+	public Optional<VersionDTO> getVersionByUriSlAndLangauge( String uriSl, String language){
+		if( language.equals( sourceLanguage )) {
+			return versions.stream()
+				.filter( p -> p.getUri().equals(uriSl))
+				.findFirst();
+		}
+		return versions.stream()
+			.filter( p -> p.getUriSl() != null )
+			.filter( p -> p.getUriSl().equals(uriSl))
+			.filter( p -> language.equals( p.getLanguage() ))
+			.findFirst();
+
+	}
+	
 	public Optional<VersionDTO> getLatestSlVersion( boolean isPublished){
 		if(isPublished)
 			return versions.stream()
@@ -1628,7 +1660,7 @@ public class VocabularyDTO implements Serializable {
 				.collect( Collectors.toSet());
 	}
 	
-	public static CVScheme setCvSchemeByVocabulary( CVScheme cvScheme, VocabularyDTO vocabulary) {
+	public static void setCvSchemeByVocabulary( CVScheme cvScheme, VocabularyDTO vocabulary) {
 		// get published languages from vocabulary
 		// TODO: consider getPublishedLanguages
 		for(String lang : vocabulary.getLanguages()) {
@@ -1638,7 +1670,6 @@ public class VocabularyDTO implements Serializable {
 			cvScheme.setTitleByLanguage(languageIso, vocabulary.getTitleByLanguage(eachLanguage));
 			cvScheme.setDescriptionByLanguage(languageIso, vocabulary.getDefinitionByLanguage(eachLanguage));
 		}
-		return cvScheme;
 	}
 	
 }

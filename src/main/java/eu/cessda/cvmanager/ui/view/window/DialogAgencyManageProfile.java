@@ -36,8 +36,8 @@ import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.ui.component.AgencyMemberGridComponent;
-import eu.cessda.cvmanager.ui.view.admin.AgencyForm;
 import eu.cessda.cvmanager.ui.view.admin.AgencyManageProfile;
+import eu.cessda.cvmanager.ui.view.admin.form.AgencyForm;
 import eu.cessda.cvmanager.ui.view.form.AgencyMemberForm;
 
 public class DialogAgencyManageProfile extends MWindow implements Translatable{

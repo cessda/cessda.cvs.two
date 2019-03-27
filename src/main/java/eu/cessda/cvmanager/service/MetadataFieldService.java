@@ -52,4 +52,8 @@ public interface MetadataFieldService {
      * @return the list of entities
      */
     Page<MetadataFieldDTO> search(String query, Pageable pageable);
+    
+    boolean existsByMetadataKey(String metadataKey);
+
+	MetadataFieldDTO findByMetadataKey(String metadataKey);
 }

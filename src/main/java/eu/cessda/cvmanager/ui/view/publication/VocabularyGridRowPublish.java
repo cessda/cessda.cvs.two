@@ -25,8 +25,8 @@ import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class VocabularyGridRowPublish extends CustomComponent {
 
@@ -172,13 +172,15 @@ public class VocabularyGridRowPublish extends CustomComponent {
 		if( definition == null )
 			definition = "";
 		
-		String baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
+		String baseUrl = configService.getServerContextPath() + "/#!" + PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
 		try {
 			baseUrl += URLEncoder.encode(vocabulary.getUri(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			baseUrl += vocabulary.getUri();
 			e.printStackTrace();
 		}
+		if(currentSelectedLanguage != null )
+			baseUrl += "&lang=" + currentSelectedLanguage;
 		
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
 		log.info("URL is: " + slTitle.getValue());

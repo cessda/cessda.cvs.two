@@ -88,6 +88,12 @@ public class AgencyMemberGridComponent extends CustomComponent {
 	private Map<String, List<String>> agencyRoleMap = new LinkedHashMap<>(); 
 	private Grid<UserAgencyDTO> grid = new Grid<>(UserAgencyDTO.class);
 	private UserAgencyDTO userAgency;
+	
+	// reset password components
+	private MCssLayout resetPasswordBlock = new MCssLayout();
+	private MButton resetPassword = new MButton( "Reset password" );
+	private MLabel resetPasswordInfo = new MLabel();
+	private MLabel resetPasswordLink = new MLabel().withContentMode( ContentMode.HTML );
 
 	
     private final Set<AgencyRole> userAgencyRoleTypes = new LinkedHashSet<>( Arrays.asList(AgencyRole.values()));
@@ -224,13 +230,26 @@ public class AgencyMemberGridComponent extends CustomComponent {
 					Notification.show( "Error: Role exist!" );
 			});
 		
+		resetPasswordLink.setWidth("100%");
+        resetPasswordLink.setVisible( false );
+        resetPasswordInfo
+        	.withWidth("100%")
+        	.withVisible( false );
+        
+        resetPassword.addClickListener(e -> this.requestResetPassword());
+		
+		resetPasswordBlock
+			.add( resetPassword, resetPasswordInfo, resetPasswordLink )
+			.withStyleName("member-password-block");
+		
 		roleAddBlock
 			.withFullWidth()
 			.add(
 				roleLabel,
 				rolesCb,
 				languageOption,
-				saveRole
+				saveRole,
+				resetPasswordBlock
 			);
 		
 		roleBlock
@@ -241,21 +260,48 @@ public class AgencyMemberGridComponent extends CustomComponent {
 			);
 	}
 	
+    private void requestResetPassword() {
+    	String tokenLink = userService.generateResetPasswordLink( userAgency.getUserId() );
+    	if( tokenLink != null ) {
+    		resetPasswordInfo
+    			.withVisible( true )
+    			.withValue("Open link below to reset password. The link only can be used once and it will be valid for 48 hours.");
+    		resetPasswordLink.setValue( "<a href=\"" + tokenLink + "\" target=\"_blank\">" + tokenLink + "</a>");
+    		resetPasswordLink.setVisible( true );
+    		resetPassword.setVisible( false );
+    	}
+    }
+
+	
 	private MButton generateDeleteRoleButton( UserAgencyDTO userRole) {
 		MButton bDelete = new MButton()
 			.withIcon( FontAwesome.TRASH)
 			.withStyleName( ValoTheme.BUTTON_DANGER, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-large");
 		
 		bDelete.addClickListener( e -> {
-			if( agencyMembers.size() > 1) {
-				userAgencyService.delete( userRole.getId() );
-				refresh();
-			} else { // the last user-agency relation
-				//remove from agency
-				agencyMembers.stream().forEach( item -> userAgencyService.delete( item.getId()));
-				// ask parent to refresh
-				dialogAgencyMember.updateList();
-			}
+			ConfirmDialog.show( 
+					this.getUI(), 
+					"Delete member role",
+					"Are you sure to delete the role of \"" + userRole.getAgencyRole() + 
+					(userRole.getLanguage() != null ?  "(" + userRole.getLanguage().toString().toUpperCase() + ") " : "" )+
+					"\" from \"" + userRole.getLastName() + "\"", 
+					"Yes", 
+					"Cancel",
+					dialog -> {
+						if( dialog.isConfirmed() ) {
+
+							if( agencyMembers.size() > 1) {
+								userAgencyService.delete( userRole.getId() );
+								refresh();
+							} else { // the last user-agency relation
+								//remove from agency
+								agencyMembers.stream().forEach( item -> userAgencyService.delete( item.getId()));
+								// ask parent to refresh
+								dialogAgencyMember.updateList();
+							}
+						}
+				});
+			
 		});
 		return bDelete;
 	}
@@ -315,11 +361,13 @@ public class AgencyMemberGridComponent extends CustomComponent {
 		summaryName
 			.withWidth( "35%" )
 			.withContentMode( ContentMode.HTML )
-			.withValue( "<strong>" +member.getFirstName() + " " + member.getLastName() + "</strong>");
+			.withValue( "<strong>" +member.getFirstName() + " " + member.getLastName() + "</strong><br/><i>" + member.getUsername() + "</i>");
 	}
 	
 	private void refresh() {
-		agencyMembers = userAgencyService.findByUser( member.getId() );
+		agencyMembers = userAgencyService.findByUser( member.getId() ) .stream()
+				.filter( ua -> ua.getAgencyId().equals( agency.getId()))
+				.collect( Collectors.toList());
 		initLayout();
 	}
 	

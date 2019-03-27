@@ -767,6 +767,11 @@ public class VocabularyServiceImpl implements VocabularyService {
 				code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), latestSLversion.getLanguage());
 				codesUpdated.add(code);
 			}
+			// set status
+			vocabulary.clearStatuses();
+			vocabulary.setStatus( latestSLversion.getStatus() );
+			vocabulary.addStatus( latestSLversion.getStatus() );
+			
 			vocabulary = save(vocabulary);
 			vocabulary.setCodes(codesUpdated);
 		} else {
@@ -775,9 +780,14 @@ public class VocabularyServiceImpl implements VocabularyService {
 			
 			vocabulary.clearContent();
 			for(VersionDTO ver : latestVersions) {
+				if( vocabulary.getStatus() == null && ver.getItemType().equals(ItemType.SL.toString()))
+					vocabulary.setStatus( ver.getStatus() );
 				vocabulary.addLanguage( ver.getLanguage());
 				vocabulary.setTitleDefinition( ver.getTitle(), ver.getDefinition(), ver.getLanguage());
 				vocabulary.setVersionByLanguage( ver.getLanguage(), ver.getNumber());
+				
+				// set status
+				vocabulary.addStatus( ver.getStatus());
 			}
 			
 			vocabulary = save(vocabulary);
@@ -802,6 +812,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 			if( latestSlVersion.isPresent())
 				version = latestSlVersion.get();
 		}
+		// no published SL version
+		if(version == null)
+			return;
 		
 		// set vocabulary with latest Published version from SL and TL
 		List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup( true );

@@ -53,13 +53,14 @@ import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader;
 import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamResource;
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.model.CvItem;
+import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.utils.VersionUtils;
 
 public class VersionLayout extends MCssLayout implements Translatable {
@@ -73,13 +74,14 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
 	private final VocabularyChangeService vocabularyChangeService;
 	private final ConfigurationService configService;
+	private final ConceptService conceptService;
 	private String baseUrl;
 	private Map<String, List<VersionDTO>> versionMap;
 	
 	public VersionLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO,
 			VocabularyChangeService vocabularyChangeService,
-			ConfigurationService configService) {
+			ConfigurationService configService, ConceptService conceptService) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
@@ -88,6 +90,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		this.vocabulary = vocabularyDTO;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.configService = configService;
+		this.conceptService = conceptService;
 		
 		this
 			.withFullWidth();
@@ -96,7 +99,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	}
 
 	private void init() {
-		baseUrl = configService.getServerContextPath() + "/#!" + DetailView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
+		baseUrl = configService.getServerContextPath() + "/#!" + PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?url=";
 		versionMap = VersionDTO.generateVersionMap( vocabulary.getVersions());
 		
 	}
@@ -168,6 +171,35 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth().withVisible( false );
 		String cvUrl = null;
 		
+		MButton comparatorLayoutToggleButton = new MButton("Show changes from previous version");
+		comparatorLayoutToggleButton
+			.withStyleName(ValoTheme.BUTTON_LINK + " pull-left")
+			.withVisible( false );
+		
+		CvComparatorLayout comparatorLayout = new CvComparatorLayout(conceptService);
+		comparatorLayout
+			.withStyleName("compare-version")
+			.withVisible( false );
+		
+		comparatorLayoutToggleButton.addClickListener( e -> {
+			if( comparatorLayout.isVisible()) {
+				comparatorLayout.setVisible( false );
+				e.getButton().setCaption("Show comparison with previous version");
+			} else {
+				if( !comparatorLayout.isVersionCompared()) {
+					VersionDTO prevVersion = vocabulary.getVersionById( versionDTO.getPreviousVersion());
+					comparatorLayout.compareVersion(prevVersion, versionDTO, true);
+					comparatorLayout.showChangeLog( false );
+					versionLayout.add( comparatorLayout );
+					comparatorLayout.setVisible( true );
+				}
+				comparatorLayout.setVisible( true );
+				e.getButton().setCaption("Hide comparison with previous version");
+			}
+
+				
+		});
+		
 		toggleButton
 			.withIcon( VaadinIcons.PLUS)
 			.addClickListener( e ->{
@@ -176,10 +208,16 @@ public class VersionLayout extends MCssLayout implements Translatable {
 					noteVersion.setVisible( true );
 					if( versionDTO.getVersionChanges() != null )
 						changeVersion.setVisible( true );
+					comparatorLayoutToggleButton.setVisible( true );
+					
 				} else {
 					e.getButton().setIcon( VaadinIcons.PLUS);
 					noteVersion.setVisible( false );
 					changeVersion.setVisible( false );
+					comparatorLayoutToggleButton
+						.withCaption( "Show comparison with previous version")
+						.withVisible( false );
+					comparatorLayout.setVisible( false );
 				}
 			});
 		
@@ -211,15 +249,24 @@ public class VersionLayout extends MCssLayout implements Translatable {
 				.withValue("<h2>Changes since previous version</h2>" +
 					versionDTO.getVersionChanges().replaceAll("(\r\n|\n)", "<br />"));
 		
-		
-		
-		versionLayout
+		if( versionDTO.isInitialVersion() ) {
+			versionLayout
+			.withStyleName( "version-item" )
+			.add(
+				panelHead
+			);
+		} else {
+			versionLayout
 			.withStyleName( "version-item" )
 			.add(
 				panelHead,
 				noteVersion,
-				changeVersion
+				changeVersion,
+				comparatorLayoutToggleButton
 			);
+		
+		}
+		
 		
 		return versionLayout;
 	}
@@ -229,6 +276,13 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		
 	}
 	
+	private CvComparatorLayout generateCompareLayout (VersionDTO currentVersion) {
+		CvComparatorLayout comparatorLayout = new CvComparatorLayout(conceptService);
+		comparatorLayout.withStyleName("compare-version");
+		VersionDTO prevVersion = vocabulary.getVersionById( currentVersion.getPreviousVersion());
+		comparatorLayout.compareVersion(prevVersion, currentVersion, true);
+		return comparatorLayout;
+	}
 	
 
 }

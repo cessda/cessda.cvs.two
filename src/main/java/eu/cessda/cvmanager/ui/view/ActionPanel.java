@@ -10,7 +10,6 @@ import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
-import org.vaadin.spring.events.annotation.EventBusListenerMethod;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
@@ -23,15 +22,12 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.window.DialogAddLanguageWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 
 public class ActionPanel extends CustomComponent{
 
@@ -231,17 +227,17 @@ public class ActionPanel extends CustomComponent{
 	
 	private void doAddCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADD_DIALOG, null) );
+		eventBus.publish(EventScope.UI, PublicationDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADD_DIALOG, null) );
 	}
 	
 	private void doCodeAddTranslation(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_TRANSLATION_DIALOG, null) );
+		eventBus.publish(EventScope.UI, PublicationDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_TRANSLATION_DIALOG, null) );
 	}
 	
 	private void doCodeAddChild(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADDCHILD_DIALOG, null) );
+		eventBus.publish(EventScope.UI, PublicationDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_ADDCHILD_DIALOG, null) );
 	}
 	
 	private void doManageMember(ClickEvent event ) {
@@ -264,7 +260,7 @@ public class ActionPanel extends CustomComponent{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void doDeleteCode(ClickEvent event ) {
 		applyButtonStyle( event.getButton());
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_DELETED, null) );
+		eventBus.publish(EventScope.UI, PublicationDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_DELETED, null) );
 	}
 	
 	public void conceptSelectedChange( CVConcept cvCode) {
@@ -293,7 +289,7 @@ public class ActionPanel extends CustomComponent{
 		applyButtonStyle( event.getButton());
 		enableSort = !enableSort;
 		buttonCodeSort.withCaption( enableSort ? "Disable order code" : "Enable order code" );
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_SORT, enableSort) );
+		eventBus.publish(EventScope.UI, PublicationDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_SORT, enableSort) );
 	}
 	
 	private void doValidateCv() {

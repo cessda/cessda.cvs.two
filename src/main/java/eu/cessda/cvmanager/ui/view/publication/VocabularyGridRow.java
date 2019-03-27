@@ -23,8 +23,8 @@ import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.ui.view.DetailView;
-import eu.cessda.cvmanager.ui.view.DetailsView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class VocabularyGridRow extends CustomComponent {
 
@@ -175,7 +175,11 @@ public class VocabularyGridRow extends CustomComponent {
 		if( definition == null )
 			definition = "";
 		
-		String baseUrl = configService.getServerContextPath() + "/#!" + DetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
+		String baseUrl = configService.getServerContextPath() + "/#!" + EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
+		
+		if(currentSelectedLanguage != null )
+			baseUrl += "?lang=" + currentSelectedLanguage;
+		
 		
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
 		log.info("URL is: " + slTitle.getValue());
@@ -183,7 +187,7 @@ public class VocabularyGridRow extends CustomComponent {
 		tlTitle.setValue("<a href='" + baseUrl  + "'>" + vocabulary.getNotation() + "</a>");
 		desc.setValue( definition );
 		version.setValue("Version: " + vocabulary.getVersionByLanguage(currentSelectedLanguage) + " "
-				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.toString()) + " <a href='" + baseUrl +"?tab=download"+ "'>Download</a>");
+				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.toString()) + " <a href='" + baseUrl +"&tab=download"+ "'>Download</a>");
 		
 		if( !vocabulary.getCodes().isEmpty() ) {
 			codeList.setVisible( true );

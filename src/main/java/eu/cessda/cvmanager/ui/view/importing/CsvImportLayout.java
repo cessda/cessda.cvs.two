@@ -60,9 +60,9 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
     private MLabel languageComboBox;
     private CsvFileData csvFileData;
 
+    private TextField valueOfCodeTextField;
     private TextField termTextField;
     private TextField definitionTextField;
-    private TextField valueOfCodeTextField;
 
     private Upload upload;
     private Language selectedLanguage;
@@ -88,7 +88,7 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
               the update.
               This is quick and easy example, though.
               */
-              tempCsvFile = File.createTempFile("temp_analysis_units_", ".csv");
+              tempCsvFile = File.createTempFile("temp_codes", ".csv");
 
               return new FileOutputStream(tempCsvFile);
           } catch (IOException ioException) {
@@ -173,20 +173,22 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
       languageComboBox = new MLabel(Language.getEnumNameCapitalized(selectedLanguage.toString()));
       languageComboBox.setCaption("Language");
       languageComboBox.withWidth("200px");
+      
+      valueOfCodeTextField = new TextField("Code column number ");
+      valueOfCodeTextField.setRequiredIndicatorVisible(true);
+      valueOfCodeTextField.setValue("0");
 
       termTextField = new TextField("Term column number");
       termTextField.setRequiredIndicatorVisible(true);
-      termTextField.setValue("0");
+      termTextField.setValue("1");
 
       definitionTextField = new TextField("Definition colum number");
       definitionTextField.setRequiredIndicatorVisible(true);
-      definitionTextField.setValue("1");
+      definitionTextField.setValue("2");
 
-      valueOfCodeTextField = new TextField("Code column number ");
-      valueOfCodeTextField.setRequiredIndicatorVisible(true);
-      valueOfCodeTextField.setValue("2");
+     
 
-      textFieldsHLayout.addComponents(termTextField, definitionTextField, valueOfCodeTextField);
+      textFieldsHLayout.addComponents(valueOfCodeTextField, termTextField, definitionTextField);
 
       HorizontalLayout horizontalLayout = new HorizontalLayout();
 
@@ -330,10 +332,7 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
     private void updateCsvGrid() {
     	csvGrid.removeAllColumns();
     	
-    	csvGrid.addColumn(CsvRow::getTerm).setId("term");
-        csvGrid.addColumn(CsvRow::getDefinition).setId("definition");
-
-        csvGrid.addColumn((ValueProvider<CsvRow, String>) csvRow -> {
+    	csvGrid.addColumn((ValueProvider<CsvRow, String>) csvRow -> {
             String valueOfCode = csvRow.getNotation();
 
             if (Objects.isNull(valueOfCode) || "".equals(valueOfCode))
@@ -346,6 +345,10 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
 
             return valueOfCode;
         }, new HtmlRenderer()).setId("valueOfCode");
+    	csvGrid.addColumn(CsvRow::getTerm).setId("term");
+        csvGrid.addColumn(CsvRow::getDefinition).setId("definition");
+
+        
         
         Map<String, List<CsvRow>> analysisUnitMap = csvFileData.getCsvRowMap();
 

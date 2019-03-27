@@ -54,6 +54,7 @@ import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.StardatDDIService;
@@ -85,6 +86,7 @@ public class WithdrawnDetailView extends CvView {
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
 	private final LicenceService licenceService;
+	private final ConceptService conceptService;
 	
 	private Language selectedLang = Language.ENGLISH;
 	private List<CodeDTO> codeDTOs = new ArrayList<>();
@@ -166,13 +168,15 @@ public class WithdrawnDetailView extends CvView {
 	public WithdrawnDetailView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, 
-			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
+			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
+			ConceptService conceptService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
 				codeService, WithdrawnDetailView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.versionService = versionService;
+		this.conceptService = conceptService;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.licenceService = licenceService;
 	}
@@ -507,7 +511,7 @@ public class WithdrawnDetailView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService);
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService);
 		versionContentLayout.add( versionLayout );
 		
 		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, true);
@@ -516,7 +520,7 @@ public class WithdrawnDetailView extends CvView {
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
 		ddiLayout.add(ddiUsageLayout);
 		
-		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, versionService, licenses,  true);
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, configService, versionService, licenses,  true);
 		licenseLayout.add( licenseLayoutContent );
 		
 		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, stardatDDIService, licenses, templateEngine, true);

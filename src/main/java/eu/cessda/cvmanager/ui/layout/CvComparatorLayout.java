@@ -35,12 +35,12 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 	private MLabel headLabel3 = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","col-compare-current", "col-compare-head");
 	
 	private MCssLayout rowCompareTitle = new MCssLayout().withFullWidth().withStyleName("row-compare");
-	private MLabel titleLabel = new MLabel( "<strong>Title</strong>" ).withContentMode( ContentMode.HTML).withStyleName("col-compare-small");
+	private MLabel titleLabel = new MLabel( "<strong>CV name</strong>" ).withContentMode( ContentMode.HTML).withStyleName("col-compare-small");
 	private MLabel titlePrev = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","word-brake-normal","col-compare-previous");
 	private MLabel titleCurrent = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","word-brake-normal","col-compare-current");
 	
 	private MCssLayout rowCompareDefinition = new MCssLayout().withFullWidth().withStyleName("row-compare-end");
-	private MLabel definitionLabel = new MLabel( "<strong>Definition</strong>" ).withContentMode( ContentMode.HTML).withStyleName("col-compare-small");
+	private MLabel definitionLabel = new MLabel( "<strong>CV definition</strong>" ).withContentMode( ContentMode.HTML).withStyleName("col-compare-small");
 	private MLabel definitionPrev = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","word-brake-normal","col-compare-previous");
 	private MLabel definitionCurrent = new MLabel().withContentMode( ContentMode.HTML).withStyleName("col-compare-extra-large","word-brake-normal","col-compare-current");
 	
@@ -65,6 +65,8 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 	private MLabel changesLogHead = new MLabel("<strong>Changes Logs:</strong>").withContentMode( ContentMode.HTML).withFullWidth();
 	private MLabel changesLogLabel = new MLabel().withContentMode( ContentMode.HTML).withFullWidth();
 	
+	private boolean isForPublication = false;
+	
 	public CvComparatorLayout(ConceptService conceptService) {
 		super();
 		this.conceptService = conceptService;
@@ -87,11 +89,11 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 		
 		showOnlyChanges.addClickListener( e->{
 			if( showAllCode ) {
-				updateGrid( false );
+				updateGrid( false , isForPublication);
 				showOnlyChanges.setCaption("Show all codes");
 				showAllCode =  false;
 			} else {
-				updateGrid( true );
+				updateGrid( true , isForPublication);
 				showOnlyChanges.setCaption("Show only code changes");
 				showAllCode =  true;
 			}
@@ -130,13 +132,22 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 			);
 	}
 	
-	public void compareVersion( VersionDTO version1, VersionDTO version2 ) {
+	public void compareVersion( VersionDTO version1, VersionDTO version2) {
+		compareVersion(version1, version2, false);
+	}
+	
+	public void compareVersion( VersionDTO version1, VersionDTO version2, boolean isForPublication) {
 		versionCompared = true;
 		versionOld = version1;
 		versionCurrent = version2;
 		
+		String rightConpareLabel = "(Current)";
+		if( isForPublication ) {
+			showOnlyChanges.setVisible( false );
+			rightConpareLabel = versionCurrent.getNumber();
+		}
 		headLabel2.setValue("<strong>" + version1.getNumber() + "</strong>");
-		headLabel3.setValue("<strong>" + "Current" + "</strong>");
+		headLabel3.setValue("<strong>" + rightConpareLabel + "</strong>");
 		
 		titlePrev.setValue( "<span>" + version1.getTitle() + "</span>" );
 		titleCurrent.setValue( "<span>" + version2.getTitle() + "</span>" );
@@ -147,7 +158,7 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 		if( !version1.getTitle().equals( version2.getTitle() )) {
 			titlePrev.addStyleName("label-highlight");
 			titleCurrent.addStyleName("label-highlight");
-			changeLogsCv.append("CV Long Name changed: " + version2.getTitle() + "\n");
+			changeLogsCv.append("CV long name changed: " + version2.getTitle() + "\n");
 		}
 		
 		if( !version1.getDefinition().equals( version2.getDefinition() )) {
@@ -193,25 +204,30 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 		});
 		
 		// set the grid
-		updateGrid( false );
+		updateGrid( false, isForPublication );
 		
 	}
 	
-	public void updateGrid( boolean showAll) {
+	
+	public void updateGrid( boolean showAll, boolean isForPublication) {
 		codeLayout.removeAllComponents();
 		changeLogs.setLength(0);
+		
+		String rightConpareLabel = "(Current)";
+		if( isForPublication )
+			rightConpareLabel = versionCurrent.getNumber();
 		
 		// set second table header
 		codeLayout
 			.add(
 				new MCssLayout().withFullWidth().withStyleName("row-compare-head")
 				.add(
-					new MLabel( "Code v" + versionOld.getNumber() ).withStyleName( "col-compare-head","col-compare-small", "col-compare-previous"),
-					new MLabel( "Code " + "(Current)" ).withStyleName( "col-compare-head","col-compare-small", "col-compare-current"),
-					new MLabel( "Term v" + versionOld.getNumber() ).withStyleName( "col-compare-head","col-compare-small", "col-compare-previous"),
-					new MLabel( "Term " + "(Current)" ).withStyleName( "col-compare-head","col-compare-small", "col-compare-current"),
-					new MLabel( "Definition v" + versionOld.getNumber() ).withStyleName( "col-compare-head","col-compare-large", "col-compare-previous"),
-					new MLabel( "Definition " + "(Current)" ).withStyleName( "col-compare-head","col-compare-large", "col-compare-current")
+					new MLabel( "Code " + versionOld.getNumber() ).withStyleName( "col-compare-head","col-compare-small", "col-compare-previous"),
+					new MLabel( "Code " + rightConpareLabel ).withStyleName( "col-compare-head","col-compare-small", "col-compare-current"),
+					new MLabel( "Term " + versionOld.getNumber() ).withStyleName( "col-compare-head","col-compare-small", "col-compare-previous"),
+					new MLabel( "Term " + rightConpareLabel ).withStyleName( "col-compare-head","col-compare-small", "col-compare-current"),
+					new MLabel( "Definition " + versionOld.getNumber() ).withStyleName( "col-compare-head","col-compare-large", "col-compare-previous"),
+					new MLabel( "Definition " + rightConpareLabel ).withStyleName( "col-compare-head","col-compare-large", "col-compare-current")
 				)
 			);
 				
@@ -253,8 +269,8 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 	private MCssLayout generateCodeRow( ConceptCompare cc) {
 		MCssLayout layout = new MCssLayout().withFullWidth().withStyleName("row-compare");
 		layout.add(
-				cc.getCodePrevious(),
-				cc.getCodeCurrent(),
+				cc.getCodePrevious().withStyleName("break-word"),
+				cc.getCodeCurrent().withStyleName("break-word"),
 				cc.getTermPrevious(),
 				cc.getTermCurrent(),
 				cc.getDefinitionPrevious(),
@@ -283,9 +299,9 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 				throw new IllegalArgumentException();
 			
 			if (conceptPrevious == null && conceptCurrent != null)
-				changesLog = "Concept added: " + conceptCurrent.getNotation() + "\n";
+				changesLog = "Code added: " + conceptCurrent.getNotation() + "\n";
 			else if (conceptPrevious != null && conceptCurrent == null)
-				changesLog = "Concept deleted: " + conceptPrevious.getNotation() + "\n";
+				changesLog = "Code deleted: " + conceptPrevious.getNotation() + "\n";
 			
 			if( conceptPrevious != null ) {
 				codePrevious.setValue( "<span>" + conceptPrevious.getNotation() + "</span>" );
@@ -366,6 +382,11 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 	
 	public String getChangesLogs() {
 		return changeLogs.toString();
+	}
+
+	public void showChangeLog(boolean b) {
+		changesLogHead.setVisible( b );
+		changesLogLabel.setVisible( b );
 	}
 
 }

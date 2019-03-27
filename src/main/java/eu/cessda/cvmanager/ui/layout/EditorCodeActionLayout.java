@@ -21,7 +21,6 @@ import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.StardatDDIService;
@@ -32,13 +31,14 @@ import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
+import eu.cessda.cvmanager.service.mapper.CsvRowToConceptDTOMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
-import eu.cessda.cvmanager.ui.view.DetailView;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.ui.view.window.DialogAddCodeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogEditCodeWindow;
+import eu.cessda.cvmanager.ui.view.window.DialogImportCsvCodeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogTranslateCodeWindow;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class EditorCodeActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -50,12 +50,14 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	private final CodeService codeService;
 	private final ConceptService conceptService;
 	private final VocabularyChangeService vocabularyChangeService;
+	private final CsvRowToConceptDTOMapper csvRowToConceptDTOMapper;
 	
 	private I18N i18n;
 	private Locale locale = UI.getCurrent().getLocale();
 	private final UIEventBus eventBus;
 	
 	private MButton buttonCodeAdd = new MButton();
+	private MButton buttonCodeImport = new MButton();
 	private MButton buttonCodeEdit = new MButton();
 	private MButton buttonCodeAddTranslation = new MButton();
 	private MButton buttonCodeAddChild = new MButton();
@@ -77,7 +79,8 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	
 	public EditorCodeActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService,
-			CodeService codeService, ConceptService conceptService, UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
+			CodeService codeService, ConceptService conceptService, UIEventBus eventBus, VocabularyChangeService vocabularyChangeService,
+			CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
@@ -88,11 +91,15 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		this.conceptService = conceptService;
 		this.eventBus = eventBus;
 		this.vocabularyChangeService = vocabularyChangeService;
+		this.csvRowToConceptDTOMapper = csvRowToConceptDTOMapper;
 		init();
 	}
 
 	private void init() {
 		buttonCodeAdd
+			.withFullWidth()
+			.withStyleName("action-button");
+		buttonCodeImport
 			.withFullWidth()
 			.withStyleName("action-button");
 		buttonCodeEdit
@@ -117,6 +124,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 			.setVisible( false);
 		
 		buttonCodeAdd.addClickListener( this::doAddCode );
+		buttonCodeImport.addClickListener( this::doImportCode );
 		buttonCodeEdit.addClickListener( this::doEditCode );
 		buttonCodeAddTranslation.addClickListener( this::doCodeAddTranslation );
 		buttonCodeAddChild.addClickListener( this::doCodeAddChild );
@@ -128,6 +136,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		getInnerContainer()
 			.add(
 				buttonCodeAdd,
+				buttonCodeImport,
 				buttonCodeEdit,
 				buttonCodeAddChild,
 				buttonCodeAddTranslation,
@@ -137,17 +146,18 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	}
 
 	private void doAddCode(ClickEvent event ) {
-		
-		CVConcept newCVConcept = new CVConcept();
-		newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
-		newCVConcept.createId();
-		newCVConcept.setContainerId( cvScheme.getContainerId());
-
-		DialogAddCodeWindow dialogAddCodeWindow = new DialogAddCodeWindow(
-				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
-				conceptService, cvScheme, newCVConcept, null, vocabulary, currentVersion, 
-				new CodeDTO(), null, new ConceptDTO(), i18n, locale, vocabularyChangeService);
-		getUI().addWindow(dialogAddCodeWindow);
+		Window window = new DialogAddCodeWindow(
+				i18n, eventBus, vocabulary, currentVersion, 
+				new CodeDTO(), null, new ConceptDTO());
+		getUI().addWindow(window);
+	}
+	
+	private void doImportCode(ClickEvent event ) {
+		Window window = new DialogImportCsvCodeWindow(
+				eventBus, vocabularyService, versionService, codeService, 
+				conceptService, vocabulary, currentVersion, i18n, locale, 
+				vocabularyChangeService, csvRowToConceptDTOMapper);
+		getUI().addWindow(window);
 	}
 	
 	private void doEditCode(ClickEvent event ) {
@@ -155,9 +165,8 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 			return;
 		
 		Window window = new DialogEditCodeWindow(
-				eventBus, stardatDDIService, vocabularyService, codeService, conceptService, cvScheme, 
-				cvConcept, selectedLanguage, vocabulary, currentVersion, currentCode, 
-				currentConcept, i18n, locale, vocabularyChangeService);
+				i18n, eventBus, selectedLanguage, vocabulary, currentVersion, 
+				currentCode, currentConcept, codeService);
 		
 		getUI().addWindow(window);
 	}
@@ -166,31 +175,25 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		Window windowTranslate = new DialogTranslateCodeWindow(
 				eventBus, stardatDDIService, vocabularyService, versionService, codeService, conceptService, cvScheme, 
 				cvConcept, selectedLanguage, sourceLanguage, vocabulary, currentVersion, currentCode, 
-				new ConceptDTO(), i18n, locale);
+				new ConceptDTO(), vocabularyChangeService, i18n, locale);
 		getUI().addWindow( windowTranslate );
 	}
 	
 	private void doCodeAddChild(ClickEvent event ) {
-		CVConcept newCVConcept = new CVConcept();
-		newCVConcept.loadSkeleton(newCVConcept.getDefaultDialect());
-		newCVConcept.createId();
-		newCVConcept.setContainerId( cvScheme.getContainerId());
-		
-		DialogAddCodeWindow dialogAddChildCodeWindow = new DialogAddCodeWindow(
-				eventBus, stardatDDIService, vocabularyService, versionService, codeService, 
-				conceptService, cvScheme, newCVConcept, cvConcept, vocabulary, currentVersion, 
-				new CodeDTO(), currentCode, new ConceptDTO(), i18n, locale, vocabularyChangeService);
-		getUI().addWindow( dialogAddChildCodeWindow );
+		Window window = new DialogAddCodeWindow(
+				i18n, eventBus, vocabulary, currentVersion, 
+				new CodeDTO(), currentCode, new ConceptDTO());
+		getUI().addWindow( window );
 	}
 	
 	private void doDeleteCode(ClickEvent event ) {
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_DELETED, null) );
+		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_DELETED, null) );
 	}
 	
 	private void doSortCode(ClickEvent event ) {
 		enableSort = !enableSort;
 		buttonCodeSort.withCaption( enableSort ? "Disable order code" : "Enable order code" );
-		eventBus.publish(EventScope.UI, DetailView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_SORT, enableSort) );
+		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_SORT, enableSort) );
 	}
 	
 	public void clearCode() {
@@ -202,9 +205,10 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	@Override
 	public void updateMessageStrings(Locale locale) {
 		buttonCodeAdd.withCaption( i18n.get("view.action.button.cvconcept.new", locale));
-		buttonCodeEdit.withCaption( "Edit Code" );
+		buttonCodeImport.withCaption( i18n.get("view.action.button.cvconcept.import", locale) );
+		buttonCodeEdit.withCaption( i18n.get("view.action.button.cvconcept.edit", locale) );
 		buttonCodeAddTranslation.withCaption( i18n.get("view.action.button.cvconcept.translation", locale));
-		buttonCodeAddChild.withCaption( "Add Child" );
+		buttonCodeAddChild.withCaption( i18n.get("view.action.button.cvconcept.child", locale) );
 		buttonCodeDelete.withCaption( i18n.get("view.action.button.cvconcept.delete", locale));
 		buttonCodeSort.withCaption( enableSort ? "Disable order code" : "Enable order code" );
 	}
@@ -231,6 +235,15 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 
 	public void setCurrentVersion(VersionDTO currentVersion) {
 		this.currentVersion = currentVersion;
+		if( this.currentVersion != null ) {
+			if( this.currentVersion.getItemType().equals(ItemType.SL.toString())) {
+				buttonCodeDelete.withCaption( i18n.get( "block.action.code.delete" ));
+				buttonCodeEdit.withCaption( i18n.get( "block.action.code.edit" ) );
+			}else {
+				buttonCodeDelete.withCaption( i18n.get( "block.action.code.delete.tl" ));
+				buttonCodeEdit.withCaption( i18n.get( "block.action.code.edit.tl" ));
+			}
+		}
 	}
 
 	public ConceptDTO getCurrentConcept() {
@@ -249,66 +262,64 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		this.vocabulary = vocabulary;
 	}
 	
-	public boolean hasActionRight() {
-		
-		boolean hasAction = false;
+	public boolean hasActionRight() {		
+ 		boolean hasAction = false;
+ 		// if user is not authenticated and the current version is already published
 		if( !SecurityUtils.isAuthenticated() || currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
 			setVisible( false );
 		} else {
+			buttonCodeEdit.setVisible( false );
+			buttonCodeAdd.setVisible( false );
+			buttonCodeImport.setVisible( false );
+			buttonCodeAddTranslation.setVisible( false );
+			buttonCodeAddChild.setVisible( false );
+			buttonCodeDelete.setVisible( false );
+			buttonCodeSort.setVisible( false );
+			
 			hasAction = true;
 
-			if( selectedLanguage.equals( sourceLanguage) && SecurityUtils.isCurrentUserAllowCreateCvSl() ) {
-				buttonCodeAdd.setVisible( true );
-				VersionDTO latestSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getLatestVersions());
-				if( latestSLVersion.getConcepts() != null && latestSLVersion.getConcepts().size() > 1 )
-					buttonCodeSort.setVisible( true );
-				else
-					buttonCodeSort.setVisible( false );
-			}
-			else {
-				buttonCodeAdd.setVisible( false );
-				buttonCodeSort.setVisible( false );
-			}
+			if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion ) ) {
+				if( selectedLanguage.equals( sourceLanguage)  ) {
+					buttonCodeAdd.setVisible( true );
+					buttonCodeImport.setVisible( true );
+					VersionDTO latestSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getLatestVersions());
+					if( latestSLVersion.getConcepts() != null && latestSLVersion.getConcepts().size() > 1 )
+						buttonCodeSort.setVisible( true );
+				}
+				else {
+					buttonCodeImport.setVisible( true );
+				}
+			}		
 			
-			if( cvConcept != null && currentCode != null && currentConcept != null) {
-				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
-					buttonCodeEdit.setVisible( true );
-					buttonCodeAddTranslation.setVisible( false );
-				}else {
-					buttonCodeEdit.setVisible( false );
-				}
-				
-				if( selectedLanguage.equals( sourceLanguage) ) {
-					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
-						buttonCodeAddChild.setVisible( true );
-						buttonCodeDelete.setVisible( true );
-					}else {
-						buttonCodeAddChild.setVisible( false );
-						buttonCodeDelete.setVisible( false );
+			if( currentCode != null ) {
+				// if specific concept is already there
+				if( currentConcept != null ) {
+					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
+						buttonCodeEdit.setVisible( true );
+//						buttonCodeImport.setVisible( true );
+					}
+					if( selectedLanguage.equals( sourceLanguage) ) {
+						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
+							buttonCodeAddChild.setVisible( true );
+							buttonCodeDelete.setVisible( true );
+						}
+					} else {
+						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
+							buttonCodeDelete.setVisible( true );
+						}
+					}
+				} else {
+					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
+						buttonCodeAddTranslation.setVisible( true );
+//						buttonCodeImport.setVisible( true );
+					}
+					if( selectedLanguage.equals( sourceLanguage) ) {
+						if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
+							buttonCodeAddChild.setVisible( true );
+							buttonCodeDelete.setVisible( true );
+						}
 					}
 				}
-			} else if( cvConcept != null && currentCode != null && currentConcept == null) {
-				if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
-					buttonCodeAddTranslation.setVisible( true );
-					buttonCodeEdit.setVisible( false );
-				}else {
-					buttonCodeAddTranslation.setVisible( false );
-				}
-				
-				if( selectedLanguage.equals( sourceLanguage) ) {
-					if( SecurityUtils.isCurrentUserAllowEditCv( agency , selectedLanguage)) {
-						buttonCodeAddChild.setVisible( true );
-						buttonCodeDelete.setVisible( true );
-					}else {
-						buttonCodeAddChild.setVisible( false );
-						buttonCodeDelete.setVisible( false );
-					}
-				}
-			} else {
-				buttonCodeEdit.setVisible( false );
-				buttonCodeAddTranslation.setVisible( false );
-				buttonCodeAddChild.setVisible( false );
-				buttonCodeDelete.setVisible( false );
 			}
 		}
 		

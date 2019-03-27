@@ -5,6 +5,9 @@ import eu.cessda.cvmanager.domain.MetadataField;
 import eu.cessda.cvmanager.repository.MetadataFieldRepository;
 import eu.cessda.cvmanager.service.dto.MetadataFieldDTO;
 import eu.cessda.cvmanager.service.mapper.MetadataFieldMapper;
+
+import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -102,4 +105,19 @@ public class MetadataFieldServiceImpl implements MetadataFieldService {
 //        Page<MetadataField> result = metadataFieldSearchRepository.search(queryStringQuery(query), pageable);
         return null;//result.map(metadataFieldMapper::toDto);
     }
+
+	@Override
+	public boolean existsByMetadataKey(String metadataKey) {
+		return metadataFieldRepository.existsByMetadataKey(metadataKey);
+	}
+
+	@Override
+	public MetadataFieldDTO findByMetadataKey(String metadataKey) {
+		Optional<MetadataField> findByMetadataKey = metadataFieldRepository.findByMetadataKey(metadataKey);
+        if( findByMetadataKey.isPresent() ) {
+        	MetadataField resolver = findByMetadataKey.get();
+        	return metadataFieldMapper.toDto(resolver);
+        }
+        return null;
+	}
 }

@@ -54,6 +54,7 @@ import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.renderers.ComponentRenderer;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -373,11 +374,15 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 	private File generateExportFile( DownloadType type, List<VersionDTO> exportVersions) throws Exception {
 		Map<String, Object> map = new HashMap<>();
+		String cvUrn = null;
 		// sort code
 		for( VersionDTO versionExp : exportVersions) {
 //			Set<ConceptDTO> orderedConcepts = new LinkedHashSet<>();
 			// change language format for printing
-			versionExp.setLanguage( Language.valueOfEnum( versionExp.getLanguage()).toStringCapitalized());
+			// if language length < 5
+			if( versionExp.getLanguage().length() < 5 ) // means language is still in the ISO format
+				versionExp.setLanguage( Language.valueOfEnum( versionExp.getLanguage()).toStringCapitalized());
+			
 			for( ConceptDTO concept : versionExp.getConcepts()) {
 				if( concept.getPosition() == null)
 					concept.setPosition(999);
@@ -387,10 +392,12 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 					.sorted((c1,c2) -> c1.getPosition().compareTo(c2.getPosition()))
 					.collect(Collectors.toCollection(LinkedHashSet::new)));
 		}
+		map.put("cvUrn", cvUrn);
 		map.put("versions", exportVersions);
 		map.put("agency", agency);
 		map.put("license", license);
 		map.put("year", year);
+		map.put("baseUrl", UI.getCurrent().getPage().getLocation().getScheme() + "://" + configurationService.getServerBaseUrl() + configurationService.getServerContextPath());
 		
 		return generateFileByThymeleafTemplate(generateOnDemandFileName( type , false), "export", map, type);
 	}

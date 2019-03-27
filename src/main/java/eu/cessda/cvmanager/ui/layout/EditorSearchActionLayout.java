@@ -3,7 +3,6 @@ package eu.cessda.cvmanager.ui.layout;
 import java.util.Locale;
 
 import org.gesis.stardat.entity.CVScheme;
-import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
@@ -14,18 +13,14 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
 import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
-import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindowNew;
-import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class EditorSearchActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -64,36 +59,15 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 		
 		updateMessageStrings(locale);
 		
-//		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl()) {
-			getInnerContainer()
-				.add(
-					buttonAddCv
-				);
-//		}
+		getInnerContainer()
+			.add(
+				buttonAddCv
+			);
 	}
 
 	private void doCvAdd( ClickEvent event ) {
-		
-//		CVScheme newCvScheme = new CVScheme();
-//		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-//		newCvScheme.createId();
-//		newCvScheme.setContainerId(newCvScheme.getId());
-//		newCvScheme.setStatus( Status.DRAFT.toString() );
-//
-//		Window window = new DialogCVSchemeWindow(stardatDDIService, agencyService, vocabularyService, 
-//				vocabularyMapper, vocabularySearchRepository, newCvScheme, new VocabularyDTO(), 
-//				new VersionDTO(), null, i18n, null, eventBus, vocabularyChangeService);
-//		getUI().addWindow(window);
-		
-		CVScheme newCvScheme = new CVScheme();
-		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-		newCvScheme.createId();
-		newCvScheme.setContainerId(newCvScheme.getId());
-		newCvScheme.setStatus( Status.DRAFT.toString() );
-
-		Window window = new DialogCVSchemeWindowNew(stardatDDIService, agencyService, vocabularyService,
-				versionService, newCvScheme, new VocabularyDTO(), new VersionDTO(), null, i18n, null, 
-				eventBus, vocabularyChangeService);
+		Window window = new DialogCVSchemeWindow(i18n, eventBus, agencyService, vocabularyService, 
+				VocabularyDTO.createDraft(), VersionDTO.createDraft(), null, null);
 		getUI().addWindow(window);
 	}
 	

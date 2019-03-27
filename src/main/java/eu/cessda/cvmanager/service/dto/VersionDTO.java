@@ -105,6 +105,17 @@ public class VersionDTO implements Serializable {
     @JsonIgnore
     private Set<ConceptDTO> concepts = new HashSet<>();
 
+    public VersionDTO() {}
+
+    public static VersionDTO createDraft() {
+		return new VersionDTO().withStatus(Status.DRAFT);
+	}
+
+	public VersionDTO withStatus(Status status) {
+		this.status = status.toString();
+		return this;
+	}
+
     public Long getId() {
         return id;
     }
@@ -170,7 +181,18 @@ public class VersionDTO implements Serializable {
     }
 
 	public String getCanonicalUri() {
-		return canonicalUri;
+		if( canonicalUri == null )
+			return null;
+		
+		String formattedUrn = removeLanguageInformation(canonicalUri);
+		// format any TL URN to SL
+		int index = canonicalUri.lastIndexOf(":");
+		if( formattedUrn.substring(index + 1).chars().filter( ch -> ch == '.').count() == 2L) {
+			// remove last dot
+			index = canonicalUri.lastIndexOf(".");
+			formattedUrn = formattedUrn.substring(0, index);
+		}
+		return formattedUrn;
 	}
 
 	public void setCanonicalUri(String canonicalUri) {
@@ -352,6 +374,10 @@ public class VersionDTO implements Serializable {
 	public String getCitation() {
 		return citation;
 	}
+	
+	public String getCitationPreview() {
+		return citation.replaceFirst(title, "<i>" + title + "</i>");
+	}
 
 	public void setCitation(String citation) {
 		this.citation = citation;
@@ -383,7 +409,7 @@ public class VersionDTO implements Serializable {
 
 	public boolean isInitialVersion() {
 		if(isPersisted()) {
-			if( initialVersion.equals( id ))
+			if( initialVersion != null && initialVersion.equals( id ))
 				return true;
 		}
 		return false;
@@ -498,7 +524,8 @@ public class VersionDTO implements Serializable {
 		return sb.toString();
 	}
 
-	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri) {
+	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri,
+			String ddiUsage) {
 		VersionDTO newVersion = new VersionDTO();
 		// generate uri
 		newVersion.setUri( agencyUri + targetVersion.getNotation() + "/" + targetVersion.getLanguage());
@@ -517,7 +544,10 @@ public class VersionDTO implements Serializable {
 		newVersion.setVocabularyId( targetVersion.getVocabularyId());
 		newVersion.setSummary( targetVersion.getSummary());
 		newVersion.setLicenseId(agencylicenseId);
-		newVersion.setDdiUsage( targetVersion.getDdiUsage() );
+		if( ddiUsage != null )
+			newVersion.setDdiUsage( ddiUsage );
+		else
+			newVersion.setDdiUsage( targetVersion.getDdiUsage() );
 		newVersion.setTranslateAgency( targetVersion.getTranslateAgency() );
 		newVersion.setTranslateAgencyLink( targetVersion.getTranslateAgencyLink() );
 		// clone concepts as well
@@ -529,38 +559,52 @@ public class VersionDTO implements Serializable {
 		return newVersion;
 	}
 
-	public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName, String detailUrl) {
+	public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName) {
 		StringBuilder citation = new StringBuilder();
-
-		/*
-Format for SL:
-Agency. (Publication year). CV Long Name (Version number) [Controlled vocabulary]. Publishing agency. urn. Retrieved from: URL in Vocabulary Service.
--- [Controlled vocabulary] text is the same for all. Publishing agency is always CESSDA for DDI and CESSDA vocs.
-
-For example:
-DDI Alliance (2018). Time Method (1.4) [Controlled vocabulary]. CESSDA. urn:ddi-cv:CsvRow:1.0. Retrieved from: vocabularies.cessda.eu/TimeMethod_1.0/en.
-
-
-TL format
-Agency. (Publication year). CV Long Name in TL [SL Long Name]  (TL Version number; Translating agency, Transl) [Controlled vocabulary]. Publishing agency. urn of SL. Retrieved from: URL from Vocabulary Service.
----the text 'Transl.' is the same for all TLs, even thought the translating agency name changes. urn is the SL urn even for TL.
-
-DDI Alliance. (2018). Erhebungsdesign [Time Method] (Version 1.2.1; GESIS, Transl.) [Controlled vocabulary]. CESSDA. urn: ddi-cv:TimeMethod:1.2. Retrieved from: http://vocabularies.cessda.eu/TimeMethod_1.2.1/de.htm
-
-"
-		 */
-		citation.append( agencyName );
-		citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
+		citation.append( agencyName + ". " );
 		if( versionDto.getItemType().equals( ItemType.SL.toString()) ) {
-			citation.append( versionDto.getTitle() + " (" + versionDto.getNumber() + ") [Controlled vocabulary]. ");
+			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
+			citation.append( versionDto.getTitle() + " (Version " + versionDto.getNumber() + ") [Controlled vocabulary]. ");
+			if( !agencyName.toLowerCase().contains("cessda")) {
+				citation.append( "CESSDA. ");
+			}
+			citation.append( versionDto.getCanonicalUri() + ". ");
 		}
 		else {
-			citation.append( versionDto.getTitle() + "[" + versionDtoSl.getTitle()+ "]" + " (" + versionDto.getNumber() +
-			(versionDto.getTranslateAgency() == null ? "": "; " + versionDto.getTranslateAgency() ) + ") [Controlled vocabulary]. ");
+			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
+			citation.append( versionDto.getTitle() + " [" + versionDtoSl.getTitle()+ "]" + " (Version " + versionDto.getNumber() +
+			(versionDto.getTranslateAgency() != null && !versionDto.getTranslateAgency().isEmpty() ? "; " + versionDto.getTranslateAgency() + ", Transl." : "") + ") [Controlled vocabulary]. ");
+			if( !agencyName.toLowerCase().contains("cessda")) {
+				citation.append( "CESSDA. ");
+			}
+			citation.append( versionDtoSl.getCanonicalUri() + ". ");
 		}
-		citation.append( versionDto.getCanonicalUri() + ". ");
-		citation.append( "Retrieved from: " + detailUrl);
 
 		return citation.toString();
+	}
+
+	public Status getEnumStatus() {
+		return Status.valueOf( getStatus().toUpperCase());
+	}
+
+	public void createSummary( String versionChanges ) {
+		setSummary(
+			"<strong>" + getNumber() + "</strong>"+
+			" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + getPublicationDate() +
+			"<br/>Notes:<br/>" + getVersionNotes() + (versionChanges != null && !versionChanges.isEmpty() ? "<br/>Changes:<br/>" + getVersionChanges() : "") 
+			+ "<br/><br/>" +
+			(getSummary() == null ? "":getSummary().replaceAll("(\r\n|\n)", "<br />")) 
+		);
+	}
+	
+	private static String removeLanguageInformation(String canonicalUrlInput) {
+		if( canonicalUrlInput == null )
+			return null;
+		// find last dash from canonicalURI
+		int lastDashPosition = canonicalUrlInput.lastIndexOf( "-" );
+		// if found and
+		if( lastDashPosition == -1 || lastDashPosition < 20)
+			return canonicalUrlInput;
+		return canonicalUrlInput.substring(0, lastDashPosition);
 	}
 }

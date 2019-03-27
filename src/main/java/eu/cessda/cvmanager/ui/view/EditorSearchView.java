@@ -1,6 +1,5 @@
 package eu.cessda.cvmanager.ui.view;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.gesis.wts.security.SecurityService;
-import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
@@ -23,6 +21,7 @@ import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 
+import com.vaadin.data.provider.ListDataProvider;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
@@ -33,7 +32,6 @@ import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
@@ -150,6 +148,18 @@ public class EditorSearchView extends CvView {
 				
 		gridResultLayout.withStyleName( "result-container" );
 		
+		cvGrid.removeAllColumns();
+		cvGrid.setHeaderVisible(false);
+		cvGrid.addColumn(voc -> {
+			agency = agencyMap.get( voc.getAgencyId() );
+			if( agency == null ) {
+				agency = agencyService.findOne( voc.getAgencyId() );
+				agencyMap.put( agency.getId(), agency);
+			}
+			return new VocabularyGridRow(voc, agency, configService);
+		}, new ComponentRenderer()).setId("cvColumn");
+		cvGrid.getColumn("cvColumn").setExpandRatio(1);
+		
 		searchTopLayout
 			.withStyleName("search-option")
 			.add( 
@@ -217,22 +227,11 @@ public class EditorSearchView extends CvView {
 		// set filter and pagination bar
 		filterLayout.setFacetFilter(esQueryResultDetail);
 		paginationBar.updateState(esQueryResultDetail);
-		resultInfo.setValue( "<h3 class=\"result-info\"><strong>" + esQueryResultDetail.getVocabularies().getTotalElements() + " results found</strong></h3>");
+		resultInfo.withStyleName("result-info").setValue( esQueryResultDetail.getVocabularies().getTotalElements() + " results found" );
 		
 		// update the result list
-		cvGrid.setItems( esQueryResultDetail.getVocabularies().getContent() );
-		cvGrid.removeAllColumns();
-		cvGrid.setHeaderVisible(false);
-		cvGrid.addColumn(voc -> {
-			agency = agencyMap.get( voc.getAgencyId() );
-			if( agency == null ) {
-				agency = agencyService.findOne( voc.getAgencyId() );
-				agencyMap.put( agency.getId(), agency);
-			}
-			return new VocabularyGridRow(voc, agency, configService);
-		}, new ComponentRenderer()).setId("cvColumn");
-		// results.setRowHeight( 135.0 );
-		cvGrid.getColumn("cvColumn").setExpandRatio(1);
+		cvGrid.setDataProvider( new ListDataProvider<>( esQueryResultDetail.getVocabularies().getContent() ));
+		cvGrid.getDataProvider().refreshAll();
 	}
 
 	@Override
