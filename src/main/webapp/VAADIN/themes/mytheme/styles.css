@@ -18157,7 +18157,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .agency {
-	margin-bottom: 15px;
+	margin: 15px 0;
 }
 
 .mytheme .agency .v-button-link {
@@ -18278,6 +18278,11 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme #login:hover, .mytheme #login:active, .mytheme #cessdahome:hover, .mytheme #cessdahome:active {
 	border-bottom: 1px solid #fff;
 	text-decoration: none;
+}
+
+.mytheme .login-bt {
+	margin: 0;
+	padding: 0 15px;
 }
 
 @media (min-width: 992px) {

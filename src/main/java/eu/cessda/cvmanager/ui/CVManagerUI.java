@@ -198,6 +198,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			navigator.navigateTo(DiscoveryView.VIEW_NAME);
 		}
 		navigator.addViewChangeListener(viewChangeListener);
+		
+		logIn.withStyleName("login-bt");
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			userInfoLayout.setVisible(true);
