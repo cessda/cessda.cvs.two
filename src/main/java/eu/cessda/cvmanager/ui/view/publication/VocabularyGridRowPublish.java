@@ -101,27 +101,13 @@ public class VocabularyGridRowPublish extends CustomComponent {
 			MButton langButton = new MButton(item.toUpperCase());
 			langButton.addStyleName( "langbutton" );
 			
-			if( item.equalsIgnoreCase( sourceLanguage.toString() ))
+			if( item.equalsIgnoreCase( sourceLanguage.toString() )) {
 				langButton.addStyleName( "button-source-language" );
+				langButton.setDescription("Source language");
+			}
 			
 			if( item.equalsIgnoreCase( currentSelectedLanguage.toString() ))
 				langButton.addStyleName( "button-language-selected" );
-			
-			// determine the status
-			vocabulary.getLatestVersionByLanguage( item )
-			.ifPresent( versionDTO -> {
-				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
-					langButton.addStyleName( "status-draft" );
-					langButton.setDescription("DRAFT");
-				}
-				else if( versionDTO.getStatus().equals( Status.INITIAL_REVIEW.toString())) {
-					langButton.addStyleName( "status-review-initial" );
-					langButton.setDescription("INITIAL_REVIEW");
-				}else if( versionDTO.getStatus().equals( Status.FINAL_REVIEW.toString())) {
-					langButton.addStyleName( "status-review-final" );
-					langButton.setDescription("FINAL_REVIEW");
-				}
-			});
 			
 			langButton.addClickListener(e -> {
 				applyButtonStyle(e.getButton());

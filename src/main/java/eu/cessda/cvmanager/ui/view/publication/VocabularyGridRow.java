@@ -101,8 +101,10 @@ public class VocabularyGridRow extends CustomComponent {
 			MButton langButton = new MButton(item.toUpperCase());
 			langButton.addStyleName( "langbutton" );
 			
-			if( item.equalsIgnoreCase( sourceLanguage.toString() ))
+			if( item.equalsIgnoreCase( sourceLanguage.toString() )) {
 				langButton.addStyleName( "button-source-language" );
+				langButton.setDescription("Source language");
+			}
 			
 			if( item.equalsIgnoreCase( currentSelectedLanguage.toString() ))
 				langButton.addStyleName( "button-language-selected" );

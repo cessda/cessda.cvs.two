@@ -17397,8 +17397,6 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: -o-pre-wrap;
 	white-space: -pre-wrap;
 	white-space: pre-wrap;
-	white-space: pre-line;
-	word-break: break-all;
 	word-wrap: break-word;
 }
 
@@ -17424,8 +17422,6 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: -o-pre-wrap;
 	white-space: -pre-wrap;
 	white-space: pre-wrap;
-	white-space: pre-line;
-	word-break: break-all;
 	word-wrap: break-word;
 }
 
@@ -17442,6 +17438,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-treegrid-tablewrapper table tr td {
+	text-overflow: clip;
 	height: auto !important;
 	display: table-cell;
 	float: none;
@@ -17451,8 +17448,6 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: -o-pre-wrap;
 	white-space: -pre-wrap;
 	white-space: pre-wrap;
-	white-space: pre-line;
-	word-break: break-all;
 	word-wrap: break-word;
 }
 
@@ -17471,7 +17466,7 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: pre-line;
 	word-break: break-all;
 	word-wrap: break-word;
-	padding-right: 10px;
+	padding-right: 14px;
 }
 
 .mytheme .v-window-header {
@@ -17804,9 +17799,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .search-box input[type="text"] {
-	margin-top: 2px;
 	border: none;
 	box-shadow: none;
+	height: 38px;
 }
 
 .mytheme .search-box-secondary {
