@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -113,8 +114,8 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 					toolbar, main
 			);
 		this
-			.withHeight("650px")
-			.withWidth("1200px")
+			.withHeight("720px")
+			.withWidth("1280px")
 			.withModal( true )
 			.withContent(layout);
 
@@ -124,10 +125,8 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 	public void updateList() {
 		// first get all useragency member
 		List<UserDTO> members = userService.findAllByAgencyId( agency.getId() );
-//		members = members.stream().filter( m -> m.getRoles() != null && !m.getRoles().isEmpty())
-//				.collect( Collectors.toList());
-		
-		grid.setItems( members );
+		// insert new unique items
+		grid.setItems( new LinkedHashSet<UserDTO>(members));
 		
 		grid.removeAllColumns();
 
