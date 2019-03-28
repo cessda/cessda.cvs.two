@@ -109,7 +109,7 @@ To create a local dev environment follow these instructions:
 
 1. Clone the repository to your local workspace
 2. Ensure that any required software and dependencies are installed
-3. Build CESSDA Vocabulary Service with mvn clean install -U docker:build -Pdocker-compose
+3. Build the CESSDA Vocabulary Service with mvn clean install -U docker:build -Pdocker-compose
    (optional - use -DskipTests to speed up build)
 4. Use `docker-compose up` in the directory `target/docker/generated` to start the application
 
