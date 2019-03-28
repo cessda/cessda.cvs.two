@@ -2,8 +2,10 @@ package eu.cessda.cvmanager.ui.view.publication;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
@@ -82,9 +84,20 @@ public class VocabularyGridRowPublish extends CustomComponent {
 //		conceptList.withContentMode(ContentMode.HTML);
 		codeList.withFullWidth();
 
-		languageLayout.withUndefinedSize().withStyleName( "pull-right" );
+		languageLayout.withUndefinedSize();
 		
-		vocabulary.getLanguagesPublished().forEach(item -> {
+		List<String> languages = new ArrayList<>();
+		// add tls if exist
+		if( vocabulary.getLanguages().size() > 1) {
+			languages.addAll( 
+					vocabulary.getLanguagesPublished().stream()
+						.filter( p -> !p.equals( vocabulary.getSourceLanguage()))
+						.sorted( (v1, v2) -> v2.compareTo( v1 ))
+						.collect( Collectors.toList()) );
+		}
+		// add source language
+		languages.add( vocabulary.getSourceLanguage() );
+		languages.forEach(item -> {
 			MButton langButton = new MButton(item.toUpperCase());
 			langButton.addStyleName( "langbutton" );
 			
@@ -127,10 +140,13 @@ public class VocabularyGridRowPublish extends CustomComponent {
 			.withUndefinedSize()
 			.withStyleName( "pull-left" )
 			.add(slTitle, tlTitle);
+		
+		version.withFullWidth();
+		codeList.withFullWidth();
 
 		vLayout
 			.withFullWidth()
-			.add(languageLayout, titleLayout, desc, version, codeList);
+			.add(titleLayout, desc, version, codeList, languageLayout);
 		
 		MLabel logoLabel = new MLabel()
 			.withContentMode( ContentMode.HTML )

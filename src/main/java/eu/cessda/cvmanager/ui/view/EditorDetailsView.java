@@ -408,9 +408,7 @@ public class EditorDetailsView extends CvView {
 		
 		// get all available licenses
 			licenses = licenceService.findAll();
-				
-		Set<String> languages = vocabulary.getLanguages();
-		
+						
 		editorCvActionLayout.setVocabulary( vocabulary );
 		editorCodeActionLayout.setVocabulary( vocabulary );
 		
@@ -445,6 +443,18 @@ public class EditorDetailsView extends CvView {
 		} else {
 			currentVersion = currentSLVersion;
 		}
+		
+		List<String> languages = new ArrayList<>();
+		// add tls if exist
+		if( vocabulary.getLanguages().size() > 1) {
+			languages.addAll( 
+				vocabulary.getLanguages().stream()
+					.filter( p -> !p.equals( vocabulary.getSourceLanguage()))
+					.sorted( (v1, v2) -> v2.compareTo( v1 ))
+					.collect( Collectors.toList()) );
+		}
+		// add source language
+		languages.add( vocabulary.getSourceLanguage() );
 		
 		languages.forEach(item -> {
 			Language eachLanguage = Language.getEnum(item);

@@ -124,8 +124,8 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 	public void updateList() {
 		// first get all useragency member
 		List<UserDTO> members = userService.findAllByAgencyId( agency.getId() );
-		members = members.stream().filter( m -> m.getRoles() != null && !m.getRoles().isEmpty())
-				.collect( Collectors.toList());
+//		members = members.stream().filter( m -> m.getRoles() != null && !m.getRoles().isEmpty())
+//				.collect( Collectors.toList());
 		
 		grid.setItems( members );
 		
