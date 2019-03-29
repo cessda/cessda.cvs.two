@@ -66,6 +66,7 @@ import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.LicenceService;
+import eu.cessda.cvmanager.service.ResolverService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -106,6 +107,7 @@ public class EditorDetailsView extends CvView {
 	private final VocabularyChangeService vocabularyChangeService;
 	private final LicenceService licenceService;
 	private final CsvRowToConceptDTOMapper csvRowToConceptDTOMapper;
+	private final ResolverService resolverService;
 
 	private Language selectedLang = Language.ENGLISH;
 
@@ -177,7 +179,7 @@ public class EditorDetailsView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
-			CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
+			ResolverService resolverService, CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, EditorDetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
@@ -188,6 +190,7 @@ public class EditorDetailsView extends CvView {
 		this.configService = configService;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.licenceService = licenceService;
+		this.resolverService = resolverService;
 		this.csvRowToConceptDTOMapper = csvRowToConceptDTOMapper;
 		eventBus.subscribe( this, EditorDetailsView.VIEW_NAME );
 	}
@@ -604,7 +607,7 @@ public class EditorDetailsView extends CvView {
 				new MCssLayout()
 						.withStyleName("col-des-4")
 						.add(
-								lVersion.withWidth("140px").withStyleName("leftPart"),
+								lVersion.withWidth("110px").withStyleName("leftPart"),
 								versionLabel
 						)
 				);
@@ -614,7 +617,7 @@ public class EditorDetailsView extends CvView {
 					new MCssLayout()
 						.withStyleName("col-des-4")
 						.add(
-								lDate.withWidth("140px").withStyleName("leftPart"),
+								lDate.withWidth("160px").withStyleName("leftPart"),
 								new MLabel(currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 					);
 
@@ -739,7 +742,7 @@ public class EditorDetailsView extends CvView {
 		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService);
 		versionContentLayout.add( versionLayout );
 		
-		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, false);
+		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, resolverService, false);
 		identifyLayout.add( identityLayout );
 		
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
