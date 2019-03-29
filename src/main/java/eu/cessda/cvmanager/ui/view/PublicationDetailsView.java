@@ -441,7 +441,7 @@ public class PublicationDetailsView extends CvView {
 				new MCssLayout()
 						.withStyleName("col-des-4")
 						.add(
-								lVersion.withWidth("140px").withStyleName("leftPart"),
+								lVersion.withWidth("110px").withStyleName("leftPart"),
 								versionLabel
 						)
 				);
@@ -450,7 +450,7 @@ public class PublicationDetailsView extends CvView {
 				new MCssLayout()
 					.withStyleName("col-des-4")
 					.add(
-							lDate.withWidth("140px").withStyleName("leftPart"),
+							lDate.withWidth("160px").withStyleName("leftPart"),
 							new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 				);
 
@@ -523,7 +523,7 @@ public class PublicationDetailsView extends CvView {
 		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService);
 		versionContentLayout.add( versionLayout );
 		
-		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, true);
+		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, null, true);
 		identifyLayout.add( identityLayout );
 		
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);

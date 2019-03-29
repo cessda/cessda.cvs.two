@@ -81,6 +81,7 @@ public class FiltersLayout extends ResponsiveBlock{
 		clear();
 		
 		resetFilter
+			.withFullWidth()
 			.withVisible( false )
 			.withStyleName( "groupButton disable" )
 			.addClickListener( e -> {

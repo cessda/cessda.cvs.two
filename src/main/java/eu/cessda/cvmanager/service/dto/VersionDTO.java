@@ -376,6 +376,8 @@ public class VersionDTO implements Serializable {
 	}
 	
 	public String getCitationPreview() {
+		if( citation == null)
+			return "";
 		return citation.replaceFirst(title, "<i>" + title + "</i>");
 	}
 

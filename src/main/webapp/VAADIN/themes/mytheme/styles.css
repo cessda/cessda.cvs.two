@@ -15743,7 +15743,6 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme html {
 	background-color: white;
-	font-size: 19px;
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
@@ -15752,6 +15751,11 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme body, .mytheme button, .mytheme input, .mytheme select, .mytheme textarea {
 	font-family: "Source Sans Pro", sans-serif;
+	font-size: 19px;
+}
+
+.mytheme label {
+	font-weight: 500;
 }
 
 .mytheme .mainlayoutContainer {
@@ -15791,6 +15795,14 @@ div.v-layout.v-horizontal.v-widget {
 	line-height: normal;
 	margin: 0 0 10px 0 !important;
 	font-family: "Open Sans", sans-serif;
+}
+
+.mytheme .v-button {
+	background-image: none;
+	text-shadow: none;
+	box-shadow: none;
+	border-radius: 0;
+	height: 40px;
 }
 
 .mytheme .v-button-loginButton {
@@ -15887,6 +15899,73 @@ div.v-layout.v-horizontal.v-widget {
 	border-top-left-radius: 3px !important;
 }
 
+.mytheme .v-filterselect {
+	height: 40px;
+	-webkit-box-shadow: none;
+	font-size: 18px;
+	border: none !important;
+}
+
+.mytheme .v-filterselect-input, .mytheme .v-filterselect-no-input [class*="input"] {
+	border: 1px solid #e5e5e5;
+	background-image: none;
+	text-shadow: none;
+	box-shadow: none;
+	border-radius: 0;
+	height: 40px;
+}
+
+.mytheme .v-filterselect.v-readonly [class*="input"], .mytheme .v-textfield-readonly, .mytheme .v-textarea-readonly {
+	color: #6b6b6b;
+}
+
+.mytheme .v-filterselect [class*="input"] {
+	height: 40px;
+	font-size: 18px;
+}
+
+.mytheme .v-filterselect-suggestpopup div[class*="page"] {
+	position: absolute;
+	z-index: 3;
+	right: 0;
+	opacity: 1;
+	filter: alpha(opacity=20) ;
+	cursor: pointer;
+	-webkit-transition: all 200ms;
+	-moz-transition: all 200ms;
+	transition: all 200ms;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	font-family: ThemeIcons;
+	-webkit-transform: scale(1.1);
+	-moz-transform: scale(1.1);
+	-ms-transform: scale(1.1);
+	-o-transform: scale(1.1);
+	transform: scale(1.1);
+	color: #333;
+	font-size: 20px;
+}
+
+.mytheme .v-filterselect-suggestpopup div[class*="page"] {
+	opacity: 1;
+	filter: none ;
+	background-color: #eeede9;
+}
+
+.mytheme .v-filterselect-error .v-filterselect-button {
+	color: #d34c12;
+	border-color: #fff;
+	background-color: #fce8dc;
+}
+
+.mytheme .v-filterselect-suggestmenu {
+	max-width: 770px;
+	max-height: 500px;
+	overflow-y: break;
+}
+
 .mytheme .v-csslayout-uploadform {
 	font-size: 14px;
 }
@@ -15899,7 +15978,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-csslayout-uploadform .v-textfield {
 	border-radius: 3px;
-	height: 33px;
+	height: 40px;
 	font-size: 18px;
 	margin-top: 8px;
 	border: 1px solid rgba(172, 166, 144, 0.6);
@@ -15907,22 +15986,6 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-csslayout-uploadform .v-textfield-prompt {
 	color: rgba(128, 124, 108, 0.6);
-}
-
-.mytheme .v-csslayout-uploadform .v-filterselect {
-	height: 40px;
-	-webkit-box-shadow: none;
-	font-size: 16px;
-	margin-top: 8px;
-	border: none !important;
-}
-
-.mytheme .v-csslayout-uploadform .v-filterselect-input {
-	border: 1px solid rgba(172, 166, 144, 0.6) !important;
-}
-
-.mytheme .v-csslayout-uploadform .v-filterselect [class*="input"][class*="prompt"] {
-	color: red !important;
 }
 
 .mytheme .v-csslayout-uploadform .v-button-add {
@@ -15951,7 +16014,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-csslayout-uploadform .v-widget.tokenfield .v-csslayout .v-button-link {
-	height: 33px;
+	height: 40px;
 	margin-top: 10px;
 }
 
@@ -16058,10 +16121,6 @@ div.v-layout.v-horizontal.v-widget {
 	height: 30px;
 }
 
-.mytheme .v-button {
-	height: 30px;
-}
-
 .mytheme .v-button-itemBox {
 	height: 100px;
 	border: 1px dots #bbb;
@@ -16153,7 +16212,7 @@ div.v-layout.v-horizontal.v-widget {
 	-moz-transition: color 140ms;
 	transition: color 140ms;
 	margin-top: 15px;
-	height: 33px;
+	height: 40px;
 	margin-right: 15px;
 	white-space: initial;
 	text-align: left;
@@ -16371,7 +16430,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-textfield {
 	border-radius: 3px;
-	height: 33px;
+	height: 40px;
 	font-size: 18px;
 	border: 1px solid rgba(172, 166, 144, 0.6);
 }
@@ -16661,22 +16720,6 @@ div.v-layout.v-horizontal.v-widget {
 	margin-right: 5px;
 }
 
-.mytheme .v-filterselect {
-	height: 40px;
-	-webkit-box-shadow: none;
-	font-size: 18px;
-	border: none !important;
-}
-
-.mytheme .v-filterselect-input {
-	border: 1px solid rgba(172, 166, 144, 0.6) !important;
-}
-
-.mytheme .v-filterselect [class*="input"] {
-	height: 36px;
-	font-size: 16px;
-}
-
 .mytheme .v-button-xeconbutton_status {
 	color: #fff;
 	text-decoration: none;
@@ -16779,55 +16822,6 @@ div.v-layout.v-horizontal.v-widget {
 	padding-right: 10px;
 }
 
-.mytheme .v-filterselect-suggestpopup div[class*="page"] {
-	position: absolute;
-	z-index: 3;
-	right: 0;
-	opacity: 1;
-	filter: alpha(opacity=20) ;
-	cursor: pointer;
-	-webkit-transition: all 200ms;
-	-moz-transition: all 200ms;
-	transition: all 200ms;
-	width: 25px;
-	height: 25px;
-	line-height: 25px;
-	text-align: center;
-	font-family: ThemeIcons;
-	-webkit-transform: scale(1.1);
-	-moz-transform: scale(1.1);
-	-ms-transform: scale(1.1);
-	-o-transform: scale(1.1);
-	transform: scale(1.1);
-	color: #333;
-	font-size: 20px;
-}
-
-.mytheme .v-filterselect-no-input [class*="input"] {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	background-color: #bfbfbf;
-	background-image: -webkit-linear-gradient(top, #fafafa 2%, #efefef 98%);
-	background-image: linear, to bottom, #fafafa 2%, #efefef 98%;
-	cursor: inherit;
-	-webkit-box-shadow: inset 0 1px 0 white, inset 0 -1px 0 #e7e7e7, 0 2px 3px rgba(0, 0, 0, 0.05);
-	box-shadow: inset 0 1px 0 white, inset 0 -1px 0 #e7e7e7, 0 2px 3px rgba(0, 0, 0, 0.05);
-	border: 1px solid #ccc;
-	border-top-color: #ccc;
-	border-bottom-color: #bcbcbc;
-	text-shadow: inherit;
-	text-overflow: ellipsis;
-	border-radius: inherit;
-}
-
-.mytheme .v-filterselect-suggestpopup div[class*="page"] {
-	opacity: 1;
-	filter: none ;
-	background-color: #eeede9;
-}
-
 .mytheme .v-contexthelp-bubble .popupContent .helpText {
 	background: transparent;
 	border: none !important;
@@ -16900,18 +16894,6 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .v-required-field-indicator {
 	display: none !important;
-}
-
-.mytheme .v-filterselect-error .v-filterselect-button {
-	color: #d34c12;
-	border-color: #fff;
-	background-color: #fce8dc;
-}
-
-.mytheme .v-filterselect-suggestmenu {
-	max-width: 770px;
-	max-height: 500px;
-	overflow-y: break;
 }
 
 .mytheme .v-margin-right {
@@ -17242,14 +17224,22 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .langbutton, .mytheme .langbutton-publish {
-	font-size: 12px;
-	padding: 0 8px;
-	line-height: 10px;
-	margin: 0 0 0 10px;
-	height: 24px;
-	border: none;
-	box-shadow: none;
-	background-image: none;
+	background-color: transparent;
+	color: #333;
+	border: 1px solid #e5e5e5;
+	margin: 0 4px 0 0;
+	overflow: visible;
+	display: inline-block;
+	box-sizing: border-box;
+	padding: 0 30px;
+	vertical-align: middle;
+	font-size: 18px;
+	line-height: 38px;
+	text-align: center;
+	text-decoration: none;
+	text-transform: uppercase;
+	transition: 0.1s ease-in-out;
+	transition-property: color, background-color, border-color;
 }
 
 .mytheme .langbutton {
@@ -17407,8 +17397,6 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: -o-pre-wrap;
 	white-space: -pre-wrap;
 	white-space: pre-wrap;
-	white-space: pre-line;
-	word-break: break-all;
 	word-wrap: break-word;
 }
 
@@ -17434,8 +17422,6 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: -o-pre-wrap;
 	white-space: -pre-wrap;
 	white-space: pre-wrap;
-	white-space: pre-line;
-	word-break: break-all;
 	word-wrap: break-word;
 }
 
@@ -17452,6 +17438,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-treegrid-tablewrapper table tr td {
+	text-overflow: clip;
 	height: auto !important;
 	display: table-cell;
 	float: none;
@@ -17461,8 +17448,6 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: -o-pre-wrap;
 	white-space: -pre-wrap;
 	white-space: pre-wrap;
-	white-space: pre-line;
-	word-break: break-all;
 	word-wrap: break-word;
 }
 
@@ -17481,7 +17466,7 @@ div.v-layout.v-horizontal.v-widget {
 	white-space: pre-line;
 	word-break: break-all;
 	word-wrap: break-word;
-	padding-right: 10px;
+	padding-right: 14px;
 }
 
 .mytheme .v-window-header {
@@ -17636,6 +17621,10 @@ div.v-layout.v-horizontal.v-widget {
 	width: 100%;
 }
 
+.mytheme .filter-layout .v-filterselect {
+	margin-bottom: 5px;
+}
+
 .mytheme .v-slot-pull-right {
 	clear: none;
 }
@@ -17693,27 +17682,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme hr.fancy-line, .mytheme hr.fancy-line:before {
-	background: -moz-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
-	background: -webkit-gradient(radial, center center, 0px, center center, 75%, color-stop(0%, rgba(0, 0, 0, 0.1)), color-stop(75%, transparent));
-	background: -webkit-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
-	background: -o-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
-	background: -ms-radial-gradient(center, ellipse cover, rgba(0, 0, 0, 0.1) 0%, transparent 75%);
-	background: radial, ellipse center, rgba(0, 0, 0, 0.1) 0%, transparent 75%;
-}
-
-.mytheme .v-filterselect {
-	height: 33px;
-	-webkit-box-shadow: none;
-	font-size: 14px;
-	border: none !important;
-}
-
-.mytheme .v-filterselect-input {
-	border: 1px solid rgba(172, 166, 144, 0.6) !important;
-}
-
-.mytheme .v-filterselect [class*="input"][class*="prompt"] {
-	color: red !important;
+	background-color: #e6e6e6;
+	margin: 20px 0;
 }
 
 .mytheme .groupButton {
@@ -17768,7 +17738,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .v-filterselect {
-	height: 33px;
+	height: 40px;
 	-webkit-box-shadow: none;
 	font-size: 14px;
 	border: none !important;
@@ -17783,33 +17753,26 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .button-source-language {
-	font-family: "Source Sans Pro", sans-serif;
 	font-weight: 600;
 	color: #000;
-	text-decoration: underline;
 }
 
 .mytheme .button-language-selected {
-	background-image: -webkit-linear-gradient(top, #fafafa 2%, #c7c7c7 98%);
-	background-image: linear, to bottom, #fafafa 2%, #c7c7c7 98%;
+	background-color: #2b5a9b;
+	color: #fff;
+	border: 1px solid transparent;
 }
 
 .mytheme .status-draft {
-	webkit-box-shadow: 3px 3px 8px -3px #f00;
-	-moz-box-shadow: 3px 3px 8px -3px #f00;
-	box-shadow: 3px 3px 8px -3px #f00;
+	border-bottom: 3px solid #f00;
 }
 
 .mytheme .status-review-initial {
-	webkit-box-shadow: 3px 3px 8px -3px #ffa500;
-	-moz-box-shadow: 3px 3px 8px -3px #ffa500;
-	box-shadow: 3px 3px 8px -3px #ffa500;
+	border-bottom: 3px solid #ffa500;
 }
 
 .mytheme .status-review-final {
-	webkit-box-shadow: 3px 3px 8px -3px #0014ff;
-	-moz-box-shadow: 3px 3px 8px -3px #0014ff;
-	box-shadow: 3px 3px 8px -3px #0014ff;
+	border-bottom: 3px solid #0014ff;
 }
 
 .mytheme .search-box {
@@ -17836,9 +17799,9 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .search-box input[type="text"] {
-	margin-top: 2px;
 	border: none;
 	box-shadow: none;
+	height: 38px;
 }
 
 .mytheme .search-box-secondary {
@@ -17917,7 +17880,6 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #eeeeee;
 	display: flex;
 	padding: 10px 15px;
-	border-radius: 3px;
 	width: 100%;
 }
 
@@ -17925,7 +17887,6 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #eeeeee;
 	display: block;
 	padding: 10px 15px;
-	border-radius: 3px;
 	width: 100%;
 	border: none;
 	box-shadow: none;
@@ -17939,10 +17900,9 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme .panel-container {
 	width: 100%;
-	border-radius: 3px;
 	padding: 0;
 	background: #ffffff;
-	border-top: 3px solid #d2d6de;
+	border-top: 3px solid #efefef;
 	margin-bottom: 20px;
 	width: 100%;
 	box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
@@ -18197,7 +18157,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme .agency {
-	margin-bottom: 15px;
+	margin: 15px 0;
 }
 
 .mytheme .agency .v-button-link {
@@ -18318,6 +18278,11 @@ div.v-layout.v-horizontal.v-widget {
 .mytheme #login:hover, .mytheme #login:active, .mytheme #cessdahome:hover, .mytheme #cessdahome:active {
 	border-bottom: 1px solid #fff;
 	text-decoration: none;
+}
+
+.mytheme .login-bt {
+	margin: 0;
+	padding: 0 15px;
 }
 
 @media (min-width: 992px) {

@@ -84,7 +84,7 @@ public class AgencyMemberForm extends FormLayout {
         this.userService = userService;
         this.encrypt = encrypt;
         
-        infoLabel.setValue("<h2>Add new agency member</h2> You can either add new user or search existing user, and then set the specific role to the user.");
+        infoLabel.setValue("<h2>Add new agency member</h2> You can search existing user, and then set user' specific role.");
         
         name.withReadOnly( true );
         name.setPlaceholder("select search result");
@@ -168,9 +168,15 @@ public class AgencyMemberForm extends FormLayout {
         });
         
         setSizeUndefined();
+        setMargin( false );
         setWidth("300px");
         addStyleName("show-caption");
-        addComponents(infoLabel, addUserBtn, filterText, userGrid, name, 
+        addComponents(
+        		infoLabel, 
+//        		addUserBtn, 
+        		filterText, 
+        		userGrid, 
+        		name, 
         		firstName, lastName, username, password,
         		roleOption, languageOption, buttons);
         
