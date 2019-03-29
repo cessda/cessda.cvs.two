@@ -361,10 +361,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 				Notification.show("Error: unable to find CV-Scheme XML");
 				throw new ObjectNotFoundException("Error: unable to find CV-Scheme XML");
 			}
-				
 		}
-		
-		
 		
 		String xmlContent = SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguages, cvItem.getCvScheme().getContent())
 				.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n" + 
