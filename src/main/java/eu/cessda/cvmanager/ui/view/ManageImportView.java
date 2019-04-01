@@ -147,6 +147,8 @@ public class ManageImportView extends CvManagerAdminView {
 									// remove all vocabulary in DB
 									vocabularyService.delete( v.getId());
 								});
+								vocabularySearchRepository.deleteAll();
+								vocabularyPublishSearchRepository.deleteAll();
 							}
 						}
 

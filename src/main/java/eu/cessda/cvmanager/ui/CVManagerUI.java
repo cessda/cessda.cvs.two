@@ -37,6 +37,7 @@ import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.Viewport;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
@@ -200,6 +201,11 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		navigator.addViewChangeListener(viewChangeListener);
 		
 		logIn.withStyleName("login-bt");
+		logIn.withIcon( VaadinIcons.SIGN_IN );
+		logIn.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
+		
+		logout.withIcon( VaadinIcons.SIGN_OUT );
+		logout.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			userInfoLayout.setVisible(true);
