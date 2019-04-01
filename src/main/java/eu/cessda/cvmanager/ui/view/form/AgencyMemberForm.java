@@ -1,6 +1,10 @@
 package eu.cessda.cvmanager.ui.view.form;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
 
 import org.gesis.wts.domain.enumeration.AgencyRole;
 import org.gesis.wts.domain.enumeration.Language;
@@ -11,9 +15,16 @@ import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.service.dto.UserAgencyDTO;
 import org.gesis.wts.service.dto.UserDTO;
 import org.gesis.wts.ui.view.admin.ManageUserAgencyView;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.vaadin.spring.i18n.I18N;
+import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.fields.MTextField;
+import org.vaadin.viritin.label.MLabel;
 
+import com.vaadin.data.Binder;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -24,9 +35,12 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.NativeSelect;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class AgencyMemberForm extends FormLayout {
 
@@ -34,10 +48,13 @@ public class AgencyMemberForm extends FormLayout {
 	private final UserAgencyService userAgencyService;
     private final AgencyService agencyService;
     private final UserService userService;
+    private final BCryptPasswordEncoder encrypt;
             
     private UserAgencyDTO userAgencyDTO;
     private DialogAgencyManageMember dialogAgencyManageMember;
 	
+    private MLabel infoLabel = new MLabel().withContentMode( ContentMode.HTML );
+    
 	private MTextField name = new MTextField("Name");
 	private MTextField filterText = new MTextField();
 	
@@ -45,17 +62,33 @@ public class AgencyMemberForm extends FormLayout {
     private NativeSelect<Language> languageOption = new NativeSelect<>( "Language" );
 	
     private Button save = new Button("Save");
+    private MButton cancelBtn = new MButton("Cancel");
+    private MButton addUserBtn = new MButton( "Add new user" );
+    
+    private TextField firstName = new TextField("First Name");
+    private TextField lastName = new TextField("Last Name");
+    private TextField username = new TextField("User Name");
+    private TextField password = new TextField("Password");
+    private boolean isNewUser;
 
 	private Grid<UserDTO> userGrid = new Grid<>(UserDTO.class);
+	private UserDTO userDTO;
+	private Binder<UserDTO> binder = new Binder<>(UserDTO.class);
 
 
-    public AgencyMemberForm(DialogAgencyManageMember dialogAgencyManageMember, UserAgencyService userAgencyService, UserService userService, AgencyService agencyService) {
+    public AgencyMemberForm(DialogAgencyManageMember dialogAgencyManageMember, UserAgencyService userAgencyService, UserService userService, 
+    		AgencyService agencyService, BCryptPasswordEncoder encrypt, I18N i18n, Locale locale) {
         this.dialogAgencyManageMember = dialogAgencyManageMember;
         this.userAgencyService = userAgencyService;
         this.agencyService = agencyService;
         this.userService = userService;
+        this.encrypt = encrypt;
+        
+        infoLabel.setValue("<h2>Add new agency member</h2> You can search existing user, and then set user' specific role.");
         
         name.withReadOnly( true );
+        name.setPlaceholder("select search result");
+        
         
         filterText
         	.withCaption("Search")
@@ -63,7 +96,12 @@ public class AgencyMemberForm extends FormLayout {
 			.withValueChangeMode(ValueChangeMode.LAZY)
 			.addValueChangeListener(e -> updateList());
         
-        roleOption.setItems( AgencyRole.values());
+        List<AgencyRole> agencyRoles = new ArrayList<AgencyRole>(Arrays.asList( AgencyRole.values()));
+        // remove Admin and View role
+        agencyRoles.remove( AgencyRole.ADMIN );
+        agencyRoles.remove( AgencyRole.VIEW );
+        
+        roleOption.setItems( agencyRoles );
         languageOption.setItems(Language.values());
         languageOption.setVisible( false );
         languageOption.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
@@ -104,19 +142,52 @@ public class AgencyMemberForm extends FormLayout {
         		this.userAgencyDTO.setLanguage( null );
         });
         
-        HorizontalLayout buttons = new HorizontalLayout(save);
+        HorizontalLayout buttons = new HorizontalLayout(save, cancelBtn);
 
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(KeyCode.ENTER);
 
         save.addClickListener(e -> this.save());
         
-        setSizeUndefined();
-        addStyleName("show-caption");
-        addComponents(filterText, userGrid, name, roleOption, languageOption, buttons);
+        cancelBtn.addClickListener( e -> {
+        	this.setVisible( false );
+        	dialogAgencyManageMember.getAddBtn().setVisible( true );
+        });
         
+        addUserBtn.addClickListener( e -> {
+            // initialize new user
+        	isNewUser = true;
+        	
+            userDTO = new UserDTO();
+            binder.bindInstanceFields(this);
+            binder.setBean(userDTO);
+            
+        	password.setValue( CvManagerSecurityUtils.generateSecureRandomPassword(10));
+            
+        	activateAddUserForm( true );
+        });
+        
+        setSizeUndefined();
+        setMargin( false );
+        setWidth("300px");
+        addStyleName("show-caption");
+        addComponents(
+        		infoLabel, 
+//        		addUserBtn, 
+        		filterText, 
+        		userGrid, 
+        		name, 
+        		firstName, lastName, username, password,
+        		roleOption, languageOption, buttons);
+        
+        addUserBtn.setVisible( false );
         filterText.setVisible( false );
         userGrid.setVisible( false );
+        
+        firstName.setVisible( false );
+        lastName.setVisible( false );
+        username.setVisible( false );
+        password.setVisible( false );
     }
 
     public void setUserAgencyDTO(UserAgencyDTO agencyMember) {
@@ -153,8 +224,18 @@ public class AgencyMemberForm extends FormLayout {
     }
 
     private void save() {
+    	if(isNewUser) {
+    		if(!isNewUserInputValid())
+        		return;
+    		userDTO.setEnable( true );
+    		userDTO.setLocked( false );
+    		userDTO.setRandomUsername( UUID.randomUUID().toString() );
+    		userDTO.setPassword(encrypt.encode( userDTO.getPassword()));
+    		userDTO = userService.save(userDTO);
+    		userAgencyDTO.setUserId( userDTO.getId() );
+    	}
     	if( userAgencyDTO.getUserId() == null ) {
-    		Notification.show("Please select one of the user on the table above");
+    		Notification.show("Please select one of the user on the user search result table");
     	} else {
     		if( userAgencyDTO.getAgencyRole() == null ) {
         		Notification.show("Please select role!");
@@ -173,6 +254,7 @@ public class AgencyMemberForm extends FormLayout {
 	    	languageOption.setValue( null );
 	        dialogAgencyManageMember.updateList();
 	        setVisible(false);
+	        dialogAgencyManageMember.getAddBtn().setVisible( true );
     	}
     }
     
@@ -188,9 +270,52 @@ public class AgencyMemberForm extends FormLayout {
 	}
     
     public void setUserLayoutVisible(boolean visible) {
+    	if( visible )
+    		isNewUser = false;
+    	addUserBtn.setVisible(visible);
     	filterText.setVisible(visible);
     	filterText.setValue("");
     	name.setValue("");
+    	roleOption.setValue( null );
+    }
+    
+    public void activateAddUserForm( boolean visible ) {
+    	setUserLayoutVisible(!visible);
+    	name.setVisible(!visible);
+    	
+    	// will be visible if true
+    	firstName.setVisible( visible );
+        lastName.setVisible( visible );
+        username.setVisible( visible );
+        password.setVisible( visible );
+    }
+    
+    private boolean isNewUserInputValid() {
+    	userDTO.setLastName( lastName.getValue() );
+    	userDTO.setUsername( username.getValue() );
+    	userDTO.setPassword( password.getValue() );
+    	
+    	binder
+    		.forField( lastName )
+    		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind( u -> u.getLastName(),
+				(u, value) -> u.setLastName(value));
+    	
+    	binder
+			.forField( username )
+			.withValidator( u -> !userService.existByUsername( u ), "username is already exist" )
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
+			.bind( u -> u.getUsername(),
+				(u, value) -> u.setUsername(value));
+    	
+    	binder
+			.forField( password )
+			.withValidator( new StringLengthValidator( "* required field, require an input with at least 6 characters", 6, 250 ))	
+			.bind( u -> u.getPassword(),
+				(u, value) -> u.setPassword(value));
+    	
+    	binder.validate();
+		return binder.isValid();
     }
 
 }

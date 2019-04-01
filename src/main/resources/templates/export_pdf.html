@@ -118,25 +118,31 @@ div.CodeList {
 		 	  </div>
 		      
 		      <hr />
-		      <h2>Description</h2>
+		      <h2>CV definition</h2>
 		      <p th:text="${version.definition}"></p>
 		      <hr />
 		      <h2>Details</h2>
 		      <dl>
-		        <dt>Short Name:</dt>
+		        <dt>CV short name:</dt>
 		        <dd th:text="${version.notation}"></dd>
-		        <dt>Long Name:</dt>
+		        <dt>CV name:</dt>
 		        <dd th:text="${version.title}"></dd>
 		        <dt>Language:</dt>
 		        <dd th:text="${version.language}"></dd>
 		        <dt th:if="${version.number != null}">Version:</dt>
 		        <dd th:if="${version.number != null}" th:text="${version.number}">1.0</dd>
-		        <dt th:if="${version.versionNotes != null and version.versionNotes != ''}">Version Notes:</dt>
+		        <dt th:if="${version.versionNotes != null and version.versionNotes != ''}">Version notes:</dt>
 		        <dd th:if="${version.versionNotes != null}" th:text="${version.versionNotes}"></dd>
-		        <dt th:if="${version.versionChanges != null}">Version Changes:</dt>
+		        <dt th:if="${version.versionChanges != null}">Version changes:</dt>
 		        <dd th:if="${version.versionChanges != null}" th:text="${version.versionChanges}"></dd>
+		        <dt th:if="${version.canonicalUri != null}">Canonical URI:</dt>
+		        <dd>
+		        	<a rel="canonical URN" th:href="${baseUrl + '/urn/' + cvUrn}" th:text="${cvUrn}"></a>
+		        </dd>
 		        <dt th:if="${version.canonicalUri != null}">Canonical URI of this version:</dt>
-		        <dd th:if="${version.canonicalUri != null}" th:text="${version.canonicalUri}"></dd>
+		        <dd>
+		        	<a rel="canonical URN this version" th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${version.canonicalUri}"></a>
+		        </dd>
 		        
 		        <dt>Agency: </dt>
 		        <dd>
@@ -151,9 +157,9 @@ div.CodeList {
 			        <caption>Code List</caption>
 			        <thead>
 			          <tr>
-			            <th>Value of the Code</th>
-			            <th>Descriptive Term of the Code</th>
-			            <th>Definition of the Code</th>
+			            <th>Code value</th>
+			            <th>Code descriptive term</th>
+			            <th>Code definition</th>
 			          </tr>
 			        </thead>
 			        <tbody>
@@ -179,12 +185,18 @@ div.CodeList {
 		    <h2>Copyright and License</h2>
 			    <p>Copyright © <a th:href="${agency.link}" th:text="${agency.name}"></a> <span th:text="${year}"></span>.</p>
 			    <p th:if="${license != null}">
+			    <!-- 
 			    	<a rel="license" th:href="${license.link}">
 			    	<img style="border-width:0;width:140px" th:attr="src=${license.logoLink},title=${license.name},alt=${license.name}" />
 			    	</a>
+			   	-->
 					<span>This work is licensed under a 
 						<a rel="license" th:href="${license.link}" th:text="${license.name}"></a>.
 					</span>
+				</p>
+				<p>Citation:
+					<span th:utext="${version.citationPreview}"></span> Available from: 
+					<a th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${baseUrl + '/urn/' + version.canonicalUri}"></a> 
 				</p>
     		</div>
     	

@@ -24,6 +24,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringJoiner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -54,6 +56,7 @@ import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.renderers.ComponentRenderer;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -122,6 +125,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private Map<String, List<VersionDTO>> orderedLanguageVersionMap = new LinkedHashMap<>();
 	private boolean publishView;
 	private int year = LocalDate.now().getYear();
+	private String inSchemeUri = "";
 	
 	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, VocabularyDTO vocabulary, AgencyDTO agency,
 			VersionService versionService, ConfigurationService configurationService, StardatDDIService stardatDDIService,
@@ -328,12 +332,21 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		
 		Set<String> filteredLanguages = getFilteredLanguages();
 		
+		// TODO: remove this after the FlatDB dialog definition fixed
+		if( !exportVersions.isEmpty()) {
+			if( exportVersions.get(0).getItemType().equals( ItemType.SL.toString()))
+				inSchemeUri = exportVersions.get(0).getUri();
+			else
+				inSchemeUri = exportVersions.get(0).getUriSl();
+		}
+		
 		if( type.equals( DownloadType.SKOS )) {
 			// get CvItem from selected sl
 			exportVersions.stream().filter( v -> v.getItemType().equals( ItemType.SL.toString())).findFirst().ifPresent( v -> {
 				List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType( v.getUri(), DDIElement.CVSCHEME);
 				if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
 					cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
+					
 					
 					TreeData<CVConcept> cvCodeTreeData = new TreeData<>();
 					List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvItem.getCvScheme().getContainerId(), DDIElement.CVCONCEPT);
@@ -348,20 +361,43 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 				Notification.show("Error: unable to find CV-Scheme XML");
 				throw new ObjectNotFoundException("Error: unable to find CV-Scheme XML");
 			}
-				
+		}
+		
+		String xmlContent = SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguages, cvItem.getCvScheme().getContent())
+				.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n" + 
+						"         xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n" + 
+						"         xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"\n" + 
+						"         xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n" + 
+						"         xmlns:gc=\"http://docs.oasis-open.org/codelist/ns/genericode/1.0/\"\n" + 
+						"         xmlns:dcterms=\"http://purl.org/dc/terms/\"\n" + 
+						"         xmlns:ddi-cv=\"urn:ddi-cv\"\n" + 
+						"         xmlns:h=\"http://www.w3.org/1999/xhtml\"\n" + 
+						"         xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n\n" )
+				// TODO: remove this after the FlatDB dialog definition fixed
+				.replace("skos:title", "dcterms:title")
+				.replace("skos:nameCode", "skos:notation")
+				.replace("skos:version", "owl:versionInfo")
+				.replace("id=\"\" ", "")
+				.replace("<skos:hasTopConcept rdf:resource=\"http://lod.gesis.org/thesoz/concept_10063164\"/>", "")
+				.replace("<!-- status; 1;published, 2:unpublished, 3: under review, 4: review finalized -->", "")
+				.replace("<!-- If a translation is added -->", "");
+
+		// TODO: remove this after the FlatDB dialog definition fixed - fix publication date (remove)
+		int index = xmlContent.indexOf(" publicationDate=\"");
+		if( index > 0 ) {
+			xmlContent = xmlContent.substring(0, index) + xmlContent.substring(index + 29); 
 		}
 		
 		StringJoiner skosXml = new StringJoiner("\n\n");
-		skosXml.add( 
-				SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguages, cvItem.getCvScheme().getContent())
-					.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\" xmlns:owl=\"http://www.w3.org/2002/07/owl#\" "
-							+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\" xmlns:dct=\"http://purl.org/dc/terms/\" xmlns:foaf=\"http://xmlns.com/foaf/spec/\" "
-							+ "xmlns:void=\"http://rdfs.org/ns/void#\" xmlns:iqvoc=\"http://try.iqvoc.net/schema#\" xmlns:skosxl=\"http://www.w3.org/2008/05/skos-xl#\" "
-							+ "xmlns=\"http://lod.gesis.org/thesoz/\" xmlns:schema=\"http://lod.gesis.org/thesoz/schema#\" id=\""+ cvItem.getCvScheme().getContainerId()+ "\">\n\n" )
-				);
+		skosXml.add( xmlContent );
 		skosXml.add( cvItem
 						.getFlattenedCvConceptStreams()
-						.map( x -> SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguages, x.getContent()).replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "") )
+						.map( x -> SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguages, x.getContent())
+								.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "")
+								// TODO: remove this after the FlatDB dialog definition fixed
+								.replace("<skos:inScheme rdf:resource=\"http://lod.gesis.org/thesoz/scheme\"/>", "<skos:inScheme rdf:resource=\""+ inSchemeUri + "\"/>")
+								.replace("<skos:narrower rdf:resource=\"http://lod.gesis.org/thesoz/concept_10063164\"/>", "")
+							)
 						.collect( Collectors.joining("\n\n"))
 				);
 		
@@ -373,6 +409,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 	private File generateExportFile( DownloadType type, List<VersionDTO> exportVersions) throws Exception {
 		Map<String, Object> map = new HashMap<>();
+		String cvUrn = null;
 		// sort code
 		for( VersionDTO versionExp : exportVersions) {
 //			Set<ConceptDTO> orderedConcepts = new LinkedHashSet<>();
@@ -390,10 +427,12 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 					.sorted((c1,c2) -> c1.getPosition().compareTo(c2.getPosition()))
 					.collect(Collectors.toCollection(LinkedHashSet::new)));
 		}
+		map.put("cvUrn", cvUrn);
 		map.put("versions", exportVersions);
 		map.put("agency", agency);
 		map.put("license", license);
 		map.put("year", year);
+		map.put("baseUrl", UI.getCurrent().getPage().getLocation().getScheme() + "://" + configurationService.getServerBaseUrl() + configurationService.getServerContextPath());
 		
 		return generateFileByThymeleafTemplate(generateOnDemandFileName( type , false), "export", map, type);
 	}
@@ -416,10 +455,16 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													
 	private Set<String> getFilteredLanguages() {
-		return exportCvItems.stream()
-			.filter( f -> f.exportSkosCb.getValue() == false)
-			.map( x -> x.language )
-			.collect( Collectors.toSet());
+		// get all available language from vocabulary
+		Set<String> vocabLanguages = vocabulary.getLanguages();
+		Set<String> checkedLanguages = exportCvItems.stream()
+				.filter( f -> f.exportSkosCb.getValue() == true)
+				.map( x -> x.language )
+				.collect( Collectors.toSet());
+		
+		vocabLanguages.removeAll(checkedLanguages);
+		
+		return vocabLanguages;
 	}																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																													
 
 	

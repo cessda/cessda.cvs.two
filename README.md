@@ -1,5 +1,5 @@
-# CESSDA CVMANAGER
-This repository contains all the source code and configuration needed to deploy the CESSDA CVManager application
+# CESSDA Vocabulary Service
+This repository contains all the source code and configuration needed to deploy the CESSDA Vocabulary Service application
 
 ##Project Structure
 
@@ -30,9 +30,9 @@ Several frameworks and languages are used in this application.
 
 ## Naming
 
-There is a unfortunate lack of alignment between product (tool/service) names and repository names, which can make the setting of variable values unclear. 
+There is a unfortunate lack of alignment between product (tool/service) names and repository names, which can make the setting of variable values unclear.
 
-Both the `Jenkins file` and `gcp.conf` contain variable declarations, but these variable names and values serve different purposes during the build and deployment process. 
+Both the `Jenkins file` and `gcp.conf` contain variable declarations, but these variable names and values serve different purposes during the build and deployment process.
 
 
 
@@ -51,10 +51,10 @@ Both the `Jenkins file` and `gcp.conf` contain variable declarations, but these 
 
 
 ### gcp.config
-The gcp.config contains a number of variables, some of which are (more or less) fixed for all CESSDA projects, 
+The gcp.config contains a number of variables, some of which are (more or less) fixed for all CESSDA projects,
 other which need to be set per project, per module and per branch.
 
-The following are stable for the time being, but all are changable if required, with NET enabling different deployment options within a specified GCP project, 
+The following are stable for the time being, but all are changable if required, with NET enabling different deployment options within a specified GCP project,
 and PROJECT and CLIENT allowing e.g. the possibility to host products for third parties within different GCP projects.
 
 
@@ -95,7 +95,7 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-These are a list of dependencies that are required to build and run CVManager
+These are a list of dependencies that are required to build and run the CESSDA Vocabulary Service
 
 - Java to run the application
 - Maven to build the application
@@ -109,11 +109,11 @@ To create a local dev environment follow these instructions:
 
 1. Clone the repository to your local workspace
 2. Ensure that any required software and dependencies are installed
-3. Build CVManager with mvn clean install -U docker:build -Pdocker-compose
+3. Build the CESSDA Vocabulary Service with mvn clean install -U docker:build -Pdocker-compose
    (optional - use -DskipTests to speed up build)
 4. Use `docker-compose up` in the directory `target/docker/generated` to start the application
 
-The CVManager should be running on `http://localhost:8080/`
+The CESSDA Vocabulary Service should be running on `http://localhost:8080/`
 
 
 ## Deployment
@@ -203,4 +203,3 @@ Please read [CESSDA Guideline for developers] (https://bitbucket.org/cessda/cess
 * **First Name - Last Name** - *Initial work*
 
 You can find the list of all contributors [here](CONTRIBUTORS.md)
-

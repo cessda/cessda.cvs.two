@@ -3,19 +3,14 @@ package eu.cessda.cvmanager.ui.view;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -66,7 +61,6 @@ import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -94,7 +88,6 @@ public class PublicationDetailsView extends CvView {
 	private final LicenceService licenceService;
 	
 	private Language selectedLang = Language.ENGLISH;
-	private List<CodeDTO> codeDTOs = new ArrayList<>();
 
 	private MCssLayout topSection = new MCssLayout().withFullWidth();
 	private MCssLayout topViewSection = new MCssLayout().withFullWidth();
@@ -207,7 +200,11 @@ public class PublicationDetailsView extends CvView {
 					String selectedLanguage = mappedParams.get("lang");
 					if( selectedLanguage != null ) {
 						cvItem.setCurrentLanguage( mappedParams.get("lang") );
-						selectedLang = Language.getEnum( selectedLanguage );
+						try {
+							selectedLang = Language.getEnum( selectedLanguage );
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					} else {
 						selectedLang = null;
 					}
@@ -278,10 +275,15 @@ public class PublicationDetailsView extends CvView {
 				}
 				
 			}
-		} else {
-			// find in Vocabulary entity as well
+		} else {			
 			currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
 			vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
+			// find correct version by selected language
+			if( selectedLang != null && !vocabulary.getSourceLanguage().equals( selectedLang.getLanguage())) {
+				vocabulary.getVersionByUriSlAndLangauge( cvItem.getCurrentCvId(), selectedLang.getLanguage())
+				.ifPresent( ver -> currentVersion = ver);
+			}
+			
 			if( !currentVersion.getItemType().equals( ItemType.SL.toString()))
 				vocabulary.getVersionByUri( currentVersion.getUriSl()).ifPresent( c -> currentSlVersion = c );
 			else
@@ -439,7 +441,7 @@ public class PublicationDetailsView extends CvView {
 				new MCssLayout()
 						.withStyleName("col-des-4")
 						.add(
-								lVersion.withWidth("140px").withStyleName("leftPart"),
+								lVersion.withWidth("110px").withStyleName("leftPart"),
 								versionLabel
 						)
 				);
@@ -448,7 +450,7 @@ public class PublicationDetailsView extends CvView {
 				new MCssLayout()
 					.withStyleName("col-des-4")
 					.add(
-							lDate.withWidth("140px").withStyleName("leftPart"),
+							lDate.withWidth("160px").withStyleName("leftPart"),
 							new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 				);
 
@@ -518,10 +520,10 @@ public class PublicationDetailsView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService);
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService);
 		versionContentLayout.add( versionLayout );
 		
-		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, true);
+		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, null, true);
 		identifyLayout.add( identityLayout );
 		
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);

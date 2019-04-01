@@ -42,6 +42,7 @@ import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -73,6 +74,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private final VocabularyService vocabularyService;
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
+	private final LicenceService licenceService;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -108,7 +110,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	public EditorCvActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService, 
 			ConceptService conceptService, CodeService codeService, ConfigurationService configService,
-			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
+			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
@@ -120,6 +122,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		this.vocabularyService = vocabularyService;
 		this.eventBus = eventBus;
 		this.vocabularyChangeService = vocabularyChangeService;
+		this.licenceService = licenceService;
 		init();
 	}
 
@@ -221,7 +224,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	public void changeStatus(ClickEvent event ) {
 		Window window = new DialogManageStatusWindow(conceptService, versionService, 
 				cvScheme, vocabulary, currentVersion, selectedLanguage, sourceLanguage, 
-				agency, eventBus, vocabularyChangeService);
+				agency, eventBus, vocabularyChangeService, licenceService);
 		getUI().addWindow(window);
 	}
 	
@@ -507,51 +510,27 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 			
 			updateMessageStrings(locale);
 			
-			setVisible( true );
-			hasAction = true;
 			// check add CV button
 			if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl() )
 				buttonAddCv.setVisible( true );
 			
-			if( currentVersion != null )  {
+			if( currentVersion == null )
+				return false;
 			
 			// check edit CV button
-				
-				if(currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
-					List<Language> availableLanguages = new ArrayList<>();
-					Set<Language> userLanguages = new HashSet<>();
-					if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
-						buttonAddCv.setVisible( true );
-						if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
-							buttonNewVersion.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonWithdrawCv.setVisible( true );
-						}
-						if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
-							userLanguages.addAll( Arrays.asList( Language.values() ) );
-							
-							availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
-							
-							Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
-							// remove with sourceLanguage option if exist
-							availableLanguages.remove( sourceLang );
-							
-							if(availableLanguages.isEmpty())
-								buttonAddTranslation.setVisible( false );
-							else
-								buttonAddTranslation.setVisible( true );
-							
-							buttonDropVersion.setVisible( true );
-						}
+			if(currentVersion.getStatus().equals( Status.PUBLISHED.toString() )) {
+				List<Language> availableLanguages = new ArrayList<>();
+				Set<Language> userLanguages = new HashSet<>();
+				if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
+					buttonAddCv.setVisible( true );
+					if( currentVersion.getItemType().equals(ItemType.SL.toString())) {
+						buttonNewVersion.setVisible( true );
+						separatorLabel.setVisible( true );
+						buttonWithdrawCv.setVisible( true );
+					}
+					if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
+						userLanguages.addAll( Arrays.asList( Language.values() ) );
 						
-					} 
-					
-					if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) ) {
-						
-
-						SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
-							userLanguages.addAll(languages);
-						});
 						availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
 						
 						Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
@@ -562,25 +541,53 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							buttonAddTranslation.setVisible( false );
 						else
 							buttonAddTranslation.setVisible( true );
-						if( currentVersion.getItemType().equals(ItemType.TL.toString()))
-							buttonNewVersion.setVisible( true );
+						
+						buttonDropVersion.setVisible( true );
 					}
+					
+				} 
+				
+				if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) ) {
+					
+
+					SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
+						userLanguages.addAll(languages);
+					});
+					availableLanguages = Language.getFilteredLanguage(new HashSet<Language>( userLanguages ), vocabulary.getLanguages());
+					
+					Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+					// remove with sourceLanguage option if exist
+					availableLanguages.remove( sourceLang );
+					
+					if(availableLanguages.isEmpty())
+						buttonAddTranslation.setVisible( false );
+					else
+						buttonAddTranslation.setVisible( true );
+					if( currentVersion.getItemType().equals(ItemType.TL.toString()) &&
+							userLanguages.contains( Language.getEnum( currentVersion.getLanguage())))
+						buttonNewVersion.setVisible( true );
 				}
-				else {						
-					if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
-						if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
+			}
+			else {						
+				if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
+					if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
+						buttonEditCv.setVisible( true );
+						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
 							buttonReviewInitial.setVisible( true );
-							buttonEditCv.setVisible( true );
 							separatorLabel.setVisible( true );
 							buttonDropVersion.setVisible( true );
 						}
-						else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() )) {
+					}
+					else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() )) {
+						buttonEditCv.setVisible( true );
+						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
 							buttonReviewFinal.setVisible( true );
-							buttonEditCv.setVisible( true );
 							separatorLabel.setVisible( true );
 							buttonDropVersion.setVisible( true );
 						}
-						else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() )) {
+					}
+					else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() )) {
+						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
 							buttonPublishCv.setVisible( true );
 							buttonEditCv.setVisible( true );
 							separatorLabel.setVisible( true );
@@ -590,6 +597,19 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 				}
 			}
 			
+		}
+		
+		// check if any component visible
+		if(buttonAddCv.isVisible() || buttonEditCv.isVisible() ||
+				buttonReviewInitial.isVisible() || buttonReviewFinal.isVisible() ||
+				buttonPublishCv.isVisible() || buttonAddTranslation.isVisible() ||
+				buttonNewVersion.isVisible() || buttonDropVersion.isVisible() ||
+				buttonWithdrawCv.isVisible() ) {
+			setVisible( true );
+			hasAction = true;
+		} else {
+			setVisible( false );
+			hasAction = false;
 		}
 		
 		return hasAction;

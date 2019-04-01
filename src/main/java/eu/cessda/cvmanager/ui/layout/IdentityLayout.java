@@ -21,7 +21,9 @@ import com.vaadin.ui.TextArea;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.ResolverService;
 import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.dto.ResolverDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.ui.view.AgencyView;
 import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
@@ -35,6 +37,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 	private final AgencyDTO agency;
 	private final VersionDTO version;
 	private final VersionService versionService;
+	private final ResolverService resolverService;
 	private final ConfigurationService configService;
 	private String baseUrl;
 	private enum LayoutMode{ READ, EDIT };
@@ -58,11 +61,12 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 	private MTextField translatorAgencyLink = new MTextField( "Translating agency link" );
 	
 	private boolean readOnly;
+	private String urnTemp;
 	
 	public IdentityLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VersionDTO versionDTO,
 			VersionService versionService, ConfigurationService configService,
-			boolean readOnly) {
+			ResolverService resolverService, boolean readOnly) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
@@ -71,6 +75,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		this.readOnly = readOnly;
 		this.configService = configService;
 		this.agency = agencyDTO;
+		this.resolverService = resolverService;
 		
 		this.withFullWidth();
 		init();
@@ -111,8 +116,21 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 
 		saveButton
 			.addClickListener( e -> {
-				String uriCv = urnEdit.getValue() + version.getNotation()  + ":" + version.getNumber() + "-" + version.getLanguage();
-				version.setCanonicalUri(uriCv);
+				if( !urnEdit.isEmpty() && !urnTemp.equals( urnEdit.getValue()) ) {
+					String uriCv = urnEdit.getValue() + ":" + version.getNotation() + ":" + version.getNumber() + "-" + version.getLanguage();
+					version.setCanonicalUri(uriCv);
+					// refresh resolver
+					try {
+						resolverService.save(
+							ResolverDTO.createUrnResolver()
+								.withResourceId( version.getUri())
+								.withResourceURL( version.getNotation() + "?url=" + URLEncoder.encode( version.getUri(), "UTF-8")  )
+								.withResolverURI( version.getCanonicalUri())
+						);
+					} catch (UnsupportedEncodingException e1) {
+						e1.printStackTrace();
+					}
+				}
 				version.setTranslateAgency( translatorAgency.getValue());
 				version.setTranslateAgencyLink( translatorAgencyLink.getValue());
 				versionService.save(version);
@@ -137,6 +155,8 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			translatorAgencyLink.setValue( version.getTranslateAgencyLink());
 		} else {
 			agencyTransalteValue.setVisible(false);
+			translatorAgency.setVisible(false);
+			translatorAgencyLink.setVisible(false);
 		}
 		
 		formLayout
@@ -173,15 +193,17 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			canonicalUri.setVisible( false );
 			canonicalUriVersion.setVisible( false );
 			agencyTransalteValue.setVisible( false );
-			translatorAgency.setVisible( true );
-			translatorAgencyLink.setVisible( true );
+			if( version.getItemType().equals(ItemType.TL.toString())) {
+				translatorAgency.setVisible( true );
+				translatorAgencyLink.setVisible( true );
+			}
 			urnEdit.setVisible( true );
 			buttonLayout.setVisible( true );
 		}
 	}
 
 	private void refreshInfo() {
-		String baseUrl = configService.getServerContextPath() + "/v1/resolver/";
+		String baseUrl = configService.getServerContextPath() + "/urn/";
 		
 		if( version.getCanonicalUri() == null || version.getCanonicalUri().isEmpty()) {
 			canonicalUri.setVisible( false );
@@ -190,11 +212,14 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		else {
 			int index = version.getCanonicalUri().lastIndexOf(":");
 			String cvCanonicalUri = version.getCanonicalUri().substring(0, index);
+			String ccUriVersion =  version.getCanonicalUri();
 			canonicalUri.setValue( "<a href='" + baseUrl +  cvCanonicalUri + "'>" + cvCanonicalUri + "</a>" );
-			canonicalUriVersion.setValue( "<a href='" + baseUrl +  version.getCanonicalUri() + "'>" + version.getCanonicalUri() + "</a>");
+			canonicalUriVersion.setValue( "<a href='" + baseUrl +  ccUriVersion + "'>" + ccUriVersion + "</a>");
 			int index2 = cvCanonicalUri.lastIndexOf(":");
-			if( index2 > 0)
+			if( index2 > 0) {
 				urnEdit.setValue( cvCanonicalUri.substring(0, index2) );
+				urnTemp = urnEdit.getValue();
+			}
 		}
 		
 		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null && !version.getTranslateAgency().isEmpty()) {

@@ -26,27 +26,32 @@ import com.vaadin.ui.UI;
 import eu.cessda.cvmanager.domain.enumeration.ObjectType;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.MetadataFieldService;
 import eu.cessda.cvmanager.service.MetadataValueService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.MetadataFieldDTO;
 import eu.cessda.cvmanager.service.dto.MetadataValueDTO;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 @UIScope
-@SpringView(name = CsvImportView.VIEW_NAME)
-public class CsvImportView extends CvView  {
+@SpringView(name = UserGuideView.VIEW_NAME)
+public class UserGuideView extends CvView  {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4913971320134365516L;
-	public static final String VIEW_NAME = "about";
+	public static final String VIEW_NAME = "user-guide";
+	
+	private static final String USER_GUIDE_FIELD = "system.menu.userguide";
+	private final MetadataFieldService metadataFieldService;
 	private final MetadataValueService metadataValueService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	private enum LayoutMode{ READ, EDIT };
 	
-	private MCssLayout aboutLayout = new MCssLayout();
+	private MCssLayout userGuideLayout = new MCssLayout();
 	private MCssLayout infoLayout = new MCssLayout().withFullSize();
 	private MLabel notExistInfo = new MLabel("No information is available, login as admin to update content");
 	private MLabel contentInfo = new MLabel().withContentMode( ContentMode.HTML);
@@ -59,14 +64,16 @@ public class CsvImportView extends CvView  {
 	private MButton saveButton = new MButton( "Save" );
 	private MButton cancelButton = new MButton( "Cancel" );
 	
-	private MetadataValueDTO aboutContent;
+	private MetadataValueDTO userGuideContent;
 
-	public CsvImportView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
+	public UserGuideView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, CodeService codeService, MetadataValueService metadataValueService) {
+			VocabularyService vocabularyService, CodeService codeService, MetadataFieldService metadataFieldService,
+			MetadataValueService metadataValueService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
 				codeService, PublicationDetailsView.VIEW_NAME);
 		this.metadataValueService = metadataValueService;
+		this.metadataFieldService = metadataFieldService;
 		
 		this.sidePanel.setVisible( false );
 		init();
@@ -74,9 +81,9 @@ public class CsvImportView extends CvView  {
 	}
 	
 	private void init() {
-		List<MetadataValueDTO> metadataValues = metadataValueService.findByMetadataField("system.menu.about", ObjectType.SYSTEM);
+		List<MetadataValueDTO> metadataValues = metadataValueService.findByMetadataField(USER_GUIDE_FIELD, ObjectType.SYSTEM);
 		if( !metadataValues.isEmpty() ) {
-			aboutContent = metadataValues.get(0);
+			userGuideContent = metadataValues.get(0);
 		}
 		
 		switchMode( LayoutMode.READ );
@@ -102,23 +109,33 @@ public class CsvImportView extends CvView  {
 		
 		infoEditor.setWidth("100%");
 		infoEditor.setHeight("500px");
-		if( aboutContent != null && !aboutContent.getValue().isEmpty())
-			infoEditor.setValue( aboutContent.getValue());
+		if( userGuideContent != null && !userGuideContent.getValue().isEmpty())
+			infoEditor.setValue( userGuideContent.getValue());
 		
 		saveButton
 			.withStyleName("pull-right")
 			.addClickListener( e -> {
-				if(aboutContent == null ) {
-					aboutContent = new MetadataValueDTO();
-					aboutContent.setMetadataFieldId(1L);
+				MetadataFieldDTO metadataField = null;
+				if( !metadataFieldService.existsByMetadataKey(USER_GUIDE_FIELD)) {
+					metadataField = new MetadataFieldDTO();
+					metadataField.setMetadataKey(USER_GUIDE_FIELD);
+					metadataField.setObjectType(ObjectType.SYSTEM);
+					metadataField = metadataFieldService.save(metadataField);
+				} else {
+					metadataField = metadataFieldService.findByMetadataKey(USER_GUIDE_FIELD);
+				}
+				if(userGuideContent == null ) {
+					userGuideContent = new MetadataValueDTO();
+					userGuideContent.setMetadataFieldId(metadataField.getId());
 				}
 				if( infoEditor.getValue().isEmpty()) {
-					aboutContent.setValue( "" );
+					userGuideContent.setValue( "" );
 				}
 				else {
-					aboutContent.setValue( toXHTML( infoEditor.getValue() ) );
+					userGuideContent.setValue( toXHTML( infoEditor.getValue() ) );
 				}
-				metadataValueService.save(aboutContent);
+				
+				userGuideContent = metadataValueService.save(userGuideContent);
 				refreshInfo();
 				switchMode( LayoutMode.READ);
 			});
@@ -135,7 +152,7 @@ public class CsvImportView extends CvView  {
 				infoEditor,
 				buttonLayout
 			);
-		aboutLayout
+		userGuideLayout
 			.withStyleName("content-mainmenu")
 			.add( 
 				infoLayout, 
@@ -144,7 +161,7 @@ public class CsvImportView extends CvView  {
 		mainContainer
 			.withStyleName("center-mainmenu")
 			.add( 
-				aboutLayout
+				userGuideLayout
 			);
 	}
 	
@@ -166,10 +183,10 @@ public class CsvImportView extends CvView  {
 	}
 
 	private void refreshInfo() {
-		if( aboutContent != null &&  aboutContent.getValue() != null && !aboutContent.getValue().isEmpty()) {
+		if( userGuideContent != null &&  userGuideContent.getValue() != null && !userGuideContent.getValue().isEmpty()) {
 			contentInfo.setVisible( true );
 			notExistInfo.setVisible( false );
-			contentInfo.setValue( aboutContent.getValue() );
+			contentInfo.setValue( userGuideContent.getValue() );
 		}
 		else {
 			contentInfo.setVisible( false );
@@ -180,7 +197,7 @@ public class CsvImportView extends CvView  {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		// activate home button
-		topMenuButtonUpdateActive(4);
+		topMenuButtonUpdateActive(5);
 	}
 
 	@Override

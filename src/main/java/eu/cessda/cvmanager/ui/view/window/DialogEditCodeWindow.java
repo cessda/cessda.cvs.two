@@ -1,6 +1,8 @@
 package eu.cessda.cvmanager.ui.view.window;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.gesis.wts.domain.enumeration.Language;
 import org.slf4j.Logger;
@@ -26,6 +28,7 @@ import com.vaadin.ui.TextField;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -41,8 +44,9 @@ public class DialogEditCodeWindow extends MWindow {
 	
 	private final EventBus.UIEventBus eventBus;
 	private final I18N i18n;
+	private final CodeService codeService;
 
-	Binder<CodeDTO> binder = new Binder<CodeDTO>();
+	private Binder<CodeDTO> binder = new Binder<CodeDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
 	private MLabel lSourceNotation = new MLabel( "Code" );
@@ -80,12 +84,15 @@ public class DialogEditCodeWindow extends MWindow {
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
 	
-	MHorizontalLayout sourceRow = new MHorizontalLayout();
-	MHorizontalLayout sourceRowA = new MHorizontalLayout();
-	MHorizontalLayout sourceRowB = new MHorizontalLayout();
-
+	private MHorizontalLayout sourceRow = new MHorizontalLayout();
+	private MHorizontalLayout sourceRowA = new MHorizontalLayout();
+	private MHorizontalLayout sourceRowB = new MHorizontalLayout();
+	
+	private String tempNotation;
+	private String tempCompleteNotation;
+	
 	public DialogEditCodeWindow(I18N i18n, EventBus.UIEventBus eventBus, Language sLanguage, VocabularyDTO vocabularyDTO, 
-			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO) {
+			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, CodeService codeService) {
 		super( "Edit Code");
 		this.i18n = i18n;
 		this.language = sLanguage;
@@ -95,13 +102,14 @@ public class DialogEditCodeWindow extends MWindow {
 		this.version = versionDTO;
 		this.code = codeDTO;
 		this.concept = conceptDTO;
+		this.codeService = codeService;
 		
 		sourceNotation.withWidth("85%");
 		sourceNotation.setValue( code.getNotation() );
 		sourceNotation.setReadOnly( true );
 		
 		notation
-			.withReadOnly( true )
+//			.withReadOnly( true )
 			.withWidth("85%");
 		
 		Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
@@ -127,8 +135,12 @@ public class DialogEditCodeWindow extends MWindow {
 		
 		preferedLabel.setCaption( "Descriptive term (" + language + ")*");
 		description.setCaption( "Definition ("+ language +")*");
+				
+		tempCompleteNotation = concept.getNotation();
+		String actualCodeNotation = getCodeActualNotation( concept.getNotation() );
+		notation.setValue( actualCodeNotation );
+		tempNotation = actualCodeNotation;
 		
-		notation.setValue( concept.getNotation() );
 		preferedLabel.setValue( concept.getTitle());
 		description.setValue( concept.getDefinition() );
 		
@@ -180,7 +192,9 @@ public class DialogEditCodeWindow extends MWindow {
 		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.codeChangeTypes));
 		changeCb.setTextInputAllowed(false);
 	//	changeCb.setEmptySelectionAllowed(false);
-		changeDesc.setWidth("100%");
+		changeDesc
+			.withFullWidth()
+			.withValue( this.concept.getTitle() );
 		changeBox
 			.withStyleName("change-block")
 			.add( 
@@ -328,13 +342,46 @@ public class DialogEditCodeWindow extends MWindow {
 			.withContent(layout);
 	}
 
+	private String getCodeActualNotation( String codeValue) {
+		int lastDotIndex = concept.getNotation().lastIndexOf( '.' );
+		if( lastDotIndex > 0)
+			return codeValue.substring( lastDotIndex + 1 );
+		
+		return codeValue;
+	}
+
 	private void saveCode() {
 		if(!isInputValid())
 			return;
 		
 		// store the changes
+		String completeNotation = (code.getParent() != null ? code.getParent() + "." : "") + notation.getValue();
 		WorkspaceManager.saveCode(vocabulary, version, code,  null, concept, 
-			notation.getValue(), preferedLabel.getValue(), description.getValue());
+			completeNotation, preferedLabel.getValue(), description.getValue());
+		
+		if( !tempNotation.equals( notation.getValue()) ) {
+			// check children notation change
+			List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
+			List<CodeDTO> codesNeedUpdate = workflowCodes.stream()
+					.sorted((c1,c2) -> c1.getPosition().compareTo( c2.getPosition()))
+					.filter( p -> p.getPosition() > code.getPosition())
+					.filter( p -> p.getNotation().contains( tempCompleteNotation ) )
+					.collect(Collectors.toList());
+			
+			if( codesNeedUpdate != null && !codesNeedUpdate.isEmpty()) {
+				for(CodeDTO toUpdateCode : codesNeedUpdate) {
+					// get corresponding child concepts
+					ConceptDTO.getConceptFromCode( version.getConcepts(), toUpdateCode.getId()).ifPresent(
+						toUpdateConcept -> {
+							String updatedNotation = toUpdateCode.getNotation().replaceFirst(toUpdateCode.getParent(), completeNotation);
+							WorkspaceManager.saveCode(vocabulary, version, toUpdateCode,  null, toUpdateConcept, 
+									updatedNotation, toUpdateConcept.getTitle(), toUpdateConcept.getDefinition());
+						}
+					);
+				}
+			}
+			 
+		}
 		
 		// save changes log
 		if( changeBox.isVisible() && changeCb.getValue() != null)

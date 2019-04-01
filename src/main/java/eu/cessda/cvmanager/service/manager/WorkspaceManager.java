@@ -203,9 +203,20 @@ public class WorkspaceManager {
 		// if notation null, it means the TL concept is saved
 		if( notation == null )
 			notation = code.getNotation();
+		else {
+			if( !notation.equals( code.getNotation()))
+				code.setNotation(notation);
+		}
+		
+		int lastDotIndex = notation.lastIndexOf( '.' );
+		if( lastDotIndex > 0) {
+			code.setParent( notation.substring(0, lastDotIndex));
+			concept.setParent( code.getParent());
+		}
 		
 		boolean isSaveUpdateSlConcept = vocabulary.getSourceLanguage().equals( version.getLanguage());
-
+		
+		concept.setNotation( notation );
 		concept.setUri( WorkflowUtils.generateCodeUri(version.getUri(), version.getNotation(), notation, version.getLanguage()));
 		concept.setTitle( term );
 		concept.setDefinition( definition );
@@ -226,19 +237,20 @@ public class WorkspaceManager {
 				TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
 				
 				if( parentCode == null) {	// if root code
-					concept.setNotation( notation );
 					code.setNotation( notation );
 					code.setUri( code.getNotation() );
 					codeTreeData.addRootItems(code);
 					
 				} else { // if child code
-					code.setNotation( parentCode.getNotation() + "." + notation);
+					String completeNotation = parentCode.getNotation() + "." + notation;
+					code.setNotation( completeNotation );
 					code.setUri( code.getNotation() );
 					code.setParent( parentCode.getNotation());
 					codeTreeData.addItem(parentCode, code);
 					
-					concept.setNotation( parentCode.getNotation() + "." + notation);
+					concept.setNotation( completeNotation );
 					concept.setParent(parentCode.getNotation());
+					concept.setUri( WorkflowUtils.generateCodeUri(version.getUri(), version.getNotation(), completeNotation, version.getLanguage()));
 				}
 				
 				// save changes on position and parent
@@ -270,7 +282,6 @@ public class WorkspaceManager {
 		} 
 		// update concept
 		else {
-			// TODO - update the concept and code notation, as well the children affected
 			code = codeService.save( code );
 			concept = conceptService.save( concept );
 		}

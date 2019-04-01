@@ -9,6 +9,7 @@ import org.gesis.wts.service.RoleService;
 import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
 import org.gesis.wts.service.dto.AgencyDTO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
@@ -23,6 +24,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageProfile;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class AgencyActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
@@ -32,6 +34,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	private final AgencyService agencyService;
 	private final UserAgencyService userAgencyService;
 	private final LicenceService licenceService;
+	private final BCryptPasswordEncoder encrypt;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -51,7 +54,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	
 	public AgencyActionLayout(String titleHeader, String showHeader, I18N i18n, UIEventBus eventBus, 
 			AgencyDTO agency, UserService userService, RoleService roleService, AgencyService agencyService,
-			LicenceService licenceService, UserAgencyService userAgencyService) {
+			LicenceService licenceService, UserAgencyService userAgencyService, BCryptPasswordEncoder encrypt) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
 		this.eventBus = eventBus;
@@ -62,6 +65,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
 		this.i18n = i18n;
+		this.encrypt = encrypt;
 		init();
 	}
 
@@ -86,7 +90,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 	}
 
 	private void doManageMember(ClickEvent event ) {
-		Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, i18n, locale);
+		Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, encrypt, i18n, locale);
 		getUI().addWindow(window);
 	}
 	
@@ -149,11 +153,18 @@ public class AgencyActionLayout extends ResponsiveBlock{
 			setVisible( false );
 		}
 		else {
-			setVisible( true );
-			hasAction = true;
-			buttonManageMember.setVisible( true );
-			buttonManageProfile.setVisible( true );
+			buttonManageMember.setVisible( false );
+			buttonManageProfile.setVisible( false );
 			
+			if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl(agency)) {
+				buttonManageMember.setVisible( true );
+				buttonManageProfile.setVisible( true );
+			}
+			
+			if( buttonManageMember.isVisible() ) {
+				setVisible( true );
+				hasAction = true;
+			}
 		}
 		
 		return hasAction;

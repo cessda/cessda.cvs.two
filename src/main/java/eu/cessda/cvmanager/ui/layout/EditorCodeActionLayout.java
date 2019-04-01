@@ -166,7 +166,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		
 		Window window = new DialogEditCodeWindow(
 				i18n, eventBus, selectedLanguage, vocabulary, currentVersion, 
-				currentCode, currentConcept);
+				currentCode, currentConcept, codeService);
 		
 		getUI().addWindow(window);
 	}

@@ -1,7 +1,10 @@
 package eu.cessda.cvmanager.ui.view.window;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
@@ -20,24 +23,29 @@ import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
+import eu.cessda.cvmanager.domain.Licence;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.I18N;
+import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.manager.WorkflowManager;
 import eu.cessda.cvmanager.ui.layout.CvComparatorLayout;
+import eu.cessda.cvmanager.ui.layout.DialogMSLicenseLayout;
 import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.utils.VersionUtils;
@@ -51,6 +59,7 @@ public class DialogManageStatusWindow extends MWindow {
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
 	private final ConceptService conceptService;
+	private final LicenceService licenceService;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -68,13 +77,13 @@ public class DialogManageStatusWindow extends MWindow {
 	private MCssLayout discussionBlock = new MCssLayout();
 	private MLabel discussionTitle = new MLabel();
 	private TextArea discussionArea = new TextArea();
-	private MButton buttonDiscussionSave = new MButton("Save Notes");
+	private MButton buttonDiscussionSave = new MButton("Save notes");
 	
 	private MCssLayout statusBlock = new MCssLayout();
 	private MLabel statusTitle = new MLabel( "Status" );
-	private MLabel statusInfo = new MLabel( "Change CV' status from to" );
-	private MButton buttonReviewInitial = new MButton("Initial Review");
-	private MButton buttonReviewFinal = new MButton("Final Review");
+	private MLabel statusInfo = new MLabel( "Change CV status from to" );
+	private MButton buttonReviewInitial = new MButton("Initial review");
+	private MButton buttonReviewFinal = new MButton("Final review");
 	private MButton buttonStatusCancel = new MButton("Cancel", e -> this.close());
 	private MCssLayout statusButtonLayout = new MCssLayout();
 	
@@ -89,6 +98,7 @@ public class DialogManageStatusWindow extends MWindow {
 	private MLabel versionNumberLabel = new MLabel();
 	private MCssLayout tlCloneInfoLayout = new MCssLayout();
 	private MCssLayout versionButtonLayout = new MCssLayout();
+	private MLabel licenseLabel = new MLabel();
 	
 	private MLabel versionSeparator1 = new MLabel("<strong>.</strong>").withContentMode( ContentMode.HTML );
 	private MLabel versionSeparator2 = new MLabel("<strong>.</strong>").withContentMode( ContentMode.HTML );
@@ -105,6 +115,7 @@ public class DialogManageStatusWindow extends MWindow {
 	private String versionNumberTL = "1.0.1";
 	private String versionNumberPastSl = "0.9";
 	private String versionNumberPastTl = "1.0.0";
+	private VersionDTO latestPublishedSl;
 	
 	private MCssLayout comparatorBlock = new MCssLayout();
 	private MCssLayout comparatorContainer = new MCssLayout().withFullWidth();
@@ -113,14 +124,19 @@ public class DialogManageStatusWindow extends MWindow {
 	private CvComparatorLayout comparatorLayout;
 	private MButton comparatorLayoutToggle = new MButton("Show comparison with previous version");
 
+	private List<LicenceDTO> licenses;
+	private DialogMSLicenseLayout licanseContent;
+	
 	public DialogManageStatusWindow(
 			ConceptService conceptService, VersionService versionService,
 			CVScheme cvScheme, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, 
 			Language selectedLanguage, Language sourceLanguage, AgencyDTO agencyDTO, 
-			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
+			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService,
+			LicenceService licenceService) {
 		super("Manage Status " + ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase());
 		this.conceptService = conceptService;
 		this.versionService = versionService;
+		this.licenceService = licenceService;
 		this.cvScheme = cvScheme;
 		
 		this.agency = agencyDTO;
@@ -131,6 +147,7 @@ public class DialogManageStatusWindow extends MWindow {
 		
 		this.eventBus = eventBus;
 		this.vocabularyChangeService = vocabularyChangeService;
+		
 		init();
 	}
 
@@ -285,6 +302,7 @@ public class DialogManageStatusWindow extends MWindow {
 					versionNumberSL = versionNumberSL.substring(0, lastDotIndex + 1) + (Integer.parseInt(lastNumber) + 1);
 				}
 				else {
+					latestPublishedSl = slPublish;
 					versionNumberTL = versionNumberSL + ".1";
 					versionNumberPastTl = versionNumberSL + ".0";
 					vocabulary.getLatestVersionByLanguage( currentVersion.getLanguage(), null, Status.PUBLISHED.toString()).ifPresent( tlPublish -> {
@@ -356,8 +374,10 @@ public class DialogManageStatusWindow extends MWindow {
 					}
 				}
 			}
-
 			
+			// initialize license 
+			licenses = licenceService.findAll();
+			licanseContent = new DialogMSLicenseLayout(agency, currentVersion, licenses);
 		}
 		
 		buttonPublishCv
@@ -377,14 +397,16 @@ public class DialogManageStatusWindow extends MWindow {
 		versionInfo
 			.withContentMode( ContentMode.HTML)
 			.withFullWidth()
-			.withValue("<strong>\n" + I18N.get( "window.status.publishversion.text" ) + "</strong>");
+			.withValue("<strong>\n" + 
+			I18N.get( sourceLanguage.equals( selectedLanguage ) ? "window.status.publishversion.text.sl": "window.status.publishversion.text.tl" ) 
+			+ "</strong>");
 		
 		versionHistoryLayout
 			.withFullWidth()
 			.withHeight("200px")
 			.withStyleName( "yscroll","white-bg" )
 			.add(
-				new MLabel("Version History").withStyleName( "section-header" ).withFullWidth()
+				new MLabel("Version history").withStyleName( "section-header" ).withFullWidth()
 			);
 		
 		versionHistoryLayout
@@ -394,13 +416,18 @@ public class DialogManageStatusWindow extends MWindow {
 			
 		versionNotesLabel
 			.withFullWidth()
-			.withStyleName("section-header")
-			.withValue("Version Notes");
+			.withStyleName("section-header margintop15px")
+			.withValue("Version notes");
 		
 		versionChangesLabel
 			.withFullWidth()
-			.withStyleName("section-header")
-			.withValue("Version Changes");
+			.withStyleName("section-header margintop15px")
+			.withValue("Version changes");
+		
+		licenseLabel
+			.withFullWidth()
+			.withStyleName("section-header margintop15px")
+			.withValue("License");
 		
 		versionNotes.setWidth("100%");
 		versionNotes.setHeight("160px");
@@ -410,7 +437,7 @@ public class DialogManageStatusWindow extends MWindow {
 		
 		versionNumberLabel
 			.withStyleName("section-header","pull-left")
-			.withValue("Version Number: ");
+			.withValue("Version number: ");
 		
 		
 
@@ -448,6 +475,7 @@ public class DialogManageStatusWindow extends MWindow {
 				);
 		}
 		
+		
 		versionBlock
 			.withStyleName("section-block")
 			.withFullWidth()
@@ -458,6 +486,7 @@ public class DialogManageStatusWindow extends MWindow {
 				versionNotes,
 				versionChangesLabel,
 				versionChanges,
+				new MLabel().withFullWidth(),// separator
 				versionNumberLabel,
 				versionNumberField1,
 				versionSeparator1,
@@ -469,6 +498,11 @@ public class DialogManageStatusWindow extends MWindow {
 				versionButtonLayout
 			);
 		
+		if( currentVersion.getStatus().equals(Status.FINAL_REVIEW.toString())) {
+			versionBlock.addComponent(licanseContent, 6);
+			versionBlock.addComponent(licenseLabel, 6);
+		}
+		
 		comparatorContent
 			.add(comparatorLayout );
 		
@@ -478,7 +512,7 @@ public class DialogManageStatusWindow extends MWindow {
 			comparatorLayoutToggle.setVisible( false );
 			versionNotes.setVisible( false );
 			versionNotesLabel.setVisible( false );
-			versionInfo.withValue("<strong>Please make sure that version number is correct.</strong>");
+			versionInfo.withValue("<strong>" + I18N.get("window.status.publishversion.initial.text") + "</strong>");
 		} else {
 			comparatorLayoutToggle.addClickListener( e -> {
 				if( comparatorLayout.isVisible()) {
@@ -517,7 +551,7 @@ public class DialogManageStatusWindow extends MWindow {
 		else {
 			if( currentVersion.isInitialVersion())
 				this.withHeight("640px");
-			else
+			else 
 				this.withHeight("800px");
 		}
 		
@@ -560,13 +594,35 @@ public class DialogManageStatusWindow extends MWindow {
 	}
 	
 	private void forwardToPublish() {
+		// check if publishing TL, if all codes are translated
+		if( latestPublishedSl != null && !vocabulary.getSourceLanguage().equals(currentVersion.getLanguage())) {
+			Set<String> missingTranslationTL = getMissingTranslatedCode(latestPublishedSl, currentVersion);
+			if( !missingTranslationTL.isEmpty() ) {
+				ConfirmDialog.show( 
+						this.getUI(), 
+						"Codes Translation Missing",
+						"The descriptive term translations are missing on the following codes \""+ 
+						String.join("\", \"", missingTranslationTL )+"\". "
+						+ "Translating all descriptive terms is mandatory for publication. "
+						+ "Use export/download if you want to produce a copy of an unfinished translation.", 
+						"Ok", 
+						"Close",
+						dialog -> {
+							if( dialog.isConfirmed() ) {
+								closeDialog();
+							}
+					});
+				return;
+			}
+		}
+		
 		if( versionChanges.isVisible() && (versionChanges.getValue() == null || versionChanges.getValue().isEmpty())) {
-			Notification.show("Version Changes can not be empty");
+			Notification.show("Version changes can not be empty");
 			return;
 		}
 		
 		if( isVersionNumberEmpty()) {
-			Notification.show("Version Number can not be empty");
+			Notification.show("Version number can not be empty");
 			return;
 		}
 			
@@ -574,12 +630,12 @@ public class DialogManageStatusWindow extends MWindow {
 			System.out.println( getVersionNumber() + "  " + versionNumberPastSl + "  " + VersionUtils.compareVersion( getVersionNumber(), versionNumberPastSl));
 
 			if( VersionUtils.compareVersion(getVersionNumber(), versionNumberPastSl) <= 0) {
-				Notification.show("Version Number is lower or simillar with the last version");
+				Notification.show("Version number is lower or simillar with the last version");
 				return;
 			}
 		} else {
 			if( VersionUtils.compareVersion( getVersionNumber(), versionNumberPastTl) <= 0) {
-				Notification.show("Version Number is lower or simillar with the last version");
+				Notification.show("Version number is lower or simillar with the last version");
 				return;
 			}
 		}
@@ -623,6 +679,19 @@ public class DialogManageStatusWindow extends MWindow {
 
 	public void closeDialog() {
 		this.close();
+	}
+	
+	private Set<String> getMissingTranslatedCode(VersionDTO versionSL, VersionDTO versionTL) {
+		if( versionSL == null || versionSL.getConcepts() == null ||
+				versionTL == null || versionTL.getConcepts() == null)
+			return Collections.emptySet();
+		if(versionSL.getConcepts().size() != versionTL.getConcepts().size()) {
+			Set<String> notationSLs = versionSL.getConcepts().stream().map( c -> c.getNotation()).collect( Collectors.toSet());
+			Set<String> notationTLs = versionTL.getConcepts().stream().map( c -> c.getNotation()).collect( Collectors.toSet());
+			notationSLs.removeAll(notationTLs);
+			return notationSLs;
+		}
+		return Collections.emptySet();
 	}
 
 }

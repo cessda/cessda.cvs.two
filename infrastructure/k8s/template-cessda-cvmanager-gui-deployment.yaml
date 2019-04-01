@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: DEPLOYMENTNAME
-        image: eu.gcr.io/cessda-development/cvmanager-gui:master-latest
+        image: eu.gcr.io/cessda-development/cvmanager-gui:staging-latest
         #image: eu.gcr.io/cessda-development/cessda/cessda.cvmanager:latest
         imagePullPolicy: Always
         env:
@@ -23,16 +23,21 @@ spec:
         ports:
         - containerPort: 8080
           name: frontend-cport
-        imagePullPolicy: Always
         livenessProbe:
           httpGet:
-            path: /
+            path: /cvmanager/
             port: 8080
           initialDelaySeconds: 300
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
-            path: /
+            path: /cvmanager/
             port: 8080
           initialDelaySeconds: 5
           timeoutSeconds: 5
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2Gi
+          limits:
+            memory: 4Gi

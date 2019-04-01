@@ -1,6 +1,6 @@
 cvmanager:
   export:
-    filterTag: skos:canonicalUri,skos:publishedVersionsURI,skos:versionNotes,skos:priorVersion,skos:languages,skos:language
+    filterTag: skos:canonicalUri,skos:publishedVersionsURI,skos:versionNotes,skos:priorVersion,skos:languages,skos:language,skos:sourceLanguage,skos:ownerAgency,skos:updatingAgency,skos:versionChanges,skos:prefLabelInEdit,skos:definitionInEdit,skos:topConceptOf,skos:changeNote,skos:editor,skos:status
 ddiflatdb:
   rest:
     url: '@ddiflatdb.rest.url@'

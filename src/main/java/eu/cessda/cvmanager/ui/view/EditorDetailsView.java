@@ -66,6 +66,7 @@ import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.LicenceService;
+import eu.cessda.cvmanager.service.ResolverService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
@@ -106,6 +107,7 @@ public class EditorDetailsView extends CvView {
 	private final VocabularyChangeService vocabularyChangeService;
 	private final LicenceService licenceService;
 	private final CsvRowToConceptDTOMapper csvRowToConceptDTOMapper;
+	private final ResolverService resolverService;
 
 	private Language selectedLang = Language.ENGLISH;
 
@@ -177,7 +179,7 @@ public class EditorDetailsView extends CvView {
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
-			CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
+			ResolverService resolverService, CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, EditorDetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
@@ -188,6 +190,7 @@ public class EditorDetailsView extends CvView {
 		this.configService = configService;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.licenceService = licenceService;
+		this.resolverService = resolverService;
 		this.csvRowToConceptDTOMapper = csvRowToConceptDTOMapper;
 		eventBus.subscribe( this, EditorDetailsView.VIEW_NAME );
 	}
@@ -197,7 +200,7 @@ public class EditorDetailsView extends CvView {
 		
 		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, 
 				stardatDDIService, agencyService, vocabularyService, versionService, conceptService, codeService, 
-				configService, eventBus, vocabularyChangeService);
+				configService, eventBus, vocabularyChangeService, licenceService);
 		
 		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
 				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
@@ -281,7 +284,11 @@ public class EditorDetailsView extends CvView {
 					String selectedLanguage = mappedParams.get("lang");
 					if( selectedLanguage != null ) {
 						cvItem.setCurrentLanguage( mappedParams.get("lang") );
-						selectedLang = Language.getEnum( selectedLanguage );
+						try {
+							selectedLang = Language.getEnum( selectedLanguage );
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
 					}
 					if(  mappedParams.get("tab") != null )
 						activeTab = mappedParams.get("tab");
@@ -380,8 +387,8 @@ public class EditorDetailsView extends CvView {
 //			Notification.show("Unable to find vocabulary");
 			return;
 		}
-		// check for withdrawn vocabulary
 		
+		// check for withdrawn vocabulary
 		if( vocabulary.isWithdrawn()) {
 			vocabularyIsWithdrawn.removeAllComponents();
 			vocabularyIsWithdrawn
@@ -404,9 +411,7 @@ public class EditorDetailsView extends CvView {
 		
 		// get all available licenses
 			licenses = licenceService.findAll();
-				
-		Set<String> languages = vocabulary.getLanguages();
-		
+						
 		editorCvActionLayout.setVocabulary( vocabulary );
 		editorCodeActionLayout.setVocabulary( vocabulary );
 		
@@ -434,7 +439,25 @@ public class EditorDetailsView extends CvView {
 			}
 		}
 		
-		currentVersion = currentSLVersion;
+		// find correct version by selected language
+		if( selectedLang != null && !vocabulary.getSourceLanguage().equals( selectedLang.getLanguage())) {
+			vocabulary.getVersionByUriSlAndLangauge( cvItem.getCurrentCvId(), selectedLang.getLanguage())
+			.ifPresent( ver -> currentVersion = ver);
+		} else {
+			currentVersion = currentSLVersion;
+		}
+		
+		List<String> languages = new ArrayList<>();
+		// add tls if exist
+		if( vocabulary.getLanguages().size() > 1) {
+			languages.addAll( 
+				vocabulary.getLanguages().stream()
+					.filter( p -> !p.equals( vocabulary.getSourceLanguage()))
+					.sorted( (v1, v2) -> v2.compareTo( v1 ))
+					.collect( Collectors.toList()) );
+		}
+		// add source language
+		languages.add( vocabulary.getSourceLanguage() );
 		
 		languages.forEach(item -> {
 			Language eachLanguage = Language.getEnum(item);
@@ -584,7 +607,7 @@ public class EditorDetailsView extends CvView {
 				new MCssLayout()
 						.withStyleName("col-des-4")
 						.add(
-								lVersion.withWidth("140px").withStyleName("leftPart"),
+								lVersion.withWidth("110px").withStyleName("leftPart"),
 								versionLabel
 						)
 				);
@@ -594,7 +617,7 @@ public class EditorDetailsView extends CvView {
 					new MCssLayout()
 						.withStyleName("col-des-4")
 						.add(
-								lDate.withWidth("140px").withStyleName("leftPart"),
+								lDate.withWidth("160px").withStyleName("leftPart"),
 								new MLabel(currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 					);
 
@@ -716,10 +739,10 @@ public class EditorDetailsView extends CvView {
 		detailLayout.addComponents(detailTreeGrid);
 		detailLayout.setSizeFull();
 		
-		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService);
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService);
 		versionContentLayout.add( versionLayout );
 		
-		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, false);
+		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, resolverService, false);
 		identifyLayout.add( identityLayout );
 		
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
@@ -1003,8 +1026,29 @@ public class EditorDetailsView extends CvView {
 
 			case CVCONCEPT_DELETED:
 				
+				// get the editor's codes
+				List<CodeDTO> wCodeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+				// Find if code has children
+				List<CodeDTO> childWCodeDTOs = wCodeDTOs
+						.stream()
+						.filter( p -> p.getParent() != null )
+						.filter( p -> p.getParent().equals( code.getNotation()))
+						.collect( Collectors.toList());
+				String popUpDialogMessageKey = null;
+				if( childWCodeDTOs.isEmpty()) {
+					if( currentVersion.getItemType().equals(ItemType.SL.toString()))
+						popUpDialogMessageKey = "dialog.confirm.delete.code";
+					else
+						popUpDialogMessageKey = "dialog.confirm.delete.code.tl";
+				}else {
+					if( currentVersion.getItemType().equals(ItemType.SL.toString()))
+						popUpDialogMessageKey = "dialog.confirm.delete.code.and.child";
+					else
+						popUpDialogMessageKey = "dialog.confirm.delete.code.tl.and.child";
+				}
+					
 				ConfirmDialog.show( this.getUI(), "Confirm",
-				i18n.get( "dialog.confirm.delete.code", "\"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")"),
+				i18n.get( popUpDialogMessageKey, "\"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")"),
 				i18n.get("dialog.button.yes"),
 				i18n.get("dialog.button.cancel"),
 						

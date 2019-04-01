@@ -88,7 +88,7 @@ public class DialogAddLanguageWindow extends MWindow {
 
 	public DialogAddLanguageWindow(
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, UIEventBus eventBus) {
-		super("Add Language");
+		super(versionDTO.isPersisted()?"Edit CV Translation (" + versionDTO.getLanguage() + ")":"Add CV Translation (" + versionDTO.getLanguage()+ ")");
 		this.agency = agencyDTO;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
@@ -140,8 +140,13 @@ public class DialogAddLanguageWindow extends MWindow {
 		VersionDTO slVersion = null;
 		
 		Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
-		if(latestSlVersion.isPresent())
+		if(latestSlVersion.isPresent()) {
 			slVersion = latestSlVersion.get();
+			// copy license and ddi usage
+			version.setDdiUsage( slVersion.getDdiUsage());
+			version.setLicense( slVersion.getLicense());
+			version.setLicenseId( slVersion.getLicenseId() );
+		}
 		
 		sourceTitle
 			.withFullWidth()
@@ -192,7 +197,7 @@ public class DialogAddLanguageWindow extends MWindow {
 		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.cvChangeTypes));
 		changeCb.setTextInputAllowed(false);
 	//	changeCb.setEmptySelectionAllowed(false);
-		changeDesc.setWidth("100%");
+
 		changeBox
 			.withStyleName("change-block")
 			.add( 
@@ -266,26 +271,51 @@ public class DialogAddLanguageWindow extends MWindow {
 			);
 
 		if( version.isPersisted() ) {
-			layout
-			.add(
-				changeBox,
-				new MHorizontalLayout()
-					.withFullWidth()
-					.add( storeCode,
-						cancelButton
-					)
-					.withExpand(storeCode, 0.8f)
-					.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
-					.withExpand(cancelButton, 0.1f)
-					.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
-			)
-			.withExpand(layout.getComponent(0), 0.05f)
-			.withExpand(layout.getComponent(1), 0.35f)
-			.withExpand(layout.getComponent(2), 0.05f)
-			.withExpand(layout.getComponent(3), 0.35f)
-			.withExpand(layout.getComponent(4), 0.1f)
-			.withExpand(layout.getComponent(5), 0.1f)
-			.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
+			if( version.isInitialVersion() ) {
+				layout
+				.add(
+					new MHorizontalLayout()
+						.withFullWidth()
+						.add( storeCode,
+							cancelButton
+						)
+						.withExpand(storeCode, 0.8f)
+						.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
+						.withExpand(cancelButton, 0.1f)
+						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
+				)
+				.withExpand(layout.getComponent(0), 0.05f)
+				.withExpand(layout.getComponent(1), 0.35f)
+				.withExpand(layout.getComponent(2), 0.05f)
+				.withExpand(layout.getComponent(3), 0.35f)
+				.withExpand(layout.getComponent(4), 0.2f)
+				.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
+			} else {
+				changeDesc
+					.withWidth("100%")
+					.withValue( version.getTitle());
+				layout
+				.add(
+					changeBox,
+					new MHorizontalLayout()
+						.withFullWidth()
+						.add( storeCode,
+							cancelButton
+						)
+						.withExpand(storeCode, 0.8f)
+						.withAlign(storeCode, Alignment.BOTTOM_RIGHT)
+						.withExpand(cancelButton, 0.1f)
+						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
+				)
+				.withExpand(layout.getComponent(0), 0.05f)
+				.withExpand(layout.getComponent(1), 0.35f)
+				.withExpand(layout.getComponent(2), 0.05f)
+				.withExpand(layout.getComponent(3), 0.35f)
+				.withExpand(layout.getComponent(4), 0.1f)
+				.withExpand(layout.getComponent(5), 0.1f)
+				.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
+			}
+			
 		} else {
 			layout
 				.add(

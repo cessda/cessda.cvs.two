@@ -210,10 +210,14 @@ public class WorkflowManager {
 			case INITIAL_REVIEW:
 				// just save after change status
 				version = versionService.save(version);
+				// index for editor
+				vocabularyService.index(vocabulary);
 				break;
 			case FINAL_REVIEW:
 				// just save after change status
 				version = versionService.save(version);
+				// index for editor
+				vocabularyService.index(vocabulary);
 				break;
 			case PUBLISHED:
 				String uri =  version.getUri() + "/" + versionNumber;
@@ -223,7 +227,6 @@ public class WorkflowManager {
 				version.setVersionNotes( versionNotes);
 				version.setNumber( versionNumber );
 				version.setPublicationDate( LocalDate.now());
-				version.setLicenseId( agency.getLicenseId());
 				version.setVersionChanges( versionChanges );
 				version.setCanonicalUri(WorkflowUtils.generateVersionCanonicalURI(agency, version));
 				version.createSummary( versionChanges );
@@ -360,7 +363,9 @@ public class WorkflowManager {
 				
 				// add URN to resolver
 				try {
-					resolverService.save( 
+					// only store SL version, since TL can be resolve from SL
+					if( isVersionSl )
+						resolverService.save( 
 							ResolverDTO.createUrnResolver()
 								.withResourceId( version.getUri())
 								.withResourceURL( vocabulary.getNotation() + "?url=" + URLEncoder.encode( version.getUri(), "UTF-8")  )
@@ -452,7 +457,8 @@ public class WorkflowManager {
 		for( VersionDTO targetTLversion : latestTlVersions ) {
 			// create new version
 			VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), 
-					currentVersion.getNumber() + ".1", agency.getLicenseId(), WorkflowUtils.generateAgencyBaseUri( agency.getUri()));
+					currentVersion.getNumber() + ".1", currentVersion.getLicenseId(), 
+					WorkflowUtils.generateAgencyBaseUri( agency.getUri()), currentVersion.getDdiUsage());
 			newVersion.setUriSl( vocabulary.getUri());
 			newVersion = versionService.save(newVersion);
 			

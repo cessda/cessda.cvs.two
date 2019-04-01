@@ -525,6 +525,7 @@ public class VocabularyDTO implements Serializable {
 	
 	public void clearContent() {
 		setLanguages( null );
+		setStatuses( null );
 		setVersionCs(null);
 		setVersionDa(null);
 		setVersionNl(null);
@@ -684,6 +685,14 @@ public class VocabularyDTO implements Serializable {
 		if(this.statuses == null)
 			this.statuses = new HashSet<>();
 		this.statuses.add( status );
+		return this;
+	}
+	
+	public VocabularyDTO clearStatuses() {
+		if(this.statuses == null)
+			this.statuses = new HashSet<>();
+		else
+			this.statuses.clear();
 		return this;
 	}
 	
@@ -1510,6 +1519,20 @@ public class VocabularyDTO implements Serializable {
 		
 		else
 			return vers.stream().findFirst();
+	}
+	
+	public Optional<VersionDTO> getVersionByUriSlAndLangauge( String uriSl, String language){
+		if( language.equals( sourceLanguage )) {
+			return versions.stream()
+				.filter( p -> p.getUri().equals(uriSl))
+				.findFirst();
+		}
+		return versions.stream()
+			.filter( p -> p.getUriSl() != null )
+			.filter( p -> p.getUriSl().equals(uriSl))
+			.filter( p -> language.equals( p.getLanguage() ))
+			.findFirst();
+
 	}
 	
 	public Optional<VersionDTO> getLatestSlVersion( boolean isPublished){

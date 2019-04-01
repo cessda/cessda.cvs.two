@@ -44,7 +44,7 @@ public class VersionDTO implements Serializable {
 
     @Size(max = 20)
     private String language;
-    
+
     private LocalDateTime lastModified;
 
     private LocalDate publicationDate;
@@ -56,9 +56,9 @@ public class VersionDTO implements Serializable {
     private String summary;
 
     private String uri;
-    
+
     private String canonicalUri;
-    
+
     private String uriSl;
 
     @Size(max = 240)
@@ -77,40 +77,40 @@ public class VersionDTO implements Serializable {
     private Long creator;
 
     private Long publisher;
-    
+
     @Lob
     private String versionNotes;
-    
+
     private String versionChanges;
-    
+
     @Lob
     private String discussionNotes;
-    
+
     private String copyright;
-    
+
     private String license;
-    
+
     private Long licenseId;
-    
+
     private String citation;
-    
+
     private String ddiUsage;
-    
+
     private String translateAgency;
-    
+
     private String translateAgencyLink;
-    
+
     private Long vocabularyId;
 
     @JsonIgnore
     private Set<ConceptDTO> concepts = new HashSet<>();
-    
+
     public VersionDTO() {}
-    
+
     public static VersionDTO createDraft() {
 		return new VersionDTO().withStatus(Status.DRAFT);
 	}
-	
+
 	public VersionDTO withStatus(Status status) {
 		this.status = status.toString();
 		return this;
@@ -179,15 +179,26 @@ public class VersionDTO implements Serializable {
     public void setUri(String uri) {
         this.uri = uri;
     }
-    
+
 	public String getCanonicalUri() {
-		return canonicalUri;
+		if( canonicalUri == null )
+			return null;
+		
+		String formattedUrn = removeLanguageInformation(canonicalUri);
+		// format any TL URN to SL
+		int index = canonicalUri.lastIndexOf(":");
+		if( formattedUrn.substring(index + 1).chars().filter( ch -> ch == '.').count() == 2L) {
+			// remove last dot
+			index = canonicalUri.lastIndexOf(".");
+			formattedUrn = formattedUrn.substring(0, index);
+		}
+		return formattedUrn;
 	}
 
 	public void setCanonicalUri(String canonicalUri) {
 		this.canonicalUri = canonicalUri;
 	}
-    
+
     public String getUriSl() {
 		return uriSl;
 	}
@@ -259,15 +270,15 @@ public class VersionDTO implements Serializable {
     public void setConcepts(Set<ConceptDTO> concepts) {
         this.concepts = concepts;
     }
-    
+
     public VersionDTO addConcept( ConceptDTO concept ) {
     	if( this.concepts == null )
     		this.concepts = new HashSet<>();
-    	
+
     	this.concepts.add(concept);
     	return this;
     }
-    
+
     public Long getVocabularyId() {
 		return vocabularyId;
 	}
@@ -275,7 +286,7 @@ public class VersionDTO implements Serializable {
 	public void setVocabularyId(Long vocabularyId) {
 		this.vocabularyId = vocabularyId;
 	}
-	
+
 	public boolean isConceptExist(String newConcept) {
 		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getNotation().equals(newConcept)).findFirst();
 		if( findFirst.isPresent())
@@ -303,7 +314,7 @@ public class VersionDTO implements Serializable {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
-    
+
     public LocalDateTime getLastModified() {
 		return lastModified;
 	}
@@ -311,7 +322,7 @@ public class VersionDTO implements Serializable {
 	public void setLastModified(LocalDateTime lastModified) {
 		this.lastModified = lastModified;
 	}
-	
+
 	public String getVersionNotes() {
 		return versionNotes;
 	}
@@ -319,7 +330,7 @@ public class VersionDTO implements Serializable {
 	public void setVersionNotes(String versionNotes) {
 		this.versionNotes = versionNotes;
 	}
-	
+
 	public String getVersionChanges() {
 		return versionChanges;
 	}
@@ -327,7 +338,7 @@ public class VersionDTO implements Serializable {
 	public void setVersionChanges(String versionChanges) {
 		this.versionChanges = versionChanges;
 	}
-	
+
 	public String getDiscussionNotes() {
 		return discussionNotes;
 	}
@@ -335,7 +346,7 @@ public class VersionDTO implements Serializable {
 	public void setDiscussionNotes(String discussionNotes) {
 		this.discussionNotes = discussionNotes;
 	}
-	
+
 	public String getCopyright() {
 		return copyright;
 	}
@@ -351,7 +362,7 @@ public class VersionDTO implements Serializable {
 	public void setLicense(String license) {
 		this.license = license;
 	}
-	
+
 	public Long getLicenseId() {
 		return licenseId;
 	}
@@ -362,6 +373,12 @@ public class VersionDTO implements Serializable {
 
 	public String getCitation() {
 		return citation;
+	}
+	
+	public String getCitationPreview() {
+		if( citation == null)
+			return "";
+		return citation.replaceFirst(title, "<i>" + title + "</i>");
 	}
 
 	public void setCitation(String citation) {
@@ -375,7 +392,7 @@ public class VersionDTO implements Serializable {
 	public void setDdiUsage(String ddiUsage) {
 		this.ddiUsage = ddiUsage;
 	}
-	
+
 	public String getTranslateAgency() {
 		return translateAgency;
 	}
@@ -391,19 +408,19 @@ public class VersionDTO implements Serializable {
 	public void setTranslateAgencyLink(String translateAgencyLink) {
 		this.translateAgencyLink = translateAgencyLink;
 	}
-	
+
 	public boolean isInitialVersion() {
 		if(isPersisted()) {
 			if( initialVersion != null && initialVersion.equals( id ))
 				return true;
-		} 
+		}
 		return false;
 	}
-	
+
 	public List<ConceptDTO> getSortedConcepts(){
 		if( concepts == null )
 			return null;
-		return concepts.stream().sorted(Comparator.nullsLast(( c1, c2) -> { 
+		return concepts.stream().sorted(Comparator.nullsLast(( c1, c2) -> {
 			if( c1.getPosition() == null && c2.getPosition() == null )
 				return 0;
 			else if( c1.getPosition() == null  )
@@ -414,7 +431,7 @@ public class VersionDTO implements Serializable {
 		})).collect( Collectors.toList());
 	}
 
-	
+
 	@Override
     public String toString() {
         return "VersionDTO{" +
@@ -435,24 +452,24 @@ public class VersionDTO implements Serializable {
             ", publisher=" + getPublisher() +
             "}";
     }
-	
+
 	public static VersionDTO getLatestSourceVersion( Set<VersionDTO> versionDTOs) {
 		Optional<VersionDTO> latestSourceVersion = versionDTOs
 				.stream()
 				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
 				.filter( p -> p.itemType.equals( ItemType.SL.toString()))
 				.findFirst();
-		
+
 		if( latestSourceVersion.isPresent() )
 			return latestSourceVersion.get();
 		else
 			return null;
 	}
-	
+
 	public static Optional<VersionDTO> getLatestVersion( Set<VersionDTO> versionDTOs, String language, String status){
 		if( versionDTOs == null || versionDTOs.isEmpty() || language == null)
 			return Optional.empty();
-		
+
 		if( status != null ) {
 			return versionDTOs.stream()
 					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
@@ -464,16 +481,16 @@ public class VersionDTO implements Serializable {
 					.stream()
 					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
 					.filter( p -> language.equalsIgnoreCase( p.language )).findFirst();
-		
+
 	}
-		
+
 	public boolean isPersisted() {
 		return id != null;
 	}
-	
+
 	public static Map<String,List<VersionDTO>> generateVersionMap(Set<VersionDTO> versionDTOs){
 		Map<String,List<VersionDTO>> versionMap = new TreeMap<>();
-		
+
 		// first put into Map, sorted in natural key order
 		for(VersionDTO eachVerDTO : versionDTOs) {
 			String key = eachVerDTO.getItemType() + "_" + eachVerDTO.getLanguage();
@@ -484,36 +501,37 @@ public class VersionDTO implements Serializable {
 			}
 			versionDs.add(eachVerDTO);
 		}
-		
+
 		// sort version list
 		for(Map.Entry<String,List<VersionDTO>> eachVersions : versionMap.entrySet()) {
 			List<VersionDTO> eachValues = eachVersions.getValue();
-			
+
 			eachValues = eachValues.stream()
 						.sorted( (v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion()))
 						.collect( Collectors.toList());
 			versionMap.put( eachVersions.getKey(), eachValues);
 		}
-		
+
 		return versionMap;
-		
+
 	}
-	
+
 	public static String generateVersionInfo(List<VersionDTO> versionDTOs ) {
 		StringBuilder sb = new StringBuilder();
 		for(VersionDTO version: versionDTOs) {
 			sb.append("<strong> V." + version.getNumber() + "</strong></br>");
 			sb.append("Notes:</br>" + version.getVersionNotes() + "</br></br>");
 		}
-		
+
 		return sb.toString();
 	}
-	
-	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri) {
+
+	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri,
+			String ddiUsage) {
 		VersionDTO newVersion = new VersionDTO();
 		// generate uri
 		newVersion.setUri( agencyUri + targetVersion.getNotation() + "/" + targetVersion.getLanguage());
-		
+
 		newVersion.setStatus( Status.DRAFT.toString());
 		newVersion.setItemType( targetVersion.getItemType() );
 		newVersion.setLanguage( targetVersion.getLanguage() );
@@ -528,7 +546,10 @@ public class VersionDTO implements Serializable {
 		newVersion.setVocabularyId( targetVersion.getVocabularyId());
 		newVersion.setSummary( targetVersion.getSummary());
 		newVersion.setLicenseId(agencylicenseId);
-		newVersion.setDdiUsage( targetVersion.getDdiUsage() );
+		if( ddiUsage != null )
+			newVersion.setDdiUsage( ddiUsage );
+		else
+			newVersion.setDdiUsage( targetVersion.getDdiUsage() );
 		newVersion.setTranslateAgency( targetVersion.getTranslateAgency() );
 		newVersion.setTranslateAgencyLink( targetVersion.getTranslateAgencyLink() );
 		// clone concepts as well
@@ -536,32 +557,12 @@ public class VersionDTO implements Serializable {
 			ConceptDTO newConcept = ConceptDTO.clone(targetConcept, agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage());
 			newVersion.addConcept(newConcept);
 		}
-		
+
 		return newVersion;
 	}
-	
+
 	public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName) {
 		StringBuilder citation = new StringBuilder();
-		
-		/*
-SL
-DDI Alliance. (2016). Time Method (Version 1.2) [Controlled vocabulary]. CESSDA. 
-urn:ddi:int.ddi.cv:TimeMethod:1.2. Retrieved from: https://vocabularies.cessda.eu/TimeMethod_1.2/en.htm 
-CESSDA. (2018). CESSDA Topic Classification (Version 3.0) [Controlled vocabulary]. 
-urn:ddi:int.cessda.cv:TopicClassification:3.0. 
-Retrieved from: https://vocabularies.cessda.eu/TopicClassification_3.0/en.htm
-
-If a TL version, citation should be (if retrieved from CV Manager) :
-
-DDI Alliance. (2016). Erhebungsdesign [Time Method] (Version 1.2.1; GESIS, Transl.) 
-[Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TimeMethod:1.2. 
-Retrieved from: https://vocabularies.cessda.eu/TimeMethod_1.2.1/de.htm
-
-CESSDA. (2018). CESSDAn aihepiiriluokitus [CESSDA Topic Classification] 
-(Version 3.0.1; Finnish Social Science Data Archive, Transl.) 
-[Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. Retrieved from: https://vocabularies.cessda.eu/TopicClassification_3.0.1/fi.htm
-"
-		 */
 		citation.append( agencyName + ". " );
 		if( versionDto.getItemType().equals( ItemType.SL.toString()) ) {
 			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
@@ -569,31 +570,43 @@ CESSDA. (2018). CESSDAn aihepiiriluokitus [CESSDA Topic Classification]
 			if( !agencyName.toLowerCase().contains("cessda")) {
 				citation.append( "CESSDA. ");
 			}
-			citation.append( versionDto.getCanonicalUri() + ". ");		
+			citation.append( versionDto.getCanonicalUri() + ". ");
 		}
 		else {
 			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
-			citation.append( versionDto.getTitle() + "[" + versionDtoSl.getTitle()+ "]" + " (Version " + versionDto.getNumber() +
-			(versionDto.getTranslateAgency() == null ? "": "; " + versionDto.getTranslateAgency() ) + ", Transl.) [Controlled vocabulary]. ");
+			citation.append( versionDto.getTitle() + " [" + versionDtoSl.getTitle()+ "]" + " (Version " + versionDto.getNumber() +
+			(versionDto.getTranslateAgency() != null && !versionDto.getTranslateAgency().isEmpty() ? "; " + versionDto.getTranslateAgency() + ", Transl." : "") + ") [Controlled vocabulary]. ");
 			if( !agencyName.toLowerCase().contains("cessda")) {
 				citation.append( "CESSDA. ");
 			}
-			citation.append( versionDtoSl.getCanonicalUri() + ". ");		
+			citation.append( versionDtoSl.getCanonicalUri() + ". ");
 		}
-		
+
 		return citation.toString();
 	}
-	
+
 	public Status getEnumStatus() {
 		return Status.valueOf( getStatus().toUpperCase());
 	}
-	
+
 	public void createSummary( String versionChanges ) {
 		setSummary(
-			(getSummary() == null ? "":getSummary().replaceAll("(\r\n|\n)", "<br />")) +
 			"<strong>" + getNumber() + "</strong>"+
 			" &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Date of publication:" + getPublicationDate() +
-			"<br/>Notes:<br/>" + getVersionNotes() + (versionChanges != null && !versionChanges.isEmpty() ? "<br/>Changes:<br/>" + getVersionChanges() : "") + "<br/><br/>"
+			"<br/>Notes:<br/>" + getVersionNotes() + (versionChanges != null && !versionChanges.isEmpty() ? "<br/>Changes:<br/>" + getVersionChanges() : "") 
+			+ "<br/><br/>" +
+			(getSummary() == null ? "":getSummary().replaceAll("(\r\n|\n)", "<br />")) 
 		);
+	}
+	
+	private static String removeLanguageInformation(String canonicalUrlInput) {
+		if( canonicalUrlInput == null )
+			return null;
+		// find last dash from canonicalURI
+		int lastDashPosition = canonicalUrlInput.lastIndexOf( "-" );
+		// if found and
+		if( lastDashPosition == -1 || lastDashPosition < 20)
+			return canonicalUrlInput;
+		return canonicalUrlInput.substring(0, lastDashPosition);
 	}
 }
