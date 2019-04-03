@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package eu.cessda.cvmanager.service.controller;
 
@@ -38,7 +38,7 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 
 	final static Logger log = LoggerFactory.getLogger(CVManagerSuggestionProvider.class);
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 6069930989597789282L;
 
@@ -48,7 +48,7 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 	private List<String> localValues = new ArrayList<String>();
 
 	/**
-	 * 
+	 *
 	 */
 	public CVManagerSuggestionProvider() {
 		super();
@@ -102,14 +102,14 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 
 	/**
 	 * Fetch list of Manufacturers for auto-completion
-	 * 
+	 *
 	 * @return List<Manufacturer>
 	 * @version 1.0
 	 */
 	public List<String> fetchNames(String query) {
 
 		// suggest/{dataset}/{language}/{query}/{limit}
-		String url = "http://localhost:8080/cvmanager/suggest/dataset/foo/language/en/limit/20/query/" + query;
+		String url = "http://localhost:8080/suggest/dataset/foo/language/en/limit/20/query/" + query;
 
 		HttpHeaders headers = new HttpHeaders();
 		headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
