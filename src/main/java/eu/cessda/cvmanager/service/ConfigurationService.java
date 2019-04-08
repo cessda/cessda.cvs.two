@@ -30,6 +30,8 @@ public class ConfigurationService {
 	private String ddiflatdbRestUrl;
 
 	public String getServerContextPath() {
+		if( serverContextPath.equals("/"))
+			return "";
 		return serverContextPath;
 	}
 
