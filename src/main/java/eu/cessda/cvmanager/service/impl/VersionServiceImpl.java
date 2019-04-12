@@ -3,6 +3,7 @@ package eu.cessda.cvmanager.service.impl;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.domain.Concept;
 import eu.cessda.cvmanager.domain.Version;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.repository.ConceptRepository;
 import eu.cessda.cvmanager.repository.VersionRepository;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -20,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -195,6 +198,16 @@ public class VersionServiceImpl implements VersionService {
 	public VersionDTO findOneByNotationLangVersion(String notation, String languageIso, String versionNumber) {
 		Version version = versionRepository.findOneByNotationLangVersion(notation, languageIso, versionNumber);
 		return versionMapper.toDto( version );
+	}
+
+	@Override
+	public List<VersionDTO> getTLVersionBySLVersion(VersionDTO slVersion) {
+		if( !slVersion.getItemType().equals( ItemType.SL.toString() ))
+			return Collections.emptyList();
+		
+		return versionRepository.findAllByUriSl( slVersion.getUri() ).stream()
+		        .map(versionMapper::toDto)
+		        .collect(Collectors.toCollection(LinkedList::new));
 	}
 
 

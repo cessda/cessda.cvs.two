@@ -238,6 +238,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		getUI().addWindow(window);
 	}
 	
+	//TODO: review drop version
 	/**
 	 * Drop the current workflow (unpublish) version
 	 * @param event
@@ -257,16 +258,30 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 					if( latestVers.isPresent()) { // there is already exist published version
 						boolean reindexPublication = false;
 						if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
+							reindexPublication = true;
 							if( currentVersion.getStatus().equals(Status.PUBLISHED.toString())) {
-								reindexPublication = true;
-							
 								// check if it is the only SL version, if yes delete everything
 								if( currentVersion.getInitialVersion().equals( currentVersion.getId() )) {
 									vocabularyService.completeDelete(vocabulary);
 									UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
 									return;
 								}
-									
+								
+								// delete published in flatDB
+								List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(currentVersion.getUri(), DDIElement.CVSCHEME);
+								if( ddiSchemes != null && !ddiSchemes.isEmpty() ) {
+									CVScheme scheme = new CVScheme(ddiSchemes.get(0));
+									stardatDDIService.deleteScheme( scheme );
+								}
+							}
+							// delete TLs
+							for(VersionDTO eachTLversion: versionService.getTLVersionBySLVersion(currentVersion)) {
+								// remove all concepts
+								for(ConceptDTO c : eachTLversion.getConcepts()) {
+									conceptService.delete( c.getId());
+								}
+								// remove version
+								vocabulary.removeVersion(eachTLversion);
 							}
 							// remove workflow codes on vocabulary
 							for( CodeDTO code : workflowCodes )
@@ -289,6 +304,9 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							// remove version
 							vocabulary.removeVersion(currentVersion);
 							versionService.delete( currentVersion.getId());
+							
+							// get latest SL and update vocabulary URI
+							vocabulary.getLatestSlVersion(true).ifPresent( v -> { vocabulary.setUri( v.getUri());});
 							
 							vocabulary.getLanguages().clear();
 							vocabulary.addLanguage(latestVers.get().getLanguage());

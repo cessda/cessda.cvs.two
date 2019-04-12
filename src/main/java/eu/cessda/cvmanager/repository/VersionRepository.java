@@ -1,6 +1,7 @@
 package eu.cessda.cvmanager.repository;
 
 import eu.cessda.cvmanager.domain.Version;
+
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
@@ -27,4 +28,7 @@ public interface VersionRepository extends JpaRepository<Version, Long> {
 
     @Query( "select v from Version v where v.notation = :notation and v.language = :languageIso and v.number = :versionNumber" )
 	Version findOneByNotationLangVersion(@Param("notation")String notation, @Param("languageIso")String languageIso, @Param("versionNumber")String versionNumber);
+
+    @Query("select v from Version v where v.uriSl =:uriSl")
+	List<Version> findAllByUriSl(@Param("uriSl")String uriSl);
 }
