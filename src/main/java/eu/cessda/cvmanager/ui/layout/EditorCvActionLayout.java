@@ -281,6 +281,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 									conceptService.delete( c.getId());
 								}
 								// remove version
+								versionService.delete( eachTLversion.getId() );
 								vocabulary.removeVersion(eachTLversion);
 							}
 							// remove workflow codes on vocabulary
