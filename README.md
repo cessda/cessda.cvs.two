@@ -1,3 +1,7 @@
+DEPRECATED, see [cessda.cvmanager.beta](https://bitbucket.org/cessda/cessda.cvmanager.beta) instead
+
+
+
 # README #
 
 
