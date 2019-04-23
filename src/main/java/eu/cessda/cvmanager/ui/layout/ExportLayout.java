@@ -47,7 +47,9 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.data.TreeData;
+import com.vaadin.shared.Registration;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
@@ -57,6 +59,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.components.grid.HeaderCell;
+import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.renderers.ComponentRenderer;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -122,6 +126,29 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private MButton exportPdf = new MButton("Export Pdf").withStyleName("marginleft20");
 	private MButton exportHtml = new MButton("Export Html").withStyleName("marginleft20");
 	
+	private MCheckBox skosCheckBox = new MCheckBox("SKOS");
+	private MCheckBox pdfCheckBox = new MCheckBox("PDF");
+	private MCheckBox htmlCheckBox = new MCheckBox("HTML");
+	private boolean activateSkosListener = true;
+	private boolean activatePdfListener = true;
+	private boolean activateHtmlListener = true;
+	
+//	private ValueChangeListener<Boolean> skosCheckBoxListener =  e -> {
+//		activateSkosListener = false;
+////		skosCheckBox.setValue( true );
+//		exportCvItems.stream().filter( p -> !p.getExportSkosCb().getValue()).findFirst().ifPresent( export -> skosCheckBox.setValue( false ));
+//	};
+//	private ValueChangeListener<Boolean> pdfCheckBoxListener =  e -> {
+//		activatePdfListener = false;
+////		pdfCheckBox.setValue( true );
+//		exportCvItems.stream().filter( p -> !p.getExportPdfCb().getValue()).findFirst().ifPresent( export -> pdfCheckBox.setValue( false ));
+//	};
+//	private ValueChangeListener<Boolean> htmlCheckBoxListener =  e -> {
+//		activateHtmlListener = false;
+////		htmlCheckBox.setValue( true );
+//		exportCvItems.stream().filter( p -> !p.getExportHtmlCb().getValue()).findFirst().ifPresent( export -> htmlCheckBox.setValue( false ));
+//	};
+	
 	private Map<String, List<VersionDTO>> orderedLanguageVersionMap = new LinkedHashMap<>();
 	private boolean publishView;
 	private int year = LocalDate.now().getYear();
@@ -150,6 +177,8 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		if( !publishView )
 			exportSkos.setVisible( false );
 		
+		HeaderRow headerRow = exportGrid.getDefaultHeaderRow();
+		
 		exportGrid.addStyleNames("export-grid");
 		exportGrid.removeAllColumns();		
 		exportGrid
@@ -166,25 +195,49 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			.setCaption("Version")
 			.setExpandRatio( 2 )
 			.setId("versionClm");
-		if( publishView )
+		if( publishView ) {
 			exportGrid.addColumn( cVersion -> {
 				return cVersion.getExportSkosCb();
 				}, new ComponentRenderer())
 				.setCaption("Skos")
 				.setExpandRatio( 1 )
 				.setId("skosClm");
+			
+			headerRow.getCell("skosClm").setComponent( skosCheckBox );
+			
+			skosCheckBox.addValueChangeListener( e-> {
+				if( activateSkosListener )
+					exportCvItems.forEach( export -> export.getExportSkosCb().setValue( e.getValue()));
+				activateSkosListener = true;
+			});
+		}
 		exportGrid.addColumn( cVersion -> {
 			return cVersion.getExportPdfCb();
 			}, new ComponentRenderer())
 			.setCaption("Pdf")
 			.setExpandRatio( 1 )
 			.setId("pdfClm");
+		headerRow.getCell("pdfClm").setComponent( pdfCheckBox );
+		
+		pdfCheckBox.addValueChangeListener( e-> {
+			if( activatePdfListener )
+				exportCvItems.forEach( export -> export.getExportPdfCb().setValue( e.getValue()));
+			activatePdfListener = true;
+		});
+		
 		exportGrid.addColumn( cVersion -> {
 			return cVersion.getExportHtmlCb();
 			}, new ComponentRenderer())
 			.setCaption("Html")
 			.setExpandRatio( 1 )
 			.setId("htmlClm");
+		headerRow.getCell("htmlClm").setComponent( htmlCheckBox );
+		
+		htmlCheckBox.addValueChangeListener( e-> {
+			if( activateHtmlListener )
+				exportCvItems.forEach( export -> export.getExportHtmlCb().setValue( e.getValue()));
+			activateHtmlListener = true;
+		});
 		
 		gridLayout
 			.withFullSize()
@@ -537,7 +590,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		private List<VersionDTO> versions;
 		private ComboBox<VersionDTO> versionOption = new ComboBox<>();
 		public ExportCV(String language, List<VersionDTO> versions) {
-			this(language, versions, true,true,true);
+			this(language, versions, false,false,false);
 		}
 		public ExportCV(String language, List<VersionDTO> versions, boolean exportSkos, boolean exportPdf, boolean exportHtml) {
 			this.language = language;
@@ -545,6 +598,10 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			this.exportSkosCb.setValue( exportSkos );
 			this.exportPdfCb.setValue( exportPdf );
 			this.exportHtmlCb.setValue( exportHtml );
+			
+//			this.exportSkosCb.addValueChangeListener(skosCheckBoxListener);
+//			this.exportPdfCb.addValueChangeListener(pdfCheckBoxListener);
+//			this.exportHtmlCb.addValueChangeListener(htmlCheckBoxListener);
 			
 			this.versionOption.setItems( versions );
 			this.versionOption.setWidth("100%");
