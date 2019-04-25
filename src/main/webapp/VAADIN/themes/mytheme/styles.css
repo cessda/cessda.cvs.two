@@ -18298,6 +18298,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-radius: 2px 0 0 0;
 	font-family: "Source Sans Pro", sans-serif;
 	transition: all 0.3s;
+	z-index: 999;
 }
 
 .mytheme .atlwdg-trigger:hover {
