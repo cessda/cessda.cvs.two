@@ -2601,4 +2601,22 @@ $v-selection-item-border-radius: 0;
 		margin: 0;
    	 	padding: 0 15px;	
 	}
-}
+	
+	.atlwdg-trigger {
+		right: 0;
+		bottom: 0;
+		background-color: rgba(43,90,155,1) !important;
+		border: 1px solid transparent;
+		color: #fff !important;
+		font-size: 15px;
+		padding: 8px 10px;
+		-webkit-box-shadow: none;
+		box-shadow: none;
+		border-radius: 2px 0 0 0;
+		font-family: "Source Sans Pro", sans-serif;
+		transition: all 0.3s;
+	}
+
+	.atlwdg-trigger:hover {
+		background-color: rgba(43,90,155,0.85) !important; }
+	}

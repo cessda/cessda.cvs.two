@@ -33,6 +33,7 @@ import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
+import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -80,7 +81,7 @@ import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
 @SpringUI
 //@PreserveOnRefresh
 @EnableEventBus
-
+@JavaScript({"https://cessda.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-wkh05n/b/48/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-UK&collectorId=e39880c9"})
 public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private static final long serialVersionUID = -6435583434844959571L;
