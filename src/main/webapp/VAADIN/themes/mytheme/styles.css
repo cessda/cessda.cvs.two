@@ -18285,26 +18285,6 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 15px;
 }
 
-.mytheme .atlwdg-trigger {
-	right: 0;
-	bottom: 0;
-	background-color: #2b5a9b !important;
-	border: 1px solid transparent;
-	color: #fff !important;
-	font-size: 15px;
-	padding: 8px 10px;
-	-webkit-box-shadow: none;
-	box-shadow: none;
-	border-radius: 2px 0 0 0;
-	font-family: "Source Sans Pro", sans-serif;
-	transition: all 0.3s;
-	z-index: 999;
-}
-
-.mytheme .atlwdg-trigger:hover {
-	background-color: rgba(43, 90, 155, 0.85) !important;
-}
-
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;
@@ -18492,4 +18472,28 @@ div.v-layout.v-horizontal.v-widget {
 	.secondary-footer .privacy div {
 		text-align: center !important;
 	}
+}
+
+#atlwdg-trigger {
+	color: #fff !important;
+}
+
+.atlwdg-trigger {
+	right: 0;
+	bottom: 0;
+	background-color: #2b5a9b !important;
+	border: 1px solid transparent;
+	color: #fff !important;
+	font-size: 15px;
+	padding: 8px 10px;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	border-radius: 2px 0 0 0;
+	font-family: "Source Sans Pro", sans-serif;
+	transition: all 0.3s;
+	z-index: 999;
+}
+
+.atlwdg-trigger:hover {
+	background-color: rgba(43, 90, 155, 0.85) !important;
 }
