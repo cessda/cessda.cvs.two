@@ -243,6 +243,27 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 //			this.getUI().getNavigator().navigateTo(LoginView.NAVIGATETO_VIEWNAME);
 
 		}
+		
+		com.vaadin.ui.JavaScript.getCurrent().execute(
+			"var _paq = window._paq || [];\n" + 
+			"_paq.push([\"setDocumentTitle\", document.domain + \"/\" + document.title]);\n" + 
+			"_paq.push([\"setDomains\", [\".vocabularies.cessda.eu\", \".vocabularies-dev.cessda.eu\"]]);\n" + 
+			"_paq.push(['trackPageView']);\n" + 
+			"_paq.push(['enableLinkTracking']);\n" + 
+			"(function() {\n" + 
+			"    var u = \"//analytics.cessda.eu/\";\n" + 
+			"    _paq.push(['setTrackerUrl', u + 'matomo.php']);\n" + 
+			"    _paq.push(['setSiteId', '3']);\n" + 
+			"    var d = document,\n" + 
+			"        g = d.createElement('script'),\n" + 
+			"        s = d.getElementsByTagName('script')[0];\n" + 
+			"    g.type = 'text/javascript';\n" + 
+			"    g.async = true;\n" + 
+			"    g.defer = true;\n" + 
+			"    g.src = u + 'matomo.js';\n" + 
+			"    s.parentNode.insertBefore(g, s);\n" + 
+			"})();"
+		);
 	}
 
 	private void addHeader() {
