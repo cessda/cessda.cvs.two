@@ -1,6 +1,5 @@
 # OpenJDK Base Container
 FROM openjdk:8-jre
-# FROM eu.gcr.io/cessda-development/cessda-java:latest
 
 # Container Information
 LABEL MAINTAINER="CESSDA-ERIC 'support@cessda.eu'"

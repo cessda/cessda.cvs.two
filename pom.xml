@@ -617,8 +617,8 @@
 				<ddiflatdb.rest.url>http://cvs-flatdb:8080</ddiflatdb.rest.url>
 				<revision>${baseRevision}.${env.BUILD_NUMBER}</revision>
                 <spring.datasource.url>jdbc:mysql://cvs-mysql:3306/cvmanager-security?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
-				<spring.datasource.username>root</spring.datasource.username>
-				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
+				<spring.datasource.username>cvs-gui</spring.datasource.username>
+				<spring.datasource.password>cfnaF2bdSPqkEwM</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
 				<spring.data.elasticsearch.cluster-nodes>cvs-es:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
@@ -640,8 +640,8 @@
 				<server.port>8080</server.port>
 				<ddiflatdb.rest.url>http://cessda-cvmanager-storage-live-microservice:8080</ddiflatdb.rest.url>
                 <spring.datasource.url>jdbc:mysql://cessda-cvmanager-storage-live-persistence:3306/cvmanager-security?useSSL=false</spring.datasource.url>
-				<spring.datasource.username>cvs-gui</spring.datasource.username>
-				<spring.datasource.password>cfnaF2bdSPqkEwM</spring.datasource.password>
+				<spring.datasource.username>root</spring.datasource.username>
+                <spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
 				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
