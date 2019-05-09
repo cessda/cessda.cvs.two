@@ -19,7 +19,7 @@ pipeline {
 		stage('Build Project') {
 			steps {
                 withMaven {
-                    sh 'mvn clean install -DskipTests -Pdocker-compose'					
+                    sh 'mvn clean install -Pdocker-compose'					
 				}
 			}
 		}
@@ -29,6 +29,13 @@ pipeline {
                     withMaven {
                         sh 'mvn sonar:sonar -Pdocker-compose'
                     }
+                }
+            }
+        }
+        stage("Get Sonar Quality Gate") {
+            steps {
+                timeout(time: 1, unit: 'HOURS') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
@@ -48,12 +55,5 @@ pipeline {
                 }
             }
         }
-		/*stage('Check Requirements and Deployments') {
-			steps {
-				dir('./infrastructure/gcp/') {
-					sh("bash ${app_name}-creation.sh")
-				}
-			}
-		}*/
 	}
 }
