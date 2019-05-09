@@ -614,9 +614,9 @@
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <server.servlet.contextPath>/</server.servlet.contextPath>
 				<server.port>8080</server.port>
-				<ddiflatdb.rest.url>http://cvs-microservice:8080</ddiflatdb.rest.url>
-				<revision>${baseRevision}-${env.BUILD_NUMBER}</revision>
-                <spring.datasource.url>jdbc:mysql://cvs-persistence:3306/cvmanager-security?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
+				<ddiflatdb.rest.url>http://cvs-flatdb:8080</ddiflatdb.rest.url>
+				<revision>${baseRevision}.${env.BUILD_NUMBER}</revision>
+                <spring.datasource.url>jdbc:mysql://cvs-mysql:3306/cvmanager-security?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
 				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
