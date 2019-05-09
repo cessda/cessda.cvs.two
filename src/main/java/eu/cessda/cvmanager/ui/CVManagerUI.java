@@ -82,6 +82,7 @@ import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
 //@PreserveOnRefresh
 @EnableEventBus
 @JavaScript({"https://cessda.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-wkh05n/b/48/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-UK&collectorId=e39880c9"})
+@JavaScript({"vaadin://js/matomo-tracker.js"})
 public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private static final long serialVersionUID = -6435583434844959571L;
@@ -243,27 +244,6 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 //			this.getUI().getNavigator().navigateTo(LoginView.NAVIGATETO_VIEWNAME);
 
 		}
-		
-		com.vaadin.ui.JavaScript.getCurrent().execute(
-			"var _paq = window._paq || [];\n" + 
-			"_paq.push([\"setDocumentTitle\", document.domain + \"/\" + document.title]);\n" + 
-			"_paq.push([\"setDomains\", [\".vocabularies.cessda.eu\", \".vocabularies-dev.cessda.eu\"]]);\n" + 
-			"_paq.push(['trackPageView']);\n" + 
-			"_paq.push(['enableLinkTracking']);\n" + 
-			"(function() {\n" + 
-			"    var u = \"//analytics.cessda.eu/\";\n" + 
-			"    _paq.push(['setTrackerUrl', u + 'matomo.php']);\n" + 
-			"    _paq.push(['setSiteId', '3']);\n" + 
-			"    var d = document,\n" + 
-			"        g = d.createElement('script'),\n" + 
-			"        s = d.getElementsByTagName('script')[0];\n" + 
-			"    g.type = 'text/javascript';\n" + 
-			"    g.async = true;\n" + 
-			"    g.defer = true;\n" + 
-			"    g.src = u + 'matomo.js';\n" + 
-			"    s.parentNode.insertBefore(g, s);\n" + 
-			"})();"
-		);
 	}
 
 	private void addHeader() {
