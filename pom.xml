@@ -676,4 +676,8 @@
 		<system>Jenkins</system>
 		<url>https://jenkins.cessda.eu/</url>
 	</ciManagement>
+	<issueManagement>
+		<url>https://bitbucket.org/cessda/cessda.cvmanager.beta/issues</url>
+		<system>Bitbucket</system>
+	</issueManagement>
 </project>
