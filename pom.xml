@@ -29,7 +29,7 @@
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<gesis.repository.visibility>public</gesis.repository.visibility>
 		<!--Sonar Prop config: starts-->
-		<sonar.projectName>cessda.cvmanager.beta</sonar.projectName>
+		<sonar.projectName>CESSDA Vocabularies Service GUI</sonar.projectName>
 		<sonar-maven-plugin.version>3.6.0.1398</sonar-maven-plugin.version>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
@@ -670,7 +670,7 @@
 		<url>https://www.cessda.eu/</url>
 	</organization>
 	<scm>
-		<url>https://bitbucket.org/cessda/cessda.cvmanager.beta/</url>
+		<url>https://bitbucket.org/cessda/cessda.cvs.gui/</url>
 	</scm>
 	<ciManagement>
 		<system>Jenkins</system>
