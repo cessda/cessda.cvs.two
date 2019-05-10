@@ -2,7 +2,7 @@ pipeline {
 	environment {
         product_name = "cvs"
         module_name = "gui"
-        image_tag = "${docker_repo}/${product_name}-${module_name}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+        IMAGE_TAG = "${docker_repo}/${product_name}-${module_name}:${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
 	}
 
     agent {
@@ -15,7 +15,7 @@ pipeline {
                 echo "Check environment"
                 echo "product_name = ${product_name}"
                 echo "module_name = ${module_name}"
-                echo "image_tag = ${image_tag}"
+                echo "image_tag = ${IMAGE_TAG}"
             }
         }
 		stage('Build Project') {
@@ -47,13 +47,13 @@ pipeline {
                 withMaven {
                     sh 'mvn docker:build docker:push -Pdocker-compose'
                 }
-                sh("gcloud container images add-tag ${image_tag} ${docker_repo}/${product_name}-${module_name}:${env.BRANCH_NAME}-latest")
+                sh("gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${product_name}-${module_name}:${env.BRANCH_NAME}-latest")
             }
         }
         stage('Check Requirements and Deployments') {
             steps {
                 dir('./infrastructure/gcp/') {
-                    build job: 'cessda.cvs.deploy/master', parameters: [string(name: 'gui_image_tag', value: "${image_tag}"), string(name: 'module', value: 'gui')], wait: false
+                    build job: 'cessda.cvs.deploy/master', parameters: [string(name: 'gui_image_tag', value: "${IMAGE_TAG}"), string(name: 'module', value: 'gui')], wait: false
                 }
             }
         }

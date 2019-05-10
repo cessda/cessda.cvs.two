@@ -270,6 +270,7 @@
         <dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
+		    <version>3.7</version>
 	    </dependency>
 
 		<dependency>
@@ -372,7 +373,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>${maven-compiler-plugin.version}</version><!--$NO-MVN-MAN-VER$-->
+				<version>${maven-compiler-plugin.version}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
@@ -448,7 +449,7 @@
 				<configuration>
 					<images>
 						<image>
-							<name>${env.image_tag}</name>
+							<name>${env.IMAGE_TAG}</name>
 							<build>
 								<dockerFileDir>${project.basedir}/target/docker/generated</dockerFileDir>
 								<assembly>
