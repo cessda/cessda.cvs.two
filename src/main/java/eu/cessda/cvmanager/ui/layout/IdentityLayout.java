@@ -145,7 +145,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 			.add( saveButton, cancelButton);
 		
 		agencyValue
-			.setValue("&nbsp; <a href='" + baseUrl + "'>" + agency.getName()  +"</a> ");
+			.setValue("&nbsp; <a href='" + agency.getLink() + "' target='_blank'>" + agency.getName()  +"</a> ");
 		
 		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null && !version.getTranslateAgency().isEmpty()) {
 			agencyTransalteValue.setVisible( true );
@@ -225,7 +225,7 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 		if( version.getItemType().equals(ItemType.TL.toString()) && version.getTranslateAgency() != null && !version.getTranslateAgency().isEmpty()) {
 			agencyTransalteValue.setVisible( true );
 			agencyTransalteValue.setCaption("Agency translator");
-			agencyTransalteValue.setValue("&nbsp; <a href='" + version.getTranslateAgencyLink() + "'>" + version.getTranslateAgency()  +"</a> ");
+			agencyTransalteValue.setValue("&nbsp; <a href='" + version.getTranslateAgencyLink() + "' target='_blank'>" + version.getTranslateAgency()  +"</a> ");
 		} else
 			agencyTransalteValue.setVisible( false );
 	}
