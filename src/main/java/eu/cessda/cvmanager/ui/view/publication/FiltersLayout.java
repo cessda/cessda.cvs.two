@@ -141,7 +141,7 @@ public class FiltersLayout extends ResponsiveBlock{
 			if( esFilter.getField().equals(LANGS_AGG) || esFilter.getField().equals(LANGS_PUB_AGG) )
 				filterOption.setItemCaptionGenerator( lang -> {
 					int index = lang.lastIndexOf( "(" );
-					return Language.valueOfEnum( lang.substring( 0, index).trim() ).toStringCapitalized2() + lang.substring( index );
+					return Language.valueOfEnum( lang.substring( 0, index).trim() ).toStringCapitalized() + " " + lang.substring( index );
 				});
 			filterOption.setWidth("100%");
 			filterOption.addValueChangeListener( e -> {
@@ -165,7 +165,7 @@ public class FiltersLayout extends ResponsiveBlock{
 					.setValue( true );
 				if( esFilter.getField().equals(LANGS_AGG) || esFilter.getField().equals(LANGS_PUB_AGG) ) {
 					int index = e.lastIndexOf( "(" );
-					checkBox.setCaption( Language.valueOfEnum( e.substring( 0, index).trim() ).toStringCapitalized2() + e.substring( index ) );
+					checkBox.setCaption( Language.valueOfEnum( e.substring( 0, index).trim() ).toStringCapitalized() + " " + e.substring( index ) );
 				}
 					
 				items.add(checkBox);
@@ -174,9 +174,9 @@ public class FiltersLayout extends ResponsiveBlock{
 				checkBox.addValueChangeListener( event -> {
 					String selectedVal = event.getComponent().getCaption();
 					if( esFilter.getField().equals(LANGS_AGG) || esFilter.getField().equals(LANGS_PUB_AGG) ) {
-						int index1 = selectedVal.lastIndexOf( "_" );
+						int index1 = selectedVal.indexOf( "(" );
 						int index2 = selectedVal.lastIndexOf( "(" );
-						esFilter.getValues().remove( selectedVal.substring( index1  + 1, index2).trim() );
+						esFilter.getValues().remove( selectedVal.substring( index1  + 1, index2 - 1).trim() );
 					} else {
 						int index = selectedVal.lastIndexOf( "(" );
 						esFilter.getValues().remove( selectedVal.substring( 0, index).trim() );
