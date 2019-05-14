@@ -26,6 +26,7 @@ import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
+import eu.cessda.cvmanager.config.Constants;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
@@ -109,8 +110,10 @@ public class DialogEditCodeWindow extends MWindow {
 		sourceNotation.setReadOnly( true );
 		
 		notation
-//			.withReadOnly( true )
-			.withWidth("85%");
+			.withWidth("85%")
+			.addValueChangeListener( e -> {
+				((TextField)e.getComponent()).setValue( e.getValue().replaceAll(Constants.NOTATION_REGEX, ""));
+			});
 		
 		Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 		

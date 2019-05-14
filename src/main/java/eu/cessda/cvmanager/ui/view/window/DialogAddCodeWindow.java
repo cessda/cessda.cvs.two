@@ -25,6 +25,7 @@ import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
+import eu.cessda.cvmanager.config.Constants;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
@@ -119,8 +120,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		MHorizontalLayout row1 = new MHorizontalLayout();
 		
 		notation.addValueChangeListener( e -> {
-			//Only allow letter
-			((TextField)e.getComponent()).setValue( e.getValue().replaceAll("[^A-Za-z]", ""));
+			((TextField)e.getComponent()).setValue( e.getValue().replaceAll(Constants.NOTATION_REGEX, ""));
 		});
 		
 		if( parentCode != null )  {
