@@ -465,7 +465,6 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		String cvUrn = null;
 		// sort code
 		for( VersionDTO versionExp : exportVersions) {
-//			Set<ConceptDTO> orderedConcepts = new LinkedHashSet<>();
 			// change language format for printing
 			// if language length < 5
 			if( versionExp.getLanguage().length() < 5 ) // means language is still in the ISO format
@@ -479,6 +478,12 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 					versionExp.getConcepts().stream()
 					.sorted((c1,c2) -> c1.getPosition().compareTo(c2.getPosition()))
 					.collect(Collectors.toCollection(LinkedHashSet::new)));
+			
+			// find one canonicalUrl
+			if( cvUrn == null ) {
+				int index = versionExp.getCanonicalUri().lastIndexOf(":");
+				cvUrn = versionExp.getCanonicalUri().substring(0, index);
+			}
 		}
 		map.put("cvUrn", cvUrn);
 		map.put("versions", exportVersions);
