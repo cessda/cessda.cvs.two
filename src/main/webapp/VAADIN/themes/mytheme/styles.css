@@ -17231,7 +17231,7 @@ div.v-layout.v-horizontal.v-widget {
 	overflow: visible;
 	display: inline-block;
 	box-sizing: border-box;
-	padding: 0 30px;
+	padding: 0 20px;
 	vertical-align: middle;
 	font-size: 18px;
 	line-height: 38px;
@@ -18297,6 +18297,12 @@ div.v-layout.v-horizontal.v-widget {
 @media (max-width: 992px) {
 	.header-cessda .col-md-8 {
 		width: 100%;
+	}
+}
+
+@media (min-width: 793px) {
+	.discover-page .header-block {
+		display: none !important;
 	}
 }
 

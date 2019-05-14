@@ -34,7 +34,6 @@
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.exclusions>**/VAADIN/themes/*/*.css</sonar.exclusions>
-		<sonar.coverage.jacoco.xmlReportPaths>${project.build.directory}/site/jacoco.xml</sonar.coverage.jacoco.xmlReportPaths>
 		<jacoco-maven-plugin.version>0.8.3</jacoco-maven-plugin.version>
 		<!--Sonar Pros: ends-->
 		<mapstruct.version>1.2.0.Final</mapstruct.version>

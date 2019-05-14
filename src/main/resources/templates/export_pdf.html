@@ -132,9 +132,9 @@ div.CodeList {
 		        <dt th:if="${version.number != null}">Version:</dt>
 		        <dd th:if="${version.number != null}" th:text="${version.number}">1.0</dd>
 		        <dt th:if="${version.versionNotes != null and version.versionNotes != ''}">Version notes:</dt>
-		        <dd th:if="${version.versionNotes != null}" th:text="${version.versionNotes}"></dd>
-		        <dt th:if="${version.versionChanges != null}">Version changes:</dt>
-		        <dd th:if="${version.versionChanges != null}" th:text="${version.versionChanges}"></dd>
+		        <dd th:if="${version.versionNotes != null and version.versionNotes != ''}" th:text="${version.versionNotes}"></dd>
+		        <dt th:if="${version.versionChanges != null and version.versionChanges != ''}">Version changes:</dt>
+		        <dd th:if="${version.versionChanges != null and version.versionChanges != ''}" th:text="${version.versionChanges}"></dd>
 		        <dt th:if="${version.canonicalUri != null}">Canonical URI:</dt>
 		        <dd>
 		        	<a rel="canonical URN" th:href="${baseUrl + '/urn/' + cvUrn}" th:text="${cvUrn}"></a>

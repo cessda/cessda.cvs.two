@@ -158,7 +158,9 @@ public class DiscoveryView extends CvView {
 		
 		// assign to parent block
 		topPanel.add( searchTopLayout );
-		sidePanel.add( filterLayout );
+		sidePanel
+			.withStyleName("discover-page")
+			.add( filterLayout );
 		mainContainer.add( resultLayout );
 			
 	}

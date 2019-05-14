@@ -56,7 +56,7 @@ public class Breadcrumbs extends CustomComponent {
 		
 		linkMap.forEach( (k, v) -> {
 			if( v != null )
-				innerContainer.add( new MLabel( "&nbsp;›&nbsp;<a href='" + baseUrl + "/#!" + v + "'>" + k + "</a>" ).withContentMode( ContentMode.HTML ).withStyleName("pull-left"));
+				innerContainer.add( new MLabel( "&nbsp;›&nbsp;<a href='" + baseUrl + "/#!" + v.replace(" ", "%20") + "'>" + k + "</a>" ).withContentMode( ContentMode.HTML ).withStyleName("pull-left"));
 			else
 				innerContainer.add( new MLabel( "&nbsp;›&nbsp;" + k ).withContentMode( ContentMode.HTML ).withStyleName("pull-left"));
 		});
