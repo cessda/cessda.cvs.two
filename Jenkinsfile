@@ -1,4 +1,8 @@
 pipeline {
+    options {
+        buildDiscarder logRotator(artifactNumToKeepStr: '5', numToKeepStr: '10')
+    }
+
 	environment {
         product_name = "cvs"
         module_name = "gui"
