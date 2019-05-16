@@ -10,7 +10,7 @@ public final class Constants {
 
     public static final String DEFAULT_LANGUAGE = "en";
     
-    public static final String NOTATION_REGEX= "[^A-Za-z0-9]";
+    public static final String NOTATION_REGEX= "[^A-Za-z0-9-+:]";
     
     // Role
     public static final String[] USER_ROLE = {
