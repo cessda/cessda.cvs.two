@@ -6,6 +6,7 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.InnerHitBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -572,7 +573,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 				.should( QueryBuilders.matchQuery( "definition" + langIso, term).boost( 2.0f ));
 		}
 //		boolQuery.should( QueryBuilders.termQuery( "notation", term).boost( 2.0f ));
-		
+		// extend query with substring based term
+		boolQuery.should( QueryBuilders.queryStringQuery( "*" + term + "*" ).defaultOperator( Operator.AND ).analyzeWildcard( true ).boost( 1.0f ));
+
 		return boolQuery;
 	}
 	
