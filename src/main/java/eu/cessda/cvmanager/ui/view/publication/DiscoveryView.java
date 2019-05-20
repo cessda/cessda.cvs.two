@@ -238,10 +238,15 @@ public class DiscoveryView extends CvView {
 			case VOCABULARY_SEARCH:
 				esQueryResultDetail.clear();
 				esQueryResultDetail.setSearchTerm( (String) event.getPayload() );
-				sortByRelevence.setStyleName( "groupButton enable" );
-				sortByTitle.setStyleName( "groupButton disable" );
-				esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, "_score") );
-				refreshSearchResult();
+				String searchTerm = esQueryResultDetail.getSearchTerm();
+				if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 1) {
+					esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, "_score") );
+					sortByRelevence.setStyleName( "groupButton enable" );
+					sortByTitle.setStyleName( "groupButton disable" );
+					refreshSearchResult();
+				}
+				else 
+					sortByTitle.click();
 				break;
 			default:
 				break;

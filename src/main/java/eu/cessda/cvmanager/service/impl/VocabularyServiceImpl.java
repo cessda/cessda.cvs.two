@@ -60,6 +60,7 @@ import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyPublishMapper;
 import eu.cessda.cvmanager.ui.view.publication.EsFilter;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
+import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -340,6 +341,10 @@ public class VocabularyServiceImpl implements VocabularyService {
 	public EsQueryResultDetail search( EsQueryResultDetail esQueryResultDetail ) {
 		// get user keyword
 		String searchTerm = esQueryResultDetail.getSearchTerm();
+		
+		boolean doTermSearching = false;
+		if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 1)
+			doTermSearching = true;
 		// build query 
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
@@ -350,11 +355,13 @@ public class VocabularyServiceImpl implements VocabularyService {
 			.withPageable( esQueryResultDetail.getPage());
 		
 		// add sorting
-		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") )
+		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") && doTermSearching)
 			searchQueryBuilder.withSort( SortBuilders.scoreSort());
 		else {
-			Order order = esQueryResultDetail.getFirstSortOrder();
-			searchQueryBuilder.withSort( SortBuilders.fieldSort( order.getProperty()).order( order.getDirection().equals( Direction.ASC) ? SortOrder.ASC : SortOrder.DESC));
+			if( !esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score")) {
+				Order order = esQueryResultDetail.getFirstSortOrder();
+				searchQueryBuilder.withSort( SortBuilders.fieldSort( order.getProperty()).order( order.getDirection().equals( Direction.ASC) ? SortOrder.ASC : SortOrder.DESC));
+			}
 		}
 		
 		// add aggregation
@@ -384,17 +391,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 		generateAggregrationFilter(esQueryResultDetail, searchResponse);
 		
 		// update vocabulary based on highlight and inner hit
-		if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty()) {
+		if( doTermSearching ) {
 			applySearchHitAndHighlight(vocabularyPage, searchResponse);
-			
-			esQueryResultDetail.setVocabularies(vocabularyPage);
 		} else {
 			// remove unnecessary nested code entities
 			for( VocabularyDTO vocab : vocabularyPage.getContent())
 				vocab.setCodes( Collections.emptySet() );
-			// no search term then just assign vocabulary as it is
-			esQueryResultDetail.setVocabularies(vocabularyPage);
 		}
+		// set selected language in case language filter is selected with specific language
+		setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage, FiltersLayout.LANGS_AGG);
+
+		esQueryResultDetail.setVocabularies(vocabularyPage);
 		
 		return esQueryResultDetail;
 	}
@@ -485,8 +492,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 				declaredField.set(cvHit, highLightText.toString());
 				
 				setSelectedLanguageByHighlight( cvHit, fieldName );
-				
-//				if( cvHit.getSelectedLang() == null )
 			} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
@@ -561,7 +566,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
 	
 	public static QueryBuilder generateMainAndNestedQuery( String term ) {
-		if( term != null && !term.isEmpty())
+		if( term != null && !term.isEmpty() && term.length() > 1)
 			return QueryBuilders.boolQuery().should( generateMainQuery( term ) ).should( generateNestedQuery( term ) );
 		else
 			return QueryBuilders.matchAllQuery();
@@ -604,9 +609,12 @@ public class VocabularyServiceImpl implements VocabularyService {
 				.should( QueryBuilders.queryStringQuery( "*" + term + "*").field( CODE_PATH +".title" + langIso).field(CODE_PATH +".definition" + langIso));
 		}
 		
+		if( term.length() > 2)
+			return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
+					.innerHit( new InnerHitBuilder( CODE_PATH )
+					.setHighlightBuilder( nestedHighlightBuilder() ));
 		return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
-				.innerHit( new InnerHitBuilder( CODE_PATH )
-				.setHighlightBuilder( nestedHighlightBuilder() ));
+				.innerHit( new InnerHitBuilder( CODE_PATH ) );
 	}
 	
 	private static HighlightBuilder nestedHighlightBuilder() {
@@ -666,6 +674,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 	@Override
 	public EsQueryResultDetail searchPublished( EsQueryResultDetail esQueryResultDetail ) {
 		String searchTerm = esQueryResultDetail.getSearchTerm();
+		boolean doTermSearching = false;
+		if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 1)
+			doTermSearching = true;
 		// build query 
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
@@ -675,11 +686,13 @@ public class VocabularyServiceImpl implements VocabularyService {
 			.withPageable( esQueryResultDetail.getPage());
 		
 		// add sorting
-		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") )
+		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") && doTermSearching )
 			searchQueryBuilder.withSort( SortBuilders.scoreSort());
 		else {
-			Order order = esQueryResultDetail.getFirstSortOrder();
-			searchQueryBuilder.withSort( SortBuilders.fieldSort( order.getProperty()).order( order.getDirection().equals( Direction.ASC) ? SortOrder.ASC : SortOrder.DESC));
+			if( !esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score")) {
+				Order order = esQueryResultDetail.getFirstSortOrder();
+				searchQueryBuilder.withSort( SortBuilders.fieldSort( order.getProperty()).order( order.getDirection().equals( Direction.ASC) ? SortOrder.ASC : SortOrder.DESC));
+			}
 		}
 		
 		// add aggregation
@@ -688,7 +701,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			searchQueryBuilder.addAggregation(aggregration);
 		
 		// add highlighter
-		if( searchTerm != null && !searchTerm.isEmpty())
+		if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 2)
 			searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain() );
 		
 		// at the end build search query
@@ -709,19 +722,35 @@ public class VocabularyServiceImpl implements VocabularyService {
 		generateAggregrationFilter(esQueryResultDetail, searchResponse);
 		
 		// update vocabulary based on highlight and inner hit
-		if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty()) {
+		if( doTermSearching ) {
 			applySearchHitAndHighlight(vocabularyPage, searchResponse);
-			
-			esQueryResultDetail.setVocabularies(vocabularyPage);
 		} else {
 			// remove unnecessary nested code entities
 			for( VocabularyDTO vocab : vocabularyPage.getContent())
 				vocab.setCodes( Collections.emptySet() );
-			// no search term then just assign vocabulary as it is
-			esQueryResultDetail.setVocabularies(vocabularyPage);
 		}
+		// set selected language in case language filter is selected with specific language
+		setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage, FiltersLayout.LANGS_PUB_AGG);
+		
+		esQueryResultDetail.setVocabularies(vocabularyPage);
 		
 		return esQueryResultDetail;
+	}
+
+	private void setVocabularySelectedLanguage(EsQueryResultDetail esQueryResultDetail,
+			Page<VocabularyDTO> vocabularyPage, String fieldType) {
+		if( esQueryResultDetail.isAnyFilterActive() ) {
+			esQueryResultDetail.getEsFilterByField(fieldType).ifPresent( langFilter -> {
+				if( langFilter.getValues().size() == 1 ) {
+					for( VocabularyDTO vocab : vocabularyPage.getContent()){
+//						if( vocab.getSelectedLang() == null ) {
+							Language lang = Language.getEnum( langFilter.getValues().get(0));
+							vocab.setSelectedLang(lang);
+//						}
+					}
+				}
+			});
+		}
 	}
 
 	@Override
