@@ -518,12 +518,12 @@ public class VocabularyServiceImpl implements VocabularyService {
 							String fieldName = entry.getKey();
 							HighlightField highlighField = entry.getValue();
 							StringBuilder highLightText = new StringBuilder();
-							if( !fieldName.contains("title")) {
 								for( Text text: highlighField.getFragments()) {
-									if( !text.string().endsWith("."))
+									if( !fieldName.contains("title") && !text.string().endsWith("."))
 										highLightText.append( text.string() + " ... ");
+									else
+										highLightText.append( text.string() );
 								}
-							}
 							java.lang.reflect.Field declaredField = null;
 							try {
 								declaredField = CodeDTO.class.getDeclaredField( fieldName.substring( CODE_PATH.length() + 1 ) );
