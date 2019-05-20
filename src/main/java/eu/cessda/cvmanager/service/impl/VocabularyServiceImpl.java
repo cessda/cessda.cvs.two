@@ -518,8 +518,11 @@ public class VocabularyServiceImpl implements VocabularyService {
 							String fieldName = entry.getKey();
 							HighlightField highlighField = entry.getValue();
 							StringBuilder highLightText = new StringBuilder();
-							for( Text text: highlighField.getFragments()) {
-								highLightText.append( text.string() + "   ");
+							if( !fieldName.contains("title")) {
+								for( Text text: highlighField.getFragments()) {
+									if( !text.string().endsWith("."))
+										highLightText.append( text.string() + " ... ");
+								}
 							}
 							java.lang.reflect.Field declaredField = null;
 							try {
@@ -583,7 +586,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		List<HighlightBuilder.Field> fields = new ArrayList<>();
 		// all language fields
 		for(String langIso : Language.getCapitalizedEnum()) {
-			fields.add( new HighlightBuilder.Field( "title" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
+			fields.add( new HighlightBuilder.Field( "title" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>"));
 			fields.add( new HighlightBuilder.Field( "definition" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
 		}
 		return fields.toArray( new HighlightBuilder.Field[ fields.size() ] );
@@ -836,111 +839,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 		VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
 		vocabularyPublishSearchRepository.save( vocab );
 	}
-
-//	@Override
-//	public String createNewVersion(VocabularyDTO vocabulary, CvItem cvItem, Language language) {
-		// Flatdb - Clone for versioning
-		// 1. Clone CvScheme by creating new cvScheme
-		
-//		CVScheme newCvScheme = new CVScheme();
-//		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-//		newCvScheme.createId();
-//		newCvScheme.setContainerId(newCvScheme.getId());
-//		newCvScheme.setStatus( Status.DRAFT.toString() );
-//		
-//		newCvScheme.setOwnerAgency( cvItem.getCvScheme().getOwnerAgency());
-//		newCvScheme.setLanguages( cvItem.getCvScheme().getLanguages());
-//		newCvScheme.setCode( cvItem.getCvScheme().getCode() );
-//		newCvScheme.setTitle( cvItem.getCvScheme().getTitle());
-//		newCvScheme.setDescription( cvItem.getCvScheme().getDescription());
-//		
-//		newCvScheme.save();
-//		// store and update cvScheme
-//		DDIStore ddiStoreCvScheme = stardatDDIService.saveElement( newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Clone CVScheme");
-//		newCvScheme = new CVScheme(ddiStoreCvScheme);
-//		
-//		
-//		// 2. Clone CvConcept
-//		TreeData<CVConcept> cvConceptTreeData = cvItem.getCvConceptTreeData();
-//		// clone top concept
-//		for( CVConcept topConcept : cvConceptTreeData.getRootItems()) {
-//			// clone top concept 
-//			CVConcept newTopConcept = new CVConcept();
-//			newTopConcept.loadSkeleton(newTopConcept.getDefaultDialect());
-//			newTopConcept.createId();
-//			newTopConcept.setNotation( topConcept.getNotation());
-//			newTopConcept.setPrefLabel( topConcept.getPrefLabel() );
-//			newTopConcept.setDescription( topConcept.getDescription() );
-//			
-//			newTopConcept.setContainerId( newCvScheme.getContainerId());
-//			newTopConcept.save();
-//			DDIStore ddiStore = stardatDDIService.saveElement(newTopConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Clone root concept");
-//			// add top concept to CVScheme
-//			newCvScheme.addOrderedMemberList(ddiStore.getElementId());
-//			
-//			// clone and store code/concept children
-//			cloneChildConcept( newCvScheme, cvConceptTreeData, topConcept, newTopConcept);
-//			
-//		}
-//		// store changes on cvScheme
-//		newCvScheme.save();
-//		ddiStoreCvScheme = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Update clonned Top Concept");
-
-		// DB - Vocabulary versioning
-		// 1. VocabularyDTO set id to null, so it will be stored as a new entity
-		// detach vocabulary so it can be saved as another entity
-		
-//		no longer needed, only use one vocabulary
-//		detach(vocabulary);
-//		
-//		vocabulary.setId( null );
-		
-//		vocabulary.setUri( ddiStoreCvScheme.getElementId());
-//		vocabulary.setStatus( Status.DRAFT.toString() );
-		
-		// add new version
-//		VersionDTO version = VersionDTO.getLatestSourceVersion( vocabulary.getVersions());
-//		version.setPreviousVersion( version.getId() );
-//		version.setId( null );
-//		version.setUri( );
-//		version.setNumber("1.1");
-//		version.setStatus( Status.DRAFT.toString() );
-//		version.setInitialVersion( 0L );
-//		
-//		vocabulary.addVersions(version);
-//		vocabulary.addVers(version);
-//		
-//		// save to database
-//		vocabulary = save(vocabulary);
-//		
-//		// index
-//		index(vocabulary);
-//		
-//		return vocabulary.getNotation();
-//	}
-
-//	private void cloneChildConcept(CVScheme newCvScheme, TreeData<CVConcept> cvConceptTreeData, CVConcept parentConcept, CVConcept newParentConcept) {
-//		for( CVConcept childConcept : cvConceptTreeData.getChildren(parentConcept)){
-//			
-//			CVConcept newChildConcept = new CVConcept();
-//			newChildConcept.loadSkeleton(newChildConcept.getDefaultDialect());
-//			newChildConcept.createId();
-//			newChildConcept.setNotation( childConcept.getNotation());
-//			newChildConcept.setPrefLabel( childConcept.getPrefLabel() );
-//			newChildConcept.setDescription( childConcept.getDescription() );
-//			
-//			
-//			newChildConcept.setContainerId( newCvScheme.getContainerId());
-//			newChildConcept.save();
-//			DDIStore ddiStore = stardatDDIService.saveElement(newChildConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Clone child concept");
-//			
-//			newParentConcept.addOrderedNarrowerList( ddiStore.getElementId() );
-//			newParentConcept.save();
-//			DDIStore ddiStoreParentConcept = stardatDDIService.saveElement(newParentConcept.ddiStore, "User", "Add Code narrower");
-//			
-//			cloneChildConcept(newCvScheme, cvConceptTreeData, childConcept, newChildConcept);
-//		}
-//	}
 
 	@Override
 	public void detach(VocabularyDTO vocabularyDTO) {

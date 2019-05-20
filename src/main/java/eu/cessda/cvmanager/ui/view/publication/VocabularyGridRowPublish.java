@@ -185,7 +185,6 @@ public class VocabularyGridRowPublish extends CustomComponent {
 			baseUrl += "&lang=" + currentSelectedLanguage;
 		
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
-		log.info("URL is: " + slTitle.getValue());
 
 		tlTitle.setValue("<a href='" + baseUrl  + "'>" + vocabulary.getNotation() + "</a>");
 		desc.setValue( definition );
