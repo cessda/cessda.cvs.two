@@ -75,12 +75,15 @@
 
 	<distributionManagement>
 		<repository>
-			<id>gesis-${gesis.repository.visibility}-releases</id>
-			<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}-releases</url>
+			<id>cessda-nexus</id>
+			<name>CESSDA Nexus Repository</name>
+			<url>https://nexus.cessda.eu/repository/maven-releases</url>
 		</repository>
 		<snapshotRepository>
-			<id>gesis-${gesis.repository.visibility}-snapshots</id>
-			<url>https://maven.gesis.org/repositories/gesis-${gesis.repository.visibility}-snapshots</url>
+			<id>cessda-nexus-snapshot</id>
+			<name>CESSDA Nexus Snapshot Repository</name>
+			<url>https://nexus.cessda.eu/repository/maven-snapshots/</url>
+			<uniqueVersion>true</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
 
