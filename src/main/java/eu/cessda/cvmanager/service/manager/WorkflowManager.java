@@ -336,8 +336,9 @@ public class WorkflowManager {
 						cvScheme.setDescriptionByLanguage( version.getLanguage(), version.getDefinition());
 						cvScheme.save();
 						DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv " + version.getNotation() + " TL" + version.getLanguage());
-						//refresh cvScheme
-						cvScheme = new CVScheme(ddiStore);
+						// if ddiStore is null, means there is duplicated CVScheme
+						if( ddiStore != null )
+							cvScheme = new CVScheme(ddiStore);
 						// save  CvConcept
 						List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
 						Map<String, CVConcept> cvConceptMaps = new HashMap<>();
