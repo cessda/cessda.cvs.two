@@ -363,7 +363,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			searchQueryBuilder.addAggregation(aggregration);
 		
 		// add highlighter
-		if( searchTerm != null && !searchTerm.isEmpty())
+		if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 2)
 			searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain() );
 		
 		// at the end build search query
@@ -485,6 +485,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 				declaredField.set(cvHit, highLightText.toString());
 				
 				setSelectedLanguageByHighlight( cvHit, fieldName );
+				
+//				if( cvHit.getSelectedLang() == null )
 			} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
@@ -552,7 +554,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		if( cvHit.getSelectedLang() == null ) {
 			// get last language information from the field and get the Language enum
 			String langIso = highlightField.substring( highlightField.length() - 2, highlightField.length());
-			Language lang = Language.getEnum( langIso );
+			Language lang = Language.getEnum( langIso.toLowerCase() );
 			cvHit.setSelectedLang(lang);
 		}
 	}
@@ -572,12 +574,10 @@ public class VocabularyServiceImpl implements VocabularyService {
 		// all language fields
 		for(String langIso : Language.getCapitalizedEnum()) {
 			boolQuery
-				.should( QueryBuilders.matchQuery( "title" + langIso, term).boost( 3.0f ))
-				.should( QueryBuilders.matchQuery( "definition" + langIso, term).boost( 2.0f ));
+				.should( QueryBuilders.matchQuery( "title" + langIso, term).boost( 1000.0f ))
+				.should( QueryBuilders.matchQuery( "definition" + langIso, term).boost( 100.0f ))
+				.should( QueryBuilders.queryStringQuery( "*" + term + "*").field( "title" + langIso).field("definition" + langIso));
 		}
-//		boolQuery.should( QueryBuilders.termQuery( "notation", term).boost( 2.0f ));
-		// extend query with substring based term
-		boolQuery.should( QueryBuilders.queryStringQuery( "*" + term + "*" ).defaultOperator( Operator.AND ).analyzeWildcard( true ).boost( 1.0f ));
 
 		return boolQuery;
 	}
@@ -599,10 +599,10 @@ public class VocabularyServiceImpl implements VocabularyService {
 		// all language fields
 		for(String langIso : Language.getCapitalizedEnum()) {
 			boolQuery
-				.should( QueryBuilders.matchQuery( CODE_PATH +".title" + langIso, term).boost( 2.0f ))
-				.should( QueryBuilders.matchQuery( CODE_PATH +".definition" + langIso, term).boost( 1.0f ));
+				.should( QueryBuilders.matchQuery( CODE_PATH +".title" + langIso, term).boost( 1000.0f ))
+				.should( QueryBuilders.matchQuery( CODE_PATH +".definition" + langIso, term).boost( 10.0f ))
+				.should( QueryBuilders.queryStringQuery( "*" + term + "*").field( CODE_PATH +".title" + langIso).field(CODE_PATH +".definition" + langIso));
 		}
-//		boolQuery.should( QueryBuilders.termQuery( CODE_PATH +".notation", term).boost( 2.0f ));
 		
 		return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
 				.innerHit( new InnerHitBuilder( CODE_PATH )
