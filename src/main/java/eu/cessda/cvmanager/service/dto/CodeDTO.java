@@ -471,6 +471,15 @@ public class CodeDTO implements Serializable {
     	return this;
     }
     
+    public void clearCodeExcept(Set<String> languages) {
+    	Set<String> toBeRemoveLanguages = Language.getEnumAsSetString();
+    	toBeRemoveLanguages.removeAll(languages);
+    	
+    	for(String clearLang : toBeRemoveLanguages) {
+    		setTitleDefinition(null, null, Language.getEnum(clearLang), true);
+    	}
+    }
+    
     public void clearCode() {
     	setTitleCs(null);
 		setDefinitionCs(null);

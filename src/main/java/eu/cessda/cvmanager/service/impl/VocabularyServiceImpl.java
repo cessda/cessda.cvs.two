@@ -863,6 +863,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 		// get latest published codes
 		List<CodeDTO> publishedCodes = codeService.findByVocabularyAndVersion(vocabulary.getId(), version.getId());
+		for( CodeDTO pCode : publishedCodes)
+			pCode.clearCodeExcept( vocabulary.getLanguagesPublished());
 		vocabulary.setCodes( new HashSet<CodeDTO>(publishedCodes) );
 		
 		VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
