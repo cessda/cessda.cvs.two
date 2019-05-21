@@ -121,6 +121,12 @@ public class CodeDTO implements Serializable {
 
     @Lob
     private String definitionHu;
+    
+    @Lob
+    private String titleIt;
+    
+    @Lob
+    private String definitionIt;
 
     @Lob
     private String titleLt;
@@ -190,6 +196,8 @@ public class CodeDTO implements Serializable {
 			return titleEl;
 		case HUNGARIAN:
 			return titleHu;
+		case ITALIAN:
+			return titleIt;
 		case LITHUANIAN:
 			return titleLt;
 		case NORWEGIAN:
@@ -230,6 +238,8 @@ public class CodeDTO implements Serializable {
 			return definitionEl;
 		case HUNGARIAN:
 			return definitionHu;
+		case ITALIAN:
+			return definitionIt;
 		case LITHUANIAN:
 			return definitionLt;
 		case NORWEGIAN:
@@ -278,6 +288,9 @@ public class CodeDTO implements Serializable {
     			break;
     		case HUNGARIAN:
     			setTitleHu(title);
+    			break;
+    		case ITALIAN:
+    			setTitleIt(title);
     			break;
     		case LITHUANIAN:
     			setTitleLt(title);
@@ -335,6 +348,9 @@ public class CodeDTO implements Serializable {
     			break;
     		case HUNGARIAN:
     			setDefinitionHu(definition);
+    			break;
+    		case ITALIAN:
+    			setDefinitionIt(definition);
     			break;
     		case LITHUANIAN:
     			setDefinitionLt(definition);
@@ -411,6 +427,10 @@ public class CodeDTO implements Serializable {
     			setTitleHu(title);
     			setDefinitionHu(definition);
     			break;
+    		case ITALIAN:
+    			setTitleIt(title);
+    			setDefinitionIt(definition);
+    			break;
     		case LITHUANIAN:
     			setTitleLt(title);
     			setDefinitionLt(definition);
@@ -470,6 +490,8 @@ public class CodeDTO implements Serializable {
 		setDefinitionEl(null);
 		setTitleHu(null);
 		setDefinitionHu(null);
+		setTitleIt(null);
+		setDefinitionIt(null);
 		setTitleLt(null);
 		setDefinitionLt(null);
 		setTitleNo(null);
@@ -724,13 +746,29 @@ public class CodeDTO implements Serializable {
     public void setTitleHu(String titleHu) {
         this.titleHu = titleHu;
     }
-
-    public String getDefinitionHu() {
+    
+	public String getDefinitionHu() {
         return definitionHu;
     }
 
     public void setDefinitionHu(String definitionHu) {
         this.definitionHu = definitionHu;
+    }
+    
+    public String getTitleIt() {
+		return titleIt;
+	}
+
+	public void setTitleIt(String titleIt) {
+		this.titleIt = titleIt;
+	}
+
+	public String getDefinitionIt() {
+        return definitionIt;
+    }
+
+    public void setDefinitionIt(String definitionIt) {
+        this.definitionIt = definitionIt;
     }
 
     public String getTitleLt() {
@@ -910,6 +948,8 @@ public class CodeDTO implements Serializable {
             ", definitionEl='" + getDefinitionEl() + "'" +
             ", titleHu='" + getTitleHu() + "'" +
             ", definitionHu='" + getDefinitionHu() + "'" +
+            ", titleIt='" + getTitleIt() + "'" +
+            ", definitionIt='" + getDefinitionIt() + "'" +
             ", titleLt='" + getTitleLt() + "'" +
             ", definitionLt='" + getDefinitionLt() + "'" +
             ", titleNo='" + getTitleNo() + "'" +
@@ -1037,6 +1077,10 @@ public class CodeDTO implements Serializable {
 	    			code.setTitleHu(title);
 	    			code.setDefinitionHu(definition);
 	    			break;
+	    		case ITALIAN:
+	    			code.setTitleIt(title);
+	    			code.setDefinitionIt(definition);
+	    			break;
 	    		case LITHUANIAN:
 	    			code.setTitleLt(title);
 	    			code.setDefinitionLt(definition);
@@ -1135,6 +1179,7 @@ public class CodeDTO implements Serializable {
 		clonedCode.setTitleDe( code.getTitleDe());
 		clonedCode.setTitleEl( code.getTitleEl());
 		clonedCode.setTitleHu( code.getTitleHu());
+		clonedCode.setTitleIt( code.getTitleIt());
 		clonedCode.setTitleLt( code.getTitleLt());
 		clonedCode.setTitleNo( code.getTitleNo());
 		clonedCode.setTitlePt( code.getTitlePt());
@@ -1152,6 +1197,7 @@ public class CodeDTO implements Serializable {
 		clonedCode.setDefinitionDe( code.getDefinitionDe());
 		clonedCode.setDefinitionEl( code.getDefinitionEl());
 		clonedCode.setDefinitionHu( code.getDefinitionHu());
+		clonedCode.setDefinitionIt( code.getDefinitionIt());
 		clonedCode.setDefinitionLt( code.getDefinitionLt());
 		clonedCode.setDefinitionNo( code.getDefinitionNo());
 		clonedCode.setDefinitionPt( code.getDefinitionPt());

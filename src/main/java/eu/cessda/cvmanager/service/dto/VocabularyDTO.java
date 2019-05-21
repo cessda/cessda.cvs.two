@@ -186,6 +186,15 @@ public class VocabularyDTO implements Serializable {
 
     @Lob
     private String definitionHu;
+    
+    @Size(max = 20)
+    private String versionIt;
+    
+    @Lob
+    private String titleIt;
+    
+    @Lob
+    private String definitionIt;
 
     @Size(max = 20)
     private String versionLt;
@@ -282,6 +291,8 @@ public class VocabularyDTO implements Serializable {
 			return titleEl;
 		case HUNGARIAN:
 			return titleHu;
+		case ITALIAN:
+			return titleIt;
 		case LITHUANIAN:
 			return titleLt;
 		case NORWEGIAN:
@@ -322,6 +333,8 @@ public class VocabularyDTO implements Serializable {
 			return definitionEl;
 		case HUNGARIAN:
 			return definitionHu;
+		case ITALIAN:
+			return definitionIt;
 		case LITHUANIAN:
 			return definitionLt;
 		case NORWEGIAN:
@@ -362,6 +375,8 @@ public class VocabularyDTO implements Serializable {
 			return versionEl;
 		case HUNGARIAN:
 			return versionHu;
+		case ITALIAN:
+			return versionIt;
 		case LITHUANIAN:
 			return versionLt;
 		case NORWEGIAN:
@@ -423,6 +438,10 @@ public class VocabularyDTO implements Serializable {
     		case HUNGARIAN:
     			setTitleHu(title);
     			setDefinitionHu(definition);
+    			break;
+    		case ITALIAN:
+    			setTitleIt(title);
+    			setDefinitionIt(definition);
     			break;
     		case LITHUANIAN:
     			setTitleLt(title);
@@ -494,6 +513,9 @@ public class VocabularyDTO implements Serializable {
 			case HUNGARIAN:
 				setVersionHu(versionNumber);
 				break;
+			case ITALIAN:
+				setVersionIt(versionNumber);
+				break;
 			case LITHUANIAN:
 				setVersionLt(versionNumber);
 				break;
@@ -535,6 +557,7 @@ public class VocabularyDTO implements Serializable {
 		setVersionDe(null);
 		setVersionEl(null);
 		setVersionHu(null);
+		setVersionIt(null);
 		setVersionLt(null);
 		setVersionNo(null);
 		setVersionPt(null);
@@ -561,6 +584,8 @@ public class VocabularyDTO implements Serializable {
 		setDefinitionEl(null);
 		setTitleHu(null);
 		setDefinitionHu(null);
+		setTitleIt(null);
+		setDefinitionIt(null);
 		setTitleLt(null);
 		setDefinitionLt(null);
 		setTitleNo(null);
@@ -855,8 +880,24 @@ public class VocabularyDTO implements Serializable {
     public void setDefinitionHu(String definitionHu) {
         this.definitionHu = definitionHu;
     }
+    
+    public String getTitleIt() {
+		return titleIt;
+	}
 
-    public String getTitleLt() {
+	public void setTitleIt(String titleIt) {
+		this.titleIt = titleIt;
+	}
+	
+    public String getDefinitionIt() {
+        return definitionIt;
+    }
+
+    public void setDefinitionIt(String definitionIt) {
+        this.definitionIt = definitionIt;
+    }
+
+	public String getTitleLt() {
         return titleLt;
     }
 
@@ -1165,6 +1206,14 @@ public class VocabularyDTO implements Serializable {
 	public void setVersionHu(String versionHu) {
 		this.versionHu = versionHu;
 	}
+	
+	public String getVersionIt() {
+		return versionIt;
+	}
+
+	public void setVersionIt(String versionIt) {
+		this.versionIt = versionIt;
+	}
 
 	public String getVersionLt() {
 		return versionLt;
@@ -1288,6 +1337,8 @@ public class VocabularyDTO implements Serializable {
             ", definitionEl='" + getDefinitionEl() + "'" +
             ", titleHu='" + getTitleHu() + "'" +
             ", definitionHu='" + getDefinitionHu() + "'" +
+            ", titleIt='" + getTitleIt() + "'" +
+            ", definitionIt='" + getDefinitionIt() + "'" +
             ", titleLt='" + getTitleLt() + "'" +
             ", definitionLt='" + getDefinitionLt() + "'" +
             ", titleNo='" + getTitleNo() + "'" +
@@ -1396,6 +1447,11 @@ public class VocabularyDTO implements Serializable {
 	    			vocabulary.setTitleHu(title);
 	    			vocabulary.setDefinitionHu(definition);
 	    			vocabulary.setVersionHu(versionTL);
+	    			break;
+	    		case ITALIAN:
+	    			vocabulary.setTitleIt(title);
+	    			vocabulary.setDefinitionIt(definition);
+	    			vocabulary.setVersionIt(versionTL);
 	    			break;
 	    		case LITHUANIAN:
 	    			vocabulary.setTitleLt(title);

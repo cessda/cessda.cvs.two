@@ -7,7 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 @Entity
 @Table(name = "vocabulary-publish")
-@Document(indexName = "vocabulary-publish")
+@Document(indexName = "vocabulary-publish2")
 public class VocabularyPublish extends VocabularyBase{
 
 }
