@@ -155,11 +155,21 @@ public class Code implements Serializable {
     @Column(name = "title_hu")
     @Field(type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
     private String titleHu;
-
+    
     @Lob
     @Column(name = "definition_hu")
     @Field(type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
     private String definitionHu;
+    
+    @Lob
+    @Column(name = "title_it")
+    @Field(type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
+    private String titleIt;
+
+    @Lob
+    @Column(name = "definition_it")
+    @Field(type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
+    private String definitionIt;
 
     @Lob
     @Column(name = "title_lt")
@@ -584,8 +594,8 @@ public class Code implements Serializable {
     public void setTitleHu(String titleHu) {
         this.titleHu = titleHu;
     }
-
-    public String getDefinitionHu() {
+    
+	public String getDefinitionHu() {
         return definitionHu;
     }
 
@@ -596,6 +606,32 @@ public class Code implements Serializable {
 
     public void setDefinitionHu(String definitionHu) {
         this.definitionHu = definitionHu;
+    }
+    
+    public String getTitleIt() {
+		return titleIt;
+	}
+    
+    public Code titleIt(String titleIt) {
+        this.titleIt = titleIt;
+        return this;
+    }
+
+	public void setTitleIt(String titleIt) {
+		this.titleIt = titleIt;
+	}
+
+	public String getDefinitionIt() {
+        return definitionIt;
+    }
+
+    public Code definitionIt(String definitionIt) {
+        this.definitionIt = definitionIt;
+        return this;
+    }
+
+    public void setDefinitionIt(String definitionIt) {
+        this.definitionIt = definitionIt;
     }
 
     public String getTitleLt() {
@@ -905,6 +941,8 @@ public class Code implements Serializable {
             ", definitionEl='" + getDefinitionEl() + "'" +
             ", titleHu='" + getTitleHu() + "'" +
             ", definitionHu='" + getDefinitionHu() + "'" +
+            ", titleIt='" + getTitleIt() + "'" +
+            ", definitionIt='" + getDefinitionIt() + "'" +
             ", titleLt='" + getTitleLt() + "'" +
             ", definitionLt='" + getDefinitionLt() + "'" +
             ", titleNo='" + getTitleNo() + "'" +

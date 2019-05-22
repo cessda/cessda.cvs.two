@@ -60,6 +60,7 @@ import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.service.mapper.VocabularyPublishMapper;
 import eu.cessda.cvmanager.ui.view.publication.EsFilter;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
+import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -340,21 +341,27 @@ public class VocabularyServiceImpl implements VocabularyService {
 	public EsQueryResultDetail search( EsQueryResultDetail esQueryResultDetail ) {
 		// get user keyword
 		String searchTerm = esQueryResultDetail.getSearchTerm();
+		
+		boolean doTermSearching = false;
+		if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 1)
+			doTermSearching = true;
 		// build query 
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
 			.withSearchType(SearchType.DEFAULT)
 			// set the target index
-			.withIndices("vocabulary").withTypes("vocabulary")
+			.withIndices("vocabulary2").withTypes("vocabulary")
 			.withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
 			.withPageable( esQueryResultDetail.getPage());
 		
 		// add sorting
-		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") )
+		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") && doTermSearching)
 			searchQueryBuilder.withSort( SortBuilders.scoreSort());
 		else {
-			Order order = esQueryResultDetail.getFirstSortOrder();
-			searchQueryBuilder.withSort( SortBuilders.fieldSort( order.getProperty()).order( order.getDirection().equals( Direction.ASC) ? SortOrder.ASC : SortOrder.DESC));
+			if( !esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score")) {
+				Order order = esQueryResultDetail.getFirstSortOrder();
+				searchQueryBuilder.withSort( SortBuilders.fieldSort( order.getProperty()).order( order.getDirection().equals( Direction.ASC) ? SortOrder.ASC : SortOrder.DESC));
+			}
 		}
 		
 		// add aggregation
@@ -363,7 +370,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			searchQueryBuilder.addAggregation(aggregration);
 		
 		// add highlighter
-		if( searchTerm != null && !searchTerm.isEmpty())
+		if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 2)
 			searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain() );
 		
 		// at the end build search query
@@ -384,17 +391,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 		generateAggregrationFilter(esQueryResultDetail, searchResponse);
 		
 		// update vocabulary based on highlight and inner hit
-		if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty()) {
+		if( doTermSearching ) {
 			applySearchHitAndHighlight(vocabularyPage, searchResponse);
-			
-			esQueryResultDetail.setVocabularies(vocabularyPage);
 		} else {
 			// remove unnecessary nested code entities
 			for( VocabularyDTO vocab : vocabularyPage.getContent())
 				vocab.setCodes( Collections.emptySet() );
-			// no search term then just assign vocabulary as it is
-			esQueryResultDetail.setVocabularies(vocabularyPage);
 		}
+		// set selected language in case language filter is selected with specific language
+		setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage, FiltersLayout.LANGS_AGG);
+
+		esQueryResultDetail.setVocabularies(vocabularyPage);
 		
 		return esQueryResultDetail;
 	}
@@ -552,14 +559,14 @@ public class VocabularyServiceImpl implements VocabularyService {
 		if( cvHit.getSelectedLang() == null ) {
 			// get last language information from the field and get the Language enum
 			String langIso = highlightField.substring( highlightField.length() - 2, highlightField.length());
-			Language lang = Language.getEnum( langIso );
+			Language lang = Language.getEnum( langIso.toLowerCase() );
 			cvHit.setSelectedLang(lang);
 		}
 	}
 
 	
 	public static QueryBuilder generateMainAndNestedQuery( String term ) {
-		if( term != null && !term.isEmpty())
+		if( term != null && !term.isEmpty() && term.length() > 1)
 			return QueryBuilders.boolQuery().should( generateMainQuery( term ) ).should( generateNestedQuery( term ) );
 		else
 			return QueryBuilders.matchAllQuery();
@@ -572,12 +579,10 @@ public class VocabularyServiceImpl implements VocabularyService {
 		// all language fields
 		for(String langIso : Language.getCapitalizedEnum()) {
 			boolQuery
-				.should( QueryBuilders.matchQuery( "title" + langIso, term).boost( 3.0f ))
-				.should( QueryBuilders.matchQuery( "definition" + langIso, term).boost( 2.0f ));
+				.should( QueryBuilders.matchQuery( "title" + langIso, term).boost( 1000.0f ))
+				.should( QueryBuilders.matchQuery( "definition" + langIso, term).boost( 100.0f ))
+				.should( QueryBuilders.queryStringQuery( "*" + term + "*").field( "title" + langIso).field("definition" + langIso));
 		}
-//		boolQuery.should( QueryBuilders.termQuery( "notation", term).boost( 2.0f ));
-		// extend query with substring based term
-		boolQuery.should( QueryBuilders.queryStringQuery( "*" + term + "*" ).defaultOperator( Operator.AND ).analyzeWildcard( true ).boost( 1.0f ));
 
 		return boolQuery;
 	}
@@ -599,14 +604,17 @@ public class VocabularyServiceImpl implements VocabularyService {
 		// all language fields
 		for(String langIso : Language.getCapitalizedEnum()) {
 			boolQuery
-				.should( QueryBuilders.matchQuery( CODE_PATH +".title" + langIso, term).boost( 2.0f ))
-				.should( QueryBuilders.matchQuery( CODE_PATH +".definition" + langIso, term).boost( 1.0f ));
+				.should( QueryBuilders.matchQuery( CODE_PATH +".title" + langIso, term).boost( 1000.0f ))
+				.should( QueryBuilders.matchQuery( CODE_PATH +".definition" + langIso, term).boost( 10.0f ))
+				.should( QueryBuilders.queryStringQuery( "*" + term + "*").field( CODE_PATH +".title" + langIso).field(CODE_PATH +".definition" + langIso));
 		}
-//		boolQuery.should( QueryBuilders.termQuery( CODE_PATH +".notation", term).boost( 2.0f ));
 		
+		if( term.length() > 2)
+			return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
+					.innerHit( new InnerHitBuilder( CODE_PATH )
+					.setHighlightBuilder( nestedHighlightBuilder() ));
 		return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
-				.innerHit( new InnerHitBuilder( CODE_PATH )
-				.setHighlightBuilder( nestedHighlightBuilder() ));
+				.innerHit( new InnerHitBuilder( CODE_PATH ) );
 	}
 	
 	private static HighlightBuilder nestedHighlightBuilder() {
@@ -666,20 +674,25 @@ public class VocabularyServiceImpl implements VocabularyService {
 	@Override
 	public EsQueryResultDetail searchPublished( EsQueryResultDetail esQueryResultDetail ) {
 		String searchTerm = esQueryResultDetail.getSearchTerm();
+		boolean doTermSearching = false;
+		if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 1)
+			doTermSearching = true;
 		// build query 
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
 			.withSearchType(SearchType.DEFAULT)
-			.withIndices("vocabulary-publish").withTypes("vocabularypublish")
+			.withIndices("vocabulary-publish2").withTypes("vocabularypublish")
 			.withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
 			.withPageable( esQueryResultDetail.getPage());
 		
 		// add sorting
-		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") )
+		if(esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score") && doTermSearching )
 			searchQueryBuilder.withSort( SortBuilders.scoreSort());
 		else {
-			Order order = esQueryResultDetail.getFirstSortOrder();
-			searchQueryBuilder.withSort( SortBuilders.fieldSort( order.getProperty()).order( order.getDirection().equals( Direction.ASC) ? SortOrder.ASC : SortOrder.DESC));
+			if( !esQueryResultDetail.getFirstSortOrder().getProperty().equals("_score")) {
+				Order order = esQueryResultDetail.getFirstSortOrder();
+				searchQueryBuilder.withSort( SortBuilders.fieldSort( order.getProperty()).order( order.getDirection().equals( Direction.ASC) ? SortOrder.ASC : SortOrder.DESC));
+			}
 		}
 		
 		// add aggregation
@@ -688,7 +701,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			searchQueryBuilder.addAggregation(aggregration);
 		
 		// add highlighter
-		if( searchTerm != null && !searchTerm.isEmpty())
+		if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 2)
 			searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain() );
 		
 		// at the end build search query
@@ -709,19 +722,35 @@ public class VocabularyServiceImpl implements VocabularyService {
 		generateAggregrationFilter(esQueryResultDetail, searchResponse);
 		
 		// update vocabulary based on highlight and inner hit
-		if( esQueryResultDetail.getSearchTerm() != null && !esQueryResultDetail.getSearchTerm().isEmpty()) {
+		if( doTermSearching ) {
 			applySearchHitAndHighlight(vocabularyPage, searchResponse);
-			
-			esQueryResultDetail.setVocabularies(vocabularyPage);
 		} else {
 			// remove unnecessary nested code entities
 			for( VocabularyDTO vocab : vocabularyPage.getContent())
 				vocab.setCodes( Collections.emptySet() );
-			// no search term then just assign vocabulary as it is
-			esQueryResultDetail.setVocabularies(vocabularyPage);
 		}
+		// set selected language in case language filter is selected with specific language
+		setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage, FiltersLayout.LANGS_PUB_AGG);
+		
+		esQueryResultDetail.setVocabularies(vocabularyPage);
 		
 		return esQueryResultDetail;
+	}
+
+	private void setVocabularySelectedLanguage(EsQueryResultDetail esQueryResultDetail,
+			Page<VocabularyDTO> vocabularyPage, String fieldType) {
+		if( esQueryResultDetail.isAnyFilterActive() ) {
+			esQueryResultDetail.getEsFilterByField(fieldType).ifPresent( langFilter -> {
+				if( langFilter.getValues().size() == 1 ) {
+					for( VocabularyDTO vocab : vocabularyPage.getContent()){
+//						if( vocab.getSelectedLang() == null ) {
+							Language lang = Language.getEnum( langFilter.getValues().get(0));
+							vocab.setSelectedLang(lang);
+//						}
+					}
+				}
+			});
+		}
 	}
 
 	@Override
@@ -834,6 +863,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 		
 		// get latest published codes
 		List<CodeDTO> publishedCodes = codeService.findByVocabularyAndVersion(vocabulary.getId(), version.getId());
+		for( CodeDTO pCode : publishedCodes)
+			pCode.clearCodeExcept( vocabulary.getLanguagesPublished());
 		vocabulary.setCodes( new HashSet<CodeDTO>(publishedCodes) );
 		
 		VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);

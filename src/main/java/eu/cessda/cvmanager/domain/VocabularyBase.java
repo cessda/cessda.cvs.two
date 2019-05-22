@@ -236,6 +236,20 @@ public class VocabularyBase implements Serializable {
     private String definitionHu;
 
     @Size(max = 20)
+    @Column(name = "version_it", length = 20)
+    private String versionIt;
+    
+    @Lob
+    @Column(name = "title_it")
+    @Field(type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
+    private String titleIt;
+    
+    @Lob
+    @Column(name = "definition_it")
+    @Field(type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
+    private String definitionIt;
+    
+    @Size(max = 20)
     @Column(name = "version_lt", length = 20)
     private String versionLt;
     
@@ -745,9 +759,35 @@ public class VocabularyBase implements Serializable {
         this.definitionHu = definitionHu;
         return this;
     }
-
-    public void setDefinitionHu(String definitionHu) {
+    
+	public void setDefinitionHu(String definitionHu) {
         this.definitionHu = definitionHu;
+    }
+
+    public String getTitleIt() {
+		return titleIt;
+	}
+    
+    public VocabularyBase titleIt(String titleIt) {
+        this.titleIt = titleIt;
+        return this;
+    }
+
+	public void setTitleIt(String titleIt) {
+		this.titleIt = titleIt;
+	}
+
+    public String getDefinitionIt() {
+        return definitionIt;
+    }
+
+    public VocabularyBase definitionIt(String definitionIt) {
+        this.definitionIt = definitionIt;
+        return this;
+    }
+    
+	public void setDefinitionIt(String definitionIt) {
+        this.definitionIt = definitionIt;
     }
 
     public String getTitleLt() {
@@ -1078,6 +1118,14 @@ public class VocabularyBase implements Serializable {
 	public void setVersionHu(String versionHu) {
 		this.versionHu = versionHu;
 	}
+	
+	public String getVersionIt() {
+		return versionIt;
+	}
+
+	public void setVersionIt(String versionIt) {
+		this.versionIt = versionIt;
+	}
 
 	public String getVersionLt() {
 		return versionLt;
@@ -1208,6 +1256,8 @@ public class VocabularyBase implements Serializable {
             ", definitionEl='" + getDefinitionEl() + "'" +
             ", titleHu='" + getTitleHu() + "'" +
             ", definitionHu='" + getDefinitionHu() + "'" +
+            ", titleIt='" + getTitleIt() + "'" +
+            ", definitionIt='" + getDefinitionIt() + "'" +
             ", titleLt='" + getTitleLt() + "'" +
             ", definitionLt='" + getDefinitionLt() + "'" +
             ", titleNo='" + getTitleNo() + "'" +

@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "vocabulary")
-@Document(indexName = "vocabulary")
+@Document(indexName = "vocabulary2")
 public class Vocabulary extends VocabularyBase{
     
 	private static final long serialVersionUID = 1L;
@@ -129,6 +129,8 @@ public class Vocabulary extends VocabularyBase{
             ", definitionEl='" + getDefinitionEl() + "'" +
             ", titleHu='" + getTitleHu() + "'" +
             ", definitionHu='" + getDefinitionHu() + "'" +
+            ", titleIt='" + getTitleIt() + "'" +
+            ", definitionIt='" + getDefinitionIt() + "'" +
             ", titleLt='" + getTitleLt() + "'" +
             ", definitionLt='" + getDefinitionLt() + "'" +
             ", titleNo='" + getTitleNo() + "'" +

@@ -215,7 +215,7 @@ public class EditorSearchView extends CvView {
 	}
 
 	public void refreshSearchResult() {
-		// set the query properties from url parameter
+		// TODO: set the query properties from url parameter
 		
 		// query
 		esQueryResultDetail = vocabularyService.search( esQueryResultDetail );
@@ -266,10 +266,15 @@ public class EditorSearchView extends CvView {
 			case VOCABULARY_EDITOR_SEARCH:
 				esQueryResultDetail.clear();
 				esQueryResultDetail.setSearchTerm( (String) event.getPayload() );
-				sortByRelevence.setStyleName( "groupButton enable" );
-				sortByTitle.setStyleName( "groupButton disable" );
-				esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, "_score") );
-				refreshSearchResult();
+				String searchTerm = esQueryResultDetail.getSearchTerm();
+				if( searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 1) {
+					esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, "_score") );
+					sortByRelevence.setStyleName( "groupButton enable" );
+					sortByTitle.setStyleName( "groupButton disable" );
+					refreshSearchResult();
+				}
+				else 
+					sortByTitle.click();
 				break;
 			default:
 				break;

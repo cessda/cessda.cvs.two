@@ -174,9 +174,9 @@ public class FiltersLayout extends ResponsiveBlock{
 				checkBox.addValueChangeListener( event -> {
 					String selectedVal = event.getComponent().getCaption();
 					if( esFilter.getField().equals(LANGS_AGG) || esFilter.getField().equals(LANGS_PUB_AGG) ) {
-						int index1 = selectedVal.indexOf( "(" );
-						int index2 = selectedVal.lastIndexOf( "(" );
-						esFilter.getValues().remove( selectedVal.substring( index1  + 1, index2 - 1).trim() );
+						int index1 = selectedVal.indexOf( ")" );
+						int index2 = selectedVal.indexOf( "(" );
+						esFilter.getValues().remove( selectedVal.substring( index2 + 1, index1) );
 					} else {
 						int index = selectedVal.lastIndexOf( "(" );
 						esFilter.getValues().remove( selectedVal.substring( 0, index).trim() );

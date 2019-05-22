@@ -118,6 +118,7 @@ public class ManageImportView extends CvManagerAdminView {
 		
 		MButton dropContent = new MButton( "Drop database content and index" );
 		dropContent.addStyleName( ValoTheme.BUTTON_DANGER);
+		dropContent.setVisible( false );
 		dropContent.addClickListener( e -> {
 			ConfirmDialog.show( this.getUI(), "Confirm",
 					"Are you sure you want to permanently drop the entire content?", "yes",
