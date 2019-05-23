@@ -350,7 +350,7 @@ public class DialogAddLanguageWindow extends MWindow {
 		if(!isInputValid())
 			return;
 		
-		if( version.isPersisted()) {
+		if( !version.isInitialVersion() && version.isPersisted()) {
 			if( changeCb.getValue() == null ) {
 				Notification.show("Please select the change type!");
 				return;
