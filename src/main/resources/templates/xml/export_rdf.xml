@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:gc="http://docs.oasis-open.org/codelist/ns/genericode/1.0/"
+         xmlns:dcterms="http://purl.org/dc/terms/"
+         xmlns:ddi-cv="urn:ddi-cv"
+         xmlns:h="http://www.w3.org/1999/xhtml"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <rdf:Description th:attr="'rdf:about'=${docId}">
+      <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+      <dcterms:isVersionOf th:attr="'rdf:resource'=${docVersionOf}"/>
+      <skos:notation th:text="${docNotation}"></skos:notation>
+     <loop th:remove="tag" th:each="version, iterStat: ${versions}">
+      <dcterms:title th:attr="'xml:lang'=${version.language}" th:text="${version.title}"></dcterms:title>
+      <dcterms:description th:attr="'xml:lang'=${version.language}" th:text="${version.definition}"></dcterms:description>
+     </loop>
+      <owl:versionInfo th:text="${docVersion}"></owl:versionInfo>
+      <dcterms:license th:attr="'rdf:resource'=${docLicense}"/>
+      <dcterms:rights th:text="${docRight}"></dcterms:rights>
+      <skos:historyNote th:if="${docVersionNotes != null}" th:text="${docVersionNotes}"></skos:historyNote>
+      <skos:changeNote th:if="${docVersionChanges != null}" th:text="${docVersionChanges}"></skos:changeNote>
+    <loop th:remove="tag" th:each="code, iterStat: ${codes}">
+      <skos:hasTopConcept th:if="${code.parent == null}" th:attr="'rdf:resource'=${docId + '#' + code.notation}"/>
+    </loop>
+   </rdf:Description>
+ <loop th:remove="tag" th:each="code, iterStat: ${codes}">
+   <rdf:Description th:attr="'rdf:about'=${docId + '#' + code.notation}">
+      <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+      <skos:inScheme th:attr="'rdf:resource'=${docId}"/>
+      <skos:notation th:text="${code.notation}"></skos:notation>
+    <loop th:remove="tag" th:each="version, iterStat: ${versions}">
+      <skos:prefLabel th:attr="'xml:lang'=${version.language}" th:text="${code.getTitleByLanguage(version.language)}"></skos:prefLabel>
+	  <skos:definition  th:attr="'xml:lang'=${version.language}" th:text="${code.getDefinitionByLanguage(version.language)}"></skos:definition>
+   	</loop>
+   	<loop th:remove="tag" th:each="code2, iterStat: ${codes}">
+      <skos:narrower th:if="${ code2.parent == code.notation}" th:attr="'rdf:resource'=${docId + '#' + code2.notation}"/>
+    </loop>
+   </rdf:Description>
+  </loop>	
+</rdf:RDF>

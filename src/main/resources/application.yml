@@ -60,9 +60,6 @@ spring:
           auth: 'false'
   messages:
     encoding: UTF-8
-  thymeleaf:
-    encoding: UTF-8
-    cache: false
 vaadin:
   servlet:
     heartbeatInterval: '60'

@@ -26,6 +26,7 @@ import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.ui.view.LoginView;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
@@ -97,7 +98,7 @@ public class EditorDetailsView extends CvView {
 	public static final String VIEW_NAME = "details";
 	private Locale locale = UI.getCurrent().getLocale();
 	
-	private final TemplateEngine templateEngine;
+	private final SpringTemplateEngine templateEngine;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
 	private final VersionService versionService;
@@ -178,7 +179,7 @@ public class EditorDetailsView extends CvView {
 	public EditorDetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
-			TemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
+			SpringTemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
 			ResolverService resolverService, CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, EditorDetailsView.VIEW_NAME);
 		this.templateEngine = templateEngine;
@@ -751,7 +752,7 @@ public class EditorDetailsView extends CvView {
 		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, configService, versionService, licenses, false);
 		licenseLayout.add( licenseLayoutContent );
 		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, configService, stardatDDIService, licenses, templateEngine, false);
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, codeService, configService, stardatDDIService, licenses, templateEngine, false);
 		exportLayout.add(exportLayoutContent);
 		exportLayout.setSizeFull();
 		

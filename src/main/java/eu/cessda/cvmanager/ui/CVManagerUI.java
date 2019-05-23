@@ -82,7 +82,7 @@ import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
 //@PreserveOnRefresh
 @EnableEventBus
 @JavaScript({"https://cessda.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-wkh05n/b/48/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-UK&collectorId=e39880c9"})
-@JavaScript({"vaadin://js/matomo-tracker.js"})
+//@JavaScript({"vaadin://js/matomo-tracker.js"})
 public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private static final long serialVersionUID = -6435583434844959571L;
