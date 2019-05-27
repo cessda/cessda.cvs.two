@@ -176,6 +176,10 @@ public class CodeDTO implements Serializable {
     @Lob
     private String definitionSv;
     
+    public String getTitleByLanguage( String language ) {
+    	return getTitleByLanguage( Language.getEnum(language) );
+    }
+    
     public String getTitleByLanguage( Language language ) {
     	switch (language) {
 		case CZECH:
@@ -216,6 +220,10 @@ public class CodeDTO implements Serializable {
 			return titleSv;
     	}
     	return null;
+    }
+    
+    public String getDefinitionByLanguage( String language ) {
+    	return getDefinitionByLanguage( Language.getEnum(language) );
     }
     
     public String getDefinitionByLanguage( Language language ) {

@@ -22,6 +22,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.StringJoiner;
 import java.util.regex.Matcher;
@@ -35,8 +36,8 @@ import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
@@ -47,19 +48,10 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.data.TreeData;
-import com.vaadin.shared.Registration;
-import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.Column;
-import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.components.grid.HeaderCell;
 import com.vaadin.ui.components.grid.HeaderRow;
 import com.vaadin.ui.renderers.ComponentRenderer;
 
@@ -69,6 +61,7 @@ import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader;
 import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamResource;
 import eu.cessda.cvmanager.export.utils.SaxParserUtils;
 import eu.cessda.cvmanager.model.CvItem;
+import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
@@ -108,7 +101,8 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private final CvItem cvItem;
 	private final ConfigurationService configurationService;
 	private final VersionService versionService;
-	private final TemplateEngine templateEngine;
+	private final CodeService codeService;
+	private final SpringTemplateEngine templateEngine;
 	private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
 	private final VocabularyDTO vocabulary;
 	private final AgencyDTO agency;
@@ -116,6 +110,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	
 	private List<LicenceDTO> licenses;
 	private LicenceDTO license;
+	private VersionDTO slVersion;
 	
 	private Set<String> filteredTag = new HashSet<>();
 	private MGrid<ExportCV> exportGrid = new MGrid<>( ExportCV.class );
@@ -155,8 +150,8 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private String inSchemeUri = "";
 	
 	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, VocabularyDTO vocabulary, AgencyDTO agency,
-			VersionService versionService, ConfigurationService configurationService, StardatDDIService stardatDDIService,
-			List<LicenceDTO> licenses, TemplateEngine templateEngine, boolean isPublished) {
+			VersionService versionService, CodeService codeService,ConfigurationService configurationService, 
+			StardatDDIService stardatDDIService, List<LicenceDTO> licenses, SpringTemplateEngine templateEngine, boolean isPublished) {
 		this.i18n = i18n;
 		this.locale = locale;
 		this.eventBus = eventBus;
@@ -165,6 +160,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		this.agency = agency;
 		this.configurationService = configurationService;
 		this.versionService = versionService;
+		this.codeService = codeService;
 		this.templateEngine = templateEngine;
 		this.publishView = isPublished;
 		this.licenses = licenses;
@@ -300,6 +296,8 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			if(vocabulary.getVersionByUri( pivotVersion.getUriSl()).isPresent())
 				pivotVersion = vocabulary.getVersionByUri( pivotVersion.getUriSl()).get();
 		}
+		
+		slVersion = pivotVersion;
 
 		for(Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
 			if( entry.getKey().equals( pivotVersion.getLanguage() ) )
@@ -355,6 +353,13 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 							}
 							break;
 						case PDF:
+							try {
+								return new FileInputStream( generateExportFile(downloadType, exportVersions));
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+							break;
+						case SKOS:
 							try {
 								return new FileInputStream( generateExportFile(downloadType, exportVersions));
 							} catch (Exception e) {
@@ -463,13 +468,12 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private File generateExportFile( DownloadType type, List<VersionDTO> exportVersions) throws Exception {
 		Map<String, Object> map = new HashMap<>();
 		String cvUrn = null;
+		String docId = null;
+		String docVersionOf = null;
+		String docVersion = null;
+		String docLicense = null;
 		// sort code
 		for( VersionDTO versionExp : exportVersions) {
-			// change language format for printing
-			// if language length < 5
-			if( versionExp.getLanguage().length() < 5 ) // means language is still in the ISO format
-				versionExp.setLanguage( Language.valueOfEnum( versionExp.getLanguage()).toStringCapitalized());
-			
 			for( ConceptDTO concept : versionExp.getConcepts()) {
 				if( concept.getPosition() == null)
 					concept.setPosition(999);
@@ -483,7 +487,28 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			if( cvUrn == null ) {
 				int index = versionExp.getCanonicalUri().lastIndexOf(":");
 				cvUrn = versionExp.getCanonicalUri().substring(0, index);
+				if( type.equals( DownloadType.SKOS)) {
+					docId = versionExp.getSkosUri();
+					index = docId.lastIndexOf("_");
+					docVersionOf = docId.substring(0, index);
+					docVersion = docId.substring(index + 1);
+					Optional<LicenceDTO> dLicence = licenses.stream().filter( l -> l.getId().equals( versionExp.getLicenseId())).findFirst();
+					if(dLicence.isPresent())
+						docLicense = dLicence.get().getName();
+				}
 			}
+		}
+		
+		if( type.equals( DownloadType.SKOS)) {
+			map.put("docId", docId);
+			map.put("docNotation", slVersion.getNotation());
+			map.put("docVersionOf", docVersionOf);
+			map.put("docVersion", docVersion);
+			map.put("docLicense", docLicense);
+			map.put("docVersionNotes", slVersion.getVersionNotes());
+			map.put("docVersionChanges", slVersion.getVersionChanges());
+			map.put("docRight", "Copyright © " + agency.getName() + " " + year);
+			map.put("codes", codeService.findByVocabularyAndVersion(vocabulary.getId(), slVersion.getId()));
 		}
 		map.put("cvUrn", cvUrn);
 		map.put("versions", exportVersions);
@@ -537,13 +562,14 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 		    	 ctx.setVariable(pair.getKey().toString(), pair.getValue());
 			}
 		}
-		String processedTemplate = templateEngine.process(templateName + "_" + type.toString() , ctx);
 		
 		switch ( type ) {
 		case PDF:
-			return createPdfFile(outputFile, processedTemplate);
+			return createPdfFile(outputFile, templateEngine.process("html/" +templateName + "_" + type.toString() , ctx));
 		case HTML:
-			return createTextFile(outputFile, processedTemplate);
+			return createTextFile(outputFile, templateEngine.process("html/" +templateName + "_" + type.toString() , ctx));
+		case SKOS:
+			return createTextFile(outputFile, templateEngine.process("xml/" +templateName + "_" + type.toString() , ctx).replaceAll("(?m)^[ \t]*\r?\n", ""));
 		default:
 			break;
 		}

@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 import javax.validation.constraints.*;
 
+import org.gesis.wts.domain.enumeration.Language;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -143,6 +145,10 @@ public class VersionDTO implements Serializable {
     public String getLanguage() {
         return language;
     }
+    
+    public String getDetailLanguage() {
+        return Language.valueOfEnum( language ).toStringCapitalized();
+    }
 
     public void setLanguage(String language) {
         this.language = language;
@@ -178,6 +184,20 @@ public class VersionDTO implements Serializable {
 
     public void setUri(String uri) {
         this.uri = uri;
+    }
+    
+    public String getSkosUri() {
+    	String skosUri = uri;
+    	if( itemType.equals( ItemType.TL.toString() ))
+    		skosUri = uriSl;
+    	if(skosUri == null )
+    		return"";
+    	
+    	int index = skosUri.lastIndexOf("/");
+    	String versionInfo = skosUri.substring( index + 1 );
+    	index = skosUri.substring( 0, index ).lastIndexOf("/");
+    	
+    	return skosUri.substring(0, index) + "_" + versionInfo;
     }
 
 	public String getCanonicalUri() {
