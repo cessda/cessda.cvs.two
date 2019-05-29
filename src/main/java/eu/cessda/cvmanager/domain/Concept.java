@@ -52,6 +52,9 @@ public class Concept implements Serializable{
     @Column(name = "previous_concept")
     private Long previousConcept;
     
+    @Column(name = "sl_concept")
+    private Long slConcept;
+    
  // if null, then it is top concept
     @Column(name = "parent", length = 240)
     private String parent;
@@ -116,6 +119,14 @@ public class Concept implements Serializable{
 
 	public void setPreviousConcept(Long previousConcept) {
 		this.previousConcept = previousConcept;
+	}
+	
+	public Long getSlConcept() {
+		return slConcept;
+	}
+
+	public void setSlConcept(Long slConcept) {
+		this.slConcept = slConcept;
 	}
 
 	public Version getVersion() {
