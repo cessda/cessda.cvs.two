@@ -100,7 +100,7 @@ public class WorkflowManager {
 				
 				// save code
 				WorkspaceManager.saveCode(vocabulary, version, new CodeDTO(), null, 
-					concept, concept.getNotation(), concept.getTitle(), concept.getDefinition());
+					concept, null, concept.getNotation(), concept.getTitle(), concept.getDefinition());
 			}
 		}
 		
@@ -145,6 +145,12 @@ public class WorkflowManager {
 			List<CodeDTO> codes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), slVersion.getId());
 			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
 			
+			// get conceptMap from latest SL
+			Optional<VersionDTO> latestSlVersionOpt = vocabulary.getLatestSlVersion( true );
+			Map<String, ConceptDTO> slConceptMap = new HashMap<>();
+			if(latestSlVersionOpt.isPresent())
+				slConceptMap = latestSlVersionOpt.get().getConceptAsMap();
+			
 			// set code and create new concept
 			for(CvCode cvCode : cv.getCvCodes()) {
 				// validate concept, make sure the concept is available in code
@@ -152,11 +158,13 @@ public class WorkflowManager {
 				if( code == null )
 					continue;
 				ConceptDTO concept = cvCodeMapper.toDto(cvCode);
+				// create connection with SL concept
+				ConceptDTO slConcept = slConceptMap.get( code.getNotation() );
 				// get parent code if exist
 				CodeDTO parentCode = codeMap.get( code.getParent());
 				// save code
 				WorkspaceManager.saveCode(vocabulary, version, code, parentCode, 
-					concept, concept.getNotation(), concept.getTitle(), concept.getDefinition());
+					concept, slConcept, concept.getNotation(), concept.getTitle(), concept.getDefinition());
 			}
 		}
 		
@@ -457,9 +465,9 @@ public class WorkflowManager {
 		// clone any latest TL if exist
 		for( VersionDTO targetTLversion : latestTlVersions ) {
 			// create new version
-			VersionDTO newVersion = VersionDTO.clone(targetTLversion, SecurityUtils.getLoggedUser().getId(), 
-					currentVersion.getNumber() + ".1", currentVersion.getLicenseId(), 
-					WorkflowUtils.generateAgencyBaseUri( agency.getUri()), currentVersion.getDdiUsage());
+			VersionDTO newVersion = VersionDTO.clone(targetTLversion, currentVersion,
+					SecurityUtils.getLoggedUser().getId(),  currentVersion.getNumber() + ".1", 
+					currentVersion.getLicenseId(), WorkflowUtils.generateAgencyBaseUri( agency.getUri()), currentVersion.getDdiUsage());
 			newVersion.setUriSl( vocabulary.getUri());
 			newVersion = versionService.save(newVersion);
 			
@@ -484,13 +492,18 @@ public class WorkflowManager {
 	private static void storeCvConceptTree(TreeData<CVConcept> cvConceptTree, CVScheme newCvScheme) {
 		List<CVConcept> rootItems = cvConceptTree.getRootItems();
 		for(CVConcept topCvConcept : rootItems) {
-			System.out.println("Store CV-concept:" + topCvConcept.getNotation());
-			DDIStore ddiStoreTopCvConcept = stardatDDIService.saveElement(topCvConcept.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Add Code " + topCvConcept.getNotation());
-			newCvScheme.addOrderedMemberList(ddiStoreTopCvConcept.getElementId());
-			
-			for( CVConcept childCvConcept : cvConceptTree.getChildren(topCvConcept)) {
-				storeCvConceptTreeChild( cvConceptTree, childCvConcept, topCvConcept);
+			try {
+				System.out.println("Store CV-concept:" + topCvConcept.getNotation());
+				DDIStore ddiStoreTopCvConcept = stardatDDIService.saveElement(topCvConcept.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Add Code " + topCvConcept.getNotation());
+				newCvScheme.addOrderedMemberList(ddiStoreTopCvConcept.getElementId());
+				
+				for( CVConcept childCvConcept : cvConceptTree.getChildren(topCvConcept)) {
+					storeCvConceptTreeChild( cvConceptTree, childCvConcept, topCvConcept);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+			
 		}
 		// store top concept
 		newCvScheme.save();

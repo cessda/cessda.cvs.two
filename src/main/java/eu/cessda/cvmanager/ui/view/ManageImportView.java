@@ -1,8 +1,10 @@
 package eu.cessda.cvmanager.ui.view;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
@@ -155,12 +157,56 @@ public class ManageImportView extends CvManagerAdminView {
 
 					);
 		});
+		
+		MButton assignConceptSlButton = new MButton("Assign concept TL with SL key");
+		assignConceptSlButton.addStyleName( ValoTheme.BUTTON_DANGER);
+		assignConceptSlButton.addClickListener( e -> {
+			ConfirmDialog.show( this.getUI(), "Confirm",
+					"Are you sure you want to assign concept TL with SL key?", "yes",
+					"cancel",
+			
+						dialog -> {
+							if( dialog.isConfirmed() ) {
+								vocabularyService.findAll().forEach( v -> {
+									Map<String, List<VersionDTO>> orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(v.getId());
+									for(VersionDTO version : v.getVersions()) {
+										if( version.getItemType().equals( ItemType.TL.toString()))
+											continue;
+										// the version is SL
+										// collect TLs version that related to SL
+										List<VersionDTO> relatedTLversions = new ArrayList<>();
+										for(Map.Entry<String, List<VersionDTO>> entry : orderedLanguageVersionMap.entrySet()) {
+											for(VersionDTO eachVersion: entry.getValue()) {
+												if( eachVersion.getUriSl() != null && eachVersion.getUriSl().equals(version.getUri()))
+													relatedTLversions.add(eachVersion);
+											}
+										}
+										if(!relatedTLversions.isEmpty()) {
+											Map<String, ConceptDTO> slConceptMap = version.getConceptAsMap();
+											for(VersionDTO tlVersion : relatedTLversions) {
+												for( ConceptDTO tlConcept : tlVersion.getConcepts()) {
+													ConceptDTO slConcept = slConceptMap.get( tlConcept.getNotation());
+													if( slConcept != null ) {
+														tlConcept.setSlConcept(slConcept.getId());
+														conceptService.save(tlConcept);
+													}
+												}
+											}
+										}
+									}
+								});
+							}
+						}
 
+					);
+		});
         layout.addComponents(pageTitle, 
         		importStardatDDI , 
         		new MLabel().withFullWidth(),
         		deleteIndexButton,
         		reIndexButton,
+        		new MLabel().withFullWidth(),
+        		assignConceptSlButton,
         		new MLabel().withFullWidth(),
         		new MLabel().withFullWidth(),
         		dropContent);

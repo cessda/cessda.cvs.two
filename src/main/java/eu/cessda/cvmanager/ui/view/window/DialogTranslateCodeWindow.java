@@ -88,7 +88,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private VersionDTO version;
 	private CodeDTO code;
 	private ConceptDTO concept;
-	
+	private ConceptDTO slConcept;
 	
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
@@ -96,7 +96,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, 
 			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
 			CVScheme cvScheme, CVConcept conceptCode, Language sLanguage, Language sourceLang, VocabularyDTO vocabularyDTO, 
-			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, VocabularyChangeService vocabularyChangeService, I18N i18n, Locale locale) {
+			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, ConceptDTO slConcept, VocabularyChangeService vocabularyChangeService, I18N i18n, Locale locale) {
 		super( "Add Code Translation");
 		this.i18n = i18n;
 		this.language = sLanguage;
@@ -113,6 +113,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 		this.code = codeDTO;
 		this.concept = conceptDTO;
 		this.sourceLang = sourceLang;
+		this.slConcept = slConcept;
 				
 		init();
 	}
@@ -243,7 +244,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 			return;
 		
 		// store the code
-		WorkspaceManager.saveCode(vocabulary, version, code, null, concept, 
+		WorkspaceManager.saveCode(vocabulary, version, code, null, concept, slConcept,
 				null, preferedLabel.getValue(), description.getValue());
 
 		// save change log

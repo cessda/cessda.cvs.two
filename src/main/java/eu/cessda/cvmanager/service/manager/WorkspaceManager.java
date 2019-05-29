@@ -158,17 +158,28 @@ public class WorkspaceManager {
 			version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId());
 			
 			// get previous version from the same language
-			Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), Status.PUBLISHED.toString());
+			Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), null);
 			if( latestTlVersion.isPresent() ) {
 				VersionDTO prevVersion = latestTlVersion.get();
-				version.setPreviousVersion( prevVersion.getId() );
-				version.setInitialVersion( prevVersion.getInitialVersion() );
+				String versionNumber = vocabulary.getVersionNumber();
 				// get last version number from previous version if exist
-				if( prevVersion.getNumber().indexOf( vocabulary.getVersionNumber()) == 0 ) {
+				if( prevVersion.getStatus().equals(Status.PUBLISHED.toString()) && prevVersion.getNumber().indexOf( vocabulary.getVersionNumber()) == 0 ) {
 					int lastDotIndex = vocabulary.getVersionNumber().lastIndexOf(".");
-					version.setNumber( vocabulary.getVersionNumber() + "." + (Integer.parseInt(vocabulary.getVersionNumber().substring( lastDotIndex + 1)) + 1));
+					versionNumber += "." + (Integer.parseInt(vocabulary.getVersionNumber().substring( lastDotIndex + 1)) + 1);
+				} else {
+					versionNumber += ".1";
 				}
+				// get slVersion
+				VersionDTO slVersion = null;
+				Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
+				if(latestSlVersion.isPresent())
+					slVersion = latestSlVersion.get();
+				VersionDTO.clone(version, prevVersion, slVersion, SecurityUtils.getLoggedUser().getId(), versionNumber, 
+						slVersion.getLicenseId(), WorkflowUtils.generateAgencyBaseUri( agency.getUri()), slVersion.getDdiUsage());
 			}
+			// alter the cloned one
+			version.setTitle( cvName );
+			version.setDefinition( cvDefinition );
 			
 			version = versionService.save(version);
 			
@@ -177,6 +188,32 @@ public class WorkspaceManager {
 				// initial version
 				version.setInitialVersion( version.getId() );
 				version = versionService.save(version);
+			}
+			
+			// save concept if exist
+			if( !version.getConcepts().isEmpty() ) {
+				// get workflow codes
+				List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+				// save concepts with workflow codes ID
+				for( CodeDTO code: codes) {
+					ConceptDTO
+						.getConceptFromCode(version.getConcepts(), code.getNotation())
+						.ifPresent( c ->{ 
+							c.setCodeId( code.getId());
+							// in case code need update
+							if( code.getTitleByLanguage(language) == null ||
+								!compareString( code.getTitleByLanguage(language) ,c.getTitle()) || 
+								!compareString( code.getDefinitionByLanguage(language) ,c.getDefinition())) {
+								code.setTitleDefinition(c.getTitle(), c.getDefinition(), language);
+								codeService.save(code);
+							}
+						});
+				}
+				// save versionId property
+				for( ConceptDTO newConcept: version.getConcepts()) {
+					newConcept.setVersionId( version.getId());
+					conceptService.save(newConcept);
+				}
 			}
 			// update version in vocabulary
 			vocabulary.setVersionByLanguage(language, version.getNumber());
@@ -196,10 +233,13 @@ public class WorkspaceManager {
 		vocabularyService.index(vocabulary);
 	}
 	
+	public static boolean compareString(String str1, String str2) {
+	    return (str1 == null ? str2 == null : str1.equals(str2));
+	}
 	
 	public static void saveCode(VocabularyDTO vocabulary, VersionDTO version, 
 			CodeDTO code, CodeDTO parentCode, ConceptDTO concept, 
-			String notation, String term, String definition) {
+			ConceptDTO slConcept, String notation, String term, String definition) {
 		// if notation null, it means the TL concept is saved
 		if( notation == null )
 			notation = code.getNotation();
@@ -269,6 +309,8 @@ public class WorkspaceManager {
 			else { // save TL concept
 				concept.setPosition( code.getPosition() );
 				concept.setParent( code.getParent());
+				if( slConcept != null )
+					concept.setSlConcept(slConcept.getId());
 				code = codeService.save(code);
 			}
 			

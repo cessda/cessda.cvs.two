@@ -80,7 +80,7 @@ public class DialogEditCodeWindow extends MWindow {
 	
 	private MCssLayout changeBox = new MCssLayout();
 	private MLabel lChange = new MLabel( "Change notes:" );
-	private MLabel lChangeType = new MLabel( "Type*" );
+	private MLabel lChangeType = new MLabel( "Type" );
 	private MLabel lChangeDesc = new MLabel( "Description" );
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
@@ -359,7 +359,7 @@ public class DialogEditCodeWindow extends MWindow {
 		
 		// store the changes
 		String completeNotation = (code.getParent() != null ? code.getParent() + "." : "") + notation.getValue();
-		WorkspaceManager.saveCode(vocabulary, version, code,  null, concept, 
+		WorkspaceManager.saveCode(vocabulary, version, code,  null, concept, null,
 			completeNotation, preferedLabel.getValue(), description.getValue());
 		
 		if( !tempNotation.equals( notation.getValue()) ) {
@@ -377,7 +377,7 @@ public class DialogEditCodeWindow extends MWindow {
 					ConceptDTO.getConceptFromCode( version.getConcepts(), toUpdateCode.getId()).ifPresent(
 						toUpdateConcept -> {
 							String updatedNotation = toUpdateCode.getNotation().replaceFirst(toUpdateCode.getParent(), completeNotation);
-							WorkspaceManager.saveCode(vocabulary, version, toUpdateCode,  null, toUpdateConcept, 
+							WorkspaceManager.saveCode(vocabulary, version, toUpdateCode,  null, toUpdateConcept, null, 
 									updatedNotation, toUpdateConcept.getTitle(), toUpdateConcept.getDefinition());
 						}
 					);
