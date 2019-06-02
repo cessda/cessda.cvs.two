@@ -994,20 +994,30 @@ $v-selection-item-border-radius: 0;
 	}
 
 	#footer {
-		padding: 0;
-	    overflow: hidden;
-	    width: 100%;
-	    position: relative;
-	    z-index: 99;
-	    margin-top: -1px;
-	    border-top: 8px solid #43464b;
-	    background: #0c0d0e;
+    	width: 100%;
+    	padding: 60px 0;
 
     	.footer_top{
 			padding: 30px 0;
 		    border-bottom: 4px solid #3a3c41;
 		    width: 100%;
 		    background: #17191b;
+		}
+		
+		#footerlogo {
+		    padding: 20px 0 0 0;
+		    width: 200px;
+		    height: auto;
+		}
+		
+		.logo, .contact, .menu-footer{
+		    vertical-align: top;
+		}
+		.contact{
+		    text-align:center;
+		}
+		.menu-footer{
+		    text-align:right;
 		}
 
 		p{
