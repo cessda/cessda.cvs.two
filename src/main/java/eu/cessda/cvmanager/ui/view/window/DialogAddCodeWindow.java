@@ -209,7 +209,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 			return;
 		
 		// store the code
-		WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, 
+		WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, null,
 				notation.getValue(), preferedLabel.getValue(), description.getValue());
 
 		// save change log

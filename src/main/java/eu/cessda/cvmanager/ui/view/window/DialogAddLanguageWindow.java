@@ -88,7 +88,7 @@ public class DialogAddLanguageWindow extends MWindow {
 
 	public DialogAddLanguageWindow(
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, UIEventBus eventBus) {
-		super(versionDTO.isPersisted()?"Edit CV Translation (" + versionDTO.getLanguage() + ")":"Add CV Translation (" + versionDTO.getLanguage()+ ")");
+		super(versionDTO.isPersisted()?"Edit CV Translation (" + versionDTO.getLanguage() + ")":"Add CV Translation");
 		this.agency = agencyDTO;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
@@ -129,6 +129,20 @@ public class DialogAddLanguageWindow extends MWindow {
 			availableLanguages.remove( sourceLang );
 			
 			languageCb.setItems( availableLanguages );
+			languageCb.addValueChangeListener( e -> {
+				Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), e.getValue().toString(), null);
+				if(latestTlVersion.isPresent()) {
+					tfTitle.setValue( latestTlVersion.get().getTitle());
+					description.setValue( latestTlVersion.get().getDefinition());
+					translatorAgency.setValue( latestTlVersion.get().getTranslateAgency());
+					translatorAgencyLink.setValue( latestTlVersion.get().getTranslateAgencyLink());
+				}else {
+					tfTitle.setValue( "" );
+					description.setValue( "" );
+					translatorAgency.setValue( "" );
+					translatorAgencyLink.setValue( "" );
+				}
+			});
 		}
 		
 		lTitle.withStyleName( "required" );

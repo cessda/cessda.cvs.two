@@ -16605,14 +16605,8 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .mytheme #footer {
-	padding: 0;
-	overflow: hidden;
 	width: 100%;
-	position: relative;
-	z-index: 99;
-	margin-top: -1px;
-	border-top: 8px solid #43464b;
-	background: #0c0d0e;
+	padding: 60px 0;
 }
 
 .mytheme #footer .footer_top {
@@ -16620,6 +16614,24 @@ div.v-layout.v-horizontal.v-widget {
 	border-bottom: 4px solid #3a3c41;
 	width: 100%;
 	background: #17191b;
+}
+
+.mytheme #footer #footerlogo {
+	padding: 20px 0 0 0;
+	width: 200px;
+	height: auto;
+}
+
+.mytheme #footer .logo, .mytheme #footer .contact, .mytheme #footer .menu-footer {
+	vertical-align: top;
+}
+
+.mytheme #footer .contact {
+	text-align: center;
+}
+
+.mytheme #footer .menu-footer {
+	text-align: right;
 }
 
 .mytheme #footer p {

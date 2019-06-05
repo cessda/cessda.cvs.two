@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.Objects;
@@ -545,10 +546,14 @@ public class VersionDTO implements Serializable {
 
 		return sb.toString();
 	}
-
-	public static VersionDTO clone (VersionDTO targetVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri,
+	
+	public static VersionDTO clone (VersionDTO targetVersion, VersionDTO slVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri,
 			String ddiUsage) {
-		VersionDTO newVersion = new VersionDTO();
+		return clone(new VersionDTO(), targetVersion, slVersion, userId, versionNumber, agencylicenseId, agencyUri, ddiUsage);
+	}
+
+	public static VersionDTO clone (VersionDTO newVersion, VersionDTO targetVersion, VersionDTO slVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri,
+			String ddiUsage) {
 		// generate uri
 		newVersion.setUri( agencyUri + targetVersion.getNotation() + "/" + targetVersion.getLanguage());
 
@@ -572,9 +577,39 @@ public class VersionDTO implements Serializable {
 			newVersion.setDdiUsage( targetVersion.getDdiUsage() );
 		newVersion.setTranslateAgency( targetVersion.getTranslateAgency() );
 		newVersion.setTranslateAgencyLink( targetVersion.getTranslateAgencyLink() );
+		// get Sl-concepts if the cloning is for TL
+		Map<Long, ConceptDTO> slConceptMap = null;
+		if( targetVersion.getItemType().equals( ItemType.TL.toString()) && slVersion != null) {
+			slConceptMap = slVersion.getConceptWithKeyPreviousConceptAsMap();
+		}
+			
 		// clone concepts as well
 		for(ConceptDTO targetConcept: targetVersion.getConcepts()) {
-			ConceptDTO newConcept = ConceptDTO.clone(targetConcept, agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage());
+			ConceptDTO slConcept = null;
+			ConceptDTO newConcept = null;
+			
+			if( targetVersion.getItemType().equals( ItemType.TL.toString()) && slConceptMap != null) {
+				slConcept = slConceptMap.get( targetConcept.getSlConcept());
+				if( slConcept != null ) {
+					
+					newConcept = ConceptDTO.clone(targetConcept, 
+							agencyUri + targetVersion.getNotation() + "#" + slConcept.getNotation() + "/" + targetVersion.getLanguage()
+							);
+					newConcept.setNotation(slConcept.getNotation());
+					newConcept.setSlConcept( slConcept.getId());
+					newConcept.setPosition( slConcept.getPosition());
+					newConcept.setParent( slConcept.getParent());
+				} else
+					newConcept = ConceptDTO.clone(targetConcept, 
+						agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage()
+						);
+			} else {
+
+				newConcept = ConceptDTO.clone(targetConcept, 
+					agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage()
+					);
+			}
+			
 			newVersion.addConcept(newConcept);
 		}
 
@@ -628,5 +663,12 @@ public class VersionDTO implements Serializable {
 		if( lastDashPosition == -1 || lastDashPosition < 20)
 			return canonicalUrlInput;
 		return canonicalUrlInput.substring(0, lastDashPosition);
+	}
+	
+	public Map<String, ConceptDTO> getConceptAsMap(){
+		return this.concepts.stream().collect( Collectors.toMap( ConceptDTO::getNotation, Function.identity()));
+	}
+	public Map<Long, ConceptDTO> getConceptWithKeyPreviousConceptAsMap(){
+		return this.concepts.stream().collect( Collectors.toMap( ConceptDTO::getPreviousConcept, Function.identity()));
 	}
 }

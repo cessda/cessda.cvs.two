@@ -307,7 +307,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 				List<VersionDTO> oldValue = entry.getValue();
 				List<VersionDTO> newValue = new ArrayList<>();
 				for(VersionDTO eachVersion: oldValue) {
-					if( publishView && !eachVersion.getStatus().equals(Status.PUBLISHED.toString())) // only show publised one
+					if( publishView && !eachVersion.getStatus().equals(Status.PUBLISHED.toString())) // only show published one
 						continue;
 					if( eachVersion.getUriSl() != null && eachVersion.getUriSl().equals(pivotVersion.getUri()))
 						newValue.add(eachVersion);

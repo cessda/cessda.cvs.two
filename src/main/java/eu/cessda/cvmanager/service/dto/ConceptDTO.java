@@ -36,6 +36,8 @@ public class ConceptDTO implements Serializable {
     
     private Long previousConcept;
     
+    private Long slConcept;
+    
     // if null, then it is top concept
     private String parent;
     
@@ -134,6 +136,14 @@ public class ConceptDTO implements Serializable {
 
 	public void setPreviousConcept(Long previousConcept) {
 		this.previousConcept = previousConcept;
+	}
+	
+	public Long getSlConcept() {
+		return slConcept;
+	}
+
+	public void setSlConcept(Long slConcept) {
+		this.slConcept = slConcept;
 	}
 	
 	public String getParent() {

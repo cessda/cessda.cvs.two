@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.ui.view.window;
 
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -141,11 +142,11 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 						continue;
 					
 					String baseNotation = concept.getNotation().substring( lastDotIndex + 1 );
-					WorkspaceManager.saveCode(vocabulary, version, newCode, parentCode, concept, 
+					WorkspaceManager.saveCode(vocabulary, version, newCode, parentCode, concept, null,
 							baseNotation, concept.getTitle(), concept.getDefinition());
 				} 
 				else { // if top concept
-					WorkspaceManager.saveCode(vocabulary, version, newCode, null, concept, 
+					WorkspaceManager.saveCode(vocabulary, version, newCode, null, concept, null,
 							concept.getNotation(), concept.getTitle(), concept.getDefinition());
 				}
 				
@@ -158,6 +159,11 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 		else {
 			// get existing published code on specific version
 			Map<String, CodeDTO> existWfCodeMap = CodeDTO.getCodeAsMap( codeService.findWorkflowCodesByVocabulary( vocabulary.getId()));
+			// get conceptMap from latest SL
+			Optional<VersionDTO> latestSlVersionOpt = vocabulary.getLatestSlVersion( true );
+			Map<String, ConceptDTO> slConceptMap = new HashMap<>();
+			if(latestSlVersionOpt.isPresent())
+				slConceptMap = latestSlVersionOpt.get().getConceptAsMap();
 			
 			for(CsvRow csvRow: csvImportLayout.getCsvRows()) {
 				// find out, if code from excel exist on the code
@@ -172,6 +178,8 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 				// if there is no code, means no SL concept as well, just skip
 				if( code == null )
 					continue;
+				// create connection with SL concept
+				ConceptDTO slConcept = slConceptMap.get( code.getNotation() );
 				
 				// find parent code
 				if( code.getParent() != null ) {
@@ -179,10 +187,10 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 					if( parentCode == null )
 						continue;
 					
-					WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, 
+					WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, slConcept,
 							concept.getNotation(), concept.getTitle(), concept.getDefinition());
 				} else {
-					WorkspaceManager.saveCode(vocabulary, version, code, null, concept, 
+					WorkspaceManager.saveCode(vocabulary, version, code, null, concept, slConcept,
 							concept.getNotation(), concept.getTitle(), concept.getDefinition());
 				}
 					
