@@ -11,9 +11,9 @@ logging:
     console: '%d{yyyy-MM-dd HH:mm:ss.SSS}  %highlight(%-5level) %30.30(%M) %40.40((%file:%line\)) - %msg%n'
   level:
     ROOT: INFO
-    org.elasticsearch: DEBUG
-    org.gesis.wts: DEBUG
-    eu.cessda.cvmanager: DEBUG
+    org.elasticsearch: INFO
+    org.gesis.wts: INFO
+    eu.cessda.cvmanager: INFO
 server:
   servlet:
     context-path: '@server.servlet.contextPath@'
@@ -53,7 +53,7 @@ spring:
       hibernate.generate_statistics: false
     show-sql: 'false'
   mail:
-    host: MAILRELAY
+    host: cvs-mailrelay
     properties:
       mail:
         smtp:
