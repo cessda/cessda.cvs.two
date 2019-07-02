@@ -22,12 +22,23 @@ pipeline {
                 echo "image_tag = ${IMAGE_TAG}"
             }
         }
+        // Building on master
 		stage('Build Project') {
 			steps {
                 withMaven {
                     sh 'mvn clean deploy -Pdocker-compose -Dmaven.test.failure.ignore=true'					
 				}
 			}
+            when { branch 'master' }
+		}
+        // Not running on master - test only (for PRs and integration branches)
+		stage('Test Project') {
+			steps {
+                withMaven {
+                    sh 'mvn clean test -Pdocker-compose'					
+				}
+			}
+            when { not { branch 'master' } }
 		}
         stage('Run Sonar Scan') {
             steps {
@@ -39,6 +50,7 @@ pipeline {
                     }
                 }
             }
+            when { branch 'master' }
         }
         stage("Get Sonar Quality Gate") {
             steps {
@@ -46,6 +58,7 @@ pipeline {
                     waitForQualityGate abortPipeline: false
                 }
             }
+            when { branch 'master' }
         }
         stage('Build and Push Docker Image') {
             steps {
@@ -55,6 +68,7 @@ pipeline {
                 }
                 sh("gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${product_name}-${module_name}:${env.BRANCH_NAME}-latest")
             }
+            when { branch 'master' }
         }
         stage('Check Requirements and Deployments') {
             steps {
@@ -62,6 +76,7 @@ pipeline {
                     build job: 'cessda.cvs.deploy/master', parameters: [string(name: 'gui_image_tag', value: "${IMAGE_TAG}"), string(name: 'module', value: 'gui')], wait: false
                 }
             }
+            when { branch 'master' }
         }
 	}
 }
