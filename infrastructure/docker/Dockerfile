@@ -4,6 +4,9 @@ FROM openjdk:8-jre
 # Container Information
 LABEL MAINTAINER="CESSDA-ERIC 'support@cessda.eu'"
 
+# Install Tomcat Native
+RUN apt-get -qq update && apt-get -qq upgrade
+RUN apt-get install -qq -y libtcnative-1
 
 # Create Volume tmp and add JAR artifacts
 VOLUME /tmp
