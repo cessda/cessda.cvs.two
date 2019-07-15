@@ -591,7 +591,12 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 				if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
 					if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
 						buttonEditCv.setVisible( true );
-						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
+						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
+							buttonReviewInitial.setVisible( true );
+							separatorLabel.setVisible( true );
+							buttonDropVersion.setVisible( true );
+						}
+						else if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
 							buttonReviewInitial.setVisible( true );
 							separatorLabel.setVisible( true );
 							buttonDropVersion.setVisible( true );
@@ -599,14 +604,25 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 					}
 					else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() )) {
 						buttonEditCv.setVisible( true );
-						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
+						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
+							buttonReviewFinal.setVisible( true );
+							separatorLabel.setVisible( true );
+							buttonDropVersion.setVisible( true );
+						}
+						else if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
 							buttonReviewFinal.setVisible( true );
 							separatorLabel.setVisible( true );
 							buttonDropVersion.setVisible( true );
 						}
 					}
 					else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() )) {
-						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
+						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
+							buttonPublishCv.setVisible( true );
+							buttonEditCv.setVisible( true );
+							separatorLabel.setVisible( true );
+							buttonDropVersion.setVisible( true );
+						}
+						else if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
 							buttonPublishCv.setVisible( true );
 							buttonEditCv.setVisible( true );
 							separatorLabel.setVisible( true );
