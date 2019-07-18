@@ -12,11 +12,13 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.ResolverService;
 import eu.cessda.cvmanager.service.dto.ResolverDTO;
 import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import springfox.documentation.annotations.ApiIgnore;
 
 
 /**
  * REST controller for managing Resolver.
  */
+@ApiIgnore
 @RestController
 @RequestMapping("/v1")
 public class ResolverResource {

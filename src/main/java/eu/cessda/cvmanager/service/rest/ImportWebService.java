@@ -20,13 +20,15 @@ import eu.cessda.cvmanager.service.ImportService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * REST controller for managing Import.
  */
-//@RestController
-//@RequestMapping
-//("/v1/import")
+@ApiIgnore
+@RestController
+@RequestMapping
+("/v1/import")
 public class ImportWebService {
 	private final Logger log = LoggerFactory.getLogger( ImportWebService.class );
 
@@ -36,16 +38,16 @@ public class ImportWebService {
 		this.importService = importService;
 	}
 	
-//	@PostMapping("/cv")
-//	@Transactional
-//	public ResponseEntity<VersionDTO> createCv(@Valid @RequestBody Cv cv) throws URISyntaxException{
-//		VersionDTO newVersion = importService.createCv(cv);
-//		return ResponseEntity.created(new URI("/v1/VocabularyDetails/" + newVersion.getNotation() + "/" + newVersion.getLanguage() + "/" + newVersion.getNumber())).body(newVersion);
-//	}
-//	
-//	@PostMapping("/batchcv")
-//	@Transactional
-//	public ResponseEntity<Map<String, Object>> createCv(@Valid @RequestBody Cvs cvs) throws URISyntaxException{
-//		return ResponseEntity.created(new URI("/v1/Vocabulary")).body(importService.createCvBatch(cvs.getCvs()));
-//	}
+	@PostMapping("/cv")
+	@Transactional
+	public ResponseEntity<VersionDTO> createCv(@Valid @RequestBody Cv cv) throws URISyntaxException{
+		VersionDTO newVersion = importService.createCv(cv);
+		return ResponseEntity.created(new URI("/v1/VocabularyDetails/" + newVersion.getNotation() + "/" + newVersion.getLanguage() + "/" + newVersion.getNumber())).body(newVersion);
+	}
+	
+	@PostMapping("/batchcv")
+	@Transactional
+	public ResponseEntity<Map<String, Object>> createCv(@Valid @RequestBody Cvs cvs) throws URISyntaxException{
+		return ResponseEntity.created(new URI("/v1/Vocabulary")).body(importService.createCvBatch(cvs.getCvs()));
+	}
 }

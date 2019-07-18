@@ -1,4 +1,4 @@
-package eu.cessda.cvmanager.service.controller;
+package eu.cessda.cvmanager.service.rest;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
@@ -20,12 +20,16 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.controller.CVSchemeList;
+import eu.cessda.cvmanager.service.controller.Code;
+import eu.cessda.cvmanager.service.controller.CodeList;
+import eu.cessda.cvmanager.service.controller.ContentType;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-public class CVController {
+public class VocabularySearch {
 
 	@Autowired
 	ConfigurationService configService;

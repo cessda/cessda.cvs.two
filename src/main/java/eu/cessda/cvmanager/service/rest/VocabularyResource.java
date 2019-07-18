@@ -9,18 +9,21 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.service.ExportService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.utils.VersionUtils;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+
 
 /**
  * REST controller for managing Vocabullary.
@@ -32,10 +35,13 @@ public class VocabularyResource {
 	
 	private final VersionService versionService;
 	private final VocabularyService vocabularService;
+	private final ExportService exportService;
 	
-	public VocabularyResource( VocabularyService vocabularService, VersionService versionService ) {
+	public VocabularyResource( VocabularyService vocabularService, VersionService versionService,
+			ExportService exportService) {
 		this.versionService = versionService;
 		this.vocabularService = vocabularService;
+		this.exportService = exportService;
 	}
 	
 	
@@ -45,7 +51,8 @@ public class VocabularyResource {
      * @return map of Agencies and CVs code
      */
     @SuppressWarnings("unchecked")
-	@GetMapping("/Vocabulary")
+	@GetMapping("/vocabulary")
+    @ApiOperation(value = "Get list of the agencies and the controlled vocabularies with the details rest API link.")
     public Map<String,Object> getAllVocabularies() {
     	// example structure:
     	// e.g:
@@ -98,9 +105,10 @@ public class VocabularyResource {
      * @param cvCode the cv short definition/notation
      * @return set of published languages in a Cv
      */
-    @GetMapping("/VocabularyLanguages/{cvCode}")
-    public List<String> getVocabularyIsoLanguages( @PathVariable String cvCode ) {
-    	log.debug("REST request to get Vocabulary and language");
+    @GetMapping("/vocabulary-languages/{cvCode}")
+    @ApiOperation(value = "Get list of the languages in iso-format from a controlled vocabulary.")
+    public List<String> getVocabularyIsoLanguages( 
+		@ApiParam(value = "the CV short definition/notation, e.g. AnalysisUnit") @PathVariable String cvCode ) {
         List<String> cvLanguages = new ArrayList<>();
         VocabularyDTO vocab = vocabularService.getByNotation(cvCode);
         cvLanguages.addAll( vocab.getLanguagesPublished());
@@ -114,9 +122,11 @@ public class VocabularyResource {
      * @param languageIso the Cv language (iso format)
      * @return set of available versions in a Cv
      */
-    @GetMapping("/VocabularyLanguages/{cvCode}/{languageIso}")
-    public List<String> getVocabularyVersions( @PathVariable String cvCode, @PathVariable String languageIso ) {
-    	log.debug("REST request to get Vocabulary and language");
+    @GetMapping("/vocabulary-version/{cvCode}/{languageIso}")
+    @ApiOperation(value = "Get list of the version from a controlled vocabulary in a specific language")
+    public List<String> getVocabularyVersions(
+    		@ApiParam(value = "the CV short definition/notation, e.g. AnalysisUnit") @PathVariable String cvCode, 
+    		@ApiParam(value = "the CV language in iso format, e.g. en") @PathVariable String languageIso ) {
         List<String> cvLangVersions = new ArrayList<>();
         VocabularyDTO vocab = vocabularService.getByNotation(cvCode);
         List<VersionDTO> versions = vocab.getVersionsByLanguage( languageIso );
@@ -130,29 +140,36 @@ public class VocabularyResource {
     }
     
     /**
-     * GET   : get the detail of a CV in specific language and version
+     * GET   : get the details of a CV in specific language and version
      * @param cvCode the cv short definition/notation
      * @param languageIso the Cv language (iso format)
      * @param version the Cv version number 
      * @return detail of CV in specific language and version
      */
-    @GetMapping("/VocabularyDetails/{cvCode}/{languageIso}/{version}")
-    public VersionDTO getVocabularyDetails( @PathVariable String cvCode, @PathVariable String languageIso, @PathVariable String version ) {
-    	log.debug("REST request to get Vocabulary and language");
-    	VersionDTO versionDTO = versionService.findOneByNotationLangVersion( cvCode, languageIso, version );
+    @GetMapping("/vocabulary-details/{cvCode}/{languageIso}/{version}")
+    @ApiOperation(value = "Get the CV details in JSON format.")
+    public VersionDTO getVocabularyDetails( 
+    		@ApiParam(value = "the CV short definition/notation, e.g. AnalysisUnit") @PathVariable String cvCode, 
+    		@ApiParam(value = "the CV language in iso format, e.g. en") @PathVariable String languageIso, 
+    		@ApiParam(value = "the CV version number, e.g. 1.0")@PathVariable String version ) {
 
-        return versionDTO;
+        return versionService.findOneByNotationLangVersion( cvCode, languageIso, version );
     }
 	
-	/**
-     * GET  /raw : get all the vocabularies (RAW).
-     *
+    /**
+     * GET   : get the details SKOS-rdf of a CV in specific language and version
+     * @param cvCode the cv short definition/notation
+     * @param languageIso the Cv language (iso format)
+     * @param version the Cv version number 
+     * @return detail of CV in specific language and version
      */
-    @GetMapping("/Vocabulary/SKOS")
-    public List<VocabularyDTO> getAllVocabulariesRaw() {
-        log.debug("REST request to get all Vocabularies");
-        
-        List<VocabularyDTO> findAll = vocabularService.findAll();
-        return findAll;
+    @GetMapping("/vocabulary-details-skos/{cvCode}/{languageIso}/{version}")
+    @ApiOperation(value = "Get the CV details in SKOS-rdf format.")
+    public String getAllVocabulariesRaw( 
+    		@ApiParam(value = "the CV short definition/notation, e.g. AnalysisUnit") @PathVariable String cvCode, 
+    		@ApiParam(value = "the CV language in iso format, e.g. en") @PathVariable String languageIso, 
+    		@ApiParam(value = "the CV version number, e.g. 1.0")@PathVariable String version ) {
+		
+        return exportService.getGeneratedSkosRdf(cvCode, languageIso, version);
     }
 }
