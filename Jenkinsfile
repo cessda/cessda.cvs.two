@@ -79,4 +79,9 @@ pipeline {
             when { branch 'master' }
         }
 	}
+    post {
+        failure {
+            emailext body: '${DEFAULT_CONTENT}', subject: '${DEFAULT_SUBJECT}'
+        }
+    }
 }
