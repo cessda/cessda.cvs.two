@@ -26,7 +26,7 @@ pipeline {
 		stage('Build Project') {
 			steps {
                 withMaven {
-                    sh 'mvn clean deploy -Pdocker-compose -Dmaven.test.failure.ignore=true'					
+                    sh 'mvn clean deploy -Pdocker-compose'					
 				}
 			}
             when { branch 'master' }
