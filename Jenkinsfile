@@ -81,7 +81,7 @@ pipeline {
 	}
     post {
         failure {
-            emailext body: '${DEFAULT_CONTENT}', subject: '${DEFAULT_SUBJECT}'
+            emailext body: "${DEFAULT_CONTENT}", subject: "${DEFAULT_SUBJECT}", to: 'Sigit.Nugraha@gesis.org, Claus-Peter.Klas@gesis.org'
         }
     }
 }
