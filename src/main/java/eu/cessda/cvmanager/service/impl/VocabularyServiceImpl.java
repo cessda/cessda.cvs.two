@@ -350,7 +350,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
 			.withSearchType(SearchType.DEFAULT)
 			// set the target index
-			.withIndices("vocabulary2").withTypes("vocabulary")
+			.withIndices("vocabulary").withTypes("vocabulary")
 			.withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
 			.withPageable( esQueryResultDetail.getPage());
 		
@@ -681,7 +681,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
 			.withQuery(  generateMainAndNestedQuery ( searchTerm ))
 			.withSearchType(SearchType.DEFAULT)
-			.withIndices("vocabulary-publish2").withTypes("vocabularypublish")
+			.withIndices("vocabulary-publish").withTypes("vocabularypublish")
 			.withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
 			.withPageable( esQueryResultDetail.getPage());
 		

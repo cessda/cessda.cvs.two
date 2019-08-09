@@ -9,9 +9,6 @@ import org.gesis.wts.domain.enumeration.Language;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import eu.cessda.cvmanager.domain.Concept;
-import eu.cessda.cvmanager.domain.Version;
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 
 import java.io.Serializable;
@@ -19,7 +16,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -271,46 +267,329 @@ public class VocabularyDTO implements Serializable {
     @Lob
     private String notes;
     
+    // additional languages
+    @Size(max = 20)
+    private String versionSq;
+    
+    @Lob
+    private String titleSq;
+
+    @Lob
+    private String definitionSq;
+    
+	public String getVersionSq() {
+		return versionSq;
+	}
+
+	public void setVersionSq(String versionSq) {
+		this.versionSq = versionSq;
+	}
+
+	public String getTitleSq() {
+        return titleSq;
+    }
+
+    public void setTitleSq(String titleSq) {
+        this.titleSq = titleSq;
+    }
+
+    public String getDefinitionSq() {
+        return definitionSq;
+    }
+
+    public void setDefinitionSq(String definitionSq) {
+        this.definitionSq = definitionSq;
+    }
+    
+    @Size(max = 20)
+    private String versionBs;
+	
+	@Lob
+    private String titleBs;
+
+    @Lob
+    private String definitionBs;
+    
+	public String getVersionBs() {
+		return versionBs;
+	}
+
+	public void setVersionBs(String versionBs) {
+		this.versionBs = versionBs;
+	}
+
+	public String getTitleBs() {
+        return titleBs;
+    }
+
+    public void setTitleBs(String titleBs) {
+        this.titleBs = titleBs;
+    }
+
+    public String getDefinitionBs() {
+        return definitionBs;
+    }
+    
+    public void setDefinitionBs(String definitionBs) {
+        this.definitionBs = definitionBs;
+    }
+    
+    @Size(max = 20)
+    private String versionBg;
+	
+	@Lob
+    private String titleBg;
+
+    @Lob
+    private String definitionBg;
+    
+	public String getVersionBg() {
+		return versionBg;
+	}
+
+	public void setVersionBg(String versionBg) {
+		this.versionBg = versionBg;
+	}
+
+	public String getTitleBg() {
+        return titleBg;
+    }
+
+    public void setTitleBg(String titleBg) {
+        this.titleBg = titleBg;
+    }
+
+    public String getDefinitionBg() {
+        return definitionBg;
+    }
+
+    public void setDefinitionBg(String definitionBg) {
+        this.definitionBg = definitionBg;
+    }
+	
+    @Size(max = 20)
+    private String versionHr;
+    
+	@Lob
+    private String titleHr;
+
+    @Lob
+    private String definitionHr;
+	
+	public String getVersionHr() {
+		return versionHr;
+	}
+
+	public void setVersionHr(String versionHr) {
+		this.versionHr = versionHr;
+	}
+
+	public String getTitleHr() {
+        return titleHr;
+    }
+
+    public void setTitleHr(String titleHr) {
+        this.titleHr = titleHr;
+    }
+
+    public String getDefinitionHr() {
+        return definitionHr;
+    }
+
+    public void setDefinitionHr(String definitionHr) {
+        this.definitionHr = definitionHr;
+    }
+    
+    @Size(max = 20)
+    private String versionMk;
+	
+	@Lob
+    private String titleMk;
+
+    @Lob
+    private String definitionMk;
+	
+	public String getVersionMk() {
+		return versionMk;
+	}
+
+	public void setVersionMk(String versionMk) {
+		this.versionMk = versionMk;
+	}
+
+	public String getTitleMk() {
+        return titleMk;
+    }
+
+    public void setTitleMk(String titleMk) {
+        this.titleMk = titleMk;
+    }
+
+    public String getDefinitionMk() {
+        return definitionMk;
+    }
+
+    public void setDefinitionMk(String definitionMk) {
+        this.definitionMk = definitionMk;
+    }
+    
+    @Size(max = 20)
+    private String versionPl;
+	
+	@Lob
+    private String titlePl;
+
+    @Lob
+    private String definitionPl;
+    
+	public String getVersionPl() {
+		return versionPl;
+	}
+
+	public void setVersionPl(String versionPl) {
+		this.versionPl = versionPl;
+	}
+
+	public String getTitlePl() {
+        return titlePl;
+    }
+
+    public void setTitlePl(String titlePl) {
+        this.titlePl = titlePl;
+    }
+
+    public String getDefinitionPl() {
+        return definitionPl;
+    }
+
+    public void setDefinitionPl(String definitionPl) {
+        this.definitionPl = definitionPl;
+    }
+    
+    @Size(max = 20)
+    private String versionSr;
+	
+	@Lob
+    private String titleSr;
+
+    @Lob
+    private String definitionSr;
+    
+	public String getVersionSr() {
+		return versionSr;
+	}
+
+	public void setVersionSr(String versionSr) {
+		this.versionSr = versionSr;
+	}
+
+	public String getTitleSr() {
+        return titleSr;
+    }
+
+    public void setTitleSr(String titleSr) {
+        this.titleSr = titleSr;
+    }
+
+    public String getDefinitionSr() {
+        return definitionSr;
+    }
+
+    public void setDefinitionSr(String definitionSr) {
+        this.definitionSr = definitionSr;
+    }
+    
+    @Size(max = 20)
+    private String versionRu;
+	
+	@Lob
+    private String titleRu;
+
+    @Lob
+    private String definitionRu;
+    
+	public String getVersionRu() {
+		return versionRu;
+	}
+
+	public void setVersionRu(String versionRu) {
+		this.versionRu = versionRu;
+	}
+
+	public String getTitleRu() {
+        return titleRu;
+    }
+
+    public void setTitleRu(String titleRu) {
+        this.titleRu = titleRu;
+    }
+
+    public String getDefinitionRu() {
+        return definitionRu;
+    }
+
+    public void setDefinitionRu(String definitionRu) {
+        this.definitionRu = definitionRu;
+    }
+    // end of additional languages
+    
     public String getTitleByLanguage( Language language ) {
     	switch (language) {
-		case CZECH:
-			return titleCs;
-		case DANISH:
-			return titleDa;
-		case DUTCH:
-			return titleNl;
-		case ENGLISH:
-			return titleEn;
-		case FINNISH:
-			return titleFi;
-		case FRENCH:
-			return titleFr;
-		case GERMAN:
-			return titleDe;
-		case GREEK:
-			return titleEl;
-		case HUNGARIAN:
-			return titleHu;
-		case ITALIAN:
-			return titleIt;
-		case LITHUANIAN:
-			return titleLt;
-		case NORWEGIAN:
-			return titleNo;
-		case PORTUGUESE:
-			return titlePt;
-		case ROMANIAN:
-			return titleRo;
-		case SLOVAK:
-			return titleSk;
-		case SLOVENIAN:
-			return titleSl;
-		case SPANISH:
-			return titleEs;
-		case SWEDISH:
-			return titleSv;
+			case CZECH:
+				return titleCs;
+			case DANISH:
+				return titleDa;
+			case DUTCH:
+				return titleNl;
+			case ENGLISH:
+				return titleEn;
+			case FINNISH:
+				return titleFi;
+			case FRENCH:
+				return titleFr;
+			case GERMAN:
+				return titleDe;
+			case GREEK:
+				return titleEl;
+			case HUNGARIAN:
+				return titleHu;
+			case ITALIAN:
+				return titleIt;
+			case LITHUANIAN:
+				return titleLt;
+			case NORWEGIAN:
+				return titleNo;
+			case PORTUGUESE:
+				return titlePt;
+			case ROMANIAN:
+				return titleRo;
+			case SLOVAK:
+				return titleSk;
+			case SLOVENIAN:
+				return titleSl;
+			case SPANISH:
+				return titleEs;
+			case SWEDISH:
+				return titleSv;
+			case ALBANIAN:
+				return titleSq;
+			case BOSNIAN:
+				return titleBs;
+			case BULGARIAN:
+				return titleBg;
+			case CROATIAN:
+				return titleHr;
+			case MACEDONIAN:
+				return titleMk;
+			case POLISH:
+				return titlePl;
+			case RUSSIAN:
+				return titleRu;
+			case SERBIAN:
+				return titleSr;
+			default:
+				return null;
     	}
-    	return null;
     }
     
     public String getDefinitionByLanguage( Language language ) {
@@ -351,50 +630,84 @@ public class VocabularyDTO implements Serializable {
 			return definitionEs;
 		case SWEDISH:
 			return definitionSv;
+		case ALBANIAN:
+			return definitionSq;
+		case BOSNIAN:
+			return definitionBs;
+		case BULGARIAN:
+			return definitionBg;
+		case CROATIAN:
+			return definitionHr;
+		case MACEDONIAN:
+			return definitionMk;
+		case POLISH:
+			return definitionPl;
+		case RUSSIAN:
+			return definitionRu;
+		case SERBIAN:
+			return definitionSr;
+		default:
+			return null;
     	}
-    	return null;
     }
     
     public String getVersionByLanguage( Language language ) {
     	switch (language) {
-		case CZECH:
-			return versionCs;
-		case DANISH:
-			return versionDa;
-		case DUTCH:
-			return versionNl;
-		case ENGLISH:
-			return versionEn;
-		case FINNISH:
-			return versionFi;
-		case FRENCH:
-			return versionFr;
-		case GERMAN:
-			return versionDe;
-		case GREEK:
-			return versionEl;
-		case HUNGARIAN:
-			return versionHu;
-		case ITALIAN:
-			return versionIt;
-		case LITHUANIAN:
-			return versionLt;
-		case NORWEGIAN:
-			return versionNo;
-		case PORTUGUESE:
-			return versionPt;
-		case ROMANIAN:
-			return versionRo;
-		case SLOVAK:
-			return versionSk;
-		case SLOVENIAN:
-			return versionSl;
-		case SPANISH:
-			return versionEs;
-		case SWEDISH:
-			return versionSv;
-    	}
-    	return null;
+			case CZECH:
+				return versionCs;
+			case DANISH:
+				return versionDa;
+			case DUTCH:
+				return versionNl;
+			case ENGLISH:
+				return versionEn;
+			case FINNISH:
+				return versionFi;
+			case FRENCH:
+				return versionFr;
+			case GERMAN:
+				return versionDe;
+			case GREEK:
+				return versionEl;
+			case HUNGARIAN:
+				return versionHu;
+			case ITALIAN:
+				return versionIt;
+			case LITHUANIAN:
+				return versionLt;
+			case NORWEGIAN:
+				return versionNo;
+			case PORTUGUESE:
+				return versionPt;
+			case ROMANIAN:
+				return versionRo;
+			case SLOVAK:
+				return versionSk;
+			case SLOVENIAN:
+				return versionSl;
+			case SPANISH:
+				return versionEs;
+			case SWEDISH:
+				return versionSv;
+			case ALBANIAN:
+				return versionSq;
+			case BOSNIAN:
+				return versionBs;
+			case BULGARIAN:
+				return versionBg;
+			case CROATIAN:
+				return versionHr;
+			case MACEDONIAN:
+				return versionMk;
+			case POLISH:
+				return versionPl;
+			case RUSSIAN:
+				return versionRu;
+			case SERBIAN:
+				return versionSr;
+			default:
+				return null;
+	    	}
     }
     
     public VocabularyDTO setTitleDefinition( String title, String definition, String language) {
@@ -475,6 +788,40 @@ public class VocabularyDTO implements Serializable {
     			setTitleSv(title);
     			setDefinitionSv(definition);
     			break;
+    		case ALBANIAN:
+    			setTitleSq(title);
+    			setDefinitionSq(definition);
+    			break;
+			case BOSNIAN:
+				setTitleBs(title);
+    			setDefinitionBs(definition);
+    			break;
+			case BULGARIAN:
+				setTitleBg(title);
+    			setDefinitionBg(definition);
+    			break;
+			case CROATIAN:
+				setTitleHr(title);
+    			setDefinitionHr(definition);
+    			break;
+			case MACEDONIAN:
+				setTitleMk(title);
+    			setDefinitionMk(definition);
+    			break;
+			case POLISH:
+				setTitlePl(title);
+    			setDefinitionPl(definition);
+    			break;
+			case RUSSIAN:
+				setTitleRu(title);
+    			setDefinitionRu(definition);
+    			break;
+			case SERBIAN:
+				setTitleSr(title);
+    			setDefinitionSr(definition);
+    			break;
+			default:
+				break;
     	}
     	addLanguage(language.toString());
     	return this;
@@ -540,6 +887,32 @@ public class VocabularyDTO implements Serializable {
 			case SWEDISH:
 				setVersionSv(versionNumber);
 				break;
+			case ALBANIAN:
+				setVersionSq(versionNumber);
+    			break;
+			case BOSNIAN:
+				setVersionBs(versionNumber);
+    			break;
+			case BULGARIAN:
+				setVersionBg(versionNumber);
+    			break;
+			case CROATIAN:
+				setVersionHr(versionNumber);
+    			break;
+			case MACEDONIAN:
+				setVersionMk(versionNumber);
+    			break;
+			case POLISH:
+				setVersionPl(versionNumber);
+    			break;
+			case RUSSIAN:
+				setVersionRu(versionNumber);
+    			break;
+			case SERBIAN:
+				setVersionSr(versionNumber);
+    			break;
+			default:
+				break;
 		}
 		
 		return this;
@@ -566,6 +939,14 @@ public class VocabularyDTO implements Serializable {
 		setVersionSl(null);
 		setVersionEs(null);
 		setVersionSv(null);
+		setVersionSq(null);
+		setVersionBs(null);
+		setVersionBg(null);
+		setVersionHr(null);
+		setVersionMk(null);
+		setVersionPl(null);
+		setVersionRu(null);
+		setVersionSr(null);
 		setTitleCs(null);
 		setDefinitionCs(null);
 		setTitleDa(null);
@@ -602,6 +983,22 @@ public class VocabularyDTO implements Serializable {
 		setDefinitionEs(null);
 		setTitleSv(null);
 		setDefinitionSv(null);
+		setTitleSq(null);
+		setTitleBs(null);
+		setTitleBg(null);
+		setTitleHr(null);
+		setTitleMk(null);
+		setTitlePl(null);
+		setTitleRu(null);
+		setTitleSr(null);
+		setDefinitionSq(null);
+		setDefinitionBs(null);
+		setDefinitionBg(null);
+		setDefinitionHr(null);
+		setDefinitionMk(null);
+		setDefinitionPl(null);
+		setDefinitionRu(null);
+		setDefinitionSr(null);
 	}
     
     public Long getId() {
@@ -1493,6 +1890,48 @@ public class VocabularyDTO implements Serializable {
 	    			vocabulary.setDefinitionSv(definition);
 	    			vocabulary.setVersionSv(versionTL);
 	    			break;
+	    		case ALBANIAN:
+	    			vocabulary.setTitleSq(title);
+	    			vocabulary.setDefinitionSq(definition);
+	    			vocabulary.setVersionSq(versionTL);
+	    			break;
+				case BOSNIAN:
+					vocabulary.setTitleBs(title);
+	    			vocabulary.setDefinitionBs(definition);
+	    			vocabulary.setVersionBs(versionTL);
+	    			break;
+				case BULGARIAN:
+					vocabulary.setTitleBg(title);
+	    			vocabulary.setDefinitionBg(definition);
+	    			vocabulary.setVersionBg(versionTL);
+	    			break;
+				case CROATIAN:
+					vocabulary.setTitleHr(title);
+	    			vocabulary.setDefinitionHr(definition);
+	    			vocabulary.setVersionHr(versionTL);
+	    			break;
+				case MACEDONIAN:
+					vocabulary.setTitleMk(title);
+	    			vocabulary.setDefinitionMk(definition);
+	    			vocabulary.setVersionMk(versionTL);
+	    			break;
+				case POLISH:
+					vocabulary.setTitlePl(title);
+	    			vocabulary.setDefinitionPl(definition);
+	    			vocabulary.setVersionPl(versionTL);
+	    			break;
+				case RUSSIAN:
+					vocabulary.setTitleRu(title);
+	    			vocabulary.setDefinitionRu(definition);
+	    			vocabulary.setVersionRu(versionTL);
+	    			break;
+				case SERBIAN:
+					vocabulary.setTitleSr(title);
+	    			vocabulary.setDefinitionSr(definition);
+	    			vocabulary.setVersionSr(versionTL);
+	    			break;
+				default:
+					break;
 				}
 				
 			}

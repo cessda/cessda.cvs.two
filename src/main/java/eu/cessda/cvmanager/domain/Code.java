@@ -250,6 +250,219 @@ public class Code implements Serializable {
     @Column(name = "definition_sv")
     @Field(type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
     private String definitionSv;
+    
+    // additional languages
+    
+	@Lob
+    @Column(name = "title_sq")
+    @Field(type = FieldType.Text, store = true)
+    private String titleSq;
+
+    @Lob
+    @Column(name = "definition_sq")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionSq;
+	
+	public String getTitleSq() {
+        return titleSq;
+    }
+
+    public void setTitleSq(String titleSq) {
+        this.titleSq = titleSq;
+    }
+
+    public String getDefinitionSq() {
+        return definitionSq;
+    }
+
+    public void setDefinitionSq(String definitionSq) {
+        this.definitionSq = definitionSq;
+    }
+	
+	@Lob
+    @Column(name = "title_bs")
+    @Field(type = FieldType.Text, store = true)
+    private String titleBs;
+
+    @Lob
+    @Column(name = "definition_bs")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionBs;
+	
+	public String getTitleBs() {
+        return titleBs;
+    }
+
+    public void setTitleBs(String titleBs) {
+        this.titleBs = titleBs;
+    }
+
+    public String getDefinitionBs() {
+        return definitionBs;
+    }
+    
+    public void setDefinitionBs(String definitionBs) {
+        this.definitionBs = definitionBs;
+    }
+	
+	@Lob
+    @Column(name = "title_bg")
+    @Field(type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
+    private String titleBg;
+
+    @Lob
+    @Column(name = "definition_bg")
+    @Field(type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
+    private String definitionBg;
+	
+	public String getTitleBg() {
+        return titleBg;
+    }
+
+    public void setTitleBg(String titleBg) {
+        this.titleBg = titleBg;
+    }
+
+    public String getDefinitionBg() {
+        return definitionBg;
+    }
+
+    public void setDefinitionBg(String definitionBg) {
+        this.definitionBg = definitionBg;
+    }
+	
+	@Lob
+    @Column(name = "title_hr")
+    @Field(type = FieldType.Text, store = true)
+    private String titleHr;
+
+    @Lob
+    @Column(name = "definition_hr")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionHr;
+	
+	public String getTitleHr() {
+        return titleHr;
+    }
+
+
+    public void setTitleHr(String titleHr) {
+        this.titleHr = titleHr;
+    }
+
+    public String getDefinitionHr() {
+        return definitionHr;
+    }
+
+
+    public void setDefinitionHr(String definitionHr) {
+        this.definitionHr = definitionHr;
+    }
+	
+	@Lob
+    @Column(name = "title_mk")
+    @Field(type = FieldType.Text, store = true)
+    private String titleMk;
+
+    @Lob
+    @Column(name = "definition_mk")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionMk;
+	
+	public String getTitleMk() {
+        return titleMk;
+    }
+
+    public void setTitleMk(String titleMk) {
+        this.titleMk = titleMk;
+    }
+
+    public String getDefinitionMk() {
+        return definitionMk;
+    }
+
+    public void setDefinitionMk(String definitionMk) {
+        this.definitionMk = definitionMk;
+    }
+	
+	@Lob
+    @Column(name = "title_pl")
+    @Field(type = FieldType.Text, store = true)
+    private String titlePl;
+
+    @Lob
+    @Column(name = "definition_pl")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionPl;
+	
+	public String getTitlePl() {
+        return titlePl;
+    }
+
+    public void setTitlePl(String titlePl) {
+        this.titlePl = titlePl;
+    }
+
+    public String getDefinitionPl() {
+        return definitionPl;
+    }
+
+    public void setDefinitionPl(String definitionPl) {
+        this.definitionPl = definitionPl;
+    }
+	
+	@Lob
+    @Column(name = "title_sr")
+    @Field(type = FieldType.Text, store = true)
+    private String titleSr;
+
+    @Lob
+    @Column(name = "definition_sr")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionSr;
+	
+	public String getTitleSr() {
+        return titleSr;
+    }
+
+    public void setTitleSr(String titleSr) {
+        this.titleSr = titleSr;
+    }
+
+    public String getDefinitionSr() {
+        return definitionSr;
+    }
+
+    public void setDefinitionSr(String definitionSr) {
+        this.definitionSr = definitionSr;
+    }
+	
+	@Lob
+    @Column(name = "title_ru")
+    @Field(type = FieldType.Text, store = true, analyzer = "russian", searchAnalyzer = "russian" )
+    private String titleRu;
+
+    @Lob
+    @Column(name = "definition_ru")
+    @Field(type = FieldType.Text, store = true , analyzer = "russian", searchAnalyzer = "russian" )
+    private String definitionRu;
+	
+	public String getTitleRu() {
+        return titleRu;
+    }
+
+    public void setTitleRu(String titleRu) {
+        this.titleRu = titleRu;
+    }
+
+    public String getDefinitionRu() {
+        return definitionRu;
+    }
+
+    public void setDefinitionRu(String definitionRu) {
+        this.definitionRu = definitionRu;
+    }
+    
 
 //    @JsonManagedReference
 //    @ManyToOne
@@ -403,23 +616,13 @@ public class Code implements Serializable {
     public String getTitleDa() {
         return titleDa;
     }
-
-    public Code titleDa(String titleDa) {
-        this.titleDa = titleDa;
-        return this;
-    }
-
+    
     public void setTitleDa(String titleDa) {
         this.titleDa = titleDa;
     }
 
     public String getDefinitionDa() {
         return definitionDa;
-    }
-
-    public Code definitionDa(String definitionDa) {
-        this.definitionDa = definitionDa;
-        return this;
     }
 
     public void setDefinitionDa(String definitionDa) {
@@ -430,22 +633,12 @@ public class Code implements Serializable {
         return titleNl;
     }
 
-    public Code titleNl(String titleNl) {
-        this.titleNl = titleNl;
-        return this;
-    }
-
     public void setTitleNl(String titleNl) {
         this.titleNl = titleNl;
     }
 
     public String getDefinitionNl() {
         return definitionNl;
-    }
-
-    public Code definitionNl(String definitionNl) {
-        this.definitionNl = definitionNl;
-        return this;
     }
 
     public void setDefinitionNl(String definitionNl) {
@@ -456,22 +649,12 @@ public class Code implements Serializable {
         return titleEn;
     }
 
-    public Code titleEn(String titleEn) {
-        this.titleEn = titleEn;
-        return this;
-    }
-
     public void setTitleEn(String titleEn) {
         this.titleEn = titleEn;
     }
 
     public String getDefinitionEn() {
         return definitionEn;
-    }
-
-    public Code definitionEn(String definitionEn) {
-        this.definitionEn = definitionEn;
-        return this;
     }
 
     public void setDefinitionEn(String definitionEn) {
@@ -481,23 +664,13 @@ public class Code implements Serializable {
     public String getTitleFi() {
         return titleFi;
     }
-
-    public Code titleFi(String titleFi) {
-        this.titleFi = titleFi;
-        return this;
-    }
-
+    
     public void setTitleFi(String titleFi) {
         this.titleFi = titleFi;
     }
 
     public String getDefinitionFi() {
         return definitionFi;
-    }
-
-    public Code definitionFi(String definitionFi) {
-        this.definitionFi = definitionFi;
-        return this;
     }
 
     public void setDefinitionFi(String definitionFi) {
@@ -508,22 +681,12 @@ public class Code implements Serializable {
         return titleFr;
     }
 
-    public Code titleFr(String titleFr) {
-        this.titleFr = titleFr;
-        return this;
-    }
-
     public void setTitleFr(String titleFr) {
         this.titleFr = titleFr;
     }
 
     public String getDefinitionFr() {
         return definitionFr;
-    }
-
-    public Code definitionFr(String definitionFr) {
-        this.definitionFr = definitionFr;
-        return this;
     }
 
     public void setDefinitionFr(String definitionFr) {
@@ -534,22 +697,12 @@ public class Code implements Serializable {
         return titleDe;
     }
 
-    public Code titleDe(String titleDe) {
-        this.titleDe = titleDe;
-        return this;
-    }
-
     public void setTitleDe(String titleDe) {
         this.titleDe = titleDe;
     }
 
     public String getDefinitionDe() {
         return definitionDe;
-    }
-
-    public Code definitionDe(String definitionDe) {
-        this.definitionDe = definitionDe;
-        return this;
     }
 
     public void setDefinitionDe(String definitionDe) {
@@ -560,22 +713,12 @@ public class Code implements Serializable {
         return titleEl;
     }
 
-    public Code titleEl(String titleEl) {
-        this.titleEl = titleEl;
-        return this;
-    }
-
     public void setTitleEl(String titleEl) {
         this.titleEl = titleEl;
     }
 
     public String getDefinitionEl() {
         return definitionEl;
-    }
-
-    public Code definitionEl(String definitionEl) {
-        this.definitionEl = definitionEl;
-        return this;
     }
 
     public void setDefinitionEl(String definitionEl) {
@@ -586,22 +729,12 @@ public class Code implements Serializable {
         return titleHu;
     }
 
-    public Code titleHu(String titleHu) {
-        this.titleHu = titleHu;
-        return this;
-    }
-
     public void setTitleHu(String titleHu) {
         this.titleHu = titleHu;
     }
     
 	public String getDefinitionHu() {
         return definitionHu;
-    }
-
-    public Code definitionHu(String definitionHu) {
-        this.definitionHu = definitionHu;
-        return this;
     }
 
     public void setDefinitionHu(String definitionHu) {
@@ -611,11 +744,6 @@ public class Code implements Serializable {
     public String getTitleIt() {
 		return titleIt;
 	}
-    
-    public Code titleIt(String titleIt) {
-        this.titleIt = titleIt;
-        return this;
-    }
 
 	public void setTitleIt(String titleIt) {
 		this.titleIt = titleIt;
@@ -623,11 +751,6 @@ public class Code implements Serializable {
 
 	public String getDefinitionIt() {
         return definitionIt;
-    }
-
-    public Code definitionIt(String definitionIt) {
-        this.definitionIt = definitionIt;
-        return this;
     }
 
     public void setDefinitionIt(String definitionIt) {
@@ -638,22 +761,12 @@ public class Code implements Serializable {
         return titleLt;
     }
 
-    public Code titleLt(String titleLt) {
-        this.titleLt = titleLt;
-        return this;
-    }
-
     public void setTitleLt(String titleLt) {
         this.titleLt = titleLt;
     }
 
     public String getDefinitionLt() {
         return definitionLt;
-    }
-
-    public Code definitionLt(String definitionLt) {
-        this.definitionLt = definitionLt;
-        return this;
     }
 
     public void setDefinitionLt(String definitionLt) {
@@ -664,22 +777,12 @@ public class Code implements Serializable {
         return titleNo;
     }
 
-    public Code titleNo(String titleNo) {
-        this.titleNo = titleNo;
-        return this;
-    }
-
     public void setTitleNo(String titleNo) {
         this.titleNo = titleNo;
     }
 
     public String getDefinitionNo() {
         return definitionNo;
-    }
-
-    public Code definitionNo(String definitionNo) {
-        this.definitionNo = definitionNo;
-        return this;
     }
 
     public void setDefinitionNo(String definitionNo) {
@@ -690,22 +793,12 @@ public class Code implements Serializable {
         return titlePt;
     }
 
-    public Code titlePt(String titlePt) {
-        this.titlePt = titlePt;
-        return this;
-    }
-
     public void setTitlePt(String titlePt) {
         this.titlePt = titlePt;
     }
 
     public String getDefinitionPt() {
         return definitionPt;
-    }
-
-    public Code definitionPt(String definitionPt) {
-        this.definitionPt = definitionPt;
-        return this;
     }
 
     public void setDefinitionPt(String definitionPt) {
@@ -716,22 +809,12 @@ public class Code implements Serializable {
         return titleRo;
     }
 
-    public Code titleRo(String titleRo) {
-        this.titleRo = titleRo;
-        return this;
-    }
-
     public void setTitleRo(String titleRo) {
         this.titleRo = titleRo;
     }
 
     public String getDefinitionRo() {
         return definitionRo;
-    }
-
-    public Code definitionRo(String definitionRo) {
-        this.definitionRo = definitionRo;
-        return this;
     }
 
     public void setDefinitionRo(String definitionRo) {
@@ -742,22 +825,12 @@ public class Code implements Serializable {
         return titleSk;
     }
 
-    public Code titleSk(String titleSk) {
-        this.titleSk = titleSk;
-        return this;
-    }
-
     public void setTitleSk(String titleSk) {
         this.titleSk = titleSk;
     }
 
     public String getDefinitionSk() {
         return definitionSk;
-    }
-
-    public Code definitionSk(String definitionSk) {
-        this.definitionSk = definitionSk;
-        return this;
     }
 
     public void setDefinitionSk(String definitionSk) {
@@ -781,11 +854,6 @@ public class Code implements Serializable {
         return definitionSl;
     }
 
-    public Code definitionSl(String definitionSl) {
-        this.definitionSl = definitionSl;
-        return this;
-    }
-
     public void setDefinitionSl(String definitionSl) {
         this.definitionSl = definitionSl;
     }
@@ -807,11 +875,6 @@ public class Code implements Serializable {
         return definitionEs;
     }
 
-    public Code definitionEs(String definitionEs) {
-        this.definitionEs = definitionEs;
-        return this;
-    }
-
     public void setDefinitionEs(String definitionEs) {
         this.definitionEs = definitionEs;
     }
@@ -820,22 +883,12 @@ public class Code implements Serializable {
         return titleSv;
     }
 
-    public Code titleSv(String titleSv) {
-        this.titleSv = titleSv;
-        return this;
-    }
-
     public void setTitleSv(String titleSv) {
         this.titleSv = titleSv;
     }
 
     public String getDefinitionSv() {
         return definitionSv;
-    }
-
-    public Code definitionSv(String definitionSv) {
-        this.definitionSv = definitionSv;
-        return this;
     }
 
     public void setDefinitionSv(String definitionSv) {
@@ -850,18 +903,6 @@ public class Code implements Serializable {
         this.vocabularyId = vocabularyId;
     }
     
-//    public Vocabulary getVocabulary() {
-//        return vocabulary;
-//    }
-//
-//    public Code vocabulary(Vocabulary vocabulary) {
-//        this.vocabulary = vocabulary;
-//        return this;
-//    }
-//
-//    public void setVocabulary(Vocabulary vocabulary) {
-//        this.vocabulary = vocabulary;
-//    }
 	public LocalDate getPublicationDate() {
 		return publicationDate;
 	}
@@ -959,6 +1000,22 @@ public class Code implements Serializable {
             ", definitionEs='" + getDefinitionEs() + "'" +
             ", titleSv='" + getTitleSv() + "'" +
             ", definitionSv='" + getDefinitionSv() + "'" +
+			", titleSq='" + getTitleSq() + "'" +
+            ", definitionSq='" + getDefinitionSq() + "'" +
+			", titleBs='" + getTitleBs() + "'" +
+            ", definitionBs='" + getDefinitionBs() + "'" +
+			", titleBg='" + getTitleBg() + "'" +
+            ", definitionBg='" + getDefinitionBg() + "'" +
+			", titleHr='" + getTitleHr() + "'" +
+            ", definitionHr='" + getDefinitionHr() + "'" +
+			", titleMk='" + getTitleMk() + "'" +
+            ", definitionMk='" + getDefinitionMk() + "'" +
+			", titlePl='" + getTitlePl() + "'" +
+            ", definitionPl='" + getDefinitionPl() + "'" +
+			", titleRu='" + getTitleRu() + "'" +
+            ", definitionRu='" + getDefinitionRu() + "'" +
+			", titleSr='" + getTitleSr() + "'" +
+            ", definitionSr='" + getDefinitionSr() + "'" +
             "}";
     }
 }

@@ -365,6 +365,312 @@ public class VocabularyBase implements Serializable {
     @Column(name = "notes")
     private String notes;
     
+    // additional languages
+    @Size(max = 20)
+    @Column(name = "version_sq", length = 20)
+    private String versionSq;
+    
+    @Lob
+    @Column(name = "title_sq")
+    @Field(type = FieldType.Text, store = true)
+    private String titleSq;
+
+    @Lob
+    @Column(name = "definition_sq")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionSq;
+    
+	public String getVersionSq() {
+		return versionSq;
+	}
+
+	public void setVersionSq(String versionSq) {
+		this.versionSq = versionSq;
+	}
+
+	public String getTitleSq() {
+        return titleSq;
+    }
+
+    public void setTitleSq(String titleSq) {
+        this.titleSq = titleSq;
+    }
+
+    public String getDefinitionSq() {
+        return definitionSq;
+    }
+
+    public void setDefinitionSq(String definitionSq) {
+        this.definitionSq = definitionSq;
+    }
+    
+    @Size(max = 20)
+    @Column(name = "version_bs", length = 20)
+    private String versionBs;
+	
+	@Lob
+    @Column(name = "title_bs")
+    @Field(type = FieldType.Text, store = true)
+    private String titleBs;
+
+    @Lob
+    @Column(name = "definition_bs")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionBs;
+    
+	public String getVersionBs() {
+		return versionBs;
+	}
+
+	public void setVersionBs(String versionBs) {
+		this.versionBs = versionBs;
+	}
+
+	public String getTitleBs() {
+        return titleBs;
+    }
+
+    public void setTitleBs(String titleBs) {
+        this.titleBs = titleBs;
+    }
+
+    public String getDefinitionBs() {
+        return definitionBs;
+    }
+    
+    public void setDefinitionBs(String definitionBs) {
+        this.definitionBs = definitionBs;
+    }
+    
+    @Size(max = 20)
+    @Column(name = "version_bg", length = 20)
+    private String versionBg;
+	
+	@Lob
+    @Column(name = "title_bg")
+    @Field(type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
+    private String titleBg;
+
+    @Lob
+    @Column(name = "definition_bg")
+    @Field(type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
+    private String definitionBg;
+    
+	public String getVersionBg() {
+		return versionBg;
+	}
+
+	public void setVersionBg(String versionBg) {
+		this.versionBg = versionBg;
+	}
+
+	public String getTitleBg() {
+        return titleBg;
+    }
+
+    public void setTitleBg(String titleBg) {
+        this.titleBg = titleBg;
+    }
+
+    public String getDefinitionBg() {
+        return definitionBg;
+    }
+
+    public void setDefinitionBg(String definitionBg) {
+        this.definitionBg = definitionBg;
+    }
+	
+    @Size(max = 20)
+    @Column(name = "version_hr", length = 20)
+    private String versionHr;
+    
+	@Lob
+    @Column(name = "title_hr")
+    @Field(type = FieldType.Text, store = true)
+    private String titleHr;
+
+    @Lob
+    @Column(name = "definition_hr")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionHr;
+	
+	public String getVersionHr() {
+		return versionHr;
+	}
+
+	public void setVersionHr(String versionHr) {
+		this.versionHr = versionHr;
+	}
+
+	public String getTitleHr() {
+        return titleHr;
+    }
+
+    public void setTitleHr(String titleHr) {
+        this.titleHr = titleHr;
+    }
+
+    public String getDefinitionHr() {
+        return definitionHr;
+    }
+
+    public void setDefinitionHr(String definitionHr) {
+        this.definitionHr = definitionHr;
+    }
+    
+    @Size(max = 20)
+    @Column(name = "version_mk", length = 20)
+    private String versionMḱ;
+	
+	@Lob
+    @Column(name = "title_mk")
+    @Field(type = FieldType.Text, store = true)
+    private String titleMk;
+
+    @Lob
+    @Column(name = "definition_mk")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionMk;
+	
+	public String getVersionMḱ() {
+		return versionMḱ;
+	}
+
+	public void setVersionMḱ(String versionMḱ) {
+		this.versionMḱ = versionMḱ;
+	}
+
+	public String getTitleMk() {
+        return titleMk;
+    }
+
+    public void setTitleMk(String titleMk) {
+        this.titleMk = titleMk;
+    }
+
+    public String getDefinitionMk() {
+        return definitionMk;
+    }
+
+    public void setDefinitionMk(String definitionMk) {
+        this.definitionMk = definitionMk;
+    }
+    
+    @Size(max = 20)
+    @Column(name = "version_pl", length = 20)
+    private String versionPl;
+	
+	@Lob
+    @Column(name = "title_pl")
+    @Field(type = FieldType.Text, store = true)
+    private String titlePl;
+
+    @Lob
+    @Column(name = "definition_pl")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionPl;
+    
+	public String getVersionPl() {
+		return versionPl;
+	}
+
+	public void setVersionPl(String versionPl) {
+		this.versionPl = versionPl;
+	}
+
+	public String getTitlePl() {
+        return titlePl;
+    }
+
+    public void setTitlePl(String titlePl) {
+        this.titlePl = titlePl;
+    }
+
+    public String getDefinitionPl() {
+        return definitionPl;
+    }
+
+    public void setDefinitionPl(String definitionPl) {
+        this.definitionPl = definitionPl;
+    }
+    
+    @Size(max = 20)
+    @Column(name = "version_sr", length = 20)
+    private String versionSr;
+	
+	@Lob
+    @Column(name = "title_sr")
+    @Field(type = FieldType.Text, store = true)
+    private String titleSr;
+
+    @Lob
+    @Column(name = "definition_sr")
+    @Field(type = FieldType.Text, store = true )
+    private String definitionSr;
+    
+	public String getVersionSr() {
+		return versionSr;
+	}
+
+	public void setVersionSr(String versionSr) {
+		this.versionSr = versionSr;
+	}
+
+	public String getTitleSr() {
+        return titleSr;
+    }
+
+    public void setTitleSr(String titleSr) {
+        this.titleSr = titleSr;
+    }
+
+    public String getDefinitionSr() {
+        return definitionSr;
+    }
+
+    public void setDefinitionSr(String definitionSr) {
+        this.definitionSr = definitionSr;
+    }
+    
+    @Size(max = 20)
+    @Column(name = "version_ru", length = 20)
+    private String versionRu;
+	
+	@Lob
+    @Column(name = "title_ru")
+    @Field(type = FieldType.Text, store = true, analyzer = "russian", searchAnalyzer = "russian" )
+    private String titleRu;
+
+    @Lob
+    @Column(name = "definition_ru")
+    @Field(type = FieldType.Text, store = true , analyzer = "russian", searchAnalyzer = "russian" )
+    private String definitionRu;
+    
+	public String getVersionRu() {
+		return versionRu;
+	}
+
+	public void setVersionRu(String versionRu) {
+		this.versionRu = versionRu;
+	}
+
+	public String getTitleRu() {
+        return titleRu;
+    }
+
+    public void setTitleRu(String titleRu) {
+        this.titleRu = titleRu;
+    }
+
+    public String getDefinitionRu() {
+        return definitionRu;
+    }
+
+    public void setDefinitionRu(String definitionRu) {
+        this.definitionRu = definitionRu;
+    }
+    // end of additional languages
+    
     public Long getId() {
         return id;
     }

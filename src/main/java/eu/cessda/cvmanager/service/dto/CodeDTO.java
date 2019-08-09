@@ -176,6 +176,264 @@ public class CodeDTO implements Serializable {
     @Lob
     private String definitionSv;
     
+    // additional language
+	@Lob
+    private String titleSq;
+
+    @Lob
+    private String definitionSq;
+    
+	@Lob
+    private String titleBs;
+
+    @Lob
+    private String definitionBs;
+    
+	@Lob
+    private String titleBg;
+
+    @Lob
+    private String definitionBg;
+    
+	@Lob
+    private String titleHr;
+
+    @Lob
+    private String definitionHr;
+    
+	@Lob
+    private String titleMk;
+
+    @Lob
+    private String definitionMk;
+    
+	@Lob
+    private String titlePl;
+
+    @Lob
+    private String definitionPl;
+    
+	@Lob
+    private String titleSr;
+
+    @Lob
+    private String definitionSr;
+    
+	@Lob
+    private String titleRu;
+
+    @Lob
+    private String definitionRu;
+	
+	public String getTitleSq() {
+        return titleSq;
+    }
+
+    public CodeDTO titleSq(String titleSq) {
+        this.titleSq = titleSq;
+        return this;
+    }
+
+    public void setTitleSq(String titleSq) {
+        this.titleSq = titleSq;
+    }
+
+    public String getDefinitionSq() {
+        return definitionSq;
+    }
+
+    public CodeDTO definitionSq(String definitionSq) {
+        this.definitionSq = definitionSq;
+        return this;
+    }
+
+    public void setDefinitionSq(String definitionSq) {
+        this.definitionSq = definitionSq;
+    }
+	
+	public String getTitleBs() {
+        return titleBs;
+    }
+
+    public CodeDTO titleBs(String titleBs) {
+        this.titleBs = titleBs;
+        return this;
+    }
+
+    public void setTitleBs(String titleBs) {
+        this.titleBs = titleBs;
+    }
+
+    public String getDefinitionBs() {
+        return definitionBs;
+    }
+
+    public CodeDTO definitionBs(String definitionBs) {
+        this.definitionBs = definitionBs;
+        return this;
+    }
+
+    public void setDefinitionBs(String definitionBs) {
+        this.definitionBs = definitionBs;
+    }
+	
+	public String getTitleBg() {
+        return titleBg;
+    }
+
+    public CodeDTO titleBg(String titleBg) {
+        this.titleBg = titleBg;
+        return this;
+    }
+
+    public void setTitleBg(String titleBg) {
+        this.titleBg = titleBg;
+    }
+
+    public String getDefinitionBg() {
+        return definitionBg;
+    }
+
+    public CodeDTO definitionBg(String definitionBg) {
+        this.definitionBg = definitionBg;
+        return this;
+    }
+
+    public void setDefinitionBg(String definitionBg) {
+        this.definitionBg = definitionBg;
+    }
+	
+	public String getTitleHr() {
+        return titleHr;
+    }
+
+    public CodeDTO titleHr(String titleHr) {
+        this.titleHr = titleHr;
+        return this;
+    }
+
+    public void setTitleHr(String titleHr) {
+        this.titleHr = titleHr;
+    }
+
+    public String getDefinitionHr() {
+        return definitionHr;
+    }
+
+    public CodeDTO definitionHr(String definitionHr) {
+        this.definitionHr = definitionHr;
+        return this;
+    }
+
+    public void setDefinitionHr(String definitionHr) {
+        this.definitionHr = definitionHr;
+    }
+	
+	public String getTitleMk() {
+        return titleMk;
+    }
+
+    public CodeDTO titleMk(String titleMk) {
+        this.titleMk = titleMk;
+        return this;
+    }
+
+    public void setTitleMk(String titleMk) {
+        this.titleMk = titleMk;
+    }
+
+    public String getDefinitionMk() {
+        return definitionMk;
+    }
+
+    public CodeDTO definitionMk(String definitionMk) {
+        this.definitionMk = definitionMk;
+        return this;
+    }
+
+    public void setDefinitionMk(String definitionMk) {
+        this.definitionMk = definitionMk;
+    }
+	
+	public String getTitlePl() {
+        return titlePl;
+    }
+
+    public CodeDTO titlePl(String titlePl) {
+        this.titlePl = titlePl;
+        return this;
+    }
+
+    public void setTitlePl(String titlePl) {
+        this.titlePl = titlePl;
+    }
+
+    public String getDefinitionPl() {
+        return definitionPl;
+    }
+
+    public CodeDTO definitionPl(String definitionPl) {
+        this.definitionPl = definitionPl;
+        return this;
+    }
+
+    public void setDefinitionPl(String definitionPl) {
+        this.definitionPl = definitionPl;
+    }
+	
+	public String getTitleSr() {
+        return titleSr;
+    }
+
+    public CodeDTO titleSr(String titleSr) {
+        this.titleSr = titleSr;
+        return this;
+    }
+
+    public void setTitleSr(String titleSr) {
+        this.titleSr = titleSr;
+    }
+
+    public String getDefinitionSr() {
+        return definitionSr;
+    }
+
+    public CodeDTO definitionSr(String definitionSr) {
+        this.definitionSr = definitionSr;
+        return this;
+    }
+
+    public void setDefinitionSr(String definitionSr) {
+        this.definitionSr = definitionSr;
+    }
+	
+	public String getTitleRu() {
+        return titleRu;
+    }
+
+    public CodeDTO titleRu(String titleRu) {
+        this.titleRu = titleRu;
+        return this;
+    }
+
+    public void setTitleRu(String titleRu) {
+        this.titleRu = titleRu;
+    }
+
+    public String getDefinitionRu() {
+        return definitionRu;
+    }
+
+    public CodeDTO definitionRu(String definitionRu) {
+        this.definitionRu = definitionRu;
+        return this;
+    }
+
+    public void setDefinitionRu(String definitionRu) {
+        this.definitionRu = definitionRu;
+    }
+    // end of additional language
+    
     public String getTitleByLanguage( String language ) {
     	return getTitleByLanguage( Language.getEnum(language) );
     }
@@ -218,6 +476,22 @@ public class CodeDTO implements Serializable {
 			return titleEs;
 		case SWEDISH:
 			return titleSv;
+		case ALBANIAN:
+			return titleSq;
+		case BOSNIAN:
+			return titleBs;
+		case BULGARIAN:
+			return titleBg;
+		case CROATIAN:
+			return titleHr;
+		case MACEDONIAN:
+			return titleMk;
+		case POLISH:
+			return titlePl;
+		case RUSSIAN:
+			return titleRu;
+		case SERBIAN:
+			return titleSr;
     	}
     	return null;
     }
@@ -264,6 +538,22 @@ public class CodeDTO implements Serializable {
 			return definitionEs;
 		case SWEDISH:
 			return definitionSv;
+		case ALBANIAN:
+			return definitionSq;
+		case BOSNIAN:
+			return definitionBs;
+		case BULGARIAN:
+			return definitionBg;
+		case CROATIAN:
+			return definitionHr;
+		case MACEDONIAN:
+			return definitionMk;
+		case POLISH:
+			return definitionPl;
+		case RUSSIAN:
+			return definitionRu;
+		case SERBIAN:
+			return definitionSr;
     	}
     	return null;
     }
@@ -324,6 +614,30 @@ public class CodeDTO implements Serializable {
     		case SWEDISH:
     			setTitleSv(title);
     			break;
+    		case ALBANIAN:
+    			setTitleSq(title);
+    			break;
+    		case BOSNIAN:
+    			setTitleBs(title);
+    			break;
+    		case BULGARIAN:
+    			setTitleBg(title);
+    			break;
+    		case CROATIAN:
+    			setTitleHr(title);
+    			break;
+    		case MACEDONIAN:
+    			setTitleMk(title);
+    			break;
+    		case POLISH:
+    			setTitlePl(title);
+    			break;
+    		case RUSSIAN:
+    			setTitleRu(title);
+    			break;
+    		case SERBIAN:
+    			setTitleSr(title);
+    			break;
     	}
     	return this;
     }
@@ -383,6 +697,30 @@ public class CodeDTO implements Serializable {
     			break;
     		case SWEDISH:
     			setDefinitionSv(definition);
+    			break;
+    		case ALBANIAN:
+    			setDefinitionSq(definition);
+    			break;
+    		case BOSNIAN:
+    			setDefinitionBs(definition);
+    			break;
+    		case BULGARIAN:
+    			setDefinitionBg(definition);
+    			break;
+    		case CROATIAN:
+    			setDefinitionHr(definition);
+    			break;
+    		case MACEDONIAN:
+    			setDefinitionMk(definition);
+    			break;
+    		case POLISH:
+    			setDefinitionPl(definition);
+    			break;
+    		case RUSSIAN:
+    			setDefinitionRu(definition);
+    			break;
+    		case SERBIAN:
+    			setDefinitionSr(definition);
     			break;
     	}
     	addLanguage(language.toString());
@@ -471,6 +809,38 @@ public class CodeDTO implements Serializable {
     			setTitleSv(title);
     			setDefinitionSv(definition);
     			break;
+    		case ALBANIAN:
+    			setTitleSq(title);
+    			setDefinitionSq(definition);
+    			break;
+    		case BOSNIAN:
+    			setTitleBs(title);
+    			setDefinitionBs(definition);
+    			break;
+    		case BULGARIAN:
+    			setTitleBg(title);
+    			setDefinitionBg(definition);
+    			break;
+    		case CROATIAN:
+    			setTitleHr(title);
+    			setDefinitionHr(definition);
+    			break;
+    		case MACEDONIAN:
+    			setTitleMk(title);
+    			setDefinitionMk(definition);
+    			break;
+    		case POLISH:
+    			setTitlePl(title);
+    			setDefinitionPl(definition);
+    			break;
+    		case RUSSIAN:
+    			setTitleRu(title);
+    			setDefinitionRu(definition);
+    			break;
+    		case SERBIAN:
+    			setTitleSr(title);
+    			setDefinitionSr(definition);
+    			break;
     	}
     	if(isRemoveLanguage)
     		removeLanguage(language.toString());
@@ -525,6 +895,22 @@ public class CodeDTO implements Serializable {
 		setDefinitionEs(null);
 		setTitleSv(null);
 		setDefinitionSv(null);
+		setTitleSq(null);
+		setDefinitionSq(null);
+		setTitleBs(null);
+		setDefinitionBs(null);
+		setTitleBg(null);
+		setDefinitionBg(null);
+		setTitleHr(null);
+		setDefinitionHr(null);
+		setTitleMk(null);
+		setDefinitionMk(null);
+		setTitlePl(null);
+		setDefinitionPl(null);
+		setTitleRu(null);
+		setDefinitionRu(null);
+		setTitleSr(null);
+		setDefinitionSr(null);
     }
 
     public Long getId() {
@@ -983,6 +1369,22 @@ public class CodeDTO implements Serializable {
             ", definitionEs='" + getDefinitionEs() + "'" +
             ", titleSv='" + getTitleSv() + "'" +
             ", definitionSv='" + getDefinitionSv() + "'" +
+            ", titleSq='" + getTitleSq() + "'" +
+            ", definitionSq='" + getDefinitionSq() + "'" +
+            ", titleBs='" + getTitleBs() + "'" +
+            ", definitionBs='" + getDefinitionBs() + "'" +
+            ", titleBg='" + getTitleBg() + "'" +
+            ", definitionBg='" + getDefinitionBg() + "'" +
+            ", titleHr='" + getTitleHr() + "'" +
+            ", definitionHr='" + getDefinitionHr() + "'" +
+            ", titleMk='" + getTitleMk() + "'" +
+            ", definitionMk='" + getDefinitionMk() + "'" +
+            ", titlePl='" + getTitlePl() + "'" +
+            ", definitionPl='" + getDefinitionPl() + "'" +
+            ", titleRu='" + getTitleRu() + "'" +
+            ", definitionRu='" + getDefinitionRu() + "'" +
+            ", titleSr='" + getTitleSr() + "'" +
+            ", definitionSr='" + getDefinitionSr() + "'" +
             "}";
     }
     
@@ -1130,6 +1532,38 @@ public class CodeDTO implements Serializable {
 	    			code.setTitleSv(title);
 	    			code.setDefinitionSv(definition);
 	    			break;
+	    		case ALBANIAN:
+	    			code.setTitleSq(title);
+	    			code.setDefinitionSq(definition);
+	    			break;
+	    		case BOSNIAN:
+	    			code.setTitleBs(title);
+	    			code.setDefinitionBs(definition);
+	    			break;
+	    		case BULGARIAN:
+	    			code.setTitleBg(title);
+	    			code.setDefinitionBg(definition);
+	    			break;
+	    		case CROATIAN:
+	    			code.setTitleHr(title);
+	    			code.setDefinitionHr(definition);
+	    			break;
+	    		case MACEDONIAN:
+	    			code.setTitleMk(title);
+	    			code.setDefinitionMk(definition);
+	    			break;
+	    		case POLISH:
+	    			code.setTitlePl(title);
+	    			code.setDefinitionPl(definition);
+	    			break;
+	    		case RUSSIAN:
+	    			code.setTitleRu(title);
+	    			code.setDefinitionRu(definition);
+	    			break;
+	    		case SERBIAN:
+	    			code.setTitleSr(title);
+	    			code.setDefinitionSr(definition);
+	    			break;
 				}
 			}
 		});
@@ -1205,6 +1639,14 @@ public class CodeDTO implements Serializable {
 		clonedCode.setTitleSl( code.getTitleSl());
 		clonedCode.setTitleEs( code.getTitleEs());
 		clonedCode.setTitleSv( code.getTitleSv());
+		clonedCode.setTitleSq( code.getTitleSq());
+		clonedCode.setTitleBs( code.getTitleBs());
+		clonedCode.setTitleBg( code.getTitleBg());
+		clonedCode.setTitleHr( code.getTitleHr());
+		clonedCode.setTitleMk( code.getTitleMk());
+		clonedCode.setTitlePl( code.getTitlePl());
+		clonedCode.setTitleRu( code.getTitleRu());
+		clonedCode.setTitleSr( code.getTitleSr());
 		clonedCode.setDefinitionCs( code.getDefinitionCs());
 		clonedCode.setDefinitionDa( code.getDefinitionDa());
 		clonedCode.setDefinitionNl( code.getDefinitionNl());
@@ -1223,7 +1665,14 @@ public class CodeDTO implements Serializable {
 		clonedCode.setDefinitionSl( code.getDefinitionSl());
 		clonedCode.setDefinitionEs( code.getDefinitionEs());
 		clonedCode.setDefinitionSv( code.getDefinitionSv());
-		
+		clonedCode.setDefinitionSq( code.getDefinitionSq());
+		clonedCode.setDefinitionBs( code.getDefinitionBs());
+		clonedCode.setDefinitionBg( code.getDefinitionBg());
+		clonedCode.setDefinitionHr( code.getDefinitionHr());
+		clonedCode.setDefinitionMk( code.getDefinitionMk());
+		clonedCode.setDefinitionPl( code.getDefinitionPl());
+		clonedCode.setDefinitionRu( code.getDefinitionRu());
+		clonedCode.setDefinitionSr( code.getDefinitionSr());
 		return clonedCode;
 	}
 	

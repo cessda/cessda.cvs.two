@@ -10,7 +10,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.gesis.wts.domain.enumeration.AgencyRole;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.AuthoritiesConstants;
-import org.gesis.wts.security.RoleType;
+import org.gesis.wts.security.RoleTypeCvs;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.service.dto.UserAgencyDTO;
 import org.springframework.security.core.context.SecurityContext;
@@ -72,7 +72,7 @@ public final class CvManagerSecurityUtils {
             .orElse(false);
     }
     
-    public static boolean isCurrentUserInRole(RoleType roleType) {
+    public static boolean isCurrentUserInRole(RoleTypeCvs roleType) {
     	return isCurrentUserInRole( roleType.toString() );
     }
     
@@ -114,11 +114,11 @@ public final class CvManagerSecurityUtils {
     }
     
     public static boolean isUserAdmin() {
-    	return isCurrentUserInRole( RoleType.ROLE_ADMIN );
+    	return isCurrentUserInRole( RoleTypeCvs.ROLE_ADMIN );
     }
     
     public static boolean isUserAdminContent() {
-    	return isCurrentUserInRole( RoleType.ROLE_ADMIN_CONTENT );
+    	return isCurrentUserInRole( RoleTypeCvs.ROLE_ADMIN_CONTENT );
     }
     
     public static boolean isCurrentUserSystemAdmin() {

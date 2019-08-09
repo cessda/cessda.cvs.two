@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "vocabulary")
-@Document(indexName = "vocabulary2")
+@Document(indexName = "vocabulary")
 public class Vocabulary extends VocabularyBase{
     
 	private static final long serialVersionUID = 1L;
