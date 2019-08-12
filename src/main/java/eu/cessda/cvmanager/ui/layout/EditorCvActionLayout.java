@@ -3,6 +3,7 @@ package eu.cessda.cvmanager.ui.layout;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVScheme;
@@ -347,6 +349,15 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							}
 							// remove version
 							vocabulary.removeVersion(currentVersion);
+							
+							// update published language
+							Set<String> publishedLangs = vocabulary.getLatestVersions( Status.PUBLISHED.toString() )
+								.stream()
+								.map( i -> i.getLanguage())
+								.collect( Collectors.toSet());
+								
+							vocabulary.setLanguagesPublished(publishedLangs);
+
 							versionService.delete( currentVersion.getId());
 							
 							// reindex editor search
