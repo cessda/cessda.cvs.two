@@ -49,6 +49,8 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.vaadin.data.TreeData;
+import com.vaadin.server.Page;
+import com.vaadin.shared.Position;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
@@ -339,7 +341,16 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 				}
 								
 				if(exportVersions.isEmpty()){
-					Notification.show( "No language selected!" );
+					Notification notif = new Notification( "",
+							"No language selected!",
+						    Notification.TYPE_WARNING_MESSAGE);
+					
+					notif.setDelayMsec(0);
+					notif.setPosition(Position.BOTTOM_RIGHT);
+					
+					// Show it in the page
+					notif.show(Page.getCurrent());
+					
 					return null;
 				}
 				
@@ -485,11 +496,13 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 			
 			// find one canonicalUrl
 			if( cvUrn == null ) {
-				int index = versionExp.getCanonicalUri().lastIndexOf(":");
-				cvUrn = versionExp.getCanonicalUri().substring(0, index);
+				if( versionExp.getCanonicalUri() != null ) {
+					int index = versionExp.getCanonicalUri().lastIndexOf(":");
+					cvUrn = versionExp.getCanonicalUri().substring(0, index);
+				}
 				if( type.equals( DownloadType.SKOS)) {
 					docId = versionExp.getSkosUri();
-					index = docId.lastIndexOf("_");
+					int index = docId.lastIndexOf("_");
 					docVersionOf = docId.substring(0, index);
 					docVersion = docId.substring(index + 1);
 					Optional<LicenceDTO> dLicence = licenses.stream().filter( l -> l.getId().equals( versionExp.getLicenseId())).findFirst();

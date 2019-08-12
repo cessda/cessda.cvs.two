@@ -18297,6 +18297,10 @@ div.v-layout.v-horizontal.v-widget {
 	padding: 0 15px;
 }
 
+.mytheme .v-checkbox > label:before, .mytheme .v-checkbox > label:after {
+	top: 4px !important;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;

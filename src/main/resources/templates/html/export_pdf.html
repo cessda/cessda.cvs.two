@@ -194,7 +194,7 @@ div.CodeList {
 						<a rel="license" th:href="${license.link}" th:text="${license.name}"></a>.
 					</span>
 				</p>
-				<p>Citation:
+				<p th:if="${version.canonicalUri != null}">Citation:
 					<span th:utext="${version.citationPreview}"></span> Available from: 
 					<a th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${baseUrl + '/urn/' + version.canonicalUri}"></a> 
 				</p>
