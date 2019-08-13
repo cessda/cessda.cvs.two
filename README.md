@@ -146,7 +146,7 @@ As well as isolating components of the application passwords to access component
 
 Please read [CESSDA Technical Guidelines](https://bitbucket.org/cessda/cessda.guidelines.public/) for details on our code of conduct, and the process for submitting pull requests to us.
 
-## Authors
+## Contributors
 
 * **Julien Le Hericy** - *Initial automation and infrastructure*
 * **Matthew Morris** - *Conversion to the new GCP infrastructure*
