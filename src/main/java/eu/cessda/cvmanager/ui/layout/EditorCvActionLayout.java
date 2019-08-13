@@ -567,9 +567,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 						// remove with sourceLanguage option if exist
 						availableLanguages.remove( sourceLang );
 						
-						if(availableLanguages.isEmpty())
-							buttonAddTranslation.setVisible( false );
-						else
+						if(!availableLanguages.isEmpty() && currentVersion.getItemType().equals(ItemType.SL.toString()))
 							buttonAddTranslation.setVisible( true );
 						
 						buttonDropVersion.setVisible( true );
@@ -589,57 +587,21 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 					// remove with sourceLanguage option if exist
 					availableLanguages.remove( sourceLang );
 					
-					if(availableLanguages.isEmpty())
-						buttonAddTranslation.setVisible( false );
-					else
-						buttonAddTranslation.setVisible( true );
-					if( currentVersion.getItemType().equals(ItemType.TL.toString()) &&
-							userLanguages.contains( Language.getEnum( currentVersion.getLanguage())))
+					if( SecurityUtils.isCurrentUserAllowEditCv(agency, Language.valueOfEnum( currentVersion.getLanguage())))
 						buttonNewVersion.setVisible( true );
 				}
 			}
 			else {						
 				if( CvManagerSecurityUtils.isCurrentUserAllowToManageCv(agency, currentVersion )) {
-					if( currentVersion.getStatus().equals( Status.DRAFT.toString() )) {
-						buttonEditCv.setVisible( true );
-						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
-							buttonReviewInitial.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonDropVersion.setVisible( true );
-						}
-						else if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
-							buttonReviewInitial.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonDropVersion.setVisible( true );
-						}
-					}
-					else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() )) {
-						buttonEditCv.setVisible( true );
-						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
-							buttonReviewFinal.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonDropVersion.setVisible( true );
-						}
-						else if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
-							buttonReviewFinal.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonDropVersion.setVisible( true );
-						}
-					}
-					else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() )) {
-						if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl( getAgency())) {
-							buttonPublishCv.setVisible( true );
-							buttonEditCv.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonDropVersion.setVisible( true );
-						}
-						else if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl( getAgency())) {
-							buttonPublishCv.setVisible( true );
-							buttonEditCv.setVisible( true );
-							separatorLabel.setVisible( true );
-							buttonDropVersion.setVisible( true );
-						}
-					}
+					separatorLabel.setVisible( true );
+					buttonEditCv.setVisible( true );
+					buttonDropVersion.setVisible( true );
+					if( currentVersion.getStatus().equals( Status.DRAFT.toString() ))
+						buttonReviewInitial.setVisible( true );
+					else if(currentVersion.getStatus().equals( Status.INITIAL_REVIEW.toString() ))
+						buttonReviewFinal.setVisible( true );
+					else if(currentVersion.getStatus().equals( Status.FINAL_REVIEW.toString() ))
+						buttonPublishCv.setVisible( true );
 				}
 			}
 			
