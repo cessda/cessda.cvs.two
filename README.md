@@ -1,3 +1,4 @@
+[![Build Status](https://jenkins.cessda.eu/buildStatus/icon?job=cessda.cvs.gui%2Fmaster)](https://jenkins.cessda.eu/job/cessda.cvs.gui/job/master/)
 [![Bugs](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=bugs)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
 [![Code Smells](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=code_smells)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
 [![Coverage](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=coverage)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
