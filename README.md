@@ -1,3 +1,14 @@
+[![Bugs](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=bugs)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Code Smells](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=code_smells)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Coverage](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=coverage)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Duplicated Lines (%)](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=duplicated_lines_density)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Lines of Code](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=ncloc)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Maintainability Rating](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=sqale_rating)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Quality Gate Status](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=alert_status)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Reliability Rating](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=reliability_rating)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Security Rating](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=security_rating)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Technical Debt](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=sqale_index)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
+[![Vulnerabilities](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvmanager%3Acvmanager-gui&metric=vulnerabilities)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvmanager%3Acvmanager-gui)
 # CESSDA Vocabulary Service
 
 This repository contains all the source code and configuration needed to deploy the CESSDA Vocabulary Service application
