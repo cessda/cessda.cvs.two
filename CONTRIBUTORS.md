@@ -1,5 +1,13 @@
 # Project Name
 
-## Julien Le Hericy ##
+## First Name - Last Name ##
 
-CESSDA MO - Automation and infrastructure
+Description of the person role
+=======
+# CVS CESSDA Vocabulary Service
+
+## Contributors
+
+Name            | Email                     | Role
+:---            | :---                      | :---
+Sigit  Nugraha | <sigit DOT nugraha AT gesis DOT org>  | Lead developer
