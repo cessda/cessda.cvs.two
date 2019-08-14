@@ -1,5 +1,6 @@
 package eu.cessda.cvmanager.service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -54,20 +55,13 @@ public class ConfigurationService {
 		return SOURCE_LANGUAGE;
 	}
 
-	public Optional<String> getPropertyByKey(String key) {
-		return Optional.of(env.getProperty(key));
-	}
-	
-	public Optional<List<String>> getPropertyByKeyAsList(String key, String splitBy) {
-		if (getPropertyByKey(key).isPresent())
-			return Optional.of(
-					Stream.of( getPropertyByKey(key).get().split(splitBy))
-				    .collect(Collectors.toList()));
-		else
-			return Optional.empty();
+	public List<String> getPropertyByKeyAsList(String key, String splitBy) {
+		if( env.getProperty(key) == null )
+			return Collections.emptyList();
+		return Arrays.asList( env.getProperty(key).split(splitBy) );
 	}
 	
 	public Optional<Set<String>> getPropertyByKeyAsSet(String key, String splitBy) {
-		return Optional.of( new LinkedHashSet<>( getPropertyByKeyAsList(key, splitBy).isPresent() ? getPropertyByKeyAsList(key, splitBy).get() : Collections.emptyList()));
+		return Optional.of( new LinkedHashSet<>( getPropertyByKeyAsList(key, splitBy)));
 	}
 }
