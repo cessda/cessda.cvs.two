@@ -920,6 +920,7 @@ public class VocabularyDTO implements Serializable {
 	
 	public void clearContent() {
 		setLanguages( null );
+		setLanguagesPublished( null );
 		setStatuses( null );
 		setVersionCs(null);
 		setVersionDa(null);

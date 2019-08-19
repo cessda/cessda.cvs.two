@@ -334,13 +334,15 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 								codeService.save( eachCode );
 							}
 							// replace the content of workflowCodes in certain language
-							Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(workflowCodes);
-							for( ConceptDTO concept : latestVers.get().getConcepts()) {
-								CodeDTO code = codeMap.get( concept.getNotation());
-								if( code == null ) 
-									continue;
-								code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), currentVersion.getLanguage());
-								codeService.save( code );
+							if( !currentVersion.isInitialVersion() && !currentVersion.equals(latestVers)) {
+								Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(workflowCodes);
+								for( ConceptDTO concept : latestVers.get().getConcepts()) {
+									CodeDTO code = codeMap.get( concept.getNotation());
+									if( code == null ) 
+										continue;
+									code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), currentVersion.getLanguage());
+									codeService.save( code );
+								}
 							}
 							
 							// remove all concepts
@@ -401,6 +403,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							versionService.delete( currentVersion.getId());
 							
 							vocabulary.getLanguages().remove( currentVersion.getLanguage());
+							vocabulary.getLanguagesPublished().remove( currentVersion.getLanguage());
 							vocabulary = vocabularyService.save(vocabulary);
 							
 							// reindex editor search
