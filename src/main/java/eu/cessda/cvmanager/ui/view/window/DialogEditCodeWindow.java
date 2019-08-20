@@ -23,6 +23,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
@@ -37,6 +38,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
+import eu.cessda.cvmanager.utils.ParserUtils;
 
 public class DialogEditCodeWindow extends MWindow {
 
@@ -66,7 +68,8 @@ public class DialogEditCodeWindow extends MWindow {
 
 	private MTextField notation = new MTextField("Code");
 	private TextField preferedLabel = new TextField("Descriptive term*");
-	private TextArea description = new TextArea("Definition*");
+//	private TextArea description = new TextArea("Definition*");
+	private RichTextArea description = new RichTextArea("Definition*");
 	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 
 	private Language language;
@@ -360,7 +363,7 @@ public class DialogEditCodeWindow extends MWindow {
 		// store the changes
 		String completeNotation = (code.getParent() != null ? code.getParent() + "." : "") + notation.getValue();
 		WorkspaceManager.saveCode(vocabulary, version, code,  null, concept, null,
-			completeNotation, preferedLabel.getValue(), description.getValue());
+			completeNotation, preferedLabel.getValue(), ParserUtils.toXHTML( description.getValue()));
 		
 		if( !tempNotation.equals( notation.getValue()) ) {
 			// check children notation change

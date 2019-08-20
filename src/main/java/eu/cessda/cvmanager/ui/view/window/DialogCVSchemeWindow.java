@@ -28,6 +28,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -41,6 +42,7 @@ import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
+import eu.cessda.cvmanager.utils.ParserUtils;
 
 public class DialogCVSchemeWindow extends MWindow implements Translatable{
 
@@ -63,7 +65,8 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	private MVerticalLayout layout = new MVerticalLayout();
 	private MTextField tfCode = new MTextField("Code");
 	private MTextField tfTitle = new MTextField("Title*");
-	private TextArea description = new TextArea("Description*");
+//	private TextArea description = new TextArea("Description*");
+	private RichTextArea description = new RichTextArea("Description*");
 	private ComboBox<AgencyDTO> editorCb = new ComboBox<>("Agency*");
 	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 	private Button storeCode = new Button("Save");
@@ -75,7 +78,8 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
 	private MLabel notesLabel = new MLabel("Notes");
-	private TextArea notes = new TextArea();
+//	private TextArea notes = new TextArea();
+	private RichTextArea notes = new RichTextArea();
 	
 	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
 	private Language language;
@@ -303,9 +307,9 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 			.withExpand(layout.getComponent(0), 0.07f)
 			.withExpand(layout.getComponent(1), 0.07f)
 			.withExpand(layout.getComponent(2), 0.07f)
-			.withExpand(layout.getComponent(3), 0.5f)
-			.withExpand(layout.getComponent(4), 0.1f)
-			.withExpand(layout.getComponent(5), 0.3f)
+			.withExpand(layout.getComponent(3), 0.4f)
+			.withExpand(layout.getComponent(4), 0.3f)
+			.withExpand(layout.getComponent(5), 0.2f)
 			.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
 		} else {
 			layout
@@ -329,7 +333,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 		}
 		
 		this
-			.withHeight("650px")
+			.withHeight("800px")
 			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
@@ -342,7 +346,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 		
 		// Store new CV
 		WorkspaceManager.saveSourceCV(agency, language, vocabulary, version, 
-				tfCode.getValue(), tfTitle.getValue(), description.getValue(), notes.getValue());
+				tfCode.getValue(), tfTitle.getValue(), ParserUtils.toXHTML( description.getValue()), ParserUtils.toXHTML( notes.getValue()));
 		
 		if( isUpdated && !version.isInitialVersion()) {
 			// store log 

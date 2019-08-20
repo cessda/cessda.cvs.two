@@ -571,11 +571,11 @@ public class EditorDetailsView extends CvView {
 
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
-				new MLabel( currentSLVersion.getDefinition() ).withStyleName("rightPart"));
+				new MLabel( currentSLVersion.getDefinition() ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 		
 		MCssLayout notes = new MCssLayout();
 		notes.withFullWidth().add(lNotes.withWidth("140px").withStyleName("leftPart"),
-				new MLabel( vocabulary.getNotes() ).withStyleName("rightPart"));
+				new MLabel( vocabulary.getNotes() ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 		if( vocabulary.getNotes() == null || vocabulary.getNotes().isEmpty() )
 			notes.setVisible( false );
 
@@ -591,7 +591,7 @@ public class EditorDetailsView extends CvView {
 		MCssLayout descriptionOl = new MCssLayout();
 		descriptionOl.withFullWidth().add(
 				lDefinitionOl.withWidth("140px").withStyleName("leftPart"),
-				new MLabel( currentVersion.getDefinition() ).withStyleName("rightPart"));
+				new MLabel( currentVersion.getDefinition() ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 
 		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
@@ -676,7 +676,8 @@ public class EditorDetailsView extends CvView {
 				.setId("prefLabelTl");
 		
 		detailTreeGrid.addColumn(code -> {
-					MLabel definitionLabel = new MLabel( code.getDefinitionByLanguage( sourceLanguage )).withStyleName( "word-brake-normal" );
+					MLabel definitionLabel = new MLabel( code.getDefinitionByLanguage( sourceLanguage ))
+							.withStyleName( "word-brake-normal" ).withContentMode( ContentMode.HTML);
 					definitionLabel.setId( "code-" + code.getNotation().replace(".", "-"));
 					return definitionLabel;
 				}, new ComponentRenderer())
