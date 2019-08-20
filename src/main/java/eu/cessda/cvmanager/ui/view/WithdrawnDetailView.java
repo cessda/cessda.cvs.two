@@ -512,7 +512,7 @@ public class WithdrawnDetailView extends CvView {
 		detailLayout.setSizeFull();
 		//detailLayout.setExpandRatio(detailTreeGrid, 1);
 		
-		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService);
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService, versionService, true);
 		versionContentLayout.add( versionLayout );
 		
 		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, null, true);

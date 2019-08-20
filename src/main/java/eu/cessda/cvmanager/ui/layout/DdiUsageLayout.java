@@ -19,6 +19,7 @@ import com.vaadin.ui.RichTextArea;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
+import eu.cessda.cvmanager.utils.ParserUtils;
 
 public class DdiUsageLayout extends MCssLayout implements Translatable {
 	
@@ -93,7 +94,7 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 					version.setDdiUsage( "" );
 				}
 				else {
-					version.setDdiUsage( toXHTML( infoEditor.getValue() ) );
+					version.setDdiUsage( ParserUtils.toXHTML( infoEditor.getValue() ) );
 				}
 				versionService.save(version);
 				refreshInfo();
@@ -118,14 +119,7 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 				editLayout
 			);
 	}
-	
-	private String toXHTML( String html ) {
-	    final Document document = Jsoup.parse(html);
-	    document.select("script,.hidden,link").remove();
-	    document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);    
-	    return document.body().html();
-	}
-	
+
 	private void switchMode( LayoutMode layoutMode) {
 		if( layoutMode.equals( LayoutMode.READ)) {
 			infoLayout.setVisible( true );

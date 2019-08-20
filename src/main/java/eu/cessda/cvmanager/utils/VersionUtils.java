@@ -3,6 +3,8 @@ package eu.cessda.cvmanager.utils;
 import java.util.regex.Pattern;
 
 public class VersionUtils {
+	private VersionUtils() {}
+	
 	public static int compareVersion(String v1, String v2) {
         String s1 = normalisedVersion(v1);
         String s2 = normalisedVersion(v2);

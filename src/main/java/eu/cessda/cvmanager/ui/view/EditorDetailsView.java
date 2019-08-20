@@ -740,7 +740,7 @@ public class EditorDetailsView extends CvView {
 		detailLayout.addComponents(detailTreeGrid);
 		detailLayout.setSizeFull();
 		
-		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService);
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService, versionService, false);
 		versionContentLayout.add( versionLayout );
 		
 		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, resolverService, false);

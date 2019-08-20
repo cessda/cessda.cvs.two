@@ -1,69 +1,40 @@
 package eu.cessda.cvmanager.ui.layout;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.gesis.wts.service.dto.AgencyDTO;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MVerticalLayout;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
+import com.vaadin.ui.RichTextArea;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader;
-import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamResource;
-import eu.cessda.cvmanager.export.utils.SaxParserUtils;
-import eu.cessda.cvmanager.model.CvItem;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
-import eu.cessda.cvmanager.ui.view.EditorDetailsView;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
+import eu.cessda.cvmanager.utils.ParserUtils;
 import eu.cessda.cvmanager.utils.VersionUtils;
 
 public class VersionLayout extends MCssLayout implements Translatable {
+	
+	private enum LayoutMode{ READ, EDIT };
 	
 	private static final long serialVersionUID = -2461005203070668382L;
 	private final I18N i18n;
@@ -75,13 +46,18 @@ public class VersionLayout extends MCssLayout implements Translatable {
 	private final VocabularyChangeService vocabularyChangeService;
 	private final ConfigurationService configService;
 	private final ConceptService conceptService;
+	private final VersionService versionService;
+	private boolean readOnly;
 	private String baseUrl;
 	private Map<String, List<VersionDTO>> versionMap;
 	
 	public VersionLayout(I18N i18n, Locale locale, UIEventBus eventBus, 
 			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO,
 			VocabularyChangeService vocabularyChangeService,
-			ConfigurationService configService, ConceptService conceptService) {
+			ConfigurationService configService, 
+			ConceptService conceptService,
+			VersionService versionService,
+			boolean readOnly) {
 		super();
 		this.i18n = i18n;
 		this.locale = locale;
@@ -91,6 +67,8 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.configService = configService;
 		this.conceptService = conceptService;
+		this.versionService = versionService;
+		this.readOnly = readOnly;
 		
 		this
 			.withFullWidth();
@@ -126,11 +104,8 @@ public class VersionLayout extends MCssLayout implements Translatable {
 					if( orderedVer.getNumber() == null )
 						continue;
 					//only show equal or lower version
-					if( version.getNumber() == null )
+					if( version.getNumber() == null || VersionUtils.compareVersion(orderedVer.getNumber(), version.getNumber()) <= 0) 
 						showSlVersion = true;
-					else 
-						if( VersionUtils.compareVersion(orderedVer.getNumber(), version.getNumber()) <= 0) 
-							showSlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showSlVersion) {
 						this.add( generateVersion(orderedVer, expandLayout));
@@ -147,11 +122,8 @@ public class VersionLayout extends MCssLayout implements Translatable {
 					if( orderedVer.getNumber() == null )
 						continue;
 					//only show equal or lower version
-					if( version.getNumber() == null )
+					if( version.getNumber() == null || VersionUtils.compareVersion(orderedVer.getNumber(), version.getNumber()) <= 0) 
 						showTlVersion = true;
-					else
-						if( VersionUtils.compareVersion(orderedVer.getNumber(), version.getNumber()) <= 0) 
-							showTlVersion = true;
 					
 					if( orderedVer.getStatus().equals( Status.PUBLISHED.toString()) && showTlVersion) {
 						this.add( generateVersion(orderedVer, showTlVersion));
@@ -170,6 +142,17 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		MLabel noteVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth().withVisible( false );
 		MLabel changeVersion = new MLabel().withContentMode( ContentMode.HTML).withFullWidth().withVisible( false );
 		String cvUrl = null;
+		
+		MCssLayout infoLayout = new MCssLayout().withFullSize();
+		MCssLayout editLayout = new MCssLayout().withFullSize();
+		RichTextArea infoEditor = new RichTextArea();
+		MButton editSwitchButton = new MButton( "Edit" );
+		MCssLayout buttonLayout = new MCssLayout().withFullWidth();
+		MButton saveButton = new MButton( "Save" );
+		MButton cancelButton = new MButton( "Cancel" );
+		
+		// set initial view to read mode
+		switchMode( infoLayout, editLayout, LayoutMode.READ);
 		
 		MButton comparatorLayoutToggleButton = new MButton("Show changes from previous version");
 		comparatorLayoutToggleButton
@@ -206,7 +189,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 				if( e.getButton().getIcon().equals( VaadinIcons.PLUS)) {
 					e.getButton().setIcon( VaadinIcons.MINUS);
 					noteVersion.setVisible( true );
-					if( versionDTO.getVersionChanges() != null )
+//					if( versionDTO.getVersionChanges() != null )
 						changeVersion.setVisible( true );
 					comparatorLayoutToggleButton.setVisible( true );
 					
@@ -244,16 +227,66 @@ public class VersionLayout extends MCssLayout implements Translatable {
 			.withValue("<h2>Version notes</h2>" +
 				versionDTO.getVersionNotes());
 		
-		if( versionDTO.getVersionChanges() != null && !versionDTO.getVersionChanges().isEmpty())
+//		if( versionDTO.getVersionChanges() != null && !versionDTO.getVersionChanges().isEmpty())
 			changeVersion
 				.withValue("<h2>Changes since previous version</h2>" +
 					versionDTO.getVersionChanges().replaceAll("(\r\n|\n)", "<br />"));
+		
+		editSwitchButton
+			.withStyleName("pull-right")
+			.withVisible( false )
+			.addClickListener( e -> switchMode( infoLayout, editLayout, LayoutMode.EDIT));
+		
+		if( CvManagerSecurityUtils.isAuthenticated() && CvManagerSecurityUtils.isCurrentUserAllowToEditMetadata(agency, versionDTO)) {
+			editSwitchButton.setVisible( true );
+		} else {
+			editSwitchButton.setVisible( false );
+		}
+		
+		infoEditor.setWidth("100%");
+		infoEditor.setHeight("340px");
+		if( versionDTO.getVersionNotes() != null )
+			infoEditor.setValue( versionDTO.getVersionNotes() );
+		
+		saveButton
+			.withStyleName("pull-right", ValoTheme.BUTTON_PRIMARY)
+			.addClickListener( e -> {
+				if( infoEditor.getValue().isEmpty()) {
+					versionDTO.setVersionNotes( "" );
+				}
+				else {
+					versionDTO.setVersionNotes( ParserUtils.toXHTML( infoEditor.getValue() ) );
+				}
+				versionService.save(versionDTO);
+				noteVersion.setValue( "<h2>Version notes</h2>" + versionDTO.getVersionNotes());
+				switchMode( infoLayout, editLayout, LayoutMode.READ);
+			});
+		
+		cancelButton
+			.withStyleName("pull-right")
+			.addClickListener( e -> switchMode( infoLayout, editLayout, LayoutMode.READ));
+		
+		buttonLayout
+			.add( saveButton, cancelButton);
+		
+		editLayout
+			.add(
+				infoEditor,
+				buttonLayout
+			);
+		
+		infoLayout.add( 
+			noteVersion,
+			editSwitchButton
+		);
 		
 		if( versionDTO.isInitialVersion() ) {
 			versionLayout
 			.withStyleName( "version-item" )
 			.add(
-				panelHead
+				panelHead,
+				infoLayout, 
+				editLayout
 			);
 		} else {
 			versionLayout
@@ -269,6 +302,16 @@ public class VersionLayout extends MCssLayout implements Translatable {
 		
 		
 		return versionLayout;
+	}
+	
+	private void switchMode( MCssLayout infoLayout, MCssLayout editLayout, LayoutMode layoutMode) {
+		if( layoutMode.equals( LayoutMode.READ)) {
+			infoLayout.setVisible( true );
+			editLayout.setVisible( false );
+		} else {
+			infoLayout.setVisible( false );
+			editLayout.setVisible( true );
+		}
 	}
 	
 	@Override
