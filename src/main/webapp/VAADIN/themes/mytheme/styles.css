@@ -17695,7 +17695,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .mytheme hr.fancy-line, .mytheme hr.fancy-line:before {
 	background-color: #e6e6e6;
-	margin: 20px 0;
+	margin: 20px 0 0 0;
 }
 
 .mytheme .groupButton {
