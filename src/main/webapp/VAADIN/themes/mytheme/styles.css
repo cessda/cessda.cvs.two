@@ -18029,6 +18029,11 @@ div.v-layout.v-horizontal.v-widget {
 	max-height: 200px;
 }
 
+.mytheme .widget {
+	padding-right: 1px;
+	padding-bottom: 1px;
+}
+
 .mytheme .box-widget {
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }

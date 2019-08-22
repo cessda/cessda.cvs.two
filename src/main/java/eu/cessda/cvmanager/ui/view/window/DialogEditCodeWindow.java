@@ -64,7 +64,8 @@ public class DialogEditCodeWindow extends MWindow {
 	private MTextField sourceNotation = new MTextField("Code");
 	private MTextField sourceTitle = new MTextField("Descriptive term (source)");
 	private MTextField sourceLanguage = new MTextField("Language (source)");
-	private TextArea sourceDescription = new TextArea("Definition en (source)");
+//	private TextArea sourceDescription = new TextArea("Definition en (source)");
+	private RichTextArea sourceDescription = new RichTextArea("Definition en (source)");
 
 	private MTextField notation = new MTextField("Code");
 	private TextField preferedLabel = new TextField("Descriptive term*");

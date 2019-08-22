@@ -21,6 +21,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -34,6 +35,7 @@ import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
+import eu.cessda.cvmanager.utils.ParserUtils;
 
 public class DialogAddCodeWindow extends MWindow implements Translatable{
 
@@ -55,7 +57,8 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private MTextField parentNotation = new MTextField();
 	private MTextField notation = new MTextField();
 	private TextField preferedLabel = new TextField();
-	private TextArea description = new TextArea();
+//	private TextArea description = new TextArea();
+	private RichTextArea description = new RichTextArea();
 	private ComboBox<Language> languageCb = new ComboBox<>();
 
 	private Button storeCode = new Button("Save");
@@ -210,7 +213,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		
 		// store the code
 		WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, null,
-				notation.getValue(), preferedLabel.getValue(), description.getValue());
+				notation.getValue(), preferedLabel.getValue(), ParserUtils.toXHTML(description.getValue()));
 
 		// save change log
 		WorkspaceManager.storeChangeLog(vocabulary, version, "Code added", concept.getNotation());

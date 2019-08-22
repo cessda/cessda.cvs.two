@@ -24,6 +24,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
@@ -70,13 +71,15 @@ public class DialogTranslateCodeWindow extends MWindow {
 	
 	private MTextField sourceTitle = new MTextField("Descriptive term (source)");
 	private MTextField sourceLanguage = new MTextField("Language (source)");
-	private TextArea sourceDescription = new TextArea("Definition en (source)");
+//	private TextArea sourceDescription = new TextArea("Definition en (source)");
+	private RichTextArea sourceDescription = new RichTextArea("Definition en (source)");
 	
 	private MLabel lCode = new MLabel( "Descriptive terms" );
 	private MTextField codeText = new MTextField("Code");
 
 	private TextField preferedLabel = new TextField("Code");
-	private TextArea description = new TextArea("Definition");
+//	private TextArea description = new TextArea("Definition");
+	private RichTextArea description = new RichTextArea("Definition");
 	private ComboBox<Language> languageCb = new ComboBox<>("Language");
 
 	private Button storeCode = new Button("Save");

@@ -28,6 +28,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.RichTextArea;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 
@@ -62,9 +63,10 @@ public class DialogAddLanguageWindow extends MWindow {
 	
 	private MTextField sourceTitle = new MTextField("Title (source)");
 	private MTextField sourceLanguage = new MTextField("Language (source)");
-	private TextArea sourceDescription = new TextArea("Definition (source)");
+//	private TextArea sourceDescription = new TextArea("Definition (source)");
+	private RichTextArea sourceDescription = new RichTextArea("Definition (source)");
 	private MTextField tfTitle = new MTextField("Title*");
-	private TextArea description = new TextArea("Definition*");
+	private RichTextArea description = new RichTextArea("Definition*");
 	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 	private Button storeCode = new Button("Save");
 	
@@ -322,7 +324,7 @@ public class DialogAddLanguageWindow extends MWindow {
 						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 				)
 				.withExpand(layout.getComponent(0), 0.05f)
-				.withExpand(layout.getComponent(1), 0.35f)
+				.withExpand(layout.getComponent(1), 0.3f)
 				.withExpand(layout.getComponent(2), 0.05f)
 				.withExpand(layout.getComponent(3), 0.35f)
 				.withExpand(layout.getComponent(4), 0.1f)
@@ -345,7 +347,7 @@ public class DialogAddLanguageWindow extends MWindow {
 						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 				)
 				.withExpand(layout.getComponent(0), 0.05f)
-				.withExpand(layout.getComponent(1), 0.4f)
+				.withExpand(layout.getComponent(1), 0.3f)
 				.withExpand(layout.getComponent(2), 0.05f)
 				.withExpand(layout.getComponent(3), 0.4f)
 				.withExpand(layout.getComponent(4), 0.1f)
