@@ -852,10 +852,11 @@ public class VocabularyServiceImpl implements VocabularyService {
 		if(version == null)
 			return;
 		
-		// In case the version is newer than vocabulary
+		// In case the version is newer than vocabulary due to partial indexing
 		if( VersionUtils.compareVersion(vocabulary.getVersionNumber(), version.getNumber()) < 0) {
 			vocabulary.setVersionNumber(version.getNumber());
 			vocabulary.setUri( version.getUri());
+			vocabulary.setStatus(Status.PUBLISHED.toString());
 			save(vocabulary);
 		}
 		
