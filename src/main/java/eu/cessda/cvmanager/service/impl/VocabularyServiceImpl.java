@@ -836,7 +836,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 	}
 	
 	@Override
-	public void indexPublish(VocabularyDTO vocabulary, VersionDTO version) {		if( vocabulary.isWithdrawn())
+	public void indexPublish(VocabularyDTO vocabulary, VersionDTO version) {		
+		if( vocabulary.isWithdrawn())
 			return;
 		// resave codes
 		vocabulary = findOne( vocabulary.getId());
@@ -853,7 +854,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 			return;
 		
 		// In case the version is newer than vocabulary due to partial indexing
-		if( VersionUtils.compareVersion(vocabulary.getVersionNumber(), version.getNumber()) < 0) {
+		if( version.getItemType().equals( ItemType.SL.toString()) &&
+				VersionUtils.compareVersion(vocabulary.getVersionNumber(), version.getNumber()) < 0) {
 			vocabulary.setVersionNumber(version.getNumber());
 			vocabulary.setUri( version.getUri());
 			vocabulary.setStatus(Status.PUBLISHED.toString());
