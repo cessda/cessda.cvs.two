@@ -669,6 +669,10 @@ public class VersionDTO implements Serializable {
 		return this.concepts.stream().collect( Collectors.toMap( ConceptDTO::getNotation, Function.identity()));
 	}
 	public Map<Long, ConceptDTO> getConceptWithKeyPreviousConceptAsMap(){
-		return this.concepts.stream().collect( Collectors.toMap( ConceptDTO::getPreviousConcept, Function.identity()));
+		Map<Long, ConceptDTO> maps = new LinkedHashMap<>();
+		for(ConceptDTO eachConcept : this.concepts ) {
+			maps.put( eachConcept.getPreviousConcept(), eachConcept);
+		}
+		return maps;
 	}
 }

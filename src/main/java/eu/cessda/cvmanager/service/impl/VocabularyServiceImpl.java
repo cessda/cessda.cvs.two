@@ -61,6 +61,7 @@ import eu.cessda.cvmanager.service.mapper.VocabularyPublishMapper;
 import eu.cessda.cvmanager.ui.view.publication.EsFilter;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
+import eu.cessda.cvmanager.utils.VersionUtils;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -835,8 +836,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	}
 	
 	@Override
-	public void indexPublish(VocabularyDTO vocabulary, VersionDTO version) {
-		if( vocabulary.isWithdrawn())
+	public void indexPublish(VocabularyDTO vocabulary, VersionDTO version) {		if( vocabulary.isWithdrawn())
 			return;
 		// resave codes
 		vocabulary = findOne( vocabulary.getId());
@@ -846,10 +846,18 @@ public class VocabularyServiceImpl implements VocabularyService {
 			Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion(true);
 			if( latestSlVersion.isPresent())
 				version = latestSlVersion.get();
+			
 		}
 		// no published SL version
 		if(version == null)
 			return;
+		
+		// In case the version is newer than vocabulary
+		if( VersionUtils.compareVersion(vocabulary.getVersionNumber(), version.getNumber()) < 0) {
+			vocabulary.setVersionNumber(version.getNumber());
+			vocabulary.setUri( version.getUri());
+			save(vocabulary);
+		}
 		
 		// set vocabulary with latest Published version from SL and TL
 		List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup( true );
