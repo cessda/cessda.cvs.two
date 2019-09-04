@@ -590,6 +590,9 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 					// remove with sourceLanguage option if exist
 					availableLanguages.remove( sourceLang );
 					
+					if(!availableLanguages.isEmpty() && currentVersion.getItemType().equals(ItemType.SL.toString()))
+						buttonAddTranslation.setVisible( true );
+					
 					if( SecurityUtils.isCurrentUserAllowEditCv(agency, Language.valueOfEnum( currentVersion.getLanguage())))
 						buttonNewVersion.setVisible( true );
 				}
