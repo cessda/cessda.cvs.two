@@ -18306,6 +18306,10 @@ div.v-layout.v-horizontal.v-widget {
 	top: 4px !important;
 }
 
+.mytheme .panel-group {
+	border: 1px solid #eee;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;

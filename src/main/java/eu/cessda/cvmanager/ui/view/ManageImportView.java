@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
@@ -18,13 +20,16 @@ import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
+import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
@@ -42,7 +47,9 @@ import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.impl.ImportServiceImpl;
+import eu.cessda.cvmanager.utils.WorkflowUtils;
 
 @UIScope
 @SpringView(name = ManageImportView.VIEW_NAME)
@@ -118,9 +125,118 @@ public class ManageImportView extends CvManagerAdminView {
 			});
 		});
 		
+		MButton dropContent = generateDropContent();
+		
+		MButton assignConceptSlButton = generateAssignSlToTl();
+		
+		MCssLayout normalisePanel = NormaliseDropVersionError();
+		
+        layout.addComponents(pageTitle, 
+        		importStardatDDI , 
+        		new MLabel().withFullWidth(),
+        		deleteIndexButton,
+        		reIndexButton,
+        		new MLabel().withFullWidth(),
+        		assignConceptSlButton,
+        		new MLabel().withFullWidth(),
+        		normalisePanel,
+        		new MLabel().withFullWidth(),
+        		dropContent);
+        rightContainer.add(layout).withExpand(layout,1);
+	}
+
+	private MCssLayout NormaliseDropVersionError() {
+		// Specific function to normalize code when TL missing during drop version
+		MCssLayout normalisePanel = new MCssLayout().withFullWidth().withStyleName("panel-group");
+		MLabel normalizeTlLabel = new MLabel("<h2>Normalize Code</h2>").withContentMode( ContentMode.HTML );
+		MTextField cvTarget = new MTextField( "Cv Notation:" );
+		MButton normalizeButton = new MButton( "Normalize" );
+		normalizeButton.addClickListener( e -> {
+			if( cvTarget.isEmpty() ) {
+				Notification.show("Target CV empty");
+				return;
+			}
+			// find the latest version from specific vocabulary
+			VocabularyDTO vocabulary = vocabularyService.getByNotation( cvTarget.getValue() );
+			if( vocabulary == null ) {
+				Notification.show("Target CV not found");
+				return;
+			}
+			// get latest version
+			List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup( true );
+			
+			Optional<VersionDTO> optSlVersion = latestVersions.stream().filter( v -> v.getItemType().equals(ItemType.SL.toString())).findFirst();
+			VersionDTO slVersion = null;
+			
+			if( !optSlVersion.isPresent() ) {
+				Notification.show("SL version not found");
+				return;
+			}
+			slVersion = optSlVersion.get();
+			// get latest published code
+			List<CodeDTO> latestPublishedCodes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), slVersion.getId());
+			
+			Map<String, ConceptDTO> slConceptsMap = slVersion.getConceptAsMap();
+			
+			// run through TL version and check if concepts exist
+			for(VersionDTO version: latestVersions){
+				if( version.getItemType().equals( ItemType.SL.toString()))
+					continue;
+				
+				System.out.println("Checking: " + cvTarget.getValue() + " TL: " + version.getLanguage() );
+				
+				// get concept and match with codes
+				Map<String, ConceptDTO> conceptMap = version.getConceptAsMap();
+				
+				if( conceptMap.isEmpty()) {
+					for(CodeDTO eachCode: latestPublishedCodes) {
+						String notation = eachCode.getNotation();
+						// check if concept exist if not create new concept
+						if( conceptMap.get( notation ) == null) {
+							String title = eachCode.getTitleByLanguage( version.getLanguage());
+							if( title == null || title.trim().isEmpty() )
+								continue;
+							
+							// check for SL concept
+							ConceptDTO slConcept = slConceptsMap.get(notation);
+							if( slConcept == null )
+								continue;
+							
+							String definition = eachCode.getDefinitionByLanguage( version.getLanguage());
+							
+							ConceptDTO newConcept = new ConceptDTO();
+							newConcept.setUri( WorkflowUtils.generateCodeUri(version.getUri(), version.getNotation(), notation, version.getLanguage()) + "/" + version.getNumber());
+							newConcept.setNotation( notation );
+							newConcept.setTitle( title );
+							newConcept.setDefinition( definition );
+							newConcept.setCodeId( eachCode.getId() );
+							newConcept.setSlConcept(slConcept.getId());
+							newConcept.setVersionId( version.getId() );
+							newConcept.setPosition( slConcept.getPosition() );
+							
+							System.out.println("Storing Concept : " + notation + " TL: " + version.getLanguage() );
+
+							conceptService.save(newConcept);
+						}
+						
+						
+						
+					}
+				}
+				
+			}
+			
+		});
+		
+		normalisePanel
+			.add( normalizeTlLabel, cvTarget, normalizeButton);
+		return normalisePanel;
+	}
+
+	private MButton generateDropContent() {
 		MButton dropContent = new MButton( "Drop database content and index" );
 		dropContent.addStyleName( ValoTheme.BUTTON_DANGER);
-		dropContent.setVisible( false );
+//		dropContent.setVisible( false );
 		dropContent.addClickListener( e -> {
 			ConfirmDialog.show( this.getUI(), "Confirm",
 					"Are you sure you want to permanently drop the entire content?", "yes",
@@ -157,7 +273,10 @@ public class ManageImportView extends CvManagerAdminView {
 
 					);
 		});
-		
+		return dropContent;
+	}
+
+	private MButton generateAssignSlToTl() {
 		MButton assignConceptSlButton = new MButton("Assign concept TL with SL key");
 		assignConceptSlButton.addStyleName( ValoTheme.BUTTON_DANGER);
 		assignConceptSlButton.addClickListener( e -> {
@@ -200,17 +319,7 @@ public class ManageImportView extends CvManagerAdminView {
 
 					);
 		});
-        layout.addComponents(pageTitle, 
-        		importStardatDDI , 
-        		new MLabel().withFullWidth(),
-        		deleteIndexButton,
-        		reIndexButton,
-        		new MLabel().withFullWidth(),
-        		assignConceptSlButton,
-        		new MLabel().withFullWidth(),
-        		new MLabel().withFullWidth(),
-        		dropContent);
-        rightContainer.add(layout).withExpand(layout,1);
+		return assignConceptSlButton;
 	}
 
 	@Override
