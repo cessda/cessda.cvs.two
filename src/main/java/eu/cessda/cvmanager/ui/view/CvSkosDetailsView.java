@@ -27,6 +27,8 @@ import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.ui.view.LoginView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.thymeleaf.TemplateEngine;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -87,6 +89,7 @@ import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 @SpringView(name = CvSkosDetailsView.VIEW_NAME)
 public class CvSkosDetailsView extends CvManagerView {
 
+	private static final Logger log = LoggerFactory.getLogger(CvSkosDetailsView.class);
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "detailold";
 	private Locale locale = UI.getCurrent().getLocale();
@@ -283,7 +286,8 @@ public class CvSkosDetailsView extends CvManagerView {
 				setDetails() ;
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
+				log.debug("Stacktrace: ", e);
 			}
 
 		}

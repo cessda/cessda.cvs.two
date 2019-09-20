@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import org.gesis.wts.service.dto.AgencyDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
@@ -33,7 +35,8 @@ import eu.cessda.cvmanager.utils.ParserUtils;
 import eu.cessda.cvmanager.utils.VersionUtils;
 
 public class VersionLayout extends MCssLayout implements Translatable {
-	
+
+	private static final Logger log = LoggerFactory.getLogger(VersionLayout.class);
 	private enum LayoutMode{ READ, EDIT };
 	
 	private static final long serialVersionUID = -2461005203070668382L;
@@ -215,7 +218,8 @@ public class VersionLayout extends MCssLayout implements Translatable {
 			cvUrl = baseUrl + URLEncoder.encode(versionDTO.getUri(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			cvUrl = baseUrl + versionDTO.getUri();
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug("Stacktrace: ", e);
 		}
 		
 		infoVersion

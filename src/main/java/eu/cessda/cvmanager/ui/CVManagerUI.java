@@ -19,6 +19,8 @@ import org.gesis.wts.ui.view.AccessDeniedView;
 import org.gesis.wts.ui.view.ErrorView;
 import org.gesis.wts.ui.view.LoginView;
 import org.gesis.wts.ui.view.ResetPasswordView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.EventScope;
@@ -86,6 +88,7 @@ import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
 public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private static final long serialVersionUID = -6435583434844959571L;
+	private static final Logger log = LoggerFactory.getLogger(CVManagerUI.class);
 
 	private final SpringViewProvider viewProvider;
 	private final SecurityService securityService;
@@ -353,7 +356,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			.withValueChangeMode( ValueChangeMode.LAZY)
 			.withValueChangeTimeout( 200 )
 			.addTextChangeListener( e -> {
-				System.out.println( EditorSearchView.class.getName() );
+				log.info( EditorSearchView.class.getName() );
 				if( navigator.getCurrentView().toString().indexOf( EditorSearchView.class.getSimpleName() ) > 0 || 
 						navigator.getCurrentView().toString().indexOf( EditorDetailsView.class.getSimpleName() ) > 0 ) {
 					if( navigator.getCurrentView().toString().indexOf( EditorSearchView.class.getSimpleName() ) < 0 && !e.getValue().isEmpty())
@@ -535,14 +538,14 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		
 		setUserDetail( SecurityUtils.getCurrentUserDetails().get());
 		// if( securityService.isAuthenticate()){
-		System.out.println("User logged in!");
+		log.info("User logged in!");
 		userInfoLayout.setVisible(true);
 		searchCVs.setVisible(true);
 		agencyButton.setVisible( true );
 		userGuide.setVisible( true );
 		usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
 		
-		System.out.println(SecurityUtils.isCurrentUserAgencyAdmin());
+		log.info("Admin: " + SecurityUtils.isCurrentUserAgencyAdmin());
 		
 		if( SecurityUtils.isCurrentUserAgencyAdmin())
 			adminButton.setVisible(true);

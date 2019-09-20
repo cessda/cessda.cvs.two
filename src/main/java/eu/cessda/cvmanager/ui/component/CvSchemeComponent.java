@@ -140,7 +140,8 @@ public class CvSchemeComponent extends CustomComponent {
 			baseUrl += URLEncoder.encode( cvScheme.getContainerId(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			baseUrl += cvScheme.getContainerId();
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug("Stacktrace: ", e);
 		}
 		
 		enTitle.setValue("<a href='" + baseUrl + "'>" + cvScheme.getTitleByLanguage("en") + "</a>");

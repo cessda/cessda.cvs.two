@@ -494,7 +494,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 				
 				setSelectedLanguageByHighlight( cvHit, fieldName );
 			} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
+				log.debug("Stacktrace: ", e);
 			}
 			
 				
@@ -540,7 +541,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 								
 								setSelectedLanguageByHighlight( cvHit, fieldName );
 							} catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-								e.printStackTrace();
+								log.error(e.getMessage());
+								log.debug("Stacktrace: ", e);
 							}				
 								
 						}					

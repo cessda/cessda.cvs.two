@@ -16,6 +16,8 @@ import java.io.OutputStream;
 import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.label.MLabel;
 
 import com.vaadin.server.FileResource;
@@ -49,6 +51,7 @@ import com.vaadin.ui.VerticalLayout;
 
 public class UploadExample extends CustomComponent {
     private static final long serialVersionUID = -4292553844521293140L;
+    private static final Logger log = LoggerFactory.getLogger(UploadExample.class);
 
     public void init (String context) {
         VerticalLayout layout = new VerticalLayout();
@@ -109,7 +112,7 @@ public class UploadExample extends CustomComponent {
                     String data = DatatypeConverter.printBase64Binary(baos.toByteArray());
                     String imageString = "data:image/png;base64," + data;
                     String html = "<img src='" + imageString + "'>";
-                    System.out.println(html);
+                    log.info(html);
                     
                     imagePreview.setVisible( true );
                     imagePreview.setValue(html);
@@ -117,7 +120,8 @@ public class UploadExample extends CustomComponent {
 //                    ImageIO.write(bi, "jpg", new File("/tmp/uploads/test.jpg"));
 
                 } catch (IOException e) {
-                    System.out.println("Error");
+                    log.error(e.getMessage());
+                    log.debug("Stacktrace:", e);
                 }
             	
             	File file2 =  new File("/tmp/uploads/test.jpg");

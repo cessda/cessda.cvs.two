@@ -15,6 +15,8 @@ import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.ui.view.admin.CvManagerAdminView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
@@ -55,6 +57,7 @@ import eu.cessda.cvmanager.utils.WorkflowUtils;
 @SpringView(name = ManageImportView.VIEW_NAME)
 public class ManageImportView extends CvManagerAdminView {
 
+	private static Logger log = LoggerFactory.getLogger(ManageImportView.class);
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "manage-import";
 	private Locale locale = UI.getCurrent().getLocale();
@@ -183,7 +186,7 @@ public class ManageImportView extends CvManagerAdminView {
 				if( version.getItemType().equals( ItemType.SL.toString()))
 					continue;
 				
-				System.out.println("Checking: " + cvTarget.getValue() + " TL: " + version.getLanguage() );
+				log.info("Checking: " + cvTarget.getValue() + " TL: " + version.getLanguage() );
 				
 				// get concept and match with codes
 				Map<String, ConceptDTO> conceptMap = version.getConceptAsMap();
@@ -214,7 +217,7 @@ public class ManageImportView extends CvManagerAdminView {
 							newConcept.setVersionId( version.getId() );
 							newConcept.setPosition( slConcept.getPosition() );
 							
-							System.out.println("Storing Concept : " + notation + " TL: " + version.getLanguage() );
+							log.info("Storing Concept : " + notation + " TL: " + version.getLanguage() );
 
 							conceptService.save(newConcept);
 						}
