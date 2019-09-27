@@ -14,19 +14,11 @@ pipeline {
     }
 
 	stages {
-        stage('Check environment') {
-            steps {
-                echo "Check environment"
-                echo "product_name = ${product_name}"
-                echo "module_name = ${module_name}"
-                echo "image_tag = ${IMAGE_TAG}"
-            }
-        }
         // Building on master
 		stage('Build Project') {
 			steps {
                 withMaven {
-                    sh 'mvn clean deploy -Pdocker-compose'					
+                    sh "mvn clean deploy -Pdocker-compose -DbuildNumber=${env.BUILD_NUMBER}"
 				}
 			}
             when { branch 'master' }
@@ -45,7 +37,7 @@ pipeline {
                 withSonarQubeEnv('cessda-sonar') {
                     nodejs('node') {
                         withMaven {
-                            sh 'mvn sonar:sonar -Pdocker-compose'
+                            sh "mvn sonar:sonar -Pdocker-compose -DbuildNumber=${env.BUILD_NUMBER}"
                         }
                     }
                 }
@@ -64,9 +56,9 @@ pipeline {
             steps {
                 sh 'gcloud auth configure-docker'
                 withMaven {
-                    sh 'mvn docker:build docker:push -Pdocker-compose'
+                    sh "mvn docker:build docker:push -Pdocker-compose -DbuildNumber=${env.BUILD_NUMBER} -Dimage_tag=${IMAGE_TAG}"
                 }
-                sh("gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${product_name}-${module_name}:${env.BRANCH_NAME}-latest")
+                sh "gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${product_name}-${module_name}:${env.BRANCH_NAME}-latest"
             }
             when { branch 'master' }
         }

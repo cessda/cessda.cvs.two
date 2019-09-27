@@ -20,12 +20,13 @@
 
 	<properties>
 		<baseRevision>1.0</baseRevision>
-        <revision>${baseRevision}-SNAPSHOT</revision>
+		<buildNumber>-SNAPSHOT</buildNumber>
+        <revision>${baseRevision}${buildNumber}</revision>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<project.version.number>${env.BRANCH_NAME}-v${env.BUILD_NUMBER}</project.version.number>
 		<java.version>1.8</java.version>
 		<vaadin.version>8.6.2</vaadin.version>
+		<image_tag>cessda/${project.artifactId}:${project.version}</image_tag>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
 		<gesis.repository.visibility>public</gesis.repository.visibility>
 		<!--Sonar Prop config: starts-->
@@ -60,6 +61,7 @@
 		 </repository>
 		 -->
 	</repositories>
+
 	<pluginRepositories>
   		<pluginRepository>
     		<id>gesis-${gesis.repository.visibility}</id>
@@ -83,7 +85,7 @@
 		<snapshotRepository>
 			<id>cessda-nexus-snapshot</id>
 			<name>CESSDA Nexus Snapshot Repository</name>
-			<url>https://nexus.cessda.eu/repository/maven-snapshots/</url>
+			<url>https://nexus.cessda.eu/repository/maven-snapshots</url>
 			<uniqueVersion>true</uniqueVersion>
 		</snapshotRepository>
 	</distributionManagement>
@@ -117,7 +119,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-tomcat</artifactId>
@@ -147,13 +148,11 @@
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
-
 		<dependency>
    			<groupId>org.vaadin.addon</groupId>
    			<artifactId>confirmdialog</artifactId>
    			<version>3.1.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -172,13 +171,11 @@
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-        
 		<dependency>
 			<groupId>org.springframework.restdocs</groupId>
 			<artifactId>spring-restdocs-mockmvc</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.vaadin.spring.extensions</groupId>
 			<artifactId>vaadin-spring-ext-boot</artifactId>
@@ -189,7 +186,6 @@
 			<artifactId>vaadin-spring-addon-eventbus</artifactId>
 			<version>2.0.0.RELEASE</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.gesis.stardat</groupId>
 			<artifactId>stardat-ddiflatdb-rest</artifactId>
@@ -206,18 +202,15 @@
 			<artifactId>stardat-ddi-entities</artifactId>
 			<version>0.0.2-SNAPSHOT</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 		</dependency>
-
 		<dependency>
 		    <groupId>org.vaadin</groupId>
 		    <artifactId>viritin</artifactId>
 		    <version>2.4</version>
 		</dependency>
-
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -265,13 +258,11 @@
             <artifactId>flying-saucer-pdf</artifactId>
             <version>9.1.15</version>
         </dependency>
-
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-jdk8</artifactId>
             <version>${mapstruct.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.gesis.wts</groupId>
             <artifactId>usermanagement</artifactId>
@@ -283,23 +274,19 @@
 		        </exclusion>
 		    </exclusions>
         </dependency>
-
         <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web-services</artifactId>
 		</dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
         </dependency>
-
         <dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
 		    <version>3.7</version>
 	    </dependency>
-
 		<dependency>
 		    <groupId>com.fasterxml.jackson.module</groupId>
 		    <artifactId>jackson-module-parameter-names</artifactId>
@@ -312,19 +299,16 @@
 		    <groupId>com.fasterxml.jackson.datatype</groupId>
 		    <artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
-
 		<dependency>
 		    <groupId>org.jsoup</groupId>
 		    <artifactId>jsoup</artifactId>
 		    <version>1.11.3</version>
 		</dependency>
-
 		<dependency>
 		    <groupId>com.auth0</groupId>
 		    <artifactId>java-jwt</artifactId>
 		    <version>3.4.0</version>
 		</dependency>
-
 		 <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
@@ -363,7 +347,6 @@
 					<artifactId>git-commit-id-plugin</artifactId>
 					<version>2.2.4</version>
 				</plugin>
-
 				<plugin>
 					<groupId>org.eclipse.m2e</groupId>
 					<artifactId>lifecycle-mapping</artifactId>
@@ -416,11 +399,9 @@
                             <artifactId>hibernate-jpamodelgen</artifactId>
                             <version>${hibernate.version}</version>
                         </path>
-
                     </annotationProcessorPaths>
 				</configuration>
 			</plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -429,7 +410,6 @@
                     <downloadJavadocs>true</downloadJavadocs>
                 </configuration>
             </plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -476,7 +456,7 @@
 				<configuration>
 					<images>
 						<image>
-							<name>${env.IMAGE_TAG}</name>
+							<name>${image_tag}</name>
 							<build>
 								<dockerFileDir>${project.basedir}/target/docker/generated</dockerFileDir>
 								<assembly>
@@ -573,6 +553,7 @@
             </plugin>
 			<!-- Sonar End -->
 		</plugins>
+
 		<resources>
 			<resource>
 				<directory>infrastructure/docker</directory>
@@ -600,7 +581,6 @@
 			</resource>
 		</resources>
 	</build>
-
 
 	<profiles>
 		 <profile>
@@ -651,19 +631,18 @@
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <server.servlet.contextPath>/</server.servlet.contextPath>
 				<server.port>8080</server.port>
-				<ddiflatdb.rest.url>http://cvs-flatdb:8080</ddiflatdb.rest.url>
-				<revision>${baseRevision}.${env.BUILD_NUMBER}</revision>
-                <spring.datasource.url>jdbc:mysql://cvs-mysql:3306/cvmanager-security?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
-				<spring.datasource.username>cvs-gui</spring.datasource.username>
-				<spring.datasource.password>cfnaF2bdSPqkEwM</spring.datasource.password>
+				<ddiflatdb.rest.url>http://localhost:8080</ddiflatdb.rest.url>
+                <spring.datasource.url>jdbc:mysql://localhost:3306/cvmanager-security?useSSL=false&amp;useUnicode=yes&amp;characterEncoding=UTF-8</spring.datasource.url>
+				<spring.datasource.username>root</spring.datasource.username>
+				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
-				<spring.data.elasticsearch.cluster-nodes>cvs-es:9300</spring.data.elasticsearch.cluster-nodes>
+				<spring.data.elasticsearch.cluster-nodes>localhost:9300</spring.data.elasticsearch.cluster-nodes>
             </properties>
         </profile>
         <profile>
             <id>test</id>
             <properties>
-                <tomcat.url>http://10.6.13.128:9090/manager/text</tomcat.url>
+                <tomcat.url>http://localhost:9090/manager/text</tomcat.url>
                 <tomcat.username>admin</tomcat.username>
                 <tomcat.password>Admin4Tomcat8</tomcat.password>
                 <!--
@@ -671,12 +650,12 @@
                 <ddiflatdb.rest.url>http://35.195.194.241:8080</ddiflatdb.rest.url>
 				<spring.datasource.url>jdbc:mysql://svko-glesd:3306/cvmanager?useSSL=false</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
-				<spring.datasource.password>GVM8Sj8FUxBf4gk</spring.datasource.password>
+				<spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				-->
 				<server.servlet.contextPath>/</server.servlet.contextPath>
 				<server.port>8080</server.port>
-				<ddiflatdb.rest.url>http://cessda-cvmanager-storage-live-microservice:8080</ddiflatdb.rest.url>
-                <spring.datasource.url>jdbc:mysql://cessda-cvmanager-storage-live-persistence:3306/cvmanager-security?useSSL=false</spring.datasource.url>
+				<ddiflatdb.rest.url>http://localhost:8080</ddiflatdb.rest.url>
+                <spring.datasource.url>jdbc:mysql://localhost:3306/cvmanager-security?useSSL=false</spring.datasource.url>
 				<spring.datasource.username>root</spring.datasource.username>
                 <spring.datasource.password>my-p3rsonal-s3cr3t</spring.datasource.password>
 				<spring.data.elasticsearch.cluster-name>elasticsearch</spring.data.elasticsearch.cluster-name>
@@ -700,7 +679,6 @@
         </profile>
     </profiles>
 
-
 	<organization>
 		<name>CESSDA ERIC</name>
 		<url>https://www.cessda.eu/</url>
@@ -713,7 +691,8 @@
 		<url>https://jenkins.cessda.eu/</url>
 	</ciManagement>
 	<issueManagement>
-		<url>https://bitbucket.org/cessda/cessda.cvmanager.beta/issues</url>
+		<url>https://bitbucket.org/cessda/cessda.cvs.gui/issues</url>
 		<system>Bitbucket</system>
 	</issueManagement>
+
 </project>
