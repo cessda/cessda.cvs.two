@@ -17,7 +17,9 @@ import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 
 import org.gesis.wts.service.dto.AgencyDTO;
+import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.label.MLabel;
+import org.slf4j.Logger;
 
 import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
@@ -44,6 +46,7 @@ import com.vaadin.ui.VerticalLayout;
 
 public class UploadAgencyLogo extends CustomComponent {
 	private static final long serialVersionUID = 5884964436829655205L;
+    private static final Logger log = LoggerFactory.getLogger(UploadAgencyLogo.class);
 
 	public void init (AgencyDTO agencyDTO) {
         VerticalLayout layout = new VerticalLayout();
@@ -97,7 +100,8 @@ public class UploadAgencyLogo extends CustomComponent {
                     
 
                 } catch (IOException e) {
-                    System.out.println("Error");
+                    log.error(e.getMessage());
+                    log.debug("Stacktrace:", e);
                 }            	
 
             }

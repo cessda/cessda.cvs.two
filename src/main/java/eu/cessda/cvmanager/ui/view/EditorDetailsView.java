@@ -25,6 +25,8 @@ import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.ui.view.LoginView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -94,6 +96,7 @@ import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 @SpringView(name = EditorDetailsView.VIEW_NAME)
 public class EditorDetailsView extends CvView {
 
+	private static final Logger log = LoggerFactory.getLogger(EditorDetailsView.class);
 	private static final long serialVersionUID = -1095312295254197091L;
 	public static final String VIEW_NAME = "details";
 	private Locale locale = UI.getCurrent().getLocale();
@@ -288,7 +291,8 @@ public class EditorDetailsView extends CvView {
 						try {
 							selectedLang = Language.getEnum( selectedLanguage );
 						} catch (Exception e) {
-							e.printStackTrace();
+							log.error(e.getMessage());
+							log.debug("Stacktrace: ", e);
 						}
 					}
 					if(  mappedParams.get("tab") != null )
@@ -314,7 +318,8 @@ public class EditorDetailsView extends CvView {
 				setDetails() ;
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
+				log.debug("Stacktrace: ", e);
 			}
 
 		} else {

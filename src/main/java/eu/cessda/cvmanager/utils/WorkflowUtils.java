@@ -9,8 +9,12 @@ import eu.cessda.cvmanager.domain.Cv;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public final class WorkflowUtils {
+	private static final Logger log = LoggerFactory.getLogger(WorkflowUtils.class);
+
 	private WorkflowUtils() {}
 	
 	public static String generateAgencyBaseUri( String agencyUri) {
@@ -60,7 +64,8 @@ public final class WorkflowUtils {
 			detailUrl += URLEncoder.encode( uri, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			detailUrl += uri;
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug("Stacktrace: ", e);
 		}
 		return detailUrl;
 	}

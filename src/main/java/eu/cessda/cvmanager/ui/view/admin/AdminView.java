@@ -14,6 +14,8 @@ import org.gesis.wts.ui.view.LoginView;
 import org.gesis.wts.ui.view.admin.layout.ManageUserAgencyLayout;
 import org.gesis.wts.ui.view.admin.layout.ManageUserLayout;
 import org.gesis.wts.ui.view.admin.layout.ManageUserRoleLayout;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -42,6 +44,7 @@ import eu.cessda.cvmanager.ui.view.importing.CsvImportLayout;
 @SpringView(name = AdminView.VIEW_NAME)
 public class AdminView extends CvAdminView {
 
+	private static final Logger log = LoggerFactory.getLogger(AdminView.class);
 	private static final long serialVersionUID = 2321835584429770141L;
 	public static final String VIEW_NAME = "admin";
 	public enum AdminContent { 
@@ -130,7 +133,8 @@ public class AdminView extends CvAdminView {
 			catch (Exception e)
 			{
 				// UI.getCurrent().getNavigator().navigateTo( ErrorView.VIEW_NAME );
-				e.printStackTrace();
+				log.error(e.getMessage());
+				log.debug("Stacktrace: ", e);;
 			}
 
 		}

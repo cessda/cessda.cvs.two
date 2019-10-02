@@ -216,17 +216,13 @@ public class WorkflowManager {
 				log.info( "Draft CV should be not possible" );
 				break;
 			case INITIAL_REVIEW:
-				// just save after change status
-				version = versionService.save(version);
-				// index for editor
-				vocabularyService.index(vocabulary);
-				break;
 			case FINAL_REVIEW:
 				// just save after change status
 				version = versionService.save(version);
 				// index for editor
 				vocabularyService.index(vocabulary);
 				break;
+			// index for editor
 			case PUBLISHED:
 				String uri =  version.getUri() + "/" + versionNumber;
 				
@@ -382,7 +378,8 @@ public class WorkflowManager {
 						);
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					log.error(e.getMessage());
+					log.debug("Stacktrace: ", e);
 				}
 				
 				// indexing published codes
@@ -493,7 +490,7 @@ public class WorkflowManager {
 		List<CVConcept> rootItems = cvConceptTree.getRootItems();
 		for(CVConcept topCvConcept : rootItems) {
 			try {
-				System.out.println("Store CV-concept:" + topCvConcept.getNotation());
+				log.info("Store CV-concept:" + topCvConcept.getNotation());
 				DDIStore ddiStoreTopCvConcept = stardatDDIService.saveElement(topCvConcept.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Add Code " + topCvConcept.getNotation());
 				newCvScheme.addOrderedMemberList(ddiStoreTopCvConcept.getElementId());
 				
@@ -501,7 +498,8 @@ public class WorkflowManager {
 					storeCvConceptTreeChild( cvConceptTree, childCvConcept, topCvConcept);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
+				log.debug("Stacktrace: ", e);
 			}
 			
 		}
@@ -511,7 +509,7 @@ public class WorkflowManager {
 	}
 
 	private static void storeCvConceptTreeChild(TreeData<CVConcept> cvConceptTree, CVConcept cCvConcept, CVConcept topCvConcept) {
-		System.out.println("Store CV-concept c:" + cCvConcept.getNotation());
+		log.info("Store CV-concept c:" + cCvConcept.getNotation());
 		// store cvConcept
 		DDIStore ddiStoreCvConcept = stardatDDIService.saveElement(cCvConcept.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Add Code " + cCvConcept.getNotation());
 		// store narrower

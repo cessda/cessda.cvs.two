@@ -627,7 +627,7 @@ public class DialogManageStatusWindow extends MWindow {
 		}
 			
 		if( sourceLanguage.equals( selectedLanguage )) {
-			System.out.println( getVersionNumber() + "  " + versionNumberPastSl + "  " + VersionUtils.compareVersion( getVersionNumber(), versionNumberPastSl));
+			log.info( getVersionNumber() + "  " + versionNumberPastSl + "  " + VersionUtils.compareVersion( getVersionNumber(), versionNumberPastSl));
 
 			if( VersionUtils.compareVersion(getVersionNumber(), versionNumberPastSl) <= 0) {
 				Notification.show("Version number is lower or simillar with the last version");

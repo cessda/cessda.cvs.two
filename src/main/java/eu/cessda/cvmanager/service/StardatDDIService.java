@@ -8,6 +8,8 @@ import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.security.SecurityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.vaadin.data.TreeData;
@@ -15,6 +17,7 @@ import com.vaadin.data.TreeData;
 @Service
 public class StardatDDIService {
 	public final ConfigurationService configService;
+	private static final Logger log = LoggerFactory.getLogger(StardatDDIService.class);
 	
 	public final RestClient restClient;
 
@@ -40,7 +43,8 @@ public class StardatDDIService {
 		try {
 			return restClient.saveElement( ddiStore, username, comment);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug("Stacktrace: ", e);
 		}
 		return null;
 	}

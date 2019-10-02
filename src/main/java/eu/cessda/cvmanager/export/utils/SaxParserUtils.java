@@ -13,6 +13,8 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -21,6 +23,9 @@ import org.xml.sax.helpers.XMLFilterImpl;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 public class SaxParserUtils {
+
+	private static final Logger log = LoggerFactory.getLogger(SaxParserUtils.class);
+
 	public static String filterSkosDoc(Set<String> filteredTag, Set<String> filteredLanguage, String xmlString){
 		XMLReader xr;
 		try {
@@ -71,11 +76,13 @@ public class SaxParserUtils {
 				TransformerFactory.newInstance().newTransformer().transform(src, res);
 				return sw.toString();
 			} catch (TransformerException | TransformerFactoryConfigurationError e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
+				log.debug("Stacktrace: ", e);
 			}
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug("Stacktrace: ", e);
 		}
 	    return null;
 	}

@@ -179,7 +179,8 @@ public class VocabularyGridRowPublish extends CustomComponent {
 			baseUrl += URLEncoder.encode(vocabulary.getUri(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			baseUrl += vocabulary.getUri();
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug("Stacktrace: ", e);
 		}
 		if(currentSelectedLanguage != null )
 			baseUrl += "&lang=" + currentSelectedLanguage;

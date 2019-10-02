@@ -137,7 +137,8 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 			return result;
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			log.debug("Stacktrace: ", e);
 			return Arrays.asList("");
 		}
 

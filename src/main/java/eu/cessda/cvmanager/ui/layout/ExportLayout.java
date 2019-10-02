@@ -36,6 +36,8 @@ import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.vaadin.spring.events.EventBus.UIEventBus;
@@ -109,6 +111,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 	private final VocabularyDTO vocabulary;
 	private final AgencyDTO agency;
 	private final StardatDDIService stardatDDIService;
+	private static final Logger log = LoggerFactory.getLogger(ExportLayout.class);
 	
 	private List<LicenceDTO> licenses;
 	private LicenceDTO license;
@@ -357,24 +360,13 @@ public class ExportLayout  extends MCssLayout implements Translatable {
                 try { 
                 	switch (downloadType) {
 	                	case HTML:
-	                		try {
-								return new FileInputStream( generateExportFile(downloadType, exportVersions));
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-							break;
 						case PDF:
-							try {
-								return new FileInputStream( generateExportFile(downloadType, exportVersions));
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-							break;
 						case SKOS:
 							try {
 								return new FileInputStream( generateExportFile(downloadType, exportVersions));
 							} catch (Exception e) {
-								e.printStackTrace();
+								log.error(e.getMessage());
+								log.debug("Stacktrace: ", e);
 							}
 							break;
 						default:
@@ -382,7 +374,8 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 					}
                     
                 } catch (IOException | ObjectNotFoundException e) {
-                    e.printStackTrace();
+					log.error(e.getMessage());
+					log.debug("Stacktrace: ", e);
                     return null;
                 }
 				return null;

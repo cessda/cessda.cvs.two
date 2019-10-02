@@ -25,6 +25,8 @@ import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.ui.view.LoginView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.vaadin.spring.events.EventBus;
@@ -78,6 +80,7 @@ import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 @SpringView(name = WithdrawnDetailView.VIEW_NAME)
 public class WithdrawnDetailView extends CvView {
 
+	private static final Logger log = LoggerFactory.getLogger(WithdrawnDetailView.class);
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "withdrawn-details";
 	private Locale locale = UI.getCurrent().getLocale();
@@ -250,7 +253,8 @@ public class WithdrawnDetailView extends CvView {
 				setDetails() ;
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
+				log.debug("Stacktrace: ", e);
 			}
 
 		}
@@ -361,7 +365,8 @@ public class WithdrawnDetailView extends CvView {
 					cvUrl = baseUrl +  vocabulary.getNotation() + "?url=" +URLEncoder.encode(latestSlVersion.getUri(), "UTF-8");
 				} catch (UnsupportedEncodingException e) {
 					cvUrl = baseUrl  + vocabulary.getNotation() + "?url=" + latestSlVersion.getUri();
-					e.printStackTrace();
+					log.error(e.getMessage());
+					log.debug("Stacktrace: ", e);
 				}
 				
 				newerVersionAvailable.removeAllComponents();

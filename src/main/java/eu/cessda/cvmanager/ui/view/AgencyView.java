@@ -12,6 +12,8 @@ import org.gesis.wts.service.UserAgencyService;
 import org.gesis.wts.service.UserService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.gesis.wts.ui.view.LoginView;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -60,6 +62,7 @@ import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 @SpringView(name = AgencyView.VIEW_NAME)
 public class AgencyView extends CvView {
 
+	private static final Logger log = LoggerFactory.getLogger(AgencyView.class);
 	private static final long serialVersionUID = -6014026644497372675L;
 	public static final String VIEW_NAME = "agency";
 	public enum ViewMode { INITIAL, DETAIL };
@@ -204,7 +207,8 @@ public class AgencyView extends CvView {
 			catch (Exception e)
 			{
 				// UI.getCurrent().getNavigator().navigateTo( ErrorView.VIEW_NAME );
-				e.printStackTrace();
+				log.error(e.getMessage());
+				log.debug("Stacktrace: ", e);
 			}
 
 		}

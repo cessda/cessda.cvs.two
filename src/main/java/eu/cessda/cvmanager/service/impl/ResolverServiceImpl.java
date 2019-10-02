@@ -180,7 +180,8 @@ public class ResolverServiceImpl implements ResolverService {
 							.withResolverURI( version.getCanonicalUri())
 					);
 				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
+					log.error(e.getMessage());
+					log.debug("Stacktrace: ", e);
 				}
 			}
 		}
