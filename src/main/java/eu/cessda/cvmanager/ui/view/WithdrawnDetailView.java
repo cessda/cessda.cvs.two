@@ -253,8 +253,7 @@ public class WithdrawnDetailView extends CvView {
 				setDetails() ;
 
 			} catch (Exception e) {
-				log.error(e.getMessage());
-				log.debug("Stacktrace: ", e);
+				log.error(e.getMessage(), e);
 			}
 
 		}
@@ -365,8 +364,7 @@ public class WithdrawnDetailView extends CvView {
 					cvUrl = baseUrl +  vocabulary.getNotation() + "?url=" +URLEncoder.encode(latestSlVersion.getUri(), "UTF-8");
 				} catch (UnsupportedEncodingException e) {
 					cvUrl = baseUrl  + vocabulary.getNotation() + "?url=" + latestSlVersion.getUri();
-					log.error(e.getMessage());
-					log.debug("Stacktrace: ", e);
+					log.error(e.getMessage(), e);
 				}
 				
 				newerVersionAvailable.removeAllComponents();

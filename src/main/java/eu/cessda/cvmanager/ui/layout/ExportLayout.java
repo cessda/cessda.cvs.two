@@ -365,8 +365,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 							try {
 								return new FileInputStream( generateExportFile(downloadType, exportVersions));
 							} catch (Exception e) {
-								log.error(e.getMessage());
-								log.debug("Stacktrace: ", e);
+								log.error(e.getMessage(), e);
 							}
 							break;
 						default:
@@ -374,8 +373,7 @@ public class ExportLayout  extends MCssLayout implements Translatable {
 					}
                     
                 } catch (IOException | ObjectNotFoundException e) {
-					log.error(e.getMessage());
-					log.debug("Stacktrace: ", e);
+					log.error(e.getMessage(), e);
                     return null;
                 }
 				return null;

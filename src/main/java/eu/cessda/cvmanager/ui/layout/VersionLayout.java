@@ -218,8 +218,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 			cvUrl = baseUrl + URLEncoder.encode(versionDTO.getUri(), "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			cvUrl = baseUrl + versionDTO.getUri();
-			log.error(e.getMessage());
-			log.debug("Stacktrace: ", e);
+			log.error(e.getMessage(), e);
 		}
 		
 		infoVersion

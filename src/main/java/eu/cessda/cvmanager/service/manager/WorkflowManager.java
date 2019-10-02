@@ -378,8 +378,7 @@ public class WorkflowManager {
 						);
 				} catch (UnsupportedEncodingException e) {
 					// TODO Auto-generated catch block
-					log.error(e.getMessage());
-					log.debug("Stacktrace: ", e);
+					log.error(e.getMessage(), e);
 				}
 				
 				// indexing published codes
@@ -498,8 +497,7 @@ public class WorkflowManager {
 					storeCvConceptTreeChild( cvConceptTree, childCvConcept, topCvConcept);
 				}
 			} catch (Exception e) {
-				log.error(e.getMessage());
-				log.debug("Stacktrace: ", e);
+				log.error(e.getMessage(), e);
 			}
 			
 		}

@@ -120,8 +120,7 @@ public class UploadExample extends CustomComponent {
 //                    ImageIO.write(bi, "jpg", new File("/tmp/uploads/test.jpg"));
 
                 } catch (IOException e) {
-                    log.error(e.getMessage());
-                    log.debug("Stacktrace:", e);
+                    log.error(e.getMessage(), e);
                 }
             	
             	File file2 =  new File("/tmp/uploads/test.jpg");
