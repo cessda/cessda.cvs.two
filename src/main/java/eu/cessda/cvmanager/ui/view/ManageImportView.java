@@ -1,12 +1,6 @@
 package eu.cessda.cvmanager.ui.view;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import javax.annotation.PostConstruct;
 
@@ -129,9 +123,12 @@ public class ManageImportView extends CvManagerAdminView {
 		
 		MButton assignConceptSlButton = generateAssignSlToTl();
 		
-		MCssLayout normalisePanel = NormaliseDropVersionError();
-		
-        layout.addComponents(pageTitle, 
+		MCssLayout normalisePanel = normaliseDropVersionError();
+
+		MCssLayout normaliseConceptPanel = normaliseMissingConcepts();
+
+
+		layout.addComponents(pageTitle,
         		importStardatDDI , 
         		new MLabel().withFullWidth(),
         		deleteIndexButton,
@@ -140,12 +137,14 @@ public class ManageImportView extends CvManagerAdminView {
         		assignConceptSlButton,
         		new MLabel().withFullWidth(),
         		normalisePanel,
+				new MLabel().withFullWidth(),
+				normaliseConceptPanel,
         		new MLabel().withFullWidth(),
         		dropContent);
         rightContainer.add(layout).withExpand(layout,1);
 	}
 
-	private MCssLayout NormaliseDropVersionError() {
+	private MCssLayout normaliseDropVersionError() {
 		// Specific function to normalize code when TL missing during drop version
 		MCssLayout normalisePanel = new MCssLayout().withFullWidth().withStyleName("panel-group");
 		MLabel normalizeTlLabel = new MLabel("<h2>Normalize Code</h2>").withContentMode( ContentMode.HTML );
@@ -230,6 +229,97 @@ public class ManageImportView extends CvManagerAdminView {
 		
 		normalisePanel
 			.add( normalizeTlLabel, cvTarget, normalizeButton);
+		return normalisePanel;
+	}
+
+	private MCssLayout normaliseMissingConcepts() {
+		// Specific function to normalize code when TL missing during drop version
+		MCssLayout normalisePanel = new MCssLayout().withFullWidth().withStyleName("panel-group");
+		MLabel normalizeTlLabel = new MLabel("<h2>Normalize Concept missing</h2>").withContentMode( ContentMode.HTML );
+		MTextField cvTarget = new MTextField( "Cv Notation:" );
+		MButton normalizeButton = new MButton( "Normalize" );
+		normalizeButton.addClickListener( e -> {
+			if( cvTarget.isEmpty() ) {
+				Notification.show("Target CV empty");
+				return;
+			}
+			// find the latest version from specific vocabulary
+			VocabularyDTO vocabulary = vocabularyService.getByNotation( cvTarget.getValue() );
+			if( vocabulary == null ) {
+				Notification.show("Target CV not found");
+				return;
+			}
+			// get latest version
+			List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup( false );
+
+			Optional<VersionDTO> optSlVersion = latestVersions.stream().filter( v -> v.getItemType().equals(ItemType.SL.toString())).findFirst();
+			VersionDTO slVersion = null;
+
+			if( !optSlVersion.isPresent() ) {
+				Notification.show("SL version not found");
+				return;
+			}
+			slVersion = optSlVersion.get();
+			// get latest published code
+			List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+
+			Map<String, ConceptDTO> slConceptsMap = slVersion.getConceptAsMap();
+
+			// remove all concepts
+			for(VersionDTO version: latestVersions) {
+				if (version.getItemType().equals(ItemType.SL.toString()))
+					continue;
+
+				System.out.println("Delete concept: " + cvTarget.getValue() + " TL: " + version.getLanguage());
+
+				// remova all concepts TL
+				for (ConceptDTO removeConcept: version.getConcepts())
+					conceptService.delete( removeConcept.getId() );
+
+				version.setConcepts( Collections.emptySet() );
+			}
+
+			// run through TL version and check if concepts exist
+			for(VersionDTO version: latestVersions){
+				if( version.getItemType().equals( ItemType.SL.toString()))
+					continue;
+
+				System.out.println("Checking: " + cvTarget.getValue() + " TL: " + version.getLanguage() );
+
+				for(CodeDTO eachCode: workflowCodes) {
+					String notation = eachCode.getNotation();
+					String title = eachCode.getTitleByLanguage( version.getLanguage());
+					if( title == null || title.trim().isEmpty() )
+						continue;
+
+					// check for SL concept
+					ConceptDTO slConcept = slConceptsMap.get(notation);
+					if( slConcept == null )
+						continue;
+
+					String definition = eachCode.getDefinitionByLanguage( version.getLanguage());
+
+					ConceptDTO newConcept = new ConceptDTO();
+					newConcept.setUri( WorkflowUtils.generateCodeUri(version.getUri(), version.getNotation(), notation, version.getLanguage()) + "/" + version.getNumber());
+					newConcept.setNotation( notation );
+					newConcept.setTitle( title );
+					newConcept.setDefinition( definition );
+					newConcept.setCodeId( eachCode.getId() );
+					newConcept.setSlConcept(slConcept.getId());
+					newConcept.setVersionId( version.getId() );
+					newConcept.setPosition( slConcept.getPosition() );
+
+					System.out.println("Storing Concept : " + notation + " TL: " + version.getLanguage() );
+
+					conceptService.save(newConcept);
+				}
+
+			}
+
+		});
+
+		normalisePanel
+				.add( normalizeTlLabel, cvTarget, normalizeButton);
 		return normalisePanel;
 	}
 
