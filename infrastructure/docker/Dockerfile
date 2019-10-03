@@ -1,19 +1,16 @@
 # OpenJDK Base Container
-FROM tomcat:8.5.43-jdk8
+FROM tomcat:8.5-jdk8
 
 # Container Information
 LABEL MAINTAINER="CESSDA-ERIC 'support@cessda.eu'"
 
-# Create Volume tmp and add JAR artifacts
-VOLUME /tmp
-RUN addgroup cessda
-RUN adduser --ingroup cessda --disabled-password --disabled-login cessda
+# Create CESSDA User
+RUN useradd cessda
+
+# Add WAR artifact
 WORKDIR /@project.artifactId@
+COPY maven/@project.build.finalName@.war ./@project.artifactId@.war
 
-COPY maven/@project.build.finalName@.war ./application.war
-RUN sh -c 'echo "exec java -jar ./application.war" > ./entrypoint.sh'
-
-RUN chmod 400 ./application.war && chmod 500 ./entrypoint.sh && chown -R cessda:cessda ./
-USER cessda:cessda
-
-ENTRYPOINT ["/bin/sh", "./entrypoint.sh"]
+# Switch to CESSDA User and set entrypoint
+USER cessda
+ENTRYPOINT ["java", "-XX:MaxRAMPercentage=50.0", "-jar", "./@project.artifactId@.war"]
