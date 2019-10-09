@@ -263,9 +263,9 @@ public class PublicationDetailsView extends CvView {
 	private void refreshCvScheme() {
 		languageLayout.removeAllComponents();
 		List<DDIStore> ddiSchemes = null;
-		if( cvItem.getCurrentCvId() != null ) {
-			ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
-		}
+//		if( cvItem.getCurrentCvId() != null ) {
+//			ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
+//		}
 		
 		if( ddiSchemes == null ) {
 			if( cvItem.getCurrentNotation() != null ) {
@@ -276,7 +276,7 @@ public class PublicationDetailsView extends CvView {
 					if( slVer.isPresent() ) {
 						currentSlVersion = slVer.get();
 						currentVersion = currentSlVersion;
-						ddiSchemes = stardatDDIService.findByIdAndElementType( currentVersion.getUri(), DDIElement.CVSCHEME);
+//						ddiSchemes = stardatDDIService.findByIdAndElementType( currentVersion.getUri(), DDIElement.CVSCHEME);
 					}
 				}
 				
