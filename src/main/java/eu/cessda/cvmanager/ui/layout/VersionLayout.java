@@ -261,11 +261,11 @@ public class VersionLayout extends MCssLayout implements Translatable {
                     if (changeVersionTf.getValue().isEmpty()) {
                         versionDTO.setVersionChanges("");
                     } else {
-                        versionDTO.setVersionChanges( changeVersionTf.getValue().replaceAll("(\r\n|\n)", "<br />") );
+                        versionDTO.setVersionChanges( changeVersionTf.getValue());
                     }
                     versionService.save(versionDTO);
                     noteVersion.setValue( versionDTO.getVersionNotes());
-                    changeVersion.setValue( versionDTO.getVersionChanges());
+                    changeVersion.setValue( versionDTO.getVersionChanges().replaceAll("(\r\n|\n)", "<br />") );
 
 
                     switchMode(noteVersionLabel, noteVersion, versionNotesTf, changeVersionLabel, changeVersion, changeVersionTf,
