@@ -286,8 +286,7 @@ public class CvSkosDetailsView extends CvManagerView {
 				setDetails() ;
 
 			} catch (Exception e) {
-				log.error(e.getMessage());
-				log.debug("Stacktrace: ", e);
+				log.error(e.getMessage(), e);
 			}
 
 		}

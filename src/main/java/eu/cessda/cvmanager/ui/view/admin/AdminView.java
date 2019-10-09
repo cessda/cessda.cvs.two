@@ -133,8 +133,7 @@ public class AdminView extends CvAdminView {
 			catch (Exception e)
 			{
 				// UI.getCurrent().getNavigator().navigateTo( ErrorView.VIEW_NAME );
-				log.error(e.getMessage());
-				log.debug("Stacktrace: ", e);;
+				log.error(e.getMessage(), e);;
 			}
 
 		}

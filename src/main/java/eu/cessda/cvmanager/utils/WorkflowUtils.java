@@ -64,8 +64,7 @@ public final class WorkflowUtils {
 			detailUrl += URLEncoder.encode( uri, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			detailUrl += uri;
-			log.error(e.getMessage());
-			log.debug("Stacktrace: ", e);
+			log.error(e.getMessage(), e);
 		}
 		return detailUrl;
 	}

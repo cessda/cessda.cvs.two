@@ -291,8 +291,7 @@ public class EditorDetailsView extends CvView {
 						try {
 							selectedLang = Language.getEnum( selectedLanguage );
 						} catch (Exception e) {
-							log.error(e.getMessage());
-							log.debug("Stacktrace: ", e);
+							log.error(e.getMessage(), e);
 						}
 					}
 					if(  mappedParams.get("tab") != null )
@@ -318,8 +317,7 @@ public class EditorDetailsView extends CvView {
 				setDetails() ;
 
 			} catch (Exception e) {
-				log.error(e.getMessage());
-				log.debug("Stacktrace: ", e);
+				log.error(e.getMessage(), e);
 			}
 
 		} else {

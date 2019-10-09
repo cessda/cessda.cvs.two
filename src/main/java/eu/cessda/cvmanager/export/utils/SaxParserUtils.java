@@ -76,13 +76,11 @@ public class SaxParserUtils {
 				TransformerFactory.newInstance().newTransformer().transform(src, res);
 				return sw.toString();
 			} catch (TransformerException | TransformerFactoryConfigurationError e) {
-				log.error(e.getMessage());
-				log.debug("Stacktrace: ", e);
+				log.error(e.getMessage(), e);
 			}
 		} catch (SAXException e) {
 			// TODO Auto-generated catch block
-			log.error(e.getMessage());
-			log.debug("Stacktrace: ", e);
+			log.error(e.getMessage(), e);
 		}
 	    return null;
 	}

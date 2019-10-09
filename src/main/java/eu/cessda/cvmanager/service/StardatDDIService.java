@@ -43,8 +43,7 @@ public class StardatDDIService {
 		try {
 			return restClient.saveElement( ddiStore, username, comment);
 		} catch (Exception e) {
-			log.error(e.getMessage());
-			log.debug("Stacktrace: ", e);
+			log.error(e.getMessage(), e);
 		}
 		return null;
 	}

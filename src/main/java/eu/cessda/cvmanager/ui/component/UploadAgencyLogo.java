@@ -100,8 +100,7 @@ public class UploadAgencyLogo extends CustomComponent {
                     
 
                 } catch (IOException e) {
-                    log.error(e.getMessage());
-                    log.debug("Stacktrace:", e);
+                    log.error(e.getMessage(), e);
                 }            	
 
             }
