@@ -160,7 +160,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 
         // set initial view to read mode
         switchMode(noteVersionLabel, noteVersion, versionNotesTf, changeVersionLabel, changeVersion, changeVersionTf,
-                editSwitchButton, buttonLayout, LayoutMode.READ);
+                editSwitchButton, buttonLayout, versionDTO, LayoutMode.READ);
 
         MButton comparatorLayoutToggleButton = new MButton("Show changes from previous version");
         comparatorLayoutToggleButton
@@ -193,13 +193,11 @@ public class VersionLayout extends MCssLayout implements Translatable {
                 .withIcon(VaadinIcons.PLUS)
                 .addClickListener(e -> {
                     switchMode(noteVersionLabel, noteVersion, versionNotesTf, changeVersionLabel, changeVersion, changeVersionTf,
-                            editSwitchButton, buttonLayout, LayoutMode.READ);
+                            editSwitchButton, buttonLayout, versionDTO, LayoutMode.READ);
                     if (e.getButton().getIcon().equals(VaadinIcons.PLUS)) {
                         e.getButton().setIcon(VaadinIcons.MINUS);
                         comparatorLayoutToggleButton.setVisible(true);
                         infoLayout.setVisible(true);
-                        if (CvManagerSecurityUtils.isAuthenticated() && CvManagerSecurityUtils.isCurrentUserAllowToEditMetadata(agency, versionDTO))
-                            editSwitchButton.setVisible(true);
                     } else {
                         e.getButton().setIcon(VaadinIcons.PLUS);
                         noteVersionLabel.setVisible(false);
@@ -240,7 +238,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
         editSwitchButton
                 .withStyleName("pull-right")
                 .addClickListener(e -> switchMode(noteVersionLabel, noteVersion, versionNotesTf, changeVersionLabel, changeVersion, changeVersionTf,
-                        editSwitchButton, buttonLayout, LayoutMode.EDIT));
+                        editSwitchButton, buttonLayout, versionDTO, LayoutMode.EDIT));
 
         versionNotesTf.setWidth("100%");
         versionNotesTf.setHeight("200px");
@@ -271,13 +269,13 @@ public class VersionLayout extends MCssLayout implements Translatable {
 
 
                     switchMode(noteVersionLabel, noteVersion, versionNotesTf, changeVersionLabel, changeVersion, changeVersionTf,
-                            editSwitchButton, buttonLayout, LayoutMode.READ);
+                            editSwitchButton, buttonLayout, versionDTO, LayoutMode.READ);
                 });
 
         cancelButton
                 .withStyleName("pull-right")
                 .addClickListener(e -> switchMode(noteVersionLabel, noteVersion, versionNotesTf, changeVersionLabel, changeVersion, changeVersionTf,
-                        editSwitchButton, buttonLayout, LayoutMode.READ));
+                        editSwitchButton, buttonLayout, versionDTO, LayoutMode.READ));
 
         buttonLayout
                 .add(saveButton, cancelButton);
@@ -319,11 +317,11 @@ public class VersionLayout extends MCssLayout implements Translatable {
 
     private void switchMode(MLabel noteVersionLabel, MLabel noteVersion, RichTextArea versionNotesTf,
                             MLabel changeVersionLabel, MLabel changeVersion, TextArea changeVersionTf,
-                            MButton editSwitchButton, MCssLayout buttonLayout, LayoutMode layoutMode) {
+                            MButton editSwitchButton, MCssLayout buttonLayout, VersionDTO versionDTO,
+                            LayoutMode layoutMode) {
         if (layoutMode.equals(LayoutMode.READ)) {
             noteVersion.setVisible(true);
             changeVersion.setVisible(true);
-            editSwitchButton.setVisible(true);
             noteVersionLabel.setVisible(false);
             changeVersionLabel.setVisible(false);
 
@@ -331,6 +329,11 @@ public class VersionLayout extends MCssLayout implements Translatable {
                 noteVersionLabel.setVisible(true);
             if (changeVersion.getValue() != null && !changeVersion.getValue().isEmpty())
                 changeVersionLabel.setVisible(true);
+
+            if (CvManagerSecurityUtils.isAuthenticated() && CvManagerSecurityUtils.isCurrentUserAllowToEditMetadata(agency, versionDTO))
+                editSwitchButton.setVisible(true);
+            else
+                editSwitchButton.setVisible(false);
 
             versionNotesTf.setVisible(false);
             changeVersionTf.setVisible(false);
