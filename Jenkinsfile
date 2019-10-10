@@ -33,6 +33,11 @@ pipeline {
 			}
             when { not { branch 'master' } }
 		}
+        stage('Record Issues') {
+            steps {
+                recordIssues aggregatingResults: true, tools: [java(), mavenConsole()]
+            }
+        }
         stage('Run Sonar Scan') {
             steps {
                 withSonarQubeEnv('cessda-sonar') {

@@ -400,6 +400,9 @@
                             <version>${hibernate.version}</version>
                         </path>
                     </annotationProcessorPaths>
+					<compilerArgs>
+						<arg>-Xlint:all</arg>
+					</compilerArgs>
 				</configuration>
 			</plugin>
             <plugin>
