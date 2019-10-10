@@ -35,7 +35,7 @@ pipeline {
 		}
         stage('Record Issues') {
             steps {
-                recordIssues aggregatingResults: true, tools: [java(), mavenConsole()]
+                recordIssues(tools: [java()])
             }
         }
         stage('Run Sonar Scan') {
