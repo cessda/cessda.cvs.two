@@ -2,8 +2,8 @@ package eu.cessda.cvmanager.service.controller;
 
 public class ContentType {
 
-	public static String TYPE_URI = "uri";
-	public static String TYPE_LITERAL = "literal";
+	public static final String TYPE_URI = "uri";
+	public static final String TYPE_LITERAL = "literal";
 
 	private String type;
 	private String value;
