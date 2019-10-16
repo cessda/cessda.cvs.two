@@ -37,7 +37,7 @@ public class Menu extends CssLayout {
 	private static final String VALO_MENU_TOGGLE = "valo-menu-toggle";
 	private static final String VALO_MENU_VISIBLE = "valo-menu-visible";
 	private Navigator navigator;
-	private Map<String, Button> viewButtons = new HashMap<String, Button>();
+	private Map<String, Button> viewButtons = new HashMap<>();
 
 	private CssLayout menuItemsLayout;
 	private CssLayout menuPart;
@@ -73,8 +73,6 @@ public class Menu extends CssLayout {
 
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
-				// VaadinSession.getCurrent().getSession().invalidate();
-				// Page.getCurrent().reload();
 				menuPart.removeComponent(logoutMenu);
 				menuPart.addComponent(loginMenu, 1);
 				securityService.logout(LoginView.NAME);
@@ -151,7 +149,6 @@ public class Menu extends CssLayout {
 	 *            view icon in the menu
 	 */
 	public void addView(View view, final String name, String caption, Resource icon) {
-		// navigator.addView(name, view);
 		createViewButton(name, caption, icon);
 	}
 

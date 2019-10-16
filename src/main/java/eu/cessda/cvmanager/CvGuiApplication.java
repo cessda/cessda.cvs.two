@@ -30,6 +30,8 @@ import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 @EntityScan(basePackages = { "org.gesis.wts", "eu.cessda.cvmanager" })
 public class CvGuiApplication extends SpringBootServletInitializer {
 
+	private static final String UTF_8 = "UTF-8";
+
 	public static void main(String[] args) {
 		SpringApplication.run(CvGuiApplication.class, args);
 	}
@@ -41,7 +43,7 @@ public class CvGuiApplication extends SpringBootServletInitializer {
 
 	@Bean
 	MessageProvider messageProvider() {
-		return new ResourceBundleMessageProvider("i18n.messages", "UTF-8");
+		return new ResourceBundleMessageProvider("i18n.messages", UTF_8);
 	}
 	
 	@Bean
@@ -60,7 +62,7 @@ public class CvGuiApplication extends SpringBootServletInitializer {
         templateResolver.setPrefix("templates/");
 	    templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCharacterEncoding("UTF-8");
+        templateResolver.setCharacterEncoding(UTF_8);
         templateResolver.setCacheable(false);
         return templateResolver;
     }
@@ -72,7 +74,7 @@ public class CvGuiApplication extends SpringBootServletInitializer {
         templateResolver.setPrefix("templates/");
         templateResolver.setSuffix(".xml");
         templateResolver.setTemplateMode(TemplateMode.XML);
-        templateResolver.setCharacterEncoding("UTF-8");
+        templateResolver.setCharacterEncoding(UTF_8);
         templateResolver.setCacheable(false);
         return templateResolver;
     }
