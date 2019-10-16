@@ -16,7 +16,6 @@ import org.vaadin.viritin.button.MButton;
 
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
 
 import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -26,22 +25,22 @@ import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageMember;
 import eu.cessda.cvmanager.ui.view.window.DialogAgencyManageProfile;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
-public class AgencyActionLayout extends ResponsiveBlock{
+public class AgencyActionLayout extends ResponsiveBlock {
 	private static final long serialVersionUID = 2436346372920594014L;
 	
-	private final UserService userService;
-	private final RoleService roleService;
-	private final AgencyService agencyService;
-	private final UserAgencyService userAgencyService;
-	private final LicenceService licenceService;
-	private final BCryptPasswordEncoder encrypt;
+	private final transient UserService userService;
+	private final transient RoleService roleService;
+	private final transient AgencyService agencyService;
+	private final transient UserAgencyService userAgencyService;
+	private final transient LicenceService licenceService;
+	private final transient BCryptPasswordEncoder encrypt;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
 		
-	private I18N i18n;
+	private transient I18N  i18n;
 	private Locale locale = UI.getCurrent().getLocale();
-	private final UIEventBus eventBus;
+	private final transient UIEventBus eventBus;
 	
 	
 	private Language selectedLanguage;
@@ -64,7 +63,7 @@ public class AgencyActionLayout extends ResponsiveBlock{
 		this.licenceService = licenceService;
 		this.agencyService = agencyService;
 		this.userAgencyService = userAgencyService;
-		this.i18n = i18n;
+		
 		this.encrypt = encrypt;
 		init();
 	}
@@ -89,12 +88,12 @@ public class AgencyActionLayout extends ResponsiveBlock{
 			);
 	}
 
-	private void doManageMember(ClickEvent event ) {
+	private void doManageMember() {
 		Window window = new DialogAgencyManageMember(eventBus, agency, userService, roleService, agencyService, userAgencyService, encrypt, i18n, locale);
 		getUI().addWindow(window);
 	}
 	
-	private void doManageProfile(ClickEvent event ) {
+	private void doManageProfile() {
 		Window window = new DialogAgencyManageProfile(eventBus, agency, agencyService, licenceService, i18n, locale);
 		getUI().addWindow(window);
 	}

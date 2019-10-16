@@ -1,11 +1,7 @@
 package eu.cessda.cvmanager.ui.component;
 
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Locale;
-import java.util.Map;
 
-import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.i18n.I18N;
@@ -16,18 +12,20 @@ import org.vaadin.viritin.layouts.MCssLayout;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.UI;
-
-import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
 
 public class ResponsiveBlock extends CustomComponent implements Translatable {
 
+	private static final String VAADIN_STYLE_BLOCK_RESPONSIVE = "block-responsive";
+
+	private static final String VAADIN_STYLE_BUTTON_RESPONSIVE = "button-responsive";
+
 	private static final long serialVersionUID = -2157226640156714417L;
-	final static Logger log = LoggerFactory.getLogger(ResponsiveBlock.class);
-	private I18N i18n;
-	private Locale locale = UI.getCurrent().getLocale();
+	
+	static  final Logger log = LoggerFactory.getLogger(ResponsiveBlock.class);
+	
+	private transient I18N i18n;
+		
 
 	private MCssLayout container = new MCssLayout();
 	private MCssLayout header = new MCssLayout();
@@ -62,23 +60,23 @@ public class ResponsiveBlock extends CustomComponent implements Translatable {
 		
 		showBlock
 			.withCaption( i18n.get( showHeader ))
-			.withStyleName("show-block" ,"filter-button", "button-responsive")
+			.withStyleName("show-block" ,"filter-button", VAADIN_STYLE_BUTTON_RESPONSIVE)
 			.addClickListener( e -> {
-				e.getButton().removeStyleName("button-responsive");
-				hideBlock.addStyleName("button-responsive");
-				innerContainer.removeStyleName("block-responsive");
+				e.getButton().removeStyleName(VAADIN_STYLE_BUTTON_RESPONSIVE);
+				hideBlock.addStyleName(VAADIN_STYLE_BUTTON_RESPONSIVE);
+				innerContainer.removeStyleName(VAADIN_STYLE_BLOCK_RESPONSIVE);
 			});
 		
 		hideBlock
 			.withStyleName("block-close-button")
 			.addClickListener( e -> {
-				e.getButton().removeStyleName("button-responsive");
-				showBlock.addStyleName("button-responsive");
-				innerContainer.addStyleName("block-responsive");
+				e.getButton().removeStyleName(VAADIN_STYLE_BUTTON_RESPONSIVE);
+				showBlock.addStyleName(VAADIN_STYLE_BUTTON_RESPONSIVE);
+				innerContainer.addStyleName(VAADIN_STYLE_BLOCK_RESPONSIVE);
 			});
 		
 		innerContainer
-			.withStyleName( "panel-container", "block-responsive" )
+			.withStyleName( "panel-container", VAADIN_STYLE_BLOCK_RESPONSIVE )
 			.add( 
 				header 
 			);
@@ -97,8 +95,7 @@ public class ResponsiveBlock extends CustomComponent implements Translatable {
 
 	@Override
 	public void updateMessageStrings(Locale locale) {
-		// TODO Auto-generated method stub
-		
+		// Do nothing because of no internationalized messages strings.
 	}
 
 	public MCssLayout getInnerContainer() {
