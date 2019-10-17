@@ -434,14 +434,14 @@ public class EditorDetailsView extends CvView {
 				
 		currentSLVersion = VersionDTO.getLatestSourceVersion( vocabulary.getVersions());
 		
-		if ( currentSLVersion.getUri() != null && !currentSLVersion.getUri().isEmpty()) {
-			List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(currentSLVersion.getUri(), DDIElement.CVSCHEME);
-			
-			if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
-				cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
-				editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
-			}
-		}
+//		if ( currentSLVersion.getUri() != null && !currentSLVersion.getUri().isEmpty()) {
+//			List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(currentSLVersion.getUri(), DDIElement.CVSCHEME);
+//
+//			if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
+//				cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
+//				editorCvActionLayout.setCvScheme( cvItem.getCvScheme() );
+//			}
+//		}
 		
 		// find correct version by selected language
 		if( selectedLang != null && !vocabulary.getSourceLanguage().equals( selectedLang.getLanguage())) {

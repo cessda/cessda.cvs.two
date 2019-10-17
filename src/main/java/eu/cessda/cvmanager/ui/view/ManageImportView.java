@@ -126,11 +126,14 @@ public class ManageImportView extends CvManagerAdminView {
 
 		MCssLayout normalisePanel = normaliseDropVersionError();
 
-		MCssLayout normaliseConceptPanel = normaliseMissingConcepts();
+		MCssLayout normaliseSLConceptPanel = normaliseMissingSLConcepts();
+
+		MCssLayout normaliseConceptPanel = normaliseMissingTLConcepts();
 
 		layout.addComponents(pageTitle, importStardatDDI, new MLabel().withFullWidth(), deleteIndexButton,
 				reIndexButton, new MLabel().withFullWidth(), assignConceptSlButton, new MLabel().withFullWidth(),
-				normalisePanel, new MLabel().withFullWidth(), normaliseConceptPanel, new MLabel().withFullWidth(),
+				normalisePanel, new MLabel().withFullWidth(), normaliseSLConceptPanel,
+				normaliseConceptPanel, new MLabel().withFullWidth(),
 				dropContent);
 		rightContainer.add(layout).withExpand(layout, 1);
 	}
@@ -227,10 +230,71 @@ public class ManageImportView extends CvManagerAdminView {
 		}
 	}
 
-	private MCssLayout normaliseMissingConcepts() {
+	private MCssLayout normaliseMissingSLConcepts() {
 		// Specific function to normalize code when TL missing during drop version
 		MCssLayout normalisePanel = new MCssLayout().withFullWidth().withStyleName("panel-group");
-		MLabel normalizeTlLabel = new MLabel("<h2>Normalize Concept missing</h2>").withContentMode(ContentMode.HTML);
+		MLabel normalizeTlLabel = new MLabel("<h2>Normalize SL Concept missing</h2>").withContentMode(ContentMode.HTML);
+		MTextField cvTarget = new MTextField("Cv Notation:");
+		MButton normalizeButton = new MButton("Normalize");
+		normalizeButton.addClickListener(e -> {
+			if (cvTarget.isEmpty()) {
+				Notification.show("Target CV empty");
+				return;
+			}
+			// find the latest version from specific vocabulary
+			VocabularyDTO vocabulary = vocabularyService.getByNotation(cvTarget.getValue());
+			if (vocabulary == null) {
+				Notification.show("Target CV not found");
+				return;
+			}
+			// get latest version
+			List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup(false);
+
+			Optional<VersionDTO> optSlVersion = latestVersions.stream()
+					.filter(v -> v.getItemType().equals(ItemType.SL.toString())).findFirst();
+			VersionDTO slVersion = null;
+
+			if (!optSlVersion.isPresent()) {
+				Notification.show("SL version not found");
+				return;
+			}
+			slVersion = optSlVersion.get();
+			// get latest published code
+			List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary(vocabulary.getId());
+
+			Map<String, ConceptDTO> slConceptsMap = slVersion.getConceptAsMap();
+
+			// check if SL concept missing
+			for (CodeDTO eachCode : workflowCodes) {
+				if( slConceptsMap.get( eachCode.getNotation() ) == null ) {
+					String title = eachCode.getTitleByLanguage(slVersion.getLanguage());
+					String definition = eachCode.getDefinitionByLanguage(slVersion.getLanguage());
+					ConceptDTO newConcept = new ConceptDTO();
+					newConcept.setUri(WorkflowUtils.generateCodeUri(slVersion.getUri(), slVersion.getNotation(), eachCode.getNotation(),
+							slVersion.getLanguage()) + "/" + slVersion.getNumber());
+					newConcept.setNotation(eachCode.getNotation());
+					newConcept.setTitle(title);
+					newConcept.setDefinition(definition);
+					newConcept.setCodeId(eachCode.getId());
+					newConcept.setVersionId(slVersion.getId());
+					newConcept.setPosition(eachCode.getPosition());
+					newConcept.setParent( eachCode.getParent() );
+
+					log.debug("Storing Concept : {} SL: {}", slVersion.getNotation(), slVersion.getLanguage());
+
+					conceptService.save(newConcept);
+				}
+			}
+		});
+
+		normalisePanel.add(normalizeTlLabel, cvTarget, normalizeButton);
+		return normalisePanel;
+	}
+
+	private MCssLayout normaliseMissingTLConcepts() {
+		// Specific function to normalize code when TL missing during drop version
+		MCssLayout normalisePanel = new MCssLayout().withFullWidth().withStyleName("panel-group");
+		MLabel normalizeTlLabel = new MLabel("<h2>Normalize TL Concept missing</h2>").withContentMode(ContentMode.HTML);
 		MTextField cvTarget = new MTextField("Cv Notation:");
 		MButton normalizeButton = new MButton("Normalize");
 		normalizeButton.addClickListener(e -> {

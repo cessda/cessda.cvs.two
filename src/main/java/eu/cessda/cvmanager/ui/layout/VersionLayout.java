@@ -350,16 +350,6 @@ public class VersionLayout extends MCssLayout implements Translatable {
         }
     }
 
-    private void switchMode(MCssLayout infoLayout, MCssLayout editLayout, LayoutMode layoutMode) {
-        if (layoutMode.equals(LayoutMode.READ)) {
-            infoLayout.setVisible(true);
-            editLayout.setVisible(false);
-        } else {
-            infoLayout.setVisible(false);
-            editLayout.setVisible(true);
-        }
-    }
-
     @Override
     public void updateMessageStrings(Locale locale) {
 
