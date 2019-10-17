@@ -294,7 +294,7 @@ public class WorkflowManager {
 					// create Codes for published version, which is cloned from the code workflow
 					List<CodeDTO> newCodes = clonePublishedVersionCode(version, codes);
 					// Publishing new CV-Scheme since SL is published
-					createAndStoreCvScheme(vocabulary, version, agency, newCodes);
+//					createAndStoreCvScheme(vocabulary, version, agency, newCodes);
 					
 					// store vocabulary URN, if not exist
 					if(version.isInitialVersion()) {
@@ -324,46 +324,8 @@ public class WorkflowManager {
 						code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), version.getLanguage());
 						codeService.save(code);
 					}
-					
-					if( cvScheme == null ) {
-						// try to get cv scheme if it is null
-						List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(latestSlVersion.getUri(), DDIElement.CVSCHEME);
-						
-						if (ddiSchemes != null && !ddiSchemes.isEmpty())
-							cvScheme = new CVScheme(ddiSchemes.get(0));
-					}
-					
-					// update CvScheme in FlatDB
-					if( cvScheme != null ) {
-						log.info("update cvscheme");
-						cvScheme.setTitleByLanguage( version.getLanguage(), version.getTitle());
-						cvScheme.setDescriptionByLanguage( version.getLanguage(), version.getDefinition());
-						cvScheme.save();
-						DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv " + version.getNotation() + " TL" + version.getLanguage());
-						// if ddiStore is null, means there is duplicated CVScheme
-						if( ddiStore != null )
-							cvScheme = new CVScheme(ddiStore);
-						// save  CvConcept
-						List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
-						Map<String, CVConcept> cvConceptMaps = new HashMap<>();
-						for(DDIStore ddiConcept: ddiConcepts) {
-							CVConcept cvConcept = new CVConcept(ddiConcept);
-							cvConceptMaps.put( cvConcept.getNotation(), cvConcept);
-						}
-						for( ConceptDTO concept : version.getConcepts()) {
-							CVConcept cvConcept = cvConceptMaps.get( concept.getNotation() );
-							if( cvConcept == null )
-								continue;
-							cvConcept.setPrefLabelByLanguage( version.getLanguage(),  concept.getTitle());
-							cvConcept.setDescriptionByLanguage( version.getLanguage(), concept.getDefinition());
-							cvConcept.save();
-							try {
-								stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "publish code " + cvConcept.getNotation());
-							} catch (Exception e) {
-								// TODO: handle exception
-							}
-						}
-					}
+
+//					storeFlatDbTLConcept(version, cvScheme, latestSlVersion);
 				}
 				
 				// add URN to resolver
@@ -392,6 +354,48 @@ public class WorkflowManager {
 		
 		
 		return version;
+	}
+
+	private static void storeFlatDbTLConcept(VersionDTO version, CVScheme cvScheme, VersionDTO latestSlVersion) {
+		if( cvScheme == null ) {
+			// try to get cv scheme if it is null
+			List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(latestSlVersion.getUri(), DDIElement.CVSCHEME);
+
+			if (ddiSchemes != null && !ddiSchemes.isEmpty())
+				cvScheme = new CVScheme(ddiSchemes.get(0));
+		}
+
+		// update CvScheme in FlatDB
+		if( cvScheme != null ) {
+			log.info("update cvscheme");
+			cvScheme.setTitleByLanguage( version.getLanguage(), version.getTitle());
+			cvScheme.setDescriptionByLanguage( version.getLanguage(), version.getDefinition());
+			cvScheme.save();
+			DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv " + version.getNotation() + " TL" + version.getLanguage());
+			// if ddiStore is null, means there is duplicated CVScheme
+			if( ddiStore != null )
+				cvScheme = new CVScheme(ddiStore);
+			// save  CvConcept
+			List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
+			Map<String, CVConcept> cvConceptMaps = new HashMap<>();
+			for(DDIStore ddiConcept: ddiConcepts) {
+				CVConcept cvConcept = new CVConcept(ddiConcept);
+				cvConceptMaps.put( cvConcept.getNotation(), cvConcept);
+			}
+			for( ConceptDTO concept : version.getConcepts()) {
+				CVConcept cvConcept = cvConceptMaps.get( concept.getNotation() );
+				if( cvConcept == null )
+					continue;
+				cvConcept.setPrefLabelByLanguage( version.getLanguage(),  concept.getTitle());
+				cvConcept.setDescriptionByLanguage( version.getLanguage(), concept.getDefinition());
+				cvConcept.save();
+				try {
+					stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "publish code " + cvConcept.getNotation());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			}
+		}
 	}
 
 	private static List<CodeDTO> clonePublishedVersionCode(VersionDTO version, List<CodeDTO> codes) {
