@@ -9,9 +9,8 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+import eu.cessda.cvmanager.service.manager.ImportManager;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVEditor;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
@@ -22,11 +21,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import eu.cessda.cvmanager.domain.Code;
 import eu.cessda.cvmanager.domain.Cv;
 import eu.cessda.cvmanager.domain.CvCode;
-import eu.cessda.cvmanager.domain.Version;
-import eu.cessda.cvmanager.domain.Vocabulary;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
@@ -58,9 +54,11 @@ public class ImportServiceImpl implements ImportService{
 	// Elasticsearch repo for Editor
 	private final VocabularySearchRepository vocabularySearchRepository;
 	private final VersionService versionService;
+	private final ImportManager importManager;
 	public ImportServiceImpl(AgencyService agencyService, VocabularyService vocabularyService, CodeService codeService,
-			ConceptService conceptService, StardatDDIService stardatDDIService, VersionService versionService,
-			VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository) {
+							 ConceptService conceptService, StardatDDIService stardatDDIService, VersionService versionService,
+							 VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository,
+							 ImportManager importManager) {
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
@@ -69,6 +67,7 @@ public class ImportServiceImpl implements ImportService{
 		this.vocabularyMapper = vocabularyMapper;
 		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.versionService = versionService;
+		this.importManager = importManager;
 	}
 	
 
@@ -91,7 +90,7 @@ public class ImportServiceImpl implements ImportService{
 				throw new IllegalArgumentException("The Cv is already exist");
 			}
 			// create new vocabulary
-			VocabularyDTO newVocabulary = WorkflowManager.createVocabulary(agency, cv);
+			VocabularyDTO newVocabulary = importManager.createVocabulary(agency, cv);
 			Optional<VersionDTO> latestSlVersion = newVocabulary.getLatestSlVersion(false);
 			if(latestSlVersion.isPresent())
 				version = latestSlVersion.get();
@@ -105,7 +104,7 @@ public class ImportServiceImpl implements ImportService{
 			}
 			
 			// add version
-			vocabulary = WorkflowManager.addVocabularyTranslation(vocabulary, agency, cv);
+			vocabulary = importManager.addVocabularyTranslation(vocabulary, agency, cv);
 			
 			Optional<VersionDTO> latestVersionByLanguage = vocabulary.getLatestVersionByLanguage( cv.getLanguage());
 			if(latestVersionByLanguage.isPresent())

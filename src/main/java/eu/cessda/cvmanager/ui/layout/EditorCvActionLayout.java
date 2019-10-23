@@ -1,9 +1,7 @@
 package eu.cessda.cvmanager.ui.layout;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -13,12 +11,13 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import eu.cessda.cvmanager.service.manager.WorkflowManager;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.vaadin.dialogs.ConfirmDialog;
@@ -29,10 +28,8 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.JavaScript;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Button.ClickEvent;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -40,7 +37,6 @@ import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.model.CvItem;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
@@ -52,7 +48,6 @@ import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
 import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
@@ -63,11 +58,12 @@ import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogCreateVersionWindow;
 import eu.cessda.cvmanager.ui.view.window.DialogManageStatusWindow;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
-import java_cup.version;
 
 public class EditorCvActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
-	
+
+	private final transient WorkspaceManager workspaceManager;
+	private final transient WorkflowManager workflowManager;
 	private final StardatDDIService stardatDDIService;
 	private final AgencyService agencyService;
 	private final CodeService codeService;
@@ -109,11 +105,13 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private boolean isCurrentSL;
 	
 	
-	public EditorCvActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
-			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService, 
-			ConceptService conceptService, CodeService codeService, ConfigurationService configService,
-			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
+	public EditorCvActionLayout(String titleHeader, String showHeader, WorkspaceManager workspaceManager, WorkflowManager workflowManager, I18N i18n, StardatDDIService stardatDDIService,
+								AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService,
+								ConceptService conceptService, CodeService codeService, ConfigurationService configService,
+								UIEventBus eventBus, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
 		super(titleHeader, showHeader, i18n);
+		this.workspaceManager = workspaceManager;
+		this.workflowManager = workflowManager;
 		this.i18n = i18n;
 		this.stardatDDIService = stardatDDIService;
 		this.codeService = codeService;
@@ -202,31 +200,32 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	}
 
 	private void doCvAdd( ClickEvent event ) {
-		Window window = new DialogCVSchemeWindow(i18n, eventBus, agencyService, vocabularyService, 
-				VocabularyDTO.createDraft(), VersionDTO.createDraft(), agency, null);
+		Window window = new DialogCVSchemeWindow(workspaceManager, i18n, agencyService, VocabularyDTO.createDraft(),
+				VersionDTO.createDraft(), agency, null, eventBus
+		);
 		getUI().addWindow(window);
 	}
 	
 	private void doCvEdit( ClickEvent event ) {
 		Window window = null;
 		if( sourceLanguage.equals(selectedLanguage))
-			window = new DialogCVSchemeWindow(i18n, eventBus, agencyService, vocabularyService, 
-					vocabulary, currentVersion, agency, selectedLanguage);
+			window = new DialogCVSchemeWindow(workspaceManager, i18n, agencyService, vocabulary, currentVersion, agency, selectedLanguage, eventBus
+			);
 		else
-			window = new DialogAddLanguageWindow(agency, vocabulary, currentVersion, eventBus);
+			window = new DialogAddLanguageWindow(workspaceManager, agency, vocabulary, currentVersion, eventBus);
 		getUI().addWindow(window);
 	}
 	
 	private void doCvAddTranslation(ClickEvent event ) {
 		
-		Window window = new DialogAddLanguageWindow(agency, vocabulary, VersionDTO.createDraft(), eventBus);
+		Window window = new DialogAddLanguageWindow(workspaceManager, agency, vocabulary, VersionDTO.createDraft(), eventBus);
 		getUI().addWindow(window);
 	}
 	
 	public void changeStatus(ClickEvent event ) {
 		Window window = new DialogManageStatusWindow(conceptService, versionService, 
-				cvScheme, vocabulary, currentVersion, selectedLanguage, sourceLanguage, 
-				agency, eventBus, vocabularyChangeService, licenceService);
+				vocabulary, currentVersion, selectedLanguage, sourceLanguage,
+				agency, eventBus, vocabularyChangeService, licenceService, workflowManager);
 		getUI().addWindow(window);
 	}
 	

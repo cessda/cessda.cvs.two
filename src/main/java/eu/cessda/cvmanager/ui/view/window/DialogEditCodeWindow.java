@@ -24,7 +24,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 import eu.cessda.cvmanager.config.Constants;
@@ -44,10 +43,11 @@ public class DialogEditCodeWindow extends MWindow {
 
 	private static final Logger log = LoggerFactory.getLogger(DialogEditCodeWindow.class);
 	private static final long serialVersionUID = 8118228014482059473L;
-	
-	private final EventBus.UIEventBus eventBus;
-	private final I18N i18n;
-	private final CodeService codeService;
+
+	private final transient WorkspaceManager workspaceManager;
+	private final transient EventBus.UIEventBus eventBus;
+	private final transient I18N i18n;
+	private final transient CodeService codeService;
 
 	private Binder<CodeDTO> binder = new Binder<CodeDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -96,9 +96,11 @@ public class DialogEditCodeWindow extends MWindow {
 	private String tempNotation;
 	private String tempCompleteNotation;
 	
-	public DialogEditCodeWindow(I18N i18n, EventBus.UIEventBus eventBus, Language sLanguage, VocabularyDTO vocabularyDTO, 
-			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, CodeService codeService) {
+	public DialogEditCodeWindow(WorkspaceManager workspaceManager, I18N i18n, EventBus.UIEventBus eventBus,
+								Language sLanguage, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, CodeDTO codeDTO,
+								ConceptDTO conceptDTO, CodeService codeService) {
 		super( "Edit Code");
+		this.workspaceManager = workspaceManager;
 		this.i18n = i18n;
 		this.language = sLanguage;
 		
@@ -363,7 +365,7 @@ public class DialogEditCodeWindow extends MWindow {
 		
 		// store the changes
 		String completeNotation = (code.getParent() != null ? code.getParent() + "." : "") + notation.getValue();
-		WorkspaceManager.saveCode(vocabulary, version, code,  null, concept, null,
+		workspaceManager.saveCodeAndConcept(vocabulary, version, code,  null, concept, null,
 			completeNotation, preferedLabel.getValue(), ParserUtils.toXHTML( description.getValue()));
 		
 		if( !tempNotation.equals( notation.getValue()) ) {
@@ -381,7 +383,7 @@ public class DialogEditCodeWindow extends MWindow {
 					ConceptDTO.getConceptFromCode( version.getConcepts(), toUpdateCode.getId()).ifPresent(
 						toUpdateConcept -> {
 							String updatedNotation = toUpdateCode.getNotation().replaceFirst(toUpdateCode.getParent(), completeNotation);
-							WorkspaceManager.saveCode(vocabulary, version, toUpdateCode,  null, toUpdateConcept, null, 
+							workspaceManager.saveCodeAndConcept(vocabulary, version, toUpdateCode,  null, toUpdateConcept, null,
 									updatedNotation, toUpdateConcept.getTitle(), toUpdateConcept.getDefinition());
 						}
 					);
@@ -392,7 +394,7 @@ public class DialogEditCodeWindow extends MWindow {
 		
 		// save changes log
 		if( changeBox.isVisible() && changeCb.getValue() != null)
-			WorkspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
+			workspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
 
 		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		this.close();

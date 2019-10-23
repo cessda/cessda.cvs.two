@@ -4,36 +4,21 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVEditor;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
-import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.vaadin.data.TreeData;
-
-import eu.cessda.cvmanager.domain.Cv;
-import eu.cessda.cvmanager.domain.CvCode;
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.ResolverService;
-import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
@@ -41,138 +26,28 @@ import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.ResolverDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.CvMapper;
-import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 import eu.cessda.cvmanager.utils.WorkflowUtils;
-import eu.cessda.cvmanager.service.mapper.CvCodeMapper;
 
 @Service
 public class WorkflowManager {
-	private static ConfigurationService configurationService;
-	private static VocabularyService vocabularyService;
-	private static VersionService versionService;
-	private static CodeService codeService;
-	private static ConceptService conceptService;
-	private static CvMapper cvMapper;
-	private static CvCodeMapper cvCodeMapper;
-	private static StardatDDIService stardatDDIService;
-	private static ResolverService resolverService;
-	
 	private static final Logger log = LoggerFactory.getLogger(WorkflowManager.class);
+	private final ConfigurationService configurationService;
+	private final VocabularyService vocabularyService;
+	private final VersionService versionService;
+	private final CodeService codeService;
+	private final ConceptService conceptService;
+	private final ResolverService resolverService;
 	
+
 	public WorkflowManager(VocabularyService vocabularySvc, VersionService versionSvc,
-			CodeService codeSvc, ConceptService conceptSvc, CvMapper cvMpr,
-			CvCodeMapper cvCodeMpr, StardatDDIService stardatDDIService,
-			ResolverService resolverService, ConfigurationService configurationService) {
-		WorkflowManager.vocabularyService = vocabularySvc;
-		WorkflowManager.versionService = versionSvc;
-		WorkflowManager.codeService = codeSvc;
-		WorkflowManager.conceptService = conceptSvc;
-		WorkflowManager.cvMapper = cvMpr;
-		WorkflowManager.cvCodeMapper = cvCodeMpr;
-		WorkflowManager.stardatDDIService = stardatDDIService;
-		WorkflowManager.resolverService = resolverService;
-		WorkflowManager.configurationService =configurationService;
-	}
-	
-	public static VocabularyDTO createVocabulary(AgencyDTO agency, Cv cv) {
-		VocabularyDTO vocabulary = VocabularyDTO.createDraft();
-		VersionDTO version = cvMapper.toDto(cv);
-		version.setStatus( Status.DRAFT.toString() );
-		Language language = Language.valueOfEnum( cv.getLanguage() );
-		
-		WorkspaceManager.saveSourceCV(agency, language, vocabulary, version, 
-				cv.getCode(), cv.getTerm(), cv.getDefinition(), null);
-		
-		// map concept as well
-		if( cv.getCvCodes() != null && cv.getCvCodes().length > 0) {
-			Set<String> conceptNotation = new HashSet<>();
-			for(CvCode cvCode : cv.getCvCodes()) {
-				// validate concept, make sure the concept is unique
-				if( conceptNotation.contains( cvCode.getCode()))
-					continue;
-				conceptNotation.add( cvCode.getCode());
-				
-				ConceptDTO concept = cvCodeMapper.toDto(cvCode);
-				CodeDTO code = new CodeDTO();
-				if( concept.getParent() != null )
-					code.setParent( concept.getParent());
-				
-				// save code
-				WorkspaceManager.saveCode(vocabulary, version, new CodeDTO(), null, 
-					concept, null, concept.getNotation(), concept.getTitle(), concept.getDefinition());
-			}
-		}
-		
-		
-		// publish, by assign version with final_review status
-		version.setStatus( Status.FINAL_REVIEW.toString());
-		forwardStatus(vocabulary, version, agency, null, null, "1.0", "", "");
-//		
-		return vocabulary;
-	}
-	
-
-	public static VocabularyDTO addVocabularyTranslation(VocabularyDTO vocabulary, AgencyDTO agency, Cv cv) {
-		
-		// check for existing version
-		VersionDTO version = null;
-		Language language = Language.valueOfEnum( cv.getLanguage() );
-		Optional<VersionDTO> versionByLanguage = vocabulary.getLatestVersionByLanguage( cv.getLanguage());
-		if(versionByLanguage.isPresent())
-			version = versionByLanguage.get();
-		
-		if( version == null ) {
-			version = cvMapper.toDto(cv);
-			version.setStatus( Status.DRAFT.toString() );
-		}
-		
-		// get the SL version
-		VersionDTO slVersion = null;
-		Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion(false);
-		if(latestSlVersion.isPresent())
-			slVersion = latestSlVersion.get();
-		else
-			throw new IllegalArgumentException("Unable to find SL version, please make sure that SL is exist");
-		
-		WorkspaceManager.saveTargetCV(agency, language, vocabulary, version, 
-				cv.getTerm(), cv.getDefinition(), null, null);
-		
-		
-		// map concept as well
-		if( cv.getCvCodes() != null && cv.getCvCodes().length > 0) {
-			// get code on the map
-			List<CodeDTO> codes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), slVersion.getId());
-			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
-			
-			// get conceptMap from latest SL
-			Optional<VersionDTO> latestSlVersionOpt = vocabulary.getLatestSlVersion( true );
-			Map<String, ConceptDTO> slConceptMap = new HashMap<>();
-			if(latestSlVersionOpt.isPresent())
-				slConceptMap = latestSlVersionOpt.get().getConceptAsMap();
-			
-			// set code and create new concept
-			for(CvCode cvCode : cv.getCvCodes()) {
-				// validate concept, make sure the concept is available in code
-				CodeDTO code = codeMap.get( cvCode.getCode());
-				if( code == null )
-					continue;
-				ConceptDTO concept = cvCodeMapper.toDto(cvCode);
-				// create connection with SL concept
-				ConceptDTO slConcept = slConceptMap.get( code.getNotation() );
-				// get parent code if exist
-				CodeDTO parentCode = codeMap.get( code.getParent());
-				// save code
-				WorkspaceManager.saveCode(vocabulary, version, code, parentCode, 
-					concept, slConcept, concept.getNotation(), concept.getTitle(), concept.getDefinition());
-			}
-		}
-		
-		// publish, by assign version with final_review status
-		version.setStatus( Status.FINAL_REVIEW.toString());
-		forwardStatus(vocabulary, version, agency, null, null, "1.0.1", "", "");
-
-		return vocabulary;
+			CodeService codeSvc, ConceptService conceptSvc, ResolverService resolverService,
+		   ConfigurationService configurationService) {
+		this.vocabularyService = vocabularySvc;
+		this.versionService = versionSvc;
+		this.codeService = codeSvc;
+		this.conceptService = conceptSvc;
+		this.resolverService = resolverService;
+		this.configurationService =configurationService;
 	}
 	
 	/**
@@ -180,7 +55,7 @@ public class WorkflowManager {
 	 * @param currentStatus
 	 * @return
 	 */
-	public static Status getForwardStatus( Status currentStatus) {
+	public Status getForwardStatus( Status currentStatus) {
 		switch( currentStatus ) {
 			case DRAFT:
 				return Status.INITIAL_REVIEW;
@@ -194,10 +69,10 @@ public class WorkflowManager {
 	}
 	
 	
-	public static VersionDTO forwardStatus( VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, CVScheme cvScheme,
+	public VersionDTO forwardStatus( VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency,
 			List<VersionDTO> latestTlVersions, String versionNumber, String versionNotes, String versionChanges) {
 		// forward current version
-		version.setStatus( WorkflowManager.getForwardStatus( version.getEnumStatus() ).toString() );
+		version.setStatus( getForwardStatus( version.getEnumStatus() ).toString() );
 		Status currentCvStatus = version.getEnumStatus();
 		
 		// determine if version is source language
@@ -222,7 +97,6 @@ public class WorkflowManager {
 				// index for editor
 				vocabularyService.index(vocabulary);
 				break;
-			// index for editor
 			case PUBLISHED:
 				String uri =  version.getUri() + "/" + versionNumber;
 				
@@ -325,7 +199,8 @@ public class WorkflowManager {
 						codeService.save(code);
 					}
 
-//					storeFlatDbTLConcept(version, cvScheme, latestSlVersion);
+					// TODO: also to assign new code-id for concept
+
 				}
 				
 				// add URN to resolver
@@ -356,49 +231,7 @@ public class WorkflowManager {
 		return version;
 	}
 
-	private static void storeFlatDbTLConcept(VersionDTO version, CVScheme cvScheme, VersionDTO latestSlVersion) {
-		if( cvScheme == null ) {
-			// try to get cv scheme if it is null
-			List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(latestSlVersion.getUri(), DDIElement.CVSCHEME);
-
-			if (ddiSchemes != null && !ddiSchemes.isEmpty())
-				cvScheme = new CVScheme(ddiSchemes.get(0));
-		}
-
-		// update CvScheme in FlatDB
-		if( cvScheme != null ) {
-			log.info("update cvscheme");
-			cvScheme.setTitleByLanguage( version.getLanguage(), version.getTitle());
-			cvScheme.setDescriptionByLanguage( version.getLanguage(), version.getDefinition());
-			cvScheme.save();
-			DDIStore ddiStore = stardatDDIService.saveElement(cvScheme.ddiStore, SecurityUtils.getCurrentUserLogin().get(), "Publish Cv " + version.getNotation() + " TL" + version.getLanguage());
-			// if ddiStore is null, means there is duplicated CVScheme
-			if( ddiStore != null )
-				cvScheme = new CVScheme(ddiStore);
-			// save  CvConcept
-			List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(cvScheme.getContainerId(), DDIElement.CVCONCEPT);
-			Map<String, CVConcept> cvConceptMaps = new HashMap<>();
-			for(DDIStore ddiConcept: ddiConcepts) {
-				CVConcept cvConcept = new CVConcept(ddiConcept);
-				cvConceptMaps.put( cvConcept.getNotation(), cvConcept);
-			}
-			for( ConceptDTO concept : version.getConcepts()) {
-				CVConcept cvConcept = cvConceptMaps.get( concept.getNotation() );
-				if( cvConcept == null )
-					continue;
-				cvConcept.setPrefLabelByLanguage( version.getLanguage(),  concept.getTitle());
-				cvConcept.setDescriptionByLanguage( version.getLanguage(), concept.getDefinition());
-				cvConcept.save();
-				try {
-					stardatDDIService.saveElement(cvConcept.ddiStore, SecurityUtils.getCurrentUserLogin().get() , "publish code " + cvConcept.getNotation());
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
-			}
-		}
-	}
-
-	private static List<CodeDTO> clonePublishedVersionCode(VersionDTO version, List<CodeDTO> codes) {
+	private List<CodeDTO> clonePublishedVersionCode(VersionDTO version, List<CodeDTO> codes) {
 		// clone each code
 		List<CodeDTO> newCodes = new ArrayList<>();
 		for( CodeDTO eachCode : codes ) {
@@ -421,46 +254,8 @@ public class WorkflowManager {
 		return newCodes;
 	}
 
-	private static void createAndStoreCvScheme(VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency,
-			List<CodeDTO> newCodes) {
-		// create cv scheme
-		CVScheme newCvScheme = new CVScheme();
-		newCvScheme.loadSkeleton(newCvScheme.getDefaultDialect());
-		newCvScheme.setId( version.getUri());
-		newCvScheme.setContainerId(newCvScheme.getId());
-		newCvScheme.setStatus( Status.PUBLISHED.toString() );
-		
-		
-		// Store also Owner Agency, Vocabulary and codes
-		// store vocabulary content
-		VocabularyDTO.setCvSchemeByVocabulary(newCvScheme, vocabulary);
-		
-		// store owner agency
-		List<CVEditor> editorSet = new ArrayList<>();
-		CVEditor cvEditor = new CVEditor();
-		cvEditor.setName( agency.getName());
-		cvEditor.setLogoPath( agency.getLogopath());
-		
-		editorSet.add( cvEditor );
-		newCvScheme.setOwnerAgency((ArrayList<CVEditor>) editorSet);
-		newCvScheme.setCode( vocabulary.getNotation());
-		newCvScheme.save();
-		newCvScheme.ddiStore = stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getLoggedUser().getUsername() , "Publish Cv");
 
-		// store complete codeDTOs to CVConcept
-		TreeData<CodeDTO> codeTree = new TreeData<>();
-		CvCodeTreeUtils.buildCvConceptTree(newCodes, codeTree);
-		
-		// generate tree concept
-		TreeData<CVConcept> cvConceptTree = new TreeData<>();
-		cvConceptTree = CvCodeTreeUtils.generateCVConceptTreeFromCodeTree(codeTree, newCvScheme);
-		
-		// save all cvConcepts and update cvScheme
-		if( !cvConceptTree.getRootItems().isEmpty())
-			storeCvConceptTree( cvConceptTree , newCvScheme);
-	}
-
-	private static void doTlCvCloning(VocabularyDTO vocabulary, VersionDTO currentVersion, AgencyDTO agency,
+	private void doTlCvCloning(VocabularyDTO vocabulary, VersionDTO currentVersion, AgencyDTO agency,
 			List<VersionDTO> latestTlVersions, List<CodeDTO> codes) {
 		// clone any latest TL if exist
 		for( VersionDTO targetTLversion : latestTlVersions ) {
@@ -488,41 +283,4 @@ public class WorkflowManager {
 			vocabulary.addVersion(newVersion);
 		}
 	}
-	
-	private static void storeCvConceptTree(TreeData<CVConcept> cvConceptTree, CVScheme newCvScheme) {
-		List<CVConcept> rootItems = cvConceptTree.getRootItems();
-		for(CVConcept topCvConcept : rootItems) {
-			try {
-				log.info("Store CV-concept:" + topCvConcept.getNotation());
-				DDIStore ddiStoreTopCvConcept = stardatDDIService.saveElement(topCvConcept.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Add Code " + topCvConcept.getNotation());
-				newCvScheme.addOrderedMemberList(ddiStoreTopCvConcept.getElementId());
-				
-				for( CVConcept childCvConcept : cvConceptTree.getChildren(topCvConcept)) {
-					storeCvConceptTreeChild( cvConceptTree, childCvConcept, topCvConcept);
-				}
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-			}
-			
-		}
-		// store top concept
-		newCvScheme.save();
-		stardatDDIService.saveElement(newCvScheme.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Update Top Concept");
-	}
-
-	private static void storeCvConceptTreeChild(TreeData<CVConcept> cvConceptTree, CVConcept cCvConcept, CVConcept topCvConcept) {
-		log.info("Store CV-concept c:" + cCvConcept.getNotation());
-		// store cvConcept
-		DDIStore ddiStoreCvConcept = stardatDDIService.saveElement(cCvConcept.ddiStore, SecurityUtils.getLoggedUser().getUsername(), "Add Code " + cCvConcept.getNotation());
-		// store narrower
-		topCvConcept.addOrderedNarrowerList( ddiStoreCvConcept.getElementId());
-		topCvConcept.save();
-		stardatDDIService.saveElement(topCvConcept.ddiStore, "User", "Add Code narrower");
-		for( CVConcept cvConceptChild : cvConceptTree.getChildren(cCvConcept)) {
-			storeCvConceptTreeChild( cvConceptTree, cvConceptChild, cCvConcept);
-		}
-	}
-	
-	
-	
 }

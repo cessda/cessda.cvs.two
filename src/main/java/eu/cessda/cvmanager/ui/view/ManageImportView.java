@@ -126,6 +126,8 @@ public class ManageImportView extends CvManagerAdminView {
 
 		MCssLayout normalisePanel = normaliseDropVersionError();
 
+		MCssLayout normaliseTlPublishedConceptPanel = normaliseMissingPublishedTLConcepts();
+
 		MCssLayout normaliseSLConceptPanel = normaliseMissingSLConcepts();
 
 		MCssLayout normaliseConceptPanel = normaliseMissingTLConcepts();
@@ -133,7 +135,7 @@ public class ManageImportView extends CvManagerAdminView {
 		layout.addComponents(pageTitle, importStardatDDI, new MLabel().withFullWidth(), deleteIndexButton,
 				reIndexButton, new MLabel().withFullWidth(), assignConceptSlButton, new MLabel().withFullWidth(),
 				normalisePanel, new MLabel().withFullWidth(), normaliseSLConceptPanel,
-				normaliseConceptPanel, new MLabel().withFullWidth(),
+				normaliseConceptPanel, normaliseTlPublishedConceptPanel, new MLabel().withFullWidth(),
 				dropContent);
 		rightContainer.add(layout).withExpand(layout, 1);
 	}
@@ -373,6 +375,106 @@ public class ManageImportView extends CvManagerAdminView {
 					log.debug("Storing Concept : {} TL: {}", notation, version.getLanguage());
 
 					conceptService.save(newConcept);
+				}
+
+			}
+
+		});
+
+		normalisePanel.add(normalizeTlLabel, cvTarget, normalizeButton);
+		return normalisePanel;
+	}
+
+	private MCssLayout normaliseMissingPublishedTLConcepts() {
+		// Specific function to normalize code when TL missing during drop version
+		MCssLayout normalisePanel = new MCssLayout().withFullWidth().withStyleName("panel-group");
+		MLabel normalizeTlLabel = new MLabel("<h2>Normalize Missing Publishing TL Concept </h2>").withContentMode(ContentMode.HTML);
+		MTextField cvTarget = new MTextField("Cv Notation:");
+		MButton normalizeButton = new MButton("Normalize");
+		normalizeButton.addClickListener(e -> {
+			if (cvTarget.isEmpty()) {
+				Notification.show("Target CV empty");
+				return;
+			}
+			// find the latest version from specific vocabulary
+			VocabularyDTO vocabulary = vocabularyService.getByNotation(cvTarget.getValue());
+			if (vocabulary == null) {
+				Notification.show("Target CV not found");
+				return;
+			}
+			// get latest version
+			List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup(true);
+
+			Optional<VersionDTO> optSlVersion = latestVersions.stream()
+					.filter(v -> v.getItemType().equals(ItemType.SL.toString())).findFirst();
+			VersionDTO slVersion = null;
+
+			if (!optSlVersion.isPresent()) {
+				Notification.show("SL version not found");
+				return;
+			}
+			slVersion = optSlVersion.get();
+			// get latest published code
+			List<CodeDTO> slCodes = codeService.findByVocabularyAndVersion( vocabulary.getId(), slVersion.getId());
+
+			Map<String, ConceptDTO> slConceptsMap = slVersion.getConceptAsMap();
+
+			// remove all concepts
+//			for (VersionDTO version : latestVersions) {
+//				if (version.getItemType().equals(ItemType.SL.toString()))
+//					continue;
+//
+//				log.debug("Delete concept: {} TL: {}", cvTarget.getValue(), version.getLanguage());
+//
+//				// remova all concepts TL
+//				for (ConceptDTO removeConcept : version.getConcepts())
+//					conceptService.delete(removeConcept.getId());
+//
+//				version.setConcepts(Collections.emptySet());
+//			}
+
+			// run through TL version and check if concepts exist
+			for (VersionDTO version : latestVersions) {
+				if (version.getItemType().equals(ItemType.SL.toString()))
+					continue;
+
+				log.debug("Checking: {} TL: {}", cvTarget.getValue(), version.getLanguage());
+				Map<String, ConceptDTO> conceptTlMap = version.getConceptAsMap();
+
+				for (CodeDTO eachCode : slCodes) {
+					ConceptDTO conceptDTO = conceptTlMap.get( eachCode.getNotation() );
+					if( conceptDTO == null ) {
+						String notation = eachCode.getNotation();
+						String title = eachCode.getTitleByLanguage(version.getLanguage());
+						if (title == null || title.trim().isEmpty())
+							continue;
+
+						// check for SL concept
+						ConceptDTO slConcept = slConceptsMap.get(notation);
+						if (slConcept == null)
+							continue;
+
+						String definition = eachCode.getDefinitionByLanguage(version.getLanguage());
+
+						conceptDTO = new ConceptDTO();
+						conceptDTO.setUri(WorkflowUtils.generateCodeUri(version.getUri(), version.getNotation(), notation,
+								version.getLanguage()) + "/" + version.getNumber());
+						conceptDTO.setNotation(notation);
+						conceptDTO.setTitle(title);
+						conceptDTO.setDefinition(definition);
+						conceptDTO.setCodeId(eachCode.getId());
+						conceptDTO.setSlConcept(slConcept.getId());
+						conceptDTO.setVersionId(version.getId());
+						conceptDTO.setPosition(slConcept.getPosition());
+						conceptDTO.setParent( slConcept.getParent() );
+
+						log.debug("Storing Concept : {} TL: {}", notation, version.getLanguage());
+
+						conceptService.save(conceptDTO);
+					} else{
+						conceptDTO.setCodeId(eachCode.getId());
+						conceptService.save(conceptDTO);
+					}
 				}
 
 			}

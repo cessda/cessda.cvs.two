@@ -29,7 +29,6 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -40,13 +39,11 @@ import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
 public class DialogAddLanguageWindow extends MWindow {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8944364070898136792L;
 	private static final Logger log = LoggerFactory.getLogger(DialogAddLanguageWindow.class);
-	
-	private final UIEventBus eventBus;
+
+	private final transient WorkspaceManager workspaceManager;
+	private final transient UIEventBus eventBus;
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
 	private VersionDTO version;
@@ -88,9 +85,10 @@ public class DialogAddLanguageWindow extends MWindow {
 	
 	//private EditorView theView;
 
-	public DialogAddLanguageWindow(
-			AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, UIEventBus eventBus) {
+	public DialogAddLanguageWindow( WorkspaceManager workspaceManager, AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO,
+									VersionDTO versionDTO, UIEventBus eventBus) {
 		super(versionDTO.isPersisted()?"Edit CV Translation (" + versionDTO.getLanguage() + ")":"Add CV Translation");
+		this.workspaceManager = workspaceManager;
 		this.agency = agencyDTO;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
@@ -375,12 +373,12 @@ public class DialogAddLanguageWindow extends MWindow {
 		
 		
 		// save TL Vocabulary
-		WorkspaceManager.saveTargetCV(agency, language, vocabulary, version, 
-				tfTitle.getValue(), description.getValue(), translatorAgency.getValue(), translatorAgencyLink.getValue());
+		version.setTitleAndDefinition( tfTitle.getValue(), description.getValue() );
+		workspaceManager.saveTargetCV(agency, language, vocabulary, version, translatorAgency.getValue(), translatorAgencyLink.getValue());
 
 		// save log if not initial version
 		if( !version.isInitialVersion())
-			WorkspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
+			workspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
 		
 		close();
 		UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.toString());

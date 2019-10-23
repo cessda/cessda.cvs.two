@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
@@ -23,13 +22,11 @@ import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.server.Page;
 import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
-import eu.cessda.cvmanager.domain.Licence;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.event.CvManagerEvent;
@@ -60,10 +57,10 @@ public class DialogManageStatusWindow extends MWindow {
 	private final VocabularyChangeService vocabularyChangeService;
 	private final ConceptService conceptService;
 	private final LicenceService licenceService;
+	private final WorkflowManager workflowManager;
 	
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
-	private CVScheme cvScheme;
 	private Language selectedLanguage;
 	private Language sourceLanguage;
 	private VersionDTO currentVersion;
@@ -129,16 +126,15 @@ public class DialogManageStatusWindow extends MWindow {
 	
 	public DialogManageStatusWindow(
 			ConceptService conceptService, VersionService versionService,
-			CVScheme cvScheme, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, 
-			Language selectedLanguage, Language sourceLanguage, AgencyDTO agencyDTO, 
+			VocabularyDTO vocabularyDTO, VersionDTO versionDTO,
+			Language selectedLanguage, Language sourceLanguage, AgencyDTO agencyDTO,
 			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService,
-			LicenceService licenceService) {
+			LicenceService licenceService, WorkflowManager workflowManager) {
 		super("Manage Status " + ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase());
 		this.conceptService = conceptService;
 		this.versionService = versionService;
 		this.licenceService = licenceService;
-		this.cvScheme = cvScheme;
-		
+
 		this.agency = agencyDTO;
 		this.vocabulary = vocabularyDTO;
 		this.currentVersion = versionDTO;
@@ -147,7 +143,8 @@ public class DialogManageStatusWindow extends MWindow {
 		
 		this.eventBus = eventBus;
 		this.vocabularyChangeService = vocabularyChangeService;
-		
+		this.workflowManager = workflowManager;
+
 		init();
 	}
 
@@ -645,7 +642,7 @@ public class DialogManageStatusWindow extends MWindow {
 	
 	private void forwardCvWorkflowConfirmation() {
 		Status currentCvStatus = currentVersion.getEnumStatus();
-		Status nextCvStatus =  WorkflowManager.getForwardStatus(currentCvStatus);
+		Status nextCvStatus =  workflowManager.getForwardStatus(currentCvStatus);
 		
 		ConfirmDialog.show( 
 			this.getUI(), 
@@ -667,7 +664,7 @@ public class DialogManageStatusWindow extends MWindow {
 	}
 
 	private void doForwardCvWorkflow() {											
-		currentVersion = WorkflowManager.forwardStatus(vocabulary, currentVersion, agency, cvScheme,
+		currentVersion = workflowManager.forwardStatus(vocabulary, currentVersion, agency,
 			 latestTlVersions, getVersionNumber(), versionNotes.getValue(), versionChanges.getValue());
 	
 		if( currentVersion.getStatus().equals( Status.PUBLISHED.toString())) 

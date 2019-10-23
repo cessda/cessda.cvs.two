@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.ui.layout;
 
 import java.util.Locale;
 
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
@@ -42,7 +43,8 @@ import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 
 public class EditorCodeActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
-	
+
+	private final transient WorkspaceManager workspaceManager;
 	private final StardatDDIService stardatDDIService;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
@@ -77,12 +79,14 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	private Language selectedLanguage;
 	private Language sourceLanguage;
 	
-	public EditorCodeActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
+	public EditorCodeActionLayout(String titleHeader, String showHeader, WorkspaceManager workspaceManager,
+								  I18N i18n, StardatDDIService stardatDDIService,
 			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService,
 			CodeService codeService, ConceptService conceptService, UIEventBus eventBus, VocabularyChangeService vocabularyChangeService,
 			CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
 		super(titleHeader, showHeader, i18n);
 		this.i18n = i18n;
+		this.workspaceManager = workspaceManager;
 		this.stardatDDIService = stardatDDIService;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -147,16 +151,15 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 
 	private void doAddCode(ClickEvent event ) {
 		Window window = new DialogAddCodeWindow(
-				i18n, eventBus, vocabulary, currentVersion, 
+                workspaceManager, i18n, eventBus, vocabulary, currentVersion,
 				new CodeDTO(), null, new ConceptDTO());
 		getUI().addWindow(window);
 	}
 	
 	private void doImportCode(ClickEvent event ) {
 		Window window = new DialogImportCsvCodeWindow(
-				eventBus, vocabularyService, versionService, codeService, 
-				conceptService, vocabulary, currentVersion, i18n, locale, 
-				vocabularyChangeService, csvRowToConceptDTOMapper);
+				workspaceManager, codeService, eventBus,
+				vocabulary, currentVersion, i18n, csvRowToConceptDTOMapper);
 		getUI().addWindow(window);
 	}
 	
@@ -165,7 +168,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 			return;
 		
 		Window window = new DialogEditCodeWindow(
-				i18n, eventBus, selectedLanguage, vocabulary, currentVersion, 
+				workspaceManager, i18n, eventBus, selectedLanguage, vocabulary, currentVersion,
 				currentCode, currentConcept, codeService);
 		
 		getUI().addWindow(window);
@@ -173,15 +176,14 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	
 	private void doCodeAddTranslation(ClickEvent event ) {
 		Window windowTranslate = new DialogTranslateCodeWindow(
-				eventBus, stardatDDIService, vocabularyService, versionService, codeService, conceptService, cvScheme, 
-				cvConcept, selectedLanguage, sourceLanguage, vocabulary, currentVersion, currentCode, 
-				new ConceptDTO(), currentConcept, vocabularyChangeService, i18n, locale);
+				workspaceManager, eventBus, selectedLanguage, sourceLanguage, vocabulary, currentVersion, currentCode,
+				new ConceptDTO(), currentConcept, i18n);
 		getUI().addWindow( windowTranslate );
 	}
 	
 	private void doCodeAddChild(ClickEvent event ) {
 		Window window = new DialogAddCodeWindow(
-				i18n, eventBus, vocabulary, currentVersion, 
+                workspaceManager, i18n, eventBus, vocabulary, currentVersion,
 				new CodeDTO(), currentCode, new ConceptDTO());
 		getUI().addWindow( window );
 	}

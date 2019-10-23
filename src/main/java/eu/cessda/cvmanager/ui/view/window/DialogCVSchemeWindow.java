@@ -29,7 +29,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
@@ -48,12 +47,12 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 
 	private static final long serialVersionUID = -8116725336044618619L;
 	private static final Logger log = LoggerFactory.getLogger(DialogCVSchemeWindow.class);
-	
-//	private final EventBus.UIEventBus eventBus;
-	private final I18N i18n;
-	private final UIEventBus eventBus;
-	private final AgencyService agencyService;
-	private final VocabularyService vocabularyService;
+
+	private final transient WorkspaceManager workspaceManager;
+	private final transient I18N i18n;
+	private final transient UIEventBus eventBus;
+	private final transient AgencyService agencyService;
+	private final transient VocabularyService vocabularyService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
 	private MLabel lAgency = new MLabel( "Agency" );
@@ -89,12 +88,13 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	
 	private boolean isUpdated = false;
 
-	public DialogCVSchemeWindow(I18N i18n, UIEventBus eventBus, AgencyService agencyService, 
-			VocabularyService vocabularyService, VocabularyDTO vocabulary, VersionDTO version, 
-			AgencyDTO agency, Language selectedLanguage) {
+	public DialogCVSchemeWindow(WorkspaceManager workspaceManager, I18N i18n, AgencyService agencyService,
+								VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, Language selectedLanguage,
+								UIEventBus eventBus) {
 		super( version.isPersisted() ?"Edit Vocabulary": "Add Vocabulary");
+		this.workspaceManager = workspaceManager;
 		this.agencyService = agencyService;
-		this.vocabularyService = vocabularyService;
+		this.vocabularyService = workspaceManager.getVocabularyService();
 		this.vocabulary = vocabulary;
 		this.version = version;
 		this.agency = agency;
@@ -345,12 +345,14 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 			return;
 		
 		// Store new CV
-		WorkspaceManager.saveSourceCV(agency, language, vocabulary, version, 
-				tfCode.getValue(), tfTitle.getValue(), ParserUtils.toXHTML( description.getValue()), ParserUtils.toXHTML( notes.getValue()));
+		version.setNotation( tfCode.getValue() );
+		version.setTitleAndDefinition( tfTitle.getValue().trim(), ParserUtils.toXHTML( description.getValue()) );
+
+		workspaceManager.saveSourceCV(agency, language, vocabulary, version, ParserUtils.toXHTML( notes.getValue()));
 		
 		if( isUpdated && !version.isInitialVersion()) {
 			// store log 
-			WorkspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
+			workspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
 		} 
 		
 		// use eventbus to update detail view

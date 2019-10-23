@@ -8,16 +8,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import eu.cessda.cvmanager.service.manager.WorkflowManager;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.LoginSucceedEvent;
 import org.gesis.wts.security.SecurityService;
@@ -27,7 +26,6 @@ import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.ui.view.LoginView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.vaadin.dialogs.ConfirmDialog;
 import org.vaadin.spring.events.EventBus;
@@ -41,7 +39,6 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.shared.ui.dnd.DropEffect;
 import com.vaadin.shared.ui.dnd.EffectAllowed;
@@ -100,7 +97,9 @@ public class EditorDetailsView extends CvView {
 	private static final long serialVersionUID = -1095312295254197091L;
 	public static final String VIEW_NAME = "details";
 	private Locale locale = UI.getCurrent().getLocale();
-	
+
+	private final transient WorkspaceManager workspaceManager;
+	private final transient WorkflowManager workflowManager;
 	private final SpringTemplateEngine templateEngine;
 	private final AgencyService agencyService;
 	private final VocabularyService vocabularyService;
@@ -180,11 +179,13 @@ public class EditorDetailsView extends CvView {
 	private EditorCodeActionLayout editorCodeActionLayout;
 
 	public EditorDetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
-			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
-			SpringTemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
-			ResolverService resolverService, CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
+							 StardatDDIService stardatDDIService, SecurityService securityService, WorkspaceManager workspaceManager, WorkflowManager workflowManager, AgencyService agencyService,
+							 VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
+							 SpringTemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
+							 ResolverService resolverService, CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, EditorDetailsView.VIEW_NAME);
+		this.workspaceManager = workspaceManager;
+		this.workflowManager = workflowManager;
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
@@ -202,11 +203,12 @@ public class EditorDetailsView extends CvView {
 	@PostConstruct
 	public void init() {
 		
-		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", i18n, 
+		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", workspaceManager, workflowManager, i18n,
 				stardatDDIService, agencyService, vocabularyService, versionService, conceptService, codeService, 
 				configService, eventBus, vocabularyChangeService, licenceService);
 		
-		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show", i18n,
+		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show",
+				workspaceManager, i18n,
 				stardatDDIService, agencyService, vocabularyService, versionService, codeService, conceptService, eventBus,
 				vocabularyChangeService, csvRowToConceptDTOMapper);
 		
@@ -662,7 +664,7 @@ public class EditorDetailsView extends CvView {
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.SINGLE );
 		
-		detailTreeGrid.addColumn(code -> code.getNotation())
+		detailTreeGrid.addColumn(code -> code.getNotation() /* + "("  + code.getCodeId() + ")"*/)
 			.setCaption("Code")
 			.setExpandRatio(1)
 			.setId("code");

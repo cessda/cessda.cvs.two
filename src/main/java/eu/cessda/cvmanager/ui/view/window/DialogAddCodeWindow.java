@@ -22,7 +22,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
@@ -42,11 +41,12 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private static final long serialVersionUID = -2960064213533383226L;
 	private static final Logger log = LoggerFactory.getLogger(DialogAddCodeWindow.class);
 
-	private final EventBus.UIEventBus eventBus;
-	private final I18N i18n;
+	private final transient WorkspaceManager workspaceManager;
+	private final transient EventBus.UIEventBus eventBus;
+	private final transient I18N i18n;
 	private static Locale locale = UI.getCurrent().getLocale();
 
-	private Binder<ConceptDTO> binder = new Binder<ConceptDTO>();
+	private Binder<ConceptDTO> binder = new Binder<>();
 	
 	private MLabel lNotation = new MLabel( "Code" );
 	private MLabel lTitle = new MLabel( "Descriptive term" );
@@ -70,11 +70,11 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private CodeDTO parentCode;
 	private Language language;
 
-	public DialogAddCodeWindow(I18N i18n, EventBus.UIEventBus eventBus, VocabularyDTO vocabularyDTO,
-			VersionDTO versionDTO, CodeDTO codeDTO, CodeDTO parentCodeDTO,ConceptDTO conceptDTO) {
+	public DialogAddCodeWindow(WorkspaceManager workspaceManager, I18N i18n, EventBus.UIEventBus eventBus, VocabularyDTO vocabularyDTO,
+							   VersionDTO versionDTO, CodeDTO codeDTO, CodeDTO parentCodeDTO, ConceptDTO conceptDTO) {
 		super( parentCodeDTO == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
 				locale, parentCodeDTO.getNotation() ));
-		
+		this.workspaceManager = workspaceManager;
 		this.eventBus = eventBus;
 		this.i18n = i18n;
 		this.vocabulary = vocabularyDTO;
@@ -115,16 +115,12 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 		binder.setBean( concept);
 
-		storeCode.addClickListener(event -> {
-			saveCode();
-		});
+		storeCode.addClickListener(event -> saveCode());
 		
 		Button cancelButton = new Button("Cancel", e -> this.close());
 		MHorizontalLayout row1 = new MHorizontalLayout();
 		
-		notation.addValueChangeListener( e -> {
-			((TextField)e.getComponent()).setValue( e.getValue().replaceAll(Constants.NOTATION_REGEX, ""));
-		});
+		notation.addValueChangeListener( e -> ((TextField)e.getComponent()).setValue( e.getValue().replaceAll(Constants.NOTATION_REGEX, "")));
 		
 		if( parentCode != null )  {
 			notation.withWidth("80%");
@@ -212,11 +208,11 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 			return;
 		
 		// store the code
-		WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, null,
+		workspaceManager.saveCodeAndConcept(vocabulary, version, code, parentCode, concept, null,
 				notation.getValue(), preferedLabel.getValue(), ParserUtils.toXHTML(description.getValue()));
 
 		// save change log
-		WorkspaceManager.storeChangeLog(vocabulary, version, "Code added", concept.getNotation());
+		workspaceManager.storeChangeLog(vocabulary, version, "Code added", concept.getNotation());
 
 		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		this.close();
@@ -231,20 +227,20 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 			.forField( notation )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
 			.withValidator( p -> !version.isConceptExist(parentCode == null? p: parentCode.getNotation() + "." + p), "code is already exist")
-			.bind( c -> c.getNotation(),
-				(c, value) -> c.setNotation(value));
+			.bind(ConceptDTO::getNotation,
+					ConceptDTO::setNotation);
 
 		binder
 			.forField( preferedLabel )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( c -> c.getTitle(),
-				(c, value) -> c.setTitle( value));
+			.bind(ConceptDTO::getTitle,
+					ConceptDTO::setTitle);
 
 		binder
 			.forField( description )
 //			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
-			.bind( c -> c.getDefinition(),
-					(c, value) -> c.setDefinition( value));
+			.bind(ConceptDTO::getDefinition,
+					ConceptDTO::setDefinition);
 		
 		binder.validate();
 		return binder.isValid();

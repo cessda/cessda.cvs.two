@@ -2,21 +2,14 @@ package eu.cessda.cvmanager.ui.layout;
 
 import java.util.Locale;
 
-import org.gesis.stardat.entity.CVScheme;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import org.gesis.wts.service.AgencyService;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.i18n.I18N;
 import org.vaadin.viritin.button.MButton;
 
-import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
 
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.component.ResponsiveBlock;
@@ -24,31 +17,22 @@ import eu.cessda.cvmanager.ui.view.window.DialogCVSchemeWindow;
 
 public class EditorSearchActionLayout extends ResponsiveBlock{
 	private static final long serialVersionUID = 2436346372920594014L;
-	
-	private final StardatDDIService stardatDDIService;
-	private final AgencyService agencyService;
-	private final VersionService versionService;
-	private final VocabularyService vocabularyService;
-	private final VocabularyChangeService vocabularyChangeService;
-	
-	private I18N i18n;
-	private Locale locale = UI.getCurrent().getLocale();
-	private final UIEventBus eventBus;
+
+	private final transient WorkspaceManager workspaceManager;
+	private final transient AgencyService agencyService;
+	private final transient I18N i18n;
+	private final transient UIEventBus eventBus;
 	
 	private MButton buttonAddCv = new MButton();
 	
-	public EditorSearchActionLayout(String titleHeader, String showHeader, I18N i18n, StardatDDIService stardatDDIService,
-			AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService,
-		    UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
+	public EditorSearchActionLayout(String titleHeader, String showHeader, WorkspaceManager workspaceManager, I18N i18n,
+									AgencyService agencyService, UIEventBus eventBus) {
 		super(titleHeader, showHeader, i18n);
+		this.workspaceManager = workspaceManager;
 		this.i18n = i18n;
-		this.stardatDDIService = stardatDDIService;
 		this.agencyService = agencyService;
-		this.versionService = versionService;
-		this.vocabularyService = vocabularyService;
 		this.eventBus = eventBus;
-		this.vocabularyChangeService = vocabularyChangeService;
-		
+
 		init();
 	}
 
@@ -57,7 +41,7 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 			.withFullWidth()
 			.addClickListener( this::doCvAdd );
 		
-		updateMessageStrings(locale);
+		updateMessageStrings( getLocale() );
 		
 		getInnerContainer()
 			.add(
@@ -65,9 +49,9 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 			);
 	}
 
-	private void doCvAdd( ClickEvent event ) {
-		Window window = new DialogCVSchemeWindow(i18n, eventBus, agencyService, vocabularyService, 
-				VocabularyDTO.createDraft(), VersionDTO.createDraft(), null, null);
+	private void doCvAdd() {
+		Window window = new DialogCVSchemeWindow(workspaceManager, i18n, agencyService, VocabularyDTO.createDraft(),
+				VersionDTO.createDraft(), null, null, eventBus );
 		getUI().addWindow(window);
 	}
 	

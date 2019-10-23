@@ -22,10 +22,6 @@ import com.vaadin.ui.Alignment;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
 import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
@@ -41,14 +37,11 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 	private static final long serialVersionUID = -2960064213533383226L;
 	private static final Logger log = LoggerFactory.getLogger(DialogImportCsvCodeWindow.class);
 
-	private final EventBus.UIEventBus eventBus;
-	private final I18N i18n;
-	private final VocabularyService vocabularyService;
-	private final VersionService versionService;
-	private final ConceptService conceptService;
-	private final CodeService codeService;
-	private final VocabularyChangeService vocabularyChangeService;
-	private final CsvRowToConceptDTOMapper csvRowToConceptDTOMapper;
+	private final transient WorkspaceManager workspaceManager;
+	private final transient EventBus.UIEventBus eventBus;
+	private final transient I18N i18n;
+	private final transient CodeService codeService;
+	private final transient CsvRowToConceptDTOMapper csvRowToConceptDTOMapper;
 	
 	private CsvImportLayout csvImportLayout;
 
@@ -65,21 +58,16 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 	private CodeDTO parentCode;
 	private Language language;
 
-	public DialogImportCsvCodeWindow(EventBus.UIEventBus eventBus, VocabularyService vocabularyService, 
-			VersionService versionService, CodeService codeService, ConceptService conceptService, VocabularyDTO vocabularyDTO,
-			VersionDTO versionDTO, I18N i18n, Locale locale, VocabularyChangeService vocabularyChangeService,
-			CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
+	public DialogImportCsvCodeWindow(WorkspaceManager workspaceManager, CodeService codeService, EventBus.UIEventBus eventBus,
+									 VocabularyDTO vocabularyDTO, VersionDTO versionDTO, I18N i18n, CsvRowToConceptDTOMapper csvRowToConceptDTOMapper) {
 		super("Import Csv");
-		
+		this.workspaceManager = workspaceManager;
+
 		this.eventBus = eventBus;
 		this.i18n = i18n;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
 		this.codeService = codeService;
-		this.conceptService = conceptService;
-		this.vocabularyService = vocabularyService;
-		this.versionService = versionService;
-		this.vocabularyChangeService = vocabularyChangeService;
 		this.csvRowToConceptDTOMapper = csvRowToConceptDTOMapper;
 
 		language = Language.valueOfEnum( this.version.getLanguage());
@@ -111,7 +99,7 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 			.withModal( true )
 			.withContent(layout);
 
-		updateMessageStrings(locale);
+		updateMessageStrings(getLocale());
 	}
 
 	private void saveCode() {
@@ -142,16 +130,16 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 						continue;
 					
 					String baseNotation = concept.getNotation().substring( lastDotIndex + 1 );
-					WorkspaceManager.saveCode(vocabulary, version, newCode, parentCode, concept, null,
+					workspaceManager.saveCodeAndConcept(vocabulary, version, newCode, parentCode, concept, null,
 							baseNotation, concept.getTitle(), concept.getDefinition());
 				} 
 				else { // if top concept
-					WorkspaceManager.saveCode(vocabulary, version, newCode, null, concept, null,
+					workspaceManager.saveCodeAndConcept(vocabulary, version, newCode, null, concept, null,
 							concept.getNotation(), concept.getTitle(), concept.getDefinition());
 				}
 				
 				// save change log
-				WorkspaceManager.storeChangeLog(vocabulary, version, "Code added", concept.getNotation());
+				workspaceManager.storeChangeLog(vocabulary, version, "Code added", concept.getNotation());
 				
 			}
 		} 
@@ -187,15 +175,15 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 					if( parentCode == null )
 						continue;
 					
-					WorkspaceManager.saveCode(vocabulary, version, code, parentCode, concept, slConcept,
+					workspaceManager.saveCodeAndConcept(vocabulary, version, code, parentCode, concept, slConcept,
 							concept.getNotation(), concept.getTitle(), concept.getDefinition());
 				} else {
-					WorkspaceManager.saveCode(vocabulary, version, code, null, concept, slConcept,
+					workspaceManager.saveCodeAndConcept(vocabulary, version, code, null, concept, slConcept,
 							concept.getNotation(), concept.getTitle(), concept.getDefinition());
 				}
 					
 				// save change log
-				WorkspaceManager.storeChangeLog(vocabulary, version, "Code TL added", concept.getNotation());
+				workspaceManager.storeChangeLog(vocabulary, version, "Code TL added", concept.getNotation());
 				
 			}
 		

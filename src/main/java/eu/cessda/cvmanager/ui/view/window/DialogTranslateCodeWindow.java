@@ -1,12 +1,6 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.time.LocalDateTime;
-import java.util.Locale;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus;
@@ -25,22 +19,13 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.ItemCaptionGenerator;
 import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
 
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
@@ -49,15 +34,10 @@ public class DialogTranslateCodeWindow extends MWindow {
 
 	private static final Logger log = LoggerFactory.getLogger(DialogTranslateCodeWindow.class);
 	private static final long serialVersionUID = 8118228014482059473L;
-	
-	private final EventBus.UIEventBus eventBus;
-	private final I18N i18n;
-	private final StardatDDIService stardatDDIService;
-	private final VocabularyService vocabularyService;
-	private final CodeService codeService;
-	private final VersionService versionService;
-	private final ConceptService conceptService;
-	private final VocabularyChangeService vocabularyChangeService;
+
+	private final transient WorkspaceManager workspaceManager;
+	private final transient EventBus.UIEventBus eventBus;
+	private final transient I18N i18n;
 
 	Binder<ConceptDTO> binder = new Binder<ConceptDTO>();
 	private MVerticalLayout layout = new MVerticalLayout();
@@ -96,19 +76,12 @@ public class DialogTranslateCodeWindow extends MWindow {
 	MHorizontalLayout sourceRowA = new MHorizontalLayout();
 	MHorizontalLayout sourceRowB = new MHorizontalLayout();
 
-	public DialogTranslateCodeWindow(EventBus.UIEventBus eventBus, StardatDDIService stardatDDIService, 
-			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, ConceptService conceptService,
-			CVScheme cvScheme, CVConcept conceptCode, Language sLanguage, Language sourceLang, VocabularyDTO vocabularyDTO, 
-			VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, ConceptDTO slConcept, VocabularyChangeService vocabularyChangeService, I18N i18n, Locale locale) {
+	public DialogTranslateCodeWindow(WorkspaceManager workspaceManager, EventBus.UIEventBus eventBus, Language sLanguage, Language sourceLang, VocabularyDTO vocabularyDTO,
+									 VersionDTO versionDTO, CodeDTO codeDTO, ConceptDTO conceptDTO, ConceptDTO slConcept, I18N i18n) {
 		super( "Add Code Translation");
+		this.workspaceManager = workspaceManager;
 		this.i18n = i18n;
 		this.language = sLanguage;
-		this.stardatDDIService = stardatDDIService;
-		this.vocabularyService = vocabularyService;
-		this.versionService = versionService;
-		this.codeService = codeService;
-		this.conceptService = conceptService;
-		this.vocabularyChangeService = vocabularyChangeService;
 		
 		this.eventBus = eventBus;
 		this.vocabulary = vocabularyDTO;
@@ -247,11 +220,11 @@ public class DialogTranslateCodeWindow extends MWindow {
 			return;
 		
 		// store the code
-		WorkspaceManager.saveCode(vocabulary, version, code, null, concept, slConcept,
+		workspaceManager.saveCodeAndConcept(vocabulary, version, code, null, concept, slConcept,
 				null, preferedLabel.getValue(), description.getValue());
 
 		// save change log
-		WorkspaceManager.storeChangeLog(vocabulary, version, "TL code added", concept.getNotation());
+		workspaceManager.storeChangeLog(vocabulary, version, "TL code added", concept.getNotation());
 		
 		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVCONCEPT_CREATED, null) );
 		

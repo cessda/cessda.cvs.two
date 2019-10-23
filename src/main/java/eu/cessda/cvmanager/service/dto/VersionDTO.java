@@ -14,19 +14,10 @@ import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.Objects;
-import java.util.Optional;
 
 import javax.persistence.Lob;
 
@@ -194,9 +185,9 @@ public class VersionDTO implements Serializable {
     	if(skosUri == null )
     		return"";
     	
-    	int index = skosUri.lastIndexOf("/");
+    	int index = skosUri.lastIndexOf('/');
     	String versionInfo = skosUri.substring( index + 1 );
-    	index = skosUri.substring( 0, index ).lastIndexOf("/");
+    	index = skosUri.substring( 0, index ).lastIndexOf('/');
     	
     	return skosUri.substring(0, index) + "_" + versionInfo;
     }
@@ -207,10 +198,10 @@ public class VersionDTO implements Serializable {
 		
 		String formattedUrn = removeLanguageInformation(canonicalUri);
 		// format any TL URN to SL
-		int index = canonicalUri.lastIndexOf(":");
+		int index = canonicalUri.lastIndexOf(':');
 		if( formattedUrn.substring(index + 1).chars().filter( ch -> ch == '.').count() == 2L) {
 			// remove last dot
-			index = canonicalUri.lastIndexOf(".");
+			index = canonicalUri.lastIndexOf('.');
 			formattedUrn = formattedUrn.substring(0, index);
 		}
 		return formattedUrn;
@@ -251,6 +242,11 @@ public class VersionDTO implements Serializable {
     public void setDefinition(String definition) {
         this.definition = definition;
     }
+
+    public void setTitleAndDefinition( String title, String definition){
+		this.title = title;
+		this.definition = definition;
+	}
 
     public Long getPreviousVersion() {
         return previousVersion;
@@ -440,7 +436,7 @@ public class VersionDTO implements Serializable {
 
 	public List<ConceptDTO> getSortedConcepts(){
 		if( concepts == null )
-			return null;
+			return Collections.emptyList();
 		return concepts.stream().sorted(Comparator.nullsLast(( c1, c2) -> {
 			if( c1.getPosition() == null && c2.getPosition() == null )
 				return 0;
@@ -560,11 +556,12 @@ public class VersionDTO implements Serializable {
 		newVersion.setStatus( Status.DRAFT.toString());
 		newVersion.setItemType( targetVersion.getItemType() );
 		newVersion.setLanguage( targetVersion.getLanguage() );
-//		newVersion.setLastModified( LocalDateTime.now());
 		newVersion.setNumber(versionNumber);
 		newVersion.setNotation( targetVersion.getNotation() );
-		newVersion.setTitle( targetVersion.getTitle() );
-		newVersion.setDefinition( targetVersion.getDefinition() );
+		if( newVersion.getTitle() == null || newVersion.getTitle().isEmpty()) // Do not overwrite if exist
+			newVersion.setTitle( targetVersion.getTitle() );
+		if( newVersion.getDefinition() == null || newVersion.getDefinition().isEmpty())
+			newVersion.setDefinition( targetVersion.getDefinition() );
 		newVersion.setPreviousVersion( targetVersion.getId() );
 		newVersion.setInitialVersion( targetVersion.getInitialVersion() );
 		newVersion.setCreator( userId );
@@ -658,7 +655,7 @@ public class VersionDTO implements Serializable {
 		if( canonicalUrlInput == null )
 			return null;
 		// find last dash from canonicalURI
-		int lastDashPosition = canonicalUrlInput.lastIndexOf( "-" );
+		int lastDashPosition = canonicalUrlInput.lastIndexOf( '-' );
 		// if found and
 		if( lastDashPosition == -1 || lastDashPosition < 20)
 			return canonicalUrlInput;

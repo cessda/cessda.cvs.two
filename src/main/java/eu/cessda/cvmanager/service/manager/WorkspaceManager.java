@@ -1,22 +1,13 @@
 package eu.cessda.cvmanager.service.manager;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVEditor;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
+import com.vaadin.data.TreeData;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.service.*;
+import eu.cessda.cvmanager.service.dto.*;
+import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
+import eu.cessda.cvmanager.utils.WorkflowUtils;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.security.UserDetails;
@@ -25,90 +16,56 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import com.vaadin.data.TreeData;
-import com.vaadin.ui.Notification;
-
-import eu.cessda.cvmanager.domain.Cv;
-import eu.cessda.cvmanager.domain.CvCode;
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.ResolverService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.service.dto.CodeDTO;
-import eu.cessda.cvmanager.service.dto.ConceptDTO;
-import eu.cessda.cvmanager.service.dto.ResolverDTO;
-import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.CvMapper;
-import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
-import eu.cessda.cvmanager.utils.WorkflowUtils;
-import eu.cessda.cvmanager.service.mapper.CvCodeMapper;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkspaceManager {
 	private static final Logger log = LoggerFactory.getLogger(WorkspaceManager.class);
 
-	private static ConfigurationService configurationService;
-	private static VocabularyService vocabularyService;
-	private static VersionService versionService;
-	private static CodeService codeService;
-	private static ConceptService conceptService;
-	private static CvMapper cvMapper;
-	private static CvCodeMapper cvCodeMapper;
-	private static StardatDDIService stardatDDIService;
-	private static ResolverService resolverService;
-	private static VocabularyChangeService vocabularyChangeService;
+	private final ConfigurationService configurationService;
+	private final VocabularyService vocabularyService;
+	private final VersionService versionService;
+	private final CodeService codeService;
+	private final ConceptService conceptService;
+	private final VocabularyChangeService vocabularyChangeService;
 	
 	public WorkspaceManager(VocabularyService vocabularySvc, VersionService versionSvc,
-			CodeService codeSvc, ConceptService conceptSvc, CvMapper cvMpr,
-			CvCodeMapper cvCodeMpr, StardatDDIService stardatDDIService,
-			ResolverService resolverService, ConfigurationService configurationService,
+			CodeService codeSvc, ConceptService conceptSvc, ConfigurationService configurationService,
 			VocabularyChangeService vocabularyChangeService) {
-		WorkspaceManager.vocabularyService = vocabularySvc;
-		WorkspaceManager.versionService = versionSvc;
-		WorkspaceManager.codeService = codeSvc;
-		WorkspaceManager.conceptService = conceptSvc;
-		WorkspaceManager.cvMapper = cvMpr;
-		WorkspaceManager.cvCodeMapper = cvCodeMpr;
-		WorkspaceManager.stardatDDIService = stardatDDIService;
-		WorkspaceManager.resolverService = resolverService;
-		WorkspaceManager.configurationService = configurationService;
-		WorkspaceManager.vocabularyChangeService = vocabularyChangeService;
+		this.vocabularyService = vocabularySvc;
+		this.versionService = versionSvc;
+		this.codeService = codeSvc;
+		this.conceptService = conceptSvc;
+		this.configurationService = configurationService;
+		this.vocabularyChangeService = vocabularyChangeService;
 	}
 
-	public static void saveSourceCV( AgencyDTO agency, Language language, VocabularyDTO vocabulary, 
-			VersionDTO version, String cvShortName, String cvName, String cvDefinition, String notes ) {
-		
+	public void saveSourceCV( AgencyDTO agency, Language language, VocabularyDTO vocabulary,
+			VersionDTO version, String notes ) {
 		vocabulary.setNotes( notes == null  ? "": notes );
-		vocabulary.setTitleDefinition( cvName, cvDefinition, language);
-		
-		version.setTitle( cvName );
-		version.setDefinition( cvDefinition );
+		vocabulary.setTitleDefinition( version.getTitle(), version.getDefinition(), language);
 		
 		if( !vocabulary.isPersisted() )
 		{
-			vocabulary.setNotation( cvShortName );
+			log.info( "Saving new SL version of {}", version.getNotation() );
+			vocabulary.setNotation( version.getNotation() );
 			vocabulary.setVersionNumber("1.0");
 			vocabulary.setAgencyId( agency.getId());
 			vocabulary.setAgencyName( agency.getName());
 			vocabulary.setSourceLanguage( language.toString());
-			
-			
+
 			version.setUri( WorkflowUtils.generateAgencyBaseUri( agency.getUri() ) + vocabulary.getNotation() + "/" + language.toString() );
 			version.setNotation( vocabulary.getNotation());
 			version.setNumber("1.0");
 			version.setItemType( ItemType.SL.toString());
 			version.setLanguage( language.toString() );
 			version.setPreviousVersion(0L);
-			version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId());
-			
+			UserDetails loggedUser = CvManagerSecurityUtils.getLoggedUser();
+			if( loggedUser != null )
+				version.setCreator( loggedUser.getId() );
+
 			// save to database
 			vocabulary = vocabularyService.save(vocabulary);
 			
@@ -122,9 +79,8 @@ public class WorkspaceManager {
 			vocabulary.addVersion(version);
 			vocabulary.addVers(version);
 		} else {
-			
-			// save to database
-			version = versionService.save( version );
+			log.info( "Updating  SL version of {}", version.getNotation() );
+			versionService.save( version );
 			vocabulary = vocabularyService.save(vocabulary);
 		}
 		
@@ -132,99 +88,63 @@ public class WorkspaceManager {
 		vocabularyService.index(vocabulary);
 	}
 	
-	public static void saveTargetCV(AgencyDTO agency, Language language, VocabularyDTO vocabulary, 
-			VersionDTO version, String cvName, String cvDefinition, String translatorAgency, String translatorAgencyLink ) {
+	public void saveTargetCV(AgencyDTO agency, Language language, VocabularyDTO vocabulary,
+			VersionDTO tlVersion, String translatorAgency, String translatorAgencyLink ) {
 
-		version.setTitle( cvName );
-		version.setDefinition( cvDefinition );
+		// target (TL) CV is based in existing published source (SL) version
+		// therefore get the latestPublished SL version first
+		VersionDTO slVersion = null;
+		Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
+		if(latestSlVersion.isPresent())
+			slVersion = latestSlVersion.get();
+		else {
+			log.error( "SL version {} not found", vocabulary.getNotation() );
+			throw new IllegalArgumentException("SL version " + vocabulary.getNotation() + " not found");
+		}
 		
 		// store new version
-		if( !version.isPersisted()) {
+		if( !tlVersion.isPersisted()) {
+			String languageIso = language.toString();
+			log.info( "Saving new TL version of {}, with language {}", vocabulary.getNotation(), languageIso);
+			tlVersion.setUriSl( vocabulary.getUri() );
 
-			version.setUriSl( vocabulary.getUri() );
-			version.setUri( WorkflowUtils.generateAgencyBaseUri( agency.getUri() ) + vocabulary.getNotation() + "/" + language.toString() );
-			
-			version.setNotation( vocabulary.getNotation());
-			version.setNumber( vocabulary.getVersionNumber() + ".1");
-			version.setItemType( ItemType.TL.toString());
-			version.setLanguage( language.toString());
-			
-			version.setPreviousVersion( 0L );
-			version.setInitialVersion( 0L );
-			version.setVocabularyId( vocabulary.getId());
-			version.setTranslateAgency( translatorAgency );
-			version.setTranslateAgencyLink( translatorAgencyLink );
-			
-			version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId());
-			
-			// get previous version from the same language
-			Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), null);
-			if( latestTlVersion.isPresent() ) {
-				VersionDTO prevVersion = latestTlVersion.get();
-				String versionNumber = vocabulary.getVersionNumber();
-				// get last version number from previous version if exist
-				if( prevVersion.getStatus().equals(Status.PUBLISHED.toString()) && prevVersion.getNumber().indexOf( vocabulary.getVersionNumber()) == 0 ) {
-					int lastDotIndex = vocabulary.getVersionNumber().lastIndexOf(".");
-					versionNumber += "." + (Integer.parseInt(vocabulary.getVersionNumber().substring( lastDotIndex + 1)) + 1);
-				} else {
-					versionNumber += ".1";
-				}
-				// get slVersion
-				VersionDTO slVersion = null;
-				Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
-				if(latestSlVersion.isPresent())
-					slVersion = latestSlVersion.get();
-				VersionDTO.clone(version, prevVersion, slVersion, SecurityUtils.getLoggedUser().getId(), versionNumber, 
-						slVersion.getLicenseId(), WorkflowUtils.generateAgencyBaseUri( agency.getUri()), slVersion.getDdiUsage());
-			}
-			// alter the cloned one
-			version.setTitle( cvName );
-			version.setDefinition( cvDefinition );
-			
-			version = versionService.save(version);
-			
+			tlVersion.setUri( WorkflowUtils.generateAgencyBaseUri( agency.getUri() ) + vocabulary.getNotation() + "/" + languageIso );
+			tlVersion.setNotation( vocabulary.getNotation());
+			tlVersion.setNumber( vocabulary.getVersionNumber() + ".1");
+			tlVersion.setItemType( ItemType.TL.toString());
+			tlVersion.setLanguage( languageIso );
+			tlVersion.setPreviousVersion( 0L );
+			UserDetails loggedUser = CvManagerSecurityUtils.getLoggedUser();
+			if( loggedUser != null )
+				tlVersion.setCreator( loggedUser.getId() );
+
+			tlVersion.setInitialVersion( 0L );
+			tlVersion.setVocabularyId( vocabulary.getId());
+			tlVersion.setTranslateAgency( translatorAgency );
+			tlVersion.setTranslateAgencyLink( translatorAgencyLink );
+
+			// check if previous version exist and perform cloning
+			clonePreviousVersion(agency, language, vocabulary, slVersion, tlVersion);
+
 			// if no initial version found
-			if( version.getInitialVersion() == 0L) {
-				// initial version
-				version.setInitialVersion( version.getId() );
-				version = versionService.save(version);
-			}
+			if( tlVersion.getInitialVersion() == 0L)
+				tlVersion.setInitialVersion( tlVersion.getId() );
 			
+			tlVersion = versionService.save(tlVersion);
+
 			// save concept if exist
-			if( !version.getConcepts().isEmpty() ) {
-				// get workflow codes
-				List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
-				// save concepts with workflow codes ID
-				for( CodeDTO code: codes) {
-					ConceptDTO
-						.getConceptFromCode(version.getConcepts(), code.getNotation())
-						.ifPresent( c ->{ 
-							c.setCodeId( code.getId());
-							// in case code need update
-							if( code.getTitleByLanguage(language) == null ||
-								!compareString( code.getTitleByLanguage(language) ,c.getTitle()) || 
-								!compareString( code.getDefinitionByLanguage(language) ,c.getDefinition())) {
-								code.setTitleDefinition(c.getTitle(), c.getDefinition(), language);
-								codeService.save(code);
-							}
-						});
-				}
-				// save versionId property
-				for( ConceptDTO newConcept: version.getConcepts()) {
-					newConcept.setVersionId( version.getId());
-					conceptService.save(newConcept);
-				}
-			}
+			storeTLConceptWithCode(language, vocabulary, tlVersion, slVersion);
+
 			// update version in vocabulary
-			vocabulary.setVersionByLanguage(language, version.getNumber());
+			vocabulary.setVersionByLanguage(language, tlVersion.getNumber());
 			
-			vocabulary.addVersion(version);
-			vocabulary.addVers(version);
+			vocabulary.addVersion(tlVersion);
+			vocabulary.addVers(tlVersion);
 		} else {
-			version = versionService.save(version);
+			versionService.save(tlVersion);
 		}
 		// store the variable and index
-		vocabulary.setTitleDefinition( cvName, cvDefinition, language);
+		vocabulary.setTitleDefinition( tlVersion.getTitle(), tlVersion.getDefinition(), language);
 		
 		// save to database
 		vocabulary = vocabularyService.save(vocabulary);
@@ -232,14 +152,61 @@ public class WorkspaceManager {
 		// index editor
 		vocabularyService.index(vocabulary);
 	}
-	
-	public static boolean compareString(String str1, String str2) {
+
+	private void storeTLConceptWithCode(Language language, VocabularyDTO vocabulary, VersionDTO tlVersion, VersionDTO slVersion) {
+		if( !tlVersion.getConcepts().isEmpty() ) {
+			// get codes from latestSL, since codes need to be match between SL and TL on the same slVersion
+			List<CodeDTO> codes = codeService.findByVocabularyAndVersion( vocabulary.getId(), slVersion.getId());
+			// save concepts with codes ID
+			for( CodeDTO code: codes) {
+				ConceptDTO
+					.getConceptFromCode(tlVersion.getConcepts(), code.getNotation())
+					.ifPresent( c ->{
+						c.setCodeId( code.getId());
+						// in case code need update
+						if( code.getTitleByLanguage(language) == null ||
+							!compareString( code.getTitleByLanguage(language) ,c.getTitle()) ||
+							!compareString( code.getDefinitionByLanguage(language) ,c.getDefinition())) {
+							code.setTitleDefinition(c.getTitle(), c.getDefinition(), language);
+							codeService.save(code);
+						}
+					});
+			}
+			// save versionId property
+			for( ConceptDTO newConcept: tlVersion.getConcepts()) {
+				newConcept.setVersionId( tlVersion.getId());
+				conceptService.save(newConcept);
+			}
+		}
+	}
+
+	private void clonePreviousVersion(AgencyDTO agency, Language language, VocabularyDTO vocabulary, VersionDTO slVersion, VersionDTO versionTl) {
+		// get previous version from the same language
+		Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), null);
+		if( latestTlVersion.isPresent() ) {
+			// if exist then reassign the version number and perform cloning
+			VersionDTO prevVersion = latestTlVersion.get();
+			String versionNumber = vocabulary.getVersionNumber();
+			// get last version number from previous version if exist
+			if( prevVersion.getStatus().equals(Status.PUBLISHED.toString()) && prevVersion.getNumber().indexOf( vocabulary.getVersionNumber()) == 0 ) {
+				int lastDotIndex = vocabulary.getVersionNumber().lastIndexOf('.');
+				versionNumber += "." + (Integer.parseInt(vocabulary.getVersionNumber().substring( lastDotIndex + 1)) + 1);
+			} else {
+				versionNumber += ".1";
+			}
+
+			VersionDTO.clone(versionTl, prevVersion, slVersion, SecurityUtils.getLoggedUser().getId(), versionNumber,
+					slVersion.getLicenseId(), WorkflowUtils.generateAgencyBaseUri( agency.getUri()), slVersion.getDdiUsage());
+		}
+	}
+
+	public boolean compareString(String str1, String str2) {
 	    return (str1 == null ? str2 == null : str1.equals(str2));
 	}
 	
-	public static void saveCode(VocabularyDTO vocabulary, VersionDTO version, 
-			CodeDTO code, CodeDTO parentCode, ConceptDTO concept, 
-			ConceptDTO slConcept, String notation, String term, String definition) {
+	public void saveCodeAndConcept(VocabularyDTO vocabulary, VersionDTO version,
+								   CodeDTO code, CodeDTO parentCode, ConceptDTO concept,
+								   ConceptDTO slConcept, String notation, String term, String definition) {
 		// if notation null, it means the TL concept is saved
 		if( notation == null )
 			notation = code.getNotation();
@@ -320,19 +287,19 @@ public class WorkspaceManager {
 			concept = conceptService.save(concept);
 			
 			version.addConcept(concept);
-			version = versionService.save(version);
+			versionService.save(version);
 		} 
 		// update concept
 		else {
-			code = codeService.save( code );
-			concept = conceptService.save( concept );
+			codeService.save( code );
+			conceptService.save( concept );
 		}
 		
 		// indexing editor
 		vocabularyService.index(vocabulary);
 	}
 	
-	public static void storeChangeLog( VocabularyDTO vocabulary, VersionDTO version,
+	public void storeChangeLog( VocabularyDTO vocabulary, VersionDTO version,
 			String changeType, String changeDescription) {
 		if( !version.isInitialVersion() ) {
 			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
@@ -347,5 +314,25 @@ public class WorkspaceManager {
 			
 			vocabularyChangeService.save(changeDTO);
 		} 
+	}
+
+	public ConfigurationService getConfigurationService() {
+		return configurationService;
+	}
+
+	public VocabularyService getVocabularyService() {
+		return vocabularyService;
+	}
+
+	public VersionService getVersionService() {
+		return versionService;
+	}
+
+	public CodeService getCodeService() {
+		return codeService;
+	}
+
+	public ConceptService getConceptService() {
+		return conceptService;
 	}
 }

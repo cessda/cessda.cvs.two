@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
@@ -55,8 +56,10 @@ public class EditorSearchView extends CvView {
 	public static final String VIEW_NAME = "editor-search";
 	public static final String FIELD_SORT = "notation";
 	private Locale locale = UI.getCurrent().getLocale();
-	private final VocabularyService vocabularyService;
-	private final VersionService versionService;
+
+	private final transient WorkspaceManager workspaceManager;
+	private final transient VocabularyService vocabularyService;
+	private final transient VersionService versionService;
 
 	// main container
 	private MCssLayout resultLayout = new MCssLayout();
@@ -92,11 +95,12 @@ public class EditorSearchView extends CvView {
 	
 
 	public EditorSearchView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
-			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VersionService versionService, CodeService codeService,
-			VocabularyChangeService vocabularyChangeService) {
+							StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
+							VocabularyService vocabularyService, VersionService versionService, CodeService codeService,
+							WorkspaceManager workspaceManager, VocabularyChangeService vocabularyChangeService) {
 		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, codeService, EditorSearchView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
+		this.workspaceManager = workspaceManager;
 		this.vocabularyChangeService = vocabularyChangeService;
 		this.versionService = versionService;
 		eventBus.subscribe(this, EditorSearchView.VIEW_NAME);
@@ -107,8 +111,7 @@ public class EditorSearchView extends CvView {
 		LoginView.NAVIGATETO_VIEWNAME = EditorSearchView.VIEW_NAME;
 		paginationBar = new PaginationBar( paggingListener , i18n);
 		filterLayout = new FiltersLayout( "block.filter", "block.filter.show", null, this, filterListener, i18n );
-		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", i18n, stardatDDIService, agencyService, vocabularyService, 
-				versionService, eventBus, vocabularyChangeService);
+		editorSearchActionLayout = new EditorSearchActionLayout("block.action", "block.action.show", workspaceManager, i18n, agencyService, eventBus);
 		esQueryResultDetail.setSort( new Sort(Sort.Direction.ASC, FIELD_SORT) );
 		
 		// button style
