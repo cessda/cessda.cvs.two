@@ -9,7 +9,6 @@ import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 import eu.cessda.cvmanager.utils.WorkflowUtils;
 import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
@@ -63,6 +62,7 @@ public class WorkspaceManager {
 			version.setLanguage( language.toString() );
 			version.setPreviousVersion(0L);
 			UserDetails loggedUser = CvManagerSecurityUtils.getLoggedUser();
+
 			if( loggedUser != null )
 				version.setCreator( loggedUser.getId() );
 
@@ -195,7 +195,7 @@ public class WorkspaceManager {
 				versionNumber += ".1";
 			}
 
-			VersionDTO.clone(versionTl, prevVersion, slVersion, SecurityUtils.getLoggedUser().getId(), versionNumber,
+			VersionDTO.clone(versionTl, prevVersion, slVersion, CvManagerSecurityUtils.getLoggedUser().getId(), versionNumber,
 					slVersion.getLicenseId(), WorkflowUtils.generateAgencyBaseUri( agency.getUri()), slVersion.getDdiUsage());
 		}
 	}
@@ -308,7 +308,7 @@ public class WorkspaceManager {
 			changeDTO.setChangeType( changeType );
 			changeDTO.setDescription( changeDescription );
 			changeDTO.setDate( LocalDateTime.now() );
-			UserDetails loggedUser = SecurityUtils.getLoggedUser();
+			UserDetails loggedUser = CvManagerSecurityUtils.getLoggedUser();
 			changeDTO.setUserId( loggedUser.getId() );
 			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
 			

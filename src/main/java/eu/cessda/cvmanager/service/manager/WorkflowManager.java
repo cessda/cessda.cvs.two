@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.ResolverService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyService;
@@ -31,7 +30,6 @@ import eu.cessda.cvmanager.utils.WorkflowUtils;
 @Service
 public class WorkflowManager {
 	private static final Logger log = LoggerFactory.getLogger(WorkflowManager.class);
-	private final ConfigurationService configurationService;
 	private final VocabularyService vocabularyService;
 	private final VersionService versionService;
 	private final CodeService codeService;
@@ -40,14 +38,12 @@ public class WorkflowManager {
 	
 
 	public WorkflowManager(VocabularyService vocabularySvc, VersionService versionSvc,
-			CodeService codeSvc, ConceptService conceptSvc, ResolverService resolverService,
-		   ConfigurationService configurationService) {
+			CodeService codeSvc, ConceptService conceptSvc, ResolverService resolverService) {
 		this.vocabularyService = vocabularySvc;
 		this.versionService = versionSvc;
 		this.codeService = codeSvc;
 		this.conceptService = conceptSvc;
 		this.resolverService = resolverService;
-		this.configurationService =configurationService;
 	}
 	
 	/**
@@ -99,59 +95,41 @@ public class WorkflowManager {
 				break;
 			case PUBLISHED:
 				String uri =  version.getUri() + "/" + versionNumber;
-				
-				
-				version.setUri( uri );
-				version.setVersionNotes( versionNotes);
+
 				version.setNumber( versionNumber );
-				version.setPublicationDate( LocalDate.now());
+				version.setVersionNotes( versionNotes);
 				version.setVersionChanges( versionChanges );
+
+				version.setUri( uri );
+				version.setPublicationDate( LocalDate.now());
 				version.setCanonicalUri(WorkflowUtils.generateVersionCanonicalURI(agency, version));
 				version.createSummary( versionChanges );
 				
 				vocabulary.setVersionByLanguage( version.getLanguage(), versionNumber);
-								
-				// TODO: refactor this
-				// get workflow codes
-				List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
-				// update concept uri
-				for(ConceptDTO concept : version.getConcepts()) {
-					concept.setUri( concept.getUri() + "/" + versionNumber);
-					// update concept parent and position based on workflow code
-					codes.stream().filter( c -> concept.getNotation().equals( c.getNotation())).findFirst().ifPresent( c -> {
-						concept.setParent( c.getParent());
-						concept.setPosition( c.getPosition());
-					});
-					conceptService.save( concept );
-				}
+
+				// get the latest SL version
+				VersionDTO latestSlVersion = null;
+
 				// If it is publishing SL
 				if( isVersionSl ) {
-					version.setCitation( VersionDTO.generateCitation(version, null, agency.getName()));
-					
-					vocabulary.setVersionNumber( versionNumber );
-					// only set Uri everytime SL published
-					vocabulary.setUri( version.getUri());
-					vocabulary.setPublicationDate( LocalDate.now());
-					vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVersions()) );
-					vocabulary.setLanguagesPublished( null);
-					vocabulary.addLanguagePublished( version.getLanguage());
-					// perform the cloning of available TL
-					doTlCvCloning(vocabulary, version, agency, latestTlVersions, codes);
-					// save current version
-					version = versionService.save(version);
-				} 
+					// get workflow codes
+					List<CodeDTO> codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+					// publish SL version
+					latestSlVersion = doPublishSlVersion(vocabulary, version, agency, latestTlVersions, versionNumber, codes);
+					// create Codes for published version, which is cloned from the code workflow
+					clonePublishedVersionCode(latestSlVersion, codes);
+					// create resolver for SL
+					createSlUriResolver(vocabulary, latestSlVersion);
+				}
 				// if publishing TL
-				else { 
-					// if TL is published
-					version.setUriSl( vocabulary.getUri());
-					// set citation
-					Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
-					if( latestSlVersion.isPresent() )
-						version.setCitation( VersionDTO.generateCitation(version, latestSlVersion.get(), agency.getName()));
-					
-					version = versionService.save(version);
-					
-					vocabulary.addLanguagePublished( version.getLanguage());
+				else {
+					Optional<VersionDTO> optLatestSlVersion = vocabulary.getLatestSlVersion( true );
+					if(optLatestSlVersion.isPresent())
+						latestSlVersion = optLatestSlVersion.get();
+					else
+						return null;
+					// publish TL version
+					version = doPublishTlVersion(vocabulary, version, agency, latestSlVersion);
 				}
 				
 				// save vocabulary
@@ -159,76 +137,99 @@ public class WorkflowManager {
 				
 				// index for editor
 				vocabularyService.index(vocabulary);
-				
-				// Now before indexing for the Publication side,
-				// the Vocabulary and Codes need to be updated
-				VersionDTO latestSlVersion = null;
-				if( isVersionSl ) {
-					latestSlVersion = version;
-					// create Codes for published version, which is cloned from the code workflow
-					List<CodeDTO> newCodes = clonePublishedVersionCode(version, codes);
-					// Publishing new CV-Scheme since SL is published
-//					createAndStoreCvScheme(vocabulary, version, agency, newCodes);
-					
-					// store vocabulary URN, if not exist
-					if(version.isInitialVersion()) {
-						int index = version.getCanonicalUri().lastIndexOf(":");
-						String cvCanonicalUri = version.getCanonicalUri().substring(0, index);
-						resolverService.save( 
-							ResolverDTO.createUrnResolver()
-								.withResourceId( vocabulary.getUri())
-								.withResourceURL( vocabulary.getNotation() )
-								.withResolverURI( cvCanonicalUri )
-						);
-					}
-				} 
-				// TL published
-				else {
-					// get the latest SL version
-					Optional<VersionDTO> optLatestSlVersion = vocabulary.getLatestSlVersion( true );
-					if(optLatestSlVersion.isPresent())
-						latestSlVersion = optLatestSlVersion.get();
-					
-					codes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), latestSlVersion.getId());
-					Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
-					for( ConceptDTO concept : version.getConcepts()) {
-						CodeDTO code = codeMap.get( concept.getNotation());
-						if( code == null )
-							continue;
-						code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), version.getLanguage());
-						codeService.save(code);
-					}
 
-					// TODO: also to assign new code-id for concept
-
-				}
-				
-				// add URN to resolver
-				try {
-					// only store SL version, since TL can be resolve from SL
-					if( isVersionSl )
-						resolverService.save( 
-							ResolverDTO.createUrnResolver()
-								.withResourceId( version.getUri())
-								.withResourceURL( vocabulary.getNotation() + "?url=" + URLEncoder.encode( version.getUri(), "UTF-8")  )
-								.withResolverURI( version.getCanonicalUri())
-						);
-				} catch (UnsupportedEncodingException e) {
-					// TODO Auto-generated catch block
-					log.error(e.getMessage(), e);
-				}
-				
 				// indexing published codes
 				vocabularyService.indexPublish(vocabulary, latestSlVersion);
-				
 				break;
 			default:
 				break;
-	}
-		
-		
-		
+		}
 		return version;
+	}
+
+	private VersionDTO doPublishTlVersion(VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, VersionDTO latestSlVersion) {
+		version.setUriSl( latestSlVersion.getUri());
+		version.setCitation( VersionDTO.generateCitation(version, latestSlVersion, agency.getName()));
+		version = versionService.save(version);
+
+		vocabulary.addLanguagePublished( version.getLanguage());
+
+		List<CodeDTO> codes = codeService.findArchivedByVocabularyAndVersion( vocabulary.getId(), latestSlVersion.getId());
+		Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(codes);
+		for( ConceptDTO concept : version.getConcepts()) {
+			CodeDTO code = codeMap.get( concept.getNotation());
+			if( code == null )
+				continue;
+			code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), version.getLanguage());
+			codeService.save(code);
+
+			concept.setCodeId( code.getId() );
+			conceptService.save(concept);
+		}
+		return version;
+	}
+
+	private VersionDTO doPublishSlVersion(VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, List<VersionDTO> latestTlVersions, String versionNumber, List<CodeDTO> codes) {
+		// update concept uri
+		for(ConceptDTO concept : version.getConcepts()) {
+			concept.setUri( concept.getUri() + "/" + versionNumber);
+			// update concept parent and position based on workflow code
+			codes.stream().filter( c -> concept.getNotation().equals( c.getNotation())).findFirst().ifPresent( c -> {
+				concept.setParent( c.getParent());
+				concept.setPosition( c.getPosition());
+			});
+			conceptService.save( concept );
+		}
+
+		version.setCitation( VersionDTO.generateCitation(version, null, agency.getName()));
+
+		vocabulary.setVersionNumber( versionNumber );
+		// only set Uri everytime SL published
+		vocabulary.setUri( version.getUri());
+		vocabulary.setPublicationDate( LocalDate.now());
+		vocabulary.setLanguages( VocabularyDTO.getLanguagesFromVersions( vocabulary.getVersions()) );
+		// clear published language
+		vocabulary.setLanguagesPublished( null);
+		vocabulary.addLanguagePublished( version.getLanguage());
+		// perform the cloning of available TL
+		doTlCvCloning(vocabulary, version, agency, latestTlVersions, codes);
+		// save current version
+		version = versionService.save(version);
+		return version;
+	}
+
+	private void createSlUriResolver(VocabularyDTO vocabulary, VersionDTO version) {
+		// store vocabulary URN, if not exist
+		if(version.isInitialVersion())
+			createInitialVersionResolver(vocabulary, version);
+
+		// add URN to resolver for specific version
+		createSpecificVersionResolver(vocabulary, version);
+	}
+
+	private void createSpecificVersionResolver(VocabularyDTO vocabulary, VersionDTO version) {
+		try {
+			// only store SL version, since TL can be resolve from SL
+			resolverService.save(
+					ResolverDTO.createUrnResolver()
+							.withResourceId( version.getUri())
+							.withResourceURL( vocabulary.getNotation() + "?url=" + URLEncoder.encode( version.getUri(), "UTF-8")  )
+							.withResolverURI( version.getCanonicalUri())
+				);
+		} catch (UnsupportedEncodingException e) {
+			log.error(e.getMessage(), e);
+		}
+	}
+
+	private void createInitialVersionResolver(VocabularyDTO vocabulary, VersionDTO version) {
+		int index = version.getCanonicalUri().lastIndexOf(':');
+		String cvCanonicalUri = version.getCanonicalUri().substring(0, index);
+		resolverService.save(
+				ResolverDTO.createUrnResolver()
+						.withResourceId( vocabulary.getUri())
+						.withResourceURL( vocabulary.getNotation() )
+						.withResolverURI( cvCanonicalUri )
+		);
 	}
 
 	private List<CodeDTO> clonePublishedVersionCode(VersionDTO version, List<CodeDTO> codes) {
@@ -245,8 +246,9 @@ public class WorkflowManager {
 			newCodes.add(newCode);
 			
 			// store also the concept "code id changed"
-			if( ConceptDTO.getConceptFromCode( version.getConcepts(), eachCode.getId()).isPresent()  ) {
-				ConceptDTO c = ConceptDTO.getConceptFromCode( version.getConcepts(), eachCode.getId()).get();
+			Optional<ConceptDTO> conceptsOpt = ConceptDTO.getConceptFromCode(version.getConcepts(), eachCode.getId());
+			if( conceptsOpt.isPresent()  ) {
+				ConceptDTO c = conceptsOpt.get();
 				c.setCodeId( newCode.getId());
 				conceptService.save(c);
 			}
@@ -270,9 +272,7 @@ public class WorkflowManager {
 			for( CodeDTO code: codes) {
 				ConceptDTO
 					.getConceptFromCode(newVersion.getConcepts(), code.getNotation())
-					.ifPresent( c ->{ 
-						c.setCodeId( code.getId());
-					});
+					.ifPresent( c -> c.setCodeId( code.getId()) );
 			}
 			// save versionId property
 			for( ConceptDTO newConcept: newVersion.getConcepts()) {

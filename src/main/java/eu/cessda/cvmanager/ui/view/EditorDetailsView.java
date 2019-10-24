@@ -664,7 +664,7 @@ public class EditorDetailsView extends CvView {
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.SINGLE );
 		
-		detailTreeGrid.addColumn(code -> code.getNotation() /* + "("  + code.getCodeId() + ")"*/)
+		detailTreeGrid.addColumn(code -> code.getNotation()  + "("  + code.getId() + ")")
 			.setCaption("Code")
 			.setExpandRatio(1)
 			.setId("code");

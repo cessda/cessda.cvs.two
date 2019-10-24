@@ -57,6 +57,6 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 	
 	@Override
 	public void updateMessageStrings(Locale locale) {
-		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new", locale));
+		buttonAddCv.withCaption(i18n.get("view.action.button.cvscheme.new"));
 	}
 }
