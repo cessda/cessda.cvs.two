@@ -15,11 +15,12 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import com.vaadin.ui.*;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityService;
 import org.gesis.wts.security.SecurityUtils;
@@ -27,7 +28,6 @@ import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.ui.view.LoginView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
@@ -41,17 +41,10 @@ import com.vaadin.data.TreeData;
 import com.vaadin.data.provider.TreeDataProvider;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.JavaScript;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TreeGrid;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.renderers.ComponentRenderer;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
@@ -410,11 +403,48 @@ public class PublicationDetailsView extends CvView {
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentSlVersion.getDefinition()).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 
+		TextArea notesField = new TextArea();
+		MButton editNotesButton = new MButton("Add notes").withVisible(false );
+
 		MCssLayout notes = new MCssLayout();
-		notes.withFullWidth().add(lNotes.withWidth("140px").withStyleName("leftPart"),
-				new MLabel( vocabulary.getNotes() ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
+		MLabel notesLabel = new MLabel( vocabulary.getNotes() ).withStyleName("rightPart").withContentMode( ContentMode.HTML);
+		notes.withFullWidth().add(lNotes.withWidth("140px").withStyleName("leftPart"), notesLabel, notesField );
 		if( vocabulary.getNotes() == null || vocabulary.getNotes().isEmpty() )
 			notes.setVisible( false );
+		else{
+			editNotesButton.setCaption( "Edit notes" );
+		}
+
+		notesField.setVisible( false );
+		notesField.setStyleName( "rightPart" );
+		notesField.setWidth("100%");
+		notesField.setValue( vocabulary.getNotes() );
+
+		// if admin then possible to edit notes
+		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl(agency) ) {
+			notes.setVisible( true );
+			editNotesButton.setVisible( true );
+			editNotesButton.addClickListener( e -> {
+				if( notesField.isVisible() ){
+					// save mode
+					notesField.setVisible( false );
+					notesLabel.setVisible( true );
+					vocabulary.setNotes( notesField.getValue().trim());
+					notesLabel.setValue( vocabulary.getNotes());
+					vocabularyService.save(vocabulary);
+					if(  vocabulary.getNotes().isEmpty() ) {
+						editNotesButton.setCaption("Add notes");
+						notesLabel.setVisible( false );
+					}
+					else
+						editNotesButton.setCaption( "Edit notes" );
+				}else{
+					notesField.setVisible( true );
+					notesLabel.setVisible( false );
+					editNotesButton.setCaption( "Save notes" );
+				}
+			});
+		}
 		
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode.withWidth("140px").withStyleName("leftPart"),
@@ -458,7 +488,7 @@ public class PublicationDetailsView extends CvView {
 							new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 				);
 
-		topViewSection.add(topHead, titleSmall, description, notes, code, titleSmallOl, descriptionOl, langVersDateLayout);
+		topViewSection.add(topHead, titleSmall, description, notes, editNotesButton, code, titleSmallOl, descriptionOl, langVersDateLayout);
 	}
 
 	private void initBottomViewSection() {
@@ -495,7 +525,7 @@ public class PublicationDetailsView extends CvView {
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.NONE );
 		
-		detailTreeGrid.addColumn(code -> code.getNotation() /* + "("  + code.getCodeId() + ")"*/)
+		detailTreeGrid.addColumn(code -> code.getNotation()  + "("  + code.getCodeId() + ")")
 			.setCaption("Code")
 			.setExpandRatio(1)
 			.setId("code");
