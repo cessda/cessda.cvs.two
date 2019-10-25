@@ -650,7 +650,7 @@ public class PublicationDetailsView extends CvView {
 		cvCodeTreeData.clear();
 		// assign the tree structure
 		
-		CvCodeTreeUtils.buildConceptTree( currentVersion.getConcepts(), cvCodeTreeData);
+		CvCodeTreeUtils.buildConceptTree( vocabulary, currentVersion, cvCodeTreeData);
 		// refresh tree
 		dataProvider.refreshAll();
 		// expand all nodes

@@ -22,12 +22,10 @@ import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityService;
-import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.ui.view.LoginView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.vaadin.spring.events.EventBus;
 import org.vaadin.spring.events.EventScope;
@@ -55,7 +53,6 @@ import com.vaadin.ui.renderers.ComponentRenderer;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ConfigurationService;
@@ -613,7 +610,7 @@ public class WithdrawnDetailView extends CvView {
 		cvCodeTreeData.clear();
 		// assign the tree structure
 		
-		CvCodeTreeUtils.buildConceptTree( currentVersion.getConcepts(), cvCodeTreeData);
+		CvCodeTreeUtils.buildConceptTree(vocabulary, currentVersion, cvCodeTreeData);
 		// refresh tree
 		dataProvider.refreshAll();
 		// expand all nodes

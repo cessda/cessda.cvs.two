@@ -1,26 +1,25 @@
 package eu.cessda.cvmanager.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 
 import com.vaadin.data.TreeData;
 
-import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class CvCodeTreeUtils{
+	private static final Logger log = LoggerFactory.getLogger( CvCodeTreeUtils.class );
 	private static List<String> conceptToBeRemoved = null;
 	
 	/**
@@ -170,9 +169,14 @@ public class CvCodeTreeUtils{
 	/**
 	 * Generate a tree from concepts by sorting based on position first
 	 */
-	public static void buildConceptTree(Set<ConceptDTO> concepts, TreeData<ConceptDTO> cvCodeTree) {
+	public static void buildConceptTree(VocabularyDTO vocabulary, VersionDTO currentVersion, TreeData<ConceptDTO> cvCodeTree) {
 		cvCodeTree.clear();
-		
+
+		Set<ConceptDTO> concepts = currentVersion.getConcepts();
+
+		// if not SL then get parent and position information from SL version
+		assignParentAndPositionFromSlConcepts(vocabulary, currentVersion, concepts);
+
 		// sort concept first
 		List<ConceptDTO> sortedConcepts = concepts.stream()
 				.sorted( ( c1, c2) -> c1.getPosition().compareTo( c2.getPosition() ))
@@ -188,6 +192,25 @@ public class CvCodeTreeUtils{
 				cvCodeTree.addItem(parentCode, concept);
 			}
 			conceptMaps.put( concept.getNotation(), concept);
+		}
+	}
+
+	private static void assignParentAndPositionFromSlConcepts(VocabularyDTO vocabulary, VersionDTO currentVersion, Set<ConceptDTO> concepts) {
+		if( currentVersion.getItemType().equals(ItemType.TL.toString())){
+			Optional<VersionDTO> versionByUri = vocabulary.getVersionByUri(currentVersion.getUriSl());
+			if( versionByUri.isPresent()) {
+				final Map<String, ConceptDTO> conceptSlAsMap = versionByUri.get().getConceptAsMap();
+				// transfer SL parent and position to the current TL concept
+				for (ConceptDTO concept : concepts) {
+					ConceptDTO conceptSl = conceptSlAsMap.get(concept.getNotation());
+					if( conceptSl != null ){
+						concept.setParent( conceptSl.getParent());
+						concept.setPosition( conceptSl.getPosition());
+					}
+				}
+			}
+			else
+				log.info("slVersion not found on CV {} version {} language {}" + currentVersion.getNotation(), currentVersion.getNumber(), currentVersion.getLanguage());
 		}
 	}
 
