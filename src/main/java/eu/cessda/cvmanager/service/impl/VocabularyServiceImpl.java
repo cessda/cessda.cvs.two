@@ -237,9 +237,20 @@ public class VocabularyServiceImpl implements VocabularyService {
         Page<Vocabulary> result = vocabularySearchRepository.search(queryStringQuery(query), pageable);
         return result.map(vocabularyMapper::toDto);
     }
-    
 
-	@Override
+    @Override
+    public void doIndexingEditorAndPublicationCvs() {
+		log.info( "Performing indexing on both editor and publication" );
+		vocabularySearchRepository.deleteAll();
+		vocabularyPublishSearchRepository.deleteAll();
+		findAll().forEach(v -> {
+			index(v);
+			indexPublish(v, null);
+		});
+    }
+
+
+    @Override
 	@Transactional(readOnly = true)
 	public Page<VocabularyDTO> findAllWithdrawn(Pageable pageable) {
 		  log.debug("Request to get all withdrawn Vocabularies");

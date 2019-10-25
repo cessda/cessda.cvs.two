@@ -72,6 +72,8 @@ public interface VocabularyService {
      * @return the list of entities
      */
     Page<VocabularyDTO> search(String query, Pageable pageable);
+
+    void doIndexingEditorAndPublicationCvs();
     
     Page<VocabularyDTO> findAllWithdrawn(Pageable pageable);
     

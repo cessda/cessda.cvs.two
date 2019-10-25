@@ -1,7 +1,6 @@
 package eu.cessda.cvmanager.config;
 
 import eu.cessda.cvmanager.repository.VocabularyRepository;
-import eu.cessda.cvmanager.repository.search.VocabularyPublishSearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.VocabularyService;
 import org.slf4j.Logger;
@@ -23,9 +22,6 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
     private VocabularySearchRepository vocabularySearchRepository;
 
     @Autowired
-    private VocabularyPublishSearchRepository vocabularyPublishSearchRepository;
-
-    @Autowired
     private VocabularyService vocabularyService;
 
     /**
@@ -34,14 +30,10 @@ public class ApplicationStartup implements ApplicationListener<ApplicationReadyE
      */
     @Override
     public void onApplicationEvent(final ApplicationReadyEvent event) {
+        // check if indexing is necessary
         if( vocabularyRepository.count() > 0 && vocabularySearchRepository.count() == 0L){
             log.info( "Performing indexing on application start up" );
-            vocabularySearchRepository.deleteAll();
-            vocabularyPublishSearchRepository.deleteAll();
-            vocabularyService.findAll().forEach(v -> {
-                vocabularyService.index(v);
-                vocabularyService.indexPublish(v, null);
-            });
+            vocabularyService.doIndexingEditorAndPublicationCvs();
         }
     }
 }
