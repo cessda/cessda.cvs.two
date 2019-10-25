@@ -253,12 +253,8 @@ public class PublicationDetailsView extends CvView {
 
 	private void refreshCvScheme() {
 		languageLayout.removeAllComponents();
-		List<DDIStore> ddiSchemes = null;
-//		if( cvItem.getCurrentCvId() != null ) {
-//			ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
-//		}
 		
-		if( ddiSchemes == null ) {
+		if( cvItem.getCurrentCvId() == null ) {
 			if( cvItem.getCurrentNotation() != null ) {
 				vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
 				
@@ -267,10 +263,8 @@ public class PublicationDetailsView extends CvView {
 					if( slVer.isPresent() ) {
 						currentSlVersion = slVer.get();
 						currentVersion = currentSlVersion;
-//						ddiSchemes = stardatDDIService.findByIdAndElementType( currentVersion.getUri(), DDIElement.CVSCHEME);
 					}
 				}
-				
 			}
 		} else {			
 			currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
@@ -287,11 +281,7 @@ public class PublicationDetailsView extends CvView {
 				currentSlVersion = currentVersion;
 		}
 		
-		
-		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
-			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
-		}
-		
+
 		if(  cvItem.getCvScheme() != null ) {
 			String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
 			if( owner != null && !owner.isEmpty() )
