@@ -126,11 +126,14 @@ public class WorkspaceManager {
 			// check if previous version exist and perform cloning
 			clonePreviousVersion(agency, language, vocabulary, slVersion, tlVersion);
 
-			// if no initial version found
-			if( tlVersion.getInitialVersion() == 0L)
-				tlVersion.setInitialVersion( tlVersion.getId() );
-			
+			// save after assign everything
 			tlVersion = versionService.save(tlVersion);
+
+			// if no initial version found
+			if( tlVersion.getInitialVersion() == 0L) {
+				tlVersion.setInitialVersion(tlVersion.getId());
+				tlVersion = versionService.save(tlVersion);
+			}
 
 			// save concept if exist
 			storeTLConceptWithCode(language, vocabulary, tlVersion, slVersion);
@@ -141,7 +144,7 @@ public class WorkspaceManager {
 			vocabulary.addVersion(tlVersion);
 			vocabulary.addVers(tlVersion);
 		} else {
-			versionService.save(tlVersion);
+			tlVersion = versionService.save(tlVersion);
 		}
 		// store the variable and index
 		vocabulary.setTitleDefinition( tlVersion.getTitle(), tlVersion.getDefinition(), language);
