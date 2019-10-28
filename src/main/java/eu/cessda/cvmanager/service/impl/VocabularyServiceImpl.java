@@ -111,8 +111,6 @@ public class VocabularyServiceImpl implements VocabularyService {
     
     private final VocabularyPublishSearchRepository vocabularyPublishSearchRepository;
 
-    private final StardatDDIService stardatDDIService;
-    
     // Use original ElasticsearchTemplate if this bug is fixed
     // https://jira.spring.io/browse/DATAES-412
     private final ElasticsearchTemplate2 elasticsearchTemplate;
@@ -120,7 +118,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     public VocabularyServiceImpl(VocabularyRepository vocabularyRepository, VocabularyMapper vocabularyMapper, 
     		VocabularySearchRepository vocabularySearchRepository, ElasticsearchTemplate2 elasticsearchTemplate,
     		VocabularyPublishMapper vocabularyPublishMapper, VersionService versionService, CodeService codeService,
-    		VocabularyPublishSearchRepository vocabularyPublishSearchRepository, StardatDDIService stardatDDIService,
+    		VocabularyPublishSearchRepository vocabularyPublishSearchRepository,
     		ConceptService conceptService, VocabularyChangeService vocabularyChangeService) {
     	this.codeService = codeService;
         this.vocabularyRepository = vocabularyRepository;
@@ -130,7 +128,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.versionService = versionService;
         this.vocabularyPublishSearchRepository = vocabularyPublishSearchRepository;
-        this.stardatDDIService = stardatDDIService;
         this.conceptService = conceptService;
         this.vocabularyChangeService = vocabularyChangeService;
     }
@@ -322,13 +319,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 	public void completeDelete(VocabularyDTO vocabulary) {
 		vocabulary = findOne( vocabulary.getId());
 		for(VersionDTO version : vocabulary.getVersions()) {
-			if( version.getItemType().equals(ItemType.SL.toString()) && version.getStatus().equals(Status.PUBLISHED.toString())) {
-				List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(version.getUri(), DDIElement.CVSCHEME);
-				if( ddiSchemes != null && !ddiSchemes.isEmpty() ) {
-					CVScheme scheme = new CVScheme(ddiSchemes.get(0));
-					stardatDDIService.deleteScheme( scheme );
-				}
-			}
 			for( ConceptDTO concept : version.getConcepts())
 				conceptService.delete( concept.getId());
 			
