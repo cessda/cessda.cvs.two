@@ -94,5 +94,12 @@ public class CvItem {
 	public void setCvCodeTreeData(TreeData<CodeDTO> cvCodeTreeData) {
 		this.cvCodeTreeData = cvCodeTreeData;
 	}
+
+	public void clear(){
+		currentCvId = null;
+		currentNotation = null;
+		currentConceptId = null;
+		currentLanguage = null;
+	}
 	
 }

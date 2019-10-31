@@ -44,7 +44,8 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private final transient WorkspaceManager workspaceManager;
 	private final transient EventBus.UIEventBus eventBus;
 	private final transient I18N i18n;
-	private static Locale locale = UI.getCurrent().getLocale();
+
+	private Locale locale = UI.getCurrent().getLocale();
 
 	private Binder<ConceptDTO> binder = new Binder<>();
 	
@@ -72,8 +73,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 
 	public DialogAddCodeWindow(WorkspaceManager workspaceManager, I18N i18n, EventBus.UIEventBus eventBus, VocabularyDTO vocabularyDTO,
 							   VersionDTO versionDTO, CodeDTO codeDTO, CodeDTO parentCodeDTO, ConceptDTO conceptDTO) {
-		super( parentCodeDTO == null ? i18n.get( "dialog.detail.code.add.window.title" , locale):i18n.get( "dialog.detail.code.child.window.title" , 
-				locale, parentCodeDTO.getNotation() ));
+		super( parentCodeDTO == null ? i18n.get( "dialog.detail.code.add.window.title" ):i18n.get( "dialog.detail.code.child.window.title", parentCodeDTO.getNotation() ));
 		this.workspaceManager = workspaceManager;
 		this.eventBus = eventBus;
 		this.i18n = i18n;

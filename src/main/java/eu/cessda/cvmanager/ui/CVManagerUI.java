@@ -147,8 +147,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	@Override
 	protected void initUI(VaadinRequest request) {
 		setLocale(Locale.ENGLISH);
-		
-		
+
 		breadCrumb
 			.withBaseUrl( configurationService.getServerContextPath() )
 			.withBasePageName("Home")

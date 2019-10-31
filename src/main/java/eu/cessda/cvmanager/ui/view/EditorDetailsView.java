@@ -204,7 +204,7 @@ public class EditorDetailsView extends CvView {
 	public void init() {
 		
 		editorCvActionLayout = new EditorCvActionLayout("block.action.cv", "block.action.cv.show", workspaceManager, workflowManager, i18n,
-				stardatDDIService, agencyService, vocabularyService, versionService, conceptService, codeService, 
+				agencyService, vocabularyService, versionService, conceptService, codeService,
 				configService, eventBus, vocabularyChangeService, licenceService);
 		
 		editorCodeActionLayout = new EditorCodeActionLayout("block.action.code", "block.action.code.show",
@@ -315,7 +315,7 @@ public class EditorDetailsView extends CvView {
 				cvItem.setCurrentNotation(itemPathPart[0]);
 				if( itemPathPart.length > 1 )
 					cvItem.setCurrentConceptId(itemPathPart[1]);
-				
+
 				setDetails() ;
 
 			} catch (Exception e) {

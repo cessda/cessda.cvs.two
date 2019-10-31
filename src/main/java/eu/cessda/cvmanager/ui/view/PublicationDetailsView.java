@@ -143,7 +143,7 @@ public class PublicationDetailsView extends CvView {
 	private List<LicenceDTO> licenses;
 	private Language sourceLanguage;
 	private String activeTab;
-	
+
 
 	public PublicationDetailsView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
@@ -182,6 +182,7 @@ public class PublicationDetailsView extends CvView {
 	@Override
 	public void enter(ViewChangeEvent event) {
 		super.enter(event);
+		cvItem.clear();
 		
 		locale = UI.getCurrent().getLocale();
 
@@ -220,7 +221,7 @@ public class PublicationDetailsView extends CvView {
 					cvItem.setCurrentCvId( mappedParams.get("url") );
 				if(  mappedParams.get("code") != null )
 					highlightCode = mappedParams.get("code");
-				
+
 				setDetails() ;
 
 			} catch (Exception e) {
@@ -237,9 +238,7 @@ public class PublicationDetailsView extends CvView {
 		topMenuButtonUpdateActive(0);
 				
 		refreshCvScheme();
-		
-		
-		
+
 		// update breadcrumb
 		breadcrumbs
 			.addItem(getAgency().getName(), "agency/" + agency.getName())
@@ -266,9 +265,14 @@ public class PublicationDetailsView extends CvView {
 					}
 				}
 			}
-		} else {			
+		} else {
 			currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
-			vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
+			if( currentVersion != null)
+				vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
+			else{
+				vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
+				vocabulary.getLatestSlVersion(true).ifPresent(v -> currentVersion = v);
+			}
 			// find correct version by selected language
 			if( selectedLang != null && !vocabulary.getSourceLanguage().equals( selectedLang.getLanguage())) {
 				vocabulary.getVersionByUriSlAndLangauge( cvItem.getCurrentCvId(), selectedLang.getLanguage())

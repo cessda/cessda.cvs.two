@@ -64,7 +64,6 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 
 	private final transient WorkspaceManager workspaceManager;
 	private final transient WorkflowManager workflowManager;
-	private final StardatDDIService stardatDDIService;
 	private final AgencyService agencyService;
 	private final CodeService codeService;
 	private final ConceptService conceptService;
@@ -105,7 +104,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private boolean isCurrentSL;
 	
 	
-	public EditorCvActionLayout(String titleHeader, String showHeader, WorkspaceManager workspaceManager, WorkflowManager workflowManager, I18N i18n, StardatDDIService stardatDDIService,
+	public EditorCvActionLayout(String titleHeader, String showHeader, WorkspaceManager workspaceManager, WorkflowManager workflowManager, I18N i18n,
 								AgencyService agencyService, VocabularyService vocabularyService, VersionService versionService,
 								ConceptService conceptService, CodeService codeService, ConfigurationService configService,
 								UIEventBus eventBus, VocabularyChangeService vocabularyChangeService, LicenceService licenceService) {
@@ -113,7 +112,6 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 		this.workspaceManager = workspaceManager;
 		this.workflowManager = workflowManager;
 		this.i18n = i18n;
-		this.stardatDDIService = stardatDDIService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		this.configService = configService;
@@ -234,7 +232,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	 * @param event
 	 */
 	private void createNewVersion(ClickEvent event ) {
-		Window window = new DialogCreateVersionWindow(stardatDDIService, codeService, conceptService, vocabularyService, versionService, cvScheme, 
+		Window window = new DialogCreateVersionWindow(codeService, conceptService, vocabularyService, versionService, cvScheme,
 				vocabulary, currentVersion, selectedLanguage, sourceLanguage, agency, eventBus, vocabularyChangeService);
 		getUI().addWindow(window);
 	}
@@ -254,121 +252,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 			dialog -> {
 				if( dialog.isConfirmed() ) {
 					// normalize the code
-					List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
-					Optional<VersionDTO> latestVers = vocabulary.getLatestVersionByLanguage(currentVersion.getLanguage(), null, Status.PUBLISHED.toString());
-					if( latestVers.isPresent()) { // there is already exist published version
-						boolean reindexPublication = false;
-						if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
-							reindexPublication = true;
-							if( currentVersion.getStatus().equals(Status.PUBLISHED.toString())) {
-								// check if it is the only SL version, if yes delete everything
-								if( currentVersion.getInitialVersion().equals( currentVersion.getId() )) {
-									vocabularyService.completeDelete(vocabulary);
-									UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
-									return;
-								}
-								
-								// delete published in flatDB
-								List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(currentVersion.getUri(), DDIElement.CVSCHEME);
-								if( ddiSchemes != null && !ddiSchemes.isEmpty() ) {
-									CVScheme scheme = new CVScheme(ddiSchemes.get(0));
-									stardatDDIService.deleteScheme( scheme );
-								}
-							}
-							// delete TLs
-							for(VersionDTO eachTLversion: versionService.getTLVersionBySLVersion(currentVersion)) {
-								// remove all concepts
-								for(ConceptDTO c : eachTLversion.getConcepts()) {
-									conceptService.delete( c.getId());
-								}
-								// remove version
-								versionService.delete( eachTLversion.getId() );
-								vocabulary.removeVersion(eachTLversion);
-							}
-							// remove workflow codes on vocabulary
-							for( CodeDTO code : workflowCodes )
-								codeService.delete(code);
-							// substitute workflow code with the one from previous version
-							List<CodeDTO> latestSLcodes = codeService.findByVocabularyAndVersion( vocabulary.getId(), latestVers.get().getId());
-							Set<CodeDTO> newWorkflowCodes = new LinkedHashSet<>();
-							for(CodeDTO eachCode : latestSLcodes) {
-								CodeDTO newCode = CodeDTO.clone(eachCode);
-								newCode.setArchived( false );
-								newCode = codeService.save( newCode);
-								newWorkflowCodes.add(newCode);
-							}
-							vocabulary.setCodes(newWorkflowCodes);
-							
-							// remove all concepts
-							for(ConceptDTO c : currentVersion.getConcepts()) {
-								conceptService.delete( c.getId());
-							}
-							// remove version
-							vocabulary.removeVersion(currentVersion);
-							versionService.delete( currentVersion.getId());
-							
-							// get latest SL and update vocabulary URI
-							vocabulary.getLatestSlVersion(true).ifPresent( v -> { vocabulary.setUri( v.getUri());});
-							
-							vocabulary.getLanguages().clear();
-							vocabulary.addLanguage(latestVers.get().getLanguage());
-							vocabulary = vocabularyService.save(vocabulary);
-														
-							// reindex editor search
-							vocabularyService.index(vocabulary);
-							
-							if(reindexPublication)
-								vocabularyService.indexPublish(vocabulary, latestVers.get());
-							
-							eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-							UI.getCurrent().getNavigator().navigateTo( PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
-						} 
-						else // TL version which is not initial version
-						{
-							if( currentVersion.getStatus().equals(Status.PUBLISHED.toString()))
-								reindexPublication = true;
-							// clear the code in certain language
-							for(CodeDTO eachCode : workflowCodes) {
-								eachCode.setTitleDefinition( null, null, currentVersion.getLanguage());
-								codeService.save( eachCode );
-							}
-							// replace the content of workflowCodes in certain language
-							if( !currentVersion.isInitialVersion() && !currentVersion.equals(latestVers)) {
-								Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(workflowCodes);
-								for( ConceptDTO concept : latestVers.get().getConcepts()) {
-									CodeDTO code = codeMap.get( concept.getNotation());
-									if( code == null ) 
-										continue;
-									code.setTitleDefinition( concept.getTitle(), concept.getDefinition(), currentVersion.getLanguage());
-									codeService.save( code );
-								}
-							}
-							
-							// remove all concepts
-							for(ConceptDTO c : currentVersion.getConcepts()) {
-								conceptService.delete( c.getId());
-							}
-							// remove version
-							vocabulary.removeVersion(currentVersion);
-							
-							// update published language
-							Set<String> publishedLangs = vocabulary.getLatestVersions( Status.PUBLISHED.toString() )
-								.stream()
-								.map( i -> i.getLanguage())
-								.collect( Collectors.toSet());
-								
-							vocabulary.setLanguagesPublished(publishedLangs);
-
-							versionService.delete( currentVersion.getId());
-							
-							// reindex editor search
-							vocabularyService.index(vocabulary);
-							if(reindexPublication)
-								vocabularyService.indexPublish(vocabulary, latestVers.get());
-							
-							eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
-							UI.getCurrent().getNavigator().navigateTo( PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
-						}
+					if( !currentVersion.isInitialVersion()) { // there is already exist published version
+						removeNonInitialVersion();
 					} else { // initial version
 						if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
 							// remove codes on vocabulary
@@ -388,6 +273,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME );
 						} else {
 							// clear workflow codes in certain language
+							List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
 							for(CodeDTO wfc : workflowCodes) {
 								wfc.setTitleDefinition(null, null, Language.getEnum( currentVersion.getLanguage()), true);
 								codeService.save(wfc);
@@ -419,7 +305,143 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 
 		);
 	}
-	
+
+	private void removeNonInitialVersion() {
+		List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
+		boolean reindexPublication = false;
+		String currentLanguage = currentVersion.getLanguage();
+
+		// if deleted code is SL
+		if( currentVersion.getItemType().equals( ItemType.SL.toString())) {
+			reindexPublication = true;
+			// delete TLs
+			removeAllTlVersions();
+			//replace current workflow codes with new ones created from previous version codes
+			replaceWorkflowCodes(workflowCodes);
+
+
+			// remove all concepts
+			for(ConceptDTO c : currentVersion.getConcepts()) {
+				conceptService.delete( c.getId());
+			}
+			// remove version
+			vocabulary.removeVersion(currentVersion);
+			versionService.delete( currentVersion.getId());
+
+			// get latest SL and update vocabulary URI
+			vocabulary.getLatestSlVersion(true)
+					.ifPresent( v -> {
+						vocabulary.setUri( v.getUri());
+						vocabulary.setVersionNumber( v.getNumber() );
+					});
+
+			// update published language
+			updatePublishedLanguages();
+
+			// update editor langauge
+			vocabulary.getLanguages().clear();
+			vocabulary.addLanguage( currentLanguage );
+			vocabulary = vocabularyService.save(vocabulary);
+
+			// reindex editor search
+			vocabularyService.index(vocabulary);
+
+			if(reindexPublication)
+				vocabularyService.indexPublish(vocabulary, null);
+
+			eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+			UI.getCurrent().getNavigator().navigateTo( PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
+		}
+		else // TL version which is not initial version
+		{
+			// reindex publication if to be deleted code has already published
+			if( currentVersion.getStatus().equals(Status.PUBLISHED.toString()))
+				reindexPublication = true;
+
+			// remove all concepts
+			for(ConceptDTO c : currentVersion.getConcepts()) {
+				conceptService.delete( c.getId());
+			}
+			// remove version
+			vocabulary.removeVersion(currentVersion);
+			versionService.delete( currentVersion.getId());
+
+
+			// clear the code in certain language
+			for(CodeDTO eachCode : workflowCodes) {
+				eachCode.setTitleDefinition( null, null, currentLanguage);
+				codeService.save( eachCode );
+			}
+
+			// update published language
+			updatePublishedLanguages();
+
+			// replace the content of workflowCodes in certain language
+			Optional<VersionDTO> latestVersionByLanguage = vocabulary.getLatestVersionByLanguage(currentLanguage);
+			Map<String, CodeDTO> codeMap = CodeDTO.getCodeAsMap(workflowCodes);
+			if( latestVersionByLanguage.isPresent() ) {
+				for (ConceptDTO concept : latestVersionByLanguage.get().getConcepts()) {
+					CodeDTO code = codeMap.get(concept.getNotation());
+					if (code == null)
+						continue;
+					code.setTitleDefinition(concept.getTitle(), concept.getDefinition(), currentVersion.getLanguage());
+					codeService.save(code);
+				}
+			}
+
+			// reindex editor search
+			vocabularyService.index(vocabulary);
+			if(reindexPublication)
+				vocabularyService.indexPublish(vocabulary, null);
+
+			eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.CVSCHEME_UPDATED, null) );
+			UI.getCurrent().getNavigator().navigateTo( PublicationDetailsView.VIEW_NAME + "/" + vocabulary.getNotation());
+		}
+	}
+
+	private void updatePublishedLanguages() {
+		Set<String> publishedLangs = vocabulary.getLatestVersions( Status.PUBLISHED.toString() )
+			.stream()
+			.map( i -> i.getLanguage())
+			.collect( Collectors.toSet());
+		vocabulary.setLanguagesPublished(publishedLangs);
+		vocabulary = vocabularyService.save(vocabulary);
+	}
+
+	private void removeAllTlVersions() {
+		for(VersionDTO eachTLversion: versionService.getTLVersionBySLVersion(currentVersion)) {
+			// remove all concepts
+			for(ConceptDTO c : eachTLversion.getConcepts()) {
+				conceptService.delete( c.getId());
+			}
+			// remove version
+			versionService.delete( eachTLversion.getId() );
+			vocabulary.removeVersion(eachTLversion);
+		}
+	}
+
+	private void replaceWorkflowCodes(List<CodeDTO> workflowCodes) {
+		// remove workflow codes on vocabulary
+		for( CodeDTO code : workflowCodes )
+			codeService.delete(code);
+		// if SL is already published set of published code need to be removed as well
+		if( currentVersion.getStatus().equals( Status.PUBLISHED.toString() )){
+			List<CodeDTO> toDeletePublishedCodes = codeService.findByVocabularyAndVersion( vocabulary.getId(), currentVersion.getId());
+			for( CodeDTO code : toDeletePublishedCodes )
+				codeService.delete(code);
+		}
+		// create new workflow code from previous version
+		List<CodeDTO> latestSLcodes = codeService.findByVocabularyAndVersion( vocabulary.getId(), currentVersion.getPreviousVersion());
+		Set<CodeDTO> newWorkflowCodes = new LinkedHashSet<>();
+		for(CodeDTO eachCode : latestSLcodes) {
+			CodeDTO newCode = CodeDTO.clone(eachCode);
+			newCode.setArchived( false );
+			newCode = codeService.save( newCode);
+			newWorkflowCodes.add(newCode);
+		}
+		vocabulary.setCodes(newWorkflowCodes);
+	}
+
 	private void withdrawVocabulary(ClickEvent event ) {
 		ConfirmDialog.show( this.getUI(), "Confirm",
 		"Are you sure you want to withdraw the CV \"" + currentVersion.getNotation() + "\" ("+ currentVersion.getNumber() +")" +"?", "yes",

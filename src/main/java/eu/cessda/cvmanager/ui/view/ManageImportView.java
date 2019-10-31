@@ -60,7 +60,6 @@ public class ManageImportView extends CvManagerAdminView {
 	private static final long serialVersionUID = 6904286186508174249L;
 	public static final String VIEW_NAME = "manage-import";
 	private final transient VocabularyService vocabularyService;
-	private final transient StardatDDIService stardatDDIService;
 	private final transient CodeService codeService;
 	private final transient VersionService versionService;
 	private final transient ConceptService conceptService;
@@ -77,14 +76,13 @@ public class ManageImportView extends CvManagerAdminView {
 
 	public ManageImportView(I18N i18n, EventBus.UIEventBus eventBus, SecurityService securityService,
 			ImportServiceImpl importServiceImpl, BCryptPasswordEncoder encrypt, VocabularyService vocabularyService,
-			StardatDDIService stardatDDIService, CodeService codeService, VersionService versionService,
+			CodeService codeService, VersionService versionService,
 			VocabularyChangeService vocabularyChangeService, ConceptService conceptService,
 			VocabularySearchRepository vocabularySearchRepository,
 			VocabularyPublishSearchRepository vocabularyPublishSearchRepository) {
 		super(VIEW_NAME, i18n, eventBus, securityService, CvManagerAdminView.ActionType.DEFAULT.toString());
 		eventBus.subscribe(this, ManageImportView.VIEW_NAME);
 		this.vocabularyService = vocabularyService;
-		this.stardatDDIService = stardatDDIService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		this.versionService = versionService;
@@ -505,13 +503,6 @@ public class ManageImportView extends CvManagerAdminView {
 	private void dropContent() {
 		vocabularyService.findAll().forEach(v -> {
 			for (VersionDTO version : v.getVersions()) {
-				if (version.getItemType().equals(ItemType.SL.toString())
-						&& version.getStatus().equals(Status.PUBLISHED.toString())) {
-					List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(version.getUri(),
-							DDIElement.CVSCHEME);
-					if (ddiSchemes != null && !ddiSchemes.isEmpty())
-						stardatDDIService.deleteScheme(new CVScheme(ddiSchemes.get(0)));
-				}
 				for (ConceptDTO concept : version.getConcepts())
 					conceptService.delete(concept.getId());
 

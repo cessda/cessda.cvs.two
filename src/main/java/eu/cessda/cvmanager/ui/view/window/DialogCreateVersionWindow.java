@@ -79,7 +79,6 @@ public class DialogCreateVersionWindow extends MWindow {
 	private final UIEventBus eventBus;
 	private final VersionService versionService;
 	private final VocabularyChangeService vocabularyChangeService;
-	private final StardatDDIService stardatDDIService;
 	private final CodeService codeService;
 	private final ConceptService conceptService;
 	private final VocabularyService vocabularyService;
@@ -120,13 +119,12 @@ public class DialogCreateVersionWindow extends MWindow {
 	private String recommendVersionNumber = null;
 //	List<CloneVersion> cloneVersions = new ArrayList<>();
 
-	public DialogCreateVersionWindow(StardatDDIService stardatDDIService, CodeService codeService, 
+	public DialogCreateVersionWindow(CodeService codeService,
 			ConceptService conceptService, VocabularyService vocabularyService, VersionService versionService,
 			CVScheme cvScheme, VocabularyDTO vocabularyDTO, VersionDTO versionDTO, 
 			Language selectedLanguage, Language sourceLanguage, AgencyDTO agencyDTO, 
 			UIEventBus eventBus, VocabularyChangeService vocabularyChangeService) {
 		super("Manage Status " + ( sourceLanguage.equals(selectedLanguage) ? " SL " : " TL ") + selectedLanguage.name().toLowerCase());
-		this.stardatDDIService = stardatDDIService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		this.vocabularyService = vocabularyService;
