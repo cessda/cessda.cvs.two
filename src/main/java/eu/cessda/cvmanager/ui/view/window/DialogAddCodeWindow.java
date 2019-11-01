@@ -1,7 +1,9 @@
 package eu.cessda.cvmanager.ui.view.window;
 
 import java.util.Locale;
+import java.util.Optional;
 
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import org.gesis.wts.domain.enumeration.Language;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -206,7 +208,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private void saveCode() {
 		if(!isInputValid())
 			return;
-		
+
 		// store the code
 		workspaceManager.saveCodeAndConcept(vocabulary, version, code, parentCode, concept, null,
 				notation.getValue(), preferedLabel.getValue(), ParserUtils.toXHTML(description.getValue()));

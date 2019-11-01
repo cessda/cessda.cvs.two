@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import eu.cessda.cvmanager.event.CvManagerEvent;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.spring.events.EventBus.UIEventBus;
+import org.vaadin.spring.events.EventScope;
 import org.vaadin.viritin.fields.MTextField;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
@@ -379,7 +381,8 @@ public class DialogAddLanguageWindow extends MWindow {
 		// save log if not initial version
 		if( !version.isInitialVersion())
 			workspaceManager.storeChangeLog(vocabulary, version, changeCb.getValue(), changeDesc.getValue() == null ? "": changeDesc.getValue());
-		
+
+		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( CvManagerEvent.EventType.CVSCHEME_UPDATED, null) );
 		close();
 		UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.toString());
 	}

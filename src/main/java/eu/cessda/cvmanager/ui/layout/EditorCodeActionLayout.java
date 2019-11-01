@@ -75,6 +75,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	private VersionDTO currentVersion;
 	private CodeDTO currentCode;
 	private ConceptDTO currentConcept;
+	private ConceptDTO currentSlConcept;
 	private AgencyDTO agency;
 	private Language selectedLanguage;
 	private Language sourceLanguage;
@@ -177,7 +178,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 	private void doCodeAddTranslation(ClickEvent event ) {
 		Window windowTranslate = new DialogTranslateCodeWindow(
 				workspaceManager, eventBus, selectedLanguage, sourceLanguage, vocabulary, currentVersion, currentCode,
-				new ConceptDTO(), currentConcept, i18n);
+				new ConceptDTO(), currentSlConcept, i18n);
 		getUI().addWindow( windowTranslate );
 	}
 	
@@ -202,6 +203,7 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 		setCvConcept( null );
 		setCurrentCode( null );
 		setCurrentConcept( null );
+		setCurrentSlConcept( null );
 	}
 	
 	@Override
@@ -254,6 +256,14 @@ public class EditorCodeActionLayout extends ResponsiveBlock{
 
 	public void setCurrentConcept(ConceptDTO currentConcept) {
 		this.currentConcept = currentConcept;
+	}
+
+	public ConceptDTO getCurrentSlConcept() {
+		return currentSlConcept;
+	}
+
+	public void setCurrentSlConcept(ConceptDTO currentSlConcept) {
+		this.currentSlConcept = currentSlConcept;
 	}
 	
 	public VocabularyDTO getVocabulary() {

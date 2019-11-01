@@ -243,40 +243,10 @@ public class WorkspaceManager {
 			
 			// saving SL concept
 			if( isSaveUpdateSlConcept ) {
-				List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
-				TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
-				
-				if( parentCode == null) {	// if root code
-					code.setNotation( notation );
-					code.setUri( code.getNotation() );
-					codeTreeData.addRootItems(code);
-					
-				} else { // if child code
-					String completeNotation = parentCode.getNotation() + "." + notation;
-					code.setNotation( completeNotation );
-					code.setUri( code.getNotation() );
-					code.setParent( parentCode.getNotation());
-					codeTreeData.addItem(parentCode, code);
-					
-					concept.setNotation( completeNotation );
-					concept.setParent(parentCode.getNotation());
-					concept.setUri( WorkflowUtils.generateCodeUri(version.getUri(), version.getNotation(), completeNotation, version.getLanguage()));
-				}
-				
-				// save changes on position and parent
-				List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
-				for( CodeDTO eachCode: newCodeDTOs) {
-					if( !eachCode.isPersisted())
-						code = codeService.save(eachCode);
-					else
-						codeService.save(eachCode);
-				}
-				
-				concept.setPosition( version.getConcepts().size());
-				
-				vocabulary.addCode(code);
+				code = saveSlConcept(vocabulary, version, code, parentCode, concept, notation);
 			} 
 			else { // save TL concept
+				// setPotitiona and setParent is not necessary since conceptTl will follow conceptSL
 				concept.setPosition( code.getPosition() );
 				concept.setParent( code.getParent());
 				if( slConcept != null )
@@ -301,7 +271,43 @@ public class WorkspaceManager {
 		// indexing editor
 		vocabularyService.index(vocabulary);
 	}
-	
+
+	private CodeDTO saveSlConcept(VocabularyDTO vocabulary, VersionDTO version, CodeDTO code, CodeDTO parentCode, ConceptDTO concept, String notation) {
+		List<CodeDTO> codeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
+		TreeData<CodeDTO> codeTreeData = CvCodeTreeUtils.getTreeDataByCodes( codeDTOs );
+
+		if( parentCode == null) {	// if root code
+			code.setNotation( notation );
+			code.setUri( code.getNotation() );
+			codeTreeData.addRootItems(code);
+
+		} else { // if child code
+			String completeNotation = parentCode.getNotation() + "." + notation;
+			code.setNotation( completeNotation );
+			code.setUri( code.getNotation() );
+			code.setParent( parentCode.getNotation());
+			codeTreeData.addItem(parentCode, code);
+
+			concept.setNotation( completeNotation );
+			concept.setParent(parentCode.getNotation());
+			concept.setUri( WorkflowUtils.generateCodeUri(version.getUri(), version.getNotation(), completeNotation, version.getLanguage()));
+		}
+
+		// save changes on position and parent
+		List<CodeDTO> newCodeDTOs = CvCodeTreeUtils.getCodeDTOByCodeTree(codeTreeData);
+		for( CodeDTO eachCode: newCodeDTOs) {
+			if( !eachCode.isPersisted())
+				code = codeService.save(eachCode);
+			else
+				codeService.save(eachCode);
+		}
+
+		concept.setPosition( version.getConcepts().size());
+
+		vocabulary.addCode(code);
+		return code;
+	}
+
 	public void storeChangeLog( VocabularyDTO vocabulary, VersionDTO version,
 			String changeType, String changeDescription) {
 		if( !version.isInitialVersion() ) {

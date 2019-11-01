@@ -2,12 +2,7 @@ package eu.cessda.cvmanager.ui.view;
 
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -707,6 +702,7 @@ public class EditorDetailsView extends CvView {
 				
 				editorCodeActionLayout.setCurrentCode(code);
 				editorCodeActionLayout.setCurrentConcept(null);
+				editorCodeActionLayout.setCurrentSlConcept( null );
 				currentConcept = null;
 				
 				// get concept
@@ -723,6 +719,16 @@ public class EditorDetailsView extends CvView {
 						}
 					}
 				});
+				// getSL concept if necessary
+				// find relation to SL concept if TL code added
+				if( currentVersion.getItemType().equals(ItemType.TL.toString())){
+					Optional<VersionDTO> versionSlOpt = vocabulary.getVersionByUri(currentVersion.getUriSl());
+					if( versionSlOpt.isPresent() ){
+						Optional<ConceptDTO> conceptSlOpt = versionSlOpt.get().getConcepts().stream().filter(c -> c.getNotation().equals(code.getNotation())).findFirst();
+						if( conceptSlOpt.isPresent() )
+							editorCodeActionLayout.setCurrentSlConcept( conceptSlOpt.get());
+					}
+				}
 								
 				refreshCodeActionButton();
 				

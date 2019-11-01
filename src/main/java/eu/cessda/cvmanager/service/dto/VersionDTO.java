@@ -672,4 +672,11 @@ public class VersionDTO implements Serializable {
 		}
 		return maps;
 	}
+	public Map<Long, ConceptDTO> getConceptWithKeyIdAsMap(){
+		Map<Long, ConceptDTO> maps = new LinkedHashMap<>();
+		for(ConceptDTO eachConcept : this.concepts ) {
+			maps.put( eachConcept.getId(), eachConcept);
+		}
+		return maps;
+	}
 }
