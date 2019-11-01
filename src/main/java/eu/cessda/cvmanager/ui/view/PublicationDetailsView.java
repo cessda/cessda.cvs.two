@@ -397,49 +397,15 @@ public class PublicationDetailsView extends CvView {
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentSlVersion.getDefinition()).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 
-		TextArea notesField = new TextArea();
-		MButton editNotesButton = new MButton("Add notes").withVisible(false );
-
+		String notesValue = currentVersion.getNotes();
+		if( notesValue == null || notesValue.isEmpty() )
+			notesValue = vocabulary.getNotes();
 		MCssLayout notes = new MCssLayout();
-		MLabel notesLabel = new MLabel( vocabulary.getNotes() ).withStyleName("rightPart").withContentMode( ContentMode.HTML);
-		notes.withFullWidth().add(lNotes.withWidth("140px").withStyleName("leftPart"), notesLabel, notesField );
-		if( vocabulary.getNotes() == null || vocabulary.getNotes().isEmpty() )
+		notes.withFullWidth().add(lNotes.withWidth("140px").withStyleName("leftPart"),
+				new MLabel( notesValue ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
+		if( notesValue == null || notesValue.isEmpty() )
 			notes.setVisible( false );
-		else{
-			editNotesButton.setCaption( "Edit notes" );
-		}
 
-		notesField.setVisible( false );
-		notesField.setStyleName( "rightPart" );
-		notesField.setWidth("100%");
-		notesField.setValue( vocabulary.getNotes() );
-
-		// if admin then possible to edit notes
-		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl(agency) ) {
-			notes.setVisible( true );
-			editNotesButton.setVisible( true );
-			editNotesButton.addClickListener( e -> {
-				if( notesField.isVisible() ){
-					// save mode
-					notesField.setVisible( false );
-					notesLabel.setVisible( true );
-					vocabulary.setNotes( notesField.getValue().trim());
-					notesLabel.setValue( vocabulary.getNotes());
-					vocabularyService.save(vocabulary);
-					if(  vocabulary.getNotes().isEmpty() ) {
-						editNotesButton.setCaption("Add notes");
-						notesLabel.setVisible( false );
-					}
-					else
-						editNotesButton.setCaption( "Edit notes" );
-				}else{
-					notesField.setVisible( true );
-					notesLabel.setVisible( false );
-					editNotesButton.setCaption( "Save notes" );
-				}
-			});
-		}
-		
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentVersion.getNotation()).withStyleName("rightPart"));
@@ -482,7 +448,7 @@ public class PublicationDetailsView extends CvView {
 							new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 				);
 
-		topViewSection.add(topHead, titleSmall, description, notes, editNotesButton, code, titleSmallOl, descriptionOl, langVersDateLayout);
+		topViewSection.add(topHead, titleSmall, description, notes, code, titleSmallOl, descriptionOl, langVersDateLayout);
 	}
 
 	private void initBottomViewSection() {

@@ -7,29 +7,21 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * A Version.
@@ -104,6 +96,10 @@ public class Version implements Serializable{
     
     @Column(name = "publisher")
     private Long publisher;
+
+	@Lob
+	@Column(name = "notes")
+	private String notes;
     
     @Lob
     @Column(name = "version_notes")
@@ -273,14 +269,6 @@ public class Version implements Serializable{
 	public void setDefinition(String definition) {
 		this.definition = definition;
 	}
-
-//	public List<Vocabulary> getVocabularies() {
-//		return vocabularies;
-//	}
-//
-//	public void setVocabularies(List<Vocabulary> vocabularies) {
-//		this.vocabularies = vocabularies;
-//	}
 	
 	public List<String> getRestrictRoles() {
 		return restrictRoles;
@@ -329,7 +317,15 @@ public class Version implements Serializable{
 	public void setConcepts(Set<Concept> concepts) {
 		this.concepts = concepts;
 	}
-	
+
+	public String getNotes() {
+		return notes;
+	}
+
+	public void setNotes(String notes) {
+		this.notes = notes;
+	}
+
 	public String getVersionNotes() {
 		return versionNotes;
 	}

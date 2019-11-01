@@ -17,7 +17,6 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.persistence.Lob;
 
@@ -73,6 +72,9 @@ public class VersionDTO implements Serializable {
     private Long publisher;
 
     @Lob
+    private String notes;
+
+    @Lob
     private String versionNotes;
 
     private String versionChanges;
@@ -99,10 +101,13 @@ public class VersionDTO implements Serializable {
     @JsonIgnore
     private Set<ConceptDTO> concepts = new HashSet<>();
 
-    public VersionDTO() {}
+    public VersionDTO() {
+        status = Status.DRAFT.toString();
+        itemType = ItemType.SL.toString();
+    }
 
     public static VersionDTO createDraft() {
-		return new VersionDTO().withStatus(Status.DRAFT);
+		return new VersionDTO();
 	}
 
 	public VersionDTO withStatus(Status status) {
@@ -305,10 +310,7 @@ public class VersionDTO implements Serializable {
 	}
 
 	public boolean isConceptExist(String newConcept) {
-		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getNotation().equals(newConcept)).findFirst();
-		if( findFirst.isPresent())
-			return true;
-		return false;
+		return concepts.stream().anyMatch( p -> p.getNotation().equals(newConcept));
 	}
 
 	@Override
@@ -339,6 +341,14 @@ public class VersionDTO implements Serializable {
 	public void setLastModified(LocalDateTime lastModified) {
 		this.lastModified = lastModified;
 	}
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
 
 	public String getVersionNotes() {
 		return versionNotes;
@@ -427,11 +437,7 @@ public class VersionDTO implements Serializable {
 	}
 
 	public boolean isInitialVersion() {
-		if(isPersisted()) {
-			if( initialVersion != null && initialVersion.equals( id ))
-				return true;
-		}
-		return false;
+		return (isPersisted() && initialVersion != null && initialVersion.equals( id ));
 	}
 
 	public List<ConceptDTO> getSortedConcepts(){
@@ -493,12 +499,12 @@ public class VersionDTO implements Serializable {
 					.filter( p -> language.equalsIgnoreCase( p.language ))
 					.filter( p -> status.equalsIgnoreCase( p.status ))
 					.findFirst();
-		}else
-			return versionDTOs
-					.stream()
-					.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
-					.filter( p -> language.equalsIgnoreCase( p.language )).findFirst();
-
+		}else {
+            return versionDTOs
+                    .stream()
+                    .sorted((v1, v2) -> v2.getPreviousVersion().compareTo(v1.getPreviousVersion()))
+                    .filter(p -> language.equalsIgnoreCase(p.language)).findFirst();
+        }
 	}
 
 	public boolean isPersisted() {
@@ -511,8 +517,9 @@ public class VersionDTO implements Serializable {
 		// first put into Map, sorted in natural key order
 		for(VersionDTO eachVerDTO : versionDTOs) {
 			String key = eachVerDTO.getItemType() + "_" + eachVerDTO.getLanguage();
+
 			List<VersionDTO> versionDs = versionMap.get( key );
-			if( versionDs  == null ) {
+			if( versionDs == null ) {
 				versionDs = new ArrayList<>();
 				versionMap.put( key , versionDs);
 			}
@@ -548,7 +555,7 @@ public class VersionDTO implements Serializable {
 		return clone(new VersionDTO(), targetVersion, slVersion, userId, versionNumber, agencylicenseId, agencyUri, ddiUsage);
 	}
 
-	public static VersionDTO clone (VersionDTO newVersion, VersionDTO targetVersion, VersionDTO slVersion, Long userId, String versionNumber, Long agencylicenseId, String agencyUri,
+	public static VersionDTO clone (VersionDTO newVersion, VersionDTO targetVersion, VersionDTO slVersion, Long userId, String versionNumber, Long agencyLicenseId, String agencyUri,
 			String ddiUsage) {
 		// generate uri
 		newVersion.setUri( agencyUri + targetVersion.getNotation() + "/" + targetVersion.getLanguage());
@@ -567,7 +574,7 @@ public class VersionDTO implements Serializable {
 		newVersion.setCreator( userId );
 		newVersion.setVocabularyId( targetVersion.getVocabularyId());
 		newVersion.setSummary( targetVersion.getSummary());
-		newVersion.setLicenseId(agencylicenseId);
+		newVersion.setLicenseId(agencyLicenseId);
 		if( ddiUsage != null )
 			newVersion.setDdiUsage( ddiUsage );
 		else
@@ -579,41 +586,44 @@ public class VersionDTO implements Serializable {
 		if( targetVersion.getItemType().equals( ItemType.TL.toString()) && slVersion != null) {
 			slConceptMap = slVersion.getConceptWithKeyPreviousConceptAsMap();
 		}
-			
-		// clone concepts as well
-		for(ConceptDTO targetConcept: targetVersion.getConcepts()) {
-			ConceptDTO slConcept = null;
-			ConceptDTO newConcept = null;
-			
-			if( targetVersion.getItemType().equals( ItemType.TL.toString()) && slConceptMap != null) {
-				slConcept = slConceptMap.get( targetConcept.getSlConcept());
-				if( slConcept != null ) {
-					
-					newConcept = ConceptDTO.clone(targetConcept, 
-							agencyUri + targetVersion.getNotation() + "#" + slConcept.getNotation() + "/" + targetVersion.getLanguage()
-							);
-					newConcept.setNotation(slConcept.getNotation());
-					newConcept.setSlConcept( slConcept.getId());
-					newConcept.setPosition( slConcept.getPosition());
-					newConcept.setParent( slConcept.getParent());
-				} else
-					newConcept = ConceptDTO.clone(targetConcept, 
-						agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage()
-						);
-			} else {
+        cloneConcepts(newVersion, targetVersion, agencyUri, slConceptMap);
 
-				newConcept = ConceptDTO.clone(targetConcept, 
-					agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage()
-					);
-			}
-			
-			newVersion.addConcept(newConcept);
-		}
-
-		return newVersion;
+        return newVersion;
 	}
 
-	public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName) {
+    private static void cloneConcepts(VersionDTO newVersion, VersionDTO targetVersion, String agencyUri, Map<Long, ConceptDTO> slConceptMap) {
+        // clone concepts as well
+        for(ConceptDTO targetConcept: targetVersion.getConcepts()) {
+            ConceptDTO slConcept = null;
+            ConceptDTO newConcept = null;
+
+            if( targetVersion.getItemType().equals( ItemType.TL.toString()) && slConceptMap != null) {
+                slConcept = slConceptMap.get( targetConcept.getSlConcept());
+                if( slConcept != null ) {
+
+                    newConcept = ConceptDTO.clone(targetConcept,
+                            agencyUri + targetVersion.getNotation() + "#" + slConcept.getNotation() + "/" + targetVersion.getLanguage()
+                            );
+                    newConcept.setNotation(slConcept.getNotation());
+                    newConcept.setSlConcept( slConcept.getId());
+                    newConcept.setPosition( slConcept.getPosition());
+                    newConcept.setParent( slConcept.getParent());
+                } else {
+newConcept = ConceptDTO.clone(targetConcept,
+agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage()
+);
+}
+            } else {
+                newConcept = ConceptDTO.clone(targetConcept,
+                    agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/" + targetVersion.getLanguage()
+                    );
+            }
+
+            newVersion.addConcept(newConcept);
+        }
+    }
+
+    public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName) {
 		StringBuilder citation = new StringBuilder();
 		citation.append( agencyName + ". " );
 		if( versionDto.getItemType().equals( ItemType.SL.toString()) ) {

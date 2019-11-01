@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
+import com.vaadin.ui.*;
 import eu.cessda.cvmanager.service.manager.WorkflowManager;
 import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import org.apache.http.NameValuePair;
@@ -40,16 +41,7 @@ import com.vaadin.shared.ui.dnd.EffectAllowed;
 import com.vaadin.shared.ui.grid.DropMode;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.JavaScript;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TreeGrid;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.components.grid.TreeGridDragSource;
 import com.vaadin.ui.components.grid.TreeGridDropTarget;
 import com.vaadin.ui.renderers.ComponentRenderer;
@@ -572,13 +564,50 @@ public class EditorDetailsView extends CvView {
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
 				new MLabel( currentSLVersion.getDefinition() ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
-		
-		MCssLayout notes = new MCssLayout();
-		notes.withFullWidth().add(lNotes.withWidth("140px").withStyleName("leftPart"),
-				new MLabel( vocabulary.getNotes() ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
-		if( vocabulary.getNotes() == null || vocabulary.getNotes().isEmpty() )
-			notes.setVisible( false );
 
+		String notesValue = currentVersion.getNotes();
+		if( notesValue == null || notesValue.isEmpty() )
+			notesValue = vocabulary.getNotes();
+
+		RichTextArea notesField = new RichTextArea();
+		notesField.setVisible( false );
+		notesField.setStyleName( "rightPart" );
+		notesField.setWidth("100%");
+		notesField.setHeight("200px");
+		notesField.setValue( notesValue );
+		MButton editNotesButton = new MButton("Add notes").withVisible(false );
+
+		MCssLayout notes = new MCssLayout();
+		MLabel notesLabel = new MLabel( notesValue ).withStyleName("rightPart").withContentMode( ContentMode.HTML);
+		notes.withFullWidth().add(lNotes.withWidth("140px").withStyleName("leftPart"), notesLabel, notesField );
+		if(notesValue != null && !notesValue.isEmpty())
+			editNotesButton.setCaption( "Edit notes" );
+
+		// if admin then possible to edit notes
+		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl(agency) ) {
+			notes.setVisible( true );
+			editNotesButton.setVisible( true );
+			editNotesButton.addClickListener( e -> {
+				if( notesField.isVisible() ){
+					// save mode
+					notesField.setVisible( false );
+					notesLabel.setVisible( true );
+					currentVersion.setNotes( notesField.getValue().trim());
+					notesLabel.setValue( currentVersion.getNotes());
+					versionService.save(currentVersion);
+					if(  vocabulary.getNotes().isEmpty() ) {
+						editNotesButton.setCaption("Add notes");
+						notesLabel.setVisible( false );
+					}
+					else
+						editNotesButton.setCaption( "Edit notes" );
+				}else{
+					notesField.setVisible( true );
+					notesLabel.setVisible( false );
+					editNotesButton.setCaption( "Save notes" );
+				}
+			});
+		}
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode.withWidth("140px").withStyleName("leftPart"),
 				new MLabel( vocabulary.getNotation() ).withStyleName("rightPart"));
@@ -622,7 +651,7 @@ public class EditorDetailsView extends CvView {
 								new MLabel(currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 					);
 
-		topViewSection.add(topHead, titleSmall, description, notes, code, titleSmallOl, descriptionOl, langVersDateLayout);
+		topViewSection.add(topHead, titleSmall, description, notes, editNotesButton, code, titleSmallOl, descriptionOl, langVersDateLayout);
 	}
 
 	private void initBottomViewSection() {

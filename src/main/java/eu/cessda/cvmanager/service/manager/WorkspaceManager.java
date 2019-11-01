@@ -45,6 +45,7 @@ public class WorkspaceManager {
 			VersionDTO version, String notes ) {
 		vocabulary.setNotes( notes == null  ? "": notes );
 		vocabulary.setTitleDefinition( version.getTitle(), version.getDefinition(), language);
+		version.setNotes( notes == null  ? "": notes );
 		
 		if( !vocabulary.isPersisted() )
 		{
