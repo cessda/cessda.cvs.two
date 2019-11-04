@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.vaadin.ui.*;
 import org.gesis.wts.domain.enumeration.Language;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +20,6 @@ import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.StringLengthValidator;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ItemCaptionGenerator;
-import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextField;
 
 import eu.cessda.cvmanager.config.Constants;
 import eu.cessda.cvmanager.event.CvManagerEvent;
@@ -49,9 +44,9 @@ public class DialogEditCodeWindow extends MWindow {
 	private final transient I18N i18n;
 	private final transient CodeService codeService;
 
-	private Binder<CodeDTO> binder = new Binder<CodeDTO>();
+	private Binder<CodeDTO> binder = new Binder<>();
 	private MVerticalLayout layout = new MVerticalLayout();
-	
+
 	private MLabel lSourceNotation = new MLabel( "Code" );
 	private MLabel lTitle = new MLabel( "Descriptive term" );
 	private MLabel lDescription = new MLabel( "Definition" );
@@ -64,13 +59,11 @@ public class DialogEditCodeWindow extends MWindow {
 	private MTextField sourceNotation = new MTextField("Code");
 	private MTextField sourceTitle = new MTextField("Descriptive term (source)");
 	private MTextField sourceLanguage = new MTextField("Language (source)");
-//	private TextArea sourceDescription = new TextArea("Definition en (source)");
-	private RichTextArea sourceDescription = new RichTextArea("Definition en (source)");
+	private TextArea sourceDescription = new TextArea("Definition en (source)");
 
 	private MTextField notation = new MTextField("Code");
 	private TextField preferedLabel = new TextField("Descriptive term*");
-//	private TextArea description = new TextArea("Definition*");
-	private RichTextArea description = new RichTextArea("Definition*");
+	private TextArea description = new TextArea("Definition*");
 	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 
 	private Language language;
@@ -117,9 +110,7 @@ public class DialogEditCodeWindow extends MWindow {
 		
 		notation
 			.withWidth("85%")
-			.addValueChangeListener( e -> {
-				((TextField)e.getComponent()).setValue( e.getValue().replaceAll(Constants.NOTATION_REGEX, ""));
-			});
+			.addValueChangeListener( e -> ((TextField)e.getComponent()).setValue( e.getValue().replaceAll(Constants.NOTATION_REGEX, "")));
 		
 		Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
 		
@@ -140,8 +131,7 @@ public class DialogEditCodeWindow extends MWindow {
 		
 		lTitle.withStyleName( "required" );
 		lLanguage.withStyleName( "required" );
-//		lDescription.withStyleName( "required" );
-		
+
 		preferedLabel.setCaption( "Descriptive term (" + language + ")*");
 		description.setCaption( "Definition ("+ language +")*");
 				
@@ -189,9 +179,7 @@ public class DialogEditCodeWindow extends MWindow {
 
 		binder.setBean(code);
 
-		storeCode.addClickListener(event -> {
-			saveCode();
-		});
+		storeCode.addClickListener(event -> saveEditedCode());
 
 		Button cancelButton = new Button("Cancel", e -> this.close());
 		
@@ -200,7 +188,7 @@ public class DialogEditCodeWindow extends MWindow {
 		changeCb.setWidth("100%");
 		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.codeChangeTypes));
 		changeCb.setTextInputAllowed(false);
-	//	changeCb.setEmptySelectionAllowed(false);
+
 		changeDesc
 			.withFullWidth()
 			.withValue( this.concept.getTitle() );
@@ -359,9 +347,11 @@ public class DialogEditCodeWindow extends MWindow {
 		return codeValue;
 	}
 
-	private void saveCode() {
+	private void saveEditedCode() {
 		if(!isInputValid())
 			return;
+
+		log.info( "Preparing to save code and concept with notation {}", notation.getValue());
 		
 		// store the changes
 		String completeNotation = (code.getParent() != null ? code.getParent() + "." : "") + notation.getValue();
@@ -408,20 +398,19 @@ public class DialogEditCodeWindow extends MWindow {
 		binder
 			.forField( notation )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( concept -> concept.getNotation(),
-				(concept, value) -> concept.setNotation(value));
+			.bind(CodeDTO::getNotation,
+					CodeDTO::setNotation);
 		
 		binder
 			.forField( preferedLabel )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( code -> code.getTitleByLanguage( language ),
-				(code, value) -> code.setTitleByLanguage(value, language));
+			.bind( c -> c.getTitleByLanguage( language ),
+				(c, value) -> c.setTitleByLanguage(value, language));
 
 		binder
 			.forField( description )
-//			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
-			.bind( code -> code.getDefinitionByLanguage( language ),
-					(code, value) -> code.setDefinitionByLanguage(value, language));
+			.bind( c -> c.getDefinitionByLanguage( language ),
+					(c, value) -> c.setDefinitionByLanguage(value, language));
 		
 		binder.validate();
 		return binder.isValid();

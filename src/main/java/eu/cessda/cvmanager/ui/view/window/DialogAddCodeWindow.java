@@ -1,9 +1,8 @@
 package eu.cessda.cvmanager.ui.view.window;
 
 import java.util.Locale;
-import java.util.Optional;
 
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import com.vaadin.ui.*;
 import org.gesis.wts.domain.enumeration.Language;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,13 +18,6 @@ import org.vaadin.viritin.layouts.MWindow;
 
 import com.vaadin.data.Binder;
 import com.vaadin.data.validator.StringLengthValidator;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ItemCaptionGenerator;
-import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.config.Constants;
 import eu.cessda.cvmanager.event.CvManagerEvent;
@@ -60,8 +52,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private MTextField parentNotation = new MTextField();
 	private MTextField notation = new MTextField();
 	private TextField preferedLabel = new TextField();
-//	private TextArea description = new TextArea();
-	private RichTextArea description = new RichTextArea();
+	private TextArea description = new TextArea();
 	private ComboBox<Language> languageCb = new ComboBox<>();
 
 	private Button storeCode = new Button("Save");
@@ -208,6 +199,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 	private void saveCode() {
 		if(!isInputValid())
 			return;
+		log.info("Preparing to save code {} ", concept.getNotation());
 
 		// store the code
 		workspaceManager.saveCodeAndConcept(vocabulary, version, code, parentCode, concept, null,
