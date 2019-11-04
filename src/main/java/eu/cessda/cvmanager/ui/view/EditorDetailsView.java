@@ -124,6 +124,7 @@ public class EditorDetailsView extends CvView {
 	private MLabel lDate = new MLabel();
 	private MLabel lTitleOl = new MLabel();
 	private MLabel lDefinitionOl = new MLabel();
+	private MLabel lNotesOl = new MLabel();
 	private MLabel lVersionOl = new MLabel();
 	private MLabel lDateOl = new MLabel();
 
@@ -541,7 +542,6 @@ public class EditorDetailsView extends CvView {
 	private void initTopViewSection() {
 		topViewSection.removeAllComponents();
 
-		// TODO: better to use version
 		MLabel topTitle = new MLabel();
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
 				.withValue( agency.getName() + " Controlled Vocabulary for "
@@ -565,17 +565,18 @@ public class EditorDetailsView extends CvView {
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
 				new MLabel( currentSLVersion.getDefinition() ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 
-		String notesValue = currentVersion.getNotes();
+		String notesValue = currentSLVersion.getNotes();
 		if( notesValue == null || notesValue.isEmpty() )
 			notesValue = vocabulary.getNotes();
 
 		RichTextArea notesField = new RichTextArea();
 		notesField.setVisible( false );
 		notesField.setStyleName( "rightPart" );
-		notesField.setWidth("100%");
+		notesField.setWidth("800px");
 		notesField.setHeight("200px");
 		notesField.setValue( notesValue );
-		MButton editNotesButton = new MButton("Add notes").withVisible(false );
+		MButton editNotesButton = new MButton("Add notes").withVisible(false ).withStyleName("margin-right15px");
+		MButton cancelNotesButton = new MButton("Cancel").withVisible(false );
 
 		MCssLayout notes = new MCssLayout();
 		MLabel notesLabel = new MLabel( notesValue ).withStyleName("rightPart").withContentMode( ContentMode.HTML);
@@ -583,31 +584,6 @@ public class EditorDetailsView extends CvView {
 		if(notesValue != null && !notesValue.isEmpty())
 			editNotesButton.setCaption( "Edit notes" );
 
-		// if admin then possible to edit notes
-		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl(agency) ) {
-			notes.setVisible( true );
-			editNotesButton.setVisible( true );
-			editNotesButton.addClickListener( e -> {
-				if( notesField.isVisible() ){
-					// save mode
-					notesField.setVisible( false );
-					notesLabel.setVisible( true );
-					currentVersion.setNotes( notesField.getValue().trim());
-					notesLabel.setValue( currentVersion.getNotes());
-					versionService.save(currentVersion);
-					if(  vocabulary.getNotes().isEmpty() ) {
-						editNotesButton.setCaption("Add notes");
-						notesLabel.setVisible( false );
-					}
-					else
-						editNotesButton.setCaption( "Edit notes" );
-				}else{
-					notesField.setVisible( true );
-					notesLabel.setVisible( false );
-					editNotesButton.setCaption( "Save notes" );
-				}
-			});
-		}
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode.withWidth("140px").withStyleName("leftPart"),
 				new MLabel( vocabulary.getNotation() ).withStyleName("rightPart"));
@@ -622,9 +598,21 @@ public class EditorDetailsView extends CvView {
 				lDefinitionOl.withWidth("140px").withStyleName("leftPart"),
 				new MLabel( currentVersion.getDefinition() ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 
+
+		MCssLayout notesOl = new MCssLayout();
+		MLabel notesOlLabel = new MLabel().withStyleName("rightPart").withContentMode(ContentMode.HTML);
 		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
+		} else {
+			notesValue = currentVersion.getNotes();
+			notesField.setValue( notesValue );
+			notesOlLabel.setValue(notesValue);
+
+			notesOl.withFullWidth().add(lNotesOl.withWidth("140px").withStyleName("leftPart"),
+					notesOlLabel, notesField);
+			if( notesValue == null || notesValue.isEmpty() )
+				notes.setVisible( false );
 		}
 		
 		versionLabel.withStyleName("rightPart");
@@ -651,7 +639,63 @@ public class EditorDetailsView extends CvView {
 								new MLabel(currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 					);
 
-		topViewSection.add(topHead, titleSmall, description, notes, editNotesButton, code, titleSmallOl, descriptionOl, langVersDateLayout);
+		// if admin then possible to edit notes
+		if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvSl(agency) ) {
+			notes.setVisible( true );
+			editNotesButton.setVisible( true );
+			editNotesButton.addClickListener( e -> {
+				if( notesField.isVisible() ){
+					// save mode
+					notesField.setVisible( false );
+					cancelNotesButton.setVisible( false );
+					currentVersion.setNotes( notesField.getValue().trim());
+					if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
+						notesLabel.setValue(currentVersion.getNotes());
+						notesLabel.setVisible( true );
+					}else {
+						notesOlLabel.setValue(currentVersion.getNotes());
+						notesOlLabel.setVisible( true );
+					}
+					versionService.save(currentVersion);
+					if(  vocabulary.getNotes().isEmpty() ) {
+						editNotesButton.setCaption("Add notes");
+						if (selectedLang.toString().equals(configService.getDefaultSourceLanguage()))
+							notesLabel.setVisible( false );
+						else
+							notesOlLabel.setVisible( false );
+					}
+					else
+						editNotesButton.setCaption( "Edit notes" );
+				}else{
+					if (selectedLang.toString().equals(configService.getDefaultSourceLanguage()))
+						notesLabel.setVisible( false );
+					else
+						notesOlLabel.setVisible( false );
+					notesField.setVisible( true );
+
+					editNotesButton.setCaption( "Save notes" );
+					cancelNotesButton.setVisible( true );
+				}
+			});
+			cancelNotesButton.addClickListener(e -> {
+				cancelNotesButton.setVisible( false );
+				notesField.setVisible( false );
+				notesField.setValue( currentVersion.getNotes() );
+				if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
+					notesLabel.setVisible( true );
+				}else {
+					notesOlLabel.setVisible( true );
+				}
+				editNotesButton.setCaption( "Edit notes" );
+			});
+		}
+
+		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
+			topViewSection.add(topHead, titleSmall, description, notes, editNotesButton, cancelNotesButton, code, langVersDateLayout);
+		}
+		else{
+			topViewSection.add(topHead, titleSmall, description, notes, code, titleSmallOl, descriptionOl, notesOl, editNotesButton, cancelNotesButton, langVersDateLayout);
+		}
 	}
 
 	private void initBottomViewSection() {
@@ -1177,7 +1221,7 @@ public class EditorDetailsView extends CvView {
 		lTitle.setValue( i18n.get("view.detail.cvscheme.label.sl.title", locale));
 		lDefinition.setValue( i18n.get("view.detail.cvscheme.label.sl.definition", locale));
 		lCode.setValue( i18n.get("view.detail.cvscheme.label.sl.code", locale));
-		lNotes.setValue( i18n.get("view.detail.cvscheme.label.sl.note", locale));
+		lNotes.setValue( "CV notes" );
 		lLang.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
 		lVersion.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
 		lDate.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
@@ -1185,6 +1229,7 @@ public class EditorDetailsView extends CvView {
 		lDefinitionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
 		lVersionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
 		lDateOl.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
+		lNotesOl.setValue( "CV notes (" + selectedLang + ")" );
 
 		detailTab.getTab(0).setCaption( i18n.get("view.detail.cvconcept.tab.detail", locale));
 		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.version", locale));

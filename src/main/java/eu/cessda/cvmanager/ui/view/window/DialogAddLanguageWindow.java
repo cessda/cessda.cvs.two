@@ -1,6 +1,5 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -39,6 +38,8 @@ import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 
+import static eu.cessda.cvmanager.config.Constants.REQUIRED;
+
 public class DialogAddLanguageWindow extends MWindow {
 
 	private static final long serialVersionUID = -8944364070898136792L;
@@ -50,22 +51,25 @@ public class DialogAddLanguageWindow extends MWindow {
 	private VocabularyDTO vocabulary;
 	private VersionDTO version;
 	
-	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
+	private Binder<VersionDTO> binder = new Binder<>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
 	private MLabel lTitle = new MLabel( "Title" );
 	private MLabel lDescription = new MLabel( "Definition" );
 	private MLabel lLanguage = new MLabel( "Language" );
+	private MLabel lNotes = new MLabel( "Notes" );
 	private MLabel lSourceTitle = new MLabel( "Title (source)" );
 	private MLabel lSourceDescription = new MLabel( "Definition (source)" );
 	private MLabel lSourceLanguage = new MLabel( "Language (source)" );
+	private MLabel lSourceNotes = new MLabel( "Notes (source)" );
 	
 	private MTextField sourceTitle = new MTextField("Title (source)");
 	private MTextField sourceLanguage = new MTextField("Language (source)");
-//	private TextArea sourceDescription = new TextArea("Definition (source)");
 	private RichTextArea sourceDescription = new RichTextArea("Definition (source)");
+	private RichTextArea sourceNotes = new RichTextArea("Notes (source)");
 	private MTextField tfTitle = new MTextField("Title*");
 	private RichTextArea description = new RichTextArea("Definition*");
+	private RichTextArea notes = new RichTextArea("Notes");
 	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 	private Button storeCode = new Button("Save");
 	
@@ -83,78 +87,38 @@ public class DialogAddLanguageWindow extends MWindow {
 	private MTextField translatorAgencyLink = new MTextField();
 	
 	private Language language;
-
 	
-	//private EditorView theView;
-
 	public DialogAddLanguageWindow( WorkspaceManager workspaceManager, AgencyDTO agencyDTO, VocabularyDTO vocabularyDTO,
 									VersionDTO versionDTO, UIEventBus eventBus) {
 		super(versionDTO.isPersisted()?"Edit CV Translation (" + versionDTO.getLanguage() + ")":"Add CV Translation");
+
+		if( vocabularyDTO == null )
+			throw new IllegalArgumentException( "Vocabulary can not be null" );
+
 		this.workspaceManager = workspaceManager;
 		this.agency = agencyDTO;
 		this.vocabulary = vocabularyDTO;
 		this.version = versionDTO;
 		this.eventBus = eventBus;
-		
-		// assign values if updated and not new TL
+
+		init();
+	}
+
+	private void init() {
 		if( version.isPersisted()) {
-			
-			tfTitle.setValue( version.getTitle());
-			description.setValue( version.getDefinition());
-			
-			Language selectedLanguage = Language.valueOfEnum( version.getLanguage());
-			languageCb.setItems( selectedLanguage );
-			languageCb.setValue(selectedLanguage);
-			languageCb.setReadOnly( true );
+			assignExistingTargetVersion();
 		}
 		else {
-			List<Language> availableLanguages = new ArrayList<>();
-			Set<Language> userLanguages = new HashSet<>();
-			if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
-				userLanguages.addAll( Arrays.asList( Language.values() ) );
-			}
-			else {
-				SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
-					userLanguages.addAll(languages);
-				});
-			}
-			
-			if( vocabulary != null ) {
-				availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
-			} 
-//			else {
-//				availableLanguages = Language.getFilteredLanguage(userLanguages, cvScheme.getLanguagesByTitle());
-//			}
-			
-			Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
-			// remove with sourceLanguage option if exist
-			availableLanguages.remove( sourceLang );
-			
-			languageCb.setItems( availableLanguages );
-			languageCb.addValueChangeListener( e -> {
-				Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), e.getValue().toString(), null);
-				if(latestTlVersion.isPresent()) {
-					tfTitle.setValue( latestTlVersion.get().getTitle());
-					description.setValue( latestTlVersion.get().getDefinition());
-					translatorAgency.setValue( latestTlVersion.get().getTranslateAgency());
-					translatorAgencyLink.setValue( latestTlVersion.get().getTranslateAgencyLink());
-				}else {
-					tfTitle.setValue( "" );
-					description.setValue( "" );
-					translatorAgency.setValue( "" );
-					translatorAgencyLink.setValue( "" );
-				}
-			});
+			assignNewTargetVersion();
 		}
-		
-		lTitle.withStyleName( "required" );
-		lLanguage.withStyleName( "required" );
-		lDescription.withStyleName( "required" );
-		
-		
+
+		lTitle.withStyleName( REQUIRED );
+		lLanguage.withStyleName( REQUIRED );
+		lDescription.withStyleName( REQUIRED );
+
 		// get version SL
 		VersionDTO slVersion = null;
-		
+
 		Optional<VersionDTO> latestSlVersion = vocabulary.getLatestSlVersion( true );
 		if(latestSlVersion.isPresent()) {
 			slVersion = latestSlVersion.get();
@@ -162,23 +126,29 @@ public class DialogAddLanguageWindow extends MWindow {
 			version.setDdiUsage( slVersion.getDdiUsage());
 			version.setLicense( slVersion.getLicense());
 			version.setLicenseId( slVersion.getLicenseId() );
+		} else {
+			throw new IllegalArgumentException("SL version for notation {} can not be null" + vocabulary.getNotation());
 		}
-		
+
 		sourceTitle
 			.withFullWidth()
 			.withReadOnly( true)
 			.setValue( slVersion.getTitle() );
 		sourceLanguage
 			.withReadOnly( true)
-			.setValue( "English" );
+			.setValue( Language.getEnumNameCapitalized( slVersion.getLanguage() ) );
 		sourceDescription.setReadOnly( true );
 		sourceDescription.setSizeFull();
 		sourceDescription.setValue( slVersion.getDefinition() );
-		
+
+		sourceNotes.setReadOnly( true );
+		sourceNotes.setSizeFull();
+		sourceNotes.setValue( slVersion.getNotes());
+
 		tfTitle.withFullWidth();
 		description.setSizeFull();
-		
-		
+		notes.setSizeFull();
+
 		languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
 		if( languageCb.getValue() != null )
 			language = languageCb.getValue();
@@ -201,22 +171,19 @@ public class DialogAddLanguageWindow extends MWindow {
 
 		binder.setBean( version );
 
-		storeCode.addClickListener(event -> {
-			saveCV();
-		});
+		storeCode.addClickListener(event ->  saveTargetCV() );
 
 		Button cancelButton = new Button("Cancel", e -> this.close());
-		
+
 		lChange
 			.withStyleName("change-header");
 		changeCb.setWidth("100%");
 		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.cvChangeTypes));
 		changeCb.setTextInputAllowed(false);
-	//	changeCb.setEmptySelectionAllowed(false);
 
 		changeBox
 			.withStyleName("change-block")
-			.add( 
+			.add(
 				lChange,
 				new MHorizontalLayout()
 					.withFullWidth()
@@ -229,10 +196,10 @@ public class DialogAddLanguageWindow extends MWindow {
 						lChangeDesc, changeDesc
 					).withExpand( lChangeDesc, 0.15f).withExpand( changeDesc, 0.85f)
 			);
-		
+
 		translatorAgencyBox
 			.withFullWidth()
-			.add( 
+			.add(
 				new MHorizontalLayout()
 					.withFullWidth()
 					.add(
@@ -247,7 +214,7 @@ public class DialogAddLanguageWindow extends MWindow {
 		layout
 			.withHeight("98%")
 			.withStyleName("dialog-content")
-			.add( 
+			.add(
 				new MHorizontalLayout()
 					.withFullWidth()
 					.add(
@@ -267,6 +234,12 @@ public class DialogAddLanguageWindow extends MWindow {
 						lSourceDescription, sourceDescription
 					).withExpand( lSourceDescription, 0.15f).withExpand( sourceDescription, 0.85f),
 				new MHorizontalLayout()
+						.withFullWidth()
+						.withHeight("100%")
+						.add(
+								lSourceNotes, sourceNotes
+						).withExpand( lSourceNotes, 0.15f).withExpand( sourceNotes, 0.85f),
+				new MHorizontalLayout()
 					.withFullWidth()
 					.add(
 						new MHorizontalLayout()
@@ -283,7 +256,13 @@ public class DialogAddLanguageWindow extends MWindow {
 					.withHeight("100%")
 					.add(
 						lDescription, description
-					).withExpand( lDescription, 0.15f).withExpand( description, 0.85f)
+					).withExpand( lDescription, 0.15f).withExpand( description, 0.85f),
+				new MHorizontalLayout()
+						.withFullWidth()
+						.withHeight("100%")
+						.add(
+								lNotes, notes
+						).withExpand( lNotes, 0.15f).withExpand( notes, 0.85f)
 			);
 
 		if( version.isPersisted() ) {
@@ -301,11 +280,13 @@ public class DialogAddLanguageWindow extends MWindow {
 						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 				)
 				.withExpand(layout.getComponent(0), 0.05f)
-				.withExpand(layout.getComponent(1), 0.35f)
-				.withExpand(layout.getComponent(2), 0.05f)
-				.withExpand(layout.getComponent(3), 0.35f)
-				.withExpand(layout.getComponent(4), 0.2f)
-				.withAlign(layout.getComponent(4), Alignment.BOTTOM_RIGHT);
+				.withExpand(layout.getComponent(1), 0.15f)
+				.withExpand(layout.getComponent(2), 0.1f)
+				.withExpand(layout.getComponent(3), 0.05f)
+				.withExpand(layout.getComponent(4), 0.3f)
+				.withExpand(layout.getComponent(5), 0.2f)
+				.withExpand(layout.getComponent(6), 0.15f)
+				.withAlign(layout.getComponent(6), Alignment.BOTTOM_RIGHT);
 			} else {
 				changeDesc
 					.withWidth("100%")
@@ -324,14 +305,16 @@ public class DialogAddLanguageWindow extends MWindow {
 						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 				)
 				.withExpand(layout.getComponent(0), 0.05f)
-				.withExpand(layout.getComponent(1), 0.3f)
-				.withExpand(layout.getComponent(2), 0.05f)
-				.withExpand(layout.getComponent(3), 0.35f)
-				.withExpand(layout.getComponent(4), 0.1f)
-				.withExpand(layout.getComponent(5), 0.1f)
-				.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
+				.withExpand(layout.getComponent(1), 0.15f)
+				.withExpand(layout.getComponent(2), 0.1f)
+				.withExpand(layout.getComponent(3), 0.05f)
+				.withExpand(layout.getComponent(4), 0.3f)
+				.withExpand(layout.getComponent(5), 0.2f)
+				.withExpand(layout.getComponent(6), 0.05f)
+				.withExpand(layout.getComponent(7), 0.05f)
+				.withAlign(layout.getComponent(7), Alignment.BOTTOM_RIGHT);
 			}
-			
+
 		} else {
 			layout
 				.add(
@@ -347,35 +330,83 @@ public class DialogAddLanguageWindow extends MWindow {
 						.withAlign(cancelButton, Alignment.BOTTOM_RIGHT)
 				)
 				.withExpand(layout.getComponent(0), 0.05f)
-				.withExpand(layout.getComponent(1), 0.3f)
-				.withExpand(layout.getComponent(2), 0.05f)
-				.withExpand(layout.getComponent(3), 0.4f)
-				.withExpand(layout.getComponent(4), 0.1f)
-				.withExpand(layout.getComponent(5), 0.1f)
-				.withAlign(layout.getComponent(5), Alignment.BOTTOM_RIGHT);
+				.withExpand(layout.getComponent(1), 0.15f)
+				.withExpand(layout.getComponent(2), 0.1f)
+				.withExpand(layout.getComponent(3), 0.05f)
+				.withExpand(layout.getComponent(4), 0.35f)
+				.withExpand(layout.getComponent(5), 0.17f)
+				.withExpand(layout.getComponent(6), 0.05f)
+				.withExpand(layout.getComponent(7), 0.1f)
+				.withAlign(layout.getComponent(7), Alignment.BOTTOM_RIGHT);
 		}
-		
+
 		this
-			.withHeight("800px")
+			.withHeight("100%")
 			.withWidth("1024px")
 			.withModal( true )
 			.withContent(layout);
 	}
 
-	private void saveCV() {
+	private void assignNewTargetVersion() {
+		List<Language> availableLanguages = null;
+		Set<Language> userLanguages = new HashSet<>();
+		if( SecurityUtils.isCurrentUserAgencyAdmin( agency)) {
+			userLanguages.addAll( Arrays.asList( Language.values() ) );
+		}
+		else {
+			SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent(userLanguages::addAll);
+		}
+
+		availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
+
+		Language sourceLang = Language.ENGLISH;
+		if( vocabulary.getSourceLanguage() != null)
+			sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+		// remove with sourceLanguage option if exist
+		availableLanguages.remove( sourceLang );
+
+		languageCb.setItems( availableLanguages );
+		languageCb.addValueChangeListener( e -> {
+			Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), e.getValue().toString(), null);
+			if(latestTlVersion.isPresent()) {
+				tfTitle.setValue( latestTlVersion.get().getTitle());
+				description.setValue( latestTlVersion.get().getDefinition());
+				notes.setValue( latestTlVersion.get().getNotes());
+				translatorAgency.setValue( latestTlVersion.get().getTranslateAgency());
+				translatorAgencyLink.setValue( latestTlVersion.get().getTranslateAgencyLink());
+			}else {
+				tfTitle.setValue( "" );
+				description.setValue( "" );
+				notes.setValue( "" );
+				translatorAgency.setValue( "" );
+				translatorAgencyLink.setValue( "" );
+			}
+		});
+	}
+
+	private void assignExistingTargetVersion() {
+		tfTitle.setValue( version.getTitle());
+		description.setValue( version.getDefinition());
+		notes.setValue( version.getNotes());
+		Language selectedLanguage = Language.valueOfEnum( version.getLanguage());
+		languageCb.setItems( selectedLanguage );
+		languageCb.setValue(selectedLanguage);
+		languageCb.setReadOnly( true );
+	}
+
+	private void saveTargetCV() {
 		if(!isInputValid())
 			return;
 		
-		if( !version.isInitialVersion() && version.isPersisted()) {
-			if( changeCb.getValue() == null ) {
-				Notification.show("Please select the change type!");
-				return;
-			}
+		if( !version.isInitialVersion() && version.isPersisted() && changeCb.getValue() == null ) {
+			Notification.show("Please select the change type!");
+			return;
 		}
-		
-		
+		log.info( "Preparint to add new CV TL with notation {}", version.getNotation());
+
 		// save TL Vocabulary
 		version.setTitleAndDefinition( tfTitle.getValue(), description.getValue() );
+		version.setNotes( notes.getValue());
 		workspaceManager.saveTargetCV(agency, language, vocabulary, version, translatorAgency.getValue(), translatorAgencyLink.getValue());
 
 		// save log if not initial version
@@ -390,18 +421,24 @@ public class DialogAddLanguageWindow extends MWindow {
 	private boolean isInputValid() {
 		version.setTitle( tfTitle.getValue() );
 		version.setDefinition( description.getValue() );
+		version.setNotes( notes.getValue() );
 		
 		binder
 			.forField( tfTitle)
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind(v -> v.getTitle(),
-				(v, value) -> v.setTitle( value));
+			.bind(VersionDTO::getTitle,
+					VersionDTO::setTitle);
 
 		binder
 			.forField( description)
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
-			.bind(v -> v.getDefinition(),
-				(v, value) -> v.setDefinition( value ));
+			.bind(VersionDTO::getDefinition,
+					VersionDTO::setDefinition);
+
+		binder
+				.forField( notes)
+				.bind(VersionDTO::getNotes,
+						VersionDTO::setNotes);
 		
 		binder.validate();
 		return binder.isValid();

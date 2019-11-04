@@ -575,6 +575,7 @@ public class VersionDTO implements Serializable {
 		newVersion.setVocabularyId( targetVersion.getVocabularyId());
 		newVersion.setSummary( targetVersion.getSummary());
 		newVersion.setLicenseId(agencyLicenseId);
+		newVersion.setNotes( targetVersion.getNotes());
 		if( ddiUsage != null )
 			newVersion.setDdiUsage( ddiUsage );
 		else

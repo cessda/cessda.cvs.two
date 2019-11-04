@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import com.vaadin.data.HasValue;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
@@ -43,6 +44,9 @@ import eu.cessda.cvmanager.service.manager.WorkspaceManager;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.utils.ParserUtils;
 
+import static eu.cessda.cvmanager.config.Constants.REQUIRED;
+import static eu.cessda.cvmanager.config.Constants.REQUIRED_FIELD_INFO;
+
 public class DialogCVSchemeWindow extends MWindow implements Translatable{
 
 	private static final long serialVersionUID = -8116725336044618619L;
@@ -64,7 +68,6 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	private MVerticalLayout layout = new MVerticalLayout();
 	private MTextField tfCode = new MTextField("Code");
 	private MTextField tfTitle = new MTextField("Title*");
-//	private TextArea description = new TextArea("Description*");
 	private RichTextArea description = new RichTextArea("Description*");
 	private ComboBox<AgencyDTO> editorCb = new ComboBox<>("Agency*");
 	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
@@ -77,10 +80,9 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
 	private MLabel notesLabel = new MLabel("Notes");
-//	private TextArea notes = new TextArea();
 	private RichTextArea notes = new RichTextArea();
 	
-	private Binder<VersionDTO> binder = new Binder<VersionDTO>();
+	private Binder<VersionDTO> binder = new Binder<>();
 	private Language language;
 	private AgencyDTO agency;
 	private VocabularyDTO vocabulary;
@@ -88,9 +90,39 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	
 	private boolean isUpdated = false;
 
+	private HasValue.ValueChangeListener<AgencyDTO> changeListener = e -> {
+		if( e.getValue() != null ) {
+			languageCb.setReadOnly( false );
+			if( SecurityUtils.isCurrentUserAgencyAdmin( e.getValue() )) {
+				languageCb.setItems( Language.values() );
+				languageCb.setValue( Language.ENGLISH );
+			}
+			else {
+				SecurityUtils.getCurrentUserLanguageSlByAgency( e.getValue() ).ifPresent( languages -> {
+					languageCb.setItems( languages );
+					if( languages.contains( Language.ENGLISH))
+						languageCb.setValue( Language.ENGLISH );
+					else // get the first available language
+						languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
+				});
+			}
+
+			if( languageCb.getValue() != null ) {
+				languageCb.setReadOnly( false );
+				language = languageCb.getValue();
+			}
+			else
+				languageCb.setReadOnly( true );
+			agency = e.getValue();
+		} else {
+			languageCb.setReadOnly( true );
+			languageCb.setValue( null );
+			agency = null;
+		}
+	};
+
 	public DialogCVSchemeWindow(WorkspaceManager workspaceManager, I18N i18n, AgencyService agencyService,
-								VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, Language selectedLanguage,
-								UIEventBus eventBus) {
+								VocabularyDTO vocabulary, VersionDTO version, AgencyDTO agency, UIEventBus eventBus) {
 		super( version.isPersisted() ?"Edit Vocabulary": "Add Vocabulary");
 		this.workspaceManager = workspaceManager;
 		this.agencyService = agencyService;
@@ -105,44 +137,15 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	}
 
 	private void init() {
-		lAgency.withStyleName( "required" );
-		lCode.withStyleName( "required" );
-		lTitle.withStyleName( "required" );
-		lDescription.withStyleName( "required" );
+		lAgency.withStyleName(REQUIRED);
+		lCode.withStyleName(REQUIRED);
+		lTitle.withStyleName(REQUIRED);
+		lDescription.withStyleName(REQUIRED);
 		
 		editorCb.setItemCaptionGenerator(AgencyDTO::getName);
 		editorCb.setEmptySelectionAllowed( false );
 		editorCb.setTextInputAllowed( false );
-		editorCb.addValueChangeListener( e -> {
-			if( e.getValue() != null ) {
-				languageCb.setReadOnly( false );
-				if( SecurityUtils.isCurrentUserAgencyAdmin( e.getValue() )) {
-					languageCb.setItems( Language.values() );
-					languageCb.setValue( Language.ENGLISH );
-				}
-				else {
-					SecurityUtils.getCurrentUserLanguageSlByAgency( e.getValue() ).ifPresent( languages -> {
-						languageCb.setItems( languages );
-						if( languages.contains( Language.ENGLISH))
-							languageCb.setValue( Language.ENGLISH );
-						else // get the first available language
-							languageCb.setValue( languageCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
-					});
-				}
-				
-				if( languageCb.getValue() != null ) {
-					languageCb.setReadOnly( false );
-					language = languageCb.getValue();
-				}
-				else
-					languageCb.setReadOnly( true );
-				agency = e.getValue();
-			} else {
-				languageCb.setReadOnly( true );
-				languageCb.setValue( null );
-				agency = null;
-			}
-		});
+		editorCb.addValueChangeListener( changeListener );
 		
 		if( vocabulary.getNotes() != null )
 			notes.setValue( vocabulary.getNotes());
@@ -174,9 +177,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 				editorCb.setItems( agencyService.findAll());
 			}
 			else {
-				SecurityUtils.getCurrentUserAgencies().ifPresent( agencies -> {
-					editorCb.setItems( agencies );
-				});
+				SecurityUtils.getCurrentUserAgencies().ifPresent( agencies -> editorCb.setItems( agencies ));
 			}
 			editorCb.setValue( editorCb.getDataProvider().fetch( new Query<>()).findFirst().orElse( null ));
 		}
@@ -204,17 +205,13 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 		binder.setBean( version );
 		
 		tfCode.withFullWidth();
-		tfCode.addValueChangeListener( e -> {
-			((TextField)e.getComponent()).setValue( e.getValue().replaceAll(Constants.NOTATION_REGEX, ""));
-		});
+		tfCode.addValueChangeListener( e -> ((TextField)e.getComponent()).setValue( e.getValue().replaceAll(Constants.NOTATION_REGEX, "")));
 		
 		tfTitle.withFullWidth();
 		description.setSizeFull();
 		notes.setSizeFull();
 
-		storeCode.addClickListener(event -> {
-			saveCV();
-		});
+		storeCode.addClickListener(event -> saveCV());
 		
 		Button cancelButton = new Button("Cancel", e -> this.close());
 		
@@ -229,7 +226,6 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 		changeCb.setWidth("100%");
 		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.cvChangeTypes));
 		changeCb.setTextInputAllowed(false);
-//		changeCb.setEmptySelectionAllowed(false);
 		changeDesc.setWidth("100%");
 		changeBox
 			.withStyleName("change-block")
@@ -343,7 +339,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	private void saveCV() {
 		if(!isInputValid())
 			return;
-		
+		log.info( "Create anew CV with notation {}", tfCode.getValue());
 		// Store new CV
 		version.setNotation( tfCode.getValue() );
 		version.setTitleAndDefinition( tfTitle.getValue().trim(), ParserUtils.toXHTML( description.getValue()) );
@@ -373,22 +369,20 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 		if( !isUpdated) {
 			binder
 			.forField( tfCode)
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))
+			.withValidator( new StringLengthValidator(REQUIRED_FIELD_INFO, 2, 250 ))
 			.withValidator(p -> !vocabularyService.existsByNotation( p ), "code is already exist")
-			.bind( v -> v.getNotation(),(v, value) -> v.setNotation(value));
+			.bind(VersionDTO::getNotation, VersionDTO::setNotation);
 		}
 		
 		binder
 			.forField( tfTitle)
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind(v -> v.getTitle(),
-				(v, value) -> v.setTitle( value));
+			.withValidator( new StringLengthValidator(REQUIRED_FIELD_INFO, 2, 250 ))
+			.bind(VersionDTO::getTitle, VersionDTO::setTitle);
 
 		binder
 			.forField( description )
-			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))
-			.bind(v -> v.getDefinition(),
-				(v, value) -> v.setDefinition( value ));
+			.withValidator( new StringLengthValidator(REQUIRED_FIELD_INFO, 2, 10000 ))
+			.bind(VersionDTO::getDefinition, VersionDTO::setDefinition);
 		
 		binder.validate();
 		return binder.isValid();

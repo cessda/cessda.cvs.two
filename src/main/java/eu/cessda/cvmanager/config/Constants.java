@@ -24,6 +24,9 @@ public final class Constants {
     		"ROLE_AGENCY_AUTHOR", 		// SL /& TL (depends on language right assigned)
     		"ROLE_AGENCY_AUTHOR_ADMIN"   // SL & TL
     		};
+
+    public static final String REQUIRED = "required";
+    public static final String REQUIRED_FIELD_INFO = "* required field, require an input with at least 2 characters";
     
     private Constants() {
     }

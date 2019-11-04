@@ -112,6 +112,7 @@ public class PublicationDetailsView extends CvView {
 	private MLabel lDate = new MLabel();
 	private MLabel lTitleOl = new MLabel();
 	private MLabel lDefinitionOl = new MLabel();
+	private MLabel lNotesOl = new MLabel();
 	private MLabel lVersionOl = new MLabel();
 	private MLabel lDateOl = new MLabel();
 	
@@ -397,7 +398,7 @@ public class PublicationDetailsView extends CvView {
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentSlVersion.getDefinition()).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 
-		String notesValue = currentVersion.getNotes();
+		String notesValue = currentSlVersion.getNotes();
 		if( notesValue == null || notesValue.isEmpty() )
 			notesValue = vocabulary.getNotes();
 		MCssLayout notes = new MCssLayout();
@@ -420,9 +421,17 @@ public class PublicationDetailsView extends CvView {
 				lDefinitionOl.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentVersion.getDefinition()).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 
+		notesValue = currentVersion.getNotes();
+		MCssLayout notesOl = new MCssLayout();
+		notesOl.withFullWidth().add(lNotesOl.withWidth("140px").withStyleName("leftPart"),
+				new MLabel( notesValue ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
+		if( notesValue == null || notesValue.isEmpty() )
+			notes.setVisible( false );
+
 		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
+			notesOl.setVisible(false);
 		}
 		
 		versionLabel.withStyleName("rightPart");
@@ -448,7 +457,7 @@ public class PublicationDetailsView extends CvView {
 							new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
 				);
 
-		topViewSection.add(topHead, titleSmall, description, notes, code, titleSmallOl, descriptionOl, langVersDateLayout);
+		topViewSection.add(topHead, titleSmall, description, notes, code, titleSmallOl, descriptionOl, notesOl, langVersDateLayout);
 	}
 
 	private void initBottomViewSection() {
@@ -651,7 +660,7 @@ public class PublicationDetailsView extends CvView {
 		lTitle.setValue( i18n.get("view.detail.cvscheme.label.sl.title", locale));
 		lDefinition.setValue( i18n.get("view.detail.cvscheme.label.sl.definition", locale));
 		lCode.setValue( i18n.get("view.detail.cvscheme.label.sl.code", locale));
-		lNotes.setValue( i18n.get("view.detail.cvscheme.label.sl.note", locale));
+		lNotes.setValue( "CV notes" );
 		lLang.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
 		lVersion.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
 		lDate.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
@@ -659,6 +668,8 @@ public class PublicationDetailsView extends CvView {
 		lDefinitionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
 		lVersionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
 		lDateOl.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
+		lNotesOl.setValue( "CV notes (" + selectedLang + ")" );
+
 
 		detailTab.getTab(0).setCaption( i18n.get("view.detail.cvconcept.tab.detail", locale));
 		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.version", locale));

@@ -51,7 +51,7 @@ public class EditorSearchActionLayout extends ResponsiveBlock{
 
 	private void doCvAdd() {
 		Window window = new DialogCVSchemeWindow(workspaceManager, i18n, agencyService, VocabularyDTO.createDraft(),
-				VersionDTO.createDraft(), null, null, eventBus );
+				VersionDTO.createDraft(), null, eventBus );
 		getUI().addWindow(window);
 	}
 	

@@ -199,7 +199,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 
 	private void doCvAdd( ClickEvent event ) {
 		Window window = new DialogCVSchemeWindow(workspaceManager, i18n, agencyService, VocabularyDTO.createDraft(),
-				VersionDTO.createDraft(), agency, null, eventBus
+				VersionDTO.createDraft(), agency, eventBus
 		);
 		getUI().addWindow(window);
 	}
@@ -207,7 +207,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private void doCvEdit( ClickEvent event ) {
 		Window window = null;
 		if( sourceLanguage.equals(selectedLanguage))
-			window = new DialogCVSchemeWindow(workspaceManager, i18n, agencyService, vocabulary, currentVersion, agency, selectedLanguage, eventBus
+			window = new DialogCVSchemeWindow(workspaceManager, i18n, agencyService, vocabulary, currentVersion, agency, eventBus
 			);
 		else
 			window = new DialogAddLanguageWindow(workspaceManager, agency, vocabulary, currentVersion, eventBus);
