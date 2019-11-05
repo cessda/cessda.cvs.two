@@ -18310,6 +18310,16 @@ div.v-layout.v-horizontal.v-widget {
 	border: 1px solid #eee;
 }
 
+.mytheme .secondary-footer .privacy {
+	text-align: left;
+	padding-bottom: 10px;
+}
+
+.mytheme .secondary-footer .privacy div .cont-privacy {
+	color: #ccc;
+	padding-bottom: 10px;
+}
+
 @media (min-width: 992px) {
 	.header-cessda .header-content h2 {
 		padding-top: 30px;

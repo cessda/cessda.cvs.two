@@ -2613,6 +2613,14 @@ $v-selection-item-border-radius: 0;
     	top: 4px !important;
     }
    .panel-group{
-	border:1px solid #eee;
+		border:1px solid #eee;
    }
+	.secondary-footer .privacy {
+		text-align: left;
+		padding-bottom: 10px;
+		div .cont-privacy {
+			color: #ccc;
+			padding-bottom:10px;
+		}
+	}
 }
