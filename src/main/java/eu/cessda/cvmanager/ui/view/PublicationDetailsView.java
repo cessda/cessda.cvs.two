@@ -421,12 +421,12 @@ public class PublicationDetailsView extends CvView {
 				lDefinitionOl.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentVersion.getDefinition()).withStyleName("rightPart").withContentMode( ContentMode.HTML));
 
-		notesValue = currentVersion.getNotes();
+		notesValue = currentVersion.getNotes() == null ? "":currentVersion.getNotes();
 		MCssLayout notesOl = new MCssLayout();
 		notesOl.withFullWidth().add(lNotesOl.withWidth("140px").withStyleName("leftPart"),
 				new MLabel( notesValue ).withStyleName("rightPart").withContentMode( ContentMode.HTML));
-		if( notesValue == null || notesValue.isEmpty() )
-			notes.setVisible( false );
+		if( notesValue.isEmpty() )
+			notesOl.setVisible( false );
 
 		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);

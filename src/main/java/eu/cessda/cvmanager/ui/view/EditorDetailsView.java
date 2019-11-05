@@ -605,7 +605,7 @@ public class EditorDetailsView extends CvView {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 		} else {
-			notesValue = currentVersion.getNotes();
+			notesValue = currentVersion.getNotes() == null ? "" : currentVersion.getNotes();
 			notesField.setValue( notesValue );
 			notesOlLabel.setValue(notesValue);
 
