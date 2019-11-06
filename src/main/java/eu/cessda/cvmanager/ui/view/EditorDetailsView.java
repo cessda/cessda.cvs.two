@@ -621,7 +621,7 @@ public class EditorDetailsView extends CvView {
 		langVersDateLayout.withFullWidth().add(
 				new MCssLayout().withStyleName("col-des-4")
 						.add(lLang.withWidth("140px").withStyleName("leftPart"),
-								new MLabel(selectedLang.toString()).withStyleName("rightPart")),
+								new MLabel(currentVersion.getDetailLanguage()).withStyleName("rightPart")),
 				new MCssLayout()
 						.withStyleName("col-des-4")
 						.add(

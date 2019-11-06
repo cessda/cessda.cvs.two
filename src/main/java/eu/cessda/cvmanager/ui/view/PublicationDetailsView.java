@@ -440,7 +440,7 @@ public class PublicationDetailsView extends CvView {
 		langVersDateLayout.withFullWidth().add(
 				new MCssLayout().withStyleName("col-des-4")
 						.add(lLang.withWidth("140px").withStyleName("leftPart"),
-								new MLabel(selectedLang.toString()).withStyleName("rightPart")),
+								new MLabel(currentVersion.getDetailLanguage()).withStyleName("rightPart")),
 				new MCssLayout()
 						.withStyleName("col-des-4")
 						.add(
@@ -715,7 +715,7 @@ public class PublicationDetailsView extends CvView {
 		private MCssLayout generateLanguageMenu( String langIso, List<VersionDTO> versions) {
 			MCssLayout languageMenu = new MCssLayout();
 			MCssLayout languageSubMenu = new MCssLayout();
-			MButton languageButton = new MButton( langIso.toUpperCase() );
+			MButton languageButton = new MButton( langIso.toUpperCase() ).withDescription( versions.get(0).getDetailLanguage());
 			langButtons.add(languageButton);
 			
 			languageButton.withStyleName("langbutton-publish");

@@ -166,7 +166,7 @@
 	<p >
 		<button value="all" class="active">show all</button>
 	<div th:remove="tag" th:each="version, iterStat: ${versions}">
-		<button th:value="${version.language}" th:text="${version.language}"></button>
+		<button th:value="${version.language}" th:text="${version.language}" th:title="${version.getDetailLanguage()}"></button>
 	</div>
 
 	</p>
