@@ -62,7 +62,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	private MVerticalLayout layout = new MVerticalLayout();
 	private MTextField tfCode = new MTextField("Code");
 	private MTextField tfTitle = new MTextField("Title*");
-	private RichTextArea description = new RichTextArea("Description*");
+	private TextArea description = new TextArea("Description*");
 	private ComboBox<AgencyDTO> editorCb = new ComboBox<>("Agency*");
 	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
 	private Button storeCode = new Button("Save");
@@ -73,7 +73,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	private MLabel lChangeDesc = new MLabel( "Description" );
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
-	private MLabel notesLabel = new MLabel("Notes");
+	private MLabel notesLabel = new MLabel("Cv notes");
 	private TextArea notes = new TextArea();
 	
 	private Binder<VersionDTO> binder = new Binder<>();

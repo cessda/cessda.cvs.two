@@ -649,6 +649,7 @@ public class EditorDetailsView extends CvView {
 					notesField.setVisible( false );
 					cancelNotesButton.setVisible( false );
 					currentVersion.setNotes( notesField.getValue().trim());
+					currentVersion = versionService.save(currentVersion);
 					if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
 						notesLabel.setValue(currentVersion.getNotes());
 						notesLabel.setVisible( true );
@@ -656,8 +657,7 @@ public class EditorDetailsView extends CvView {
 						notesOlLabel.setValue(currentVersion.getNotes());
 						notesOlLabel.setVisible( true );
 					}
-					versionService.save(currentVersion);
-					if(  vocabulary.getNotes().isEmpty() ) {
+					if(  currentVersion.getNotes().isEmpty() ) {
 						editNotesButton.setCaption("Add notes");
 						if (selectedLang.toString().equals(configService.getDefaultSourceLanguage()))
 							notesLabel.setVisible( false );

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import com.vaadin.ui.*;
 import eu.cessda.cvmanager.event.CvManagerEvent;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
@@ -24,13 +25,6 @@ import org.vaadin.viritin.layouts.MWindow;
 import com.vaadin.data.Binder;
 import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ItemCaptionGenerator;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
@@ -54,23 +48,23 @@ public class DialogAddLanguageWindow extends MWindow {
 	private Binder<VersionDTO> binder = new Binder<>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
-	private MLabel lTitle = new MLabel( "Title" );
-	private MLabel lDescription = new MLabel( "Definition" );
-	private MLabel lLanguage = new MLabel( "Language" );
-	private MLabel lNotes = new MLabel( "Notes" );
-	private MLabel lSourceTitle = new MLabel( "Title (source)" );
-	private MLabel lSourceDescription = new MLabel( "Definition (source)" );
-	private MLabel lSourceLanguage = new MLabel( "Language (source)" );
-	private MLabel lSourceNotes = new MLabel( "Notes (source)" );
+	private MLabel lTitle = new MLabel( "CV name" );
+	private MLabel lDescription = new MLabel( "CV definition" );
+	private MLabel lLanguage = new MLabel( "CV language" );
+	private MLabel lNotes = new MLabel( "CV notes" );
+	private MLabel lSourceTitle = new MLabel( "CV name (source)" );
+	private MLabel lSourceDescription = new MLabel( "CV definition (source)" );
+	private MLabel lSourceLanguage = new MLabel( "CV language (source)" );
+	private MLabel lSourceNotes = new MLabel( "CV notes (source)" );
 	
-	private MTextField sourceTitle = new MTextField("Title (source)");
-	private MTextField sourceLanguage = new MTextField("Language (source)");
-	private RichTextArea sourceDescription = new RichTextArea("Definition (source)");
-	private RichTextArea sourceNotes = new RichTextArea("Notes (source)");
-	private MTextField tfTitle = new MTextField("Title*");
-	private RichTextArea description = new RichTextArea("Definition*");
-	private RichTextArea notes = new RichTextArea("Notes");
-	private ComboBox<Language> languageCb = new ComboBox<>("Language*");
+	private MTextField sourceTitle = new MTextField("CV name (source)");
+	private MTextField sourceLanguage = new MTextField("CV language (source)");
+	private TextArea sourceDescription = new TextArea("CV definition (source)");
+	private TextArea sourceNotes = new TextArea("CV notes (source)");
+	private MTextField tfTitle = new MTextField("CV name*");
+	private TextArea description = new TextArea("CV definition*");
+	private TextArea notes = new TextArea("CV notes");
+	private ComboBox<Language> languageCb = new ComboBox<>("CV language*");
 	private Button storeCode = new Button("Save");
 	
 	private MCssLayout changeBox = new MCssLayout();
@@ -143,7 +137,7 @@ public class DialogAddLanguageWindow extends MWindow {
 
 		sourceNotes.setReadOnly( true );
 		sourceNotes.setSizeFull();
-		sourceNotes.setValue( slVersion.getNotes());
+		sourceNotes.setValue( slVersion.getNotes() == null ? "": slVersion.getNotes());
 
 		tfTitle.withFullWidth();
 		description.setSizeFull();
@@ -371,7 +365,7 @@ public class DialogAddLanguageWindow extends MWindow {
 			if(latestTlVersion.isPresent()) {
 				tfTitle.setValue( latestTlVersion.get().getTitle());
 				description.setValue( latestTlVersion.get().getDefinition());
-				notes.setValue( latestTlVersion.get().getNotes());
+				notes.setValue( latestTlVersion.get().getNotes() == null ? "":latestTlVersion.get().getNotes());
 				translatorAgency.setValue( latestTlVersion.get().getTranslateAgency());
 				translatorAgencyLink.setValue( latestTlVersion.get().getTranslateAgencyLink());
 			}else {
@@ -387,7 +381,7 @@ public class DialogAddLanguageWindow extends MWindow {
 	private void assignExistingTargetVersion() {
 		tfTitle.setValue( version.getTitle());
 		description.setValue( version.getDefinition());
-		notes.setValue( version.getNotes());
+		notes.setValue( version.getNotes() == null ? "":version.getNotes());
 		Language selectedLanguage = Language.valueOfEnum( version.getLanguage());
 		languageCb.setItems( selectedLanguage );
 		languageCb.setValue(selectedLanguage);
