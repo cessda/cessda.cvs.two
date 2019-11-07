@@ -494,7 +494,7 @@ public class PublicationDetailsView extends CvView {
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.NONE );
 		
-		detailTreeGrid.addColumn(code -> code.getNotation()  + "("  + code.getCodeId() + ")")
+		detailTreeGrid.addColumn(code -> code.getNotation() /* + "("  + code.getCodeId() + ")" */)
 			.setCaption("Code")
 			.setExpandRatio(1)
 			.setId("code");

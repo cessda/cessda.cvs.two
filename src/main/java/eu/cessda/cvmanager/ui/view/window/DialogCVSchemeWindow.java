@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.vaadin.data.HasValue;
+import com.vaadin.ui.*;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
@@ -25,13 +26,6 @@ import org.vaadin.viritin.layouts.MWindow;
 import com.vaadin.data.Binder;
 import com.vaadin.data.provider.Query;
 import com.vaadin.data.validator.StringLengthValidator;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.ItemCaptionGenerator;
-import com.vaadin.ui.RichTextArea;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.UI;
 
 import eu.cessda.cvmanager.config.Constants;
 import eu.cessda.cvmanager.event.CvManagerEvent;
@@ -80,7 +74,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 	private ComboBox<String> changeCb = new ComboBox<>();
 	private MTextField changeDesc = new MTextField();
 	private MLabel notesLabel = new MLabel("Notes");
-	private RichTextArea notes = new RichTextArea();
+	private TextArea notes = new TextArea();
 	
 	private Binder<VersionDTO> binder = new Binder<>();
 	private Language language;
@@ -344,7 +338,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 		version.setNotation( tfCode.getValue() );
 		version.setTitleAndDefinition( tfTitle.getValue().trim(), ParserUtils.toXHTML( description.getValue()) );
 
-		workspaceManager.saveSourceCV(agency, language, vocabulary, version, ParserUtils.toXHTML( notes.getValue()));
+		workspaceManager.saveSourceCV(agency, language, vocabulary, version, notes.getValue());
 		
 		if( isUpdated && !version.isInitialVersion()) {
 			// store log 

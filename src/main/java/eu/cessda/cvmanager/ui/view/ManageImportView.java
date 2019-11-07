@@ -401,7 +401,7 @@ public class ManageImportView extends CvManagerAdminView {
 				return;
 			}
 			// get latest version
-			List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup(true);
+			List<VersionDTO> latestVersions = vocabulary.getLatestVersionGroup(true, false);
 
 			Optional<VersionDTO> optSlVersion = latestVersions.stream()
 					.filter(v -> v.getItemType().equals(ItemType.SL.toString())).findFirst();

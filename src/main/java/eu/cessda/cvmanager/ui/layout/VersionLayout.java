@@ -21,7 +21,6 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.ui.RichTextArea;
 
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
@@ -151,7 +150,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
         String cvUrl = null;
 
         MCssLayout infoLayout = new MCssLayout().withFullSize().withVisible(false);
-        RichTextArea versionNotesTf = new RichTextArea();
+        TextArea versionNotesTf = new TextArea();
         TextArea changeVersionTf = new TextArea();
         MButton editSwitchButton = new MButton("Edit").withVisible(false);
         MCssLayout buttonLayout = new MCssLayout().withFullWidth();
@@ -315,7 +314,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
         return versionLayout;
     }
 
-    private void switchMode(MLabel noteVersionLabel, MLabel noteVersion, RichTextArea versionNotesTf,
+    private void switchMode(MLabel noteVersionLabel, MLabel noteVersion, TextArea versionNotesTf,
                             MLabel changeVersionLabel, MLabel changeVersion, TextArea changeVersionTf,
                             MButton editSwitchButton, MCssLayout buttonLayout, VersionDTO versionDTO,
                             LayoutMode layoutMode) {

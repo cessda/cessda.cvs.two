@@ -4,6 +4,7 @@ package eu.cessda.cvmanager.service.dto;
 import javax.persistence.Lob;
 import javax.validation.constraints.*;
 
+import eu.cessda.cvmanager.utils.VersionUtils;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 
@@ -53,11 +54,9 @@ public class VocabularyDTO implements Serializable {
     @Size(max = 240)
     private String uri;
     
-    @NotNull
     @Size(max = 240)
     private String notation;
 
-    @NotNull
     @Size(max = 20)
     private String versionNumber;
     
@@ -77,14 +76,11 @@ public class VocabularyDTO implements Serializable {
     
     private Set<String> statuses;
     
-    @NotNull
     @Size(max = 20)
     private String sourceLanguage;
     
-    @NotNull
     private Long agencyId;
     
-    @NotNull
     private String agencyName;
     
     @JsonIgnore
@@ -1773,7 +1769,6 @@ public class VocabularyDTO implements Serializable {
     }
 
 	private static VocabularyDTO extractCVSchemeToVocabularyDTO(CVScheme cvScheme, VocabularyDTO vocabulary) {
-		//TODO: need to change hard coded value
 		vocabulary.setUri( cvScheme.getId() );
 		vocabulary.setVersionNumber( "1.0" );
 		vocabulary.setSourceLanguage( Language.ENGLISH.toString());
@@ -1963,7 +1958,7 @@ public class VocabularyDTO implements Serializable {
 	public Set<VersionDTO> getLatestVersions(String status){
 		Set<VersionDTO> versionDTOs = new HashSet<>();
 		for(String lang: languages) {
-			getLatestVersionByLanguage(lang, null, status).ifPresent( v -> versionDTOs.add(v));
+			getLatestVersionByLanguage(lang, null, status).ifPresent(versionDTOs::add);
 		}
 		return versionDTOs;
 	}
@@ -1992,29 +1987,29 @@ public class VocabularyDTO implements Serializable {
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(String language, String version, String status) {
 		// sort first
-		List<VersionDTO> vers = versions.stream()
+		List<VersionDTO> versionDTOS = versions.stream()
 				.sorted( ( v1, v2) -> v2.getPreviousVersion().compareTo( v1.getPreviousVersion() ))
 				.filter( p -> language.equalsIgnoreCase( p.getLanguage() ))
 				.collect( Collectors.toList());
 			
 		if( status != null && version != null )
-			return vers.stream()
+			return versionDTOS.stream()
 					.filter( v -> status.equalsIgnoreCase( v.getStatus() ))
 					.filter( v -> version.equalsIgnoreCase( v.getNumber() ))
 					.findFirst();
 		
 		else if( status != null )
-			return vers.stream()
+			return versionDTOS.stream()
 					.filter( v -> status.equalsIgnoreCase( v.getStatus() ))
 					.findFirst();
 		
 		else if( version != null )
-			return vers.stream()
+			return versionDTOS.stream()
 					.filter( v -> version.equalsIgnoreCase( v.getNumber() ))
 					.findFirst();
 		
 		else
-			return vers.stream().findFirst();
+			return versionDTOS.stream().findFirst();
 	}
 	
 	public Optional<VersionDTO> getVersionByUriSlAndLangauge( String uriSl, String language){
@@ -2046,40 +2041,46 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public List<VersionDTO> getLatestVersionGroup( boolean isTlPublished){
-		List<VersionDTO> versionsGroup = new ArrayList<>();
-		//  First get latest published SL
-		Optional<VersionDTO> latestSlVersionOpt = getLatestSlVersion( true );
-		
-		if( latestSlVersionOpt.isPresent() ) {
-			VersionDTO latestSlVersion = latestSlVersionOpt.get();
-			versionsGroup.add( latestSlVersion );
-			
-			// get TL version by uri_sl
-			List<VersionDTO> tlVersions = null;
-			if( isTlPublished ) {
-				tlVersions = versions.stream()
-					.filter( p -> Status.PUBLISHED.toString().equals( p.getStatus()) )
-					.filter( p -> latestSlVersion.getUri().equals( p.getUriSl() ))
-					.collect( Collectors.toList());
-			}
-			else {
-				tlVersions = versions.stream()
-					.filter( p -> latestSlVersion.getUri().equals( p.getUriSl() ))
-					.collect( Collectors.toList());
-			}
-			
-			Set<String> tlLanguages = new HashSet<>();
-			for( VersionDTO versionTl : tlVersions) {
-				if( tlLanguages.contains( versionTl.getLanguage()))
-					continue;
-				
-				versionsGroup.add(versionTl);
-				tlLanguages.add( versionTl.getLanguage());
-			}
-		}
-		
-		return versionsGroup;
+
+		return getLatestVersionGroup( isTlPublished, true );
 	}
+
+    public List<VersionDTO> getLatestVersionGroup( boolean isTlPublished, boolean isOnlyLatestTl){
+        List<VersionDTO> versionsGroup = new ArrayList<>();
+        //  First get latest published SL
+        Optional<VersionDTO> latestSlVersionOpt = getLatestSlVersion( true );
+
+        if( latestSlVersionOpt.isPresent() ) {
+            VersionDTO latestSlVersion = latestSlVersionOpt.get();
+            versionsGroup.add( latestSlVersion );
+
+            // get TL version by uri_sl
+            List<VersionDTO> tlVersions = null;
+            if( isTlPublished ) {
+                tlVersions = versions.stream()
+                        .filter( p -> Status.PUBLISHED.toString().equals( p.getStatus()) )
+                        .filter( p -> latestSlVersion.getUri().equals( p.getUriSl() ))
+                        .sorted((v1,v2) -> VersionUtils.compareVersion(v2.getNumber(), v1.getNumber()))
+                        .collect( Collectors.toList());
+            }
+            else {
+                tlVersions = versions.stream()
+                        .filter( p -> latestSlVersion.getUri().equals( p.getUriSl() ))
+                        .sorted((v1,v2) -> VersionUtils.compareVersion(v2.getNumber(), v1.getNumber()))
+                        .collect( Collectors.toList());
+            }
+
+            Set<String> tlLanguages = new HashSet<>();
+            for( VersionDTO versionTl : tlVersions) {
+                if( isOnlyLatestTl && tlLanguages.contains( versionTl.getLanguage()))
+                    continue;
+
+                versionsGroup.add(versionTl);
+                tlLanguages.add( versionTl.getLanguage());
+            }
+        }
+        return versionsGroup;
+    }
 	
 	public List<VersionDTO> getVersionsByLanguage( String language){
 		return versions.stream()
@@ -2107,10 +2108,11 @@ public class VocabularyDTO implements Serializable {
 		Map<String, CodeDTO> codeMap = new HashMap<>();
 		for(String lang: languages) {
 			Language langEnum = Language.valueOfEnum(lang);
-			
-			if( getLatestVersionByLanguage(lang,status).isPresent() ) {
+
+            Optional<VersionDTO> latestVersionByLanguageOpt = getLatestVersionByLanguage(lang, status);
+            if( latestVersionByLanguageOpt.isPresent() ) {
 				// get codes
-				for( ConceptDTO concept : getLatestVersionByLanguage(lang,status).get().getConcepts()){
+				for( ConceptDTO concept : latestVersionByLanguageOpt.get().getConcepts()){
 					CodeDTO targetCode = codeMap.get( concept.getNotation());
 					if( targetCode == null ) {
 						CodeDTO newCode = new CodeDTO();
@@ -2120,22 +2122,8 @@ public class VocabularyDTO implements Serializable {
 					} else {
 						targetCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum, false);
 					}
-				};
+				}
 			}
-//			getLatestVersionByLanguage(lang,status).ifPresent( versionDTO -> {
-//				// get codes
-//				for( ConceptDTO concept : versionDTO.getConcepts()){
-//					CodeDTO targetCode = codeMap.get( concept.getNotation());
-//					if( targetCode == null ) {
-//						CodeDTO newCode = new CodeDTO();
-//						newCode.setNotation( concept.getNotation());
-//						newCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum);
-//						codeMap.put(concept.getNotation(), newCode);
-//					} else {
-//						targetCode.setTitleDefinition( concept.getTitle(), concept.getDefinition(), langEnum);
-//					}
-//				};
-//			});
 		}
 		
 		return new HashSet<>( codeMap.values());
@@ -2144,7 +2132,7 @@ public class VocabularyDTO implements Serializable {
 	public static Set<String> getLanguagesFromVersions( Set<VersionDTO> versDTOs){
 		return versDTOs
 				.stream()
-				.map( s -> s.getLanguage())
+				.map(VersionDTO::getLanguage)
 				.collect( Collectors.toSet());
 	}
 	
@@ -2152,13 +2140,12 @@ public class VocabularyDTO implements Serializable {
 		return versDTOs
 				.stream()
 				.filter( v -> v.getStatus().equals( Status.PUBLISHED.toString()))
-				.map( s -> s.getLanguage())
+				.map(VersionDTO::getLanguage)
 				.collect( Collectors.toSet());
 	}
 	
 	public static void setCvSchemeByVocabulary( CVScheme cvScheme, VocabularyDTO vocabulary) {
 		// get published languages from vocabulary
-		// TODO: consider getPublishedLanguages
 		for(String lang : vocabulary.getLanguages()) {
 			Language eachLanguage = Language.getEnum(lang);
 			String languageIso = eachLanguage.toString();

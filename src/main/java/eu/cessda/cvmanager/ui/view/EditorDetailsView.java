@@ -569,7 +569,7 @@ public class EditorDetailsView extends CvView {
 		if( notesValue == null || notesValue.isEmpty() )
 			notesValue = vocabulary.getNotes();
 
-		RichTextArea notesField = new RichTextArea();
+		TextArea notesField = new TextArea();
 		notesField.setVisible( false );
 		notesField.setStyleName( "rightPart" );
 		notesField.setWidth("800px");
@@ -680,7 +680,7 @@ public class EditorDetailsView extends CvView {
 			cancelNotesButton.addClickListener(e -> {
 				cancelNotesButton.setVisible( false );
 				notesField.setVisible( false );
-				notesField.setValue( currentVersion.getNotes() );
+				notesField.setValue( currentVersion.getNotes() == null ? "": currentVersion.getNotes());
 				if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
 					notesLabel.setVisible( true );
 				}else {
@@ -732,7 +732,7 @@ public class EditorDetailsView extends CvView {
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.SINGLE );
 		
-		detailTreeGrid.addColumn(code -> code.getNotation()  + "("  + code.getId() + ")")
+		detailTreeGrid.addColumn(code -> code.getNotation() /* + "("  + code.getId() + ")" */)
 			.setCaption("Code")
 			.setExpandRatio(1)
 			.setId("code");
