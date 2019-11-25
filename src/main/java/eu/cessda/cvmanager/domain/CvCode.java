@@ -2,7 +2,8 @@ package eu.cessda.cvmanager.domain;
 
 import javax.validation.constraints.NotNull;
 
-public class CvCode{
+public class CvCode
+{
 	@NotNull
 	private String code;
 	@NotNull
@@ -12,35 +13,55 @@ public class CvCode{
 	private String parent;
 	// the position of the code (positive integer)
 	private Integer position;
-	public String getCode() {
+
+	public String getCode()
+	{
 		return code;
 	}
-	public void setCode(String code) {
+
+	public void setCode( String code )
+	{
 		this.code = code;
 	}
-	public String getTerm() {
+
+	public String getTerm()
+	{
 		return term;
 	}
-	public void setTerm(String term) {
+
+	public void setTerm( String term )
+	{
 		this.term = term;
 	}
-	public String getDefinition() {
+
+	public String getDefinition()
+	{
 		return definition;
 	}
-	public void setDefinition(String definition) {
+
+	public void setDefinition( String definition )
+	{
 		this.definition = definition;
 	}
-	public String getParent() {
+
+	public String getParent()
+	{
 		return parent;
 	}
-	public void setParent(String parent) {
+
+	public void setParent( String parent )
+	{
 		this.parent = parent;
 	}
-	public Integer getPosition() {
+
+	public Integer getPosition()
+	{
 		return position;
 	}
-	public void setPosition(Integer position) {
+
+	public void setPosition( Integer position )
+	{
 		this.position = position;
 	}
-	
+
 }
