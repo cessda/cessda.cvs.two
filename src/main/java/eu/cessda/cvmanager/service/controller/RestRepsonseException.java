@@ -6,7 +6,7 @@ public class RestRepsonseException extends RuntimeException
 {
 	private static final long serialVersionUID = 3617246608437128048L;
 
-	private HttpStatus httpStatus;
+	private final HttpStatus httpStatus;
 
 	public RestRepsonseException( HttpStatus httpStatus, String message )
 	{

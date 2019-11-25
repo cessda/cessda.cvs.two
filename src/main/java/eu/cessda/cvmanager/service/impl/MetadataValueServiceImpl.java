@@ -46,12 +46,9 @@ public class MetadataValueServiceImpl implements MetadataValueService {
      */
     @Override
     public MetadataValueDTO save(MetadataValueDTO metadataValueDTO) {
-//        log.debug("Request to save MetadataValue : {}", metadataValueDTO);
         MetadataValue metadataValue = metadataValueMapper.toEntity(metadataValueDTO);
         metadataValue = metadataValueRepository.save(metadataValue);
-        MetadataValueDTO result = metadataValueMapper.toDto(metadataValue);
-//        metadataValueSearchRepository.save(metadataValue);
-        return result;
+        return metadataValueMapper.toDto(metadataValue);
     }
 
     /**
@@ -91,7 +88,6 @@ public class MetadataValueServiceImpl implements MetadataValueService {
     public void delete(Long id) {
         log.debug("Request to delete MetadataValue : {}", id);
         metadataValueRepository.deleteById(id);
-//        metadataValueSearchRepository.delete(id);
     }
 
     /**
@@ -105,8 +101,7 @@ public class MetadataValueServiceImpl implements MetadataValueService {
     @Transactional(readOnly = true)
     public Page<MetadataValueDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of MetadataValues for query {}", query);
-//        Page<MetadataValue> result = metadataValueSearchRepository.search(queryStringQuery(query), pageable);
-        return null;//result.map(metadataValueMapper::toDto);
+        return null;
     }
 
 	@Override

@@ -88,7 +88,7 @@ public class WithdrawnDetailView extends CvView {
 	private final VocabularyChangeService vocabularyChangeService;
 	private final LicenceService licenceService;
 	private final ConceptService conceptService;
-	
+
 	private Language selectedLang = Language.ENGLISH;
 	private List<CodeDTO> codeDTOs = new ArrayList<>();
 
@@ -96,10 +96,10 @@ public class WithdrawnDetailView extends CvView {
 	private MCssLayout topViewSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomSection = new MCssLayout().withFullWidth();
 	private MCssLayout bottomViewSection = new MCssLayout().withFullWidth();
-	
+
 	private MCssLayout newerVersionAvailable = new MCssLayout();
 	private MCssLayout vocabularyIsWithdrawn = new MCssLayout();
-	
+
 	// the tabs
 	private TabSheet detailTab = new TabSheet();
 	private MCssLayout detailLayout = new MCssLayout().withFullWidth();
@@ -119,7 +119,7 @@ public class WithdrawnDetailView extends CvView {
 	private MLabel lDefinitionOl = new MLabel();
 	private MLabel lVersionOl = new MLabel();
 	private MLabel lDateOl = new MLabel();
-	
+
 	private MLabel lTitle2 = new MLabel();
 	private MLabel lDefinition2 = new MLabel();
 	private MLabel lCode2 = new MLabel();
@@ -130,48 +130,48 @@ public class WithdrawnDetailView extends CvView {
 	private MLabel lDefinitionOl2 = new MLabel();
 	private MLabel lVersionOl2 = new MLabel();
 	private MLabel lDateOl2 = new MLabel();
-	
+
 	private MLabel lLang3 = new MLabel();
 	private MLabel lVersion3 = new MLabel();
 	private MLabel lDate3 = new MLabel();
-	
+
 	private LanguageMenu langMenu;
 	private String highlightCode;
-	
+
 	private VersionDTO currentVersion;
 	private VersionDTO currentSlVersion;
 	private VersionDTO latestSlVersion;
-	
+
 	private MLabel versionLabel = new MLabel();
 
 	private List<MButton> langButtons = new ArrayList<>();
-	private Map<VersionDTO,MButton> langSubButtons = new HashMap<>();
-	
+	private Map<VersionDTO, MButton> langSubButtons = new HashMap<>();
+
 	private TreeGrid<ConceptDTO> detailTreeGrid = new TreeGrid<>(ConceptDTO.class);
 
 	private TreeData<ConceptDTO> cvCodeTreeData;
 	private MCssLayout languageLayout = new MCssLayout();
 	private TreeDataProvider<ConceptDTO> dataProvider;
-	
+
 	private VersionLayout versionLayout;
 	private ExportLayout exportLayoutContent;
 	private IdentityLayout identityLayout;
 	private DdiUsageLayout ddiUsageLayout;
 	private LicenseLayout licenseLayoutContent;
-	
+
 	private Map<String, List<VersionDTO>> orderedLanguageVersionMap;
 	private List<LicenceDTO> licenses;
 	private Language sourceLanguage;
 	private String activeTab;
-	
+
 	private WithdrawnCvActionLayout withdrawnCvActionLayout;
 
 	public WithdrawnDetailView(I18N i18n, EventBus.UIEventBus eventBus, ConfigurationService configService,
 			StardatDDIService stardatDDIService, SecurityService securityService, AgencyService agencyService,
-			VocabularyService vocabularyService, VersionService versionService, CodeService codeService, 
-			SpringTemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService, LicenceService licenceService,
-			ConceptService conceptService) {
-		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService, 
+			VocabularyService vocabularyService, VersionService versionService, CodeService codeService,
+			SpringTemplateEngine templateEngine, VocabularyChangeService vocabularyChangeService,
+			LicenceService licenceService, ConceptService conceptService) {
+		super(i18n, eventBus, configService, stardatDDIService, securityService, agencyService, vocabularyService,
 				codeService, WithdrawnDetailView.VIEW_NAME);
 		this.templateEngine = templateEngine;
 		this.agencyService = agencyService;
@@ -184,35 +184,27 @@ public class WithdrawnDetailView extends CvView {
 
 	@PostConstruct
 	public void init() {
-		withdrawnCvActionLayout = new WithdrawnCvActionLayout("block.action.withdrawn", "block.action.withdrawn.show", i18n, vocabularyService);
-		
+		withdrawnCvActionLayout = new WithdrawnCvActionLayout("block.action.withdrawn", "block.action.withdrawn.show",
+				i18n, vocabularyService);
+
 		languageLayout.withFullWidth();
 
 		topSection.add(topViewSection);
 
 		bottomSection.add(bottomViewSection);
-		
-		sidePanel
-		.add( 
-			withdrawnCvActionLayout
-		);
 
-		mainContainer
-			.add(
-				topSection, 
-				languageLayout, 
-				bottomSection
-			);
+		sidePanel.add(withdrawnCvActionLayout);
+
+		mainContainer.add(topSection, languageLayout, bottomSection);
 	}
 
-	
 	@Override
 	public void enter(ViewChangeEvent event) {
 		super.enter(event);
-		
-		if(!authorizeViewAccess())
+
+		if (!authorizeViewAccess())
 			return;
-		
+
 		locale = UI.getCurrent().getLocale();
 
 		if (event.getParameters() != null) {
@@ -220,18 +212,18 @@ public class WithdrawnDetailView extends CvView {
 				Map<String, String> mappedParams = new HashMap<>();
 				String[] itemPath = event.getParameters().split("\\?");
 				String[] itemPathPart = itemPath[0].split("/");
-				if(itemPath.length > 1) {
-					List<NameValuePair> params = URLEncodedUtils.parse( itemPath[1],  Charset.forName("UTF-8"));
-					mappedParams = params.stream().collect(
-					        Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
+				if (itemPath.length > 1) {
+					List<NameValuePair> params = URLEncodedUtils.parse(itemPath[1], Charset.forName("UTF-8"));
+					mappedParams = params.stream()
+							.collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
 					String selectedLanguage = mappedParams.get("lang");
-					if( selectedLanguage != null ) {
-						cvItem.setCurrentLanguage( mappedParams.get("lang") );
-						selectedLang = Language.getEnum( selectedLanguage );
+					if (selectedLanguage != null) {
+						cvItem.setCurrentLanguage(mappedParams.get("lang"));
+						selectedLang = Language.getEnum(selectedLanguage);
 					} else {
 						selectedLang = null;
 					}
-					if(  mappedParams.get("tab") != null )
+					if (mappedParams.get("tab") != null)
 						activeTab = mappedParams.get("tab");
 					else
 						activeTab = "detail";
@@ -240,211 +232,190 @@ public class WithdrawnDetailView extends CvView {
 					activeTab = "detail";
 				}
 				LoginView.NAVIGATETO_VIEWNAME = WithdrawnDetailView.VIEW_NAME + "/" + itemPathPart[0];
-				if( itemPathPart.length > 0 )
+				if (itemPathPart.length > 0)
 					cvItem.setCurrentNotation(itemPathPart[0]);
-				if( mappedParams.get("url") != null)
-					cvItem.setCurrentCvId( mappedParams.get("url") );
-				if(  mappedParams.get("code") != null )
+				if (mappedParams.get("url") != null)
+					cvItem.setCurrentCvId(mappedParams.get("url"));
+				if (mappedParams.get("code") != null)
 					highlightCode = mappedParams.get("code");
-				
-				setDetails() ;
+
+				setDetails();
 
 			} catch (Exception e) {
 				log.error(e.getMessage(), e);
 			}
 
 		}
-		
+
 	}
-	
-	
+
 	private void setDetails() {
 		// activate home button
 		topMenuButtonUpdateActive(3);
-				
+
 		refreshCvScheme();
 
 		updateMessageStrings(UI.getCurrent().getLocale());
-		
-		topPanel.setVisible( false );
+
+		topPanel.setVisible(false);
 	}
 
 	private void refreshCvScheme() {
 		languageLayout.removeAllComponents();
 		List<DDIStore> ddiSchemes = null;
-		if( cvItem.getCurrentCvId() != null ) {
+		if (cvItem.getCurrentCvId() != null) {
 			ddiSchemes = stardatDDIService.findByIdAndElementType(cvItem.getCurrentCvId(), DDIElement.CVSCHEME);
 		}
-		
-		if( ddiSchemes == null ) {
-			if( cvItem.getCurrentNotation() != null ) {
+
+		if (ddiSchemes == null) {
+			if (cvItem.getCurrentNotation() != null) {
 				vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
-				
-				if(vocabulary != null ) {
-					Optional<VersionDTO> slVer = vocabulary.getLatestSlVersion( true );
-					if( slVer.isPresent() ) {
+
+				if (vocabulary != null) {
+					Optional<VersionDTO> slVer = vocabulary.getLatestSlVersion(true);
+					if (slVer.isPresent()) {
 						currentSlVersion = slVer.get();
 						currentVersion = currentSlVersion;
-						ddiSchemes = stardatDDIService.findByIdAndElementType( currentVersion.getUri(), DDIElement.CVSCHEME);
+						ddiSchemes = stardatDDIService.findByIdAndElementType(currentVersion.getUri(),
+								DDIElement.CVSCHEME);
 					}
 				}
-				
+
 			}
 		} else {
 			// find in Vocabulary entity as well
-			currentVersion = versionService.getByUri( cvItem.getCurrentCvId() );
-			vocabulary = vocabularyService.findOne( currentVersion.getVocabularyId() );
-			if( !currentVersion.getItemType().equals( ItemType.SL.toString()))
-				vocabulary.getVersionByUri( currentVersion.getUriSl()).ifPresent( c -> currentSlVersion = c );
+			currentVersion = versionService.getByUri(cvItem.getCurrentCvId());
+			vocabulary = vocabularyService.findOne(currentVersion.getVocabularyId());
+			if (!currentVersion.getItemType().equals(ItemType.SL.toString()))
+				vocabulary.getVersionByUri(currentVersion.getUriSl()).ifPresent(c -> currentSlVersion = c);
 			else
 				currentSlVersion = currentVersion;
 		}
-		
+
 		withdrawnCvActionLayout.setVocabulary(vocabulary);
 		withdrawnCvActionLayout.hasActionRight();
-		
+
 		if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
-			cvItem.setCvScheme( new CVScheme(ddiSchemes.get(0)) );
+			cvItem.setCvScheme(new CVScheme(ddiSchemes.get(0)));
 		}
-		
-		if(  cvItem.getCvScheme() != null ) {
-		String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
-			if( owner != null && !owner.isEmpty() )
-				setAgency( agencyService.findByName( owner));
+
+		if (cvItem.getCvScheme() != null) {
+			String owner = cvItem.getCvScheme().getOwnerAgency().get(0).getName();
+			if (owner != null && !owner.isEmpty())
+				setAgency(agencyService.findByName(owner));
 		}
-		if( getAgency() == null)
-			setAgency( agencyService.findOne(1L) );
-		
+		if (getAgency() == null)
+			setAgency(agencyService.findOne(1L));
+
 		// get all available licenses
 		licenses = licenceService.findAll();
-				
-		sourceLanguage = Language.valueOfEnum( vocabulary.getSourceLanguage());
-		selectedLang = Language.valueOfEnum( currentVersion.getLanguage());
-		
+
+		sourceLanguage = Language.valueOfEnum(vocabulary.getSourceLanguage());
+		selectedLang = Language.valueOfEnum(currentVersion.getLanguage());
+
 		orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
 		langMenu = new LanguageMenu(orderedLanguageVersionMap, currentVersion);
 		languageLayout.add(langMenu);
-		
+
 		updateDetailContent();
-		
+
 	}
 
 	private void initTopViewSection() {
 		topViewSection.removeAllComponents();
-		
-		if( vocabulary.isWithdrawn()) {
+
+		if (vocabulary.isWithdrawn()) {
 			vocabularyIsWithdrawn.removeAllComponents();
-			vocabularyIsWithdrawn
-				.withWidth("100%")
-				.withStyleName( "alert alert-danger" )
-				.add(
-					new MLabel()
-						.withContentMode( ContentMode.HTML)
-						.withValue(
-							"Warning! This CV \"" + vocabulary.getNotation() + "\" has been withdrawn."
-						)
-				);
-			
-			topViewSection.add( vocabularyIsWithdrawn );
+			vocabularyIsWithdrawn.withWidth("100%").withStyleName("alert alert-danger")
+					.add(new MLabel().withContentMode(ContentMode.HTML)
+							.withValue("Warning! This CV \"" + vocabulary.getNotation() + "\" has been withdrawn."));
+
+			topViewSection.add(vocabularyIsWithdrawn);
 		}
-		
-		vocabulary
-		.getLatestVersionByLanguage( sourceLanguage.toString(), null, Status.PUBLISHED.toString())
-		.ifPresent( slVersion -> {
-			String baseUrl = configService.getServerContextPath() + "/#!" + WithdrawnDetailView.VIEW_NAME + "/";
-			latestSlVersion = slVersion;
-			// warning about newer version
-			if( latestSlVersion.getId() > currentVersion.getId()) {
-				
-				String cvUrl = null;
-				try {
-					cvUrl = baseUrl +  vocabulary.getNotation() + "?url=" +URLEncoder.encode(latestSlVersion.getUri(), "UTF-8");
-				} catch (UnsupportedEncodingException e) {
-					cvUrl = baseUrl  + vocabulary.getNotation() + "?url=" + latestSlVersion.getUri();
-					log.error(e.getMessage(), e);
-				}
-				
-				newerVersionAvailable.removeAllComponents();
-				newerVersionAvailable
-					.withWidth("100%")
-					.withStyleName( "alert alert-warning" )
-					.add(
-						new MLabel()
-							.withContentMode( ContentMode.HTML)
-							.withValue(
-								"Newer version is available " +
-										"<a href='" + cvUrl + "'>" + latestSlVersion.getNotation() + ". " + latestSlVersion.getNumber() +"</a> "
-							)
-					);
-				
-				topViewSection.add( newerVersionAvailable );
-			}
-		});
+
+		vocabulary.getLatestVersionByLanguage(sourceLanguage.toString(), null, Status.PUBLISHED.toString())
+				.ifPresent(slVersion -> {
+					String baseUrl = configService.getServerContextPath() + "/#!" + WithdrawnDetailView.VIEW_NAME + "/";
+					latestSlVersion = slVersion;
+					// warning about newer version
+					if (latestSlVersion.getId() > currentVersion.getId()) {
+
+						String cvUrl = null;
+						try {
+							cvUrl = baseUrl + vocabulary.getNotation() + "?url="
+									+ URLEncoder.encode(latestSlVersion.getUri(), "UTF-8");
+						} catch (UnsupportedEncodingException e) {
+							cvUrl = baseUrl + vocabulary.getNotation() + "?url=" + latestSlVersion.getUri();
+							log.error(e.getMessage(), e);
+						}
+
+						newerVersionAvailable.removeAllComponents();
+						newerVersionAvailable.withWidth("100%").withStyleName("alert alert-warning")
+								.add(new MLabel().withContentMode(ContentMode.HTML)
+										.withValue("Newer version is available " + "<a href='" + cvUrl + "'>"
+												+ latestSlVersion.getNotation() + ". " + latestSlVersion.getNumber()
+												+ "</a> "));
+
+						topViewSection.add(newerVersionAvailable);
+					}
+				});
 
 		MLabel topTitle = new MLabel();
 		topTitle.withStyleName("topTitle").withContentMode(ContentMode.HTML)
-				.withValue( agency.getName() + " Controlled Vocabulary for "
-						+ currentVersion.getTitle() + "</strong>");
+				.withValue(agency.getName() + " Controlled Vocabulary for " + currentVersion.getTitle() + "</strong>");
 
-		MLabel logoLabel = new MLabel()
-			.withContentMode( ContentMode.HTML )
-			.withWidth("120px");
-			
-		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
-			logoLabel.setValue(  "<img style=\"max-width:120px;max-height:80px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
-			
+		MLabel logoLabel = new MLabel().withContentMode(ContentMode.HTML).withWidth("120px");
+
+		if (agency.getLogo() != null && !agency.getLogo().isEmpty())
+			logoLabel.setValue("<img style=\"max-width:120px;max-height:80px\" alt=\"" + agency.getName()
+					+ " logo\" src='" + agency.getLogo() + "'>");
+
 		MCssLayout topHead = new MCssLayout();
-		topHead.withFullWidth().add( logoLabel, topTitle);
+		topHead.withFullWidth().add(logoLabel, topTitle);
 
 		MCssLayout titleSmall = new MCssLayout();
-		titleSmall.withFullWidth().add( lTitle.withWidth("140px").withStyleName("leftPart"),
-				new MLabel( currentSlVersion.getTitle()).withStyleName("rightPart"));
+		titleSmall.withFullWidth().add(lTitle.withWidth("140px").withStyleName("leftPart"),
+				new MLabel(currentSlVersion.getTitle()).withStyleName("rightPart"));
 
 		MCssLayout description = new MCssLayout();
 		description.withFullWidth().add(lDefinition.withWidth("140px").withStyleName("leftPart"),
-				new MLabel(currentSlVersion.getDefinition()).withStyleName("rightPart").withContentMode( ContentMode.HTML));
+				new MLabel(currentSlVersion.getDefinition()).withStyleName("rightPart")
+						.withContentMode(ContentMode.HTML));
 
 		MCssLayout code = new MCssLayout();
 		code.withFullWidth().add(lCode.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentVersion.getNotation()).withStyleName("rightPart"));
 
 		MCssLayout titleSmallOl = new MCssLayout();
-		titleSmallOl.withFullWidth().add(
-				lTitleOl.withWidth("140px").withStyleName("leftPart"),
+		titleSmallOl.withFullWidth().add(lTitleOl.withWidth("140px").withStyleName("leftPart"),
 				new MLabel(currentVersion.getTitle()).withStyleName("rightPart"));
 
 		MCssLayout descriptionOl = new MCssLayout();
-		descriptionOl.withFullWidth().add(
-				lDefinitionOl.withWidth("140px").withStyleName("leftPart"),
-				new MLabel(currentVersion.getDefinition()).withStyleName("rightPart").withContentMode( ContentMode.HTML));
+		descriptionOl.withFullWidth().add(lDefinitionOl.withWidth("140px").withStyleName("leftPart"),
+				new MLabel(currentVersion.getDefinition()).withStyleName("rightPart")
+						.withContentMode(ContentMode.HTML));
 
 		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 		}
-		
+
 		versionLabel.withStyleName("rightPart");
 
 		MCssLayout langVersDateLayout = new MCssLayout();
-		langVersDateLayout.withFullWidth().add(
-				new MCssLayout().withStyleName("col-des-4")
-						.add(lLang.withWidth("140px").withStyleName("leftPart"),
-								new MLabel(selectedLang.toString()).withStyleName("rightPart")),
-				new MCssLayout()
-						.withStyleName("col-des-4")
-						.add(
-								lVersion.withWidth("140px").withStyleName("leftPart"),
-								versionLabel
-						)
-				);
-		
-		langVersDateLayout.add(
-				new MCssLayout()
-					.withStyleName("col-des-4")
-					.add(
-							lDate.withWidth("140px").withStyleName("leftPart"),
-							new MLabel(currentVersion.getPublicationDate() == null ? "":currentVersion.getPublicationDate().toString()).withStyleName("rightPart"))
-				);
+		langVersDateLayout.withFullWidth()
+				.add(new MCssLayout().withStyleName("col-des-4").add(lLang.withWidth("140px").withStyleName("leftPart"),
+						new MLabel(selectedLang.toString()).withStyleName("rightPart")),
+						new MCssLayout().withStyleName("col-des-4")
+								.add(lVersion.withWidth("140px").withStyleName("leftPart"), versionLabel));
+
+		langVersDateLayout
+				.add(new MCssLayout()
+						.withStyleName(
+								"col-des-4")
+						.add(lDate.withWidth("140px").withStyleName("leftPart"),
+								new MLabel(currentVersion.getPublicationDate() == null ? ""
+										: currentVersion.getPublicationDate().toString()).withStyleName("rightPart")));
 
 		topViewSection.add(topHead, titleSmall, description, code, titleSmallOl, descriptionOl, langVersDateLayout);
 	}
@@ -457,7 +428,7 @@ public class WithdrawnDetailView extends CvView {
 		ddiLayout.removeAllComponents();
 		licenseLayout.removeAllComponents();
 		versionContentLayout.removeAllComponents();
-		
+
 		exportLayout.withHeight("450px");
 		detailLayout.setHeight("800px");
 
@@ -465,103 +436,101 @@ public class WithdrawnDetailView extends CvView {
 		detailTab.setStyleName("detail-tab");
 		detailTab.setHeightUndefined();
 		detailTab.setWidth("100%");
-	
+
 		detailTab.addTab(detailLayout, i18n.get("view.detail.cvconcept.tab.detail", locale)).setId("detail");
 		detailTab.addTab(versionContentLayout, i18n.get("view.detail.cvconcept.tab.version", locale)).setId("version");
 		detailTab.addTab(identifyLayout, i18n.get("view.detail.cvconcept.tab.identity", locale)).setId("identify");
 		detailTab.addTab(ddiLayout, i18n.get("view.detail.cvconcept.tab.ddi", locale)).setId("identify");
 		detailTab.addTab(licenseLayout, i18n.get("view.detail.cvconcept.tab.license", locale)).setId("license");
 		detailTab.addTab(exportLayout, i18n.get("view.detail.cvconcept.tab.export", locale)).setId("export");
-		
+
 		detailTreeGrid = new TreeGrid<>(ConceptDTO.class);
 		detailTreeGrid.addStyleNames("undefined-height");
 		detailTreeGrid.removeAllColumns();
 		detailTreeGrid.setHeight("800px");
 		detailTreeGrid.setWidthUndefined();
-		
+
 		updateDetailGrid();
-		
-		detailTreeGrid.setSelectionMode( SelectionMode.NONE );
-		
-		detailTreeGrid.addColumn(code -> code.getNotation())
-			.setCaption("Code")
-			.setExpandRatio(1)
-			.setId("code");
-	
+
+		detailTreeGrid.setSelectionMode(SelectionMode.NONE);
+
+		detailTreeGrid.addColumn(code -> code.getNotation()).setCaption("Code").setExpandRatio(1).setId("code");
+
 		detailTreeGrid.addColumn(concept -> concept.getTitle())
-			.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
-			.setExpandRatio(1)
-			.setId("prefLabelTl");
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString()))
+				.setExpandRatio(1).setId("prefLabelTl");
 
 		detailTreeGrid.addColumn(concept -> {
-			MLabel definitionLabel = new MLabel( concept.getDefinition()).withStyleName( "word-brake-normal" ).withContentMode( ContentMode.HTML );;
-			definitionLabel.setId( "code-" + concept.getNotation().replace(".", "-"));
+			MLabel definitionLabel = new MLabel(concept.getDefinition()).withStyleName("word-brake-normal")
+					.withContentMode(ContentMode.HTML);
+			;
+			definitionLabel.setId("code-" + concept.getNotation().replace(".", "-"));
 			return definitionLabel;
 		}, new ComponentRenderer())
-			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString() ))
-			.setExpandRatio(3)
-			.setId("definitionTl");
-		
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString()))
+				.setExpandRatio(3).setId("definitionTl");
+
 		detailTreeGrid.setSizeFull();
-		
-		detailTreeGrid.getColumns().stream().forEach( column -> column.setSortable( false ));
-				
+
+		detailTreeGrid.getColumns().stream().forEach(column -> column.setSortable(false));
+
 		detailLayout.addComponents(detailTreeGrid);
-		//detailLayout.setMargin(false);
-		//detailLayout.setSpacing(false);
+		// detailLayout.setMargin(false);
+		// detailLayout.setSpacing(false);
 		detailLayout.setSizeFull();
-		//detailLayout.setExpandRatio(detailTreeGrid, 1);
-		
-		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService, versionService, true);
-		versionContentLayout.add( versionLayout );
-		
-		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, null, true);
-		identifyLayout.add( identityLayout );
-		
+		// detailLayout.setExpandRatio(detailTreeGrid, 1);
+
+		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService,
+				configService, conceptService, versionService, true);
+		versionContentLayout.add(versionLayout);
+
+		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService,
+				configService, null, true);
+		identifyLayout.add(identityLayout);
+
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, true);
 		ddiLayout.add(ddiUsageLayout);
-		
-		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, configService, versionService, licenses,  true);
-		licenseLayout.add( licenseLayoutContent );
-		
-		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService, codeService, configService, stardatDDIService, licenses, templateEngine, true);
+
+		licenseLayoutContent = new LicenseLayout(i18n, locale, eventBus, agency, currentVersion, configService,
+				versionService, licenses, true);
+		licenseLayout.add(licenseLayoutContent);
+
+		exportLayoutContent = new ExportLayout(i18n, locale, eventBus, cvItem, vocabulary, agency, versionService,
+				codeService, configService, stardatDDIService, licenses, templateEngine, true);
 		exportLayout.add(exportLayoutContent);
 		exportLayout.setSizeFull();
-		
-		detailTab.addSelectedTabChangeListener( e -> {
+
+		detailTab.addSelectedTabChangeListener(e -> {
 			TabSheet tabsheet = e.getTabSheet();
-			 // Find the tab (here we know it's a layout)
-	        Layout tab = (Layout) tabsheet.getSelectedTab();
-	        
-			if( tabsheet.getTab(tab).getId().equals("export")) {
+			// Find the tab (here we know it's a layout)
+			Layout tab = (Layout) tabsheet.getSelectedTab();
+
+			if (tabsheet.getTab(tab).getId().equals("export")) {
 				vocabulary = vocabularyService.findOne(currentVersion.getVocabularyId());
 				// get all version put it on the map
 				exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
-			}
-			else if (tabsheet.getTab(tab).getId().equals("version")) {
+			} else if (tabsheet.getTab(tab).getId().equals("version")) {
 				versionLayout.refreshContent(currentVersion);
 			}
-			
+
 		});
 
 		bottomViewSection.add(detailTab);
-		
+
 		setActiveTab();
-		
+
 		executeJavascriptFunction();
 	}
-	
+
 	private void executeJavascriptFunction() {
 		// scroll code, if code available in url
-		if( highlightCode != null ) {
-			JavaScript.getCurrent().execute(
-				"function offset(el) {" + 
-				"    var rect = el.getBoundingClientRect()," + 
-				"    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft," + 
-				"    scrollTop = window.pageYOffset || document.documentElement.scrollTop;" + 
-				"    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + 
-				"}" + 
-				"var mainContainer=document.getElementById('main-container'); " +
+		if (highlightCode != null) {
+			JavaScript.getCurrent()
+					.execute("function offset(el) {" + "    var rect = el.getBoundingClientRect(),"
+							+ "    scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,"
+							+ "    scrollTop = window.pageYOffset || document.documentElement.scrollTop;"
+							+ "    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }" + "}"
+							+ "var mainContainer=document.getElementById('main-container'); " +
 //				"var sidePanel = document.getElementById('side-panel');" + 
 //				"var sidePanelOffset = offset(sidePanel);" + 
 //				"mainContainer.addEventListener('scroll', function() { " +
@@ -571,52 +540,45 @@ public class WithdrawnDetailView extends CvView {
 //						"sidePanel.style.position='static';" +
 //					"}" +
 //				"});" +
-				"setTimeout( scrollPage, 1000);" +
-				"function scrollPage(){" +
-					"var codeRow = document.getElementById('code-"+ highlightCode +"'); " +
-					"codeRow.parentNode.parentNode.parentNode.classList.add('code-highlight');" +
-					"setTimeout( function(){ codeRow.parentNode.parentNode.parentNode.classList.remove('code-highlight');}, 2000);" +
-					"var codeRowOffset = offset(codeRow);" + 
-					"console.log(codeRowOffset.top);" + 
-					"mainContainer.scrollTop = codeRowOffset.top;" +
-				"}"
-				);
+							"setTimeout( scrollPage, 1000);" + "function scrollPage(){"
+							+ "var codeRow = document.getElementById('code-" + highlightCode + "'); "
+							+ "codeRow.parentNode.parentNode.parentNode.classList.add('code-highlight');"
+							+ "setTimeout( function(){ codeRow.parentNode.parentNode.parentNode.classList.remove('code-highlight');}, 2000);"
+							+ "var codeRowOffset = offset(codeRow);" + "console.log(codeRowOffset.top);"
+							+ "mainContainer.scrollTop = codeRowOffset.top;" + "}");
 			highlightCode = null;
 		}
 	}
 
 	private void setActiveTab() {
-		if( activeTab != null) {
-			switch( activeTab) {
-				case "download":
-					vocabulary = vocabularyService.findOne(currentVersion.getVocabularyId());
-					// get all version put it on the map
-					exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
-					detailTab.setSelectedTab(5);
-					break;
-				default:
-					detailTab.setSelectedTab(0);
+		if (activeTab != null) {
+			switch (activeTab) {
+			case "download":
+				vocabulary = vocabularyService.findOne(currentVersion.getVocabularyId());
+				// get all version put it on the map
+				exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
+				detailTab.setSelectedTab(5);
+				break;
+			default:
+				detailTab.setSelectedTab(0);
 			}
 		} else
 			detailTab.setSelectedTab(0);
 	}
-	
-	
 
 	@SuppressWarnings("unchecked")
-	public void updateDetailGrid() {				
-		dataProvider  = (TreeDataProvider<ConceptDTO>) detailTreeGrid.getDataProvider();
+	public void updateDetailGrid() {
+		dataProvider = (TreeDataProvider<ConceptDTO>) detailTreeGrid.getDataProvider();
 		cvCodeTreeData = dataProvider.getTreeData();
 		cvCodeTreeData.clear();
 		// assign the tree structure
-		
+
 		CvCodeTreeUtils.buildConceptTree(vocabulary, currentVersion, cvCodeTreeData);
 		// refresh tree
 		dataProvider.refreshAll();
 		// expand all nodes
-		detailTreeGrid.expand( currentVersion.getConcepts() );
+		detailTreeGrid.expand(currentVersion.getConcepts());
 	}
-
 
 	public Language getSelectedLang() {
 		return selectedLang;
@@ -625,19 +587,17 @@ public class WithdrawnDetailView extends CvView {
 	public void setSelectedLang(Language selectedLang) {
 		this.selectedLang = selectedLang;
 	}
-	
-	@EventBusListenerMethod( scope = EventScope.UI )
-	public void resetGrid( DDIStore ddiStore ) {
-		cvItem.setCurrentCvId( ddiStore.getParentIdentifier() );
+
+	@EventBusListenerMethod(scope = EventScope.UI)
+	public void resetGrid(DDIStore ddiStore) {
+		cvItem.setCurrentCvId(ddiStore.getParentIdentifier());
 		setDetails();
 	}
-	
-
 
 	@Override
 	public void afterViewChange(ViewChangeEvent arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -648,186 +608,181 @@ public class WithdrawnDetailView extends CvView {
 
 	@Override
 	public void updateMessageStrings(Locale locale) {
-		lTitle.setValue( i18n.get("view.detail.cvscheme.label.sl.title", locale));
-		lDefinition.setValue( i18n.get("view.detail.cvscheme.label.sl.definition", locale));
-		lCode.setValue( i18n.get("view.detail.cvscheme.label.sl.code", locale));
-		lLang.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
-		lVersion.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
-		lDate.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
-		lTitleOl.setValue( i18n.get("view.detail.cvscheme.label.tl.title", locale, selectedLang));
-		lDefinitionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
-		lVersionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
-		lDateOl.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
-		
-		lTitle2.setValue( i18n.get("view.detail.cvscheme.label.sl.title", locale));
-		lDefinition2.setValue( i18n.get("view.detail.cvscheme.label.sl.definition", locale));
-		lCode2.setValue( i18n.get("view.detail.cvscheme.label.sl.code", locale));
-		lLang2.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
-		lVersion2.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
-		lDate2.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
-		lTitleOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.title", locale, selectedLang));
-		lDefinitionOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
-		lVersionOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
-		lDateOl2.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
-		
-		lLang3.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
-		lVersion3.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
-		lDate3.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
-		
-		detailTab.getTab(0).setCaption( i18n.get("view.detail.cvconcept.tab.detail", locale));
-		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.version", locale));
-		detailTab.getTab(2).setCaption( i18n.get("view.detail.cvconcept.tab.identity", locale));
-		detailTab.getTab(3).setCaption( i18n.get("view.detail.cvconcept.tab.ddi", locale));
-		detailTab.getTab(4).setCaption( i18n.get("view.detail.cvconcept.tab.license", locale));
-		detailTab.getTab(5).setCaption( i18n.get("view.detail.cvconcept.tab.export", locale));
-		
-		detailTreeGrid.getColumn("code").setCaption( "Code" );
-//		detailTreeGrid.getColumn("prefLabelSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.title", locale) );
-		if( detailTreeGrid.getColumn("prefLabelTl") != null )
-			detailTreeGrid.getColumn("prefLabelTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang) );
-//		detailTreeGrid.getColumn("definitionSl").setCaption( i18n.get("view.detail.cvconcept.column.sl.definition", locale) );
-		if( detailTreeGrid.getColumn("definitionTl") != null )
-			detailTreeGrid.getColumn("definitionTl").setCaption( i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang) );
-		
-//		actionPanel.updateMessageStrings(locale);
+		lTitle.setValue(i18n.get("view.detail.cvscheme.label.sl.title", locale));
+		lDefinition.setValue(i18n.get("view.detail.cvscheme.label.sl.definition", locale));
+		lCode.setValue(i18n.get("view.detail.cvscheme.label.sl.code", locale));
+		lLang.setValue(i18n.get("view.detail.cvscheme.label.language", locale));
+		lVersion.setValue(i18n.get("view.detail.cvscheme.label.sl.version", locale));
+		lDate.setValue(i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
+		lTitleOl.setValue(i18n.get("view.detail.cvscheme.label.tl.title", locale, selectedLang));
+		lDefinitionOl.setValue(i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
+		lVersionOl.setValue(i18n.get("view.detail.cvscheme.label.tl.version", locale));
+		lDateOl.setValue(i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
+
+		lTitle2.setValue(i18n.get("view.detail.cvscheme.label.sl.title", locale));
+		lDefinition2.setValue(i18n.get("view.detail.cvscheme.label.sl.definition", locale));
+		lCode2.setValue(i18n.get("view.detail.cvscheme.label.sl.code", locale));
+		lLang2.setValue(i18n.get("view.detail.cvscheme.label.language", locale));
+		lVersion2.setValue(i18n.get("view.detail.cvscheme.label.sl.version", locale));
+		lDate2.setValue(i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
+		lTitleOl2.setValue(i18n.get("view.detail.cvscheme.label.tl.title", locale, selectedLang));
+		lDefinitionOl2.setValue(i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
+		lVersionOl2.setValue(i18n.get("view.detail.cvscheme.label.tl.version", locale));
+		lDateOl2.setValue(i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
+
+		lLang3.setValue(i18n.get("view.detail.cvscheme.label.language", locale));
+		lVersion3.setValue(i18n.get("view.detail.cvscheme.label.sl.version", locale));
+		lDate3.setValue(i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
+
+		detailTab.getTab(0).setCaption(i18n.get("view.detail.cvconcept.tab.detail", locale));
+		detailTab.getTab(1).setCaption(i18n.get("view.detail.cvconcept.tab.version", locale));
+		detailTab.getTab(2).setCaption(i18n.get("view.detail.cvconcept.tab.identity", locale));
+		detailTab.getTab(3).setCaption(i18n.get("view.detail.cvconcept.tab.ddi", locale));
+		detailTab.getTab(4).setCaption(i18n.get("view.detail.cvconcept.tab.license", locale));
+		detailTab.getTab(5).setCaption(i18n.get("view.detail.cvconcept.tab.export", locale));
+
+		detailTreeGrid.getColumn("code").setCaption("Code");
+		if (detailTreeGrid.getColumn("prefLabelTl") != null)
+			detailTreeGrid.getColumn("prefLabelTl")
+					.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang));
+		if (detailTreeGrid.getColumn("definitionTl") != null)
+			detailTreeGrid.getColumn("definitionTl")
+					.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang));
+
 	}
-	
-	class LanguageMenu extends CustomComponent{
+
+	class LanguageMenu extends CustomComponent {
 		private static final long serialVersionUID = 1L;
 		private Map<String, List<VersionDTO>> versionMaps;
-		
+
 		private MCssLayout langLayout = new MCssLayout();
-		
+
 		private Long targetVersionId;
-		
+
 		public LanguageMenu(Map<String, List<VersionDTO>> versionMap, VersionDTO targetVersion) {
 			// filter out versions that not related to current SL version
 			this.versionMaps = getFilteredVersionMap(targetVersion, versionMap);
 			this.targetVersionId = targetVersion.getId();
-			
+
 			langButtons.clear();
-			
-			for( Map.Entry<String, List<VersionDTO>> entry : versionMaps.entrySet()){
-				langLayout.add( generateLanguageMenu( entry.getKey(), entry.getValue()));
+
+			for (Map.Entry<String, List<VersionDTO>> entry : versionMaps.entrySet()) {
+				langLayout.add(generateLanguageMenu(entry.getKey(), entry.getValue()));
 			}
-			
+
 			setStyleName("align-right");
-			setCompositionRoot( langLayout );
+			setCompositionRoot(langLayout);
 		}
-		
-		private MCssLayout generateLanguageMenu( String langIso, List<VersionDTO> versions) {
+
+		private MCssLayout generateLanguageMenu(String langIso, List<VersionDTO> versions) {
 			MCssLayout languageMenu = new MCssLayout();
 			MCssLayout languageSubMenu = new MCssLayout();
-			MButton languageButton = new MButton( langIso.toUpperCase() );
+			MButton languageButton = new MButton(langIso.toUpperCase());
 			langButtons.add(languageButton);
-			
+
 			languageButton.withStyleName("langbutton-publish");
-			if( langIso.equalsIgnoreCase( sourceLanguage.toString() )) {
-				languageButton.addStyleNames( "button-source-language", "font-bold" );
-				languageButton.setDescription( "source language" );
+			if (langIso.equalsIgnoreCase(sourceLanguage.toString())) {
+				languageButton.addStyleNames("button-source-language", "font-bold");
+				languageButton.setDescription("source language");
 			}
-			
-			if( langIso.equalsIgnoreCase( selectedLang.toString() ))
-				languageButton.addStyleName( "button-language-selected" );
-			
-			languageButton.addClickListener( e-> {
+
+			if (langIso.equalsIgnoreCase(selectedLang.toString()))
+				languageButton.addStyleName("button-language-selected");
+
+			languageButton.addClickListener(e -> {
 				currentVersion = versions.get(0);
 
 				updateDetailContent();
 			});
-			
-			for(VersionDTO version : versions) {
-				MButton versionButton = new MButton( version.getNumber() );
-				langSubButtons.put(version,versionButton);
-				versionButton.withStyleName( "sub-button-menu" );
-				if( version.getId().equals( targetVersionId )) {
-					versionButton.withIcon( VaadinIcons.CHECK );
+
+			for (VersionDTO version : versions) {
+				MButton versionButton = new MButton(version.getNumber());
+				langSubButtons.put(version, versionButton);
+				versionButton.withStyleName("sub-button-menu");
+				if (version.getId().equals(targetVersionId)) {
+					versionButton.withIcon(VaadinIcons.CHECK);
 				}
-				versionButton.addClickListener( e -> {
+				versionButton.addClickListener(e -> {
 					currentVersion = version;
-					
+
 					updateDetailContent();
 				});
-				
-				languageSubMenu.add( versionButton );
+
+				languageSubMenu.add(versionButton);
 			}
-			
-			languageSubMenu
-				.withStyleName("language-submenu");
-		
-			languageMenu
-				.withStyleName("language-menu")
-				.add( languageButton, languageSubMenu);
-			
+
+			languageSubMenu.withStyleName("language-submenu");
+
+			languageMenu.withStyleName("language-menu").add(languageButton, languageSubMenu);
+
 			return languageMenu;
 		}
-		
-		private Map<String, List<VersionDTO>> getFilteredVersionMap ( VersionDTO pivotVersion , Map<String, List<VersionDTO>> versionMap) {
+
+		private Map<String, List<VersionDTO>> getFilteredVersionMap(VersionDTO pivotVersion,
+				Map<String, List<VersionDTO>> versionMap) {
 			Map<String, List<VersionDTO>> filteredVersionMap = new LinkedHashMap<>();
-			if( pivotVersion == null ) {
-				//get latest SL version
-				for(Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
-					pivotVersion = entry.getValue().get(0);
-					//break after first loop since SL version is always in the first entry
-					break;
-				}
+			if (pivotVersion == null && !versionMap.entrySet().isEmpty()) {
+				// get latest SL version
+				// SL version is always in the first entry
+				pivotVersion = versionMap.entrySet().iterator().next().getValue().get(0);
 			}
-			
+
 			// always get one SL version
-			if( pivotVersion.getItemType().equals( ItemType.TL.toString())) {
-				if(vocabulary.getVersionByUri( pivotVersion.getUriSl()).isPresent())
-					pivotVersion = vocabulary.getVersionByUri( pivotVersion.getUriSl()).get();
+			if (pivotVersion.getItemType().equals(ItemType.TL.toString())) {
+				Optional<VersionDTO> versionDTO = vocabulary.getVersionByUri(pivotVersion.getUriSl());
+				if (versionDTO.isPresent())
+					pivotVersion = versionDTO.get();
 			}
-			
-			for(Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
-				if( entry.getKey().equals( pivotVersion.getLanguage() ) )
-					filteredVersionMap.put( entry.getKey(), Arrays.asList(pivotVersion));
+
+			for (Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
+				if (entry.getKey().equals(pivotVersion.getLanguage()))
+					filteredVersionMap.put(entry.getKey(), Arrays.asList(pivotVersion));
 				else {
 					// get only SL that within SL version
 					List<VersionDTO> oldValue = entry.getValue();
 					List<VersionDTO> newValue = new ArrayList<>();
-					for(VersionDTO eachVersion: oldValue) {
-						if( !eachVersion.getStatus().equals(Status.PUBLISHED.toString())) // only show published one
+					for (VersionDTO eachVersion : oldValue) {
+						if (!eachVersion.getStatus().equals(Status.PUBLISHED.toString())) // only show published one
 							continue;
-						if( eachVersion.getUriSl() != null && eachVersion.getUriSl().equals(pivotVersion.getUri()))
+						if (eachVersion.getUriSl() != null && eachVersion.getUriSl().equals(pivotVersion.getUri()))
 							newValue.add(eachVersion);
 					}
-					if( !newValue.isEmpty() ) {
-						filteredVersionMap.put( entry.getKey(), newValue);
+					if (!newValue.isEmpty()) {
+						filteredVersionMap.put(entry.getKey(), newValue);
 					}
 				}
 
 			}
-			
+
 			return filteredVersionMap;
 		}
 	}
-	
+
 	private void updateDetailContent() {
-		cvItem.setCurrentLanguage( currentVersion.getLanguage());
-		setSelectedLang( Language.getEnum( currentVersion.getLanguage()) );
-		
-		langButtons.forEach( b -> {
-			if( b.getCaption().equalsIgnoreCase( currentVersion.getLanguage()))
+		cvItem.setCurrentLanguage(currentVersion.getLanguage());
+		setSelectedLang(Language.getEnum(currentVersion.getLanguage()));
+
+		langButtons.forEach(b -> {
+			if (b.getCaption().equalsIgnoreCase(currentVersion.getLanguage()))
 				b.addStyleName("button-language-selected");
 			else
 				b.removeStyleName("button-language-selected");
 		});
-		
-		langSubButtons.forEach( (k, v) -> {
-			if( k.equals( currentVersion))
-				v.withIcon( VaadinIcons.CHECK );
+
+		langSubButtons.forEach((k, v) -> {
+			if (k.equals(currentVersion))
+				v.withIcon(VaadinIcons.CHECK);
 			else
 				v.setIcon(null);
 		});
-		
-		versionLabel.setValue( currentVersion.getNumber() + (selectedLang.equals( sourceLanguage ) ? ""
-				: "-" + selectedLang.toString()) );
-		
+
+		versionLabel.setValue(currentVersion.getNumber()
+				+ (selectedLang.equals(sourceLanguage) ? "" : "-" + selectedLang.toString()));
+
 		initTopViewSection();
 		initBottomViewSection();
-		
-		setCode( null );
+
+		setCode(null);
 		updateMessageStrings(locale);
 	}
 }

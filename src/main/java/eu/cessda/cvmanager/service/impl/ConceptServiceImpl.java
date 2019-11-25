@@ -49,9 +49,7 @@ public class ConceptServiceImpl implements ConceptService {
         log.debug("Request to save Concept : {}", conceptDTO);
         Concept concept = conceptMapper.toEntity(conceptDTO);
         concept = conceptRepository.save(concept);
-        ConceptDTO result = conceptMapper.toDto(concept);
-//        conceptSearchRepository.save(concept);
-        return result;
+        return conceptMapper.toDto(concept);
     }
 
     /**
@@ -91,7 +89,6 @@ public class ConceptServiceImpl implements ConceptService {
     public void delete(Long id) {
         log.debug("Request to delete Concept : {}", id);
         conceptRepository.deleteById(id);
-//        conceptSearchRepository.delete(id);
     }
 
     /**
@@ -105,8 +102,8 @@ public class ConceptServiceImpl implements ConceptService {
     @Transactional(readOnly = true)
     public Page<ConceptDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Concepts for query {}", query);
-//        Page<Concept> result = conceptSearchRepository.search(queryStringQuery(query), pageable);
-        return null;//result.map(conceptMapper::toDto);
+        // TODO: implement search from database
+        return null;
     }
 
 	@Override

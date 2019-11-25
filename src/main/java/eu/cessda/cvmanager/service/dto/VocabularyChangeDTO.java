@@ -5,7 +5,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-import javax.persistence.Column;
 import javax.persistence.Lob;
 
 /**
@@ -13,14 +12,14 @@ import javax.persistence.Lob;
  */
 public class VocabularyChangeDTO implements Serializable {
 	
-	public static String[] cvChangeTypes = {
+	public static final String[] cvChangeTypes = {
 			"CV Short Name changed",
 			"CV Long Name changed",
 			"CV definition amended with meaning change",
 			"CV definition rephrased"
 	};
-	
-	public static String[] codeChangeTypes = {
+
+    public static final String[] codeChangeTypes = {
 			"Code value changed",
 			"Code descriptive term rephrased",
 			"Code definition amended with meaning change",
