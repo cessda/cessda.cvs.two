@@ -45,9 +45,7 @@ public class ActivityLogServiceImpl implements ActivityLogService {
         log.debug("Request to save ActivityLog : {}", activityLogDTO);
         ActivityLog activityLog = activityLogMapper.toEntity(activityLogDTO);
         activityLog = activityLogRepository.save(activityLog);
-        ActivityLogDTO result = activityLogMapper.toDto(activityLog);
-//        activityLogSearchRepository.save(activityLog);
-        return result;
+        return activityLogMapper.toDto(activityLog);
     }
 
     /**
@@ -87,7 +85,6 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     public void delete(Long id) {
         log.debug("Request to delete ActivityLog : {}", id);
         activityLogRepository.deleteById(id);
-//        activityLogSearchRepository.delete(id);
     }
 
     /**
@@ -101,7 +98,7 @@ public class ActivityLogServiceImpl implements ActivityLogService {
     @Transactional(readOnly = true)
     public Page<ActivityLogDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of ActivityLogs for query {}", query);
-//        Page<ActivityLog> result = activityLogSearchRepository.search(queryStringQuery(query), pageable);
-        return null;//result.map(activityLogMapper::toDto);
+        //TODO: need to be implemented
+        return null;
     }
 }
