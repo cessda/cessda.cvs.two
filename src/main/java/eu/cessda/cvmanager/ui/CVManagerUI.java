@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.ErrorHandler;
@@ -67,24 +68,24 @@ import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 import eu.cessda.cvmanager.ui.view.AboutView;
 import eu.cessda.cvmanager.ui.view.AgencyView;
-import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
-import eu.cessda.cvmanager.ui.view.UserGuideView;
 import eu.cessda.cvmanager.ui.view.EditorDetailsView;
 import eu.cessda.cvmanager.ui.view.EditorSearchView;
 import eu.cessda.cvmanager.ui.view.EditorView;
+import eu.cessda.cvmanager.ui.view.PublicationDetailsView;
+import eu.cessda.cvmanager.ui.view.UserGuideView;
 import eu.cessda.cvmanager.ui.view.admin.AdminView;
 import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
 
-
 @Viewport("initial-scale=1, maximum-scale=1")
-@StyleSheet({"https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,200,300,400,500,600,700,800,900"})
+@StyleSheet({ "https://fonts.googleapis.com/css?family=Source+Sans+Pro:100,200,300,400,500,600,700,800,900" })
 @Theme("mytheme")
 @Title("CESSDA Vocabularies")
 @SpringUI
 //@PreserveOnRefresh
 @EnableEventBus
-@JavaScript({"https://cessda.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-wkh05n/b/48/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-UK&collectorId=e39880c9"})
-@JavaScript({"vaadin://js/matomo-tracker.js"})
+@JavaScript({
+		"https://cessda.atlassian.net/s/d41d8cd98f00b204e9800998ecf8427e-T/-wkh05n/b/48/a44af77267a987a660377e5c46e0fb64/_/download/batch/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector/com.atlassian.jira.collector.plugin.jira-issue-collector-plugin:issuecollector.js?locale=en-UK&collectorId=e39880c9" })
+@JavaScript({ "vaadin://js/matomo-tracker.js" })
 public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private static final long serialVersionUID = -6435583434844959571L;
@@ -110,7 +111,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	private List<MButton> menuButtons = new ArrayList<>();
 	private MButton searchCVs = new MButton("Editor Search", this::gotoSearchCvs);
-	
+
 	private MButton agencyButton = new MButton("Agency", this::goToAgency);
 	private MButton adminButton = new MButton("Admin", this::goToAdmin);
 	private MButton discoverButton = new MButton("Published", this::goToDiscovery);
@@ -124,8 +125,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private String webLanguage = "de";
 
 	private ComboBox<Language> countryBox = new ComboBox<>();
-	private UserDetails userDetail;	
-	
+	private UserDetails userDetail;
+
 	private MTextField searchTf = new MTextField();
 	private MCssLayout userSubMenu = new MCssLayout();
 	private MLabel usernameLbl = new MLabel();
@@ -133,9 +134,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private Breadcrumbs breadCrumb = new Breadcrumbs();
 	private Map<String, String> breadcrumbItemMap = new LinkedHashMap<>();
 
-	public CVManagerUI(SpringViewProvider viewProvider,
-			SecurityService securityService, ConfigurationService configurationService, 
-			UIEventBus eventBus, I18N i18n) {
+	public CVManagerUI(SpringViewProvider viewProvider, SecurityService securityService,
+			ConfigurationService configurationService, UIEventBus eventBus, I18N i18n) {
 		this.viewProvider = viewProvider;
 		this.securityService = securityService;
 		this.configurationService = configurationService;
@@ -148,39 +148,25 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	protected void initUI(VaadinRequest request) {
 		setLocale(Locale.ENGLISH);
 
-		breadCrumb
-			.withBaseUrl( configurationService.getServerContextPath() )
-			.withBasePageName("Home")
-			.withBasePageUrl( DiscoveryView.VIEW_NAME);
+		breadCrumb.withBaseUrl(configurationService.getServerContextPath()).withBasePageName("Home")
+				.withBasePageUrl(DiscoveryView.VIEW_NAME);
 
 		// to handle the errors of AccessDenied
 		this.getUI().setErrorHandler(ErrorHandler::handleError);
-		this.getUI().getCurrent().setPollInterval( 5000 );
+		this.getUI().getCurrent().setPollInterval(5000);
 
 		addHeader();
 
 		footer.setStyleName("footer");
 		footer.setWidth(100, Unit.PERCENTAGE);
 
-		viewContainer
-			.withFullWidth()
-			.withMargin( false )
-			.withStyleName("content");
+		viewContainer.withFullWidth().withMargin(false).withStyleName("content");
 
-		root
-			.withResponsive(true)
-			.withFullWidth()
-			.withMargin(false)
-			.withSpacing( false )
-			.withUndefinedSize()
-			.withDefaultComponentAlignment(Alignment.TOP_CENTER)
-			.with(
-				headerBar,
-				// searchBox,
-				viewContainer, 
-				footer
-			)
-			.withExpand(viewContainer, 1.0f);
+		root.withResponsive(true).withFullWidth().withMargin(false).withSpacing(false).withUndefinedSize()
+				.withDefaultComponentAlignment(Alignment.TOP_CENTER).with(headerBar,
+						// searchBox,
+						viewContainer, footer)
+				.withExpand(viewContainer, 1.0f);
 
 		// main UI properties
 		setStyleName("mainlayout");
@@ -196,28 +182,30 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		this.viewProvider.setAccessDeniedViewClass(AccessDeniedView.class);
 
 		String uriQuery = Page.getCurrent().getLocation().toString();
-		if( !uriQuery.contains( "#!" + PublicationDetailsView.VIEW_NAME ) && !uriQuery.contains( "#!" + AgencyView.VIEW_NAME ) && 
-				!uriQuery.contains( "#!" + DiscoveryView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorDetailsView.VIEW_NAME )  && 
-				!uriQuery.contains( "#!" + AdminView.VIEW_NAME ) && !uriQuery.contains( "#!" + EditorSearchView.VIEW_NAME ) &&
-				!uriQuery.contains( "#!" + ResetPasswordView.NAME )) {
+		if (!uriQuery.contains("#!" + PublicationDetailsView.VIEW_NAME)
+				&& !uriQuery.contains("#!" + AgencyView.VIEW_NAME) && !uriQuery.contains("#!" + DiscoveryView.VIEW_NAME)
+				&& !uriQuery.contains("#!" + EditorDetailsView.VIEW_NAME)
+				&& !uriQuery.contains("#!" + AdminView.VIEW_NAME)
+				&& !uriQuery.contains("#!" + EditorSearchView.VIEW_NAME)
+				&& !uriQuery.contains("#!" + ResetPasswordView.NAME)) {
 			navigator.navigateTo(DiscoveryView.VIEW_NAME);
 		}
 		navigator.addViewChangeListener(viewChangeListener);
-		
+
 		logIn.withStyleName("login-bt");
-		logIn.withIcon( VaadinIcons.SIGN_IN );
+		logIn.withIcon(VaadinIcons.SIGN_IN);
 		logIn.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
-		
-		logout.withIcon( VaadinIcons.SIGN_OUT );
+
+		logout.withIcon(VaadinIcons.SIGN_OUT);
 		logout.addStyleName(ValoTheme.BUTTON_ICON_ALIGN_RIGHT);
 
 		if (SecurityContextHolder.getContext().getAuthentication() != null) {
 			userInfoLayout.setVisible(true);
 			searchCVs.setVisible(true);
-			agencyButton.setVisible( true );
-			userGuide.setVisible( true );
-			
-			if( SecurityUtils.isCurrentUserAgencyAdmin())
+			agencyButton.setVisible(true);
+			userGuide.setVisible(true);
+
+			if (SecurityUtils.isCurrentUserAgencyAdmin())
 				adminButton.setVisible(true);
 			logIn.setVisible(false);
 		} else {
@@ -225,13 +213,13 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 			adminButton.setVisible(false);
 			logIn.setVisible(true);
 			searchCVs.setVisible(false);
-			agencyButton.setVisible( false );
-			userGuide.setVisible( false );
+			agencyButton.setVisible(false);
+			userGuide.setVisible(false);
 		}
 
 		eventBus.subscribe(this);
 		// updateMessageStrings(UI.getCurrent().getLocale());
-		
+
 		// remember me login
 		if (securityService.rememberMeLogin()) {
 
@@ -251,67 +239,42 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	private void addHeader() {
 
 		countryBox.setTextInputAllowed(false);
-		countryBox.setItems( Language.ENGLISH, Language.GERMAN, Language.FINNISH);
+		countryBox.setItems(Language.ENGLISH, Language.GERMAN, Language.FINNISH);
 		countryBox.setEmptySelectionAllowed(false);
-		countryBox.setStyleName( "language-option" );
-		countryBox.setValue( Language.ENGLISH );
+		countryBox.setStyleName("language-option");
+		countryBox.setValue(Language.ENGLISH);
 		countryBox.setWidth("100px");
 		countryBox.addValueChangeListener(e -> {
 			setLocale(new Locale(e.getValue().toString()));
 		});
-		countryBox.setItemCaptionGenerator( new ItemCaptionGenerator<Language>() {
+		countryBox.setItemCaptionGenerator(new ItemCaptionGenerator<Language>() {
 			private static final long serialVersionUID = 1L;
+
 			@Override
 			public String apply(Language item) {
 				return item.name().substring(0, 1) + item.name().substring(1).toLowerCase();
 			}
 		});
-		
-		//  Remove this line if select language is activated
-		countryBox.setVisible( false );
-		
-		
-		setLocale(new Locale(countryBox.getValue().toString().toLowerCase()));
-		
-		userSubMenu
-			.withId("user-submenu")
-			.add(
-				logout
-			);
 
-		userInfoLayout
-			.withId("user-menu")
-			.add(
-				new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-header fa fa-user\"></i>" ),
-				usernameLbl,
-				userSubMenu
-			);
-		
-		
-		
+		// Remove this line if select language is activated
+		countryBox.setVisible(false);
+
+		setLocale(new Locale(countryBox.getValue().toString().toLowerCase()));
+
+		userSubMenu.withId("user-submenu").add(logout);
+
+		userInfoLayout.withId("user-menu").add(
+				new MLabel().withContentMode(ContentMode.HTML).withValue("<i class=\"icon-header fa fa-user\"></i>"),
+				usernameLbl, userSubMenu);
+
 		MCssLayout headerTopContainer = new MCssLayout();
-		headerTopContainer
-			.withStyleName( "row" )
-			.withFullWidth()
-			.add(
-				new MLabel()
-					.withContentMode( ContentMode.HTML)
-					.withStyleName( "col-md-6 social" )
-					.withValue(  "<div class=\"email\"><span>" + i18n.get("view.home.cessda.link") + "</span></div>" ),
-				new MCssLayout()
-					.withStyleName( "col-md-6 log-in pull-right" )
-					.add(
+		headerTopContainer.withStyleName("row").withFullWidth()
+				.add(new MLabel().withContentMode(ContentMode.HTML).withStyleName("col-md-6 social")
+						.withValue("<div class=\"email\"><span>" + i18n.get("view.home.cessda.link") + "</span></div>"),
+						new MCssLayout().withStyleName("col-md-6 log-in pull-right").add(
 //						new MLabel().withContentMode( ContentMode.HTML ).withValue( "<i class=\"icon-header fa fa-globe\"></i>" ),
-						countryBox,
-						new MCssLayout()
-							.withStyleName( "login" )
-							.add( 
-								logIn, 
-								userInfoLayout
-							)
-					)
-			);
-		
+								countryBox, new MCssLayout().withStyleName("login").add(logIn, userInfoLayout)));
+
 		// A resource reference to some object
 		Resource res = new ThemeResource("img/logo/cessda_logo_cvs.svg");
 
@@ -320,21 +283,9 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		embeddedLogo.setWidth("100%");
 
 		MCssLayout headerMiddleContent = new MCssLayout();
-		headerMiddleContent
-			.withStyleName( "row header-content" )
-			.withFullWidth()
-			.add(
-				new MCssLayout()
-					.withStyleName("col-md-4 logo")
-					.add(
-							embeddedLogo
-						),
-					new MCssLayout()
-					.withStyleName("col-md-8 text-center")
-					.add(
-							searchBox()
-						)
-					);
+		headerMiddleContent.withStyleName("row header-content").withFullWidth().add(
+				new MCssLayout().withStyleName("col-md-4 logo").add(embeddedLogo),
+				new MCssLayout().withStyleName("col-md-8 text-center").add(searchBox()));
 
 		home.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		about.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
@@ -345,83 +296,54 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 		adminButton.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		logIn.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
 		logout.withStyleName(ValoTheme.BUTTON_LINK + " pull-left");
-		
-		if( SecurityUtils.isAuthenticated() )
-			usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
-		
-		searchTf
-			.withPlaceholder("Find Controlled Vocabulary")
-			.withFullWidth()
-			.withValueChangeMode( ValueChangeMode.LAZY)
-			.withValueChangeTimeout( 200 )
-			.addTextChangeListener( e -> {
-				log.info( EditorSearchView.class.getName() );
-				if( navigator.getCurrentView().toString().indexOf( EditorSearchView.class.getSimpleName() ) > 0 || 
-						navigator.getCurrentView().toString().indexOf( EditorDetailsView.class.getSimpleName() ) > 0 ) {
-					if( navigator.getCurrentView().toString().indexOf( EditorSearchView.class.getSimpleName() ) < 0 && !e.getValue().isEmpty())
-						navigator.navigateTo(EditorSearchView.VIEW_NAME);
-					eventBus.publish(EventScope.UI, EditorSearchView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_EDITOR_SEARCH, e.getValue()) );
-				} else {
-					if( navigator.getCurrentView().toString().indexOf( DiscoveryView.class.getSimpleName() ) < 0 && !e.getValue().isEmpty())
-						navigator.navigateTo(DiscoveryView.VIEW_NAME);
-					eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.VOCABULARY_SEARCH, e.getValue()) );
-				}
-				if( e.getValue() != null && e.getValue().length() > 0)
-					clearSearchButton.setVisible( true );
-				else
-					clearSearchButton.setVisible( false );
-			});
-		
-		headerTop
-			.withFullWidth()
-			.withStyleName( "primary-header" )
-			.add(
-					new MCssLayout()
-					.withStyleName( "container" )
-					.add( headerTopContainer )
-			);
-		
-		headerMiddle
-			.withFullWidth()
-			.withStyleName( "common-header header-bg" )
-			.add(
-					new MCssLayout()
-					.withStyleName( "container" )
-					.add( headerMiddleContent )
-			);
-		
-		menuButtons.clear();
-		menuButtons.add( home );
-		menuButtons.add( searchCVs );
-		menuButtons.add(agencyButton);
-		menuButtons.add( adminButton );
-		menuButtons.add( about );
-		menuButtons.add( userGuide );
 
-		headerBottom
-			.withFullWidth()
-			.withStyleName("menu-bg")
-			.add(
-					new MCssLayout()
-					.withStyleName( "container" )
-					.add(
-						home,
-						searchCVs,
-						agencyButton,
+		if (SecurityUtils.isAuthenticated())
+			usernameLbl.setValue(SecurityUtils.getLoggedUser().getLastName());
+
+		searchTf.withPlaceholder("Find Controlled Vocabulary").withFullWidth().withValueChangeMode(ValueChangeMode.LAZY)
+				.withValueChangeTimeout(200).addTextChangeListener(e -> {
+					log.info(EditorSearchView.class.getName());
+					if (navigator.getCurrentView().toString().indexOf(EditorSearchView.class.getSimpleName()) > 0
+							|| navigator.getCurrentView().toString()
+									.indexOf(EditorDetailsView.class.getSimpleName()) > 0) {
+						if (navigator.getCurrentView().toString().indexOf(EditorSearchView.class.getSimpleName()) < 0
+								&& !e.getValue().isEmpty())
+							navigator.navigateTo(EditorSearchView.VIEW_NAME);
+						eventBus.publish(EventScope.UI, EditorSearchView.VIEW_NAME, this,
+								new CvManagerEvent.Event(EventType.VOCABULARY_EDITOR_SEARCH, e.getValue()));
+					} else {
+						if (navigator.getCurrentView().toString().indexOf(DiscoveryView.class.getSimpleName()) < 0
+								&& !e.getValue().isEmpty())
+							navigator.navigateTo(DiscoveryView.VIEW_NAME);
+						eventBus.publish(EventScope.UI, DiscoveryView.VIEW_NAME, this,
+								new CvManagerEvent.Event(EventType.VOCABULARY_SEARCH, e.getValue()));
+					}
+					if (e.getValue() != null && e.getValue().length() > 0)
+						clearSearchButton.setVisible(true);
+					else
+						clearSearchButton.setVisible(false);
+				});
+
+		headerTop.withFullWidth().withStyleName("primary-header")
+				.add(new MCssLayout().withStyleName("container").add(headerTopContainer));
+
+		headerMiddle.withFullWidth().withStyleName("common-header header-bg")
+				.add(new MCssLayout().withStyleName("container").add(headerMiddleContent));
+
+		menuButtons.clear();
+		menuButtons.add(home);
+		menuButtons.add(searchCVs);
+		menuButtons.add(agencyButton);
+		menuButtons.add(adminButton);
+		menuButtons.add(about);
+		menuButtons.add(userGuide);
+
+		headerBottom.withFullWidth().withStyleName("menu-bg")
+				.add(new MCssLayout().withStyleName("container").add(home, searchCVs, agencyButton,
 //						discoverButton,
-						adminButton,
-						about,
-						userGuide
-					)
-			);
-		
-		headerBar
-			.withResponsive(true)
-			.withStyleName("header-cessda")
-			.add(
-				headerTop,
-				headerMiddle,
-				headerBottom,
+						adminButton, about, userGuide));
+
+		headerBar.withResponsive(true).withStyleName("header-cessda").add(headerTop, headerMiddle, headerBottom,
 				breadCrumb
 //				new MHorizontalLayout().withStyleName("mid_search").withFullWidth().withMargin(false)
 //						.add(new MHorizontalLayout().withStyleName("container").add(logoLayout, menuLayout)
@@ -429,24 +351,16 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 		);
 	}
-	
+
 	private MCssLayout searchBox() {
 		MCssLayout searchContainer = new MCssLayout();
-		clearSearchButton
-			.withIcon(FontAwesome.TIMES)
-			.withStyleName("clear-search-button")
-			.withVisible( false )
-			.addClickListener( e -> {
-				clearSearch();
-			});
-		searchContainer
-			.withStyleName("search-box")
-			.add( 
-				new MLabel().withContentMode( ContentMode.HTML )
-				.withValue( "<i class=\"icon-search fa fa-search\"></i>" ),
-				searchTf,
-				clearSearchButton
-			);
+		clearSearchButton.withIcon(FontAwesome.TIMES).withStyleName("clear-search-button").withVisible(false)
+				.addClickListener(e -> {
+					clearSearch();
+				});
+		searchContainer.withStyleName("search-box").add(
+				new MLabel().withContentMode(ContentMode.HTML).withValue("<i class=\"icon-search fa fa-search\"></i>"),
+				searchTf, clearSearchButton);
 		return searchContainer;
 	}
 
@@ -473,24 +387,25 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	public void gotoProfile(ClickEvent event) {
 
 	}
-	
+
 	public void goToAgency(ClickEvent event) {
 		navigator.navigateTo(AgencyView.VIEW_NAME);
-		eventBus.publish(EventScope.UI, AgencyView.VIEW_NAME, this, new CvManagerEvent.Event( EventType.AGENCY_SEARCH_MODE, null) );
+		eventBus.publish(EventScope.UI, AgencyView.VIEW_NAME, this,
+				new CvManagerEvent.Event(EventType.AGENCY_SEARCH_MODE, null));
 	}
-	
+
 	public void goToDiscovery(ClickEvent event) {
 		navigator.navigateTo(DiscoveryView.VIEW_NAME);
 	}
-	
+
 	public void goToAbout(ClickEvent event) {
 		navigator.navigateTo(AboutView.VIEW_NAME);
 	}
-	
+
 	public void goToUserGuide(ClickEvent event) {
 		navigator.navigateTo(UserGuideView.VIEW_NAME);
 	}
-	
+
 	public void goToAdmin(ClickEvent event) {
 		navigator.navigateTo(AdminView.VIEW_NAME);
 	}
@@ -534,22 +449,25 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 
 	@EventBusListenerMethod(scope = EventScope.UI)
 	public void onPersonModified(LoginSucceedEvent event) {
-		
-		setUserDetail( SecurityUtils.getCurrentUserDetails().get());
-		// if( securityService.isAuthenticate()){
-		log.info("User logged in!");
-		userInfoLayout.setVisible(true);
-		searchCVs.setVisible(true);
-		agencyButton.setVisible( true );
-		userGuide.setVisible( true );
-		usernameLbl.setValue( SecurityUtils.getLoggedUser().getLastName() );
-		
-		log.info("Admin: " + SecurityUtils.isCurrentUserAgencyAdmin());
-		
-		if( SecurityUtils.isCurrentUserAgencyAdmin())
-			adminButton.setVisible(true);
-		
-		logIn.setVisible(false);
+
+		Optional<UserDetails> userDetails = SecurityUtils.getCurrentUserDetails();
+		if (userDetails.isPresent()) {
+			setUserDetail(userDetails.get());
+
+			log.info("User logged in!");
+			userInfoLayout.setVisible(true);
+			searchCVs.setVisible(true);
+			agencyButton.setVisible(true);
+			userGuide.setVisible(true);
+			usernameLbl.setValue(SecurityUtils.getLoggedUser().getLastName());
+
+			log.info("Admin: {}", SecurityUtils.isCurrentUserAgencyAdmin());
+
+			if (SecurityUtils.isCurrentUserAgencyAdmin())
+				adminButton.setVisible(true);
+
+			logIn.setVisible(false);
+		}
 	}
 
 	@Override
@@ -576,7 +494,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	public Map<String, String> getBreadcrumbItemMap() {
 		return breadcrumbItemMap;
 	}
-	
+
 	public void clearSearch() {
 		searchTf.setValue("");
 	}
@@ -584,6 +502,5 @@ public class CVManagerUI extends TranslatableUI implements Translatable {
 	public List<MButton> getMenuButtons() {
 		return menuButtons;
 	}
-	
-	
+
 }
