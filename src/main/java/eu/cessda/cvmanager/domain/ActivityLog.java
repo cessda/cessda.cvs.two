@@ -1,123 +1,149 @@
 package eu.cessda.cvmanager.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * A ActivityLog.
  */
 @Entity
-@Table(name = "activity_log")
-public class ActivityLog implements Serializable {
+@Table( name = "activity_log" )
+public class ActivityLog implements Serializable
+{
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	private Long id;
 
-    @NotNull
-    @Size(max = 60)
-    @Column(name = "change_type", length = 60, nullable = false)
-    private String changeType;
+	@NotNull
+	@Size( max = 60 )
+	@Column( name = "change_type", length = 60, nullable = false )
+	private String changeType;
 
-    @Lob
-    @Column(name = "description")
-    private String description;
+	@Lob
+	@Column( name = "description" )
+	private String description;
 
-    @Column(name = "user_id")
-    private Long userId;
-    
-    @Column(name = "date")
-    private LocalDateTime date;
+	@Column( name = "user_id" )
+	private Long userId;
 
-    public Long getId() {
-        return id;
-    }
+	@Column( name = "date" )
+	private LocalDateTime date;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId()
+	{
+		return id;
+	}
 
-    public String getChangeType() {
-        return changeType;
-    }
+	public void setId( Long id )
+	{
+		this.id = id;
+	}
 
-    public ActivityLog changeType(String changeType) {
-        this.changeType = changeType;
-        return this;
-    }
+	public String getChangeType()
+	{
+		return changeType;
+	}
 
-    public void setChangeType(String changeType) {
-        this.changeType = changeType;
-    }
+	public ActivityLog changeType( String changeType )
+	{
+		this.changeType = changeType;
+		return this;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setChangeType( String changeType )
+	{
+		this.changeType = changeType;
+	}
 
-    public ActivityLog description(String description) {
-        this.description = description;
-        return this;
-    }
+	public String getDescription()
+	{
+		return description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public ActivityLog description( String description )
+	{
+		this.description = description;
+		return this;
+	}
 
-    public Long getUserId() {
-        return userId;
-    }
+	public void setDescription( String description )
+	{
+		this.description = description;
+	}
 
-    public ActivityLog userId(Long userId) {
-        this.userId = userId;
-        return this;
-    }
+	public Long getUserId()
+	{
+		return userId;
+	}
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+	public ActivityLog userId( Long userId )
+	{
+		this.userId = userId;
+		return this;
+	}
 
-    public LocalDateTime getDate() {
+	public void setUserId( Long userId )
+	{
+		this.userId = userId;
+	}
+
+	public LocalDateTime getDate()
+	{
 		return date;
 	}
 
-	public void setDate(LocalDateTime date) {
+	public void setDate( LocalDateTime date )
+	{
 		this.date = date;
 	}
 
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        ActivityLog activityLog = (ActivityLog) o;
-        if (activityLog.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), activityLog.getId());
-    }
+	public boolean equals( Object o )
+	{
+		if ( this == o )
+		{
+			return true;
+		}
+		if ( o == null || getClass() != o.getClass() )
+		{
+			return false;
+		}
+		ActivityLog activityLog = (ActivityLog) o;
+		if ( activityLog.getId() == null || getId() == null )
+		{
+			return false;
+		}
+		return Objects.equals( getId(), activityLog.getId() );
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
+	@Override
+	public int hashCode()
+	{
+		return Objects.hashCode( getId() );
+	}
 
-    @Override
-    public String toString() {
-        return "ActivityLog{" +
-            "id=" + getId() +
-            ", changeType='" + getChangeType() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", userId=" + getUserId() +
-            "}";
-    }
+	@Override
+	public String toString()
+	{
+		return "ActivityLog{" +
+				"id=" + getId() +
+				", changeType='" + getChangeType() + "'" +
+				", description='" + getDescription() + "'" +
+				", userId=" + getUserId() +
+				"}";
+	}
 }
-

@@ -1,156 +1,188 @@
 package eu.cessda.cvmanager.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
-
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * A VocabularyChange.
  */
 @Entity
-@Table(name = "vocabulary_change")
-public class VocabularyChange implements Serializable {
+@Table( name = "vocabulary_change" )
+public class VocabularyChange implements Serializable
+{
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    @Column(name = "vocabulary_id")
-    private Long vocabularyId;
-    
-    @Column(name = "version_id")
-    private Long versionId;
+	@Id
+	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	private Long id;
 
-    @NotNull
-    @Size(max = 60)
-    @Column(name = "change_type", length = 60)
-    private String changeType;
+	@Column( name = "vocabulary_id" )
+	private Long vocabularyId;
 
-    @Lob
-    @Column(name = "description")
-    private String description;
+	@Column( name = "version_id" )
+	private Long versionId;
 
-    @Column(name = "user_id")
-    private Long userId;
-    
-    @Column(name = "user_name", length = 120)
-    private String userName;
-    
-    @Column(name = "date")
-    private LocalDateTime date;
+	@NotNull
+	@Size( max = 60 )
+	@Column( name = "change_type", length = 60 )
+	private String changeType;
 
-    public Long getId() {
-        return id;
-    }
+	@Lob
+	@Column( name = "description" )
+	private String description;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	@Column( name = "user_id" )
+	private Long userId;
 
-    public String getChangeType() {
-        return changeType;
-    }
+	@Column( name = "user_name", length = 120 )
+	private String userName;
 
-    public VocabularyChange changeType(String changeType) {
-        this.changeType = changeType;
-        return this;
-    }
+	@Column( name = "date" )
+	private LocalDateTime date;
 
-    public void setChangeType(String changeType) {
-        this.changeType = changeType;
-    }
+	public Long getId()
+	{
+		return id;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public void setId( Long id )
+	{
+		this.id = id;
+	}
 
-    public VocabularyChange description(String description) {
-        this.description = description;
-        return this;
-    }
+	public String getChangeType()
+	{
+		return changeType;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public VocabularyChange changeType( String changeType )
+	{
+		this.changeType = changeType;
+		return this;
+	}
 
-    public Long getUserId() {
-        return userId;
-    }
+	public void setChangeType( String changeType )
+	{
+		this.changeType = changeType;
+	}
 
-    public VocabularyChange userId(Long userId) {
-        this.userId = userId;
-        return this;
-    }
+	public String getDescription()
+	{
+		return description;
+	}
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
+	public VocabularyChange description( String description )
+	{
+		this.description = description;
+		return this;
+	}
 
-    public LocalDateTime getDate() {
+	public void setDescription( String description )
+	{
+		this.description = description;
+	}
+
+	public Long getUserId()
+	{
+		return userId;
+	}
+
+	public VocabularyChange userId( Long userId )
+	{
+		this.userId = userId;
+		return this;
+	}
+
+	public void setUserId( Long userId )
+	{
+		this.userId = userId;
+	}
+
+	public LocalDateTime getDate()
+	{
 		return date;
 	}
 
-	public void setDate(LocalDateTime date) {
+	public void setDate( LocalDateTime date )
+	{
 		this.date = date;
 	}
 
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        VocabularyChange vocabularyChange = (VocabularyChange) o;
-        if (vocabularyChange.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), vocabularyChange.getId());
-    }
+	public boolean equals( Object o )
+	{
+		if ( this == o )
+		{
+			return true;
+		}
+		if ( o == null || getClass() != o.getClass() )
+		{
+			return false;
+		}
+		VocabularyChange vocabularyChange = (VocabularyChange) o;
+		if ( vocabularyChange.getId() == null || getId() == null )
+		{
+			return false;
+		}
+		return Objects.equals( getId(), vocabularyChange.getId() );
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
+	@Override
+	public int hashCode()
+	{
+		return Objects.hashCode( getId() );
+	}
 
-    @Override
-    public String toString() {
-        return "VocabularyChange{" +
-            "id=" + getId() +
-            ", changeType='" + getChangeType() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", userId=" + getUserId() +
-            "}";
-    }
+	@Override
+	public String toString()
+	{
+		return "VocabularyChange{" +
+				"id=" + getId() +
+				", changeType='" + getChangeType() + "'" +
+				", description='" + getDescription() + "'" +
+				", userId=" + getUserId() +
+				"}";
+	}
 
-	public Long getVocabularyId() {
+	public Long getVocabularyId()
+	{
 		return vocabularyId;
 	}
 
-	public void setVocabularyId(Long vocabularyId) {
+	public void setVocabularyId( Long vocabularyId )
+	{
 		this.vocabularyId = vocabularyId;
 	}
 
-	public Long getVersionId() {
+	public Long getVersionId()
+	{
 		return versionId;
 	}
 
-	public void setVersionId(Long versionId) {
+	public void setVersionId( Long versionId )
+	{
 		this.versionId = versionId;
 	}
 
-	public String getUserName() {
+	public String getUserName()
+	{
 		return userName;
 	}
 
-	public void setUserName(String userName) {
+	public void setUserName( String userName )
+	{
 		this.userName = userName;
 	}
 }

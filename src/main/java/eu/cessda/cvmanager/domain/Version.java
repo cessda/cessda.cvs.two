@@ -27,403 +27,469 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
  * A Version.
  */
 @Entity
-@Table(name = "version")
-public class Version implements Serializable{
-	
-	private static final long serialVersionUID = 1L;
-	
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    @Column(name = "status", length = 20, nullable = false)
-    @Field(type = FieldType.Keyword)
-    private String status;
-    
-    @Column(name = "item_type", length = 20, nullable = false)
-    @Field(type = FieldType.Keyword)
-    private String itemType;
-    
-    @Size(max = 20)
-    @Column(name = "language", length = 20)
-    @Field(type = FieldType.Keyword)
-    private String language;
-    
-    @Column(name = "last_modified")
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
-    private LocalDateTime lastModified;
-    
-    @Column(name = "publication_date")
-    @Field(type = FieldType.Date, format = DateFormat.date)
-    private LocalDate publicationDate;
-    
-    @Column(name = "number", length = 20)
-    private String number;
-    
-    @Lob
-    @Column(name = "summary")
-    private String summary;
-    
-    @Column(name = "uri", length = 255)
-    private String uri;
-    
-    @Column(name = "canonical_uri", length = 255)
-    private String canonicalUri;
-    
-    @Column(name = "uri_sl", length = 255)
-    private String uriSl;
-    
-    // Start SL or TL Vocabulary
-    @Column(name = "notation", length = 240)
-    private String notation;
-    
-    @Lob
-    @Column(name = "title")
-    private String title;
+@Table( name = "version" )
+public class Version implements Serializable
+{
 
-    @Lob
-    @Column(name = "definition")
-    private String definition;
-    
-    @Column(name = "previous_version")
-    private Long previousVersion;
-    
-    @Column(name = "initial_version")
-    private Long initialVersion;
-    
-    @Column(name = "creator")
-    private Long creator;
-    
-    @Column(name = "publisher")
-    private Long publisher;
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	private Long id;
+
+	@Column( name = "status", length = 20, nullable = false )
+	@Field( type = FieldType.Keyword )
+	private String status;
+
+	@Column( name = "item_type", length = 20, nullable = false )
+	@Field( type = FieldType.Keyword )
+	private String itemType;
+
+	@Size( max = 20 )
+	@Column( name = "language", length = 20 )
+	@Field( type = FieldType.Keyword )
+	private String language;
+
+	@Column( name = "last_modified" )
+	@Field( type = FieldType.Date, format = DateFormat.date_hour_minute_second )
+	private LocalDateTime lastModified;
+
+	@Column( name = "publication_date" )
+	@Field( type = FieldType.Date, format = DateFormat.date )
+	private LocalDate publicationDate;
+
+	@Column( name = "number", length = 20 )
+	private String number;
 
 	@Lob
-	@Column(name = "notes")
-	private String notes;
-    
-    @Lob
-    @Column(name = "version_notes")
-    private String versionNotes;
-    
-    @Lob
-    @Column(name = "version_changes")
-    private String versionChanges;
-    
-    @Lob
-    @Column(name = "discussion_notes")
-    private String discussionNotes;
-    
-    @Lob
-    @Column(name = "copyright")
-    private String copyright;
-    
-    @Lob
-    @Column(name = "license")
-    private String license;
-    
-    @Column(name = "license_id")
-    private Long licenseId;
-    
-    @Lob
-    @Column(name = "citation")
-    private String citation;
-    
-    @Lob
-    @Column(name = "ddi_usage")
-    private String ddiUsage;
-    
-    @Column(name = "translate_agency", length = 255)
-    private String translateAgency;
-    
-    @Column(name = "translate_agency_link", length = 255)
-    private String translateAgencyLink;
-    
-    @ManyToOne
-    private Vocabulary vocabulary;
-    
-    // in case only for SL type version
-    @Column(name = "restrict_role")
-    @ElementCollection( targetClass=String.class )
-    @Field(type = FieldType.Keyword)
-    private List<String> restrictRoles;
-    
-    @OneToMany(mappedBy = "version")
-    private Set<Concept> concepts = new HashSet<>();
+	@Column( name = "summary" )
+	private String summary;
 
-	public Long getId() {
+	@Column( name = "uri", length = 255 )
+	private String uri;
+
+	@Column( name = "canonical_uri", length = 255 )
+	private String canonicalUri;
+
+	@Column( name = "uri_sl", length = 255 )
+	private String uriSl;
+
+	// Start SL or TL Vocabulary
+	@Column( name = "notation", length = 240 )
+	private String notation;
+
+	@Lob
+	@Column( name = "title" )
+	private String title;
+
+	@Lob
+	@Column( name = "definition" )
+	private String definition;
+
+	@Column( name = "previous_version" )
+	private Long previousVersion;
+
+	@Column( name = "initial_version" )
+	private Long initialVersion;
+
+	@Column( name = "creator" )
+	private Long creator;
+
+	@Column( name = "publisher" )
+	private Long publisher;
+
+	@Lob
+	@Column( name = "notes" )
+	private String notes;
+
+	@Lob
+	@Column( name = "version_notes" )
+	private String versionNotes;
+
+	@Lob
+	@Column( name = "version_changes" )
+	private String versionChanges;
+
+	@Lob
+	@Column( name = "discussion_notes" )
+	private String discussionNotes;
+
+	@Lob
+	@Column( name = "copyright" )
+	private String copyright;
+
+	@Lob
+	@Column( name = "license" )
+	private String license;
+
+	@Column( name = "license_id" )
+	private Long licenseId;
+
+	@Lob
+	@Column( name = "citation" )
+	private String citation;
+
+	@Lob
+	@Column( name = "ddi_usage" )
+	private String ddiUsage;
+
+	@Column( name = "translate_agency", length = 255 )
+	private String translateAgency;
+
+	@Column( name = "translate_agency_link", length = 255 )
+	private String translateAgencyLink;
+
+	@ManyToOne
+	private Vocabulary vocabulary;
+
+	// in case only for SL type version
+	@Column( name = "restrict_role" )
+	@ElementCollection( targetClass = String.class )
+	@Field( type = FieldType.Keyword )
+	private List<String> restrictRoles;
+
+	@OneToMany( mappedBy = "version" )
+	private Set<Concept> concepts = new HashSet<>();
+
+	public Long getId()
+	{
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId( Long id )
+	{
 		this.id = id;
 	}
-	
-	public String getItemType() {
+
+	public String getItemType()
+	{
 		return itemType;
 	}
 
-	public void setItemType(String itemType) {
+	public void setItemType( String itemType )
+	{
 		this.itemType = itemType;
 	}
 
-	public LocalDate getPublicationDate() {
+	public LocalDate getPublicationDate()
+	{
 		return publicationDate;
 	}
 
-	public void setPublicationDate(LocalDate publicationDate) {
+	public void setPublicationDate( LocalDate publicationDate )
+	{
 		this.publicationDate = publicationDate;
 	}
 
-	public String getNumber() {
+	public String getNumber()
+	{
 		return number;
 	}
 
-	public void setNumber(String number) {
+	public void setNumber( String number )
+	{
 		this.number = number;
 	}
 
-	public String getSummary() {
+	public String getSummary()
+	{
 		return summary;
 	}
 
-	public void setSummary(String summary) {
+	public void setSummary( String summary )
+	{
 		this.summary = summary;
 	}
 
-	public Long getPreviousVersion() {
+	public Long getPreviousVersion()
+	{
 		return previousVersion;
 	}
 
-	public void setPreviousVersion(Long previousVersion) {
+	public void setPreviousVersion( Long previousVersion )
+	{
 		this.previousVersion = previousVersion;
 	}
-	
-	public Long getInitialVersion() {
+
+	public Long getInitialVersion()
+	{
 		return initialVersion;
 	}
 
-	public void setInitialVersion(Long initialVersion) {
+	public void setInitialVersion( Long initialVersion )
+	{
 		this.initialVersion = initialVersion;
 	}
 
-	public Long getCreator() {
+	public Long getCreator()
+	{
 		return creator;
 	}
 
-	public void setCreator(Long creator) {
+	public void setCreator( Long creator )
+	{
 		this.creator = creator;
 	}
 
-	public Long getPublisher() {
+	public Long getPublisher()
+	{
 		return publisher;
 	}
 
-	public void setPublisher(Long publisher) {
+	public void setPublisher( Long publisher )
+	{
 		this.publisher = publisher;
 	}
 
-	public String getStatus() {
+	public String getStatus()
+	{
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus( String status )
+	{
 		this.status = status;
 	}
 
-	public String getLanguage() {
+	public String getLanguage()
+	{
 		return language;
 	}
 
-	public void setLanguage(String language) {
+	public void setLanguage( String language )
+	{
 		this.language = language;
 	}
 
-	public LocalDateTime getLastModified() {
+	public LocalDateTime getLastModified()
+	{
 		return lastModified;
 	}
 
-	public void setLastModified(LocalDateTime lastModified) {
+	public void setLastModified( LocalDateTime lastModified )
+	{
 		this.lastModified = lastModified;
 	}
 
-	public String getNotation() {
+	public String getNotation()
+	{
 		return notation;
 	}
 
-	public void setNotation(String notation) {
+	public void setNotation( String notation )
+	{
 		this.notation = notation;
 	}
 
-	public String getTitle() {
+	public String getTitle()
+	{
 		return title;
 	}
 
-	public void setTitle(String title) {
+	public void setTitle( String title )
+	{
 		this.title = title;
 	}
 
-	public String getDefinition() {
+	public String getDefinition()
+	{
 		return definition;
 	}
 
-	public void setDefinition(String definition) {
+	public void setDefinition( String definition )
+	{
 		this.definition = definition;
 	}
-	
-	public List<String> getRestrictRoles() {
+
+	public List<String> getRestrictRoles()
+	{
 		return restrictRoles;
 	}
 
-	public Vocabulary getVocabulary() {
+	public Vocabulary getVocabulary()
+	{
 		return vocabulary;
 	}
 
-	public void setVocabulary(Vocabulary vocabulary) {
+	public void setVocabulary( Vocabulary vocabulary )
+	{
 		this.vocabulary = vocabulary;
 	}
 
-	public void setRestrictRoles(List<String> restrictRoles) {
+	public void setRestrictRoles( List<String> restrictRoles )
+	{
 		this.restrictRoles = restrictRoles;
 	}
 
-	public String getUri() {
+	public String getUri()
+	{
 		return uri;
 	}
 
-	public void setUri(String uri) {
+	public void setUri( String uri )
+	{
 		this.uri = uri;
 	}
-	
-	public String getCanonicalUri() {
+
+	public String getCanonicalUri()
+	{
 		return canonicalUri;
 	}
 
-	public void setCanonicalUri(String canonicalUri) {
+	public void setCanonicalUri( String canonicalUri )
+	{
 		this.canonicalUri = canonicalUri;
 	}
 
-	public String getUriSl() {
+	public String getUriSl()
+	{
 		return uriSl;
 	}
 
-	public void setUriSl(String uriSl) {
+	public void setUriSl( String uriSl )
+	{
 		this.uriSl = uriSl;
 	}
 
-	public Set<Concept> getConcepts() {
+	public Set<Concept> getConcepts()
+	{
 		return concepts;
 	}
 
-	public void setConcepts(Set<Concept> concepts) {
+	public void setConcepts( Set<Concept> concepts )
+	{
 		this.concepts = concepts;
 	}
 
-	public String getNotes() {
+	public String getNotes()
+	{
 		return notes;
 	}
 
-	public void setNotes(String notes) {
+	public void setNotes( String notes )
+	{
 		this.notes = notes;
 	}
 
-	public String getVersionNotes() {
+	public String getVersionNotes()
+	{
 		return versionNotes;
 	}
 
-	public void setVersionNotes(String versionNotes) {
+	public void setVersionNotes( String versionNotes )
+	{
 		this.versionNotes = versionNotes;
 	}
-	
-	public String getVersionChanges() {
+
+	public String getVersionChanges()
+	{
 		return versionChanges;
 	}
 
-	public void setVersionChanges(String versionChanges) {
+	public void setVersionChanges( String versionChanges )
+	{
 		this.versionChanges = versionChanges;
 	}
 
-	public String getDiscussionNotes() {
+	public String getDiscussionNotes()
+	{
 		return discussionNotes;
 	}
 
-	public void setDiscussionNotes(String discussionNotes) {
+	public void setDiscussionNotes( String discussionNotes )
+	{
 		this.discussionNotes = discussionNotes;
 	}
-	
-	public String getCopyright() {
+
+	public String getCopyright()
+	{
 		return copyright;
 	}
 
-	public void setCopyright(String copyright) {
+	public void setCopyright( String copyright )
+	{
 		this.copyright = copyright;
 	}
 
-	public String getLicense() {
+	public String getLicense()
+	{
 		return license;
 	}
 
-	public void setLicense(String license) {
+	public void setLicense( String license )
+	{
 		this.license = license;
 	}
-	
-	public Long getLicenseId() {
+
+	public Long getLicenseId()
+	{
 		return licenseId;
 	}
 
-	public void setLicenseId(Long licenseId) {
+	public void setLicenseId( Long licenseId )
+	{
 		this.licenseId = licenseId;
 	}
 
-	public String getCitation() {
+	public String getCitation()
+	{
 		return citation;
 	}
 
-	public void setCitation(String citation) {
+	public void setCitation( String citation )
+	{
 		this.citation = citation;
 	}
 
-	public String getDdiUsage() {
+	public String getDdiUsage()
+	{
 		return ddiUsage;
 	}
 
-	public void setDdiUsage(String ddiUsage) {
+	public void setDdiUsage( String ddiUsage )
+	{
 		this.ddiUsage = ddiUsage;
 	}
-	
-	public String getTranslateAgency() {
+
+	public String getTranslateAgency()
+	{
 		return translateAgency;
 	}
 
-	public void setTranslateAgency(String translateAgency) {
+	public void setTranslateAgency( String translateAgency )
+	{
 		this.translateAgency = translateAgency;
 	}
 
-	public String getTranslateAgencyLink() {
+	public String getTranslateAgencyLink()
+	{
 		return translateAgencyLink;
 	}
 
-	public void setTranslateAgencyLink(String translateAgencyLink) {
+	public void setTranslateAgencyLink( String translateAgencyLink )
+	{
 		this.translateAgencyLink = translateAgencyLink;
 	}
 
 	@Override
-    public String toString() {
-        return "Version{" +
-            "id=" + getId() +
-            ", status='" + getStatus() + "'" +
-            ", itemType='" + getItemType() + "'" +
-            ", language='" + getLanguage() + "'" +
-            ", publicationDate='" + getPublicationDate() + "'" +
-            ", number='" + getNumber() + "'" +
-            ", summary='" + getSummary() + "'" +
-            ", uri='" + getUri() + "'" +
-            ", notation='" + getNotation() + "'" +
-            ", title='" + getTitle() + "'" +
-            ", definition='" + getDefinition() + "'" +
-            ", previousVersion=" + getPreviousVersion() +
-            ", initialVersion=" + getInitialVersion() +
-            ", creator=" + getCreator() +
-            ", publisher=" + getPublisher() +
-            "}";
-    }
+	public String toString()
+	{
+		return "Version{" +
+				"id=" + getId() +
+				", status='" + getStatus() + "'" +
+				", itemType='" + getItemType() + "'" +
+				", language='" + getLanguage() + "'" +
+				", publicationDate='" + getPublicationDate() + "'" +
+				", number='" + getNumber() + "'" +
+				", summary='" + getSummary() + "'" +
+				", uri='" + getUri() + "'" +
+				", notation='" + getNotation() + "'" +
+				", title='" + getTitle() + "'" +
+				", definition='" + getDefinition() + "'" +
+				", previousVersion=" + getPreviousVersion() +
+				", initialVersion=" + getInitialVersion() +
+				", creator=" + getCreator() +
+				", publisher=" + getPublisher() +
+				"}";
+	}
 }
