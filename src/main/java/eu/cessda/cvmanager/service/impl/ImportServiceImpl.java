@@ -26,7 +26,6 @@ import eu.cessda.cvmanager.domain.Cv;
 import eu.cessda.cvmanager.domain.CvCode;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
 import eu.cessda.cvmanager.service.ImportService;
@@ -37,7 +36,6 @@ import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 @Service
@@ -50,22 +48,17 @@ public class ImportServiceImpl implements ImportService{
 	private final ConceptService conceptService;
 	private final CodeService codeService;
 	private final StardatDDIService stardatDDIService;
-	private final VocabularyMapper vocabularyMapper;
 	// Elasticsearch repo for Editor
-	private final VocabularySearchRepository vocabularySearchRepository;
 	private final VersionService versionService;
 	private final ImportManager importManager;
 	public ImportServiceImpl(AgencyService agencyService, VocabularyService vocabularyService, CodeService codeService,
 							 ConceptService conceptService, StardatDDIService stardatDDIService, VersionService versionService,
-							 VocabularyMapper vocabularyMapper, VocabularySearchRepository vocabularySearchRepository,
 							 ImportManager importManager) {
 		this.agencyService = agencyService;
 		this.vocabularyService = vocabularyService;
 		this.codeService = codeService;
 		this.conceptService = conceptService;
 		this.stardatDDIService = stardatDDIService;
-		this.vocabularyMapper = vocabularyMapper;
-		this.vocabularySearchRepository = vocabularySearchRepository;
 		this.versionService = versionService;
 		this.importManager = importManager;
 	}
@@ -159,16 +152,13 @@ public class ImportServiceImpl implements ImportService{
 
 	@Override
 	public VersionDTO setCvCode(Long versionId, CvCode... cvCodes) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
 	
 	 /**
      * Import all CVs from Stardat DDI-flatDB to the CV-Manager
-     * @Deprecated, since this import method does not support versioning
      */
-	@Deprecated
 	@Override
 	public void importFromStardat() {
 		List<DDIStore> ddiSchemes = stardatDDIService.findStudyByElementType(DDIElement.CVSCHEME);
@@ -222,72 +212,75 @@ public class ImportServiceImpl implements ImportService{
 			
 			//saved codes
 			List<CodeDTO> savedCodes = new ArrayList<>();
-			
-			// store code for indexing
-			for(CodeDTO code: codes){							
-				CodeDTO codeDB = codeService.getByUri( code.getUri() );
-				if( codeDB != null)
-					code.setId( codeDB.getId());
-				code.setDiscoverable( true );
-				
-				// store code to db
-				code.setVocabularyId( vocabulary.getId());
-				code = codeService.save(code);
-				
-				savedCodes.add(code);
-				vocabulary.addCode(code);
-			};
-			
+			storeCode(codes, vocabulary, savedCodes);
+
 			// assign version
 			// workaround to prevent save multiple version
-			// TODO: check if version already exist
-			for( String lang: vocabulary.getLanguages()) {
-				Language langEnum = Language.valueOfEnum(lang);
-				
-				VersionDTO version = null;
-				
-				if( version == null)
-					version = new VersionDTO();
-				
-				version.setStatus( Status.DRAFT.toString() );
-				if( langEnum.equals( Language.ENGLISH )) {
-					version.setItemType( ItemType.SL.toString());
-					version.setUri( vocabulary.getUri() );
-				} else {
-					version.setItemType( ItemType.TL.toString());
-				}
-				version.setLanguage( lang);
-				
-				version.setNotation( vocabulary.getNotation() );
-				version.setTitle( vocabulary.getTitleByLanguage(langEnum) );
-				version.setDefinition(vocabulary.getDefinitionByLanguage(langEnum) );
-				version.setPreviousVersion( 0L );
-				version.setInitialVersion( 0L );
-				Optional<UserDetails> currentUserDetailsOpt = SecurityUtils.getCurrentUserDetails();
-				if( currentUserDetailsOpt.isPresent())
-					version.setCreator( currentUserDetailsOpt.get().getId() );
-				version.setVocabularyId( vocabulary.getId());
-				
-				version = versionService.save(version);
-				
-				version.setInitialVersion( version.getId() );
-				version = versionService.save(version);
-				
-				// set concept from code
-				Set<ConceptDTO> conceptsFromCodes = CodeDTO.getConceptsFromCodes(savedCodes, langEnum, version.getId());
-				for( ConceptDTO concept: conceptsFromCodes ){
-					concept = conceptService.save(concept);
-					version.addConcept(concept);
-				}
-				
-				vocabulary.addVersion(version);
-			}
-			
+			storeVersion(vocabulary, savedCodes);
+
 			// reindex nested codes
 			vocabularyService.index(vocabulary);
 			
 		}
 		log.debug("DDIFlatDB imported to database");
+	}
+
+	private void storeVersion(VocabularyDTO vocabulary, List<CodeDTO> savedCodes) {
+		for( String lang: vocabulary.getLanguages()) {
+			Language langEnum = Language.valueOfEnum(lang);
+
+			VersionDTO version = new VersionDTO();
+
+			version.setStatus( Status.DRAFT.toString() );
+			if( langEnum.equals( Language.ENGLISH )) {
+				version.setItemType( ItemType.SL.toString());
+				version.setUri( vocabulary.getUri() );
+			} else {
+				version.setItemType( ItemType.TL.toString());
+			}
+			version.setLanguage( lang);
+
+			version.setNotation( vocabulary.getNotation() );
+			version.setTitle( vocabulary.getTitleByLanguage(langEnum) );
+			version.setDefinition(vocabulary.getDefinitionByLanguage(langEnum) );
+			version.setPreviousVersion( 0L );
+			version.setInitialVersion( 0L );
+			Optional<UserDetails> currentUserDetailsOpt = SecurityUtils.getCurrentUserDetails();
+			if( currentUserDetailsOpt.isPresent())
+				version.setCreator( currentUserDetailsOpt.get().getId() );
+			version.setVocabularyId( vocabulary.getId());
+
+			version = versionService.save(version);
+
+			version.setInitialVersion( version.getId() );
+			version = versionService.save(version);
+
+			// set concept from code
+			Set<ConceptDTO> conceptsFromCodes = CodeDTO.getConceptsFromCodes(savedCodes, langEnum, version.getId());
+			for( ConceptDTO concept: conceptsFromCodes ){
+				concept = conceptService.save(concept);
+				version.addConcept(concept);
+			}
+
+			vocabulary.addVersion(version);
+		}
+	}
+
+	private void storeCode(List<CodeDTO> codes, VocabularyDTO vocabulary, List<CodeDTO> savedCodes) {
+		// store code for indexing
+		for(CodeDTO code: codes){
+			CodeDTO codeDB = codeService.getByUri( code.getUri() );
+			if( codeDB != null)
+				code.setId( codeDB.getId());
+			code.setDiscoverable( true );
+
+			// store code to db
+			code.setVocabularyId( vocabulary.getId());
+			code = codeService.save(code);
+
+			savedCodes.add(code);
+			vocabulary.addCode(code);
+		}
 	}
 
 }
