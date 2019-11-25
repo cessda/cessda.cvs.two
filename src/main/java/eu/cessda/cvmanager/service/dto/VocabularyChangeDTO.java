@@ -12,14 +12,14 @@ import javax.persistence.Lob;
  */
 public class VocabularyChangeDTO implements Serializable {
 	
-	protected static final String[] cvChangeTypes = {
+	public static final String[] cvChangeTypes = {
 			"CV Short Name changed",
 			"CV Long Name changed",
 			"CV definition amended with meaning change",
 			"CV definition rephrased"
 	};
 
-    protected static final String[] codeChangeTypes = {
+    public static final String[] codeChangeTypes = {
 			"Code value changed",
 			"Code descriptive term rephrased",
 			"Code definition amended with meaning change",

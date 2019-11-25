@@ -227,9 +227,7 @@ public class ExportLayout extends MCssLayout implements Translatable {
 
 		if (pivotVersion.getLicenseId() != null) {
 			licenses.stream().filter(p -> p.getId().equals(pivotVersion.getLicenseId())).findFirst()
-					.ifPresent(theLicense -> {
-						this.license = theLicense;
-					});
+					.ifPresent(theLicense -> this.license = theLicense);
 		}
 
 		if (pivotVersion.getStatus().equals(Status.PUBLISHED.toString())) {
@@ -242,19 +240,20 @@ public class ExportLayout extends MCssLayout implements Translatable {
 	public Map<String, List<VersionDTO>> getFilteredVersionMap(VersionDTO pivotVersion,
 			Map<String, List<VersionDTO>> versionMap) {
 		Map<String, List<VersionDTO>> filteredVersionMap = new LinkedHashMap<>();
-		if (pivotVersion == null) {
+		if (pivotVersion == null && versionMap.entrySet().iterator().hasNext()) {
 			// get latest SL version
-			for (Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
-				pivotVersion = entry.getValue().get(0);
-				// break after first loop since SL version is always in the first entry
-				break;
-			}
+			// SL version is always in the first entry
+
+			pivotVersion = versionMap.entrySet().iterator().next().getValue().get(0);
+
 		}
 
 		// always get one SL version
-		if (pivotVersion.getItemType().equals(ItemType.TL.toString())
-				&& vocabulary.getVersionByUri(pivotVersion.getUriSl()).isPresent()) {
-			pivotVersion = vocabulary.getVersionByUri(pivotVersion.getUriSl()).get();
+		Optional<VersionDTO> versionDTO = vocabulary.getVersionByUri(pivotVersion.getUriSl());
+
+		if (pivotVersion.getItemType().equals(ItemType.TL.toString()) && versionDTO.isPresent()) {
+
+			pivotVersion = versionDTO.get();
 		}
 
 		slVersion = pivotVersion;

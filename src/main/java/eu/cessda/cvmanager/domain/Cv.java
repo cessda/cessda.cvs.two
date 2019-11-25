@@ -4,13 +4,14 @@ import java.time.LocalDate;
 
 import javax.validation.constraints.NotNull;
 
-public class Cv {
-	
+public class Cv
+{
+
 	// Optional for updating the Version entity
 	private String uri;
-	@NotNull  // valid unique agency name
+	@NotNull // valid unique agency name
 	private String agency;
-	@NotNull  // code of the CV in Camel-case
+	@NotNull // code of the CV in Camel-case
 	private String code;
 	@NotNull
 	private String term;
@@ -25,101 +26,125 @@ public class Cv {
 	private String versionChanges;
 	private LocalDate publicationDate;
 	private CvCode[] cvCodes;
-		
-	public String getUri() {
+
+	public String getUri()
+	{
 		return uri;
 	}
 
-	public void setUri(String uri) {
+	public void setUri( String uri )
+	{
 		this.uri = uri;
 	}
 
-	public String getAgency() {
+	public String getAgency()
+	{
 		return agency;
 	}
 
-	public void setAgency(String agency) {
+	public void setAgency( String agency )
+	{
 		this.agency = agency;
 	}
 
-	public String getCode() {
+	public String getCode()
+	{
 		return code;
 	}
 
-	public void setCode(String code) {
+	public void setCode( String code )
+	{
 		this.code = code;
 	}
 
-	public String getTerm() {
+	public String getTerm()
+	{
 		return term;
 	}
 
-	public void setTerm(String term) {
+	public void setTerm( String term )
+	{
 		this.term = term;
 	}
 
-	public String getDefinition() {
+	public String getDefinition()
+	{
 		return definition;
 	}
 
-	public void setDefinition(String definition) {
+	public void setDefinition( String definition )
+	{
 		this.definition = definition;
 	}
 
-	public String getVersion() {
+	public String getVersion()
+	{
 		return version;
 	}
 
-	public void setVersion(String version) {
+	public void setVersion( String version )
+	{
 		this.version = version;
 	}
 
-	public String getType() {
+	public String getType()
+	{
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType( String type )
+	{
 		this.type = type;
 	}
 
-	public String getLanguage() {
+	public String getLanguage()
+	{
 		return language;
 	}
 
-	public void setLanguage(String language) {
+	public void setLanguage( String language )
+	{
 		this.language = language;
 	}
 
-	public String getVersionNotes() {
+	public String getVersionNotes()
+	{
 		return versionNotes;
 	}
 
-	public void setVersionNotes(String versionNotes) {
+	public void setVersionNotes( String versionNotes )
+	{
 		this.versionNotes = versionNotes;
 	}
 
-	public String getVersionChanges() {
+	public String getVersionChanges()
+	{
 		return versionChanges;
 	}
 
-	public void setVersionChanges(String versionChanges) {
+	public void setVersionChanges( String versionChanges )
+	{
 		this.versionChanges = versionChanges;
 	}
 
-	public LocalDate getPublicationDate() {
+	public LocalDate getPublicationDate()
+	{
 		return publicationDate;
 	}
 
-	public void setPublicationDate(LocalDate publicationDate) {
+	public void setPublicationDate( LocalDate publicationDate )
+	{
 		this.publicationDate = publicationDate;
 	}
-	
-	public CvCode[] getCvCodes() {
+
+	public CvCode[] getCvCodes()
+	{
 		return cvCodes;
 	}
 
-	public void setCvCodes(CvCode[] cvCodes) {
+	public void setCvCodes( CvCode[] cvCodes )
+	{
 		this.cvCodes = cvCodes;
 	}
-	
+
 }
