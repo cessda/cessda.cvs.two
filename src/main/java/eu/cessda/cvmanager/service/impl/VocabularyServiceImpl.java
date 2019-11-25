@@ -6,7 +6,6 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.InnerHitBuilder;
-import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -21,9 +20,6 @@ import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +27,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.domain.Sort.Order;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.ResultsExtractor;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
@@ -46,8 +43,6 @@ import eu.cessda.cvmanager.repository.search.VocabularyPublishSearchRepository;
 import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
 import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.ElasticsearchTemplate2;
-import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
 import eu.cessda.cvmanager.service.VocabularyService;
@@ -111,12 +106,10 @@ public class VocabularyServiceImpl implements VocabularyService {
     
     private final VocabularyPublishSearchRepository vocabularyPublishSearchRepository;
 
-    // Use original ElasticsearchTemplate if this bug is fixed
-    // https://jira.spring.io/browse/DATAES-412
-    private final ElasticsearchTemplate2 elasticsearchTemplate;
+    private final ElasticsearchTemplate elasticsearchTemplate;
 
     public VocabularyServiceImpl(VocabularyRepository vocabularyRepository, VocabularyMapper vocabularyMapper, 
-    		VocabularySearchRepository vocabularySearchRepository, ElasticsearchTemplate2 elasticsearchTemplate,
+    		VocabularySearchRepository vocabularySearchRepository, ElasticsearchTemplate elasticsearchTemplate,
     		VocabularyPublishMapper vocabularyPublishMapper, VersionService versionService, CodeService codeService,
     		VocabularyPublishSearchRepository vocabularyPublishSearchRepository,
     		ConceptService conceptService, VocabularyChangeService vocabularyChangeService) {
