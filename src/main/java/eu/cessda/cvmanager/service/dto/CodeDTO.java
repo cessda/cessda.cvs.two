@@ -1,19 +1,16 @@
 package eu.cessda.cvmanager.service.dto;
 
-
 import javax.persistence.Lob;
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
 
-import com.vaadin.data.TreeData;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -1423,13 +1420,6 @@ public class CodeDTO implements Serializable {
 	public void setVersionNumber(String versionNumber) {
 		this.versionNumber = versionNumber;
 	}
-	
-//	public static List<CodeDTO> mergeWithVersionConcepts(List<CodeDTO> codeDTOs, Set<ConceptDTO> concepts){
-//		List<CodeDTO> codes = new ArrayList<>();
-//		for( CodeDTO )
-//		
-//		return codes;
-//	}
 
 	public static CodeDTO generateFromCVConcept ( CodeDTO code, CVConcept cvConcept) {
     	if( code == null) {
@@ -1445,7 +1435,6 @@ public class CodeDTO implements Serializable {
     }
 
 	private static CodeDTO extractCVConceptToCodeDTO(CVConcept cvConcept, CodeDTO code) {
-		//TODO: need to change hard coded value
 		code.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 				
 		code.setNotation( cvConcept.getNotation());
@@ -1616,11 +1605,7 @@ public class CodeDTO implements Serializable {
 		clonedCode.setSourceLanguage( code.getSourceLanguage());
 		clonedCode.setParent( code.getParent() );
 		clonedCode.setPosition( code.getPosition() );
-//		clonedCode.setPublicationDate( code.getPublicationDate() );
-//		clonedCode.setLastModified( code.getLastModified() );
 		clonedCode.setVocabularyId( code.getVocabularyId() );
-//		clonedCode.setVersionId( code.getVersionId() );
-//		clonedCode.setVersionNumber( code.getVersionNumber() );
 		clonedCode.setTitleCs( code.getTitleCs());
 		clonedCode.setTitleDa( code.getTitleDa());
 		clonedCode.setTitleNl( code.getTitleNl());

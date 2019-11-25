@@ -15,6 +15,7 @@ import org.gesis.stardat.entity.CVScheme;
 import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
+import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
@@ -36,7 +37,6 @@ import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.manager.WorkflowManager;
 import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
@@ -147,14 +147,12 @@ public class ImportServiceImpl implements ImportService{
 
 	@Override
 	public VersionDTO updateCv(Cv cv) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	
 	@Override
 	public VersionDTO setCvCode(String uri, CvCode... cvCodes) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -265,8 +263,9 @@ public class ImportServiceImpl implements ImportService{
 				version.setDefinition(vocabulary.getDefinitionByLanguage(langEnum) );
 				version.setPreviousVersion( 0L );
 				version.setInitialVersion( 0L );
-				version.setCreator( SecurityUtils.getCurrentUserDetails().get().getId() );
-//				version.setPublisher( 1L );
+				Optional<UserDetails> currentUserDetailsOpt = SecurityUtils.getCurrentUserDetails();
+				if( currentUserDetailsOpt.isPresent())
+					version.setCreator( currentUserDetailsOpt.get().getId() );
 				version.setVocabularyId( vocabulary.getId());
 				
 				version = versionService.save(version);
@@ -279,7 +278,7 @@ public class ImportServiceImpl implements ImportService{
 				for( ConceptDTO concept: conceptsFromCodes ){
 					concept = conceptService.save(concept);
 					version.addConcept(concept);
-				};
+				}
 				
 				vocabulary.addVersion(version);
 			}
