@@ -36,7 +36,7 @@ import eu.maxschuster.vaadin.autocompletetextfield.provider.MatchMode;
  */
 public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 
-	final static Logger log = LoggerFactory.getLogger(CVManagerSuggestionProvider.class);
+	private static final Logger log = LoggerFactory.getLogger(CVManagerSuggestionProvider.class);
 	/**
 	 * 
 	 */
@@ -44,8 +44,7 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 
 	private List<String> instituteList;
 
-	private Map<String, String> ids = new HashMap<String, String>();
-	private List<String> localValues = new ArrayList<String>();
+	private Map<String, String> ids = new HashMap<>();
 
 	/**
 	 * 
@@ -54,8 +53,6 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 		super();
 		setMatchMode(MatchMode.CONTAINS);
 		setIgnoreCase(true);
-
-		// setValues( fetchNames( "GESIS" ) );
 	}
 
 	@Override
@@ -74,9 +71,9 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 
 		Set<AutocompleteSuggestion> suggestions;
 		if (hasLimit) {
-			suggestions = new LinkedHashSet<AutocompleteSuggestion>(limit);
+			suggestions = new LinkedHashSet<>(limit);
 		} else {
-			suggestions = new LinkedHashSet<AutocompleteSuggestion>();
+			suggestions = new LinkedHashSet<>();
 		}
 
 		List<String> names = fetchNames(term);
@@ -87,15 +84,9 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 				break; // limit reached, exit loop
 			}
 
-			String searchValue = name.toLowerCase();
-
-			// if ( MatchMode.BEGINS == getMatchMode() && searchValue.startsWith( term )
-			// || MatchMode.CONTAINS == getMatchMode() && searchValue.contains( term ) )
-			// {
 			if (suggestions.add(new AutocompleteSuggestion(name))) {
 				++added;
 			}
-			// }
 		}
 		return suggestions;
 	}
@@ -108,7 +99,6 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 	 */
 	public List<String> fetchNames(String query) {
 
-		// suggest/{dataset}/{language}/{query}/{limit}
 		String url = "http://localhost:8080/cvmanager/suggest/dataset/foo/language/en/limit/20/query/" + query;
 
 		HttpHeaders headers = new HttpHeaders();
@@ -125,9 +115,8 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 			HttpEntity<CodeList> response = restTemplate.exchange(builder.build().encode().toUri(), HttpMethod.GET,
 					entity, CodeList.class);
 
-			// System.out.println( response );
 			CodeList res = response.getBody();
-			List<String> result = new ArrayList<String>();
+			List<String> result = new ArrayList<>();
 			for (Code b : res.getListOfCodes()) {
 				result.add(b.getPrefLabel().getValue());
 				// store string/name and GND ID
@@ -159,7 +148,6 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 	public CVManagerSuggestionProvider(Collection<String> values, MatchMode matchMode, boolean ignoreCase,
 			Locale locale) {
 		super(values, matchMode, ignoreCase, locale);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -169,7 +157,6 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 	 */
 	public CVManagerSuggestionProvider(Collection<String> values, MatchMode matchMode, boolean ignoreCase) {
 		super(values, matchMode, ignoreCase);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -178,7 +165,6 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 	 */
 	public CVManagerSuggestionProvider(Collection<String> values, MatchMode matchMode) {
 		super(values, matchMode);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -186,7 +172,6 @@ public class CVManagerSuggestionProvider extends CollectionSuggestionProvider {
 	 */
 	public CVManagerSuggestionProvider(Collection<String> values) {
 		super(values);
-		// TODO Auto-generated constructor stub
 	}
 
 	/**

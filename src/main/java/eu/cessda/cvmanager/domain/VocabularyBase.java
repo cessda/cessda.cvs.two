@@ -1,7 +1,22 @@
 package eu.cessda.cvmanager.domain;
 
-import javax.persistence.*;
-import javax.validation.constraints.*;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.gesis.wts.domain.enumeration.Language;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
@@ -10,1576 +25,1819 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Objects;
-
 /**
  * A VocabularyBase.
  */
 @MappedSuperclass
-public class VocabularyBase implements Serializable {
-    
+public class VocabularyBase implements Serializable
+{
+
 	private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    
-    // only for SL status
-    @Column(name = "status", length = 20, nullable = false)
-    @Field(type = FieldType.Keyword)
-    private String status;
-    
-    @Column(name = "uri", length = 240, unique = true)
-    private String uri;
-    
-    @NotNull
-    @Column(name = "notation", length = 240, nullable = false, unique = true)
-    @Field(type = FieldType.Text, fielddata = true)
-    private String notation;
+	@Id
+	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	private Long id;
 
-    @NotNull
-    @Size(max = 20)
-    @Column(name = "version_number", length = 20, nullable = false)
-    private String versionNumber;
-    
-    @Column(name = "initial_publication")
-    private Long initialPublication;
-    
-    @Column(name = "previous_publication")
-    private Long previousPublication;
+	// only for SL status
+	@Column( name = "status", length = 20, nullable = false )
+	@Field( type = FieldType.Keyword )
+	private String status;
 
-    @Column(name = "archived")
-    private Boolean archived = false;
+	@Column( name = "uri", length = 240, unique = true )
+	private String uri;
 
-    @Column(name = "withdrawn")
-    private Boolean withdrawn = false;
+	@NotNull
+	@Column( name = "notation", length = 240, nullable = false, unique = true )
+	@Field( type = FieldType.Text, fielddata = true )
+	private String notation;
 
-    @Column(name = "discoverable")
-    private Boolean discoverable = false;
-    
-    @NotNull
-    @Size(max = 20)
-    @Column(name = "source_language", length = 20, nullable = false)
-    @Field(type = FieldType.Keyword)
-    private String sourceLanguage;
-    
-    @NotNull
-    @Column(name = "agency_id", nullable = false)
-    private Long agencyId;
+	@NotNull
+	@Size( max = 20 )
+	@Column( name = "version_number", length = 20, nullable = false )
+	private String versionNumber;
 
-    @NotNull
-    @Column(name = "agency_name", nullable = false)
-    @Field(type = FieldType.Keyword)
-    private String agencyName;
-    
-    @Column(name = "languages")
-    @ElementCollection( targetClass=String.class )
-    @Field(type = FieldType.Keyword)
-    private Set<String> languages;
-    
-    @Column(name = "languages_published")
-    @ElementCollection( targetClass=String.class )
-    @Field(type = FieldType.Keyword)
-    private Set<String> languagesPublished;
-    
-    @Transient
-    @Field(type = FieldType.Nested, store = true)
-    private Set<Code> codes = new HashSet<>();
-    
-    @Transient
-    @Field(type = FieldType.Nested, store = true)
-    private Set<Version> vers = new HashSet<>();
-	  
-    @Transient
-    private Language selectedLang;
-	  
-    @Column(name = "publication_date")
-    @Field(type = FieldType.Date, format = DateFormat.date)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate publicationDate;
-    
-    @Column(name = "last_modified")
-    @Field(type = FieldType.Date, format = DateFormat.date_hour_minute_second)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime lastModified;
-    
-    @Size(max = 20)
-    @Column(name = "version_cs", length = 20)
-    private String versionCs;
+	@Column( name = "initial_publication" )
+	private Long initialPublication;
 
-    @Lob
-    @Column(name = "title_cs")
-    @Field(type = FieldType.Text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
-    private String titleCs;
+	@Column( name = "previous_publication" )
+	private Long previousPublication;
 
-    @Lob
-    @Column(name = "definition_cs")
-    @Field(type = FieldType.Text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
-    private String definitionCs;
-    
-    @Size(max = 20)
-    @Column(name = "version_da", length = 20)
-    private String versionDa;
+	@Column( name = "archived" )
+	private Boolean archived = false;
 
-    @Lob
-    @Column(name = "title_da")
-    @Field(type = FieldType.Text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
-    private String titleDa;
+	@Column( name = "withdrawn" )
+	private Boolean withdrawn = false;
 
-    @Lob
-    @Column(name = "definition_da")
-    @Field(type = FieldType.Text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
-    private String definitionDa;
-    
-    @Size(max = 20)
-    @Column(name = "version_nl", length = 20)
-    private String versionNl;
+	@Column( name = "discoverable" )
+	private Boolean discoverable = false;
 
-    @Lob
-    @Column(name = "title_nl")
-    @Field(type = FieldType.Text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
-    private String titleNl;
+	@NotNull
+	@Size( max = 20 )
+	@Column( name = "source_language", length = 20, nullable = false )
+	@Field( type = FieldType.Keyword )
+	private String sourceLanguage;
 
-    @Lob
-    @Column(name = "definition_nl")
-    @Field(type = FieldType.Text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
-    private String definitionNl;
-    
-    @Size(max = 20)
-    @Column(name = "version_en", length = 20)
-    private String versionEn;
+	@NotNull
+	@Column( name = "agency_id", nullable = false )
+	private Long agencyId;
 
-    @Lob
-    @Column(name = "title_en")
-    @Field(type = FieldType.Text, store = true, analyzer = "english", searchAnalyzer = "english" )
-    private String titleEn;
+	@NotNull
+	@Column( name = "agency_name", nullable = false )
+	@Field( type = FieldType.Keyword )
+	private String agencyName;
 
-    @Lob
-    @Column(name = "definition_en")
-    @Field(type = FieldType.Text, store = true, analyzer = "english", searchAnalyzer = "english" )
-    private String definitionEn;
-    
-    @Size(max = 20)
-    @Column(name = "version_fi", length = 20)
-    private String versionFi;
+	@Column( name = "languages" )
+	@ElementCollection( targetClass = String.class )
+	@Field( type = FieldType.Keyword )
+	private Set<String> languages;
 
-    @Lob
-    @Column(name = "title_fi")
-    @Field(type = FieldType.Text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
-    private String titleFi;
+	@Column( name = "languages_published" )
+	@ElementCollection( targetClass = String.class )
+	@Field( type = FieldType.Keyword )
+	private Set<String> languagesPublished;
 
-    @Lob
-    @Column(name = "definition_fi")
-    @Field(type = FieldType.Text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
-    private String definitionFi;
+	@Transient
+	@Field( type = FieldType.Nested, store = true )
+	private Set<Code> codes = new HashSet<>();
 
-    @Size(max = 20)
-    @Column(name = "version_fr", length = 20)
-    private String versionFr;
-    
-    @Lob
-    @Column(name = "title_fr")
-    @Field(type = FieldType.Text, store = true, analyzer = "french", searchAnalyzer = "french" )
-    private String titleFr;
+	@Transient
+	@Field( type = FieldType.Nested, store = true )
+	private Set<Version> vers = new HashSet<>();
 
-    @Lob
-    @Column(name = "definition_fr")
-    @Field(type = FieldType.Text, store = true, analyzer = "french", searchAnalyzer = "french" )
-    private String definitionFr;
-    
-    @Size(max = 20)
-    @Column(name = "version_de", length = 20)
-    private String versionDe;
+	@Transient
+	private Language selectedLang;
 
-    @Lob
-    @Column(name = "title_de")
-    @Field(type = FieldType.Text, store = true, analyzer = "german", searchAnalyzer = "german" )
-    private String titleDe;
+	@Column( name = "publication_date" )
+	@Field( type = FieldType.Date, format = DateFormat.date )
+	@JsonFormat( shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd" )
+	private LocalDate publicationDate;
 
-    @Lob
-    @Column(name = "definition_de")
-    @Field(type = FieldType.Text, store = true, analyzer = "german", searchAnalyzer = "german" )
-    private String definitionDe;
+	@Column( name = "last_modified" )
+	@Field( type = FieldType.Date, format = DateFormat.date_hour_minute_second )
+	@JsonFormat( shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss" )
+	private LocalDateTime lastModified;
 
-    @Size(max = 20)
-    @Column(name = "version_el", length = 20)
-    private String versionEl;
-    
-    @Lob
-    @Column(name = "title_el")
-    @Field(type = FieldType.Text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
-    private String titleEl;
+	@Size( max = 20 )
+	@Column( name = "version_cs", length = 20 )
+	private String versionCs;
 
-    @Lob
-    @Column(name = "definition_el")
-    @Field(type = FieldType.Text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
-    private String definitionEl;
+	@Lob
+	@Column( name = "title_cs" )
+	@Field( type = FieldType.Text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
+	private String titleCs;
 
-    @Size(max = 20)
-    @Column(name = "version_hu", length = 20)
-    private String versionHu;
-    
-    @Lob
-    @Column(name = "title_hu")
-    @Field(type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
-    private String titleHu;
+	@Lob
+	@Column( name = "definition_cs" )
+	@Field( type = FieldType.Text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
+	private String definitionCs;
 
-    @Lob
-    @Column(name = "definition_hu")
-    @Field(type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
-    private String definitionHu;
+	@Size( max = 20 )
+	@Column( name = "version_da", length = 20 )
+	private String versionDa;
 
-    @Size(max = 20)
-    @Column(name = "version_it", length = 20)
-    private String versionIt;
-    
-    @Lob
-    @Column(name = "title_it")
-    @Field(type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
-    private String titleIt;
-    
-    @Lob
-    @Column(name = "definition_it")
-    @Field(type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
-    private String definitionIt;
-    
-    @Size(max = 20)
-    @Column(name = "version_lt", length = 20)
-    private String versionLt;
-    
-    @Lob
-    @Column(name = "title_lt")
-    @Field(type = FieldType.Text, store = true )
-    private String titleLt;
+	@Lob
+	@Column( name = "title_da" )
+	@Field( type = FieldType.Text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
+	private String titleDa;
 
-    @Lob
-    @Column(name = "definition_lt")
-    @Field(type = FieldType.Text, store = true )
-    private String definitionLt;
+	@Lob
+	@Column( name = "definition_da" )
+	@Field( type = FieldType.Text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
+	private String definitionDa;
 
-    @Size(max = 20)
-    @Column(name = "version_no", length = 20)
-    private String versionNo;
-    
-    @Lob
-    @Column(name = "title_no")
-    @Field(type = FieldType.Text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
-    private String titleNo;
+	@Size( max = 20 )
+	@Column( name = "version_nl", length = 20 )
+	private String versionNl;
 
-    @Lob
-    @Column(name = "definition_no")
-    @Field(type = FieldType.Text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
-    private String definitionNo;
+	@Lob
+	@Column( name = "title_nl" )
+	@Field( type = FieldType.Text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
+	private String titleNl;
 
-    @Size(max = 20)
-    @Column(name = "version_pt", length = 20)
-    private String versionPt;
-    
-    @Lob
-    @Column(name = "title_pt")
-    @Field(type = FieldType.Text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
-    private String titlePt;
+	@Lob
+	@Column( name = "definition_nl" )
+	@Field( type = FieldType.Text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
+	private String definitionNl;
 
-    @Lob
-    @Column(name = "definition_pt")
-    @Field(type = FieldType.Text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
-    private String definitionPt;
-    
-    @Size(max = 20)
-    @Column(name = "version_ro", length = 20)
-    private String versionRo;
+	@Size( max = 20 )
+	@Column( name = "version_en", length = 20 )
+	private String versionEn;
 
-    @Lob
-    @Column(name = "title_ro")
-    @Field(type = FieldType.Text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
-    private String titleRo;
+	@Lob
+	@Column( name = "title_en" )
+	@Field( type = FieldType.Text, store = true, analyzer = "english", searchAnalyzer = "english" )
+	private String titleEn;
 
-    @Lob
-    @Column(name = "definition_ro")
-    @Field(type = FieldType.Text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
-    private String definitionRo;
+	@Lob
+	@Column( name = "definition_en" )
+	@Field( type = FieldType.Text, store = true, analyzer = "english", searchAnalyzer = "english" )
+	private String definitionEn;
 
-    @Size(max = 20)
-    @Column(name = "version_sk", length = 20)
-    private String versionSk;
-    
-    @Lob
-    @Column(name = "title_sk")
-    @Field(type = FieldType.Text, store = true )
-    private String titleSk;
+	@Size( max = 20 )
+	@Column( name = "version_fi", length = 20 )
+	private String versionFi;
 
-    @Lob
-    @Column(name = "definition_sk")
-    @Field(type = FieldType.Text, store = true )
-    private String definitionSk;
+	@Lob
+	@Column( name = "title_fi" )
+	@Field( type = FieldType.Text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
+	private String titleFi;
 
-    @Size(max = 20)
-    @Column(name = "version_sl", length = 20)
-    private String versionSl;
-    
-    @Lob
-    @Column(name = "title_sl")
-    @Field(type = FieldType.Text, store = true )
-    private String titleSl;
+	@Lob
+	@Column( name = "definition_fi" )
+	@Field( type = FieldType.Text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
+	private String definitionFi;
 
-    @Lob
-    @Column(name = "definition_sl")
-    @Field(type = FieldType.Text, store = true )
-    private String definitionSl;
+	@Size( max = 20 )
+	@Column( name = "version_fr", length = 20 )
+	private String versionFr;
 
-    @Size(max = 20)
-    @Column(name = "version_es", length = 20)
-    private String versionEs;
-    
-    @Lob
-    @Column(name = "title_es")
-    @Field(type = FieldType.Text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
-    private String titleEs;
+	@Lob
+	@Column( name = "title_fr" )
+	@Field( type = FieldType.Text, store = true, analyzer = "french", searchAnalyzer = "french" )
+	private String titleFr;
 
-    @Lob
-    @Column(name = "definition_es")
-    @Field(type = FieldType.Text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
-    private String definitionEs;
+	@Lob
+	@Column( name = "definition_fr" )
+	@Field( type = FieldType.Text, store = true, analyzer = "french", searchAnalyzer = "french" )
+	private String definitionFr;
 
-    @Size(max = 20)
-    @Column(name = "version_sv", length = 20)
-    private String versionSv;
-    
-    @Lob
-    @Column(name = "title_sv")
-    @Field(type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
-    private String titleSv;
+	@Size( max = 20 )
+	@Column( name = "version_de", length = 20 )
+	private String versionDe;
 
-    @Lob
-    @Column(name = "definition_sv")
-    @Field(type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
-    private String definitionSv;
-    
-    @Lob
-    @Column(name = "notes")
-    private String notes;
-    
-    // additional languages
-    @Size(max = 20)
-    @Column(name = "version_sq", length = 20)
-    private String versionSq;
-    
-    @Lob
-    @Column(name = "title_sq")
-    @Field(type = FieldType.Text, store = true)
-    private String titleSq;
+	@Lob
+	@Column( name = "title_de" )
+	@Field( type = FieldType.Text, store = true, analyzer = "german", searchAnalyzer = "german" )
+	private String titleDe;
 
-    @Lob
-    @Column(name = "definition_sq")
-    @Field(type = FieldType.Text, store = true )
-    private String definitionSq;
-    
-	public String getVersionSq() {
+	@Lob
+	@Column( name = "definition_de" )
+	@Field( type = FieldType.Text, store = true, analyzer = "german", searchAnalyzer = "german" )
+	private String definitionDe;
+
+	@Size( max = 20 )
+	@Column( name = "version_el", length = 20 )
+	private String versionEl;
+
+	@Lob
+	@Column( name = "title_el" )
+	@Field( type = FieldType.Text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
+	private String titleEl;
+
+	@Lob
+	@Column( name = "definition_el" )
+	@Field( type = FieldType.Text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
+	private String definitionEl;
+
+	@Size( max = 20 )
+	@Column( name = "version_hu", length = 20 )
+	private String versionHu;
+
+	@Lob
+	@Column( name = "title_hu" )
+	@Field( type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
+	private String titleHu;
+
+	@Lob
+	@Column( name = "definition_hu" )
+	@Field( type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
+	private String definitionHu;
+
+	@Size( max = 20 )
+	@Column( name = "version_it", length = 20 )
+	private String versionIt;
+
+	@Lob
+	@Column( name = "title_it" )
+	@Field( type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
+	private String titleIt;
+
+	@Lob
+	@Column( name = "definition_it" )
+	@Field( type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
+	private String definitionIt;
+
+	@Size( max = 20 )
+	@Column( name = "version_lt", length = 20 )
+	private String versionLt;
+
+	@Lob
+	@Column( name = "title_lt" )
+	@Field( type = FieldType.Text, store = true )
+	private String titleLt;
+
+	@Lob
+	@Column( name = "definition_lt" )
+	@Field( type = FieldType.Text, store = true )
+	private String definitionLt;
+
+	@Size( max = 20 )
+	@Column( name = "version_no", length = 20 )
+	private String versionNo;
+
+	@Lob
+	@Column( name = "title_no" )
+	@Field( type = FieldType.Text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
+	private String titleNo;
+
+	@Lob
+	@Column( name = "definition_no" )
+	@Field( type = FieldType.Text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
+	private String definitionNo;
+
+	@Size( max = 20 )
+	@Column( name = "version_pt", length = 20 )
+	private String versionPt;
+
+	@Lob
+	@Column( name = "title_pt" )
+	@Field( type = FieldType.Text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
+	private String titlePt;
+
+	@Lob
+	@Column( name = "definition_pt" )
+	@Field( type = FieldType.Text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
+	private String definitionPt;
+
+	@Size( max = 20 )
+	@Column( name = "version_ro", length = 20 )
+	private String versionRo;
+
+	@Lob
+	@Column( name = "title_ro" )
+	@Field( type = FieldType.Text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
+	private String titleRo;
+
+	@Lob
+	@Column( name = "definition_ro" )
+	@Field( type = FieldType.Text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
+	private String definitionRo;
+
+	@Size( max = 20 )
+	@Column( name = "version_sk", length = 20 )
+	private String versionSk;
+
+	@Lob
+	@Column( name = "title_sk" )
+	@Field( type = FieldType.Text, store = true )
+	private String titleSk;
+
+	@Lob
+	@Column( name = "definition_sk" )
+	@Field( type = FieldType.Text, store = true )
+	private String definitionSk;
+
+	@Size( max = 20 )
+	@Column( name = "version_sl", length = 20 )
+	private String versionSl;
+
+	@Lob
+	@Column( name = "title_sl" )
+	@Field( type = FieldType.Text, store = true )
+	private String titleSl;
+
+	@Lob
+	@Column( name = "definition_sl" )
+	@Field( type = FieldType.Text, store = true )
+	private String definitionSl;
+
+	@Size( max = 20 )
+	@Column( name = "version_es", length = 20 )
+	private String versionEs;
+
+	@Lob
+	@Column( name = "title_es" )
+	@Field( type = FieldType.Text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
+	private String titleEs;
+
+	@Lob
+	@Column( name = "definition_es" )
+	@Field( type = FieldType.Text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
+	private String definitionEs;
+
+	@Size( max = 20 )
+	@Column( name = "version_sv", length = 20 )
+	private String versionSv;
+
+	@Lob
+	@Column( name = "title_sv" )
+	@Field( type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
+	private String titleSv;
+
+	@Lob
+	@Column( name = "definition_sv" )
+	@Field( type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
+	private String definitionSv;
+
+	@Lob
+	@Column( name = "notes" )
+	private String notes;
+
+	// additional languages
+	@Size( max = 20 )
+	@Column( name = "version_sq", length = 20 )
+	private String versionSq;
+
+	@Lob
+	@Column( name = "title_sq" )
+	@Field( type = FieldType.Text, store = true )
+	private String titleSq;
+
+	@Lob
+	@Column( name = "definition_sq" )
+	@Field( type = FieldType.Text, store = true )
+	private String definitionSq;
+
+	public String getVersionSq()
+	{
 		return versionSq;
 	}
 
-	public void setVersionSq(String versionSq) {
+	public void setVersionSq( String versionSq )
+	{
 		this.versionSq = versionSq;
 	}
 
-	public String getTitleSq() {
-        return titleSq;
-    }
+	public String getTitleSq()
+	{
+		return titleSq;
+	}
 
-    public void setTitleSq(String titleSq) {
-        this.titleSq = titleSq;
-    }
+	public void setTitleSq( String titleSq )
+	{
+		this.titleSq = titleSq;
+	}
 
-    public String getDefinitionSq() {
-        return definitionSq;
-    }
+	public String getDefinitionSq()
+	{
+		return definitionSq;
+	}
 
-    public void setDefinitionSq(String definitionSq) {
-        this.definitionSq = definitionSq;
-    }
-    
-    @Size(max = 20)
-    @Column(name = "version_bs", length = 20)
-    private String versionBs;
-	
+	public void setDefinitionSq( String definitionSq )
+	{
+		this.definitionSq = definitionSq;
+	}
+
+	@Size( max = 20 )
+	@Column( name = "version_bs", length = 20 )
+	private String versionBs;
+
 	@Lob
-    @Column(name = "title_bs")
-    @Field(type = FieldType.Text, store = true)
-    private String titleBs;
+	@Column( name = "title_bs" )
+	@Field( type = FieldType.Text, store = true )
+	private String titleBs;
 
-    @Lob
-    @Column(name = "definition_bs")
-    @Field(type = FieldType.Text, store = true )
-    private String definitionBs;
-    
-	public String getVersionBs() {
+	@Lob
+	@Column( name = "definition_bs" )
+	@Field( type = FieldType.Text, store = true )
+	private String definitionBs;
+
+	public String getVersionBs()
+	{
 		return versionBs;
 	}
 
-	public void setVersionBs(String versionBs) {
+	public void setVersionBs( String versionBs )
+	{
 		this.versionBs = versionBs;
 	}
 
-	public String getTitleBs() {
-        return titleBs;
-    }
+	public String getTitleBs()
+	{
+		return titleBs;
+	}
 
-    public void setTitleBs(String titleBs) {
-        this.titleBs = titleBs;
-    }
+	public void setTitleBs( String titleBs )
+	{
+		this.titleBs = titleBs;
+	}
 
-    public String getDefinitionBs() {
-        return definitionBs;
-    }
-    
-    public void setDefinitionBs(String definitionBs) {
-        this.definitionBs = definitionBs;
-    }
-    
-    @Size(max = 20)
-    @Column(name = "version_bg", length = 20)
-    private String versionBg;
-	
+	public String getDefinitionBs()
+	{
+		return definitionBs;
+	}
+
+	public void setDefinitionBs( String definitionBs )
+	{
+		this.definitionBs = definitionBs;
+	}
+
+	@Size( max = 20 )
+	@Column( name = "version_bg", length = 20 )
+	private String versionBg;
+
 	@Lob
-    @Column(name = "title_bg")
-    @Field(type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
-    private String titleBg;
+	@Column( name = "title_bg" )
+	@Field( type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
+	private String titleBg;
 
-    @Lob
-    @Column(name = "definition_bg")
-    @Field(type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
-    private String definitionBg;
-    
-	public String getVersionBg() {
+	@Lob
+	@Column( name = "definition_bg" )
+	@Field( type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
+	private String definitionBg;
+
+	public String getVersionBg()
+	{
 		return versionBg;
 	}
 
-	public void setVersionBg(String versionBg) {
+	public void setVersionBg( String versionBg )
+	{
 		this.versionBg = versionBg;
 	}
 
-	public String getTitleBg() {
-        return titleBg;
-    }
+	public String getTitleBg()
+	{
+		return titleBg;
+	}
 
-    public void setTitleBg(String titleBg) {
-        this.titleBg = titleBg;
-    }
+	public void setTitleBg( String titleBg )
+	{
+		this.titleBg = titleBg;
+	}
 
-    public String getDefinitionBg() {
-        return definitionBg;
-    }
+	public String getDefinitionBg()
+	{
+		return definitionBg;
+	}
 
-    public void setDefinitionBg(String definitionBg) {
-        this.definitionBg = definitionBg;
-    }
-	
-    @Size(max = 20)
-    @Column(name = "version_hr", length = 20)
-    private String versionHr;
-    
+	public void setDefinitionBg( String definitionBg )
+	{
+		this.definitionBg = definitionBg;
+	}
+
+	@Size( max = 20 )
+	@Column( name = "version_hr", length = 20 )
+	private String versionHr;
+
 	@Lob
-    @Column(name = "title_hr")
-    @Field(type = FieldType.Text, store = true)
-    private String titleHr;
+	@Column( name = "title_hr" )
+	@Field( type = FieldType.Text, store = true )
+	private String titleHr;
 
-    @Lob
-    @Column(name = "definition_hr")
-    @Field(type = FieldType.Text, store = true )
-    private String definitionHr;
-	
-	public String getVersionHr() {
+	@Lob
+	@Column( name = "definition_hr" )
+	@Field( type = FieldType.Text, store = true )
+	private String definitionHr;
+
+	public String getVersionHr()
+	{
 		return versionHr;
 	}
 
-	public void setVersionHr(String versionHr) {
+	public void setVersionHr( String versionHr )
+	{
 		this.versionHr = versionHr;
 	}
 
-	public String getTitleHr() {
-        return titleHr;
-    }
+	public String getTitleHr()
+	{
+		return titleHr;
+	}
 
-    public void setTitleHr(String titleHr) {
-        this.titleHr = titleHr;
-    }
+	public void setTitleHr( String titleHr )
+	{
+		this.titleHr = titleHr;
+	}
 
-    public String getDefinitionHr() {
-        return definitionHr;
-    }
+	public String getDefinitionHr()
+	{
+		return definitionHr;
+	}
 
-    public void setDefinitionHr(String definitionHr) {
-        this.definitionHr = definitionHr;
-    }
-    
-    @Size(max = 20)
-    @Column(name = "version_mk", length = 20)
-    private String versionMḱ;
-	
+	public void setDefinitionHr( String definitionHr )
+	{
+		this.definitionHr = definitionHr;
+	}
+
+	@Size( max = 20 )
+	@Column( name = "version_mk", length = 20 )
+	private String versionMḱ;
+
 	@Lob
-    @Column(name = "title_mk")
-    @Field(type = FieldType.Text, store = true)
-    private String titleMk;
+	@Column( name = "title_mk" )
+	@Field( type = FieldType.Text, store = true )
+	private String titleMk;
 
-    @Lob
-    @Column(name = "definition_mk")
-    @Field(type = FieldType.Text, store = true )
-    private String definitionMk;
-	
-	public String getVersionMḱ() {
+	@Lob
+	@Column( name = "definition_mk" )
+	@Field( type = FieldType.Text, store = true )
+	private String definitionMk;
+
+	public String getVersionMḱ()
+	{
 		return versionMḱ;
 	}
 
-	public void setVersionMḱ(String versionMḱ) {
+	public void setVersionMḱ( String versionMḱ )
+	{
 		this.versionMḱ = versionMḱ;
 	}
 
-	public String getTitleMk() {
-        return titleMk;
-    }
+	public String getTitleMk()
+	{
+		return titleMk;
+	}
 
-    public void setTitleMk(String titleMk) {
-        this.titleMk = titleMk;
-    }
+	public void setTitleMk( String titleMk )
+	{
+		this.titleMk = titleMk;
+	}
 
-    public String getDefinitionMk() {
-        return definitionMk;
-    }
+	public String getDefinitionMk()
+	{
+		return definitionMk;
+	}
 
-    public void setDefinitionMk(String definitionMk) {
-        this.definitionMk = definitionMk;
-    }
-    
-    @Size(max = 20)
-    @Column(name = "version_pl", length = 20)
-    private String versionPl;
-	
+	public void setDefinitionMk( String definitionMk )
+	{
+		this.definitionMk = definitionMk;
+	}
+
+	@Size( max = 20 )
+	@Column( name = "version_pl", length = 20 )
+	private String versionPl;
+
 	@Lob
-    @Column(name = "title_pl")
-    @Field(type = FieldType.Text, store = true)
-    private String titlePl;
+	@Column( name = "title_pl" )
+	@Field( type = FieldType.Text, store = true )
+	private String titlePl;
 
-    @Lob
-    @Column(name = "definition_pl")
-    @Field(type = FieldType.Text, store = true )
-    private String definitionPl;
-    
-	public String getVersionPl() {
+	@Lob
+	@Column( name = "definition_pl" )
+	@Field( type = FieldType.Text, store = true )
+	private String definitionPl;
+
+	public String getVersionPl()
+	{
 		return versionPl;
 	}
 
-	public void setVersionPl(String versionPl) {
+	public void setVersionPl( String versionPl )
+	{
 		this.versionPl = versionPl;
 	}
 
-	public String getTitlePl() {
-        return titlePl;
-    }
+	public String getTitlePl()
+	{
+		return titlePl;
+	}
 
-    public void setTitlePl(String titlePl) {
-        this.titlePl = titlePl;
-    }
+	public void setTitlePl( String titlePl )
+	{
+		this.titlePl = titlePl;
+	}
 
-    public String getDefinitionPl() {
-        return definitionPl;
-    }
+	public String getDefinitionPl()
+	{
+		return definitionPl;
+	}
 
-    public void setDefinitionPl(String definitionPl) {
-        this.definitionPl = definitionPl;
-    }
-    
-    @Size(max = 20)
-    @Column(name = "version_sr", length = 20)
-    private String versionSr;
-	
+	public void setDefinitionPl( String definitionPl )
+	{
+		this.definitionPl = definitionPl;
+	}
+
+	@Size( max = 20 )
+	@Column( name = "version_sr", length = 20 )
+	private String versionSr;
+
 	@Lob
-    @Column(name = "title_sr")
-    @Field(type = FieldType.Text, store = true)
-    private String titleSr;
+	@Column( name = "title_sr" )
+	@Field( type = FieldType.Text, store = true )
+	private String titleSr;
 
-    @Lob
-    @Column(name = "definition_sr")
-    @Field(type = FieldType.Text, store = true )
-    private String definitionSr;
-    
-	public String getVersionSr() {
+	@Lob
+	@Column( name = "definition_sr" )
+	@Field( type = FieldType.Text, store = true )
+	private String definitionSr;
+
+	public String getVersionSr()
+	{
 		return versionSr;
 	}
 
-	public void setVersionSr(String versionSr) {
+	public void setVersionSr( String versionSr )
+	{
 		this.versionSr = versionSr;
 	}
 
-	public String getTitleSr() {
-        return titleSr;
-    }
+	public String getTitleSr()
+	{
+		return titleSr;
+	}
 
-    public void setTitleSr(String titleSr) {
-        this.titleSr = titleSr;
-    }
+	public void setTitleSr( String titleSr )
+	{
+		this.titleSr = titleSr;
+	}
 
-    public String getDefinitionSr() {
-        return definitionSr;
-    }
+	public String getDefinitionSr()
+	{
+		return definitionSr;
+	}
 
-    public void setDefinitionSr(String definitionSr) {
-        this.definitionSr = definitionSr;
-    }
-    
-    @Size(max = 20)
-    @Column(name = "version_ru", length = 20)
-    private String versionRu;
-	
+	public void setDefinitionSr( String definitionSr )
+	{
+		this.definitionSr = definitionSr;
+	}
+
+	@Size( max = 20 )
+	@Column( name = "version_ru", length = 20 )
+	private String versionRu;
+
 	@Lob
-    @Column(name = "title_ru")
-    @Field(type = FieldType.Text, store = true, analyzer = "russian", searchAnalyzer = "russian" )
-    private String titleRu;
+	@Column( name = "title_ru" )
+	@Field( type = FieldType.Text, store = true, analyzer = "russian", searchAnalyzer = "russian" )
+	private String titleRu;
 
-    @Lob
-    @Column(name = "definition_ru")
-    @Field(type = FieldType.Text, store = true , analyzer = "russian", searchAnalyzer = "russian" )
-    private String definitionRu;
-    
-	public String getVersionRu() {
+	@Lob
+	@Column( name = "definition_ru" )
+	@Field( type = FieldType.Text, store = true, analyzer = "russian", searchAnalyzer = "russian" )
+	private String definitionRu;
+
+	public String getVersionRu()
+	{
 		return versionRu;
 	}
 
-	public void setVersionRu(String versionRu) {
+	public void setVersionRu( String versionRu )
+	{
 		this.versionRu = versionRu;
 	}
 
-	public String getTitleRu() {
-        return titleRu;
-    }
+	public String getTitleRu()
+	{
+		return titleRu;
+	}
 
-    public void setTitleRu(String titleRu) {
-        this.titleRu = titleRu;
-    }
+	public void setTitleRu( String titleRu )
+	{
+		this.titleRu = titleRu;
+	}
 
-    public String getDefinitionRu() {
-        return definitionRu;
-    }
+	public String getDefinitionRu()
+	{
+		return definitionRu;
+	}
 
-    public void setDefinitionRu(String definitionRu) {
-        this.definitionRu = definitionRu;
-    }
-    // end of additional languages
-    
-    public Long getId() {
-        return id;
-    }
+	public void setDefinitionRu( String definitionRu )
+	{
+		this.definitionRu = definitionRu;
+	}
+	// end of additional languages
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public Long getId()
+	{
+		return id;
+	}
 
-    public String getUri() {
-        return uri;
-    }
+	public void setId( Long id )
+	{
+		this.id = id;
+	}
 
-    public VocabularyBase uri(String uri) {
-        this.uri = uri;
-        return this;
-    }
+	public String getUri()
+	{
+		return uri;
+	}
 
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-    
-    public String getNotation() {
+	public VocabularyBase uri( String uri )
+	{
+		this.uri = uri;
+		return this;
+	}
+
+	public void setUri( String uri )
+	{
+		this.uri = uri;
+	}
+
+	public String getNotation()
+	{
 		return notation;
 	}
 
-	public void setNotation(String notation) {
+	public void setNotation( String notation )
+	{
 		this.notation = notation;
 	}
 
-    public String getVersionNumber() {
-        return versionNumber;
-    }
+	public String getVersionNumber()
+	{
+		return versionNumber;
+	}
 
-    public VocabularyBase versionNumber(String versionNumber) {
-        this.versionNumber = versionNumber;
-        return this;
-    }
+	public VocabularyBase versionNumber( String versionNumber )
+	{
+		this.versionNumber = versionNumber;
+		return this;
+	}
 
-    public void setVersionNumber(String versionNumber) {
-        this.versionNumber = versionNumber;
-    }
+	public void setVersionNumber( String versionNumber )
+	{
+		this.versionNumber = versionNumber;
+	}
 
-    public Boolean isArchived() {
-        return archived;
-    }
+	public Boolean isArchived()
+	{
+		return archived;
+	}
 
-    public VocabularyBase archived(Boolean archived) {
-        this.archived = archived;
-        return this;
-    }
+	public VocabularyBase archived( Boolean archived )
+	{
+		this.archived = archived;
+		return this;
+	}
 
-    public void setArchived(Boolean archived) {
-        this.archived = archived;
-    }
+	public void setArchived( Boolean archived )
+	{
+		this.archived = archived;
+	}
 
-    public Boolean isWithdrawn() {
-        return withdrawn;
-    }
+	public Boolean isWithdrawn()
+	{
+		return withdrawn;
+	}
 
-    public VocabularyBase withdrawn(Boolean withdrawn) {
-        this.withdrawn = withdrawn;
-        return this;
-    }
+	public VocabularyBase withdrawn( Boolean withdrawn )
+	{
+		this.withdrawn = withdrawn;
+		return this;
+	}
 
-    public void setWithdrawn(Boolean withdrawn) {
-        this.withdrawn = withdrawn;
-    }
+	public void setWithdrawn( Boolean withdrawn )
+	{
+		this.withdrawn = withdrawn;
+	}
 
-    public Boolean isDiscoverable() {
-        return discoverable;
-    }
+	public Boolean isDiscoverable()
+	{
+		return discoverable;
+	}
 
-    public VocabularyBase discoverable(Boolean discoverable) {
-        this.discoverable = discoverable;
-        return this;
-    }
+	public VocabularyBase discoverable( Boolean discoverable )
+	{
+		this.discoverable = discoverable;
+		return this;
+	}
 
-    public void setDiscoverable(Boolean discoverable) {
-        this.discoverable = discoverable;
-    }
+	public void setDiscoverable( Boolean discoverable )
+	{
+		this.discoverable = discoverable;
+	}
 
-    public String getSourceLanguage() {
-        return sourceLanguage;
-    }
+	public String getSourceLanguage()
+	{
+		return sourceLanguage;
+	}
 
-    public VocabularyBase sourceLanguage(String sourceLanguage) {
-        this.sourceLanguage = sourceLanguage;
-        return this;
-    }
+	public VocabularyBase sourceLanguage( String sourceLanguage )
+	{
+		this.sourceLanguage = sourceLanguage;
+		return this;
+	}
 
-    public void setSourceLanguage(String sourceLanguage) {
-        this.sourceLanguage = sourceLanguage;
-    }
-    
-    public Long getAgencyId() {
+	public void setSourceLanguage( String sourceLanguage )
+	{
+		this.sourceLanguage = sourceLanguage;
+	}
+
+	public Long getAgencyId()
+	{
 		return agencyId;
 	}
 
-	public void setAgencyId(Long agencyId) {
+	public void setAgencyId( Long agencyId )
+	{
 		this.agencyId = agencyId;
 	}
 
-	public String getAgencyName() {
-        return agencyName;
-    }
+	public String getAgencyName()
+	{
+		return agencyName;
+	}
 
-    public VocabularyBase agencyName(String agencyName) {
-        this.agencyName = agencyName;
-        return this;
-    }
+	public VocabularyBase agencyName( String agencyName )
+	{
+		this.agencyName = agencyName;
+		return this;
+	}
 
-    public void setAgencyName(String agencyName) {
-        this.agencyName = agencyName;
-    }
-    
-    public Set<String> getLanguages() {
+	public void setAgencyName( String agencyName )
+	{
+		this.agencyName = agencyName;
+	}
+
+	public Set<String> getLanguages()
+	{
 		return languages;
 	}
 
-	public void setLanguages(Set<String> languages) {
+	public void setLanguages( Set<String> languages )
+	{
 		this.languages = languages;
 	}
-	
-	public VocabularyBase addLanguage(String language) {
-		this.languages.add(language);
+
+	public VocabularyBase addLanguage( String language )
+	{
+		this.languages.add( language );
 		return this;
 	}
-	
-	public Set<String> getLanguagesPublished() {
+
+	public Set<String> getLanguagesPublished()
+	{
 		return languagesPublished;
 	}
 
-	public void setLanguagesPublished(Set<String> languagesPublished) {
+	public void setLanguagesPublished( Set<String> languagesPublished )
+	{
 		this.languagesPublished = languagesPublished;
 	}
-	
-	public VocabularyBase addLanguagePublished(String languagePublished) {
-		this.languagesPublished.add(languagePublished);
+
+	public VocabularyBase addLanguagePublished( String languagePublished )
+	{
+		this.languagesPublished.add( languagePublished );
 		return this;
 	}
-	
-    public LocalDate getPublicationDate() {
+
+	public LocalDate getPublicationDate()
+	{
 		return publicationDate;
 	}
 
-	public void setPublicationDate(LocalDate publicationDate) {
+	public void setPublicationDate( LocalDate publicationDate )
+	{
 		this.publicationDate = publicationDate;
 	}
-	
-	public LocalDateTime getLastModified() {
+
+	public LocalDateTime getLastModified()
+	{
 		return lastModified;
 	}
 
-	public void setLastModified(LocalDateTime lastModified) {
+	public void setLastModified( LocalDateTime lastModified )
+	{
 		this.lastModified = lastModified;
 	}
-	
-	public String getStatus() {
+
+	public String getStatus()
+	{
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus( String status )
+	{
 		this.status = status;
 	}
 
-	public String getTitleCs() {
-        return titleCs;
-    }
+	public String getTitleCs()
+	{
+		return titleCs;
+	}
 
-    public VocabularyBase titleCs(String titleCs) {
-        this.titleCs = titleCs;
-        return this;
-    }
+	public VocabularyBase titleCs( String titleCs )
+	{
+		this.titleCs = titleCs;
+		return this;
+	}
 
-    public void setTitleCs(String titleCs) {
-        this.titleCs = titleCs;
-    }
+	public void setTitleCs( String titleCs )
+	{
+		this.titleCs = titleCs;
+	}
 
-    public String getDefinitionCs() {
-        return definitionCs;
-    }
+	public String getDefinitionCs()
+	{
+		return definitionCs;
+	}
 
-    public VocabularyBase definitionCs(String definitionCs) {
-        this.definitionCs = definitionCs;
-        return this;
-    }
+	public VocabularyBase definitionCs( String definitionCs )
+	{
+		this.definitionCs = definitionCs;
+		return this;
+	}
 
-    public void setDefinitionCs(String definitionCs) {
-        this.definitionCs = definitionCs;
-    }
+	public void setDefinitionCs( String definitionCs )
+	{
+		this.definitionCs = definitionCs;
+	}
 
-    public String getTitleDa() {
-        return titleDa;
-    }
+	public String getTitleDa()
+	{
+		return titleDa;
+	}
 
-    public VocabularyBase titleDa(String titleDa) {
-        this.titleDa = titleDa;
-        return this;
-    }
+	public VocabularyBase titleDa( String titleDa )
+	{
+		this.titleDa = titleDa;
+		return this;
+	}
 
-    public void setTitleDa(String titleDa) {
-        this.titleDa = titleDa;
-    }
+	public void setTitleDa( String titleDa )
+	{
+		this.titleDa = titleDa;
+	}
 
-    public String getDefinitionDa() {
-        return definitionDa;
-    }
+	public String getDefinitionDa()
+	{
+		return definitionDa;
+	}
 
-    public VocabularyBase definitionDa(String definitionDa) {
-        this.definitionDa = definitionDa;
-        return this;
-    }
+	public VocabularyBase definitionDa( String definitionDa )
+	{
+		this.definitionDa = definitionDa;
+		return this;
+	}
 
-    public void setDefinitionDa(String definitionDa) {
-        this.definitionDa = definitionDa;
-    }
+	public void setDefinitionDa( String definitionDa )
+	{
+		this.definitionDa = definitionDa;
+	}
 
-    public String getTitleNl() {
-        return titleNl;
-    }
+	public String getTitleNl()
+	{
+		return titleNl;
+	}
 
-    public VocabularyBase titleNl(String titleNl) {
-        this.titleNl = titleNl;
-        return this;
-    }
+	public VocabularyBase titleNl( String titleNl )
+	{
+		this.titleNl = titleNl;
+		return this;
+	}
 
-    public void setTitleNl(String titleNl) {
-        this.titleNl = titleNl;
-    }
+	public void setTitleNl( String titleNl )
+	{
+		this.titleNl = titleNl;
+	}
 
-    public String getDefinitionNl() {
-        return definitionNl;
-    }
+	public String getDefinitionNl()
+	{
+		return definitionNl;
+	}
 
-    public VocabularyBase definitionNl(String definitionNl) {
-        this.definitionNl = definitionNl;
-        return this;
-    }
+	public VocabularyBase definitionNl( String definitionNl )
+	{
+		this.definitionNl = definitionNl;
+		return this;
+	}
 
-    public void setDefinitionNl(String definitionNl) {
-        this.definitionNl = definitionNl;
-    }
+	public void setDefinitionNl( String definitionNl )
+	{
+		this.definitionNl = definitionNl;
+	}
 
-    public String getTitleEn() {
-        return titleEn;
-    }
+	public String getTitleEn()
+	{
+		return titleEn;
+	}
 
-    public VocabularyBase titleEn(String titleEn) {
-        this.titleEn = titleEn;
-        return this;
-    }
+	public VocabularyBase titleEn( String titleEn )
+	{
+		this.titleEn = titleEn;
+		return this;
+	}
 
-    public void setTitleEn(String titleEn) {
-        this.titleEn = titleEn;
-    }
+	public void setTitleEn( String titleEn )
+	{
+		this.titleEn = titleEn;
+	}
 
-    public String getDefinitionEn() {
-        return definitionEn;
-    }
+	public String getDefinitionEn()
+	{
+		return definitionEn;
+	}
 
-    public VocabularyBase definitionEn(String definitionEn) {
-        this.definitionEn = definitionEn;
-        return this;
-    }
+	public VocabularyBase definitionEn( String definitionEn )
+	{
+		this.definitionEn = definitionEn;
+		return this;
+	}
 
-    public void setDefinitionEn(String definitionEn) {
-        this.definitionEn = definitionEn;
-    }
+	public void setDefinitionEn( String definitionEn )
+	{
+		this.definitionEn = definitionEn;
+	}
 
-    public String getTitleFi() {
-        return titleFi;
-    }
+	public String getTitleFi()
+	{
+		return titleFi;
+	}
 
-    public VocabularyBase titleFi(String titleFi) {
-        this.titleFi = titleFi;
-        return this;
-    }
+	public VocabularyBase titleFi( String titleFi )
+	{
+		this.titleFi = titleFi;
+		return this;
+	}
 
-    public void setTitleFi(String titleFi) {
-        this.titleFi = titleFi;
-    }
+	public void setTitleFi( String titleFi )
+	{
+		this.titleFi = titleFi;
+	}
 
-    public String getDefinitionFi() {
-        return definitionFi;
-    }
+	public String getDefinitionFi()
+	{
+		return definitionFi;
+	}
 
-    public VocabularyBase definitionFi(String definitionFi) {
-        this.definitionFi = definitionFi;
-        return this;
-    }
+	public VocabularyBase definitionFi( String definitionFi )
+	{
+		this.definitionFi = definitionFi;
+		return this;
+	}
 
-    public void setDefinitionFi(String definitionFi) {
-        this.definitionFi = definitionFi;
-    }
+	public void setDefinitionFi( String definitionFi )
+	{
+		this.definitionFi = definitionFi;
+	}
 
-    public String getTitleFr() {
-        return titleFr;
-    }
+	public String getTitleFr()
+	{
+		return titleFr;
+	}
 
-    public VocabularyBase titleFr(String titleFr) {
-        this.titleFr = titleFr;
-        return this;
-    }
+	public VocabularyBase titleFr( String titleFr )
+	{
+		this.titleFr = titleFr;
+		return this;
+	}
 
-    public void setTitleFr(String titleFr) {
-        this.titleFr = titleFr;
-    }
+	public void setTitleFr( String titleFr )
+	{
+		this.titleFr = titleFr;
+	}
 
-    public String getDefinitionFr() {
-        return definitionFr;
-    }
+	public String getDefinitionFr()
+	{
+		return definitionFr;
+	}
 
-    public VocabularyBase definitionFr(String definitionFr) {
-        this.definitionFr = definitionFr;
-        return this;
-    }
+	public VocabularyBase definitionFr( String definitionFr )
+	{
+		this.definitionFr = definitionFr;
+		return this;
+	}
 
-    public void setDefinitionFr(String definitionFr) {
-        this.definitionFr = definitionFr;
-    }
+	public void setDefinitionFr( String definitionFr )
+	{
+		this.definitionFr = definitionFr;
+	}
 
-    public String getTitleDe() {
-        return titleDe;
-    }
+	public String getTitleDe()
+	{
+		return titleDe;
+	}
 
-    public VocabularyBase titleDe(String titleDe) {
-        this.titleDe = titleDe;
-        return this;
-    }
+	public VocabularyBase titleDe( String titleDe )
+	{
+		this.titleDe = titleDe;
+		return this;
+	}
 
-    public void setTitleDe(String titleDe) {
-        this.titleDe = titleDe;
-    }
+	public void setTitleDe( String titleDe )
+	{
+		this.titleDe = titleDe;
+	}
 
-    public String getDefinitionDe() {
-        return definitionDe;
-    }
+	public String getDefinitionDe()
+	{
+		return definitionDe;
+	}
 
-    public VocabularyBase definitionDe(String definitionDe) {
-        this.definitionDe = definitionDe;
-        return this;
-    }
+	public VocabularyBase definitionDe( String definitionDe )
+	{
+		this.definitionDe = definitionDe;
+		return this;
+	}
 
-    public void setDefinitionDe(String definitionDe) {
-        this.definitionDe = definitionDe;
-    }
+	public void setDefinitionDe( String definitionDe )
+	{
+		this.definitionDe = definitionDe;
+	}
 
-    public String getTitleEl() {
-        return titleEl;
-    }
+	public String getTitleEl()
+	{
+		return titleEl;
+	}
 
-    public VocabularyBase titleEl(String titleEl) {
-        this.titleEl = titleEl;
-        return this;
-    }
+	public VocabularyBase titleEl( String titleEl )
+	{
+		this.titleEl = titleEl;
+		return this;
+	}
 
-    public void setTitleEl(String titleEl) {
-        this.titleEl = titleEl;
-    }
+	public void setTitleEl( String titleEl )
+	{
+		this.titleEl = titleEl;
+	}
 
-    public String getDefinitionEl() {
-        return definitionEl;
-    }
+	public String getDefinitionEl()
+	{
+		return definitionEl;
+	}
 
-    public VocabularyBase definitionEl(String definitionEl) {
-        this.definitionEl = definitionEl;
-        return this;
-    }
+	public VocabularyBase definitionEl( String definitionEl )
+	{
+		this.definitionEl = definitionEl;
+		return this;
+	}
 
-    public void setDefinitionEl(String definitionEl) {
-        this.definitionEl = definitionEl;
-    }
+	public void setDefinitionEl( String definitionEl )
+	{
+		this.definitionEl = definitionEl;
+	}
 
-    public String getTitleHu() {
-        return titleHu;
-    }
+	public String getTitleHu()
+	{
+		return titleHu;
+	}
 
-    public VocabularyBase titleHu(String titleHu) {
-        this.titleHu = titleHu;
-        return this;
-    }
+	public VocabularyBase titleHu( String titleHu )
+	{
+		this.titleHu = titleHu;
+		return this;
+	}
 
-    public void setTitleHu(String titleHu) {
-        this.titleHu = titleHu;
-    }
+	public void setTitleHu( String titleHu )
+	{
+		this.titleHu = titleHu;
+	}
 
-    public String getDefinitionHu() {
-        return definitionHu;
-    }
+	public String getDefinitionHu()
+	{
+		return definitionHu;
+	}
 
-    public VocabularyBase definitionHu(String definitionHu) {
-        this.definitionHu = definitionHu;
-        return this;
-    }
-    
-	public void setDefinitionHu(String definitionHu) {
-        this.definitionHu = definitionHu;
-    }
+	public VocabularyBase definitionHu( String definitionHu )
+	{
+		this.definitionHu = definitionHu;
+		return this;
+	}
 
-    public String getTitleIt() {
+	public void setDefinitionHu( String definitionHu )
+	{
+		this.definitionHu = definitionHu;
+	}
+
+	public String getTitleIt()
+	{
 		return titleIt;
 	}
-    
-    public VocabularyBase titleIt(String titleIt) {
-        this.titleIt = titleIt;
-        return this;
-    }
 
-	public void setTitleIt(String titleIt) {
+	public VocabularyBase titleIt( String titleIt )
+	{
+		this.titleIt = titleIt;
+		return this;
+	}
+
+	public void setTitleIt( String titleIt )
+	{
 		this.titleIt = titleIt;
 	}
 
-    public String getDefinitionIt() {
-        return definitionIt;
-    }
+	public String getDefinitionIt()
+	{
+		return definitionIt;
+	}
 
-    public VocabularyBase definitionIt(String definitionIt) {
-        this.definitionIt = definitionIt;
-        return this;
-    }
-    
-	public void setDefinitionIt(String definitionIt) {
-        this.definitionIt = definitionIt;
-    }
+	public VocabularyBase definitionIt( String definitionIt )
+	{
+		this.definitionIt = definitionIt;
+		return this;
+	}
 
-    public String getTitleLt() {
-        return titleLt;
-    }
+	public void setDefinitionIt( String definitionIt )
+	{
+		this.definitionIt = definitionIt;
+	}
 
-    public VocabularyBase titleLt(String titleLt) {
-        this.titleLt = titleLt;
-        return this;
-    }
+	public String getTitleLt()
+	{
+		return titleLt;
+	}
 
-    public void setTitleLt(String titleLt) {
-        this.titleLt = titleLt;
-    }
+	public VocabularyBase titleLt( String titleLt )
+	{
+		this.titleLt = titleLt;
+		return this;
+	}
 
-    public String getDefinitionLt() {
-        return definitionLt;
-    }
+	public void setTitleLt( String titleLt )
+	{
+		this.titleLt = titleLt;
+	}
 
-    public VocabularyBase definitionLt(String definitionLt) {
-        this.definitionLt = definitionLt;
-        return this;
-    }
+	public String getDefinitionLt()
+	{
+		return definitionLt;
+	}
 
-    public void setDefinitionLt(String definitionLt) {
-        this.definitionLt = definitionLt;
-    }
+	public VocabularyBase definitionLt( String definitionLt )
+	{
+		this.definitionLt = definitionLt;
+		return this;
+	}
 
-    public String getTitleNo() {
-        return titleNo;
-    }
+	public void setDefinitionLt( String definitionLt )
+	{
+		this.definitionLt = definitionLt;
+	}
 
-    public VocabularyBase titleNo(String titleNo) {
-        this.titleNo = titleNo;
-        return this;
-    }
+	public String getTitleNo()
+	{
+		return titleNo;
+	}
 
-    public void setTitleNo(String titleNo) {
-        this.titleNo = titleNo;
-    }
+	public VocabularyBase titleNo( String titleNo )
+	{
+		this.titleNo = titleNo;
+		return this;
+	}
 
-    public String getDefinitionNo() {
-        return definitionNo;
-    }
+	public void setTitleNo( String titleNo )
+	{
+		this.titleNo = titleNo;
+	}
 
-    public VocabularyBase definitionNo(String definitionNo) {
-        this.definitionNo = definitionNo;
-        return this;
-    }
+	public String getDefinitionNo()
+	{
+		return definitionNo;
+	}
 
-    public void setDefinitionNo(String definitionNo) {
-        this.definitionNo = definitionNo;
-    }
+	public VocabularyBase definitionNo( String definitionNo )
+	{
+		this.definitionNo = definitionNo;
+		return this;
+	}
 
-    public String getTitlePt() {
-        return titlePt;
-    }
+	public void setDefinitionNo( String definitionNo )
+	{
+		this.definitionNo = definitionNo;
+	}
 
-    public VocabularyBase titlePt(String titlePt) {
-        this.titlePt = titlePt;
-        return this;
-    }
+	public String getTitlePt()
+	{
+		return titlePt;
+	}
 
-    public void setTitlePt(String titlePt) {
-        this.titlePt = titlePt;
-    }
+	public VocabularyBase titlePt( String titlePt )
+	{
+		this.titlePt = titlePt;
+		return this;
+	}
 
-    public String getDefinitionPt() {
-        return definitionPt;
-    }
+	public void setTitlePt( String titlePt )
+	{
+		this.titlePt = titlePt;
+	}
 
-    public VocabularyBase definitionPt(String definitionPt) {
-        this.definitionPt = definitionPt;
-        return this;
-    }
+	public String getDefinitionPt()
+	{
+		return definitionPt;
+	}
 
-    public void setDefinitionPt(String definitionPt) {
-        this.definitionPt = definitionPt;
-    }
+	public VocabularyBase definitionPt( String definitionPt )
+	{
+		this.definitionPt = definitionPt;
+		return this;
+	}
 
-    public String getTitleRo() {
-        return titleRo;
-    }
+	public void setDefinitionPt( String definitionPt )
+	{
+		this.definitionPt = definitionPt;
+	}
 
-    public VocabularyBase titleRo(String titleRo) {
-        this.titleRo = titleRo;
-        return this;
-    }
+	public String getTitleRo()
+	{
+		return titleRo;
+	}
 
-    public void setTitleRo(String titleRo) {
-        this.titleRo = titleRo;
-    }
+	public VocabularyBase titleRo( String titleRo )
+	{
+		this.titleRo = titleRo;
+		return this;
+	}
 
-    public String getDefinitionRo() {
-        return definitionRo;
-    }
+	public void setTitleRo( String titleRo )
+	{
+		this.titleRo = titleRo;
+	}
 
-    public VocabularyBase definitionRo(String definitionRo) {
-        this.definitionRo = definitionRo;
-        return this;
-    }
+	public String getDefinitionRo()
+	{
+		return definitionRo;
+	}
 
-    public void setDefinitionRo(String definitionRo) {
-        this.definitionRo = definitionRo;
-    }
+	public VocabularyBase definitionRo( String definitionRo )
+	{
+		this.definitionRo = definitionRo;
+		return this;
+	}
 
-    public String getTitleSk() {
-        return titleSk;
-    }
+	public void setDefinitionRo( String definitionRo )
+	{
+		this.definitionRo = definitionRo;
+	}
 
-    public VocabularyBase titleSk(String titleSk) {
-        this.titleSk = titleSk;
-        return this;
-    }
+	public String getTitleSk()
+	{
+		return titleSk;
+	}
 
-    public void setTitleSk(String titleSk) {
-        this.titleSk = titleSk;
-    }
+	public VocabularyBase titleSk( String titleSk )
+	{
+		this.titleSk = titleSk;
+		return this;
+	}
 
-    public String getDefinitionSk() {
-        return definitionSk;
-    }
+	public void setTitleSk( String titleSk )
+	{
+		this.titleSk = titleSk;
+	}
 
-    public VocabularyBase definitionSk(String definitionSk) {
-        this.definitionSk = definitionSk;
-        return this;
-    }
+	public String getDefinitionSk()
+	{
+		return definitionSk;
+	}
 
-    public void setDefinitionSk(String definitionSk) {
-        this.definitionSk = definitionSk;
-    }
+	public VocabularyBase definitionSk( String definitionSk )
+	{
+		this.definitionSk = definitionSk;
+		return this;
+	}
 
-    public String getTitleSl() {
-        return titleSl;
-    }
+	public void setDefinitionSk( String definitionSk )
+	{
+		this.definitionSk = definitionSk;
+	}
 
-    public VocabularyBase titleSl(String titleSl) {
-        this.titleSl = titleSl;
-        return this;
-    }
+	public String getTitleSl()
+	{
+		return titleSl;
+	}
 
-    public void setTitleSl(String titleSl) {
-        this.titleSl = titleSl;
-    }
+	public VocabularyBase titleSl( String titleSl )
+	{
+		this.titleSl = titleSl;
+		return this;
+	}
 
-    public String getDefinitionSl() {
-        return definitionSl;
-    }
+	public void setTitleSl( String titleSl )
+	{
+		this.titleSl = titleSl;
+	}
 
-    public VocabularyBase definitionSl(String definitionSl) {
-        this.definitionSl = definitionSl;
-        return this;
-    }
+	public String getDefinitionSl()
+	{
+		return definitionSl;
+	}
 
-    public void setDefinitionSl(String definitionSl) {
-        this.definitionSl = definitionSl;
-    }
+	public VocabularyBase definitionSl( String definitionSl )
+	{
+		this.definitionSl = definitionSl;
+		return this;
+	}
 
-    public String getTitleEs() {
-        return titleEs;
-    }
+	public void setDefinitionSl( String definitionSl )
+	{
+		this.definitionSl = definitionSl;
+	}
 
-    public VocabularyBase titleEs(String titleEs) {
-        this.titleEs = titleEs;
-        return this;
-    }
+	public String getTitleEs()
+	{
+		return titleEs;
+	}
 
-    public void setTitleEs(String titleEs) {
-        this.titleEs = titleEs;
-    }
+	public VocabularyBase titleEs( String titleEs )
+	{
+		this.titleEs = titleEs;
+		return this;
+	}
 
-    public String getDefinitionEs() {
-        return definitionEs;
-    }
+	public void setTitleEs( String titleEs )
+	{
+		this.titleEs = titleEs;
+	}
 
-    public VocabularyBase definitionEs(String definitionEs) {
-        this.definitionEs = definitionEs;
-        return this;
-    }
+	public String getDefinitionEs()
+	{
+		return definitionEs;
+	}
 
-    public void setDefinitionEs(String definitionEs) {
-        this.definitionEs = definitionEs;
-    }
+	public VocabularyBase definitionEs( String definitionEs )
+	{
+		this.definitionEs = definitionEs;
+		return this;
+	}
 
-    public String getTitleSv() {
-        return titleSv;
-    }
+	public void setDefinitionEs( String definitionEs )
+	{
+		this.definitionEs = definitionEs;
+	}
 
-    public VocabularyBase titleSv(String titleSv) {
-        this.titleSv = titleSv;
-        return this;
-    }
+	public String getTitleSv()
+	{
+		return titleSv;
+	}
 
-    public void setTitleSv(String titleSv) {
-        this.titleSv = titleSv;
-    }
+	public VocabularyBase titleSv( String titleSv )
+	{
+		this.titleSv = titleSv;
+		return this;
+	}
 
-    public String getDefinitionSv() {
-        return definitionSv;
-    }
+	public void setTitleSv( String titleSv )
+	{
+		this.titleSv = titleSv;
+	}
 
-    public VocabularyBase definitionSv(String definitionSv) {
-        this.definitionSv = definitionSv;
-        return this;
-    }
+	public String getDefinitionSv()
+	{
+		return definitionSv;
+	}
 
-    public void setDefinitionSv(String definitionSv) {
-        this.definitionSv = definitionSv;
-    }
+	public VocabularyBase definitionSv( String definitionSv )
+	{
+		this.definitionSv = definitionSv;
+		return this;
+	}
 
-    public Set<Code> getCodes() {
-        return codes;
-    }
+	public void setDefinitionSv( String definitionSv )
+	{
+		this.definitionSv = definitionSv;
+	}
 
-    public VocabularyBase codes(Set<Code> codes) {
-        this.codes = codes;
-        return this;
-    }
+	public Set<Code> getCodes()
+	{
+		return codes;
+	}
 
-    public VocabularyBase addCode(Code code) {
-        this.codes.add(code);
-//        code.setVocabulary(this);
-        return this;
-    }
+	public VocabularyBase codes( Set<Code> codes )
+	{
+		this.codes = codes;
+		return this;
+	}
 
-    public VocabularyBase removeCode(Code code) {
-        this.codes.remove(code);
-//        code.setVocabulary(null);
-        return this;
-    }
-    
-	public void setCodes(Set<Code> codes) {
-        this.codes = codes;
-    }
+	public VocabularyBase addCode( Code code )
+	{
+		this.codes.add( code );
+		return this;
+	}
 
-    public Language getSelectedLang() {
+	public VocabularyBase removeCode( Code code )
+	{
+		this.codes.remove( code );
+		return this;
+	}
+
+	public void setCodes( Set<Code> codes )
+	{
+		this.codes = codes;
+	}
+
+	public Language getSelectedLang()
+	{
 		return selectedLang;
 	}
 
-	public void setSelectedLang(Language selectedLang) {
+	public void setSelectedLang( Language selectedLang )
+	{
 		this.selectedLang = selectedLang;
 	}
 
-	public Long getPreviousPublication() {
+	public Long getPreviousPublication()
+	{
 		return previousPublication;
 	}
 
-	public void setPreviousPublication(Long previousPublication) {
+	public void setPreviousPublication( Long previousPublication )
+	{
 		this.previousPublication = previousPublication;
 	}
 
-	public Long getInitialPublication() {
+	public Long getInitialPublication()
+	{
 		return initialPublication;
 	}
 
-	public void setInitialPublication(Long initialPublication) {
+	public void setInitialPublication( Long initialPublication )
+	{
 		this.initialPublication = initialPublication;
 	}
 
-	public String getVersionCs() {
+	public String getVersionCs()
+	{
 		return versionCs;
 	}
 
-	public void setVersionCs(String versionCs) {
+	public void setVersionCs( String versionCs )
+	{
 		this.versionCs = versionCs;
 	}
 
-	public String getVersionDa() {
+	public String getVersionDa()
+	{
 		return versionDa;
 	}
 
-	public void setVersionDa(String versionDa) {
+	public void setVersionDa( String versionDa )
+	{
 		this.versionDa = versionDa;
 	}
 
-	public String getVersionNl() {
+	public String getVersionNl()
+	{
 		return versionNl;
 	}
 
-	public void setVersionNl(String versionNl) {
+	public void setVersionNl( String versionNl )
+	{
 		this.versionNl = versionNl;
 	}
 
-	public String getVersionEn() {
+	public String getVersionEn()
+	{
 		return versionEn;
 	}
 
-	public void setVersionEn(String versionEn) {
+	public void setVersionEn( String versionEn )
+	{
 		this.versionEn = versionEn;
 	}
 
-	public String getVersionFi() {
+	public String getVersionFi()
+	{
 		return versionFi;
 	}
 
-	public void setVersionFi(String versionFi) {
+	public void setVersionFi( String versionFi )
+	{
 		this.versionFi = versionFi;
 	}
 
-	public String getVersionFr() {
+	public String getVersionFr()
+	{
 		return versionFr;
 	}
 
-	public void setVersionFr(String versionFr) {
+	public void setVersionFr( String versionFr )
+	{
 		this.versionFr = versionFr;
 	}
 
-	public String getVersionDe() {
+	public String getVersionDe()
+	{
 		return versionDe;
 	}
 
-	public void setVersionDe(String versionDe) {
+	public void setVersionDe( String versionDe )
+	{
 		this.versionDe = versionDe;
 	}
 
-	public String getVersionEl() {
+	public String getVersionEl()
+	{
 		return versionEl;
 	}
 
-	public void setVersionEl(String versionEl) {
+	public void setVersionEl( String versionEl )
+	{
 		this.versionEl = versionEl;
 	}
 
-	public String getVersionHu() {
+	public String getVersionHu()
+	{
 		return versionHu;
 	}
 
-	public void setVersionHu(String versionHu) {
+	public void setVersionHu( String versionHu )
+	{
 		this.versionHu = versionHu;
 	}
-	
-	public String getVersionIt() {
+
+	public String getVersionIt()
+	{
 		return versionIt;
 	}
 
-	public void setVersionIt(String versionIt) {
+	public void setVersionIt( String versionIt )
+	{
 		this.versionIt = versionIt;
 	}
 
-	public String getVersionLt() {
+	public String getVersionLt()
+	{
 		return versionLt;
 	}
 
-	public void setVersionLt(String versionLt) {
+	public void setVersionLt( String versionLt )
+	{
 		this.versionLt = versionLt;
 	}
 
-	public String getVersionNo() {
+	public String getVersionNo()
+	{
 		return versionNo;
 	}
 
-	public void setVersionNo(String versionNo) {
+	public void setVersionNo( String versionNo )
+	{
 		this.versionNo = versionNo;
 	}
 
-	public String getVersionPt() {
+	public String getVersionPt()
+	{
 		return versionPt;
 	}
 
-	public void setVersionPt(String versionPt) {
+	public void setVersionPt( String versionPt )
+	{
 		this.versionPt = versionPt;
 	}
 
-	public String getVersionRo() {
+	public String getVersionRo()
+	{
 		return versionRo;
 	}
 
-	public void setVersionRo(String versionRo) {
+	public void setVersionRo( String versionRo )
+	{
 		this.versionRo = versionRo;
 	}
 
-	public String getVersionSk() {
+	public String getVersionSk()
+	{
 		return versionSk;
 	}
 
-	public void setVersionSk(String versionSk) {
+	public void setVersionSk( String versionSk )
+	{
 		this.versionSk = versionSk;
 	}
 
-	public String getVersionSl() {
+	public String getVersionSl()
+	{
 		return versionSl;
 	}
 
-	public void setVersionSl(String versionSl) {
+	public void setVersionSl( String versionSl )
+	{
 		this.versionSl = versionSl;
 	}
 
-	public String getVersionEs() {
+	public String getVersionEs()
+	{
 		return versionEs;
 	}
 
-	public void setVersionEs(String versionEs) {
+	public void setVersionEs( String versionEs )
+	{
 		this.versionEs = versionEs;
 	}
 
-	public String getVersionSv() {
+	public String getVersionSv()
+	{
 		return versionSv;
 	}
 
-	public void setVersionSv(String versionSv) {
+	public void setVersionSv( String versionSv )
+	{
 		this.versionSv = versionSv;
 	}
 
-	public Set<Version> getVers() {
+	public Set<Version> getVers()
+	{
 		return vers;
 	}
 
-	public void setVers(Set<Version> vers) {
+	public void setVers( Set<Version> vers )
+	{
 		this.vers = vers;
 	}
-	
-	public String getNotes() {
+
+	public String getNotes()
+	{
 		return notes;
 	}
 
-	public void setNotes(String notes) {
+	public void setNotes( String notes )
+	{
 		this.notes = notes;
 	}
 
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        VocabularyBase vocabulary = (VocabularyBase) o;
-        if (vocabulary.getId() == null || getId() == null) {
-            return false;
-        }
-        return Objects.equals(getId(), vocabulary.getId());
-    }
+	public boolean equals( Object o )
+	{
+		if ( this == o )
+		{
+			return true;
+		}
+		if ( o == null || getClass() != o.getClass() )
+		{
+			return false;
+		}
+		VocabularyBase vocabulary = (VocabularyBase) o;
+		if ( vocabulary.getId() == null || getId() == null )
+		{
+			return false;
+		}
+		return Objects.equals( getId(), vocabulary.getId() );
+	}
 
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
-    }
+	@Override
+	public int hashCode()
+	{
+		return Objects.hashCode( getId() );
+	}
 
-    @Override
-    public String toString() {
-        return "VocabularyBase{" +
-            "id=" + getId() +
-            ", uri='" + getUri() + "'" +
-            ", versionNumber='" + getVersionNumber() + "'" +
-            ", archived='" + isArchived() + "'" +
-            ", withdrawn='" + isWithdrawn() + "'" +
-            ", discoverable='" + isDiscoverable() + "'" +
-            ", sourceLanguage='" + getSourceLanguage() + "'" +
-            ", agencyName='" + getAgencyName() + "'" +
-            ", titleCs='" + getTitleCs() + "'" +
-            ", definitionCs='" + getDefinitionCs() + "'" +
-            ", titleDa='" + getTitleDa() + "'" +
-            ", definitionDa='" + getDefinitionDa() + "'" +
-            ", titleNl='" + getTitleNl() + "'" +
-            ", definitionNl='" + getDefinitionNl() + "'" +
-            ", titleEn='" + getTitleEn() + "'" +
-            ", definitionEn='" + getDefinitionEn() + "'" +
-            ", titleFi='" + getTitleFi() + "'" +
-            ", definitionFi='" + getDefinitionFi() + "'" +
-            ", titleFr='" + getTitleFr() + "'" +
-            ", definitionFr='" + getDefinitionFr() + "'" +
-            ", titleDe='" + getTitleDe() + "'" +
-            ", definitionDe='" + getDefinitionDe() + "'" +
-            ", titleEl='" + getTitleEl() + "'" +
-            ", definitionEl='" + getDefinitionEl() + "'" +
-            ", titleHu='" + getTitleHu() + "'" +
-            ", definitionHu='" + getDefinitionHu() + "'" +
-            ", titleIt='" + getTitleIt() + "'" +
-            ", definitionIt='" + getDefinitionIt() + "'" +
-            ", titleLt='" + getTitleLt() + "'" +
-            ", definitionLt='" + getDefinitionLt() + "'" +
-            ", titleNo='" + getTitleNo() + "'" +
-            ", definitionNo='" + getDefinitionNo() + "'" +
-            ", titlePt='" + getTitlePt() + "'" +
-            ", definitionPt='" + getDefinitionPt() + "'" +
-            ", titleRo='" + getTitleRo() + "'" +
-            ", definitionRo='" + getDefinitionRo() + "'" +
-            ", titleSk='" + getTitleSk() + "'" +
-            ", definitionSk='" + getDefinitionSk() + "'" +
-            ", titleSl='" + getTitleSl() + "'" +
-            ", definitionSl='" + getDefinitionSl() + "'" +
-            ", titleEs='" + getTitleEs() + "'" +
-            ", definitionEs='" + getDefinitionEs() + "'" +
-            ", titleSv='" + getTitleSv() + "'" +
-            ", definitionSv='" + getDefinitionSv() + "'" +
-            "}";
-    }
+	@Override
+	public String toString()
+	{
+		return "VocabularyBase{" +
+				"id=" + getId() +
+				", uri='" + getUri() + "'" +
+				", versionNumber='" + getVersionNumber() + "'" +
+				", archived='" + isArchived() + "'" +
+				", withdrawn='" + isWithdrawn() + "'" +
+				", discoverable='" + isDiscoverable() + "'" +
+				", sourceLanguage='" + getSourceLanguage() + "'" +
+				", agencyName='" + getAgencyName() + "'" +
+				", titleCs='" + getTitleCs() + "'" +
+				", definitionCs='" + getDefinitionCs() + "'" +
+				", titleDa='" + getTitleDa() + "'" +
+				", definitionDa='" + getDefinitionDa() + "'" +
+				", titleNl='" + getTitleNl() + "'" +
+				", definitionNl='" + getDefinitionNl() + "'" +
+				", titleEn='" + getTitleEn() + "'" +
+				", definitionEn='" + getDefinitionEn() + "'" +
+				", titleFi='" + getTitleFi() + "'" +
+				", definitionFi='" + getDefinitionFi() + "'" +
+				", titleFr='" + getTitleFr() + "'" +
+				", definitionFr='" + getDefinitionFr() + "'" +
+				", titleDe='" + getTitleDe() + "'" +
+				", definitionDe='" + getDefinitionDe() + "'" +
+				", titleEl='" + getTitleEl() + "'" +
+				", definitionEl='" + getDefinitionEl() + "'" +
+				", titleHu='" + getTitleHu() + "'" +
+				", definitionHu='" + getDefinitionHu() + "'" +
+				", titleIt='" + getTitleIt() + "'" +
+				", definitionIt='" + getDefinitionIt() + "'" +
+				", titleLt='" + getTitleLt() + "'" +
+				", definitionLt='" + getDefinitionLt() + "'" +
+				", titleNo='" + getTitleNo() + "'" +
+				", definitionNo='" + getDefinitionNo() + "'" +
+				", titlePt='" + getTitlePt() + "'" +
+				", definitionPt='" + getDefinitionPt() + "'" +
+				", titleRo='" + getTitleRo() + "'" +
+				", definitionRo='" + getDefinitionRo() + "'" +
+				", titleSk='" + getTitleSk() + "'" +
+				", definitionSk='" + getDefinitionSk() + "'" +
+				", titleSl='" + getTitleSl() + "'" +
+				", definitionSl='" + getDefinitionSl() + "'" +
+				", titleEs='" + getTitleEs() + "'" +
+				", definitionEs='" + getDefinitionEs() + "'" +
+				", titleSv='" + getTitleSv() + "'" +
+				", definitionSv='" + getDefinitionSv() + "'" +
+				"}";
+	}
 }

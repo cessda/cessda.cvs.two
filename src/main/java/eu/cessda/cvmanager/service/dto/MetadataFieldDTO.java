@@ -5,9 +5,6 @@ import javax.validation.constraints.*;
 import eu.cessda.cvmanager.domain.enumeration.ObjectType;
 
 import java.io.Serializable;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
 
 import javax.persistence.Lob;
 

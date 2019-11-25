@@ -46,9 +46,7 @@ public class MetadataFieldServiceImpl implements MetadataFieldService {
         log.debug("Request to save MetadataField : {}", metadataFieldDTO);
         MetadataField metadataField = metadataFieldMapper.toEntity(metadataFieldDTO);
         metadataField = metadataFieldRepository.save(metadataField);
-        MetadataFieldDTO result = metadataFieldMapper.toDto(metadataField);
-//        metadataFieldSearchRepository.save(metadataField);
-        return result;
+        return metadataFieldMapper.toDto(metadataField);
     }
 
     /**
@@ -88,7 +86,6 @@ public class MetadataFieldServiceImpl implements MetadataFieldService {
     public void delete(Long id) {
         log.debug("Request to delete MetadataField : {}", id);
         metadataFieldRepository.deleteById(id);
-//        metadataFieldSearchRepository.delete(id);
     }
 
     /**
@@ -102,8 +99,7 @@ public class MetadataFieldServiceImpl implements MetadataFieldService {
     @Transactional(readOnly = true)
     public Page<MetadataFieldDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of MetadataFields for query {}", query);
-//        Page<MetadataField> result = metadataFieldSearchRepository.search(queryStringQuery(query), pageable);
-        return null;//result.map(metadataFieldMapper::toDto);
+        return null;
     }
 
 	@Override

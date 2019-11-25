@@ -21,8 +21,6 @@ import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 
 import java.util.ArrayList;
 
-//import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -44,14 +42,11 @@ public class CodeServiceImpl implements CodeService {
     
     private final ConceptService conceptService;
 
-//    private final CodeSearchRepository codeSearchRepository;
-
-    public CodeServiceImpl(CodeRepository codeRepository, CodeMapper codeMapper, 
+    public CodeServiceImpl(CodeRepository codeRepository, CodeMapper codeMapper,
     		ConceptService conceptService/*, CodeSearchRepository codeSearchRepository*/) {
         this.codeRepository = codeRepository;
         this.codeMapper = codeMapper;
         this.conceptService = conceptService;
-//        this.codeSearchRepository = codeSearchRepository;
     }
 
     /**
@@ -65,10 +60,7 @@ public class CodeServiceImpl implements CodeService {
         log.debug("Request to save Code : {}", codeDTO);
         Code code = codeMapper.toEntity(codeDTO);
         code = codeRepository.save(code);
-        CodeDTO result = codeMapper.toDto(code);
-//        if( code.isDiscoverable() != null && code.isDiscoverable())
-//        	codeSearchRepository.save(code);
-        return result;
+		return codeMapper.toDto(code);
     }
 
     /**
@@ -127,9 +119,6 @@ public class CodeServiceImpl implements CodeService {
     
 	@Override
 	public void delete(CodeDTO code) {
-//		if( code.isDiscoverable() != null && code.isDiscoverable())
-//        	codeSearchRepository.deleteById( code.getId() );
-		
 		delete( code.getId() );
 	}
 
@@ -144,8 +133,8 @@ public class CodeServiceImpl implements CodeService {
     @Transactional(readOnly = true)
     public Page<CodeDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Codes for query {}", query);
-//        Page<Code> result = codeSearchRepository.search(queryStringQuery(query), pageable);
-        return null;//result.map(codeMapper::toDto);
+		// TODO: needs method implementation
+        return null;
     }
 
 	@Override
@@ -192,14 +181,12 @@ public class CodeServiceImpl implements CodeService {
 			codes.add(code);
 			if( !codeTree.getChildren( code ).isEmpty())
 				traverseToDeleteCode( codes, codeTree, codeTree.getChildren( code ));
-		};
+		}
 	}
 
 	@Override
 	public void deleteCodeTree(TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO version) {
-		treeData.getChildren(code).forEach( c -> {			
-			deleteCodeTree(treeData, c, version);
-		});
+		treeData.getChildren(code).forEach( c -> deleteCodeTree(treeData, c, version));
 		// delete direct concept
 		List<ConceptDTO> concepts = conceptService.findAllByCode( code.getId());
 		for( ConceptDTO concept: concepts) {
@@ -212,10 +199,8 @@ public class CodeServiceImpl implements CodeService {
 	
 	@Override
 	public void deleteCodeTreeTl(TreeData<CodeDTO> treeData, CodeDTO code, VersionDTO version) {
-		treeData.getChildren(code).forEach( c -> {
-			// delete also related concept
-			deleteCodeTreeTl(treeData, c, version);
-		});
+		// delete also related concept
+		treeData.getChildren(code).forEach( c -> deleteCodeTreeTl(treeData, c, version));
 		
 		// delete direct concept
 		List<ConceptDTO> concepts = conceptService.findAllByCode( code.getId());
@@ -297,7 +282,7 @@ public class CodeServiceImpl implements CodeService {
 			position++;
 			if( !codeTree.getChildren( codeRoot).isEmpty())
 				position = traverseChildCode(  codeTree, codeRoot, codeTree.getChildren(codeRoot), position, concepts );
-		};
+		}
 	}
 	
 	private int traverseChildCode( TreeData<CodeDTO> codeTree,
@@ -316,7 +301,7 @@ public class CodeServiceImpl implements CodeService {
 				// get TL concepts as well (change position)
 				List<ConceptDTO> otherConcepts = conceptService.findAllByCode( code.getId());
 				for(ConceptDTO otherConcept: otherConcepts) {
-					if( otherConcept.getPosition() != position) {
+					if( otherConcept.getPosition().equals( position)) {
 						otherConcept.setPosition(position);
 						otherConcept.setParent( code.getParent() );
 						conceptService.save(otherConcept);
@@ -328,7 +313,7 @@ public class CodeServiceImpl implements CodeService {
 			position++;
 			if( !codeTree.getChildren( code ).isEmpty())
 				position = traverseChildCode(  codeTree, code, codeTree.getChildren( code ), position, concepts );
-		};
+		}
 		return position;
 	}
 }

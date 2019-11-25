@@ -4,9 +4,6 @@ import java.io.Serializable;
 
 import org.springframework.data.annotation.Id;
 
-//import org.springframework.data.elasticsearch.annotations.Document;
-//
-//@Document(indexName = "ddistore_concept")
 public class DDIStoreES implements Serializable {
 	/**
 	 * 

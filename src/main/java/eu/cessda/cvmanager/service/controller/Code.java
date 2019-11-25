@@ -17,10 +17,6 @@ public class Code {
 
 	private ContentType description;
 
-	public Code() {
-
-	}
-
 	public ContentType getUrl() {
 		return url;
 	}
