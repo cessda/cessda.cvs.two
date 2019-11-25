@@ -49,15 +49,12 @@ public class LicenceServiceImpl implements LicenceService {
         log.debug("Request to save Licence : {}", licenceDTO);
         Licence licence = licenceMapper.toEntity(licenceDTO);
         licence = licenceRepository.save(licence);
-        LicenceDTO result = licenceMapper.toDto(licence);
-//        licenseSearchRepository.save(license);
-        return result;
+        return licenceMapper.toDto(licence);
     }
     
     /**
      * Get all the licenses.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override
@@ -106,7 +103,6 @@ public class LicenceServiceImpl implements LicenceService {
     public void delete(Long id) {
         log.debug("Request to delete Licence : {}", id);
         licenceRepository.deleteById(id);
-//        licenseSearchRepository.delete(id);
     }
 
     /**
@@ -120,7 +116,6 @@ public class LicenceServiceImpl implements LicenceService {
     @Transactional(readOnly = true)
     public Page<LicenceDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Licenses for query {}", query);
-//        Page<Licence> result = licenseSearchRepository.search(queryStringQuery(query), pageable);
-        return null;//result.map(licenceMapper::toDto);
+        return null;
     }
 }

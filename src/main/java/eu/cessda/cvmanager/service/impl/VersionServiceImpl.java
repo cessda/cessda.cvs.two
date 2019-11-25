@@ -1,10 +1,8 @@
 package eu.cessda.cvmanager.service.impl;
 
 import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.domain.Concept;
 import eu.cessda.cvmanager.domain.Version;
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
-import eu.cessda.cvmanager.repository.ConceptRepository;
 import eu.cessda.cvmanager.repository.VersionRepository;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.mapper.VersionMapper;
@@ -18,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -58,16 +53,8 @@ public class VersionServiceImpl implements VersionService {
         log.debug("Request to save Version : {}", versionDTO);
         Version version = versionMapper.toEntity(versionDTO);
         
-//        Not needed due to CascadeType changed to PERSIST, MERGE, REFRESH
-//        // store Concept first if exist
-//        for( Concept concept: version.getConcepts()) {
-//        	concept = conceptRepository.save(concept);
-//        }
-        
         version = versionRepository.save(version);
-        VersionDTO result = versionMapper.toDto(version);
-//        versionSearchRepository.save(version);
-        return result;
+        return versionMapper.toDto(version);
     }
 
     /**
@@ -107,7 +94,6 @@ public class VersionServiceImpl implements VersionService {
     public void delete(Long id) {
         log.debug("Request to delete Version : {}", id);
         versionRepository.deleteById(id);
-//        versionSearchRepository.delete(id);
     }
 
     /**
@@ -121,8 +107,7 @@ public class VersionServiceImpl implements VersionService {
     @Transactional(readOnly = true)
     public Page<VersionDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Versions for query {}", query);
-//        Page<Version> result = versionSearchRepository.search(queryStringQuery(query), pageable);
-        return null;//result.map(versionMapper::toDto);
+        return null;
     }
 
 	@Override
@@ -141,8 +126,7 @@ public class VersionServiceImpl implements VersionService {
 		// create map based on language
 		Map<String, List<VersionDTO>> langVersionMap = new LinkedHashMap<>();
 		for( VersionDTO version : versionDTOs) {
-			if( language != null)
-				if( !language.toString().equalsIgnoreCase( version.getLanguage() ))
+			if( language != null && !language.toString().equalsIgnoreCase( version.getLanguage() ))
 					continue;
 			
 			List<VersionDTO> versions = langVersionMap.get( version.getLanguage() );
@@ -161,15 +145,12 @@ public class VersionServiceImpl implements VersionService {
 		// create map based on language
 		Map<String, List<VersionDTO>> langVersionMap = new LinkedHashMap<>();
 		for( VersionDTO version : versionDTOs) {
-			if( language != null)
-				if( !language.toString().equalsIgnoreCase( version.getLanguage() ))
+			if( language != null && !language.toString().equalsIgnoreCase( version.getLanguage() ))
 					continue;
 			
-			if( status != null ) {
-				if( !status.equals( version.getStatus() ))
+			if( status != null && !status.equals( version.getStatus() ))
 					continue;
-			}
-			
+
 			List<VersionDTO> versions = langVersionMap.get( version.getLanguage() );
 			if( versions == null ) {
 				versions = new ArrayList<>();
