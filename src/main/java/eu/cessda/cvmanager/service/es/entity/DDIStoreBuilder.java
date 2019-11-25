@@ -17,16 +17,4 @@ public class DDIStoreBuilder {
 		result.setType(ddiStore.getType());
 		result.setPrimaryKey(ddiStore.getPrimaryKey());
 	}
-
-	// public IndexQuery buildIndex() {
-	// IndexQuery indexQuery = new IndexQuery();
-	// indexQuery.setId(result.getElementId());
-	// indexQuery.setObject(result);
-	// return indexQuery;
-	// }
-	//
-	// public IndexQuery buildIndex(DDIStoreES result) {
-	// this.result = result;
-	// return buildIndex();
-	// }
 }
