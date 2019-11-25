@@ -89,9 +89,7 @@ public class LicenceDTO implements Serializable {
     }
 
 	public boolean isPersisted() {
-		if( getId() == null )
-			return false;
-		return true;
+		return getId() != null;
 	}
 }
 
