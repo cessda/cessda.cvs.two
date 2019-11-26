@@ -19,7 +19,7 @@ pipeline {
 		stage('Build Project') {
 			steps {
                 withMaven {
-                    sh "mvn clean deploy -Pdocker-compose -DbuildNumber=.${env.BUILD_NUMBER}"
+                    sh "mvn clean install -Pdocker-compose -DbuildNumber=.${env.BUILD_NUMBER}"
 				}
 			}
             when { branch 'master' }
