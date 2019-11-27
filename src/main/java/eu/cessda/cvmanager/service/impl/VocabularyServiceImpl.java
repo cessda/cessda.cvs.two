@@ -1,5 +1,20 @@
 package eu.cessda.cvmanager.service.impl;
 
+import eu.cessda.cvmanager.domain.Vocabulary;
+import eu.cessda.cvmanager.domain.VocabularyPublish;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.repository.VocabularyRepository;
+import eu.cessda.cvmanager.repository.search.VocabularyPublishSearchRepository;
+import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
+import eu.cessda.cvmanager.service.*;
+import eu.cessda.cvmanager.service.dto.*;
+import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
+import eu.cessda.cvmanager.service.mapper.VocabularyPublishMapper;
+import eu.cessda.cvmanager.ui.view.publication.EsFilter;
+import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
+import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
+import eu.cessda.cvmanager.utils.VersionUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -34,46 +49,12 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.cessda.cvmanager.domain.Vocabulary;
-import eu.cessda.cvmanager.domain.VocabularyPublish;
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.repository.VocabularyRepository;
-import eu.cessda.cvmanager.repository.search.VocabularyPublishSearchRepository;
-import eu.cessda.cvmanager.repository.search.VocabularySearchRepository;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.service.dto.CodeDTO;
-import eu.cessda.cvmanager.service.dto.ConceptDTO;
-import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.mapper.VocabularyMapper;
-import eu.cessda.cvmanager.service.mapper.VocabularyPublishMapper;
-import eu.cessda.cvmanager.ui.view.publication.EsFilter;
-import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
-import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
-import eu.cessda.cvmanager.utils.VersionUtils;
-
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Vocabulary.
@@ -553,7 +534,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		// only set selected language once
 		if( cvHit.getSelectedLang() == null ) {
 			// get last language information from the field and get the Language enum
-			String langIso = highlightField.substring( highlightField.length() - 2, highlightField.length());
+			String langIso = highlightField.substring(highlightField.length() - 2);
 			Language lang = Language.getEnum( langIso.toLowerCase() );
 			cvHit.setSelectedLang(lang);
 		}

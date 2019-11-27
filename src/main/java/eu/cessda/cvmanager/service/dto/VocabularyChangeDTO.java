@@ -1,25 +1,25 @@
 package eu.cessda.cvmanager.service.dto;
 
-import javax.validation.constraints.*;
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
-import javax.persistence.Lob;
 
 /**
  * A DTO for the VocabularyChange entity.
  */
 public class VocabularyChangeDTO implements Serializable {
-	
-	public static final String[] cvChangeTypes = {
+
+	private static final String[] cvChangeTypes = {
 			"CV Short Name changed",
 			"CV Long Name changed",
 			"CV definition amended with meaning change",
 			"CV definition rephrased"
 	};
 
-    public static final String[] codeChangeTypes = {
+	private static final String[] codeChangeTypes = {
 			"Code value changed",
 			"Code descriptive term rephrased",
 			"Code definition amended with meaning change",
@@ -47,7 +47,15 @@ public class VocabularyChangeDTO implements Serializable {
     
     private LocalDateTime date;
 
-    public Long getId() {
+	public static String[] getCvChangeTypes() {
+		return cvChangeTypes;
+	}
+
+	public static String[] getCodeChangeTypes() {
+		return codeChangeTypes;
+	}
+
+	public Long getId() {
         return id;
     }
 

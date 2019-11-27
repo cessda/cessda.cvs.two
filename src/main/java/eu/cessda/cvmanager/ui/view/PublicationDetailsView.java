@@ -1,20 +1,23 @@
 package eu.cessda.cvmanager.ui.view;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
-
+import com.vaadin.data.TreeData;
+import com.vaadin.data.provider.TreeDataProvider;
+import com.vaadin.icons.VaadinIcons;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.*;
+import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.renderers.ComponentRenderer;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.service.*;
+import eu.cessda.cvmanager.service.dto.ConceptDTO;
+import eu.cessda.cvmanager.service.dto.LicenceDTO;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.ui.layout.*;
+import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -34,41 +37,12 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 
-import com.vaadin.data.TreeData;
-import com.vaadin.data.provider.TreeDataProvider;
-import com.vaadin.icons.VaadinIcons;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.JavaScript;
-import com.vaadin.ui.Layout;
-import com.vaadin.ui.TabSheet;
-import com.vaadin.ui.TreeGrid;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.renderers.ComponentRenderer;
-
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.LicenceService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.service.dto.ConceptDTO;
-import eu.cessda.cvmanager.service.dto.LicenceDTO;
-import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.ui.layout.DdiUsageLayout;
-import eu.cessda.cvmanager.ui.layout.ExportLayout;
-import eu.cessda.cvmanager.ui.layout.IdentityLayout;
-import eu.cessda.cvmanager.ui.layout.LicenseLayout;
-import eu.cessda.cvmanager.ui.layout.VersionLayout;
-import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
+import javax.annotation.PostConstruct;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @UIScope
 @SpringView(name = PublicationDetailsView.VIEW_NAME)
@@ -189,7 +163,7 @@ public class PublicationDetailsView extends CvView {
 				String[] itemPath = event.getParameters().split("\\?");
 				String[] itemPathPart = itemPath[0].split("/");
 				if (itemPath.length > 1) {
-					List<NameValuePair> params = URLEncodedUtils.parse(itemPath[1], Charset.forName("UTF-8"));
+					List<NameValuePair> params = URLEncodedUtils.parse(itemPath[1], StandardCharsets.UTF_8);
 					mappedParams = params.stream()
 							.collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
 					String selectedLanguage = mappedParams.get("lang");
@@ -273,8 +247,7 @@ public class PublicationDetailsView extends CvView {
 						.ifPresent(ver -> currentVersion = ver);
 			}
 
-			// TODO check the code !
-			if (!currentVersion.getItemType().equals(ItemType.SL.toString()))
+			if (currentVersion != null && !currentVersion.getItemType().equals(ItemType.SL.toString()))
 				vocabulary.getVersionByUri(currentVersion.getUriSl()).ifPresent(c -> currentSlVersion = c);
 			else
 				currentSlVersion = currentVersion;

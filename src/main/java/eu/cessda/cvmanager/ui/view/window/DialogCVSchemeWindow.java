@@ -1,11 +1,20 @@
 package eu.cessda.cvmanager.ui.view.window;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-
+import com.vaadin.data.Binder;
 import com.vaadin.data.HasValue;
+import com.vaadin.data.provider.Query;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.ui.*;
+import eu.cessda.cvmanager.config.Constants;
+import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VersionDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import eu.cessda.cvmanager.service.manager.WorkspaceManager;
+import eu.cessda.cvmanager.ui.view.EditorDetailsView;
+import eu.cessda.cvmanager.utils.ParserUtils;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.security.SecurityUtils;
 import org.gesis.wts.service.AgencyService;
@@ -23,20 +32,9 @@ import org.vaadin.viritin.layouts.MHorizontalLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
-import com.vaadin.data.Binder;
-import com.vaadin.data.provider.Query;
-import com.vaadin.data.validator.StringLengthValidator;
-
-import eu.cessda.cvmanager.config.Constants;
-import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
-import eu.cessda.cvmanager.service.manager.WorkspaceManager;
-import eu.cessda.cvmanager.ui.view.EditorDetailsView;
-import eu.cessda.cvmanager.utils.ParserUtils;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
 
 import static eu.cessda.cvmanager.config.Constants.REQUIRED;
 import static eu.cessda.cvmanager.config.Constants.REQUIRED_FIELD_INFO;
@@ -218,7 +216,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 		lChange
 			.withStyleName("change-header");
 		changeCb.setWidth("100%");
-		changeCb.setItems( Arrays.asList( VocabularyChangeDTO.cvChangeTypes));
+		changeCb.setItems(Arrays.asList(VocabularyChangeDTO.getCvChangeTypes()));
 		changeCb.setTextInputAllowed(false);
 		changeDesc.setWidth("100%");
 		changeBox
