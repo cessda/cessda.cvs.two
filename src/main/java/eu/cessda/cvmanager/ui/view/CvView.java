@@ -41,9 +41,6 @@ import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 public abstract class CvView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -8769292972079523949L;
-//	public static enum ActionType{
-//		ADMIN, DISCOVER, EDITORSEARCH, DETAIL, DETAILS, AGENCY, WITHDRAWNDETAILS// this should be similar to view names
-//	}
 	
 	protected final I18N i18n;
 	protected final EventBus.UIEventBus eventBus;
@@ -56,7 +53,6 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 	
 	protected Locale locale = UI.getCurrent().getLocale();
 	
-//	private final ActionType actionType;
 	protected CvItem cvItem = new CvItem();
 	protected AgencyDTO agency;
 	protected VocabularyDTO vocabulary;
