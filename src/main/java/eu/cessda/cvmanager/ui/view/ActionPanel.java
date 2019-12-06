@@ -1,8 +1,13 @@
 package eu.cessda.cvmanager.ui.view;
 
-import java.util.Iterator;
-import java.util.Locale;
-
+import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.*;
+import com.vaadin.ui.Button.ClickEvent;
+import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
+import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VocabularyService;
+import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.security.SecurityUtils;
@@ -15,19 +20,8 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 
-import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-
-import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.event.CvManagerEvent.EventType;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
+import java.util.Iterator;
+import java.util.Locale;
 
 public class ActionPanel extends CustomComponent{
 
@@ -249,9 +243,9 @@ public class ActionPanel extends CustomComponent{
 
 		Iterator<Component> iterate = actionLayout.iterator();
 		while (iterate.hasNext()) {
-			Component c = (Component) iterate.next();
+			Component c = iterate.next();
 			if( c instanceof  Button) {
-				((Button) c).removeStyleName( "button-pressed" );
+				c.removeStyleName("button-pressed");
 			}
 		}
 		pressedButton.addStyleName( "button-pressed" );
@@ -293,19 +287,19 @@ public class ActionPanel extends CustomComponent{
 	}
 	
 	private void doValidateCv() {
-		
+
 	}
 	
 	private void doFinaliseReview() {
-		
+
 	}
 	
 	private void doPublishCv() {
-		
+
 	}
 	
 	private void doUnpublishCv() {
-		
+
 	}
 	
 	public boolean isEnableSort() {
