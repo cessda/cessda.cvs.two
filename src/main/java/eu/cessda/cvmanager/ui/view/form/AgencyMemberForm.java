@@ -108,7 +108,7 @@ public class AgencyMemberForm extends FormLayout {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String apply(Language item) {
-				return item.name() + " (" +item.getLanguage() + ")";
+				return item.getFormatted();
 			}
 		});
         

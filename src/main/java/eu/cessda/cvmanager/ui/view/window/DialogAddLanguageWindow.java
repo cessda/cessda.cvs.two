@@ -124,7 +124,7 @@ public class DialogAddLanguageWindow extends MWindow {
 			.setValue( slVersion.getTitle() );
 		sourceLanguage
 			.withReadOnly( true)
-			.setValue( Language.getEnumNameCapitalized( slVersion.getLanguage() ) );
+			.setValue( Language.getByIso( slVersion.getLanguage() ).getFormatted() );
 		sourceDescription.setReadOnly( true );
 		sourceDescription.setSizeFull();
 		sourceDescription.setValue( slVersion.getDefinition() );
@@ -147,7 +147,7 @@ public class DialogAddLanguageWindow extends MWindow {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String apply(Language item) {
-				return item.name() + " (" +item.getLanguage() + ")";
+				return item.getFormatted();
 			}
 		});
 
@@ -349,7 +349,7 @@ public class DialogAddLanguageWindow extends MWindow {
 
 		Language sourceLang = Language.ENGLISH;
 		if( vocabulary.getSourceLanguage() != null)
-			sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+			sourceLang = Language.getByIso( vocabulary.getSourceLanguage() );
 		// remove with sourceLanguage option if exist
 		availableLanguages.remove( sourceLang );
 
@@ -376,7 +376,7 @@ public class DialogAddLanguageWindow extends MWindow {
 		tfTitle.setValue( version.getTitle());
 		description.setValue( version.getDefinition());
 		notes.setValue( version.getNotes() == null ? "":version.getNotes());
-		Language selectedLanguage = Language.valueOfEnum( version.getLanguage());
+		Language selectedLanguage = Language.getByIso( version.getLanguage());
 		languageCb.setItems( selectedLanguage );
 		languageCb.setValue(selectedLanguage);
 		languageCb.setReadOnly( true );

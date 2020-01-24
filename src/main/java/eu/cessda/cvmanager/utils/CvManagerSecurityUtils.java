@@ -368,7 +368,7 @@ public final class CvManagerSecurityUtils {
     }
     
     public static Optional<List<UserAgencyDTO>> getUserAgencyByAgencyAndLanguage( AgencyDTO agency, String langIso) {	
-    	return getUserAgencyByAgencyAndLanguage(agency, Language.valueOfEnum(langIso));
+    	return getUserAgencyByAgencyAndLanguage(agency, Language.getByIso(langIso));
     }
     
     public static Optional<List<UserAgencyDTO>> getUserAgencyByAgencyAndLanguage( AgencyDTO agency, Language language) {	

@@ -170,7 +170,7 @@ public class PublicationDetailsView extends CvView {
 					if (selectedLanguage != null) {
 						cvItem.setCurrentLanguage(mappedParams.get("lang"));
 						try {
-							selectedLang = Language.getEnum(selectedLanguage);
+							selectedLang = Language.getByIso(selectedLanguage);
 						} catch (Exception e) {
 							log.error(e.getMessage(), e);
 						}
@@ -242,8 +242,8 @@ public class PublicationDetailsView extends CvView {
 				vocabulary.getLatestSlVersion(true).ifPresent(v -> currentVersion = v);
 			}
 			// find correct version by selected language
-			if (selectedLang != null && !vocabulary.getSourceLanguage().equals(selectedLang.getLanguage())) {
-				vocabulary.getVersionByUriSlAndLangauge(cvItem.getCurrentCvId(), selectedLang.getLanguage())
+			if (selectedLang != null && !vocabulary.getSourceLanguage().equals(selectedLang.getIso())) {
+				vocabulary.getVersionByUriSlAndLangauge(cvItem.getCurrentCvId(), selectedLang.getIso())
 						.ifPresent(ver -> currentVersion = ver);
 			}
 
@@ -266,8 +266,8 @@ public class PublicationDetailsView extends CvView {
 		// get all available licenses
 		licenses = licenceService.findAll();
 
-		sourceLanguage = Language.valueOfEnum(vocabulary.getSourceLanguage());
-		selectedLang = Language.valueOfEnum(currentVersion.getLanguage());
+		sourceLanguage = Language.getByIso(vocabulary.getSourceLanguage());
+		selectedLang = Language.getByIso(currentVersion.getLanguage());
 
 		orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
 		langMenu = new LanguageMenu(orderedLanguageVersionMap, currentVersion);
@@ -726,7 +726,7 @@ public class PublicationDetailsView extends CvView {
 
 	private void updateDetailContent() {
 		cvItem.setCurrentLanguage(currentVersion.getLanguage());
-		setSelectedLang(Language.getEnum(currentVersion.getLanguage()));
+		setSelectedLang(Language.getByIso(currentVersion.getLanguage()));
 
 		langButtons.forEach(b -> {
 			if (b.getCaption().equalsIgnoreCase(currentVersion.getLanguage()))

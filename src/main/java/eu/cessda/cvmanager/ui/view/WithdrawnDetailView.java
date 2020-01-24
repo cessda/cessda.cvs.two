@@ -219,7 +219,7 @@ public class WithdrawnDetailView extends CvView {
 					String selectedLanguage = mappedParams.get("lang");
 					if (selectedLanguage != null) {
 						cvItem.setCurrentLanguage(mappedParams.get("lang"));
-						selectedLang = Language.getEnum(selectedLanguage);
+						selectedLang = Language.getByIso(selectedLanguage);
 					} else {
 						selectedLang = null;
 					}
@@ -310,8 +310,8 @@ public class WithdrawnDetailView extends CvView {
 		// get all available licenses
 		licenses = licenceService.findAll();
 
-		sourceLanguage = Language.valueOfEnum(vocabulary.getSourceLanguage());
-		selectedLang = Language.valueOfEnum(currentVersion.getLanguage());
+		sourceLanguage = Language.getByIso(vocabulary.getSourceLanguage());
+		selectedLang = Language.getByIso(currentVersion.getLanguage());
 
 		orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
 		langMenu = new LanguageMenu(orderedLanguageVersionMap, currentVersion);
@@ -760,7 +760,7 @@ public class WithdrawnDetailView extends CvView {
 
 	private void updateDetailContent() {
 		cvItem.setCurrentLanguage(currentVersion.getLanguage());
-		setSelectedLang(Language.getEnum(currentVersion.getLanguage()));
+		setSelectedLang(Language.getByIso(currentVersion.getLanguage()));
 
 		langButtons.forEach(b -> {
 			if (b.getCaption().equalsIgnoreCase(currentVersion.getLanguage()))

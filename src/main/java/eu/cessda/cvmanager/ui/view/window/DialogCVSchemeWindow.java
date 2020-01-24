@@ -147,7 +147,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 		
 		// update process
 		if( isUpdated) {
-			language = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+			language = Language.getByIso( vocabulary.getSourceLanguage() );
 			// fill with value
 			editorCb.setItems( agency );
 			editorCb.setValue( agency );
@@ -180,7 +180,7 @@ public class DialogCVSchemeWindow extends MWindow implements Translatable{
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String apply(Language item) {
-				return item.name() + " (" +item.getLanguage() + ")";
+				return item.getFormatted();
 			}
 		});
 		

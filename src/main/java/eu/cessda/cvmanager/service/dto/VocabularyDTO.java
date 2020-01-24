@@ -11,6 +11,8 @@ import org.gesis.wts.domain.enumeration.Language;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import eu.cessda.cvmanager.domain.enumeration.Status;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -30,6 +32,8 @@ import java.util.Optional;
  */
 public class VocabularyDTO implements Serializable {
 
+    private final Logger log = LoggerFactory.getLogger( VocabularyDTO.class );
+
 	private static final long serialVersionUID = 1L;
 
 	public VocabularyDTO() {
@@ -39,7 +43,7 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public static VocabularyDTO createDraft() {
-		return new VocabularyDTO().withStatus(Status.DRAFT).addStatus( Status.DRAFT.toString());
+		return new VocabularyDTO().withStatus(Status.DRAFT).addStatuses( Status.DRAFT.toString());
 	}
 	
 	public VocabularyDTO withStatus(Status status) {
@@ -707,7 +711,13 @@ public class VocabularyDTO implements Serializable {
     }
     
     public VocabularyDTO setTitleDefinition( String title, String definition, String language) {
-    	return setTitleDefinition(title, definition, Language.getEnum(language));
+        Language lang = Language.getByIso(language);
+        if( lang == null ){
+            Map<String, Language> stringLanguageMap = Language.getMap();
+            log.info("Language not found on vocabulary " + title + " with language \"" + language + "\"");
+            return this;
+        }
+        return setTitleDefinition(title, definition, lang);
     }
 
     public VocabularyDTO setTitleDefinition( String title, String definition, Language language) {
@@ -824,7 +834,12 @@ public class VocabularyDTO implements Serializable {
     }
     
     public VocabularyDTO setVersionByLanguage(String langIso, String versionNumber) {
-    	return setVersionByLanguage(Language.getEnum( langIso ), versionNumber);
+        Language lang = Language.getByIso(langIso);
+        if( lang == null ){
+            log.info("Language not found on vocabulary versionNumber " + versionNumber + " with language \"" + langIso + "\"");
+            return this;
+        }
+    	return setVersionByLanguage(lang, versionNumber);
     }
     
 	public VocabularyDTO setVersionByLanguage(Language language, String versionNumber) {
@@ -1100,7 +1115,7 @@ public class VocabularyDTO implements Serializable {
 		this.statuses = statuses;
 	}
 	
-	public VocabularyDTO addStatus(String status) {
+	public VocabularyDTO addStatuses(String status) {
 		if(this.statuses == null)
 			this.statuses = new HashSet<>();
 		this.statuses.add( status );
@@ -1774,8 +1789,8 @@ public class VocabularyDTO implements Serializable {
 		vocabulary.setSourceLanguage( Language.ENGLISH.toString());
 		
 		vocabulary.setNotation( cvScheme.getCode());
-		vocabulary.setLanguages( Language.getLanguagesFromIso(cvScheme.getLanguagesByTitle()));
-		Set<String> langs = Language.getEnumAsSetString();
+		vocabulary.setLanguages( cvScheme.getLanguagesByTitle());
+		Set<String> langs = Language.getIsos();
 		
 		if( cvScheme.getStatus() == null )
 			vocabulary.setStatus(Status.DRAFT.toString());
@@ -1790,11 +1805,10 @@ public class VocabularyDTO implements Serializable {
 				return;
 				
 			if( cvScheme.getTitleByLanguage(lang) != null && cvScheme.getDescriptionByLanguage(lang) != null ){
-				Language langEnum = Language.getEnum(lang);
+				Language langEnum = Language.getByIso(lang);
 				String title = cvScheme.getTitleByLanguage(lang);
-				String definition =cvScheme.getDescriptionByLanguage(lang);
-				
-				
+				String definition = cvScheme.getDescriptionByLanguage(lang);
+
 				switch ( langEnum ) {
 	    		case CZECH:
 	    			vocabulary.setTitleCs(title);
@@ -2107,7 +2121,7 @@ public class VocabularyDTO implements Serializable {
 	private Set<CodeDTO> extractCodeFromVersionConcept( String status) {
 		Map<String, CodeDTO> codeMap = new HashMap<>();
 		for(String lang: languages) {
-			Language langEnum = Language.valueOfEnum(lang);
+			Language langEnum = Language.getByIso(lang);
 
             Optional<VersionDTO> latestVersionByLanguageOpt = getLatestVersionByLanguage(lang, status);
             if( latestVersionByLanguageOpt.isPresent() ) {
@@ -2147,7 +2161,7 @@ public class VocabularyDTO implements Serializable {
 	public static void setCvSchemeByVocabulary( CVScheme cvScheme, VocabularyDTO vocabulary) {
 		// get published languages from vocabulary
 		for(String lang : vocabulary.getLanguages()) {
-			Language eachLanguage = Language.getEnum(lang);
+			Language eachLanguage = Language.getByIso(lang);
 			String languageIso = eachLanguage.toString();
 			
 			cvScheme.setTitleByLanguage(languageIso, vocabulary.getTitleByLanguage(eachLanguage));

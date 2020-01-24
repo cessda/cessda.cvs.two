@@ -106,7 +106,7 @@ public class DialogEditCodeWindow extends MWindow {
 			.withWidth("85%")
 			.addValueChangeListener( e -> ((TextField)e.getComponent()).setValue( e.getValue().replaceAll(Constants.NOTATION_REGEX, "")));
 		
-		Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+		Language sourceLang = Language.getByIso( vocabulary.getSourceLanguage() );
 		
 		sourceTitle.withFullWidth();
 		sourceTitle.setValue( code.getTitleByLanguage( sourceLang ) );
@@ -166,7 +166,7 @@ public class DialogEditCodeWindow extends MWindow {
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String apply(Language item) {
-				return item.name() + " (" +item.getLanguage() + ")";
+				return item.getFormatted();
 			}
 		});
 		

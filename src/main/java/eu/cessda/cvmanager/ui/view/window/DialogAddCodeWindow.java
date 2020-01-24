@@ -76,7 +76,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 		this.parentCode = parentCodeDTO;
 		this.concept = conceptDTO;
 
-		language = Language.valueOfEnum( this.version.getLanguage());
+		language = Language.getByIso( this.version.getLanguage());
 		
 		languageCb.setItems( language);
 		languageCb.setValue( language );
@@ -90,7 +90,7 @@ public class DialogAddCodeWindow extends MWindow implements Translatable{
 			private static final long serialVersionUID = 1L;
 			@Override
 			public String apply(Language item) {
-				return item.name() + " (" +item.getLanguage() + ")";
+				return item.name() + " (" +item.getIso() + ")";
 			}
 		});
 		

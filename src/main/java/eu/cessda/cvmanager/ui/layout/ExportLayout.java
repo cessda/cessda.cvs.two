@@ -162,7 +162,7 @@ public class ExportLayout extends MCssLayout implements Translatable {
 		exportGrid.removeAllColumns();
 		exportGrid.withFullWidth().withHeight("200px");
 
-		exportGrid.addColumn(cVersion -> Language.valueOfEnum(cVersion.getLanguage()).toStringCapitalized())
+		exportGrid.addColumn(cVersion -> Language.getByIso(cVersion.getLanguage()).getFormatted())
 				.setCaption("Language").setExpandRatio(2).setId("languageClm");
 		exportGrid.addColumn(ExportCV::getVersionOption, new ComponentRenderer()).setCaption("Version")
 				.setExpandRatio(2).setId("versionClm");

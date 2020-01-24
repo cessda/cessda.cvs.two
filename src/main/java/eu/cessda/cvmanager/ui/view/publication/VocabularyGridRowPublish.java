@@ -56,7 +56,7 @@ public class VocabularyGridRowPublish extends CustomComponent {
 		this.configService = configService;
 
 		if (vocabulary.getSourceLanguage() != null)
-			sourceLanguage = Language.valueOfEnum(vocabulary.getSourceLanguage());
+			sourceLanguage = Language.getByIso(vocabulary.getSourceLanguage());
 		else
 			sourceLanguage = Language.ENGLISH;
 
@@ -103,7 +103,7 @@ public class VocabularyGridRowPublish extends CustomComponent {
 
 			langButton.addClickListener(e -> {
 				applyButtonStyle(e.getButton());
-				currentSelectedLanguage = Language.getEnum(e.getButton().getCaption().toLowerCase());
+				currentSelectedLanguage = Language.getByIso(e.getButton().getCaption().toLowerCase());
 				setContent();
 			});
 			languageLayout.add(langButton);

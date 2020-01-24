@@ -279,7 +279,7 @@ public class EditorDetailsView extends CvView {
 					if( selectedLanguage != null ) {
 						cvItem.setCurrentLanguage( mappedParams.get("lang") );
 						try {
-							selectedLang = Language.getEnum( selectedLanguage );
+							selectedLang = Language.getByIso( selectedLanguage );
 						} catch (Exception e) {
 							log.error(e.getMessage(), e);
 						}
@@ -414,7 +414,7 @@ public class EditorDetailsView extends CvView {
 		
 		
 		// determine source langauge
-		sourceLanguage = Language.valueOfEnum( vocabulary.getSourceLanguage());
+		sourceLanguage = Language.getByIso( vocabulary.getSourceLanguage());
 		if(selectedLang == null )
 			selectedLang = sourceLanguage;
 		
@@ -434,8 +434,8 @@ public class EditorDetailsView extends CvView {
 //		}
 		
 		// find correct version by selected language
-		if( selectedLang != null && !vocabulary.getSourceLanguage().equals( selectedLang.getLanguage())) {
-			vocabulary.getVersionByUriSlAndLangauge( cvItem.getCurrentCvId(), selectedLang.getLanguage())
+		if( selectedLang != null && !vocabulary.getSourceLanguage().equals( selectedLang.getIso())) {
+			vocabulary.getVersionByUriSlAndLangauge( cvItem.getCurrentCvId(), selectedLang.getIso())
 			.ifPresent( ver -> currentVersion = ver);
 		} else {
 			currentVersion = currentSLVersion;
@@ -454,7 +454,7 @@ public class EditorDetailsView extends CvView {
 		languages.add( vocabulary.getSourceLanguage() );
 		
 		languages.forEach(item -> {
-			Language eachLanguage = Language.getEnum(item);
+			Language eachLanguage = Language.getByIso(item);
 			
 			MButton langButton = new MButton(eachLanguage.toString().toUpperCase());
 			langButton.withStyleName("langbutton");
@@ -490,7 +490,7 @@ public class EditorDetailsView extends CvView {
 				applyButtonStyle(e.getButton());
 				
 				cvItem.setCurrentLanguage(e.getButton().getCaption().toLowerCase());
-				setSelectedLang( Language.getEnum( e.getButton().getCaption().toLowerCase()) );
+				setSelectedLang( Language.getByIso( e.getButton().getCaption().toLowerCase()) );
 							
 				editorCvActionLayout.setSelectedLanguage(selectedLang);
 				editorCodeActionLayout.setSelectedLanguage(selectedLang);
@@ -742,7 +742,7 @@ public class EditorDetailsView extends CvView {
 			.setExpandRatio(1)
 			.setId("prefLabelSl");
 
-		if( !selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() ) ))
+		if( !selectedLang.equals( Language.getByIso( vocabulary.getSourceLanguage() ) ))
 			detailTreeGrid.addColumn(code -> code.getTitleByLanguage(selectedLang))
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
 				.setExpandRatio(1)
@@ -758,7 +758,7 @@ public class EditorDetailsView extends CvView {
 				.setExpandRatio(3)
 				.setId("definitionSl");
 		
-		if( !selectedLang.equals( Language.valueOfEnum( vocabulary.getSourceLanguage() ) ))
+		if( !selectedLang.equals( Language.getByIso( vocabulary.getSourceLanguage() ) ))
 			detailTreeGrid.addColumn(code -> {
 				return new MLabel( code.getDefinitionByLanguage(selectedLang)).withStyleName( "word-brake-normal" );
 			}, new ComponentRenderer())

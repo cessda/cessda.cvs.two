@@ -275,7 +275,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 							// clear workflow codes in certain language
 							List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
 							for(CodeDTO wfc : workflowCodes) {
-								wfc.setTitleDefinition(null, null, Language.getEnum( currentVersion.getLanguage()), true);
+								wfc.setTitleDefinition(null, null, Language.getByIso( currentVersion.getLanguage()), true);
 								codeService.save(wfc);
 							}
 							
@@ -587,7 +587,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 						
 						availableLanguages = Language.getFilteredLanguage(userLanguages, vocabulary.getLanguages());
 						
-						Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+						Language sourceLang = Language.getByIso( vocabulary.getSourceLanguage() );
 						// remove with sourceLanguage option if exist
 						availableLanguages.remove( sourceLang );
 						
@@ -607,14 +607,14 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 					});
 					availableLanguages = Language.getFilteredLanguage(new HashSet<Language>( userLanguages ), vocabulary.getLanguages());
 					
-					Language sourceLang = Language.valueOfEnum( vocabulary.getSourceLanguage() );
+					Language sourceLang = Language.getByIso( vocabulary.getSourceLanguage() );
 					// remove with sourceLanguage option if exist
 					availableLanguages.remove( sourceLang );
 					
 					if(!availableLanguages.isEmpty() && currentVersion.getItemType().equals(ItemType.SL.toString()))
 						buttonAddTranslation.setVisible( true );
 					
-					if( SecurityUtils.isCurrentUserAllowEditCv(agency, Language.valueOfEnum( currentVersion.getLanguage())))
+					if( SecurityUtils.isCurrentUserAllowEditCv(agency, Language.getByIso( currentVersion.getLanguage())))
 						buttonNewVersion.setVisible( true );
 				}
 			}

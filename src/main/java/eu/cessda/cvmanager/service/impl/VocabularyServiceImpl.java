@@ -15,6 +15,7 @@ import eu.cessda.cvmanager.ui.view.publication.EsFilter;
 import eu.cessda.cvmanager.ui.view.publication.EsQueryResultDetail;
 import eu.cessda.cvmanager.ui.view.publication.FiltersLayout;
 import eu.cessda.cvmanager.utils.VersionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -535,7 +536,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		if( cvHit.getSelectedLang() == null ) {
 			// get last language information from the field and get the Language enum
 			String langIso = highlightField.substring(highlightField.length() - 2);
-			Language lang = Language.getEnum( langIso.toLowerCase() );
+			Language lang = Language.getByIso( langIso.toLowerCase() );
 			cvHit.setSelectedLang(lang);
 		}
 	}
@@ -553,7 +554,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 		
 		// all language fields
-		for(String langIso : Language.getCapitalizedEnum()) {
+		for(String langIso : Language.getCapitalizedIsos()) {
 			boolQuery
 				.should( QueryBuilders.matchQuery( "title" + langIso, term).boost( 1000.0f ))
 				.should( QueryBuilders.matchQuery( "definition" + langIso, term).boost( 100.0f ))
@@ -566,7 +567,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	public static HighlightBuilder.Field[] generateHighlightBuilderMain() {
 		List<HighlightBuilder.Field> fields = new ArrayList<>();
 		// all language fields
-		for(String langIso : Language.getCapitalizedEnum()) {
+		for(String langIso : Language.getCapitalizedIsos()) {
 			fields.add( new HighlightBuilder.Field( "title" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>"));
 			fields.add( new HighlightBuilder.Field( "definition" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
 		}
@@ -578,7 +579,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 		
 		// all language fields
-		for(String langIso : Language.getCapitalizedEnum()) {
+		for(String langIso : Language.getCapitalizedIsos()) {
 			boolQuery
 				.should( QueryBuilders.matchQuery( CODE_PATH +".title" + langIso, term).boost( 1000.0f ))
 				.should( QueryBuilders.matchQuery( CODE_PATH +".definition" + langIso, term).boost( 10.0f ))
@@ -596,7 +597,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 	private static HighlightBuilder nestedHighlightBuilder() {
 		HighlightBuilder highlightBuilder = new HighlightBuilder();
 		// all language fields
-		for(String langIso : Language.getCapitalizedEnum()) {
+		for(String langIso : Language.getCapitalizedIsos()) {
 			highlightBuilder.field( CODE_PATH +".title" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>" );
 			highlightBuilder.field( CODE_PATH +".definition" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>" );
 		}
@@ -720,7 +721,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 				if( langFilter.getValues().size() == 1 ) {
 					for( VocabularyDTO vocab : vocabularyPage.getContent()){
 //						if( vocab.getSelectedLang() == null ) {
-							Language lang = Language.getEnum( langFilter.getValues().get(0));
+							Language lang = Language.getByIso( langFilter.getValues().get(0));
 							vocab.setSelectedLang(lang);
 //						}
 					}
@@ -781,7 +782,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			// set status
 			vocabulary.clearStatuses();
 			vocabulary.setStatus( latestSLversion.getStatus() );
-			vocabulary.addStatus( latestSLversion.getStatus() );
+			vocabulary.addStatuses( latestSLversion.getStatus() );
 			
 			vocabulary = save(vocabulary);
 			vocabulary.setCodes(codesUpdated);
@@ -798,7 +799,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 				vocabulary.setVersionByLanguage( ver.getLanguage(), ver.getNumber());
 				
 				// set status
-				vocabulary.addStatus( ver.getStatus());
+				vocabulary.addStatuses( ver.getStatus());
 			}
 			
 			vocabulary = save(vocabulary);

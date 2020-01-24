@@ -432,7 +432,7 @@ public class CodeDTO implements Serializable {
     // end of additional language
     
     public String getTitleByLanguage( String language ) {
-    	return getTitleByLanguage( Language.getEnum(language) );
+    	return getTitleByLanguage( Language.getByIso(language) );
     }
     
     public String getTitleByLanguage( Language language ) {
@@ -494,7 +494,7 @@ public class CodeDTO implements Serializable {
     }
     
     public String getDefinitionByLanguage( String language ) {
-    	return getDefinitionByLanguage( Language.getEnum(language) );
+    	return getDefinitionByLanguage( Language.getByIso(language) );
     }
     
     public String getDefinitionByLanguage( Language language ) {
@@ -729,7 +729,7 @@ public class CodeDTO implements Serializable {
     }
     
     public CodeDTO setTitleDefinition( String title, String definition, String language) {
-    	return setTitleDefinition(title, definition, Language.getEnum(language), false);
+    	return setTitleDefinition(title, definition, Language.getByIso(language), false);
     }
 
     public CodeDTO setTitleDefinition( String title, String definition, Language language, boolean isRemoveLanguage) {
@@ -847,11 +847,11 @@ public class CodeDTO implements Serializable {
     }
     
     public void clearCodeExcept(Set<String> languages) {
-    	Set<String> toBeRemoveLanguages = Language.getEnumAsSetString();
+    	Set<String> toBeRemoveLanguages = Language.getIsos();
     	toBeRemoveLanguages.removeAll(languages);
     	
-    	for(String clearLang : toBeRemoveLanguages) {
-    		setTitleDefinition(null, null, Language.getEnum(clearLang), true);
+    	for(String lang : toBeRemoveLanguages) {
+    		setTitleDefinition(null, null, Language.getByIso(lang), true);
     	}
     }
     
@@ -1438,8 +1438,10 @@ public class CodeDTO implements Serializable {
 		code.setSourceLanguage( Language.ENGLISH.name().toLowerCase());
 				
 		code.setNotation( cvConcept.getNotation());
-		code.setLanguages( Language.getLanguagesFromIso(cvConcept.getLanguagesByPrefLabel()));
-		Set<String> langs = Language.getEnumAsSetString();
+        cvConcept.getLanguagesByPrefLabel().forEach(l -> {
+            code.addLanguage( Language.getByIso(l).getIso());
+        });
+		Set<String> langs = Language.getIsos();
 		
 		cvConcept.getLanguagesByPrefLabel().forEach( lang -> {
 			if( !langs.contains( lang ))
@@ -1448,7 +1450,7 @@ public class CodeDTO implements Serializable {
 			if( cvConcept.getPrefLabelByLanguage(lang) != null && cvConcept.getDescriptionByLanguage(lang) != null ){
 				String title = cvConcept.getPrefLabelByLanguage(lang);
 				String definition =cvConcept.getDescriptionByLanguage(lang);
-				switch ( Language.getEnum(lang) ) {
+				switch ( Language.getByIso(lang) ) {
 	    		case CZECH:
 	    			code.setTitleCs(title);
 	    			code.setDefinitionCs(definition);

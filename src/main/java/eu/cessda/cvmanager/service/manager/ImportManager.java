@@ -40,7 +40,7 @@ public class ImportManager {
         VocabularyDTO vocabulary = VocabularyDTO.createDraft();
         VersionDTO version = cvMapper.toDto(cv);
         version.setStatus( Status.DRAFT.toString() );
-        Language language = Language.valueOfEnum( cv.getLanguage() );
+        Language language = Language.getByIso( cv.getLanguage() );
 
         version.setNotation( cv.getCode() );
         version.setTitleAndDefinition( cv.getTerm(), cv.getDefinition() );
@@ -76,7 +76,7 @@ public class ImportManager {
     public VocabularyDTO addVocabularyTranslation(VocabularyDTO vocabulary, AgencyDTO agency, Cv cv) {
         // check for existing version
         VersionDTO version = null;
-        Language language = Language.valueOfEnum( cv.getLanguage() );
+        Language language = Language.getByIso( cv.getLanguage() );
         Optional<VersionDTO> versionByLanguage = vocabulary.getLatestVersionByLanguage( cv.getLanguage());
         if(versionByLanguage.isPresent())
             version = versionByLanguage.get();

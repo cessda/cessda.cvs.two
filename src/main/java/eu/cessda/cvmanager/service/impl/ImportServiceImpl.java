@@ -203,7 +203,7 @@ public class ImportServiceImpl implements ImportService{
 			
 			
 			vocabulary.setStatus( Status.DRAFT.toString() );
-			vocabulary.addStatus( Status.DRAFT.toString() );
+			vocabulary.addStatuses( Status.DRAFT.toString() );
 			vocabulary.setDiscoverable( true );
 			vocabulary.setPublicationDate( LocalDate.now());
 			
@@ -227,7 +227,7 @@ public class ImportServiceImpl implements ImportService{
 
 	private void storeVersion(VocabularyDTO vocabulary, List<CodeDTO> savedCodes) {
 		for( String lang: vocabulary.getLanguages()) {
-			Language langEnum = Language.valueOfEnum(lang);
+			Language langEnum = Language.getByIso(lang);
 
 			VersionDTO version = new VersionDTO();
 

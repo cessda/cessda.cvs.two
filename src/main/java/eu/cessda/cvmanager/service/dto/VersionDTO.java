@@ -144,7 +144,7 @@ public class VersionDTO implements Serializable {
     }
     
     public String getDetailLanguage() {
-        return Language.valueOfEnum( language ).toStringCapitalized();
+        return Language.getByIso(language).getFormatted();
     }
 
     public void setLanguage(String language) {
@@ -483,10 +483,7 @@ public class VersionDTO implements Serializable {
 				.filter( p -> p.itemType.equals( ItemType.SL.toString()))
 				.findFirst();
 
-		if( latestSourceVersion.isPresent() )
-			return latestSourceVersion.get();
-		else
-			return null;
+		return latestSourceVersion.orElse(null);
 	}
 
 	public static Optional<VersionDTO> getLatestVersion( Set<VersionDTO> versionDTOs, String language, String status){

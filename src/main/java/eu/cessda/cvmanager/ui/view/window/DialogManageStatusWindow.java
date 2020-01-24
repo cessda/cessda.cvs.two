@@ -350,8 +350,8 @@ public class DialogManageStatusWindow extends MWindow {
 		if (!latestTlVersions.isEmpty()) {
 			StringBuilder sb = new StringBuilder();
 			for (VersionDTO ver : latestTlVersions) {
-				Language verLang = Language.valueOfEnum(ver.getLanguage());
-				sb.append(verLang.toStringCapitalized() + " " + (ver.getNumber() == null ? "" : ver.getNumber()) + " ("
+				Language verLang = Language.getByIso(ver.getLanguage());
+				sb.append(verLang.getFormatted() + " " + (ver.getNumber() == null ? "" : ver.getNumber()) + " ("
 						+ ver.getStatus() + ") <br/>");
 			}
 

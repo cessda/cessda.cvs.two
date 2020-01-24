@@ -70,9 +70,9 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 		this.codeService = codeService;
 		this.csvRowToConceptDTOMapper = csvRowToConceptDTOMapper;
 
-		language = Language.valueOfEnum( this.version.getLanguage());
+		language = Language.getByIso( this.version.getLanguage());
 		
-		csvImportLayout = new CsvImportLayout(i18n, Language.valueOfEnum( version.getLanguage() ), this);
+		csvImportLayout = new CsvImportLayout(i18n, Language.getByIso( version.getLanguage() ), this);
 
 		importButton.setVisible( false );
 		

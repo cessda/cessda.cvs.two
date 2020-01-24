@@ -262,7 +262,7 @@ public class CvCodeTreeUtils {
 			topCVConcept.setNotation(topCode.getNotation());
 
 			for (String langString : topCode.getLanguages()) {
-				Language lang = Language.getEnum(langString);
+				Language lang = Language.getByIso(langString);
 				topCVConcept.setPrefLabelByLanguage(lang.toString(), topCode.getTitleByLanguage(lang));
 				topCVConcept.setDescriptionByLanguage(lang.toString(), topCode.getDefinitionByLanguage(lang));
 			}
@@ -290,7 +290,7 @@ public class CvCodeTreeUtils {
 		newCVConcept.setNotation(childCode.getNotation());
 
 		for (String langString : childCode.getLanguages()) {
-			Language lang = Language.getEnum(langString);
+			Language lang = Language.getByIso(langString);
 			newCVConcept.setPrefLabelByLanguage(lang.toString(), childCode.getTitleByLanguage(lang));
 			newCVConcept.setDescriptionByLanguage(lang.toString(), childCode.getDefinitionByLanguage(lang));
 		}

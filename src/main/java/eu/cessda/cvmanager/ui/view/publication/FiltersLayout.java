@@ -141,7 +141,7 @@ public class FiltersLayout extends ResponsiveBlock{
 			if( esFilter.getField().equals(LANGS_AGG) || esFilter.getField().equals(LANGS_PUB_AGG) )
 				filterOption.setItemCaptionGenerator( lang -> {
 					int index = lang.lastIndexOf( "(" );
-					return Language.valueOfEnum( lang.substring( 0, index).trim() ).toStringCapitalized() + " " + lang.substring( index );
+					return Language.getByIso( lang.substring( 0, index).trim() ).getFormatted() + " " + lang.substring( index );
 				});
 			filterOption.setWidth("100%");
 			filterOption.addValueChangeListener( e -> {
@@ -165,7 +165,7 @@ public class FiltersLayout extends ResponsiveBlock{
 					.setValue( true );
 				if( esFilter.getField().equals(LANGS_AGG) || esFilter.getField().equals(LANGS_PUB_AGG) ) {
 					int index = e.lastIndexOf( "(" );
-					checkBox.setCaption( Language.valueOfEnum( e.substring( 0, index).trim() ).toStringCapitalized() + " " + e.substring( index ) );
+					checkBox.setCaption( Language.getByIso( e.substring( 0, index).trim() ).getFormatted() + " " + e.substring( index ) );
 				}
 					
 				items.add(checkBox);
