@@ -1,19 +1,11 @@
 package eu.cessda.cvmanager.ui.view.importing;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
-
+import com.vaadin.data.HasValue;
+import com.vaadin.data.provider.Query;
+import com.vaadin.server.Page;
+import com.vaadin.ui.*;
+import com.vaadin.ui.renderers.HtmlRenderer;
+import eu.cessda.cvmanager.ui.view.window.DialogImportCsvCodeWindow;
 import org.gesis.wts.domain.enumeration.Language;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,20 +15,11 @@ import org.vaadin.viritin.grid.MGrid;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 
-import com.vaadin.data.HasValue;
-import com.vaadin.data.ValueProvider;
-import com.vaadin.data.provider.Query;
-import com.vaadin.server.Page;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.Upload;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.renderers.HtmlRenderer;
-
-import eu.cessda.cvmanager.ui.view.window.DialogImportCsvCodeWindow;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class CsvImportLayout extends MCssLayout implements Translatable {
 	private static final long serialVersionUID = 1L;
@@ -59,95 +42,108 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
 	private DialogImportCsvCodeWindow dialogWindow;
 	private List<CsvRow> csvRows = new ArrayList<>();
 
-	public CsvImportLayout(I18N i18n, Language selectedLanguage, DialogImportCsvCodeWindow dialogWindow) {
+	public CsvImportLayout( I18N i18n, Language selectedLanguage, DialogImportCsvCodeWindow dialogWindow )
+	{
 		super();
 		this.selectedLanguage = selectedLanguage;
 		this.dialogWindow = dialogWindow;
 		init();
 	}
 
-	private void init() {
+	private void init()
+	{
 //      /* Create and configure the upload component */
-		upload = new Upload("Upload CSV File", (Upload.Receiver) (filename, mimeType) -> {
-			try {
+		upload = new Upload( "Upload CSV File", ( filename, mimeType ) ->
+		{
+			try
+			{
 				/*
 				 * Here, we'll stored the uploaded file as a temporary file. No doubt there's a
 				 * way to use a ByteArrayOutputStream, a reader around it, use ProgressListener
 				 * (and a progress bar) and a separate reader thread to populate a container
 				 * *during* the update. This is quick and easy example, though.
 				 */
-				tempCsvFile = File.createTempFile("temp_codes", ".csv");
+				tempCsvFile = File.createTempFile( "temp_codes", ".csv" );
 
-				return new FileOutputStream(tempCsvFile);
-			} catch (IOException ioException) {
-				log.error("Could not write file", ioException);
+				return new FileOutputStream( tempCsvFile );
+			}
+			catch ( IOException ioException )
+			{
+				log.error( "Could not write file", ioException );
 				return null;
 			}
-		});
+		} );
 
 		HorizontalLayout textFieldsHLayout = new HorizontalLayout();
 
-		upload.addFinishedListener((Upload.FinishedListener) finishedEvent -> {
-			try {
+		upload.addFinishedListener( finishedEvent ->
+		{
+			try
+			{
 				/* Let's build a container from the CSV File */
 				BufferedReader bufferedReader = new BufferedReader(
-						new InputStreamReader(new FileInputStream(tempCsvFile), StandardCharsets.UTF_8));
+						new InputStreamReader( new FileInputStream( tempCsvFile ), StandardCharsets.UTF_8 ) );
 				BufferedReader rawDataBufferedReader = new BufferedReader(
-						new InputStreamReader(new FileInputStream(tempCsvFile), StandardCharsets.UTF_8));
+						new InputStreamReader( new FileInputStream( tempCsvFile ), StandardCharsets.UTF_8 ) );
 
 				CsvFileUtil csvFileUtil = new CsvFileUtil();
 
-				int termColumnIndex = Integer.valueOf(termTextField.getValue());
-				int definitionColumnIndex = Integer.valueOf(definitionTextField.getValue());
-				int valueOfCodeColumnIndex = Integer.valueOf(valueOfCodeTextField.getValue());
+				int termColumnIndex = Integer.parseInt( termTextField.getValue() );
+				int definitionColumnIndex = Integer.parseInt( definitionTextField.getValue() );
+				int valueOfCodeColumnIndex = Integer.parseInt( valueOfCodeTextField.getValue() );
 
-				csvFileData = csvFileUtil.readData(bufferedReader, termColumnIndex, definitionColumnIndex,
-						valueOfCodeColumnIndex);
-				rawDataList = csvFileUtil.readRawData(rawDataBufferedReader);
+				csvFileData = csvFileUtil.readData( bufferedReader, termColumnIndex, definitionColumnIndex,
+						valueOfCodeColumnIndex );
+				rawDataList = csvFileUtil.readRawData( rawDataBufferedReader );
 
 				/* Finally, let's update the table with the container */
-				csvGrid.setCaption(finishedEvent.getFilename());
+				csvGrid.setCaption( finishedEvent.getFilename() );
 
 				updateCsvGrid();
 
-				csvGrid.setVisible(true);
+				csvGrid.setVisible( true );
 
-				upload.setVisible(false);
-				textFieldsHLayout.setVisible(false);
-				dialogWindow.getImportButton().setVisible(true);
+				upload.setVisible( false );
+				textFieldsHLayout.setVisible( false );
+				dialogWindow.getImportButton().setVisible( true );
 
-				HasValue.ValueChangeListener<String> valueChangeListener = valueChangeEvent -> {
+				HasValue.ValueChangeListener<String> valueChangeListener = valueChangeEvent ->
+				{
 					String termIndex = termTextField.getValue();
 					String definitionIndex = definitionTextField.getValue();
 					String valueOfCodeIndex = valueOfCodeTextField.getValue();
 
-					if (!isNumberString(termIndex) || !isNumberString(definitionIndex)
-							|| !isNumberString(valueOfCodeIndex)) {
+					if ( !isNumberString( termIndex ) || !isNumberString( definitionIndex )
+							|| !isNumberString( valueOfCodeIndex ) )
+					{
 						return;
 					}
 
-					int updatedTermColumnIndex = Integer.valueOf(termIndex);
-					int updatedDefinitionColumnIndex = Integer.valueOf(definitionIndex);
-					int updatedValueOfCodeColumnIndex = Integer.valueOf(valueOfCodeIndex);
+					int updatedTermColumnIndex = Integer.parseInt( termIndex );
+					int updatedDefinitionColumnIndex = Integer.parseInt( definitionIndex );
+					int updatedValueOfCodeColumnIndex = Integer.parseInt( valueOfCodeIndex );
 
-					for (String[] currentLine : rawDataList) {
-						csvRows.add(csvFileUtil.createCsvRow(currentLine, updatedTermColumnIndex,
-								updatedDefinitionColumnIndex, updatedValueOfCodeColumnIndex));
+					for ( String[] currentLine : rawDataList )
+					{
+						csvRows.add( csvFileUtil.createCsvRow( currentLine, updatedTermColumnIndex,
+								updatedDefinitionColumnIndex, updatedValueOfCodeColumnIndex ) );
 					}
 
-					csvGrid.setItems(csvRows);
+					csvGrid.setItems( csvRows );
 				};
 
-				termTextField.addValueChangeListener(valueChangeListener);
-				definitionTextField.addValueChangeListener(valueChangeListener);
-				valueOfCodeTextField.addValueChangeListener(valueChangeListener);
+				termTextField.addValueChangeListener( valueChangeListener );
+				definitionTextField.addValueChangeListener( valueChangeListener );
+				valueOfCodeTextField.addValueChangeListener( valueChangeListener );
 
 				bufferedReader.close();
 				rawDataBufferedReader.close();
 
-				tempCsvFile.delete();
-			} catch (IOException ioException) {
-				ioException.printStackTrace();
+				Files.delete( tempCsvFile.toPath() );
+			}
+			catch ( IOException ioException )
+			{
+				log.error( "IOException!", ioException );
 			}
 		});
 
@@ -292,14 +288,17 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
 	 * Check is string contains number or not.
 	 *
 	 * @param value - source string
-	 * @return boolean
+	 * @return true if the string can be parsed as a number, false otherwise
 	 */
-	private boolean isNumberString(String value) {
-		try {
-			Integer.valueOf(value);
-
+	private boolean isNumberString( String value )
+	{
+		try
+		{
+			Integer.valueOf( value );
 			return true;
-		} catch (Exception exception) {
+		}
+		catch ( NumberFormatException exception )
+		{
 			return false;
 		}
 	}
@@ -317,16 +316,19 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
 	/**
 	 * Update {@link #csvGrid} content by selected language.
 	 */
-	private void updateCsvGrid() {
+	private void updateCsvGrid()
+	{
 		csvGrid.removeAllColumns();
 
-		csvGrid.addColumn((ValueProvider<CsvRow, String>) csvRow -> {
+		csvGrid.addColumn( csvRow ->
+		{
 			String valueOfCode = csvRow.getNotation();
 
-			if (Objects.isNull(valueOfCode) || "".equals(valueOfCode))
+			if ( Objects.isNull( valueOfCode ) || "".equals( valueOfCode ) )
 
-				if (valueOfCode.contains(".")) {
-					String[] rows = valueOfCode.split("\\.");
+				if ( valueOfCode.contains( "." ) )
+				{
+					String[] rows = valueOfCode.split( "\\." );
 
 					return "<div><font size=\"1\">" + rows[0] + "<br/>" + "&nbsp;&nbsp;" + rows[1] + "</font></div>";
 				}

@@ -1,66 +1,58 @@
 package eu.cessda.cvmanager.ui.component;
 
-import java.awt.AlphaComposite;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import javax.imageio.ImageIO;
-import javax.xml.bind.DatatypeConverter;
-
+import com.vaadin.server.Page;
+import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.Label;
+import com.vaadin.ui.*;
+import com.vaadin.ui.Upload.*;
+import eu.cessda.cvmanager.config.Constants;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.vaadin.viritin.label.MLabel;
 
-import com.vaadin.server.Page;
-import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.Upload;
-import com.vaadin.ui.Upload.ProgressListener;
-import com.vaadin.ui.Upload.Receiver;
-import com.vaadin.ui.Upload.StartedEvent;
-import com.vaadin.ui.Upload.StartedListener;
-import com.vaadin.ui.Upload.SucceededEvent;
-import com.vaadin.ui.Upload.SucceededListener;
-import com.vaadin.ui.VerticalLayout;
+import javax.imageio.ImageIO;
+import javax.xml.bind.DatatypeConverter;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
 
-public class UploadAgencyLogo extends CustomComponent {
-	private static final String HARDCODED_TMP_UPLOADS_DIRECTORY = "/tmp/uploads";
+public class UploadAgencyLogo extends CustomComponent
+{
+	private static final File HARDCODED_TMP_UPLOADS_DIRECTORY = new File( Constants.TMPDIR, "uploads/" );
 	private static final long serialVersionUID = 5884964436829655205L;
-	private static final Logger log = LoggerFactory.getLogger(UploadAgencyLogo.class);
+	private static final Logger log = LoggerFactory.getLogger( UploadAgencyLogo.class );
 
-	public void init(AgencyDTO agencyDTO) {
+	public void init( AgencyDTO agencyDTO )
+	{
 		VerticalLayout layout = new VerticalLayout();
-		layout.setMargin(false);
+		layout.setMargin( false );
 		// Show uploaded file in this placeholder
-		final MLabel imagePreview = new MLabel().withContentMode(ContentMode.HTML);
+		final MLabel imagePreview = new MLabel().withContentMode( ContentMode.HTML );
 
 		// Implement both receiver that saves upload in a file and
 		// listener for successful upload
-		class ImageReceiver implements Receiver, SucceededListener {
+		class ImageReceiver implements Receiver, SucceededListener
+		{
 
 			private static final long serialVersionUID = -1923790134165706057L;
 			private File file;
 
 			@Override
-			public OutputStream receiveUpload(String filename, String mimeType) {
+			public OutputStream receiveUpload( String filename, String mimeType )
+			{
 				// Create upload stream
-				FileOutputStream fos = null; // Stream to write to
-				try {
+				FileOutputStream fos; // Stream to write to
+				try
+				{
 					// Open the file for writing.
-					file = new File(HARDCODED_TMP_UPLOADS_DIRECTORY + "/" + filename);
-					fos = new FileOutputStream(file);
-				} catch (final java.io.FileNotFoundException e) {
-					new Notification("Could not open file<br/>", e.getMessage(), Notification.Type.ERROR_MESSAGE)
-							.show(Page.getCurrent());
+					file = new File( HARDCODED_TMP_UPLOADS_DIRECTORY, filename );
+					fos = new FileOutputStream( file );
+				}
+				catch ( final java.io.FileNotFoundException e )
+				{
+					new Notification( "Could not open file<br/>", e.getMessage(), Notification.Type.ERROR_MESSAGE )
+							.show( Page.getCurrent() );
 					return null;
 				}
 				return fos; // Return the output stream to write to
@@ -142,19 +134,22 @@ public class UploadAgencyLogo extends CustomComponent {
 		ImageReceiver receiver = new ImageReceiver();
 
 		// Create the upload with a caption and set receiver later
-		final Upload upload = new Upload("Choose file to add/replace agency logo (max 5MB)", receiver);
+		final Upload upload = new Upload( "Choose file to add/replace agency logo (max 5MB)", receiver );
 
-		upload.addSucceededListener(receiver);
+		upload.addSucceededListener( receiver );
 
 		// Prevent too big downloads
-		final long UPLOAD_LIMIT = 5000000l;
-		upload.addStartedListener(new StartedListener() {
+		final long UPLOAD_LIMIT = 5000000L;
+		upload.addStartedListener( new StartedListener()
+		{
 			private static final long serialVersionUID = 4728847902678459488L;
 
 			@Override
-			public void uploadStarted(StartedEvent event) {
-				if (event.getContentLength() > UPLOAD_LIMIT) {
-					Notification.show("Too big file", Notification.Type.ERROR_MESSAGE);
+			public void uploadStarted( StartedEvent event )
+			{
+				if ( event.getContentLength() > UPLOAD_LIMIT )
+				{
+					Notification.show( "Too big file", Notification.Type.ERROR_MESSAGE );
 					upload.interruptUpload();
 				}
 			}
@@ -171,25 +166,26 @@ public class UploadAgencyLogo extends CustomComponent {
 					upload.interruptUpload();
 				}
 			}
-		});
-		if (agencyDTO.getLogo() != null) {
-			imagePreview.setValue("<img src='" + agencyDTO.getLogo() + "'>");
+		} );
+		if ( agencyDTO.getLogo() != null )
+		{
+			imagePreview.setValue( "<img src='" + agencyDTO.getLogo() + "'>" );
 		}
 
 		// Put the components in a panel
 		VerticalLayout panelContent = new VerticalLayout();
-		panelContent.setMargin(false);
-		panelContent.addComponents(upload, imagePreview);
+		panelContent.setMargin( false );
+		panelContent.addComponents( upload, imagePreview );
 		// END-EXAMPLE: component.upload.basic
 
 		// Create uploads directory
-		File uploads = new File(HARDCODED_TMP_UPLOADS_DIRECTORY);
-		if (!uploads.exists() && !uploads.mkdir())
-			layout.addComponent(new Label("ERROR: Could not create upload dir"));
+		File uploads = HARDCODED_TMP_UPLOADS_DIRECTORY;
+		if ( !uploads.exists() && !uploads.mkdir() )
+			layout.addComponent( new Label( "ERROR: Could not create upload dir" ) );
 
-		layout.addComponent(panelContent);
+		layout.addComponent( panelContent );
 
-		setCompositionRoot(layout);
-		setStyleName("upload-logo");
+		setCompositionRoot( layout );
+		setStyleName( "upload-logo" );
 	}
 }

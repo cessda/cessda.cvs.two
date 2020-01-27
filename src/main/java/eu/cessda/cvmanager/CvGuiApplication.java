@@ -1,7 +1,5 @@
 package eu.cessda.cvmanager;
 
-import java.util.Collections;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
@@ -22,6 +20,8 @@ import org.thymeleaf.templateresolver.StringTemplateResolver;
 import org.vaadin.spring.i18n.MessageProvider;
 import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 
+import java.util.Collections;
+
 @SpringBootApplication( exclude = { SecurityAutoConfiguration.class, ThymeleafAutoConfiguration.class } )
 @ComponentScan( basePackages = { "org.gesis.wts", "eu.cessda.cvmanager" } )
 @EnableJpaRepositories( basePackages = { "org.gesis.wts.repository", "eu.cessda.cvmanager.repository" } )
@@ -30,7 +30,7 @@ import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 public class CvGuiApplication extends SpringBootServletInitializer
 {
 
-	private static final String UTF_8 = "UTF-8";
+    private static final String UTF_8 = "UTF-8";
 
 	public static void main( String[] args )
 	{
@@ -61,40 +61,40 @@ public class CvGuiApplication extends SpringBootServletInitializer
 	}
 
 	private ITemplateResolver htmlTemplateResolver()
-	{
-		final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-		templateResolver.setOrder( Integer.valueOf( 1 ) );
-		templateResolver.setResolvablePatterns( Collections.singleton( "html/*" ) );
-		templateResolver.setPrefix( "templates/" );
-		templateResolver.setSuffix( ".html" );
-		templateResolver.setTemplateMode( TemplateMode.HTML );
-		templateResolver.setCharacterEncoding( UTF_8 );
-		templateResolver.setCacheable( false );
-		return templateResolver;
-	}
+    {
+        final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setOrder( 1 );
+        templateResolver.setResolvablePatterns( Collections.singleton( "html/*" ) );
+        templateResolver.setPrefix( "templates/" );
+        templateResolver.setSuffix( ".html" );
+        templateResolver.setTemplateMode( TemplateMode.HTML );
+        templateResolver.setCharacterEncoding( UTF_8 );
+        templateResolver.setCacheable( false );
+        return templateResolver;
+    }
 
 	private ITemplateResolver xmlTemplateResolver()
-	{
-		final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
-		templateResolver.setOrder( Integer.valueOf( 2 ) );
-		templateResolver.setResolvablePatterns( Collections.singleton( "xml/*" ) );
-		templateResolver.setPrefix( "templates/" );
-		templateResolver.setSuffix( ".xml" );
-		templateResolver.setTemplateMode( TemplateMode.XML );
-		templateResolver.setCharacterEncoding( UTF_8 );
-		templateResolver.setCacheable( false );
-		return templateResolver;
-	}
+    {
+        final ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setOrder( 2 );
+        templateResolver.setResolvablePatterns( Collections.singleton( "xml/*" ) );
+        templateResolver.setPrefix( "templates/" );
+        templateResolver.setSuffix( ".xml" );
+        templateResolver.setTemplateMode( TemplateMode.XML );
+        templateResolver.setCharacterEncoding( UTF_8 );
+        templateResolver.setCacheable( false );
+        return templateResolver;
+    }
 
 	private ITemplateResolver stringTemplateResolver()
-	{
-		final StringTemplateResolver templateResolver = new StringTemplateResolver();
-		templateResolver.setOrder( Integer.valueOf( 3 ) );
-		// No resolvable pattern, will simply process as a String template everything not previously
-		// matched
-		templateResolver.setTemplateMode( "HTML5" );
-		templateResolver.setCacheable( false );
-		return templateResolver;
-	}
+    {
+        final StringTemplateResolver templateResolver = new StringTemplateResolver();
+        templateResolver.setOrder( 3 );
+        // No resolvable pattern, will simply process as a String template everything not previously
+        // matched
+        templateResolver.setTemplateMode( TemplateMode.HTML );
+        templateResolver.setCacheable( false );
+        return templateResolver;
+    }
 
 }
