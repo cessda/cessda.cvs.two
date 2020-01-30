@@ -93,12 +93,12 @@ public class VocabularyGridRowPublish extends CustomComponent {
 			MButton langButton = new MButton(item.toUpperCase());
 			langButton.addStyleName("langbutton");
 
-			if (item.equalsIgnoreCase(sourceLanguage.toString())) {
+			if (item.equalsIgnoreCase(sourceLanguage.getIso())) {
 				langButton.addStyleName("button-source-language");
 				langButton.setDescription("Source language");
 			}
 
-			if (item.equalsIgnoreCase(currentSelectedLanguage.toString()))
+			if (item.equalsIgnoreCase(currentSelectedLanguage.getIso()))
 				langButton.addStyleName(BUTTON_LANGUAGE_SELECTED);
 
 			langButton.addClickListener(e -> {
@@ -107,7 +107,7 @@ public class VocabularyGridRowPublish extends CustomComponent {
 				setContent();
 			});
 			languageLayout.add(langButton);
-			if (item.equalsIgnoreCase(sourceLanguage.toString())) {
+			if (item.equalsIgnoreCase(sourceLanguage.getIso())) {
 				langButton.addStyleName("font-bold");
 				langButton.setDescription("source language"
 						+ (langButton.getDescription() != null && !langButton.getDescription().isEmpty()
@@ -176,7 +176,7 @@ public class VocabularyGridRowPublish extends CustomComponent {
 		desc.setValue(definition);
 		if (currentSelectedLanguage != null) {
 			version.setValue("Version: " + vocabulary.getVersionByLanguage(currentSelectedLanguage) + " "
-					+ (currentSelectedLanguage.equals(sourceLanguage) ? "" : "_" + currentSelectedLanguage.toString())
+					+ (currentSelectedLanguage.equals(sourceLanguage) ? "" : "_" + currentSelectedLanguage.getIso())
 					+ " <a href='" + baseUrl + "&tab=download" + "'>Download</a>");
 		}
 

@@ -829,7 +829,7 @@ public class VocabularyDTO implements Serializable {
 			default:
 				break;
     	}
-    	addLanguage(language.toString());
+    	addLanguage(language.getIso());
     	return this;
     }
     
@@ -1984,7 +1984,7 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(Language language) {
-		return getLatestVersionByLanguage(language.toString(), null);
+		return getLatestVersionByLanguage(language.getIso(), null);
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(String language) {
@@ -1996,7 +1996,7 @@ public class VocabularyDTO implements Serializable {
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(Language language, String version) {
-		return getLatestVersionByLanguage(language.toString(), version, null);
+		return getLatestVersionByLanguage(language.getIso(), version, null);
 	}
 	
 	public Optional<VersionDTO> getLatestVersionByLanguage(String language, String version, String status) {
@@ -2162,7 +2162,7 @@ public class VocabularyDTO implements Serializable {
 		// get published languages from vocabulary
 		for(String lang : vocabulary.getLanguages()) {
 			Language eachLanguage = Language.getByIso(lang);
-			String languageIso = eachLanguage.toString();
+			String languageIso = eachLanguage.getIso();
 			
 			cvScheme.setTitleByLanguage(languageIso, vocabulary.getTitleByLanguage(eachLanguage));
 			cvScheme.setDescriptionByLanguage(languageIso, vocabulary.getDefinitionByLanguage(eachLanguage));

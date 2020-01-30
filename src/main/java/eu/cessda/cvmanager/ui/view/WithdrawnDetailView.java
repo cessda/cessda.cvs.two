@@ -333,7 +333,7 @@ public class WithdrawnDetailView extends CvView {
 			topViewSection.add(vocabularyIsWithdrawn);
 		}
 
-		vocabulary.getLatestVersionByLanguage(sourceLanguage.toString(), null, Status.PUBLISHED.toString())
+		vocabulary.getLatestVersionByLanguage(sourceLanguage.getIso(), null, Status.PUBLISHED.toString())
 				.ifPresent(slVersion -> {
 					String baseUrl = configService.getServerContextPath() + "/#!" + WithdrawnDetailView.VIEW_NAME + "/";
 					latestSlVersion = slVersion;
@@ -395,7 +395,7 @@ public class WithdrawnDetailView extends CvView {
 				new MLabel(currentVersion.getDefinition()).withStyleName("rightPart")
 						.withContentMode(ContentMode.HTML));
 
-		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
+		if (selectedLang.getIso().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 		}
@@ -405,7 +405,7 @@ public class WithdrawnDetailView extends CvView {
 		MCssLayout langVersDateLayout = new MCssLayout();
 		langVersDateLayout.withFullWidth()
 				.add(new MCssLayout().withStyleName("col-des-4").add(lLang.withWidth("140px").withStyleName("leftPart"),
-						new MLabel(selectedLang.toString()).withStyleName("rightPart")),
+						new MLabel(selectedLang.getIso()).withStyleName("rightPart")),
 						new MCssLayout().withStyleName("col-des-4")
 								.add(lVersion.withWidth("140px").withStyleName("leftPart"), versionLabel));
 
@@ -457,7 +457,7 @@ public class WithdrawnDetailView extends CvView {
 		detailTreeGrid.addColumn(code -> code.getNotation()).setCaption("Code").setExpandRatio(1).setId("code");
 
 		detailTreeGrid.addColumn(concept -> concept.getTitle())
-				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString()))
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.getIso()))
 				.setExpandRatio(1).setId("prefLabelTl");
 
 		detailTreeGrid.addColumn(concept -> {
@@ -467,7 +467,7 @@ public class WithdrawnDetailView extends CvView {
 			definitionLabel.setId("code-" + concept.getNotation().replace(".", "-"));
 			return definitionLabel;
 		}, new ComponentRenderer())
-				.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString()))
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.getIso()))
 				.setExpandRatio(3).setId("definitionTl");
 
 		detailTreeGrid.setSizeFull();
@@ -681,12 +681,12 @@ public class WithdrawnDetailView extends CvView {
 			langButtons.add(languageButton);
 
 			languageButton.withStyleName("langbutton-publish");
-			if (langIso.equalsIgnoreCase(sourceLanguage.toString())) {
+			if (langIso.equalsIgnoreCase(sourceLanguage.getIso())) {
 				languageButton.addStyleNames("button-source-language", "font-bold");
 				languageButton.setDescription("source language");
 			}
 
-			if (langIso.equalsIgnoreCase(selectedLang.toString()))
+			if (langIso.equalsIgnoreCase(selectedLang.getIso()))
 				languageButton.addStyleName("button-language-selected");
 
 			languageButton.addClickListener(e -> {
@@ -777,7 +777,7 @@ public class WithdrawnDetailView extends CvView {
 		});
 
 		versionLabel.setValue(currentVersion.getNumber()
-				+ (selectedLang.equals(sourceLanguage) ? "" : "-" + selectedLang.toString()));
+				+ (selectedLang.equals(sourceLanguage) ? "" : "-" + selectedLang.getIso()));
 
 		initTopViewSection();
 		initBottomViewSection();

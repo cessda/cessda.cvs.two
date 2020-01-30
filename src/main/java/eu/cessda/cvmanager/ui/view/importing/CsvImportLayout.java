@@ -159,7 +159,7 @@ public class CsvImportLayout extends MCssLayout implements Translatable {
 		csvGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
 		csvGrid.getEditor().setEnabled(true);
 
-		languageComboBox = new MLabel(Language.getByIso(selectedLanguage.toString()).getFormatted());
+		languageComboBox = new MLabel(Language.getByIso(selectedLanguage.getIso()).getFormatted());
 		languageComboBox.setCaption("Language");
 		languageComboBox.withWidth("200px");
 

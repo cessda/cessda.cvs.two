@@ -720,7 +720,7 @@ public class CodeDTO implements Serializable {
     			setDefinitionSr(definition);
     			break;
     	}
-    	addLanguage(language.toString());
+    	addLanguage(language.getIso());
     	return this;
     }
     
@@ -840,9 +840,9 @@ public class CodeDTO implements Serializable {
     			break;
     	}
     	if(isRemoveLanguage)
-    		removeLanguage(language.toString());
+    		removeLanguage(language.getIso());
     	else
-    		addLanguage(language.toString());
+    		addLanguage(language.getIso());
     	return this;
     }
     

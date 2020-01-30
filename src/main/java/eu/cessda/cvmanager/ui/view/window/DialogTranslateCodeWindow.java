@@ -132,8 +132,8 @@ public class DialogTranslateCodeWindow extends MWindow {
 			}
 		});
 
-		preferedLabel.setCaption( "Code (" + language.toString() + ")*");
-		description.setCaption( "Definition ("+ language.toString() +")*");
+		preferedLabel.setCaption( "Code (" + language.getIso() + ")*");
+		description.setCaption( "Definition ("+ language.getIso() +")*");
 		
 		if( language.equals( sourceLang )) {
 			sourceRowA.setVisible( false );

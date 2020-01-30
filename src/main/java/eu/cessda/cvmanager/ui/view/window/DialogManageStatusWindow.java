@@ -281,7 +281,7 @@ public class DialogManageStatusWindow extends MWindow {
 				// get available TL, get language first and then get the latest TL
 				// The latest TL will be listed as the target TL to be cloned
 				for (String lang : VocabularyDTO.getLanguagesFromVersions(vocabulary.getVersions())) {
-					if (lang.equals(sourceLanguage.toString()))
+					if (lang.equals(sourceLanguage.getIso()))
 						continue;
 					latestTlVersions.add(vocabulary.getLatestVersionByLanguage(lang).get());
 				}

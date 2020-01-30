@@ -54,13 +54,13 @@ public class WorkspaceManager {
 			vocabulary.setVersionNumber("1.0");
 			vocabulary.setAgencyId( agency.getId());
 			vocabulary.setAgencyName( agency.getName());
-			vocabulary.setSourceLanguage( language.toString());
+			vocabulary.setSourceLanguage( language.getIso());
 
-			version.setUri( WorkflowUtils.generateAgencyBaseUri( agency.getUri() ) + vocabulary.getNotation() + "/" + language.toString() );
+			version.setUri( WorkflowUtils.generateAgencyBaseUri( agency.getUri() ) + vocabulary.getNotation() + "/" + language.getIso() );
 			version.setNotation( vocabulary.getNotation());
 			version.setNumber("1.0");
 			version.setItemType( ItemType.SL.toString());
-			version.setLanguage( language.toString() );
+			version.setLanguage( language.getIso() );
 			version.setPreviousVersion(0L);
 			UserDetails loggedUser = CvManagerSecurityUtils.getLoggedUser();
 
@@ -105,7 +105,7 @@ public class WorkspaceManager {
 		
 		// store new version
 		if( !tlVersion.isPersisted()) {
-			String languageIso = language.toString();
+			String languageIso = language.getIso();
 			log.info( "Saving new TL version of {}, with language {}", vocabulary.getNotation(), languageIso);
 			tlVersion.setUriSl( vocabulary.getUri() );
 
@@ -186,7 +186,7 @@ public class WorkspaceManager {
 
 	private void clonePreviousVersion(AgencyDTO agency, Language language, VocabularyDTO vocabulary, VersionDTO slVersion, VersionDTO versionTl) {
 		// get previous version from the same language
-		Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), language.toString(), null);
+		Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), language.getIso(), null);
 		if( latestTlVersion.isPresent() ) {
 			// if exist then reassign the version number and perform cloning
 			VersionDTO prevVersion = latestTlVersion.get();

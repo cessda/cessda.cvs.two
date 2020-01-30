@@ -296,7 +296,7 @@ public class PublicationDetailsView extends CvView {
 			topViewSection.add(vocabularyIsWithdrawn);
 		}
 
-		vocabulary.getLatestVersionByLanguage(sourceLanguage.toString(), null, Status.PUBLISHED.toString())
+		vocabulary.getLatestVersionByLanguage(sourceLanguage.getIso(), null, Status.PUBLISHED.toString())
 				.ifPresent(slVersion -> {
 					String baseUrl = configService.getServerContextPath() + "/#!" + PublicationDetailsView.VIEW_NAME
 							+ "/";
@@ -375,7 +375,7 @@ public class PublicationDetailsView extends CvView {
 		if (notesValue.isEmpty())
 			notesOl.setVisible(false);
 
-		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
+		if (selectedLang.getIso().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 			notesOl.setVisible(false);
@@ -440,7 +440,7 @@ public class PublicationDetailsView extends CvView {
 				.setExpandRatio(1).setId("code");
 
 		detailTreeGrid.addColumn(concept -> concept.getTitle())
-				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString()))
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.getIso()))
 				.setExpandRatio(1).setId("prefLabelTl");
 
 		detailTreeGrid.addColumn(concept -> {
@@ -449,7 +449,7 @@ public class PublicationDetailsView extends CvView {
 			definitionLabel.setId("code-" + concept.getNotation().replace(".", "-"));
 			return definitionLabel;
 		}, new ComponentRenderer())
-				.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString()))
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.getIso()))
 				.setExpandRatio(3).setId("definitionTl");
 
 		detailTreeGrid.setSizeFull();
@@ -647,12 +647,12 @@ public class PublicationDetailsView extends CvView {
 			langButtons.add(languageButton);
 
 			languageButton.withStyleName("langbutton-publish");
-			if (langIso.equalsIgnoreCase(sourceLanguage.toString())) {
+			if (langIso.equalsIgnoreCase(sourceLanguage.getIso())) {
 				languageButton.addStyleNames("button-source-language", "font-bold");
 				languageButton.setDescription("source language");
 			}
 
-			if (langIso.equalsIgnoreCase(selectedLang.toString()))
+			if (langIso.equalsIgnoreCase(selectedLang.getIso()))
 				languageButton.addStyleName("button-language-selected");
 
 			languageButton.addClickListener(e -> {
@@ -743,7 +743,7 @@ public class PublicationDetailsView extends CvView {
 		});
 
 		versionLabel.setValue(currentVersion.getNumber()
-				+ (selectedLang.equals(sourceLanguage) ? "" : "-" + selectedLang.toString()));
+				+ (selectedLang.equals(sourceLanguage) ? "" : "-" + selectedLang.getIso()));
 
 		initTopViewSection();
 		initBottomViewSection();

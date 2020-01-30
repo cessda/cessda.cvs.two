@@ -104,7 +104,7 @@ public class DialogImportCsvCodeWindow extends MWindow implements Translatable{
 
 	private void saveCode() {
 		// if source language code is added
-		if( vocabulary.getSourceLanguage().equals( language.toString())) {
+		if( vocabulary.getSourceLanguage().equals( language.getIso())) {
 			for(CsvRow csvRow: csvImportLayout.getCsvRows()) {
 				// get workspace code map from this vocabulary
 				Map<String, CodeDTO> existWfCodeMap = CodeDTO.getCodeAsMap( codeService.findWorkflowCodesByVocabulary( vocabulary.getId()));

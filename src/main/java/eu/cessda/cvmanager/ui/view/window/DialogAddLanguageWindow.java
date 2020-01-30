@@ -403,7 +403,7 @@ public class DialogAddLanguageWindow extends MWindow {
 
 		eventBus.publish(EventScope.UI, EditorDetailsView.VIEW_NAME, this, new CvManagerEvent.Event( CvManagerEvent.EventType.CVSCHEME_UPDATED, null) );
 		close();
-		UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.toString());
+		UI.getCurrent().getNavigator().navigateTo( EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation() + "?lang=" + language.getIso());
 	}
 	
 	private boolean isInputValid() {

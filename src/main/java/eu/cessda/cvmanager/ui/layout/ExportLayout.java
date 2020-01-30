@@ -27,6 +27,7 @@ import java.util.Set;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
+import eu.cessda.cvmanager.service.dto.*;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
@@ -66,10 +67,6 @@ import eu.cessda.cvmanager.service.CodeService;
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.StardatDDIService;
 import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.dto.ConceptDTO;
-import eu.cessda.cvmanager.service.dto.LicenceDTO;
-import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
 import javassist.tools.rmi.ObjectNotFoundException;
 
@@ -243,17 +240,14 @@ public class ExportLayout extends MCssLayout implements Translatable {
 		if (pivotVersion == null && versionMap.entrySet().iterator().hasNext()) {
 			// get latest SL version
 			// SL version is always in the first entry
-
 			pivotVersion = versionMap.entrySet().iterator().next().getValue().get(0);
 
 		}
-
 		// always get one SL version
-		Optional<VersionDTO> versionDTO = vocabulary.getVersionByUri(pivotVersion.getUriSl());
-
-		if (pivotVersion.getItemType().equals(ItemType.TL.toString()) && versionDTO.isPresent()) {
-
-			pivotVersion = versionDTO.get();
+		if (pivotVersion.getItemType().equals(ItemType.TL.toString())) {
+			Optional<VersionDTO> versionDTO = vocabulary.getVersionByUri(pivotVersion.getUriSl());
+			if( versionDTO.isPresent())
+				pivotVersion = versionDTO.get();
 		}
 
 		slVersion = pivotVersion;
@@ -311,7 +305,6 @@ public class ExportLayout extends MCssLayout implements Translatable {
 					return null;
 				}
 
-				try {
 					switch (downloadType) {
 					case HTML:
 					case PDF:
@@ -322,15 +315,8 @@ public class ExportLayout extends MCssLayout implements Translatable {
 							log.error(e.getMessage(), e);
 						}
 						break;
-					default:
-						return new ByteArrayInputStream(
-								generateSKOSxml(downloadType, exportVersions).getBytes(StandardCharsets.UTF_8.name()));
 					}
 
-				} catch (IOException | ObjectNotFoundException e) {
-					log.error(e.getMessage(), e);
-					return null;
-				}
 				return null;
 			}
 
@@ -339,88 +325,6 @@ public class ExportLayout extends MCssLayout implements Translatable {
 				return generateOnDemandFileName(downloadType, true);
 			}
 		};
-	}
-
-	private String generateSKOSxml(DownloadType type, List<VersionDTO> exportVersions) throws ObjectNotFoundException {
-
-		configurationService.getPropertyByKeyAsSet("cvmanager.export.filterTag", ",").ifPresent(c -> filteredTag = c);
-
-		Set<String> filteredLanguages = getFilteredLanguages();
-
-		// TODO: remove this after the FlatDB dialog definition fixed
-		if (!exportVersions.isEmpty()) {
-			if (exportVersions.get(0).getItemType().equals(ItemType.SL.toString()))
-				inSchemeUri = exportVersions.get(0).getUri();
-			else
-				inSchemeUri = exportVersions.get(0).getUriSl();
-		}
-
-		if (type.equals(DownloadType.SKOS)) {
-			// get CvItem from selected sl
-			exportVersions.stream().filter(v -> v.getItemType().equals(ItemType.SL.toString())).findFirst()
-					.ifPresent(v -> {
-						List<DDIStore> ddiSchemes = stardatDDIService.findByIdAndElementType(v.getUri(),
-								DDIElement.CVSCHEME);
-						if (ddiSchemes != null && !ddiSchemes.isEmpty()) {
-							cvItem.setCvScheme(new CVScheme(ddiSchemes.get(0)));
-
-							TreeData<CVConcept> cvCodeTreeData = new TreeData<>();
-							List<DDIStore> ddiConcepts = stardatDDIService.findByIdAndElementType(
-									cvItem.getCvScheme().getContainerId(), DDIElement.CVCONCEPT);
-							CvCodeTreeUtils.buildCvConceptTree(ddiConcepts, cvItem.getCvScheme(), cvCodeTreeData);
-
-							cvItem.setCvConceptTreeData(cvCodeTreeData);
-
-						}
-					});
-
-			if (cvItem.getCvScheme() == null) {
-				Notification.show("Error: unable to find CV-Scheme XML");
-				throw new ObjectNotFoundException("Error: unable to find CV-Scheme XML");
-			}
-		}
-
-		String xmlContent = SaxParserUtils
-				.filterSkosDoc(filteredTag, filteredLanguages, cvItem.getCvScheme().getContent())
-				.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>",
-						"<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\"\n"
-								+ "         xmlns:rdfs=\"http://www.w3.org/2000/01/rdf-schema#\"\n"
-								+ "         xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\"\n"
-								+ "         xmlns:owl=\"http://www.w3.org/2002/07/owl#\"\n"
-								+ "         xmlns:gc=\"http://docs.oasis-open.org/codelist/ns/genericode/1.0/\"\n"
-								+ "         xmlns:dcterms=\"http://purl.org/dc/terms/\"\n"
-								+ "         xmlns:ddi-cv=\"urn:ddi-cv\"\n"
-								+ "         xmlns:h=\"http://www.w3.org/1999/xhtml\"\n"
-								+ "         xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\n\n")
-				// TODO: remove this after the FlatDB dialog definition fixed
-				.replace("skos:title", "dcterms:title").replace("skos:nameCode", "skos:notation")
-				.replace("skos:version", "owl:versionInfo").replace("id=\"\" ", "")
-				.replace("<skos:hasTopConcept rdf:resource=\"http://lod.gesis.org/thesoz/concept_10063164\"/>", "")
-				.replace("<!-- status; 1;published, 2:unpublished, 3: under review, 4: review finalized -->", "")
-				.replace("<!-- If a translation is added -->", "");
-
-		// TODO: remove this after the FlatDB dialog definition fixed - fix publication
-		// date (remove)
-		int index = xmlContent.indexOf(" publicationDate=\"");
-		if (index > 0) {
-			xmlContent = xmlContent.substring(0, index) + xmlContent.substring(index + 29);
-		}
-
-		StringJoiner skosXml = new StringJoiner("\n\n");
-		skosXml.add(xmlContent);
-		skosXml.add(cvItem.getFlattenedCvConceptStreams()
-				.map(x -> SaxParserUtils.filterSkosDoc(filteredTag, filteredLanguages, x.getContent())
-						.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "")
-						// TODO: remove this after the FlatDB dialog definition fixed
-						.replace("<skos:inScheme rdf:resource=\"http://lod.gesis.org/thesoz/scheme\"/>",
-								"<skos:inScheme rdf:resource=\"" + inSchemeUri + "\"/>")
-						.replace("<skos:narrower rdf:resource=\"http://lod.gesis.org/thesoz/concept_10063164\"/>", ""))
-				.collect(Collectors.joining("\n\n")));
-
-		skosXml.add("\n</rdf:RDF>");
-
-		// return string and remove any blank lines
-		return skosXml.toString().replaceAll("(?m)^[ \t]*\r?\n", "");
 	}
 
 	private File generateExportFile(DownloadType type, List<VersionDTO> exportVersions) throws Exception {
@@ -468,7 +372,11 @@ public class ExportLayout extends MCssLayout implements Translatable {
 			map.put("docVersionNotes", slVersion.getVersionNotes());
 			map.put("docVersionChanges", slVersion.getVersionChanges());
 			map.put("docRight", "Copyright © " + agency.getName() + " " + year);
-			map.put("codes", codeService.findByVocabularyAndVersion(vocabulary.getId(), slVersion.getId()));
+			List<CodeDTO> codes = codeService.findByVocabularyAndVersion(vocabulary.getId(), slVersion.getId());
+			if( codes.isEmpty())
+				codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
+			map.put("codes", codes);
+
 		}
 		map.put("cvUrn", cvUrn);
 		map.put("versions", exportVersions);
@@ -532,8 +440,9 @@ public class ExportLayout extends MCssLayout implements Translatable {
 			return createTextFile(outputFile,
 					templateEngine.process("html/" + templateName + "_" + type.toString(), ctx));
 		case SKOS:
-			return createTextFile(outputFile, templateEngine.process("xml/" + templateName + "_" + type.toString(), ctx)
-					.replaceAll("(?m)^[ \t]*\r?\n", ""));
+			String content  = templateEngine.process("xml/" + templateName + "_" + type.toString(), ctx);
+			return createTextFile(outputFile,
+					content.replaceAll("(?m)^[ \t]*\r?\n", ""));
 		default:
 			break;
 		}

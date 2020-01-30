@@ -263,8 +263,8 @@ public class CvCodeTreeUtils {
 
 			for (String langString : topCode.getLanguages()) {
 				Language lang = Language.getByIso(langString);
-				topCVConcept.setPrefLabelByLanguage(lang.toString(), topCode.getTitleByLanguage(lang));
-				topCVConcept.setDescriptionByLanguage(lang.toString(), topCode.getDefinitionByLanguage(lang));
+				topCVConcept.setPrefLabelByLanguage(lang.getIso(), topCode.getTitleByLanguage(lang));
+				topCVConcept.setDescriptionByLanguage(lang.getIso(), topCode.getDefinitionByLanguage(lang));
 			}
 			// add root entry
 			topCVConcept.save();
@@ -291,8 +291,8 @@ public class CvCodeTreeUtils {
 
 		for (String langString : childCode.getLanguages()) {
 			Language lang = Language.getByIso(langString);
-			newCVConcept.setPrefLabelByLanguage(lang.toString(), childCode.getTitleByLanguage(lang));
-			newCVConcept.setDescriptionByLanguage(lang.toString(), childCode.getDefinitionByLanguage(lang));
+			newCVConcept.setPrefLabelByLanguage(lang.getIso(), childCode.getTitleByLanguage(lang));
+			newCVConcept.setDescriptionByLanguage(lang.getIso(), childCode.getDefinitionByLanguage(lang));
 		}
 		// add narrower entry
 		newCVConcept.save();

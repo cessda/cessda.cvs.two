@@ -83,10 +83,10 @@ public class VocabularyWithdrawnGridRow extends CustomComponent {
 			MButton langButton = new MButton(item.toUpperCase());
 			langButton.addStyleName( "langbutton" );
 			
-			if( item.equalsIgnoreCase( sourceLanguage.toString() ))
+			if( item.equalsIgnoreCase( sourceLanguage.getIso() ))
 				langButton.addStyleName( "button-source-language" );
 			
-			if( item.equalsIgnoreCase( currentSelectedLanguage.toString() ))
+			if( item.equalsIgnoreCase( currentSelectedLanguage.getIso() ))
 				langButton.addStyleName( "button-language-selected" );
 			
 			// determine the status
@@ -111,7 +111,7 @@ public class VocabularyWithdrawnGridRow extends CustomComponent {
 				setContent();
 			});
 			languageLayout.add(langButton);
-			if (item.equals(sourceLanguage.toString().toUpperCase())) {
+			if (item.equals(sourceLanguage.getIso().toUpperCase())) {
 				langButton.addStyleName("font-bold");
 				langButton.setDescription("source language" + (langButton.getDescription() != null && !langButton.getDescription().isEmpty()? " (" + langButton.getDescription() + ")":""));
 				langButton.click();
@@ -179,7 +179,7 @@ public class VocabularyWithdrawnGridRow extends CustomComponent {
 		tlTitle.setValue("<a href='" + baseUrl  + "'>" + vocabulary.getNotation() + "</a>");
 		desc.setValue( definition );
 		version.setValue("Version: " + vocabulary.getVersionByLanguage(currentSelectedLanguage) + " "
-				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.toString()) );
+				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.getIso()) );
 		
 		if( !vocabulary.getCodes().isEmpty() ) {
 			codeList.setVisible( true );

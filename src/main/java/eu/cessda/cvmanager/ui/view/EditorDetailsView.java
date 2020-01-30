@@ -455,18 +455,18 @@ public class EditorDetailsView extends CvView {
 		
 		languages.forEach(item -> {
 			Language eachLanguage = Language.getByIso(item);
-			
-			MButton langButton = new MButton(eachLanguage.toString().toUpperCase());
+
+			MButton langButton = new MButton(item.toUpperCase());
 			langButton.withStyleName("langbutton");
 			
-			if( item.equalsIgnoreCase( sourceLanguage.toString() ))
+			if( item.equalsIgnoreCase( sourceLanguage.getIso() ))
 				langButton.addStyleName( "button-source-language" );
 			
 			if( eachLanguage.equals( selectedLang ))
 				langButton.addStyleName( "button-language-selected" );
 			
 			// determine the status
-			vocabulary.getLatestVersionByLanguage( eachLanguage.toString(), versionNumber)
+			vocabulary.getLatestVersionByLanguage( eachLanguage.getIso(), versionNumber)
 			.ifPresent( versionDTO -> {
 				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
 					// TODO: check detail for editor or publication page
@@ -505,7 +505,7 @@ public class EditorDetailsView extends CvView {
 						currentVersion = v;
 						
 						versionLabel.setValue( (currentVersion.getNumber() == null ? "":currentVersion.getNumber()) + 
-								(selectedLang.equals( sourceLanguage ) ? "": "-" + selectedLang.toString())  + 
+								(selectedLang.equals( sourceLanguage ) ? "": "-" + selectedLang.getIso())  +
 								( currentVersion.getStatus().equals( Status.PUBLISHED.toString() ) ? "":" (" + currentVersion.getStatus() + ")"));
 					});
 				
@@ -601,7 +601,7 @@ public class EditorDetailsView extends CvView {
 
 		MCssLayout notesOl = new MCssLayout();
 		MLabel notesOlLabel = new MLabel().withStyleName("rightPart").withContentMode(ContentMode.HTML);
-		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
+		if (selectedLang.getIso().equals(configService.getDefaultSourceLanguage())) {
 			titleSmallOl.setVisible(false);
 			descriptionOl.setVisible(false);
 		} else {
@@ -650,7 +650,7 @@ public class EditorDetailsView extends CvView {
 					cancelNotesButton.setVisible( false );
 					currentVersion.setNotes( notesField.getValue().trim());
 					currentVersion = versionService.save(currentVersion);
-					if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
+					if (selectedLang.getIso().equals(configService.getDefaultSourceLanguage())) {
 						notesLabel.setValue(currentVersion.getNotes());
 						notesLabel.setVisible( true );
 					}else {
@@ -659,7 +659,7 @@ public class EditorDetailsView extends CvView {
 					}
 					if(  currentVersion.getNotes().isEmpty() ) {
 						editNotesButton.setCaption("Add notes");
-						if (selectedLang.toString().equals(configService.getDefaultSourceLanguage()))
+						if (selectedLang.getIso().equals(configService.getDefaultSourceLanguage()))
 							notesLabel.setVisible( false );
 						else
 							notesOlLabel.setVisible( false );
@@ -667,7 +667,7 @@ public class EditorDetailsView extends CvView {
 					else
 						editNotesButton.setCaption( "Edit notes" );
 				}else{
-					if (selectedLang.toString().equals(configService.getDefaultSourceLanguage()))
+					if (selectedLang.getIso().equals(configService.getDefaultSourceLanguage()))
 						notesLabel.setVisible( false );
 					else
 						notesOlLabel.setVisible( false );
@@ -681,7 +681,7 @@ public class EditorDetailsView extends CvView {
 				cancelNotesButton.setVisible( false );
 				notesField.setVisible( false );
 				notesField.setValue( currentVersion.getNotes() == null ? "": currentVersion.getNotes());
-				if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
+				if (selectedLang.getIso().equals(configService.getDefaultSourceLanguage())) {
 					notesLabel.setVisible( true );
 				}else {
 					notesOlLabel.setVisible( true );
@@ -690,7 +690,7 @@ public class EditorDetailsView extends CvView {
 			});
 		}
 
-		if (selectedLang.toString().equals(configService.getDefaultSourceLanguage())) {
+		if (selectedLang.getIso().equals(configService.getDefaultSourceLanguage())) {
 			topViewSection.add(topHead, titleSmall, description, notes, editNotesButton, cancelNotesButton, code, langVersDateLayout);
 		}
 		else{
@@ -744,7 +744,7 @@ public class EditorDetailsView extends CvView {
 
 		if( !selectedLang.equals( Language.getByIso( vocabulary.getSourceLanguage() ) ))
 			detailTreeGrid.addColumn(code -> code.getTitleByLanguage(selectedLang))
-				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.toString() ))
+				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.getIso() ))
 				.setExpandRatio(1)
 				.setId("prefLabelTl");
 		
@@ -762,7 +762,7 @@ public class EditorDetailsView extends CvView {
 			detailTreeGrid.addColumn(code -> {
 				return new MLabel( code.getDefinitionByLanguage(selectedLang)).withStyleName( "word-brake-normal" );
 			}, new ComponentRenderer())
-			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.toString() ))
+			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.getIso() ))
 			.setExpandRatio(3)
 			.setId("definitionTl");
 		
@@ -1225,11 +1225,11 @@ public class EditorDetailsView extends CvView {
 		lLang.setValue( i18n.get("view.detail.cvscheme.label.language", locale));
 		lVersion.setValue( i18n.get("view.detail.cvscheme.label.sl.version", locale));
 		lDate.setValue( i18n.get("view.detail.cvscheme.label.sl.publicationdate", locale));
-		lTitleOl.setValue( i18n.get("view.detail.cvscheme.label.tl.title", locale, selectedLang));
-		lDefinitionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang));
+		lTitleOl.setValue( i18n.get("view.detail.cvscheme.label.tl.title", locale, selectedLang.getIso()));
+		lDefinitionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.definition", locale, selectedLang.getIso()));
 		lVersionOl.setValue( i18n.get("view.detail.cvscheme.label.tl.version", locale));
 		lDateOl.setValue( i18n.get("view.detail.cvscheme.label.tl.publicationdate", locale));
-		lNotesOl.setValue( "CV notes (" + selectedLang + ")" );
+		lNotesOl.setValue( "CV notes (" + selectedLang.getIso() + ")" );
 
 		detailTab.getTab(0).setCaption( i18n.get("view.detail.cvconcept.tab.detail", locale));
 		detailTab.getTab(1).setCaption( i18n.get("view.detail.cvconcept.tab.version", locale));
