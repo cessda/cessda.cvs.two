@@ -1,27 +1,21 @@
 package eu.cessda.cvmanager.utils;
 
-import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Stream;
-
+import com.google.common.base.Preconditions;
+import com.google.common.primitives.Ints;
+import com.vaadin.data.provider.*;
+import com.vaadin.server.SerializableBiFunction;
+import com.vaadin.server.SerializableFunction;
+import com.vaadin.shared.Registration;
+import com.vaadin.shared.data.sort.SortDirection;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.google.common.base.Preconditions;
-import com.google.common.primitives.Ints;
-import com.vaadin.data.provider.CallbackDataProvider;
-import com.vaadin.data.provider.ConfigurableFilterDataProvider;
-import com.vaadin.data.provider.DataProvider;
-import com.vaadin.data.provider.DataProviderListener;
-import com.vaadin.data.provider.Query;
-import com.vaadin.data.provider.QuerySortOrder;
-import com.vaadin.server.SerializableBiFunction;
-import com.vaadin.server.SerializableFunction;
-import com.vaadin.shared.Registration;
-import com.vaadin.shared.data.sort.SortDirection;
+import java.io.Serializable;
+import java.util.List;
+import java.util.stream.Stream;
 
 /*
  * example from https://vaadin.com/forum/#!/thread/16031323
@@ -36,10 +30,11 @@ public class ExampleFilterDataProvider<T, ID extends Serializable> implements Co
 
     public ExampleFilterDataProvider(JpaRepository<T, ID> repository,
                                      ExampleMatcher matcher,
-                                     List<QuerySortOrder> defaultSort) {
-        Preconditions.checkNotNull(defaultSort);
-        Preconditions.checkArgument(defaultSort.size() > 0,
-                "At least one sort property must be specified!");
+                                     List<QuerySortOrder> defaultSort)
+    {
+        Preconditions.checkNotNull( defaultSort );
+        Preconditions.checkArgument( !defaultSort.isEmpty(),
+                "At least one sort property must be specified!" );
 
         this.repository = repository;
         this.matcher = matcher;
@@ -133,19 +128,21 @@ public class ExampleFilterDataProvider<T, ID extends Serializable> implements Co
             }
         }
 
-        private static Sort.Order[] mapSortCriteria(List<QuerySortOrder> sortOrders) {
+        private static Sort.Order[] mapSortCriteria( List<QuerySortOrder> sortOrders )
+        {
             return sortOrders.stream()
-                    .map(s -> new Sort.Order(s.getDirection() == SortDirection.ASCENDING ? Sort.Direction.ASC : Sort.Direction.DESC, s.getSorted()))
-                    .toArray(Sort.Order[]::new);
+                    .map( s -> new Sort.Order( s.getDirection() == SortDirection.ASCENDING ? Sort.Direction.ASC : Sort.Direction.DESC, s.getSorted() ) )
+                    .toArray( Sort.Order[]::new );
         }
 
         private final Sort sort;
-        private int limit = 0;
-        private int offset = 0;
+        private int limit;
+        private int offset;
 
-        private ChunkRequest(int offset, int limit, Sort sort) {
-            Preconditions.checkArgument(offset >= 0, "Offset must not be less than zero!");
-            Preconditions.checkArgument(limit > 0, "Limit must be greater than zero!");
+        private ChunkRequest( int offset, int limit, Sort sort )
+        {
+            Preconditions.checkArgument( offset >= 0, "Offset must not be less than zero!" );
+            Preconditions.checkArgument( limit > 0, "Limit must be greater than zero!" );
             this.sort = sort;
             this.offset = offset;
             this.limit = limit;

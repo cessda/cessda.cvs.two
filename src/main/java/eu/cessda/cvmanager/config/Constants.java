@@ -28,8 +28,10 @@ public final class Constants
 
 	public static final String REQUIRED = "required";
 	public static final String REQUIRED_FIELD_INFO = "* required field, require an input with at least 2 characters";
+	public static final String TMPDIR = System.getProperty( "java.io.tmpdir" );
 
 	private Constants()
 	{
+		throw new IllegalStateException( "Utility class!" );
 	}
 }

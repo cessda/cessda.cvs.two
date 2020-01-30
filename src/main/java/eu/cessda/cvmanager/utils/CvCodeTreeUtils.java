@@ -291,8 +291,8 @@ public class CvCodeTreeUtils {
 
 		for (String langString : childCode.getLanguages()) {
 			Language lang = Language.getByIso(langString);
-			newCVConcept.setPrefLabelByLanguage(lang.getIso(), childCode.getTitleByLanguage(lang));
-			newCVConcept.setDescriptionByLanguage(lang.getIso(), childCode.getDefinitionByLanguage(lang));
+			newCVConcept.setPrefLabelByLanguage(lang.toString(), childCode.getTitleByLanguage(lang));
+			newCVConcept.setDescriptionByLanguage(lang.toString(), childCode.getDefinitionByLanguage(lang));
 		}
 		// add narrower entry
 		newCVConcept.save();
