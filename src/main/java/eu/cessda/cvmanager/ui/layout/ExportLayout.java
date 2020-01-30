@@ -373,6 +373,7 @@ public class ExportLayout extends MCssLayout implements Translatable {
 			map.put("docVersionChanges", slVersion.getVersionChanges());
 			map.put("docRight", "Copyright © " + agency.getName() + " " + year);
 			List<CodeDTO> codes = codeService.findByVocabularyAndVersion(vocabulary.getId(), slVersion.getId());
+			// in some case the codes are empty and workflow codes are needed
 			if( codes.isEmpty())
 				codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
 			map.put("codes", codes);
