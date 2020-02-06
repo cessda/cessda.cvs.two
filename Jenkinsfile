@@ -71,7 +71,7 @@ pipeline {
         stage('Check Requirements and Deployments') {
             steps {
                 dir('./infrastructure/gcp/') {
-                    build job: 'cessda.cvs.deploy/master', parameters: [string(name: 'gui_image_tag', value: "${IMAGE_TAG}"), string(name: 'module', value: 'gui')], wait: false
+                    build job: 'cessda.cvs.deploy/master', parameters: [string(name: 'gui_image_tag', value: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}"), string(name: 'module', value: 'gui')], wait: false
                 }
             }
             when { branch 'master' }
