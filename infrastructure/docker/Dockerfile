@@ -5,7 +5,7 @@ FROM tomcat:8.5-jdk8
 LABEL MAINTAINER="CESSDA-ERIC 'support@cessda.eu'"
 
 # Remove base Tomacat webapps
-RUN rm -r /usr/local/tomcat/webapps/*
+RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Add WAR artifact
 COPY maven/@project.build.finalName@.war /usr/local/tomcat/webapps/ROOT.war
