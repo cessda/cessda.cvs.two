@@ -4,13 +4,13 @@ FROM tomcat:8.5-jdk8
 # Container Information
 LABEL MAINTAINER="CESSDA-ERIC 'support@cessda.eu'"
 
-# Create CESSDA User
-RUN useradd cessda
+# Remove base Tomacat webapps
+RUN rm -r /usr/local/tomcat/webapps/*
 
 # Add WAR artifact
-WORKDIR /@project.artifactId@
-COPY maven/@project.build.finalName@.war ./@project.artifactId@.war
+COPY maven/@project.build.finalName@.war /usr/local/tomcat/webapps/ROOT.war
 
 # Switch to CESSDA User and set entrypoint
+RUN useradd cessda
+RUN chown -R cessda /usr/local/tomcat
 USER cessda
-ENTRYPOINT ["java", "-XX:MaxRAMPercentage=50.0", "-jar", "./@project.artifactId@.war"]
