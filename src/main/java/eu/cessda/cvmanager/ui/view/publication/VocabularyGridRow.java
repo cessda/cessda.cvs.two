@@ -197,7 +197,7 @@ public class VocabularyGridRow extends CustomComponent {
 		String baseUrl = configService.getServerContextPath() + "/#!" + EditorDetailsView.VIEW_NAME + "/" + vocabulary.getNotation();
 		
 		if(currentSelectedLanguage != null )
-			baseUrl += "?lang=" + currentSelectedLanguage;
+			baseUrl += "?lang=" + currentSelectedLanguage.getIso();
 		
 		
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");

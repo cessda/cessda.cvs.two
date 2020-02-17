@@ -168,7 +168,7 @@ public class VocabularyGridRowPublish extends CustomComponent {
 			log.error(e.getMessage(), e);
 		}
 		if (currentSelectedLanguage != null)
-			baseUrl += "&lang=" + currentSelectedLanguage;
+			baseUrl += "&lang=" + currentSelectedLanguage.getIso();
 
 		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
 
