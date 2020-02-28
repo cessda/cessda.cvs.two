@@ -1,5 +1,5 @@
 # OpenJDK Base Container
-FROM tomcat:8.5-jdk8
+FROM tomcat:9.0-jdk11
 
 # Container Information
 LABEL MAINTAINER="CESSDA-ERIC 'support@cessda.eu'"
