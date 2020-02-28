@@ -776,9 +776,10 @@ public class EditorDetailsView extends CvView {
 				if( currentVersion.getItemType().equals(ItemType.TL.toString())){
 					Optional<VersionDTO> versionSlOpt = vocabulary.getVersionByUri(currentVersion.getUriSl());
 					if( versionSlOpt.isPresent() ){
-						Optional<ConceptDTO> conceptSlOpt = versionSlOpt.get().getConcepts().stream().filter(c -> c.getNotation().equals(code.getNotation())).findFirst();
-						if( conceptSlOpt.isPresent() )
-							editorCodeActionLayout.setCurrentSlConcept( conceptSlOpt.get());
+						Optional<ConceptDTO> conceptSlOpt = versionSlOpt.get().getConcepts().stream()
+								.filter( c -> c.getNotation().equals( code.getNotation() ) ).findFirst();
+						conceptSlOpt
+								.ifPresent( conceptDTO -> editorCodeActionLayout.setCurrentSlConcept( conceptDTO ) );
 					}
 				}
 								
@@ -789,25 +790,26 @@ public class EditorDetailsView extends CvView {
             	editorCodeActionLayout.clearCode();
 				refreshCodeActionButton();
             }
-		});
-		
-		if(enableTreeDragAndDrop)
+		} );
+
+		if ( enableTreeDragAndDrop )
 			enableTreeGridDragAndDropSort();
-		
+
 		// select row programatically
-		if(code != null ) {
-			detailTreeGrid.select( code);
+		if ( code != null )
+		{
+			detailTreeGrid.select( code );
 		}
-		
-		detailTreeGrid.getColumns().stream().forEach( column -> column.setSortable( false ));
-				
-		detailLayout.addComponents(detailTreeGrid);
+
+		detailTreeGrid.getColumns().forEach( column -> column.setSortable( false ) );
+
+		detailLayout.addComponents( detailTreeGrid );
 		detailLayout.setSizeFull();
-		
-		versionLayout = new VersionLayout(i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService, versionService, false);
+
+		versionLayout = new VersionLayout( i18n, locale, eventBus, agency, vocabulary, vocabularyChangeService, configService, conceptService, versionService, false );
 		versionContentLayout.add( versionLayout );
-		
-		identityLayout = new IdentityLayout(i18n, locale, eventBus, agency, currentVersion, versionService, configService, resolverService, false);
+
+		identityLayout = new IdentityLayout( i18n, locale, eventBus, agency, currentVersion, versionService, configService, resolverService, false );
 		identifyLayout.add( identityLayout );
 		
 		ddiUsageLayout = new DdiUsageLayout(i18n, locale, eventBus, agency, currentVersion, versionService, false);
@@ -835,13 +837,9 @@ public class EditorDetailsView extends CvView {
 				versionLayout.refreshContent(currentVersion);
 			}
 			
-			if( SecurityUtils.isAuthenticated()) {
-				if (tabsheet.getTab(tab).getId().equals("detail")) {
-					editorCodeActionLayout.setVisible( true );
-				}
-				else {
-					editorCodeActionLayout.setVisible( false );
-				}
+			if( SecurityUtils.isAuthenticated())
+			{
+				editorCodeActionLayout.setVisible( tabsheet.getTab( tab ).getId().equals( "detail" ) );
 			}
 		});
 		
@@ -906,20 +904,25 @@ public class EditorDetailsView extends CvView {
 	}
 	
 	private void setActiveTab() {
-		if( activeTab != null) {
-			switch( activeTab) {
-				case "download":
-					vocabulary = vocabularyService.getByNotation(cvItem.getCurrentNotation());
-					// get all version put it on the map
-					orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap(vocabulary.getId());
-					exportLayoutContent.updateGrid(currentVersion, orderedLanguageVersionMap);
-					detailTab.setSelectedTab(5);
-					break;
-				default:
-					detailTab.setSelectedTab(0);
+		if( activeTab != null)
+		{
+			if ( "download".equals( activeTab ) )
+			{
+				vocabulary = vocabularyService.getByNotation( cvItem.getCurrentNotation() );
+				// get all version put it on the map
+				orderedLanguageVersionMap = versionService.getOrderedLanguageVersionMap( vocabulary.getId() );
+				exportLayoutContent.updateGrid( currentVersion, orderedLanguageVersionMap );
+				detailTab.setSelectedTab( 5 );
 			}
-		} else
-			detailTab.setSelectedTab(0);
+			else
+			{
+				detailTab.setSelectedTab( 0 );
+			}
+		}
+		else
+		{
+			detailTab.setSelectedTab( 0 );
+		}
 	}
 	
 	private void enableTreeGridDragAndDropSort() {		
@@ -938,93 +941,108 @@ public class EditorDetailsView extends CvView {
 	     
 		dropTarget.addTreeGridDropListener(event -> {
 			// Accepting dragged items from another Grid in the same UI
-	        event.getDragSourceExtension().ifPresent(source -> {
-	            if (source instanceof TreeGridDragSource) {
-            		if (event.getDropTargetRow().isPresent()) {
-            			CodeDTO targetRow = event.getDropTargetRow().get();
-            			CodeDTO draggedRow = draggedItems.iterator().next();
-	                	
-	                	// check if code drag and drop to itself
-	                	if( targetRow.equals(draggedRow) ) {
-	                		return;
-	                	}
-	                	List<Button> optionButtons = new ArrayList<>();
-	                	optionButtons.add( new Button( "As previous sibling" )); // option 0
-	                	optionButtons.add( new Button( "As next sibling" )); // option 1
-	                	optionButtons.add( new Button( "As child" ));        // option 2
-	                	
-	                	getUI().addWindow( new DialogMultipleOption(
-	                			i18n.get( "dialog.order.code.header" ), 
-	                			i18n.get("dialog.order.code.content", 
-	                					(draggedRow.getNotation() == null ? draggedRow.getTitleByLanguage( sourceLanguage ): draggedRow.getNotation()), 
-	                					(targetRow.getNotation() == null ? targetRow.getTitleByLanguage( sourceLanguage ): targetRow.getNotation())),
-	                			optionButtons, 
-	                			windowoption ->  {
-	                				Integer selectedOptionNumber = windowoption.getSelectedOptionNumber();
-	                				if(selectedOptionNumber == null )
-	                					return;
-	                				
-	                				CodeDTO draggedNodeParent = cvCodeTreeData.getParent( draggedRow );
-	                				CodeDTO targetNodeParent = cvCodeTreeData.getParent(targetRow);
-	                				if( selectedOptionNumber == 0 || selectedOptionNumber == 1) { // move as previous or next sibling
-	                					// in order to be able to move as previous sibling 
-	                					// the nodes need to be from the same parent
-	                					if( !Objects.equals( draggedNodeParent, targetNodeParent)){
-	                						// add code as target parent node first
-	                						cvCodeTreeData.setParent(draggedRow, targetNodeParent);
-	                					}
-	                					
-	                					// now after the node target and node dragged from same parent,
-	                					// set the node position
-	                					if( draggedRow.getParent() != null ) {
-	                						draggedRow.setNotation( draggedRow.getNotation().substring(draggedRow.getParent().length() + 1));
-	                						draggedRow.setParent( null );
-	                					}
-	                					if( targetNodeParent != null && targetNodeParent.getParent() != null ) {
-	                						draggedRow.setParent( targetNodeParent.getParent() );
-	                						draggedRow.setNotation( targetNodeParent.getParent() + "." + draggedRow.getNotation());
-	                					} 
-	                					draggedRow.setUri( draggedRow.getNotation() );
+	        event.getDragSourceExtension().ifPresent(source ->
+			{
+				if ( source instanceof TreeGridDragSource && event.getDropTargetRow().isPresent() )
+				{
+					CodeDTO targetRow = event.getDropTargetRow().get();
+					CodeDTO draggedRow = draggedItems.iterator().next();
 
-	                					// update tree in vaadin UI
-	                					cvCodeTreeData.moveAfterSibling(draggedRow, targetRow);
-	                					
-	                					// if move to previous sibling, need to do moveAfterSibling twice
-	                					// to swap the position between target and dragged node
-	                					if( selectedOptionNumber == 0 ) {
-	                						cvCodeTreeData.moveAfterSibling(targetRow, draggedRow);
-	                					}
-	                					dataProvider.refreshAll();
-	                					
-	                					// save on DB
-            							codeService.storeCodeTree(cvCodeTreeData, currentVersion.getConcepts());
-	                				} 
-	                				else if (selectedOptionNumber == 2) { //move as child
-	                					// Possibility
-	                					// as topconcept to child from root/leaf concept
-	                					// as child child to  child from root/leaf concept (only concept narrower affected)
-	                					
-	                					// force child notation follow its parent
-	                					int lastDotIndex = draggedRow.getNotation().lastIndexOf( '.' );
-	                					if( lastDotIndex >= 0) {
-	                						draggedRow.setNotation( targetRow.getNotation() + "." + draggedRow.getNotation().substring( lastDotIndex + 1));
-	                					} else {
-	                						draggedRow.setNotation( targetRow.getNotation() + "." + draggedRow.getNotation());
-	                					}
-	                					draggedRow.setUri( draggedRow.getNotation() );
-	                					
-            							cvCodeTreeData.setParent(draggedRow, targetRow);
-            							dataProvider.refreshAll();
-            							detailTreeGrid.expand(draggedRow, targetRow);
-            							
-            							// save on DB
-            							codeService.storeCodeTree(cvCodeTreeData, currentVersion.getConcepts());
-	                				}
-	                				draggedItems = null;
-	                			})
-	                	);
-	                }
-	            }
+					// check if code drag and drop to itself
+					if ( targetRow.equals( draggedRow ) )
+					{
+						return;
+					}
+					List<Button> optionButtons = new ArrayList<>();
+					optionButtons.add( new Button( "As previous sibling" ) ); // option 0
+					optionButtons.add( new Button( "As next sibling" ) ); // option 1
+					optionButtons.add( new Button( "As child" ) );        // option 2
+
+					getUI().addWindow( new DialogMultipleOption(
+									i18n.get( "dialog.order.code.header" ),
+									i18n.get( "dialog.order.code.content",
+											( draggedRow.getNotation() == null ?
+													draggedRow.getTitleByLanguage( sourceLanguage ) :
+													draggedRow.getNotation() ),
+											( targetRow.getNotation() == null ? targetRow.getTitleByLanguage( sourceLanguage ) :
+													targetRow.getNotation() ) ),
+									optionButtons, windowoption ->
+							{
+								Integer selectedOptionNumber = windowoption.getSelectedOptionNumber();
+								if ( selectedOptionNumber == null )
+									return;
+
+								CodeDTO draggedNodeParent = cvCodeTreeData.getParent( draggedRow );
+								CodeDTO targetNodeParent = cvCodeTreeData.getParent( targetRow );
+								if ( selectedOptionNumber == 0 || selectedOptionNumber == 1 )
+								{ // move as previous or next sibling
+									// in order to be able to move as previous sibling
+									// the nodes need to be from the same parent
+									if ( !Objects.equals( draggedNodeParent, targetNodeParent ) )
+									{
+										// add code as target parent node first
+										cvCodeTreeData.setParent( draggedRow, targetNodeParent );
+									}
+
+									// now after the node target and node dragged from same parent,
+									// set the node position
+									if ( draggedRow.getParent() != null )
+									{
+										draggedRow.setNotation( draggedRow.getNotation()
+												.substring( draggedRow.getParent().length() + 1 ) );
+										draggedRow.setParent( null );
+									}
+									if ( targetNodeParent != null && targetNodeParent.getParent() != null )
+									{
+										draggedRow.setParent( targetNodeParent.getParent() );
+										draggedRow.setNotation( targetNodeParent.getParent() + "." + draggedRow.getNotation() );
+									}
+									draggedRow.setUri( draggedRow.getNotation() );
+
+									// update tree in vaadin UI
+									cvCodeTreeData.moveAfterSibling( draggedRow, targetRow );
+
+									// if move to previous sibling, need to do moveAfterSibling twice
+									// to swap the position between target and dragged node
+									if ( selectedOptionNumber == 0 )
+									{
+										cvCodeTreeData.moveAfterSibling( targetRow, draggedRow );
+									}
+									dataProvider.refreshAll();
+
+									// save on DB
+									codeService.storeCodeTree( cvCodeTreeData, currentVersion.getConcepts() );
+								}
+								else if ( selectedOptionNumber == 2 )
+								{ //move as child
+									// Possibility
+									// as topconcept to child from root/leaf concept
+									// as child child to  child from root/leaf concept (only concept narrower affected)
+
+									// force child notation follow its parent
+									int lastDotIndex = draggedRow.getNotation().lastIndexOf( '.' );
+									if ( lastDotIndex >= 0 )
+									{
+										draggedRow.setNotation( targetRow.getNotation() + "." +
+												draggedRow.getNotation().substring( lastDotIndex + 1 ) );
+									}
+									else
+									{
+										draggedRow.setNotation( targetRow.getNotation() + "." + draggedRow.getNotation() );
+									}
+									draggedRow.setUri( draggedRow.getNotation() );
+
+									cvCodeTreeData.setParent( draggedRow, targetRow );
+									dataProvider.refreshAll();
+									detailTreeGrid.expand( draggedRow, targetRow );
+
+									// save on DB
+									codeService.storeCodeTree( cvCodeTreeData, currentVersion.getConcepts() );
+								}
+								draggedItems = null;
+							} )
+					);
+				}
 	        });
 	     });
 	}
@@ -1072,41 +1090,40 @@ public class EditorDetailsView extends CvView {
 	@EventBusListenerMethod( scope = EventScope.UI )
 	public void eventHandle( CvManagerEvent.Event event)
 	{
-		switch(event.getType()) {
+		switch(event.getType())
+		{
+			case CVSCHEME_NEWVERSION:
 			case CVSCHEME_UPDATED:
 				super.updateBreadcrumb();
 				setDetails();
 				break;
+
 			case CVCONCEPT_CREATED:
 				// refresh vocabulary
-				vocabulary = vocabularyService.findOne( vocabulary.getId());
+				vocabulary = vocabularyService.findOne( vocabulary.getId() );
 				updateDetailGrid();
-				
-				break;
-				
-			case CVSCHEME_NEWVERSION:
-				super.updateBreadcrumb();
-				setDetails();
 				break;
 
 			case CVCONCEPT_DELETED:
-				
 				// get the editor's codes
 				List<CodeDTO> wCodeDTOs = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
 				// Find if code has children
 				List<CodeDTO> childWCodeDTOs = wCodeDTOs
 						.stream()
 						.filter( p -> p.getParent() != null )
-						.filter( p -> p.getParent().equals( code.getNotation()))
-						.collect( Collectors.toList());
-				String popUpDialogMessageKey = null;
-				if( childWCodeDTOs.isEmpty()) {
-					if( currentVersion.getItemType().equals(ItemType.SL.toString()))
+						.filter( p -> p.getParent().equals( code.getNotation() ) )
+						.collect( Collectors.toList() );
+				String popUpDialogMessageKey;
+				if ( childWCodeDTOs.isEmpty() )
+				{
+					if ( currentVersion.getItemType().equals( ItemType.SL.toString() ) )
 						popUpDialogMessageKey = "dialog.confirm.delete.code";
 					else
 						popUpDialogMessageKey = "dialog.confirm.delete.code.tl";
-				}else {
-					if( currentVersion.getItemType().equals(ItemType.SL.toString()))
+				}
+				else
+				{
+					if ( currentVersion.getItemType().equals( ItemType.SL.toString() ) )
 						popUpDialogMessageKey = "dialog.confirm.delete.code.and.child";
 					else
 						popUpDialogMessageKey = "dialog.confirm.delete.code.tl.and.child";

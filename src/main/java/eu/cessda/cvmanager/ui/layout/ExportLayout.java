@@ -286,7 +286,7 @@ public class ExportLayout extends MCssLayout implements Translatable
 				if ( exportVersions.isEmpty() )
 				{
 					Notification notif = new Notification( "", "No language selected!",
-							Notification.TYPE_WARNING_MESSAGE );
+							Notification.Type.WARNING_MESSAGE );
 
 					notif.setDelayMsec( 0 );
 					notif.setPosition( Position.BOTTOM_RIGHT );

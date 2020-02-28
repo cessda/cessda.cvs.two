@@ -1,5 +1,10 @@
 package eu.cessda.cvmanager.service.rest;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonSerializer;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.ExportService;
 import eu.cessda.cvmanager.service.VersionService;
@@ -11,33 +16,42 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static net.logstash.logback.argument.StructuredArguments.keyValue;
+
 
 /**
- * REST controller for managing Vocabullary.
+ * REST controller for managing Vocabulary.
  */
 @RestController
-@RequestMapping("/v1")
-public class VocabularyResource {
-	private final Logger log = LoggerFactory.getLogger( VocabularyResource.class );
-	
-	private final VersionService versionService;
-	private final VocabularyService vocabularService;
-	private final ExportService exportService;
-	
-	public VocabularyResource( VocabularyService vocabularService, VersionService versionService,
-			ExportService exportService) {
-		this.versionService = versionService;
-		this.vocabularService = vocabularService;
-		this.exportService = exportService;
+@RequestMapping( "/v1" )
+public class VocabularyResource
+{
+    private static final String CV_CODE = "cvCode";
+    private static final String LANGUAGE_ISO = "languageIso";
+    private static final String VERSION = "version";
+    private static final Logger log = LoggerFactory.getLogger( VocabularyResource.class );
+
+    private final VersionService versionService;
+    private final VocabularyService vocabularService;
+    private final ExportService exportService;
+
+    public VocabularyResource( VocabularyService vocabularService, VersionService versionService,
+                               ExportService exportService )
+    {
+        this.versionService = versionService;
+        this.vocabularService = vocabularService;
+        this.exportService = exportService;
 	}
 	
 	
@@ -49,40 +63,46 @@ public class VocabularyResource {
     @SuppressWarnings("unchecked")
 	@GetMapping("/vocabulary")
     @ApiOperation(value = "Get list of the agencies and the controlled vocabularies with the details rest API link.")
-    public Map<String,Object> getAllVocabularies() {
-    	// example structure:
-    	// e.g:
-//    	"DDI":{
-//    		"CsvRow":{
-//                "en":{
-//    				"1.0":"/v1/Vocabulary/CsvRow/en/1.0",
-//    				"1.1":"/v1/Vocabulary/CsvRow/en/1.1"
-//    			}
-//    		}
-//    	}
-        log.debug( "REST request to get all Vocabularies" );
+    public Map<String,Object> getAllVocabularies()
+    {
+    	/*
+    	 example structure:
+    	 e.g:
+    	    	"DDI":{
+    	    		"CsvRow":{
+    	                "en":{
+    	    				"1.0":"/v1/Vocabulary/CsvRow/en/1.0",
+    	    				"1.1":"/v1/Vocabulary/CsvRow/en/1.1"
+    	    			}
+    	    		}
+    	    	}
+    	*/
+        log.debug( "REST: Getting all Vocabularies" );
         Map<String, Object> agencyCvMap = new TreeMap<>();
 
         List<VocabularyDTO> vocabularies = vocabularService.findAll();
 
-        vocabularies = vocabularies.stream().sorted( Comparator.comparing( VocabularyDTO::getNotation ) ).collect( Collectors.toList() );
+        vocabularies = vocabularies.stream().sorted( Comparator.comparing( VocabularyDTO::getNotation ) )
+                .collect( Collectors.toList() );
 
-        for ( VocabularyDTO voc : vocabularies )
+        vocabularies.stream().filter( voc -> !Boolean.TRUE.equals( voc.isWithdrawn() ) ).forEach( voc ->
         {
-            if ( Boolean.TRUE.equals( voc.isWithdrawn() ) )
-                continue;
             Object vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
-            List<VersionDTO> versions = voc.getVersions().stream().sorted( ( c1, c2 ) -> VersionUtils.compareVersion( c1.getNumber(), c2.getNumber() ) ).collect( Collectors.toList() );
-            for ( VersionDTO version : versions )
+            List<VersionDTO> versions = voc.getVersions().stream()
+                    .sorted( ( c1, c2 ) -> VersionUtils.compareVersion( c1.getNumber(), c2.getNumber() ) )
+                    .collect( Collectors.toList() );
+            versions.forEach( version ->
             {
                 Object langMap = ( (Map<String, Object>) vocabMap )
                         .computeIfAbsent( version.getNotation(), k -> new LinkedHashMap<>() );
                 Object versionMap = ( (Map<String, Object>) langMap )
-                        .computeIfAbsent( version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
-                ( (Map<String, Object>) versionMap ).put( version.getNumber(), "/v1/VocabularyDetails/" + version.getNotation() + "/" + version.getLanguage() + "/" + version.getNumber() );
-            }
-
-        }
+                        .computeIfAbsent(
+                                version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
+                ( (Map<String, Object>) versionMap ).put( version.getNumber(),
+                        "/v1/VocabularyDetails/" + version.getNotation() + "/" + version.getLanguage() + "/" +
+                                version.getNumber() );
+            } );
+        } );
 
         return agencyCvMap;
     }
@@ -95,11 +115,16 @@ public class VocabularyResource {
      */
     @GetMapping( "/vocabulary-languages/{cvCode}" )
     @ApiOperation( value = "Get list of the languages in iso-format from a controlled vocabulary." )
-    public List<String> getVocabularyIsoLanguages(
+    public ResponseEntity<List<String>> getVocabularyIsoLanguages(
             @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String cvCode )
     {
+        log.debug( "REST: Getting list of languages for {}", keyValue( CV_CODE, cvCode ) );
         VocabularyDTO vocab = vocabularService.getByNotation( cvCode );
-        return new ArrayList<>( vocab.getLanguagesPublished() );
+        if ( vocab != null )
+        {
+            return ResponseEntity.ok( new ArrayList<>( vocab.getLanguagesPublished() ) );
+        }
+        return ResponseEntity.notFound().build();
     }
 
     /**
@@ -115,57 +140,84 @@ public class VocabularyResource {
             @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String cvCode,
             @ApiParam( value = "the CV language in iso format, e.g. en" ) @PathVariable String languageIso )
     {
-        List<String> cvLangVersions;
+        log.debug( "REST: Getting list of versions for {}, {}", keyValue( CV_CODE, cvCode ), keyValue( LANGUAGE_ISO, languageIso ) );
         VocabularyDTO vocab = vocabularService.getByNotation( cvCode );
 
         // If the vocab was returned
         if ( vocab != null )
         {
             List<VersionDTO> versions = vocab.getVersionsByLanguage( languageIso );
-            cvLangVersions = versions.stream()
+            List<String> cvLangVersions = versions.stream()
                     .filter( v -> v.getStatus().equals( Status.PUBLISHED.toString() ) )
                     .map( VersionDTO::getNumber )
                     .collect( Collectors.toList() );
+            if ( !cvLangVersions.isEmpty() )
+            {
+                return ResponseEntity.ok( cvLangVersions );
+            }
         }
-        else
-        {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok( cvLangVersions );
+        return ResponseEntity.notFound().build();
     }
 
     /**
      * GET   : get the details of a CV in specific language and version
-     * @param cvCode the cv short definition/notation
+     *
+     * @param cvCode      the cv short definition/notation
      * @param languageIso the Cv language (iso format)
-     * @param version the Cv version number 
+     * @param version     the Cv version number
      * @return detail of CV in specific language and version
      */
-    @GetMapping("/vocabulary-details/{cvCode}/{languageIso}/{version}")
-    @ApiOperation(value = "Get the CV details in JSON format.")
-    public VersionDTO getVocabularyDetails( 
-    		@ApiParam(value = "the CV short definition/notation, e.g. AnalysisUnit") @PathVariable String cvCode, 
-    		@ApiParam(value = "the CV language in iso format, e.g. en") @PathVariable String languageIso, 
-    		@ApiParam(value = "the CV version number, e.g. 1.0")@PathVariable String version ) {
-
-        return versionService.findOneByNotationLangVersion( cvCode, languageIso, version );
+    @GetMapping( "/vocabulary-details/{cvCode}/{languageIso}/{version}" )
+    @ApiOperation( value = "Get the CV details in JSON format." )
+    public ResponseEntity<String> getVocabularyDetails(
+            @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String cvCode,
+            @ApiParam( value = "the CV language in iso format, e.g. en" ) @PathVariable String languageIso,
+            @ApiParam( value = "the CV version number, e.g. 1.0" ) @PathVariable String version ) throws JsonProcessingException
+    {
+        log.debug( "REST: Getting {}, {}, {}", keyValue( CV_CODE, cvCode ), keyValue( LANGUAGE_ISO, languageIso ),
+                keyValue( VERSION, version ) );
+        VersionDTO versionDTO = versionService.findOneByNotationLangVersion( cvCode, languageIso, version );
+        if ( versionDTO != null )
+        {
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.getSerializerProvider().setNullKeySerializer( new NullKeySerializer() );
+            return ResponseEntity.ok().contentType( MediaType.APPLICATION_JSON )
+                    .body( mapper.writeValueAsString( versionDTO ) );
+        }
+        return ResponseEntity.notFound().build();
     }
-	
+
     /**
      * GET   : get the details SKOS-rdf of a CV in specific language and version
-     * @param cvCode the cv short definition/notation
+     *
+     * @param cvCode      the cv short definition/notation
      * @param languageIso the Cv language (iso format)
-     * @param version the Cv version number 
+     * @param version     the Cv version number
      * @return detail of CV in specific language and version
      */
-    @GetMapping("/vocabulary-details-skos/{cvCode}/{languageIso}/{version}")
-    @ApiOperation(value = "Get the CV details in SKOS-rdf format.")
-    public String getAllVocabulariesRaw( 
-    		@ApiParam(value = "the CV short definition/notation, e.g. AnalysisUnit") @PathVariable String cvCode, 
-    		@ApiParam(value = "the CV language in iso format, e.g. en") @PathVariable String languageIso, 
-    		@ApiParam(value = "the CV version number, e.g. 1.0")@PathVariable String version ) {
-		
-        return exportService.getGeneratedSkosRdf(cvCode, languageIso, version);
+    @GetMapping( "/vocabulary-details-skos/{cvCode}/{languageIso}/{version}" )
+    @ApiOperation( value = "Get the CV details in SKOS-rdf format." )
+    public ResponseEntity<String> getAllVocabulariesRaw(
+            @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String cvCode,
+            @ApiParam( value = "the CV language in iso format, e.g. en" ) @PathVariable String languageIso,
+            @ApiParam( value = "the CV version number, e.g. 1.0" ) @PathVariable String version )
+    {
+        log.debug( "REST: Getting {}, {}, {} in SKOS-rdf format", keyValue( CV_CODE, cvCode ),
+                keyValue( LANGUAGE_ISO, languageIso ), keyValue( VERSION, version ) );
+        String generatedSkosRdf = exportService.getGeneratedSkosRdf( cvCode, languageIso, version );
+        if ( generatedSkosRdf != null )
+        {
+            return ResponseEntity.ok().contentType( MediaType.TEXT_XML ).body( generatedSkosRdf );
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    private static class NullKeySerializer extends JsonSerializer<Object>
+    {
+        @Override
+        public void serialize( Object nullKey, JsonGenerator jsonGenerator, SerializerProvider unused ) throws IOException
+        {
+            jsonGenerator.writeFieldName( "" );
+        }
     }
 }
