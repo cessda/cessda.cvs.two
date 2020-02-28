@@ -1,16 +1,16 @@
 package eu.cessda.cvmanager.service;
 
 import eu.cessda.cvmanager.service.dto.LicenceDTO;
-
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * Service Interface for managing Licence.
  */
-public interface LicenceService {
+public interface LicenceService
+{
 
     /**
      * Save a license.
@@ -23,7 +23,6 @@ public interface LicenceService {
     /**
      * Get all the licenses.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     List<LicenceDTO> findAll();

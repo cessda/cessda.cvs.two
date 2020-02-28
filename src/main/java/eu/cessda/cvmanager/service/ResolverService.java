@@ -1,16 +1,16 @@
 package eu.cessda.cvmanager.service;
 
 import eu.cessda.cvmanager.service.dto.ResolverDTO;
-
-import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 /**
  * Service Interface for managing Resolver.
  */
-public interface ResolverService {
+public interface ResolverService
+{
 
     /**
      * Save a resolver.
@@ -23,7 +23,6 @@ public interface ResolverService {
     /**
      * Get all the resolvers.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     List<ResolverDTO> findAll();

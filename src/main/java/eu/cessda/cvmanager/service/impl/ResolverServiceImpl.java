@@ -1,15 +1,21 @@
 package eu.cessda.cvmanager.service.impl;
 
-import eu.cessda.cvmanager.service.ResolverService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.domain.Resolver;
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.repository.ResolverRepository;
+import eu.cessda.cvmanager.service.ResolverService;
+import eu.cessda.cvmanager.service.VersionService;
+import eu.cessda.cvmanager.service.VocabularyService;
 import eu.cessda.cvmanager.service.dto.ResolverDTO;
 import eu.cessda.cvmanager.service.dto.VersionDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.mapper.ResolverMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -18,22 +24,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 
 /**
  * Service Implementation for managing Resolver.
  */
 @Service
 @Transactional
-public class ResolverServiceImpl implements ResolverService {
+public class ResolverServiceImpl implements ResolverService
+{
 
-    private final Logger log = LoggerFactory.getLogger(ResolverServiceImpl.class);
+    private final Logger log = LoggerFactory.getLogger( ResolverServiceImpl.class );
 
     private final ResolverRepository resolverRepository;
     
@@ -72,7 +72,6 @@ public class ResolverServiceImpl implements ResolverService {
     /**
      * Get all the resolvers.
      *
-     * @param pageable the pagination information
      * @return the list of entities
      */
     @Override

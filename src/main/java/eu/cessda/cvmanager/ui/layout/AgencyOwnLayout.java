@@ -1,15 +1,14 @@
 package eu.cessda.cvmanager.ui.layout;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import org.gesis.wts.domain.Agency;
+import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.ui.*;
+import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.renderers.ComponentRenderer;
+import com.vaadin.ui.themes.ValoTheme;
+import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.ui.component.AgencyGridComponent;
+import eu.cessda.cvmanager.ui.view.AgencyView;
 import org.gesis.wts.security.SecurityUtils;
-import org.gesis.wts.security.UserDetails;
 import org.gesis.wts.service.AgencyService;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.vaadin.spring.events.EventBus.UIEventBus;
@@ -17,25 +16,9 @@ import org.vaadin.spring.i18n.I18N;
 import org.vaadin.spring.i18n.support.Translatable;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
 
-import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.renderers.ComponentRenderer;
-import com.vaadin.ui.themes.ValoTheme;
-
-import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.ui.CVManagerUI;
-import eu.cessda.cvmanager.ui.component.AgencyGridComponent;
-import eu.cessda.cvmanager.ui.view.AgencyView;
-import eu.cessda.cvmanager.ui.view.GesisPagination;
+import java.util.List;
+import java.util.Locale;
 
 public class AgencyOwnLayout extends MCssLayout implements Translatable {
 	
@@ -129,8 +112,6 @@ public class AgencyOwnLayout extends MCssLayout implements Translatable {
 	 * Initialize the results zone, with all necessary components and listeners.
 	 * Especially: results grid + pagination
 	 * 
-	 * @param hits:
-	 *            a list of results
 	 * @return a vertical layout containing all components of this zone
 	 */
 	private Component initResultsContainer() {

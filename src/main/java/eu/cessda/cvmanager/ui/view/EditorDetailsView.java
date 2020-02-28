@@ -1,15 +1,32 @@
 package eu.cessda.cvmanager.ui.view;
 
-import java.nio.charset.Charset;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
-
+import com.vaadin.data.TreeData;
+import com.vaadin.data.provider.TreeDataProvider;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.ContentMode;
+import com.vaadin.shared.ui.dnd.DropEffect;
+import com.vaadin.shared.ui.dnd.EffectAllowed;
+import com.vaadin.shared.ui.grid.DropMode;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
 import com.vaadin.ui.*;
+import com.vaadin.ui.Grid.SelectionMode;
+import com.vaadin.ui.components.grid.TreeGridDragSource;
+import com.vaadin.ui.components.grid.TreeGridDropTarget;
+import com.vaadin.ui.renderers.ComponentRenderer;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.event.CvManagerEvent;
+import eu.cessda.cvmanager.service.*;
+import eu.cessda.cvmanager.service.dto.*;
 import eu.cessda.cvmanager.service.manager.WorkflowManager;
 import eu.cessda.cvmanager.service.manager.WorkspaceManager;
+import eu.cessda.cvmanager.service.mapper.CsvRowToConceptDTOMapper;
+import eu.cessda.cvmanager.ui.layout.*;
+import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
+import eu.cessda.cvmanager.ui.view.window.DialogMultipleOption;
+import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
+import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -32,49 +49,11 @@ import org.vaadin.viritin.button.MButton;
 import org.vaadin.viritin.label.MLabel;
 import org.vaadin.viritin.layouts.MCssLayout;
 
-import com.vaadin.data.TreeData;
-import com.vaadin.data.provider.TreeDataProvider;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.shared.ui.dnd.DropEffect;
-import com.vaadin.shared.ui.dnd.EffectAllowed;
-import com.vaadin.shared.ui.grid.DropMode;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.components.grid.TreeGridDragSource;
-import com.vaadin.ui.components.grid.TreeGridDropTarget;
-import com.vaadin.ui.renderers.ComponentRenderer;
-
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.event.CvManagerEvent;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConceptService;
-import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.LicenceService;
-import eu.cessda.cvmanager.service.ResolverService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.VocabularyService;
-import eu.cessda.cvmanager.service.dto.CodeDTO;
-import eu.cessda.cvmanager.service.dto.ConceptDTO;
-import eu.cessda.cvmanager.service.dto.LicenceDTO;
-import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
-import eu.cessda.cvmanager.service.mapper.CsvRowToConceptDTOMapper;
-import eu.cessda.cvmanager.ui.layout.DdiUsageLayout;
-import eu.cessda.cvmanager.ui.layout.EditorCodeActionLayout;
-import eu.cessda.cvmanager.ui.layout.EditorCvActionLayout;
-import eu.cessda.cvmanager.ui.layout.ExportLayout;
-import eu.cessda.cvmanager.ui.layout.IdentityLayout;
-import eu.cessda.cvmanager.ui.layout.LicenseLayout;
-import eu.cessda.cvmanager.ui.layout.VersionLayout;
-import eu.cessda.cvmanager.ui.view.publication.DiscoveryView;
-import eu.cessda.cvmanager.ui.view.window.DialogMultipleOption;
-import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
-import eu.cessda.cvmanager.utils.CvManagerSecurityUtils;
+import javax.annotation.PostConstruct;
+import java.nio.charset.Charset;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @UIScope
 @SpringView(name = EditorDetailsView.VIEW_NAME)
@@ -1192,16 +1171,16 @@ public class EditorDetailsView extends CvView {
 		}
 	}
 	
-	private void applyButtonStyle(Button pressedButton) {
-
-		Iterator<Component> iterate = languageLayout.iterator();
-		while (iterate.hasNext()) {
-			Component c = (Component) iterate.next();
-			if( c instanceof  Button) {
-				((Button) c).removeStyleName("button-language-selected");
+	private void applyButtonStyle(Button pressedButton)
+	{
+		for ( Component c : languageLayout )
+		{
+			if ( c instanceof Button )
+			{
+				c.removeStyleName( "button-language-selected" );
 			}
 		}
-		pressedButton.addStyleName("button-language-selected");
+		pressedButton.addStyleName( "button-language-selected" );
 	}
 
 	@Override

@@ -1,37 +1,23 @@
 package eu.cessda.cvmanager.ui.layout;
 
-import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
-import java.util.StringJoiner;
-import java.util.stream.Collectors;
-
+import com.lowagie.text.DocumentException;
+import com.vaadin.server.Page;
+import com.vaadin.shared.Position;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
+import com.vaadin.ui.components.grid.HeaderRow;
+import com.vaadin.ui.renderers.ComponentRenderer;
+import eu.cessda.cvmanager.domain.enumeration.ItemType;
+import eu.cessda.cvmanager.domain.enumeration.Status;
+import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader;
+import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamResource;
+import eu.cessda.cvmanager.model.CvItem;
+import eu.cessda.cvmanager.service.CodeService;
+import eu.cessda.cvmanager.service.ConfigurationService;
+import eu.cessda.cvmanager.service.StardatDDIService;
+import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.dto.*;
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
@@ -48,50 +34,20 @@ import org.vaadin.viritin.layouts.MCssLayout;
 import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
-import com.vaadin.data.TreeData;
-import com.vaadin.server.Page;
-import com.vaadin.shared.Position;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.components.grid.HeaderRow;
-import com.vaadin.ui.renderers.ComponentRenderer;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
-import eu.cessda.cvmanager.domain.enumeration.ItemType;
-import eu.cessda.cvmanager.domain.enumeration.Status;
-import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader;
-import eu.cessda.cvmanager.export.utils.OnDemandFileDownloader.OnDemandStreamResource;
-import eu.cessda.cvmanager.export.utils.SaxParserUtils;
-import eu.cessda.cvmanager.model.CvItem;
-import eu.cessda.cvmanager.service.CodeService;
-import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.StardatDDIService;
-import eu.cessda.cvmanager.service.VersionService;
-import eu.cessda.cvmanager.utils.CvCodeTreeUtils;
-import javassist.tools.rmi.ObjectNotFoundException;
-
-public class ExportLayout extends MCssLayout implements Translatable {
+public class ExportLayout extends MCssLayout implements Translatable
+{
 
 	private static final String VAADIN_STYLE_MARGINLEFT20 = "marginleft20";
 
-	public enum DownloadType {
-		SKOS("rdf"), PDF("pdf"), HTML("html");
-
-		private final String type;
-
-		private DownloadType(String s) {
-			type = s;
-		}
-
-		public boolean equalsType(String otherType) {
-			return type.equals(otherType);
-		}
-
-		@Override
-		public String toString() {
-			return this.type;
-		}
-	}
+	private final Set<String> filteredTag = new HashSet<>();
 
 	private static final long serialVersionUID = -2461005203070668382L;
 
@@ -100,41 +56,64 @@ public class ExportLayout extends MCssLayout implements Translatable {
 	private final transient VersionService versionService;
 	private final transient CodeService codeService;
 	private final transient SpringTemplateEngine templateEngine;
-	private final transient DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm");
+	private final transient DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern( "yyyy-MM-dd_HH-mm" );
 	private final VocabularyDTO vocabulary;
 	private final AgencyDTO agency;
 	private final transient StardatDDIService stardatDDIService;
-	private static final Logger log = LoggerFactory.getLogger(ExportLayout.class);
+	private static final Logger log = LoggerFactory.getLogger( ExportLayout.class );
 
 	private List<LicenceDTO> licenses;
 	private LicenceDTO license;
 	private VersionDTO slVersion;
-
-	private Set<String> filteredTag = new HashSet<>();
-	private MGrid<ExportCV> exportGrid = new MGrid<>(ExportCV.class);
-	private transient List<ExportCV> exportCvItems = new ArrayList<>();
+	private final transient List<ExportCV> exportCvItems = new ArrayList<>();
+	private MGrid<ExportCV> exportGrid = new MGrid<>( ExportCV.class );
+	private final Map<String, List<VersionDTO>> orderedLanguageVersionMap = new LinkedHashMap<>();
 	private MCssLayout sectionLayout = new MCssLayout();
 	private MVerticalLayout gridLayout = new MVerticalLayout();
-	private MButton exportSkos = new MButton("Export Skos").withStyleName(VAADIN_STYLE_MARGINLEFT20);
-	private MButton exportPdf = new MButton("Export Pdf").withStyleName(VAADIN_STYLE_MARGINLEFT20);
-	private MButton exportHtml = new MButton("Export Html").withStyleName(VAADIN_STYLE_MARGINLEFT20);
+	private MButton exportSkos = new MButton( "Export Skos" ).withStyleName( VAADIN_STYLE_MARGINLEFT20 );
+	private MButton exportPdf = new MButton( "Export Pdf" ).withStyleName( VAADIN_STYLE_MARGINLEFT20 );
+	private MButton exportHtml = new MButton( "Export Html" ).withStyleName( VAADIN_STYLE_MARGINLEFT20 );
 
-	private MCheckBox skosCheckBox = new MCheckBox("SKOS");
-	private MCheckBox pdfCheckBox = new MCheckBox("PDF");
-	private MCheckBox htmlCheckBox = new MCheckBox("HTML");
+	private MCheckBox skosCheckBox = new MCheckBox( "SKOS" );
+	private MCheckBox pdfCheckBox = new MCheckBox( "PDF" );
+	private MCheckBox htmlCheckBox = new MCheckBox( "HTML" );
 	private boolean activateSkosListener = true;
 	private boolean activatePdfListener = true;
 	private boolean activateHtmlListener = true;
 
-	private Map<String, List<VersionDTO>> orderedLanguageVersionMap = new LinkedHashMap<>();
+	public void updateGrid( VersionDTO pivotVersion, Map<String, List<VersionDTO>> versionMap )
+	{
+		orderedLanguageVersionMap.clear();
+		orderedLanguageVersionMap.putAll( versionMap );
+		exportCvItems.clear();
+
+		Map<String, List<VersionDTO>> filteredVersionMap = getFilteredVersionMap( pivotVersion,
+				orderedLanguageVersionMap );
+		filteredVersionMap.forEach( ( k, v ) -> exportCvItems.add( new ExportCV( k, v ) ) );
+
+		if ( pivotVersion.getLicenseId() != null )
+		{
+			licenses.stream().filter( p -> p.getId().equals( pivotVersion.getLicenseId() ) ).findFirst()
+					.ifPresent( theLicense -> this.license = theLicense );
+		}
+
+		if ( pivotVersion.getStatus().equals( Status.PUBLISHED.toString() ) )
+		{
+			year = pivotVersion.getPublicationDate().getYear();
+		}
+
+		exportGrid.setItems( exportCvItems );
+	}
+
 	private boolean publishView;
 	private int year = LocalDate.now().getYear();
 	private String inSchemeUri = "";
 
-	public ExportLayout(I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, VocabularyDTO vocabulary,
-			AgencyDTO agency, VersionService versionService, CodeService codeService,
-			ConfigurationService configurationService, StardatDDIService stardatDDIService, List<LicenceDTO> licenses,
-			SpringTemplateEngine templateEngine, boolean isPublished) {
+	public ExportLayout( I18N i18n, Locale locale, UIEventBus eventBus, CvItem cvItem, VocabularyDTO vocabulary,
+						 AgencyDTO agency, VersionService versionService, CodeService codeService,
+						 ConfigurationService configurationService, StardatDDIService stardatDDIService, List<LicenceDTO> licenses,
+						 SpringTemplateEngine templateEngine, boolean isPublished )
+	{
 		this.cvItem = cvItem;
 		this.vocabulary = vocabulary;
 		this.agency = agency;
@@ -206,32 +185,35 @@ public class ExportLayout extends MCssLayout implements Translatable {
 			onDemandSkosFileDownloader.extend(exportSkos);
 		}
 		OnDemandFileDownloader onDemandSkosFileDownloaderPdf = new OnDemandFileDownloader(
-				createOnDemandResource(DownloadType.PDF));
-		onDemandSkosFileDownloaderPdf.extend(exportPdf);
+				createOnDemandResource( DownloadType.PDF ) );
+		onDemandSkosFileDownloaderPdf.extend( exportPdf );
 
 		OnDemandFileDownloader onDemandSkosFileDownloaderHtml = new OnDemandFileDownloader(
-				createOnDemandResource(DownloadType.HTML));
-		onDemandSkosFileDownloaderHtml.extend(exportHtml);
+				createOnDemandResource( DownloadType.HTML ) );
+		onDemandSkosFileDownloaderHtml.extend( exportHtml );
 	}
 
-	public void updateGrid(VersionDTO pivotVersion, Map<String, List<VersionDTO>> versionMap) {
-		orderedLanguageVersionMap = versionMap;
-		exportCvItems.clear();
+	public enum DownloadType
+	{
+		SKOS( "rdf" ), PDF( "pdf" ), HTML( "html" );
 
-		Map<String, List<VersionDTO>> filteredVersionMap = getFilteredVersionMap(pivotVersion,
-				orderedLanguageVersionMap);
-		filteredVersionMap.forEach((k, v) -> exportCvItems.add(new ExportCV(k, v)));
+		private final String type;
 
-		if (pivotVersion.getLicenseId() != null) {
-			licenses.stream().filter(p -> p.getId().equals(pivotVersion.getLicenseId())).findFirst()
-					.ifPresent(theLicense -> this.license = theLicense);
+		DownloadType( String s )
+		{
+			type = s;
 		}
 
-		if (pivotVersion.getStatus().equals(Status.PUBLISHED.toString())) {
-			year = pivotVersion.getPublicationDate().getYear();
+		public boolean equalsType( String otherType )
+		{
+			return type.equals( otherType );
 		}
 
-		exportGrid.setItems(exportCvItems);
+		@Override
+		public String toString()
+		{
+			return this.type;
+		}
 	}
 
 	public Map<String, List<VersionDTO>> getFilteredVersionMap(VersionDTO pivotVersion,
@@ -246,88 +228,103 @@ public class ExportLayout extends MCssLayout implements Translatable {
 		// always get one SL version
 		if (pivotVersion.getItemType().equals(ItemType.TL.toString())) {
 			Optional<VersionDTO> versionDTO = vocabulary.getVersionByUri(pivotVersion.getUriSl());
-			if( versionDTO.isPresent())
+			if ( versionDTO.isPresent() )
+			{
 				pivotVersion = versionDTO.get();
+			}
 		}
 
 		slVersion = pivotVersion;
 
 		for (Map.Entry<String, List<VersionDTO>> entry : versionMap.entrySet()) {
-			if (entry.getKey().equals(pivotVersion.getLanguage()))
-				filteredVersionMap.put(entry.getKey(), Arrays.asList(pivotVersion));
-			else {
+			if ( entry.getKey().equals( pivotVersion.getLanguage() ) )
+			{
+				filteredVersionMap.put( entry.getKey(), Collections.singletonList( pivotVersion ) );
+			}
+			else
+			{
 				// get only SL that within SL version
 				List<VersionDTO> oldValue = entry.getValue();
 				List<VersionDTO> newValue = new ArrayList<>();
-				for (VersionDTO eachVersion : oldValue) {
-					if (publishView && !eachVersion.getStatus().equals(Status.PUBLISHED.toString())) // only show
-																										// published one
+				for ( VersionDTO eachVersion : oldValue )
+				{
+					if ( publishView &&
+							!eachVersion.getStatus().equals( Status.PUBLISHED.toString() ) ) // only show published one
+					{
 						continue;
-					if (eachVersion.getUriSl() != null && eachVersion.getUriSl().equals(pivotVersion.getUri()))
-						newValue.add(eachVersion);
+					}
+					if ( eachVersion.getUriSl() != null && eachVersion.getUriSl().equals( pivotVersion.getUri() ) )
+					{
+						newValue.add( eachVersion );
+					}
 				}
-				if (!newValue.isEmpty()) {
-					filteredVersionMap.put(entry.getKey(), newValue);
+				if ( !newValue.isEmpty() )
+				{
+					filteredVersionMap.put( entry.getKey(), newValue );
 				}
 			}
-
 		}
 
 		return filteredVersionMap;
 	}
 
 	private OnDemandStreamResource createOnDemandResource(DownloadType downloadType) {
-		return new OnDemandStreamResource() {
-			private ArrayList<VersionDTO> exportVersions = new ArrayList<>();
+		return new OnDemandStreamResource()
+		{
+			private final ArrayList<VersionDTO> exportVersions = new ArrayList<>();
 			private static final long serialVersionUID = 3421089012275806929L;
 
 			@Override
-			public InputStream getStream() {
+			public InputStream getStream()
+			{
 
 				exportVersions.clear();
-				for (ExportCV ecv : exportCvItems) {
-					Map<DownloadType, VersionDTO> fotmatVersionMap = ecv.getFotmatVersionMap();
-					if (fotmatVersionMap.get(downloadType) != null) {
-						exportVersions.add(fotmatVersionMap.get(downloadType));
-					}
-				}
+				exportCvItems.stream().map( ExportCV::getFotmatVersionMap )
+						.filter( fotmatVersionMap -> fotmatVersionMap.get( downloadType ) != null )
+						.forEach( fotmatVersionMap -> exportVersions.add( fotmatVersionMap.get( downloadType ) ) );
 
-				if (exportVersions.isEmpty()) {
-					Notification notif = new Notification("", "No language selected!",
-							Notification.TYPE_WARNING_MESSAGE);
+				if ( exportVersions.isEmpty() )
+				{
+					Notification notif = new Notification( "", "No language selected!",
+							Notification.TYPE_WARNING_MESSAGE );
 
-					notif.setDelayMsec(0);
-					notif.setPosition(Position.BOTTOM_RIGHT);
+					notif.setDelayMsec( 0 );
+					notif.setPosition( Position.BOTTOM_RIGHT );
 
 					// Show it in the page
-					notif.show(Page.getCurrent());
+					notif.show( Page.getCurrent() );
 
 					return null;
 				}
 
-					switch (downloadType) {
-					case HTML:
-					case PDF:
-					case SKOS:
-						try {
-							return new FileInputStream(generateExportFile(downloadType, exportVersions));
-						} catch (Exception e) {
-							log.error(e.getMessage(), e);
-						}
-						break;
+				if ( downloadType == DownloadType.HTML || downloadType == DownloadType.PDF ||
+						downloadType == DownloadType.SKOS )
+				{
+					try
+					{
+						return new ByteArrayInputStream( generateExportFile( downloadType, exportVersions )
+								.toByteArray() );
 					}
-
+					catch ( IOException e )
+					{
+						log.error( "Export failed!", e );
+					}
+				}
 				return null;
 			}
 
 			@Override
-			public String getFilename() {
-				return generateOnDemandFileName(downloadType, true);
+			public String getFilename()
+			{
+				String fileName = generateOnDemandFileName( downloadType );
+				log.debug( "Created download with filename: {}", fileName );
+				return fileName;
 			}
 		};
 	}
 
-	private File generateExportFile(DownloadType type, List<VersionDTO> exportVersions) throws Exception {
+	private ByteArrayOutputStream generateExportFile( DownloadType type, List<VersionDTO> exportVersions ) throws IOException
+	{
 		Map<String, Object> map = new HashMap<>();
 		String cvUrn = null;
 		String docId = null;
@@ -335,30 +332,31 @@ public class ExportLayout extends MCssLayout implements Translatable {
 		String docVersion = null;
 		String docLicense = null;
 		// sort code
-		for (VersionDTO versionExp : exportVersions) {
-			for (ConceptDTO concept : versionExp.getConcepts()) {
-				if (concept.getPosition() == null)
-					concept.setPosition(999);
-			}
-			versionExp.setConcepts(
-					versionExp.getConcepts().stream().sorted((c1, c2) -> c1.getPosition().compareTo(c2.getPosition()))
-							.collect(Collectors.toCollection(LinkedHashSet::new)));
+		for ( VersionDTO versionExp : exportVersions )
+		{
+			versionExp.getConcepts().stream().filter( concept -> concept.getPosition() == null )
+					.forEach( concept -> concept.setPosition( 999 ) );
+			versionExp.setConcepts( versionExp.getConcepts().stream()
+					.sorted( Comparator.comparing( ConceptDTO::getPosition ) )
+					.collect( Collectors.toCollection( LinkedHashSet::new ) ) );
 
 			// find one canonicalUrl
-			if (cvUrn == null) {
-				if (versionExp.getCanonicalUri() != null) {
-					int index = versionExp.getCanonicalUri().lastIndexOf(":");
-					cvUrn = versionExp.getCanonicalUri().substring(0, index);
-				}
-				if (type.equals(DownloadType.SKOS)) {
-					docId = versionExp.getSkosUri();
-					int index = docId.lastIndexOf("_");
-					docVersionOf = docId.substring(0, index);
-					docVersion = docId.substring(index + 1);
-					Optional<LicenceDTO> dLicence = licenses.stream()
-							.filter(l -> l.getId().equals(versionExp.getLicenseId())).findFirst();
-					if (dLicence.isPresent())
-						docLicense = dLicence.get().getName();
+			if ( versionExp.getCanonicalUri() != null )
+			{
+				int index = versionExp.getCanonicalUri().lastIndexOf( ':' );
+				cvUrn = versionExp.getCanonicalUri().substring( 0, index );
+			}
+			if ( type.equals( DownloadType.SKOS ) )
+			{
+				docId = versionExp.getSkosUri();
+				int index = docId.lastIndexOf( '_' );
+				docVersionOf = docId.substring( 0, index );
+				docVersion = docId.substring( index + 1 );
+				Optional<LicenceDTO> dLicence = licenses.stream()
+						.filter( l -> l.getId().equals( versionExp.getLicenseId() ) ).findFirst();
+				if ( dLicence.isPresent() )
+				{
+					docLicense = dLicence.get().getName();
 				}
 			}
 		}
@@ -374,111 +372,116 @@ public class ExportLayout extends MCssLayout implements Translatable {
 			map.put("docRight", "Copyright © " + agency.getName() + " " + year);
 			List<CodeDTO> codes = codeService.findByVocabularyAndVersion(vocabulary.getId(), slVersion.getId());
 			// in some case the codes are empty and workflow codes are needed
-			if( codes.isEmpty())
+			if ( codes.isEmpty() )
+			{
 				codes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId() );
-			map.put("codes", codes);
-
+			}
+			map.put( "codes", codes );
 		}
-		map.put("cvUrn", cvUrn);
-		map.put("versions", exportVersions);
-		map.put("agency", agency);
-		map.put("license", license);
-		map.put("year", year);
-		map.put("baseUrl", UI.getCurrent().getPage().getLocation().getScheme() + "://"
-				+ configurationService.getServerBaseUrl() + configurationService.getServerContextPath());
+		map.put( "cvUrn", cvUrn );
+		map.put( "versions", exportVersions );
+		map.put( "agency", agency );
+		map.put( "license", license );
+		map.put( "year", year );
+		map.put( "baseUrl", UI.getCurrent().getPage().getLocation().getScheme() + "://"
+				+ configurationService.getServerBaseUrl() + configurationService.getServerContextPath() );
 
-		return generateFileByThymeleafTemplate(generateOnDemandFileName(type, false), "export", map, type);
+		return generateFileByThymeleafTemplate( "export", map, type );
 	}
 
-	private String generateOnDemandFileName(DownloadType type, boolean withFileFormat) {
+	private String generateOnDemandFileName( DownloadType type )
+	{
 		StringBuilder title = new StringBuilder();
-		title.append(vocabulary.getNotation() + "_");
-		List<String> selectedLanguage = null;
-		if (type == DownloadType.PDF)
-			selectedLanguage = exportCvItems.stream().filter(f -> f.exportPdfCb.getValue())
-					.map(m -> m.getSelectedVersionLabel(publishView)).collect(Collectors.toList());
-		else if (type == DownloadType.HTML)
-			selectedLanguage = exportCvItems.stream().filter(f -> f.exportHtmlCb.getValue())
-					.map(m -> m.getSelectedVersionLabel(publishView)).collect(Collectors.toList());
+		title.append( vocabulary.getNotation() ).append( "_" );
+		List<String> selectedLanguage;
+		if ( type == DownloadType.PDF )
+		{
+			selectedLanguage = exportCvItems.stream().filter( f -> f.exportPdfCb.getValue() )
+					.map( m -> m.getSelectedVersionLabel( publishView ) ).collect( Collectors.toList() );
+		}
+		else if ( type == DownloadType.HTML )
+		{
+			selectedLanguage = exportCvItems.stream().filter( f -> f.exportHtmlCb.getValue() )
+					.map( m -> m.getSelectedVersionLabel( publishView ) ).collect( Collectors.toList() );
+		}
 		else
-			selectedLanguage = exportCvItems.stream().filter(f -> f.exportSkosCb.getValue())
-					.map(m -> m.getSelectedVersionLabel(publishView)).collect(Collectors.toList());
+		{
+			selectedLanguage = exportCvItems.stream().filter( f -> f.exportSkosCb.getValue() )
+					.map( m -> m.getSelectedVersionLabel( publishView ) ).collect( Collectors.toList() );
+		}
 
-		title.append(String.join("-", selectedLanguage));
-		title.append("_" + LocalDateTime.now().format(dateFormatter) + (withFileFormat ? "." + type.toString() : ""));
+		title.append( String.join( "-", selectedLanguage ) ).append( "_" )
+				.append( LocalDateTime.now().format( dateFormatter ) ).append( "." ).append( type );
 		return title.toString();
 	}
 
-	private Set<String> getFilteredLanguages() {
+	private Set<String> getFilteredLanguages()
+	{
 		// get all available language from vocabulary
 		Set<String> vocabLanguages = vocabulary.getLanguages();
-		Set<String> checkedLanguages = exportCvItems.stream().filter(f -> f.exportSkosCb.getValue() == true)
-				.map(x -> x.language).collect(Collectors.toSet());
+		Set<String> checkedLanguages = exportCvItems.stream().filter( f -> f.exportSkosCb.getValue() )
+				.map( x -> x.language ).collect( Collectors.toSet() );
 
-		vocabLanguages.removeAll(checkedLanguages);
+		vocabLanguages.removeAll( checkedLanguages );
 
 		return vocabLanguages;
 	}
 
-	private File generateFileByThymeleafTemplate(String fileName, String templateName, Map<String, Object> map,
-			DownloadType type) throws Exception {
-		File outputFile = File.createTempFile(fileName, "." + type.toString());
+	private ByteArrayOutputStream generateFileByThymeleafTemplate( String templateName, Map<String, Object> map,
+																   DownloadType type ) throws IOException
+	{
 		Context ctx = new Context();
-		if (map != null) {
-			Iterator<?> itMap = map.entrySet().iterator();
-			while (itMap.hasNext()) {
-				@SuppressWarnings("rawtypes")
-				Map.Entry pair = (Map.Entry) itMap.next();
-				ctx.setVariable(pair.getKey().toString(), pair.getValue());
-			}
-		}
+		map.forEach( ctx::setVariable );
 
-		switch (type) {
-		case PDF:
-			return createPdfFile(outputFile,
-					templateEngine.process("html/" + templateName + "_" + type.toString(), ctx));
-		case HTML:
-			return createTextFile(outputFile,
-					templateEngine.process("html/" + templateName + "_" + type.toString(), ctx));
-		case SKOS:
-			String content  = templateEngine.process("xml/" + templateName + "_" + type.toString(), ctx);
-			return createTextFile(outputFile,
-					content.replaceAll("(?m)^[ \t]*\r?\n", ""));
-		default:
-			break;
+		if ( log.isTraceEnabled() ) log.trace( "Type: {}", type.name() );
+		switch ( type )
+		{
+			case PDF:
+				try
+				{
+					return createPdfFile( templateEngine.process( "html/" + templateName + "_" + type, ctx ) );
+				}
+				catch ( DocumentException e )
+				{
+					log.error( "PDF creation failed!", e );
+					break;
+				}
+			case HTML:
+				return createTextFile( templateEngine.process( "html/" + templateName + "_" + type, ctx ) );
+			case SKOS:
+				String content = templateEngine.process( "xml/" + templateName + "_" + type, ctx );
+				return createTextFile( content.replaceAll( "(?m)^[ \t]*\r?\n", "" ) );
 		}
 		return null;
 	}
 
-	private File createTextFile(File outputFile, String contents) throws IOException {
-		BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile));
-		try {
-			bw.write(contents);
-		} finally {
-			bw.close();
-		}
-		return outputFile;
+	private ByteArrayOutputStream createTextFile( String contents ) throws IOException
+	{
+		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		new OutputStreamWriter( stream, StandardCharsets.UTF_8 ).write( contents );
+		return stream;
 	}
 
-	public File createPdfFile(File outputFile, String contents) throws Exception {
-
-		try (FileOutputStream os = new FileOutputStream(outputFile)) {
-			ITextRenderer renderer = new ITextRenderer();
-			renderer.setDocumentFromString(contents);
-			renderer.layout();
-			renderer.createPDF(os, false);
-			renderer.finishPDF();
-		}
-		return outputFile;
+	public ByteArrayOutputStream createPdfFile( String contents ) throws com.lowagie.text.DocumentException
+	{
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		ITextRenderer renderer = new ITextRenderer();
+		renderer.setDocumentFromString( contents );
+		renderer.layout();
+		renderer.createPDF( os, false );
+		renderer.finishPDF();
+		return os;
 	}
 
 	@Override
-	public void updateMessageStrings(Locale locale) {
+	public void updateMessageStrings( Locale locale )
+	{
 		// No internationalized string used in this class.
 
 	}
 
-	class ExportCV {
+	class ExportCV
+	{
 		private String language;
 		private String type;
 		private MCheckBox exportSkosCb = new MCheckBox();
@@ -495,42 +498,46 @@ public class ExportLayout extends MCssLayout implements Translatable {
 				boolean exportHtml) {
 			this.language = language;
 			this.versions = versions;
-			this.exportSkosCb.setValue(exportSkos);
-			this.exportPdfCb.setValue(exportPdf);
-			this.exportHtmlCb.setValue(exportHtml);
+			this.exportSkosCb.setValue( exportSkos );
+			this.exportPdfCb.setValue( exportPdf );
+			this.exportHtmlCb.setValue( exportHtml );
 
 //			this.exportSkosCb.addValueChangeListener(skosCheckBoxListener);
 //			this.exportPdfCb.addValueChangeListener(pdfCheckBoxListener);
 //			this.exportHtmlCb.addValueChangeListener(htmlCheckBoxListener);
 
-			this.versionOption.setItems(versions);
-			this.versionOption.setWidth("100%");
-			this.versionOption.setItemCaptionGenerator(vers -> {
-				return publishView ? vers.getNumber() : vers.getNumber() + " (" + vers.getStatus() + ")";
-			});
-			this.versionOption.setValue(versions.get(0));
-			this.versionOption.setEmptySelectionAllowed(false);
-			this.versionOption.setTextInputAllowed(false);
+			this.versionOption.setItems( versions );
+			this.versionOption.setWidth( "100%" );
+			this.versionOption.setItemCaptionGenerator( vers ->
+					publishView ? vers.getNumber() : vers.getNumber() + " (" + vers.getStatus() + ")" );
+			this.versionOption.setValue( versions.get( 0 ) );
+			this.versionOption.setEmptySelectionAllowed( false );
+			this.versionOption.setTextInputAllowed( false );
 
-			this.type = versions.get(0).getItemType();
-			if (this.type.equals(ItemType.SL.toString())) {
-				this.versionOption.setReadOnly(true);
+			this.type = versions.get( 0 ).getItemType();
+			if ( this.type.equals( ItemType.SL.toString() ) )
+			{
+				this.versionOption.setReadOnly( true );
 			}
 		}
 
-		public Map<DownloadType, VersionDTO> getFotmatVersionMap() {
-			Map<DownloadType, VersionDTO> formatVersionMap = new HashMap<>();
+		public Map<DownloadType, VersionDTO> getFotmatVersionMap()
+		{
+			Map<DownloadType, VersionDTO> formatVersionMap = new EnumMap<>( DownloadType.class );
 			VersionDTO selectedVersion = versionOption.getValue();
-			if (exportSkosCb.getValue() == true) {
-				formatVersionMap.put(DownloadType.SKOS, selectedVersion);
+			if ( exportSkosCb.getValue() )
+			{
+				formatVersionMap.put( DownloadType.SKOS, selectedVersion );
 			}
 
-			if (exportPdfCb.getValue() == true) {
-				formatVersionMap.put(DownloadType.PDF, selectedVersion);
+			if ( exportPdfCb.getValue() )
+			{
+				formatVersionMap.put( DownloadType.PDF, selectedVersion );
 			}
 
-			if (exportHtmlCb.getValue() == true) {
-				formatVersionMap.put(DownloadType.HTML, selectedVersion);
+			if ( exportHtmlCb.getValue() )
+			{
+				formatVersionMap.put( DownloadType.HTML, selectedVersion );
 			}
 
 			return formatVersionMap;
@@ -601,10 +608,6 @@ public class ExportLayout extends MCssLayout implements Translatable {
 
 	public Map<String, List<VersionDTO>> getOrderedLanguageVersionMap() {
 		return orderedLanguageVersionMap;
-	}
-
-	public void setOrderedLanguageVersionMap(Map<String, List<VersionDTO>> orderedLanguageVersionMap) {
-		this.orderedLanguageVersionMap = orderedLanguageVersionMap;
 	}
 
 }

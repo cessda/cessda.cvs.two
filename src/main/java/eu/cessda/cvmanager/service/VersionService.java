@@ -1,18 +1,18 @@
 package eu.cessda.cvmanager.service;
 
 import eu.cessda.cvmanager.service.dto.VersionDTO;
-
-import java.util.List;
-import java.util.Map;
-
 import org.gesis.wts.domain.enumeration.Language;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Service Interface for managing Version.
  */
-public interface VersionService {
+public interface VersionService
+{
 
     /**
      * Save a version.
@@ -48,9 +48,6 @@ public interface VersionService {
     /**
      * Search for the version corresponding to the query.
      *
-     * @param query the query of the search
-     * 
-     * @param pageable the pagination information
      * @return the list of entities
      */
     
