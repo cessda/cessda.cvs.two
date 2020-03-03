@@ -13,7 +13,7 @@ logging:
     ROOT: INFO
     org.elasticsearch: INFO
     org.gesis.wts: INFO
-    eu.cessda.cvmanager: INFO
+    eu.cessda.cvmanager: TRACE
     org.hibernate.SQL : INFO
 server:
   servlet:

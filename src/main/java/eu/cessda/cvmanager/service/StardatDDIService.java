@@ -1,38 +1,41 @@
 package eu.cessda.cvmanager.service;
 
-import java.util.List;
-
+import com.vaadin.data.TreeData;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
 import org.gesis.wts.security.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vaadin.data.TreeData;
+import java.util.List;
 
 @Service
-public class StardatDDIService {
+public class StardatDDIService
+{
 	public final ConfigurationService configService;
-	private static final Logger log = LoggerFactory.getLogger(StardatDDIService.class);
-	
+	private static final Logger log = LoggerFactory.getLogger( StardatDDIService.class );
+
 	public final RestClient restClient;
 
-	public StardatDDIService(ConfigurationService configService) {
+	@Autowired
+	public StardatDDIService( ConfigurationService configService, RestClient restClient )
+	{
 		this.configService = configService;
-		
-		this.restClient = new RestClient( configService.getDdiflatdbRestUrl() );
+		this.restClient = restClient;
 	}
-	
-	public List<DDIStore> findByIdAndElementType(String id, String elementType){
-		return restClient.getElementList(id, elementType);
+
+	public List<DDIStore> findByIdAndElementType( String id, String elementType )
+	{
+		return restClient.getElementList( id, elementType );
 	}
-	
-	public List<DDIStore> findByContentAndElementType(String content, String elementType){
-		return restClient.getElementListByContent( elementType, content);
+
+	public List<DDIStore> findByContentAndElementType( String content, String elementType )
+	{
+		return restClient.getElementListByContent( elementType, content );
 	}
 	
 	public List<DDIStore> findStudyByElementType(String elementType){
@@ -40,10 +43,13 @@ public class StardatDDIService {
 	}	
 
 	public DDIStore saveElement(DDIStore ddiStore, String username, String comment) {
-		try {
-			return restClient.saveElement( ddiStore, username, comment);
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
+		try
+		{
+			return restClient.saveElement( ddiStore, username, comment );
+		}
+		catch ( RuntimeException e )
+		{
+			log.error( e.getMessage(), e );
 		}
 		return null;
 	}
@@ -56,15 +62,20 @@ public class StardatDDIService {
 		return restClient.deleteElementList(studyId, elementType, userName, comment);
 	}
 	
-	public void deleteConceptTree(TreeData<CVConcept> treeData, CVConcept targetConcept) {
-		deleteById(targetConcept.ddiStore.getPrimaryKey(), SecurityUtils.getCurrentUserLogin().get() , "delete concept");
-		treeData.getChildren(targetConcept).forEach( childConcept -> {
-			deleteConceptTree(treeData, childConcept);
-		});
+	public void deleteConceptTree(TreeData<CVConcept> treeData, CVConcept targetConcept)
+	{
+		SecurityUtils.getCurrentUserLogin().ifPresent( username ->
+		{
+			deleteById( targetConcept.ddiStore.getPrimaryKey(), username, "delete concept" );
+			treeData.getChildren( targetConcept )
+					.forEach( childConcept -> deleteConceptTree( treeData, childConcept ) );
+		} );
 	}
 	
-	public void deleteScheme( CVScheme cvScheme ) {
-		deleteById( cvScheme.ddiStore.getPrimaryKey(), SecurityUtils.getCurrentUserLogin().get() , "delete scheme");
+	public void deleteScheme( CVScheme cvScheme )
+	{
+		SecurityUtils.getCurrentUserLogin().ifPresent( username ->
+				deleteById( cvScheme.ddiStore.getPrimaryKey(), username, "delete scheme" ) );
 	}
 	
 	public DDIStore storeTopConcept( CVScheme cvScheme, List<CVConcept> topConcepts ) {

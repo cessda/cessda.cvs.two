@@ -3,12 +3,15 @@
  */
 package eu.cessda.cvmanager.ui.view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.annotation.PostConstruct;
-
+import com.vaadin.data.Binder;
+import com.vaadin.data.Binder.Binding;
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.spring.annotation.SpringView;
+import com.vaadin.spring.annotation.UIScope;
+import com.vaadin.ui.*;
+import com.vaadin.ui.Grid.SelectionMode;
+import eu.cessda.cvmanager.service.ConfigurationService;
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
 import org.gesis.stardat.ddiflatdb.client.RestClient;
 import org.gesis.stardat.entity.CVConcept;
@@ -24,26 +27,10 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.vaadin.data.Binder;
-import com.vaadin.data.Binder.Binding;
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.spring.annotation.UIScope;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Grid.SelectionMode;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
-
-import eu.cessda.cvmanager.service.ConfigurationService;
+import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author klascr
@@ -80,14 +67,16 @@ public class EditorView extends VerticalLayout implements View {
 
 	private String originalLanguage = "en";
 
+	@Autowired
 	private RestClient client;
+
 	List<DDIStore> ddiConcepts;
 
 	List<CVConcept> concepts = new ArrayList<CVConcept>();
 
-	private Button addCVScheme = new Button("Add a new CV");
+	private Button addCVScheme = new Button( "Add a new CV" );
 
-	private Button addCode = new Button("Add new Code");
+	private Button addCode = new Button( "Add new Code" );
 
 	private Button editCode = new Button("Edit Code");
 
@@ -109,14 +98,12 @@ public class EditorView extends VerticalLayout implements View {
 		super();
 		// TODO Auto-generated constructor stub
 		theView = this;
-		client = new RestClient( configService.getDdiflatdbRestUrl() );
 	}
 
 	public EditorView(Component... children) {
 		super(children);
 		// TODO Auto-generated constructor stub
 		theView = this;
-		client = new RestClient( configService.getDdiflatdbRestUrl() );
 	}
 
 	/*
@@ -127,24 +114,23 @@ public class EditorView extends VerticalLayout implements View {
 	 * ViewChangeEvent)
 	 */
 	@Override
-	public void enter(ViewChangeEvent event) {
+	public void enter(ViewChangeEvent event)
+	{
 
-		log.info("");
-		ddiConcepts = client.getElementList(getContainerId(), DDIElement.CVCONCEPT);
+		log.info( "" );
+		ddiConcepts = client.getElementList( getContainerId(), DDIElement.CVCONCEPT );
 		concepts.clear();
-		for (DDIStore store : ddiConcepts) {
-			CVConcept con = new CVConcept(store);
-			concepts.add(con);
-		}
+		ddiConcepts.stream().map( CVConcept::new ).forEach( con -> concepts.add( con ) );
 
-		languages.setItems(Arrays.asList("de", "en", "ru", "fr"));
+		languages.setItems( Arrays.asList( "de", "en", "ru", "fr" ) );
 
-		languages.addValueChangeListener(lang -> {
-			updateGrid(lang.getValue());
-			setLanguage(lang.getValue());
-			setOriginalLanguage("en");
-		});
-		languages.setSelectedItem("en");
+		languages.addValueChangeListener( lang ->
+		{
+			updateGrid( lang.getValue() );
+			setLanguage( lang.getValue() );
+			setOriginalLanguage( "en" );
+		} );
+		languages.setSelectedItem( "en" );
 
 		languages.setEmptySelectionAllowed(false);
 
@@ -154,23 +140,24 @@ public class EditorView extends VerticalLayout implements View {
 	}
 
 	@PostConstruct
-	private void init() {
+	private void init()
+	{
 
-		log.info("");
+		log.info( "" );
 		this.setHeightUndefined();
 		gridLayout.setSizeFull();
-		gridLayout.setDefaultComponentAlignment(Alignment.TOP_CENTER);
-		conceptGrid = new Grid<CVConcept>();
+		gridLayout.setDefaultComponentAlignment( Alignment.TOP_CENTER );
+		conceptGrid = new Grid<>();
 		conceptGrid.asSingleSelect();
 
 		binder = conceptGrid.getEditor().getBinder();
-		binder.addValueChangeListener(event -> Notification.show("Binder Event"));
+		binder.addValueChangeListener( event -> Notification.show( "Binder Event" ) );
 
 		conceptGrid.setSizeFull();
-		conceptGrid.setSelectionMode(SelectionMode.SINGLE);
+		conceptGrid.setSelectionMode( SelectionMode.SINGLE );
 
-		conceptGrid.setItems(concepts);
-		gridLayout.addComponent(languages, 0, 0);
+		conceptGrid.setItems( concepts );
+		gridLayout.addComponent( languages, 0, 0 );
 		gridLayout.addComponent(addCode, 1, 0);
 		gridLayout.addComponent(editCode, 2, 0);
 		gridLayout.addComponent(addCVScheme, 3, 0);
@@ -206,19 +193,21 @@ public class EditorView extends VerticalLayout implements View {
 		addComponents(new Label("Thesoz"), gridLayout);
 	}
 
-	public void updateGrid(String language) {
+	public void updateGrid(String language)
+	{
 
-		log.info("" + language);
+		log.info( language );
 		conceptGrid.removeAllColumns();
 		// conceptGrid.addColumn(CVConcept::getId).setCaption("URI").setExpandRatio(1);
 
-		conceptGrid.addColumn(concept -> concept.getPrefLabelByLanguage("en")).setCaption("en")
-				.setEditorComponent(prefLabelEditor, (concept, value) -> concept.setPrefLabelByLanguage("en", value))
-				.setExpandRatio(1);
+		conceptGrid.addColumn( concept -> concept.getPrefLabelByLanguage( "en" ) ).setCaption( "en" )
+				.setEditorComponent( prefLabelEditor, ( concept, value ) -> concept
+						.setPrefLabelByLanguage( "en", value ) )
+				.setExpandRatio( 1 );
 
-		Binding<CVConcept, String> prefLabelBinding = binder.bind(prefLanguageEditor,
-				concept -> concept.getPrefLabelByLanguage(language),
-				(concept, label) -> concept.setPrefLabelByLanguage(language, label));
+		Binding<CVConcept, String> prefLabelBinding = binder.bind( prefLanguageEditor,
+				concept -> concept.getPrefLabelByLanguage( language ),
+				( concept, label ) -> concept.setPrefLabelByLanguage( language, label ) );
 
 		conceptGrid.addColumn(concept -> concept.getPrefLabelByLanguage(language)).setCaption(language)
 				.setEditorBinding(prefLabelBinding).setExpandRatio(1);// Component(prefLanguageEditor,

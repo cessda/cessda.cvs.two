@@ -1,24 +1,5 @@
 package eu.cessda.cvmanager.service.rest;
 
-import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
-
-import java.util.List;
-import java.util.Optional;
-
-import org.gesis.stardat.ddiflatdb.client.DDIStore;
-import org.gesis.stardat.ddiflatdb.client.RestClient;
-import org.gesis.stardat.entity.CVConcept;
-import org.gesis.stardat.entity.CVScheme;
-import org.gesis.stardat.entity.DDIElement;
-import org.gesis.stardat.entity.LanguageLabel;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
-
 import eu.cessda.cvmanager.service.ConfigurationService;
 import eu.cessda.cvmanager.service.controller.CVSchemeList;
 import eu.cessda.cvmanager.service.controller.Code;
@@ -27,25 +8,46 @@ import eu.cessda.cvmanager.service.controller.ContentType;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.gesis.stardat.ddiflatdb.client.DDIStore;
+import org.gesis.stardat.ddiflatdb.client.RestClient;
+import org.gesis.stardat.entity.CVConcept;
+import org.gesis.stardat.entity.CVScheme;
+import org.gesis.stardat.entity.DDIElement;
+import org.gesis.stardat.entity.LanguageLabel;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_UTF8_VALUE;
 
 @RestController
-public class VocabularySearch {
+public class VocabularySearch
+{
 
 	@Autowired
 	ConfigurationService configService;
 
-	private RestClient restClient;
+	private final RestClient restClient;
 
-	@ResponseStatus(code = HttpStatus.OK)
-	@RequestMapping(value = "/v1/suggest/Vocabulary/{vocabulary}/version/{version}/language/{language}/limit/{limit}/query/{query}", produces = APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
-	@ApiOperation(value = "Get list of suggestions by query")
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "No code found") })
+	@Autowired
+	public VocabularySearch( RestClient restClient ) {this.restClient = restClient;}
 
-	public CodeList getSuggestionByQuery(@PathVariable String vocabulary, @PathVariable String version,
-			@PathVariable String language, @PathVariable String query, @PathVariable Integer limit) {
+	@ResponseStatus( code = HttpStatus.OK )
+	@GetMapping( value = "/v1/suggest/Vocabulary/{vocabulary}/version/{version}/language/{language}/limit/{limit}/query/{query}", produces = APPLICATION_JSON_UTF8_VALUE )
+	@ApiOperation( value = "Get list of suggestions by query" )
+	@ApiResponses( value = { @ApiResponse( code = 404, message = "No code found" ) } )
 
-		restClient = new RestClient(configService.getDdiflatdbRestUrl());
-		List<DDIStore> searchResult = restClient.getElementListByContent(DDIElement.CVCONCEPT, query);
+	public CodeList getSuggestionByQuery( @PathVariable String vocabulary, @PathVariable String version,
+										  @PathVariable String language, @PathVariable String query, @PathVariable Integer limit )
+	{
+
+		List<DDIStore> searchResult = restClient.getElementListByContent( DDIElement.CVCONCEPT, query );
 
 		int count = limit;
 		CodeList codeList = new CodeList();
@@ -99,35 +101,31 @@ public class VocabularySearch {
 
 	}
 
-	@ResponseStatus(code = HttpStatus.OK)
-	@RequestMapping(value = "/v1/Vocabularies/agency/{agency}/version/{version}/language/{language}", produces = APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
-	@ApiOperation(value = "Get list of suggestions by agency, version or/and language")
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "No cv  found") })
+	@ResponseStatus( code = HttpStatus.OK )
+	@GetMapping( value = "/v1/Vocabularies/agency/{agency}/version/{version}/language/{language}", produces = APPLICATION_JSON_UTF8_VALUE )
+	@ApiOperation( value = "Get list of suggestions by agency, version or/and language" )
+	@ApiResponses( value = { @ApiResponse( code = 404, message = "No cv  found" ) } )
 
 	public CVSchemeList getVocabularies(@PathVariable String agency, @PathVariable String version,
-			@PathVariable String language) {
+			@PathVariable String language)
+	{
 
-		restClient = new RestClient(configService.getDdiflatdbRestUrl());
-		List<DDIStore> searchResult = restClient.getStudyList(DDIElement.CVSCHEME);
+		List<DDIStore> searchResult = restClient.getStudyList( DDIElement.CVSCHEME );
 		CVSchemeList schemeList = new CVSchemeList();
 
-		for (DDIStore store : searchResult) {
-			CVScheme scheme = new CVScheme(store);
-			schemeList.getListOfCVSchemes().add(scheme);
-		}
+		searchResult.stream().map( CVScheme::new ).forEach( scheme -> schemeList.getListOfCVSchemes().add( scheme ) );
 
 		return schemeList;
 	}
 
-	@ResponseStatus(code = HttpStatus.OK)
-	@RequestMapping(value = "/v1/Codes/vocabulary/{vocabulary}/version/{version}/language/{language}", produces = APPLICATION_JSON_UTF8_VALUE, method = RequestMethod.GET)
-	@ApiOperation(value = "Get list of suggestions by agency, version or/and language")
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "No cv  found") })
+	@ResponseStatus( code = HttpStatus.OK )
+	@GetMapping( value = "/v1/Codes/vocabulary/{vocabulary}/version/{version}/language/{language}", produces = APPLICATION_JSON_UTF8_VALUE )
+	@ApiOperation( value = "Get list of suggestions by agency, version or/and language" )
+	@ApiResponses( value = { @ApiResponse( code = 404, message = "No cv  found" ) } )
 
 	public CodeList getCodes(@PathVariable String vocabulary, @PathVariable String version,
 			@PathVariable String language) {
 
-		restClient = new RestClient(configService.getDdiflatdbRestUrl());
 		List<DDIStore> searchResult = restClient.getStudyList(DDIElement.CVCONCEPT);
 		CodeList codeList = new CodeList();
 
