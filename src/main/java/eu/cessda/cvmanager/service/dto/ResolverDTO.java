@@ -1,16 +1,20 @@
 package eu.cessda.cvmanager.service.dto;
 
 
-import javax.validation.constraints.*;
+import eu.cessda.cvmanager.domain.enumeration.ResolverType;
+import eu.cessda.cvmanager.domain.enumeration.ResourceType;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-import eu.cessda.cvmanager.domain.enumeration.ResourceType;
-import eu.cessda.cvmanager.domain.enumeration.ResolverType;
 
 /**
  * A DTO for the Resolver entity.
  */
-public class ResolverDTO implements Serializable {
+public class ResolverDTO implements Serializable
+{
+
+    private static final long serialVersionUID = 9188921541673634043L;
 
     private Long id;
 

@@ -1,28 +1,27 @@
 package eu.cessda.cvmanager.service.dto;
 
-import javax.validation.constraints.*;
-
 import eu.cessda.cvmanager.domain.enumeration.ObjectType;
 
-import java.io.Serializable;
 import javax.persistence.Lob;
+import java.io.Serializable;
 
 /**
  * A DTO for the MetadataValue entity.
  */
-public class MetadataValueDTO implements Serializable {
+public class MetadataValueDTO implements Serializable
+{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 7712401550474793839L;
 
 	private Long id;
-    @Lob
-    private String value;
+	@Lob
+	private String value;
 
-    private ObjectType objectType;
-    
-    private Long objectId;
-    
-    private Long metadataFieldId;
+	private ObjectType objectType;
+
+	private Long objectId;
+
+	private Long metadataFieldId;
     
     @Override
     public String toString() {

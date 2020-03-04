@@ -53,27 +53,30 @@ public class WorkspaceManager {
 			log.info( "Saving new SL version of {}", version.getNotation() );
 			vocabulary.setNotation( version.getNotation() );
 			vocabulary.setVersionNumber("1.0");
-			vocabulary.setAgencyId( agency.getId());
-			vocabulary.setAgencyName( agency.getName());
-			vocabulary.setSourceLanguage( language.getIso());
+			vocabulary.setAgencyId( agency.getId() );
+			vocabulary.setAgencyName( agency.getName() );
+			vocabulary.setSourceLanguage( language.getIso() );
 
-			version.setUri( WorkflowUtils.generateAgencyBaseUri( agency.getUri() ) + vocabulary.getNotation() + "/" + language.getIso() );
-			version.setNotation( vocabulary.getNotation());
-			version.setNumber("1.0");
-			version.setItemType( ItemType.SL.toString());
+			version.setUri( WorkflowUtils.generateAgencyBaseUri( agency.getUri() ) + vocabulary.getNotation() + "/" +
+					language.getIso() );
+			version.setNotation( vocabulary.getNotation() );
+			version.setNumber( "1.0" );
+			version.setItemType( ItemType.SL.toString() );
 			version.setLanguage( language.getIso() );
-			version.setPreviousVersion(0L);
-			UserDetails loggedUser = CvManagerSecurityUtils.getLoggedUser();
+			version.setPreviousVersion( 0L );
+			Optional<UserDetails> loggedUser = CvManagerSecurityUtils.getLoggedUser();
 
-			if( loggedUser != null )
-				version.setCreator( loggedUser.getId() );
+			if ( loggedUser.isPresent() )
+			{
+				version.setCreator( loggedUser.get().getId() );
+			}
 
 			// save to database
-			vocabulary = vocabularyService.save(vocabulary);
-			
+			vocabulary = vocabularyService.save( vocabulary );
+
 			version.setVocabularyId( vocabulary.getId() );
 			version = versionService.save( version );
-			
+
 			// save initial version
 			version.setInitialVersion( version.getId() );
 			version = versionService.save( version );
@@ -107,26 +110,29 @@ public class WorkspaceManager {
 		// store new version
 		if( !tlVersion.isPersisted()) {
 			String languageIso = language.getIso();
-			log.info( "Saving new TL version of {}, with language {}", vocabulary.getNotation(), languageIso);
+			log.info( "Saving new TL version of {}, with language {}", vocabulary.getNotation(), languageIso );
 			tlVersion.setUriSl( vocabulary.getUri() );
 
-			tlVersion.setUri( WorkflowUtils.generateAgencyBaseUri( agency.getUri() ) + vocabulary.getNotation() + "/" + languageIso );
-			tlVersion.setNotation( vocabulary.getNotation());
-			tlVersion.setNumber( vocabulary.getVersionNumber() + ".1");
-			tlVersion.setItemType( ItemType.TL.toString());
+			tlVersion.setUri( WorkflowUtils.generateAgencyBaseUri( agency.getUri() ) + vocabulary.getNotation() + "/" +
+					languageIso );
+			tlVersion.setNotation( vocabulary.getNotation() );
+			tlVersion.setNumber( vocabulary.getVersionNumber() + ".1" );
+			tlVersion.setItemType( ItemType.TL.toString() );
 			tlVersion.setLanguage( languageIso );
 			tlVersion.setPreviousVersion( 0L );
-			UserDetails loggedUser = CvManagerSecurityUtils.getLoggedUser();
-			if( loggedUser != null )
-				tlVersion.setCreator( loggedUser.getId() );
+			Optional<UserDetails> loggedUser = CvManagerSecurityUtils.getLoggedUser();
+			if ( loggedUser.isPresent() )
+			{
+				tlVersion.setCreator( loggedUser.get().getId() );
+			}
 
 			tlVersion.setInitialVersion( 0L );
-			tlVersion.setVocabularyId( vocabulary.getId());
+			tlVersion.setVocabularyId( vocabulary.getId() );
 			tlVersion.setTranslateAgency( translatorAgency );
 			tlVersion.setTranslateAgencyLink( translatorAgencyLink );
 
 			// check if previous version exist and perform cloning
-			clonePreviousVersion(agency, language, vocabulary, slVersion, tlVersion);
+			clonePreviousVersion( agency, language, vocabulary, slVersion, tlVersion );
 
 			// save after assign everything
 			tlVersion = versionService.save(tlVersion);
@@ -159,49 +165,60 @@ public class WorkspaceManager {
 	}
 
 	private void storeTLConceptWithCode(Language language, VocabularyDTO vocabulary, VersionDTO tlVersion, VersionDTO slVersion) {
-		if( !tlVersion.getConcepts().isEmpty() ) {
+		if( !tlVersion.getConcepts().isEmpty() )
+		{
 			// get codes from latestSL, since codes need to be match between SL and TL on the same slVersion
-			List<CodeDTO> codes = codeService.findByVocabularyAndVersion( vocabulary.getId(), slVersion.getId());
+			List<CodeDTO> codes = codeService.findByVocabularyAndVersion( vocabulary.getId(), slVersion.getId() );
 			// save concepts with codes ID
-			for( CodeDTO code: codes) {
-				ConceptDTO
-					.getConceptFromCode(tlVersion.getConcepts(), code.getNotation())
-					.ifPresent( c ->{
-						c.setCodeId( code.getId());
+			codes.forEach( code -> ConceptDTO.getConceptFromCode( tlVersion.getConcepts(), code.getNotation() )
+					.ifPresent( c ->
+					{
+						c.setCodeId( code.getId() );
 						// in case code need update
-						if( code.getTitleByLanguage(language) == null ||
-							!compareString( code.getTitleByLanguage(language) ,c.getTitle()) ||
-							!compareString( code.getDefinitionByLanguage(language) ,c.getDefinition())) {
-							code.setTitleDefinition(c.getTitle(), c.getDefinition(), language);
-							codeService.save(code);
+						if ( code.getTitleByLanguage( language ) == null ||
+								!compareString( code.getTitleByLanguage( language ), c.getTitle() ) ||
+								!compareString( code.getDefinitionByLanguage( language ), c.getDefinition() ) )
+						{
+							code.setTitleDefinition( c.getTitle(), c.getDefinition(), language );
+							codeService.save( code );
 						}
-					});
-			}
+					} ) );
 			// save versionId property
-			for( ConceptDTO newConcept: tlVersion.getConcepts()) {
-				newConcept.setVersionId( tlVersion.getId());
-				conceptService.save(newConcept);
-			}
+			tlVersion.getConcepts().forEach( newConcept ->
+			{
+				newConcept.setVersionId( tlVersion.getId() );
+				conceptService.save( newConcept );
+			} );
 		}
 	}
 
-	private void clonePreviousVersion(AgencyDTO agency, Language language, VocabularyDTO vocabulary, VersionDTO slVersion, VersionDTO versionTl) {
+	private void clonePreviousVersion(AgencyDTO agency, Language language, VocabularyDTO vocabulary, VersionDTO slVersion, VersionDTO versionTl)
+	{
 		// get previous version from the same language
-		Optional<VersionDTO> latestTlVersion = VersionDTO.getLatestVersion( vocabulary.getVersions(), language.getIso(), null);
-		if( latestTlVersion.isPresent() ) {
+		Optional<VersionDTO> latestTlVersion = VersionDTO
+				.getLatestVersion( vocabulary.getVersions(), language.getIso(), null );
+		Optional<UserDetails> loggedUser = CvManagerSecurityUtils.getLoggedUser();
+		if ( latestTlVersion.isPresent() && loggedUser.isPresent() )
+		{
 			// if exist then reassign the version number and perform cloning
 			VersionDTO prevVersion = latestTlVersion.get();
 			String versionNumber = vocabulary.getVersionNumber();
 			// get last version number from previous version if exist
-			if( prevVersion.getStatus().equals(Status.PUBLISHED.toString()) && prevVersion.getNumber().indexOf( vocabulary.getVersionNumber()) == 0 ) {
-				int lastDotIndex = vocabulary.getVersionNumber().lastIndexOf('.');
-				versionNumber += "." + (Integer.parseInt(vocabulary.getVersionNumber().substring( lastDotIndex + 1)) + 1);
-			} else {
+			if ( prevVersion.getStatus().equals( Status.PUBLISHED.toString() ) &&
+					prevVersion.getNumber().indexOf( vocabulary.getVersionNumber() ) == 0 )
+			{
+				int lastDotIndex = vocabulary.getVersionNumber().lastIndexOf( '.' );
+				versionNumber +=
+						"." + ( Integer.parseInt( vocabulary.getVersionNumber().substring( lastDotIndex + 1 ) ) + 1 );
+			}
+			else
+			{
 				versionNumber += ".1";
 			}
 
-			VersionDTO.clone(versionTl, prevVersion, slVersion, CvManagerSecurityUtils.getLoggedUser().getId(), versionNumber,
-					slVersion.getLicenseId(), WorkflowUtils.generateAgencyBaseUri( agency.getUri()), slVersion.getDdiUsage());
+			VersionDTO.clone( versionTl, prevVersion, slVersion, loggedUser.get().getId(), versionNumber,
+					slVersion.getLicenseId(), WorkflowUtils.generateAgencyBaseUri( agency.getUri() ), slVersion
+							.getDdiUsage() );
 		}
 	}
 
@@ -312,18 +329,26 @@ public class WorkspaceManager {
 
 	public void storeChangeLog( VocabularyDTO vocabulary, VersionDTO version,
 			String changeType, String changeDescription) {
-		if( !version.isInitialVersion() ) {
-			VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
-			changeDTO.setVocabularyId( vocabulary.getId());
-			changeDTO.setVersionId( version.getId()); 
-			changeDTO.setChangeType( changeType );
-			changeDTO.setDescription( changeDescription );
-			changeDTO.setDate( LocalDateTime.now() );
-			UserDetails loggedUser = CvManagerSecurityUtils.getLoggedUser();
-			changeDTO.setUserId( loggedUser.getId() );
-			changeDTO.setUserName( loggedUser.getFirstName() + " " + loggedUser.getLastName());
-			
-			vocabularyChangeService.save(changeDTO);
+		if( !version.isInitialVersion() )
+		{
+			Optional<UserDetails> loggedUser = CvManagerSecurityUtils.getLoggedUser();
+			if ( loggedUser.isPresent() )
+			{
+				VocabularyChangeDTO changeDTO = new VocabularyChangeDTO();
+				changeDTO.setVocabularyId( vocabulary.getId() );
+				changeDTO.setVersionId( version.getId() );
+				changeDTO.setChangeType( changeType );
+				changeDTO.setDescription( changeDescription );
+				changeDTO.setDate( LocalDateTime.now() );
+				changeDTO.setUserId( loggedUser.get().getId() );
+				changeDTO.setUserName( loggedUser.get().getFirstName() + " " + loggedUser.get().getLastName() );
+
+				vocabularyChangeService.save( changeDTO );
+			}
+			else
+			{
+				throw new IllegalStateException( "No user is logged in, changelog can't be generated!" );
+			}
 		} 
 	}
 

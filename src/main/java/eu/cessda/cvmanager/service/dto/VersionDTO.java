@@ -1,41 +1,38 @@
 package eu.cessda.cvmanager.service.dto;
 
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-
-import javax.validation.constraints.*;
-
-import org.gesis.wts.domain.enumeration.Language;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import eu.cessda.cvmanager.domain.enumeration.ItemType;
 import eu.cessda.cvmanager.domain.enumeration.Status;
+import org.gesis.wts.domain.enumeration.Language;
 
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import javax.persistence.Lob;
-
 /**
  * A DTO for the Version entity.
  */
-public class VersionDTO implements Serializable {
+public class VersionDTO implements Serializable
+{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2627451040228545583L;
 
 	private Long id;
 
-    @NotNull
-    private String status;
+	@NotNull
+	private String status;
 
-    @NotNull
-    private String itemType;
+	@NotNull
+	private String itemType;
 
-    @Size(max = 20)
+	@Size( max = 20 )
     private String language;
 
     private LocalDateTime lastModified;

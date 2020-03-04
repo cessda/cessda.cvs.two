@@ -1,10 +1,11 @@
 package eu.cessda.cvmanager.service.mapper;
 
-import eu.cessda.cvmanager.domain.*;
+import eu.cessda.cvmanager.domain.Concept;
 import eu.cessda.cvmanager.service.dto.ConceptDTO;
-
 import org.gesis.wts.service.mapper.EntityMapper;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 /**
  * Mapper for the entity Concept and its DTO ConceptDTO.
@@ -16,8 +17,8 @@ public interface ConceptMapper extends EntityMapper<ConceptDTO, Concept> {
 		@Mapping(source = "version.id", target = "versionId")
 	})
 	ConceptDTO toDto (Concept concept);
-	
-	@Mappings({
+
+    @Mappings({
 		@Mapping(source = "versionId", target = "version")
 	})
     Concept toEntity(ConceptDTO conceptDTO);

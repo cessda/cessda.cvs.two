@@ -26,9 +26,9 @@ public class VocabularyChangeDTO implements Serializable {
 			"Code definition rephrased"
 	};
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -6263433539500744194L;
 
-	private Long id;
+    private Long id;
 	
     private Long vocabularyId;
     

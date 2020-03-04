@@ -1,20 +1,21 @@
 package eu.cessda.cvmanager.service.dto;
 
 
-import javax.validation.constraints.*;
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the ActivityLog entity.
  */
 public class ActivityLogDTO implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 8655987663022259591L;
 
-	private Long id;
+    private Long id;
 
     @NotNull
     @Size(max = 60)

@@ -1,16 +1,16 @@
 package eu.cessda.cvmanager.service.dto;
 
-import javax.validation.constraints.*;
-import java.util.Objects;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A LicenceDTO.
  */
 public class LicenceDTO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 3723292021697018348L;
 
     private Long id;
 

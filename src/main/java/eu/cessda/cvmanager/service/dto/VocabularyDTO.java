@@ -1,50 +1,42 @@
 package eu.cessda.cvmanager.service.dto;
 
 
-import javax.persistence.Lob;
-import javax.validation.constraints.*;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.utils.VersionUtils;
 import org.gesis.stardat.entity.CVScheme;
 import org.gesis.wts.domain.enumeration.Language;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import eu.cessda.cvmanager.domain.enumeration.Status;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.Lob;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * A DTO for the Vocabulary entity.
  */
-public class VocabularyDTO implements Serializable {
+public class VocabularyDTO implements Serializable
+{
 
-    private final Logger log = LoggerFactory.getLogger( VocabularyDTO.class );
+    private static final long serialVersionUID = 5595358482701599345L;
+    private static final Logger log = LoggerFactory.getLogger( VocabularyDTO.class );
 
-	private static final long serialVersionUID = 1L;
+    public VocabularyDTO()
+    {
+        archived = false;
+        withdrawn = false;
+        discoverable = false;
+    }
 
-	public VocabularyDTO() {
-		archived = false;
-		withdrawn = false;
-		discoverable = false;
-	}
-	
-	public static VocabularyDTO createDraft() {
-		return new VocabularyDTO().withStatus(Status.DRAFT).addStatuses( Status.DRAFT.toString());
-	}
+    public static VocabularyDTO createDraft()
+    {
+        return new VocabularyDTO().withStatus( Status.DRAFT ).addStatuses( Status.DRAFT.toString() );
+    }
 	
 	public VocabularyDTO withStatus(Status status) {
 		this.status = status.toString();

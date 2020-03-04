@@ -1,28 +1,29 @@
 package eu.cessda.cvmanager.service.dto;
 
-import javax.validation.constraints.*;
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
-import javax.persistence.Lob;
-
 /**
  * A DTO for the Concept entity.
  */
-public class ConceptDTO implements Serializable {
+public class ConceptDTO implements Serializable
+{
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 5246294417151987878L;
 
 	private Long id;
-	
-	@Size(max = 255)
+
+	@Size( max = 255 )
 	private String uri;
 
-    @NotNull
-    @Size(max = 240)
-    private String notation;
+	@NotNull
+	@Size( max = 240 )
+	private String notation;
 
     @Lob
     private String title;

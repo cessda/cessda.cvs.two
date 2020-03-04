@@ -1,35 +1,32 @@
 package eu.cessda.cvmanager.service.dto;
 
-import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.gesis.stardat.entity.CVConcept;
 import org.gesis.wts.domain.enumeration.Language;
 
-
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.Objects;
-import java.util.Optional;
 
 /**
  * A DTO for the Code entity.
  */
-public class CodeDTO implements Serializable {
-	
-	public CodeDTO() {
-		archived = false;
-		withdrawn = false;
-		discoverable = false;
-	}
+public class CodeDTO implements Serializable
+{
+
+    private static final long serialVersionUID = -26692085521949128L;
+
+    public CodeDTO()
+    {
+        archived = false;
+        withdrawn = false;
+        discoverable = false;
+    }
 
     private Long id;
 
