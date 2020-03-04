@@ -49,9 +49,9 @@ public class UserGuideView extends CvView  {
 	private final MetadataValueService metadataValueService;
 	private Locale locale = UI.getCurrent().getLocale();
 	
-	private enum LayoutMode{ READ, EDIT };
-	
-	private MCssLayout userGuideLayout = new MCssLayout();
+	private enum LayoutMode{ READ, EDIT }
+
+    private MCssLayout userGuideLayout = new MCssLayout();
 	private MCssLayout infoLayout = new MCssLayout().withFullSize();
 	private MLabel notExistInfo = new MLabel("No information is available, login as admin to update content");
 	private MLabel contentInfo = new MLabel().withContentMode( ContentMode.HTML);

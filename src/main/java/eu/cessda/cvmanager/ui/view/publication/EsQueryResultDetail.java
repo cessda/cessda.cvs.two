@@ -49,9 +49,7 @@ public class EsQueryResultDetail {
 	}
 	
 	public void clearFilter() {
-		this.esFilters.forEach( esFilter -> {
-			esFilter.getValues().clear();
-		});
+		this.esFilters.forEach( esFilter -> esFilter.getValues().clear() );
 	}
 	
 	public void resetPaging() {
@@ -127,7 +125,7 @@ public class EsQueryResultDetail {
 		for( EsFilter esFilter : this.esFilters){
 			if( esFilter.getValues() != null && !esFilter.getValues().isEmpty())
 				return true;
-		};
-		return false;
+		}
+        return false;
 	}
 }

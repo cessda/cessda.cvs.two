@@ -436,10 +436,10 @@ public class PublicationDetailsView extends CvView {
 
 		detailTreeGrid.setSelectionMode(SelectionMode.NONE);
 
-		detailTreeGrid.addColumn(code -> code.getNotation() /* + "(" + code.getCodeId() + ")" */).setCaption("Code")
+		detailTreeGrid.addColumn( ConceptDTO::getNotation /* + "(" + code.getCodeId() + ")" */).setCaption("Code")
 				.setExpandRatio(1).setId("code");
 
-		detailTreeGrid.addColumn(concept -> concept.getTitle())
+		detailTreeGrid.addColumn( ConceptDTO::getTitle )
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.getIso()))
 				.setExpandRatio(1).setId("prefLabelTl");
 

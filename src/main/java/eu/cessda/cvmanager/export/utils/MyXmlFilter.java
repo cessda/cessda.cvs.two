@@ -25,10 +25,7 @@ public class MyXmlFilter extends XMLFilterImpl
 	public void startElement( String uri, String localName, String qName, Attributes atts ) throws SAXException
 	{
 		// filter tag
-		if ( filteredTag != null && filteredTag.contains( qName ) )
-			skip = true;
-		else
-			skip = false;
+        skip = filteredTag != null && filteredTag.contains( qName );
 
 		// filter language attribute
 		if ( !skip && filteredLanguage != null )

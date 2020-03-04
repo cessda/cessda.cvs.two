@@ -15,12 +15,12 @@ public class Concept implements Serializable {
 
 	private URI URI;
 	
-	private Map<String, String> prefLabel = new HashMap<String, String>();
+	private Map<String, String> prefLabel = new HashMap<>();
 	
 
-	private Map<String, String> altLabel = new HashMap<String, String>();
+	private Map<String, String> altLabel = new HashMap<>();
 	
-	private Map<String, String> definition = new HashMap<String, String>();
+	private Map<String, String> definition = new HashMap<>();
 	
 
 

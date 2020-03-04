@@ -202,11 +202,11 @@ public class VocabularyWithdrawnGridRow extends CustomComponent {
 
 	private void applyButtonStyle(Button pressedButton) {
 
-		Iterator<Component> iterate = languageLayout.iterator();
-		while (iterate.hasNext()) {
-			Component c = iterate.next();
-			if (c instanceof Button) {
-				((Button) c).removeStyleName("button-language-selected");
+		for ( Component c : languageLayout )
+		{
+			if ( c instanceof Button )
+			{
+				c.removeStyleName( "button-language-selected" );
 			}
 		}
 		pressedButton.addStyleName("button-language-selected");

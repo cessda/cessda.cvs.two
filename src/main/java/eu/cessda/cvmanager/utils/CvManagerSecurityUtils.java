@@ -2,6 +2,7 @@ package eu.cessda.cvmanager.utils;
 
 import java.security.SecureRandom;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -94,10 +95,8 @@ public final class CvManagerSecurityUtils {
     
     public static org.gesis.wts.security.UserDetails getLoggedUser() {
 		Optional<org.gesis.wts.security.UserDetails> currentUserDetails = getCurrentUserDetails();
-		if( currentUserDetails.isPresent() )
-    		return currentUserDetails.get();
-        return null;
-    }
+		return currentUserDetails.orElse( null );
+	}
     
     /**
      * Get list of agencies from logged user
@@ -132,24 +131,22 @@ public final class CvManagerSecurityUtils {
     public static boolean isCurrentUserAgencyAdmin( AgencyDTO agency ) {
     	// user is admin skip authorization
     	if( isCurrentUserSystemAdmin() )
-    		return true;
+		{
+			return true;
+		}
 
-		Optional<org.gesis.wts.security.UserDetails> currentUserDetails = getCurrentUserDetails();
-		if( currentUserDetails.isPresent() )
-			return Optional.ofNullable( currentUserDetails.get())
-				.map( userdetail -> {
-					if (userdetail.getAgencyDtos().contains(agency)) {
-						for( UserAgencyDTO userAgency : getUserAgencyByAgency(agency).get())
-							if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN))
-								return true;
-						return false;
+		return getCurrentUserDetails().map( userdetail ->
+				{
+					if ( userdetail.getAgencyDtos().contains( agency ) )
+					{
+						return getUserAgencyByAgency( agency ).map( userAgencyDTOS -> userAgencyDTOS.stream()
+								.anyMatch( userAgency -> userAgency.getAgencyRole().equals( AgencyRole.ADMIN ) ) )
+								.orElse( false );
 					}
-					else
-						return false;
-				})
-				.orElse(false);
-		return false;
-    }
+					return false;
+				} )
+				.orElse( false );
+	}
     
 	public static boolean isCurrentUserAgencyAdmin() {
 		if (!isAuthenticated())
@@ -158,18 +155,9 @@ public final class CvManagerSecurityUtils {
 		if (isUserAdmin() || isUserAdminContent())
 			return true;
 
-		Optional<org.gesis.wts.security.UserDetails> currentUserDetails = getCurrentUserDetails();
-		if (currentUserDetails.isPresent())
-			return Optional.ofNullable(currentUserDetails.get())
-					.map(userdetail -> {
-						for (UserAgencyDTO userAgency : userdetail.getUserAgencyDtos()) {
-							if (userAgency.getAgencyRole().equals(AgencyRole.ADMIN))
-								return true;
-						}
-						return false;
-					})
-					.orElse(false);
-		return false;
+		return getCurrentUserDetails().map( userdetail -> userdetail.getUserAgencyDtos().stream()
+						.anyMatch( userAgency -> userAgency.getAgencyRole().equals( AgencyRole.ADMIN ) ) )
+				.orElse( false );
 	}
 	
 	/**
@@ -177,15 +165,9 @@ public final class CvManagerSecurityUtils {
      * @return
      */
     public static Optional<List<UserAgencyDTO>> getCurrentUserUserAgencies(){
-
-		Optional<org.gesis.wts.security.UserDetails> currentUserDetails = getCurrentUserDetails();
-		if (currentUserDetails.isPresent())
-			return Optional.ofNullable( currentUserDetails.get() )
-    	    	.map( userdetail -> userdetail.getUserAgencyDtos().stream()
-    	    				.sorted( (a1, a2) -> a1.getAgencyName().compareTo( a2.getAgencyName()))
-    	    				.collect( Collectors.toList()));
-		return Optional.empty();
-
+		return getCurrentUserDetails().map( userdetail -> userdetail.getUserAgencyDtos().stream()
+				.sorted( Comparator.comparing( UserAgencyDTO::getAgencyName ) )
+				.collect( Collectors.toList()));
     }
     
     /**
@@ -217,7 +199,7 @@ public final class CvManagerSecurityUtils {
     	    			.filter( p -> p.getAgencyId().equals( agency.getId()))
     	    			.filter( p -> p.getAgencyRole().equals( AgencyRole.ADMIN_SL) || p.getAgencyRole().equals( AgencyRole.CONTRIBUTOR_SL))
     	    			.map(UserAgencyDTO::getLanguage)
-    	    			.sorted( (l1, l2) -> l1.toString().compareTo( l2.toString()))
+    	    			.sorted( Comparator.comparing( Enum::toString ) )
     	    			.collect( Collectors.toList()));
 		return Optional.empty();
     }
@@ -233,7 +215,7 @@ public final class CvManagerSecurityUtils {
     	    			.filter( p -> p.getAgencyId().equals( agency.getId()))
     	    			.filter( p -> p.getAgencyRole().equals( AgencyRole.ADMIN_TL) || p.getAgencyRole().equals( AgencyRole.CONTRIBUTOR_TL))
     	    			.map(UserAgencyDTO::getLanguage)
-    	    			.sorted( (l1, l2) -> l1.toString().compareTo( l2.toString()))
+    	    			.sorted( Comparator.comparing( Enum::toString ) )
     	    			.collect( Collectors.toList()));
 		return Optional.empty();
     }
@@ -275,17 +257,10 @@ public final class CvManagerSecurityUtils {
     	
     	// check for SL role
 		Optional<List<UserAgencyDTO>> userAgencyByAgency = getUserAgencyByAgency(agency);
-		if( userAgencyByAgency.isPresent() )
-			return Optional.of( userAgencyByAgency.get() )
-				.map( uas -> {
-					for( UserAgencyDTO userAgency : uas) {
-						if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN_SL))
-							return true;
-					}
-					return false;
-				}).orElse( false);
-		return false;
-    }
+		return userAgencyByAgency.map( uas -> uas.stream()
+				.anyMatch( userAgency -> userAgency.getAgencyRole().equals( AgencyRole.ADMIN_SL ) ) )
+				.orElse( false );
+	}
     
     /**
      * Determine whether user allowed to add CV translation, user needs TL role in any agencies
@@ -328,17 +303,10 @@ public final class CvManagerSecurityUtils {
     	
     	// check for TL role
 		Optional<List<UserAgencyDTO>> userAgencyByAgency = getUserAgencyByAgency(agency);
-		if( userAgencyByAgency.isPresent() )
-			return Optional.of( userAgencyByAgency.get() )
-        		.map( uas -> {
-        			for( UserAgencyDTO userAgency : uas) {
-        				if( userAgency.getAgencyRole().equals(AgencyRole.ADMIN_TL))
-        					return true;
-        			}
-    				return false;
-        		}).orElse( false);
-		return false;
-    }
+		return userAgencyByAgency.map( uas -> uas.stream()
+						.anyMatch( userAgency -> userAgency.getAgencyRole().equals( AgencyRole.ADMIN_TL ) ) )
+				.orElse( false ) ;
+	}
     
     
     public static boolean isCurrentUserAllowEditCv( AgencyDTO agency, Language language) {
@@ -353,19 +321,14 @@ public final class CvManagerSecurityUtils {
     	
     	// check for SL role
 		Optional<List<UserAgencyDTO>> userAgencyByAgency = getUserAgencyByAgency(agency);
-		if( userAgencyByAgency.isPresent() )
-			return Optional.of( userAgencyByAgency.get() )
-    		.map( uas -> {
-    			for( UserAgencyDTO userAgency : uas) {
-    				if( (userAgency.getAgencyRole().equals(AgencyRole.ADMIN_SL) || userAgency.getAgencyRole().equals(AgencyRole.CONTRIBUTOR_SL) ||
-    						userAgency.getAgencyRole().equals(AgencyRole.ADMIN_TL) || userAgency.getAgencyRole().equals(AgencyRole.CONTRIBUTOR_TL))
-							&&  userAgency.getLanguage().equals( language ))
-    						return true;
-    			}
-				return false;
-    		}).orElse( false);
-		return false;
-    }
+		return userAgencyByAgency.map( uas -> uas.stream()
+				.anyMatch( userAgency -> ( userAgency.getAgencyRole().equals( AgencyRole.ADMIN_SL ) ||
+								userAgency.getAgencyRole().equals( AgencyRole.CONTRIBUTOR_SL ) ||
+								userAgency.getAgencyRole().equals( AgencyRole.ADMIN_TL ) ||
+								userAgency.getAgencyRole().equals( AgencyRole.CONTRIBUTOR_TL ) )
+								&& userAgency.getLanguage().equals( language ) ) )
+				.orElse( false );
+	}
     
     public static Optional<List<UserAgencyDTO>> getUserAgencyByAgencyAndLanguage( AgencyDTO agency, String langIso) {	
     	return getUserAgencyByAgencyAndLanguage(agency, Language.getByIso(langIso));
@@ -401,26 +364,29 @@ public final class CvManagerSecurityUtils {
     		return true;
     	
     	Optional<List<UserAgencyDTO>> userAgencyByAgencyAndLanguage = getUserAgencyByAgencyAndLanguage(agency, version.getLanguage());
-    	
-    	if(!userAgencyByAgencyAndLanguage.isPresent())
-    		return false;
+
+		return userAgencyByAgencyAndLanguage.map( uas ->
+			{
+				for ( UserAgencyDTO userAgency : uas )
+				{
+					if ( version.getStatus().equals( Status.DRAFT.toString() ) )
+					{
+						return true;
+					}
+					else if ( version.getStatus().equals( Status.INITIAL_REVIEW.toString() ) )
+					{
+						return true;
+					}
+					else if ( version.getStatus().equals( Status.FINAL_REVIEW.toString() ) &&
+							( userAgency.getAgencyRole().equals( AgencyRole.ADMIN_SL ) ||
+									userAgency.getAgencyRole().equals( AgencyRole.ADMIN_TL ) ) )
+						return true;
+				}
+				return false;
+			} ).orElse( false );
     	
 		// check for role and current status
-    	return Optional.of( userAgencyByAgencyAndLanguage.get() )
-        		.map( uas -> {
-        			for( UserAgencyDTO userAgency : uas) {
-        				if(  version.getStatus().equals(Status.DRAFT.toString())) {
-        					return true;
-        				}
-        				else if(  version.getStatus().equals(Status.INITIAL_REVIEW.toString())) {
-        					return true;
-        				}
-        				else if(  version.getStatus().equals(Status.FINAL_REVIEW.toString()) && ( userAgency.getAgencyRole().equals( AgencyRole.ADMIN_SL) || userAgency.getAgencyRole().equals( AgencyRole.ADMIN_TL)))
-        					return true;
-        			}
-    				return false;
-        		}).orElse( false);
-    }
+	}
     
     /**
      * Determine whether user allowed to edit Agency Specific Metadata on the Cv, user needs TL role in specific agency
@@ -435,20 +401,14 @@ public final class CvManagerSecurityUtils {
     		return true;
     	
     	Optional<List<UserAgencyDTO>> userAgencyByAgencyAndLanguage = getUserAgencyByAgencyAndLanguage(agency, version.getLanguage());
-    	
-    	if(!userAgencyByAgencyAndLanguage.isPresent())
-    		return false;
+
+		return userAgencyByAgencyAndLanguage.map( uas -> uas.stream()
+				.anyMatch( userAgency -> userAgency.getAgencyRole().equals( AgencyRole.ADMIN_SL ) ||
+						userAgency.getAgencyRole().equals( AgencyRole.ADMIN_TL ) ) )
+				.orElse( false );
     	    	
     	// check for role and current status
-    	return Optional.of( userAgencyByAgencyAndLanguage.get() )
-        		.map( uas -> {
-        			for( UserAgencyDTO userAgency : uas) {
-    					if( userAgency.getAgencyRole().equals( AgencyRole.ADMIN_SL) || userAgency.getAgencyRole().equals( AgencyRole.ADMIN_TL))
-    						return true;
-        			}
-    				return false;
-        		}).orElse( false);
-    }
+	}
     
     public static String generateSecureRandomPassword(int randomStrLength) {
     	char[] possibleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".toCharArray();

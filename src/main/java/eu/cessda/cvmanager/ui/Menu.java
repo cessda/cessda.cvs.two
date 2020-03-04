@@ -64,61 +64,37 @@ public class Menu extends CssLayout {
 
 		// logout menu item
 		MenuBar logoutMenu = new MenuBar();
-		logoutMenu.addItem("Logout", VaadinIcons.SIGN_OUT, new Command() {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void menuSelected(MenuItem selectedItem) {
-				menuPart.removeComponent(logoutMenu);
-				menuPart.addComponent(loginMenu, 1);
-				securityService.logout(LoginView.NAME);
-			}
-		});
+		logoutMenu.addItem("Logout", VaadinIcons.SIGN_OUT, selectedItem ->
+		{
+			menuPart.removeComponent(logoutMenu);
+			menuPart.addComponent(loginMenu, 1);
+			securityService.logout(LoginView.NAME);
+		} );
 
 		logoutMenu.addStyleName("user-menu");
 
 		// logout menu item
 		loginMenu = new MenuBar();
-		loginMenu.addItem("Login", VaadinIcons.SIGN_IN, new Command() {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void menuSelected(MenuItem selectedItem) {
-				menuPart.removeComponent(loginMenu);
-				menuPart.addComponent(logoutMenu, 1);
-				navigator.navigateTo(LoginView.NAME);
-
-			}
-		});
+		loginMenu.addItem("Login", VaadinIcons.SIGN_IN, selectedItem ->
+		{
+			menuPart.removeComponent(loginMenu);
+			menuPart.addComponent(logoutMenu, 1);
+			navigator.navigateTo(LoginView.NAME);
+		} );
 
 		loginMenu.addStyleName("user-menu");
 
 		menuPart.addComponent(loginMenu);
 
 		// button for toggling the visibility of the menu when on a small screen
-		final Button showMenu = new Button("Menu", new ClickListener() {
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(final ClickEvent event) {
-				if (menuPart.getStyleName().contains(VALO_MENU_VISIBLE)) {
-					menuPart.removeStyleName(VALO_MENU_VISIBLE);
-				} else {
-					menuPart.addStyleName(VALO_MENU_VISIBLE);
-				}
+		final Button showMenu = new Button("Menu", event ->
+		{
+			if (menuPart.getStyleName().contains(VALO_MENU_VISIBLE)) {
+				menuPart.removeStyleName(VALO_MENU_VISIBLE);
+			} else {
+				menuPart.addStyleName(VALO_MENU_VISIBLE);
 			}
-		});
+		} );
 		showMenu.addStyleName(ValoTheme.BUTTON_PRIMARY);
 		showMenu.addStyleName(ValoTheme.BUTTON_SMALL);
 		showMenu.addStyleName(VALO_MENU_TOGGLE);
@@ -173,19 +149,7 @@ public class Menu extends CssLayout {
 	}
 
 	private void createViewButton(final String name, String caption, Resource icon) {
-		Button button = new Button(caption, new ClickListener() {
-
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public void buttonClick(ClickEvent event) {
-				navigator.navigateTo(name);
-
-			}
-		});
+		Button button = new Button(caption, event -> navigator.navigateTo(name) );
 		button.setPrimaryStyleName(ValoTheme.MENU_ITEM);
 		button.setIcon(icon);
 		menuItemsLayout.addComponent(button);

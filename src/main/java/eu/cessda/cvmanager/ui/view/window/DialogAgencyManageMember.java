@@ -126,7 +126,7 @@ public class DialogAgencyManageMember extends MWindow implements Translatable{
 		// first get all useragency member
 		List<UserDTO> members = userService.findAllByAgencyId( agency.getId() );
 		// insert new unique items
-		grid.setItems( new LinkedHashSet<UserDTO>(members));
+		grid.setItems( new LinkedHashSet<>( members ));
 		
 		grid.removeAllColumns();
 

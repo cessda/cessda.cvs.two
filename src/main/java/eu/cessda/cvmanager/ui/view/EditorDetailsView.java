@@ -51,6 +51,7 @@ import org.vaadin.viritin.layouts.MCssLayout;
 
 import javax.annotation.PostConstruct;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -249,7 +250,7 @@ public class EditorDetailsView extends CvView {
 				// if contains query string
 				if(itemPath.length > 1) {
 					// get query string params as pairs
-					List<NameValuePair> params = URLEncodedUtils.parse( itemPath[1],  Charset.forName("UTF-8"));
+					List<NameValuePair> params = URLEncodedUtils.parse( itemPath[1], StandardCharsets.UTF_8 );
 					Map<String, String> mappedParams = params.stream().collect(
 					        Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
 					
@@ -295,7 +296,6 @@ public class EditorDetailsView extends CvView {
 				UI.getCurrent().getNavigator().navigateTo( DiscoveryView.VIEW_NAME);
 			else
 				UI.getCurrent().getNavigator().navigateTo( EditorSearchView.VIEW_NAME);
-			return;
 		}
 		
 	}
@@ -426,7 +426,7 @@ public class EditorDetailsView extends CvView {
 			languages.addAll( 
 				vocabulary.getLanguages().stream()
 					.filter( p -> !p.equals( vocabulary.getSourceLanguage()))
-					.sorted( (v1, v2) -> v2.compareTo( v1 ))
+					.sorted( Comparator.reverseOrder() )
 					.collect( Collectors.toList()) );
 		}
 		// add source language
@@ -711,7 +711,7 @@ public class EditorDetailsView extends CvView {
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.SINGLE );
 		
-		detailTreeGrid.addColumn(code -> code.getNotation() /* + "("  + code.getId() + ")" */)
+		detailTreeGrid.addColumn( CodeDTO::getNotation /* + "("  + code.getId() + ")" */)
 			.setCaption("Code")
 			.setExpandRatio(1)
 			.setId("code");
@@ -738,9 +738,7 @@ public class EditorDetailsView extends CvView {
 				.setId("definitionSl");
 		
 		if( !selectedLang.equals( Language.getByIso( vocabulary.getSourceLanguage() ) ))
-			detailTreeGrid.addColumn(code -> {
-				return new MLabel( code.getDefinitionByLanguage(selectedLang)).withStyleName( "word-brake-normal" );
-			}, new ComponentRenderer())
+			detailTreeGrid.addColumn(code -> new MLabel( code.getDefinitionByLanguage(selectedLang)).withStyleName( "word-brake-normal" ), new ComponentRenderer())
 			.setCaption(i18n.get("view.detail.cvconcept.column.tl.definition", locale, selectedLang.getIso() ))
 			.setExpandRatio(3)
 			.setId("definitionTl");

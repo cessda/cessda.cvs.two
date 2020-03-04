@@ -55,9 +55,9 @@ public class AdminView extends CvAdminView {
 		MANAGE_LICENSE,
 		LIST_WITHDRAWN_CV, 
 		MANAGE_RESOLVER
-	};
-	
-//	Autowired
+	}
+
+	//	Autowired
 	private final UserService userService;
 	private final AgencyService agencyService;
 	private final RoleService roleService;
@@ -133,7 +133,7 @@ public class AdminView extends CvAdminView {
 			catch (Exception e)
 			{
 				// UI.getCurrent().getNavigator().navigateTo( ErrorView.VIEW_NAME );
-				log.error(e.getMessage(), e);;
+				log.error(e.getMessage(), e);
 			}
 
 		}
@@ -168,9 +168,6 @@ public class AdminView extends CvAdminView {
 		adminActionLayout.setVisible( adminActionLayout.hasActionRight() );
 		mainContainer.removeAllComponents();
 		switch(adminContent) {
-			case MANAGE_USER:
-				mainContainer.add( new ManageUserLayout(i18n, userService, encrypt) );
-				break;
 			case MANAGE_AGENCY:
 				mainContainer.add( new ManageAgencyLayout(i18n, agencyService, licenceService) );
 				break;

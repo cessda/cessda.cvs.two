@@ -96,7 +96,7 @@ public class AgencyMemberForm extends FormLayout {
 			.withValueChangeMode(ValueChangeMode.LAZY)
 			.addValueChangeListener(e -> updateList());
         
-        List<AgencyRole> agencyRoles = new ArrayList<AgencyRole>(Arrays.asList( AgencyRole.values()));
+        List<AgencyRole> agencyRoles = new ArrayList<>( Arrays.asList( AgencyRole.values() ) );
         // remove Admin and View role
         agencyRoles.remove( AgencyRole.ADMIN );
         agencyRoles.remove( AgencyRole.VIEW );
@@ -298,21 +298,18 @@ public class AgencyMemberForm extends FormLayout {
     	binder
     		.forField( lastName )
     		.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( u -> u.getLastName(),
-				(u, value) -> u.setLastName(value));
+			.bind( UserDTO::getLastName, UserDTO::setLastName );
     	
     	binder
 			.forField( username )
 			.withValidator( u -> !userService.existByUsername( u ), "username is already exist" )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( u -> u.getUsername(),
-				(u, value) -> u.setUsername(value));
+			.bind( UserDTO::getUsername, UserDTO::setUsername );
     	
     	binder
 			.forField( password )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 6 characters", 6, 250 ))	
-			.bind( u -> u.getPassword(),
-				(u, value) -> u.setPassword(value));
+			.bind( UserDTO::getPassword, UserDTO::setPassword );
     	
     	binder.validate();
 		return binder.isValid();

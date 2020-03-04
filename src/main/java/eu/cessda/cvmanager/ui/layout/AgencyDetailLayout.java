@@ -102,9 +102,7 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 		
 		backButton
 			.withStyleName( "pull-right" )
-			.addClickListener( e -> {
-				agencyView.setAgency( null , ViewMode.INITIAL);
-			});
+			.addClickListener( e -> agencyView.setAgency( null , ViewMode.INITIAL) );
 		
 		titleLayout
 			.withStyleName( "pull-left" )
@@ -168,9 +166,7 @@ public class AgencyDetailLayout extends MCssLayout implements Translatable {
 		cvGrid.setItems( esQueryResultDetail.getVocabularies().getContent() );
 		cvGrid.removeAllColumns();
 		cvGrid.setHeaderVisible(false);
-		cvGrid.addColumn(voc -> {
-			return new VocabularyGridRowPublish(voc, agency, configService);
-		}, new ComponentRenderer()).setId("cvColumn");
+		cvGrid.addColumn(voc -> new VocabularyGridRowPublish(voc, agency, configService), new ComponentRenderer()).setId("cvColumn");
 		// results.setRowHeight( 135.0 );
 		cvGrid.getColumn("cvColumn").setExpandRatio(1);
 	}

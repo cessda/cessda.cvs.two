@@ -1952,10 +1952,7 @@ public class VocabularyDTO implements Serializable {
 	
 	public VersionDTO getVersionById( Long versionId ) {
 		Optional<VersionDTO> findFirst = versions.stream().filter( p -> p.getId().equals(versionId)).findFirst();
-		if(findFirst.isPresent())
-			return findFirst.get();
-		else
-			return null;
+        return findFirst.orElse( null );
 	}
 	
 	public Set<String> getLatestStatuses(){

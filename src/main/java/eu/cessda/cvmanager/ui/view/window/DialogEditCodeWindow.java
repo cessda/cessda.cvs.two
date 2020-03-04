@@ -25,6 +25,7 @@ import org.vaadin.viritin.layouts.MVerticalLayout;
 import org.vaadin.viritin.layouts.MWindow;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -356,7 +357,7 @@ public class DialogEditCodeWindow extends MWindow {
 			// check children notation change
 			List<CodeDTO> workflowCodes = codeService.findWorkflowCodesByVocabulary( vocabulary.getId());
 			List<CodeDTO> codesNeedUpdate = workflowCodes.stream()
-					.sorted((c1,c2) -> c1.getPosition().compareTo( c2.getPosition()))
+					.sorted( Comparator.comparing( CodeDTO::getPosition ) )
 					.filter( p -> p.getPosition() > code.getPosition())
 					.filter( p -> p.getNotation().contains( tempCompleteNotation ) )
 					.collect(Collectors.toList());

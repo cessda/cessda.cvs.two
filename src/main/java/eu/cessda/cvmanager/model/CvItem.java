@@ -40,7 +40,7 @@ public class CvItem {
 		return cvConceptTreeData
 				.getRootItems()
 				.stream()
-				.flatMap( x -> flattened(x));
+				.flatMap( this::flattened );
 	}
 	
 	public Map<String, CVConcept> getCVConceptMap(){
@@ -55,7 +55,7 @@ public class CvItem {
 				cvConceptTreeData
 					.getChildren(cvConcept)
 						.stream()
-						.flatMap( x -> flattened(x)) 
+						.flatMap( this::flattened )
 				);
 	}
 	public String getCurrentNotation() {

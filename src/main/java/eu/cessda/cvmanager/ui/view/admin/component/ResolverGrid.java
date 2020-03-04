@@ -31,15 +31,15 @@ public class ResolverGrid extends MGrid<ResolverDTO> implements Translatable{
 		
 		this.removeAllColumns();
 		
-		this.addColumn( r -> r.getResolverURI() )
+		this.addColumn( ResolverDTO::getResolverURI )
 			.setCaption( "Resolver URI" )
 			.setId( COLUMN_RESOLVER_URI );
 		
-		this.addColumn( r -> r.getResourceURL() )
+		this.addColumn( ResolverDTO::getResourceURL )
 			.setCaption( "Resource URL" )
 			.setId( COLUMN_RESOURCE_URL );
 		
-		this.addColumn( r -> r.getResourceId() )
+		this.addColumn( ResolverDTO::getResourceId )
 			.setCaption( "Resource ID" )
 			.setId( COLUMN_RESOURCE_ID );
 		
@@ -68,9 +68,12 @@ public class ResolverGrid extends MGrid<ResolverDTO> implements Translatable{
 		HeaderCell resourceUrlFilter = filterRow.getCell( COLUMN_RESOURCE_URL );
 		HeaderCell resourceIdFilter = filterRow.getCell( COLUMN_RESOURCE_ID );
 		
-		tfResolverUri.addValueChangeListener(e -> ((ListDataProvider<ResolverDTO>) this.getDataProvider()).setFilter(p -> p.getResolverURI() != null ? p.getResolverURI().toLowerCase().contains(e.getValue().toLowerCase()) : false));
-		tfResourceUrl.addValueChangeListener(e -> ((ListDataProvider<ResolverDTO>) this.getDataProvider()).setFilter(p -> p.getResourceURL() != null ? p.getResourceURL().toLowerCase().contains(e.getValue().toLowerCase()) : false));
-		tfResourceId.addValueChangeListener(e -> ((ListDataProvider<ResolverDTO>) this.getDataProvider()).setFilter(p -> p.getResourceId() != null ? p.getResourceId().toLowerCase().contains(e.getValue().toLowerCase()) : false));
+		tfResolverUri.addValueChangeListener(e -> ((ListDataProvider<ResolverDTO>) this.getDataProvider()).setFilter(p ->
+				p.getResolverURI() != null && p.getResolverURI().toLowerCase().contains( e.getValue().toLowerCase() ) ));
+		tfResourceUrl.addValueChangeListener(e -> ((ListDataProvider<ResolverDTO>) this.getDataProvider()).setFilter(p ->
+				p.getResourceURL() != null && p.getResourceURL().toLowerCase().contains( e.getValue().toLowerCase() ) ));
+		tfResourceId.addValueChangeListener(e -> ((ListDataProvider<ResolverDTO>) this.getDataProvider()).setFilter(p ->
+				p.getResourceId() != null && p.getResourceId().toLowerCase().contains( e.getValue().toLowerCase() ) ));
 		
 		resolverUriFilter.setComponent(tfResourceId);
 		resourceUrlFilter.setComponent(tfResourceUrl);

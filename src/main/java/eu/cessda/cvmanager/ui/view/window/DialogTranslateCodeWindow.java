@@ -39,7 +39,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 	private final transient EventBus.UIEventBus eventBus;
 	private final transient I18N i18n;
 
-	Binder<ConceptDTO> binder = new Binder<ConceptDTO>();
+	Binder<ConceptDTO> binder = new Binder<>();
 	private MVerticalLayout layout = new MVerticalLayout();
 	
 	private MLabel lTitle = new MLabel( "Descriptive term" );
@@ -145,9 +145,7 @@ public class DialogTranslateCodeWindow extends MWindow {
 
 		binder.setBean( concept );
 
-		storeCode.addClickListener(event -> {
-			saveCode();
-		});
+		storeCode.addClickListener(event -> saveCode() );
 
 		Button cancelButton = new Button("Cancel", e -> this.close());
 		
@@ -238,14 +236,14 @@ public class DialogTranslateCodeWindow extends MWindow {
 		binder
 			.forField( preferedLabel )
 			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 250 ))	
-			.bind( concept -> concept.getTitle(),
-				(concept, value) -> concept.setTitle(value));
+			.bind( ConceptDTO::getTitle,
+					ConceptDTO::setTitle );
 
 		binder
 			.forField( description )
 //			.withValidator( new StringLengthValidator( "* required field, require an input with at least 2 characters", 2, 10000 ))	
-			.bind(  concept -> concept.getDefinition(),
-				(concept, value) -> concept.setDefinition(value));
+			.bind( ConceptDTO::getDefinition,
+					ConceptDTO::setDefinition );
 		
 		binder.validate();
 		return binder.isValid();

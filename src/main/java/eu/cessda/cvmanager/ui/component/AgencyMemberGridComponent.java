@@ -278,31 +278,28 @@ public class AgencyMemberGridComponent extends CustomComponent {
 			.withIcon( FontAwesome.TRASH)
 			.withStyleName( ValoTheme.BUTTON_DANGER, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-large");
 		
-		bDelete.addClickListener( e -> {
-			ConfirmDialog.show( 
-					this.getUI(), 
-					"Delete member role",
-					"Are you sure to delete the role of \"" + userRole.getAgencyRole() + 
-					(userRole.getLanguage() != null ?  "(" + userRole.getLanguage().toString().toUpperCase() + ") " : "" )+
-					"\" from \"" + userRole.getLastName() + "\"", 
-					"Yes", 
-					"Cancel",
-					dialog -> {
-						if( dialog.isConfirmed() ) {
+		bDelete.addClickListener( e -> ConfirmDialog.show(
+                this.getUI(),
+                "Delete member role",
+                "Are you sure to delete the role of \"" + userRole.getAgencyRole() +
+                (userRole.getLanguage() != null ?  "(" + userRole.getLanguage().toString().toUpperCase() + ") " : "" )+
+                "\" from \"" + userRole.getLastName() + "\"",
+                "Yes",
+                "Cancel",
+                dialog -> {
+                    if( dialog.isConfirmed() ) {
 
-							if( agencyMembers.size() > 1) {
-								userAgencyService.delete( userRole.getId() );
-								refresh();
-							} else { // the last user-agency relation
-								//remove from agency
-								agencyMembers.stream().forEach( item -> userAgencyService.delete( item.getId()));
-								// ask parent to refresh
-								dialogAgencyMember.updateList();
-							}
-						}
-				});
-			
-		});
+                        if( agencyMembers.size() > 1) {
+                            userAgencyService.delete( userRole.getId() );
+                            refresh();
+                        } else { // the last user-agency relation
+                            //remove from agency
+                            agencyMembers.stream().forEach( item -> userAgencyService.delete( item.getId()));
+                            // ask parent to refresh
+                            dialogAgencyMember.updateList();
+                        }
+                    }
+            }) );
 		return bDelete;
 	}
 	
@@ -318,21 +315,19 @@ public class AgencyMemberGridComponent extends CustomComponent {
 			.withIcon( FontAwesome.TRASH)
 			.withCaption( "Delete" )
 			.withStyleName( ValoTheme.BUTTON_DANGER, ValoTheme.BUTTON_SMALL, "pull-right", "btn-spacing-large")
-			.addClickListener( e ->{
-				ConfirmDialog.show( this.getUI(), "Confirm",
-					"Are you sure you want to remove \"" + member.getFirstName() + " " +
-					member.getLastName() + "\" from \"" + agency.getName() + "\"?", "yes",
-					"cancel",
-						dialog -> {
-							if( dialog.isConfirmed() ) {
-								//remove from agency
-								agencyMembers.stream().forEach( item -> userAgencyService.delete( item.getId()));
-								// ask parent to refresh
-								dialogAgencyMember.updateList();
-							}
-						}
-					);
-			});
+			.addClickListener( e -> ConfirmDialog.show( this.getUI(), "Confirm",
+                "Are you sure you want to remove \"" + member.getFirstName() + " " +
+                member.getLastName() + "\" from \"" + agency.getName() + "\"?", "yes",
+                "cancel",
+                    dialog -> {
+                        if( dialog.isConfirmed() ) {
+                            //remove from agency
+                            agencyMembers.stream().forEach( item -> userAgencyService.delete( item.getId()));
+                            // ask parent to refresh
+                            dialogAgencyMember.updateList();
+                        }
+                    }
+                ) );
 		
 		summaryButton
 			.withWidth("20%")
@@ -346,7 +341,8 @@ public class AgencyMemberGridComponent extends CustomComponent {
 			if( agencyMember.getAgencyRole() != null )
 				sb.append( agencyMember.getAgencyRole().toString() );
 			if( agencyMember.getLanguage() != null ) {
-				sb.append( "- " + agencyMember.getLanguage().name() + " (" +agencyMember.getLanguage() + ")</br>" );
+				sb.append( "- " ).append( agencyMember.getLanguage().name() ).append( " (" )
+						.append( agencyMember.getLanguage() ).append( ")</br>" );
 			} else {
 				sb.append( "</br>" );
 			}
@@ -375,15 +371,9 @@ public class AgencyMemberGridComponent extends CustomComponent {
 		for( UserAgencyDTO a: agencyMembers) {
 			if( a.getAgencyRole().equals( userAgency.getAgencyRole())) {
 				if( userAgency.getLanguage() == null) {
-					if( a.getLanguage() == null )
-						return true;
-					else
-						return false;
-				} else { 
-					if( a.getLanguage().equals( userAgency.getLanguage() ) )
-						return true;
-					else
-						return false;
+					return a.getLanguage() == null;
+				} else {
+					return a.getLanguage().equals( userAgency.getLanguage() );
 				}
 			}
 		}

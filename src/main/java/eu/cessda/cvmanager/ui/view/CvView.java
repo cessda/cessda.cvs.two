@@ -128,9 +128,7 @@ public abstract class CvView extends MVerticalLayout implements MView, Translata
 			.clear();
 		
 		if( !breadcrumbItemMap.isEmpty() ) {
-			breadcrumbItemMap.forEach( (k , v ) -> {
-				breadcrumbs.addItem( k, v );
-			});
+			breadcrumbItemMap.forEach( (k , v ) -> breadcrumbs.addItem( k, v ) );
 		}
 	}
 	

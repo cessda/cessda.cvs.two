@@ -515,11 +515,7 @@ public class VersionDTO implements Serializable {
 		for(VersionDTO eachVerDTO : versionDTOs) {
 			String key = eachVerDTO.getItemType() + "_" + eachVerDTO.getLanguage();
 
-			List<VersionDTO> versionDs = versionMap.get( key );
-			if( versionDs == null ) {
-				versionDs = new ArrayList<>();
-				versionMap.put( key , versionDs);
-			}
+			List<VersionDTO> versionDs = versionMap.computeIfAbsent( key, k -> new ArrayList<>() );
 			versionDs.add(eachVerDTO);
 		}
 
@@ -540,8 +536,8 @@ public class VersionDTO implements Serializable {
 	public static String generateVersionInfo(List<VersionDTO> versionDTOs ) {
 		StringBuilder sb = new StringBuilder();
 		for(VersionDTO version: versionDTOs) {
-			sb.append("<strong> V." + version.getNumber() + "</strong></br>");
-			sb.append("Notes:</br>" + version.getVersionNotes() + "</br></br>");
+			sb.append( "<strong> V." ).append( version.getNumber() ).append( "</strong></br>" );
+			sb.append( "Notes:</br>" ).append( version.getVersionNotes() ).append( "</br></br>" );
 		}
 
 		return sb.toString();
@@ -623,23 +619,27 @@ agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/
 
     public static String generateCitation(VersionDTO versionDto, VersionDTO versionDtoSl, String agencyName) {
 		StringBuilder citation = new StringBuilder();
-		citation.append( agencyName + ". " );
+		citation.append( agencyName ).append( ". " );
 		if( versionDto.getItemType().equals( ItemType.SL.toString()) ) {
-			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
-			citation.append( versionDto.getTitle() + " (Version " + versionDto.getNumber() + ") [Controlled vocabulary]. ");
+			citation.append( "(" ).append( versionDto.getPublicationDate().getYear() ).append( "). " );
+			citation.append( versionDto.getTitle() ).append( " (Version " ).append( versionDto.getNumber() )
+					.append( ") [Controlled vocabulary]. " );
 			if( !agencyName.toLowerCase().contains("cessda")) {
 				citation.append( "CESSDA. ");
 			}
-			citation.append( versionDto.getCanonicalUri() + ". ");
+			citation.append( versionDto.getCanonicalUri() ).append( ". " );
 		}
 		else {
-			citation.append( "(" + versionDto.getPublicationDate().getYear() + "). ");
-			citation.append( versionDto.getTitle() + " [" + versionDtoSl.getTitle()+ "]" + " (Version " + versionDto.getNumber() +
-			(versionDto.getTranslateAgency() != null && !versionDto.getTranslateAgency().isEmpty() ? "; " + versionDto.getTranslateAgency() + ", Transl." : "") + ") [Controlled vocabulary]. ");
+			citation.append( "(" ).append( versionDto.getPublicationDate().getYear() ).append( "). " );
+			citation.append( versionDto.getTitle() ).append( " [" ).append( versionDtoSl.getTitle() ).append( "]" )
+					.append( " (Version " ).append( versionDto.getNumber() ).append(
+					versionDto.getTranslateAgency() != null && !versionDto.getTranslateAgency().isEmpty() ?
+							"; " + versionDto.getTranslateAgency() + ", Transl." : "" )
+					.append( ") [Controlled vocabulary]. " );
 			if( !agencyName.toLowerCase().contains("cessda")) {
 				citation.append( "CESSDA. ");
 			}
-			citation.append( versionDtoSl.getCanonicalUri() + ". ");
+			citation.append( versionDtoSl.getCanonicalUri() ).append( ". " );
 		}
 
 		return citation.toString();
@@ -665,7 +665,7 @@ agencyUri + targetVersion.getNotation() + "#" + targetConcept.getNotation() + "/
 		// find last dash from canonicalURI
 		int lastDashPosition = canonicalUrlInput.lastIndexOf( '-' );
 		// if found and
-		if( lastDashPosition == -1 || lastDashPosition < 20)
+		if( lastDashPosition < 20 )
 			return canonicalUrlInput;
 		return canonicalUrlInput.substring(0, lastDashPosition);
 	}

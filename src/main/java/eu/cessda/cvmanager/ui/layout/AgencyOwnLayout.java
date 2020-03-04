@@ -96,9 +96,7 @@ public class AgencyOwnLayout extends MCssLayout implements Translatable {
 		
 		agencyGrid.setItems( agencies );
 		
-		agencyGrid.addColumn(agency -> {
-			return new AgencyGridComponent(agencyView, agency, configurationService, null);
-		}, new ComponentRenderer()).setId("agencyComp");
+		agencyGrid.addColumn(agency -> new AgencyGridComponent(agencyView, agency, configurationService, null), new ComponentRenderer()).setId("agencyComp");
 		// results.setRowHeight( 135.0 );
 		agencyGrid.getColumn("agencyComp").setExpandRatio(1);
 		

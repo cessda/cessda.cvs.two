@@ -195,9 +195,6 @@ public class ConceptDTO implements Serializable {
 	
 	public static ConceptDTO getConceptById( Set<ConceptDTO> concepts, Long conceptId) {
 		Optional<ConceptDTO> findFirst = concepts.stream().filter( p -> p.getId().equals(conceptId)).findFirst();
-		if(findFirst.isPresent())
-			return findFirst.get();
-		else
-			return null;
+		return findFirst.orElse( null );
 	}
 }

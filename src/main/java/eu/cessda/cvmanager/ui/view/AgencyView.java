@@ -65,9 +65,9 @@ public class AgencyView extends CvView {
 	private static final Logger log = LoggerFactory.getLogger(AgencyView.class);
 	private static final long serialVersionUID = -6014026644497372675L;
 	public static final String VIEW_NAME = "agency";
-	public enum ViewMode { INITIAL, DETAIL };
-	
-//	Autowired
+	public enum ViewMode { INITIAL, DETAIL }
+
+    //	Autowired
 	private final UserService userService;
 	private final AgencyService agencyService;
 	private final RoleService roleService;
@@ -163,9 +163,7 @@ public class AgencyView extends CvView {
 			.withIcon(FontAwesome.TIMES)
 			.withStyleName("clear-search-button")
 			.withVisible( false )
-			.addClickListener( e -> {
-				clearSearch();
-			});
+			.addClickListener( e -> clearSearch() );
 		searchContainer
 			.withStyleName("search-box-secondary")
 			.add( 

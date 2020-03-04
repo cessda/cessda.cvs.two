@@ -1,11 +1,6 @@
 package eu.cessda.cvmanager.utils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.gesis.stardat.ddiflatdb.client.DDIStore;
@@ -67,7 +62,6 @@ public class CvCodeTreeUtils {
 			if (!codeTree.getChildren(codeRoot).isEmpty())
 				position = traverseChildCode(codes, codeTree, codeRoot, codeTree.getChildren(codeRoot), position);
 		}
-		;
 		return codes;
 	}
 
@@ -80,7 +74,6 @@ public class CvCodeTreeUtils {
 			if (!codeTree.getChildren(code).isEmpty())
 				position = traverseChildCode(codes, codeTree, code, codeTree.getChildren(code), position);
 		}
-		;
 		return position;
 	}
 
@@ -96,7 +89,6 @@ public class CvCodeTreeUtils {
 				position = traverseChildCvConcept(codes, conceptTree, cvConceptRoot,
 						conceptTree.getChildren(cvConceptRoot), position);
 		}
-		;
 		return codes;
 	}
 
@@ -112,12 +104,11 @@ public class CvCodeTreeUtils {
 				position = traverseChildCvConcept(codes, conceptTree, cvConcept, conceptTree.getChildren(cvConcept),
 						position);
 		}
-		;
 		return position;
 	}
 
 	public static TreeData<CVConcept> buildCvConceptTree(List<DDIStore> ddiConcepts, CVScheme cvScheme) {
-		TreeData<CVConcept> cvConceptTree = new TreeData<CVConcept>();
+		TreeData<CVConcept> cvConceptTree = new TreeData<>();
 		buildCvConceptTree(ddiConcepts, cvScheme, cvConceptTree);
 		return cvConceptTree;
 	}
@@ -152,7 +143,7 @@ public class CvCodeTreeUtils {
 		do {
 			conceptToBeRemoved = new ArrayList<>();
 			cvConceptMap.forEach((k, v) -> assignNarrower(cvConceptTree, cvConceptMap, v, conceptToBeRemoved));
-			conceptToBeRemoved.forEach(i -> cvConceptMap.remove(i));
+			conceptToBeRemoved.forEach( cvConceptMap::remove );
 		} while (!conceptToBeRemoved.isEmpty());
 	}
 
@@ -189,7 +180,7 @@ public class CvCodeTreeUtils {
 
 		// sort concept first
 		List<ConceptDTO> sortedConcepts = concepts.stream()
-				.sorted((c1, c2) -> c1.getPosition().compareTo(c2.getPosition())).collect(Collectors.toList());
+				.sorted( Comparator.comparing( ConceptDTO::getPosition ) ).collect(Collectors.toList());
 
 		Map<String, ConceptDTO> conceptMaps = new HashMap<>();
 		for (ConceptDTO concept : sortedConcepts) {
@@ -249,8 +240,8 @@ public class CvCodeTreeUtils {
 	public static TreeData<CVConcept> generateCVConceptTreeFromCodeTree(TreeData<CodeDTO> codeTree, CVScheme cvScheme) {
 		TreeData<CVConcept> cvConceptTree = new TreeData<>();
 		String baseUri = cvScheme.getContainerId().substring(0, cvScheme.getContainerId().lastIndexOf("/"));
-		String versionNumber = cvScheme.getContainerId().substring(cvScheme.getContainerId().lastIndexOf("/"),
-				cvScheme.getContainerId().length());
+		String versionNumber = cvScheme.getContainerId().substring(cvScheme.getContainerId().lastIndexOf("/")
+		);
 		baseUri = baseUri.substring(0, baseUri.lastIndexOf("/"));
 
 		for (CodeDTO topCode : codeTree.getRootItems()) {

@@ -31,10 +31,14 @@ public class PaginationBar extends MHorizontalLayout {
     private int noOfRows = 30;
     private int totalPages;
     private int currentPage;
-    private Button first, last, next, previous,status;
+    private Button first;
+    private Button last;
+    private Button next;
+    private Button previous;
+    private Button status;
 	 
 	private CustomLayout pagin = new CustomLayout("pagination");
-	private ComboBox perpage = new ComboBox();
+	private ComboBox<Integer> perpage = new ComboBox<>();
 	
     private final ClickListener handler = event -> {
         if (event.getButton() == first) {
@@ -63,7 +67,7 @@ public class PaginationBar extends MHorizontalLayout {
 		perpage.setValue( perPages[0] );
 		perpage.setTextInputAllowed( false );
 		perpage.addValueChangeListener( event -> {
-			 noOfRows = (int)event.getValue();
+			 noOfRows = event.getValue();
 	         listener.pageRequested(0, noOfRows);		
 		});
 		

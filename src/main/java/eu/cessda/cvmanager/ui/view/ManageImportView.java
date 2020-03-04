@@ -468,12 +468,11 @@ public class ManageImportView extends CvManagerAdminView {
 
 						log.debug("Storing Concept : {} TL: {}", notation, version.getLanguage());
 
-						conceptService.save(conceptDTO);
-					} else{
+                    } else{
 						conceptDTO.setCodeId(eachCode.getId());
-						conceptService.save(conceptDTO);
-					}
-				}
+                    }
+                    conceptService.save(conceptDTO);
+                }
 
 			}
 
@@ -487,16 +486,14 @@ public class ManageImportView extends CvManagerAdminView {
 		MButton dropContent = new MButton("Drop database content and index");
 		dropContent.addStyleName(ValoTheme.BUTTON_DANGER);
 
-		dropContent.addClickListener(e -> {
-			ConfirmDialog.show(this.getUI(), "Confirm", "Are you sure you want to permanently drop the entire content?",
-					"yes", "cancel",
+		dropContent.addClickListener(e -> ConfirmDialog.show(this.getUI(), "Confirm", "Are you sure you want to permanently drop the entire content?",
+                "yes", "cancel",
 
-					dialog -> {
-						if (dialog.isConfirmed()) {
-							dropContent();
-						}
-					});
-		});
+                dialog -> {
+                    if (dialog.isConfirmed()) {
+                        dropContent();
+                    }
+                }) );
 		return dropContent;
 	}
 
@@ -526,18 +523,16 @@ public class ManageImportView extends CvManagerAdminView {
 	private MButton generateAssignSlToTl() {
 		MButton assignConceptSlButton = new MButton("Assign concept TL with SL key");
 		assignConceptSlButton.addStyleName(ValoTheme.BUTTON_DANGER);
-		assignConceptSlButton.addClickListener(e -> {
-			ConfirmDialog.show(this.getUI(), "Confirm", "Are you sure you want to assign concept TL with SL key?",
-					"yes", "cancel",
+		assignConceptSlButton.addClickListener(e -> ConfirmDialog.show(this.getUI(), "Confirm", "Are you sure you want to assign concept TL with SL key?",
+                "yes", "cancel",
 
-					dialog -> {
-						if (dialog.isConfirmed()) {
-							assignSlToTl();
-						}
-					}
+                dialog -> {
+                    if (dialog.isConfirmed()) {
+                        assignSlToTl();
+                    }
+                }
 
-			);
-		});
+        ) );
 		return assignConceptSlButton;
 	}
 

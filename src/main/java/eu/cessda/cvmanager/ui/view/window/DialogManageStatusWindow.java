@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import eu.cessda.cvmanager.service.dto.*;
 import org.gesis.wts.domain.enumeration.Language;
 import org.gesis.wts.service.dto.AgencyDTO;
 import org.slf4j.Logger;
@@ -36,10 +37,6 @@ import eu.cessda.cvmanager.service.I18N;
 import eu.cessda.cvmanager.service.LicenceService;
 import eu.cessda.cvmanager.service.VersionService;
 import eu.cessda.cvmanager.service.VocabularyChangeService;
-import eu.cessda.cvmanager.service.dto.LicenceDTO;
-import eu.cessda.cvmanager.service.dto.VersionDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyChangeDTO;
-import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.service.manager.WorkflowManager;
 import eu.cessda.cvmanager.ui.layout.CvComparatorLayout;
 import eu.cessda.cvmanager.ui.layout.DialogMSLicenseLayout;
@@ -148,15 +145,9 @@ public class DialogManageStatusWindow extends MWindow {
 	}
 
 	private void init() {
-		versionNumberField1.addValueChangeListener(e -> {
-			((TextField) e.getComponent()).setValue(e.getValue().replaceAll("[^\\d.]", ""));
-		});
-		versionNumberField2.addValueChangeListener(e -> {
-			((TextField) e.getComponent()).setValue(e.getValue().replaceAll("[^\\d.]", ""));
-		});
-		versionNumberField3.addValueChangeListener(e -> {
-			((TextField) e.getComponent()).setValue(e.getValue().replaceAll("[^\\d.]", ""));
-		});
+		versionNumberField1.addValueChangeListener(e -> ((TextField) e.getComponent()).setValue(e.getValue().replaceAll("[^\\d.]", "")) );
+		versionNumberField2.addValueChangeListener(e -> ((TextField) e.getComponent()).setValue(e.getValue().replaceAll("[^\\d.]", "")) );
+		versionNumberField3.addValueChangeListener(e -> ((TextField) e.getComponent()).setValue(e.getValue().replaceAll("[^\\d.]", "")) );
 		List<VocabularyChangeDTO> changes = null;
 		comparatorLayout = new CvComparatorLayout(conceptService);
 		comparatorBlockHead.withFullWidth().withStyleName("section-header").withValue("Compare versions");
@@ -267,24 +258,23 @@ public class DialogManageStatusWindow extends MWindow {
 				}
 				int indexDot = versionNumberSL.indexOf(".");
 				versionNumberField1.setValue(versionNumberSL.substring(0, indexDot));
-				versionNumberField2.setValue(versionNumberSL.substring(indexDot + 1, versionNumberSL.length()));
+				versionNumberField2.setValue(versionNumberSL.substring(indexDot + 1 ));
 			} else {
 				versionNumberField1.setVisible(false);
 				versionNumberField2.setVisible(false);
 				int indexDot = versionNumberTL.lastIndexOf(".");
 				versionSeparator1.setValue("<strong>" + versionNumberTL.substring(0, indexDot) + "</strong>");
-				versionNumberField3.setValue(versionNumberTL.substring(indexDot + 1, versionNumberTL.length()));
+				versionNumberField3.setValue(versionNumberTL.substring(indexDot + 1 ));
 			}
 
 			// If publishing SL
 			if (currentVersion.getItemType().equals(ItemType.SL.toString())) {
 				// get available TL, get language first and then get the latest TL
 				// The latest TL will be listed as the target TL to be cloned
-				for (String lang : VocabularyDTO.getLanguagesFromVersions(vocabulary.getVersions())) {
-					if (lang.equals(sourceLanguage.getIso()))
-						continue;
-					latestTlVersions.add(vocabulary.getLatestVersionByLanguage(lang).get());
-				}
+				VocabularyDTO.getLanguagesFromVersions( vocabulary.getVersions() ).stream()
+						.filter( lang -> !lang.equals( sourceLanguage.getIso() ) )
+						.forEach( lang -> vocabulary.getLatestVersionByLanguage( lang )
+								.ifPresent( latestVersion -> latestTlVersions.add( latestVersion ) ) );
 			}
 
 			// version changes extracts
@@ -299,7 +289,8 @@ public class DialogManageStatusWindow extends MWindow {
 				} else {
 					StringBuilder versionChangesContent = new StringBuilder();
 					for (VocabularyChangeDTO vc : changes) {
-						versionChangesContent.append(vc.getChangeType() + ": " + vc.getDescription() + "\n");
+						versionChangesContent.append( vc.getChangeType() ).append( ": " ).append( vc.getDescription() )
+								.append( "\n" );
 					}
 					versionChanges.setValue(versionChangesContent.toString());
 				}
@@ -351,8 +342,9 @@ public class DialogManageStatusWindow extends MWindow {
 			StringBuilder sb = new StringBuilder();
 			for (VersionDTO ver : latestTlVersions) {
 				Language verLang = Language.getByIso(ver.getLanguage());
-				sb.append(verLang.getFormatted() + " " + (ver.getNumber() == null ? "" : ver.getNumber()) + " ("
-						+ ver.getStatus() + ") <br/>");
+				sb.append( verLang.getFormatted() ).append( " " )
+						.append( ver.getNumber() == null ? "" : ver.getNumber() ).append( " (" )
+						.append( ver.getStatus() ).append( ") <br/>" );
 			}
 
 			tlCloneInfoLayout.add(
@@ -437,14 +429,10 @@ public class DialogManageStatusWindow extends MWindow {
 
 	private boolean isVersionNumberEmpty() {
 		if (sourceLanguage.equals(selectedLanguage)) {
-			if ((versionNumberField1.getValue() != null && !versionNumberField1.isEmpty())
-					&& (versionNumberField2.getValue() != null && !versionNumberField2.isEmpty()))
-				return false;
-			return true;
+			return ( versionNumberField1.getValue() == null || versionNumberField1.isEmpty() )
+					|| ( versionNumberField2.getValue() == null || versionNumberField2.isEmpty() );
 		} else {
-			if ((versionNumberField3.getValue() != null && !versionNumberField3.isEmpty()))
-				return false;
-			return true;
+			return ( versionNumberField3.getValue() == null || versionNumberField3.isEmpty() );
 		}
 	}
 
@@ -534,9 +522,9 @@ public class DialogManageStatusWindow extends MWindow {
 				|| versionTL.getConcepts() == null)
 			return Collections.emptySet();
 		if (versionSL.getConcepts().size() != versionTL.getConcepts().size()) {
-			Set<String> notationSLs = versionSL.getConcepts().stream().map(c -> c.getNotation())
+			Set<String> notationSLs = versionSL.getConcepts().stream().map( ConceptDTO::getNotation )
 					.collect(Collectors.toSet());
-			Set<String> notationTLs = versionTL.getConcepts().stream().map(c -> c.getNotation())
+			Set<String> notationTLs = versionTL.getConcepts().stream().map( ConceptDTO::getNotation )
 					.collect(Collectors.toSet());
 			notationSLs.removeAll(notationTLs);
 			return notationSLs;

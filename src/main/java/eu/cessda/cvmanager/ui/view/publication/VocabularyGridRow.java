@@ -92,7 +92,7 @@ public class VocabularyGridRow extends CustomComponent {
 			languages.addAll( 
 				vocabulary.getLanguages().stream()
 					.filter( p -> !p.equals( vocabulary.getSourceLanguage()))
-					.sorted( (v1, v2) -> v2.compareTo( v1 ))
+					.sorted( Comparator.reverseOrder() )
 					.collect( Collectors.toList()) );
 		}
 		// add source language
@@ -229,11 +229,11 @@ public class VocabularyGridRow extends CustomComponent {
 
 	private void applyButtonStyle(Button pressedButton) {
 
-		Iterator<Component> iterate = languageLayout.iterator();
-		while (iterate.hasNext()) {
-			Component c = iterate.next();
-			if (c instanceof Button) {
-				((Button) c).removeStyleName("button-language-selected");
+		for ( Component c : languageLayout )
+		{
+			if ( c instanceof Button )
+			{
+				c.removeStyleName( "button-language-selected" );
 			}
 		}
 		pressedButton.addStyleName("button-language-selected");

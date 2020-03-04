@@ -41,7 +41,7 @@ import eu.cessda.cvmanager.ui.component.Breadcrumbs;
 public abstract class CvAdminView extends MVerticalLayout implements MView, Translatable {
 
 	private static final long serialVersionUID = -8769292972079523949L;
-	public static enum ActionType{
+	public enum ActionType{
 		ADMIN
 	}
 	
@@ -128,9 +128,7 @@ public abstract class CvAdminView extends MVerticalLayout implements MView, Tran
 			.clear();
 		
 		if( !breadcrumbItemMap.isEmpty() ) {
-			breadcrumbItemMap.forEach( (k , v ) -> {
-				breadcrumbs.addItem( k, v );
-			});
+			breadcrumbItemMap.forEach( (k , v ) -> breadcrumbs.addItem( k, v ) );
 		}
 	}
 	
@@ -151,7 +149,7 @@ public abstract class CvAdminView extends MVerticalLayout implements MView, Tran
 
 	public void topMenuButtonUpdateActive(int activeIndex) {
 		int i=0;
-		if( ((CVManagerUI) getUI()) == null)
+		if( getUI() == null)
 			return;
 		for( MButton button : ((CVManagerUI) getUI()).getMenuButtons()) {
 			if( activeIndex == i )

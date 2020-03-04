@@ -158,13 +158,13 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 		if( !version1.getTitle().equals( version2.getTitle() )) {
 			titlePrev.addStyleName("label-highlight");
 			titleCurrent.addStyleName("label-highlight");
-			changeLogsCv.append("CV long name changed: " + version2.getTitle() + "\n");
+			changeLogsCv.append( "CV long name changed: " ).append( version2.getTitle() ).append( "\n" );
 		}
 		
 		if( !version1.getDefinition().equals( version2.getDefinition() )) {
 			definitionPrev.addStyleName("label-highlight");
 			definitionCurrent.addStyleName("label-highlight");
-			changeLogsCv.append("CV definition changed: " + version2.getTitle() + "\n");
+			changeLogsCv.append( "CV definition changed: " ).append( version2.getTitle() ).append( "\n" );
 		}
 		
 		// get both concepts
@@ -199,9 +199,7 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 				changesComparation.add(conceptCompare);
 		}
 		
-		changesComparation.forEach( cc -> {
-			changeLogs.append( cc.getChangesLog());
-		});
+		changesComparation.forEach( cc -> changeLogs.append( cc.getChangesLog()) );
 		
 		// set the grid
 		updateGrid( false, isForPublication );
@@ -285,7 +283,7 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 	
 	}
 	
-	class ConceptCompare{
+	static class ConceptCompare{
 		private MLabel codePrevious = new MLabel().withContentMode( ContentMode.HTML).withStyleName( "word-brake-normal","col-compare-small", "col-compare-previous");
 		private MLabel codeCurrent = new MLabel().withContentMode( ContentMode.HTML).withStyleName( "word-brake-normal" ,"col-compare-small", "col-compare-current");
 		private MLabel termPrevious = new MLabel().withContentMode( ContentMode.HTML).withStyleName( "word-brake-normal","col-compare-small", "col-compare-previous");
@@ -296,11 +294,11 @@ public class CvComparatorLayout extends MCssLayout implements Translatable {
 		private String changesLog;
 		public ConceptCompare( ConceptDTO conceptPrevious, ConceptDTO conceptCurrent) {
 			if( conceptPrevious == null && conceptCurrent == null)
-				throw new IllegalArgumentException();
+				throw new IllegalArgumentException("conceptPrevious and conceptCurrent is null!");
 			
-			if (conceptPrevious == null && conceptCurrent != null)
+			if ( conceptPrevious == null )
 				changesLog = "Code added: " + conceptCurrent.getNotation() + "\n";
-			else if (conceptPrevious != null && conceptCurrent == null)
+			else if ( conceptCurrent == null )
 				changesLog = "Code deleted: " + conceptPrevious.getNotation() + "\n";
 			
 			if( conceptPrevious != null ) {

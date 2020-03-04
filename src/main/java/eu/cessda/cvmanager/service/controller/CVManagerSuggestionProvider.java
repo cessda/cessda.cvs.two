@@ -1,5 +1,5 @@
-/**
- * 
+/*
+
  */
 package eu.cessda.cvmanager.service.controller;
 

@@ -90,7 +90,7 @@ public class ManageResolverLayout extends MCssLayout implements Translatable {
 	}
 	
 	public void updateList() {
-		resolverGrid.setDataProvider( new ListDataProvider<ResolverDTO>( resolverService.findAll() ));
+		resolverGrid.setDataProvider( new ListDataProvider<>( resolverService.findAll() ));
 	}
 	
 	@Override

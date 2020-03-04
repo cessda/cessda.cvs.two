@@ -39,7 +39,7 @@ public class VersionLayout extends MCssLayout implements Translatable {
 
     private static final Logger log = LoggerFactory.getLogger(VersionLayout.class);
 
-    private enum LayoutMode {READ, EDIT};
+    private enum LayoutMode {READ, EDIT}
 
     private static final long serialVersionUID = -2461005203070668382L;
     private final I18N i18n;

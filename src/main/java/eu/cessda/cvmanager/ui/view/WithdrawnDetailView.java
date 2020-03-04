@@ -3,6 +3,7 @@ package eu.cessda.cvmanager.ui.view;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -213,7 +214,7 @@ public class WithdrawnDetailView extends CvView {
 				String[] itemPath = event.getParameters().split("\\?");
 				String[] itemPathPart = itemPath[0].split("/");
 				if (itemPath.length > 1) {
-					List<NameValuePair> params = URLEncodedUtils.parse(itemPath[1], Charset.forName("UTF-8"));
+					List<NameValuePair> params = URLEncodedUtils.parse(itemPath[1], StandardCharsets.UTF_8 );
 					mappedParams = params.stream()
 							.collect(Collectors.toMap(NameValuePair::getName, NameValuePair::getValue));
 					String selectedLanguage = mappedParams.get("lang");
@@ -454,16 +455,15 @@ public class WithdrawnDetailView extends CvView {
 
 		detailTreeGrid.setSelectionMode(SelectionMode.NONE);
 
-		detailTreeGrid.addColumn(code -> code.getNotation()).setCaption("Code").setExpandRatio(1).setId("code");
+		detailTreeGrid.addColumn( ConceptDTO::getNotation ).setCaption("Code").setExpandRatio(1).setId("code");
 
-		detailTreeGrid.addColumn(concept -> concept.getTitle())
+		detailTreeGrid.addColumn( ConceptDTO::getTitle )
 				.setCaption(i18n.get("view.detail.cvconcept.column.tl.title", locale, selectedLang.getIso()))
 				.setExpandRatio(1).setId("prefLabelTl");
 
 		detailTreeGrid.addColumn(concept -> {
 			MLabel definitionLabel = new MLabel(concept.getDefinition()).withStyleName("word-brake-normal")
 					.withContentMode(ContentMode.HTML);
-			;
 			definitionLabel.setId("code-" + concept.getNotation().replace(".", "-"));
 			return definitionLabel;
 		}, new ComponentRenderer())

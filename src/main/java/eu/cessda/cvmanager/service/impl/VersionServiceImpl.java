@@ -128,13 +128,9 @@ public class VersionServiceImpl implements VersionService {
 		for( VersionDTO version : versionDTOs) {
 			if( language != null && !language.getIso().equalsIgnoreCase( version.getLanguage() ))
 					continue;
-			
-			List<VersionDTO> versions = langVersionMap.get( version.getLanguage() );
-			if( versions == null ) {
-				versions = new ArrayList<>();
-				langVersionMap.put( version.getLanguage(), versions);
-			}
-			versions.add(version);
+
+            List<VersionDTO> versions = langVersionMap.computeIfAbsent( version.getLanguage(), k -> new ArrayList<>() );
+            versions.add(version);
 		}
 		return langVersionMap;
 	}
@@ -151,12 +147,8 @@ public class VersionServiceImpl implements VersionService {
 			if( status != null && !status.equals( version.getStatus() ))
 					continue;
 
-			List<VersionDTO> versions = langVersionMap.get( version.getLanguage() );
-			if( versions == null ) {
-				versions = new ArrayList<>();
-				langVersionMap.put( version.getLanguage(), versions);
-			}
-			versions.add(version);
+            List<VersionDTO> versions = langVersionMap.computeIfAbsent( version.getLanguage(), k -> new ArrayList<>() );
+            versions.add(version);
 		}
 		return langVersionMap;
 	}

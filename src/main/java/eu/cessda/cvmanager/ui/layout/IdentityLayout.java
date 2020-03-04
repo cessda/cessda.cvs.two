@@ -44,9 +44,9 @@ public class IdentityLayout extends MCssLayout implements Translatable {
 
 	private enum LayoutMode {
 		READ, EDIT
-	};
+	}
 
-	private MFormLayout formLayout = new MFormLayout();
+    private MFormLayout formLayout = new MFormLayout();
 
 	private MTextField urnEdit = new MTextField();
 

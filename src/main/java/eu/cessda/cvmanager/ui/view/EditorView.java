@@ -1,5 +1,5 @@
-/**
- * 
+/*
+
  */
 package eu.cessda.cvmanager.ui.view;
 
@@ -41,7 +41,7 @@ import java.util.List;
 @SpringView(name = EditorView.VIEW_NAME)
 public class EditorView extends VerticalLayout implements View {
 
-	final static Logger log = LoggerFactory.getLogger(EditorView.class);
+	private static final Logger log = LoggerFactory.getLogger(EditorView.class);
 
 	/**
 	 * 
@@ -61,7 +61,7 @@ public class EditorView extends VerticalLayout implements View {
 
 	Grid<CVConcept> conceptGrid;
 
-	ComboBox<String> languages = new ComboBox<String>();
+	ComboBox<String> languages = new ComboBox<>();
 
 	private String language;
 
@@ -72,7 +72,7 @@ public class EditorView extends VerticalLayout implements View {
 
 	List<DDIStore> ddiConcepts;
 
-	List<CVConcept> concepts = new ArrayList<CVConcept>();
+	List<CVConcept> concepts = new ArrayList<>();
 
 	private Button addCVScheme = new Button( "Add a new CV" );
 

@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class EsFilter {
-	public enum FilterType {NORMAL, RANGE};
-	
-	private FilterType filterType;
+	public enum FilterType {NORMAL, RANGE}
+
+    private FilterType filterType;
 	private String field;
 	// active filter
 	private List<String> values = new ArrayList<>();
@@ -60,8 +60,8 @@ public class EsFilter {
 	public Map<String, Long> getFilteredBucket() {
 		return this.filteredBucket;
 	}
-	public void setFilteredBucket(Map<String, Long> FilteredBucket) {
-		this.filteredBucket = FilteredBucket;
+	public void setFilteredBucket(Map<String, Long> filteredBucket) {
+		this.filteredBucket = filteredBucket;
 	}
 	
 	public EsFilter addFilteredBucket(String term, Long count) {
@@ -90,8 +90,6 @@ public class EsFilter {
 	}
 	
 	public static boolean isActiveFilter( EsFilter esFilter, String term) {
-		if( esFilter.getValues().contains(term))
-			return true;
-		return false;
+		return esFilter.getValues().contains( term );
 	}
 }

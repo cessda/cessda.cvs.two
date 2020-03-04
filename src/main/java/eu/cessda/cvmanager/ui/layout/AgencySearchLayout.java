@@ -96,9 +96,7 @@ public class AgencySearchLayout extends MCssLayout implements Translatable {
 		agencyGrid.setItems( agencies.getContent() );
 		
 		agencyGrid.removeAllColumns();
-		agencyGrid.addColumn(agency -> {
-			return new AgencyGridComponent( agencyView, agency, configurationService, agencyView.getSearchTf().getValue());
-		}, new ComponentRenderer()).setId("agencyComp");
+		agencyGrid.addColumn(agency -> new AgencyGridComponent( agencyView, agency, configurationService, agencyView.getSearchTf().getValue()), new ComponentRenderer()).setId("agencyComp");
 		// results.setRowHeight( 135.0 );
 		agencyGrid.getColumn("agencyComp").setExpandRatio(1);
 		

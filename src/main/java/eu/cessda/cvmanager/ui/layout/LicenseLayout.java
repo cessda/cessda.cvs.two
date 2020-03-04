@@ -40,9 +40,9 @@ public class LicenseLayout extends MCssLayout implements Translatable {
 	private final VersionService versionService;
 	private final ConfigurationService configService;
 	
-	private enum LayoutMode{ READ, EDIT };
-	
-	private MCssLayout infoLayout = new MCssLayout().withFullSize();
+	private enum LayoutMode{ READ, EDIT }
+
+    private MCssLayout infoLayout = new MCssLayout().withFullSize();
 	private MLabel copyrightInfo = new MLabel().withContentMode( ContentMode.HTML);
 	
 	private MLabel citationLabel = new MLabel("Citation").withContentMode( ContentMode.HTML).withFullWidth();

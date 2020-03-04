@@ -30,9 +30,9 @@ public class DdiUsageLayout extends MCssLayout implements Translatable {
 	private final AgencyDTO agency;
 	private final VersionService versionService;
 	
-	private enum LayoutMode{ READ, EDIT };
-	
-	private MCssLayout infoLayout = new MCssLayout().withFullSize();
+	private enum LayoutMode{ READ, EDIT }
+
+    private MCssLayout infoLayout = new MCssLayout().withFullSize();
 	private MLabel notExistInfo = new MLabel("No information is available");
 	private MLabel contentInfo = new MLabel().withContentMode( ContentMode.HTML);
 	

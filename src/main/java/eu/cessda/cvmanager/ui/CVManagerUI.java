@@ -30,6 +30,7 @@ import org.gesis.wts.ui.view.LoginView;
 import org.gesis.wts.ui.view.ResetPasswordView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.vaadin.spring.events.EventBus.UIEventBus;
 import org.vaadin.spring.events.EventScope;
@@ -105,6 +106,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable
 	private Breadcrumbs breadCrumb = new Breadcrumbs();
 	private Map<String, String> breadcrumbItemMap = new LinkedHashMap<>();
 
+	@Autowired
 	public CVManagerUI(SpringViewProvider viewProvider, SecurityService securityService,
 			ConfigurationService configurationService, UIEventBus eventBus, I18N i18n) {
 		this.viewProvider = viewProvider;
@@ -217,16 +219,8 @@ public class CVManagerUI extends TranslatableUI implements Translatable
 		countryBox.setValue( Language.ENGLISH );
 		countryBox.setWidth( "100px" );
 		countryBox.addValueChangeListener( e -> setLocale( new Locale( e.getValue().toString() ) ) );
-		countryBox.setItemCaptionGenerator( new ItemCaptionGenerator<Language>()
-		{
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public String apply( Language item )
-			{
-				return item.name().substring( 0, 1 ) + item.name().substring( 1 ).toLowerCase();
-			}
-		} );
+		countryBox.setItemCaptionGenerator( item -> item.name().substring( 0, 1 )
+				+ item.name().substring( 1 ).toLowerCase() );
 
 		// Remove this line if select language is activated
 		countryBox.setVisible(false);
@@ -382,8 +376,13 @@ public class CVManagerUI extends TranslatableUI implements Translatable
 	}
 
 	public void doLogin(ClickEvent event) {
-		LoginView.NAVIGATETO_VIEWNAME = DiscoveryView.VIEW_NAME;
+		loginViewNavigateToDiscoveryView();
 		getNavigator().navigateTo(LoginView.NAME);
+	}
+
+	private static void loginViewNavigateToDiscoveryView()
+	{
+		LoginView.NAVIGATETO_VIEWNAME = DiscoveryView.VIEW_NAME;
 	}
 
 	public void doLogout(ClickEvent event) {
@@ -394,10 +393,7 @@ public class CVManagerUI extends TranslatableUI implements Translatable
 	// is currently active
 	ViewChangeListener viewChangeListener = new ViewChangeListener() {
 
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = -4283569287694352710L;
 
 		@Override
 		public boolean beforeViewChange(ViewChangeEvent event) {

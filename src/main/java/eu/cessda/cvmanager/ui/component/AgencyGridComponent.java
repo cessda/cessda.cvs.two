@@ -62,7 +62,7 @@ public class AgencyGridComponent extends CustomComponent {
 			agencyView.setAgency( agency, ViewMode.DETAIL);
 			agencyView.getaDetailLayout().setAgency(agency);
 			
-			String url = Page.getCurrent().getUriFragment().toString();
+			String url = Page.getCurrent().getUriFragment();
 			url = url.split(AgencyView.VIEW_NAME)[0] + AgencyView.VIEW_NAME + "/" + agency.getName();
 			Page.getCurrent().setUriFragment(url, true);
 		});

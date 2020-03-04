@@ -357,12 +357,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		Page<VocabularyDTO> vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class).map(vocabularyMapper::toDto);
 		
 		// get search response for aggregation, hits, inner hits and highlighter
-		SearchResponse searchResponse = elasticsearchTemplate.query(searchQuery, new ResultsExtractor<SearchResponse>() {
-			@Override
-			public SearchResponse extract(SearchResponse response) {
-				return response;
-			}
-		});
+		SearchResponse searchResponse = elasticsearchTemplate.query(searchQuery, response -> response );
 		
 		// assign aggregation to esQueryResultDetail
 		generateAggregrationFilter(esQueryResultDetail, searchResponse);
@@ -460,7 +455,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			HighlightField highlighField = entry.getValue();
 			StringBuilder highLightText = new StringBuilder();
 			for( Text text: highlighField.getFragments()) {
-				highLightText.append( text.string() + " ");
+				highLightText.append( text.string() ).append( " " );
 			}
 			java.lang.reflect.Field declaredField = null;
 			try {
@@ -504,7 +499,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 							StringBuilder highLightText = new StringBuilder();
 								for( Text text: highlighField.getFragments()) {
 									if( !fieldName.contains("title") && !text.string().endsWith("."))
-										highLightText.append( text.string() + " ... ");
+										highLightText.append( text.string() ).append( " ... " );
 									else
 										highLightText.append( text.string() );
 								}
@@ -571,7 +566,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 			fields.add( new HighlightBuilder.Field( "title" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>"));
 			fields.add( new HighlightBuilder.Field( "definition" + langIso ).preTags("<span class=\"highlight\">").postTags("</span>") );
 		}
-		return fields.toArray( new HighlightBuilder.Field[ fields.size() ] );
+		return fields.toArray( new HighlightBuilder.Field[0] );
 	}
 	
 	public static QueryBuilder generateNestedQuery( String term ) {
@@ -688,12 +683,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		Page<VocabularyDTO> vocabularyPage = elasticsearchTemplate.queryForPage( searchQuery, Vocabulary.class).map(vocabularyMapper::toDto);
 		
 		// get search response for aggregation, hits, inner hits and highlighter
-		SearchResponse searchResponse = elasticsearchTemplate.query(searchQuery, new ResultsExtractor<SearchResponse>() {
-			@Override
-			public SearchResponse extract(SearchResponse response) {
-				return response;
-			}
-		});
+		SearchResponse searchResponse = elasticsearchTemplate.query(searchQuery, response -> response );
 		
 		// assign aggregation to esQueryResultDetail
 		generateAggregrationFilter(esQueryResultDetail, searchResponse);
@@ -852,7 +842,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 		List<CodeDTO> publishedCodes = codeService.findByVocabularyAndVersion(vocabulary.getId(), version.getId());
 		for( CodeDTO pCode : publishedCodes)
 			pCode.clearCodeExcept( vocabulary.getLanguagesPublished());
-		vocabulary.setCodes( new HashSet<CodeDTO>(publishedCodes) );
+		vocabulary.setCodes( new HashSet<>( publishedCodes ) );
 		
 		VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
 		vocabularyPublishSearchRepository.save( vocab );

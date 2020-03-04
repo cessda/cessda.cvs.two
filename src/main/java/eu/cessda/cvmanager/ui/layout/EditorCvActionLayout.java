@@ -402,7 +402,7 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 	private void updatePublishedLanguages() {
 		Set<String> publishedLangs = vocabulary.getLatestVersions( Status.PUBLISHED.toString() )
 			.stream()
-			.map( i -> i.getLanguage())
+			.map( VersionDTO::getLanguage )
 			.collect( Collectors.toSet());
 		vocabulary.setLanguagesPublished(publishedLangs);
 		vocabulary = vocabularyService.save(vocabulary);
@@ -556,11 +556,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 			separatorLabel.setVisible( false );
 			buttonDropVersion.setVisible( false );
 			buttonWithdrawCv.setVisible( false );
-			
-			if( sourceLanguage.equals(selectedLanguage))
-				isCurrentSL = true;
-			else
-				isCurrentSL = false;
+
+			isCurrentSL = sourceLanguage.equals( selectedLanguage );
 			
 			updateMessageStrings(locale);
 			
@@ -602,10 +599,8 @@ public class EditorCvActionLayout extends ResponsiveBlock{
 				if( CvManagerSecurityUtils.isCurrentUserAllowCreateCvTl(getAgency()) ) {
 					
 
-					SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( languages -> {
-						userLanguages.addAll(languages);
-					});
-					availableLanguages = Language.getFilteredLanguage(new HashSet<Language>( userLanguages ), vocabulary.getLanguages());
+					SecurityUtils.getCurrentUserLanguageTlByAgency( agency ).ifPresent( userLanguages::addAll );
+					availableLanguages = Language.getFilteredLanguage( new HashSet<>( userLanguages ), vocabulary.getLanguages());
 					
 					Language sourceLang = Language.getByIso( vocabulary.getSourceLanguage() );
 					// remove with sourceLanguage option if exist

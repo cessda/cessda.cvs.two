@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -205,7 +206,7 @@ public class WorkspaceManager {
 	}
 
 	public boolean compareString(String str1, String str2) {
-	    return (str1 == null ? str2 == null : str1.equals(str2));
+	    return ( Objects.equals( str1, str2 ) );
 	}
 	
 	public void saveCodeAndConcept(VocabularyDTO vocabulary, VersionDTO version,
