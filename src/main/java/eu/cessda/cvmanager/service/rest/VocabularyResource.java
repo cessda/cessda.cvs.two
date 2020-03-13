@@ -43,27 +43,26 @@ public class VocabularyResource
     private static final Logger log = LoggerFactory.getLogger( VocabularyResource.class );
 
     private final VersionService versionService;
-    private final VocabularyService vocabularService;
+    private final VocabularyService vocabularyService;
     private final ExportService exportService;
 
-    public VocabularyResource( VocabularyService vocabularService, VersionService versionService,
+    public VocabularyResource( VocabularyService vocabularyService, VersionService versionService,
                                ExportService exportService )
     {
         this.versionService = versionService;
-        this.vocabularService = vocabularService;
+        this.vocabularyService = vocabularyService;
         this.exportService = exportService;
-	}
-	
-	
-	/**
+    }
+
+
+    /**
      * GET   : get all the vocabularies .
      *
      * @return map of Agencies and CVs code
      */
-    @SuppressWarnings("unchecked")
-	@GetMapping("/vocabulary")
-    @ApiOperation(value = "Get list of the agencies and the controlled vocabularies with the details rest API link.")
-    public Map<String,Object> getAllVocabularies()
+    @GetMapping( "/vocabulary" )
+    @ApiOperation( value = "Get list of the agencies and the controlled vocabularies with the details rest API link." )
+    public Map<String, Map<String, Map<String, Map<String, String>>>> getAllVocabularies()
     {
     	/*
     	 example structure:
@@ -78,27 +77,25 @@ public class VocabularyResource
     	    	}
     	*/
         log.debug( "REST: Getting all Vocabularies" );
-        Map<String, Object> agencyCvMap = new TreeMap<>();
+        Map<String, Map<String, Map<String, Map<String, String>>>> agencyCvMap = new TreeMap<>();
 
-        List<VocabularyDTO> vocabularies = vocabularService.findAll();
+        List<VocabularyDTO> vocabularies = vocabularyService.findAll();
 
         vocabularies = vocabularies.stream().sorted( Comparator.comparing( VocabularyDTO::getNotation ) )
                 .collect( Collectors.toList() );
 
         vocabularies.stream().filter( voc -> !Boolean.TRUE.equals( voc.isWithdrawn() ) ).forEach( voc ->
         {
-            Object vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
+            Map<String, Map<String, Map<String, String>>> vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
             List<VersionDTO> versions = voc.getVersions().stream()
                     .sorted( ( c1, c2 ) -> VersionUtils.compareVersion( c1.getNumber(), c2.getNumber() ) )
                     .collect( Collectors.toList() );
             versions.forEach( version ->
             {
-                Object langMap = ( (Map<String, Object>) vocabMap )
-                        .computeIfAbsent( version.getNotation(), k -> new LinkedHashMap<>() );
-                Object versionMap = ( (Map<String, Object>) langMap )
-                        .computeIfAbsent(
-                                version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
-                ( (Map<String, Object>) versionMap ).put( version.getNumber(),
+                Map<String, Map<String, String>> langMap = vocabMap.computeIfAbsent( version.getNotation(), k -> new LinkedHashMap<>() );
+                Map<String, String> versionMap = langMap.computeIfAbsent(
+                        version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
+                versionMap.put( version.getNumber(),
                         "/v1/VocabularyDetails/" + version.getNotation() + "/" + version.getLanguage() + "/" +
                                 version.getNumber() );
             } );
@@ -119,7 +116,7 @@ public class VocabularyResource
             @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String cvCode )
     {
         log.debug( "REST: Getting list of languages for {}", keyValue( CV_CODE, cvCode ) );
-        VocabularyDTO vocab = vocabularService.getByNotation( cvCode );
+        VocabularyDTO vocab = vocabularyService.getByNotation( cvCode );
         if ( vocab != null )
         {
             return ResponseEntity.ok( new ArrayList<>( vocab.getLanguagesPublished() ) );
@@ -141,7 +138,7 @@ public class VocabularyResource
             @ApiParam( value = "the CV language in iso format, e.g. en" ) @PathVariable String languageIso )
     {
         log.debug( "REST: Getting list of versions for {}, {}", keyValue( CV_CODE, cvCode ), keyValue( LANGUAGE_ISO, languageIso ) );
-        VocabularyDTO vocab = vocabularService.getByNotation( cvCode );
+        VocabularyDTO vocab = vocabularyService.getByNotation( cvCode );
 
         // If the vocab was returned
         if ( vocab != null )
