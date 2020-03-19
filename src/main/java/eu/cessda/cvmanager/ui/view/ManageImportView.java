@@ -1,11 +1,7 @@
 package eu.cessda.cvmanager.ui.view;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -130,12 +126,64 @@ public class ManageImportView extends CvManagerAdminView {
 
 		MCssLayout normaliseConceptPanel = normaliseMissingTLConcepts();
 
+		MCssLayout normaliseSlAndTlConceptsPanel = normaliseSlAndTlConcepts();
+
 		layout.addComponents(pageTitle, importStardatDDI, new MLabel().withFullWidth(), deleteIndexButton,
 				reIndexButton, new MLabel().withFullWidth(), assignConceptSlButton, new MLabel().withFullWidth(),
 				normalisePanel, new MLabel().withFullWidth(), normaliseSLConceptPanel,
-				normaliseConceptPanel, normaliseTlPublishedConceptPanel, new MLabel().withFullWidth(),
+				normaliseConceptPanel, normaliseTlPublishedConceptPanel, normaliseSlAndTlConceptsPanel, new MLabel().withFullWidth(),
 				dropContent);
 		rightContainer.add(layout).withExpand(layout, 1);
+	}
+
+	private MCssLayout normaliseSlAndTlConcepts() {
+		// Specific function to normalize code when TL missing during drop version
+		MCssLayout normalisePanel = new MCssLayout().withFullWidth().withStyleName("panel-group");
+		MLabel normalizeTlLabel = new MLabel("<h2>Normalize Code Sync SL and TL</h2>").withContentMode(ContentMode.HTML);
+		MTextField cvTarget = new MTextField("Cv Notation:");
+		MTextField cvVersion = new MTextField("Cv SL Version:");
+		MButton normalizeButton = new MButton("Normalize");
+		normalizeButton.addClickListener(e -> {
+			if (cvTarget.isEmpty() || cvVersion.isEmpty()) {
+				Notification.show("Target CV empty or SL version is empty");
+				return;
+			}
+			// find the latest version from specific vocabulary
+			VocabularyDTO vocabulary = vocabularyService.getByNotation(cvTarget.getValue());
+			if (vocabulary == null) {
+				Notification.show("Target CV not found");
+				return;
+			}
+			// Find SL version and the relevant TL
+			Optional<VersionDTO> slVersionOpt = vocabulary.getLatestVersionByLanguage(vocabulary.getSourceLanguage(), cvVersion.getValue());
+			List<VersionDTO> versionTls = null;
+			Set<String> slConcepts = null;
+			if( slVersionOpt.isPresent() ){
+				VersionDTO sl = slVersionOpt.get();
+				slConcepts = sl.getConcepts().stream().map(c -> c.getNotation()).collect(Collectors.toSet());
+				versionTls = vocabulary.getVersions().stream().filter(v ->  v.getUriSl() != null && v.getUriSl().equals(sl.getUri())).collect(Collectors.toList());
+			} else {
+				Notification.show("Target Version not found");
+				return;
+			}
+			// Make sure that concepts SL and TL match, remove for non existed concept
+			Iterator<VersionDTO> versionTlIterator = versionTls.iterator();
+			while( versionTlIterator.hasNext() ){
+				VersionDTO versionTl = versionTlIterator.next();
+				Iterator<ConceptDTO> conceptsIter = versionTl.getConcepts().iterator();
+				while( conceptsIter.hasNext() ) {
+					ConceptDTO conceptDTO = conceptsIter.next();
+					// tl concept not exist in sl then remove
+					if( !slConcepts.contains( conceptDTO.getNotation() )) {
+						conceptService.delete( conceptDTO.getId());
+					}
+				}
+			}
+
+		});
+
+		normalisePanel.add(normalizeTlLabel, cvTarget, cvVersion, normalizeButton);
+		return normalisePanel;
 	}
 
 	private MCssLayout normaliseDropVersionError() {
