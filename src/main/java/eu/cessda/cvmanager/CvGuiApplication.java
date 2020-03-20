@@ -34,9 +34,8 @@ public class CvGuiApplication extends SpringBootServletInitializer
 
 	public static void main( String[] args )
 	{
-		if ( args.length == 0 )
-			SpringApplication.run( CvGuiApplication.class, args );
-	}
+        SpringApplication.run( CvGuiApplication.class, args );
+    }
 
 	@Override
 	protected SpringApplicationBuilder configure( SpringApplicationBuilder application )
