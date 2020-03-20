@@ -173,6 +173,20 @@ public class VocabularyBase implements Serializable
 	@Field( type = FieldType.Text, store = true, analyzer = "english", searchAnalyzer = "english" )
 	private String definitionEn;
 
+	@Size(max = 20)
+	@Column(name = "version_et", length = 20)
+	private String versionEt;
+
+	@Lob
+	@Column(name = "title_et")
+	@Field( type = FieldType.Text, store = true )
+	private String titleEt;
+
+	@Lob
+	@Column(name = "definition_et")
+	@Field( type = FieldType.Text, store = true )
+	private String definitionEt;
+
 	@Size( max = 20 )
 	@Column( name = "version_fi", length = 20 )
 	private String versionFi;
@@ -256,6 +270,20 @@ public class VocabularyBase implements Serializable
 	@Column( name = "definition_it" )
 	@Field( type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
 	private String definitionIt;
+
+	@Size(max = 20)
+	@Column(name = "version_ja", length = 20)
+	private String versionJa;
+
+	@Lob
+	@Column(name = "title_ja")
+	@Field( type = FieldType.Text, store = true )
+	private String titleJa;
+
+	@Lob
+	@Column(name = "definition_ja")
+	@Field( type = FieldType.Text, store = true )
+	private String definitionJa;
 
 	@Size( max = 20 )
 	@Column( name = "version_lt", length = 20 )
@@ -1059,6 +1087,32 @@ public class VocabularyBase implements Serializable
 		this.definitionEn = definitionEn;
 	}
 
+	public String getTitleEt() {
+		return titleEt;
+	}
+
+	public VocabularyBase titleEt(String titleEt) {
+		this.titleEt = titleEt;
+		return this;
+	}
+
+	public void setTitleEt(String titleEt) {
+		this.titleEt = titleEt;
+	}
+
+	public String getDefinitionEt() {
+		return definitionEt;
+	}
+
+	public VocabularyBase definitionEt(String definitionEt) {
+		this.definitionEt = definitionEt;
+		return this;
+	}
+
+	public void setDefinitionEt(String definitionEt) {
+		this.definitionEt = definitionEt;
+	}
+
 	public String getTitleFi()
 	{
 		return titleFi;
@@ -1249,6 +1303,32 @@ public class VocabularyBase implements Serializable
 	public void setDefinitionIt( String definitionIt )
 	{
 		this.definitionIt = definitionIt;
+	}
+
+	public String getTitleJa() {
+		return titleJa;
+	}
+
+	public VocabularyBase titleJa(String titleJa) {
+		this.titleJa = titleJa;
+		return this;
+	}
+
+	public void setTitleJa(String titleJa) {
+		this.titleJa = titleJa;
+	}
+
+	public String getDefinitionJa() {
+		return definitionJa;
+	}
+
+	public VocabularyBase definitionJa(String definitionJa) {
+		this.definitionJa = definitionJa;
+		return this;
+	}
+
+	public void setDefinitionJa(String definitionJa) {
+		this.definitionJa = definitionJa;
 	}
 
 	public String getTitleLt()
@@ -1605,6 +1685,14 @@ public class VocabularyBase implements Serializable
 		this.versionEn = versionEn;
 	}
 
+	public String getVersionEt() {
+		return versionEt;
+	}
+
+	public void setVersionEt(String versionEt) {
+		this.versionEt = versionEt;
+	}
+
 	public String getVersionFi()
 	{
 		return versionFi;
@@ -1663,6 +1751,14 @@ public class VocabularyBase implements Serializable
 	public void setVersionIt( String versionIt )
 	{
 		this.versionIt = versionIt;
+	}
+
+	public String getVersionJa() {
+		return versionJa;
+	}
+
+	public void setVersionJa(String versionJa) {
+		this.versionJa = versionJa;
 	}
 
 	public String getVersionLt()

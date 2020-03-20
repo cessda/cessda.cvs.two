@@ -120,6 +120,16 @@ public class Code implements Serializable
 	private String definitionEn;
 
 	@Lob
+	@Column(name = "title_et")
+	@Field( type = FieldType.Text, store = true )
+	private String titleEt;
+
+	@Lob
+	@Column(name = "definition_et")
+	@Field( type = FieldType.Text, store = true )
+	private String definitionEt;
+
+	@Lob
 	@Column( name = "title_fi" )
 	@Field( type = FieldType.Text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
 	private String titleFi;
@@ -178,6 +188,16 @@ public class Code implements Serializable
 	@Column( name = "definition_it" )
 	@Field( type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
 	private String definitionIt;
+
+	@Lob
+	@Column(name = "title_ja")
+	@Field( type = FieldType.Text, store = true )
+	private String titleJa;
+
+	@Lob
+	@Column(name = "definition_ja")
+	@Field( type = FieldType.Text, store = true )
+	private String definitionJa;
 
 	@Lob
 	@Column( name = "title_lt" )
@@ -738,6 +758,14 @@ public class Code implements Serializable
 		this.definitionEn = definitionEn;
 	}
 
+	public String getTitleEt() {
+		return titleEt;
+	}
+
+	public void setTitleEt(String titleEt) {
+		this.titleEt = titleEt;
+	}
+
 	public String getTitleFi()
 	{
 		return titleFi;
@@ -856,6 +884,14 @@ public class Code implements Serializable
 	public void setDefinitionIt( String definitionIt )
 	{
 		this.definitionIt = definitionIt;
+	}
+
+	public String getTitleJa() {
+		return titleJa;
+	}
+
+	public void setTitleJa(String titleJa) {
+		this.titleJa = titleJa;
 	}
 
 	public String getTitleLt()

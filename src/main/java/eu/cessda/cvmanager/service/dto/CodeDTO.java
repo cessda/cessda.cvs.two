@@ -87,6 +87,12 @@ public class CodeDTO implements Serializable
     private String definitionEn;
 
     @Lob
+    private String titleEt;
+
+    @Lob
+    private String definitionEt;
+
+    @Lob
     private String titleFi;
 
     @Lob
@@ -127,6 +133,12 @@ public class CodeDTO implements Serializable
 
     @Lob
     private String definitionLt;
+
+    @Lob
+    private String titleJa;
+
+    @Lob
+    private String definitionJa;
 
     @Lob
     private String titleNo;
@@ -442,6 +454,8 @@ public class CodeDTO implements Serializable
 			return titleNl;
 		case ENGLISH:
 			return titleEn;
+        case ESTONIAN:
+            return titleEt;
 		case FINNISH:
 			return titleFi;
 		case FRENCH:
@@ -454,6 +468,8 @@ public class CodeDTO implements Serializable
 			return titleHu;
 		case ITALIAN:
 			return titleIt;
+        case JAPANESE:
+            return titleJa;
 		case LITHUANIAN:
 			return titleLt;
 		case NORWEGIAN:
@@ -504,6 +520,8 @@ public class CodeDTO implements Serializable
 			return definitionNl;
 		case ENGLISH:
 			return definitionEn;
+        case ESTONIAN:
+            return  definitionEt;
 		case FINNISH:
 			return definitionFi;
 		case FRENCH:
@@ -516,6 +534,8 @@ public class CodeDTO implements Serializable
 			return definitionHu;
 		case ITALIAN:
 			return definitionIt;
+        case JAPANESE:
+            return  definitionJa;
 		case LITHUANIAN:
 			return definitionLt;
 		case NORWEGIAN:
@@ -566,6 +586,9 @@ public class CodeDTO implements Serializable
     		case ENGLISH:
     			setTitleEn(title);
     			break;
+            case ESTONIAN:
+                setTitleEt(title);
+                break;
     		case FINNISH:
     			setTitleFi(title);
     			break;
@@ -584,6 +607,9 @@ public class CodeDTO implements Serializable
     		case ITALIAN:
     			setTitleIt(title);
     			break;
+            case JAPANESE:
+                setTitleJa(title);
+                break;
     		case LITHUANIAN:
     			setTitleLt(title);
     			break;
@@ -650,6 +676,9 @@ public class CodeDTO implements Serializable
     		case ENGLISH:
     			setDefinitionEn(definition);
     			break;
+            case ESTONIAN:
+                setDefinitionEt(definition);
+                break;
     		case FINNISH:
     			setDefinitionFi(definition);
     			break;
@@ -668,6 +697,9 @@ public class CodeDTO implements Serializable
     		case ITALIAN:
     			setDefinitionIt(definition);
     			break;
+            case JAPANESE:
+                setDefinitionJa(definition);
+                break;
     		case LITHUANIAN:
     			setDefinitionLt(definition);
     			break;
@@ -747,6 +779,10 @@ public class CodeDTO implements Serializable
     			setTitleEn(title);
     			setDefinitionEn(definition);
     			break;
+            case ESTONIAN:
+                setTitleEt(title);
+                setDefinitionEt(definition);
+                break;
     		case FINNISH:
     			setTitleFi(title);
     			setDefinitionFi(definition);
@@ -771,6 +807,10 @@ public class CodeDTO implements Serializable
     			setTitleIt(title);
     			setDefinitionIt(definition);
     			break;
+            case JAPANESE:
+                setTitleJa(title);
+                setDefinitionJa(definition);
+                break;
     		case LITHUANIAN:
     			setTitleLt(title);
     			setDefinitionLt(definition);
@@ -1072,6 +1112,22 @@ public class CodeDTO implements Serializable
         this.definitionEn = definitionEn;
     }
 
+    public String getTitleEt() {
+        return titleEt;
+    }
+
+    public void setTitleEt(String titleEt) {
+        this.titleEt = titleEt;
+    }
+
+    public String getDefinitionEt() {
+        return definitionEt;
+    }
+
+    public void setDefinitionEt(String definitionEt) {
+        this.definitionEt = definitionEt;
+    }
+
     public String getTitleFi() {
         return titleFi;
     }
@@ -1166,6 +1222,22 @@ public class CodeDTO implements Serializable
 
     public void setDefinitionIt(String definitionIt) {
         this.definitionIt = definitionIt;
+    }
+
+    public String getTitleJa() {
+        return titleJa;
+    }
+
+    public void setTitleJa(String titleJa) {
+        this.titleJa = titleJa;
+    }
+
+    public String getDefinitionJa() {
+        return definitionJa;
+    }
+
+    public void setDefinitionJa(String definitionJa) {
+        this.definitionJa = definitionJa;
     }
 
     public String getTitleLt() {
@@ -1462,6 +1534,10 @@ public class CodeDTO implements Serializable
 	    			code.setTitleEn(title);
 	    			code.setDefinitionEn(definition);
 	    			break;
+                case ESTONIAN:
+                    code.setTitleEt(title);
+                    code.setDefinitionEt(definition);
+                    break;
 	    		case FINNISH:
 	    			code.setTitleFi(title);
 	    			code.setDefinitionFi(definition);
@@ -1486,6 +1562,10 @@ public class CodeDTO implements Serializable
 	    			code.setTitleIt(title);
 	    			code.setDefinitionIt(definition);
 	    			break;
+                case JAPANESE:
+                    code.setTitleJa(title);
+                    code.setDefinitionJa(definition);
+                    break;
 	    		case LITHUANIAN:
 	    			code.setTitleLt(title);
 	    			code.setDefinitionLt(definition);
