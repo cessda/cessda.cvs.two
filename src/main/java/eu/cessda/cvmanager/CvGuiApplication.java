@@ -20,6 +20,7 @@ import org.thymeleaf.templateresolver.StringTemplateResolver;
 import org.vaadin.spring.i18n.MessageProvider;
 import org.vaadin.spring.i18n.ResourceBundleMessageProvider;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 
 @SpringBootApplication( exclude = { SecurityAutoConfiguration.class, ThymeleafAutoConfiguration.class } )
@@ -29,8 +30,6 @@ import java.util.Collections;
 @EntityScan( basePackages = { "org.gesis.wts", "eu.cessda.cvmanager" } )
 public class CvGuiApplication extends SpringBootServletInitializer
 {
-
-    private static final String UTF_8 = "UTF-8";
 
 	public static void main( String[] args )
 	{
@@ -45,9 +44,9 @@ public class CvGuiApplication extends SpringBootServletInitializer
 
 	@Bean
 	MessageProvider messageProvider()
-	{
-		return new ResourceBundleMessageProvider( "i18n.messages", UTF_8 );
-	}
+    {
+        return new ResourceBundleMessageProvider( "i18n.messages", StandardCharsets.UTF_8.toString() );
+    }
 
 	@Bean
 	public TemplateEngine templateEngine()
@@ -67,7 +66,7 @@ public class CvGuiApplication extends SpringBootServletInitializer
         templateResolver.setPrefix( "templates/" );
         templateResolver.setSuffix( ".html" );
         templateResolver.setTemplateMode( TemplateMode.HTML );
-        templateResolver.setCharacterEncoding( UTF_8 );
+        templateResolver.setCharacterEncoding( StandardCharsets.UTF_8.toString() );
         templateResolver.setCacheable( false );
         return templateResolver;
     }
@@ -80,7 +79,7 @@ public class CvGuiApplication extends SpringBootServletInitializer
         templateResolver.setPrefix( "templates/" );
         templateResolver.setSuffix( ".xml" );
         templateResolver.setTemplateMode( TemplateMode.XML );
-        templateResolver.setCharacterEncoding( UTF_8 );
+        templateResolver.setCharacterEncoding( StandardCharsets.UTF_8.toString() );
         templateResolver.setCacheable( false );
         return templateResolver;
     }
