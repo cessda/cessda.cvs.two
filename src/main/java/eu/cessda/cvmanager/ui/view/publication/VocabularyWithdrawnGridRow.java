@@ -1,215 +1,101 @@
 package eu.cessda.cvmanager.ui.view.publication;
 
-import java.util.Iterator;
-import java.util.List;
-
-import org.gesis.wts.domain.enumeration.Language;
-import org.gesis.wts.service.dto.AgencyDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.vaadin.viritin.button.MButton;
-import org.vaadin.viritin.label.MLabel;
-import org.vaadin.viritin.layouts.MCssLayout;
-import org.vaadin.viritin.layouts.MHorizontalLayout;
-
-import com.vaadin.shared.ui.ContentMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.CustomComponent;
-
 import eu.cessda.cvmanager.domain.enumeration.Status;
 import eu.cessda.cvmanager.service.ConfigurationService;
-import eu.cessda.cvmanager.service.dto.CodeDTO;
 import eu.cessda.cvmanager.service.dto.VocabularyDTO;
 import eu.cessda.cvmanager.ui.view.WithdrawnDetailView;
+import org.gesis.wts.domain.enumeration.Language;
+import org.gesis.wts.service.dto.AgencyDTO;
+import org.vaadin.viritin.button.MButton;
+import org.vaadin.viritin.layouts.MCssLayout;
 
-public class VocabularyWithdrawnGridRow extends CustomComponent {
-
-	final static Logger log = LoggerFactory.getLogger(VocabularyWithdrawnGridRow.class);
-
-	private final VocabularyDTO vocabulary;
-	private final AgencyDTO agency;
+public class VocabularyWithdrawnGridRow extends AbstractGridRow
+{
 
 	private static final long serialVersionUID = 4932510587869607326L;
 
-	private MCssLayout container = new MCssLayout();
-	private MHorizontalLayout hLayout = new MHorizontalLayout();
-	private MCssLayout vLayout = new MCssLayout();
-	private MCssLayout languageLayout = new MCssLayout();
-	private MCssLayout titleLayout = new MCssLayout();
-	private MCssLayout codeList = new MCssLayout();
-	private MLabel slTitle = new MLabel();
-	private MLabel tlTitle = new MLabel();
-	private MLabel desc = new MLabel();
-	private MLabel version = new MLabel();
-
-
-	private transient ConfigurationService configService;
-	private Language currentSelectedLanguage;
-	private Language sourceLanguage;
-
-	public VocabularyWithdrawnGridRow(VocabularyDTO voc, AgencyDTO agency, ConfigurationService configService) {
-		this.vocabulary = voc;
-		this.agency = agency;
-		this.configService = configService;
-		
-		if( vocabulary.getSourceLanguage() != null) 
-			sourceLanguage = Language.getByIso( vocabulary.getSourceLanguage() );
-		else
-			sourceLanguage = Language.ENGLISH;
-		
-		if( this.vocabulary.getSelectedLang() != null )
-			currentSelectedLanguage = this.vocabulary.getSelectedLang();
-		else
-			currentSelectedLanguage = sourceLanguage;
-
-		setCompositionRoot(container);
+	public VocabularyWithdrawnGridRow( VocabularyDTO voc, AgencyDTO agency, ConfigurationService configService )
+	{
+		super( voc, agency, configService );
 		initLayout();
 	}
 
-	private void initLayout() {
-		slTitle.withStyleName("marginright20").withContentMode(ContentMode.HTML);
-
-		tlTitle.withContentMode(ContentMode.HTML);
-
-		desc.withContentMode(ContentMode.HTML).withFullWidth();
-		version.withContentMode(ContentMode.HTML);
-//		conceptList.withContentMode(ContentMode.HTML);
-		codeList.withFullWidth();
+	@Override
+	protected void initLayout()
+	{
+		super.initLayout();
 
 		languageLayout.withUndefinedSize().withStyleName( "pull-right" );
-		
-		vocabulary.getLanguages().forEach(item -> {
-			MButton langButton = new MButton(item.toUpperCase());
+
+		vocabulary.getLanguages().forEach( item ->
+		{
+			MButton langButton = new MButton( item.toUpperCase() );
 			langButton.addStyleName( "langbutton" );
-			
-			if( item.equalsIgnoreCase( sourceLanguage.getIso() ))
+
+			if ( item.equalsIgnoreCase( sourceLanguage.getIso() ) )
+			{
 				langButton.addStyleName( "button-source-language" );
-			
-			if( item.equalsIgnoreCase( currentSelectedLanguage.getIso() ))
+			}
+
+			if ( item.equalsIgnoreCase( currentSelectedLanguage.getIso() ) )
+			{
 				langButton.addStyleName( "button-language-selected" );
-			
+			}
+
 			// determine the status
 			vocabulary.getLatestVersionByLanguage( item )
-			.ifPresent( versionDTO -> {
-				if( versionDTO.getStatus().equals( Status.DRAFT.toString())) {
-					langButton.addStyleName( "status-draft" );
-					langButton.setDescription("DRAFT");
-				}
-				else if( versionDTO.getStatus().equals( Status.INITIAL_REVIEW.toString())) {
-					langButton.addStyleName( "status-review-initial" );
-					langButton.setDescription("INITIAL_REVIEW");
-				}else if( versionDTO.getStatus().equals( Status.FINAL_REVIEW.toString())) {
-					langButton.addStyleName( "status-review-final" );
-					langButton.setDescription("FINAL_REVIEW");
-				}
-			});
-			
-			langButton.addClickListener(e -> {
-				applyButtonStyle(e.getButton());
+					.ifPresent( versionDTO ->
+					{
+						if ( versionDTO.getStatus().equals( Status.DRAFT.toString() ) )
+						{
+							langButton.addStyleName( "status-draft" );
+							langButton.setDescription( "DRAFT" );
+						}
+						else if ( versionDTO.getStatus().equals( Status.INITIAL_REVIEW.toString() ) )
+						{
+							langButton.addStyleName( "status-review-initial" );
+							langButton.setDescription( "INITIAL_REVIEW" );
+						}
+						else if ( versionDTO.getStatus().equals( Status.FINAL_REVIEW.toString() ) )
+						{
+							langButton.addStyleName( "status-review-final" );
+							langButton.setDescription( "FINAL_REVIEW" );
+						}
+					} );
+
+			langButton.addClickListener( e ->
+			{
+				applyButtonStyle( e.getButton() );
 				currentSelectedLanguage = Language.getByIso( e.getButton().getCaption().toLowerCase() );
 				setContent();
-			});
-			languageLayout.add(langButton);
-			if (item.equals(sourceLanguage.getIso().toUpperCase())) {
-				langButton.addStyleName("font-bold");
-				langButton.setDescription("source language" + (langButton.getDescription() != null && !langButton.getDescription().isEmpty()? " (" + langButton.getDescription() + ")":""));
+			} );
+			languageLayout.add( langButton );
+			if ( item.equalsIgnoreCase( sourceLanguage.getIso() ) )
+			{
+				langButton.addStyleName( "font-bold" );
+				langButton.setDescription( "source language" + ( langButton.getDescription() != null && !langButton.getDescription().isEmpty() ? " (" + langButton.getDescription() + ")" : "" ) );
 				langButton.click();
 			}
 		});
 
-		titleLayout
-			.withUndefinedSize()
-			.withStyleName( "pull-left" )
-			.add(slTitle, tlTitle);
-
-		vLayout
-			.withFullWidth()
-			.add(languageLayout, titleLayout, desc, version, codeList);
-		
-		MLabel logoLabel = new MLabel()
-			.withContentMode( ContentMode.HTML )
-			.withWidth("120px");
-		
-		if( agency.getLogo() != null && !agency.getLogo().isEmpty())
-			logoLabel.setValue(  "<img style=\"max-width:120px;max-height:80px\" alt=\"" + agency.getName() + " logo\" src='" + agency.getLogo() + "'>");
-		
-//		logo = new Image(null, new ThemeResource( agency.getLogopath() ));
-//		logo.setWidth("120px");
-
-		hLayout.withFullWidth().add(logoLabel, vLayout).withExpand(vLayout, 1.0f);
-
-		container
-			.withStyleName("itemcontainer")
-			.withFullWidth()
-			.add( 
-				hLayout,
-				new MLabel("<hr class=\"fancy-line\"/>").withContentMode( ContentMode.HTML ).withFullSize());
 		// Initial
 		setContent();
 	}
 
 
-	public MCssLayout getContainer() {
+	public MCssLayout getContainer()
+	{
 		return container;
 	}
 
-	public void setContainer(MCssLayout container) {
+	public void setContainer( MCssLayout container )
+	{
 		this.container = container;
 	}
 
-	private void setContent() {
-		codeList.removeAllComponents();
-		codeList.setVisible( false );
-		
-		String title = vocabulary.getTitleByLanguage( currentSelectedLanguage );
-		String definition = vocabulary.getDefinitionByLanguage( currentSelectedLanguage );
-		
-		if( title == null )
-			return;
-		
-		if( definition == null )
-			definition = "";
-		
-		String baseUrl = configService.getServerContextPath() + "/#!" + WithdrawnDetailView.VIEW_NAME+ "/" + vocabulary.getNotation();
-		
-		slTitle.setValue("<a href='" + baseUrl + "'>" + title + "</a>");
-		log.info("URL is: " + slTitle.getValue());
-
-		tlTitle.setValue("<a href='" + baseUrl  + "'>" + vocabulary.getNotation() + "</a>");
-		desc.setValue( definition );
-		version.setValue("Version: " + vocabulary.getVersionByLanguage(currentSelectedLanguage) + " "
-				+ (currentSelectedLanguage.equals( sourceLanguage ) ? "" : "_" + currentSelectedLanguage.getIso()) );
-		
-		if( !vocabulary.getCodes().isEmpty() ) {
-			codeList.setVisible( true );
-			for( CodeDTO code: vocabulary.getCodes() ) {
-				String codeTitle = code.getTitleByLanguage( currentSelectedLanguage );
-				String codeDefinition = code.getDefinitionByLanguage( currentSelectedLanguage );
-				if( codeDefinition == null )
-					codeDefinition = "";
-				if( codeTitle != null ) {
-					codeList.add(
-						new MLabel( "<a href=\"" + baseUrl + "?code=" + code.getNotation().replace(".", "-") + "\">" + codeTitle + "</a>" 
-								+ " " + codeDefinition )
-						.withContentMode( ContentMode.HTML )
-						.withFullWidth()
-					);
-				}
-			}
-		}
+	private void setContent()
+	{
+		String baseUrl = configService.getServerContextPath() + "/#!" + WithdrawnDetailView.VIEW_NAME + "/" + vocabulary.getNotation();
+		super.setContent( baseUrl );
 	}
-
-	private void applyButtonStyle(Button pressedButton) {
-
-		for ( Component c : languageLayout )
-		{
-			if ( c instanceof Button )
-			{
-				c.removeStyleName( "button-language-selected" );
-			}
-		}
-		pressedButton.addStyleName("button-language-selected");
-	}
-
 }
