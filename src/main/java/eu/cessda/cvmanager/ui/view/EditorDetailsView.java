@@ -711,7 +711,7 @@ public class EditorDetailsView extends CvView {
 		
 		detailTreeGrid.setSelectionMode( SelectionMode.SINGLE );
 		
-		detailTreeGrid.addColumn( CodeDTO::getNotation /* + "("  + code.getId() + ")" */)
+		detailTreeGrid.addColumn( code -> code.getNotation() /* + "("  + code.getId() + ")" */)
 			.setCaption("Code")
 			.setExpandRatio(1)
 			.setId("code");
@@ -727,12 +727,14 @@ public class EditorDetailsView extends CvView {
 				.setExpandRatio(1)
 				.setId("prefLabelTl");
 		
-		detailTreeGrid.addColumn(code -> {
-					MLabel definitionLabel = new MLabel( code.getDefinitionByLanguage( sourceLanguage ))
-							.withStyleName( "word-brake-normal" ).withContentMode( ContentMode.HTML);
-					definitionLabel.setId( "code-" + code.getNotation().replace(".", "-"));
-					return definitionLabel;
-				}, new ComponentRenderer())
+		detailTreeGrid.addColumn(code -> code.getDefinitionByLanguage( sourceLanguage )
+//		{
+//					Label definitionLabel = new Label( "aa " + code.getDefinitionByLanguage( sourceLanguage ));
+//					definitionLabel.setStyleName( "word-brake-normal" );
+////					definitionLabel.setId( "code-" + code.getNotation().replace(".", "-").replace("+", "-"));
+//					return definitionLabel;
+//				}, new ComponentRenderer()
+		)
 				.setCaption(i18n.get("view.detail.cvconcept.column.sl.definition", locale))
 				.setExpandRatio(3)
 				.setId("definitionSl");
