@@ -1,20 +1,29 @@
 package eu.cessda.cvmanager.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.gesis.wts.domain.enumeration.Language;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.gesis.wts.domain.enumeration.Language;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * A VocabularyBase.
@@ -571,7 +580,7 @@ public class VocabularyBase implements Serializable
 
 	@Size( max = 20 )
 	@Column( name = "version_mk", length = 20 )
-	private String versionMk;
+	private String versionMḱ;
 
 	@Lob
 	@Column( name = "title_mk" )
@@ -583,14 +592,14 @@ public class VocabularyBase implements Serializable
 	@Field( type = FieldType.Text, store = true )
 	private String definitionMk;
 
-	public String getVersionMk()
+	public String getVersionMḱ()
 	{
-		return versionMk;
+		return versionMḱ;
 	}
 
-	public void setVersionMk( String versionMk )
+	public void setVersionMḱ( String versionMḱ )
 	{
-		this.versionMk = versionMk;
+		this.versionMḱ = versionMḱ;
 	}
 
 	public String getTitleMk()
