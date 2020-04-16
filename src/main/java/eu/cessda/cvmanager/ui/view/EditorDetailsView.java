@@ -1130,7 +1130,7 @@ public class EditorDetailsView extends CvView {
 				}
 					
 				ConfirmDialog.show( this.getUI(), "Confirm",
-				i18n.get( popUpDialogMessageKey, "\"" + code.getNotation() + "\" - \"" + currentConcept.getTitle() + "\" ("+ currentVersion.getLanguage() +")"),
+				i18n.get( popUpDialogMessageKey, "\"" + code.getNotation() + "\" ("+ currentVersion.getLanguage() +")"),
 				i18n.get("dialog.button.yes"),
 				i18n.get("dialog.button.cancel"),
 						
