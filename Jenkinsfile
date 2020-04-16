@@ -19,7 +19,7 @@ pipeline {
 		stage('Build Project') {
 			steps {
                 withMaven {
-                    sh "mvn clean install -Pdocker-compose -DbuildNumber=.${env.BUILD_NUMBER}"
+                    sh "./mvnw clean install -Pdocker-compose -DbuildNumber=.${env.BUILD_NUMBER}"
 				}
 			}
             when { branch 'master' }
@@ -28,7 +28,7 @@ pipeline {
 		stage('Test Project') {
 			steps {
                 withMaven {
-                    sh 'mvn clean test -Pdocker-compose'					
+                    sh './mvnw clean test -Pdocker-compose'					
 				}
 			}
             when { not { branch 'master' } }
@@ -43,7 +43,7 @@ pipeline {
                 withSonarQubeEnv('cessda-sonar') {
                     nodejs('node') {
                         withMaven {
-                            sh "mvn sonar:sonar -Pdocker-compose -DbuildNumber=.${env.BUILD_NUMBER}"
+                            sh "./mvnw sonar:sonar -Pdocker-compose -DbuildNumber=.${env.BUILD_NUMBER}"
                         }
                     }
                 }
@@ -62,7 +62,7 @@ pipeline {
             steps {
                 sh 'gcloud auth configure-docker'
                 withMaven {
-                    sh "mvn docker:build docker:push -Pdocker-compose -DbuildNumber=.${env.BUILD_NUMBER} -Dimage_tag=${IMAGE_TAG}"
+                    sh "./mvnw docker:build docker:push -Pdocker-compose -DbuildNumber=.${env.BUILD_NUMBER} -Dimage_tag=${IMAGE_TAG}"
                 }
                 sh "gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${product_name}-${module_name}:${env.BRANCH_NAME}-latest"
             }
