@@ -162,7 +162,7 @@ public class AgencyMemberForm extends FormLayout {
             binder.bindInstanceFields(this);
             binder.setBean(userDTO);
             
-        	password.setValue( CvManagerSecurityUtils.generateSecureRandomPassword(10));
+        	password.setValue( CvManagerSecurityUtils.generateSecureRandomPassword(12));
             
         	activateAddUserForm( true );
         });
