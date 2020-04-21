@@ -71,3 +71,8 @@ vaadin4spring:
       enabled: 'false'
     message-provider-cache:
       cleanup-interval-seconds: '5'
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: '/v1/api-docs'
