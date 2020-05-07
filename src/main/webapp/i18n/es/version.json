@@ -1,0 +1,51 @@
+{
+  "cvsApp": {
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Crear nuevo Version",
+        "createOrEditLabel": "Crear o editar Version",
+        "notFound": "Ningún Versions encontrado"
+      },
+      "created": "Un nuevo Version ha sido creado con el identificador {{ param }}",
+      "updated": "Un Version ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Version ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Version {{ id }}?"
+      },
+      "detail": {
+        "title": "Version"
+      },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    }
+  }
+}

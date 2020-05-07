@@ -1,0 +1,51 @@
+{
+  "cvsApp": {
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Skapa en ny Version",
+        "createOrEditLabel": "Skapa eller ändra en Version",
+        "notFound": "No Versions found"
+      },
+      "created": "En ny Version är skapad med id {{ param }}",
+      "updated": "En Version är uppdaterad med id  {{ param }}",
+      "deleted": "En Version är borttagen med id  {{ param }}",
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Version {{ id }}?"
+      },
+      "detail": {
+        "title": "Version"
+      },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    }
+  }
+}

@@ -1,0 +1,1205 @@
+package eu.cessda.cvs.service.dto;
+
+import eu.cessda.cvs.domain.Code;
+import eu.cessda.cvs.domain.enumeration.Language;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.*;
+
+/**
+ * A DTO for the {@link Code} entity.
+ */
+public class CodeDTO implements Serializable {
+
+    public CodeDTO() {
+        archived = false;
+        withdrawn = false;
+        discoverable = false;
+    }
+
+    private Long id;
+
+    @Size(max = 240)
+    private String uri;
+
+    @Size(max = 240)
+    private String notation;
+
+    private Boolean archived;
+
+    private Boolean withdrawn;
+
+    private Boolean discoverable;
+
+    private Set<String> languages;
+
+    @Size(max = 20)
+    private String sourceLanguage;
+
+    @Size(max = 240)
+    private String parent;
+
+    private Integer position;
+
+    private LocalDate publicationDate;
+
+    private ZonedDateTime lastModified;
+
+    private Long vocabularyId;
+
+    private Long versionId;
+
+    private String versionNumber;
+
+    @Lob
+    private String titleSq;
+
+    @Lob
+    private String definitionSq;
+
+    @Lob
+    private String titleBs;
+
+    @Lob
+    private String definitionBs;
+
+    @Lob
+    private String titleBg;
+
+    @Lob
+    private String definitionBg;
+
+    @Lob
+    private String titleHr;
+
+    @Lob
+    private String definitionHr;
+
+    @Lob
+    private String titleCs;
+
+    @Lob
+    private String definitionCs;
+
+    @Lob
+    private String titleDa;
+
+    @Lob
+    private String definitionDa;
+
+    @Lob
+    private String titleNl;
+
+    @Lob
+    private String definitionNl;
+
+    @Lob
+    private String titleEn;
+
+    @Lob
+    private String definitionEn;
+
+    @Lob
+    private String titleEt;
+
+    @Lob
+    private String definitionEt;
+
+    @Lob
+    private String titleFi;
+
+    @Lob
+    private String definitionFi;
+
+    @Lob
+    private String titleFr;
+
+    @Lob
+    private String definitionFr;
+
+    @Lob
+    private String titleDe;
+
+    @Lob
+    private String definitionDe;
+
+    @Lob
+    private String titleEl;
+
+    @Lob
+    private String definitionEl;
+
+    @Lob
+    private String titleHu;
+
+    @Lob
+    private String definitionHu;
+
+    @Lob
+    private String titleIt;
+
+    @Lob
+    private String definitionIt;
+
+    @Lob
+    private String titleJa;
+
+    @Lob
+    private String definitionJa;
+
+    @Lob
+    private String titleLt;
+
+    @Lob
+    private String definitionLt;
+
+    @Lob
+    private String titleMk;
+
+    @Lob
+    private String definitionMk;
+
+    @Lob
+    private String titleNo;
+
+    @Lob
+    private String definitionNo;
+
+    @Lob
+    private String titlePl;
+
+    @Lob
+    private String definitionPl;
+
+    @Lob
+    private String titlePt;
+
+    @Lob
+    private String definitionPt;
+
+    @Lob
+    private String titleRo;
+
+    @Lob
+    private String definitionRo;
+
+    @Lob
+    private String titleRu;
+
+    @Lob
+    private String definitionRu;
+
+    @Lob
+    private String titleSr;
+
+    @Lob
+    private String definitionSr;
+
+    @Lob
+    private String titleSk;
+
+    @Lob
+    private String definitionSk;
+
+    @Lob
+    private String titleSl;
+
+    @Lob
+    private String definitionSl;
+
+    @Lob
+    private String titleEs;
+
+    @Lob
+    private String definitionEs;
+
+    @Lob
+    private String titleSv;
+
+    @Lob
+    private String definitionSv;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getNotation() {
+        return notation;
+    }
+
+    public void setNotation(String notation) {
+        this.notation = notation;
+    }
+
+    public Boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(Boolean archived) {
+        this.archived = archived;
+    }
+
+    public Boolean isWithdrawn() {
+        return withdrawn;
+    }
+
+    public void setWithdrawn(Boolean withdrawn) {
+        this.withdrawn = withdrawn;
+    }
+
+    public Boolean isDiscoverable() {
+        return discoverable;
+    }
+
+    public void setDiscoverable(Boolean discoverable) {
+        this.discoverable = discoverable;
+    }
+
+    public Set<String> getLanguages() {
+        return languages;
+    }
+
+    public void setLanguages(Set<String> languages) {
+        this.languages = languages;
+    }
+
+    public CodeDTO addLanguage(String language) {
+        if(languages == null)
+            languages = new HashSet<>();
+        this.languages.add(language);
+        return this;
+    }
+
+    public void removeLanguage(String language) {
+        if(languages == null)
+            return;
+        this.languages.remove(language);
+    }
+
+    public String getSourceLanguage() {
+        return sourceLanguage;
+    }
+
+    public void setSourceLanguage(String sourceLanguage) {
+        this.sourceLanguage = sourceLanguage;
+    }
+
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public LocalDate getPublicationDate() {
+        return publicationDate;
+    }
+
+    public void setPublicationDate(LocalDate publicationDate) {
+        this.publicationDate = publicationDate;
+    }
+
+    public ZonedDateTime getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(ZonedDateTime lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public Long getVocabularyId() {
+        return vocabularyId;
+    }
+
+    public void setVocabularyId(Long vocabularyId) {
+        this.vocabularyId = vocabularyId;
+    }
+
+    public Long getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(Long versionId) {
+        this.versionId = versionId;
+    }
+
+    public String getVersionNumber() {
+        return versionNumber;
+    }
+
+    public void setVersionNumber(String versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+
+    public String getTitleSq() {
+        return titleSq;
+    }
+
+    public void setTitleSq(String titleSq) {
+        this.titleSq = titleSq;
+    }
+
+    public String getDefinitionSq() {
+        return definitionSq;
+    }
+
+    public void setDefinitionSq(String definitionSq) {
+        this.definitionSq = definitionSq;
+    }
+
+    public String getTitleBs() {
+        return titleBs;
+    }
+
+    public void setTitleBs(String titleBs) {
+        this.titleBs = titleBs;
+    }
+
+    public String getDefinitionBs() {
+        return definitionBs;
+    }
+
+    public void setDefinitionBs(String definitionBs) {
+        this.definitionBs = definitionBs;
+    }
+
+    public String getTitleBg() {
+        return titleBg;
+    }
+
+    public void setTitleBg(String titleBg) {
+        this.titleBg = titleBg;
+    }
+
+    public String getDefinitionBg() {
+        return definitionBg;
+    }
+
+    public void setDefinitionBg(String definitionBg) {
+        this.definitionBg = definitionBg;
+    }
+
+    public String getTitleHr() {
+        return titleHr;
+    }
+
+    public void setTitleHr(String titleHr) {
+        this.titleHr = titleHr;
+    }
+
+    public String getDefinitionHr() {
+        return definitionHr;
+    }
+
+    public void setDefinitionHr(String definitionHr) {
+        this.definitionHr = definitionHr;
+    }
+
+    public String getTitleCs() {
+        return titleCs;
+    }
+
+    public void setTitleCs(String titleCs) {
+        this.titleCs = titleCs;
+    }
+
+    public String getDefinitionCs() {
+        return definitionCs;
+    }
+
+    public void setDefinitionCs(String definitionCs) {
+        this.definitionCs = definitionCs;
+    }
+
+    public String getTitleDa() {
+        return titleDa;
+    }
+
+    public void setTitleDa(String titleDa) {
+        this.titleDa = titleDa;
+    }
+
+    public String getDefinitionDa() {
+        return definitionDa;
+    }
+
+    public void setDefinitionDa(String definitionDa) {
+        this.definitionDa = definitionDa;
+    }
+
+    public String getTitleNl() {
+        return titleNl;
+    }
+
+    public void setTitleNl(String titleNl) {
+        this.titleNl = titleNl;
+    }
+
+    public String getDefinitionNl() {
+        return definitionNl;
+    }
+
+    public void setDefinitionNl(String definitionNl) {
+        this.definitionNl = definitionNl;
+    }
+
+    public String getTitleEn() {
+        return titleEn;
+    }
+
+    public void setTitleEn(String titleEn) {
+        this.titleEn = titleEn;
+    }
+
+    public String getDefinitionEn() {
+        return definitionEn;
+    }
+
+    public void setDefinitionEn(String definitionEn) {
+        this.definitionEn = definitionEn;
+    }
+
+    public String getTitleEt() {
+        return titleEt;
+    }
+
+    public void setTitleEt(String titleEt) {
+        this.titleEt = titleEt;
+    }
+
+    public String getDefinitionEt() {
+        return definitionEt;
+    }
+
+    public void setDefinitionEt(String definitionEt) {
+        this.definitionEt = definitionEt;
+    }
+
+    public String getTitleFi() {
+        return titleFi;
+    }
+
+    public void setTitleFi(String titleFi) {
+        this.titleFi = titleFi;
+    }
+
+    public String getDefinitionFi() {
+        return definitionFi;
+    }
+
+    public void setDefinitionFi(String definitionFi) {
+        this.definitionFi = definitionFi;
+    }
+
+    public String getTitleFr() {
+        return titleFr;
+    }
+
+    public void setTitleFr(String titleFr) {
+        this.titleFr = titleFr;
+    }
+
+    public String getDefinitionFr() {
+        return definitionFr;
+    }
+
+    public void setDefinitionFr(String definitionFr) {
+        this.definitionFr = definitionFr;
+    }
+
+    public String getTitleDe() {
+        return titleDe;
+    }
+
+    public void setTitleDe(String titleDe) {
+        this.titleDe = titleDe;
+    }
+
+    public String getDefinitionDe() {
+        return definitionDe;
+    }
+
+    public void setDefinitionDe(String definitionDe) {
+        this.definitionDe = definitionDe;
+    }
+
+    public String getTitleEl() {
+        return titleEl;
+    }
+
+    public void setTitleEl(String titleEl) {
+        this.titleEl = titleEl;
+    }
+
+    public String getDefinitionEl() {
+        return definitionEl;
+    }
+
+    public void setDefinitionEl(String definitionEl) {
+        this.definitionEl = definitionEl;
+    }
+
+    public String getTitleHu() {
+        return titleHu;
+    }
+
+    public void setTitleHu(String titleHu) {
+        this.titleHu = titleHu;
+    }
+
+    public String getDefinitionHu() {
+        return definitionHu;
+    }
+
+    public void setDefinitionHu(String definitionHu) {
+        this.definitionHu = definitionHu;
+    }
+
+    public String getTitleIt() {
+        return titleIt;
+    }
+
+    public void setTitleIt(String titleIt) {
+        this.titleIt = titleIt;
+    }
+
+    public String getDefinitionIt() {
+        return definitionIt;
+    }
+
+    public void setDefinitionIt(String definitionIt) {
+        this.definitionIt = definitionIt;
+    }
+
+    public String getTitleJa() {
+        return titleJa;
+    }
+
+    public void setTitleJa(String titleJa) {
+        this.titleJa = titleJa;
+    }
+
+    public String getDefinitionJa() {
+        return definitionJa;
+    }
+
+    public void setDefinitionJa(String definitionJa) {
+        this.definitionJa = definitionJa;
+    }
+
+    public String getTitleLt() {
+        return titleLt;
+    }
+
+    public void setTitleLt(String titleLt) {
+        this.titleLt = titleLt;
+    }
+
+    public String getDefinitionLt() {
+        return definitionLt;
+    }
+
+    public void setDefinitionLt(String definitionLt) {
+        this.definitionLt = definitionLt;
+    }
+
+    public String getTitleMk() {
+        return titleMk;
+    }
+
+    public void setTitleMk(String titleMk) {
+        this.titleMk = titleMk;
+    }
+
+    public String getDefinitionMk() {
+        return definitionMk;
+    }
+
+    public void setDefinitionMk(String definitionMk) {
+        this.definitionMk = definitionMk;
+    }
+
+    public String getTitleNo() {
+        return titleNo;
+    }
+
+    public void setTitleNo(String titleNo) {
+        this.titleNo = titleNo;
+    }
+
+    public String getDefinitionNo() {
+        return definitionNo;
+    }
+
+    public void setDefinitionNo(String definitionNo) {
+        this.definitionNo = definitionNo;
+    }
+
+    public String getTitlePl() {
+        return titlePl;
+    }
+
+    public void setTitlePl(String titlePl) {
+        this.titlePl = titlePl;
+    }
+
+    public String getDefinitionPl() {
+        return definitionPl;
+    }
+
+    public void setDefinitionPl(String definitionPl) {
+        this.definitionPl = definitionPl;
+    }
+
+    public String getTitlePt() {
+        return titlePt;
+    }
+
+    public void setTitlePt(String titlePt) {
+        this.titlePt = titlePt;
+    }
+
+    public String getDefinitionPt() {
+        return definitionPt;
+    }
+
+    public void setDefinitionPt(String definitionPt) {
+        this.definitionPt = definitionPt;
+    }
+
+    public String getTitleRo() {
+        return titleRo;
+    }
+
+    public void setTitleRo(String titleRo) {
+        this.titleRo = titleRo;
+    }
+
+    public String getDefinitionRo() {
+        return definitionRo;
+    }
+
+    public void setDefinitionRo(String definitionRo) {
+        this.definitionRo = definitionRo;
+    }
+
+    public String getTitleRu() {
+        return titleRu;
+    }
+
+    public void setTitleRu(String titleRu) {
+        this.titleRu = titleRu;
+    }
+
+    public String getDefinitionRu() {
+        return definitionRu;
+    }
+
+    public void setDefinitionRu(String definitionRu) {
+        this.definitionRu = definitionRu;
+    }
+
+    public String getTitleSr() {
+        return titleSr;
+    }
+
+    public void setTitleSr(String titleSr) {
+        this.titleSr = titleSr;
+    }
+
+    public String getDefinitionSr() {
+        return definitionSr;
+    }
+
+    public void setDefinitionSr(String definitionSr) {
+        this.definitionSr = definitionSr;
+    }
+
+    public String getTitleSk() {
+        return titleSk;
+    }
+
+    public void setTitleSk(String titleSk) {
+        this.titleSk = titleSk;
+    }
+
+    public String getDefinitionSk() {
+        return definitionSk;
+    }
+
+    public void setDefinitionSk(String definitionSk) {
+        this.definitionSk = definitionSk;
+    }
+
+    public String getTitleSl() {
+        return titleSl;
+    }
+
+    public void setTitleSl(String titleSl) {
+        this.titleSl = titleSl;
+    }
+
+    public String getDefinitionSl() {
+        return definitionSl;
+    }
+
+    public void setDefinitionSl(String definitionSl) {
+        this.definitionSl = definitionSl;
+    }
+
+    public String getTitleEs() {
+        return titleEs;
+    }
+
+    public void setTitleEs(String titleEs) {
+        this.titleEs = titleEs;
+    }
+
+    public String getDefinitionEs() {
+        return definitionEs;
+    }
+
+    public void setDefinitionEs(String definitionEs) {
+        this.definitionEs = definitionEs;
+    }
+
+    public String getTitleSv() {
+        return titleSv;
+    }
+
+    public void setTitleSv(String titleSv) {
+        this.titleSv = titleSv;
+    }
+
+    public String getDefinitionSv() {
+        return definitionSv;
+    }
+
+    public void setDefinitionSv(String definitionSv) {
+        this.definitionSv = definitionSv;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        CodeDTO codeDTO = (CodeDTO) o;
+        if (codeDTO.getId() == null || getId() == null) {
+            return false;
+        }
+        return Objects.equals(getId(), codeDTO.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
+    }
+
+    @Override
+    public String toString() {
+        return "CodeDTO{" +
+            "id=" + getId() +
+            ", uri='" + getUri() + "'" +
+            ", notation='" + getNotation() + "'" +
+            ", archived='" + isArchived() + "'" +
+            ", withdrawn='" + isWithdrawn() + "'" +
+            ", discoverable='" + isDiscoverable() + "'" +
+            ", sourceLanguage='" + getSourceLanguage() + "'" +
+            ", parent='" + getParent() + "'" +
+            ", position=" + getPosition() +
+            ", publicationDate='" + getPublicationDate() + "'" +
+            ", lastModified='" + getLastModified() + "'" +
+            ", titleSq='" + getTitleSq() + "'" +
+            ", definitionSq='" + getDefinitionSq() + "'" +
+            ", titleBs='" + getTitleBs() + "'" +
+            ", definitionBs='" + getDefinitionBs() + "'" +
+            ", titleBg='" + getTitleBg() + "'" +
+            ", definitionBg='" + getDefinitionBg() + "'" +
+            ", titleHr='" + getTitleHr() + "'" +
+            ", definitionHr='" + getDefinitionHr() + "'" +
+            ", titleCs='" + getTitleCs() + "'" +
+            ", definitionCs='" + getDefinitionCs() + "'" +
+            ", titleDa='" + getTitleDa() + "'" +
+            ", definitionDa='" + getDefinitionDa() + "'" +
+            ", titleNl='" + getTitleNl() + "'" +
+            ", definitionNl='" + getDefinitionNl() + "'" +
+            ", titleEn='" + getTitleEn() + "'" +
+            ", definitionEn='" + getDefinitionEn() + "'" +
+            ", titleEt='" + getTitleEt() + "'" +
+            ", definitionEt='" + getDefinitionEt() + "'" +
+            ", titleFi='" + getTitleFi() + "'" +
+            ", definitionFi='" + getDefinitionFi() + "'" +
+            ", titleFr='" + getTitleFr() + "'" +
+            ", definitionFr='" + getDefinitionFr() + "'" +
+            ", titleDe='" + getTitleDe() + "'" +
+            ", definitionDe='" + getDefinitionDe() + "'" +
+            ", titleEl='" + getTitleEl() + "'" +
+            ", definitionEl='" + getDefinitionEl() + "'" +
+            ", titleHu='" + getTitleHu() + "'" +
+            ", definitionHu='" + getDefinitionHu() + "'" +
+            ", titleIt='" + getTitleIt() + "'" +
+            ", definitionIt='" + getDefinitionIt() + "'" +
+            ", titleJa='" + getTitleJa() + "'" +
+            ", definitionJa='" + getDefinitionJa() + "'" +
+            ", titleLt='" + getTitleLt() + "'" +
+            ", definitionLt='" + getDefinitionLt() + "'" +
+            ", titleMk='" + getTitleMk() + "'" +
+            ", definitionMk='" + getDefinitionMk() + "'" +
+            ", titleNo='" + getTitleNo() + "'" +
+            ", definitionNo='" + getDefinitionNo() + "'" +
+            ", titlePl='" + getTitlePl() + "'" +
+            ", definitionPl='" + getDefinitionPl() + "'" +
+            ", titlePt='" + getTitlePt() + "'" +
+            ", definitionPt='" + getDefinitionPt() + "'" +
+            ", titleRo='" + getTitleRo() + "'" +
+            ", definitionRo='" + getDefinitionRo() + "'" +
+            ", titleRu='" + getTitleRu() + "'" +
+            ", definitionRu='" + getDefinitionRu() + "'" +
+            ", titleSr='" + getTitleSr() + "'" +
+            ", definitionSr='" + getDefinitionSr() + "'" +
+            ", titleSk='" + getTitleSk() + "'" +
+            ", definitionSk='" + getDefinitionSk() + "'" +
+            ", titleSl='" + getTitleSl() + "'" +
+            ", definitionSl='" + getDefinitionSl() + "'" +
+            ", titleEs='" + getTitleEs() + "'" +
+            ", definitionEs='" + getDefinitionEs() + "'" +
+            ", titleSv='" + getTitleSv() + "'" +
+            ", definitionSv='" + getDefinitionSv() + "'" +
+            "}";
+    }
+
+    public CodeDTO setTitleDefinition(String title, String definition, String language) {
+        return setTitleDefinition(title, definition, Language.getByIso(language), false);
+    }
+
+    public CodeDTO setTitleDefinition(String title, String definition, Language language, boolean isRemoveLanguage) {
+        switch (language) {
+            case CZECH:
+                setTitleCs(title);
+                setDefinitionCs(definition);
+                break;
+            case DANISH:
+                setTitleDa(title);
+                setDefinitionDa(definition);
+                break;
+            case DUTCH:
+                setTitleNl(title);
+                setDefinitionNl(definition);
+                break;
+            case ENGLISH:
+                setTitleEn(title);
+                setDefinitionEn(definition);
+                break;
+            case ESTONIAN:
+                setTitleEt(title);
+                setDefinitionEt(definition);
+                break;
+            case FINNISH:
+                setTitleFi(title);
+                setDefinitionFi(definition);
+                break;
+            case FRENCH:
+                setTitleFr(title);
+                setDefinitionFr(definition);
+                break;
+            case GERMAN:
+                setTitleDe(title);
+                setDefinitionDe(definition);
+                break;
+            case GREEK:
+                setTitleEl(title);
+                setDefinitionEl(definition);
+                break;
+            case HUNGARIAN:
+                setTitleHu(title);
+                setDefinitionHu(definition);
+                break;
+            case ITALIAN:
+                setTitleIt(title);
+                setDefinitionIt(definition);
+                break;
+            case JAPANESE:
+                setTitleJa(title);
+                setDefinitionJa(definition);
+                break;
+            case LITHUANIAN:
+                setTitleLt(title);
+                setDefinitionLt(definition);
+                break;
+            case NORWEGIAN:
+                setTitleNo(title);
+                setDefinitionNo(definition);
+                break;
+            case PORTUGUESE:
+                setTitlePt(title);
+                setDefinitionPt(definition);
+                break;
+            case ROMANIAN:
+                setTitleRo(title);
+                setDefinitionRo(definition);
+                break;
+            case SLOVAK:
+                setTitleSk(title);
+                setDefinitionSk(definition);
+                break;
+            case SLOVENIAN:
+                setTitleSl(title);
+                setDefinitionSl(definition);
+                break;
+            case SPANISH:
+                setTitleEs(title);
+                setDefinitionEs(definition);
+                break;
+            case SWEDISH:
+                setTitleSv(title);
+                setDefinitionSv(definition);
+                break;
+            case ALBANIAN:
+                setTitleSq(title);
+                setDefinitionSq(definition);
+                break;
+            case BOSNIAN:
+                setTitleBs(title);
+                setDefinitionBs(definition);
+                break;
+            case BULGARIAN:
+                setTitleBg(title);
+                setDefinitionBg(definition);
+                break;
+            case CROATIAN:
+                setTitleHr(title);
+                setDefinitionHr(definition);
+                break;
+            case MACEDONIAN:
+                setTitleMk(title);
+                setDefinitionMk(definition);
+                break;
+            case POLISH:
+                setTitlePl(title);
+                setDefinitionPl(definition);
+                break;
+            case RUSSIAN:
+                setTitleRu(title);
+                setDefinitionRu(definition);
+                break;
+            case SERBIAN:
+                setTitleSr(title);
+                setDefinitionSr(definition);
+                break;
+        }
+        if(isRemoveLanguage)
+            removeLanguage(language.getIso());
+        else
+            addLanguage(language.getIso());
+        return this;
+    }
+
+    public static Optional<CodeDTO> findByIdFromList(Set<CodeDTO> codes, int docId) {
+        return codes.stream().filter( voc -> voc.getId() == docId).findFirst();
+    }
+
+    public static Set<CodeDTO> generateCodesFromVersion(Set<VersionDTO> versions, boolean isForEditor){
+        Map<String, CodeDTO> codeDTOsMap = new LinkedHashMap<>();
+        // use to ignore version with same lang, eg. FRv2.0.2 and FRv2.0.1 only FRv.2.0.2 will be chosen
+        Set<String> versionLangs = new HashSet<>();
+        long codeIndex = 0L;
+        // code ID for editor will always on even number, the publication code will be on odd number
+        if( isForEditor )
+            codeIndex = 1L;
+        for (VersionDTO version : versions) {
+            if( versionLangs.contains( version.getLanguage()) )
+                continue;
+
+            long baseCodeId = version.getId() * 100;
+            versionLangs.add( version.getLanguage());
+            for (ConceptDTO concept : version.getConcepts()) {
+                CodeDTO codeDTO = codeDTOsMap.get(concept.getNotation());
+                if( codeDTO == null ){
+                    codeDTO = new CodeDTO();
+                    codeDTO.setId( baseCodeId + codeIndex);
+                    codeDTO.setNotation( concept.getNotation());
+                    if( concept.getParent() != null )
+                        codeDTO.setParent( concept.getParent() );
+                    codeDTOsMap.put(concept.getNotation(), codeDTO);
+                    codeIndex+=2L;
+                }
+                codeDTO.setTitleDefinition(concept.getTitle(), concept.getDefinition(), version.getLanguage());
+            }
+        }
+
+        return new LinkedHashSet<>(codeDTOsMap.values());
+    }
+
+    /**
+     * Get title from specific language. Used for Thymeleaf. Do not remove
+     * @param language
+     * @return
+     */
+    public String getTitleByLanguage( String language ) {
+        return getTitleByLanguage( Language.getByIso(language) );
+    }
+
+    public String getTitleByLanguage( Language language ) {
+        switch (language) {
+            case CZECH:
+                return titleCs;
+            case DANISH:
+                return titleDa;
+            case DUTCH:
+                return titleNl;
+            case ENGLISH:
+                return titleEn;
+            case ESTONIAN:
+                return titleEt;
+            case FINNISH:
+                return titleFi;
+            case FRENCH:
+                return titleFr;
+            case GERMAN:
+                return titleDe;
+            case GREEK:
+                return titleEl;
+            case HUNGARIAN:
+                return titleHu;
+            case ITALIAN:
+                return titleIt;
+            case JAPANESE:
+                return titleJa;
+            case LITHUANIAN:
+                return titleLt;
+            case NORWEGIAN:
+                return titleNo;
+            case PORTUGUESE:
+                return titlePt;
+            case ROMANIAN:
+                return titleRo;
+            case SLOVAK:
+                return titleSk;
+            case SLOVENIAN:
+                return titleSl;
+            case SPANISH:
+                return titleEs;
+            case SWEDISH:
+                return titleSv;
+            case ALBANIAN:
+                return titleSq;
+            case BOSNIAN:
+                return titleBs;
+            case BULGARIAN:
+                return titleBg;
+            case CROATIAN:
+                return titleHr;
+            case MACEDONIAN:
+                return titleMk;
+            case POLISH:
+                return titlePl;
+            case RUSSIAN:
+                return titleRu;
+            case SERBIAN:
+                return titleSr;
+        }
+        return null;
+    }
+
+    /**
+     * Get definition from specific language. Used for Thymeleaf. Do not remove
+     * @param language
+     * @return
+     */
+    public String getDefinitionByLanguage( String language ) {
+        return getDefinitionByLanguage( Language.getByIso(language));
+    }
+
+    public String getDefinitionByLanguage( Language language ) {
+        switch (language) {
+            case CZECH:
+                return definitionCs;
+            case DANISH:
+                return definitionDa;
+            case DUTCH:
+                return definitionNl;
+            case ENGLISH:
+                return definitionEn;
+            case ESTONIAN:
+                return  definitionEt;
+            case FINNISH:
+                return definitionFi;
+            case FRENCH:
+                return definitionFr;
+            case GERMAN:
+                return definitionDe;
+            case GREEK:
+                return definitionEl;
+            case HUNGARIAN:
+                return definitionHu;
+            case ITALIAN:
+                return definitionIt;
+            case JAPANESE:
+                return  definitionJa;
+            case LITHUANIAN:
+                return definitionLt;
+            case NORWEGIAN:
+                return definitionNo;
+            case PORTUGUESE:
+                return definitionPt;
+            case ROMANIAN:
+                return definitionRo;
+            case SLOVAK:
+                return definitionSk;
+            case SLOVENIAN:
+                return definitionSl;
+            case SPANISH:
+                return definitionEs;
+            case SWEDISH:
+                return definitionSv;
+            case ALBANIAN:
+                return definitionSq;
+            case BOSNIAN:
+                return definitionBs;
+            case BULGARIAN:
+                return definitionBg;
+            case CROATIAN:
+                return definitionHr;
+            case MACEDONIAN:
+                return definitionMk;
+            case POLISH:
+                return definitionPl;
+            case RUSSIAN:
+                return definitionRu;
+            case SERBIAN:
+                return definitionSr;
+        }
+        return null;
+    }
+}

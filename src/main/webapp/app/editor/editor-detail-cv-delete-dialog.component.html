@@ -1,0 +1,25 @@
+<form *ngIf="vocabularyParam" name="deleteForm" (ngSubmit)="confirmDelete(versionParam.id!)">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="deleteType === 'vocabulary'">Confirm delete Vocabulary <strong>{{vocabularyParam.notation}}</strong></span>
+            <span *ngIf="deleteType === 'versionSl'">Confirm delete SL version <strong>{{versionParam.notation}}</strong> v.{{versionParam.number}}</span>
+            <span *ngIf="deleteType === 'versionTl'">Confirm delete TL version <strong>{{versionParam.notation}}</strong> v.{{versionParam.number}}</span>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <p *ngIf="deleteType === 'vocabulary'">Are you sure you want to delete Vocabulary <strong>{{vocabularyParam.notation}}</strong>?</p>
+        <p *ngIf="deleteType === 'versionSl'">Are you sure you want to delete SL version <strong>{{versionParam.notation}}</strong> v.{{versionParam.number}}, and any of versions TLs if exist?</p>
+        <p *ngIf="deleteType === 'versionTl'">Are you sure you want to delete TL version <strong>{{versionParam.notation}}</strong> v.{{versionParam.number}}?</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button id="jhi-confirm-delete-vocabulary" type="submit" class="btn btn-danger">
+            <fa-icon [icon]="'times'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.delete">Delete</span>
+        </button>
+    </div>
+</form>

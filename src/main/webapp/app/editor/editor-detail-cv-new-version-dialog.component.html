@@ -1,0 +1,28 @@
+<form name="newVersionForm" (ngSubmit)="confirmCreateNewVersion(versionParam.id!)">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>Confirm create new version from <strong>{{vocabularyParam.notation}}</strong> {{versionParam.itemType}} {{getLangIsoFormatted(versionParam.language!)}}</span>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <span>Are you sure to create new version from <strong>{{vocabularyParam.notation}}</strong> {{versionParam.itemType}} {{getLangIsoFormatted(versionParam.language!)}}</span>
+        <div *ngIf="versionParam.itemType === 'SL' && vocabularyParam.versions && vocabularyParam.versions!.length > 1">
+            <br/>
+            The following TL versions would also be cloned as DRAFT after this new SL version is published:
+            <div *ngFor="let version of vocabularyParam.versions">
+                <span>- TL {{getLangIsoFormatted(version.language!)}} {{version.status!}}</span><br/>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button id="jhi-confirm-delete-vocabulary" [disabled]="isSaving" type="submit" class="btn btn-primary">
+            <fa-icon [icon]="'folder-plus'"></fa-icon>&nbsp;<span>Create new version</span>
+        </button>
+    </div>
+</form>

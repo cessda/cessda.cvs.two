@@ -1,0 +1,26 @@
+{
+  "cvsApp": {
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Pridať Resolver",
+        "createOrEditLabel": "Pridať alebo upraviť Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "Bol vytvorený potomok entity Resolver s identifikátorom {{ param }}",
+      "updated": "Potomok entity Resolver s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Resolver s identifikátorom {{ param }} bol vymazaný.",
+      "delete": {
+        "question": "Ste si istý, že chcete vymazať Resolver {{ id }}?"
+      },
+      "detail": {
+        "title": "Resolver"
+      },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    }
+  }
+}

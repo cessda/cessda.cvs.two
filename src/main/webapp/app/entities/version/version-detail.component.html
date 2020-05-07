@@ -1,0 +1,136 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="version">
+            <h2><span jhiTranslate="cvsApp.version.detail.title">Version</span> {{ version.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="cvsApp.version.status">Status</span></dt>
+                <dd>
+                    <span>{{ version.status }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.itemType">Item Type</span></dt>
+                <dd>
+                    <span>{{ version.itemType }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.language">Language</span></dt>
+                <dd>
+                    <span>{{ version.language }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.publicationDate">Publication Date</span></dt>
+                <dd>
+                    <span>{{ version.publicationDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.lastModified">Last Modified</span></dt>
+                <dd>
+                    <span>{{ version.lastModified }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.number">Number</span></dt>
+                <dd>
+                    <span>{{ version.number }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.uri">Uri</span></dt>
+                <dd>
+                    <span>{{ version.uri }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.canonicalUri">Canonical Uri</span></dt>
+                <dd>
+                    <span>{{ version.canonicalUri }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.uriSl">Uri Sl</span></dt>
+                <dd>
+                    <span>{{ version.uriSl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.notation">Notation</span></dt>
+                <dd>
+                    <span>{{ version.notation }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.title">Title</span></dt>
+                <dd>
+                    <span>{{ version.title }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.definition">Definition</span></dt>
+                <dd>
+                    <span>{{ version.definition }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.previousVersion">Previous Version</span></dt>
+                <dd>
+                    <span>{{ version.previousVersion }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.initialVersion">Initial Version</span></dt>
+                <dd>
+                    <span>{{ version.initialVersion }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.creator">Creator</span></dt>
+                <dd>
+                    <span>{{ version.creator }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.publisher">Publisher</span></dt>
+                <dd>
+                    <span>{{ version.publisher }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.notes">Notes</span></dt>
+                <dd>
+                    <span>{{ version.notes }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.versionNotes">Version Notes</span></dt>
+                <dd>
+                    <span>{{ version.versionNotes }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.versionChanges">Version Changes</span></dt>
+                <dd>
+                    <span>{{ version.versionChanges }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.discussionNotes">Discussion Notes</span></dt>
+                <dd>
+                    <span>{{ version.discussionNotes }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.license">License</span></dt>
+                <dd>
+                    <span>{{ version.license }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.licenseId">License Id</span></dt>
+                <dd>
+                    <span>{{ version.licenseId }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.citation">Citation</span></dt>
+                <dd>
+                    <span>{{ version.citation }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.ddiUsage">Ddi Usage</span></dt>
+                <dd>
+                    <span>{{ version.ddiUsage }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.translateAgency">Translate Agency</span></dt>
+                <dd>
+                    <span>{{ version.translateAgency }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.translateAgencyLink">Translate Agency Link</span></dt>
+                <dd>
+                    <span>{{ version.translateAgencyLink }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.version.vocabulary">Vocabulary</span></dt>
+                <dd>
+                    <div *ngIf="version.vocabularyId">
+                        <a [routerLink]="['/vocabulary', version.vocabularyId, 'view']">{{ version.vocabularyId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/version', version.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

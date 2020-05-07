@@ -1,0 +1,35 @@
+{
+    "name": "UserAgency",
+    "fields": [
+        {
+            "fieldName": "agencyRole",
+            "fieldType": "AgencyRole",
+            "fieldValues": "ADMIN,VIEW,CONTRIBUTOR_SL,CONTRIBUTOR_TL,ADMIN_SL,ADMIN_TL"
+        },
+        {
+            "fieldName": "language",
+            "fieldType": "Language",
+            "fieldValues": "ALBANIAN,BOSNIAN,BULGARIAN,CROATIAN,CZECH,DANISH,DUTCH,ENGLISH,ESTONIAN,FINNISH,FRENCH,GERMAN,GREEK,HUNGARIAN,ITALIAN,JAPANESE,LITHUANIAN,MACEDONIAN,NORWEGIAN,POLISH,PORTUGUESE,ROMANIAN,RUSSIAN,SERBIAN,SLOVAK,SLOVENIAN,SPANISH,SWEDISH"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "agency",
+            "otherEntityRelationshipName": "userAgency",
+            "relationshipName": "agency",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200506163900",
+    "entityTableName": "user_agency",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="vocabularyChange">
+            <h2><span jhiTranslate="cvsApp.vocabularyChange.detail.title">Vocabulary Change</span> {{ vocabularyChange.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="cvsApp.vocabularyChange.vocabularyId">Vocabulary Id</span></dt>
+                <dd>
+                    <span>{{ vocabularyChange.vocabularyId }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabularyChange.versionId">Version Id</span></dt>
+                <dd>
+                    <span>{{ vocabularyChange.versionId }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabularyChange.changeType">Change Type</span></dt>
+                <dd>
+                    <span>{{ vocabularyChange.changeType }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabularyChange.description">Description</span></dt>
+                <dd>
+                    <span>{{ vocabularyChange.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabularyChange.userId">User Id</span></dt>
+                <dd>
+                    <span>{{ vocabularyChange.userId }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabularyChange.userName">User Name</span></dt>
+                <dd>
+                    <span>{{ vocabularyChange.userName }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabularyChange.date">Date</span></dt>
+                <dd>
+                    <span>{{ vocabularyChange.date }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/vocabulary-change', vocabularyChange.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

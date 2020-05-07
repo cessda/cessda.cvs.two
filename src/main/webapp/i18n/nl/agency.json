@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Maak een nieuwe Agency",
+        "createOrEditLabel": "Maak of wijzig een Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "A new Agency is created with identifier {{ param }}",
+      "updated": "A Agency is updated with identifier {{ param }}",
+      "deleted": "A Agency is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u Agency {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    }
+  }
+}

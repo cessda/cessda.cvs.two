@@ -1,0 +1,24 @@
+{
+  "cvsApp": {
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Kreiraj novi User Agency",
+        "createOrEditLabel": "Kreirajte ili izmenite User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "Kreiran je novi User Agency pod nazivom {{ param }}",
+      "updated": "User Agency pod nazivom {{ param }} je ažuriran",
+      "deleted": "User Agency pod nazivom {{ param }} je obrisan",
+      "delete": {
+        "question": "Da li ste sigurni da želite da obrišete User Agency pod nazivom {{ id }}?"
+      },
+      "detail": {
+        "title": "User Agency"
+      },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    }
+  }
+}

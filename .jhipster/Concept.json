@@ -1,0 +1,68 @@
+{
+    "name": "Concept",
+    "fields": [
+        {
+            "fieldName": "uri",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "notation",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "240"
+        },
+        {
+            "fieldName": "title",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "definition",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "previousConcept",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "slConcept",
+            "fieldType": "Long"
+        },
+        {
+            "fieldName": "parent",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "240"
+        },
+        {
+            "fieldName": "position",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "version",
+            "otherEntityRelationshipName": "concept",
+            "relationshipName": "version",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20200506163200",
+    "entityTableName": "concept",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

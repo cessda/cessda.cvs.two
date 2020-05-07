@@ -1,0 +1,51 @@
+{
+  "cvsApp": {
+    "version": {
+      "home": {
+        "title": "Versions",
+        "createLabel": "Pridať Version",
+        "createOrEditLabel": "Pridať alebo upraviť Version",
+        "notFound": "No Versions found"
+      },
+      "created": "Bol vytvorený potomok entity Version s identifikátorom {{ param }}",
+      "updated": "Potomok entity Version s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Version s identifikátorom {{ param }} bol vymazaný.",
+      "delete": {
+        "question": "Ste si istý, že chcete vymazať Version {{ id }}?"
+      },
+      "detail": {
+        "title": "Version"
+      },
+      "status": "Status",
+      "itemType": "Item Type",
+      "language": "Language",
+      "publicationDate": "Publication Date",
+      "lastModified": "Last Modified",
+      "number": "Number",
+      "summary": "Summary",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "uriSl": "Uri Sl",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "previousVersion": "Previous Version",
+      "initialVersion": "Initial Version",
+      "creator": "Creator",
+      "publisher": "Publisher",
+      "notes": "Notes",
+      "versionNotes": "Version Notes",
+      "versionChanges": "Version Changes",
+      "discussionNotes": "Discussion Notes",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "citation": "Citation",
+      "ddiUsage": "Ddi Usage",
+      "translateAgency": "Translate Agency",
+      "translateAgencyLink": "Translate Agency Link",
+      "concept": "Concept",
+      "vocabulary": "Vocabulary"
+    }
+  }
+}

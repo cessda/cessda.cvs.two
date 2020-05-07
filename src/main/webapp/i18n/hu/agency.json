@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Egy új Agency létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Agencyt",
+        "notFound": "No Agencies found"
+      },
+      "created": "Egy új Agency lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Agency módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Agency törölve lett {{ param }} azonosítóval",
+      "delete": {
+        "question": "Biztos benne, hogy törölni szeretné az Agencyt {{ id }} azonosítóval?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    }
+  }
+}

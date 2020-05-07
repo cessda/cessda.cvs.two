@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Creeare o nouă entitate Concept",
+        "createOrEditLabel": "Creeare sau editare Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "A fost creată o nouă entitate Concept cu identificatorul {{ param }}",
+      "updated": "Concept cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Concept cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Concept {{ id }}?"
+      },
+      "detail": {
+        "title": "Concept"
+      },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Skapa en ny Concept",
+        "createOrEditLabel": "Skapa eller ändra en Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "En ny Concept är skapad med id {{ param }}",
+      "updated": "En Concept är uppdaterad med id  {{ param }}",
+      "deleted": "En Concept är borttagen med id  {{ param }}",
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Concept {{ id }}?"
+      },
+      "detail": {
+        "title": "Concept"
+      },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    }
+  }
+}

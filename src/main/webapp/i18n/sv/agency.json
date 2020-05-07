@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Skapa en ny Agency",
+        "createOrEditLabel": "Skapa eller ändra en Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "En ny Agency är skapad med id {{ param }}",
+      "updated": "En Agency är uppdaterad med id  {{ param }}",
+      "deleted": "En Agency är borttagen med id  {{ param }}",
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Agency {{ id }}?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    }
+  }
+}

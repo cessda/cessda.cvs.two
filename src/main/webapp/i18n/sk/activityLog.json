@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Pridať Activity Log",
+        "createOrEditLabel": "Pridať alebo upraviť Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "Bol vytvorený potomok entity Activity Log s identifikátorom {{ param }}",
+      "updated": "Potomok entity Activity Log s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Activity Log s identifikátorom {{ param }} bol vymazaný.",
+      "delete": {
+        "question": "Ste si istý, že chcete vymazať Activity Log {{ id }}?"
+      },
+      "detail": {
+        "title": "Activity Log"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    }
+  }
+}

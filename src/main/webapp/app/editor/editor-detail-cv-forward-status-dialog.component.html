@@ -1,0 +1,95 @@
+<form name="cvForwardStatusForm" role="form" (ngSubmit)="forwardStatus()" novalidate [formGroup]="cvForwardStatusForm">
+    <div class="modal-header">
+        <div class="modal-title" style="display: flex;">
+            <span *ngIf="versionParam!.status !== 'FINAL_REVIEW'">Confirm status change for Cv {{versionParam!.itemType}} {{getLangIsoFormatted(versionParam!.language!)}} <strong>{{versionParam!.notation}}</strong> </span>
+            <span *ngIf="versionParam!.status === 'FINAL_REVIEW'">Confirm publishing Cv {{versionParam!.itemType}} {{getLangIsoFormatted(versionParam!.language!)}} <strong>{{versionParam!.notation}}</strong> </span>
+        </div>
+
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row-content">
+            <span *ngIf="versionParam!.status === 'DRAFT'">Are you sure to change Cv {{versionParam!.itemType}} <strong>{{versionParam!.notation}}</strong> status from DRAFT to INITIAL_REVIEW?</span>
+            <span *ngIf="versionParam!.status === 'INITIAL_REVIEW'">Are you sure to change Cv {{versionParam!.itemType}} <strong>{{versionParam!.notation}}</strong> status from INITIAL_REVIEW to FINAL_REVIEW?</span>
+            <div *ngIf="versionParam!.status === 'FINAL_REVIEW'" class="row-detail form-group">
+                <div class="label-column-input label-right">
+                    <span class="label-required">License</span>
+                </div>
+                <div class="detail-column">
+                    <select class="form-control w-auto sk-select" id="licenseId" name="licenseId" formControlName="licenseId">
+                        <option *ngFor="let licence of licences; let i = index" [value]="licence.id">{{licence.name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div *ngIf="versionParam!.status === 'FINAL_REVIEW' && isSlForm" class="row-detail form-group">
+                <div class="label-column-input label-right">
+                    <span class="label-required">Version number</span>
+                </div>
+                <div class="detail-column">
+                    <input type="text" style="width:100px" class="form-control" id="field_versionNumberSl" name="versionNumberSl" formControlName="versionNumberSl"/>
+                    <div *ngIf="cvForwardStatusForm.get('versionNumberSl')!.invalid && (cvForwardStatusForm.get('versionNumberSl')!.dirty || cvForwardStatusForm.get('versionNumberSl')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="cvForwardStatusForm.get('versionNumberSl')?.errors?.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="cvForwardStatusForm.get('versionNumberSl')?.errors?.pattern">
+                            Version number format is [number1].[number2], with [number1] is larger than 0. Both of them must be no longer than 2 digits.
+                        </small>
+                    </div>
+                    <small class="form-text text-danger"
+                           *ngIf="isVersionInvalid">
+                        Version number is lower than {{versionParam!.number}}. Please set version number {{versionParam!.number}} or higher.
+                    </small>
+                </div>
+            </div>
+            <div *ngIf="versionParam!.status === 'FINAL_REVIEW' && !isSlForm" class="row-detail form-group">
+                <div class="label-column-input label-right">
+                    <span class="label-required">Version number</span>
+                </div>
+                <div class="detail-column label-column-value">
+                    <span>
+                        <span>{{slVersionNumber}}.</span>
+                        <input type="text" style="width:60px;display:inline-block" class="form-control" id="field_versionNumberTl" name="versionNumberTl" formControlName="versionNumberTl"/>
+                    </span>
+                    <div *ngIf="cvForwardStatusForm.get('versionNumberTl')!.invalid && (cvForwardStatusForm.get('versionNumberTl')!.dirty || cvForwardStatusForm.get('versionNumberTl')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="cvForwardStatusForm.get('versionNumberTl')?.errors?.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="cvForwardStatusForm.get('versionNumberTl')?.errors?.pattern">
+                            Please fill with a positive number no longer that 2 digits.
+                        </small>
+                    </div>
+                    <small class="form-text text-danger"
+                           *ngIf="isVersionInvalid">
+                        Version number is lower than {{versionParam!.number}}. Please set version number {{versionParam!.number}} or higher.
+                    </small>
+                </div>
+            </div>
+            <div *ngIf="missingTranslations.length > 0" class="row-detail">
+                <div class="label-column-input label-right">&nbsp;</div>
+                <div class="detail-column label-column-value text-danger">
+                    <span *ngIf="missingTranslations.length === 1">The following code translation is missing <strong>{{ missingTranslations.join(', ')}}</strong>. Please complete it first.</span>
+                    <span *ngIf="missingTranslations.length > 1">The following code translation are missing <strong>{{ missingTranslations.join(', ')}}</strong>. Please complete them first.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+        </button>
+        <button type="submit" id="save-new-cv" [disabled]="cvForwardStatusForm.invalid || isSaving" class="btn btn-primary">
+            <fa-icon [icon]="'save'"></fa-icon>&nbsp;
+            <span *ngIf="versionParam!.status === 'DRAFT'">INITIAL_REVIEW</span>
+            <span *ngIf="versionParam!.status === 'INITIAL_REVIEW'">FINAL_REVIEW</span>
+            <span *ngIf="versionParam!.status === 'FINAL_REVIEW'">PUBLISH</span>
+        </button>
+    </div>
+</form>

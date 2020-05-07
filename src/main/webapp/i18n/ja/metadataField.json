@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "metadataField": {
+      "home": {
+        "title": "MetadataFields",
+        "createLabel": "Metadata Field を追加",
+        "createOrEditLabel": "Metadata Fieldを追加または編集",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "A new Metadata Field is created with identifier {{ param }}",
+      "updated": "A Metadata Field is updated with identifier {{ param }}",
+      "deleted": "A Metadata Field is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Metadata Field {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Metadata Field"
+      },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    }
+  }
+}

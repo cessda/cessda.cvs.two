@@ -1,0 +1,452 @@
+<div class="row">
+    <form name="detailForm" class="detail-form" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="detailForm">
+        <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
+        <div class="bc">
+            <div class="bc-inner">
+                <a href="javascript:void(0);" (click)="goToCvSearch()">
+                    CVs search
+                </a>
+                <span class="">
+                    ›
+                </span>
+                <span class="">
+                    {{vocabulary!.notation}} v.{{getSlVersion()!.number}}
+                </span>
+            </div>
+        </div>
+        <div class="row-content">
+
+            <ngb-alert class="text-center" [dismissible]="false" *ngIf="vocabulary!.versionNumber !== getSlVersion()!.number">
+                <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
+                    {{vocabulary!.notation}} v.{{vocabulary!.versionNumber}}
+                </a></strong>
+            </ngb-alert>
+
+            <div class="row-detail">
+                <div class="label-column">
+                    <div class="vocab-logo">
+                        <img [src]="vocabulary!.agencyLogo" width="120px" alt="logo {{vocabulary!.agencyName}}"/>
+                    </div>
+                </div>
+                <div class="detail-column vocab-title">
+                    <span> {{vocabulary!.agencyName}} Controlled Vocabulary for {{getVersionByLangNumber()!.title}}</span>
+                </div>
+            </div>
+
+            <div class="row-detail">
+                <div class="label-column">
+                    <span>CV name</span>
+                </div>
+                <div class="detail-column">
+                    <span>{{getSlVersion()!.title}}</span>
+                </div>
+            </div>
+
+            <div class="row-detail">
+                <div class="label-column">
+                    <span>CV definition</span>
+                </div>
+                <div class="detail-column">
+                    <span>{{getSlVersion()!.definition}}</span>
+                </div>
+            </div>
+
+            <div class="row-detail">
+                <div class="label-column">
+                    <span>CV notes</span>
+                </div>
+                <div class="detail-column">
+                    <span>{{getSlVersion()!.notes}}</span>
+                </div>
+            </div>
+
+            <div class="row-detail">
+                <div class="label-column">
+                    <span>CV short name</span>
+                </div>
+                <div class="detail-column">
+                    <span>{{vocabulary!.notation}}</span>
+                </div>
+            </div>
+
+            <div class="row-detail" *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">
+                <div class="label-column">
+                    <span>CV name ({{vocabulary!.selectedLang}})</span>
+                </div>
+                <div class="detail-column">
+                    <span>{{getVersionByLangNumber().title}}</span>
+                </div>
+            </div>
+
+            <div class="row-detail" *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">
+                <div class="label-column">
+                    <span>CV definition ({{vocabulary!.selectedLang}})</span>
+                </div>
+                <div class="detail-column">
+                    <span>{{getVersionByLangNumber()!.definition}}</span>
+                </div>
+            </div>
+
+            <div class="row-details">
+                <div class="row-detail">
+                    <div class="label-column">
+                        <span>Language</span>
+                    </div>
+                    <div class="detail-column">
+                        <span>{{getFormattedLang(vocabulary!.selectedLang!)}}</span>
+                    </div>
+                </div>
+                <div class="row-detail">
+                    <div class="label-column">
+                        <span>Version</span>
+                    </div>
+                    <div class="detail-column">
+                        <span>{{getVersionByLangNumber()!.number}}</span>
+                    </div>
+                </div>
+                <div class="row-detail">
+                    <div class="label-column">
+                        <span>Date of publication</span>
+                    </div>
+                    <div class="detail-column">
+                        <span>
+                            {{getVersionByLangNumber()!.publicationDate!}}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vocab-lang" style="float: right">
+                <ng-container *ngFor="let lang of getUniqueVersionLang()!">
+                    <!-- determine multiple version with same lang -->
+                    <span *ngIf="getVersionsByLanguage(lang)!.length === 1; else buttonDropDown">
+                        <button *ngFor="let version of getVersionsByLanguage(lang)!"
+                                (click)="vocabulary!.selectedLang = version!.language;vocabulary!.selectedVersion = version!.number"
+                                class="vocab-lang-button"
+                                [ngClass]="{'active': lang === vocabulary!.selectedLang, 'source-lang': lang === vocabulary!.sourceLanguage}"
+                                ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
+                            {{lang}}
+                        </button>
+                    </span>
+                    <ng-template #buttonDropDown>
+                        <div ngbDropdown class="d-inline-block">
+                            <button class="vocab-lang-button" id="dropdownBasic{{lang}}" ngbDropdownToggle
+                            [ngClass]="{'active': lang === vocabulary!.selectedLang}"
+                            ngbTooltip="{{getFormattedLang(lang)}}">
+                                {{lang}}</button>
+                            <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownBasic'+lang">
+                                <button ngbDropdownItem *ngFor="let version of getVersionsByLanguage(lang)!"
+                                        (click)="vocabulary!.selectedLang = version.language;vocabulary!.selectedVersion = version.number"
+                                        [ngClass]="{'active': lang === vocabulary!.selectedLang && version.number === vocabulary!.selectedVersion}"
+                                        ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
+                                    v.{{version.number}}
+                                </button>
+                            </div>
+                        </div>
+                    </ng-template>
+                </ng-container>
+            </div>
+
+
+            <!-- Details  -->
+            <div class="content-details">
+                <!--tabs-->
+                <div class="btn-group btn-group-toggle" ngbRadioGroup name="radioBasic" formControlName="tabSelected" #detailTab id="detailTab">
+                    <label ngbButtonLabel class="btn-primary tab-label">
+                        <input ngbButton type="radio" value="detail"> Details
+                    </label>
+                    <label ngbButtonLabel class="btn-primary tab-label">
+                        <input ngbButton type="radio" value="version"> Versions
+                    </label>
+                    <label ngbButtonLabel class="btn-primary tab-label">
+                        <input ngbButton type="radio" value="identity"> Identity and general
+                    </label>
+                    <label ngbButtonLabel class="btn-primary tab-label">
+                        <input ngbButton type="radio" value="usage"> Usage
+                    </label>
+                    <label ngbButtonLabel class="btn-primary tab-label">
+                        <input ngbButton type="radio" value="license"> License and Citation
+                    </label>
+                    <label ngbButtonLabel class="btn-primary tab-label">
+                        <input ngbButton type="radio" value="export"> Export/Download
+                    </label>
+                </div>
+
+                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleDetailPanel()">&nbsp;
+                    <fa-icon *ngIf="!isDetailCollapse" icon="caret-down"></fa-icon>
+                    <fa-icon *ngIf="isDetailCollapse" icon="caret-right"></fa-icon>
+                    <span>Details</span>
+                </a>
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'detail', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'detail'}" #detailPanel id="detailPanel" >
+                    <div class="concept-row row-header">
+                        <span class="column1">
+                            Code value
+                        </span>
+                        <span class="column2">
+                            Code descriptive term ({{vocabulary!.selectedLang}})
+                        </span>
+                        <span class="column3">
+                            Code definition({{vocabulary!.selectedLang}})
+                        </span>
+                    </div>
+                    <jhi-tree [parentNotation]="" [conceptList]="getVersionByLangNumber()!.concepts" [level]="0"></jhi-tree>
+                </div>
+
+                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleVersionPanel()">&nbsp;
+                    <fa-icon *ngIf="!isVersionCollapse" icon="caret-down"></fa-icon>
+                    <fa-icon *ngIf="isVersionCollapse" icon="caret-right"></fa-icon>
+                    <span>Versions</span>
+                </a>
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'version', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'version'}" #versionPanel id="versionPanel">
+                    <!-- self version -->
+                    <div class="item-panel">
+                        <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen"
+                           [attr.aria-expanded]="isCurrentVersionHistoryOpen" aria-controls="self-history">&nbsp;
+                            <fa-icon *ngIf="isCurrentVersionHistoryOpen" icon="caret-down"></fa-icon>
+                            <fa-icon *ngIf="!isCurrentVersionHistoryOpen" icon="caret-right"></fa-icon>
+                            <span>{{getVersionByLangNumber()!.language}}: {{getVersionByLangNumber()!.number}}</span>
+                            <span>&nbsp;&nbsp;&nbsp; Published: {{getVersionByLangNumber()!.publicationDate}}</span>
+                        </a>
+                        <div id="self-history" [ngbCollapse]="!isCurrentVersionHistoryOpen">
+                            <div class="row-detail small-block-info" *ngIf="getVersionByLangNumber()!.versionNotes">
+                                <div class="label-column">
+                                    <span>Version notes</span>
+                                </div>
+                                <div class="detail-column">
+                                    <span>{{getVersionByLangNumber()!.versionNotes}}</span>
+                                </div>
+                            </div>
+                            <div class="row-detail small-block-info" *ngIf="getVersionByLangNumber()!.versionChanges">
+                                <div class="label-column">
+                                    <span>Version changes</span>
+                                </div>
+                                <div class="detail-column">
+                                    <span class="ta-mode">{{getVersionByLangNumber()!.versionChanges}}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row-detail" *ngIf="!getVersionByLangNumber()!.versionNotes && !getVersionByLangNumber()!.versionChanges">
+                            <span>no information</span>
+                        </div>
+                    </div>
+                    <!-- other older versions -->
+                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber()!.versionHistories">
+                        <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
+                           [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
+                            <fa-icon *ngIf="vh.visible" icon="caret-down"></fa-icon>
+                            <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
+                            <span>{{getVersionByLangNumber()!.language}}: {{vh.version}} </span>
+                            <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
+                            <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
+                                <fa-icon icon="external-link-alt"></fa-icon>
+                            </a>
+                        </a>
+                        <div id="history_{{vh.version}}" [ngbCollapse]="!vh.visible">
+                            <div class="row-detail small-block-info" *ngIf="vh.note">
+                                <div class="label-column">
+                                    <span>Version notes</span>
+                                </div>
+                                <div class="detail-column">
+                                    <span>{{vh.note}}</span>
+                                </div>
+                            </div>
+                            <div class="row-detail small-block-info" *ngIf="vh.changes">
+                                <div class="label-column">
+                                    <span>Version changes</span>
+                                </div>
+                                <div class="detail-column">
+                                    <span class="ta-mode">{{vh.changes}}</span>
+                                </div>
+                            </div>
+                            <div class="row-detail" *ngIf="!vh.changes && !vh.note">
+                                <span>no information</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleIdentityPanel()">&nbsp;
+                    <fa-icon *ngIf="!isIdentityCollapse" icon="caret-down"></fa-icon>
+                    <fa-icon *ngIf="isIdentityCollapse" icon="caret-right"></fa-icon>
+                    <span>Identitys</span>
+                </a>
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'identity', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'identity'}" #identityPanel id="identityPanel">
+                    <div class="row-detail small-block-n">
+                        <div class="label-column">
+                            <span>Canonical URI</span>
+                        </div>
+                        <div class="detail-column">
+                            <span>{{getVersionByLangNumber()!.canonicalUri!.substr(0, getVersionByLangNumber()!.canonicalUri!.length - 4)}} </span>
+                            &nbsp;
+                            <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
+                                <fa-icon icon="external-link-alt"></fa-icon>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row-detail small-block-n">
+                        <div class="label-column">
+                            <span>Canonical URI of this version</span>
+                        </div>
+                        <div class="detail-column">
+                            <span>{{getVersionByLangNumber()!.canonicalUri}} </span>
+                            &nbsp;
+                            <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersion()!.number}">
+                                <fa-icon icon="external-link-alt"></fa-icon>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row-detail small-block-n">
+                        <div class="label-column">
+                            <span>Agency</span>
+                        </div>
+                        <div class="detail-column">
+                            <span>{{vocabulary!.agencyName}} </span>
+                            &nbsp;
+                            <a [href]="vocabulary!.agencyLink" target="_blank">
+                                <fa-icon icon="external-link-alt"></fa-icon>
+                            </a>
+                        </div>
+                    </div>
+                    <div *ngIf="getVersionByLangNumber().itemType === 'TL' && getVersionByLangNumber()!.translateAgency" class="row-detail small-block-n">
+                        <div class="label-column">
+                            <span>Translating agency</span>
+                        </div>
+                        <div class="detail-column">
+                            <span>{{getVersionByLangNumber()!.translateAgency}} </span>
+                            &nbsp;
+                            <a *ngIf="getVersionByLangNumber()!.translateAgencyLink" [href]="getVersionByLangNumber()!.translateAgencyLink" target="_blank">
+                                <fa-icon icon="external-link-alt"></fa-icon>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleUsagePanel()">&nbsp;
+                    <fa-icon *ngIf="!isUsageCollapse" icon="caret-down"></fa-icon>
+                    <fa-icon *ngIf="isUsageCollapse" icon="caret-right"></fa-icon>
+                    <span>Usages</span>
+                </a>
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'usage', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'usage'}" #usagePanel id="usagePanel">
+                    <div class="small-block-n" [innerHTML]="getVersionByLangNumber()!.ddiUsage"></div>
+                </div>
+
+                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleLicensePanel()">&nbsp;
+                    <fa-icon *ngIf="!isLicenseCollapse" icon="caret-down"></fa-icon>
+                    <fa-icon *ngIf="isLicenseCollapse" icon="caret-right"></fa-icon>
+                    <span>Licenses</span>
+                </a>
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'license', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'license'}" #licensePanel id="licensePanel">
+                    <div class="small-block-n">
+                        <p style="width: 100%">Copyright ©
+                            <a [href]="vocabulary!.agencyLink" target="_blank">
+                                {{vocabulary!.agencyName}}
+                            </a>
+                            {{getVersionByLangNumber()!.publicationDate!.toString().substr(0,4)}}
+                        </p>
+                    </div>
+                    <div class="row-detail small-block-n" *ngIf="getVersionByLangNumber()!.license === 'BY'">
+                        <div class="label-column">
+                            <span>
+                                <img style="max-width:120px" alt="Creative Commons Attribution 4.0 International" src="/content/images/license/by.png">
+                            </span>
+                        </div>
+                        <div class="detail-column">
+                            <span>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>.</span>
+                        </div>
+                    </div>
+                    <div class="row-detail small-block-n">
+                        <div class="label-column">
+                            <span>Citation</span>
+                        </div>
+                        <div class="detail-column">
+                            <span>{{getVersionByLangNumber()!.citation}} </span>
+                        </div>
+                    </div>
+                    <div class="row-detail small-block-n">
+                        <div class="label-column">
+                            <span>Available from</span>
+                        </div>
+                        <div class="detail-column">
+                            <span style="word-break: break-word;">
+                                <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
+                                    {{getServerUrl() + '/urn/' + getVersionByLangNumber()!.canonicalUri}}
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleExportPanel()">&nbsp;
+                    <fa-icon *ngIf="!isExportCollapse" icon="caret-down"></fa-icon>
+                    <fa-icon *ngIf="isExportCollapse" icon="caret-right"></fa-icon>
+                    <span>Exports</span>
+                </a>
+                <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'export', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'export'}" #exportPanel id="exportPanel">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col"><label>Language</label></th>
+                            <th scope="col" class="tac"><label>Version</label></th>
+                            <th scope="col" class="tac"><input type="checkbox" [checked]="!(skosSelected.indexOf(false) > -1)" name="skosGrp" id="skosGrp" (change)="toggleSelectAll('skos', $event.target.checked)"/><label for="skosGrp">SKOS</label></th>
+                            <th scope="col" class="tac"><input type="checkbox" [checked]="!(pdfSelected.indexOf(false) > -1)" name="pdfGrp" id="pdfGrp" (change)="toggleSelectAll('pdf', $event.target.checked)"/><label for="pdfGrp">PDF</label></th>
+                            <th scope="col" class="tac"><input type="checkbox" [checked]="!(htmlSelected.indexOf(false) > -1)" name="htmlGrp" id="htmlGrp" (change)="toggleSelectAll('html', $event.target.checked)"/><label for="htmlGrp">HTML</label></th>
+                            <th *ngIf="enableDocxExport" scope="col" class="tac"><input type="checkbox" [checked]="!(docxSelected.indexOf(false) > -1)" name="docxGrp" id="docxGrp" (change)="toggleSelectAll('docx', $event.target.checked)"/><label for="docxGrp">DOCX</label></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let lang of getUniqueVersionLang()!; let i = index">
+                            <th scope="row">{{getFormattedLang(lang)}}</th>
+                            <td class="tac">
+                                <!-- determine multiple version with same lang -->
+                                <span *ngIf="getVersionsByLanguage(lang)!.length === 1; else versionDropDown">
+                                    <span *ngFor="let version of getVersionsByLanguage(lang)!">
+                                        {{version.number}}
+                                    </span>
+                                </span>
+                                <ng-template #versionDropDown>
+                                    <select (change)="updateCheckboxValue(i, lang, $event.target.value)">
+                                        <option *ngFor="let version of getVersionsByLanguage(lang)!" value="{{version.number}}">{{version.number}}</option>
+                                    </select>
+                                </ng-template>
+                            </td>
+                            <td class="tac"><input type="checkbox" [checked]="skosSelected[i]" name="skosItems" formControlName="skosItems" value="{{dwnldCbVal[i]}}" (change)="skosSelected[i] = $event.target.checked"/></td>
+                            <td class="tac"><input type="checkbox" [checked]="pdfSelected[i]" name="pdfItems" formControlName="pdfItems" value="{{dwnldCbVal[i]}}" (change)="pdfSelected[i] = $event.target.checked"/></td>
+                            <td class="tac"><input type="checkbox" [checked]="htmlSelected[i]" name="htmlItems" formControlName="htmlItems" value="{{dwnldCbVal[i]}}" (change)="htmlSelected[i] = $event.target.checked"/></td>
+                            <td *ngIf="enableDocxExport" class="tac"><input type="checkbox" [checked]="docxSelected[i]" name="docxItems" formControlName="docxItems" value="{{dwnldCbVal[i]}}" (change)="docxSelected[i] = $event.target.checked"/></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Download</th>
+                            <td>&nbsp;</td>
+                            <td class="tac">
+                                <button class="btn btn-primary" (click)="downloadSkos()" [disabled]="skosSelected.indexOf(true) === -1">
+                                    <fa-icon icon="download"></fa-icon>
+                                </button>
+                            </td>
+                            <td class="tac">
+                                <button class="btn btn-primary" (click)="downloadPdf()" [disabled]="pdfSelected.indexOf(true) === -1">
+                                    <fa-icon icon="download"></fa-icon>
+                                </button>
+                            </td>
+                            <td class="tac">
+                                <button class="btn btn-primary" (click)="downloadHtml()" [disabled]="htmlSelected.indexOf(true) === -1">
+                                    <fa-icon icon="download"></fa-icon>
+                                </button>
+                            </td>
+                            <td *ngIf="enableDocxExport" class="tac">
+                                <button class="btn btn-primary" (click)="downloadDocx()" [disabled]="docxSelected.indexOf(true) === -1">
+                                    <fa-icon icon="download"></fa-icon>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>

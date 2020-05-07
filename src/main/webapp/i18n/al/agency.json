@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Krijo një të ri Agency",
+        "createOrEditLabel": "Krijo ose përpuno një Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "Një Agency i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Agency u përpunua me identifikues {{ param }}",
+      "deleted": "Një Agency u fshi me identifikues {{ param }}",
+      "delete": {
+        "question": "Jeni i sigurtë që doni të fshini Agency {{ id }}?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "cvsApp": {
+    "vocabularyChange": {
+      "home": {
+        "title": "Vocabulary Changes",
+        "createLabel": "Vytvořit Vocabulary Change",
+        "createOrEditLabel": "Vytvořit nebo upravit Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "Byl vytvořen potomek entity Vocabulary Change s identifikátorem {{ param }}",
+      "updated": "Potomek entity Vocabulary Change s identifikátorem {{ param }} byl upravený.",
+      "deleted": "Potomek entity Vocabulary Change s identifikátorem {{ param }} bol smazaný.",
+      "delete": {
+        "question": "Jste si jisti, že chcete smazat Vocabulary Change {{ id }}?"
+      },
+      "detail": {
+        "title": "Vocabulary Change"
+      },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  }
+}

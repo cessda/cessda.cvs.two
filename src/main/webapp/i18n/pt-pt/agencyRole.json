@@ -1,0 +1,13 @@
+{
+  "cvsApp": {
+    "AgencyRole": {
+      "null": "",
+      "ADMIN": "ADMIN",
+      "VIEW": "VIEW",
+      "CONTRIBUTOR_SL": "CONTRIBUTOR_SL",
+      "CONTRIBUTOR_TL": "CONTRIBUTOR_TL",
+      "ADMIN_SL": "ADMIN_SL",
+      "ADMIN_TL": "ADMIN_TL"
+    }
+  }
+}

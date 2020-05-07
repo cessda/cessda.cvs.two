@@ -1,0 +1,24 @@
+{
+  "cvsApp": {
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Skapa en ny Licence",
+        "createOrEditLabel": "Skapa eller ändra en Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "En ny Licence är skapad med id {{ param }}",
+      "updated": "En Licence är uppdaterad med id  {{ param }}",
+      "deleted": "En Licence är borttagen med id  {{ param }}",
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Licence {{ id }}?"
+      },
+      "detail": {
+        "title": "Licence"
+      },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo Link"
+    }
+  }
+}

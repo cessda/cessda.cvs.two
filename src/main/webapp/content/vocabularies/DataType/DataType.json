@@ -1,0 +1,330 @@
+{
+  "id": 60,
+  "status": "PUBLISHED",
+  "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType/en/1.1",
+  "notation": "DataType",
+  "versionNumber": "1.1",
+  "withdrawn": false,
+  "sourceLanguage": "en",
+  "agencyId": 2,
+  "agencyName": "DDI Alliance",
+  "agencyLogo": "/content/images/agency/ddi.png",
+  "agencyLink": "http://www.ddialliance.org/",
+  "publicationDate": "2019-11-25",
+  "notes": "The present list is based on the W3C data types (http://www.w3.org/TR/xmlschema-2/), and includes the terms relevant for documenting research data.",
+  "versions": [
+    {
+      "id": 418,
+      "status": "PUBLISHED",
+      "itemType": "SL",
+      "language": "en",
+      "publicationDate": "2019-11-25",
+      "number": "1.1",
+      "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType/en/1.1",
+      "canonicalUri": "urn:ddi:int.ddi.cv:DataType:1.1",
+      "notation": "DataType",
+      "title": "Data Type",
+      "definition": "Identifies the type of data, which has a bearing on the acceptable data values, the operations that can be performed with the data, and the ways in which the data are stored.",
+      "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all. The present list is based on the W3C data types (http://www.w3.org/TR/xmlschema-2/), and includes the terms relevant for documenting research data.",
+      "versionNotes": "Float, Double: Code definition edited to eliminate suspicious character.",
+      "versionChanges": "Code definition rephrased: Float\nCode definition rephrased: Double\n",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
+      "citation": "DDI Alliance. (2019). Data Type (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataType:1.1. ",
+      "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module name: reusable \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/DefaultDataType.html\"> DefaultDataType</a> \n</div> \n<div> \n <span style=\"white-space:pre\"> </span>&nbsp; \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/RecommendedDataType.html\">RecommendedDataType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/varFormat.html\">varFormat@category</a>\n</div>",
+      "concepts": [
+        {
+          "id": 8261,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#String/en/1.1",
+          "notation": "String",
+          "title": "String",
+          "definition": "Finite sequences of characters. A character is an atomic unit of written communication; it is not further specified except to note that every character has a corresponding Universal Character Set code point (which is an integer).",
+          "previousConcept": 3054,
+          "position": 0
+        },
+        {
+          "id": 8238,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#NormalizedString/en/1.1",
+          "notation": "NormalizedString",
+          "title": "Normalized string",
+          "definition": "Type of string in which any occurrence of whitespace (including tabs, line feeds, and carriage returns) is replaced by a single space.",
+          "previousConcept": 3055,
+          "position": 1
+        },
+        {
+          "id": 8241,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Boolean/en/1.1",
+          "notation": "Boolean",
+          "title": "Boolean",
+          "definition": "True or false. Can be represented by 1 and 0 correspondingly.",
+          "previousConcept": 3056,
+          "position": 2
+        },
+        {
+          "id": 8232,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Decimal/en/1.1",
+          "notation": "Decimal",
+          "title": "Decimal",
+          "definition": "A subset of real numbers, which can be represented by a finite-length sequence of decimal digits (0-9) separated by a period as a decimal indicator. An optional leading sign is allowed. If the sign is omitted, \"+\" is assumed. Leading and trailing zeroes are optional. If the fractional part is zero, the period and following zero(es) can be omitted. For example: -1.23, 12678967.543233, +100000.00, 210.",
+          "previousConcept": 3057,
+          "position": 3
+        },
+        {
+          "id": 8249,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Integer/en/1.1",
+          "notation": "Integer",
+          "title": "Integer",
+          "definition": "Whole numbers, the infinite set of integers, no minimum or maximum value.",
+          "previousConcept": 3058,
+          "position": 4
+        },
+        {
+          "id": 8253,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#PositiveInteger/en/1.1",
+          "notation": "PositiveInteger",
+          "title": "Positive integer",
+          "definition": "Whole numbers greater than 0.",
+          "previousConcept": 3059,
+          "position": 5
+        },
+        {
+          "id": 8231,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#NegativeInteger/en/1.1",
+          "notation": "NegativeInteger",
+          "title": "Negative integer",
+          "definition": "Whole numbers less than 0.",
+          "previousConcept": 3060,
+          "position": 6
+        },
+        {
+          "id": 8250,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#NonNegativeInteger/en/1.1",
+          "notation": "NonNegativeInteger",
+          "title": "Non-negative integer",
+          "definition": "Whole numbers greater than -1.",
+          "previousConcept": 3061,
+          "position": 7
+        },
+        {
+          "id": 8239,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#NonPositiveInteger/en/1.1",
+          "notation": "NonPositiveInteger",
+          "title": "Non-positive integer",
+          "definition": "Whole numbers less than 1.",
+          "previousConcept": 3062,
+          "position": 8
+        },
+        {
+          "id": 8242,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Long/en/1.1",
+          "notation": "Long",
+          "title": "Long",
+          "definition": "Whole numbers in the range -9223372036854775808 .. 9223372036854775807.",
+          "previousConcept": 3063,
+          "position": 9
+        },
+        {
+          "id": 8247,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Int/en/1.1",
+          "notation": "Int",
+          "title": "Int",
+          "definition": "Whole numbers in the range -2147483648 .. 2147483647.",
+          "previousConcept": 3064,
+          "position": 10
+        },
+        {
+          "id": 8243,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Short/en/1.1",
+          "notation": "Short",
+          "title": "Short",
+          "definition": "Whole numbers in the range -32768 .. 32767.",
+          "previousConcept": 3065,
+          "position": 11
+        },
+        {
+          "id": 8256,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Byte/en/1.1",
+          "notation": "Byte",
+          "title": "Byte",
+          "definition": "Whole numbers in the range -128 .. 127.",
+          "previousConcept": 3066,
+          "position": 12
+        },
+        {
+          "id": 8255,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#UnsignedLong/en/1.1",
+          "notation": "UnsignedLong",
+          "title": "Unsigned long",
+          "definition": "Whole numbers in the range 0 .. 18446744073709551615.",
+          "previousConcept": 3067,
+          "position": 13
+        },
+        {
+          "id": 8230,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#UnsignedInt/en/1.1",
+          "notation": "UnsignedInt",
+          "title": "Unsigned int",
+          "definition": "Whole numbers in the range 0 .. 4294967295.",
+          "previousConcept": 3068,
+          "position": 14
+        },
+        {
+          "id": 8257,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#UnsignedShort/en/1.1",
+          "notation": "UnsignedShort",
+          "title": "Unsigned short",
+          "definition": "Whole numbers in the range 0 .. 65535.",
+          "previousConcept": 3069,
+          "position": 15
+        },
+        {
+          "id": 8233,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#UnsignedByte/en/1.1",
+          "notation": "UnsignedByte",
+          "title": "Unsigned byte",
+          "definition": "Whole numbers in the range 0 .. 255 (system dependent).",
+          "previousConcept": 3070,
+          "position": 16
+        },
+        {
+          "id": 8245,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Float/en/1.1",
+          "notation": "Float",
+          "title": "Float",
+          "definition": "Single-precision 32-bit floating point type: The basic value space of float consists of the values m*2^e, where m is an integer whose absolute value is less than 2^24, and e is an integer between -149 and 104, inclusive. In addition, it also contains the following three special values: positive and negative infinity and not-a-number (NaN). The special values positive and negative infinity and not-a-number have lexical representations INF, -INF and NaN, respectively. Lexical representations for zero may take a positive or negative sign. For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for float.",
+          "previousConcept": 3071,
+          "position": 17
+        },
+        {
+          "id": 8251,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Double/en/1.1",
+          "notation": "Double",
+          "title": "Double",
+          "definition": "Double-precision 64-bit floating point type. The basic value space of double consists of the values m*2^e, where m is an integer whose absolute value is less than 2^53, and e is an integer between -1075 and 970, inclusive. In addition to the basic value space described above, the value space of double also contains the following three special values: positive and negative infinity and not-a-number (NaN). The special values positive and negative infinity and not-a-number have lexical representations INF, -INF and NaN, respectively. Lexical representations for zero may take a positive or negative sign. For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for double.",
+          "previousConcept": 3072,
+          "position": 18
+        },
+        {
+          "id": 8258,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#DateTime/en/1.1",
+          "notation": "DateTime",
+          "title": "DateTime",
+          "definition": "Integer-valued year, month, day, hour and minute, plus decimal-valued second property, and time zone hour and minute (e.g., 2002-10-10T12:00:00-05:00).",
+          "previousConcept": 3073,
+          "position": 19
+        },
+        {
+          "id": 8260,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Time/en/1.1",
+          "notation": "Time",
+          "title": "Time",
+          "definition": "Left-truncated dateTime, e.g., 13:20:00-05:00 (1:20 pm for Eastern Standard Time U.S.).",
+          "previousConcept": 3074,
+          "position": 20
+        },
+        {
+          "id": 8248,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Date/en/1.1",
+          "notation": "Date",
+          "title": "Date",
+          "definition": "Integer-valued year, month, day, and time zone hour and minutes, e.g., 2003-06-30-05:00 (30 June 2003 Eastern Standard Time U.S.).",
+          "previousConcept": 3075,
+          "position": 21
+        },
+        {
+          "id": 8259,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GYearMonth/en/1.1",
+          "notation": "GYearMonth",
+          "title": "YearMonth",
+          "definition": "Integer-valued year and month, e.g., 2004-11.",
+          "previousConcept": 3076,
+          "position": 22
+        },
+        {
+          "id": 8246,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GYear/en/1.1",
+          "notation": "GYear",
+          "title": "Year",
+          "definition": "Integer-valued year, e.g., 2005.",
+          "previousConcept": 3077,
+          "position": 23
+        },
+        {
+          "id": 8236,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GMonthDay/en/1.1",
+          "notation": "GMonthDay",
+          "title": "MonthDay",
+          "definition": "Integer-valued month and day, e.g., 12-31.",
+          "previousConcept": 3078,
+          "position": 24
+        },
+        {
+          "id": 8235,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GDay/en/1.1",
+          "notation": "GDay",
+          "title": "Day",
+          "definition": "Integer-valued day, e.g., 24.",
+          "previousConcept": 3079,
+          "position": 25
+        },
+        {
+          "id": 8244,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GMonth/en/1.1",
+          "notation": "GMonth",
+          "title": "Month",
+          "definition": "Integer-valued month, e.g., 03.",
+          "previousConcept": 3080,
+          "position": 26
+        },
+        {
+          "id": 8240,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Duration/en/1.1",
+          "notation": "Duration",
+          "title": "Duration",
+          "definition": "A duration of time. The value space of \"duration\" is a six-dimensional space in which the coordinates designate the Gregorian year, month, day, hour, minute, and second components as defined in ISO 8601. These components are ordered in their significance by their order of appearance as year, month, day, hour, minute, and second. The lexical representation of duration is the extended format PnYnMnDTnHnMnS, where P is the flag for duration (i.e., Period) and is constant, nY represents the number of years, nM the number of months, nD the number of days, T is the date/time separator, nH the number of hours, nM the number of minutes and nS the number of seconds. The number of seconds can include decimal digits to arbitrary precision. For example, to indicate a duration of 1 year, 2 months, 3 days, 10 hours, and 30 minutes, one would write: \"P1Y2M3DT10H30M.\" An optional preceding minus sign (\"-\") is allowed, to indicate a negative duration: a duration of minus 120 days would be indicated as: \"-P120D\" (from: http://www.w3.org/TR/xmlschema-2/#duration).",
+          "previousConcept": 3081,
+          "position": 27
+        },
+        {
+          "id": 8254,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#HexBinary/en/1.1",
+          "notation": "HexBinary",
+          "title": "hexBinary",
+          "definition": "Even-lengthed sequence of hexadecimal digits representing an N times 8-bit integer.",
+          "previousConcept": 3082,
+          "position": 28
+        },
+        {
+          "id": 8252,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Base64Binary/en/1.1",
+          "notation": "Base64Binary",
+          "title": "base64Binary",
+          "definition": "Sequence of multiples of four base64 digits, where each 4-tuple represents a 24-bit integer. Each digit (a-z, A-Z, 0-9, +, /) represents a 6-bit integer between 0 and 63.",
+          "previousConcept": 3083,
+          "position": 29
+        },
+        {
+          "id": 8234,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#AnyURI/en/1.1",
+          "notation": "AnyURI",
+          "title": "anyURI",
+          "definition": "A Uniform Resource Identifier such as ftp, http or mailto, e.g., http://www.w3.org/TR/xmlschema-2.",
+          "previousConcept": 3084,
+          "position": 30
+        },
+        {
+          "id": 8237,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Other/en/1.1",
+          "notation": "Other",
+          "title": "Other",
+          "definition": "Use if the data type is known, but not found in the list.",
+          "previousConcept": 3085,
+          "position": 31
+        }
+      ],
+      "versionHistories": []
+    }
+  ]
+}

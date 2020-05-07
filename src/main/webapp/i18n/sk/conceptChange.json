@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Pridať Concept Change",
+        "createOrEditLabel": "Pridať alebo upraviť Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "Bol vytvorený potomok entity Concept Change s identifikátorom {{ param }}",
+      "updated": "Potomok entity Concept Change s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Concept Change s identifikátorom {{ param }} bol vymazaný.",
+      "delete": {
+        "question": "Ste si istý, že chcete vymazať Concept Change {{ id }}?"
+      },
+      "detail": {
+        "title": "Concept Change"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Krijo një të ri Metadata Value",
+        "createOrEditLabel": "Krijo ose përpuno një Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Një Metadata Value i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Metadata Value u përpunua me identifikues {{ param }}",
+      "deleted": "Një Metadata Value u fshi me identifikues {{ param }}",
+      "delete": {
+        "question": "Jeni i sigurtë që doni të fshini Metadata Value {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Value"
+      },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    }
+  }
+}

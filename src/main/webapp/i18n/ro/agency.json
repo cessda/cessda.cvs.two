@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Creeare o nouă entitate Agency",
+        "createOrEditLabel": "Creeare sau editare Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "A fost creată o nouă entitate Agency cu identificatorul {{ param }}",
+      "updated": "Agency cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Agency cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Agency {{ id }}?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    }
+  }
+}

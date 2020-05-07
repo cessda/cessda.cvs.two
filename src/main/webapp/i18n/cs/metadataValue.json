@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Vytvořit Metadata Value",
+        "createOrEditLabel": "Vytvořit nebo upravit Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Byl vytvořen potomek entity Metadata Value s identifikátorem {{ param }}",
+      "updated": "Potomek entity Metadata Value s identifikátorem {{ param }} byl upravený.",
+      "deleted": "Potomek entity Metadata Value s identifikátorem {{ param }} bol smazaný.",
+      "delete": {
+        "question": "Jste si jisti, že chcete smazat Metadata Value {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Value"
+      },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    }
+  }
+}

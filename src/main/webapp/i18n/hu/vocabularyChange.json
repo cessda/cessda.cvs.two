@@ -1,0 +1,28 @@
+{
+  "cvsApp": {
+    "vocabularyChange": {
+      "home": {
+        "title": "VocabularyChanges",
+        "createLabel": "Egy új Vocabulary Change létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Vocabulary Changet",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "Egy új Vocabulary Change lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Vocabulary Change módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Vocabulary Change törölve lett {{ param }} azonosítóval",
+      "delete": {
+        "question": "Biztos benne, hogy törölni szeretné az Vocabulary Changet {{ id }} azonosítóval?"
+      },
+      "detail": {
+        "title": "Vocabulary Change"
+      },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  }
+}

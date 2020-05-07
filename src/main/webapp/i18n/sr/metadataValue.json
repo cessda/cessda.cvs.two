@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Kreiraj novi Metadata Value",
+        "createOrEditLabel": "Kreirajte ili izmenite Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "Kreiran je novi Metadata Value pod nazivom {{ param }}",
+      "updated": "Metadata Value pod nazivom {{ param }} je ažuriran",
+      "deleted": "Metadata Value pod nazivom {{ param }} je obrisan",
+      "delete": {
+        "question": "Da li ste sigurni da želite da obrišete Metadata Value pod nazivom {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Value"
+      },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    }
+  }
+}

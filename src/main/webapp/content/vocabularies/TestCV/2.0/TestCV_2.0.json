@@ -1,0 +1,78 @@
+{
+  "id": 74,
+  "status": "PUBLISHED",
+  "uri": "https://vocabularies.cessda.eu/TestCV/en/2.0",
+  "notation": "TestCV",
+  "versionNumber": "2.0",
+  "archived": false,
+  "withdrawn": true,
+  "sourceLanguage": "en",
+  "agencyId": 1,
+  "agencyName": "CESSDA",
+  "agencyLogo": "/content/images/agency/cessda.png",
+  "agencyLink": "https://www.cessda.eu/",
+  "publicationDate": "2019-07-04",
+  "notes": "",
+  "versions": [
+    {
+      "id": 347,
+      "status": "PUBLISHED",
+      "itemType": "SL",
+      "language": "en",
+      "publicationDate": "2019-07-04",
+      "number": "2.0",
+      "uri": "https://vocabularies.cessda.eu/TestCV/en/2.0",
+      "canonicalUri": "urn:ddi:int.cessda.cv:TestCV:2.0",
+      "notation": "TestCV",
+      "title": "Test CV",
+      "definition": "This is a test CV.",
+      "versionNotes": "",
+      "versionChanges": "Code added: Test4\nCode definition rephrased: Test 1\n",
+      "citation": "CESSDA. (2019). Test CV (Version 2.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TestCV:2.0. ",
+      "concepts": [
+        {
+          "id": 5556,
+          "uri": "https://vocabularies.cessda.eu/TestCV#Test1/en/2.0",
+          "notation": "Test1",
+          "title": "Test 1",
+          "definition": "Test term 1.",
+          "previousConcept": 5553,
+          "position": 0
+        },
+        {
+          "id": 5557,
+          "uri": "https://vocabularies.cessda.eu/TestCV#Test2/en/2.0",
+          "notation": "Test2",
+          "title": "Test 2",
+          "definition": "Test term 2.",
+          "previousConcept": 5554,
+          "position": 1
+        },
+        {
+          "id": 5558,
+          "uri": "https://vocabularies.cessda.eu/TestCV#Test3/en/2.0",
+          "notation": "Test3",
+          "title": "Test 3",
+          "definition": "Test term 3.",
+          "previousConcept": 5555,
+          "position": 2
+        },
+        {
+          "id": 5559,
+          "uri": "https://vocabularies.cessda.eu/TestCV#Test4/en/2.0",
+          "notation": "Test4",
+          "title": "Test 4",
+          "definition": "Test term 4.",
+          "position": 3
+        }
+      ],
+      "versionHistories": [
+        {
+          "version": "1.0",
+          "date": "2019-07-04",
+          "changes": ""
+        }
+      ]
+    }
+  ]
+}

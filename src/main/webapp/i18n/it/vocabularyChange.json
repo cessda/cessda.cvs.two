@@ -1,0 +1,28 @@
+{
+  "cvsApp": {
+    "vocabularyChange": {
+      "home": {
+        "title": "VocabularyChanges",
+        "createLabel": "Genera un nuovo Vocabulary Change",
+        "createOrEditLabel": "Genera o modifica un Vocabulary Change",
+        "notFound": "No Vocabulary Changes found"
+      },
+      "created": "&Egrave; stato generato un nuovo Vocabulary Change con identificatore {{ param }}",
+      "updated": "&Egrave; stato aggiornato Vocabulary Change identificato da {{ param }}",
+      "deleted": "&Egrave; stato eliminato Vocabulary Change con identificatore {{ param }}",
+      "delete": {
+        "question": "Sei sicuro di volere eliminare Vocabulary Change {{ id }}?"
+      },
+      "detail": {
+        "title": "Vocabulary Change"
+      },
+      "vocabularyId": "Vocabulary Id",
+      "versionId": "Version Id",
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "userName": "User Name",
+      "date": "Date"
+    }
+  }
+}

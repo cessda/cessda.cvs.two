@@ -1,0 +1,287 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="cvsApp.vocabulary.home.title">Vocabularies</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-vocabulary" [routerLink]="['/vocabulary/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="cvsApp.vocabulary.home.createLabel">
+            Create a new Vocabulary
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'cvsApp.vocabulary.home.search' | translate }}">
+
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon icon="search"></fa-icon>
+                    </button>
+
+                    <button class="input-group-append btn btn-danger" (click)="search('')" *ngIf="currentSearch">
+                        <fa-icon icon="trash-alt"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="vocabularies?.length === 0">
+        <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="vocabularies?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="status"><span jhiTranslate="cvsApp.vocabulary.status">Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="uri"><span jhiTranslate="cvsApp.vocabulary.uri">Uri</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="notation"><span jhiTranslate="cvsApp.vocabulary.notation">Notation</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionNumber"><span jhiTranslate="cvsApp.vocabulary.versionNumber">Version Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="initialPublication"><span jhiTranslate="cvsApp.vocabulary.initialPublication">Initial Publication</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="previousPublication"><span jhiTranslate="cvsApp.vocabulary.previousPublication">Previous Publication</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="archived"><span jhiTranslate="cvsApp.vocabulary.archived">Archived</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="withdrawn"><span jhiTranslate="cvsApp.vocabulary.withdrawn">Withdrawn</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="discoverable"><span jhiTranslate="cvsApp.vocabulary.discoverable">Discoverable</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="sourceLanguage"><span jhiTranslate="cvsApp.vocabulary.sourceLanguage">Source Language</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="agencyId"><span jhiTranslate="cvsApp.vocabulary.agencyId">Agency Id</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="agencyName"><span jhiTranslate="cvsApp.vocabulary.agencyName">Agency Name</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="agencyLogo"><span jhiTranslate="cvsApp.vocabulary.agencyLogo">Agency Logo</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="publicationDate"><span jhiTranslate="cvsApp.vocabulary.publicationDate">Publication Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModified"><span jhiTranslate="cvsApp.vocabulary.lastModified">Last Modified</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="notes"><span jhiTranslate="cvsApp.vocabulary.notes">Notes</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionSq"><span jhiTranslate="cvsApp.vocabulary.versionSq">Version Sq</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleSq"><span jhiTranslate="cvsApp.vocabulary.titleSq">Title Sq</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionSq"><span jhiTranslate="cvsApp.vocabulary.definitionSq">Definition Sq</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionBs"><span jhiTranslate="cvsApp.vocabulary.versionBs">Version Bs</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleBs"><span jhiTranslate="cvsApp.vocabulary.titleBs">Title Bs</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionBs"><span jhiTranslate="cvsApp.vocabulary.definitionBs">Definition Bs</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionBg"><span jhiTranslate="cvsApp.vocabulary.versionBg">Version Bg</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleBg"><span jhiTranslate="cvsApp.vocabulary.titleBg">Title Bg</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionBg"><span jhiTranslate="cvsApp.vocabulary.definitionBg">Definition Bg</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionHr"><span jhiTranslate="cvsApp.vocabulary.versionHr">Version Hr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleHr"><span jhiTranslate="cvsApp.vocabulary.titleHr">Title Hr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionHr"><span jhiTranslate="cvsApp.vocabulary.definitionHr">Definition Hr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionCs"><span jhiTranslate="cvsApp.vocabulary.versionCs">Version Cs</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleCs"><span jhiTranslate="cvsApp.vocabulary.titleCs">Title Cs</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionCs"><span jhiTranslate="cvsApp.vocabulary.definitionCs">Definition Cs</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionDa"><span jhiTranslate="cvsApp.vocabulary.versionDa">Version Da</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleDa"><span jhiTranslate="cvsApp.vocabulary.titleDa">Title Da</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionDa"><span jhiTranslate="cvsApp.vocabulary.definitionDa">Definition Da</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionNl"><span jhiTranslate="cvsApp.vocabulary.versionNl">Version Nl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleNl"><span jhiTranslate="cvsApp.vocabulary.titleNl">Title Nl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionNl"><span jhiTranslate="cvsApp.vocabulary.definitionNl">Definition Nl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionEn"><span jhiTranslate="cvsApp.vocabulary.versionEn">Version En</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleEn"><span jhiTranslate="cvsApp.vocabulary.titleEn">Title En</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionEn"><span jhiTranslate="cvsApp.vocabulary.definitionEn">Definition En</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionEt"><span jhiTranslate="cvsApp.vocabulary.versionEt">Version Et</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleEt"><span jhiTranslate="cvsApp.vocabulary.titleEt">Title Et</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionEt"><span jhiTranslate="cvsApp.vocabulary.definitionEt">Definition Et</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionFi"><span jhiTranslate="cvsApp.vocabulary.versionFi">Version Fi</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleFi"><span jhiTranslate="cvsApp.vocabulary.titleFi">Title Fi</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionFi"><span jhiTranslate="cvsApp.vocabulary.definitionFi">Definition Fi</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionFr"><span jhiTranslate="cvsApp.vocabulary.versionFr">Version Fr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleFr"><span jhiTranslate="cvsApp.vocabulary.titleFr">Title Fr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionFr"><span jhiTranslate="cvsApp.vocabulary.definitionFr">Definition Fr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionDe"><span jhiTranslate="cvsApp.vocabulary.versionDe">Version De</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleDe"><span jhiTranslate="cvsApp.vocabulary.titleDe">Title De</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionDe"><span jhiTranslate="cvsApp.vocabulary.definitionDe">Definition De</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionEl"><span jhiTranslate="cvsApp.vocabulary.versionEl">Version El</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleEl"><span jhiTranslate="cvsApp.vocabulary.titleEl">Title El</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionEl"><span jhiTranslate="cvsApp.vocabulary.definitionEl">Definition El</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionHu"><span jhiTranslate="cvsApp.vocabulary.versionHu">Version Hu</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleHu"><span jhiTranslate="cvsApp.vocabulary.titleHu">Title Hu</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionHu"><span jhiTranslate="cvsApp.vocabulary.definitionHu">Definition Hu</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionIt"><span jhiTranslate="cvsApp.vocabulary.versionIt">Version It</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleIt"><span jhiTranslate="cvsApp.vocabulary.titleIt">Title It</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionIt"><span jhiTranslate="cvsApp.vocabulary.definitionIt">Definition It</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionJa"><span jhiTranslate="cvsApp.vocabulary.versionJa">Version Ja</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleJa"><span jhiTranslate="cvsApp.vocabulary.titleJa">Title Ja</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionJa"><span jhiTranslate="cvsApp.vocabulary.definitionJa">Definition Ja</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionLt"><span jhiTranslate="cvsApp.vocabulary.versionLt">Version Lt</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleLt"><span jhiTranslate="cvsApp.vocabulary.titleLt">Title Lt</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionLt"><span jhiTranslate="cvsApp.vocabulary.definitionLt">Definition Lt</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionMk"><span jhiTranslate="cvsApp.vocabulary.versionMk">Version Mk</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleMk"><span jhiTranslate="cvsApp.vocabulary.titleMk">Title Mk</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionMk"><span jhiTranslate="cvsApp.vocabulary.definitionMk">Definition Mk</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionNo"><span jhiTranslate="cvsApp.vocabulary.versionNo">Version No</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleNo"><span jhiTranslate="cvsApp.vocabulary.titleNo">Title No</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionNo"><span jhiTranslate="cvsApp.vocabulary.definitionNo">Definition No</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionPl"><span jhiTranslate="cvsApp.vocabulary.versionPl">Version Pl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titlePl"><span jhiTranslate="cvsApp.vocabulary.titlePl">Title Pl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionPl"><span jhiTranslate="cvsApp.vocabulary.definitionPl">Definition Pl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionPt"><span jhiTranslate="cvsApp.vocabulary.versionPt">Version Pt</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titlePt"><span jhiTranslate="cvsApp.vocabulary.titlePt">Title Pt</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionPt"><span jhiTranslate="cvsApp.vocabulary.definitionPt">Definition Pt</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionRo"><span jhiTranslate="cvsApp.vocabulary.versionRo">Version Ro</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleRo"><span jhiTranslate="cvsApp.vocabulary.titleRo">Title Ro</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionRo"><span jhiTranslate="cvsApp.vocabulary.definitionRo">Definition Ro</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionRu"><span jhiTranslate="cvsApp.vocabulary.versionRu">Version Ru</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleRu"><span jhiTranslate="cvsApp.vocabulary.titleRu">Title Ru</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionRu"><span jhiTranslate="cvsApp.vocabulary.definitionRu">Definition Ru</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionSr"><span jhiTranslate="cvsApp.vocabulary.versionSr">Version Sr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleSr"><span jhiTranslate="cvsApp.vocabulary.titleSr">Title Sr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionSr"><span jhiTranslate="cvsApp.vocabulary.definitionSr">Definition Sr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionSk"><span jhiTranslate="cvsApp.vocabulary.versionSk">Version Sk</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleSk"><span jhiTranslate="cvsApp.vocabulary.titleSk">Title Sk</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionSk"><span jhiTranslate="cvsApp.vocabulary.definitionSk">Definition Sk</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionSl"><span jhiTranslate="cvsApp.vocabulary.versionSl">Version Sl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleSl"><span jhiTranslate="cvsApp.vocabulary.titleSl">Title Sl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionSl"><span jhiTranslate="cvsApp.vocabulary.definitionSl">Definition Sl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionEs"><span jhiTranslate="cvsApp.vocabulary.versionEs">Version Es</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleEs"><span jhiTranslate="cvsApp.vocabulary.titleEs">Title Es</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionEs"><span jhiTranslate="cvsApp.vocabulary.definitionEs">Definition Es</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionSv"><span jhiTranslate="cvsApp.vocabulary.versionSv">Version Sv</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="titleSv"><span jhiTranslate="cvsApp.vocabulary.titleSv">Title Sv</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definitionSv"><span jhiTranslate="cvsApp.vocabulary.definitionSv">Definition Sv</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let vocabulary of vocabularies ;trackBy: trackId">
+                    <td><a [routerLink]="['/vocabulary', vocabulary.id, 'view']">{{ vocabulary.id }}</a></td>
+                    <td>{{ vocabulary.status }}</td>
+                    <td>{{ vocabulary.uri }}</td>
+                    <td>{{ vocabulary.notation }}</td>
+                    <td>{{ vocabulary.versionNumber }}</td>
+                    <td>{{ vocabulary.initialPublication }}</td>
+                    <td>{{ vocabulary.previousPublication }}</td>
+                    <td>{{ vocabulary.archived }}</td>
+                    <td>{{ vocabulary.withdrawn }}</td>
+                    <td>{{ vocabulary.discoverable }}</td>
+                    <td>{{ vocabulary.sourceLanguage }}</td>
+                    <td>{{ vocabulary.agencyId }}</td>
+                    <td>{{ vocabulary.agencyName }}</td>
+                    <td>{{ vocabulary.agencyLogo }}</td>
+                    <td>{{ vocabulary.publicationDate | date:'mediumDate' }}</td>
+                    <td>{{ vocabulary.lastModified | date:'medium' }}</td>
+                    <td>{{ vocabulary.notes }}</td>
+                    <td>{{ vocabulary.versionSq }}</td>
+                    <td>{{ vocabulary.titleSq }}</td>
+                    <td>{{ vocabulary.definitionSq }}</td>
+                    <td>{{ vocabulary.versionBs }}</td>
+                    <td>{{ vocabulary.titleBs }}</td>
+                    <td>{{ vocabulary.definitionBs }}</td>
+                    <td>{{ vocabulary.versionBg }}</td>
+                    <td>{{ vocabulary.titleBg }}</td>
+                    <td>{{ vocabulary.definitionBg }}</td>
+                    <td>{{ vocabulary.versionHr }}</td>
+                    <td>{{ vocabulary.titleHr }}</td>
+                    <td>{{ vocabulary.definitionHr }}</td>
+                    <td>{{ vocabulary.versionCs }}</td>
+                    <td>{{ vocabulary.titleCs }}</td>
+                    <td>{{ vocabulary.definitionCs }}</td>
+                    <td>{{ vocabulary.versionDa }}</td>
+                    <td>{{ vocabulary.titleDa }}</td>
+                    <td>{{ vocabulary.definitionDa }}</td>
+                    <td>{{ vocabulary.versionNl }}</td>
+                    <td>{{ vocabulary.titleNl }}</td>
+                    <td>{{ vocabulary.definitionNl }}</td>
+                    <td>{{ vocabulary.versionEn }}</td>
+                    <td>{{ vocabulary.titleEn }}</td>
+                    <td>{{ vocabulary.definitionEn }}</td>
+                    <td>{{ vocabulary.versionEt }}</td>
+                    <td>{{ vocabulary.titleEt }}</td>
+                    <td>{{ vocabulary.definitionEt }}</td>
+                    <td>{{ vocabulary.versionFi }}</td>
+                    <td>{{ vocabulary.titleFi }}</td>
+                    <td>{{ vocabulary.definitionFi }}</td>
+                    <td>{{ vocabulary.versionFr }}</td>
+                    <td>{{ vocabulary.titleFr }}</td>
+                    <td>{{ vocabulary.definitionFr }}</td>
+                    <td>{{ vocabulary.versionDe }}</td>
+                    <td>{{ vocabulary.titleDe }}</td>
+                    <td>{{ vocabulary.definitionDe }}</td>
+                    <td>{{ vocabulary.versionEl }}</td>
+                    <td>{{ vocabulary.titleEl }}</td>
+                    <td>{{ vocabulary.definitionEl }}</td>
+                    <td>{{ vocabulary.versionHu }}</td>
+                    <td>{{ vocabulary.titleHu }}</td>
+                    <td>{{ vocabulary.definitionHu }}</td>
+                    <td>{{ vocabulary.versionIt }}</td>
+                    <td>{{ vocabulary.titleIt }}</td>
+                    <td>{{ vocabulary.definitionIt }}</td>
+                    <td>{{ vocabulary.versionJa }}</td>
+                    <td>{{ vocabulary.titleJa }}</td>
+                    <td>{{ vocabulary.definitionJa }}</td>
+                    <td>{{ vocabulary.versionLt }}</td>
+                    <td>{{ vocabulary.titleLt }}</td>
+                    <td>{{ vocabulary.definitionLt }}</td>
+                    <td>{{ vocabulary.versionMk }}</td>
+                    <td>{{ vocabulary.titleMk }}</td>
+                    <td>{{ vocabulary.definitionMk }}</td>
+                    <td>{{ vocabulary.versionNo }}</td>
+                    <td>{{ vocabulary.titleNo }}</td>
+                    <td>{{ vocabulary.definitionNo }}</td>
+                    <td>{{ vocabulary.versionPl }}</td>
+                    <td>{{ vocabulary.titlePl }}</td>
+                    <td>{{ vocabulary.definitionPl }}</td>
+                    <td>{{ vocabulary.versionPt }}</td>
+                    <td>{{ vocabulary.titlePt }}</td>
+                    <td>{{ vocabulary.definitionPt }}</td>
+                    <td>{{ vocabulary.versionRo }}</td>
+                    <td>{{ vocabulary.titleRo }}</td>
+                    <td>{{ vocabulary.definitionRo }}</td>
+                    <td>{{ vocabulary.versionRu }}</td>
+                    <td>{{ vocabulary.titleRu }}</td>
+                    <td>{{ vocabulary.definitionRu }}</td>
+                    <td>{{ vocabulary.versionSr }}</td>
+                    <td>{{ vocabulary.titleSr }}</td>
+                    <td>{{ vocabulary.definitionSr }}</td>
+                    <td>{{ vocabulary.versionSk }}</td>
+                    <td>{{ vocabulary.titleSk }}</td>
+                    <td>{{ vocabulary.definitionSk }}</td>
+                    <td>{{ vocabulary.versionSl }}</td>
+                    <td>{{ vocabulary.titleSl }}</td>
+                    <td>{{ vocabulary.definitionSl }}</td>
+                    <td>{{ vocabulary.versionEs }}</td>
+                    <td>{{ vocabulary.titleEs }}</td>
+                    <td>{{ vocabulary.definitionEs }}</td>
+                    <td>{{ vocabulary.versionSv }}</td>
+                    <td>{{ vocabulary.titleSv }}</td>
+                    <td>{{ vocabulary.definitionSv }}</td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/vocabulary', vocabulary.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/vocabulary', vocabulary.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(vocabulary)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="vocabularies?.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

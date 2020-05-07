@@ -1,0 +1,23 @@
+package eu.cessda.cvs.service.mapper;
+
+import eu.cessda.cvs.domain.Licence;
+import eu.cessda.cvs.service.dto.LicenceDTO;
+import org.mapstruct.Mapper;
+
+/**
+ * Mapper for the entity {@link Licence} and its DTO {@link LicenceDTO}.
+ */
+@Mapper(componentModel = "spring", uses = {})
+public interface LicenceMapper extends EntityMapper<LicenceDTO, Licence> {
+
+
+
+    default Licence fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Licence licence = new Licence();
+        licence.setId(id);
+        return licence;
+    }
+}

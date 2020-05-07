@@ -1,0 +1,26 @@
+{
+  "cvsApp": {
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Skapa en ny Resolver",
+        "createOrEditLabel": "Skapa eller ändra en Resolver",
+        "notFound": "No Resolvers found"
+      },
+      "created": "En ny Resolver är skapad med id {{ param }}",
+      "updated": "En Resolver är uppdaterad med id  {{ param }}",
+      "deleted": "En Resolver är borttagen med id  {{ param }}",
+      "delete": {
+        "question": "Är du säker på att du vill ta bort Resolver {{ id }}?"
+      },
+      "detail": {
+        "title": "Resolver"
+      },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    }
+  }
+}

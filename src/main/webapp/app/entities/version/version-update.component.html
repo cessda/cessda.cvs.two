@@ -1,0 +1,233 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-version-heading" jhiTranslate="cvsApp.version.home.createOrEditLabel">Create or edit a Version</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.status" for="field_status">Status</label>
+                    <input type="text" class="form-control" name="status" id="field_status"
+                           formControlName="status"/>
+                    <div *ngIf="editForm.get('status')!.invalid && (editForm.get('status')!.dirty || editForm.get('status')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('status')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('status')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.itemType" for="field_itemType">Item Type</label>
+                    <input type="text" class="form-control" name="itemType" id="field_itemType"
+                           formControlName="itemType"/>
+                    <div *ngIf="editForm.get('itemType')!.invalid && (editForm.get('itemType')!.dirty || editForm.get('itemType')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('itemType')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('itemType')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.language" for="field_language">Language</label>
+                    <input type="text" class="form-control" name="language" id="field_language"
+                           formControlName="language"/>
+                    <div *ngIf="editForm.get('language')!.invalid && (editForm.get('language')!.dirty || editForm.get('language')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('language')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.publicationDate" for="field_publicationDate">Publication Date</label>
+                    <div class="input-group">
+                        <input id="field_publicationDate" type="text" class="form-control" name="publicationDate" ngbDatepicker #publicationDateDp="ngbDatepicker" formControlName="publicationDate"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="publicationDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.lastModified" for="field_lastModified">Last Modified</label>
+                    <div class="d-flex">
+                        <input id="field_lastModified" type="datetime-local" class="form-control" name="lastModified" formControlName="lastModified" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.number" for="field_number">Number</label>
+                    <input type="text" class="form-control" name="number" id="field_number"
+                           formControlName="number"/>
+                    <div *ngIf="editForm.get('number')!.invalid && (editForm.get('number')!.dirty || editForm.get('number')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('number')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.uri" for="field_uri">Uri</label>
+                    <input type="text" class="form-control" name="uri" id="field_uri"
+                           formControlName="uri"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.canonicalUri" for="field_canonicalUri">Canonical Uri</label>
+                    <input type="text" class="form-control" name="canonicalUri" id="field_canonicalUri"
+                           formControlName="canonicalUri"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.uriSl" for="field_uriSl">Uri Sl</label>
+                    <input type="text" class="form-control" name="uriSl" id="field_uriSl"
+                           formControlName="uriSl"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.notation" for="field_notation">Notation</label>
+                    <input type="text" class="form-control" name="notation" id="field_notation"
+                           formControlName="notation"/>
+                    <div *ngIf="editForm.get('notation')!.invalid && (editForm.get('notation')!.dirty || editForm.get('notation')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('notation')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                        This field cannot be longer than 240 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.title" for="field_title">Title</label>
+                    <textarea class="form-control" name="title" id="field_title"
+                              formControlName="title"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.definition" for="field_definition">Definition</label>
+                    <textarea class="form-control" name="definition" id="field_definition"
+                              formControlName="definition"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.previousVersion" for="field_previousVersion">Previous Version</label>
+                    <input type="number" class="form-control" name="previousVersion" id="field_previousVersion"
+                           formControlName="previousVersion"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.initialVersion" for="field_initialVersion">Initial Version</label>
+                    <input type="number" class="form-control" name="initialVersion" id="field_initialVersion"
+                           formControlName="initialVersion"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.creator" for="field_creator">Creator</label>
+                    <input type="number" class="form-control" name="creator" id="field_creator"
+                           formControlName="creator"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.publisher" for="field_publisher">Publisher</label>
+                    <input type="number" class="form-control" name="publisher" id="field_publisher"
+                           formControlName="publisher"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.notes" for="field_notes">Notes</label>
+                    <textarea class="form-control" name="notes" id="field_notes"
+                              formControlName="notes"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.versionNotes" for="field_versionNotes">Version Notes</label>
+                    <textarea class="form-control" name="versionNotes" id="field_versionNotes"
+                              formControlName="versionNotes"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.versionChanges" for="field_versionChanges">Version Changes</label>
+                    <textarea class="form-control" name="versionChanges" id="field_versionChanges"
+                              formControlName="versionChanges"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.discussionNotes" for="field_discussionNotes">Discussion Notes</label>
+                    <textarea class="form-control" name="discussionNotes" id="field_discussionNotes"
+                              formControlName="discussionNotes"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.license" for="field_license">License</label>
+                    <input type="text" class="form-control" name="license" id="field_license"
+                           formControlName="license"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.licenseId" for="field_licenseId">License Id</label>
+                    <input type="number" class="form-control" name="licenseId" id="field_licenseId"
+                           formControlName="licenseId"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.citation" for="field_citation">Citation</label>
+                    <textarea class="form-control" name="citation" id="field_citation"
+                              formControlName="citation"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.ddiUsage" for="field_ddiUsage">Ddi Usage</label>
+                    <textarea class="form-control" name="ddiUsage" id="field_ddiUsage"
+                              formControlName="ddiUsage"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.translateAgency" for="field_translateAgency">Translate Agency</label>
+                    <input type="text" class="form-control" name="translateAgency" id="field_translateAgency"
+                           formControlName="translateAgency"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.translateAgencyLink" for="field_translateAgencyLink">Translate Agency Link</label>
+                    <input type="text" class="form-control" name="translateAgencyLink" id="field_translateAgencyLink"
+                           formControlName="translateAgencyLink"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.version.vocabulary" for="field_vocabulary">Vocabulary</label>
+                    <select class="form-control" id="field_vocabulary" name="vocabulary" formControlName="vocabularyId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="vocabularyOption.id" *ngFor="let vocabularyOption of vocabularies; trackBy: trackById">{{ vocabularyOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

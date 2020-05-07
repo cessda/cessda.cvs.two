@@ -1,0 +1,24 @@
+{
+  "cvsApp": {
+    "licence": {
+      "home": {
+        "title": "Licence",
+        "createLabel": "Dodaj Licence",
+        "createOrEditLabel": "Dodaj lub edytuj: Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "Utworzono nowy obiekt typu Licence z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono obiekt typu Licence z identyfikatorem {{ param }}",
+      "deleted": "Usunięto obiekt typu Licence z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć Licence {{ id }}?"
+      },
+      "detail": {
+        "title": "Licence"
+      },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo Link"
+    }
+  }
+}

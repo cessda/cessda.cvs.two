@@ -1,0 +1,26 @@
+{
+  "cvsApp": {
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Criar novo(a) Comment",
+        "createOrEditLabel": "Criar ou editar Comment",
+        "search": "Procurar por Comment",
+        "notFound": "Nenhum Comments encontrado"
+      },
+      "created": "Um novo Comment foi criado com o identificador {{ param }}",
+      "updated": "Comment com identificador {{ param }} foi actualizado",
+      "deleted": "Comment com identificador {{ param }} foi eliminado",
+      "delete": {
+        "question": "Tem a certeza que pretende eliminar o(a) Comment {{ id }}?"
+      },
+      "detail": {
+        "title": "Comment"
+      },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    }
+  }
+}

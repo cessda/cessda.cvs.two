@@ -1,0 +1,45 @@
+{
+    "name": "Resolver",
+    "fields": [
+        {
+            "fieldName": "resourceId",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "resourceType",
+            "fieldType": "ResourceType",
+            "fieldValues": "VOCABULARY"
+        },
+        {
+            "fieldName": "resourceUrl",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "resolverType",
+            "fieldType": "ResolverType",
+            "fieldValues": "DOI,URN"
+        },
+        {
+            "fieldName": "resolverURI",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "relationships": [],
+    "changelogDate": "20200506163600",
+    "entityTableName": "resolver",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

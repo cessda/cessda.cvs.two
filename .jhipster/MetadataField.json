@@ -1,0 +1,43 @@
+{
+    "name": "MetadataField",
+    "fields": [
+        {
+            "fieldName": "metadataKey",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": "240"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "text"
+        },
+        {
+            "fieldName": "objectType",
+            "fieldType": "ObjectType",
+            "fieldValues": "AGENCY,GROUP,SYSTEM"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "otherEntityName": "metadataValue",
+            "otherEntityRelationshipName": "metadataField",
+            "relationshipName": "metadataValue"
+        }
+    ],
+    "changelogDate": "20200506163400",
+    "entityTableName": "metadata_field",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "readOnly": false,
+    "embedded": false,
+    "clientRootFolder": "",
+    "applications": "*"
+}

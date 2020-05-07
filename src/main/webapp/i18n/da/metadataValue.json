@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Create a new Metadata Value",
+        "createOrEditLabel": "Create or edit a Metadata Value",
+        "notFound": "No Metadata Values found"
+      },
+      "created": "A new Metadata Value is created with identifier {{ param }}",
+      "updated": "A Metadata Value is updated with identifier {{ param }}",
+      "deleted": "A Metadata Value is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Metadata Value {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Value"
+      },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    }
+  }
+}

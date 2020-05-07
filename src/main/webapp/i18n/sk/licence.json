@@ -1,0 +1,24 @@
+{
+  "cvsApp": {
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Pridať Licence",
+        "createOrEditLabel": "Pridať alebo upraviť Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "Bol vytvorený potomok entity Licence s identifikátorom {{ param }}",
+      "updated": "Potomok entity Licence s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Licence s identifikátorom {{ param }} bol vymazaný.",
+      "delete": {
+        "question": "Ste si istý, že chcete vymazať Licence {{ id }}?"
+      },
+      "detail": {
+        "title": "Licence"
+      },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo Link"
+    }
+  }
+}

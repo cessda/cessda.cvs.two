@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "metadataValue": {
+      "home": {
+        "title": "Metadata Values",
+        "createLabel": "Luo Metadata Value",
+        "createOrEditLabel": "Luo tai muokkaa Metadata Value",
+        "notFound": "Metadata Value ei löytynyt"
+      },
+      "created": "Uusi Metadata Value on luotu, id: {{ param }}",
+      "updated": "Metadata Value on päivitetty, id: {{ param }}",
+      "deleted": "Metadata Value on päivitetty, id: {{ param }}",
+      "delete": {
+        "question": "Haluatko varmasti poistaa Metadata Value {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Value"
+      },
+      "value": "Value",
+      "objectType": "Object Type",
+      "objectId": "Object Id",
+      "metadataField": "Metadata Field"
+    }
+  }
+}

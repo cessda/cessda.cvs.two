@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Lisa uus Metadata Field",
+        "createOrEditLabel": "Lisa või muuda Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "Uus Metadata Field on loodud identifikaatoriga {{ param }}",
+      "updated": "Metadata Field identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Metadata Field identifikaatoriga {{ param }} on kustutatud",
+      "delete": {
+        "question": "Kas olete kindel, et soovite kustutada Metadata Field {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Field"
+      },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    }
+  }
+}

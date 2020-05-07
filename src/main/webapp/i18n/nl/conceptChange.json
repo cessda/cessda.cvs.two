@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Maak een nieuwe Concept Change",
+        "createOrEditLabel": "Maak of wijzig een Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "A new Concept Change is created with identifier {{ param }}",
+      "updated": "A Concept Change is updated with identifier {{ param }}",
+      "deleted": "A Concept Change is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u Concept Change {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Concept Change"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    }
+  }
+}

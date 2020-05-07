@@ -1,0 +1,426 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="vocabulary">
+            <h2><span jhiTranslate="cvsApp.vocabulary.detail.title">Vocabulary</span> {{ vocabulary.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="cvsApp.vocabulary.status">Status</span></dt>
+                <dd>
+                    <span>{{ vocabulary.status }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.uri">Uri</span></dt>
+                <dd>
+                    <span>{{ vocabulary.uri }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.notation">Notation</span></dt>
+                <dd>
+                    <span>{{ vocabulary.notation }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionNumber">Version Number</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionNumber }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.initialPublication">Initial Publication</span></dt>
+                <dd>
+                    <span>{{ vocabulary.initialPublication }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.previousPublication">Previous Publication</span></dt>
+                <dd>
+                    <span>{{ vocabulary.previousPublication }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.archived">Archived</span></dt>
+                <dd>
+                    <span>{{ vocabulary.archived }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.withdrawn">Withdrawn</span></dt>
+                <dd>
+                    <span>{{ vocabulary.withdrawn }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.discoverable">Discoverable</span></dt>
+                <dd>
+                    <span>{{ vocabulary.discoverable }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.sourceLanguage">Source Language</span></dt>
+                <dd>
+                    <span>{{ vocabulary.sourceLanguage }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.agencyId">Agency Id</span></dt>
+                <dd>
+                    <span>{{ vocabulary.agencyId }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.agencyName">Agency Name</span></dt>
+                <dd>
+                    <span>{{ vocabulary.agencyName }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.agencyLogo">Agency Logo</span></dt>
+                <dd>
+                    <span>{{ vocabulary.agencyLogo }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.publicationDate">Publication Date</span></dt>
+                <dd>
+                    <span>{{ vocabulary.publicationDate }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.lastModified">Last Modified</span></dt>
+                <dd>
+                    <span>{{ vocabulary.lastModified }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.notes">Notes</span></dt>
+                <dd>
+                    <span>{{ vocabulary.notes }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionSq">Version Sq</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionSq }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleSq">Title Sq</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleSq }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionSq">Definition Sq</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionSq }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionBs">Version Bs</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionBs }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleBs">Title Bs</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleBs }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionBs">Definition Bs</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionBs }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionBg">Version Bg</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionBg }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleBg">Title Bg</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleBg }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionBg">Definition Bg</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionBg }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionHr">Version Hr</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionHr }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleHr">Title Hr</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleHr }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionHr">Definition Hr</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionHr }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionCs">Version Cs</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionCs }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleCs">Title Cs</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleCs }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionCs">Definition Cs</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionCs }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionDa">Version Da</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionDa }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleDa">Title Da</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleDa }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionDa">Definition Da</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionDa }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionNl">Version Nl</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionNl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleNl">Title Nl</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleNl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionNl">Definition Nl</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionNl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionEn">Version En</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionEn }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleEn">Title En</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleEn }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionEn">Definition En</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionEn }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionEt">Version Et</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionEt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleEt">Title Et</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleEt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionEt">Definition Et</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionEt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionFi">Version Fi</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionFi }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleFi">Title Fi</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleFi }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionFi">Definition Fi</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionFi }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionFr">Version Fr</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionFr }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleFr">Title Fr</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleFr }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionFr">Definition Fr</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionFr }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionDe">Version De</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionDe }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleDe">Title De</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleDe }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionDe">Definition De</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionDe }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionEl">Version El</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionEl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleEl">Title El</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleEl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionEl">Definition El</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionEl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionHu">Version Hu</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionHu }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleHu">Title Hu</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleHu }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionHu">Definition Hu</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionHu }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionIt">Version It</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionIt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleIt">Title It</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleIt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionIt">Definition It</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionIt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionJa">Version Ja</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionJa }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleJa">Title Ja</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleJa }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionJa">Definition Ja</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionJa }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionLt">Version Lt</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionLt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleLt">Title Lt</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleLt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionLt">Definition Lt</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionLt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionMk">Version Mk</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionMk }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleMk">Title Mk</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleMk }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionMk">Definition Mk</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionMk }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionNo">Version No</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionNo }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleNo">Title No</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleNo }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionNo">Definition No</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionNo }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionPl">Version Pl</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionPl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titlePl">Title Pl</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titlePl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionPl">Definition Pl</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionPl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionPt">Version Pt</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionPt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titlePt">Title Pt</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titlePt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionPt">Definition Pt</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionPt }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionRo">Version Ro</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionRo }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleRo">Title Ro</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleRo }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionRo">Definition Ro</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionRo }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionRu">Version Ru</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionRu }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleRu">Title Ru</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleRu }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionRu">Definition Ru</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionRu }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionSr">Version Sr</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionSr }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleSr">Title Sr</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleSr }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionSr">Definition Sr</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionSr }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionSk">Version Sk</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionSk }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleSk">Title Sk</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleSk }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionSk">Definition Sk</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionSk }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionSl">Version Sl</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionSl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleSl">Title Sl</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleSl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionSl">Definition Sl</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionSl }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionEs">Version Es</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionEs }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleEs">Title Es</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleEs }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionEs">Definition Es</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionEs }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.versionSv">Version Sv</span></dt>
+                <dd>
+                    <span>{{ vocabulary.versionSv }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.titleSv">Title Sv</span></dt>
+                <dd>
+                    <span>{{ vocabulary.titleSv }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.vocabulary.definitionSv">Definition Sv</span></dt>
+                <dd>
+                    <span>{{ vocabulary.definitionSv }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/vocabulary', vocabulary.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+package eu.cessda.cvs.service.mapper;
+
+import eu.cessda.cvs.domain.Vocabulary;
+import eu.cessda.cvs.service.dto.VocabularyDTO;
+import org.mapstruct.Mapper;
+
+/**
+ * Mapper for the entity {@link Vocabulary} and its DTO {@link VocabularyDTO}.
+ */
+@Mapper(componentModel = "spring", uses = {VersionMapper.class})
+public interface VocabularyMapper extends EntityMapper<VocabularyDTO, Vocabulary> {
+
+    VocabularyDTO toDto(Vocabulary vocabulary);
+
+    Vocabulary toEntity(VocabularyDTO vocabularyDTO);
+
+    default Vocabulary fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Vocabulary vocabulary = new Vocabulary();
+        vocabulary.setId(id);
+        return vocabulary;
+    }
+}

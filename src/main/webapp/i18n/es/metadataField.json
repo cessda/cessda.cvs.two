@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Crear nuevo Metadata Field",
+        "createOrEditLabel": "Crear o editar Metadata Field",
+        "notFound": "Ningún Metadata Fields encontrado"
+      },
+      "created": "Un nuevo Metadata Field ha sido creado con el identificador {{ param }}",
+      "updated": "Un Metadata Field ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Metadata Field ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Metadata Field {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Field"
+      },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    }
+  }
+}

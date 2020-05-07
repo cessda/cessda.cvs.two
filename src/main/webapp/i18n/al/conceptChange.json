@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Krijo një të ri Concept Change",
+        "createOrEditLabel": "Krijo ose përpuno një Concept Change",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "Një Concept Change i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Concept Change u përpunua me identifikues {{ param }}",
+      "deleted": "Një Concept Change u fshi me identifikues {{ param }}",
+      "delete": {
+        "question": "Jeni i sigurtë që doni të fshini Concept Change {{ id }}?"
+      },
+      "detail": {
+        "title": "Concept Change"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    }
+  }
+}

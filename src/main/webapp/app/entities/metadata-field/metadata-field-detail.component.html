@@ -1,0 +1,38 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="metadataField">
+            <h2><span jhiTranslate="cvsApp.metadataField.detail.title">Metadata Field</span> {{ metadataField.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="cvsApp.metadataField.metadataKey">Metadata Key</span></dt>
+                <dd>
+                    <span>{{ metadataField.metadataKey }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.metadataField.description">Description</span></dt>
+                <dd>
+                    <span>{{ metadataField.description }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.metadataField.objectType">Object Type</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'cvsApp.ObjectType.' + metadataField.objectType }}">{{ metadataField.objectType }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/metadata-field', metadataField.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

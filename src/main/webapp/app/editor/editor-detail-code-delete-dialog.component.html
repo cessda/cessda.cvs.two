@@ -1,0 +1,29 @@
+<form name="deleteForm" (ngSubmit)="confirmDelete(conceptParam.id!)">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="isSlForm">Confirm delete Code <strong>{{conceptParam.notation}}</strong></span>
+            <span *ngIf="!isSlForm">Confirm remove code translation {{getLangIsoFormatted(versionParam!.language!)}} from <strong>{{conceptParam.notation}}</strong></span>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div *ngIf="isSlForm">
+            <p>Are you sure you want to delete Code <strong>{{conceptParam.notation}}</strong>?</p>
+            <p>Any children codes under <strong>{{conceptParam.notation}}</strong> will also be deleted!</p>
+        </div>
+        <div *ngIf="!isSlForm">
+            Are you sure you want to remove code translation {{getLangIsoFormatted(versionParam!.language!)}} from <strong>{{conceptParam.notation}}?</strong>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button id="jhi-confirm-delete-vocabulary" type="submit" class="btn btn-danger">
+            <fa-icon *ngIf="isSlForm" [icon]="'trash'"></fa-icon>&nbsp;<span *ngIf="isSlForm" jhiTranslate="entity.action.delete">Delete</span>
+            <fa-icon *ngIf="!isSlForm" [icon]="'times'"></fa-icon>&nbsp;<span *ngIf="!isSlForm">Remove</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,24 @@
+{
+  "cvsApp": {
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Luo Licence",
+        "createOrEditLabel": "Luo tai muokkaa Licence",
+        "notFound": "Licence ei löytynyt"
+      },
+      "created": "Uusi Licence on luotu, id: {{ param }}",
+      "updated": "Licence on päivitetty, id: {{ param }}",
+      "deleted": "Licence on päivitetty, id: {{ param }}",
+      "delete": {
+        "question": "Haluatko varmasti poistaa Licence {{ id }}?"
+      },
+      "detail": {
+        "title": "Licence"
+      },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo Link"
+    }
+  }
+}

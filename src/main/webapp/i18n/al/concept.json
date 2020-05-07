@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "concept": {
+      "home": {
+        "title": "Concepts",
+        "createLabel": "Krijo një të ri Concept",
+        "createOrEditLabel": "Krijo ose përpuno një Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "Një Concept i ri u krijua me identifikues {{ param }}",
+      "updated": "Një Concept u përpunua me identifikues {{ param }}",
+      "deleted": "Një Concept u fshi me identifikues {{ param }}",
+      "delete": {
+        "question": "Jeni i sigurtë që doni të fshini Concept {{ id }}?"
+      },
+      "detail": {
+        "title": "Concept"
+      },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    }
+  }
+}

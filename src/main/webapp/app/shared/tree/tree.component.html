@@ -1,0 +1,24 @@
+<div *ngFor="let concept of conceptList">
+    <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
+        <li id="code_{{concept.notation.split('.').join('')}}">
+            <div class="concept-row">
+                <span class="column1 coll-mar-{{level!}}">
+                    <button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button">
+                        <fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon>
+                        <fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon>
+                    </button>
+                    {{concept.notation}}
+                </span>
+                <span class="column2">
+                    {{concept.title}}
+                </span>
+                <span class="column3">
+                    {{concept.definition}}
+                </span>
+            </div>
+            <jhi-tree *ngIf="isConceptHasChildren(concept.notation,conceptList)"
+                      [ngClass]="{'display-none': concept.visible}"
+                      [parentNotation]="concept.notation" [conceptList]="removeCurrentLevelItems(conceptList , parentNotation)" [level]="level! + 1"></jhi-tree>
+        </li>
+    </ul>
+</div>

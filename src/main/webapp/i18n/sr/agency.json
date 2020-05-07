@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Kreiraj novi Agency",
+        "createOrEditLabel": "Kreirajte ili izmenite Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "Kreiran je novi Agency pod nazivom {{ param }}",
+      "updated": "Agency pod nazivom {{ param }} je ažuriran",
+      "deleted": "Agency pod nazivom {{ param }} je obrisan",
+      "delete": {
+        "question": "Da li ste sigurni da želite da obrišete Agency pod nazivom {{ id }}?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    }
+  }
+}

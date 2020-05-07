@@ -1,0 +1,861 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-vocabulary-heading" jhiTranslate="cvsApp.vocabulary.home.createOrEditLabel">Create or edit a Vocabulary</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.status" for="field_status">Status</label>
+                    <input type="text" class="form-control" name="status" id="field_status"
+                           formControlName="status"/>
+                    <div *ngIf="editForm.get('status')!.invalid && (editForm.get('status')!.dirty || editForm.get('status')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('status')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('status')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.uri" for="field_uri">Uri</label>
+                    <input type="text" class="form-control" name="uri" id="field_uri"
+                           formControlName="uri"/>
+                    <div *ngIf="editForm.get('uri')!.invalid && (editForm.get('uri')!.dirty || editForm.get('uri')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('uri')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                        This field cannot be longer than 240 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.notation" for="field_notation">Notation</label>
+                    <input type="text" class="form-control" name="notation" id="field_notation"
+                           formControlName="notation"/>
+                    <div *ngIf="editForm.get('notation')!.invalid && (editForm.get('notation')!.dirty || editForm.get('notation')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('notation')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('notation')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
+                        This field cannot be longer than 240 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionNumber" for="field_versionNumber">Version Number</label>
+                    <input type="text" class="form-control" name="versionNumber" id="field_versionNumber"
+                           formControlName="versionNumber"/>
+                    <div *ngIf="editForm.get('versionNumber')!.invalid && (editForm.get('versionNumber')!.dirty || editForm.get('versionNumber')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionNumber')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionNumber')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.initialPublication" for="field_initialPublication">Initial Publication</label>
+                    <input type="number" class="form-control" name="initialPublication" id="field_initialPublication"
+                           formControlName="initialPublication"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.previousPublication" for="field_previousPublication">Previous Publication</label>
+                    <input type="number" class="form-control" name="previousPublication" id="field_previousPublication"
+                           formControlName="previousPublication"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.archived" for="field_archived">Archived</label>
+                    <input type="checkbox" class="form-control" name="archived" id="field_archived"
+                           formControlName="archived"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.withdrawn" for="field_withdrawn">Withdrawn</label>
+                    <input type="checkbox" class="form-control" name="withdrawn" id="field_withdrawn"
+                           formControlName="withdrawn"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.discoverable" for="field_discoverable">Discoverable</label>
+                    <input type="checkbox" class="form-control" name="discoverable" id="field_discoverable"
+                           formControlName="discoverable"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.sourceLanguage" for="field_sourceLanguage">Source Language</label>
+                    <input type="text" class="form-control" name="sourceLanguage" id="field_sourceLanguage"
+                           formControlName="sourceLanguage"/>
+                    <div *ngIf="editForm.get('sourceLanguage')!.invalid && (editForm.get('sourceLanguage')!.dirty || editForm.get('sourceLanguage')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('sourceLanguage')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('sourceLanguage')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.agencyId" for="field_agencyId">Agency Id</label>
+                    <input type="number" class="form-control" name="agencyId" id="field_agencyId"
+                           formControlName="agencyId"/>
+                    <div *ngIf="editForm.get('agencyId')!.invalid && (editForm.get('agencyId')!.dirty || editForm.get('agencyId')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('agencyId')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('agencyId')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.agencyName" for="field_agencyName">Agency Name</label>
+                    <input type="text" class="form-control" name="agencyName" id="field_agencyName"
+                           formControlName="agencyName"/>
+                    <div *ngIf="editForm.get('agencyName')!.invalid && (editForm.get('agencyName')!.dirty || editForm.get('agencyName')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('agencyName')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.agencyLogo" for="field_agencyLogo">Agency Logo</label>
+                    <input type="text" class="form-control" name="agencyLogo" id="field_agencyLogo"
+                           formControlName="agencyLogo"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.publicationDate" for="field_publicationDate">Publication Date</label>
+                    <div class="input-group">
+                        <input id="field_publicationDate" type="text" class="form-control" name="publicationDate" ngbDatepicker #publicationDateDp="ngbDatepicker" formControlName="publicationDate"/>
+                        <span class="input-group-append">
+                            <button type="button" class="btn btn-secondary" (click)="publicationDateDp.toggle()"><fa-icon icon="calendar-alt"></fa-icon></button>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.lastModified" for="field_lastModified">Last Modified</label>
+                    <div class="d-flex">
+                        <input id="field_lastModified" type="datetime-local" class="form-control" name="lastModified" formControlName="lastModified" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.notes" for="field_notes">Notes</label>
+                    <textarea class="form-control" name="notes" id="field_notes"
+                              formControlName="notes"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionSq" for="field_versionSq">Version Sq</label>
+                    <input type="text" class="form-control" name="versionSq" id="field_versionSq"
+                           formControlName="versionSq"/>
+                    <div *ngIf="editForm.get('versionSq')!.invalid && (editForm.get('versionSq')!.dirty || editForm.get('versionSq')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionSq')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleSq" for="field_titleSq">Title Sq</label>
+                    <textarea class="form-control" name="titleSq" id="field_titleSq"
+                              formControlName="titleSq"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionSq" for="field_definitionSq">Definition Sq</label>
+                    <textarea class="form-control" name="definitionSq" id="field_definitionSq"
+                              formControlName="definitionSq"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionBs" for="field_versionBs">Version Bs</label>
+                    <input type="text" class="form-control" name="versionBs" id="field_versionBs"
+                           formControlName="versionBs"/>
+                    <div *ngIf="editForm.get('versionBs')!.invalid && (editForm.get('versionBs')!.dirty || editForm.get('versionBs')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionBs')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleBs" for="field_titleBs">Title Bs</label>
+                    <textarea class="form-control" name="titleBs" id="field_titleBs"
+                              formControlName="titleBs"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionBs" for="field_definitionBs">Definition Bs</label>
+                    <textarea class="form-control" name="definitionBs" id="field_definitionBs"
+                              formControlName="definitionBs"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionBg" for="field_versionBg">Version Bg</label>
+                    <input type="text" class="form-control" name="versionBg" id="field_versionBg"
+                           formControlName="versionBg"/>
+                    <div *ngIf="editForm.get('versionBg')!.invalid && (editForm.get('versionBg')!.dirty || editForm.get('versionBg')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionBg')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleBg" for="field_titleBg">Title Bg</label>
+                    <textarea class="form-control" name="titleBg" id="field_titleBg"
+                              formControlName="titleBg"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionBg" for="field_definitionBg">Definition Bg</label>
+                    <textarea class="form-control" name="definitionBg" id="field_definitionBg"
+                              formControlName="definitionBg"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionHr" for="field_versionHr">Version Hr</label>
+                    <input type="text" class="form-control" name="versionHr" id="field_versionHr"
+                           formControlName="versionHr"/>
+                    <div *ngIf="editForm.get('versionHr')!.invalid && (editForm.get('versionHr')!.dirty || editForm.get('versionHr')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionHr')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleHr" for="field_titleHr">Title Hr</label>
+                    <textarea class="form-control" name="titleHr" id="field_titleHr"
+                              formControlName="titleHr"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionHr" for="field_definitionHr">Definition Hr</label>
+                    <textarea class="form-control" name="definitionHr" id="field_definitionHr"
+                              formControlName="definitionHr"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionCs" for="field_versionCs">Version Cs</label>
+                    <input type="text" class="form-control" name="versionCs" id="field_versionCs"
+                           formControlName="versionCs"/>
+                    <div *ngIf="editForm.get('versionCs')!.invalid && (editForm.get('versionCs')!.dirty || editForm.get('versionCs')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionCs')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleCs" for="field_titleCs">Title Cs</label>
+                    <textarea class="form-control" name="titleCs" id="field_titleCs"
+                              formControlName="titleCs"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionCs" for="field_definitionCs">Definition Cs</label>
+                    <textarea class="form-control" name="definitionCs" id="field_definitionCs"
+                              formControlName="definitionCs"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionDa" for="field_versionDa">Version Da</label>
+                    <input type="text" class="form-control" name="versionDa" id="field_versionDa"
+                           formControlName="versionDa"/>
+                    <div *ngIf="editForm.get('versionDa')!.invalid && (editForm.get('versionDa')!.dirty || editForm.get('versionDa')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionDa')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleDa" for="field_titleDa">Title Da</label>
+                    <textarea class="form-control" name="titleDa" id="field_titleDa"
+                              formControlName="titleDa"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionDa" for="field_definitionDa">Definition Da</label>
+                    <textarea class="form-control" name="definitionDa" id="field_definitionDa"
+                              formControlName="definitionDa"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionNl" for="field_versionNl">Version Nl</label>
+                    <input type="text" class="form-control" name="versionNl" id="field_versionNl"
+                           formControlName="versionNl"/>
+                    <div *ngIf="editForm.get('versionNl')!.invalid && (editForm.get('versionNl')!.dirty || editForm.get('versionNl')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionNl')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleNl" for="field_titleNl">Title Nl</label>
+                    <textarea class="form-control" name="titleNl" id="field_titleNl"
+                              formControlName="titleNl"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionNl" for="field_definitionNl">Definition Nl</label>
+                    <textarea class="form-control" name="definitionNl" id="field_definitionNl"
+                              formControlName="definitionNl"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionEn" for="field_versionEn">Version En</label>
+                    <input type="text" class="form-control" name="versionEn" id="field_versionEn"
+                           formControlName="versionEn"/>
+                    <div *ngIf="editForm.get('versionEn')!.invalid && (editForm.get('versionEn')!.dirty || editForm.get('versionEn')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionEn')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleEn" for="field_titleEn">Title En</label>
+                    <textarea class="form-control" name="titleEn" id="field_titleEn"
+                              formControlName="titleEn"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionEn" for="field_definitionEn">Definition En</label>
+                    <textarea class="form-control" name="definitionEn" id="field_definitionEn"
+                              formControlName="definitionEn"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionEt" for="field_versionEt">Version Et</label>
+                    <input type="text" class="form-control" name="versionEt" id="field_versionEt"
+                           formControlName="versionEt"/>
+                    <div *ngIf="editForm.get('versionEt')!.invalid && (editForm.get('versionEt')!.dirty || editForm.get('versionEt')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionEt')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleEt" for="field_titleEt">Title Et</label>
+                    <textarea class="form-control" name="titleEt" id="field_titleEt"
+                              formControlName="titleEt"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionEt" for="field_definitionEt">Definition Et</label>
+                    <textarea class="form-control" name="definitionEt" id="field_definitionEt"
+                              formControlName="definitionEt"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionFi" for="field_versionFi">Version Fi</label>
+                    <input type="text" class="form-control" name="versionFi" id="field_versionFi"
+                           formControlName="versionFi"/>
+                    <div *ngIf="editForm.get('versionFi')!.invalid && (editForm.get('versionFi')!.dirty || editForm.get('versionFi')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionFi')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleFi" for="field_titleFi">Title Fi</label>
+                    <textarea class="form-control" name="titleFi" id="field_titleFi"
+                              formControlName="titleFi"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionFi" for="field_definitionFi">Definition Fi</label>
+                    <textarea class="form-control" name="definitionFi" id="field_definitionFi"
+                              formControlName="definitionFi"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionFr" for="field_versionFr">Version Fr</label>
+                    <input type="text" class="form-control" name="versionFr" id="field_versionFr"
+                           formControlName="versionFr"/>
+                    <div *ngIf="editForm.get('versionFr')!.invalid && (editForm.get('versionFr')!.dirty || editForm.get('versionFr')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionFr')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleFr" for="field_titleFr">Title Fr</label>
+                    <textarea class="form-control" name="titleFr" id="field_titleFr"
+                              formControlName="titleFr"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionFr" for="field_definitionFr">Definition Fr</label>
+                    <textarea class="form-control" name="definitionFr" id="field_definitionFr"
+                              formControlName="definitionFr"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionDe" for="field_versionDe">Version De</label>
+                    <input type="text" class="form-control" name="versionDe" id="field_versionDe"
+                           formControlName="versionDe"/>
+                    <div *ngIf="editForm.get('versionDe')!.invalid && (editForm.get('versionDe')!.dirty || editForm.get('versionDe')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionDe')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleDe" for="field_titleDe">Title De</label>
+                    <textarea class="form-control" name="titleDe" id="field_titleDe"
+                              formControlName="titleDe"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionDe" for="field_definitionDe">Definition De</label>
+                    <textarea class="form-control" name="definitionDe" id="field_definitionDe"
+                              formControlName="definitionDe"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionEl" for="field_versionEl">Version El</label>
+                    <input type="text" class="form-control" name="versionEl" id="field_versionEl"
+                           formControlName="versionEl"/>
+                    <div *ngIf="editForm.get('versionEl')!.invalid && (editForm.get('versionEl')!.dirty || editForm.get('versionEl')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionEl')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleEl" for="field_titleEl">Title El</label>
+                    <textarea class="form-control" name="titleEl" id="field_titleEl"
+                              formControlName="titleEl"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionEl" for="field_definitionEl">Definition El</label>
+                    <textarea class="form-control" name="definitionEl" id="field_definitionEl"
+                              formControlName="definitionEl"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionHu" for="field_versionHu">Version Hu</label>
+                    <input type="text" class="form-control" name="versionHu" id="field_versionHu"
+                           formControlName="versionHu"/>
+                    <div *ngIf="editForm.get('versionHu')!.invalid && (editForm.get('versionHu')!.dirty || editForm.get('versionHu')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionHu')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleHu" for="field_titleHu">Title Hu</label>
+                    <textarea class="form-control" name="titleHu" id="field_titleHu"
+                              formControlName="titleHu"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionHu" for="field_definitionHu">Definition Hu</label>
+                    <textarea class="form-control" name="definitionHu" id="field_definitionHu"
+                              formControlName="definitionHu"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionIt" for="field_versionIt">Version It</label>
+                    <input type="text" class="form-control" name="versionIt" id="field_versionIt"
+                           formControlName="versionIt"/>
+                    <div *ngIf="editForm.get('versionIt')!.invalid && (editForm.get('versionIt')!.dirty || editForm.get('versionIt')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionIt')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleIt" for="field_titleIt">Title It</label>
+                    <textarea class="form-control" name="titleIt" id="field_titleIt"
+                              formControlName="titleIt"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionIt" for="field_definitionIt">Definition It</label>
+                    <textarea class="form-control" name="definitionIt" id="field_definitionIt"
+                              formControlName="definitionIt"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionJa" for="field_versionJa">Version Ja</label>
+                    <input type="text" class="form-control" name="versionJa" id="field_versionJa"
+                           formControlName="versionJa"/>
+                    <div *ngIf="editForm.get('versionJa')!.invalid && (editForm.get('versionJa')!.dirty || editForm.get('versionJa')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionJa')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleJa" for="field_titleJa">Title Ja</label>
+                    <textarea class="form-control" name="titleJa" id="field_titleJa"
+                              formControlName="titleJa"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionJa" for="field_definitionJa">Definition Ja</label>
+                    <textarea class="form-control" name="definitionJa" id="field_definitionJa"
+                              formControlName="definitionJa"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionLt" for="field_versionLt">Version Lt</label>
+                    <input type="text" class="form-control" name="versionLt" id="field_versionLt"
+                           formControlName="versionLt"/>
+                    <div *ngIf="editForm.get('versionLt')!.invalid && (editForm.get('versionLt')!.dirty || editForm.get('versionLt')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionLt')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleLt" for="field_titleLt">Title Lt</label>
+                    <textarea class="form-control" name="titleLt" id="field_titleLt"
+                              formControlName="titleLt"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionLt" for="field_definitionLt">Definition Lt</label>
+                    <textarea class="form-control" name="definitionLt" id="field_definitionLt"
+                              formControlName="definitionLt"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionMk" for="field_versionMk">Version Mk</label>
+                    <input type="text" class="form-control" name="versionMk" id="field_versionMk"
+                           formControlName="versionMk"/>
+                    <div *ngIf="editForm.get('versionMk')!.invalid && (editForm.get('versionMk')!.dirty || editForm.get('versionMk')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionMk')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleMk" for="field_titleMk">Title Mk</label>
+                    <textarea class="form-control" name="titleMk" id="field_titleMk"
+                              formControlName="titleMk"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionMk" for="field_definitionMk">Definition Mk</label>
+                    <textarea class="form-control" name="definitionMk" id="field_definitionMk"
+                              formControlName="definitionMk"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionNo" for="field_versionNo">Version No</label>
+                    <input type="text" class="form-control" name="versionNo" id="field_versionNo"
+                           formControlName="versionNo"/>
+                    <div *ngIf="editForm.get('versionNo')!.invalid && (editForm.get('versionNo')!.dirty || editForm.get('versionNo')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionNo')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleNo" for="field_titleNo">Title No</label>
+                    <textarea class="form-control" name="titleNo" id="field_titleNo"
+                              formControlName="titleNo"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionNo" for="field_definitionNo">Definition No</label>
+                    <textarea class="form-control" name="definitionNo" id="field_definitionNo"
+                              formControlName="definitionNo"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionPl" for="field_versionPl">Version Pl</label>
+                    <input type="text" class="form-control" name="versionPl" id="field_versionPl"
+                           formControlName="versionPl"/>
+                    <div *ngIf="editForm.get('versionPl')!.invalid && (editForm.get('versionPl')!.dirty || editForm.get('versionPl')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionPl')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titlePl" for="field_titlePl">Title Pl</label>
+                    <textarea class="form-control" name="titlePl" id="field_titlePl"
+                              formControlName="titlePl"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionPl" for="field_definitionPl">Definition Pl</label>
+                    <textarea class="form-control" name="definitionPl" id="field_definitionPl"
+                              formControlName="definitionPl"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionPt" for="field_versionPt">Version Pt</label>
+                    <input type="text" class="form-control" name="versionPt" id="field_versionPt"
+                           formControlName="versionPt"/>
+                    <div *ngIf="editForm.get('versionPt')!.invalid && (editForm.get('versionPt')!.dirty || editForm.get('versionPt')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionPt')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titlePt" for="field_titlePt">Title Pt</label>
+                    <textarea class="form-control" name="titlePt" id="field_titlePt"
+                              formControlName="titlePt"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionPt" for="field_definitionPt">Definition Pt</label>
+                    <textarea class="form-control" name="definitionPt" id="field_definitionPt"
+                              formControlName="definitionPt"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionRo" for="field_versionRo">Version Ro</label>
+                    <input type="text" class="form-control" name="versionRo" id="field_versionRo"
+                           formControlName="versionRo"/>
+                    <div *ngIf="editForm.get('versionRo')!.invalid && (editForm.get('versionRo')!.dirty || editForm.get('versionRo')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionRo')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleRo" for="field_titleRo">Title Ro</label>
+                    <textarea class="form-control" name="titleRo" id="field_titleRo"
+                              formControlName="titleRo"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionRo" for="field_definitionRo">Definition Ro</label>
+                    <textarea class="form-control" name="definitionRo" id="field_definitionRo"
+                              formControlName="definitionRo"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionRu" for="field_versionRu">Version Ru</label>
+                    <input type="text" class="form-control" name="versionRu" id="field_versionRu"
+                           formControlName="versionRu"/>
+                    <div *ngIf="editForm.get('versionRu')!.invalid && (editForm.get('versionRu')!.dirty || editForm.get('versionRu')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionRu')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleRu" for="field_titleRu">Title Ru</label>
+                    <textarea class="form-control" name="titleRu" id="field_titleRu"
+                              formControlName="titleRu"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionRu" for="field_definitionRu">Definition Ru</label>
+                    <textarea class="form-control" name="definitionRu" id="field_definitionRu"
+                              formControlName="definitionRu"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionSr" for="field_versionSr">Version Sr</label>
+                    <input type="text" class="form-control" name="versionSr" id="field_versionSr"
+                           formControlName="versionSr"/>
+                    <div *ngIf="editForm.get('versionSr')!.invalid && (editForm.get('versionSr')!.dirty || editForm.get('versionSr')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionSr')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleSr" for="field_titleSr">Title Sr</label>
+                    <textarea class="form-control" name="titleSr" id="field_titleSr"
+                              formControlName="titleSr"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionSr" for="field_definitionSr">Definition Sr</label>
+                    <textarea class="form-control" name="definitionSr" id="field_definitionSr"
+                              formControlName="definitionSr"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionSk" for="field_versionSk">Version Sk</label>
+                    <input type="text" class="form-control" name="versionSk" id="field_versionSk"
+                           formControlName="versionSk"/>
+                    <div *ngIf="editForm.get('versionSk')!.invalid && (editForm.get('versionSk')!.dirty || editForm.get('versionSk')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionSk')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleSk" for="field_titleSk">Title Sk</label>
+                    <textarea class="form-control" name="titleSk" id="field_titleSk"
+                              formControlName="titleSk"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionSk" for="field_definitionSk">Definition Sk</label>
+                    <textarea class="form-control" name="definitionSk" id="field_definitionSk"
+                              formControlName="definitionSk"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionSl" for="field_versionSl">Version Sl</label>
+                    <input type="text" class="form-control" name="versionSl" id="field_versionSl"
+                           formControlName="versionSl"/>
+                    <div *ngIf="editForm.get('versionSl')!.invalid && (editForm.get('versionSl')!.dirty || editForm.get('versionSl')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionSl')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleSl" for="field_titleSl">Title Sl</label>
+                    <textarea class="form-control" name="titleSl" id="field_titleSl"
+                              formControlName="titleSl"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionSl" for="field_definitionSl">Definition Sl</label>
+                    <textarea class="form-control" name="definitionSl" id="field_definitionSl"
+                              formControlName="definitionSl"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionEs" for="field_versionEs">Version Es</label>
+                    <input type="text" class="form-control" name="versionEs" id="field_versionEs"
+                           formControlName="versionEs"/>
+                    <div *ngIf="editForm.get('versionEs')!.invalid && (editForm.get('versionEs')!.dirty || editForm.get('versionEs')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionEs')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleEs" for="field_titleEs">Title Es</label>
+                    <textarea class="form-control" name="titleEs" id="field_titleEs"
+                              formControlName="titleEs"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionEs" for="field_definitionEs">Definition Es</label>
+                    <textarea class="form-control" name="definitionEs" id="field_definitionEs"
+                              formControlName="definitionEs"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.versionSv" for="field_versionSv">Version Sv</label>
+                    <input type="text" class="form-control" name="versionSv" id="field_versionSv"
+                           formControlName="versionSv"/>
+                    <div *ngIf="editForm.get('versionSv')!.invalid && (editForm.get('versionSv')!.dirty || editForm.get('versionSv')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('versionSv')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 20 }">
+                        This field cannot be longer than 20 characters.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.titleSv" for="field_titleSv">Title Sv</label>
+                    <textarea class="form-control" name="titleSv" id="field_titleSv"
+                              formControlName="titleSv"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.vocabulary.definitionSv" for="field_definitionSv">Definition Sv</label>
+                    <textarea class="form-control" name="definitionSv" id="field_definitionSv"
+                              formControlName="definitionSv"></textarea>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

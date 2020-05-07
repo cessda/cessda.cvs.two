@@ -1,0 +1,145 @@
+<div>
+    <h2 id="page-heading">
+        <span jhiTranslate="cvsApp.version.home.title">Versions</span>
+
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-version" [routerLink]="['/version/new']">
+            <fa-icon icon="plus"></fa-icon>
+            <span class="hidden-sm-down"  jhiTranslate="cvsApp.version.home.createLabel">
+            Create a new Version
+            </span>
+        </button>
+    </h2>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <jhi-alert></jhi-alert>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'cvsApp.version.home.search' | translate }}">
+
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <fa-icon icon="search"></fa-icon>
+                    </button>
+
+                    <button class="input-group-append btn btn-danger" (click)="search('')" *ngIf="currentSearch">
+                        <fa-icon icon="trash-alt"></fa-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="alert alert-warning" id="no-result" *ngIf="versions?.length === 0">
+        <span jhiTranslate="cvsApp.version.home.notFound">No versions found</span>
+    </div>
+
+    <div class="table-responsive" id="entities" *ngIf="versions?.length > 0">
+        <table class="table table-striped" aria-describedby="page-heading">
+            <thead>
+                <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
+                    <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="status"><span jhiTranslate="cvsApp.version.status">Status</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="itemType"><span jhiTranslate="cvsApp.version.itemType">Item Type</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="language"><span jhiTranslate="cvsApp.version.language">Language</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="publicationDate"><span jhiTranslate="cvsApp.version.publicationDate">Publication Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="lastModified"><span jhiTranslate="cvsApp.version.lastModified">Last Modified</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="number"><span jhiTranslate="cvsApp.version.number">Number</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="uri"><span jhiTranslate="cvsApp.version.uri">Uri</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="canonicalUri"><span jhiTranslate="cvsApp.version.canonicalUri">Canonical Uri</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="uriSl"><span jhiTranslate="cvsApp.version.uriSl">Uri Sl</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="notation"><span jhiTranslate="cvsApp.version.notation">Notation</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="title"><span jhiTranslate="cvsApp.version.title">Title</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="definition"><span jhiTranslate="cvsApp.version.definition">Definition</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="previousVersion"><span jhiTranslate="cvsApp.version.previousVersion">Previous Version</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="initialVersion"><span jhiTranslate="cvsApp.version.initialVersion">Initial Version</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="creator"><span jhiTranslate="cvsApp.version.creator">Creator</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="publisher"><span jhiTranslate="cvsApp.version.publisher">Publisher</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="notes"><span jhiTranslate="cvsApp.version.notes">Notes</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionNotes"><span jhiTranslate="cvsApp.version.versionNotes">Version Notes</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="versionChanges"><span jhiTranslate="cvsApp.version.versionChanges">Version Changes</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="discussionNotes"><span jhiTranslate="cvsApp.version.discussionNotes">Discussion Notes</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="license"><span jhiTranslate="cvsApp.version.license">License</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="licenseId"><span jhiTranslate="cvsApp.version.licenseId">License Id</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="citation"><span jhiTranslate="cvsApp.version.citation">Citation</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="ddiUsage"><span jhiTranslate="cvsApp.version.ddiUsage">Ddi Usage</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="translateAgency"><span jhiTranslate="cvsApp.version.translateAgency">Translate Agency</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="translateAgencyLink"><span jhiTranslate="cvsApp.version.translateAgencyLink">Translate Agency Link</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="vocabularyId"><span jhiTranslate="cvsApp.version.vocabulary">Vocabulary</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let version of versions ;trackBy: trackId">
+                    <td><a [routerLink]="['/version', version.id, 'view']">{{ version.id }}</a></td>
+                    <td>{{ version.status }}</td>
+                    <td>{{ version.itemType }}</td>
+                    <td>{{ version.language }}</td>
+                    <td>{{ version.publicationDate | date:'mediumDate' }}</td>
+                    <td>{{ version.lastModified | date:'medium' }}</td>
+                    <td>{{ version.number }}</td>
+                    <td>{{ version.uri }}</td>
+                    <td>{{ version.canonicalUri }}</td>
+                    <td>{{ version.uriSl }}</td>
+                    <td>{{ version.notation }}</td>
+                    <td>{{ version.title }}</td>
+                    <td>{{ version.definition }}</td>
+                    <td>{{ version.previousVersion }}</td>
+                    <td>{{ version.initialVersion }}</td>
+                    <td>{{ version.creator }}</td>
+                    <td>{{ version.publisher }}</td>
+                    <td>{{ version.notes }}</td>
+                    <td>{{ version.versionNotes }}</td>
+                    <td>{{ version.versionChanges }}</td>
+                    <td>{{ version.discussionNotes }}</td>
+                    <td>{{ version.license }}</td>
+                    <td>{{ version.licenseId }}</td>
+                    <td>{{ version.citation }}</td>
+                    <td>{{ version.ddiUsage }}</td>
+                    <td>{{ version.translateAgency }}</td>
+                    <td>{{ version.translateAgencyLink }}</td>
+                    <td>
+                        <div *ngIf="version.vocabularyId">
+                            <a [routerLink]="['/vocabulary', version.vocabularyId , 'view']" >{{ version.vocabularyId }}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group">
+                            <button type="submit"
+                                    [routerLink]="['/version', version.id, 'view']"
+                                    class="btn btn-info btn-sm">
+                                <fa-icon icon="eye"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+
+                            <button type="submit"
+                                    [routerLink]="['/version', version.id, 'edit']"
+                                    class="btn btn-primary btn-sm">
+                                <fa-icon icon="pencil-alt"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+
+                            <button type="submit" (click)="delete(version)"
+                                    class="btn btn-danger btn-sm">
+                                <fa-icon icon="times"></fa-icon>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="versions?.length > 0">
+        <div class="row justify-content-center">
+            <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
+        </div>
+
+        <div class="row justify-content-center">
+            <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="5" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+        </div>
+    </div>
+</div>

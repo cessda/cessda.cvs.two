@@ -1,0 +1,26 @@
+{
+  "cvsApp": {
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Lisa uus Comment",
+        "createOrEditLabel": "Lisa või muuda Comment",
+        "search": "Otsi Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "Uus Comment on loodud identifikaatoriga {{ param }}",
+      "updated": "Comment identifikaatoriga {{ param }} on muudetud",
+      "deleted": "Comment identifikaatoriga {{ param }} on kustutatud",
+      "delete": {
+        "question": "Kas olete kindel, et soovite kustutada Comment {{ id }}?"
+      },
+      "detail": {
+        "title": "Comment"
+      },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    }
+  }
+}

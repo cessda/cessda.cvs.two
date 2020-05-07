@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "conceptChange": {
+      "home": {
+        "title": "Concept Changes",
+        "createLabel": "Luo Concept Change",
+        "createOrEditLabel": "Luo tai muokkaa Concept Change",
+        "notFound": "Concept Change ei löytynyt"
+      },
+      "created": "Uusi Concept Change on luotu, id: {{ param }}",
+      "updated": "Concept Change on päivitetty, id: {{ param }}",
+      "deleted": "Concept Change on päivitetty, id: {{ param }}",
+      "delete": {
+        "question": "Haluatko varmasti poistaa Concept Change {{ id }}?"
+      },
+      "detail": {
+        "title": "Concept Change"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    }
+  }
+}

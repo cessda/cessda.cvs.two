@@ -1,0 +1,26 @@
+{
+  "cvsApp": {
+    "resolver": {
+      "home": {
+        "title": "Resolvers",
+        "createLabel": "Egy új Resolver létrehozása",
+        "createOrEditLabel": "Hozzon létre, vagy módosítson Resolvert",
+        "notFound": "No Resolvers found"
+      },
+      "created": "Egy új Resolver lett létrehozva {{ param }} azonosítóval",
+      "updated": "A Resolver módosítva lett {{ param }} azonosítóval",
+      "deleted": "A Resolver törölve lett {{ param }} azonosítóval",
+      "delete": {
+        "question": "Biztos benne, hogy törölni szeretné az Resolvert {{ id }} azonosítóval?"
+      },
+      "detail": {
+        "title": "Resolver"
+      },
+      "resourceId": "Resource Id",
+      "resourceType": "Resource Type",
+      "resourceUrl": "Resource Url",
+      "resolverType": "Resolver Type",
+      "resolverURI": "Resolver URI"
+    }
+  }
+}

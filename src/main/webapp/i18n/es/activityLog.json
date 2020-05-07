@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Crear nuevo Activity Log",
+        "createOrEditLabel": "Crear o editar Activity Log",
+        "notFound": "Ningún Activity Logs encontrado"
+      },
+      "created": "Un nuevo Activity Log ha sido creado con el identificador {{ param }}",
+      "updated": "Un Activity Log ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Activity Log ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Activity Log {{ id }}?"
+      },
+      "detail": {
+        "title": "Activity Log"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    }
+  }
+}

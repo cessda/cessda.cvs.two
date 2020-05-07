@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Pridať Agency",
+        "createOrEditLabel": "Pridať alebo upraviť Agency",
+        "notFound": "No Agencies found"
+      },
+      "created": "Bol vytvorený potomok entity Agency s identifikátorom {{ param }}",
+      "updated": "Potomok entity Agency s identifikátorom {{ param }} bol upravený.",
+      "deleted": "Potomok entity Agency s identifikátorom {{ param }} bol vymazaný.",
+      "delete": {
+        "question": "Ste si istý, že chcete vymazať Agency {{ id }}?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    }
+  }
+}

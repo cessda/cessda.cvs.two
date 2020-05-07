@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "agency": {
+      "home": {
+        "title": "Agencies",
+        "createLabel": "Agency erstellen",
+        "createOrEditLabel": "Agency erstellen oder bearbeiten",
+        "notFound": "No Agencies found"
+      },
+      "created": "Agency erstellt mit ID {{ param }}",
+      "updated": "Agency aktualisiert mit ID {{ param }}",
+      "deleted": "Agency gelöscht mit ID {{ param }}",
+      "delete": {
+        "question": "Soll Agency {{ id }} wirklich dauerhaft gelöscht werden?"
+      },
+      "detail": {
+        "title": "Agency"
+      },
+      "name": "Name",
+      "link": "Link",
+      "description": "Description",
+      "logopath": "Logopath",
+      "copyright": "Copyright",
+      "license": "License",
+      "licenseId": "License Id",
+      "uri": "Uri",
+      "canonicalUri": "Canonical Uri",
+      "logo": "Logo",
+      "userAgency": "User Agency"
+    }
+  }
+}

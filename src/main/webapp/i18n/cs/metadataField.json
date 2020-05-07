@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "metadataField": {
+      "home": {
+        "title": "Metadata Fields",
+        "createLabel": "Vytvořit Metadata Field",
+        "createOrEditLabel": "Vytvořit nebo upravit Metadata Field",
+        "notFound": "No Metadata Fields found"
+      },
+      "created": "Byl vytvořen potomek entity Metadata Field s identifikátorem {{ param }}",
+      "updated": "Potomek entity Metadata Field s identifikátorem {{ param }} byl upravený.",
+      "deleted": "Potomek entity Metadata Field s identifikátorem {{ param }} bol smazaný.",
+      "delete": {
+        "question": "Jste si jisti, že chcete smazat Metadata Field {{ id }}?"
+      },
+      "detail": {
+        "title": "Metadata Field"
+      },
+      "metadataKey": "Metadata Key",
+      "description": "Description",
+      "objectType": "Object Type",
+      "metadataValue": "Metadata Value"
+    }
+  }
+}

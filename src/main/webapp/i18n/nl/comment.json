@@ -1,0 +1,26 @@
+{
+  "cvsApp": {
+    "comment": {
+      "home": {
+        "title": "Comments",
+        "createLabel": "Maak een nieuwe Comment",
+        "createOrEditLabel": "Maak of wijzig een Comment",
+        "search": "Search for Comment",
+        "notFound": "No Comments found"
+      },
+      "created": "A new Comment is created with identifier {{ param }}",
+      "updated": "A Comment is updated with identifier {{ param }}",
+      "deleted": "A Comment is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u Comment {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "Comment"
+      },
+      "content": "Content",
+      "userId": "User Id",
+      "dateTime": "Date Time",
+      "version": "Version"
+    }
+  }
+}

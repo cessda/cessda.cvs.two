@@ -1,0 +1,24 @@
+{
+  "cvsApp": {
+    "userAgency": {
+      "home": {
+        "title": "User Agencies",
+        "createLabel": "Maak een nieuwe User Agency",
+        "createOrEditLabel": "Maak of wijzig een User Agency",
+        "notFound": "No User Agencies found"
+      },
+      "created": "A new User Agency is created with identifier {{ param }}",
+      "updated": "A User Agency is updated with identifier {{ param }}",
+      "deleted": "A User Agency is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Bent u zeker dat u User Agency {{ id }} wilt verwijderen?"
+      },
+      "detail": {
+        "title": "User Agency"
+      },
+      "agencyRole": "Agency Role",
+      "language": "Language",
+      "agency": "Agency"
+    }
+  }
+}

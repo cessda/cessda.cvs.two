@@ -1,0 +1,10 @@
+{
+  "cvsApp": {
+    "ObjectType": {
+      "null": "",
+      "AGENCY": "AGENCY",
+      "GROUP": "GROUP",
+      "SYSTEM": "SYSTEM"
+    }
+  }
+}

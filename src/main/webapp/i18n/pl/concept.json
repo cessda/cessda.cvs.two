@@ -1,0 +1,32 @@
+{
+  "cvsApp": {
+    "concept": {
+      "home": {
+        "title": "Concept",
+        "createLabel": "Dodaj Concept",
+        "createOrEditLabel": "Dodaj lub edytuj: Concept",
+        "notFound": "No Concepts found"
+      },
+      "created": "Utworzono nowy obiekt typu Concept z identyfikatorem {{ param }}",
+      "updated": "Uaktualniono obiekt typu Concept z identyfikatorem {{ param }}",
+      "deleted": "Usunięto obiekt typu Concept z identyfikatorem {{ param }}",
+      "delete": {
+        "question": "Czy na pewno chcesz usunąć Concept {{ id }}?"
+      },
+      "detail": {
+        "title": "Concept"
+      },
+      "uri": "Uri",
+      "notation": "Notation",
+      "title": "Title",
+      "definition": "Definition",
+      "codeId": "Code Id",
+      "previousConcept": "Previous Concept",
+      "slConcept": "Sl Concept",
+      "parent": "Parent",
+      "position": "Position",
+      "conceptChange": "Concept Change",
+      "version": "Version"
+    }
+  }
+}

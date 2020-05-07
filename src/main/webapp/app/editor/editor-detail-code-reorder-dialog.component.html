@@ -1,0 +1,60 @@
+<form name="reorderForm" (ngSubmit)="confirmReorder()">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>Reorder code</span>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <p>
+            <span>Please select a position where the selected codes will be moved, by clicking one of the code on right column</span><br/>
+            <small>Note: Drag and drop between codes are still not yet supported</small>
+        </p>
+
+        <div class="row-content">
+            <div class="row-details">
+                <div class="row-detail form-group">
+                    <div class="tree-box">
+                        <div class="head">Selected codes</div>
+                        <jhi-tree-reorder [parentNotation]="" [conceptList]="conceptsToMove" [level]="0"></jhi-tree-reorder>
+                    </div>
+                </div>
+                <div class="row-detail form-group">
+                    <div class="tree-box">
+                        <div class="head">Code List</div>
+                        <jhi-tree-reorder [parentNotation]="" [conceptList]="conceptsToPlace" [level]="0"></jhi-tree-reorder>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row-content">
+            <div class="row-details">
+                <div class="row-detail form-group">
+                    <div class="btn-group btn-group-toggle" ngbRadioGroup name="insert-choice" [(ngModel)]="insertMode" (ngModelChange)="updateTreePreview($event)">
+                        <label ngbButtonLabel class="btn-primary">
+                            <input ngbButton type="radio" value="after"> Insert after
+                        </label>
+                        <label ngbButtonLabel class="btn-primary">
+                            <input ngbButton type="radio" value="before"> Insert before
+                        </label>
+                        <label ngbButtonLabel class="btn-primary">
+                            <input ngbButton type="radio" value="child"> Insert as child
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+        </button>
+        <button type="submit" id="save-new-cv" [disabled]="!selectedConceptToPlace || isSaving" class="btn btn-primary">
+            <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

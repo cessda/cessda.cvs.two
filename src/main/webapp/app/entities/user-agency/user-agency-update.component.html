@@ -1,0 +1,80 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-user-agency-heading" jhiTranslate="cvsApp.userAgency.home.createOrEditLabel">Create or edit a User Agency</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.userAgency.agencyRole" for="field_agencyRole">Agency Role</label>
+                    <select class="form-control" name="agencyRole" formControlName="agencyRole" id="field_agencyRole">
+                        <option value="ADMIN">{{ 'cvsApp.AgencyRole.ADMIN' | translate }}</option>
+                        <option value="VIEW">{{ 'cvsApp.AgencyRole.VIEW' | translate }}</option>
+                        <option value="CONTRIBUTOR_SL">{{ 'cvsApp.AgencyRole.CONTRIBUTOR_SL' | translate }}</option>
+                        <option value="CONTRIBUTOR_TL">{{ 'cvsApp.AgencyRole.CONTRIBUTOR_TL' | translate }}</option>
+                        <option value="ADMIN_SL">{{ 'cvsApp.AgencyRole.ADMIN_SL' | translate }}</option>
+                        <option value="ADMIN_TL">{{ 'cvsApp.AgencyRole.ADMIN_TL' | translate }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.userAgency.language" for="field_language">Language</label>
+                    <select class="form-control" name="language" formControlName="language" id="field_language">
+                        <option value="ALBANIAN">{{ 'cvsApp.Language.ALBANIAN' | translate }}</option>
+                        <option value="BOSNIAN">{{ 'cvsApp.Language.BOSNIAN' | translate }}</option>
+                        <option value="BULGARIAN">{{ 'cvsApp.Language.BULGARIAN' | translate }}</option>
+                        <option value="CROATIAN">{{ 'cvsApp.Language.CROATIAN' | translate }}</option>
+                        <option value="CZECH">{{ 'cvsApp.Language.CZECH' | translate }}</option>
+                        <option value="DANISH">{{ 'cvsApp.Language.DANISH' | translate }}</option>
+                        <option value="DUTCH">{{ 'cvsApp.Language.DUTCH' | translate }}</option>
+                        <option value="ENGLISH">{{ 'cvsApp.Language.ENGLISH' | translate }}</option>
+                        <option value="ESTONIAN">{{ 'cvsApp.Language.ESTONIAN' | translate }}</option>
+                        <option value="FINNISH">{{ 'cvsApp.Language.FINNISH' | translate }}</option>
+                        <option value="FRENCH">{{ 'cvsApp.Language.FRENCH' | translate }}</option>
+                        <option value="GERMAN">{{ 'cvsApp.Language.GERMAN' | translate }}</option>
+                        <option value="GREEK">{{ 'cvsApp.Language.GREEK' | translate }}</option>
+                        <option value="HUNGARIAN">{{ 'cvsApp.Language.HUNGARIAN' | translate }}</option>
+                        <option value="ITALIAN">{{ 'cvsApp.Language.ITALIAN' | translate }}</option>
+                        <option value="JAPANESE">{{ 'cvsApp.Language.JAPANESE' | translate }}</option>
+                        <option value="LITHUANIAN">{{ 'cvsApp.Language.LITHUANIAN' | translate }}</option>
+                        <option value="MACEDONIAN">{{ 'cvsApp.Language.MACEDONIAN' | translate }}</option>
+                        <option value="NORWEGIAN">{{ 'cvsApp.Language.NORWEGIAN' | translate }}</option>
+                        <option value="POLISH">{{ 'cvsApp.Language.POLISH' | translate }}</option>
+                        <option value="PORTUGUESE">{{ 'cvsApp.Language.PORTUGUESE' | translate }}</option>
+                        <option value="ROMANIAN">{{ 'cvsApp.Language.ROMANIAN' | translate }}</option>
+                        <option value="RUSSIAN">{{ 'cvsApp.Language.RUSSIAN' | translate }}</option>
+                        <option value="SERBIAN">{{ 'cvsApp.Language.SERBIAN' | translate }}</option>
+                        <option value="SLOVAK">{{ 'cvsApp.Language.SLOVAK' | translate }}</option>
+                        <option value="SLOVENIAN">{{ 'cvsApp.Language.SLOVENIAN' | translate }}</option>
+                        <option value="SPANISH">{{ 'cvsApp.Language.SPANISH' | translate }}</option>
+                        <option value="SWEDISH">{{ 'cvsApp.Language.SWEDISH' | translate }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="cvsApp.userAgency.agency" for="field_agency">Agency</label>
+                    <select class="form-control" id="field_agency" name="agency" formControlName="agencyId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="agencyOption.id" *ngFor="let agencyOption of agencies; trackBy: trackById">{{ agencyOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

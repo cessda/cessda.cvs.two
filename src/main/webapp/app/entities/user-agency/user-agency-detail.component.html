@@ -1,0 +1,40 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="userAgency">
+            <h2><span jhiTranslate="cvsApp.userAgency.detail.title">User Agency</span> {{ userAgency.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="cvsApp.userAgency.agencyRole">Agency Role</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'cvsApp.AgencyRole.' + userAgency.agencyRole }}">{{ userAgency.agencyRole }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.userAgency.language">Language</span></dt>
+                <dd>
+                    <span jhiTranslate="{{ 'cvsApp.Language.' + userAgency.language }}">{{ userAgency.language }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.userAgency.agency">Agency</span></dt>
+                <dd>
+                    <div *ngIf="userAgency.agencyId">
+                        <a [routerLink]="['/agency', userAgency.agencyId, 'view']">{{ userAgency.agencyId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/user-agency', userAgency.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

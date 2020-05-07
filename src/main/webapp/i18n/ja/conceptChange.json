@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "conceptChange": {
+      "home": {
+        "title": "ConceptChanges",
+        "createLabel": "Concept Change を追加",
+        "createOrEditLabel": "Concept Changeを追加または編集",
+        "notFound": "No Concept Changes found"
+      },
+      "created": "A new Concept Change is created with identifier {{ param }}",
+      "updated": "A Concept Change is updated with identifier {{ param }}",
+      "deleted": "A Concept Change is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Concept Change {{ id }}を削除してもよろしいですか？"
+      },
+      "detail": {
+        "title": "Concept Change"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "concept": "Concept"
+    }
+  }
+}

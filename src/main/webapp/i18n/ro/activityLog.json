@@ -1,0 +1,25 @@
+{
+  "cvsApp": {
+    "activityLog": {
+      "home": {
+        "title": "Activity Logs",
+        "createLabel": "Creeare o nouă entitate Activity Log",
+        "createOrEditLabel": "Creeare sau editare Activity Log",
+        "notFound": "No Activity Logs found"
+      },
+      "created": "A fost creată o nouă entitate Activity Log cu identificatorul {{ param }}",
+      "updated": "Activity Log cu identificatorul {{ param }} a fost actualizată",
+      "deleted": "Activity Log cu identificatorul {{ param }} a fost ștearsă",
+      "delete": {
+        "question": "Sunteți sigur că doriți să ștergeți Activity Log {{ id }}?"
+      },
+      "detail": {
+        "title": "Activity Log"
+      },
+      "changeType": "Change Type",
+      "description": "Description",
+      "userId": "User Id",
+      "date": "Date"
+    }
+  }
+}

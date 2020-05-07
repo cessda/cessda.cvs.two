@@ -1,0 +1,64 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="concept">
+            <h2><span jhiTranslate="cvsApp.concept.detail.title">Concept</span> {{ concept.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="cvsApp.concept.uri">Uri</span></dt>
+                <dd>
+                    <span>{{ concept.uri }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.concept.notation">Notation</span></dt>
+                <dd>
+                    <span>{{ concept.notation }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.concept.title">Title</span></dt>
+                <dd>
+                    <span>{{ concept.title }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.concept.definition">Definition</span></dt>
+                <dd>
+                    <span>{{ concept.definition }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.concept.previousConcept">Previous Concept</span></dt>
+                <dd>
+                    <span>{{ concept.previousConcept }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.concept.slConcept">Sl Concept</span></dt>
+                <dd>
+                    <span>{{ concept.slConcept }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.concept.parent">Parent</span></dt>
+                <dd>
+                    <span>{{ concept.parent }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.concept.position">Position</span></dt>
+                <dd>
+                    <span>{{ concept.position }}</span>
+                </dd>
+                <dt><span jhiTranslate="cvsApp.concept.version">Version</span></dt>
+                <dd>
+                    <div *ngIf="concept.versionId">
+                        <a [routerLink]="['/version', concept.versionId, 'view']">{{ concept.versionId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/concept', concept.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

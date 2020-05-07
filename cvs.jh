@@ -1,0 +1,301 @@
+enum AgencyRole {
+    ADMIN,
+    VIEW,
+    CONTRIBUTOR_SL,
+    CONTRIBUTOR_TL,
+    ADMIN_SL,
+    ADMIN_TL
+}
+enum ItemType{
+	SL, TL
+}
+enum Language{
+	ALBANIAN,
+	BOSNIAN,
+	BULGARIAN,
+	CROATIAN,
+	CZECH,
+	DANISH,
+	DUTCH,
+	ENGLISH,
+	ESTONIAN,
+	FINNISH,
+	FRENCH,
+	GERMAN,
+	GREEK,
+	HUNGARIAN,
+	ITALIAN,
+	JAPANESE,
+	LITHUANIAN,
+	MACEDONIAN,
+	NORWEGIAN,
+	POLISH,
+	PORTUGUESE,
+	ROMANIAN,
+	RUSSIAN,
+	SERBIAN,
+	SLOVAK,
+	SLOVENIAN,
+	SPANISH,
+	SWEDISH
+}
+enum ObjectType {
+    AGENCY, 
+    GROUP, 
+    SYSTEM
+}
+enum ResolverType {
+    DOI, URN
+}
+enum ResourceType {
+    VOCABULARY
+}
+enum Status{
+	DRAFT,
+    REVIEW,
+    PUBLISHED,
+    PUBLISHED_RESTRICT, 
+    WITHDRAWN
+}
+entity Vocabulary {
+	status String required maxlength(20)
+	uri String maxlength(240)
+    notation String required maxlength(240)
+    versionNumber String required maxlength(20)
+    initialPublication Long
+    previousPublication Long
+    archived Boolean
+    withdrawn Boolean
+    discoverable Boolean
+    sourceLanguage String required maxlength(20)
+    agencyId Long required
+    agencyName String required
+    agencyLogo String
+    publicationDate LocalDate
+    lastModified ZonedDateTime
+    notes TextBlob
+    
+    versionSq String maxlength(20)
+    titleSq TextBlob
+	definitionSq TextBlob
+    
+    versionBs String maxlength(20)
+    titleBs TextBlob
+	definitionBs TextBlob
+    
+  	versionBg String maxlength(20)
+    titleBg TextBlob
+	definitionBg TextBlob
+    
+    versionHr String maxlength(20)
+    titleHr TextBlob
+	definitionHr TextBlob
+    
+    versionCs String maxlength(20)
+    titleCs TextBlob
+	definitionCs TextBlob
+    
+    versionDa String maxlength(20)
+    titleDa TextBlob
+	definitionDa TextBlob
+    
+    versionNl String maxlength(20)
+    titleNl TextBlob
+	definitionNl TextBlob
+    
+    versionEn String maxlength(20)
+    titleEn TextBlob
+	definitionEn TextBlob
+    
+    versionEt String maxlength(20)
+    titleEt TextBlob
+	definitionEt TextBlob
+    
+    versionFi String maxlength(20)
+    titleFi TextBlob
+	definitionFi TextBlob
+    
+    versionFr String maxlength(20)
+    titleFr TextBlob
+	definitionFr TextBlob
+    
+    versionDe String maxlength(20)
+    titleDe TextBlob
+	definitionDe TextBlob
+    
+    versionEl String maxlength(20)
+    titleEl TextBlob
+	definitionEl TextBlob
+    
+    versionHu String maxlength(20)
+    titleHu TextBlob
+	definitionHu TextBlob
+    
+    versionIt String maxlength(20)
+    titleIt TextBlob
+	definitionIt TextBlob
+    
+    versionJa String maxlength(20)
+    titleJa TextBlob
+	definitionJa TextBlob
+    
+    versionLt String maxlength(20)
+    titleLt TextBlob
+	definitionLt TextBlob
+    
+    versionMk String maxlength(20)
+    titleMk TextBlob
+	definitionMk TextBlob
+    
+    versionNo String maxlength(20)
+    titleNo TextBlob
+	definitionNo TextBlob
+    
+    versionPl String maxlength(20)
+    titlePl TextBlob
+	definitionPl TextBlob
+    
+    versionPt String maxlength(20)
+    titlePt TextBlob
+	definitionPt TextBlob
+    
+    versionRo String maxlength(20)
+    titleRo TextBlob
+	definitionRo TextBlob
+    
+    versionRu String maxlength(20)
+    titleRu TextBlob
+	definitionRu TextBlob
+    
+    versionSr String maxlength(20)
+    titleSr TextBlob
+	definitionSr TextBlob
+    
+    versionSk String maxlength(20)
+    titleSk TextBlob
+	definitionSk TextBlob
+    
+    versionSl String maxlength(20)
+    titleSl TextBlob
+	definitionSl TextBlob
+    
+    versionEs String maxlength(20)
+    titleEs TextBlob
+	definitionEs TextBlob
+    
+    versionSv String maxlength(20)
+    titleSv TextBlob
+	definitionSv TextBlob
+}
+
+entity Version{
+	status String required maxlength(20)
+    itemType String required maxlength(20)
+    language String maxlength(20)
+    publicationDate LocalDate
+    lastModified ZonedDateTime
+    number String maxlength(20)
+    uri String
+    canonicalUri String
+    uriSl String
+    notation String maxlength(240)
+    title TextBlob
+	definition TextBlob
+    previousVersion Long
+    initialVersion Long
+    creator Long
+    publisher Long
+    notes TextBlob
+    versionNotes TextBlob
+    versionChanges TextBlob
+    discussionNotes TextBlob
+    license String
+    licenseId Long
+    citation TextBlob
+    ddiUsage TextBlob
+    translateAgency String
+    translateAgencyLink String
+}
+
+entity Concept{
+	uri String
+	notation String required maxlength(240)
+    title TextBlob
+	definition TextBlob
+    previousConcept Long
+    slConcept Long
+    parent String maxlength(240)
+    position Integer
+}
+
+entity Licence{
+	name String required maxlength(255)
+    link String maxlength(255)
+    logoLink String maxlength(255)
+    abbr String maxlength(255)
+}
+
+entity MetadataField{
+	metadataKey String required maxlength(240)
+    description TextBlob
+    objectType ObjectType
+}
+
+entity MetadataValue{
+    value TextBlob
+    objectType ObjectType
+    objectId Long
+}
+
+entity Resolver{
+	resourceId String
+    resourceType ResourceType
+    resourceUrl String required
+    resolverType ResolverType
+    resolverURI String required
+}
+
+entity VocabularyChange{
+	vocabularyId Long
+    versionId Long
+    changeType String required maxlength(60)
+    description TextBlob
+    userId Long
+    userName String maxlength(120)
+    date LocalDate
+}
+
+entity Agency{
+	name String maxlength(240),
+    link String maxlength(255),
+    description TextBlob,
+    logopath String maxlength(255),
+    license String maxlength(240),
+    licenseId Long,
+    uri String maxlength(255),
+    canonicalUri String maxlength(255)
+}
+
+entity UserAgency{
+	agencyRole AgencyRole,
+    language Language
+}
+
+entity Comment {
+  content TextBlob,
+  userId Long,
+  dateTime ZonedDateTime
+}
+
+relationship OneToMany {
+    MetadataField{metadataValue} to MetadataValue{metadataField}
+    Vocabulary{version} to Version{vocabulary} 
+	Version{concept} to Concept{version} 
+    Version{comment} to Comment{version} 
+    Agency{userAgency} to UserAgency{agency}
+}
+
+dto * with mapstruct
+service all with serviceImpl
+paginate all with pagination
+search Vocabulary with elasticsearch

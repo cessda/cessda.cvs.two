@@ -1,0 +1,24 @@
+{
+  "cvsApp": {
+    "licence": {
+      "home": {
+        "title": "Licences",
+        "createLabel": "Genera un nuovo Licence",
+        "createOrEditLabel": "Genera o modifica un Licence",
+        "notFound": "No Licences found"
+      },
+      "created": "&Egrave; stato generato un nuovo Licence con identificatore {{ param }}",
+      "updated": "&Egrave; stato aggiornato Licence identificato da {{ param }}",
+      "deleted": "&Egrave; stato eliminato Licence con identificatore {{ param }}",
+      "delete": {
+        "question": "Sei sicuro di volere eliminare Licence {{ id }}?"
+      },
+      "detail": {
+        "title": "Licence"
+      },
+      "name": "Name",
+      "link": "Link",
+      "logoLink": "Logo Link"
+    }
+  }
+}
