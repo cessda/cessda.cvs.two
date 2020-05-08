@@ -22,6 +22,7 @@
         "vocabularyChange": "Vocabulary Change",
         "agency": "Agency",
         "userAgency": "User Agency",
+        "comment": "Comments",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

@@ -14,7 +14,7 @@ import { RouteEventsService } from 'app/shared';
   selector: 'jhi-home-detail',
   templateUrl: './home-detail.component.html'
 })
-export class HomeDetailComponent implements OnInit, AfterViewChecked {
+export class HomeDetailComponent implements OnInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
   @ViewChild('versionPanel', { static: true }) versionPanel!: ElementRef;
   @ViewChild('identityPanel', { static: true }) identityPanel!: ElementRef;
@@ -30,8 +30,6 @@ export class HomeDetailComponent implements OnInit, AfterViewChecked {
   isUsageCollapse = true;
   isLicenseCollapse = true;
   isExportCollapse = true;
-
-  isAfterViewCheckedDone = false;
 
   isCurrentVersionHistoryOpen = true;
 
@@ -214,18 +212,19 @@ export class HomeDetailComponent implements OnInit, AfterViewChecked {
     });
 
     this.detailForm.patchValue({ tabSelected: this.initialTabSelected });
-  }
 
-  ngAfterViewChecked(): void {
-    if (!this.isAfterViewCheckedDone && this.currentSelectedCode !== '') {
-      const element = document.querySelector('#code_' + this.currentSelectedCode);
-      element!.scrollIntoView({ behavior: 'smooth' });
-      element!.classList.add('highlight');
-      this.isAfterViewCheckedDone = true;
+    if (this.currentSelectedCode !== '') {
       this._ngZone.runOutsideAngular(() => {
-        window.setTimeout(() => {
-          element!.classList.remove('highlight');
-        }, 5000);
+        setTimeout(() => {
+          const element = document.querySelector('#code_' + this.currentSelectedCode);
+          element!.scrollIntoView({ behavior: 'smooth' });
+          element!.classList.add('highlight');
+          this._ngZone.runOutsideAngular(() => {
+            window.setTimeout(() => {
+              element!.classList.remove('highlight');
+            }, 5000);
+          });
+        }, 1500);
       });
     }
   }

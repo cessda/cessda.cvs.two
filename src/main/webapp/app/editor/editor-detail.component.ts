@@ -27,7 +27,7 @@ import { EditorDetailCvNewVersionDialogComponent } from 'app/editor/editor-detai
   templateUrl: './editor-detail.component.html',
   styleUrls: ['editor.scss']
 })
-export class EditorDetailComponent implements OnInit, AfterViewChecked, OnDestroy {
+export class EditorDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
   @ViewChild('versionPanel', { static: true }) versionPanel!: ElementRef;
   @ViewChild('identityPanel', { static: true }) identityPanel!: ElementRef;
@@ -50,7 +50,6 @@ export class EditorDetailComponent implements OnInit, AfterViewChecked, OnDestro
   isExportCollapse = true;
   isCvActionCollapse = false;
   isCodeActionCollapse = false;
-  isAfterViewCheckedDone = false;
   isCurrentVersionHistoryOpen = true;
   enableAddTl = false;
 
@@ -335,6 +334,21 @@ export class EditorDetailComponent implements OnInit, AfterViewChecked, OnDestro
     this.detailForm.patchValue({ tabSelected: this.initialTabSelected });
 
     this.subscribeSelectConceptEvent();
+
+    if (this.currentSelectedCode !== '') {
+      this._ngZone.runOutsideAngular(() => {
+        setTimeout(() => {
+          const element = document.querySelector('#code_' + this.currentSelectedCode);
+          element!.scrollIntoView({ behavior: 'smooth' });
+          element!.classList.add('highlight');
+          this._ngZone.runOutsideAngular(() => {
+            window.setTimeout(() => {
+              element!.classList.remove('highlight');
+            }, 5000);
+          });
+        }, 1500);
+      });
+    }
   }
 
   private subscribeSelectConceptEvent(): void {
@@ -344,20 +358,6 @@ export class EditorDetailComponent implements OnInit, AfterViewChecked, OnDestro
     this.eventSubscriber2 = this.eventManager.subscribe('deselectConcept', () => {
       this.concept = null;
     });
-  }
-
-  ngAfterViewChecked(): void {
-    if (!this.isAfterViewCheckedDone && this.currentSelectedCode !== '') {
-      const element = document.querySelector('#code_' + this.currentSelectedCode);
-      element!.scrollIntoView({ behavior: 'smooth' });
-      element!.classList.add('highlight');
-      this.isAfterViewCheckedDone = true;
-      this._ngZone.runOutsideAngular(() => {
-        window.setTimeout(() => {
-          element!.classList.remove('highlight');
-        }, 3000);
-      });
-    }
   }
 
   byteSize(base64String: string): string {
