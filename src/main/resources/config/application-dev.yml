@@ -136,5 +136,5 @@ jhipster:
 # ===================================================================
 
 application:
-  static-file-path: /home/sigit/git/cvs-manager/src/main/webapp
-  vocab-json-path: /home/sigit/git/cvs-manager/src/main/webapp/content/vocabularies/
+  static-file-path: /home/sigit/git/cvs/src/main/webapp
+  vocab-json-path: /home/sigit/git/cvs/src/main/webapp/content/vocabularies/

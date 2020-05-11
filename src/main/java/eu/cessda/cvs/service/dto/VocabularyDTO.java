@@ -1398,6 +1398,73 @@ public class VocabularyDTO implements Serializable {
         return this;
     }
 
+    public String getVersionByLanguage( String languageIso ) {
+        return getVersionByLanguage(Language.getByIso(languageIso ));
+    }
+
+    public String getVersionByLanguage( Language language ) {
+        switch (language) {
+            case CZECH:
+                return versionCs;
+            case DANISH:
+                return versionDa;
+            case DUTCH:
+                return versionNl;
+            case ENGLISH:
+                return versionEn;
+            case ESTONIAN:
+                return versionEt;
+            case FINNISH:
+                return versionFi;
+            case FRENCH:
+                return versionFr;
+            case GERMAN:
+                return versionDe;
+            case GREEK:
+                return versionEl;
+            case HUNGARIAN:
+                return versionHu;
+            case ITALIAN:
+                return versionIt;
+            case JAPANESE:
+                return versionJa;
+            case LITHUANIAN:
+                return versionLt;
+            case NORWEGIAN:
+                return versionNo;
+            case PORTUGUESE:
+                return versionPt;
+            case ROMANIAN:
+                return versionRo;
+            case SLOVAK:
+                return versionSk;
+            case SLOVENIAN:
+                return versionSl;
+            case SPANISH:
+                return versionEs;
+            case SWEDISH:
+                return versionSv;
+            case ALBANIAN:
+                return versionSq;
+            case BOSNIAN:
+                return versionBs;
+            case BULGARIAN:
+                return versionBg;
+            case CROATIAN:
+                return versionHr;
+            case MACEDONIAN:
+                return versionMk;
+            case POLISH:
+                return versionPl;
+            case RUSSIAN:
+                return versionRu;
+            case SERBIAN:
+                return versionSr;
+            default:
+                return null;
+        }
+    }
+
     public String getTitleByLanguage( String languageIso ) {
         return getTitleByLanguage(Language.getByIso(languageIso ));
     }
@@ -1554,6 +1621,10 @@ public class VocabularyDTO implements Serializable {
                 setTitleEn(title);
                 setDefinitionEn(definition);
                 break;
+            case ESTONIAN:
+                setTitleEt(title);
+                setDefinitionEt(definition);
+                break;
             case FINNISH:
                 setTitleFi(title);
                 setDefinitionFi(definition);
@@ -1577,6 +1648,10 @@ public class VocabularyDTO implements Serializable {
             case ITALIAN:
                 setTitleIt(title);
                 setDefinitionIt(definition);
+                break;
+            case JAPANESE:
+                setTitleJa(title);
+                setDefinitionJa(definition);
                 break;
             case LITHUANIAN:
                 setTitleLt(title);
@@ -1666,6 +1741,9 @@ public class VocabularyDTO implements Serializable {
             case ENGLISH:
                 setVersionEn(versionNumber);
                 break;
+            case ESTONIAN:
+                setVersionEt(versionNumber);
+                break;
             case FINNISH:
                 setVersionFi(versionNumber);
                 break;
@@ -1683,6 +1761,9 @@ public class VocabularyDTO implements Serializable {
                 break;
             case ITALIAN:
                 setVersionIt(versionNumber);
+                break;
+            case JAPANESE:
+                setVersionJa(versionNumber);
                 break;
             case LITHUANIAN:
                 setVersionLt(versionNumber);
@@ -1740,19 +1821,18 @@ public class VocabularyDTO implements Serializable {
     }
 
     public void clearContent() {
-        setLanguages( null );
-        setLanguagesPublished( null );
-        setStatuses( null );
         setVersionCs(null);
         setVersionDa(null);
         setVersionNl(null);
         setVersionEn(null);
+        setVersionEt(null);
         setVersionFi(null);
         setVersionFr(null);
         setVersionDe(null);
         setVersionEl(null);
         setVersionHu(null);
         setVersionIt(null);
+        setVersionJa(null);
         setVersionLt(null);
         setVersionNo(null);
         setVersionPt(null);
@@ -1769,6 +1849,9 @@ public class VocabularyDTO implements Serializable {
         setVersionPl(null);
         setVersionRu(null);
         setVersionSr(null);
+        setLanguages( null );
+        setLanguagesPublished( null );
+        setStatuses( null );
         setTitleCs(null);
         setDefinitionCs(null);
         setTitleDa(null);
@@ -1777,6 +1860,8 @@ public class VocabularyDTO implements Serializable {
         setDefinitionNl(null);
         setTitleEn(null);
         setDefinitionEn(null);
+        setTitleEt(null);
+        setDefinitionEt(null);
         setTitleFi(null);
         setDefinitionFi(null);
         setTitleFr(null);
@@ -1789,6 +1874,8 @@ public class VocabularyDTO implements Serializable {
         setDefinitionHu(null);
         setTitleIt(null);
         setDefinitionIt(null);
+        setTitleJa(null);
+        setDefinitionJa(null);
         setTitleLt(null);
         setDefinitionLt(null);
         setTitleNo(null);

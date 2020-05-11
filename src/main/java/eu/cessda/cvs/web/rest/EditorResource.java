@@ -33,9 +33,9 @@ public class EditorResource {
 
     private final Logger log = LoggerFactory.getLogger(EditorResource.class);
 
-    private static final String ENTITY_VOCABULARY_NAME = "Vocabulary";
-    private static final String ENTITY_VERSION_NAME = "Version";
-    private static final String ENTITY_CODE_NAME = "Code";
+    private static final String ENTITY_VOCABULARY_NAME = "vocabulary";
+    private static final String ENTITY_VERSION_NAME = "version";
+    private static final String ENTITY_CODE_NAME = "code";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -100,7 +100,7 @@ public class EditorResource {
      * @throws URISyntaxException
      */
     @PostMapping("/editors/vocabularies/new-version/{id}")
-    public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id){
         log.debug("REST request to create new Vocabulary with version ID: {}", id);
         VersionDTO result = vocabularyService.createNewVersion( id );
         return ResponseEntity.ok()
@@ -231,15 +231,19 @@ public class EditorResource {
         // first check version and determine delete strategy
         VersionDTO versionDTO = versionService.findOne(id)
             .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + id + " to be deleted" ));
+        VersionDTO finalVersionDTO = versionDTO;
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
-            .orElseThrow( () -> new EntityNotFoundException("Unable to find vocabulary with Id " + versionDTO.getVocabularyId() ));
+            .orElseThrow( () -> new EntityNotFoundException("Unable to find vocabulary with Id " + finalVersionDTO.getVocabularyId() ));
+        // replace the equal Version object with the one from VocabularyDto
+        versionDTO = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals( finalVersionDTO.getId())).findFirst()
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + finalVersionDTO.getId()  ));
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CV,
             vocabularyDTO.getAgencyId(), ActionType.DELETE_CV.getAgencyRoles(), versionDTO.getLanguage());
 
         if( versionDTO.getItemType().equals(ItemType.TL.toString()) ){
-            versionService.delete( versionDTO.getId() );
+            deleteTlVocabulary(versionDTO, vocabularyDTO);
         } else {
             if( versionDTO.isInitialVersion() ) {
                 // delete whole vocabulary
@@ -251,6 +255,33 @@ public class EditorResource {
             }
         }
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_VERSION_NAME, id.toString())).build();
+    }
+
+    private void deleteTlVocabulary(VersionDTO versionDTO, VocabularyDTO vocabularyDTO) {
+        boolean isTlPublished = versionDTO.getStatus().equals( Status.PUBLISHED.toString());
+        vocabularyDTO.removeVersion( versionDTO);
+        if( isTlPublished ) {
+            // if published update vocabulary
+            if( versionDTO.isInitialVersion() ) {
+                vocabularyDTO.setTitleDefinition(null, null, versionDTO.getLanguage());
+                vocabularyDTO.setVersionByLanguage(versionDTO.getLanguage(), null );
+            } else {
+                // check if there is previous version
+                VersionDTO versionPrevDTO = null;
+                if ( versionDTO.getPreviousVersion() != null )
+                    versionPrevDTO = versionService.findOne(versionDTO.getPreviousVersion()).orElse(null);
+                if( versionPrevDTO != null) {
+                    vocabularyDTO.setTitleDefinition(versionPrevDTO.getTitle(), versionPrevDTO.getDefinition(), versionPrevDTO.getLanguage());
+                    vocabularyDTO.setVersionByLanguage(versionPrevDTO.getLanguage(), versionPrevDTO.getNumber() );
+                }
+            }
+        }
+        versionService.delete( versionDTO.getId() );
+        vocabularyDTO = vocabularyService.save(vocabularyDTO);
+        vocabularyService.indexEditor( vocabularyDTO );
+        if( isTlPublished ) {
+            vocabularyService.indexPublished(vocabularyDTO );
+        }
     }
 
     /**

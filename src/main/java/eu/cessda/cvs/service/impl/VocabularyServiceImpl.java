@@ -85,6 +85,8 @@ public class VocabularyServiceImpl implements VocabularyService {
     public static final String JSON_FORMAT = ".json";
     public static final String UNABLE_FIND_VOCABULARY = "Unable to find vocabulary with Id ";
     public static final String UNABLE_FIND_VERSION = "Unable to find version with Id ";
+    public static final String LATEST = "latest";
+    public static final String ALL = "all";
     private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
 
     private static final String CODE_PATH = "codes";
@@ -547,7 +549,10 @@ public class VocabularyServiceImpl implements VocabularyService {
         vocabularyEditorSearchRepository.deleteById(id);
         vocabularyPublishSearchRepository.deleteById(id);
         // delete files if any
-        String path = applicationProperties.getVocabJsonPath() + notation;
+        deleteDirectoryAndContent(applicationProperties.getVocabJsonPath() + notation);
+    }
+
+    private void deleteDirectoryAndContent(String path) {
         File dirPath = new File( path );
         if( dirPath.isDirectory() ) {
             try {
@@ -606,7 +611,11 @@ public class VocabularyServiceImpl implements VocabularyService {
             throw new IllegalArgumentException("Error version number  could not be empty or null");
         }
         VocabularyDTO vocabulary = getByNotation(notation);
-        if( slVersionNumber.equals( "latest" ))
+
+        if( slVersionNumber.equals(ALL))
+            return vocabulary;
+
+        if( slVersionNumber.equals(LATEST))
             slVersionNumber = vocabulary.getVersionNumber();
 
         Set<VersionDTO> versionDTOS = new LinkedHashSet<>();
@@ -1067,6 +1076,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     @Override
     public void generateJsonAllVocabularyPublish() {
+        // remove all static JSON files on vocabulary (delete entire and including vocabulary directory)
+        deleteDirectoryAndContent(applicationProperties.getVocabJsonPath());
+
         List<VocabularyDTO> vocabularyDTOS = findAll();
         generateJsonVocabularyPublish( vocabularyDTOS.toArray(new VocabularyDTO[0]) );
     }
@@ -1085,18 +1097,28 @@ public class VocabularyServiceImpl implements VocabularyService {
         for (VocabularyDTO vocabulary : vocabularies) {
             // get all published versions (sorted by SL and number)
             List<VersionDTO> versions = versionService.findAllPublishedByVocabulary(vocabulary.getId());
+            // skip vocabulary without published version
+            if( versions.isEmpty() )
+                continue;
             // remove unused attributes, and add the required attribute for vocabulary
             updateVocabularyContentForJsonfy(agencyMap, vocabulary);
             // put into map based on versionSL, the SL need to be listed in beginning (sorted first)
             Map<String, List<VersionDTO>> slNumberVersionsMap = new LinkedHashMap<>();
+            // add special Map for all latest version across SL version
+            // just remember that the versions are always already sorted from latest to oldest
+            List<VersionDTO> latestVersionsAcrossSl = new ArrayList<>();
+            Set<String> latestVersionsLangs = new HashSet<>();
+            slNumberVersionsMap.put( LATEST, latestVersionsAcrossSl);
             for (VersionDTO version : versions) {
-                prepareVersionAndConceptForJsonfy(licenceMap, vocabulary, slNumberVersionsMap, version);
+                prepareVersionAndConceptForJsonfy(licenceMap, vocabulary, slNumberVersionsMap, version, latestVersionsAcrossSl, latestVersionsLangs);
             }
             generateJsonFile(mapper, vocabulary, slNumberVersionsMap);
         }
     }
 
-    private void prepareVersionAndConceptForJsonfy(Map<Long, Licence> licenceMap, VocabularyDTO vocabulary, Map<String, List<VersionDTO>> slNumberVersionsMap, VersionDTO version) {
+    private void prepareVersionAndConceptForJsonfy(Map<Long, Licence> licenceMap, VocabularyDTO vocabulary,
+                                                   Map<String, List<VersionDTO>> slNumberVersionsMap, VersionDTO version,
+                                                   List<VersionDTO> latestVersionsAcrossSl, Set<String> latestVersionsLangs) {
         // get concepts and sorted by position
         List<ConceptDTO> concepts = conceptService.findByVersion(version.getId());
         // remove unused attributes, and add the required attribute for version
@@ -1129,6 +1151,11 @@ public class VocabularyServiceImpl implements VocabularyService {
 
             versionDTOs.add( version );
         }
+        // collect latest version accross SL
+        if( !latestVersionsLangs.contains( version.getLanguage()) || version.getNumber().startsWith( vocabulary.getVersionNumber() )) {
+            latestVersionsAcrossSl.add( version );
+            latestVersionsLangs.add( version.getLanguage() );
+        }
     }
 
     private void updateConceptContentForJsonfy(List<ConceptDTO> concepts) {
@@ -1155,7 +1182,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     private void updateVocabularyContentForJsonfy(Map<Long, Agency> agencyMap, VocabularyDTO vocabulary) {
-        // clear vocabulary content, since it is not needed
+        // clear vocabulary content (title, definition), since it is not needed
         vocabulary.clearContent();
         //update data remove unused and add more agency information
         vocabulary.setDiscoverable( null );
@@ -1168,8 +1195,9 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     private void addVersionHistories(VocabularyDTO vocabulary, VersionDTO version) {
-        if( version.isInitialVersion())
-            return;
+        // enable this after the data is corrected
+//        if( version.isInitialVersion())
+//            return;
         List<VersionDTO> olderVersions = versionService.findOlderPublishedByVocabularyLanguageId(vocabulary.getId(), version.getLanguage(), version.getId());
         List<Map<String,String>> olderVersionHistories = new ArrayList<>();
         for (VersionDTO olderVersion : olderVersions) {
@@ -1184,34 +1212,35 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     private void generateJsonFile(ObjectMapper mapper, VocabularyDTO vocabulary, Map<String, List<VersionDTO>> slNumberVersionsMap) {
-        int counter = 0;
         for (Map.Entry<String, List<VersionDTO>> entry : slNumberVersionsMap.entrySet()) {
-            counter++;
+            String entryKey = entry.getKey();
             vocabulary.setVersions( new LinkedHashSet<>( entry.getValue()) );
 
             String jsonString;
             try {
                 jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(vocabulary);
-                writeToFile(vocabulary.getNotation(), entry.getKey(), jsonString, counter == 1);
+                writeToFile(vocabulary.getNotation(), entryKey, jsonString, entryKey.equals(LATEST));
             } catch (JsonProcessingException e) {
                 log.error(e.getMessage());
-            }
-
-            if( counter == slNumberVersionsMap.size() ) {
-                counter = 0;
             }
         }
     }
 
-    private void writeToFile(String notation, String versionNumber, String content, boolean latestVersion) {
+    private void writeToFile(String notation, String versionNumber, String content, boolean isAllLatestVersion) {
         String path = applicationProperties.getVocabJsonPath() + notation + File.separator + versionNumber;
+        if ( isAllLatestVersion ) {
+            path = applicationProperties.getVocabJsonPath() + notation;
+        }
         File dirPath = new File(path);
         if( !dirPath.isDirectory() ) {
             dirPath.mkdirs();
         }
         File file;
-
-        file = new File(path + File.separator + notation + "_" + versionNumber + JSON_FORMAT);
+        if( isAllLatestVersion ) {
+            file = new File(path + File.separator + notation + JSON_FORMAT);
+        } else {
+            file = new File(path + File.separator + notation + "_" + versionNumber + JSON_FORMAT);
+        }
         try(
             BufferedWriter bw = new BufferedWriter(new FileWriter(file))
         ){
@@ -1220,20 +1249,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         } catch (IOException e)
         {
             log.error(e.getMessage());
-        }
-        // also create copy to root vocabulary folder
-        if( latestVersion ){
-            file = new File(applicationProperties.getVocabJsonPath() + notation + File.separator + notation + JSON_FORMAT);
-            try(
-                BufferedWriter bw2 = new BufferedWriter(new FileWriter(file))
-            )
-            {
-                bw2.write(content);
-                log.info("Written to Temp file : {} ", file.getAbsolutePath());
-            } catch (IOException e)
-            {
-                log.error(e.getMessage());
-            }
         }
     }
 
