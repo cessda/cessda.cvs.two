@@ -110,7 +110,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     if (this.isSlForm) {
       this.cvForwardStatusForm.patchValue({
         versionNumberSl: this.versionParam!.number,
-        licenseId: this.licences![0].id
+        licenseId: this.licences?.length ? this.licences[0].id : null
       });
     } else {
       this.cvForwardStatusForm.patchValue({

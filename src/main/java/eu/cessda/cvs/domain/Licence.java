@@ -12,7 +12,7 @@ import java.io.Serializable;
  * A Licence.
  */
 @Entity
-@Table(name = "licence")
+@Table( name = "license" )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Licence implements Serializable {
 
