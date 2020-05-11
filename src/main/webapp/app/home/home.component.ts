@@ -123,6 +123,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     return this.languageService.currentLang;
   }
 
+  getVersionByLang(vocab: IVocabulary): string {
+    return VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, vocab.selectedLang!);
+  }
+
   getTitleByLang(vocab: IVocabulary): string {
     return VocabularyUtil.getVocabularyTitleBySelectedLang(vocab);
   }
