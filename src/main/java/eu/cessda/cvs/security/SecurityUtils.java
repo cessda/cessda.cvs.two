@@ -95,9 +95,7 @@ public final class SecurityUtils {
 
     public static UserDTO getCurrentUser(){
         Optional<eu.cessda.cvs.security.UserDetails> currectUserDetailsOpt = getCurrectUserDetails();
-        if( currectUserDetailsOpt.isPresent() )
-            return currectUserDetailsOpt.get().getUser();
-        return null;
+        return currectUserDetailsOpt.map(eu.cessda.cvs.security.UserDetails::getUser).orElse(null);
     }
 
     public static Long getCurrentUserId(){
@@ -112,23 +110,16 @@ public final class SecurityUtils {
         if( currentUser == null )
             return false;
 
+        if( actionType == null ){
+            throw new IllegalArgumentException( "" );
+        }
+
         // if user content admin
         if( isCurrentUserInRole("ROLE_ADMIN") || isCurrentUserInRole("ROLE_ADMIN_CONTENT" ) )
             return true;
 
-        // check based on actionType and UserAgencyRole
-        switch ( actionType ) {
-            case CREATE_CV:
-            case EDIT_CV:
-            case DELETE_CV:
-            case WITHDRAWN_CV:
-            case CREATE_CODE:
-            case EDIT_CODE:
-            case DELETE_CODE:
-                return hasAgencyRole(currentUser.getUserAgencies(), agencyId, agencyRoles, language);
-            default:
-                return false;
-        }
+        // check based on UserAgencyRole
+        return hasAgencyRole(currentUser.getUserAgencies(), agencyId, agencyRoles, language);
     }
 
     public static void checkResourceAuthorization(ActionType actionType, Long agencyId, Set<AgencyRole> agencyRoles, String language){

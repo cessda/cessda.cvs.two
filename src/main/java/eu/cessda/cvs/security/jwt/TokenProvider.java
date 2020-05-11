@@ -6,14 +6,17 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
+import eu.cessda.cvs.security.UserDetails;
+import eu.cessda.cvs.repository.UserRepository;
+import eu.cessda.cvs.service.dto.UserDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import io.github.jhipster.config.JHipsterProperties;
@@ -36,8 +39,11 @@ public class TokenProvider {
 
     private final JHipsterProperties jHipsterProperties;
 
-    public TokenProvider(JHipsterProperties jHipsterProperties) {
+    private final UserRepository userRepository;
+
+    public TokenProvider(JHipsterProperties jHipsterProperties, UserRepository userRepository) {
         this.jHipsterProperties = jHipsterProperties;
+        this.userRepository = userRepository;
     }
 
     @PostConstruct
@@ -81,6 +87,7 @@ public class TokenProvider {
             .compact();
     }
 
+    @Transactional(readOnly = true)
     public Authentication getAuthentication(String token) {
         Claims claims = Jwts.parser()
             .setSigningKey(key)
@@ -92,7 +99,9 @@ public class TokenProvider {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        User principal = new User(claims.getSubject(), "", authorities);
+        UserDetails principal = new UserDetails(claims.getSubject(), "", authorities);
+        if( userRepository != null )
+            userRepository.findOneByLogin(claims.getSubject()).ifPresent(user -> principal.setUser( new UserDTO(user)));
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
