@@ -28,10 +28,6 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Type of Concept Group (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfConceptGroup:1.0. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2&nbsp;</a>\n<div>\n Module name: conceptualcomponent\n</div>\n<div>\n Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/conceptualcomponent_xsd/elements/TypeOfConceptGroup.html\">TypeOfConceptGroup</a>\n</div>\n<div>\n <br />\n</div>\n<div>\n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n</div>\n<div>\n DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element that would support this controlled vocabulary.\n</div>",
       "concepts": [

@@ -28,10 +28,6 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Aggregation Method (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AggregationMethod:1.0. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" style=\"\">DDI 3.2</a> \n<div> \n <div>\n   Module name:&nbsp; &nbsp; &nbsp;reusable \n </div> \n <div>\n   Element name:&nbsp; &nbsp; \n  <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AggregationMethod.html\"> AggregationMethod </a> \n </div> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/var.html\">var@otherAggrMeth</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <div>\n   Element/Attribute name: \n  <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/measure.html\">measure@otherAggrMeth</a> \n </div> \n</div>",
       "concepts": [

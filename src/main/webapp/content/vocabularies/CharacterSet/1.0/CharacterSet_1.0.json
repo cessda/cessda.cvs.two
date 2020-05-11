@@ -28,10 +28,6 @@
       "notes": "This vocabulary lists some popular character sets but is not exhaustive. If the character set is not mentioned in the list, use 'Other' for this element and enter the specific name into the OtherValue element. You can search for the name of the character set in the list published by IANA (Internet Assigned Character Numbers). Use the \"preferred MIME-name\" if the IANA list specifies one, otherwise use the format in the Name field - http://www.iana.org/assignments/character-sets.\n\nThe vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Character Set (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:CharacterSet:1.0. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module name: reusable \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/CharacterSet.html\">CharacterSet</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/xhtml-datatypes-1_xsd/simpleTypes/Charset.html\"> @charset</a>\n</div>",
       "concepts": [

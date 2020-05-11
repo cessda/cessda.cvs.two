@@ -7,9 +7,9 @@
         "createOrEditLabel": "Create or edit a Version",
         "notFound": "No Versions found"
       },
-      "created": "A new Version is created with identifier {{ param }}",
-      "updated": "A Version is updated with identifier {{ param }}",
-      "deleted": "A Version is deleted with identifier {{ param }}",
+      "created": "A new Vocabulary is created with identifier {{ param }}",
+      "updated": "A Vocabulary is updated with identifier {{ param }}",
+      "deleted": "A Vocabulary is deleted with identifier {{ param }}",
       "delete": {
         "question": "Are you sure you want to delete Version {{ id }}?"
       },

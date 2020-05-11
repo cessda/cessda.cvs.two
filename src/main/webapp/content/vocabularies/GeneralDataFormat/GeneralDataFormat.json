@@ -28,10 +28,6 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). General Data Format (Version 2.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<br /> \n<div>\n  A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> \n</div>",
       "concepts": [
@@ -133,10 +129,6 @@
       "definition": "Beskriver de(t) fysiske format(er) af den data, der er dokumenteret i de(t) logiske produkt(er) i en studieenhed.",
       "versionNotes": "Misspelling in CV name (da)",
       "versionChanges": "CV Short Name changed: Type af data format\n",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Generelt dataformat [General Data Format] (Version 2.0.2; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<br /> \n<div>\n  A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> \n</div>",
       "translateAgency": "Danish National Archives (DNA)",
@@ -223,7 +215,13 @@
           "position": 9
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "2.0.1",
+          "date": "2019-07-23",
+          "changes": ""
+        }
+      ]
     },
     {
       "id": 230,
@@ -240,10 +238,6 @@
       "definition": "Beskriver de(t) fysiske format(er) af den data, der er dokumenteret i de(t) logiske produkt(er) i en studieenhed.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Type af data format [General Data Format] (Version 2.0.1; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\">A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list.</font>\n <font size=\"3\" face=\"Verdana\"> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"><br /></font>\n<div> \n <font size=\"3\" face=\"Verdana\">A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. <br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\" face=\"Verdana\"> </font>\n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div> \n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>",
       "translateAgency": "Danish National Archives (DNA)",
@@ -347,10 +341,6 @@
       "definition": "Beschreibt das Format der Daten, die in den logischen Produkten einer Studie dokumentiert sind.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Art des Datenformats [General Data Format] (Version 2.0.1; GESIS - Leibniz Institute for the Social Sciences, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<div> \n <br /> \n</div> \n<div>\n  Module Name: \n</div> \n<div>\n  Element Name: \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div>\n  Element Number in DDI 2.1: \n</div> \n<div>\n  Element/Attribute Name:\n <br /> \n</div>",
       "translateAgency": "GESIS - Leibniz Institute for the Social Sciences",
@@ -454,10 +444,6 @@
       "definition": "Formaatti, jossa aineisto luovutetaan käyttäjille.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Aineiston formaatti [General Data Format] (Version 2.0.1; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<div> \n <br /> \n</div> \n<div>\n  Module Name: \n</div> \n<div>\n  Element Name: \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div>\n  Element Number in DDI 2.1: \n</div> \n<div>\n  Element/Attribute Name:\n <br /> \n</div>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
@@ -561,10 +547,6 @@
       "definition": "<span style=\"color: rgb(55, 64, 78); font-family: Arial; font-size: 15px; white-space: pre-wrap; background-color: rgb(250, 250, 250);\">Décrit le(s) format(s) physique des données documentées dans la description des différentes parties de la description de l'étude</span>",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Format général des données [General Data Format] (Version 2.0.1;  Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<br /> \n<div>\n  A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> \n</div>",
       "translateAgency": " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
@@ -668,10 +650,6 @@
       "definition": "Descrive il formato fisico dei dati documentati nello studio.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Formato generale dei dati [General Data Format] (Version 2.0.1; UniData - Bicocca Data Archive, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<br /> \n<div>\n  A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> \n</div>",
       "translateAgency": "UniData - Bicocca Data Archive",
@@ -775,10 +753,6 @@
       "definition": "Beskriver fysisk(-e) format for de data som dokumenteres i en studieenhets logiske produkt(-er).",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Type dataformat [General Data Format] (Version 2.0.1; NSD - Norwegian Centre for Research Data, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<div> \n <br /> \n</div> \n<div>\n  Module Name: \n</div> \n<div>\n  Element Name: \n</div> \n<div> \n <br /> A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div>\n  Element/Attribute Name:\n <br /> \n</div>",
       "translateAgency": "NSD - Norwegian Centre for Research Data",
@@ -882,10 +856,6 @@
       "definition": "Descreve o(s) formato(s) físico(s) dos dados documentados nos resultados dum estudo.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Formato dos dados [General Data Format] (Version 2.0.1; Arquivo Português de Informação Social (APIS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<br /> \n<div>\n  A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> \n</div>",
       "translateAgency": "Arquivo Português de Informação Social (APIS)",
@@ -989,10 +959,6 @@
       "definition": "Opisuje fizične format_e dokumentiranih podatkov v logičnem sosledju raziskovalne enote.",
       "versionNotes": "",
       "versionChanges": "CV definition rephrased: Format (Vrsta podatkov)\n",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Format (Vrsta podatkov) [General Data Format] (Version 2.0.2; Social Science Data Archives (ADP), Slovenia, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<br /> \n<div>\n  A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> \n</div>",
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
@@ -1079,7 +1045,13 @@
           "position": 9
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "2.0.1",
+          "date": "2019-04-03",
+          "changes": ""
+        }
+      ]
     },
     {
       "id": 228,
@@ -1096,10 +1068,6 @@
       "definition": "Opisuje fizični format_e dokumentiranih podatkov v logičnem sosledju raziskovalne enote.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Format (Vrsta podatkov) [General Data Format] (Version 2.0.1; Social Science Data Archives (ADP), Slovenia, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\">A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list.</font> \n</div> \n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div> \n<div> \n <font size=\"3\" face=\"Verdana\">Module Name:</font> \n</div> \n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:</font> \n</div> \n<div> \n <br /> \n <font size=\"3\" face=\"Verdana\">A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. <br /></font> \n</div> \n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div> \n<div> \n <font size=\"3\" face=\"Verdana\">Element/Attribute Name:<br /></font> \n</div>",
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
@@ -1204,10 +1172,6 @@
       "notes": "",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Format (Vrste podataka) [General Data Format] (Version 2.0.1; Data Centre Serbia for Social Sciences (DCS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<br /> \n<div>\n  A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> \n</div>",
       "translateAgency": "Data Centre Serbia for Social Sciences (DCS)",
@@ -1311,10 +1275,6 @@
       "definition": "Beskriver fysiskt/-a format för de data som dokumenteras i en studieenhets logiska produkt/-er.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Typ av dataformat [General Data Format] (Version 2.0.1; Swedish National Data Service (SND), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:GeneralDataFormat:2.0. ",
       "ddiUsage": "<div>\n  A new element, GeneralDataFormat, is being created in DDI 3.3 to support this CV list. \n</div> \n<div> \n <br /> \n</div> \n<div>\n  Module Name: \n</div> \n<div>\n  Element Name: \n</div> \n<div> \n <br /> \n</div> \n<div> \n <br /> A new element, GeneralDataFormat, is being created in DDI 2.6 to support this CV list. \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div>\n  Element Number in DDI 2.1: \n</div> \n<div>\n  Element/Attribute Name:\n <br /> \n</div>",
       "translateAgency": "Swedish National Data Service (SND)",

@@ -4,7 +4,6 @@
   "uri": "https://vocabularies.cessda.eu/TestCV/en/2.0",
   "notation": "TestCV",
   "versionNumber": "2.0",
-  "archived": false,
   "withdrawn": true,
   "sourceLanguage": "en",
   "agencyId": 1,

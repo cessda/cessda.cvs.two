@@ -28,10 +28,6 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all. The present list is based on the W3C data types (http://www.w3.org/TR/xmlschema-2/), and includes the terms relevant for documenting research data.",
       "versionNotes": "Float, Double: Code definition edited to eliminate suspicious character.",
       "versionChanges": "Code definition rephrased: Float\nCode definition rephrased: Double\n",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Data Type (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataType:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module name: reusable \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/DefaultDataType.html\"> DefaultDataType</a> \n</div> \n<div> \n <span style=\"white-space:pre\"> </span>&nbsp; \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/RecommendedDataType.html\">RecommendedDataType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/varFormat.html\">varFormat@category</a>\n</div>",
       "concepts": [
@@ -324,7 +320,14 @@
           "position": 31
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "1.0",
+          "date": "2019-11-25",
+          "note": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all. The present list is based on the W3C data types (http://www.w3.org/TR/xmlschema-2/), and includes the terms relevant for documenting research data.",
+          "changes": ""
+        }
+      ]
     }
   ]
 }

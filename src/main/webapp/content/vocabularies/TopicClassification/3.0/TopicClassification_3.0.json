@@ -27,10 +27,6 @@
       "definition": "A typology of main themes or subjects of data.",
       "versionNotes": "Ten code values were edited for consistency with other entries. Typos were corrected in nine definitions.",
       "versionChanges": "Code value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed to MediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode definition rephrased: Vocational education and training\nCode definition rephrased: Working conditions\nCode definition rephrased: Equality, inequality and social exclusion\nCode definition rephrased: Educational policy\nCode definition rephrased: Leisure, tourism and sport\nCode definition rephrased: Compulsory and pre-school education\nCode definition rephrased: Employee training\nCode definition rephrased: Media\nCode definition rephrased: Health behaviour",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Topic Classification (Version 3.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "concepts": [
@@ -946,7 +942,13 @@
           "position": 92
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "2.0",
+          "date": "2019-05-06",
+          "changes": ""
+        }
+      ]
     },
     {
       "id": 304,
@@ -963,10 +965,6 @@
       "definition": "En typology over hovedtemaer eller emner af data.",
       "versionNotes": "",
       "versionChanges": "Code definition rephrased: Sygelighed og dødelighed\nCode definition rephrased: ANDET\nCode descriptive term rephrased: DEMOGRAFI (BEFOLKNING, BEFOLKNINGSUDVIKLING OG FOLKETÆLLINGER)\nCode definition rephrased: Sygelighed og dødelighed\nCode descriptive term rephrased: Sygelighed og dødelighed\nCode definition rephrased: Folketællinger\nCode descriptive term rephrased: Indvandring\nCode definition amended with meaning change: Migration\nCode definition rephrased: Økonomiske forhold og indikatorer\nCode definition amended with meaning change: Forbrug og forbrugeradfærd\nCode descriptive term rephrased: Økonomisk politik, offentlige udgifter og offentlige indtægter\nCode definition rephrased: Økonomisk politik, offentlige udgifter og indtægter\nCode definition rephrased: Indkomst, ejendom og investering/opsparing\nCode definition rephrased: Økonomiske systemer og udvikling\nCode descriptive term rephrased: Sundhedsvæsenet og sundhedspolitik\nCode definition amended with meaning change: Sundhedsydelser og -politikker\nCode descriptive term rephrased: Specifikke sygdomme, lidelser og sygdomslidelser\nCode definition amended with meaning change: Specifikke sygdomme, lidelser og medicinske tilstande\nCode definition rephrased: Tegn på sygdom og symptomer; patalogiske lidelser\nCode definition rephrased: Tegn  og symptomer; patologiske lidelser\nCode definition amended with meaning change: Sår og skader\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Generel sundhed og trivsel\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Folkesundhed\nCode definition rephrased: Reproduktiv sundhed\nCode definition rephrased: Sundhed på arbejdspladsen\nCode descriptive term rephrased: Sundhed på arbejdspladsen\nCode definition rephrased: Sundhedsadfærd\nCode definition amended with meaning change: HISTORIE\nCode definition rephrased: HISTORIE\nCode definition amended with meaning change: Bolig\nCode definition rephrased: Arealanvendelse og planlægning\nCode descriptive term rephrased: ARBEJDE OG BESKÆFTIGELSE\nCode descriptive term rephrased: BOLIG OG AREAL ANVENDELSE\nCode definition amended with meaning change: Beskæftigelse\nCode definition amended with meaning change: Arbejdsløshed\nCode definition amended with meaning change: Pensionering\nCode descriptive term rephrased: Uddannelse af medarbejdere\nCode definition amended with meaning change: Medarbejderuddannelse\nCode descriptive term rephrased: Relationer og konflikter på arbejdsmarkedet\nCode definition rephrased: Arbejdsvilkår\nCode descriptive term rephrased: Arbejdsmarkedspolitk og beskæftigelsespolitik\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode descriptive term rephrased: LOV, KRIMINALITET OG RETSYSTEMER\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode definition rephrased: Lovgivning og retssystemer\nCode definition rephrased: Kriminalitet og retshåndhævelse\nCode definition rephrased: Medier\nCode definition rephrased: Offentlige relationer (PR)\nCode definition amended with meaning change: Informationssamfund\nCode definition rephrased: Informationssamfund\nCode definition rephrased: Sprog og lingvistik\nCode descriptive term rephrased: Miljø og bevarelse\nCode definition rephrased: Miljø og bevaring\nCode definition rephrased: Energi og naturrressourcer\nCode definition rephrased: Planter og dyr\nCode descriptive term rephrased: Politisk adfærd og holdning\nCode definition rephrased: Politisk adfærd og holdninger\nCode definition rephrased: Valg\nCode definition rephrased: Politisk ideologi\nCode definition rephrased: Regering, politiske systemer og organisationer\nCode descriptive term rephrased: International polik og organisation\nCode definition rephrased: International politik og organisationer\nCode definition rephrased: Konflikt, sikkerhed og fred\nCode descriptive term rephrased: PSYCHOLOGI \nCode definition rephrased: Informationsteknologi\nCode descriptive term rephrased: SOCIAL STRATIFICATION OG GRUPPERINGER\nCode descriptive term rephrased: Lighed, ulighed og social eksklusion\nCode definition rephrased: Social- og erhvervsmobilitet\nCode definition rephrased: Køn og kønsroller\nCode definition rephrased: Familieliv og ægteskab\nCode descriptive term rephrased: Minoritet\nCode definition rephrased: Eliter og lederskab\nCode descriptive term rephrased: VELFÆRDSPOLITIK OG VELFÆRDSSYSTEMER\nCode descriptive term rephrased: Velfærdsspolitik\nCode definition rephrased: Social velfærdsspolitik\nCode descriptive term rephrased: Velfrædssystemer/strukturerer\nCode definition rephrased: Sociale velfærdssystemer/strukturer\nCode descriptive term rephrased: Specifikke sociale service: Deres brug og tilgængelighed\nCode definition rephrased: Specifikke sociale ydelser: Brug og tilgængelighed\nCode descriptive term rephrased: Social adfærd pg attitude\nCode definition rephrased: Social adfærd og holdninger\nCode descriptive term rephrased: Sociale vilkår og tegn\nCode definition rephrased: Sociale forhold og indikatorer\nCode definition rephrased: Kulturelle aktiviteter og deltagelse\nCode definition rephrased: Kulturel og national identitet\nCode definition rephrased: Fritid, turisme og sport\nCode definition rephrased: Religion og værdier\nCode descriptive term rephrased: Lokalsamfund, byliv og landligt liv\nCode definition rephrased: Lokalsamfund, byliv og landligt liv\nCode definition rephrased: Forbrug af tid\nCode descriptive term rephrased: Sociale ændringer\nCode definition rephrased: Social forandring\nCode descriptive term rephrased: HANDEL, INDUSTRI OG MARKED\nCode definition rephrased: Forretnings/industriel ledelse og organisation\nCode definition rephrased: Landbrug og landlig industri\nCode descriptive term rephrased: Handel med udlandet\nCode definition rephrased: Udenrigshandel\nCode descriptive term rephrased: TRANSPORT OG REJSER\nCode definition rephrased: TRANSPORT OG REJSE\nCode definition rephrased: Sundhedsydelser og -politikker\nCode definition rephrased: Tegn  og symptomer; patologiske lidelser\nCode definition rephrased: Sår og skader\nCode definition rephrased: HISTORIE\nCode definition rephrased: Beskæftigelse\nCode definition rephrased: Arbejdsvilkår\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode definition rephrased: Politisk adfærd og holdninger\nCode definition rephrased: Konflikt, sikkerhed og fred\nCode definition rephrased: Informationsteknologi\nCode definition rephrased: Køn og kønsroller\nCode definition rephrased: Minoriteter\nCode definition rephrased: Social velfærdsspolitik\nCode definition rephrased: Fritid, turisme og sport\nCode definition rephrased: Generel sundhed og trivsel\nCode definition rephrased: Sprog og lingvistik\nCode descriptive term rephrased: Ungdomsuddanelser og videregående uddannelse\nCode descriptive term rephrased: Obligatorisk undervisning og daginstitutioner\nCode definition amended with meaning change: Obligatorisk undervisning og dagtilbud\nCode definition amended with meaning change: Ungdomsuddanelse og videregående uddannelse\nCode definition amended with meaning change: Erhvervsuddannelse\nCode definition amended with meaning change: Livslang uddannelse/efteruddannelse\nCode definition amended with meaning change: Uddannelsespolitik\n",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Emne Klassifikation [CESSDA Topic Classification] (Version 3.0.1; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "Danish National Archives (DNA)",
@@ -1834,7 +1832,13 @@
           "position": 94
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "2.0.1",
+          "date": "2019-05-15",
+          "changes": ""
+        }
+      ]
     },
     {
       "id": 299,
@@ -1851,10 +1855,6 @@
       "definition": "Thematische Klassifikation für Daten",
       "versionNotes": "First German version of SL 3.0 published.",
       "versionChanges": "Code value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Themenklassifikation [CESSDA Topic Classification] (Version 3.0.1; GESIS - Leibniz Institute for the Social Sciences, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "GESIS - Leibniz Institute for the Social Sciences",
@@ -2722,7 +2722,13 @@
           "position": 94
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "2.0.1",
+          "date": "2019-05-15",
+          "changes": ""
+        }
+      ]
     },
     {
       "id": 324,
@@ -2739,10 +2745,6 @@
       "definition": "Aineiston pääasiallisten aiheiden luokittelu.",
       "versionNotes": "Typo corrections to code definitions and a code descriptive term. References to obsolete terms updated.",
       "versionChanges": "Code definition rephrased: joukkoviestimet\nCode definition rephrased: HISTORIA\nCode definition rephrased: vähemmistöt\nCode definition rephrased: sosiaaliset olot ja indikaattorit\nCode definition rephrased: maankäyttö, suunnittelu ja kaavoitus\nCode descriptive term rephrased: sukupuoli ja sukuoliroolit changed to sukupuoli ja sukupuoliroolit\n",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDAn aihepiiriluokitus [CESSDA Topic Classification] (Version 3.0.2; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
@@ -3610,7 +3612,18 @@
           "position": 94
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "3.0.1",
+          "date": "2019-06-03",
+          "changes": "Code definition rephrased: sairastuvuus ja kuolleisuus\nCode definition rephrased: talouden tila ja tunnusluvut\nCode definition rephrased: talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö\nCode definition rephrased: toisen ja korkea-asteen koulutus\nCode definition rephrased: täydennys- ja jatkokoulutus,  elinikäinen oppiminen\nCode definition rephrased: koulutuspolitiikka\nCode definition rephrased: terveyspalvelut ja terveyspolitiikka\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: terveyskäyttäytyminen\nCode definition rephrased: työpaikkakoulutus\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: tietoyhteiskunta\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: KULKEMINEN, KULJETUS JA LIIKENNE\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry"
+        },
+        {
+          "version": "2.0.1",
+          "date": "2019-05-15",
+          "changes": ""
+        }
+      ]
     },
     {
       "id": 318,
@@ -3627,10 +3640,6 @@
       "definition": "Aineiston pääasiallisten aiheiden luokittelu.",
       "versionNotes": "New Finnish version published to include code values changes made to SL 3.0. Typo corrections to definitions.",
       "versionChanges": "Code definition rephrased: sairastuvuus ja kuolleisuus\nCode definition rephrased: talouden tila ja tunnusluvut\nCode definition rephrased: talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö\nCode definition rephrased: toisen ja korkea-asteen koulutus\nCode definition rephrased: täydennys- ja jatkokoulutus,  elinikäinen oppiminen\nCode definition rephrased: koulutuspolitiikka\nCode definition rephrased: terveyspalvelut ja terveyspolitiikka\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: terveyskäyttäytyminen\nCode definition rephrased: työpaikkakoulutus\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: tietoyhteiskunta\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: KULKEMINEN, KULJETUS JA LIIKENNE\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDAn aihepiiriluokitus [CESSDA Topic Classification] (Version 3.0.1; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
@@ -4498,7 +4507,13 @@
           "position": 94
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "2.0.1",
+          "date": "2019-05-15",
+          "changes": ""
+        }
+      ]
     },
     {
       "id": 320,
@@ -4515,10 +4530,6 @@
       "definition": "Tipologia dei temi o argomenti principali trattati dai dati",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). Classificazione CESSDA degli argomenti [CESSDA Topic Classification] (Version 3.0.1; UniData - Bicocca Data Archive, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "UniData - Bicocca Data Archive",
@@ -5315,10 +5326,6 @@
       "definition": "En typologi for hovedtemaer eller emnekategorier for data.",
       "versionNotes": "Norwegian version published to include code values changes made to SL 3.0. Typo corrections to definitions.",
       "versionChanges": "Code value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode definition rephrased: Migrasjon\nCode definition rephrased: Økonomiske forhold og indikatorer\nCode descriptive term rephrased: Konsum/konsumentatferd\nCode definition rephrased: Tegn og symptomer; patologiske tilstander\nCode descriptive term rephrased: Reproduktiv Helse\nCode definition rephrased: Folkehelse\nCode definition rephrased: Arealbruk og arealplanlegging\nCode definition rephrased: Arbeidsledighet\nCode definition rephrased: Opplæring av ansatte\nCode definition rephrased: Arbeidsbetingelser\nCode definition rephrased: Publikumskontakt\nCode definition rephrased: Informasjonssamfunn\nCode definition rephrased: Valg\nCode definition rephrased: Ungdom\nCode definition rephrased: Eldre\nCode definition rephrased: Barn\nCode definition rephrased: Sosial velferdspolitikk\nCode definition rephrased: Sosial velferdspolitikk",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Emneklassifisering [CESSDA Topic Classification] (Version 3.0.1; NSD - Norwegian Centre for Research Data, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "NSD - Norwegian Centre for Research Data",
@@ -6186,7 +6193,13 @@
           "position": 94
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "2.0.1",
+          "date": "2019-05-16",
+          "changes": ""
+        }
+      ]
     },
     {
       "id": 303,
@@ -6203,10 +6216,7 @@
       "definition": "Tipologija glavnih vsebinskih področij raziskav.",
       "versionNotes": "",
       "versionChanges": "Changed few typos.",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "license": "Creative Commons Attribution 4.0 International",
       "citation": "CESSDA. (2019). Vsebinska področja CESSDA [CESSDA Topic Classification] (Version 3.0.1; Social Science Data Archives (ADP), Slovenia, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
@@ -7074,7 +7084,13 @@
           "position": 94
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "2.0.1",
+          "date": "2019-05-16",
+          "changes": ""
+        }
+      ]
     },
     {
       "id": 302,
@@ -7091,10 +7107,6 @@
       "definition": "En typologi för större teman eller ämneskategorier för data.",
       "versionNotes": "",
       "versionChanges": "Code definition rephrased: Konsumtion och konsumentbeteende\nCode definition rephrased: Livslångt lärande/vidareutbildning\nCode definition rephrased: Tecken och symtom; patologiska tillstånd\nCode definition rephrased: Hälsobeteende\nCode definition rephrased: Energi och naturresurser\nCode definition rephrased: Ungdomar\nCode descriptive term rephrased: Kriminalitet och rättstillämpning\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed to MediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\n",
-      "license": "BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Ämnesklassificering [CESSDA Topic Classification] (Version 3.0.1; Swedish National Data Service (SND), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:3.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "Swedish National Data Service (SND)",
@@ -7962,7 +7974,13 @@
           "position": 94
         }
       ],
-      "versionHistories": []
+      "versionHistories": [
+        {
+          "version": "2.0.1",
+          "date": "2019-05-16",
+          "changes": ""
+        }
+      ]
     }
   ]
 }
