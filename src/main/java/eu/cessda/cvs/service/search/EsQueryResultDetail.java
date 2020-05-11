@@ -14,16 +14,16 @@ import java.util.Optional;
 
 public class EsQueryResultDetail implements Serializable {
 	public static final int PAGE_SIZE = 30 ;
-    private SearchScope searchScope = SearchScope.PUBLICATIONSEARCH;
+    private SearchScope searchScope;
 
     // Query properties with default value, to be updated during query
 	private String searchTerm = "";
-    private Pageable page = PageRequest.of( 0, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "_score"));
-	private List<String> aggFields = new ArrayList<>( Arrays.asList( EsFilter.filterFields));
+    private transient Pageable page = PageRequest.of( 0, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "_score"));
+	private List<String> aggFields = new ArrayList<>( Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_PUB_AGG ));
 	private List<EsFilter> esFilters = new ArrayList<>();
 
 	// Results
-	private Page<VocabularyDTO> vocabularies;
+	private transient Page<VocabularyDTO> vocabularies;
 
     public EsQueryResultDetail(){
         this( SearchScope.PUBLICATIONSEARCH );
@@ -36,9 +36,9 @@ public class EsQueryResultDetail implements Serializable {
 
     private void init(SearchScope searchScope) {
         if( searchScope.equals(SearchScope.EDITORSEARCH)) {
-            aggFields = new ArrayList<>(Arrays.asList(EsFilter.filterEditorFields));
+            aggFields = new ArrayList<>(Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_AGG, EsFilter.STATUS_AGG ));
         } else {
-            aggFields = new ArrayList<>(Arrays.asList(EsFilter.filterFields));
+            aggFields = new ArrayList<>(Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_PUB_AGG ));
         }
         // initialize esfilter
         for( String field: aggFields) {

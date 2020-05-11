@@ -14,17 +14,6 @@ public class EsFilter implements Serializable {
     public static final String LANGS_PUB_AGG = "languagesPublished";
     public static final String STATUS_AGG = "statuses";
 
-    public static final String[] filterFields = {
-        AGENCY_AGG,
-        LANGS_PUB_AGG
-    };
-
-    public static final String[] filterEditorFields = {
-        AGENCY_AGG,
-        LANGS_AGG,
-        STATUS_AGG
-    };
-
 	private FilterType filterType;
 	private String field;
 	// active filter
