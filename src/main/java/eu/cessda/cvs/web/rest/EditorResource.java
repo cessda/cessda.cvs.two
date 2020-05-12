@@ -11,9 +11,11 @@ import eu.cessda.cvs.service.*;
 import eu.cessda.cvs.service.dto.*;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +23,10 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing {@link Vocabulary}.
@@ -217,6 +221,72 @@ public class EditorResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
             .body(versionDTO);
+    }
+
+    /**
+     * {@code GET  /editors/vocabularies/compare-prev/:id} : get the text to be compared by diff-algorithm,
+     * given "id" vocabulary and previous version from vocabulary.
+     *
+     * @param id the id of the vocabularyDTO to be compared with previous version.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the vocabularyDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/editors/vocabularies/compare-prev/{id}")
+    public ResponseEntity<List<String>> getVocabularyComparePrev(@PathVariable Long id) {
+        log.debug("REST request to get Vocabulary comparison text: {}", id);
+        VersionDTO versionDTO = versionService.findOne(id)
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + id));
+        if( versionDTO.getPreviousVersion() == null ) {
+            throw new IllegalArgumentException( "Unable to create previous comparison text, previous version is missing!" );
+        }
+        VersionDTO prevVersionDTO = versionService.findOne(versionDTO.getPreviousVersion())
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + versionDTO.getPreviousVersion()));
+
+        // create comparison based on current version
+        StringBuilder currentVersionCvSb = new StringBuilder();
+        StringBuilder prevVersionCvSb = new StringBuilder();
+
+        currentVersionCvSb.append( "Cv Name: " + versionDTO.getTitle() + "\n");
+        currentVersionCvSb.append( "Cv Def: " + versionDTO.getDefinition() + "\n");
+        currentVersionCvSb.append( "Cv Notes: " + versionDTO.getNotes() + "\n\n\n");
+
+        prevVersionCvSb.append( "Cv Name: " + prevVersionDTO.getTitle() + "\n");
+        prevVersionCvSb.append( "Cv Def: " + prevVersionDTO.getDefinition() + "\n");
+        prevVersionCvSb.append( "Cv Notes: " + prevVersionDTO.getNotes() + "\n\n\n");
+
+        // get concepts and sorted by position
+        List<ConceptDTO> currentConcepts = conceptService.findByVersion(versionDTO.getId());
+        currentConcepts.forEach(currentConcept -> {
+            currentVersionCvSb.append( "Code: " + currentConcept.getNotation()+ "\n");
+            currentVersionCvSb.append( "Code Term: " + currentConcept.getTitle() + "\n");
+            currentVersionCvSb.append( "Code Def: " + currentConcept.getDefinition() + "\n\n");
+
+            ConceptDTO prevConceptDTO = null;
+
+            if( currentConcept.getPreviousConcept() != null )
+                prevConceptDTO = prevVersionDTO.getConcepts().stream()
+                    .filter(prevConcept -> currentConcept.getPreviousConcept().equals( prevConcept.getId())).findFirst()
+                    .orElse(null);
+
+            if ( prevConceptDTO == null ) {
+                prevVersionCvSb.append( "Code: \n");
+                prevVersionCvSb.append( "Code Term: \n");
+                prevVersionCvSb.append( "Code Def: \n\n");
+            } else {
+                prevVersionCvSb.append( "Code: " + prevConceptDTO.getNotation()+ "\n");
+                prevVersionCvSb.append( "Code Term: " + prevConceptDTO.getTitle() + "\n");
+                prevVersionCvSb.append( "Code Def: " + prevConceptDTO.getDefinition() + "\n\n");
+            }
+        });
+
+        List<String> compareCurrentPrev = new ArrayList<>();
+        compareCurrentPrev.add( prevVersionCvSb.toString() );
+        compareCurrentPrev.add( currentVersionCvSb.toString() );
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Prev-Cv-Version", prevVersionDTO.getNotation() + " " +prevVersionDTO.getItemType() + " v." + prevVersionDTO.getNumber());
+        headers.add("X-Current-Cv-Version", versionDTO.getNotation() + " " +versionDTO.getItemType() + " v." + versionDTO.getNumber());
+
+        return ResponseEntity.ok().headers(headers).body(compareCurrentPrev);
     }
 
     /**

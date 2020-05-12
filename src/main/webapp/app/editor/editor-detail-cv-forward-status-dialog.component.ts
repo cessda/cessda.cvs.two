@@ -7,7 +7,7 @@ import { HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
 import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
 import { Account } from 'app/core/user/account.model';
 import { EditorService } from 'app/editor/editor.service';
@@ -16,6 +16,7 @@ import { IVersion } from 'app/shared/model/version.model';
 import { ILicence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/entities/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
+import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-forward-status-dialog',
@@ -35,6 +36,19 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   slVersionNumber!: string;
   tlProposedVersionNumber = 1;
   missingTranslations: string[] = [];
+
+  isCommentCollapse = false;
+  isTextDiffCollapse = true;
+
+  compareNoOfDifference = 0;
+  comparePrevVersion = '';
+
+  left = '';
+  right = '';
+
+  // Inside Component define observable
+  contentObservable: Subject<DiffContent> = new Subject<DiffContent>();
+  contentObservable$: Observable<DiffContent> = this.contentObservable.asObservable();
 
   cvForwardStatusForm = this.fb.group({
     versionChanges: [],
@@ -104,6 +118,18 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         }
       }
     });
+
+    // compare version
+    if (this.versionParam!.previousVersion && this.versionParam!.previousVersion != null) {
+      this.editorService.getVocabularyCompare(this.versionParam!.id!).subscribe((res: HttpResponse<string[]>) => {
+        const newContent: DiffContent = {
+          leftContent: res.body![0],
+          rightContent: res.body![1]
+        };
+        this.contentObservable.next(newContent);
+        this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
+      });
+    }
   }
 
   private fillForm(): void {
@@ -185,5 +211,9 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     }
     this.activeModal.dismiss(true);
     this.eventManager.broadcast('deselectConcept');
+  }
+
+  onCompareResults(diffResults: DiffResults): void {
+    this.compareNoOfDifference = diffResults.diffsCount;
   }
 }

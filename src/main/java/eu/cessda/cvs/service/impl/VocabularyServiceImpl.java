@@ -427,7 +427,8 @@ public class VocabularyServiceImpl implements VocabularyService {
             conceptDTO.setNotation( codeSnippet.getNotation() );
         }
 
-        if ( codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE ) ||
+        if ( codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) ||
+            codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE ) ||
             codeSnippet.getActionType().equals( ActionType.EDIT_TL_CODE )) {
             conceptDTO.setTitle( codeSnippet.getTitle());
             conceptDTO.setDefinition( codeSnippet.getDefinition());

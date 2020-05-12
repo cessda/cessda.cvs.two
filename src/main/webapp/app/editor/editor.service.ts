@@ -95,6 +95,10 @@ export class EditorService {
     return this.http.get<IVocabulary>(`${this.resourceVocabularyUrl}/${notation}/latest`, { observe: 'response' });
   }
 
+  getVocabularyCompare(id: number): Observable<HttpResponse<string[]>> {
+    return this.http.get<string[]>(`${this.resourceEditorVocabularyUrl}/compare-prev/${id}`, { observe: 'response' });
+  }
+
   downloadVocabularyFile(notation: string, slNumber: string, downloadType: string, req?: any): Observable<Blob> {
     const options = createRequestOption(req);
     return this.http.get(`${this.resourceDownloadUrl}/${downloadType}/${notation}/${slNumber}`, {

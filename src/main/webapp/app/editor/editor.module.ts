@@ -18,9 +18,10 @@ import {
 } from './';
 import { TagInputModule } from 'ngx-chips';
 import { QuillModule } from 'ngx-quill';
+import { NgxTextDiffModule } from 'ngx-text-diff';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(EDITOR_ROUTE), TagInputModule, QuillModule],
+  imports: [CvsSharedModule, RouterModule.forChild(EDITOR_ROUTE), TagInputModule, QuillModule, NgxTextDiffModule],
   declarations: [
     EditorComponent,
     EditorDetailComponent,

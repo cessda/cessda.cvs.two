@@ -481,9 +481,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openForwardStatusCvPopup(): void {
-    const windowSize = this.version!.status === 'FINAL_REVIEW' ? 'xl' : 'lg';
     this.ngbModalRef = this.modalService.open(EditorDetailCvForwardStatusDialogComponent as Component, {
-      size: windowSize,
+      size: 'xl',
       backdrop: 'static'
     });
     this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
