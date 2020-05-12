@@ -21,6 +21,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // ngx-quill rich text
 import { QuillModule } from 'ngx-quill';
+// ngx-text-diff
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NgxTextDiffModule } from 'ngx-text-diff';
 
 @NgModule({
   imports: [
@@ -36,7 +39,9 @@ import { QuillModule } from 'ngx-quill';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    QuillModule.forRoot()
+    QuillModule.forRoot(),
+    ScrollingModule,
+    NgxTextDiffModule
   ],
   declarations: [MainComponent, NavbarComponent, ErrorComponent, PageRibbonComponent, ActiveMenuDirective, FooterComponent],
   exports: [],

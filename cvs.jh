@@ -40,8 +40,8 @@ enum Language{
 	SWEDISH
 }
 enum ObjectType {
-    AGENCY, 
-    GROUP, 
+    AGENCY,
+    GROUP,
     SYSTEM
 }
 enum ResolverType {
@@ -54,7 +54,7 @@ enum Status{
 	DRAFT,
     REVIEW,
     PUBLISHED,
-    PUBLISHED_RESTRICT, 
+    PUBLISHED_RESTRICT,
     WITHDRAWN
 }
 entity Vocabulary {
@@ -74,115 +74,115 @@ entity Vocabulary {
     publicationDate LocalDate
     lastModified ZonedDateTime
     notes TextBlob
-    
+
     versionSq String maxlength(20)
     titleSq TextBlob
 	definitionSq TextBlob
-    
+
     versionBs String maxlength(20)
     titleBs TextBlob
 	definitionBs TextBlob
-    
+
   	versionBg String maxlength(20)
     titleBg TextBlob
 	definitionBg TextBlob
-    
+
     versionHr String maxlength(20)
     titleHr TextBlob
 	definitionHr TextBlob
-    
+
     versionCs String maxlength(20)
     titleCs TextBlob
 	definitionCs TextBlob
-    
+
     versionDa String maxlength(20)
     titleDa TextBlob
 	definitionDa TextBlob
-    
+
     versionNl String maxlength(20)
     titleNl TextBlob
 	definitionNl TextBlob
-    
+
     versionEn String maxlength(20)
     titleEn TextBlob
 	definitionEn TextBlob
-    
+
     versionEt String maxlength(20)
     titleEt TextBlob
 	definitionEt TextBlob
-    
+
     versionFi String maxlength(20)
     titleFi TextBlob
 	definitionFi TextBlob
-    
+
     versionFr String maxlength(20)
     titleFr TextBlob
 	definitionFr TextBlob
-    
+
     versionDe String maxlength(20)
     titleDe TextBlob
 	definitionDe TextBlob
-    
+
     versionEl String maxlength(20)
     titleEl TextBlob
 	definitionEl TextBlob
-    
+
     versionHu String maxlength(20)
     titleHu TextBlob
 	definitionHu TextBlob
-    
+
     versionIt String maxlength(20)
     titleIt TextBlob
 	definitionIt TextBlob
-    
+
     versionJa String maxlength(20)
     titleJa TextBlob
 	definitionJa TextBlob
-    
+
     versionLt String maxlength(20)
     titleLt TextBlob
 	definitionLt TextBlob
-    
+
     versionMk String maxlength(20)
     titleMk TextBlob
 	definitionMk TextBlob
-    
+
     versionNo String maxlength(20)
     titleNo TextBlob
 	definitionNo TextBlob
-    
+
     versionPl String maxlength(20)
     titlePl TextBlob
 	definitionPl TextBlob
-    
+
     versionPt String maxlength(20)
     titlePt TextBlob
 	definitionPt TextBlob
-    
+
     versionRo String maxlength(20)
     titleRo TextBlob
 	definitionRo TextBlob
-    
+
     versionRu String maxlength(20)
     titleRu TextBlob
 	definitionRu TextBlob
-    
+
     versionSr String maxlength(20)
     titleSr TextBlob
 	definitionSr TextBlob
-    
+
     versionSk String maxlength(20)
     titleSk TextBlob
 	definitionSk TextBlob
-    
+
     versionSl String maxlength(20)
     titleSl TextBlob
 	definitionSl TextBlob
-    
+
     versionEs String maxlength(20)
     titleEs TextBlob
 	definitionEs TextBlob
-    
+
     versionSv String maxlength(20)
     titleSv TextBlob
 	definitionSv TextBlob
@@ -282,6 +282,7 @@ entity UserAgency{
 }
 
 entity Comment {
+  info String maxlength(255),
   content TextBlob,
   userId Long,
   dateTime ZonedDateTime
@@ -289,9 +290,9 @@ entity Comment {
 
 relationship OneToMany {
     MetadataField{metadataValue} to MetadataValue{metadataField}
-    Vocabulary{version} to Version{vocabulary} 
-	Version{concept} to Concept{version} 
-    Version{comment} to Comment{version} 
+    Vocabulary{version} to Version{vocabulary}
+	Version{concept} to Concept{version}
+    Version{comment} to Comment{version}
     Agency{userAgency} to UserAgency{agency}
 }
 

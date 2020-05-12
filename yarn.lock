@@ -2,11 +2,6 @@
 # yarn lockfile v1
 
 
-"-@0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/-/-/--0.0.1.tgz#db6db7cd866142880dd03e5b8781d1b4fac0e5bd"
-  integrity sha512-3HfneK3DGAm05fpyj20sT3apkNcvPpCuccOThOPdzz8sY7GgQGe0l93XH9bt+YzibcTIgUAIMoyVJI740RtgyQ==
-
 "@angular-devkit/architect@0.900.4":
   version "0.900.4"
   resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.900.4.tgz#6daf95b9c2ec51c38ca451c3ff7cf64e5404a04a"
@@ -39,6 +34,13 @@
   version "9.1.4"
   resolved "https://registry.yarnpkg.com/@angular/animations/-/animations-9.1.4.tgz#22f64a062103d4903f2c7d862889a88fc6553bc7"
   integrity sha512-gMo/DbCm5BDArladMAeC7/75T2DvhLr4CSUGJt/P/aimTEG2ywoAALs3pzwSSe4qxrHiR0OIksVW3l4km3iXEw==
+
+"@angular/cdk@^9.2.3":
+  version "9.2.3"
+  resolved "https://registry.yarnpkg.com/@angular/cdk/-/cdk-9.2.3.tgz#e0f7d4eaeca429346e15bd258966fbb5a5f4ed0b"
+  integrity sha512-tQr/yt8GNGsZ/DTT+PMq7XdRmL56hwVCyf8F12JQAawutSLfTfMb+S1lpN7L/0Pb/L5JBuCfG2HmXK7vHo02gw==
+  optionalDependencies:
+    parse5 "^5.0.0"
 
 "@angular/cli@9.0.4":
   version "9.0.4"
@@ -351,12 +353,10 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
-"@fortawesome/angular-fontawesome@0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@fortawesome/angular-fontawesome/-/angular-fontawesome-0.5.0.tgz#5dbc01714b4af45a2ecb8dd63a6f8b462a8337e1"
-  integrity sha512-5IR/jNMddiEpgApcqSMfp7l5kZqOtxQYzkSLW6iZ4MZHbQQ+Kc9tu9qi2hro6VFSk/sPxeYEzkzGZUNrMYiwOg==
-  dependencies:
-    tslib "^1.9.0"
+"@fortawesome/angular-fontawesome@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@fortawesome/angular-fontawesome/-/angular-fontawesome-0.6.0.tgz#6d72a9379707cf29543c0b7056b08d23a48c72b4"
+  integrity sha512-FcWwnEAshaLI8o1b08935OuXo8K3jSUInDDtkRwO+GtZy3VspOujpiOjxDU/gw6hNUEGsFDppqnRl2Prh6OWBw==
 
 "@fortawesome/fontawesome-common-types@^0.2.26":
   version "0.2.28"
@@ -3547,6 +3547,11 @@ didyoumean@1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/didyoumean/-/didyoumean-1.2.1.tgz#e92edfdada6537d484d73c0172fd1eba0c4976ff"
   integrity sha1-6S7f2tplN9SE1zwBcv0eugxJdv8=
+
+diff-match-patch@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/diff-match-patch/-/diff-match-patch-1.0.4.tgz#6ac4b55237463761c4daf0dc603eb869124744b1"
+  integrity sha512-Uv3SW8bmH9nAtHKaKSanOQmj2DnlH65fUpcrMdfdaOxUG02QQ4YGZ8AE7kKOMisF7UqvOlGKVYWRvezdncW9lg==
 
 diff-sequences@^24.9.0:
   version "24.9.0"
@@ -8130,6 +8135,13 @@ ngx-quill@^9.2.0:
   resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-9.2.0.tgz#9f108514b9abcefe1c8411a443a4142c9f803458"
   integrity sha512-G0L3l9Ny3bRrnJn8MnXmZHiNTRkXhzLVNb8DbGyWLpnlm3Stix8y6uZGsS6zaNY0b6X/nhVHZfzp0KiuOf8naw==
 
+ngx-text-diff@^0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/ngx-text-diff/-/ngx-text-diff-0.6.0.tgz#f369966fc7943bc515191acf518ee478e4e000ba"
+  integrity sha512-61njY/kRmbNLJr/a9FxhfouJ8LpUtejEGqcethZemqlE9lWqu0mxIuoqZYFB2gHkMzhvvBqfgWV190uRIxAClA==
+  dependencies:
+    diff-match-patch "^1.0.4"
+
 ngx-webstorage@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/ngx-webstorage/-/ngx-webstorage-5.0.0.tgz#e27d9673c2452ca000ff509cd5a8397924c5b433"
@@ -8934,6 +8946,11 @@ parse5@5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-5.1.0.tgz#c59341c9723f414c452975564c7c00a68d58acd2"
   integrity sha512-fxNG2sQjHvlVAYmzBZS9YlDp6PTSSDwa98vkD4QgVDDCAo84z5X1t5XyJQ62ImdLXx5NdIIfihey6xpum9/gRQ==
+
+parse5@^5.0.0:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/parse5/-/parse5-5.1.1.tgz#f68e4e5ba1852ac2cadc00f4555fff6c2abb6178"
+  integrity sha512-ugq4DFI0Ptb+WWjAdOK16+u/nHfiIrcE+sh8kZMaM0WllQKLI9rOUq6c2b7cwPkXdzfQESqvoqK6ug7U/Yyzug==
 
 parseqs@0.0.5:
   version "0.0.5"

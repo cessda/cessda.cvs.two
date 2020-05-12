@@ -9,6 +9,7 @@
   ],
   "dependencies": {
     "@angular/animations": "^9.1.4",
+    "@angular/cdk": "^9.2.3",
     "@angular/common": "9.0.4",
     "@angular/compiler": "9.0.4",
     "@angular/core": "9.0.4",
@@ -32,6 +33,7 @@
     "ngx-cookie": "4.0.2",
     "ngx-infinite-scroll": "8.0.1",
     "ngx-quill": "^9.2.0",
+    "ngx-text-diff": "^0.6.0",
     "ngx-webstorage": "5.0.0",
     "of": "^1.0.0",
     "peer": "^0.5.2",
