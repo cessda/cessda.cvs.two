@@ -16,6 +16,6 @@ import java.util.List;
 @Repository
 public interface ConceptRepository extends JpaRepository<Concept, Long> {
 
-    @Query( "select c from Concept c where c.version.id = :versionId order by c.position asc")
+    @Query( "select c from Concept c where c.version.id = :versionId order by c.id asc, c.position asc")
     List<Concept> findByVersion(@Param( "versionId" ) Long versionId );
 }

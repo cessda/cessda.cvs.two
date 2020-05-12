@@ -9,11 +9,13 @@ import javax.persistence.Lob;
  * A DTO for the {@link eu.cessda.cvs.domain.Comment} entity.
  */
 public class CommentDTO implements Serializable {
-    
+
     private Long id;
 
     @Lob
     private String content;
+
+    private String info;
 
     private Long userId;
 
@@ -21,7 +23,7 @@ public class CommentDTO implements Serializable {
 
 
     private Long versionId;
-    
+
     public Long getId() {
         return id;
     }
@@ -36,6 +38,14 @@ public class CommentDTO implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
     }
 
     public Long getUserId() {

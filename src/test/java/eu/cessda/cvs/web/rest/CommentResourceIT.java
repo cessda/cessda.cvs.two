@@ -50,6 +50,9 @@ public class CommentResourceIT {
     private static final String DEFAULT_CONTENT = "AAAAAAAAAA";
     private static final String UPDATED_CONTENT = "BBBBBBBBBB";
 
+    private static final String DEFAULT_INFO = "AAAAAAAAAA";
+    private static final String UPDATED_INFO = "BBBBBBBBBB";
+
     private static final Long DEFAULT_USER_ID = 1L;
     private static final Long UPDATED_USER_ID = 2L;
 
@@ -82,6 +85,7 @@ public class CommentResourceIT {
     public static Comment createEntity(EntityManager em) {
         Comment comment = new Comment()
             .content(DEFAULT_CONTENT)
+            .info(DEFAULT_INFO)
             .userId(DEFAULT_USER_ID)
             .dateTime(DEFAULT_DATE_TIME);
         return comment;
@@ -95,6 +99,7 @@ public class CommentResourceIT {
     public static Comment createUpdatedEntity(EntityManager em) {
         Comment comment = new Comment()
             .content(UPDATED_CONTENT)
+            .info(UPDATED_INFO)
             .userId(UPDATED_USER_ID)
             .dateTime(UPDATED_DATE_TIME);
         return comment;
@@ -122,6 +127,7 @@ public class CommentResourceIT {
         assertThat(commentList).hasSize(databaseSizeBeforeCreate + 1);
         Comment testComment = commentList.get(commentList.size() - 1);
         assertThat(testComment.getContent()).isEqualTo(DEFAULT_CONTENT);
+        assertThat(testComment.getInfo()).isEqualTo(DEFAULT_INFO);
         assertThat(testComment.getUserId()).isEqualTo(DEFAULT_USER_ID);
         assertThat(testComment.getDateTime()).isEqualTo(DEFAULT_DATE_TIME);
     }
@@ -159,6 +165,7 @@ public class CommentResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(comment.getId().intValue())))
             .andExpect(jsonPath("$.[*].content").value(hasItem(DEFAULT_CONTENT.toString())))
+            .andExpect(jsonPath("$.[*].info").value(hasItem(DEFAULT_INFO.toString())))
             .andExpect(jsonPath("$.[*].userId").value(hasItem(DEFAULT_USER_ID.intValue())))
             .andExpect(jsonPath("$.[*].dateTime").value(hasItem(sameInstant(DEFAULT_DATE_TIME))));
     }
@@ -175,6 +182,7 @@ public class CommentResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(comment.getId().intValue()))
             .andExpect(jsonPath("$.content").value(DEFAULT_CONTENT.toString()))
+            .andExpect(jsonPath("$.info").value(DEFAULT_INFO.toString()))
             .andExpect(jsonPath("$.userId").value(DEFAULT_USER_ID.intValue()))
             .andExpect(jsonPath("$.dateTime").value(sameInstant(DEFAULT_DATE_TIME)));
     }
@@ -201,6 +209,7 @@ public class CommentResourceIT {
         em.detach(updatedComment);
         updatedComment
             .content(UPDATED_CONTENT)
+            .info(UPDATED_INFO)
             .userId(UPDATED_USER_ID)
             .dateTime(UPDATED_DATE_TIME);
         CommentDTO commentDTO = commentMapper.toDto(updatedComment);
@@ -215,6 +224,7 @@ public class CommentResourceIT {
         assertThat(commentList).hasSize(databaseSizeBeforeUpdate);
         Comment testComment = commentList.get(commentList.size() - 1);
         assertThat(testComment.getContent()).isEqualTo(UPDATED_CONTENT);
+        assertThat(testComment.getInfo()).isEqualTo(UPDATED_INFO);
         assertThat(testComment.getUserId()).isEqualTo(UPDATED_USER_ID);
         assertThat(testComment.getDateTime()).isEqualTo(UPDATED_DATE_TIME);
     }

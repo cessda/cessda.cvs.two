@@ -30,6 +30,9 @@ public class Comment implements Serializable {
     @Column(name = "content")
     private String content;
 
+    @Column(name = "info")
+    private String info;
+
     @Column(name = "user_id")
     private Long userId;
 
@@ -60,6 +63,19 @@ public class Comment implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    public Comment info(String info) {
+        this.info = info;
+        return this;
     }
 
     public Long getUserId() {

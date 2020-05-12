@@ -41,12 +41,14 @@ describe('Comment e2e test', () => {
     await commentComponentsPage.clickOnCreateButton();
 
     await promise.all([
+      commentUpdatePage.setInfoInput('info'),
       commentUpdatePage.setContentInput('content'),
       commentUpdatePage.setUserIdInput('5'),
       commentUpdatePage.setDateTimeInput('01/01/2001' + protractor.Key.TAB + '02:30AM'),
       commentUpdatePage.versionSelectLastOption()
     ]);
 
+    expect(await commentUpdatePage.getInfoInput()).to.eq('info', 'Expected Info value to be equals to info');
     expect(await commentUpdatePage.getContentInput()).to.eq('content', 'Expected Content value to be equals to content');
     expect(await commentUpdatePage.getUserIdInput()).to.eq('5', 'Expected userId value to be equals to 5');
     expect(await commentUpdatePage.getDateTimeInput()).to.contain('2001-01-01T02:30', 'Expected dateTime value to be equals to 2000-12-31');

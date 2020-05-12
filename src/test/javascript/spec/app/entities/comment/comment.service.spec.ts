@@ -24,7 +24,7 @@ describe('Service Tests', () => {
       httpMock = injector.get(HttpTestingController);
       currentDate = moment();
 
-      elemDefault = new Comment(0, 'AAAAAAA', 0, currentDate);
+      elemDefault = new Comment(0, 'AAAAAAA', 'AAAAAAA', 0, currentDate);
     });
 
     describe('Service methods', () => {
@@ -69,6 +69,7 @@ describe('Service Tests', () => {
       it('should update a Comment', () => {
         const returnedFromService = Object.assign(
           {
+            info: 'BBBBBB',
             content: 'BBBBBB',
             userId: 1,
             dateTime: currentDate.format(DATE_TIME_FORMAT)
@@ -93,6 +94,7 @@ describe('Service Tests', () => {
       it('should return a list of Comment', () => {
         const returnedFromService = Object.assign(
           {
+            info: 'BBBBBB',
             content: 'BBBBBB',
             userId: 1,
             dateTime: currentDate.format(DATE_TIME_FORMAT)

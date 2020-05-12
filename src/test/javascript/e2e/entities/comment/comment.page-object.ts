@@ -29,6 +29,7 @@ export class CommentUpdatePage {
   saveButton = element(by.id('save-entity'));
   cancelButton = element(by.id('cancel-save'));
 
+  infoInput = element(by.id('field_info'));
   contentInput = element(by.id('field_content'));
   userIdInput = element(by.id('field_userId'));
   dateTimeInput = element(by.id('field_dateTime'));
@@ -37,6 +38,14 @@ export class CommentUpdatePage {
 
   async getPageTitle(): Promise<string> {
     return this.pageTitle.getAttribute('jhiTranslate');
+  }
+
+  async setInfoInput(info: string): Promise<void> {
+    await this.infoInput.sendKeys(info);
+  }
+
+  async getInfoInput(): Promise<string> {
+    return await this.infoInput.getAttribute('value');
   }
 
   async setContentInput(content: string): Promise<void> {

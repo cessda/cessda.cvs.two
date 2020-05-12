@@ -41,6 +41,7 @@
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="info"><span jhiTranslate="cvsApp.comment.info">Info</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="content"><span jhiTranslate="cvsApp.comment.content">Content</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="userId"><span jhiTranslate="cvsApp.comment.userId">User Id</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="dateTime"><span jhiTranslate="cvsApp.comment.dateTime">Date Time</span> <fa-icon icon="sort"></fa-icon></th>
@@ -51,6 +52,7 @@
             <tbody>
                 <tr *ngFor="let comment of comments ;trackBy: trackId">
                     <td><a [routerLink]="['/comment', comment.id, 'view']">{{ comment.id }}</a></td>
+                    <td>{{ comment.info }}</td>
                     <td>{{ comment.content }}</td>
                     <td>{{ comment.userId }}</td>
                     <td>{{ comment.dateTime | date:'medium' }}</td>

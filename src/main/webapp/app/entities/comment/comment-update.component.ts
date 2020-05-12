@@ -24,6 +24,7 @@ export class CommentUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
+    info: [null, [Validators.maxLength(255)]],
     content: [],
     userId: [],
     dateTime: [],
@@ -55,6 +56,7 @@ export class CommentUpdateComponent implements OnInit {
   updateForm(comment: IComment): void {
     this.editForm.patchValue({
       id: comment.id,
+      info: comment.info,
       content: comment.content,
       userId: comment.userId,
       dateTime: comment.dateTime ? comment.dateTime.format(DATE_TIME_FORMAT) : null,
@@ -96,6 +98,7 @@ export class CommentUpdateComponent implements OnInit {
     return {
       ...new Comment(),
       id: this.editForm.get(['id'])!.value,
+      info: this.editForm.get(['info'])!.value,
       content: this.editForm.get(['content'])!.value,
       userId: this.editForm.get(['userId'])!.value,
       dateTime: this.editForm.get(['dateTime'])!.value ? moment(this.editForm.get(['dateTime'])!.value, DATE_TIME_FORMAT) : undefined,
