@@ -13,7 +13,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -101,5 +103,18 @@ public class CommentServiceImpl implements CommentService {
     public Page<CommentDTO> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Comments for query {}", query);
         return null;
+    }
+
+    /**
+     * Get all the comments in version
+     *
+     * @param versionId the version ID.
+     * @return the list of entities.
+     */
+    @Override
+    public List<CommentDTO> findAllByVersion(Long versionId) {
+        log.debug("Request to get all Comments by Version ID", versionId);
+        return commentRepository.findAllByVersion(versionId).stream()
+            .map(commentMapper::toDto).collect(Collectors.toList());
     }
 }

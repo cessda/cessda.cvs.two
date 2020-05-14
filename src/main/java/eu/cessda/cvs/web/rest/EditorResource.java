@@ -11,7 +11,6 @@ import eu.cessda.cvs.service.*;
 import eu.cessda.cvs.service.dto.*;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
-import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,10 +22,10 @@ import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing {@link Vocabulary}.
@@ -40,6 +39,7 @@ public class EditorResource {
     private static final String ENTITY_VOCABULARY_NAME = "vocabulary";
     private static final String ENTITY_VERSION_NAME = "version";
     private static final String ENTITY_CODE_NAME = "code";
+    private static final String ENTITY_COMMENT_NAME = "comment";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -54,12 +54,16 @@ public class EditorResource {
 
     private final AgencyService agencyService;
 
-    public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService, LicenceService licenceService, AgencyService agencyService) {
+    private final CommentService commentService;
+
+    public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
+                          LicenceService licenceService, AgencyService agencyService, CommentService commentService) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
         this.licenceService = licenceService;
         this.agencyService = agencyService;
+        this.commentService = commentService;
     }
 
     /**
@@ -361,7 +365,7 @@ public class EditorResource {
      *
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ConceptDTO, or with status {@code 400 (Bad Request)} if the concept has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
-     * @throws VocabularyAlreadyExistException {@code 400 (Bad Request)} if the codes is already exist.
+     * @throws CodeAlreadyExistException {@code 400 (Bad Request)} if the codes is already exist.
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PostMapping("/editors/codes")
@@ -383,14 +387,14 @@ public class EditorResource {
      *
      * @param codeSnippet the conceptDTO helper to create.
      *
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vocabularyDTO,
-     * or with status {@code 400 (Bad Request)} if the vocabularyDTO is not valid,
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated conceptDTO,
+     * or with status {@code 400 (Bad Request)} if the conceptDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the conceptDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @throws CodeAlreadyExistException {@code 400 (Bad Request)} if the codes is already exist.
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PutMapping("/editors/codes")
-    public ResponseEntity<ConceptDTO> updateCode(@Valid @RequestBody CodeSnippet codeSnippet) throws URISyntaxException {
+    public ResponseEntity<ConceptDTO> updateCode(@Valid @RequestBody CodeSnippet codeSnippet) {
         log.debug("REST request to update Code/Concept : {}", codeSnippet);
         if( !(codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) ||
             codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE ) ||
@@ -411,6 +415,7 @@ public class EditorResource {
      *
      * @param id the id of the conceptDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @DeleteMapping("/editors/codes/{id}")
     public ResponseEntity<Void> deleteCode(@PathVariable Long id) {
@@ -419,7 +424,7 @@ public class EditorResource {
         ConceptDTO conceptDTO = conceptService.findOne(id)
             .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + id + " to be deleted" ));
         VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + id ));
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + conceptDTO.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
             .orElseThrow( () -> new EntityNotFoundException("Unable to find vocabulary with Id " + versionDTO.getVocabularyId() ));
 
@@ -450,8 +455,6 @@ public class EditorResource {
      * @param codeSnippet the conceptDTOs helper to reorder codes.
      *
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} if success.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PostMapping("/editors/codes/reorder")
     public ResponseEntity<VersionDTO> reorderCode(@Valid @RequestBody CodeSnippet codeSnippet) throws URISyntaxException {
@@ -493,5 +496,103 @@ public class EditorResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
             .body(versionDTO);
+    }
+
+    /**
+     * {@code POST  /editors/comments} : Create a new comment via editor Rest API.
+     *
+     * @param commentDTO the commentDTO to create.
+     *
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new CommentDTO, or with status {@code 400 (Bad Request)} if the comment has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/editors/comments")
+    public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody CommentDTO commentDTO) throws URISyntaxException {
+        log.debug("REST request to save Comment : {}", commentDTO);
+
+        if (commentDTO.getId() != null) {
+            throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_CODE_NAME, "idexists");
+        }
+
+        if (commentDTO.getVersionId() == null) {
+            throw new IllegalArgumentException( "Comment need to be linked to version. Version ID is null" );
+        }
+
+        @Valid CommentDTO finalCommentDTO = commentDTO;
+        VersionDTO versionDTO = versionService.findOne(commentDTO.getVersionId())
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + finalCommentDTO.getVersionId() ));
+        commentDTO.setUserId( SecurityUtils.getCurrentUserId() );
+        ZonedDateTime dateTime = ZonedDateTime.now();
+        commentDTO.setDateTime( dateTime );
+        versionDTO.addComment( commentDTO );
+
+        versionDTO = versionService.save(versionDTO);
+
+        CommentDTO newSavedComment = versionDTO.getComments().stream().filter(c -> c.getDateTime().equals(dateTime)).findFirst().orElse(null);
+        if( newSavedComment != null )
+            commentDTO = newSavedComment;
+
+        return ResponseEntity.created(new URI("/api/comment/" + commentDTO.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_COMMENT_NAME, commentDTO.getId().toString()))
+            .body(commentDTO);
+    }
+
+    /**
+     * {@code PUT  /editors/comments} : Updates an existing comment via editor Rest API.
+     *
+     * @param commentDTO the commentDTO to update.
+     *
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new CommentDTO, or with status {@code 400 (Bad Request)} if the comment has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated commentDTO,
+     * or with status {@code 400 (Bad Request)} if the commentDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the commentDTO couldn't be updated.
+     */
+    @PutMapping("/editors/comments")
+    public ResponseEntity<CommentDTO> updateComment(@Valid @RequestBody CommentDTO commentDTO) {
+        log.debug("REST request to update Comment : {}", commentDTO);
+        if (commentDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_CODE_NAME, "idnull");
+        }
+
+        // find version
+        VersionDTO versionDTO = versionService.findOne(commentDTO.getVersionId())
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + commentDTO.getVersionId() ));
+        // find comment from version
+        CommentDTO commentFromVersion = versionDTO.getComments().stream().filter(c -> c.getId().equals( commentDTO.getId())).findFirst()
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find comment with Id " + commentDTO.getId() ));
+
+        // update comment from version
+        commentFromVersion.setDateTime( ZonedDateTime.now());
+        commentFromVersion.setContent( commentDTO.getContent());
+        versionService.save(versionDTO );
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_COMMENT_NAME, commentFromVersion.getId().toString()))
+            .body(commentFromVersion);
+    }
+
+    /**
+     * {@code DELETE  /editors/comments/:id} : delete the "id" comment.
+     *
+     * @param id the id of the comment to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/editors/comments/{id}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+        log.debug("REST request to delete Comment : {}", id);
+        // first check version and determine delete strategy
+        CommentDTO commentDTO = commentService.findOne(id)
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find comment with Id " + id + " to be deleted" ));
+        VersionDTO versionDTO = versionService.findOne(commentDTO.getVersionId())
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + commentDTO.getId() ));
+        commentDTO.setVersionId( null );
+        versionDTO.removeComment(commentDTO);
+        // automatically remove comment
+        versionService.save(versionDTO);
+
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true,
+            ENTITY_COMMENT_NAME, id.toString())).build();
     }
 }

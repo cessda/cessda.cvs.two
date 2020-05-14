@@ -14,6 +14,7 @@ describe('Component Tests', () => {
     let fixture: ComponentFixture<SettingsComponent>;
     let mockAuth: MockAccountService;
     const accountValues: Account = {
+      id: 1,
       firstName: 'John',
       lastName: 'Doe',
       activated: true,

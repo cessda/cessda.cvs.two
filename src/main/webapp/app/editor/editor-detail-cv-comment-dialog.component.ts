@@ -1,0 +1,110 @@
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { EditorService } from 'app/editor/editor.service';
+import { IVersion } from 'app/shared/model/version.model';
+import { Router } from '@angular/router';
+import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
+import { Comment, IComment } from 'app/shared/model/comment.model';
+import { CommentService } from 'app/entities/comment/comment.service';
+import { Observable, Subscription } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import * as moment from 'moment';
+import { Moment } from 'moment';
+
+@Component({
+  templateUrl: './editor-detail-cv-comment-dialog.component.html'
+})
+export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
+  isSaving: boolean;
+  account!: Account;
+  versionParam!: IVersion;
+  comments: IComment[] | undefined = [];
+  isWriteComment = false;
+
+  eventSubscriber?: Subscription;
+
+  quillModules: any = {
+    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']]
+  };
+
+  commentForm = this.fb.group({
+    content: ['', [Validators.required]]
+  });
+
+  constructor(
+    private accountService: AccountService,
+    private commentService: CommentService,
+    protected editorService: EditorService,
+    public activeModal: NgbActiveModal,
+    private router: Router,
+    protected eventManager: JhiEventManager,
+    private fb: FormBuilder
+  ) {
+    this.isSaving = false;
+  }
+
+  clear(): void {
+    this.activeModal.dismiss();
+  }
+
+  ngOnInit(): void {
+    this.comments = this.versionParam.comments;
+    this.accountService.identity().subscribe(account => {
+      if (account) {
+        this.account = account;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventSubscriber.unsubscribe();
+    }
+  }
+
+  private registerCvSearchEvent(): void {
+    this.eventSubscriber = this.eventManager.subscribe('commentListModification', () => this.loadComment());
+  }
+
+  loadComment(): void {
+    this.commentService.findAllByVersion(this.versionParam.id!).subscribe((res: HttpResponse<IComment[]>) => (this.comments = res.body!));
+  }
+
+  saveComment(): void {
+    this.isSaving = true;
+    const newComment = {
+      ...new Comment(),
+      info: this.account.lastName + (this.account.firstName ? ', ' + this.account.firstName : ''),
+      content: this.commentForm.get(['content'])!.value,
+      versionId: this.versionParam.id
+    };
+    this.subscribeToSaveResponse(this.editorService.createComment(newComment));
+  }
+
+  protected subscribeToSaveResponse(result: Observable<HttpResponse<IComment>>): void {
+    result.subscribe(
+      response => this.onSaveSuccess(response.body!),
+      () => this.onSaveError()
+    );
+  }
+
+  protected onSaveSuccess(newComment: IComment): void {
+    this.isSaving = false;
+    this.versionParam.comments!.push(newComment);
+    this.commentForm.patchValue({ content: '' });
+    this.isWriteComment = false;
+    this.loadComment();
+  }
+
+  protected onSaveError(): void {
+    this.isSaving = false;
+  }
+
+  parseDateTimeAgo(dateTime: Moment): string {
+    return moment(dateTime).fromNow();
+  }
+}

@@ -1,6 +1,7 @@
 import { Moment } from 'moment';
 import { IConcept } from 'app/shared/model/concept.model';
 import { IVersionHistory } from 'app/shared/model/version-history';
+import { IComment } from 'app/shared/model/comment.model';
 
 export interface IVersion {
   id?: number;
@@ -34,6 +35,7 @@ export interface IVersion {
   translateAgency?: string;
   translateAgencyLink?: string;
   concepts?: IConcept[];
+  comments?: IComment[];
   vocabularyId?: number;
   versionHistories?: IVersionHistory[];
   languageSl?: string;
@@ -72,6 +74,7 @@ export class Version implements IVersion {
     public translateAgency?: string,
     public translateAgencyLink?: string,
     public concepts?: IConcept[],
+    public comments?: IComment[],
     public vocabularyId?: number,
     public versionHistories?: IVersionHistory[],
     public languageSl?: string

@@ -141,4 +141,17 @@ public class CommentResource {
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
+
+    /**
+     * {@code GET  /comments} : get all the comments.
+     *
+     * @param versionId the pagination information.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of comments in body.
+     */
+    @GetMapping("/comments/version/{versionId}")
+    public ResponseEntity<List<CommentDTO>> getAllCommentsByVersion(@PathVariable Long versionId) {
+        log.debug("REST request to get a page of Comments by VersionId", versionId);
+        List<CommentDTO> comments = commentService.findAllByVersion(versionId);
+        return ResponseEntity.ok().body(comments);
+    }
 }

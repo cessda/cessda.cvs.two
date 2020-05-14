@@ -1,0 +1,25 @@
+<div class="d-flex justify-content-between" [ngClass]="{'w-100' : account.id === comment.userId}">
+    <h6 class="text-muted" [ngClass]="{'text-right' : account.id !== comment.userId, 'col-sm-12' : account.id !== comment.userId}">{{comment.info}} - <small class="text-muted">{{parseDateTimeAgo(comment.dateTime!)}}</small></h6>
+    <small *ngIf="account.id === comment.userId && !isWriteComment" class="text-muted">
+        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" (click)="doEditComment()">
+            <fa-icon [icon]="'edit'"></fa-icon>
+        </button>
+        <button type="button" class="btn btn-sm btn-danger" data-dismiss="modal" (click)="doDeleteComment()">
+            <fa-icon [icon]="'trash'"></fa-icon>
+        </button>
+    </small>
+</div>
+<div *ngIf="!isWriteComment" class="mb-1" [ngClass]="{'text-right' : account.id !== comment.userId}" [innerHTML]="comment.content"></div>
+<form *ngIf="versionParam"  novalidate [formGroup]="commentForm">
+    <div *ngIf="isWriteComment" id="quill-ddi">
+        <quill-editor class="small-quill" [modules]="quillModules" name="content" formControlName="content"></quill-editor>
+    </div>
+    <div *ngIf="isWriteComment" class="ql-editor-buttons">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriteComment = !isWriteComment">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="button" id="save-ddi-usage" [disabled]="commentForm.invalid || isSaving" (click)="saveComment()" class="btn btn-primary">
+            <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

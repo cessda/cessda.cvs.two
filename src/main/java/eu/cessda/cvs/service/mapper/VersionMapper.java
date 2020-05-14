@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 /**
  * Mapper for the entity {@link Version} and its DTO {@link VersionDTO}.
  */
-@Mapper(componentModel = "spring", uses = {VocabularyMapper.class, ConceptMapper.class})
+@Mapper(componentModel = "spring", uses = {VocabularyMapper.class, ConceptMapper.class, CommentMapper.class})
 public interface VersionMapper extends EntityMapper<VersionDTO, Version> {
 
     @Mapping(source = "vocabulary.id", target = "vocabularyId")

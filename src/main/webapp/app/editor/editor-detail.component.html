@@ -15,10 +15,10 @@
                 </span>
 
                 <span class="cmt-scn">
-                    <button type="button" class="btn btn-primary btn-sm">
+                    <button type="button" class="btn btn-primary btn-sm" (click)="openCvCommentPopup()">
                         <fa-icon icon="comment"></fa-icon>
                         <span> Comments</span>
-                        <span class="badge badge-light">0</span>
+                        <span class="badge badge-light">{{version!.comments!.length}}</span>
                     </button>
                 </span>
             </div>

@@ -5,6 +5,7 @@ import eu.cessda.cvs.service.dto.CommentDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,9 +48,17 @@ public interface CommentService {
      * Search for the comment corresponding to the query.
      *
      * @param query the query of the search.
-     * 
+     *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
     Page<CommentDTO> search(String query, Pageable pageable);
+
+    /**
+     * Get all the comments in version
+     *
+     * @param versionId the version ID.
+     * @return the list of entities.
+     */
+    List<CommentDTO> findAllByVersion(Long versionId);
 }

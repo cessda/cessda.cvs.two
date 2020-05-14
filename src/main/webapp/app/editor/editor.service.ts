@@ -12,10 +12,12 @@ import { IVocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { IConcept } from 'app/shared/model/concept.model';
 import { IVersion } from 'app/shared/model/version.model';
+import { IComment } from 'app/shared/model/comment.model';
 
 type EntityResponseVocabularyType = HttpResponse<IVocabulary>;
 type EntityResponseVersionType = HttpResponse<IVersion>;
 type EntityResponseConceptType = HttpResponse<IConcept>;
+type EntityResponseCommentType = HttpResponse<IComment>;
 
 @Injectable({ providedIn: 'root' })
 export class EditorService {
@@ -23,6 +25,7 @@ export class EditorService {
   public resourceEditorSearchUrl = SERVER_API_URL + 'api/editor/search';
   public resourceEditorVocabularyUrl = SERVER_API_URL + 'api/editors/vocabularies';
   public resourceEditorCodeUrl = SERVER_API_URL + 'api/editors/codes';
+  public resourceEditorCommentUrl = SERVER_API_URL + 'api/editors/comments';
   public resourceDownloadUrl = SERVER_API_URL + 'api/download';
 
   constructor(protected http: HttpClient) {}
@@ -30,7 +33,7 @@ export class EditorService {
   createVocabulary(vocabularySnippet: IVocabularySnippet): Observable<EntityResponseVocabularyType> {
     return this.http
       .post<IVocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
-      .pipe(map((res: EntityResponseVocabularyType) => this.convertDateFromServer(res)));
+      .pipe(map((res: EntityResponseVocabularyType) => this.convertVocabularyDateFromServer(res)));
   }
 
   createNewVersion(id: number): Observable<EntityResponseVersionType> {
@@ -40,7 +43,7 @@ export class EditorService {
   updateVocabulary(vocabularySnippet: IVocabularySnippet): Observable<EntityResponseVocabularyType> {
     return this.http
       .put<IVocabulary>(this.resourceEditorVocabularyUrl, vocabularySnippet, { observe: 'response' })
-      .pipe(map((res: EntityResponseVocabularyType) => this.convertDateFromServer(res)));
+      .pipe(map((res: EntityResponseVocabularyType) => this.convertVocabularyDateFromServer(res)));
   }
 
   forwardStatusVocabulary(vocabularySnippet: IVocabularySnippet): Observable<EntityResponseVersionType> {
@@ -54,7 +57,7 @@ export class EditorService {
   createCode(codeSnippet: ICodeSnippet): Observable<EntityResponseConceptType> {
     return this.http
       .post<IConcept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' })
-      .pipe(map((res: EntityResponseConceptType) => this.convertDateFromServer(res)));
+      .pipe(map((res: EntityResponseConceptType) => this.convertVocabularyDateFromServer(res)));
   }
 
   updateCode(codeSnippet: ICodeSnippet): Observable<EntityResponseConceptType> {
@@ -78,14 +81,6 @@ export class EditorService {
     return copy;
   }
 
-  protected convertDateFromServer(res: EntityResponseVocabularyType): EntityResponseVocabularyType {
-    if (res.body) {
-      res.body.publicationDate = res.body.publicationDate ? moment(res.body.publicationDate) : undefined;
-      res.body.lastModified = res.body.lastModified ? moment(res.body.lastModified) : undefined;
-    }
-    return res;
-  }
-
   search(req?: any): Observable<HttpResponse<ICvResult>> {
     const options = createRequestOption(req);
     return this.http.get<ICvResult>(this.resourceEditorSearchUrl, { params: options, observe: 'response' });
@@ -105,5 +100,34 @@ export class EditorService {
       params: options,
       responseType: 'blob'
     });
+  }
+
+  createComment(comment: IComment): Observable<EntityResponseCommentType> {
+    return this.http
+      .post<IComment>(this.resourceEditorCommentUrl, comment, { observe: 'response' })
+      .pipe(map((res: EntityResponseConceptType) => this.convertCommentDateFromServer(res)));
+  }
+
+  updateComment(comment: IComment): Observable<EntityResponseCommentType> {
+    return this.http.put<IComment>(this.resourceEditorCommentUrl, comment, { observe: 'response' });
+  }
+
+  deleteComment(commentId: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceEditorCommentUrl}/${commentId}`, { observe: 'response' });
+  }
+
+  protected convertVocabularyDateFromServer(res: EntityResponseVocabularyType): EntityResponseVocabularyType {
+    if (res.body) {
+      res.body.publicationDate = res.body.publicationDate ? moment(res.body.publicationDate) : undefined;
+      res.body.lastModified = res.body.lastModified ? moment(res.body.lastModified) : undefined;
+    }
+    return res;
+  }
+
+  protected convertCommentDateFromServer(res: EntityResponseCommentType): EntityResponseCommentType {
+    if (res.body) {
+      res.body.dateTime = res.body.dateTime ? moment(res.body.dateTime) : undefined;
+    }
+    return res;
   }
 }

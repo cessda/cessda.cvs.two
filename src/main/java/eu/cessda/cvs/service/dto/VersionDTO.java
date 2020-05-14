@@ -185,6 +185,8 @@ public class VersionDTO implements Serializable {
 
     private Set<ConceptDTO> concepts = new LinkedHashSet<>();
 
+    private Set<CommentDTO> comments = new LinkedHashSet<>();
+
     @Transient
     private List<Map<String, String>> versionHistories = new ArrayList<>();
 
@@ -493,6 +495,24 @@ public class VersionDTO implements Serializable {
             }
         }
         setConcepts( new LinkedHashSet<>(conceptLists ));
+        return this;
+    }
+
+    public Set<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(Set<CommentDTO> comments) {
+        this.comments = comments;
+    }
+
+    public VersionDTO addComment( CommentDTO comment ) {
+        this.comments.add(comment);
+        return this;
+    }
+
+    public VersionDTO removeComment( CommentDTO comment ) {
+        this.comments.remove(comment);
         return this;
     }
 

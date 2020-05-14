@@ -8,6 +8,8 @@ export * from './editor-detail-cv-add-edit-dialog.component';
 export * from './editor-detail-cv-delete-dialog.component';
 export * from './editor-detail-cv-forward-status-dialog.component';
 export * from './editor-detail-cv-new-version-dialog.component';
+export * from './editor-detail-cv-comment-dialog.component';
+export * from './editor-detail-cv-comment-item.component';
 
 export * from './editor-detail-code-add-edit-dialog.component';
 export * from './editor-detail-code-delete-dialog.component';

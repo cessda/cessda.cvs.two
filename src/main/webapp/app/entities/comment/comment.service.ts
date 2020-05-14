@@ -49,6 +49,12 @@ export class CommentService {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
 
+  findAllByVersion(versionId: number): Observable<EntityArrayResponseType> {
+    return this.http
+      .get<IComment[]>(`${this.resourceUrl}/version/${versionId}`, { observe: 'response' })
+      .pipe(map((res: EntityArrayResponseType) => this.convertDateArrayFromServer(res)));
+  }
+
   search(req: SearchWithPagination): Observable<EntityArrayResponseType> {
     const options = createRequestOption(req);
     return this.http

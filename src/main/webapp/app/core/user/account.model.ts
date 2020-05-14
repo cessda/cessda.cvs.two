@@ -1,7 +1,8 @@
-import {IUserAgency} from 'app/shared/model/user-agency.model';
+import { IUserAgency } from 'app/shared/model/user-agency.model';
 
 export class Account {
   constructor(
+    public id: number,
     public activated: boolean,
     public authorities: string[],
     public email: string,

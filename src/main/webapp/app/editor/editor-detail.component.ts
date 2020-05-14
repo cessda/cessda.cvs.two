@@ -21,6 +21,7 @@ import { EditorDetailCvForwardStatusDialogComponent } from 'app/editor/editor-de
 import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { HttpResponse } from '@angular/common/http';
 import { EditorDetailCvNewVersionDialogComponent } from 'app/editor/editor-detail-cv-new-version-dialog.component';
+import { EditorDetailCvCommentDialogComponent } from '.';
 
 @Component({
   selector: 'jhi-editor-detail',
@@ -73,6 +74,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   isNotesEdit = false;
 
   codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'CONTRIBUTOR_TL'];
+
+  noOfComments = 0;
 
   quillModules: any = {
     toolbar: [
@@ -148,6 +151,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.vocabulary!.selectedVersion = versionNumber;
     this.version = VocabularyUtil.getVersionByLangAndNumber(this.vocabulary!, versionNumber);
     this.detailForm.patchValue({ ddiUsage: this.version.ddiUsage, notes: this.version.notes });
+
+    this.noOfComments = this.version.comments!.length;
 
     if (this.version.status === 'FINAL_REVIEW') {
       this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL'];
@@ -562,6 +567,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.ngbModalRef = this.modalService.open(EditorDetailCodeReorderDialogComponent as Component, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.conceptParam = this.concept;
+  }
+
+  openCvCommentPopup(): void {
+    this.ngbModalRef = this.modalService.open(EditorDetailCvCommentDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
+    this.ngbModalRef.componentInstance.versionParam = this.version;
   }
 
   saveDdiUsage(): void {
