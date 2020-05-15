@@ -264,7 +264,7 @@
                                 <textarea style="width:100%" class="small-quill" name="notes" formControlName="notes"></textarea>
                             </div>
                             <div *ngIf="isNotesEdit" class="ql-editor-buttons">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isNotesEdit = !isNotesEdit">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeNotes()">
                                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
                                 </button>
                                 <button type="button" id="save-notes" (click)="saveNotes()" class="btn btn-primary">
@@ -551,7 +551,7 @@
                             <span>Usages</span>
                         </a>
                         <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'usage', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'usage'}" #usagePanel id="usagePanel">
-                            <div *ngIf="!isDdiUsageEdit" class="small-block-n" [innerHTML]="detailForm.get(['ddiUsage'])!.value ? detailForm.get(['ddiUsage'])!.value: 'no information'"></div>
+                            <div *ngIf="!isDdiUsageEdit" class="small-block-n" [innerHTML]="version!.ddiUsage ? version!.ddiUsage: 'no information'"></div>
 
                             <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_DDI_CV', agency:vocabulary!.agencyId, agencyRoles:['ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}">
                                 <a *ngIf="!isDdiUsageEdit" ngbTooltip="edit ddi-usage" href="javascript:void(0);" (click)="isDdiUsageEdit = !isDdiUsageEdit">
@@ -563,7 +563,7 @@
                                 <quill-editor class="medium-quill" [modules]="quillModules" name="ddiUsage" formControlName="ddiUsage"></quill-editor>
                             </div>
                             <div *ngIf="isDdiUsageEdit" class="ql-editor-buttons">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isDdiUsageEdit = !isDdiUsageEdit">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeDdiUsage()">
                                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
                                 </button>
                                 <button type="button" id="save-ddi-usage" (click)="saveDdiUsage()" class="btn btn-primary">

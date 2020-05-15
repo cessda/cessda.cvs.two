@@ -1,10 +1,10 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { EditorService } from 'app/editor/editor.service';
 import { IVersion } from 'app/shared/model/version.model';
 import { Router } from '@angular/router';
-import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
@@ -42,7 +42,8 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
     public activeModal: NgbActiveModal,
     private router: Router,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _ngZone: NgZone
   ) {
     this.isSaving = false;
   }
@@ -57,6 +58,13 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
       if (account) {
         this.account = account;
       }
+    });
+
+    this._ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        const element = document.querySelector('#commentInput');
+        element!.scrollIntoView({ behavior: 'smooth' });
+      }, 500);
     });
   }
 

@@ -614,4 +614,14 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  closeDdiUsage(): void {
+    this.isDdiUsageEdit = false;
+    this.detailForm.patchValue({ ddiUsage: this.version!.ddiUsage });
+  }
+
+  closeNotes(): void {
+    this.isNotesEdit = false;
+    this.detailForm.patchValue({ notes: this.version!.notes });
+  }
 }

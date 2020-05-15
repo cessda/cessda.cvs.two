@@ -16,7 +16,7 @@ import { HttpResponse } from '@angular/common/http';
   templateUrl: './editor-detail-cv-comment-item.component.html'
 })
 export class EditorDetailCvCommentItemComponent {
-  @Input() account!: Account;
+  @Input() account?: Account;
   @Input() comment!: IComment;
   @Input() versionParam!: IVersion;
   isSaving: boolean;
@@ -60,6 +60,7 @@ export class EditorDetailCvCommentItemComponent {
   saveComment(): void {
     this.isSaving = true;
     this.comment.content = this.commentForm.get(['content'])!.value;
+    this.comment.dateTime = moment();
     this.subscribeToSaveResponse(this.editorService.updateComment(this.comment));
   }
 

@@ -18,13 +18,19 @@
             </div>
         </div>
 
-        <div class="row-detail form-group">
+        <div class="row-detail form-group" id="commentInput" #commentInput>
             <div *ngIf="!isWriteComment" class="detail-column">
                 <input type="text" placeholder="what you want to say?" class="form-control" id="field_translateAgency" (focus)="isWriteComment = true"/>
             </div>
             <form *ngIf="versionParam"  novalidate [formGroup]="commentForm">
                 <div *ngIf="isWriteComment">
                     <quill-editor class="small-quill" [modules]="quillModules" name="content" formControlName="content"></quill-editor>
+                    <div *ngIf="commentForm.get('content')!.invalid && (commentForm.get('content')!.dirty || commentForm.get('content')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="commentForm.get('content')?.errors?.required" jhiTranslate="entity.validation.required">
+                            Comment is empty!
+                        </small>
+                    </div>
                 </div>
                 <div *ngIf="isWriteComment" class="ql-editor-buttons">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriteComment = !isWriteComment">

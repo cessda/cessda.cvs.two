@@ -17,6 +17,7 @@ import { ILicence } from 'app/shared/model/licence.model';
 import { LicenceService } from 'app/entities/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { IComment } from 'app/shared/model/comment.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-forward-status-dialog',
@@ -36,8 +37,9 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   slVersionNumber!: string;
   tlProposedVersionNumber = 1;
   missingTranslations: string[] = [];
+  comments: IComment[] | undefined = [];
 
-  isCommentCollapse = false;
+  isCommentCollapse = true;
   isTextDiffCollapse = true;
 
   compareNoOfDifference = 0;
@@ -81,6 +83,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSaving = false;
+    this.comments = this.versionParam!.comments;
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.account = account;

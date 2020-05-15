@@ -974,3 +974,7 @@ button.invisible-button:focus {
   float: right;
   display: inline-block;
 }
+.btn-primary-outline {
+  background-color: transparent;
+  border-color: #ccc;
+}

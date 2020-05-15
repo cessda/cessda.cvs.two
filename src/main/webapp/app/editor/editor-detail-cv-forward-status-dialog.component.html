@@ -17,11 +17,18 @@
                 &nbsp;
                 <fa-icon *ngIf="!isCommentCollapse" icon="caret-down"></fa-icon>
                 <fa-icon *ngIf="isCommentCollapse" icon="caret-right"></fa-icon>
-                <span>&nbsp;<fa-icon icon="comment"></fa-icon> Comments</span>
+                <span>&nbsp;<fa-icon icon="comment"></fa-icon> Comments <span class="badge badge-light">{{comments!.length}}</span></span>
             </a>
             <div id="comment-panel" class="acc-body" [ngbCollapse]="isCommentCollapse">
                 <div>
-
+                    <div class="list-group">
+                        <div *ngIf="!comments! || comments!.length === 0" class="list-group-item">
+                            <p>There is no comments.</p>
+                        </div>
+                        <div *ngFor="let c of comments!; let i = index" class="list-group-item">
+                            <jhi-comment-item [comment]="c" [versionParam]="versionParam"></jhi-comment-item>
+                        </div>
+                    </div>
                 </div>
             </div>
 
