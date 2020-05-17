@@ -1,0 +1,38 @@
+{
+  "id": 78,
+  "status": "PUBLISHED",
+  "uri": "https://vocabularies.cessda.eu/bbb/en/1.0",
+  "notation": "bbb",
+  "versionNumber": "1.0",
+  "withdrawn": false,
+  "sourceLanguage": "en",
+  "agencyId": 1,
+  "agencyName": "CESSDA",
+  "agencyLogo": "/content/images/agency/cessda.png",
+  "agencyLink": "https://www.cessda.eu/",
+  "publicationDate": "2020-05-10",
+  "notes": "bbb",
+  "versions": [
+    {
+      "id": 438,
+      "status": "PUBLISHED",
+      "itemType": "SL",
+      "language": "en",
+      "publicationDate": "2020-05-09",
+      "number": "1.0",
+      "uri": "https://vocabularies.cessda.eu/bbb/en/1.0",
+      "canonicalUri": "urn:ddi:int.cessda.cv:bbb:1.0",
+      "notation": "bbb",
+      "title": "bbb",
+      "definition": "bbb",
+      "notes": "bbb",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
+      "citation": "CESSDA. (2020). bbb (Version 1.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:bbb:1.0. ",
+      "concepts": [],
+      "versionHistories": []
+    }
+  ]
+}

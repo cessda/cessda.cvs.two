@@ -27,7 +27,7 @@
                 <dt><span jhiTranslate="cvsApp.comment.version">Version</span></dt>
                 <dd>
                     <div *ngIf="comment.versionId">
-                        <a [routerLink]="['/version', comment.versionId, 'view']">{{ comment.versionId }}</a>
+                        <a [routerLink]="['/entity/version', comment.versionId, 'view']">{{ comment.versionId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -39,7 +39,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/comment', comment.id, 'edit']"
+                    [routerLink]="['/entity/comment', comment.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>

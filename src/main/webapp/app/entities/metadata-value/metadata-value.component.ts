@@ -126,7 +126,7 @@ export class MetadataValueComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    this.router.navigate(['/metadata-value'], {
+    this.router.navigate(['/entity/metadata-value'], {
       queryParams: {
         page: this.page,
         size: this.itemsPerPage,

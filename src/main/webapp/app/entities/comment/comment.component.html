@@ -51,27 +51,27 @@
             </thead>
             <tbody>
                 <tr *ngFor="let comment of comments ;trackBy: trackId">
-                    <td><a [routerLink]="['/comment', comment.id, 'view']">{{ comment.id }}</a></td>
+                    <td><a [routerLink]="['/entity/comment', comment.id, 'view']">{{ comment.id }}</a></td>
                     <td>{{ comment.info }}</td>
                     <td>{{ comment.content }}</td>
                     <td>{{ comment.userId }}</td>
                     <td>{{ comment.dateTime | date:'medium' }}</td>
                     <td>
                         <div *ngIf="comment.versionId">
-                            <a [routerLink]="['/version', comment.versionId , 'view']" >{{ comment.versionId }}</a>
+                            <a [routerLink]="['/entity/version', comment.versionId , 'view']" >{{ comment.versionId }}</a>
                         </div>
                     </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
-                                    [routerLink]="['/comment', comment.id, 'view']"
+                                    [routerLink]="['/entity/comment', comment.id, 'view']"
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
 
                             <button type="submit"
-                                    [routerLink]="['/comment', comment.id, 'edit']"
+                                    [routerLink]="['/entity/comment', comment.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>

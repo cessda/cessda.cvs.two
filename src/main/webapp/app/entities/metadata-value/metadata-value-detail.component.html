@@ -23,7 +23,7 @@
                 <dt><span jhiTranslate="cvsApp.metadataValue.metadataField">Metadata Field</span></dt>
                 <dd>
                     <div *ngIf="metadataValue.metadataFieldId">
-                        <a [routerLink]="['/metadata-field', metadataValue.metadataFieldId, 'view']">{{ metadataValue.metadataFieldId }}</a>
+                        <a [routerLink]="['/entity/metadata-field', metadataValue.metadataFieldId, 'view']">{{ metadataValue.metadataFieldId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -35,7 +35,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/metadata-value', metadataValue.id, 'edit']"
+                    [routerLink]="['/entity/metadata-value', metadataValue.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>

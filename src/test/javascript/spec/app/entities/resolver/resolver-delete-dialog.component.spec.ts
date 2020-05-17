@@ -6,8 +6,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { CvsTestModule } from '../../../test.module';
 import { MockEventManager } from '../../../helpers/mock-event-manager.service';
 import { MockActiveModal } from '../../../helpers/mock-active-modal.service';
-import { ResolverDeleteDialogComponent } from 'app/entities/resolver/resolver-delete-dialog.component';
-import { ResolverService } from 'app/entities/resolver/resolver.service';
+import { ResolverDeleteDialogComponent } from 'app/admin/resolver/resolver-delete-dialog.component';
+import { ResolverService } from 'app/admin/resolver/resolver.service';
 
 describe('Component Tests', () => {
   describe('Resolver Management Delete Component', () => {

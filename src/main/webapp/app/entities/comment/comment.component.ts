@@ -126,7 +126,7 @@ export class CommentComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    this.router.navigate(['/comment'], {
+    this.router.navigate(['/entity/comment'], {
       queryParams: {
         page: this.page,
         size: this.itemsPerPage,

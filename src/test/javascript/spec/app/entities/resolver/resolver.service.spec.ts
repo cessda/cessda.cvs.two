@@ -1,6 +1,6 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { ResolverService } from 'app/entities/resolver/resolver.service';
+import { ResolverService } from 'app/admin/resolver/resolver.service';
 import { IResolver, Resolver } from 'app/shared/model/resolver.model';
 import { ResourceType } from 'app/shared/model/enumerations/resource-type.model';
 import { ResolverType } from 'app/shared/model/enumerations/resolver-type.model';

@@ -126,7 +126,7 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    this.router.navigate(['/vocabulary-change'], {
+    this.router.navigate(['/entity/vocabulary-change'], {
       queryParams: {
         page: this.page,
         size: this.itemsPerPage,

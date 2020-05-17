@@ -4,8 +4,8 @@ import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
-import { LicenceUpdateComponent } from 'app/entities/licence/licence-update.component';
-import { LicenceService } from 'app/entities/licence/licence.service';
+import { LicenceUpdateComponent } from 'app/admin/licence/licence-update.component';
+import { LicenceService } from 'app/admin/licence/licence.service';
 import { Licence } from 'app/shared/model/licence.model';
 
 describe('Component Tests', () => {

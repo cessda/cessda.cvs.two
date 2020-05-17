@@ -1,6 +1,6 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { AgencyService } from 'app/entities/agency/agency.service';
+import { AgencyService } from 'app/agency/agency.service';
 import { IAgency, Agency } from 'app/shared/model/agency.model';
 
 describe('Service Tests', () => {

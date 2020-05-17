@@ -30,6 +30,14 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           loadChildren: () => import('./editor/editor.module').then(m => m.CvsEditorModule)
         },
         {
+          path: 'agency',
+          data: {
+            authorities: [Authority.ADMIN, Authority.USER]
+          },
+          canActivate: [UserRouteAccessService],
+          loadChildren: () => import('./agency/agency.module').then(m => m.CvsAgencyModule)
+        },
+        {
           path: 'account',
           loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
         },

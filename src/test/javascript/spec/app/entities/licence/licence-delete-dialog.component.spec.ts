@@ -6,8 +6,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { CvsTestModule } from '../../../test.module';
 import { MockEventManager } from '../../../helpers/mock-event-manager.service';
 import { MockActiveModal } from '../../../helpers/mock-active-modal.service';
-import { LicenceDeleteDialogComponent } from 'app/entities/licence/licence-delete-dialog.component';
-import { LicenceService } from 'app/entities/licence/licence.service';
+import { LicenceDeleteDialogComponent } from 'app/admin/licence/licence-delete-dialog.component';
+import { LicenceService } from 'app/admin/licence/licence.service';
 
 describe('Component Tests', () => {
   describe('Licence Management Delete Component', () => {

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
-import { AgencyService } from 'app/entities/agency/agency.service';
+import { AgencyService } from 'app/agency/agency.service';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { IAgency } from 'app/shared/model/agency.model';
 import { AccountService } from 'app/core/auth/account.service';

@@ -146,7 +146,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let vocabulary of vocabularies ;trackBy: trackId">
-                    <td><a [routerLink]="['/vocabulary', vocabulary.id, 'view']">{{ vocabulary.id }}</a></td>
+                    <td><a [routerLink]="['/entity/vocabulary', vocabulary.id, 'view']">{{ vocabulary.id }}</a></td>
                     <td>{{ vocabulary.status }}</td>
                     <td>{{ vocabulary.uri }}</td>
                     <td>{{ vocabulary.notation }}</td>
@@ -250,14 +250,14 @@
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
-                                    [routerLink]="['/vocabulary', vocabulary.id, 'view']"
+                                    [routerLink]="['/entity/vocabulary', vocabulary.id, 'view']"
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
 
                             <button type="submit"
-                                    [routerLink]="['/vocabulary', vocabulary.id, 'edit']"
+                                    [routerLink]="['/entity/vocabulary', vocabulary.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>

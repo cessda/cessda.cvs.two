@@ -126,7 +126,7 @@ export class MetadataFieldComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    this.router.navigate(['/metadata-field'], {
+    this.router.navigate(['/entity/metadata-field'], {
       queryParams: {
         page: this.page,
         size: this.itemsPerPage,

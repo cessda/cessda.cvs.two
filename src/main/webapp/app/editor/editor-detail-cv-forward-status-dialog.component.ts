@@ -14,7 +14,7 @@ import { EditorService } from 'app/editor/editor.service';
 import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { IVersion } from 'app/shared/model/version.model';
 import { ILicence } from 'app/shared/model/licence.model';
-import { LicenceService } from 'app/entities/licence/licence.service';
+import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
 import { IComment } from 'app/shared/model/comment.model';

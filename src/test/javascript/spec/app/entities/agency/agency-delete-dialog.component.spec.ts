@@ -6,8 +6,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { CvsTestModule } from '../../../test.module';
 import { MockEventManager } from '../../../helpers/mock-event-manager.service';
 import { MockActiveModal } from '../../../helpers/mock-active-modal.service';
-import { AgencyDeleteDialogComponent } from 'app/entities/agency/agency-delete-dialog.component';
-import { AgencyService } from 'app/entities/agency/agency.service';
+import { AgencyDeleteDialogComponent } from 'app/agency/agency-delete-dialog.component';
+import { AgencyService } from 'app/agency/agency.service';
 
 describe('Component Tests', () => {
   describe('Agency Management Delete Component', () => {

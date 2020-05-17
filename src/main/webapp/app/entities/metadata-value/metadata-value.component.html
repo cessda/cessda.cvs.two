@@ -50,26 +50,26 @@
             </thead>
             <tbody>
                 <tr *ngFor="let metadataValue of metadataValues ;trackBy: trackId">
-                    <td><a [routerLink]="['/metadata-value', metadataValue.id, 'view']">{{ metadataValue.id }}</a></td>
+                    <td><a [routerLink]="['/entity/metadata-value', metadataValue.id, 'view']">{{ metadataValue.id }}</a></td>
                     <td>{{ metadataValue.value }}</td>
                     <td jhiTranslate="{{ 'cvsApp.ObjectType.' + metadataValue.objectType }}">{{ metadataValue.objectType }}</td>
                     <td>{{ metadataValue.objectId }}</td>
                     <td>
                         <div *ngIf="metadataValue.metadataFieldId">
-                            <a [routerLink]="['/metadata-field', metadataValue.metadataFieldId , 'view']" >{{ metadataValue.metadataFieldId }}</a>
+                            <a [routerLink]="['/entity/metadata-field', metadataValue.metadataFieldId , 'view']" >{{ metadataValue.metadataFieldId }}</a>
                         </div>
                     </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
-                                    [routerLink]="['/metadata-value', metadataValue.id, 'view']"
+                                    [routerLink]="['/entity/metadata-value', metadataValue.id, 'view']"
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
 
                             <button type="submit"
-                                    [routerLink]="['/metadata-value', metadataValue.id, 'edit']"
+                                    [routerLink]="['/entity/metadata-value', metadataValue.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>

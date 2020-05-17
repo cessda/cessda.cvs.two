@@ -1,6 +1,6 @@
 import { TestBed, getTestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { LicenceService } from 'app/entities/licence/licence.service';
+import { LicenceService } from 'app/admin/licence/licence.service';
 import { ILicence, Licence } from 'app/shared/model/licence.model';
 
 describe('Service Tests', () => {

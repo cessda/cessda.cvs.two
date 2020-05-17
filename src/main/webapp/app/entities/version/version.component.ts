@@ -126,7 +126,7 @@ export class VersionComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    this.router.navigate(['/version'], {
+    this.router.navigate(['/entity/version'], {
       queryParams: {
         page: this.page,
         size: this.itemsPerPage,

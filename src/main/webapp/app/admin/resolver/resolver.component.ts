@@ -117,14 +117,14 @@ export class ResolverComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    this.router.navigate(['/resolver'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        search: this.currentSearch,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
+    // this.router.navigate(['/resolver'], {
+    //   queryParams: {
+    //     page: this.page,
+    //     size: this.itemsPerPage,
+    //     search: this.currentSearch,
+    //     sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
+    //   }
+    // });
     this.resolvers = data || [];
   }
 

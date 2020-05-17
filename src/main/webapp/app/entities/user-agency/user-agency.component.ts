@@ -117,7 +117,7 @@ export class UserAgencyComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    this.router.navigate(['/user-agency'], {
+    this.router.navigate(['/entity/user-agency'], {
       queryParams: {
         page: this.page,
         size: this.itemsPerPage,

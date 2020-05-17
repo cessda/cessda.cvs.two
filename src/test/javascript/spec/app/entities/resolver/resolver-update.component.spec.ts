@@ -4,8 +4,8 @@ import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
-import { ResolverUpdateComponent } from 'app/entities/resolver/resolver-update.component';
-import { ResolverService } from 'app/entities/resolver/resolver.service';
+import { ResolverUpdateComponent } from 'app/admin/resolver/resolver-update.component';
+import { ResolverService } from 'app/admin/resolver/resolver.service';
 import { Resolver } from 'app/shared/model/resolver.model';
 
 describe('Component Tests', () => {

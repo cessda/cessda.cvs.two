@@ -43,7 +43,6 @@ export const resolverRoute: Routes = [
       pagingParams: JhiResolvePagingParams
     },
     data: {
-      authorities: [Authority.USER],
       defaultSort: 'id,asc',
       pageTitle: 'cvsApp.resolver.home.title'
     },
@@ -56,7 +55,6 @@ export const resolverRoute: Routes = [
       resolver: ResolverResolve
     },
     data: {
-      authorities: [Authority.USER],
       pageTitle: 'cvsApp.resolver.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -68,7 +66,6 @@ export const resolverRoute: Routes = [
       resolver: ResolverResolve
     },
     data: {
-      authorities: [Authority.USER],
       pageTitle: 'cvsApp.resolver.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -80,7 +77,6 @@ export const resolverRoute: Routes = [
       resolver: ResolverResolve
     },
     data: {
-      authorities: [Authority.USER],
       pageTitle: 'cvsApp.resolver.home.title'
     },
     canActivate: [UserRouteAccessService]

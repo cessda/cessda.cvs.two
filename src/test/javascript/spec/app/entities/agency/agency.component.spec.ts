@@ -4,8 +4,8 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data } from '@angular/router';
 
 import { CvsTestModule } from '../../../test.module';
-import { AgencyComponent } from 'app/entities/agency/agency.component';
-import { AgencyService } from 'app/entities/agency/agency.service';
+import { AgencyComponent } from 'app/agency/agency.component';
+import { AgencyService } from 'app/agency/agency.service';
 import { Agency } from 'app/shared/model/agency.model';
 
 describe('Component Tests', () => {

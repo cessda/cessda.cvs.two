@@ -4,8 +4,8 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data } from '@angular/router';
 
 import { CvsTestModule } from '../../../test.module';
-import { LicenceComponent } from 'app/entities/licence/licence.component';
-import { LicenceService } from 'app/entities/licence/licence.service';
+import { LicenceComponent } from 'app/admin/licence/licence.component';
+import { LicenceService } from 'app/admin/licence/licence.service';
 import { Licence } from 'app/shared/model/licence.model';
 
 describe('Component Tests', () => {

@@ -4,8 +4,8 @@ import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { ActivatedRoute, Data } from '@angular/router';
 
 import { CvsTestModule } from '../../../test.module';
-import { ResolverComponent } from 'app/entities/resolver/resolver.component';
-import { ResolverService } from 'app/entities/resolver/resolver.service';
+import { ResolverComponent } from 'app/admin/resolver/resolver.component';
+import { ResolverService } from 'app/admin/resolver/resolver.service';
 import { Resolver } from 'app/shared/model/resolver.model';
 
 describe('Component Tests', () => {

@@ -4,8 +4,8 @@ import { FormBuilder } from '@angular/forms';
 import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
-import { AgencyUpdateComponent } from 'app/entities/agency/agency-update.component';
-import { AgencyService } from 'app/entities/agency/agency.service';
+import { AgencyUpdateComponent } from 'app/agency/agency-update.component';
+import { AgencyService } from 'app/agency/agency.service';
 import { Agency } from 'app/shared/model/agency.model';
 
 describe('Component Tests', () => {

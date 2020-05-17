@@ -73,7 +73,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let version of versions ;trackBy: trackId">
-                    <td><a [routerLink]="['/version', version.id, 'view']">{{ version.id }}</a></td>
+                    <td><a [routerLink]="['/entity/version', version.id, 'view']">{{ version.id }}</a></td>
                     <td>{{ version.status }}</td>
                     <td>{{ version.itemType }}</td>
                     <td>{{ version.language }}</td>
@@ -102,20 +102,20 @@
                     <td>{{ version.translateAgencyLink }}</td>
                     <td>
                         <div *ngIf="version.vocabularyId">
-                            <a [routerLink]="['/vocabulary', version.vocabularyId , 'view']" >{{ version.vocabularyId }}</a>
+                            <a [routerLink]="['/entity/vocabulary', version.vocabularyId , 'view']" >{{ version.vocabularyId }}</a>
                         </div>
                     </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
-                                    [routerLink]="['/version', version.id, 'view']"
+                                    [routerLink]="['/entity/version', version.id, 'view']"
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
 
                             <button type="submit"
-                                    [routerLink]="['/version', version.id, 'edit']"
+                                    [routerLink]="['/entity/version', version.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>

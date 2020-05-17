@@ -126,7 +126,7 @@ export class ConceptComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    this.router.navigate(['/concept'], {
+    this.router.navigate(['/entity/concept'], {
       queryParams: {
         page: this.page,
         size: this.itemsPerPage,

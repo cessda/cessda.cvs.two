@@ -115,7 +115,7 @@
                 <dt><span jhiTranslate="cvsApp.version.vocabulary">Vocabulary</span></dt>
                 <dd>
                     <div *ngIf="version.vocabularyId">
-                        <a [routerLink]="['/vocabulary', version.vocabularyId, 'view']">{{ version.vocabularyId }}</a>
+                        <a [routerLink]="['/entity/vocabulary', version.vocabularyId, 'view']">{{ version.vocabularyId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -127,7 +127,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/version', version.id, 'edit']"
+                    [routerLink]="['/entity/version', version.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>

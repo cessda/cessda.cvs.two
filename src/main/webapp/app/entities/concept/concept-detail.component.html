@@ -43,7 +43,7 @@
                 <dt><span jhiTranslate="cvsApp.concept.version">Version</span></dt>
                 <dd>
                     <div *ngIf="concept.versionId">
-                        <a [routerLink]="['/version', concept.versionId, 'view']">{{ concept.versionId }}</a>
+                        <a [routerLink]="['/entity/version', concept.versionId, 'view']">{{ concept.versionId }}</a>
                     </div>
                 </dd>
             </dl>
@@ -55,7 +55,7 @@
             </button>
 
             <button type="button"
-                    [routerLink]="['/concept', concept.id, 'edit']"
+                    [routerLink]="['/entity/concept', concept.id, 'edit']"
                     class="btn btn-primary">
                 <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
             </button>

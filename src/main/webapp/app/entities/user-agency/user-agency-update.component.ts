@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { IUserAgency, UserAgency } from 'app/shared/model/user-agency.model';
 import { UserAgencyService } from './user-agency.service';
 import { IAgency } from 'app/shared/model/agency.model';
-import { AgencyService } from 'app/entities/agency/agency.service';
+import { AgencyService } from 'app/agency/agency.service';
 
 @Component({
   selector: 'jhi-user-agency-update',

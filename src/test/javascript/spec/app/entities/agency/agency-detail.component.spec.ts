@@ -4,7 +4,7 @@ import { of } from 'rxjs';
 import { JhiDataUtils } from 'ng-jhipster';
 
 import { CvsTestModule } from '../../../test.module';
-import { AgencyDetailComponent } from 'app/entities/agency/agency-detail.component';
+import { AgencyDetailComponent } from 'app/agency/agency-detail.component';
 import { Agency } from 'app/shared/model/agency.model';
 
 describe('Component Tests', () => {

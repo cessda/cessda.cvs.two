@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
-import { LicenceDetailComponent } from 'app/entities/licence/licence-detail.component';
+import { LicenceDetailComponent } from 'app/admin/licence/licence-detail.component';
 import { Licence } from 'app/shared/model/licence.model';
 
 describe('Component Tests', () => {

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { of } from 'rxjs';
 
 import { CvsTestModule } from '../../../test.module';
-import { ResolverDetailComponent } from 'app/entities/resolver/resolver-detail.component';
+import { ResolverDetailComponent } from 'app/admin/resolver/resolver-detail.component';
 import { Resolver } from 'app/shared/model/resolver.model';
 
 describe('Component Tests', () => {
