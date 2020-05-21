@@ -2,6 +2,7 @@ package eu.cessda.cvs.service.impl;
 
 import eu.cessda.cvs.domain.UserAgency;
 import eu.cessda.cvs.repository.UserAgencyRepository;
+import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.service.UserAgencyService;
 import eu.cessda.cvs.service.dto.UserAgencyDTO;
 import eu.cessda.cvs.service.mapper.UserAgencyMapper;
@@ -27,9 +28,12 @@ public class UserAgencyServiceImpl implements UserAgencyService {
 
     private final UserAgencyMapper userAgencyMapper;
 
-    public UserAgencyServiceImpl(UserAgencyRepository userAgencyRepository, UserAgencyMapper userAgencyMapper) {
+    private final UserRepository userRepository;
+
+    public UserAgencyServiceImpl(UserAgencyRepository userAgencyRepository, UserAgencyMapper userAgencyMapper, UserRepository userRepository) {
         this.userAgencyRepository = userAgencyRepository;
         this.userAgencyMapper = userAgencyMapper;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -42,6 +46,12 @@ public class UserAgencyServiceImpl implements UserAgencyService {
     public UserAgencyDTO save(UserAgencyDTO userAgencyDTO) {
         log.debug("Request to save UserAgency : {}", userAgencyDTO);
         UserAgency userAgency = userAgencyMapper.toEntity(userAgencyDTO);
+
+        if( userAgencyDTO.getUserId() != null ){
+            UserAgency finalUserAgency = userAgency;
+            userRepository.findById( userAgencyDTO.getUserId() ).ifPresent(finalUserAgency::setUser);
+        }
+
         userAgency = userAgencyRepository.save(userAgency);
         return userAgencyMapper.toDto(userAgency);
     }

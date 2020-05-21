@@ -2,6 +2,7 @@ package eu.cessda.cvs.service.mapper;
 
 import eu.cessda.cvs.domain.Authority;
 import eu.cessda.cvs.domain.User;
+import eu.cessda.cvs.domain.UserAgency;
 import eu.cessda.cvs.service.dto.UserDTO;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,12 @@ import java.util.stream.Collectors;
  */
 @Service
 public class UserMapper {
+
+    private final UserAgencyMapper userAgencyMapper;
+
+    public UserMapper(UserAgencyMapper userAgencyMapper) {
+        this.userAgencyMapper = userAgencyMapper;
+    }
 
     public List<UserDTO> usersToUserDTOs(List<User> users) {
         return users.stream()
@@ -53,6 +60,11 @@ public class UserMapper {
             user.setLangKey(userDTO.getLangKey());
             Set<Authority> authorities = this.authoritiesFromStrings(userDTO.getAuthorities());
             user.setAuthorities(authorities);
+            if( userDTO.getUserAgencies() != null && !userDTO.getUserAgencies().isEmpty()) {
+                Set<UserAgency> userAgencies = userDTO.getUserAgencies().stream().map(userAgencyMapper::toEntity).collect(Collectors.toSet());
+                user.setUserAgencies(userAgencies);
+            }
+
             return user;
         }
     }

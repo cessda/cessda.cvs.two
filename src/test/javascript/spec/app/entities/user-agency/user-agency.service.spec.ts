@@ -22,7 +22,7 @@ describe('Service Tests', () => {
       service = injector.get(UserAgencyService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new UserAgency(0, AgencyRole.ADMIN, Language.ALBANIAN);
+      elemDefault = new UserAgency(0, 1, AgencyRole.ADMIN, Language.ALBANIAN);
     });
 
     describe('Service methods', () => {

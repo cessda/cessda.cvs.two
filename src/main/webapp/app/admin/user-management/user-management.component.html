@@ -20,10 +20,10 @@
                     <th scope="col"  jhiSortBy="email"><span jhiTranslate="userManagement.email">Email</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                     <th scope="col"  jhiSortBy="langKey"> <span jhiTranslate="userManagement.langKey">Lang Key</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"><span jhiTranslate="userManagement.profiles">Profiles</span></th>
+                    <th scope="col"><span jhiTranslate="userManagement.profiles">System roles</span></th>
+                    <th scope="col"><span>Agency roles</span></th>
                     <th scope="col" jhiSortBy="createdDate"><span jhiTranslate="userManagement.createdDate">Created Date</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col" jhiSortBy="lastModifiedBy"><span jhiTranslate="userManagement.lastModifiedBy">Last Modified By</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col" jhiSortBy="lastModifiedDate"><span jhiTranslate="userManagement.lastModifiedDate">Last Modified Date</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col" jhiSortBy="lastModifiedBy" ngbTooltip="Last modified by and last modified date"><span>Modified</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -44,9 +44,15 @@
                             <span class="badge badge-info">{{ authority }}</span>
                         </div>
                     </td>
+                    <td>
+                        <div *ngFor="let userAgency of user.userAgencies">
+                            <span class="badge badge-info">{{ getAgencyName(userAgency.agencyId)  + ': ' + userAgency.agencyRole + '-' + getLangIsoFormatted(userAgency.language) }}</span>
+                        </div>
+                    </td>
                     <td>{{ user.createdDate | date:'dd/MM/yy HH:mm' }}</td>
-                    <td>{{ user.lastModifiedBy }}</td>
-                    <td>{{ user.lastModifiedDate | date:'dd/MM/yy HH:mm' }}</td>
+                    <td>
+                        <span *ngIf="user.lastModifiedBy" ngbTooltip="{{ user.lastModifiedBy }} - {{ user.lastModifiedDate | date:'dd/MM/yy HH:mm' }}">...</span>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"

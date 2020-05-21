@@ -3,6 +3,7 @@ package eu.cessda.cvs.service;
 import eu.cessda.cvs.config.Constants;
 import eu.cessda.cvs.domain.Authority;
 import eu.cessda.cvs.domain.User;
+import eu.cessda.cvs.domain.UserAgency;
 import eu.cessda.cvs.repository.AuthorityRepository;
 import eu.cessda.cvs.repository.UserAgencyRepository;
 import eu.cessda.cvs.repository.UserRepository;
@@ -46,7 +47,9 @@ public class UserService {
 
     private final CacheManager cacheManager;
 
-    public UserService(UserRepository userRepository, UserAgencyRepository userAgencyRepository, PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository, CacheManager cacheManager) {
+    public UserService(UserRepository userRepository, UserAgencyRepository userAgencyRepository,
+                       PasswordEncoder passwordEncoder, AuthorityRepository authorityRepository,
+                       CacheManager cacheManager) {
         this.userRepository = userRepository;
         this.userAgencyRepository = userAgencyRepository;
         this.passwordEncoder = passwordEncoder;
@@ -166,6 +169,15 @@ public class UserService {
                 .collect(Collectors.toSet());
             user.setAuthorities(authorities);
         }
+
+        if( userDTO.getUserAgencies() != null) {
+            Set<UserAgency> userAgencies = userDTO.getUserAgencies().stream()
+                .map(ua -> userAgencyRepository.findById(ua.getId()))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+            user.setUserAgencies( userAgencies );
+        }
         userRepository.save(user);
         this.clearUserCaches(user);
         log.debug("Created Information for User: {}", user);
@@ -226,6 +238,17 @@ public class UserService {
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .forEach(managedAuthorities::add);
+
+                if( userDTO.getUserAgencies() != null) {
+                    Set<UserAgency> managedUserAgencies = user.getUserAgencies();
+                    user.getUserAgencies().clear();
+                    userDTO.getUserAgencies().stream()
+                        .map(ua -> userAgencyRepository.findById(ua.getId()))
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .forEach(managedUserAgencies::add);
+                }
+
                 this.clearUserCaches(user);
                 log.debug("Changed Information for User: {}", user);
                 return user;

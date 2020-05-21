@@ -34,6 +34,7 @@ public class UserAgency implements Serializable {
     private String language;
 
     @ManyToOne
+    @JsonIgnoreProperties("userAgencies")
     private User user;
 
     @ManyToOne

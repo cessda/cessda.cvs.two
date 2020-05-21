@@ -27,7 +27,7 @@ public class UserMapperTest {
 
     @BeforeEach
     public void init() {
-        userMapper = new UserMapper();
+        userMapper = new UserMapper(null);
         user = new User();
         user.setLogin(DEFAULT_LOGIN);
         user.setPassword(RandomStringUtils.random(60));

@@ -12,6 +12,10 @@ import { Account } from 'app/core/user/account.model';
 import { UserService } from 'app/core/user/user.service';
 import { User } from 'app/core/user/user.model';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
+import { IAgency } from 'app/shared/model/agency.model';
+import { AgencyService } from 'app/agency/agency.service';
+import { IUserAgency } from 'app/shared/model/user-agency.model';
+import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -28,13 +32,16 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   previousPage!: number;
   ascending!: boolean;
 
+  agencies?: IAgency[];
+
   constructor(
     private userService: UserService,
     private accountService: AccountService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private eventManager: JhiEventManager,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private agencyService: AgencyService
   ) {}
 
   ngOnInit(): void {
@@ -54,12 +61,26 @@ export class UserManagementComponent implements OnInit, OnDestroy {
         )
       )
       .subscribe();
+
+    this.agencyService
+      .query({
+        page: 0,
+        size: 1000,
+        sort: ['name,asc']
+      })
+      .subscribe((res: HttpResponse<IAgency[]>) => {
+        this.agencies = res.body!;
+      });
   }
 
   ngOnDestroy(): void {
     if (this.userListSubscription) {
       this.eventManager.destroy(this.userListSubscription);
     }
+  }
+
+  getAgencyName(agencyId: number): string {
+    return this.agencies!.filter(a => a.id === agencyId)[0]!.name!;
   }
 
   setActive(user: User, isActivated: boolean): void {
@@ -114,5 +135,24 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   private onSuccess(users: User[] | null, headers: HttpHeaders): void {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.users = users;
+    this.users!.forEach(u => {
+      if (u.userAgencies && u.userAgencies.length > 0) {
+        u.userAgencies.sort((ua1, ua2) =>
+          this.userAgencyToCompare(ua1) < this.userAgencyToCompare(ua2)
+            ? -1
+            : this.userAgencyToCompare(ua1) > this.userAgencyToCompare(ua2)
+            ? 1
+            : 0
+        );
+      }
+    });
+  }
+
+  userAgencyToCompare(ua: IUserAgency): string {
+    return ua.agencyId! + ua.agencyRole! + (ua.language ? ua.language : '');
+  }
+
+  getLangIsoFormatted(langIso: string): string {
+    return VocabularyUtil.getLangIsoFormatted(langIso);
   }
 }

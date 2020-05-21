@@ -2,10 +2,13 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.config.Constants;
 import eu.cessda.cvs.domain.User;
+import eu.cessda.cvs.repository.UserAgencyRepository;
 import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.service.MailService;
+import eu.cessda.cvs.service.UserAgencyService;
 import eu.cessda.cvs.service.UserService;
+import eu.cessda.cvs.service.dto.UserAgencyDTO;
 import eu.cessda.cvs.service.dto.UserDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import eu.cessda.cvs.web.rest.errors.EmailAlreadyUsedException;
@@ -32,9 +35,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing users.
@@ -73,11 +73,17 @@ public class UserResource {
 
     private final UserRepository userRepository;
 
+    private final UserAgencyRepository userAgencyRepository;
+
+    private final UserAgencyService userAgencyService;
+
     private final MailService mailService;
 
-    public UserResource(UserService userService, UserRepository userRepository, MailService mailService) {
+    public UserResource(UserService userService, UserRepository userRepository, UserAgencyRepository userAgencyRepository, UserAgencyService userAgencyService, MailService mailService) {
         this.userService = userService;
         this.userRepository = userRepository;
+        this.userAgencyRepository = userAgencyRepository;
+        this.userAgencyService = userAgencyService;
         this.mailService = mailService;
     }
 
@@ -134,6 +140,23 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(userDTO.getId()))) {
             throw new LoginAlreadyUsedException();
         }
+
+        if( userDTO.getUserAgencies() != null ) {
+            Set<UserAgencyDTO> newUserAgencies = new HashSet<>();
+            Set<UserAgencyDTO> userAgencies = userDTO.getUserAgencies();
+            Iterator<UserAgencyDTO> userAgenciesIterator = userAgencies.iterator();
+            while( userAgenciesIterator.hasNext() ) {
+                UserAgencyDTO ua = userAgenciesIterator.next();
+                if( ua.getId() == null ) {
+                    newUserAgencies.add( userAgencyService.save( ua));
+                    userAgenciesIterator.remove();
+                }
+            }
+
+            if( !newUserAgencies.isEmpty() )
+                userDTO.getUserAgencies().addAll( newUserAgencies );
+        }
+
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
@@ -172,9 +195,14 @@ public class UserResource {
     @GetMapping("/users/{login:" + Constants.LOGIN_REGEX + "}")
     public ResponseEntity<UserDTO> getUser(@PathVariable String login) {
         log.debug("REST request to get User : {}", login);
+        User user = null;
+        Optional<User> userOpt = userService.getUserWithAuthoritiesByLogin(login);
+        if( userOpt.isPresent() ){
+            user = userOpt.get();
+            user.setUserAgencies( userAgencyRepository.findByUser(user.getId()).stream().collect(Collectors.toSet()));
+        }
         return ResponseUtil.wrapOrNotFound(
-            userService.getUserWithAuthoritiesByLogin(login)
-                .map(UserDTO::new));
+            Optional.ofNullable(user).map(UserDTO::new));
     }
 
     /**
@@ -199,6 +227,6 @@ public class UserResource {
      */
     @GetMapping("/_search/users/{query}")
     public List<User> search(@PathVariable String query) {
-        return null;
+        return Collections.emptyList();
     }
 }

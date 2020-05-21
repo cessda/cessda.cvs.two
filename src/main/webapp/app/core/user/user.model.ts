@@ -1,3 +1,5 @@
+import { IUserAgency } from 'app/shared/model/user-agency.model';
+
 export interface IUser {
   id?: any;
   login?: string;
@@ -12,6 +14,7 @@ export interface IUser {
   lastModifiedBy?: string;
   lastModifiedDate?: Date;
   password?: string;
+  userAgencies?: IUserAgency[];
 }
 
 export class User implements IUser {
@@ -28,6 +31,7 @@ export class User implements IUser {
     public createdDate?: Date,
     public lastModifiedBy?: string,
     public lastModifiedDate?: Date,
-    public password?: string
+    public password?: string,
+    public userAgencies?: IUserAgency[]
   ) {}
 }
