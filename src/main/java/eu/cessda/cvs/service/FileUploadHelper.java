@@ -4,8 +4,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
-enum FileUploadType{ IMAGE, CSV }
-
 public class FileUploadHelper {
     private FileUploadType fileUploadType;
     private MultipartFile sourceFile;
@@ -34,7 +32,7 @@ public class FileUploadHelper {
         this.sourceFile = sourceFile;
     }
 
-    public FileUploadHelper sourceFIle(MultipartFile sourceFile) {
+    public FileUploadHelper sourceFile(MultipartFile sourceFile) {
         this.sourceFile = sourceFile;
         return this;
     }

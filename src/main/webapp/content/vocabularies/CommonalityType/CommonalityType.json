@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
-  "agencyLogo": "/content/images/agency/ddi.png",
+  "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
   "publicationDate": "2019-05-21",
   "notes": "",
@@ -28,6 +28,10 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Commonality Type (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:CommonalityType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module name: comparative \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/comparative_xsd/elements/CommonalityTypeCoded.html\">CommonalityTypeCoded</a> \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary. \n</div>",
       "translateAgency": "",
@@ -58,6 +62,7 @@
           "position": 2
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -75,6 +80,10 @@
       "definition": "Beskriver graden af lighed mellem to elementer eller skemaer (samling af elementer).",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Type af ensartethed [Commonality Type] (Version 1.0.1; Danish National Archives, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:CommonalityType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module name: comparative \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/comparative_xsd/elements/CommonalityTypeCoded.html\">CommonalityTypeCoded</a> \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary. \n</div>",
       "translateAgency": "Danish National Archives",
@@ -105,6 +114,7 @@
           "position": 2
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -122,6 +132,10 @@
       "definition": "Descreve o grau de similitude entre dois itens ou esquemas.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Tipo de convergência/uniformidade [Commonality Type] (Version 1.0.1; Arquivo Português de Informação Social, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:CommonalityType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module name: comparative \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/comparative_xsd/elements/CommonalityTypeCoded.html\">CommonalityTypeCoded</a> \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary. \n</div>",
       "translateAgency": "Arquivo Português de Informação Social",
@@ -152,6 +166,7 @@
           "position": 2
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -170,6 +185,10 @@
       "notes": "",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Vrste sličnosti [Commonality Type] (Version 1.0.1; Data Centre Serbia for Social Sciences (DCS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:CommonalityType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module name: comparative \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/comparative_xsd/elements/CommonalityTypeCoded.html\">CommonalityTypeCoded</a> \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary. \n</div>",
       "translateAgency": "Data Centre Serbia for Social Sciences (DCS)",
@@ -200,6 +219,7 @@
           "position": 2
         }
       ],
+      "comments": [],
       "versionHistories": []
     }
   ]

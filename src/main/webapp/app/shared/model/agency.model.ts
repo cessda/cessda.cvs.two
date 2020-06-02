@@ -11,6 +11,7 @@ export interface IAgency {
   uri?: string;
   canonicalUri?: string;
   userAgencies?: IUserAgency[];
+  deletable?: boolean;
 }
 
 export class Agency implements IAgency {
@@ -24,6 +25,7 @@ export class Agency implements IAgency {
     public licenseId?: number,
     public uri?: string,
     public canonicalUri?: string,
-    public userAgencies?: IUserAgency[]
+    public userAgencies?: IUserAgency[],
+    public deletable?: boolean
   ) {}
 }

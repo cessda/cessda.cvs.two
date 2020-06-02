@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
-  "agencyLogo": "/content/images/agency/ddi.png",
+  "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
   "publicationDate": "2019-05-08",
   "notes": "",
@@ -28,6 +28,10 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Data Source Type (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataSourceType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/SourceType.html\">SourceType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/dataSrc.html\" style=\"\">dataSrc</a> \n</div> \n<div> \n</div>",
       "concepts": [
@@ -229,6 +233,7 @@
           "position": 22
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -246,6 +251,10 @@
       "definition": "Indeholder en typologi af datakilder.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Type af datakilde [Data Source Type] (Version 1.0.1; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataSourceType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/SourceType.html\">SourceType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/dataSrc.html\" style=\"\">dataSrc</a> \n</div> \n<div> \n</div>",
       "translateAgency": "Danish National Archives (DNA)",
@@ -436,6 +445,7 @@
           "position": 22
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -453,6 +463,10 @@
       "definition": "Aineiston alkuperän tyyppi.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Aineiston alkuperä [Data Source Type] (Version 1.0.1; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataSourceType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/SourceType.html\">SourceType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 2.3.1.8.1 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/dataSrc.html\">dataSrc</a>\n <br /> \n</div>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
@@ -643,6 +657,7 @@
           "position": 22
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -660,6 +675,10 @@
       "definition": "Include una tipologia delle fonti dei dati.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Tipo di fonte dei dati [Data Source Type] (Version 1.0.1; UniData - Bicocca Data Archive, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataSourceType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/SourceType.html\">SourceType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 2.3.1.8.1 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/dataSrc.html\">dataSrc</a>\n <br /> \n</div>",
       "translateAgency": "UniData - Bicocca Data Archive",
@@ -850,6 +869,7 @@
           "position": 22
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -867,6 +887,10 @@
       "definition": "Inneholder en typologi av datakilder.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Type av datakilde [Data Source Type] (Version 1.0.1; NSD - Norwegian Centre for Research Data, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataSourceType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/SourceType.html\">SourceType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 2.3.1.8.1 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/dataSrc.html\">dataSrc</a>\n <br /> \n</div>",
       "translateAgency": "NSD - Norwegian Centre for Research Data",
@@ -1057,6 +1081,7 @@
           "position": 22
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1074,11 +1099,23 @@
       "definition": "Inclui uma tipologia de fontes de dados.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Tipo de fonte de dados [Data Source Type] (Version 1.0.1; Arquivo Português de Informação Social (APIS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataSourceType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/SourceType.html\">SourceType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/dataSrc.html\" style=\"\">dataSrc</a> \n</div> \n<div> \n</div>",
       "translateAgency": "Arquivo Português de Informação Social (APIS)",
       "translateAgencyLink": "http://www.apis.ics.ulisboa.pt/",
       "concepts": [
+        {
+          "id": 6659,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataSourceType#EventsInteractions/pt",
+          "notation": "EventsInteractions",
+          "title": "Eventos/Interações",
+          "definition": "Os eventos são geralmente ocorrências únicas, individuais, com uma duração curta ou limitada. Um evento pode ser catalogado como fonte de dados quando é diretamente observado ou registado para pesquisa/investigação. Interações são eventos em que duas ou mais pessoas, grupos, objetos ou sistemas, atuam uns sobre os outros, tendo uma influência ou efeito recíproco. Exemplos: alguns tipos de reuniões (cerimónias, competições, festivais, encontros), tumultos/motins, ataques terroristas, eventos de computação (i.e., ações ou ocorrências detetadas por programas de computador), etc.",
+          "position": 9
+        },
         {
           "id": 6669,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataSourceType#RegistersRecordsAccounts/pt",
@@ -1158,14 +1195,6 @@
           "definition": "Detalhes dos votos expressos numa eleição (também conhecidos como 'resultados eleitorais'), votos parlamentares ou organizacionais sobre políticas, moções ou propostas, referendos públicos, etc.",
           "parent": "RegistersRecordsAccounts",
           "position": 8
-        },
-        {
-          "id": 6659,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataSourceType#EventsInteractions/pt",
-          "notation": "EventsInteractions",
-          "title": "Eventos/Interações",
-          "definition": "Os eventos são geralmente ocorrências únicas, individuais, com uma duração curta ou limitada. Um evento pode ser catalogado como fonte de dados quando é diretamente observado ou registado para pesquisa/investigação. Interações são eventos em que duas ou mais pessoas, grupos, objetos ou sistemas, atuam uns sobre os outros, tendo uma influência ou efeito recíproco. Exemplos: alguns tipos de reuniões (cerimónias, competições, festivais, encontros), tumultos/motins, ataques terroristas, eventos de computação (i.e., ações ou ocorrências detetadas por programas de computador), etc.",
-          "position": 9
         },
         {
           "id": 6678,
@@ -1277,6 +1306,7 @@
           "position": 22
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1294,6 +1324,10 @@
       "definition": "Vključuje razvrstitev podatkovnih virov.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Vrste podatkovnih virov [Data Source Type] (Version 1.0.1; Social Science Data Archives (ADP), Slovenia, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataSourceType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/SourceType.html\">SourceType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/dataSrc.html\" style=\"\">dataSrc</a> \n</div> \n<div> \n</div>",
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
@@ -1484,6 +1518,7 @@
           "position": 22
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1501,6 +1536,10 @@
       "definition": "Sadrži tipove izvora podataka.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Vrste izvora podataka [Data Source Type] (Version 1.0.1; Data Centre Serbia for Social Sciences (DCS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataSourceType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/SourceType.html\">SourceType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/dataSrc.html\" style=\"\">dataSrc</a> \n</div> \n<div> \n</div>",
       "translateAgency": "Data Centre Serbia for Social Sciences (DCS)",
@@ -1704,6 +1743,7 @@
           "position": 22
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1721,6 +1761,10 @@
       "definition": "Innehåller en typologi av datakällor.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Typ av datakälla [Data Source Type] (Version 1.0.1; Swedish National Data Service (SND), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataSourceType:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/SourceType.html\">SourceType</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 2.3.1.8.1 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/dataSrc.html\">dataSrc</a>\n <br /> \n</div>",
       "translateAgency": "Swedish National Data Service (SND)",
@@ -1911,6 +1955,7 @@
           "position": 22
         }
       ],
+      "comments": [],
       "versionHistories": []
     }
   ]

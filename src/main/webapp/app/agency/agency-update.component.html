@@ -29,8 +29,8 @@
                            formControlName="link"/>
                     <div *ngIf="editForm.get('link')!.invalid && (editForm.get('link')!.dirty || editForm.get('link')!.touched)">
                         <small class="form-text text-danger"
-                               *ngIf="editForm.get('link')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
-                        This field cannot be longer than 255 characters.
+                               *ngIf="editForm.get('link')?.errors?.pattern">
+                            Not a valid URL.
                         </small>
                     </div>
                 </div>
@@ -42,33 +42,34 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.agency.logopath" for="field_logopath">Logopath</label>
-                    <input type="text" class="form-control" name="logopath" id="field_logopath"
-                           formControlName="logopath"/>
-                    <div *ngIf="editForm.get('logopath')!.invalid && (editForm.get('logopath')!.dirty || editForm.get('logopath')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('logopath')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
-                        This field cannot be longer than 255 characters.
-                        </small>
+                    <label class="form-control-label">Agency logo</label>
+                    <br/>
+                    <img *ngIf="currentImage" [src]="'/content/images/agency/' + currentImage" alt="{{editForm.get('name')!.value}}" class="mh-60px"/>
+                    <div *ngIf="currentFileUpload" class="progress" [hidden]="progress.percentage === 100">
+                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                             attr.aria-valuenow="{{progress.percentage}}"
+                             aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
+                            {{progress.percentage}}%
+                        </div>
                     </div>
+                    <br/>
+                    <small>JPG / GIF / PNG (maximal image size: 2 MB).</small>
+                    <br/>
+                    <label class="btn btn-default">
+                        <input type="file" (change)="selectFile($event)"
+                               accept="image/x-png,image/gif,image/jpeg"/>
+                    </label>
+                    <button *ngIf="currentImage" type="button"
+                            class="btn pull-right btn-secondary"
+                            (click)="removePicture()">
+                        <fa-icon [icon]="'trash-alt'"></fa-icon>&nbsp;<span>Remove agency image</span></button>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.agency.license" for="field_license">License</label>
-                    <input type="text" class="form-control" name="license" id="field_license"
-                           formControlName="license"/>
-                    <div *ngIf="editForm.get('license')!.invalid && (editForm.get('license')!.dirty || editForm.get('license')!.touched)">
-                        <small class="form-text text-danger"
-                               *ngIf="editForm.get('license')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
-                        This field cannot be longer than 240 characters.
-                        </small>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.agency.licenseId" for="field_licenseId">License Id</label>
-                    <input type="number" class="form-control" name="licenseId" id="field_licenseId"
-                           formControlName="licenseId"/>
+                    <label class="form-control-label" for="field_licenseId">License</label>
+                    <select class="form-control w-auto sk-select" id="field_licenseId" name="licenseId" formControlName="licenseId">
+                        <option *ngFor="let licence of licences; let i = index" [value]="licence.id">{{licence.name}}</option>
+                    </select>
                 </div>
 
                 <div class="form-group">

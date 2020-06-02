@@ -105,6 +105,11 @@ public final class SecurityUtils {
         return currentUser.getId();
     }
 
+    public static boolean isAdminContent() {
+        // if user content admin
+        return isCurrentUserInRole("ROLE_ADMIN") || isCurrentUserInRole("ROLE_ADMIN_CONTENT" );
+    }
+
     public static boolean hasAnyAgencyAuthority(ActionType actionType, Long agencyId, Set<AgencyRole> agencyRoles, String language){
         UserDTO currentUser = getCurrentUser();
         if( currentUser == null )
@@ -114,8 +119,7 @@ public final class SecurityUtils {
             throw new IllegalArgumentException( "" );
         }
 
-        // if user content admin
-        if( isCurrentUserInRole("ROLE_ADMIN") || isCurrentUserInRole("ROLE_ADMIN_CONTENT" ) )
+        if ( isAdminContent() )
             return true;
 
         // check based on UserAgencyRole

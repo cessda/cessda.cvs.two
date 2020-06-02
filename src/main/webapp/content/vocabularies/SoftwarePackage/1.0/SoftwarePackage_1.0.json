@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
-  "agencyLogo": "/content/images/agency/ddi.png",
+  "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
   "publicationDate": "2020-02-20",
   "notes": "Lists a number of commonly used statistical software packages but is not meant to be an exhaustive list.",
@@ -28,6 +28,10 @@
       "notes": "Lists a number of commonly used statistical software packages but is not meant to be an exhaustive list. This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Software Package (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SoftwarePackage:1.0. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<div>\n Module name:&nbsp; reusable\n</div>\n<div>\n Element name:&nbsp; &nbsp;\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/SoftwarePackage.html\">SoftwarePackage</a>\n</div>\n<div>\n <br />\n</div>\n<div>\n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n</div>\n<div>\n Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/software.html\">software</a>\n</div>",
       "concepts": [
@@ -416,6 +420,7 @@
           "position": 47
         }
       ],
+      "comments": [],
       "versionHistories": []
     }
   ]

@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
-  "agencyLogo": "/content/images/agency/ddi.png",
+  "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
   "publicationDate": "2019-05-08",
   "notes": "",
@@ -28,6 +28,10 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Summary Statistic Type (Version 2.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: physicalinstance \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\">TypeOfSummaryStatistic</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  This vocabulary cannot be used for the element Element sumStat (4.3.14) in DDI 2.1 because the element already comes with a hard-coded controlled vocabulary in the \"type\" attribute. For using in DDI 2.5, select value \"Other\" in the \"type\" attribute, and insert the appropriate value from this CV in the \"otherType\" attribute. Use the complex element controlledVocabUsed (in the docDscr section) to identify the controlled vocabulary to which the selected term belongs. \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" style=\"\">sumStat</a> \n</div> \n<div> \n</div>",
       "concepts": [
@@ -384,6 +388,7 @@
           "position": 43
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -401,6 +406,10 @@
       "definition": "Specificerer typen af sammenfattende statistik. Sammenfattende statistik er en repræsentation af et sæt af værdiers karakteristika ved hjælp af et enkelt tal.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Typen af sammenfattende statistik [Summary Statistic Type] (Version 2.1.1; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: physicalinstance \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\">TypeOfSummaryStatistic</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" style=\"\">sumStat</a> \n</div> \n<div> \n</div>",
       "translateAgency": "Danish National Archives (DNA)",
@@ -759,6 +768,7 @@
           "position": 43
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -776,6 +786,10 @@
       "definition": "Tilastolliset tunnusluvut kuvaavat tietyn arvojoukon, esimerkiksi otoksen havaintojen sisältämää informaatiota. Usein tunnusluvut ovat nimensä mukaisesti yksittäisiä lukuja.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Tilastollisen tunnusluvun tyyppi [Summary Statistic Type] (Version 2.1.1; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: physicalinstance \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\">TypeOfSummaryStatistic</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 4.3.14 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\">sumStat</a>\n <br /> \n</div>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
@@ -1134,6 +1148,7 @@
           "position": 43
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1151,6 +1166,10 @@
       "definition": "Specifica il tipo di statistica riassuntiva. Tali statistiche sono una rappresentazione sintetica delle caratteristiche di un insieme di valori.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Tipo di statistiche riassuntive [Summary Statistic Type] (Version 2.1.1; UniData - Bicocca Data Archive, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: physicalinstance \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\">TypeOfSummaryStatistic</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 4.3.14 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\">sumStat</a>\n <br /> \n</div>",
       "translateAgency": "UniData - Bicocca Data Archive",
@@ -1509,6 +1528,7 @@
           "position": 43
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1526,6 +1546,10 @@
       "definition": "Especifica o tipo de estatística sumária. As estatísticas sumárias são medidas/números/valores usados para descrever as características de um conjunto de dados.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Tipo de estatística sumária [Summary Statistic Type] (Version 2.1.1; Arquivo Português de Informação Social, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: physicalinstance \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\">TypeOfSummaryStatistic</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  This vocabulary cannot be used for the element Element sumStat (4.3.14) in DDI 2.1 because the element already comes with a hard-coded controlled vocabulary in the \"type\" attribute. For using in DDI 2.5, select value \"Other\" in the \"type\" attribute, and insert the appropriate value from this CV in the \"otherType\" attribute. Use the complex element controlledVocabUsed (in the docDscr section) to identify the controlled vocabulary to which the selected term belongs. \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" style=\"\">sumStat</a> \n</div> \n<div> \n</div>",
       "translateAgency": "Arquivo Português de Informação Social",
@@ -1644,36 +1668,12 @@
           "position": 13
         },
         {
-          "id": 7046,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#StandardDeviation/pt",
-          "notation": "StandardDeviation",
-          "title": "Desvio padrão",
-          "definition": "Indica em que medida os indivíduos de uma amostra diferem da média da mesma.",
-          "position": 14
-        },
-        {
-          "id": 7045,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#CoefficientOfVariation/pt",
-          "notation": "CoefficientOfVariation",
-          "title": "Coeficiente de variação",
-          "definition": "Desvio padrão dividido pela média.",
-          "position": 15
-        },
-        {
-          "id": 7047,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#AverageAbsoluteDeviation/pt",
-          "notation": "AverageAbsoluteDeviation",
-          "title": "Desvio absoluto médio",
-          "definition": "A média das diferenças absolutas entre cada valor e a média geral. Medida de dispersão estatística em torno da média, alternativa ao desvio padrão.",
-          "position": 16
-        },
-        {
-          "id": 7048,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#MedianAbsoluteDeviation/pt",
-          "notation": "MedianAbsoluteDeviation",
-          "title": "Desvio absoluto mediano",
-          "definition": "O desvio absoluto mediano da mediana. Medida de dispersão estatística em torno da mediana.",
-          "position": 17
+          "id": 7019,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#Other/pt",
+          "notation": "Other",
+          "title": "Outro",
+          "definition": "Usar se o tipo de estatística sumária for conhecido, mas não se encontrar na lista.",
+          "position": 43
         },
         {
           "id": 7020,
@@ -1876,14 +1876,39 @@
           "position": 42
         },
         {
-          "id": 7019,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#Other/pt",
-          "notation": "Other",
-          "title": "Outro",
-          "definition": "Usar se o tipo de estatística sumária for conhecido, mas não se encontrar na lista.",
-          "position": 43
+          "id": 7045,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#CoefficientOfVariation/pt",
+          "notation": "CoefficientOfVariation",
+          "title": "Coeficiente de variação",
+          "definition": "Desvio padrão dividido pela média.",
+          "position": 15
+        },
+        {
+          "id": 7046,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#StandardDeviation/pt",
+          "notation": "StandardDeviation",
+          "title": "Desvio padrão",
+          "definition": "Indica em que medida os indivíduos de uma amostra diferem da média da mesma.",
+          "position": 14
+        },
+        {
+          "id": 7047,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#AverageAbsoluteDeviation/pt",
+          "notation": "AverageAbsoluteDeviation",
+          "title": "Desvio absoluto médio",
+          "definition": "A média das diferenças absolutas entre cada valor e a média geral. Medida de dispersão estatística em torno da média, alternativa ao desvio padrão.",
+          "position": 16
+        },
+        {
+          "id": 7048,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#MedianAbsoluteDeviation/pt",
+          "notation": "MedianAbsoluteDeviation",
+          "title": "Desvio absoluto mediano",
+          "definition": "O desvio absoluto mediano da mediana. Medida de dispersão estatística em torno da mediana.",
+          "position": 17
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1901,6 +1926,10 @@
       "definition": "Določa vrsto zbirne statistike. Zbirna statistika je številka, s katero predstavimo značilnosti niza vrednosti.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Vrsta zbirne statistike [Summary Statistic Type] (Version 2.1.1; Social Science Data Archives (ADP), Slovenia, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: physicalinstance \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\">TypeOfSummaryStatistic</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 4.3.14 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\">sumStat</a>\n <br /> \n</div>",
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
@@ -2259,6 +2288,7 @@
           "position": 43
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -2277,6 +2307,10 @@
       "notes": "",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Vrsta zbirne statistike [Summary Statistic Type] (Version 2.1.1; Data Centre Serbia for Social Sciences (DCS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: physicalinstance \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\">TypeOfSummaryStatistic</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  This vocabulary cannot be used for the element Element sumStat (4.3.14) in DDI 2.1 because the element already comes with a hard-coded controlled vocabulary in the \"type\" attribute. For using in DDI 2.5, select value \"Other\" in the \"type\" attribute, and insert the appropriate value from this CV in the \"otherType\" attribute. Use the complex element controlledVocabUsed (in the docDscr section) to identify the controlled vocabulary to which the selected term belongs. \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" style=\"\">sumStat</a> \n</div> \n<div> \n</div>",
       "translateAgency": "Data Centre Serbia for Social Sciences (DCS)",
@@ -2635,6 +2669,7 @@
           "position": 43
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -2652,6 +2687,10 @@
       "definition": "Anger typ av sammanfattande statistik. Sammanfattande statistik är ett enda värde som representerar egenskaperna hos en mängd värden.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Typ av sammanfattande statistik [Summary Statistic Type] (Version 2.1.1; Swedish National Data Service (SND), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: physicalinstance \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\">TypeOfSummaryStatistic</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 4.3.14 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\">sumStat</a>\n <br /> \n</div>",
       "translateAgency": "Swedish National Data Service (SND)",
@@ -3010,6 +3049,7 @@
           "position": 43
         }
       ],
+      "comments": [],
       "versionHistories": []
     }
   ]

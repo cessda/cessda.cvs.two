@@ -2,6 +2,8 @@ package eu.cessda.cvs.service.impl;
 
 import eu.cessda.cvs.domain.Agency;
 import eu.cessda.cvs.repository.AgencyRepository;
+import eu.cessda.cvs.repository.VocabularyRepository;
+import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.AgencyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.mapper.AgencyMapper;
@@ -25,10 +27,13 @@ public class AgencyServiceImpl implements AgencyService {
 
     private final AgencyRepository agencyRepository;
 
+    private final VocabularyRepository vocabularyRepository;
+
     private final AgencyMapper agencyMapper;
 
-    public AgencyServiceImpl(AgencyRepository agencyRepository, AgencyMapper agencyMapper) {
+    public AgencyServiceImpl(AgencyRepository agencyRepository, VocabularyRepository vocabularyRepository, AgencyMapper agencyMapper) {
         this.agencyRepository = agencyRepository;
+        this.vocabularyRepository = vocabularyRepository;
         this.agencyMapper = agencyMapper;
     }
 
@@ -56,8 +61,17 @@ public class AgencyServiceImpl implements AgencyService {
     @Transactional(readOnly = true)
     public Page<AgencyDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Agencies");
-        return agencyRepository.findAll(pageable)
+
+        Page<AgencyDTO> agencyDTOS = agencyRepository.findAll(pageable)
             .map(agencyMapper::toDto);
+
+        if( SecurityUtils.isAuthenticated() && SecurityUtils.isAdminContent() ){
+            agencyDTOS.get().forEach( agencyDTO -> {
+                agencyDTO.setDeletable( !vocabularyRepository.existsByAgencyId(agencyDTO.getId()));
+            });
+        }
+
+        return agencyDTOS;
     }
 
 

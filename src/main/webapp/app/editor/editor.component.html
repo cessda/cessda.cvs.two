@@ -167,16 +167,16 @@
                 <div class="table-responsive" *ngIf="vocabularies?.length > 0">
                     <div *ngFor="let vocabulary of vocabularies ;trackBy: trackNotation" class="vocab-item">
                         <div class="vocab-logo">
-                            <img [src]="vocabulary.agencyLogo" width="120px" alt="logo"/>
+                            <img [src]="'/content/images/agency/' + vocabulary.agencyLogo" width="120px" alt="logo"/>
                         </div>
                         <div class="vocab-detail">
                             <div class="vocab-title">
                                 <h4>
-                                    <a [routerLink]="['/editor/vocabulary', vocabulary.notation ]">
+                                    <a [routerLink]="['/editor/vocabulary', vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
                                         <span [innerHTML]="getTitleByLang(vocabulary)"></span>
                                     </a>
                                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a [routerLink]="['/editor/vocabulary', vocabulary.notation ]">
+                                    <a [routerLink]="['/editor/vocabulary', vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
                                         <span>{{vocabulary.notation}}</span>
                                     </a>
                                 </h4>
@@ -217,9 +217,9 @@
                     </div>
                 </div>
                 <div *ngIf="vocabularies?.length > 0">
-                    <div class="row justify-content-center">
-                        <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>
-                    </div>
+<!--                    <div class="row justify-content-center">-->
+<!--                        <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>-->
+<!--                    </div>-->
                     <div class="row justify-content-center">
                         <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
                     </div>

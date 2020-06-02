@@ -138,3 +138,4 @@ jhipster:
 application:
   static-file-path: /home/sigit/git/cvs/src/main/webapp
   vocab-json-path: /home/sigit/git/cvs/src/main/webapp/content/vocabularies/
+  agency-image-path: /home/sigit/git/cvs/src/main/webapp/content/images/agency/

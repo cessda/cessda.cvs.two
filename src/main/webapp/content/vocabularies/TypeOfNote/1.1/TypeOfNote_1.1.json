@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
-  "agencyLogo": "/content/images/agency/ddi.png",
+  "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
   "publicationDate": "2020-02-21",
   "notes": "",
@@ -28,9 +28,22 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nProcessing, System: Descriptive term capitalization changed to conform to the other vocabularies.\n\n\n\n\n\n",
       "versionChanges": "Code descriptive term rephrased: Processing Note rephrased to Processing note\nCode descriptive term rephrased: System Note rephrased to System note\n",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Type of Note (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfNote:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<div>\n Module name: reusable\n</div>\n<div>\n Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/TypeOfNote.html\">TypeOfNote</a>\n</div>\n<div>\n <br />\n</div>\n<div>\n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n</div>\n<div>\n Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/notes.html\">notes@type</a>\n</div>",
       "concepts": [
+        {
+          "id": 8806,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfNote#Comment/en/1.1",
+          "notation": "Comment",
+          "title": "Comment",
+          "definition": "A human-readable comment, typically of a more subjective nature than an addendum.",
+          "previousConcept": 3549,
+          "position": 4
+        },
         {
           "id": 8807,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfNote#Processing/en/1.1",
@@ -41,13 +54,13 @@
           "position": 0
         },
         {
-          "id": 8811,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfNote#Addendum/en/1.1",
-          "notation": "Addendum",
-          "title": "Addendum",
-          "definition": "\tAdditional information, usually of a factual nature (as opposed to a comment), intended to clarify the content of a DDI section or module.",
-          "previousConcept": 3546,
-          "position": 1
+          "id": 8808,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfNote#Other/en/1.1",
+          "notation": "Other",
+          "title": "Other",
+          "definition": "Use when the type of note is known, but not found in the list.",
+          "previousConcept": 3550,
+          "position": 5
         },
         {
           "id": 8809,
@@ -68,24 +81,16 @@
           "position": 3
         },
         {
-          "id": 8806,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfNote#Comment/en/1.1",
-          "notation": "Comment",
-          "title": "Comment",
-          "definition": "A human-readable comment, typically of a more subjective nature than an addendum.",
-          "previousConcept": 3549,
-          "position": 4
-        },
-        {
-          "id": 8808,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfNote#Other/en/1.1",
-          "notation": "Other",
-          "title": "Other",
-          "definition": "Use when the type of note is known, but not found in the list.",
-          "previousConcept": 3550,
-          "position": 5
+          "id": 8811,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfNote#Addendum/en/1.1",
+          "notation": "Addendum",
+          "title": "Addendum",
+          "definition": "\tAdditional information, usually of a factual nature (as opposed to a comment), intended to clarify the content of a DDI section or module.",
+          "previousConcept": 3546,
+          "position": 1
         }
       ],
+      "comments": [],
       "versionHistories": [
         {
           "version": "1.0",

@@ -118,7 +118,7 @@
                             </span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link" routerLink="agency" (click)="collapseNavbar()">
                             <span>
                                 <fa-icon icon="university"></fa-icon>
@@ -266,6 +266,23 @@
                         </ul>
                     </li>
 
+                    <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                        <a class="nav-link" routerLink="user-guide" (click)="collapseNavbar()">
+                            <span>
+                                <fa-icon icon="question"></fa-icon>
+                                <span> USER GUIDE</span>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                        <a class="nav-link" routerLink="about" (click)="collapseNavbar()">
+                            <span>
+                                <fa-icon icon="info"></fa-icon>
+                                <span> ABOUT</span>
+                            </span>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

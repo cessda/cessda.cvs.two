@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
-  "agencyLogo": "/content/images/agency/ddi.png",
+  "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
   "publicationDate": "2019-04-05",
   "notes": "",
@@ -28,6 +28,10 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Type of Instrument (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
       "concepts": [
@@ -151,6 +155,7 @@
           "position": 13
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -168,6 +173,10 @@
       "definition": "Indeholder en typologi af dataindsamlingsinstrumenter.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Instrumenttype [Type of Instrument] (Version 1.1.1; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>",
       "translateAgency": "Danish National Archives (DNA)",
@@ -234,15 +243,6 @@
           "position": 6
         },
         {
-          "id": 7972,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/da#DataCollectionGuidelines.DiscussionGuide/da/1.1.1",
-          "notation": "DataCollectionGuidelines.DiscussionGuide",
-          "title": "Retningslinjer for dataindsamling: Diskussionsguide",
-          "definition": "Retningslinjer for en gruppediskussion. Afhængigt af undersøgelsesdesignet kan en diskussion være mere eller mindre struktureret, rangererende fra præcist formulerede spørgsmål til generelle idéer om, hvad man skal diskutere. For eksempel en liste over emner, der skal diskuteres i en fokusgruppe eller temaer formuleret af en forsker, der skal lede en blogdiskussion mm.",
-          "parent": "DataCollectionGuidelines",
-          "position": 7
-        },
-        {
           "id": 1915,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/da/1.1.1",
           "notation": "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
@@ -291,8 +291,18 @@
           "title": "Andet",
           "definition": "Anvend, når typen af instrument er kendt, men ikke findes i listen.",
           "position": 13
+        },
+        {
+          "id": 7972,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/da#DataCollectionGuidelines.DiscussionGuide/da/1.1.1",
+          "notation": "DataCollectionGuidelines.DiscussionGuide",
+          "title": "Retningslinjer for dataindsamling: Diskussionsguide",
+          "definition": "Retningslinjer for en gruppediskussion. Afhængigt af undersøgelsesdesignet kan en diskussion være mere eller mindre struktureret, rangererende fra præcist formulerede spørgsmål til generelle idéer om, hvad man skal diskutere. For eksempel en liste over emner, der skal diskuteres i en fokusgruppe eller temaer formuleret af en forsker, der skal lede en blogdiskussion mm.",
+          "parent": "DataCollectionGuidelines",
+          "position": 7
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -310,6 +320,10 @@
       "definition": "Tyyppiluokittelu tutkimusaineiston muodostamisessa käytetyille keruuvälineille, -ohjeistuksille tai -suunnitelmille.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Keruuväline [Type of Instrument] (Version 1.1.1; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
@@ -376,15 +390,6 @@
           "position": 6
         },
         {
-          "id": 7967,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/fi#DataCollectionGuidelines.DiscussionGuide/fi/1.1.1",
-          "notation": "DataCollectionGuidelines.DiscussionGuide",
-          "title": "Aineistonkeruuohjeistus: keskusteluohje",
-          "definition": "Ryhmäkeskusteluun annetut ohjeet. Tutkimusasetelmasta riippuen saattavat olla enemmän tai vähemmän strukturoituja, vaihdellen väljästi muotoilluista keskusteluteemoista tarkasti muotoiltuihin kysymyksiin. Esimerkkejä: Lista keskustelun teemoista, tutkijan esille ottamat tarkat aiheet ja muu ohjaus blogikeskusteluun jne.",
-          "parent": "DataCollectionGuidelines",
-          "position": 7
-        },
-        {
           "id": 1845,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/fi/1.1.1",
           "notation": "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
@@ -433,8 +438,18 @@
           "title": "Muu keruuväline",
           "definition": "Käytetään jos keruuväline on tiedossa mutta ei listassa.",
           "position": 13
+        },
+        {
+          "id": 7967,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/fi#DataCollectionGuidelines.DiscussionGuide/fi/1.1.1",
+          "notation": "DataCollectionGuidelines.DiscussionGuide",
+          "title": "Aineistonkeruuohjeistus: keskusteluohje",
+          "definition": "Ryhmäkeskusteluun annetut ohjeet. Tutkimusasetelmasta riippuen saattavat olla enemmän tai vähemmän strukturoituja, vaihdellen väljästi muotoilluista keskusteluteemoista tarkasti muotoiltuihin kysymyksiin. Esimerkkejä: Lista keskustelun teemoista, tutkijan esille ottamat tarkat aiheet ja muu ohjaus blogikeskusteluun jne.",
+          "parent": "DataCollectionGuidelines",
+          "position": 7
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -452,6 +467,10 @@
       "definition": "Inclut une typologie des instruments de collecte de données",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Type d'instrument [Type of Instrument] (Version 1.1.1; Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
       "translateAgency": "Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
@@ -577,6 +596,7 @@
           "position": 13
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -594,6 +614,10 @@
       "definition": "Include una tipologia di strumenti per la raccolta dei dati.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Tipo di Strumento [Type of Instrument] (Version 1.1.1; UniData - Bicocca Data Archive, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
       "translateAgency": "UniData - Bicocca Data Archive",
@@ -660,15 +684,6 @@
           "position": 6
         },
         {
-          "id": 7971,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/it#DataCollectionGuidelines.DiscussionGuide/it/1.1.1",
-          "notation": "DataCollectionGuidelines.DiscussionGuide",
-          "title": "Linee guida per la raccolta dei dati: traccia di discussione",
-          "definition": "Linee guida per una discussione di gruppo. A seconda del progetto del disegno della ricerca, una guida alla discussione può essere più o meno strutturata, variando tra domande formulate con precisione a idee generali sui temi da sottoporre alla discussione. Ad esempio, un elenco di argomenti da discutere in un focus group o temi formulati da un ricercatore per indirizzare una discussione su un blog, ecc.",
-          "parent": "DataCollectionGuidelines",
-          "position": 7
-        },
-        {
           "id": 5503,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/it/1.1.1",
           "notation": "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
@@ -717,8 +732,18 @@
           "title": "Altro",
           "definition": "Utilizzare quando il tipo di strumento è conosciuto, ma non è presente nell'elenco.",
           "position": 13
+        },
+        {
+          "id": 7971,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/it#DataCollectionGuidelines.DiscussionGuide/it/1.1.1",
+          "notation": "DataCollectionGuidelines.DiscussionGuide",
+          "title": "Linee guida per la raccolta dei dati: traccia di discussione",
+          "definition": "Linee guida per una discussione di gruppo. A seconda del progetto del disegno della ricerca, una guida alla discussione può essere più o meno strutturata, variando tra domande formulate con precisione a idee generali sui temi da sottoporre alla discussione. Ad esempio, un elenco di argomenti da discutere in un focus group o temi formulati da un ricercatore per indirizzare una discussione su un blog, ecc.",
+          "parent": "DataCollectionGuidelines",
+          "position": 7
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -736,6 +761,10 @@
       "definition": "Inneholder en typologi av ulike instrumenter for datainnsamling.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Type instrument [Type of Instrument] (Version 1.1.1; NSD - Norwegian Centre for Research Data, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>",
       "translateAgency": "NSD - Norwegian Centre for Research Data",
@@ -802,15 +831,6 @@
           "position": 6
         },
         {
-          "id": 7970,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/no#DataCollectionGuidelines.DiscussionGuide/no/1.1.1",
-          "notation": "DataCollectionGuidelines.DiscussionGuide",
-          "title": "Retningslinjer for datainnsamling: Diskusjonsguide",
-          "definition": "Retningslinjer for en gruppediskusjon. En diskusjonsguide kan være mer eller mindre strukturert avhengig av studiedesignet. Den kan variere mellom nøyaktig formulerte spørsmål og løst formulerte ideer om hva en ønsker å diskutere. For eksempel en liste med tema å diskutere i en fokusgruppe, eller tema formulert av forsker for å lede en bloggdiskusjon, etc.",
-          "parent": "DataCollectionGuidelines",
-          "position": 7
-        },
-        {
           "id": 1901,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/no/1.1.1",
           "notation": "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
@@ -859,8 +879,18 @@
           "title": "Annet",
           "definition": "Bruk når instrumenttypen er kjent, men ikke finnes i listen.",
           "position": 13
+        },
+        {
+          "id": 7970,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/no#DataCollectionGuidelines.DiscussionGuide/no/1.1.1",
+          "notation": "DataCollectionGuidelines.DiscussionGuide",
+          "title": "Retningslinjer for datainnsamling: Diskusjonsguide",
+          "definition": "Retningslinjer for en gruppediskusjon. En diskusjonsguide kan være mer eller mindre strukturert avhengig av studiedesignet. Den kan variere mellom nøyaktig formulerte spørsmål og løst formulerte ideer om hva en ønsker å diskutere. For eksempel en liste med tema å diskutere i en fokusgruppe, eller tema formulert av forsker for å lede en bloggdiskusjon, etc.",
+          "parent": "DataCollectionGuidelines",
+          "position": 7
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -878,6 +908,10 @@
       "definition": "Inclui uma tipologia de instrumentos de recolha de dados.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Tipo de instrumento de recolha de dados [Type of Instrument] (Version 1.1.1; Arquivo Português de Informação Social (APIS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
       "translateAgency": "Arquivo Português de Informação Social (APIS)",
@@ -944,15 +978,6 @@
           "position": 6
         },
         {
-          "id": 6999,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.DiscussionGuide/pt",
-          "notation": "DataCollectionGuidelines.DiscussionGuide",
-          "title": "Orientações para a recolha de dados: Guião de debate",
-          "definition": "Orientações ou instruções para uma discussão de grupo. Dependendo da concepção do estudo, um guião de discussão pode ser mais ou menos estruturado, variando de questões especificamente formuladas a ideias gerais sobre o que discutir/debater. Por exemplo, uma lista de tópicos a serem discutidos num grupo de foco, ou temas formulados por um investigador para orientar uma discussão num blog, etc.",
-          "parent": "DataCollectionGuidelines",
-          "position": 7
-        },
-        {
           "id": 6998,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/pt",
           "notation": "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
@@ -960,6 +985,15 @@
           "definition": "Orientações ou instruções sobre o conteúdo esperado ou desejado de relatos ou narrativas pessoais de potenciais participantes. As instruções podem ser fornecidas como parte do guião ou separadamente. Por exemplo, um convite pedindo/solicitando às pessoas que sofrem de uma doença específica ou incapacidade/limitação para descrever como isso afeta os sentimentos, as relações sociais e a vida quotidiana; ou um convite por escrito pedindo às pessoas para manterem um diário dos livros lidos durante um período de seis meses e dos pensamentos por eles suscitados.",
           "parent": "DataCollectionGuidelines",
           "position": 8
+        },
+        {
+          "id": 6999,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.DiscussionGuide/pt",
+          "notation": "DataCollectionGuidelines.DiscussionGuide",
+          "title": "Orientações para a recolha de dados: Guião de debate",
+          "definition": "Orientações ou instruções para uma discussão de grupo. Dependendo da concepção do estudo, um guião de discussão pode ser mais ou menos estruturado, variando de questões especificamente formuladas a ideias gerais sobre o que discutir/debater. Por exemplo, uma lista de tópicos a serem discutidos num grupo de foco, ou temas formulados por um investigador para orientar uma discussão num blog, etc.",
+          "parent": "DataCollectionGuidelines",
+          "position": 7
         },
         {
           "id": 7000,
@@ -1003,6 +1037,7 @@
           "position": 13
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1020,6 +1055,10 @@
       "definition": "Vključuje razvrstitev instrumentov za zbiranje podatkov.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Vrste instrumentov [Type of Instrument] (Version 1.1.1; Social Science Data Archives (ADP), Slovenia, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>",
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
@@ -1086,15 +1125,6 @@
           "position": 6
         },
         {
-          "id": 7969,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/sl#DataCollectionGuidelines.DiscussionGuide/sl/1.1.1",
-          "notation": "DataCollectionGuidelines.DiscussionGuide",
-          "title": "Smernice za zbiranje podatkov: vodnik za razpravo",
-          "definition": "Smernice za skupinsko razpravo. Glede na načrt raziskave je lahko vodnik za razpravo bolj ali manj strukturiran, od natančno oblikovanih vprašanj do splošnih idej o predmetu razprave. Na primer, seznam tem, o katerih bo razpravljala fokusna skupina, ali teme, ki jih oblikuje raziskovalec za usmerjanje razprave na spletnem blogu, itd.",
-          "parent": "DataCollectionGuidelines",
-          "position": 7
-        },
-        {
           "id": 1887,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/sl/1.1.1",
           "notation": "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
@@ -1143,8 +1173,18 @@
           "title": "Drugo",
           "definition": "Uporabite, ko je vrsta uporabljenega instrumenta znana, a je ne najdete na seznamu.",
           "position": 13
+        },
+        {
+          "id": 7969,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/sl#DataCollectionGuidelines.DiscussionGuide/sl/1.1.1",
+          "notation": "DataCollectionGuidelines.DiscussionGuide",
+          "title": "Smernice za zbiranje podatkov: vodnik za razpravo",
+          "definition": "Smernice za skupinsko razpravo. Glede na načrt raziskave je lahko vodnik za razpravo bolj ali manj strukturiran, od natančno oblikovanih vprašanj do splošnih idej o predmetu razprave. Na primer, seznam tem, o katerih bo razpravljala fokusna skupina, ali teme, ki jih oblikuje raziskovalec za usmerjanje razprave na spletnem blogu, itd.",
+          "parent": "DataCollectionGuidelines",
+          "position": 7
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1163,6 +1203,10 @@
       "notes": "",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Vrsta Instrumenta [Type of Instrument] (Version 1.1.1; Data Centre Serbia for Social Sciences (DCS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
       "translateAgency": "Data Centre Serbia for Social Sciences (DCS)",
@@ -1288,6 +1332,7 @@
           "position": 13
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1305,6 +1350,10 @@
       "definition": "Innehåller en typologi av olika instrument för datainsamling.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Typ av instrument [Type of Instrument] (Version 1.1.1; Swedish National Data Service (SND), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
       "translateAgency": "Swedish National Data Service (SND)",
@@ -1371,15 +1420,6 @@
           "position": 6
         },
         {
-          "id": 7968,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/sv#DataCollectionGuidelines.DiscussionGuide/sv/1.1.1",
-          "notation": "DataCollectionGuidelines.DiscussionGuide",
-          "title": "Datainsamlingsguide: Diskussionsguide",
-          "definition": "Guide för en gruppdiskussion. Beroende på studiedesign kan en diskussionsguide vara mer eller mindre strukturerad, allt från exakt formulerade frågor till allmänna idéer om vad man ska diskutera. Till exempel en lista över ämnen som ska diskuteras i en fokusgrupp eller teman formulerade av en forskare för att styra en bloggdiskussion osv.",
-          "parent": "DataCollectionGuidelines",
-          "position": 7
-        },
-        {
           "id": 1873,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/sv/1.1.1",
           "notation": "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
@@ -1428,8 +1468,18 @@
           "title": "Övrigt",
           "definition": "Använd när typ av instrument är känt men saknas i listan.",
           "position": 13
+        },
+        {
+          "id": 7968,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/sv#DataCollectionGuidelines.DiscussionGuide/sv/1.1.1",
+          "notation": "DataCollectionGuidelines.DiscussionGuide",
+          "title": "Datainsamlingsguide: Diskussionsguide",
+          "definition": "Guide för en gruppdiskussion. Beroende på studiedesign kan en diskussionsguide vara mer eller mindre strukturerad, allt från exakt formulerade frågor till allmänna idéer om vad man ska diskutera. Till exempel en lista över ämnen som ska diskuteras i en fokusgrupp eller teman formulerade av en forskare för att styra en bloggdiskussion osv.",
+          "parent": "DataCollectionGuidelines",
+          "position": 7
         }
       ],
+      "comments": [],
       "versionHistories": []
     }
   ]

@@ -60,9 +60,9 @@ export class AgencyComponent implements OnInit, OnDestroy {
 
     this.agencyService
       .query({
-        page: pageToLoad - 1,
-        size: this.itemsPerPage,
-        sort: this.sort()
+        page: 0,
+        size: 200,
+        sort: ['name,asc']
       })
       .subscribe(
         (res: HttpResponse<IAgency[]>) => this.onSuccess(res.body, res.headers, pageToLoad),
@@ -73,6 +73,10 @@ export class AgencyComponent implements OnInit, OnDestroy {
   search(query: string): void {
     this.currentSearch = query;
     this.loadPage(1);
+  }
+
+  urlCleaner(url: string): string {
+    return url.replace(/^(?:https?:\/\/)?(?:www\.)?/i, '').split('/')[0];
   }
 
   ngOnInit(): void {
@@ -126,14 +130,6 @@ export class AgencyComponent implements OnInit, OnDestroy {
     this.totalItems = Number(headers.get('X-Total-Count'));
     this.page = page;
     this.ngbPaginationPage = this.page;
-    this.router.navigate(['/agency'], {
-      queryParams: {
-        page: this.page,
-        size: this.itemsPerPage,
-        search: this.currentSearch,
-        sort: this.predicate + ',' + (this.ascending ? 'asc' : 'desc')
-      }
-    });
     this.agencies = data || [];
   }
 

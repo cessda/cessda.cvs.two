@@ -221,7 +221,7 @@
                     <div class="row-detail">
                         <div class="label-column">
                             <div class="vocab-logo">
-                                <img [src]="vocabulary!.agencyLogo" width="120px" alt="logo {{vocabulary!.agencyName}}"/>
+                                <img [src]="'/content/images/agency/' + vocabulary!.agencyLogo" width="120px" alt="logo {{vocabulary!.agencyName}}"/>
                             </div>
                         </div>
                         <div class="detail-column vocab-title">
@@ -450,7 +450,7 @@
                                     </div>
                                 </div>
                                 <div class="row-detail" *ngIf="!version!.versionNotes && !version!.versionChanges">
-                                    <span>no information</span>
+                                    <span>no additional information</span>
                                 </div>
                             </div>
                             <!-- other older versions -->
@@ -483,7 +483,7 @@
                                         </div>
                                     </div>
                                     <div class="row-detail" *ngIf="!vh.changes && !vh.note">
-                                        <span>no information</span>
+                                        <span>no additional information</span>
                                     </div>
                                 </div>
                             </div>

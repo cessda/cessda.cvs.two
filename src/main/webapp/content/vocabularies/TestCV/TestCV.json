@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 1,
   "agencyName": "CESSDA",
-  "agencyLogo": "/content/images/agency/cessda.png",
+  "agencyLogo": "cessda.png",
   "agencyLink": "https://www.cessda.eu/",
   "publicationDate": "2019-07-04",
   "notes": "",
@@ -65,6 +65,7 @@
           "position": 3
         }
       ],
+      "comments": [],
       "versionHistories": [
         {
           "version": "1.0",

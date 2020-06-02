@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
     private String vocabJsonPath;
     private String staticFilePath;
+    private String agencyImagePath;
 
     public String getVocabJsonPath() {
         return vocabJsonPath;
@@ -27,5 +28,13 @@ public class ApplicationProperties {
 
     public void setStaticFilePath(String staticFilePath) {
         this.staticFilePath = staticFilePath;
+    }
+
+    public String getAgencyImagePath() {
+        return agencyImagePath;
+    }
+
+    public void setAgencyImagePath(String agencyImagePath) {
+        this.agencyImagePath = agencyImagePath;
     }
 }

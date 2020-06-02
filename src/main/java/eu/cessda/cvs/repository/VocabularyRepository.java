@@ -29,6 +29,8 @@ public interface VocabularyRepository extends JpaRepository<Vocabulary, Long>
 
     boolean existsByNotation( String notation );
 
+    boolean existsByAgencyId( Long agencyId );
+
     @Query( "select DISTINCT v from Vocabulary v where v.withdrawn IS true" )
     Page<Vocabulary> findAllWithdrawn(Pageable pageable );
 

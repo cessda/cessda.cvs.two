@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
-  "agencyLogo": "/content/images/agency/ddi.png",
+  "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
   "publicationDate": "2019-05-06",
   "notes": "",
@@ -28,6 +28,10 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Sampling Procedure (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "concepts": [
@@ -75,6 +79,15 @@
           "position": 4
         },
         {
+          "id": 1994,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/en/1.1",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Probability: Stratified: Disproportional",
+          "definition": "The target population is subdivided into separate and mutually exclusive segments (strata) that cover the entire population. In disproportional sampling the number of units chosen from each stratum is not proportional to the population size of the stratum when viewed against the entire population. The number of sampled units from each stratum can be equal, optimal, or can reflect the purpose of the study, like oversampling of different subgroups of the population. For example, a country is divided into two regional strata that comprise 80 percent (West) and 20 precent (East) of the country's population. If equal representation of the two regions is needed in a study, half the sample may be drawn from the West and half from the East, so that each region is represented by 50 percent of the sample. If a more detailed analysis of the population from the East is needed, 40 percent of the units may be drawn from the West and 60 percent from the East, so that the East is over-represented.",
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
           "id": 1995,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/en/1.1",
           "notation": "Probability.Cluster",
@@ -84,15 +97,6 @@
           "position": 5
         },
         {
-          "id": 2009,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/en/1.1",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Probability: Cluster: Simple random",
-          "definition": "The target population is divided into naturally occurring segments (clusters) and a simple random sample of the clusters is selected. Data are then collected from all units within each selected cluster. For example, for a sample of students in a city, a number of schools would be chosen using the random selection method, and then all of the students from every sampled school would be included.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
           "id": 1998,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/en/1.1",
           "notation": "Probability.Multistage",
@@ -100,33 +104,6 @@
           "definition": "Sampling is carried out in stages using smaller and smaller units at each stage, and all stages involve a probability selection. The type of probability sampling procedure may be different at each stage. For example, for a sample of students in a city, schools are randomly selected in the first stage. A random sample of classes within each selected school is drawn in the second stage. Students are then randomly selected from each of these classes in the third stage.",
           "parent": "Probability",
           "position": 7
-        },
-        {
-          "id": 2008,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/en/1.1",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Probability: Cluster: Stratified random",
-          "definition": "The target population is divided into naturally occurring segments (clusters); next, these are divided into mutually exclusive strata and a random sample of clusters is selected from each stratum. Data are then collected from all units within each selected cluster. For example, for a sample of students in a city, schools would be divided into two strata by school type (private vs. public); schools would be then randomly selected from each stratum, and all of the students from every sampled school would be included.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
-          "id": 2006,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/en/1.1",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Probability: Stratified: Proportional",
-          "definition": "The target population is subdivided into separate and mutually exclusive segments (strata) that cover the entire population. In proportional stratified sampling the number of elements chosen from each stratum is proportional to the population size of the stratum when viewed against the entire population. For example, a country is divided into two regional strata that comprise 80 percent (West) and 20 percent (East) of the total population. For a sample of 1,000 people, 800 (i.e., 80 percent) would be drawn from the West and 200 (i.e., 20 percent) from the East to accurately represent their proportion in the total population.",
-          "parent": "Probability.Stratified",
-          "position": 9
-        },
-        {
-          "id": 1994,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/en/1.1",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Probability: Stratified: Disproportional",
-          "definition": "The target population is subdivided into separate and mutually exclusive segments (strata) that cover the entire population. In disproportional sampling the number of units chosen from each stratum is not proportional to the population size of the stratum when viewed against the entire population. The number of sampled units from each stratum can be equal, optimal, or can reflect the purpose of the study, like oversampling of different subgroups of the population. For example, a country is divided into two regional strata that comprise 80 percent (West) and 20 precent (East) of the country's population. If equal representation of the two regions is needed in a study, half the sample may be drawn from the West and half from the East, so that each region is represented by 50 percent of the sample. If a more detailed analysis of the population from the East is needed, 40 percent of the units may be drawn from the West and 60 percent from the East, so that the East is over-represented.",
-          "parent": "Probability.Stratified",
-          "position": 10
         },
         {
           "id": 1999,
@@ -187,8 +164,36 @@
           "title": "Other",
           "definition": "Use if the sampling procedure is known, but not found in the list.",
           "position": 17
+        },
+        {
+          "id": 2006,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/en/1.1",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Probability: Stratified: Proportional",
+          "definition": "The target population is subdivided into separate and mutually exclusive segments (strata) that cover the entire population. In proportional stratified sampling the number of elements chosen from each stratum is proportional to the population size of the stratum when viewed against the entire population. For example, a country is divided into two regional strata that comprise 80 percent (West) and 20 percent (East) of the total population. For a sample of 1,000 people, 800 (i.e., 80 percent) would be drawn from the West and 200 (i.e., 20 percent) from the East to accurately represent their proportion in the total population.",
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 2008,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/en/1.1",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Probability: Cluster: Stratified random",
+          "definition": "The target population is divided into naturally occurring segments (clusters); next, these are divided into mutually exclusive strata and a random sample of clusters is selected from each stratum. Data are then collected from all units within each selected cluster. For example, for a sample of students in a city, schools would be divided into two strata by school type (private vs. public); schools would be then randomly selected from each stratum, and all of the students from every sampled school would be included.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 2009,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/en/1.1",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Probability: Cluster: Simple random",
+          "definition": "The target population is divided into naturally occurring segments (clusters) and a simple random sample of the clusters is selected. Data are then collected from all units within each selected cluster. For example, for a sample of students in a city, a number of schools would be chosen using the random selection method, and then all of the students from every sampled school would be included.",
+          "parent": "Probability.Cluster",
+          "position": 6
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -206,19 +211,15 @@
       "definition": "En typologi af stikprøvemetoder.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Procedure for stikprøve [Sampling Procedure] (Version 1.1.1; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": "Danish National Archives (DNA)",
       "translateAgencyLink": "https://www.sa.dk/",
       "concepts": [
-        {
-          "id": 7910,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/da#TotalUniverseCompleteEnumeration/da/1.1.1",
-          "notation": "TotalUniverseCompleteEnumeration",
-          "title": "Totalt univers/Total opgørelse",
-          "definition": "Alle enheder (individer, husholdninger, organisationer mm.) af en målpopulation er inkluderet i dataindsamlingen. Eksempel: Hvis målpopulationen er defineret som medlemmerne af en fagforening, så er alle medlemmerne inviteret til at deltage i undersøgelsen. Kaldes også for \"folketælling\", hvis hele populationen af en regional enhed (f.eks. et land) er udvalgt.",
-          "position": 0
-        },
         {
           "id": 2198,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability/da/1.1.1",
@@ -255,6 +256,24 @@
           "position": 4
         },
         {
+          "id": 2202,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/da/1.1.1",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Sandsynlighed: Stratificeret: Proportionel",
+          "definition": "Målpopulationen er opdelt i separate og gensidigt udelukkende segmenter (strata), der dækker hele befolkningen. I proportionel stratificeret stikprøveudvælgelse er antallet af elementer udvalgt fra hvert stratum proportionelt med befolkningsstørrelsen af stratummet set i forhold til hele befolkningen. For eksempel er et land opdelt i to regionale strata, der dækker 80 procent (vest) og 20 procent (øst) af den samlede befolkning. For en stikprøve på 1000 personer ville 800 (80 procent) trækkes fra vest og 200 (20 procent) fra øst for nøjagtigt at repræsentere deres andel i den samlede befolkning. ",
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 2203,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/da/1.1.1",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Sandsylighed: Stratificeret: Disproportionel",
+          "definition": "Målpopulationen er opdelt i separate og gensidigt udelukkende segmenter (strata), der dækker hele befolkningen. I disproportional stikprøveudvælgelse er antallet af enhederne udvalgt fra hvert lag ikke proportional med stratummets befolkningsstørrelse set i forhold til hele befolkningen. Antallet af stikprøveenheder fra hvert stratum kan være ens, optimalt, eller kan afspejle undersøgelsens formål, såsom oversampling af forskellige undergrupper af befolkningen. For eksempel er et land opdelt i to regionale strata, der dækker 80 procent (vest) og 20 procent (øst) af landets befolkning. Hvis der er behov for ligevægtig repræsentation af de to regioner i en undersøgelse, kan halvdelen af stikprøven udtrækkes fra vest og halvdelen fra øst, således at hver region er repræsenteret i 50 procent af stikprøven. Hvis en mere detaljeret analyse af befolkningen fra øst er nødvendig, kan 40 procent af enhederne udtrækkes fra vest og 60 procent fra øst, således øst er overrepræsenteret.",
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
           "id": 2204,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/da/1.1.1",
           "notation": "Probability.Cluster",
@@ -273,15 +292,6 @@
           "position": 6
         },
         {
-          "id": 2207,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/da/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Sandsynlighed: Flertrin",
-          "definition": "Stikprøveudvælgelse udføres i trin ved brug af mindre og mindre enheder for hvert trin, og alle trin involverer en sandsynlighedsudvælgelse. Typen af procedure for sandsynlighedsstikprøveudvælgelse kan være forskellig for hvert trin. For eksempel for en stikprøve af studerende i en by er skoler tilfældigt udvalgt i det første trin. En tilfældig stikprøve af klasser inden for hver udvalgt skole udtrækkes i det andet trin. Studerende udvælges derefter tilfældigt fra hver af disse klasser i det tredje trin. ",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
           "id": 2206,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/da/1.1.1",
           "notation": "Probability.Cluster.StratifiedRandom",
@@ -291,22 +301,13 @@
           "position": 8
         },
         {
-          "id": 2202,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/da/1.1.1",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Sandsynlighed: Stratificeret: Proportionel",
-          "definition": "Målpopulationen er opdelt i separate og gensidigt udelukkende segmenter (strata), der dækker hele befolkningen. I proportionel stratificeret stikprøveudvælgelse er antallet af elementer udvalgt fra hvert stratum proportionelt med befolkningsstørrelsen af stratummet set i forhold til hele befolkningen. For eksempel er et land opdelt i to regionale strata, der dækker 80 procent (vest) og 20 procent (øst) af den samlede befolkning. For en stikprøve på 1000 personer ville 800 (80 procent) trækkes fra vest og 200 (20 procent) fra øst for nøjagtigt at repræsentere deres andel i den samlede befolkning. ",
-          "parent": "Probability.Stratified",
-          "position": 9
-        },
-        {
-          "id": 2203,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/da/1.1.1",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Sandsylighed: Stratificeret: Disproportionel",
-          "definition": "Målpopulationen er opdelt i separate og gensidigt udelukkende segmenter (strata), der dækker hele befolkningen. I disproportional stikprøveudvælgelse er antallet af enhederne udvalgt fra hvert lag ikke proportional med stratummets befolkningsstørrelse set i forhold til hele befolkningen. Antallet af stikprøveenheder fra hvert stratum kan være ens, optimalt, eller kan afspejle undersøgelsens formål, såsom oversampling af forskellige undergrupper af befolkningen. For eksempel er et land opdelt i to regionale strata, der dækker 80 procent (vest) og 20 procent (øst) af landets befolkning. Hvis der er behov for ligevægtig repræsentation af de to regioner i en undersøgelse, kan halvdelen af stikprøven udtrækkes fra vest og halvdelen fra øst, således at hver region er repræsenteret i 50 procent af stikprøven. Hvis en mere detaljeret analyse af befolkningen fra øst er nødvendig, kan 40 procent af enhederne udtrækkes fra vest og 60 procent fra øst, således øst er overrepræsenteret.",
-          "parent": "Probability.Stratified",
-          "position": 10
+          "id": 2207,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/da/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Sandsynlighed: Flertrin",
+          "definition": "Stikprøveudvælgelse udføres i trin ved brug af mindre og mindre enheder for hvert trin, og alle trin involverer en sandsynlighedsudvælgelse. Typen af procedure for sandsynlighedsstikprøveudvælgelse kan være forskellig for hvert trin. For eksempel for en stikprøve af studerende i en by er skoler tilfældigt udvalgt i det første trin. En tilfældig stikprøve af klasser inden for hver udvalgt skole udtrækkes i det andet trin. Studerende udvælges derefter tilfældigt fra hver af disse klasser i det tredje trin. ",
+          "parent": "Probability",
+          "position": 7
         },
         {
           "id": 2208,
@@ -335,15 +336,6 @@
           "position": 13
         },
         {
-          "id": 7911,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/da#Nonprobability.Quota/da/1.1.1",
-          "notation": "Nonprobability.Quota",
-          "title": "Ikke-sandsynlighed: Kvoter",
-          "definition": "Målpopulationen er opdelt i separate og gensidigt udelukkende segmenter i henhold til nogle forhåndsdefinerede kvotekriterier. Fordelingen af kvotekriterierne (køn/alder/etnicitetsforhold eller andre karakteristika som religion, uddannelse etc.) skal afspejle den reelle struktur for målgruppepopulationen eller den ønskede undersøgelsespopulations struktur. Ikke-sandsynlighedsbaserede stikprøver udtrækkes derefter fra hvert segment, indtil et specifikt antal af enheder er nået. For eksempel, hvis målgruppepopulationen består af 45 procent kvinder og 55 procent mænd, vil en proportional kvotestikprøve have samme kønsprocenter, mens procenterne i en ikke-proportional kvotestikprøve vil være anderledes, baseret på en undersøgelsesrelateret overvejelse (for eksempel behov for at oversample for bestemte underrepræsenterede segmenter i befolkningen).",
-          "parent": "Nonprobability",
-          "position": 14
-        },
-        {
           "id": 2212,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/da/1.1.1",
           "notation": "Nonprobability.RespondentAssisted",
@@ -367,8 +359,26 @@
           "title": "Andet",
           "definition": "Anvend, hvis procedure for stikprøveudvælgelse er kendt, men ikke findes på listen.",
           "position": 17
+        },
+        {
+          "id": 7910,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/da#TotalUniverseCompleteEnumeration/da/1.1.1",
+          "notation": "TotalUniverseCompleteEnumeration",
+          "title": "Totalt univers/Total opgørelse",
+          "definition": "Alle enheder (individer, husholdninger, organisationer mm.) af en målpopulation er inkluderet i dataindsamlingen. Eksempel: Hvis målpopulationen er defineret som medlemmerne af en fagforening, så er alle medlemmerne inviteret til at deltage i undersøgelsen. Kaldes også for \"folketælling\", hvis hele populationen af en regional enhed (f.eks. et land) er udvalgt.",
+          "position": 0
+        },
+        {
+          "id": 7911,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/da#Nonprobability.Quota/da/1.1.1",
+          "notation": "Nonprobability.Quota",
+          "title": "Ikke-sandsynlighed: Kvoter",
+          "definition": "Målpopulationen er opdelt i separate og gensidigt udelukkende segmenter i henhold til nogle forhåndsdefinerede kvotekriterier. Fordelingen af kvotekriterierne (køn/alder/etnicitetsforhold eller andre karakteristika som religion, uddannelse etc.) skal afspejle den reelle struktur for målgruppepopulationen eller den ønskede undersøgelsespopulations struktur. Ikke-sandsynlighedsbaserede stikprøver udtrækkes derefter fra hvert segment, indtil et specifikt antal af enheder er nået. For eksempel, hvis målgruppepopulationen består af 45 procent kvinder og 55 procent mænd, vil en proportional kvotestikprøve have samme kønsprocenter, mens procenterne i en ikke-proportional kvotestikprøve vil være anderledes, baseret på en undersøgelsesrelateret overvejelse (for eksempel behov for at oversample for bestemte underrepræsenterede segmenter i befolkningen).",
+          "parent": "Nonprobability",
+          "position": 14
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -386,19 +396,15 @@
       "definition": "Aineistossa käytetyn otantamenetelmän tyyppiluokittelu.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Otantamenetelmä [Sampling Procedure] (Version 1.1.1; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element Number in DDI 2.1: 2.3.1.4\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
       "translateAgencyLink": "https://www.fsd.uta.fi/en/",
       "concepts": [
-        {
-          "id": 7912,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/fi#TotalUniverseCompleteEnumeration/fi/1.1.1",
-          "notation": "TotalUniverseCompleteEnumeration",
-          "title": "Kokonaisaineisto",
-          "definition": "Kaikki perusjoukon yksiköt (henkilöt, kotitaloudet, organisaatio jne) valitaan mukaan. Mitään otantaa ei tehdä. Esimerkiksi jos perusjoukko on tietyn ammattiliiton jäsenet, kaikki liiton jäsenet saavat kutsun osallistua tutkimukseen.",
-          "position": 0
-        },
         {
           "id": 2108,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability/fi/1.1.1",
@@ -435,6 +441,24 @@
           "position": 4
         },
         {
+          "id": 2112,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fi/1.1.1",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Todennäköisyysotanta: suhteutettu ositettu otanta",
+          "definition": "Perusjoukko jaetaan ensin erillisiin, toisensa poissulkeviin ositteisiin jonkin ominaisuuden mukaan. Suhteutetussa ositetussa otannassa kunkin ositteen otoskoko suhteessa kokonaisotokseen on sama kuin tämän ositteen suhteellinen koko perusjoukossa. Esimerkki: maa on jaettu kahteen alueelliseen ositteeseen, joissa länsiosa sisältää 80 % ja itäosa 20 % maan kokonaisväestöstä. Jos 1000 henkilön otos on suhteutettu ositettu otanta, otokseen valitaan 800 henkilöä lännestä (80 %) ja 200 henkilöä idästä (20 %).",
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 2113,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/fi/1.1.1",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Todennäköisyysotanta: suhteuttamaton ositettu otanta",
+          "definition": "Perusjoukko jaetaan ensin jonkin ominaisuuden mukaan erillisiin, toisensa poissulkeviin ositteisiin. Suhteuttamattomassa ositetussa otannassa kunkin ositteen otoskoko suhteessa kokonaisotokseen ei ole sama kuin ositteen suhteellinen koko perusjoukossa. Eri ositteista valittu otoskoko voi olla samansuuruinen, optimaalinen tai se saattaa heijastaa tutkimuksen tavoitteita (esim. tehdään yliotos tietystä perusjoukon osasta). Esimerkki: maa jaetaan kahteen alueelliseen ositteeseen, joissa länsiosa sisältää 80 % ja itäosa 20 % maan kokonaisväestöstä. Jos halutaan samansuuruiset otokset, puolet yksiköistä valitaan lännestä ja puolet idästä, niin että molemmat muodostavat 50 % kokonaisotoksesta. Jos itäosan väestöä halutaan tutkia tarkemmin, voidaan tehdä otos, jossa 40 % yksiköistä valitaan lännestä ja 60 % idästä, joten itäosasta on tehty yliotos.",
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
           "id": 2114,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fi/1.1.1",
           "notation": "Probability.Cluster",
@@ -453,15 +477,6 @@
           "position": 6
         },
         {
-          "id": 2117,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fi/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Todennäköisyysotanta: monivaiheinen otanta",
-          "definition": "Otanta tehdään kahdessa tai useammassa eri vaiheessa siten, että jokaisessa vaiheessa otos pienenee ja kaikissa vaiheissa käytetään jotain todennäköisyysotantaa (eli missään vaiheessa ei oteta mukaan kaikkia yksiköitä). Todennäköisyysotannan menetelmä saattaa vaihtua eri vaiheissa. Esimerkiksi jos halutaan otos kaupungin koululaisista, valitaan ensin mukaan osa kaupungin kouluista. Seuraavassa vaiheessa valitaan otokseen tulleista kouluista osa luokista. Viimeisessä vaiheessa valitaan jokaisesta mukaan tulleesta luokasta osa koululaisista.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
           "id": 2116,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fi/1.1.1",
           "notation": "Probability.Cluster.StratifiedRandom",
@@ -471,22 +486,13 @@
           "position": 8
         },
         {
-          "id": 2112,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fi/1.1.1",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Todennäköisyysotanta: suhteutettu ositettu otanta",
-          "definition": "Perusjoukko jaetaan ensin erillisiin, toisensa poissulkeviin ositteisiin jonkin ominaisuuden mukaan. Suhteutetussa ositetussa otannassa kunkin ositteen otoskoko suhteessa kokonaisotokseen on sama kuin tämän ositteen suhteellinen koko perusjoukossa. Esimerkki: maa on jaettu kahteen alueelliseen ositteeseen, joissa länsiosa sisältää 80 % ja itäosa 20 % maan kokonaisväestöstä. Jos 1000 henkilön otos on suhteutettu ositettu otanta, otokseen valitaan 800 henkilöä lännestä (80 %) ja 200 henkilöä idästä (20 %).",
-          "parent": "Probability.Stratified",
-          "position": 9
-        },
-        {
-          "id": 2113,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/fi/1.1.1",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Todennäköisyysotanta: suhteuttamaton ositettu otanta",
-          "definition": "Perusjoukko jaetaan ensin jonkin ominaisuuden mukaan erillisiin, toisensa poissulkeviin ositteisiin. Suhteuttamattomassa ositetussa otannassa kunkin ositteen otoskoko suhteessa kokonaisotokseen ei ole sama kuin ositteen suhteellinen koko perusjoukossa. Eri ositteista valittu otoskoko voi olla samansuuruinen, optimaalinen tai se saattaa heijastaa tutkimuksen tavoitteita (esim. tehdään yliotos tietystä perusjoukon osasta). Esimerkki: maa jaetaan kahteen alueelliseen ositteeseen, joissa länsiosa sisältää 80 % ja itäosa 20 % maan kokonaisväestöstä. Jos halutaan samansuuruiset otokset, puolet yksiköistä valitaan lännestä ja puolet idästä, niin että molemmat muodostavat 50 % kokonaisotoksesta. Jos itäosan väestöä halutaan tutkia tarkemmin, voidaan tehdä otos, jossa 40 % yksiköistä valitaan lännestä ja 60 % idästä, joten itäosasta on tehty yliotos.",
-          "parent": "Probability.Stratified",
-          "position": 10
+          "id": 2117,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fi/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Todennäköisyysotanta: monivaiheinen otanta",
+          "definition": "Otanta tehdään kahdessa tai useammassa eri vaiheessa siten, että jokaisessa vaiheessa otos pienenee ja kaikissa vaiheissa käytetään jotain todennäköisyysotantaa (eli missään vaiheessa ei oteta mukaan kaikkia yksiköitä). Todennäköisyysotannan menetelmä saattaa vaihtua eri vaiheissa. Esimerkiksi jos halutaan otos kaupungin koululaisista, valitaan ensin mukaan osa kaupungin kouluista. Seuraavassa vaiheessa valitaan otokseen tulleista kouluista osa luokista. Viimeisessä vaiheessa valitaan jokaisesta mukaan tulleesta luokasta osa koululaisista.",
+          "parent": "Probability",
+          "position": 7
         },
         {
           "id": 2118,
@@ -515,15 +521,6 @@
           "position": 13
         },
         {
-          "id": 7913,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/fi#Nonprobability.Quota/fi/1.1.1",
-          "notation": "Nonprobability.Quota",
-          "title": "Ei-todennäköisyysotanta: kiintiöpoiminta",
-          "definition": "Perusjoukko jaetaan erillisiin ja toisensa poissulkeviin ositteisiin jonkin etukäteen määritellyn kriteerin mukaan (esim. sukupuoli, ikä, etninen ryhmä, uskonto, koulutus). Yksiköiden suhteellinen osuus kussakin ositteessa määräytyy todellisen perusjoukon mukaan tai heijastaa haluttua perusjoukkoa. Sitten poimitaan yksiköitä ei-todennäköisyysmenetelmillä kunnes yksiköiden etukäteen määrätty määrä kussakin ositteessa täyttyy. Esimerkiksi, jos perusjoukossa on 89 prosenttia suomenkielisiä, 5 prosenttia ruotsinkielisiä ja 6 prosenttia muunkielisiä, suhteutetussa kiintiöpoiminnassa kieliryhmien prosenttiosuudet pysyvät otoksessa samana kuin perusjoukossa. Suhteuttamattomassa kiintiöpoiminnassa kieliryhmien prosenttiosuudet ovat erilaiset ja riippuvat tutkimuksen tarpeista, esimerkiksi tarpeesta tehdä yliotos ruotsin- ja muunkielisistä.",
-          "parent": "Nonprobability",
-          "position": 14
-        },
-        {
           "id": 2122,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/fi/1.1.1",
           "notation": "Nonprobability.RespondentAssisted",
@@ -547,8 +544,26 @@
           "title": "Muu otantamenetelmä",
           "definition": "Käytä, mikäli otantamenetelmä on tiedossa, mutta sanastossa ei ole sopivaa termiä.",
           "position": 17
+        },
+        {
+          "id": 7912,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/fi#TotalUniverseCompleteEnumeration/fi/1.1.1",
+          "notation": "TotalUniverseCompleteEnumeration",
+          "title": "Kokonaisaineisto",
+          "definition": "Kaikki perusjoukon yksiköt (henkilöt, kotitaloudet, organisaatio jne) valitaan mukaan. Mitään otantaa ei tehdä. Esimerkiksi jos perusjoukko on tietyn ammattiliiton jäsenet, kaikki liiton jäsenet saavat kutsun osallistua tutkimukseen.",
+          "position": 0
+        },
+        {
+          "id": 7913,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/fi#Nonprobability.Quota/fi/1.1.1",
+          "notation": "Nonprobability.Quota",
+          "title": "Ei-todennäköisyysotanta: kiintiöpoiminta",
+          "definition": "Perusjoukko jaetaan erillisiin ja toisensa poissulkeviin ositteisiin jonkin etukäteen määritellyn kriteerin mukaan (esim. sukupuoli, ikä, etninen ryhmä, uskonto, koulutus). Yksiköiden suhteellinen osuus kussakin ositteessa määräytyy todellisen perusjoukon mukaan tai heijastaa haluttua perusjoukkoa. Sitten poimitaan yksiköitä ei-todennäköisyysmenetelmillä kunnes yksiköiden etukäteen määrätty määrä kussakin ositteessa täyttyy. Esimerkiksi, jos perusjoukossa on 89 prosenttia suomenkielisiä, 5 prosenttia ruotsinkielisiä ja 6 prosenttia muunkielisiä, suhteutetussa kiintiöpoiminnassa kieliryhmien prosenttiosuudet pysyvät otoksessa samana kuin perusjoukossa. Suhteuttamattomassa kiintiöpoiminnassa kieliryhmien prosenttiosuudet ovat erilaiset ja riippuvat tutkimuksen tarpeista, esimerkiksi tarpeesta tehdä yliotos ruotsin- ja muunkielisistä.",
+          "parent": "Nonprobability",
+          "position": 14
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -566,19 +581,132 @@
       "definition": "Une typologie des méthodes d'échantillonnage",
       "versionNotes": "",
       "versionChanges": "Code descriptive term rephrased: Probabiliste : stratifié : disproportionnel\n",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Procédure d'échantillonnage [Sampling Procedure] (Version 1.1.3;  Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
       "translateAgencyLink": "https://cdsp.sciences-po.fr/fr/",
       "concepts": [
         {
-          "id": 8329,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#TotalUniverseCompleteEnumeration/fr",
-          "notation": "TotalUniverseCompleteEnumeration",
-          "title": "Univers complet / dénombrement complet",
-          "definition": "Toutes les unités (individus, ménages, organisations, etc.) de la population cible sont incluses dans la collecte des données. Par exemple, si la population cible est définie comme les membres d'une organisation syndicale, tous les membres syndicaux sont invités à participer à l'étude. Aussi appelé \"recensement\" si la population complète d'une unité régionale (e.g. un pays) est sélectionnée.",
-          "previousConcept": 7573,
-          "position": 0
+          "id": 8315,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified/fr",
+          "notation": "Probability.Stratified",
+          "title": "Probabiliste : stratifié",
+          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusifs qui couvrent la population entière. Des échantillons aléatoires indépendants sont alors tirés de chaque segment. Par exemple, dans une enquête nationale d'opinion publique la population entière est divisée en deux strates régionales : Est et Ouest. Après cela, les unités d'échantillonnage sont tirées à partir de chaque région utilisant un échantillonnage aléatoire simple ou systématique. Utilisez ce terme si le type spécifique de l'échantillonnage stratifié n'est pas connu ou est difficile à identifier.",
+          "previousConcept": 7564,
+          "parent": "Probability",
+          "position": 4
+        },
+        {
+          "id": 8316,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#MixedProbabilityNonprobability/fr",
+          "notation": "MixedProbabilityNonprobability",
+          "title": "Mixte probabiliste et non probabiliste",
+          "definition": "Le plan d'échantillonnage qui combine échantillonnage probabiliste et non probabiliste au sein d'un même processus d'échantillonnage. Différents type d'échantillonnage peuvent être utilisés à différentes étapes de création de l'échantillon. Par exemple, pour un échantillon d'élèves issus de l'immigration dans une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Alors, un échantillon par quotas des élèves est sélectionné au sein de chaque école dans une seconde étape. Si des échantillons distincts sont tirés à partir de la même population cible à l'aide de différentes méthodes d'échantillonnage, le type de procédure d'échantillonnage utilisé pour chaque échantillon devra être classé séparément.",
+          "previousConcept": 7559,
+          "position": 16
+        },
+        {
+          "id": 8317,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/fr",
+          "notation": "Nonprobability.RespondentAssisted",
+          "title": "Non probabiliste : participation volontaire",
+          "definition": "Les unités de l'échantillon sont identifiées à partir d'une population cible avec l'assistance d'unités déjà sélectionnées (adapté de \"Public Health Research Methods\", ed. Greg Guest, Emily E. Namey, 2014). Un cas typique est l'échantillonnage boule de neige, dans lequel le chercheur identifie un groupe d'unités qui correspond à un critère particulier d'éligibilité. Ces dernières sont invitées à recruter d'autres membres de la même population qui remplissent le même critère d'éligibilité (échantillonnage de populations spécifiques comme des migrants, etc.)",
+          "previousConcept": 7566,
+          "parent": "Nonprobability",
+          "position": 15
+        },
+        {
+          "id": 8318,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Quota/fr",
+          "notation": "Nonprobability.Quota",
+          "title": "Non probabiliste : quota",
+          "definition": "La population cible est subdivisée dans des segments séparés et mutuellement exclusifs d'après certains critères de quotas prédéfinis. La distribution des critères de quotas (genre / âge / ratio d'ethnicité, ou des autres caractéristiques, comme la religion, l'éducation, etc.) est destinée à refléter la structure réelle de la population cible ou la structure désirée de la population étudiée. Des échantillons non probabilistes sont alors tirés à partir de chaque segment jusqu'à ce qu'un nombre spécifique d'unités soit atteint. Par exemple, si la population cible compte 45 pour cent de femmes et 55 pour cent d'hommes, un échantillon par quotas proportionnel devra avoir les mêmes pourcentages par genre, alors que dans un échantillon par quotas non proportionnel le pourcentage sera différent, basé sur certaines considérations liées à l'étude (par exemple, le besoin de sur-échantillon pour certains segments sous-représentés de la population).",
+          "previousConcept": 7561,
+          "parent": "Nonprobability",
+          "position": 14
+        },
+        {
+          "id": 8319,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fr",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Probabiliste : grappe : aléatoire simple",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectés à partir de tous les unités dans chaque groupe sélectionné. Par exemple, pour un échantillon d'élèves d'une ville, un nombre d'écoles devrait être choisi en utilisant une méthode de sélection aléatoire, et puis tous les élèves de chaque école échantillonnée seraient inclus.",
+          "previousConcept": 7571,
+          "parent": "Probability.Cluster",
+          "position": 6
+        },
+        {
+          "id": 8320,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Probabiliste : grappe : aléatoire stratifié",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
+          "previousConcept": 7560,
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 8321,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fr",
+          "notation": "Probability.Cluster",
+          "title": "Probabiliste : grappe",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectées à partir de tous les unités dans chaque groupe sélectionné. L'échantillonnage est souvent regroupé selon la géographie, ou la période de temps. Utilisez ce terme si un terme plus spécifique d'échantillonnage en grappes n'est pas connu ou est difficile à identifier.",
+          "previousConcept": 7570,
+          "parent": "Probability",
+          "position": 5
+        },
+        {
+          "id": 8322,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Availability/fr",
+          "notation": "Nonprobability.Availability",
+          "title": "Non probabiliste : disponibilité",
+          "definition": "La sélection de l'échantillon est basée sur la disponibilité, l'accès relativement facile des unités. Elles peuvent être facile à approcher, ou peuvent elles-mêmes choisir de participer à l'étude (auto-sélection). Les chercheurs peuvent avoir un groupe particulier à l'esprit mais ils ne peuvent pas contrôler les mécanismes de sélection de l'échantillon. Par exemple, des étudiants vivant dans un bâtiment particulier du campus peuvent être approchés, ou des individus peuvent volontairement participer en répondant à des invitations qui ne les ciblent pas spécifiquement, mais un groupe plus large auquel ils peuvent appartenir. Aussi appelé échantillonnage de \"convenance\" ou d'\"opportunité\".",
+          "previousConcept": 7568,
+          "parent": "Nonprobability",
+          "position": 12
+        },
+        {
+          "id": 8323,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/fr",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Probabiliste : stratifié : disproportionné",
+          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon disproportionnel le nombre des unités choisies à partir de chaque strate n'est pas proportionnel à la taille de population de la strate par rapport à la population entière. Le nombre d'unités échantillonnées à partir de chaque strate peut être égal, optimal, ou peut refléter la raison de l'enquête, comme le sur-échantillonnage de différents sous-groupes de la population. Par exemple, un pays est divisé en deux strates qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population du pays. Si une représentation égale des deux régions est nécessaire dans une étude, la moitié de l'échantillon peut être tirée à partir de l'Ouest et la moitié de l'Est, tel que chaque région est représentée par 50 pour cent de l'échantillon. Si une analyse plus détaillée de la population de l'Est est nécessaire, 40 pour cent des unités peuvent être tirées à partir de l'Ouest et 60 pour cent à partir de l'Est, tel que l'Est est surreprésenté.",
+          "previousConcept": 7562,
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
+          "id": 8324,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Other/fr",
+          "notation": "Other",
+          "title": "Autre",
+          "definition": "Utilisez si la procédure d'échantillonnage est connue, mais pas présente dans la liste.",
+          "previousConcept": 7569,
+          "position": 17
+        },
+        {
+          "id": 8325,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Purposive/fr",
+          "notation": "Nonprobability.Purposive",
+          "title": "Non probabiliste : raisonné",
+          "definition": "Les unités échantillonnées sont spécifiquement identifiées, sélectionnées et contactées pour les informations qu'elles peuvent fournir sur le thème recherché. La sélection est basée sur différentes caractéristiques de variables indépendantes et / ou dépendantes à l'étude, et repose sur le jugement des chercheurs. Les auteurs de l'étude, ou les personnes autorisées par eux ont le contrôle au-delà des mécanismes de sélection de l'échantillon et l'univers est défini en termes de critères de sélection. Aussi appelé échantillonnage par \"jugement\". Par exemple, un chercheur en médecine peut intentionnellement sélectionner des individus qui sont similaires à la plupart des égards, excepté en ce qui concerne le résultat du sujet de recherche, qui peut être une maladie spécifique. Certains types d'échantillonnages raisonnés sont des échantillonnage de cas typiques / déviants, de variation homogène / maximale, d'experts ou de cas critiques.",
+          "previousConcept": 7557,
+          "parent": "Nonprobability",
+          "position": 13
+        },
+        {
+          "id": 8326,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr",
+          "notation": "Probability.Multistage",
+          "title": "Probabiliste : multi-étapes",
+          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
+          "previousConcept": 7558,
+          "parent": "Probability",
+          "position": 7
         },
         {
           "id": 8327,
@@ -600,64 +728,13 @@
           "position": 2
         },
         {
-          "id": 8332,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.SystematicRandom/fr",
-          "notation": "Probability.SystematicRandom",
-          "title": "Probabiliste : aléatoire systématique",
-          "definition": "Un intervalle de sélection fixe est déterminé en divisant la taille de la population par la taille désirée de l'échantillon. Le point de départ est alors un tirage au sort à partir de la base de sondage, laquelle couvre normalement la population cible totale. À partir de ce point de départ, des unités pour l'échantillonnage sont choisies en fonction de l'intervalle de sélection. Aussi connu comme l'échantillonnage par intervalle. Par exemple, une enquête dans une entreprise porte sur un échantillon de 1 000 employés sur un total de 10 000. En commençant par un nombre de départ aléatoire, tous les 10 noms de la liste des employés de l'entreprise seront invités à participer à l'étude.",
-          "previousConcept": 7572,
-          "parent": "Probability",
-          "position": 3
-        },
-        {
-          "id": 8315,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified/fr",
-          "notation": "Probability.Stratified",
-          "title": "Probabiliste : stratifié",
-          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusifs qui couvrent la population entière. Des échantillons aléatoires indépendants sont alors tirés de chaque segment. Par exemple, dans une enquête nationale d'opinion publique la population entière est divisée en deux strates régionales : Est et Ouest. Après cela, les unités d'échantillonnage sont tirées à partir de chaque région utilisant un échantillonnage aléatoire simple ou systématique. Utilisez ce terme si le type spécifique de l'échantillonnage stratifié n'est pas connu ou est difficile à identifier.",
-          "previousConcept": 7564,
-          "parent": "Probability",
-          "position": 4
-        },
-        {
-          "id": 8321,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fr",
-          "notation": "Probability.Cluster",
-          "title": "Probabiliste : grappe",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectées à partir de tous les unités dans chaque groupe sélectionné. L'échantillonnage est souvent regroupé selon la géographie, ou la période de temps. Utilisez ce terme si un terme plus spécifique d'échantillonnage en grappes n'est pas connu ou est difficile à identifier.",
-          "previousConcept": 7570,
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 8319,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fr",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Probabiliste : grappe : aléatoire simple",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectés à partir de tous les unités dans chaque groupe sélectionné. Par exemple, pour un échantillon d'élèves d'une ville, un nombre d'écoles devrait être choisi en utilisant une méthode de sélection aléatoire, et puis tous les élèves de chaque école échantillonnée seraient inclus.",
-          "previousConcept": 7571,
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 8326,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr",
-          "notation": "Probability.Multistage",
-          "title": "Probabiliste : multi-étapes",
-          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
-          "previousConcept": 7558,
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 8320,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Probabiliste : grappe : aléatoire stratifié",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
-          "previousConcept": 7560,
-          "parent": "Probability.Cluster",
-          "position": 8
+          "id": 8329,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#TotalUniverseCompleteEnumeration/fr",
+          "notation": "TotalUniverseCompleteEnumeration",
+          "title": "Univers complet / dénombrement complet",
+          "definition": "Toutes les unités (individus, ménages, organisations, etc.) de la population cible sont incluses dans la collecte des données. Par exemple, si la population cible est définie comme les membres d'une organisation syndicale, tous les membres syndicaux sont invités à participer à l'étude. Aussi appelé \"recensement\" si la population complète d'une unité régionale (e.g. un pays) est sélectionnée.",
+          "previousConcept": 7573,
+          "position": 0
         },
         {
           "id": 8330,
@@ -670,16 +747,6 @@
           "position": 9
         },
         {
-          "id": 8323,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/fr",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Probabiliste : stratifié : disproportionné",
-          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon disproportionnel le nombre des unités choisies à partir de chaque strate n'est pas proportionnel à la taille de population de la strate par rapport à la population entière. Le nombre d'unités échantillonnées à partir de chaque strate peut être égal, optimal, ou peut refléter la raison de l'enquête, comme le sur-échantillonnage de différents sous-groupes de la population. Par exemple, un pays est divisé en deux strates qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population du pays. Si une représentation égale des deux régions est nécessaire dans une étude, la moitié de l'échantillon peut être tirée à partir de l'Ouest et la moitié de l'Est, tel que chaque région est représentée par 50 pour cent de l'échantillon. Si une analyse plus détaillée de la population de l'Est est nécessaire, 40 pour cent des unités peuvent être tirées à partir de l'Ouest et 60 pour cent à partir de l'Est, tel que l'Est est surreprésenté.",
-          "previousConcept": 7562,
-          "parent": "Probability.Stratified",
-          "position": 10
-        },
-        {
           "id": 8331,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability/fr",
           "notation": "Nonprobability",
@@ -689,64 +756,17 @@
           "position": 11
         },
         {
-          "id": 8322,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Availability/fr",
-          "notation": "Nonprobability.Availability",
-          "title": "Non probabiliste : disponibilité",
-          "definition": "La sélection de l'échantillon est basée sur la disponibilité, l'accès relativement facile des unités. Elles peuvent être facile à approcher, ou peuvent elles-mêmes choisir de participer à l'étude (auto-sélection). Les chercheurs peuvent avoir un groupe particulier à l'esprit mais ils ne peuvent pas contrôler les mécanismes de sélection de l'échantillon. Par exemple, des étudiants vivant dans un bâtiment particulier du campus peuvent être approchés, ou des individus peuvent volontairement participer en répondant à des invitations qui ne les ciblent pas spécifiquement, mais un groupe plus large auquel ils peuvent appartenir. Aussi appelé échantillonnage de \"convenance\" ou d'\"opportunité\".",
-          "previousConcept": 7568,
-          "parent": "Nonprobability",
-          "position": 12
-        },
-        {
-          "id": 8325,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Purposive/fr",
-          "notation": "Nonprobability.Purposive",
-          "title": "Non probabiliste : raisonné",
-          "definition": "Les unités échantillonnées sont spécifiquement identifiées, sélectionnées et contactées pour les informations qu'elles peuvent fournir sur le thème recherché. La sélection est basée sur différentes caractéristiques de variables indépendantes et / ou dépendantes à l'étude, et repose sur le jugement des chercheurs. Les auteurs de l'étude, ou les personnes autorisées par eux ont le contrôle au-delà des mécanismes de sélection de l'échantillon et l'univers est défini en termes de critères de sélection. Aussi appelé échantillonnage par \"jugement\". Par exemple, un chercheur en médecine peut intentionnellement sélectionner des individus qui sont similaires à la plupart des égards, excepté en ce qui concerne le résultat du sujet de recherche, qui peut être une maladie spécifique. Certains types d'échantillonnages raisonnés sont des échantillonnage de cas typiques / déviants, de variation homogène / maximale, d'experts ou de cas critiques.",
-          "previousConcept": 7557,
-          "parent": "Nonprobability",
-          "position": 13
-        },
-        {
-          "id": 8318,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Quota/fr",
-          "notation": "Nonprobability.Quota",
-          "title": "Non probabiliste : quota",
-          "definition": "La population cible est subdivisée dans des segments séparés et mutuellement exclusifs d'après certains critères de quotas prédéfinis. La distribution des critères de quotas (genre / âge / ratio d'ethnicité, ou des autres caractéristiques, comme la religion, l'éducation, etc.) est destinée à refléter la structure réelle de la population cible ou la structure désirée de la population étudiée. Des échantillons non probabilistes sont alors tirés à partir de chaque segment jusqu'à ce qu'un nombre spécifique d'unités soit atteint. Par exemple, si la population cible compte 45 pour cent de femmes et 55 pour cent d'hommes, un échantillon par quotas proportionnel devra avoir les mêmes pourcentages par genre, alors que dans un échantillon par quotas non proportionnel le pourcentage sera différent, basé sur certaines considérations liées à l'étude (par exemple, le besoin de sur-échantillon pour certains segments sous-représentés de la population).",
-          "previousConcept": 7561,
-          "parent": "Nonprobability",
-          "position": 14
-        },
-        {
-          "id": 8317,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/fr",
-          "notation": "Nonprobability.RespondentAssisted",
-          "title": "Non probabiliste : participation volontaire",
-          "definition": "Les unités de l'échantillon sont identifiées à partir d'une population cible avec l'assistance d'unités déjà sélectionnées (adapté de \"Public Health Research Methods\", ed. Greg Guest, Emily E. Namey, 2014). Un cas typique est l'échantillonnage boule de neige, dans lequel le chercheur identifie un groupe d'unités qui correspond à un critère particulier d'éligibilité. Ces dernières sont invitées à recruter d'autres membres de la même population qui remplissent le même critère d'éligibilité (échantillonnage de populations spécifiques comme des migrants, etc.)",
-          "previousConcept": 7566,
-          "parent": "Nonprobability",
-          "position": 15
-        },
-        {
-          "id": 8316,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#MixedProbabilityNonprobability/fr",
-          "notation": "MixedProbabilityNonprobability",
-          "title": "Mixte probabiliste et non probabiliste",
-          "definition": "Le plan d'échantillonnage qui combine échantillonnage probabiliste et non probabiliste au sein d'un même processus d'échantillonnage. Différents type d'échantillonnage peuvent être utilisés à différentes étapes de création de l'échantillon. Par exemple, pour un échantillon d'élèves issus de l'immigration dans une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Alors, un échantillon par quotas des élèves est sélectionné au sein de chaque école dans une seconde étape. Si des échantillons distincts sont tirés à partir de la même population cible à l'aide de différentes méthodes d'échantillonnage, le type de procédure d'échantillonnage utilisé pour chaque échantillon devra être classé séparément.",
-          "previousConcept": 7559,
-          "position": 16
-        },
-        {
-          "id": 8324,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Other/fr",
-          "notation": "Other",
-          "title": "Autre",
-          "definition": "Utilisez si la procédure d'échantillonnage est connue, mais pas présente dans la liste.",
-          "previousConcept": 7569,
-          "position": 17
+          "id": 8332,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.SystematicRandom/fr",
+          "notation": "Probability.SystematicRandom",
+          "title": "Probabiliste : aléatoire systématique",
+          "definition": "Un intervalle de sélection fixe est déterminé en divisant la taille de la population par la taille désirée de l'échantillon. Le point de départ est alors un tirage au sort à partir de la base de sondage, laquelle couvre normalement la population cible totale. À partir de ce point de départ, des unités pour l'échantillonnage sont choisies en fonction de l'intervalle de sélection. Aussi connu comme l'échantillonnage par intervalle. Par exemple, une enquête dans une entreprise porte sur un échantillon de 1 000 employés sur un total de 10 000. En commençant par un nombre de départ aléatoire, tous les 10 noms de la liste des employés de l'entreprise seront invités à participer à l'étude.",
+          "previousConcept": 7572,
+          "parent": "Probability",
+          "position": 3
         }
       ],
+      "comments": [],
       "versionHistories": [
         {
           "version": "1.1.2",
@@ -775,19 +795,73 @@
       "definition": "Une typologie des méthodes d'échantillonnage",
       "versionNotes": "",
       "versionChanges": "Probabiliste : stratifié => [séparées et mutuellement exclusives] => [séparées et mutuellement exclusifs]",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Procédure d'échantillonnage [Sampling Procedure] (Version 1.1.2;  Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
       "translateAgencyLink": "https://cdsp.sciences-po.fr/fr/",
       "concepts": [
         {
-          "id": 7573,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#TotalUniverseCompleteEnumeration/fr/1.1.2",
-          "notation": "TotalUniverseCompleteEnumeration",
-          "title": "Univers complet / dénombrement complet",
-          "definition": "Toutes les unités (individus, ménages, organisations, etc.) de la population cible sont incluses dans la collecte des données. Par exemple, si la population cible est définie comme les membres d'une organisation syndicale, tous les membres syndicaux sont invités à participer à l'étude. Aussi appelé \"recensement\" si la population complète d'une unité régionale (e.g. un pays) est sélectionnée.",
-          "previousConcept": 7309,
-          "position": 0
+          "id": 7557,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Purposive/fr/1.1.2",
+          "notation": "Nonprobability.Purposive",
+          "title": "Non probabiliste : raisonné",
+          "definition": "Les unités échantillonnées sont spécifiquement identifiées, sélectionnées et contactées pour les informations qu'elles peuvent fournir sur le thème recherché. La sélection est basée sur différentes caractéristiques de variables indépendantes et / ou dépendantes à l'étude, et repose sur le jugement des chercheurs. Les auteurs de l'étude, ou les personnes autorisées par eux ont le contrôle au-delà des mécanismes de sélection de l'échantillon et l'univers est défini en termes de critères de sélection. Aussi appelé échantillonnage par \"jugement\". Par exemple, un chercheur en médecine peut intentionnellement sélectionner des individus qui sont similaires à la plupart des égards, excepté en ce qui concerne le résultat du sujet de recherche, qui peut être une maladie spécifique. Certains types d'échantillonnages raisonnés sont des échantillonnage de cas typiques / déviants, de variation homogène / maximale, d'experts ou de cas critiques.",
+          "previousConcept": 7322,
+          "parent": "Nonprobability",
+          "position": 13
+        },
+        {
+          "id": 7558,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr/1.1.2",
+          "notation": "Probability.Multistage",
+          "title": "Probabiliste : multi-étapes",
+          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
+          "previousConcept": 7319,
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 7559,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#MixedProbabilityNonprobability/fr/1.1.2",
+          "notation": "MixedProbabilityNonprobability",
+          "title": "Mixte probabiliste et non probabiliste",
+          "definition": "Le plan d'échantillonnage qui combine échantillonnage probabiliste et non probabiliste au sein d'un même processus d'échantillonnage. Différents type d'échantillonnage peuvent être utilisés à différentes étapes de création de l'échantillon. Par exemple, pour un échantillon d'élèves issus de l'immigration dans une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Alors, un échantillon par quotas des élèves est sélectionné au sein de chaque école dans une seconde étape. Si des échantillons distincts sont tirés à partir de la même population cible à l'aide de différentes méthodes d'échantillonnage, le type de procédure d'échantillonnage utilisé pour chaque échantillon devra être classé séparément.",
+          "previousConcept": 7325,
+          "position": 16
+        },
+        {
+          "id": 7560,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr/1.1.2",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Probabiliste : grappe : aléatoire stratifié",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
+          "previousConcept": 7318,
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 7561,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Quota/fr/1.1.2",
+          "notation": "Nonprobability.Quota",
+          "title": "Non probabiliste : quota",
+          "definition": "La population cible est subdivisée dans des segments séparés et mutuellement exclusifs d'après certains critères de quotas prédéfinis. La distribution des critères de quotas (genre / âge / ratio d'ethnicité, ou des autres caractéristiques, comme la religion, l'éducation, etc.) est destinée à refléter la structure réelle de la population cible ou la structure désirée de la population étudiée. Des échantillons non probabilistes sont alors tirés à partir de chaque segment jusqu'à ce qu'un nombre spécifique d'unités soit atteint. Par exemple, si la population cible compte 45 pour cent de femmes et 55 pour cent d'hommes, un échantillon par quotas proportionnel devra avoir les mêmes pourcentages par genre, alors que dans un échantillon par quotas non proportionnel le pourcentage sera différent, basé sur certaines considérations liées à l'étude (par exemple, le besoin de sur-échantillon pour certains segments sous-représentés de la population).",
+          "previousConcept": 7323,
+          "parent": "Nonprobability",
+          "position": 14
+        },
+        {
+          "id": 7562,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/fr/1.1.2",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Probabiliste : stratifié : disproportionnel",
+          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon disproportionnel le nombre des unités choisies à partir de chaque strate n'est pas proportionnel à la taille de population de la strate par rapport à la population entière. Le nombre d'unités échantillonnées à partir de chaque strate peut être égal, optimal, ou peut refléter la raison de l'enquête, comme le sur-échantillonnage de différents sous-groupes de la population. Par exemple, un pays est divisé en deux strates qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population du pays. Si une représentation égale des deux régions est nécessaire dans une étude, la moitié de l'échantillon peut être tirée à partir de l'Ouest et la moitié de l'Est, tel que chaque région est représentée par 50 pour cent de l'échantillon. Si une analyse plus détaillée de la population de l'Est est nécessaire, 40 pour cent des unités peuvent être tirées à partir de l'Ouest et 60 pour cent à partir de l'Est, tel que l'Est est surreprésenté.",
+          "previousConcept": 7315,
+          "parent": "Probability.Stratified",
+          "position": 10
         },
         {
           "id": 7563,
@@ -799,26 +873,6 @@
           "position": 1
         },
         {
-          "id": 7574,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.SimpleRandom/fr/1.1.2",
-          "notation": "Probability.SimpleRandom",
-          "title": "Probabiliste : aléatoire simple",
-          "definition": "Toutes les unités de la population cible ont une probabilité identique d'être incluses dans l'échantillon. Typiquement, la population entière est listée dans une \"base de sondage\", et des unités sont alors choisies à partir de cette base en utilisant une méthode de sélection aléatoire.",
-          "previousConcept": 7311,
-          "parent": "Probability",
-          "position": 2
-        },
-        {
-          "id": 7572,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.SystematicRandom/fr/1.1.2",
-          "notation": "Probability.SystematicRandom",
-          "title": "Probabiliste : aléatoire systématique",
-          "definition": "Un intervalle de sélection fixe est déterminé en divisant la taille de la population par la taille désirée de l'échantillon. Le point de départ est alors un tirage au sort à partir de la base de sondage, laquelle couvre normalement la population cible totale. À partir de ce point de départ, des unités pour l'échantillonnage sont choisies en fonction de l'intervalle de sélection. Aussi connu comme l'échantillonnage par intervalle. Par exemple, une enquête dans une entreprise porte sur un échantillon de 1 000 employés sur un total de 10 000. En commençant par un nombre de départ aléatoire, tous les 10 noms de la liste des employés de l'entreprise seront invités à participer à l'étude.",
-          "previousConcept": 7312,
-          "parent": "Probability",
-          "position": 3
-        },
-        {
           "id": 7564,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified/fr/1.1.2",
           "notation": "Probability.Stratified",
@@ -827,6 +881,54 @@
           "previousConcept": 7313,
           "parent": "Probability",
           "position": 4
+        },
+        {
+          "id": 7565,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fr/1.1.2",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Probabiliste : stratifié : proportionnel",
+          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon stratifié proportionnel le nombre d'éléments choisis dans chaque strate est proportionnel à la taille de la population de la strate par rapport à la population entière. Par exemple, un pays est divisé en deux strates régionales qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population totale. Pour un échantillon de 1 000 personnes, 800 (i. e., 80 pour cent) devraient être tirées à partir de l'Ouest et 200 (i. e., 20 pour cent) à partir de l'Est pour représenter fidèlement leur proportion dans la population totale.",
+          "previousConcept": 7314,
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 7566,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/fr/1.1.2",
+          "notation": "Nonprobability.RespondentAssisted",
+          "title": "Non probabiliste : participation volontaire",
+          "definition": "Les unités de l'échantillon sont identifiées à partir d'une population cible avec l'assistance d'unités déjà sélectionnées (adapté de \"Public Health Research Methods\", ed. Greg Guest, Emily E. Namey, 2014). Un cas typique est l'échantillonnage boule de neige, dans lequel le chercheur identifie un groupe d'unités qui correspond à un critère particulier d'éligibilité. Ces dernières sont invitées à recruter d'autres membres de la même population qui remplissent le même critère d'éligibilité (échantillonnage de populations spécifiques comme des migrants, etc.)",
+          "previousConcept": 7324,
+          "parent": "Nonprobability",
+          "position": 15
+        },
+        {
+          "id": 7567,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability/fr/1.1.2",
+          "notation": "Nonprobability",
+          "title": "Non probabiliste",
+          "definition": "La sélection des unités (individus, ménages, organisations, etc.) depuis la population cible n'est pas basé sur une sélection aléatoire. Il n'est pas possible de déterminer la probabilité de chaque élément d'être échantillonné. Utilisez ce terme si le type spécifique d'échantillonnage non probabiliste n'est pas connu, difficile à identifier, ou si de multiples méthodes non probabilistes ont été employées.",
+          "previousConcept": 7320,
+          "position": 11
+        },
+        {
+          "id": 7568,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Availability/fr/1.1.2",
+          "notation": "Nonprobability.Availability",
+          "title": "Non probabiliste : disponibilité",
+          "definition": "La sélection de l'échantillon est basée sur la disponibilité, l'accès relativement facile des unités. Elles peuvent être facile à approcher, ou peuvent elles-mêmes choisir de participer à l'étude (auto-sélection). Les chercheurs peuvent avoir un groupe particulier à l'esprit mais ils ne peuvent pas contrôler les mécanismes de sélection de l'échantillon. Par exemple, des étudiants vivant dans un bâtiment particulier du campus peuvent être approchés, ou des individus peuvent volontairement participer en répondant à des invitations qui ne les ciblent pas spécifiquement, mais un groupe plus large auquel ils peuvent appartenir. Aussi appelé échantillonnage de \"convenance\" ou d'\"opportunité\".",
+          "previousConcept": 7321,
+          "parent": "Nonprobability",
+          "position": 12
+        },
+        {
+          "id": 7569,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Other/fr/1.1.2",
+          "notation": "Other",
+          "title": "Autre",
+          "definition": "Utilisez si la procédure d'échantillonnage est connue, mais pas présente dans la liste.",
+          "previousConcept": 7326,
+          "position": 17
         },
         {
           "id": 7570,
@@ -849,113 +951,36 @@
           "position": 6
         },
         {
-          "id": 7558,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr/1.1.2",
-          "notation": "Probability.Multistage",
-          "title": "Probabiliste : multi-étapes",
-          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
-          "previousConcept": 7319,
+          "id": 7572,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.SystematicRandom/fr/1.1.2",
+          "notation": "Probability.SystematicRandom",
+          "title": "Probabiliste : aléatoire systématique",
+          "definition": "Un intervalle de sélection fixe est déterminé en divisant la taille de la population par la taille désirée de l'échantillon. Le point de départ est alors un tirage au sort à partir de la base de sondage, laquelle couvre normalement la population cible totale. À partir de ce point de départ, des unités pour l'échantillonnage sont choisies en fonction de l'intervalle de sélection. Aussi connu comme l'échantillonnage par intervalle. Par exemple, une enquête dans une entreprise porte sur un échantillon de 1 000 employés sur un total de 10 000. En commençant par un nombre de départ aléatoire, tous les 10 noms de la liste des employés de l'entreprise seront invités à participer à l'étude.",
+          "previousConcept": 7312,
           "parent": "Probability",
-          "position": 7
+          "position": 3
         },
         {
-          "id": 7560,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr/1.1.2",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Probabiliste : grappe : aléatoire stratifié",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
-          "previousConcept": 7318,
-          "parent": "Probability.Cluster",
-          "position": 8
+          "id": 7573,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#TotalUniverseCompleteEnumeration/fr/1.1.2",
+          "notation": "TotalUniverseCompleteEnumeration",
+          "title": "Univers complet / dénombrement complet",
+          "definition": "Toutes les unités (individus, ménages, organisations, etc.) de la population cible sont incluses dans la collecte des données. Par exemple, si la population cible est définie comme les membres d'une organisation syndicale, tous les membres syndicaux sont invités à participer à l'étude. Aussi appelé \"recensement\" si la population complète d'une unité régionale (e.g. un pays) est sélectionnée.",
+          "previousConcept": 7309,
+          "position": 0
         },
         {
-          "id": 7565,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fr/1.1.2",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Probabiliste : stratifié : proportionnel",
-          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon stratifié proportionnel le nombre d'éléments choisis dans chaque strate est proportionnel à la taille de la population de la strate par rapport à la population entière. Par exemple, un pays est divisé en deux strates régionales qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population totale. Pour un échantillon de 1 000 personnes, 800 (i. e., 80 pour cent) devraient être tirées à partir de l'Ouest et 200 (i. e., 20 pour cent) à partir de l'Est pour représenter fidèlement leur proportion dans la population totale.",
-          "previousConcept": 7314,
-          "parent": "Probability.Stratified",
-          "position": 9
-        },
-        {
-          "id": 7562,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/fr/1.1.2",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Probabiliste : stratifié : disproportionnel",
-          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon disproportionnel le nombre des unités choisies à partir de chaque strate n'est pas proportionnel à la taille de population de la strate par rapport à la population entière. Le nombre d'unités échantillonnées à partir de chaque strate peut être égal, optimal, ou peut refléter la raison de l'enquête, comme le sur-échantillonnage de différents sous-groupes de la population. Par exemple, un pays est divisé en deux strates qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population du pays. Si une représentation égale des deux régions est nécessaire dans une étude, la moitié de l'échantillon peut être tirée à partir de l'Ouest et la moitié de l'Est, tel que chaque région est représentée par 50 pour cent de l'échantillon. Si une analyse plus détaillée de la population de l'Est est nécessaire, 40 pour cent des unités peuvent être tirées à partir de l'Ouest et 60 pour cent à partir de l'Est, tel que l'Est est surreprésenté.",
-          "previousConcept": 7315,
-          "parent": "Probability.Stratified",
-          "position": 10
-        },
-        {
-          "id": 7567,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability/fr/1.1.2",
-          "notation": "Nonprobability",
-          "title": "Non probabiliste",
-          "definition": "La sélection des unités (individus, ménages, organisations, etc.) depuis la population cible n'est pas basé sur une sélection aléatoire. Il n'est pas possible de déterminer la probabilité de chaque élément d'être échantillonné. Utilisez ce terme si le type spécifique d'échantillonnage non probabiliste n'est pas connu, difficile à identifier, ou si de multiples méthodes non probabilistes ont été employées.",
-          "previousConcept": 7320,
-          "position": 11
-        },
-        {
-          "id": 7568,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Availability/fr/1.1.2",
-          "notation": "Nonprobability.Availability",
-          "title": "Non probabiliste : disponibilité",
-          "definition": "La sélection de l'échantillon est basée sur la disponibilité, l'accès relativement facile des unités. Elles peuvent être facile à approcher, ou peuvent elles-mêmes choisir de participer à l'étude (auto-sélection). Les chercheurs peuvent avoir un groupe particulier à l'esprit mais ils ne peuvent pas contrôler les mécanismes de sélection de l'échantillon. Par exemple, des étudiants vivant dans un bâtiment particulier du campus peuvent être approchés, ou des individus peuvent volontairement participer en répondant à des invitations qui ne les ciblent pas spécifiquement, mais un groupe plus large auquel ils peuvent appartenir. Aussi appelé échantillonnage de \"convenance\" ou d'\"opportunité\".",
-          "previousConcept": 7321,
-          "parent": "Nonprobability",
-          "position": 12
-        },
-        {
-          "id": 7557,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Purposive/fr/1.1.2",
-          "notation": "Nonprobability.Purposive",
-          "title": "Non probabiliste : raisonné",
-          "definition": "Les unités échantillonnées sont spécifiquement identifiées, sélectionnées et contactées pour les informations qu'elles peuvent fournir sur le thème recherché. La sélection est basée sur différentes caractéristiques de variables indépendantes et / ou dépendantes à l'étude, et repose sur le jugement des chercheurs. Les auteurs de l'étude, ou les personnes autorisées par eux ont le contrôle au-delà des mécanismes de sélection de l'échantillon et l'univers est défini en termes de critères de sélection. Aussi appelé échantillonnage par \"jugement\". Par exemple, un chercheur en médecine peut intentionnellement sélectionner des individus qui sont similaires à la plupart des égards, excepté en ce qui concerne le résultat du sujet de recherche, qui peut être une maladie spécifique. Certains types d'échantillonnages raisonnés sont des échantillonnage de cas typiques / déviants, de variation homogène / maximale, d'experts ou de cas critiques.",
-          "previousConcept": 7322,
-          "parent": "Nonprobability",
-          "position": 13
-        },
-        {
-          "id": 7561,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Quota/fr/1.1.2",
-          "notation": "Nonprobability.Quota",
-          "title": "Non probabiliste : quota",
-          "definition": "La population cible est subdivisée dans des segments séparés et mutuellement exclusifs d'après certains critères de quotas prédéfinis. La distribution des critères de quotas (genre / âge / ratio d'ethnicité, ou des autres caractéristiques, comme la religion, l'éducation, etc.) est destinée à refléter la structure réelle de la population cible ou la structure désirée de la population étudiée. Des échantillons non probabilistes sont alors tirés à partir de chaque segment jusqu'à ce qu'un nombre spécifique d'unités soit atteint. Par exemple, si la population cible compte 45 pour cent de femmes et 55 pour cent d'hommes, un échantillon par quotas proportionnel devra avoir les mêmes pourcentages par genre, alors que dans un échantillon par quotas non proportionnel le pourcentage sera différent, basé sur certaines considérations liées à l'étude (par exemple, le besoin de sur-échantillon pour certains segments sous-représentés de la population).",
-          "previousConcept": 7323,
-          "parent": "Nonprobability",
-          "position": 14
-        },
-        {
-          "id": 7566,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/fr/1.1.2",
-          "notation": "Nonprobability.RespondentAssisted",
-          "title": "Non probabiliste : participation volontaire",
-          "definition": "Les unités de l'échantillon sont identifiées à partir d'une population cible avec l'assistance d'unités déjà sélectionnées (adapté de \"Public Health Research Methods\", ed. Greg Guest, Emily E. Namey, 2014). Un cas typique est l'échantillonnage boule de neige, dans lequel le chercheur identifie un groupe d'unités qui correspond à un critère particulier d'éligibilité. Ces dernières sont invitées à recruter d'autres membres de la même population qui remplissent le même critère d'éligibilité (échantillonnage de populations spécifiques comme des migrants, etc.)",
-          "previousConcept": 7324,
-          "parent": "Nonprobability",
-          "position": 15
-        },
-        {
-          "id": 7559,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#MixedProbabilityNonprobability/fr/1.1.2",
-          "notation": "MixedProbabilityNonprobability",
-          "title": "Mixte probabiliste et non probabiliste",
-          "definition": "Le plan d'échantillonnage qui combine échantillonnage probabiliste et non probabiliste au sein d'un même processus d'échantillonnage. Différents type d'échantillonnage peuvent être utilisés à différentes étapes de création de l'échantillon. Par exemple, pour un échantillon d'élèves issus de l'immigration dans une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Alors, un échantillon par quotas des élèves est sélectionné au sein de chaque école dans une seconde étape. Si des échantillons distincts sont tirés à partir de la même population cible à l'aide de différentes méthodes d'échantillonnage, le type de procédure d'échantillonnage utilisé pour chaque échantillon devra être classé séparément.",
-          "previousConcept": 7325,
-          "position": 16
-        },
-        {
-          "id": 7569,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Other/fr/1.1.2",
-          "notation": "Other",
-          "title": "Autre",
-          "definition": "Utilisez si la procédure d'échantillonnage est connue, mais pas présente dans la liste.",
-          "previousConcept": 7326,
-          "position": 17
+          "id": 7574,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.SimpleRandom/fr/1.1.2",
+          "notation": "Probability.SimpleRandom",
+          "title": "Probabiliste : aléatoire simple",
+          "definition": "Toutes les unités de la population cible ont une probabilité identique d'être incluses dans l'échantillon. Typiquement, la population entière est listée dans une \"base de sondage\", et des unités sont alors choisies à partir de cette base en utilisant une méthode de sélection aléatoire.",
+          "previousConcept": 7311,
+          "parent": "Probability",
+          "position": 2
         }
       ],
+      "comments": [],
       "versionHistories": [
         {
           "version": "1.1.1",
@@ -979,6 +1004,10 @@
       "definition": "Une typologie des méthodes d'échantillonnage",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Procédure d'échantillonnage [Sampling Procedure] (Version 1.1.1;  Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
@@ -1028,6 +1057,24 @@
           "position": 4
         },
         {
+          "id": 7314,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fr/1.1.1",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Probabiliste : stratifié : proportionnel",
+          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon stratifié proportionnel le nombre d'éléments choisis dans chaque strate est proportionnel à la taille de la population de la strate par rapport à la population entière. Par exemple, un pays est divisé en deux strates régionales qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population totale. Pour un échantillon de 1 000 personnes, 800 (i. e., 80 pour cent) devraient être tirées à partir de l'Ouest et 200 (i. e., 20 pour cent) à partir de l'Est pour représenter fidèlement leur proportion dans la population totale.",
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 7315,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/fr/1.1.1",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Probabiliste : stratifié : disproportionnel",
+          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon disproportionnel le nombre des unités choisies à partir de chaque strate n'est pas proportionnel à la taille de population de la strate par rapport à la population entière. Le nombre d'unités échantillonnées à partir de chaque strate peut être égal, optimal, ou peut refléter la raison de l'enquête, comme le sur-échantillonnage de différents sous-groupes de la population. Par exemple, un pays est divisé en deux strates qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population du pays. Si une représentation égale des deux régions est nécessaire dans une étude, la moitié de l'échantillon peut être tirée à partir de l'Ouest et la moitié de l'Est, tel que chaque région est représentée par 50 pour cent de l'échantillon. Si une analyse plus détaillée de la population de l'Est est nécessaire, 40 pour cent des unités peuvent être tirées à partir de l'Ouest et 60 pour cent à partir de l'Est, tel que l'Est est surreprésenté.",
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
           "id": 7316,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fr/1.1.1",
           "notation": "Probability.Cluster",
@@ -1046,15 +1093,6 @@
           "position": 6
         },
         {
-          "id": 7319,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Probabiliste : multi-étapes",
-          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
           "id": 7318,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr/1.1.1",
           "notation": "Probability.Cluster.StratifiedRandom",
@@ -1064,22 +1102,13 @@
           "position": 8
         },
         {
-          "id": 7314,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fr/1.1.1",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Probabiliste : stratifié : proportionnel",
-          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon stratifié proportionnel le nombre d'éléments choisis dans chaque strate est proportionnel à la taille de la population de la strate par rapport à la population entière. Par exemple, un pays est divisé en deux strates régionales qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population totale. Pour un échantillon de 1 000 personnes, 800 (i. e., 80 pour cent) devraient être tirées à partir de l'Ouest et 200 (i. e., 20 pour cent) à partir de l'Est pour représenter fidèlement leur proportion dans la population totale.",
-          "parent": "Probability.Stratified",
-          "position": 9
-        },
-        {
-          "id": 7315,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/fr/1.1.1",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Probabiliste : stratifié : disproportionnel",
-          "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon disproportionnel le nombre des unités choisies à partir de chaque strate n'est pas proportionnel à la taille de population de la strate par rapport à la population entière. Le nombre d'unités échantillonnées à partir de chaque strate peut être égal, optimal, ou peut refléter la raison de l'enquête, comme le sur-échantillonnage de différents sous-groupes de la population. Par exemple, un pays est divisé en deux strates qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population du pays. Si une représentation égale des deux régions est nécessaire dans une étude, la moitié de l'échantillon peut être tirée à partir de l'Ouest et la moitié de l'Est, tel que chaque région est représentée par 50 pour cent de l'échantillon. Si une analyse plus détaillée de la population de l'Est est nécessaire, 40 pour cent des unités peuvent être tirées à partir de l'Ouest et 60 pour cent à partir de l'Est, tel que l'Est est surreprésenté.",
-          "parent": "Probability.Stratified",
-          "position": 10
+          "id": 7319,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Probabiliste : multi-étapes",
+          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
+          "parent": "Probability",
+          "position": 7
         },
         {
           "id": 7320,
@@ -1142,6 +1171,7 @@
           "position": 17
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1159,19 +1189,15 @@
       "definition": "Tipologia dei metodi di campionamento.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Procedura di campionamento [Sampling Procedure] (Version 1.1.1; UniData - Bicocca Data Archive, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": "UniData - Bicocca Data Archive",
       "translateAgencyLink": "https://www.unidata.unimib.it/",
       "concepts": [
-        {
-          "id": 7914,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/it#TotalUniverseCompleteEnumeration/it/1.1.1",
-          "notation": "TotalUniverseCompleteEnumeration",
-          "title": "Intero universo",
-          "definition": "Tutte le unità (individui, famiglie, organizzazioni, ecc.) della popolazione di riferimento sono incluse nella raccolta dei dati. Ad esempio, se la popolazione di riferimento è definita come l'insieme dei membri di un sindacato, tutti i membri del sindacato sono invitati a partecipare allo studio. È anche chiamato \"censimento\" se viene selezionata l'intera popolazione di un'unità regionale (ad esempio un paese).",
-          "position": 0
-        },
         {
           "id": 5312,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability/it/1.1.1",
@@ -1208,6 +1234,24 @@
           "position": 4
         },
         {
+          "id": 5316,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/it/1.1.1",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Probabilistisco: stratificato proporzionale",
+          "definition": "La popolazione di riferimento è suddivisa in segmenti separati e mutuamente esclusivi (strati) che coprono l'intera popolazione. Nel campionamento stratificato proporzionale il numero di elementi scelti da ogni strato è proporzionale alla dimensione della popolazione dello strato, in rapporto all'intera popolazione. Ad esempio, un paese è diviso in due strati regionali che comprendono l'80% (ovest) e il 20% (est) della popolazione totale. Per un campione di 1.000 persone, 800 (cioè l'80%) saranno estratte dalla regione Ovest e 200 (ossia il 20%) dalla regione Est, mantenendo adeguatamente la relativa proporzione rispetto alla popolazione totale.",
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 5317,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/it/1.1.1",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Probabilistisco: stratificato non proporzionale",
+          "definition": "La popolazione di riferimento è suddivisa in segmenti separati e mutuamente esclusivi (strati) che coprono l'intera popolazione. Nel campionamento non proporzionale il numero di unità scelte da ogni strato non è proporzionale alla dimensione della popolazione dello strato in rapporto all'intera popolazione. Il numero di unità campionarie provenienti da ogni strato può essere uguale oppure riflettere lo scopo dello studio, come nel caso di sovracampionamento di diversi sottogruppi della popolazione. Ad esempio, un paese è diviso in due strati regionali che comprendono l'80% (ovest) e il 20% (est) della popolazione totale. Se in uno studio è necessaria una uguale rappresentazione delle due regioni, metà del campione sarà estratto dalla regione Est, in modo che ciascuna regione sia rappresentata dal 50% del campione. Se invece è necessaria un'analisi più dettagliata della popolazione proveniente dalla regione Est, potrà essere estratto il 40% delle unità dalla regione Ovest e il restante 60% dalla regione Est, in modo che quest'ultima sia sovrarappresentata.",
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
           "id": 5318,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/it/1.1.1",
           "notation": "Probability.Cluster",
@@ -1226,15 +1270,6 @@
           "position": 6
         },
         {
-          "id": 5321,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/it/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Probabilistico: multistadio",
-          "definition": "Il campionamento viene eseguito in differenti stadi, utilizzando unità sempre più piccole in ogni stadio. Tutti gli stadi implicano un campionamento probabilistico che può essere diverso in ogni stadio. Ad esempio, per selezionare un campione di studenti in una città, nel primo stadio si selezionano in modo casuale le scuole. Nel secondo stadio si effettua un campione casuale di classi all'interno di ciascuna scuola selezionata. Nel terzo stadio, infine, vengono selezionati in modo casuale gli studenti da ciascuna delle classi identificate.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
           "id": 5320,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/it/1.1.1",
           "notation": "Probability.Cluster.StratifiedRandom",
@@ -1244,22 +1279,13 @@
           "position": 8
         },
         {
-          "id": 5316,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/it/1.1.1",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Probabilistisco: stratificato proporzionale",
-          "definition": "La popolazione di riferimento è suddivisa in segmenti separati e mutuamente esclusivi (strati) che coprono l'intera popolazione. Nel campionamento stratificato proporzionale il numero di elementi scelti da ogni strato è proporzionale alla dimensione della popolazione dello strato, in rapporto all'intera popolazione. Ad esempio, un paese è diviso in due strati regionali che comprendono l'80% (ovest) e il 20% (est) della popolazione totale. Per un campione di 1.000 persone, 800 (cioè l'80%) saranno estratte dalla regione Ovest e 200 (ossia il 20%) dalla regione Est, mantenendo adeguatamente la relativa proporzione rispetto alla popolazione totale.",
-          "parent": "Probability.Stratified",
-          "position": 9
-        },
-        {
-          "id": 5317,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/it/1.1.1",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Probabilistisco: stratificato non proporzionale",
-          "definition": "La popolazione di riferimento è suddivisa in segmenti separati e mutuamente esclusivi (strati) che coprono l'intera popolazione. Nel campionamento non proporzionale il numero di unità scelte da ogni strato non è proporzionale alla dimensione della popolazione dello strato in rapporto all'intera popolazione. Il numero di unità campionarie provenienti da ogni strato può essere uguale oppure riflettere lo scopo dello studio, come nel caso di sovracampionamento di diversi sottogruppi della popolazione. Ad esempio, un paese è diviso in due strati regionali che comprendono l'80% (ovest) e il 20% (est) della popolazione totale. Se in uno studio è necessaria una uguale rappresentazione delle due regioni, metà del campione sarà estratto dalla regione Est, in modo che ciascuna regione sia rappresentata dal 50% del campione. Se invece è necessaria un'analisi più dettagliata della popolazione proveniente dalla regione Est, potrà essere estratto il 40% delle unità dalla regione Ovest e il restante 60% dalla regione Est, in modo che quest'ultima sia sovrarappresentata.",
-          "parent": "Probability.Stratified",
-          "position": 10
+          "id": 5321,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/it/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Probabilistico: multistadio",
+          "definition": "Il campionamento viene eseguito in differenti stadi, utilizzando unità sempre più piccole in ogni stadio. Tutti gli stadi implicano un campionamento probabilistico che può essere diverso in ogni stadio. Ad esempio, per selezionare un campione di studenti in una città, nel primo stadio si selezionano in modo casuale le scuole. Nel secondo stadio si effettua un campione casuale di classi all'interno di ciascuna scuola selezionata. Nel terzo stadio, infine, vengono selezionati in modo casuale gli studenti da ciascuna delle classi identificate.",
+          "parent": "Probability",
+          "position": 7
         },
         {
           "id": 5322,
@@ -1288,15 +1314,6 @@
           "position": 13
         },
         {
-          "id": 7915,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/it#Nonprobability.Quota/it/1.1.1",
-          "notation": "Nonprobability.Quota",
-          "title": "Non probabilistico: per quota",
-          "definition": "La popolazione di riferimento è suddivisa in segmenti separati e mutuamente esclusivi secondo qualche criterio per quote predefinito. La distribuzione dei criteri di quotazione (genere/età/etnia o altre caratteristiche, come religione, istruzione, ecc.) riflette la reale struttura della popolazione di riferimento o la struttura della popolazione che si intende studiare. I campioni non probabilistici vengono quindi estratti da ciascun segmento fino a raggiungere un numero specifico di unità. Ad esempio, se la popolazione di riferimento è composta per il 45% da femmine e per il 55% da maschi, un campione per quota proporzionale avrà le stesse percentuali di genere, mentre in un campione per quota non proporzionale le percentuali saranno diverse, sulla base di specifiche considerazioni legate allo studio (ad esempio, la necessità di sovracampionare alcuni segmenti sottorappresentati della popolazione).",
-          "parent": "Nonprobability",
-          "position": 14
-        },
-        {
           "id": 5326,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/it/1.1.1",
           "notation": "Nonprobability.RespondentAssisted",
@@ -1320,8 +1337,26 @@
           "title": "Altro",
           "definition": "Utilizzare se la procedura di campionamento è conosciuta, ma non è presente nell'elenco.",
           "position": 17
+        },
+        {
+          "id": 7914,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/it#TotalUniverseCompleteEnumeration/it/1.1.1",
+          "notation": "TotalUniverseCompleteEnumeration",
+          "title": "Intero universo",
+          "definition": "Tutte le unità (individui, famiglie, organizzazioni, ecc.) della popolazione di riferimento sono incluse nella raccolta dei dati. Ad esempio, se la popolazione di riferimento è definita come l'insieme dei membri di un sindacato, tutti i membri del sindacato sono invitati a partecipare allo studio. È anche chiamato \"censimento\" se viene selezionata l'intera popolazione di un'unità regionale (ad esempio un paese).",
+          "position": 0
+        },
+        {
+          "id": 7915,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/it#Nonprobability.Quota/it/1.1.1",
+          "notation": "Nonprobability.Quota",
+          "title": "Non probabilistico: per quota",
+          "definition": "La popolazione di riferimento è suddivisa in segmenti separati e mutuamente esclusivi secondo qualche criterio per quote predefinito. La distribuzione dei criteri di quotazione (genere/età/etnia o altre caratteristiche, come religione, istruzione, ecc.) riflette la reale struttura della popolazione di riferimento o la struttura della popolazione che si intende studiare. I campioni non probabilistici vengono quindi estratti da ciascun segmento fino a raggiungere un numero specifico di unità. Ad esempio, se la popolazione di riferimento è composta per il 45% da femmine e per il 55% da maschi, un campione per quota proporzionale avrà le stesse percentuali di genere, mentre in un campione per quota non proporzionale le percentuali saranno diverse, sulla base di specifiche considerazioni legate allo studio (ad esempio, la necessità di sovracampionare alcuni segmenti sottorappresentati della popolazione).",
+          "parent": "Nonprobability",
+          "position": 14
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1339,6 +1374,10 @@
       "definition": "Tipologia de métodos de amostragem.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Método de amostragem [Sampling Procedure] (Version 1.1.1; Arquivo Português de Informação Social (APIS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": "Arquivo Português de Informação Social (APIS)",
@@ -1388,6 +1427,24 @@
           "position": 4
         },
         {
+          "id": 6816,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/pt",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Probabilística: Estratificada: Proporcional",
+          "definition": "A população-alvo é subdividida em segmentos separados e mutuamente exclusivos (estratos) que cobrem toda a população. Na amostragem estratificada proporcional, o número de elementos escolhidos em cada estrato é proporcional à dimensão da população do estrato tendo em conta o seu peso na população total. Por exemplo, um país é dividido em dois estratos regionais que compreendem 80% (oeste) e 20% (leste) da população total. Para uma amostra de 1000 pessoas, 800 (ou seja, 80%) seriam retiradas do oeste e 200 (ou seja, 20%) do leste, por forma a representar com precisão a sua proporção na população total.",
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 6817,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/pt",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Probabilística: Estratificada: Não proporcional",
+          "definition": "A população-alvo é subdividida em segmentos separados e mutuamente exclusivos (estratos) que cobrem toda a população. Na amostragem não proporcional, o número de unidades escolhidas de cada estrato não é proporcional à dimensão da população do estrato quando visto em relação à população total. O número de unidades selecionadas de cada estrato pode ser igual, ideal, ou pode refletir o objetivo do estudo, como a sobreamostragem de diferentes subgrupos da população. Por exemplo, um país é dividido em dois estratos regionais que abrangem 80% (oeste) e 20% (leste) da população do país. Se uma representação igual das duas regiões for necessária num estudo, metade da amostra pode ser extraída do oeste e metade do leste, de modo que cada região é representada por 50% da amostra. Se for necessária uma análise mais detalhada da população do leste, 40% das unidades podem ser retiradas do oeste e 60% do leste para que este esteja sobrerepresentado.",
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
           "id": 6818,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/pt",
           "notation": "Probability.Cluster",
@@ -1406,15 +1463,6 @@
           "position": 6
         },
         {
-          "id": 6821,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/pt",
-          "notation": "Probability.Multistage",
-          "title": "Probabilística: Multietapas",
-          "definition": "A amostragem é realizada por etapas, havendo, em cada etapa, cada vez menos unidades, já que todas as etapas envolvem uma seleção probabilística. O tipo de procedimento da amostragem probabilística pode ser diferente em cada etapa. Por exemplo, para uma amostra de alunos numa cidade, as escolas são selecionadas aleatoriamente na primeira etapa. Numa segunda etapa, uma amostra aleatória das turmas é extraída em cada escola selecionada. Numa terceira etapa, os alunos são selecionados aleatoriamente dentro de cada uma dessas turmas.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
           "id": 6820,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/pt",
           "notation": "Probability.Cluster.StratifiedRandom",
@@ -1424,22 +1472,21 @@
           "position": 8
         },
         {
-          "id": 6816,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/pt",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Probabilística: Estratificada: Proporcional",
-          "definition": "A população-alvo é subdividida em segmentos separados e mutuamente exclusivos (estratos) que cobrem toda a população. Na amostragem estratificada proporcional, o número de elementos escolhidos em cada estrato é proporcional à dimensão da população do estrato tendo em conta o seu peso na população total. Por exemplo, um país é dividido em dois estratos regionais que compreendem 80% (oeste) e 20% (leste) da população total. Para uma amostra de 1000 pessoas, 800 (ou seja, 80%) seriam retiradas do oeste e 200 (ou seja, 20%) do leste, por forma a representar com precisão a sua proporção na população total.",
-          "parent": "Probability.Stratified",
-          "position": 9
+          "id": 6821,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/pt",
+          "notation": "Probability.Multistage",
+          "title": "Probabilística: Multietapas",
+          "definition": "A amostragem é realizada por etapas, havendo, em cada etapa, cada vez menos unidades, já que todas as etapas envolvem uma seleção probabilística. O tipo de procedimento da amostragem probabilística pode ser diferente em cada etapa. Por exemplo, para uma amostra de alunos numa cidade, as escolas são selecionadas aleatoriamente na primeira etapa. Numa segunda etapa, uma amostra aleatória das turmas é extraída em cada escola selecionada. Numa terceira etapa, os alunos são selecionados aleatoriamente dentro de cada uma dessas turmas.",
+          "parent": "Probability",
+          "position": 7
         },
         {
-          "id": 6817,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/pt",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Probabilística: Estratificada: Não proporcional",
-          "definition": "A população-alvo é subdividida em segmentos separados e mutuamente exclusivos (estratos) que cobrem toda a população. Na amostragem não proporcional, o número de unidades escolhidas de cada estrato não é proporcional à dimensão da população do estrato quando visto em relação à população total. O número de unidades selecionadas de cada estrato pode ser igual, ideal, ou pode refletir o objetivo do estudo, como a sobreamostragem de diferentes subgrupos da população. Por exemplo, um país é dividido em dois estratos regionais que abrangem 80% (oeste) e 20% (leste) da população do país. Se uma representação igual das duas regiões for necessária num estudo, metade da amostra pode ser extraída do oeste e metade do leste, de modo que cada região é representada por 50% da amostra. Se for necessária uma análise mais detalhada da população do leste, 40% das unidades podem ser retiradas do oeste e 60% do leste para que este esteja sobrerepresentado.",
-          "parent": "Probability.Stratified",
-          "position": 10
+          "id": 6822,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Other/pt",
+          "notation": "Other",
+          "title": "Outro",
+          "definition": "Usar se o método de amostragem for conhecido, mas não se encontrar na lista.",
+          "position": 17
         },
         {
           "id": 6823,
@@ -1477,15 +1524,6 @@
           "position": 14
         },
         {
-          "id": 6973,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/pt",
-          "notation": "Nonprobability.RespondentAssisted",
-          "title": "Não Probabilística: \"bola de neve\"",
-          "definition": "As unidades de amostra de uma população-alvo são identificadas com o auxílio de unidades já selecionadas (adaptado de \"Public Health Research Methods\", ed. Greg Guest, Emily E. Namey, 2014). Um caso típico é a amostragem \"bola de neve\", na qual o investigador identifica um grupo de unidades que corresponde a um critério específico de elegibilidade. De seguida, as unidades desse grupo são convidadas a nomear/identificar outros membros da mesma população que preencham o mesmo critério de elegibilidade (amostragem de populações específicas como migrantes, etc.).",
-          "parent": "Nonprobability",
-          "position": 15
-        },
-        {
           "id": 6972,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#MixedProbabilityNonprobability/pt",
           "notation": "MixedProbabilityNonprobability",
@@ -1494,14 +1532,16 @@
           "position": 16
         },
         {
-          "id": 6822,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Other/pt",
-          "notation": "Other",
-          "title": "Outro",
-          "definition": "Usar se o método de amostragem for conhecido, mas não se encontrar na lista.",
-          "position": 17
+          "id": 6973,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/pt",
+          "notation": "Nonprobability.RespondentAssisted",
+          "title": "Não Probabilística: \"bola de neve\"",
+          "definition": "As unidades de amostra de uma população-alvo são identificadas com o auxílio de unidades já selecionadas (adaptado de \"Public Health Research Methods\", ed. Greg Guest, Emily E. Namey, 2014). Um caso típico é a amostragem \"bola de neve\", na qual o investigador identifica um grupo de unidades que corresponde a um critério específico de elegibilidade. De seguida, as unidades desse grupo são convidadas a nomear/identificar outros membros da mesma população que preencham o mesmo critério de elegibilidade (amostragem de populações específicas como migrantes, etc.).",
+          "parent": "Nonprobability",
+          "position": 15
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1519,19 +1559,15 @@
       "definition": "Vključuje razvrstitev metod vzorčenja.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Postopek vzorčenja [Sampling Procedure] (Version 1.1.1; Social Science Data Archives (ADP), Slovenia, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element Number in DDI 2.1: 2.3.1.4\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
       "translateAgencyLink": "https://www.adp.fdv.uni-lj.si/",
       "concepts": [
-        {
-          "id": 7918,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/sl#TotalUniverseCompleteEnumeration/sl/1.1.1",
-          "notation": "TotalUniverseCompleteEnumeration",
-          "title": "Zajeta celotna populacija",
-          "definition": "Vse enote (posamezniki, gospodinjstva, organizacije itd.) ciljne populacije so vključene v zbiranje podatkov. Na primer, če je ciljna populacija opredeljena kot člani sindikata, so vsi člani sindikata vabljeni k sodelovanju v raziskavi. Imenujemo tudi \"popis\", če je vključeno celotno prebivalstvo določene regionalne enote (npr. države).",
-          "position": 0
-        },
         {
           "id": 2162,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability/sl/1.1.1",
@@ -1568,6 +1604,24 @@
           "position": 4
         },
         {
+          "id": 2166,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/sl/1.1.1",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Verjetnostno: stratificiano: proporcionalno",
+          "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke (stratume/sloje), ki pokrivajo celotno populacijo. Pri proporcionalnem stratificiranem vzorčenju je število elementov, izbranih iz vsakega sloja, sorazmerno z velikostjo populacije v sloju glede na celotno populacijo. Na primer, država je razdeljena na dva regionalna odseka, ki obsegata 80 odstotkov (zahod) in 20 odstotkov (vzhod) celotnega prebivalstva. Za vzorec 1.000 prebivalcev bi iz zahodnega odseka vzeli 800 (tj. 80 odstotkov) udeležencev in iz vzhodnega odseka 200 (tj. 20 odstotkov), kar bi natančno predstavljalo njihov delež v celotni populaciji.",
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 2167,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/sl/1.1.1",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Verjetnostno: startificirano: disproporcionalno",
+          "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke (stratume/sloje), ki pokrivajo celotno populacijo. Število enot, izbranih iz vsakega odseka, pri disproporcionalnem vzorčenju ni sorazmerno z velikostjo populacije odseka glede na celotno populacijo. Število vzorčenih enot iz vsakega odseka je lahko enako, optimalno oziroma lahko odraža namen raziskave, kot je nadvzorčenje različnih podskupin prebivalstva. Na primer, država je razdeljena na dva regionalna odseka, ki obsegata 80 odstotkov (zahod) in 20 odstotkov (vzhod) prebivalstva države. Če je v raziskavi potrebna enakopravna zastopanost obeh regij, se v vzorec lahko vzame polovica udeležencev iz zahoda in polovica iz vzhoda, tako da vsaka regija predstavlja 50 odstotkov vzorca. Če je potrebna podrobnejša analiza prebivalstva z vzhoda, lahko vzamemo 40 odstotkov enot iz zahoda in 60 odstotkov iz vzhoda, tako da je vzhod prekomerno zastopan.",
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
           "id": 2168,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/sl/1.1.1",
           "notation": "Probability.Cluster",
@@ -1586,15 +1640,6 @@
           "position": 6
         },
         {
-          "id": 2171,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sl/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Verjetnostno: večstopenjsko",
-          "definition": "Vzorčenje se izvaja stopenjsko z vključitvijo vedno manjšega števila enot na vsaki stopnji, vse stopnje vključujejo verjetnostno izbiro. Vrsta postopka verjetnostnega vzorčenja je lahko različna na vsaki stopnji. Na primer, za vzorec učencev v mestu najprej na prvi stopnji slučajno izberemo šole. Na drugi stopnji poteka izbor slučajnega vzorca razredov v vsaki izmed izbranih šol. Na tretji stopnji nato slučajno izberemo učence iz vsakega od izbranih razredov.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
           "id": 2170,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/sl/1.1.1",
           "notation": "Probability.Cluster.StratifiedRandom",
@@ -1604,22 +1649,13 @@
           "position": 8
         },
         {
-          "id": 2166,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/sl/1.1.1",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Verjetnostno: stratificiano: proporcionalno",
-          "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke (stratume/sloje), ki pokrivajo celotno populacijo. Pri proporcionalnem stratificiranem vzorčenju je število elementov, izbranih iz vsakega sloja, sorazmerno z velikostjo populacije v sloju glede na celotno populacijo. Na primer, država je razdeljena na dva regionalna odseka, ki obsegata 80 odstotkov (zahod) in 20 odstotkov (vzhod) celotnega prebivalstva. Za vzorec 1.000 prebivalcev bi iz zahodnega odseka vzeli 800 (tj. 80 odstotkov) udeležencev in iz vzhodnega odseka 200 (tj. 20 odstotkov), kar bi natančno predstavljalo njihov delež v celotni populaciji.",
-          "parent": "Probability.Stratified",
-          "position": 9
-        },
-        {
-          "id": 2167,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/sl/1.1.1",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Verjetnostno: startificirano: disproporcionalno",
-          "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke (stratume/sloje), ki pokrivajo celotno populacijo. Število enot, izbranih iz vsakega odseka, pri disproporcionalnem vzorčenju ni sorazmerno z velikostjo populacije odseka glede na celotno populacijo. Število vzorčenih enot iz vsakega odseka je lahko enako, optimalno oziroma lahko odraža namen raziskave, kot je nadvzorčenje različnih podskupin prebivalstva. Na primer, država je razdeljena na dva regionalna odseka, ki obsegata 80 odstotkov (zahod) in 20 odstotkov (vzhod) prebivalstva države. Če je v raziskavi potrebna enakopravna zastopanost obeh regij, se v vzorec lahko vzame polovica udeležencev iz zahoda in polovica iz vzhoda, tako da vsaka regija predstavlja 50 odstotkov vzorca. Če je potrebna podrobnejša analiza prebivalstva z vzhoda, lahko vzamemo 40 odstotkov enot iz zahoda in 60 odstotkov iz vzhoda, tako da je vzhod prekomerno zastopan.",
-          "parent": "Probability.Stratified",
-          "position": 10
+          "id": 2171,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sl/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Verjetnostno: večstopenjsko",
+          "definition": "Vzorčenje se izvaja stopenjsko z vključitvijo vedno manjšega števila enot na vsaki stopnji, vse stopnje vključujejo verjetnostno izbiro. Vrsta postopka verjetnostnega vzorčenja je lahko različna na vsaki stopnji. Na primer, za vzorec učencev v mestu najprej na prvi stopnji slučajno izberemo šole. Na drugi stopnji poteka izbor slučajnega vzorca razredov v vsaki izmed izbranih šol. Na tretji stopnji nato slučajno izberemo učence iz vsakega od izbranih razredov.",
+          "parent": "Probability",
+          "position": 7
         },
         {
           "id": 2172,
@@ -1648,15 +1684,6 @@
           "position": 13
         },
         {
-          "id": 7919,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/sl#Nonprobability.Quota/sl/1.1.1",
-          "notation": "Nonprobability.Quota",
-          "title": "Neverjetnostno: kvotno",
-          "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke v skladu z nekaterimi vnaprej določenimi merili za izračune. Porazdelitev meril za izračune (razmerje med spoloma/starostjo/etnično pripadnostjo ali drugimi značilnostmi, kot so vera, izobraževanje itd.) naj bi odražala resnično strukturo ciljne populacije ali strukturo želene preučevane populacije. Iz vsakega odseka se nato vzamejo neverjetnostni vzorci, dokler ni doseženo določeno število enot. Na primer, če ciljno populacijo sestavlja 45 odstotkov žensk in 55 odstotkov moških, bo v proporcionalni kvotni vzorec vključen enak odstotek udeležencev glede na spol, medtem ko so v neproporcionalni kvotni vzorec vključeni različni odstotki, ki izhajajo iz razmislekov v povezavi z raziskavo (na primer, nadvzorčenje nekaterih manj zastopanih delov populacije). ",
-          "parent": "Nonprobability",
-          "position": 14
-        },
-        {
           "id": 2176,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/sl/1.1.1",
           "notation": "Nonprobability.RespondentAssisted",
@@ -1680,8 +1707,26 @@
           "title": "Drugo",
           "definition": "Uporabite, če je postopek vzorčenja znan, a ga ne najdete na seznamu.",
           "position": 17
+        },
+        {
+          "id": 7918,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/sl#TotalUniverseCompleteEnumeration/sl/1.1.1",
+          "notation": "TotalUniverseCompleteEnumeration",
+          "title": "Zajeta celotna populacija",
+          "definition": "Vse enote (posamezniki, gospodinjstva, organizacije itd.) ciljne populacije so vključene v zbiranje podatkov. Na primer, če je ciljna populacija opredeljena kot člani sindikata, so vsi člani sindikata vabljeni k sodelovanju v raziskavi. Imenujemo tudi \"popis\", če je vključeno celotno prebivalstvo določene regionalne enote (npr. države).",
+          "position": 0
+        },
+        {
+          "id": 7919,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/sl#Nonprobability.Quota/sl/1.1.1",
+          "notation": "Nonprobability.Quota",
+          "title": "Neverjetnostno: kvotno",
+          "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke v skladu z nekaterimi vnaprej določenimi merili za izračune. Porazdelitev meril za izračune (razmerje med spoloma/starostjo/etnično pripadnostjo ali drugimi značilnostmi, kot so vera, izobraževanje itd.) naj bi odražala resnično strukturo ciljne populacije ali strukturo želene preučevane populacije. Iz vsakega odseka se nato vzamejo neverjetnostni vzorci, dokler ni doseženo določeno število enot. Na primer, če ciljno populacijo sestavlja 45 odstotkov žensk in 55 odstotkov moških, bo v proporcionalni kvotni vzorec vključen enak odstotek udeležencev glede na spol, medtem ko so v neproporcionalni kvotni vzorec vključeni različni odstotki, ki izhajajo iz razmislekov v povezavi z raziskavo (na primer, nadvzorčenje nekaterih manj zastopanih delov populacije). ",
+          "parent": "Nonprobability",
+          "position": 14
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1700,6 +1745,10 @@
       "notes": "",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2020). Postupak uzorkovanja [Sampling Procedure] (Version 1.1.1; Data Centre Serbia for Social Sciences (DCS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": "Data Centre Serbia for Social Sciences (DCS)",
@@ -1749,6 +1798,24 @@
           "position": 4
         },
         {
+          "id": 8013,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/sr",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Verovatnoća: Stratifikovana: Proporcionalna",
+          "definition": "Ciljna populacija je podeljena u odvojene i međusobno isključujuće segmente (stratume) koji pokrivaju celokupnu populaciju. U proporcionalnom stratifikovanom uzorkovanju, broj elemenata odabranih iz svakog stratuma proporcionalan je veličini populacije stratuma u odnosu na celokupnu populaciju. Na primer, zemlja je podeljena na dva regionalna stratuma koji čine 80 procenata (zapad) i 20 procenata (istok) ukupnog stanovništva. Za uzorak od 1.000 ljudi, 800 (80%) bilo bi izvučeno sa zapada, a 200 (20%) sa istoka, da bi tačno predstavljali njihov udeo u ukupnom broju stanovnika.",
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 8014,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/sr",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Verovatnoća: Stratifikovana: Neproporcionalna",
+          "definition": "Ciljna populacija je podeljena u odvojene i međusobno isključujuće segmente (stratume) koji pokrivaju celokupnu populaciju. U neproporcionalnom uzorkovanju, broj jedinica odabranih iz svakog stratuma nije proporcionalan veličini populacije stratuma u odnosu na celokupnu populaciju. Broj uzorkovanih jedinica iz svakog stratuma može biti jednak, optimalan ili može odražavati svrhu studije, poput prekomernog uzorkovanja različitih podgrupa stanovništva. Na primer, zemlja je podeljena u dva regionalna stratuma koji čine 80% (zapad) i 20% (istok) stanovništva. Ako je potrebna jednaka zastupljenost dva regiona u studiji, polovina uzorka se može uzeti sa zapada, a polovina sa istoka, tako da je svaki region predstavljen sa 50% u uzorku. Ako je potrebna detaljnija analiza stanovništva sa istoka, 40% jedinica može se skupiti sa zapada, a 60% sa istoka, tako da je istok dominantno zastupljen.",
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
           "id": 8015,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/sr",
           "notation": "Probability.Cluster",
@@ -1767,15 +1834,6 @@
           "position": 6
         },
         {
-          "id": 8018,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sr",
-          "notation": "Probability.Multistage",
-          "title": "Verovatnoća: Višefazna",
-          "definition": "Uzorkovanje se vrši u fazama koristeći sve manje i manje jedinice u svakoj fazi, a sve faze uključuju izbornu verovatnoće. Vrsta postupka uzorkovanja verovatnoće može biti različita u svakoj fazi. Na primer, za uzorak učenika u gradu, škole se nasumično biraju u prvoj fazi, dok se u drugoj fazi primenjuje nasumični uzorak časova u svakoj odabranoj školi. Potom se, u trećoj fazi, učenici nasumično biraju iz svake od ovih klasa.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
           "id": 8017,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/sr",
           "notation": "Probability.Cluster.StratifiedRandom",
@@ -1785,22 +1843,13 @@
           "position": 8
         },
         {
-          "id": 8013,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/sr",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Verovatnoća: Stratifikovana: Proporcionalna",
-          "definition": "Ciljna populacija je podeljena u odvojene i međusobno isključujuće segmente (stratume) koji pokrivaju celokupnu populaciju. U proporcionalnom stratifikovanom uzorkovanju, broj elemenata odabranih iz svakog stratuma proporcionalan je veličini populacije stratuma u odnosu na celokupnu populaciju. Na primer, zemlja je podeljena na dva regionalna stratuma koji čine 80 procenata (zapad) i 20 procenata (istok) ukupnog stanovništva. Za uzorak od 1.000 ljudi, 800 (80%) bilo bi izvučeno sa zapada, a 200 (20%) sa istoka, da bi tačno predstavljali njihov udeo u ukupnom broju stanovnika.",
-          "parent": "Probability.Stratified",
-          "position": 9
-        },
-        {
-          "id": 8014,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/sr",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Verovatnoća: Stratifikovana: Neproporcionalna",
-          "definition": "Ciljna populacija je podeljena u odvojene i međusobno isključujuće segmente (stratume) koji pokrivaju celokupnu populaciju. U neproporcionalnom uzorkovanju, broj jedinica odabranih iz svakog stratuma nije proporcionalan veličini populacije stratuma u odnosu na celokupnu populaciju. Broj uzorkovanih jedinica iz svakog stratuma može biti jednak, optimalan ili može odražavati svrhu studije, poput prekomernog uzorkovanja različitih podgrupa stanovništva. Na primer, zemlja je podeljena u dva regionalna stratuma koji čine 80% (zapad) i 20% (istok) stanovništva. Ako je potrebna jednaka zastupljenost dva regiona u studiji, polovina uzorka se može uzeti sa zapada, a polovina sa istoka, tako da je svaki region predstavljen sa 50% u uzorku. Ako je potrebna detaljnija analiza stanovništva sa istoka, 40% jedinica može se skupiti sa zapada, a 60% sa istoka, tako da je istok dominantno zastupljen.",
-          "parent": "Probability.Stratified",
-          "position": 10
+          "id": 8018,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sr",
+          "notation": "Probability.Multistage",
+          "title": "Verovatnoća: Višefazna",
+          "definition": "Uzorkovanje se vrši u fazama koristeći sve manje i manje jedinice u svakoj fazi, a sve faze uključuju izbornu verovatnoće. Vrsta postupka uzorkovanja verovatnoće može biti različita u svakoj fazi. Na primer, za uzorak učenika u gradu, škole se nasumično biraju u prvoj fazi, dok se u drugoj fazi primenjuje nasumični uzorak časova u svakoj odabranoj školi. Potom se, u trećoj fazi, učenici nasumično biraju iz svake od ovih klasa.",
+          "parent": "Probability",
+          "position": 7
         },
         {
           "id": 8019,
@@ -1863,6 +1912,7 @@
           "position": 17
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1880,19 +1930,15 @@
       "definition": "Innehåller en typologi av olika urvalsmetoder.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Urvalsmetod [Sampling Procedure] (Version 1.1.1; Swedish National Data Service (SND), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
       "translateAgency": "Swedish National Data Service (SND)",
       "translateAgencyLink": "https://snd.gu.se/",
       "concepts": [
-        {
-          "id": 7916,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/sv#TotalUniverseCompleteEnumeration/sv/1.1.1",
-          "notation": "TotalUniverseCompleteEnumeration",
-          "title": "Hela populationen/total räkning",
-          "definition": "Alla element (individer, hushåll, organisationer m.m.) i målpopulationen inkluderas i datainsamlingen. Exempel: om målpopulationen definieras som medlemmarna i ett fackförbund så bjuds samtliga medlemmar in till att delta i studien. Kallas även \"folkräkning\", om det rör sig om den totala populationen i en regional enhet (t.ex. ett land).",
-          "position": 0
-        },
         {
           "id": 2144,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability/sv/1.1.1",
@@ -1929,6 +1975,24 @@
           "position": 4
         },
         {
+          "id": 2148,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/sv/1.1.1",
+          "notation": "Probability.Stratified.Proportional",
+          "title": "Sannolikhetsurval: stratifierat: proportionerligt urval",
+          "definition": "Målpopulationen är uppdelad i flera delar (strata) som utesluter varandra och täcker hela populationen. För ett proportionerligt stratifierat urval står antalet element som väljs från varje stratum i proportion till storleken på stratumet i förhållande till hela populationen. Exempel: ett land är uppdelat i två regionala strata som motsvarar 80 procent (Väst) respektive 20 procent (Öst) av hela populationen. För ett sampel på 1.000 personer skulle 800 (dvs. 80 %) väljas från Väst och 200 (dvs. 20 %) från Öst för att ge en korrekt representation av deras andel av hela populationen.",
+          "parent": "Probability.Stratified",
+          "position": 9
+        },
+        {
+          "id": 2149,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/sv/1.1.1",
+          "notation": "Probability.Stratified.Disproportional",
+          "title": "Sannolikhetsurval: stratifierat: oproportionerligt urval",
+          "definition": "Målpopulationen är uppdelad i flera delar (strata) som utesluter varandra och täcker hela populationen. För ett oproportionerligt urval så står antalet element som väljs från varje stratum inte i proportion till stratumets populationsstorlek i förhållande till hela populationen. Sampelstorleken kan vara lika stor, optimal eller kan avspegla studiens syfte genom ett avsiktligt större urval från olika undergrupper i populationen. Exempel: ett land är uppdelat i två regionala strata som motsvarar 80 procent (Väst) respektive 20 procent (Öst) av hela populationen. Om lika representation av båda regionerna behövs i studien kan halva samplet dras från Öst och andra halvan från Väst så att varje region representeras av 50 % av samplet. Om det behövs en mer detaljerad analys av population i Öst kan 40 % av elementen dras från Väst och 60 % från Öst så att Öst är överrepresenterat.",
+          "parent": "Probability.Stratified",
+          "position": 10
+        },
+        {
           "id": 2150,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/sv/1.1.1",
           "notation": "Probability.Cluster",
@@ -1947,15 +2011,6 @@
           "position": 6
         },
         {
-          "id": 2153,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sv/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Sannolikhetsurval: flerstegsurval",
-          "definition": "Urvalet sker stegvis med allt mindre enheter för varje steg, och varje steg omfattar ett sannolikhetsurval. Urvalsmetoden kan skilja sig från steg till steg. Exempel: för att få ett sampel av elever i en stad så kan skolor väljas slumpmässigt i första steget. Ett slumpmässigt urval av klasser görs i steg två. Elever väljs sedan från dessa klasser i ett tredje steg. ",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
           "id": 2152,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/sv/1.1.1",
           "notation": "Probability.Cluster.StratifiedRandom",
@@ -1965,22 +2020,13 @@
           "position": 8
         },
         {
-          "id": 2148,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/sv/1.1.1",
-          "notation": "Probability.Stratified.Proportional",
-          "title": "Sannolikhetsurval: stratifierat: proportionerligt urval",
-          "definition": "Målpopulationen är uppdelad i flera delar (strata) som utesluter varandra och täcker hela populationen. För ett proportionerligt stratifierat urval står antalet element som väljs från varje stratum i proportion till storleken på stratumet i förhållande till hela populationen. Exempel: ett land är uppdelat i två regionala strata som motsvarar 80 procent (Väst) respektive 20 procent (Öst) av hela populationen. För ett sampel på 1.000 personer skulle 800 (dvs. 80 %) väljas från Väst och 200 (dvs. 20 %) från Öst för att ge en korrekt representation av deras andel av hela populationen.",
-          "parent": "Probability.Stratified",
-          "position": 9
-        },
-        {
-          "id": 2149,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Disproportional/sv/1.1.1",
-          "notation": "Probability.Stratified.Disproportional",
-          "title": "Sannolikhetsurval: stratifierat: oproportionerligt urval",
-          "definition": "Målpopulationen är uppdelad i flera delar (strata) som utesluter varandra och täcker hela populationen. För ett oproportionerligt urval så står antalet element som väljs från varje stratum inte i proportion till stratumets populationsstorlek i förhållande till hela populationen. Sampelstorleken kan vara lika stor, optimal eller kan avspegla studiens syfte genom ett avsiktligt större urval från olika undergrupper i populationen. Exempel: ett land är uppdelat i två regionala strata som motsvarar 80 procent (Väst) respektive 20 procent (Öst) av hela populationen. Om lika representation av båda regionerna behövs i studien kan halva samplet dras från Öst och andra halvan från Väst så att varje region representeras av 50 % av samplet. Om det behövs en mer detaljerad analys av population i Öst kan 40 % av elementen dras från Väst och 60 % från Öst så att Öst är överrepresenterat.",
-          "parent": "Probability.Stratified",
-          "position": 10
+          "id": 2153,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sv/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Sannolikhetsurval: flerstegsurval",
+          "definition": "Urvalet sker stegvis med allt mindre enheter för varje steg, och varje steg omfattar ett sannolikhetsurval. Urvalsmetoden kan skilja sig från steg till steg. Exempel: för att få ett sampel av elever i en stad så kan skolor väljas slumpmässigt i första steget. Ett slumpmässigt urval av klasser görs i steg två. Elever väljs sedan från dessa klasser i ett tredje steg. ",
+          "parent": "Probability",
+          "position": 7
         },
         {
           "id": 2154,
@@ -2009,15 +2055,6 @@
           "position": 13
         },
         {
-          "id": 7917,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/sv#Nonprobability.Quota/sv/1.1.1",
-          "notation": "Nonprobability.Quota",
-          "title": "Icke-sannolikhetsurval: kvoturval",
-          "definition": "Målpopulationen är uppdelad i flera separata segment som utesluter varandra enligt fördefinierade kvoteringskriterier. Fördelningen av kvoteringskriterierna (kön/ålder/etnicitet-förhållande eller andra egenskaper, som religion, utbildning m.m.) avser att spegla strukturen i den önskade målpopulationen för studien. Icke-sannolikhetsurval görs sedan från varje segment tills ett förutbestämt antal enheter har inkluderats. Exempel: om målpopulationen består av 45 % kvinnor och 55 % män så har ett proportionerligt kvoturval samma könsfördelning men ett icke-proportionerligt kvoturval har en annan kvot baserad på någon för studien relevant faktor (t.ex. behovet att överinkludera vissa underrepresenterade segment av populationen).",
-          "parent": "Nonprobability",
-          "position": 14
-        },
-        {
           "id": 2158,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/sv/1.1.1",
           "notation": "Nonprobability.RespondentAssisted",
@@ -2041,8 +2078,26 @@
           "title": "Övrigt",
           "definition": "Använd om urvalsmetoden är känd men saknas i listan.",
           "position": 17
+        },
+        {
+          "id": 7916,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/sv#TotalUniverseCompleteEnumeration/sv/1.1.1",
+          "notation": "TotalUniverseCompleteEnumeration",
+          "title": "Hela populationen/total räkning",
+          "definition": "Alla element (individer, hushåll, organisationer m.m.) i målpopulationen inkluderas i datainsamlingen. Exempel: om målpopulationen definieras som medlemmarna i ett fackförbund så bjuds samtliga medlemmar in till att delta i studien. Kallas även \"folkräkning\", om det rör sig om den totala populationen i en regional enhet (t.ex. ett land).",
+          "position": 0
+        },
+        {
+          "id": 7917,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/sv#Nonprobability.Quota/sv/1.1.1",
+          "notation": "Nonprobability.Quota",
+          "title": "Icke-sannolikhetsurval: kvoturval",
+          "definition": "Målpopulationen är uppdelad i flera separata segment som utesluter varandra enligt fördefinierade kvoteringskriterier. Fördelningen av kvoteringskriterierna (kön/ålder/etnicitet-förhållande eller andra egenskaper, som religion, utbildning m.m.) avser att spegla strukturen i den önskade målpopulationen för studien. Icke-sannolikhetsurval görs sedan från varje segment tills ett förutbestämt antal enheter har inkluderats. Exempel: om målpopulationen består av 45 % kvinnor och 55 % män så har ett proportionerligt kvoturval samma könsfördelning men ett icke-proportionerligt kvoturval har en annan kvot baserad på någon för studien relevant faktor (t.ex. behovet att överinkludera vissa underrepresenterade segment av populationen).",
+          "parent": "Nonprobability",
+          "position": 14
         }
       ],
+      "comments": [],
       "versionHistories": []
     }
   ]

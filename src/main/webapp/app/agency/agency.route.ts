@@ -43,11 +43,9 @@ export const agencyRoute: Routes = [
       pagingParams: JhiResolvePagingParams
     },
     data: {
-      authorities: [Authority.USER],
       defaultSort: 'id,asc',
       pageTitle: 'cvsApp.agency.home.title'
-    },
-    canActivate: [UserRouteAccessService]
+    }
   },
   {
     path: ':id/view',
@@ -56,7 +54,7 @@ export const agencyRoute: Routes = [
       agency: AgencyResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'cvsApp.agency.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -68,7 +66,7 @@ export const agencyRoute: Routes = [
       agency: AgencyResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'cvsApp.agency.home.title'
     },
     canActivate: [UserRouteAccessService]
@@ -80,7 +78,7 @@ export const agencyRoute: Routes = [
       agency: AgencyResolve
     },
     data: {
-      authorities: [Authority.USER],
+      authorities: [Authority.ADMIN],
       pageTitle: 'cvsApp.agency.home.title'
     },
     canActivate: [UserRouteAccessService]

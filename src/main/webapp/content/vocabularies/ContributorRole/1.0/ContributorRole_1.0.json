@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
-  "agencyLogo": "/content/images/agency/ddi.png",
+  "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
   "publicationDate": "2019-12-11",
   "notes": "Recommendations regarding mapping to DataCite's ContributorType list have been included in the terms' definitions as appropriate.",
@@ -27,6 +27,10 @@
       "definition": "A classification of contributor roles.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Contributor Role (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ContributorRole:1.0. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module Name: reusable \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/ContributorRole.html\">ContributorRole</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div>\n<div>\n DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary\n</div> \n<div> \n <br /> \n</div>",
       "concepts": [
@@ -66,6 +70,14 @@
           "position": 3
         },
         {
+          "id": 5574,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesignSamplingDesign/en/1.0",
+          "notation": "ProjectOrStudyDesignSamplingDesign",
+          "title": "Project/Study design: Sampling design",
+          "definition": "Defining which elements of the target population are included in the sample, as well as the rules and procedures by which they will be selected. ",
+          "position": 7
+        },
+        {
           "id": 5575,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesign.WeightsDesign/en/1.0",
           "notation": "ProjectOrStudyDesign.WeightsDesign",
@@ -91,14 +103,6 @@
           "definition": "Creating a data model based on an analysis of data objects and their relationships, data properties, as well as data flows and processes. It is often the first step in database creation, tool and standards development, etc., and typically involves a progression from a conceptual model to a logical model, and then to a physical schema. ",
           "parent": "ProjectOrStudyDesign",
           "position": 6
-        },
-        {
-          "id": 5574,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesignSamplingDesign/en/1.0",
-          "notation": "ProjectOrStudyDesignSamplingDesign",
-          "title": "Project/Study design: Sampling design",
-          "definition": "Defining which elements of the target population are included in the sample, as well as the rules and procedures by which they will be selected. ",
-          "position": 7
         },
         {
           "id": 5578,
@@ -257,14 +261,6 @@
           "position": 26
         },
         {
-          "id": 5615,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#EquipmentDevelopment/en/1.0",
-          "notation": "EquipmentDevelopment",
-          "title": "Equipment development",
-          "definition": "Creating and maintaining equipment needed at any stage of the data life cycle. ",
-          "position": 27
-        },
-        {
           "id": 5597,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Evaluation/en/1.0",
           "notation": "Evaluation",
@@ -396,6 +392,14 @@
           "position": 43
         },
         {
+          "id": 5615,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#EquipmentDevelopment/en/1.0",
+          "notation": "EquipmentDevelopment",
+          "title": "Equipment development",
+          "definition": "Creating and maintaining equipment needed at any stage of the data life cycle. ",
+          "position": 27
+        },
+        {
           "id": 5616,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Supervision/en/1.0",
           "notation": "Supervision",
@@ -452,6 +456,7 @@
           "position": 50
         }
       ],
+      "comments": [],
       "versionHistories": []
     }
   ]

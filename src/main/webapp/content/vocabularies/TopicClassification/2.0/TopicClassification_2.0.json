@@ -8,7 +8,7 @@
   "sourceLanguage": "en",
   "agencyId": 1,
   "agencyName": "CESSDA",
-  "agencyLogo": "/content/images/agency/cessda.png",
+  "agencyLogo": "cessda.png",
   "agencyLink": "https://www.cessda.eu/",
   "publicationDate": "2019-05-20",
   "notes": "Top terms should only be used if no narrower terms are applicable. More than one term can be used for classifying a dataset.",
@@ -27,6 +27,10 @@
       "definition": "A typology of main themes or subjects of data.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Topic Classification (Version 2.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:2.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "concepts": [
@@ -762,42 +766,6 @@
           "position": 82
         },
         {
-          "id": 2103,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.ReligionAndValues/en/2.0",
-          "notation": "SocietyAndCulture.ReligionAndValues",
-          "title": "Religion and values",
-          "definition": "Data which addresses questions of religious behaviour, religious movements, spirituality, morality and other values.",
-          "parent": "SocietyAndCulture",
-          "position": 83
-        },
-        {
-          "id": 2104,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.CommunityUrbanAndRuralLife/en/2.0",
-          "notation": "SocietyAndCulture.CommunityUrbanAndRuralLife",
-          "title": "Community, urban and rural life",
-          "definition": "Data related to different aspects of life in the community, or in urban and rural areas. Opinions on and images of the neighbourhood, or of urban or rural areas. Services, facilities and business opportunities in the neighbourhood.",
-          "parent": "SocietyAndCulture",
-          "position": 84
-        },
-        {
-          "id": 2105,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.TimeUse/en/2.0",
-          "notation": "SocietyAndCulture.TimeUse",
-          "title": "Time use",
-          "definition": "Data on the amount of time spent by the population on various activities.",
-          "parent": "SocietyAndCulture",
-          "position": 85
-        },
-        {
-          "id": 2106,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.SocialChange/en/2.0",
-          "notation": "SocietyAndCulture.SocialChange",
-          "title": "Social change",
-          "definition": "Data on changes in the society, including attitudinal changes.",
-          "parent": "SocietyAndCulture",
-          "position": 86
-        },
-        {
           "id": 2096,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#TradeIndustryAndMarkets/en/2.0",
           "notation": "TradeIndustryAndMarkets",
@@ -847,8 +815,45 @@
           "title": "OTHER",
           "definition": "Use if the topic is known, but not found in the list.",
           "position": 92
+        },
+        {
+          "id": 2103,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.ReligionAndValues/en/2.0",
+          "notation": "SocietyAndCulture.ReligionAndValues",
+          "title": "Religion and values",
+          "definition": "Data which addresses questions of religious behaviour, religious movements, spirituality, morality and other values.",
+          "parent": "SocietyAndCulture",
+          "position": 83
+        },
+        {
+          "id": 2104,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.CommunityUrbanAndRuralLife/en/2.0",
+          "notation": "SocietyAndCulture.CommunityUrbanAndRuralLife",
+          "title": "Community, urban and rural life",
+          "definition": "Data related to different aspects of life in the community, or in urban and rural areas. Opinions on and images of the neighbourhood, or of urban or rural areas. Services, facilities and business opportunities in the neighbourhood.",
+          "parent": "SocietyAndCulture",
+          "position": 84
+        },
+        {
+          "id": 2105,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.TimeUse/en/2.0",
+          "notation": "SocietyAndCulture.TimeUse",
+          "title": "Time use",
+          "definition": "Data on the amount of time spent by the population on various activities.",
+          "parent": "SocietyAndCulture",
+          "position": 85
+        },
+        {
+          "id": 2106,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.SocialChange/en/2.0",
+          "notation": "SocietyAndCulture.SocialChange",
+          "title": "Social change",
+          "definition": "Data on changes in the society, including attitudinal changes.",
+          "parent": "SocietyAndCulture",
+          "position": 86
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -866,6 +871,10 @@
       "definition": "En typology over hovedtemaer eller emner af data.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Emne Klassifikation [CESSDA Topic Classification] (Version 2.0.1; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:2.0. ",
       "ddiUsage": "<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> </font>\n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Module Name: reusable</font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\">Element Name:<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><br /></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div> \n <font size=\"3\" face=\"Verdana\"><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a></font> \n</div>\n<font size=\"3\" face=\"Verdana\"> </font>\n<div>\n <font size=\"3\"><font face=\"Verdana\"> </font><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "Danish National Archives (DNA)",
@@ -1347,15 +1356,6 @@
           "position": 53
         },
         {
-          "id": 3652,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.Elections/da/2.0.1",
-          "notation": "Politics.Elections",
-          "title": "Valg",
-          "definition": "Data om valg, folkeafstemninger, valgkampagner, valgresultater, kandidater, valg af kandidater, valgstøtte mm.",
-          "parent": "Politics",
-          "position": 54
-        },
-        {
           "id": 3615,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.PoliticalIdeology/da/2.0.1",
           "notation": "Politics.PoliticalIdeology",
@@ -1415,15 +1415,6 @@
           "definition": "Informations- og kommunikationsteknologi der er brugt i hjemmet, på arbejdspladsen eller andre fælleskaber. Bemærk at brugen og indflydelsen af disse teknologier er dækket af 'Informationssamfund'.",
           "parent": "ScienceAndTechnology",
           "position": 61
-        },
-        {
-          "id": 3653,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.Biotechnology/da/2.0.1",
-          "notation": "ScienceAndTechnology.Biotechnology",
-          "title": "Bioteknologi",
-          "definition": "Brug af biomolekylære og cellulære processer til at skabe nye produkter og teknologiske processer.",
-          "parent": "ScienceAndTechnology",
-          "position": 62
         },
         {
           "id": 3622,
@@ -1688,8 +1679,27 @@
           "title": "ANDET",
           "definition": "",
           "position": 92
+        },
+        {
+          "id": 3652,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.Elections/da/2.0.1",
+          "notation": "Politics.Elections",
+          "title": "Valg",
+          "definition": "Data om valg, folkeafstemninger, valgkampagner, valgresultater, kandidater, valg af kandidater, valgstøtte mm.",
+          "parent": "Politics",
+          "position": 54
+        },
+        {
+          "id": 3653,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.Biotechnology/da/2.0.1",
+          "notation": "ScienceAndTechnology.Biotechnology",
+          "title": "Bioteknologi",
+          "definition": "Brug af biomolekylære og cellulære processer til at skabe nye produkter og teknologiske processer.",
+          "parent": "ScienceAndTechnology",
+          "position": 62
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -1707,6 +1717,10 @@
       "definition": "Thematische Klassifikation für Daten",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Themenklassifikation [CESSDA Topic Classification] (Version 2.0.1; GESIS - Leibniz Institute for the Social Sciences, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:2.0. ",
       "ddiUsage": "<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 3.2</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Module Name: reusable</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element Name: subject</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 2.5</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "GESIS - Leibniz Institute for the Social Sciences",
@@ -2531,6 +2545,7 @@
           "position": 92
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -2548,6 +2563,10 @@
       "definition": "Aineiston pääasiallisten aiheiden luokittelu.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDAn aihepiiriluokitus [CESSDA Topic Classification] (Version 2.0.1; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:2.0. ",
       "ddiUsage": "<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 3.2</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Module Name: reusable</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element Name: subject</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 2.5</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
@@ -3372,6 +3391,7 @@
           "position": 92
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -3389,6 +3409,10 @@
       "definition": "En typologi for hovedtemaer eller emnekategorier for data.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Emneklassifisering [CESSDA Topic Classification] (Version 2.0.1; NSD - Norwegian Centre for Research Data, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:2.0. ",
       "ddiUsage": "<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 3.2</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Module Name: reusable</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element Name: subject</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 2.5</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "NSD - Norwegian Centre for Research Data",
@@ -3940,15 +3964,6 @@
           "position": 61
         },
         {
-          "id": 3049,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.Biotechnology/no/2.0.1",
-          "notation": "ScienceAndTechnology.Biotechnology",
-          "title": "Bioteknologi",
-          "definition": "Bruker biomolekylære og cellulære prosesser for å skape nye produkter og teknologiske prosesser.",
-          "parent": "ScienceAndTechnology",
-          "position": 62
-        },
-        {
           "id": 3019,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings/no/2.0.1",
           "notation": "SocialStratificationAndGroupings",
@@ -4211,8 +4226,18 @@
           "title": "ANNET",
           "definition": "Bruk hvis emnet er kjent, men ikke finnes i listen.",
           "position": 92
+        },
+        {
+          "id": 3049,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.Biotechnology/no/2.0.1",
+          "notation": "ScienceAndTechnology.Biotechnology",
+          "title": "Bioteknologi",
+          "definition": "Bruker biomolekylære og cellulære prosesser for å skape nye produkter og teknologiske prosesser.",
+          "parent": "ScienceAndTechnology",
+          "position": 62
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -4230,6 +4255,10 @@
       "definition": "Tipologija glavnih vsebinskih področij raziskav.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). Vsebinska področja CESSDA [CESSDA Topic Classification] (Version 2.0.1; Social Science Data Archives (ADP), Slovenia, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:2.0. ",
       "ddiUsage": "<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 3.2</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Module Name: reusable</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element Name: subject</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 2.5</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
@@ -5054,6 +5083,7 @@
           "position": 92
         }
       ],
+      "comments": [],
       "versionHistories": []
     },
     {
@@ -5071,6 +5101,10 @@
       "definition": "En typologi för större teman eller ämneskategorier för data.",
       "versionNotes": "",
       "versionChanges": "",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
       "citation": "CESSDA. (2019). CESSDA Ämnesklassificering [CESSDA Topic Classification] (Version 2.0.1; Swedish National Data Service (SND), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:2.0. ",
       "ddiUsage": "<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 3.2</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Module Name: reusable</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element Name: subject</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">DDI 2.5</font></font> \n</div> \n<div> \n <font size=\"3\"><font face=\"Verdana\">Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a><br /></font></font> \n</div>",
       "translateAgency": "Swedish National Data Service (SND)",
@@ -5895,6 +5929,7 @@
           "position": 92
         }
       ],
+      "comments": [],
       "versionHistories": []
     }
   ]

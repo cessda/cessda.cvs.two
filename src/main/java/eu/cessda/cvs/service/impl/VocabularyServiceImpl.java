@@ -796,7 +796,8 @@ public class VocabularyServiceImpl implements VocabularyService {
                 vocab.setCodes( Collections.emptySet() );
         }
         // set selected language in case language filter is selected with specific language
-        setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage, EsFilter.LANGS_AGG);
+        setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage,
+            esQueryResultDetail.getSearchScope().equals( SearchScope.EDITORSEARCH) ? EsFilter.LANGS_AGG: EsFilter.LANGS_PUB_AGG);
 
         esQueryResultDetail.setVocabularies(vocabularyPage);
 
@@ -1070,8 +1071,16 @@ public class VocabularyServiceImpl implements VocabularyService {
                     for( VocabularyDTO vocab : vocabularyPage.getContent()){
                         vocab.setSelectedLang(langFilter.getValues().get(0));
                     }
+                } else {
+                    for( VocabularyDTO vocab : vocabularyPage.getContent()){
+                        vocab.setSelectedLang(vocab.getSourceLanguage());
+                    }
                 }
             });
+        } else {
+            for( VocabularyDTO vocab : vocabularyPage.getContent()){
+                vocab.setSelectedLang(vocab.getSourceLanguage());
+            }
         }
     }
 

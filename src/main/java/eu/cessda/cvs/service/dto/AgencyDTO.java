@@ -1,4 +1,5 @@
 package eu.cessda.cvs.service.dto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.Agency;
 
 import javax.validation.constraints.*;
@@ -9,6 +10,7 @@ import javax.persistence.Lob;
 /**
  * A DTO for the {@link Agency} entity.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AgencyDTO implements Serializable {
 
     private Long id;
@@ -42,6 +44,7 @@ public class AgencyDTO implements Serializable {
     @Lob
     private String logo;
 
+    private Boolean deletable;
 
     public Long getId() {
         return id;
@@ -129,6 +132,14 @@ public class AgencyDTO implements Serializable {
 
     public void setLogo(String logo) {
         this.logo = logo;
+    }
+
+    public Boolean isDeletable() {
+        return deletable;
+    }
+
+    public void setDeletable(Boolean deletable) {
+        this.deletable = deletable;
     }
 
     @Override

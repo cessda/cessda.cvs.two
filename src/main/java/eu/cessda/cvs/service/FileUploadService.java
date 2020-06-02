@@ -1,5 +1,6 @@
 package eu.cessda.cvs.service;
 
+import org.apache.commons.io.FileUtils;
 import org.imgscalr.Scalr;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ public class FileUploadService {
 
     public void uploadFile (FileUploadHelper fileUploadHelper) {
         switch ( fileUploadHelper.getFileUploadType()) {
-            case IMAGE:
+            case IMAGE_AGENCY:
                 uploadImage(fileUploadHelper );
                 break;
             case CSV:
@@ -54,12 +55,19 @@ public class FileUploadService {
             ImageIO.write(fillTransparentPixels( scaledImg, Color.white ), "jpg", destFile);
 
             BufferedImage scaledImgThumb = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 180, 180);
+            File pathFileThumb = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + "thumbs");
+            if (! pathFileThumb.exists()){
+                pathFileThumb.mkdirs();
+            }
             File destFileThumb = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + "thumbs" +
                 File.separator + fileName  + ".jpg");
-            ImageIO.write(fillTransparentPixels( scaledImgThumb, Color.white ), "jpg", destFile);
+            ImageIO.write(fillTransparentPixels( scaledImgThumb, Color.white ), "jpg", destFileThumb);
 
             fileUploadHelper.setUploadedFile( destFile );
             fileUploadHelper.setUploadedThumbFile( destFileThumb );
+
+            // Delete file
+            FileUtils.deleteQuietly( imageFile );
 
         } catch (Exception e) {
             log.error( e.getMessage() );
