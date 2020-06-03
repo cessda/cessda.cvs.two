@@ -34,6 +34,14 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           loadChildren: () => import('./agency/agency.module').then(m => m.CvsAgencyModule)
         },
         {
+          path: 'about',
+          loadChildren: () => import('./about/about.module').then(m => m.CvsAboutModule)
+        },
+        {
+          path: 'user-guide',
+          loadChildren: () => import('./user-guide/user-guide.module').then(m => m.CvsUserGuideModule)
+        },
+        {
           path: 'account',
           loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
         },

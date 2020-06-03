@@ -8,6 +8,8 @@ import { CvsAppRoutingModule } from './app-routing.module';
 import { CvsHomeModule } from './home/home.module';
 import { CvsEditorModule } from './editor/editor.module';
 import { CvsEntityModule } from './entities/entity.module';
+import { CvsAboutModule } from 'app/about/about.module';
+import { CvsUserGuideModule } from 'app/user-guide/user-guide.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import { MainComponent } from './layouts/main/main.component';
 import { NavbarComponent } from './layouts/navbar/navbar.component';
@@ -32,6 +34,8 @@ import { NgxTextDiffModule } from 'ngx-text-diff';
     CvsCoreModule,
     CvsHomeModule,
     CvsEditorModule,
+    CvsAboutModule,
+    CvsUserGuideModule,
     // jhipster-needle-angular-add-module JHipster will add new module here
     CvsEntityModule,
     CvsAppRoutingModule,
