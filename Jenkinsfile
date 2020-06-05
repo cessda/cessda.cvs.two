@@ -54,7 +54,7 @@ pipeline {
                 stage('Run Sonar Scan') {
                     steps {
                         withSonarQubeEnv('cessda-sonar') {
-                            nodejs('node') {
+                            nodejs('node-12') {
                                 withMaven {
                                     sh "$MVN_CMD sonar:sonar -Pprod"
                                 }
