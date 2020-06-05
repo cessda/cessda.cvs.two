@@ -822,6 +822,18 @@
 
                 </plugin>
                 <!-- jhipster-needle-maven-add-plugin-management -->
+
+                <!-- Elasticsearch for Integration Tests -->
+                <plugin>
+                    <groupId>com.github.alexcojocaru</groupId>
+                    <artifactId>elasticsearch-maven-plugin</artifactId>
+                    <version>6.17</version>
+                    <configuration>
+                        <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
+                        <version>6.8.10</version>
+                        <clusterName>docker-cluster</clusterName>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
