@@ -32,7 +32,7 @@ pipeline {
                 stage('Build Project') {
                     steps {
                         withMaven {
-                            sh "$MVN_CMD clean install -Pprod"
+                            sh "./mvnw clean install -Pprod"
                         }
                     }
                     when { branch 'master' }
@@ -41,7 +41,7 @@ pipeline {
                 stage('Test Project') {
                     steps {
                         withMaven {
-                            sh '$MVN_CMD clean verify -Pprod'
+                            sh './mvnw clean verify -Pprod'
                         }
                     }
                     when { not { branch 'master' } }
@@ -56,7 +56,7 @@ pipeline {
                         withSonarQubeEnv('cessda-sonar') {
                             nodejs('node-12') {
                                 withMaven {
-                                    sh "$MVN_CMD sonar:sonar -Pprod"
+                                    sh "./mvnw sonar:sonar -Pprod"
                                 }
                             }
                         }
@@ -82,7 +82,7 @@ pipeline {
             steps {
                 sh 'gcloud auth configure-docker'
                 withMaven {
-                    sh "./mvnw jib:dockerBuild -Pprod -D\"docker.registry.host\"=${docker_repo} -D\"docker.image.name\"=${productName}-${componentName} -D\"docker.image.tag\"=${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+                    sh "./mvnw jib:build -Pprod -D\"docker.registry.host\"=${docker_repo} -D\"docker.image.name\"=${productName}-${componentName} -D\"docker.image.tag\"=${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
                 }
                 sh("gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-latest")
             }
