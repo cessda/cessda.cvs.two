@@ -449,6 +449,7 @@
                     <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
                     <version>6.8.10</version>
                     <clusterName>docker-cluster</clusterName>
+                    <timeout>300</timeout>
                 </configuration>
                 <executions>
                     <execution>
