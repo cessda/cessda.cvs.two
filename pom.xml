@@ -439,6 +439,34 @@
                 <artifactId>jib-maven-plugin</artifactId>
             </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
+
+            <!-- Elasticsearch for Integration Tests -->
+            <plugin>
+                <groupId>com.github.alexcojocaru</groupId>
+                <artifactId>elasticsearch-maven-plugin</artifactId>
+                <version>6.17</version>
+                <configuration>
+                    <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
+                    <version>6.8.10</version>
+                    <clusterName>docker-cluster</clusterName>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start-elasticsearch</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>runforked</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop-elasticsearch</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
         <pluginManagement>
             <plugins>
@@ -822,18 +850,6 @@
 
                 </plugin>
                 <!-- jhipster-needle-maven-add-plugin-management -->
-
-                <!-- Elasticsearch for Integration Tests -->
-                <plugin>
-                    <groupId>com.github.alexcojocaru</groupId>
-                    <artifactId>elasticsearch-maven-plugin</artifactId>
-                    <version>6.17</version>
-                    <configuration>
-                        <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
-                        <version>6.8.10</version>
-                        <clusterName>docker-cluster</clusterName>
-                    </configuration>
-                </plugin>
             </plugins>
         </pluginManagement>
     </build>
