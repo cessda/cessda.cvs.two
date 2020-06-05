@@ -51,24 +51,24 @@ pipeline {
                         recordIssues aggregatingResults: true, tools: [errorProne(), java()]
                     }
                 }
-                stage('Run Sonar Scan') {
-                    steps {
-                        withSonarQubeEnv('cessda-sonar') {
-                            nodejs('node-12') {
-                                withMaven {
-                                    sh "./mvnw sonar:sonar -Pprod"
-                                }
-                            }
-                        }
-                    }
-                    when { branch 'master' }
-                }
             }
             post {
                 always {
                     junit 'target/test-results/TESTS-results-jest.xml'
                 }
             }
+        }
+        stage('Run Sonar Scan') {
+            steps {
+                withSonarQubeEnv('cessda-sonar') {
+                    nodejs('node-12') {
+                        withMaven {
+                            sh "./mvnw sonar:sonar -Pprod"
+                        }
+                    }
+                }
+            }
+            when { branch 'master' }
         }
         stage("Get Sonar Quality Gate") {
             steps {
@@ -82,7 +82,7 @@ pipeline {
             steps {
                 sh 'gcloud auth configure-docker'
                 withMaven {
-                    sh "./mvnw jib:build -Pprod -D\"docker.registry.host\"=${docker_repo} -D\"docker.image.name\"=${productName}-${componentName} -D\"docker.image.tag\"=${env.BRANCH_NAME}-${env.BUILD_NUMBER}"
+                    sh "./mvnw jib:build -Pprod -Djib.to.image=${IMAGE_TAG}"
                 }
                 sh("gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-latest")
             }
