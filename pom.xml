@@ -80,6 +80,8 @@
         <!-- jhipster-needle-maven-property -->
 
         <!-- SonarQube Properties -->
+        <sonar.sources>src/main/</sonar.sources>
+        <sonar.tests>src/test/</sonar.tests>
         <sonar.coverage.jacoco.xmlReportPaths>target/jacoco/test/jacoco.xml,target/jacoco/integrationTest/jacoco.xml
         </sonar.coverage.jacoco.xmlReportPaths>
         <sonar.java.codeCoveragePlugin>jacoco</sonar.java.codeCoveragePlugin>
