@@ -7,7 +7,7 @@
     <artifactId>cvs</artifactId>
     <version>2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Cvs</name>
+    <name>CESSDA Vocabulary Service Version 2</name>
 
     <repositories>
     </repositories>
@@ -78,6 +78,38 @@
         <junit.utReportFolder>${project.testresult.directory}/test</junit.utReportFolder>
         <junit.itReportFolder>${project.testresult.directory}/integrationTest</junit.itReportFolder>
         <!-- jhipster-needle-maven-property -->
+
+        <!-- SonarQube Properties -->
+        <sonar.coverage.jacoco.xmlReportPaths>target/jacoco/test/jacoco.xml,target/jacoco/integrationTest/jacoco.xml
+        </sonar.coverage.jacoco.xmlReportPaths>
+        <sonar.java.codeCoveragePlugin>jacoco</sonar.java.codeCoveragePlugin>
+        <sonar.junit.reportPaths>target/test-results/test,target/test-results/integrationTest</sonar.junit.reportPaths>
+        <sonar.testExecutionReportPaths>target/test-results/jest/TESTS-results-sonar.xml
+        </sonar.testExecutionReportPaths>
+        <sonar.typescript.lcov.reportPaths>target/test-results/lcov.info</sonar.typescript.lcov.reportPaths>
+        <sonar.issue.ignore.multicriteria>S3437,S4502,S4684,UndocumentedApi,BoldAndItalicTagsCheck,S2637
+        </sonar.issue.ignore.multicriteria>
+        <!-- Rule https://sonarcloud.io/coding_rules?open=squid%3AS3437&rule_key=squid%3AS3437 is ignored, as a JPA-managed field cannot be transient -->
+        <sonar.issue.ignore.multicriteria.S3437.resourceKey>src/main/java/**/*
+        </sonar.issue.ignore.multicriteria.S3437.resourceKey>
+        <sonar.issue.ignore.multicriteria.S3437.ruleKey>squid:S3437</sonar.issue.ignore.multicriteria.S3437.ruleKey>
+        <!-- Rule https://sonarcloud.io/coding_rules?open=squid%3AS4502&rule_key=squid%3AS4502 is ignored, as for JWT tokens we are not subject to CSRF attack -->
+        <sonar.issue.ignore.multicriteria.S4502.resourceKey>src/main/java/**/*
+        </sonar.issue.ignore.multicriteria.S4502.resourceKey>
+        <sonar.issue.ignore.multicriteria.S4502.ruleKey>squid:S4502</sonar.issue.ignore.multicriteria.S4502.ruleKey>
+        <!-- Rule https://sonarcloud.io/coding_rules?open=squid%3AS4684&rule_key=squid%3AS4684-->
+        <sonar.issue.ignore.multicriteria.S4684.resourceKey>src/main/java/**/*
+        </sonar.issue.ignore.multicriteria.S4684.resourceKey>
+        <sonar.issue.ignore.multicriteria.S4684.ruleKey>squid:S4684</sonar.issue.ignore.multicriteria.S4684.ruleKey>
+        <!--Rule https://sonarcloud.io/coding_rules?open=Web%3ABoldAndItalicTagsCheck&rule_key=Web%3ABoldAndItalicTagsCheck is ignored. Even if we agree that using the "i" tag is an awful practice, this is what is recommended by http://fontawesome.io/examples/ -->
+        <sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>src/main/webapp/app/**/*
+        </sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.resourceKey>
+        <sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.ruleKey>Web:BoldAndItalicTagsCheck
+        </sonar.issue.ignore.multicriteria.BoldAndItalicTagsCheck.ruleKey>
+        <!-- Rule https://sonarcloud.io/coding_rules?open=squid%3AS2637&rule_key=squid%3AS2637 is ignored. Since it falsely indicated issues on DTOs -->
+        <sonar.issue.ignore.multicriteria.S2637.resourceKey>src/main/java/eu/cessda/cvs/service/dto/**/*
+        </sonar.issue.ignore.multicriteria.S2637.resourceKey>
+        <sonar.issue.ignore.multicriteria.S2637.ruleKey>squid:S2637</sonar.issue.ignore.multicriteria.S2637.ruleKey>
     </properties>
 
     <dependencyManagement>
@@ -406,10 +438,6 @@
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
             </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>properties-maven-plugin</artifactId>
-            </plugin>
             <!-- jhipster-needle-maven-add-plugin -->
         </plugins>
         <pluginManagement>
@@ -515,24 +543,6 @@
                     <groupId>com.github.eirslett</groupId>
                     <artifactId>frontend-maven-plugin</artifactId>
                     <version>${frontend-maven-plugin.version}</version>
-                </plugin>
-                <plugin>
-                    <groupId>org.codehaus.mojo</groupId>
-                    <artifactId>properties-maven-plugin</artifactId>
-                    <version>${properties-maven-plugin.version}</version>
-                    <executions>
-                        <execution>
-                            <phase>initialize</phase>
-                            <goals>
-                                <goal>read-project-properties</goal>
-                            </goals>
-                            <configuration>
-                                <files>
-                                    <file>sonar-project.properties</file>
-                                </files>
-                            </configuration>
-                        </execution>
-                    </executions>
                 </plugin>
 
                 <plugin>
@@ -951,8 +961,9 @@
                                 <goals>
                                     <goal>npm</goal>
                                 </goals>
+                                <!-- Ensure that the dependencies are recreated exactly as specified by package-lock.json -->
                                 <configuration>
-                                    <arguments>install</arguments>
+                                    <arguments>ci</arguments>
                                 </configuration>
                             </execution>
                             <execution>
