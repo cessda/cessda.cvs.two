@@ -84,7 +84,13 @@ pipeline {
                 withMaven {
                     sh "./mvnw jib:build -Pprod -Djib.to.image=${IMAGE_TAG}"
                 }
-                sh("gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-latest")
+                sh "gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
+            }
+            when { branch 'master' }
+        }
+        stage('Deploy CVS') {
+            steps {
+                build job: 'cessda.cvs.deploy/v2', parameters: [string(name: 'frontend_image_tag', value: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}")], wait: false
             }
             when { branch 'master' }
         }
