@@ -1,6 +1,9 @@
 package eu.cessda.cvs.domain;
 
+import org.hibernate.annotations.Cache;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
@@ -14,6 +17,7 @@ import java.util.Set;
  */
 @Entity
 @Table( name = "vocabulary" )
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Vocabulary extends VocabularyBase
 {
 
@@ -24,9 +28,6 @@ public class Vocabulary extends VocabularyBase
     @ElementCollection( targetClass = String.class )
     @Field( type = FieldType.Keyword )
     private Set<String> statuses;
-
-    @Transient
-    private Set<Code> codes = new HashSet<>();
 
     public Vocabulary() {
         // default constructor for jackson
@@ -68,34 +69,6 @@ public class Vocabulary extends VocabularyBase
 
     public void setVersions(Set<Version> versions) {
         this.versions = versions;
-    }
-
-    public Set<Code> getCodes()
-    {
-        return codes;
-    }
-
-    public VocabularyBase codes(Set<Code> codes )
-    {
-        this.codes = codes;
-        return this;
-    }
-
-    public VocabularyBase addCode(Code code )
-    {
-        this.codes.add( code );
-        return this;
-    }
-
-    public VocabularyBase removeCode(Code code )
-    {
-        this.codes.remove( code );
-        return this;
-    }
-
-    public void setCodes( Set<Code> codes )
-    {
-        this.codes = codes;
     }
 
     @Override

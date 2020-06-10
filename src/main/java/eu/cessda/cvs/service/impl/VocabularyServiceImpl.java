@@ -1072,15 +1072,17 @@ public class VocabularyServiceImpl implements VocabularyService {
                         vocab.setSelectedLang(langFilter.getValues().get(0));
                     }
                 } else {
-                    for( VocabularyDTO vocab : vocabularyPage.getContent()){
-                        vocab.setSelectedLang(vocab.getSourceLanguage());
-                    }
+                    setSelectedLangToSourceLang(vocabularyPage);
                 }
             });
         } else {
-            for( VocabularyDTO vocab : vocabularyPage.getContent()){
-                vocab.setSelectedLang(vocab.getSourceLanguage());
-            }
+            setSelectedLangToSourceLang(vocabularyPage);
+        }
+    }
+
+    private void setSelectedLangToSourceLang(Page<VocabularyDTO> vocabularyPage) {
+        for (VocabularyDTO vocab : vocabularyPage.getContent()) {
+            vocab.setSelectedLang(vocab.getSourceLanguage());
         }
     }
 
