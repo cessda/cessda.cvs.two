@@ -7,6 +7,13 @@
 Bootstrap tweaks
 ===============================================================*/
 
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* needed for container min-height */
+}
+
 body,
 input,
 select,
@@ -45,6 +52,12 @@ p {
   color: $dropdown-link-hover-color;
 }
 
+.header-content {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
 /* ==========================================================================
 Browser Upgrade Prompt
 ========================================================================== */
@@ -63,6 +76,7 @@ Generic styles
 
 .jh-card {
   border: none;
+  margin-bottom: 500px;
 }
 
 .error {
@@ -97,6 +111,9 @@ Generic styles
   background-color: #f8f8f8;
   color: #4e4d56;
   font-weight: 500;
+  margin-top: -477px;
+  height: 477px;
+  overflow-y: hidden;
   .col-md-4 {
     text-align: center !important;
   }
@@ -321,16 +338,20 @@ tag-ripple {
     margin-top: -42px;
   }
   .footer {
+    margin-top: -278px;
+    height: 278px;
     .logo-footer {
       margin: 0;
     }
     .has-text-centered {
       text-align: center !important;
     }
-
     .has-text-right {
       text-align: right !important;
     }
+  }
+  .jh-card {
+    margin-bottom: 300px;
   }
 }
 .acc-header,
