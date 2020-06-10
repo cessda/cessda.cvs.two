@@ -42,6 +42,10 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
           loadChildren: () => import('./user-guide/user-guide.module').then(m => m.CvsUserGuideModule)
         },
         {
+          path: 'api-docs',
+          loadChildren: () => import('./api-docs/api-docs.module').then(m => m.CvsApiDocsModule)
+        },
+        {
           path: 'account',
           loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
         },
