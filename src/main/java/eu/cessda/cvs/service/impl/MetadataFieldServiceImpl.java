@@ -76,6 +76,32 @@ public class MetadataFieldServiceImpl implements MetadataFieldService {
     }
 
     /**
+     * Get the "metadataKey" metadataField.
+     *
+     * @param metadataKey the metadataKey of the entity.
+     * @return the entity.
+     */
+    @Override
+    public Optional<MetadataFieldDTO> findOneByMetadataKey(String metadataKey) {
+        log.debug("Request to get MetadataField metadataKey: {}", metadataKey);
+        return metadataFieldRepository.findByMetadataKey(metadataKey)
+            .map(metadataFieldMapper::toDto);
+    }
+
+    /**
+     * Get one metadataField by metadataKey.
+     *
+     * @param metadataKey the metadataKey of the entity.
+     * @return the entity.
+     */
+    @Override
+    public Optional<MetadataFieldDTO> findByMetadataKey(String metadataKey) {
+        log.debug("Request to get MetadataField by metadataKey : {}", metadataKey);
+        return metadataFieldRepository.findByMetadataKey(metadataKey)
+            .map(metadataFieldMapper::toDto);
+    }
+
+    /**
      * Delete the metadataField by id.
      *
      * @param id the id of the entity.

@@ -40,6 +40,7 @@ public class EditorResource {
     private static final String ENTITY_VERSION_NAME = "version";
     private static final String ENTITY_CODE_NAME = "code";
     private static final String ENTITY_COMMENT_NAME = "comment";
+    private static final String ENTITY_METADATAVALUE_NAME = "metadataValue";
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -56,14 +57,20 @@ public class EditorResource {
 
     private final CommentService commentService;
 
+    private final MetadataFieldService metadataFieldService;
+
+    private final MetadataValueService metadataValueService;
+
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
-                          LicenceService licenceService, AgencyService agencyService, CommentService commentService) {
+                          LicenceService licenceService, AgencyService agencyService, CommentService commentService, MetadataFieldService metadataFieldService, MetadataValueService metadataValueService) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
         this.licenceService = licenceService;
         this.agencyService = agencyService;
         this.commentService = commentService;
+        this.metadataFieldService = metadataFieldService;
+        this.metadataValueService = metadataValueService;
     }
 
     /**
@@ -457,7 +464,7 @@ public class EditorResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} if success.
      */
     @PostMapping("/editors/codes/reorder")
-    public ResponseEntity<VersionDTO> reorderCode(@Valid @RequestBody CodeSnippet codeSnippet) throws URISyntaxException {
+    public ResponseEntity<VersionDTO> reorderCode(@Valid @RequestBody CodeSnippet codeSnippet){
         log.debug("REST request to reorder codes : {}", codeSnippet);
 
         if ( !codeSnippet.getActionType().equals( ActionType.REORDER_CODE) ) {
@@ -594,5 +601,117 @@ public class EditorResource {
 
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true,
             ENTITY_COMMENT_NAME, id.toString())).build();
+    }
+
+    /**
+     * {@code POST  /editors/metadatas} : Create a new metadata via editor Rest API.
+     *
+     * @param metadataValueDTO the metadataValueDTO to create.
+     *
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new MetadataValueDTO, or with status {@code 400 (Bad Request)} if the metadataValueDTO has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     */
+    @PostMapping("/editors/metadatas")
+    public ResponseEntity<MetadataValueDTO> createAppMetadata(@Valid @RequestBody MetadataValueDTO metadataValueDTO) throws URISyntaxException {
+        log.debug("REST request to save MetadataValue : {}", metadataValueDTO);
+
+        if (metadataValueDTO.getId() != null) {
+            throw new BadRequestAlertException("A new metadataValueDTO cannot already have an ID", ENTITY_CODE_NAME, "idexists");
+        }
+
+        if (metadataValueDTO.getMetadataKey() == null) {
+            throw new IllegalArgumentException( "MetadataValue need to be linked to metadataKey. metadataKey is null" );
+        }
+
+        MetadataFieldDTO metadataFieldDTO = metadataFieldService.findByMetadataKey( metadataValueDTO.getMetadataKey() )
+            .orElse(null);
+        if( metadataFieldDTO == null ) {
+            metadataFieldDTO = new MetadataFieldDTO();
+            metadataFieldDTO.setMetadataKey( metadataValueDTO.getMetadataKey() );
+            metadataFieldDTO.setObjectType( metadataValueDTO.getObjectType() );
+            metadataFieldDTO = metadataFieldService.save( metadataFieldDTO);
+        }
+
+        metadataValueDTO.setMetadataFieldId( metadataFieldDTO.getId());
+        metadataFieldDTO.addMetadataValue(metadataValueDTO);
+
+        metadataFieldDTO = metadataFieldService.save( metadataFieldDTO);
+
+        if( metadataFieldDTO.getMetadataValues().isEmpty()) {
+            throw new EntityNotFoundException( "Unable to get any MetadataValues from metadataFieldDTO "+ metadataFieldDTO.getId() );
+        }
+
+        MetadataValueDTO result = metadataFieldDTO.getMetadataValues().iterator().next();
+
+        if( metadataFieldDTO.getMetadataValues().size() > 1) {
+            result = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getValue().equals(metadataValueDTO.getValue() ))
+                .findFirst().orElse(result);
+        }
+
+        return ResponseEntity.created(new URI("/api/metadata-values/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_METADATAVALUE_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code PUT  /editors/metadatas} : Updates an existing metadataValueDTO via editor Rest API.
+     *
+     * @param metadataValueDTO the metadataValueDTO to update.
+     *
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new MetadataValueDTO, or with status {@code 400 (Bad Request)} if the metadataValueDTO has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated metadataValueDTO,
+     * or with status {@code 400 (Bad Request)} if the metadataValueDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the metadataValueDTO couldn't be updated.
+     */
+    @PutMapping("/editors/metadatas")
+    public ResponseEntity<MetadataValueDTO> updateAppMetadata(@Valid @RequestBody MetadataValueDTO metadataValueDTO) {
+        log.debug("REST request to update MetadataValue : {}", metadataValueDTO);
+        if (metadataValueDTO.getId() == null) {
+            throw new BadRequestAlertException("Invalid id", ENTITY_CODE_NAME, "idnull");
+        }
+
+        if (metadataValueDTO.getMetadataFieldId() == null) {
+            throw new IllegalArgumentException( "MetadataValue need to be linked to MetadataField. MetadataField.ID is null" );
+        }
+
+        MetadataFieldDTO metadataFieldDTO = metadataFieldService.findOne(metadataValueDTO.getMetadataFieldId() )
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataField with metadataKey " + metadataValueDTO.getMetadataKey() ));
+        // find metadataValueDTO from MetadataFieldDTO
+        MetadataValueDTO result  = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getId().equals(metadataValueDTO.getId())).findFirst()
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + metadataValueDTO.getId() ));
+
+        // update comment from version
+        result.setValue( metadataValueDTO.getValue() );
+        metadataFieldService.save( metadataFieldDTO );
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_METADATAVALUE_NAME, metadataValueDTO.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * {@code DELETE  /editors/metadatas/:id} : delete the "id" metadata.
+     *
+     * @param id the id of the metadata to delete.
+     * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
+     */
+    @DeleteMapping("/editors/metadatas/{id}")
+    public ResponseEntity<Void> deleteAppMetadata(@PathVariable Long id) {
+        log.debug("REST request to delete Metadata : {}", id);
+        // first check version and determine delete strategy
+        MetadataValueDTO metadataValueDTO = metadataValueService.findOne(id)
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + id + " to be deleted" ));
+        MetadataFieldDTO metadataFieldDTO = metadataFieldService.findOne(metadataValueDTO.getMetadataFieldId())
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataField with Id " + metadataValueDTO.getMetadataFieldId() ));
+
+        // automatically remove metadataValue
+        metadataValueDTO.setMetadataFieldId( null );
+        metadataFieldDTO.removeMetadataValue(metadataValueDTO);
+        metadataFieldService.save( metadataFieldDTO );
+
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true,
+            ENTITY_METADATAVALUE_NAME, id.toString())).build();
     }
 }

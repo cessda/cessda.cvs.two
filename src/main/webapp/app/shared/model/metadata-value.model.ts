@@ -6,6 +6,7 @@ export interface IMetadataValue {
   objectType?: ObjectType;
   objectId?: number;
   metadataFieldId?: number;
+  metadataKey?: string;
 }
 
 export class MetadataValue implements IMetadataValue {
@@ -14,6 +15,7 @@ export class MetadataValue implements IMetadataValue {
     public value?: any,
     public objectType?: ObjectType,
     public objectId?: number,
-    public metadataFieldId?: number
+    public metadataFieldId?: number,
+    public metadataKey?: string
   ) {}
 }

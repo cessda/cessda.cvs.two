@@ -41,4 +41,8 @@ export class MetadataFieldService {
     const options = createRequestOption(req);
     return this.http.get<IMetadataField[]>(this.resourceSearchUrl, { params: options, observe: 'response' });
   }
+
+  findByKey(metadataKey: string): Observable<EntityResponseType> {
+    return this.http.get<IMetadataField>(`${this.resourceUrl}/metadata-key/${metadataKey}`, { observe: 'response' });
+  }
 }

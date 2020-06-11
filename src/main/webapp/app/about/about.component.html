@@ -2,6 +2,28 @@
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
 
-    <h2>About</h2>
+    <div class="row-detail form-group clearfix">
+        <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
+            <button *ngIf="!isWriteAbout" type="button" ngbTooltip="Edit comment" class="btn btn-sm btn-primary-outline float-right" data-dismiss="modal" (click)="isWriteAbout = !isWriteAbout">
+                <fa-icon class="text-secondary" [icon]="'edit'"></fa-icon>
+                <span> Edit</span>
+            </button>
+        </div>
+        <div *ngIf="!isWriteAbout" class="detail-column" [innerHTML]="aboutForm.get('content')? aboutForm.get('content')!.value : 'no information'">        </div>
+        <form novalidate [formGroup]="aboutForm">
+            <div *ngIf="isWriteAbout">
+                <quill-editor class="large-quill" formControlName="content"></quill-editor>
+            </div>
+            <div *ngIf="isWriteAbout" class="ql-editor-buttons">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriteAbout = !isWriteAbout">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="button" id="save-ddi-usage" [disabled]="aboutForm.invalid || isSaving" (click)="saveAbout()" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+        <div class="clearfix"></div>
+    </div>
 
 </div>

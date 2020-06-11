@@ -13,11 +13,13 @@ import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { IConcept } from 'app/shared/model/concept.model';
 import { IVersion } from 'app/shared/model/version.model';
 import { IComment } from 'app/shared/model/comment.model';
+import { IMetadataValue } from 'app/shared/model/metadata-value.model';
 
 type EntityResponseVocabularyType = HttpResponse<IVocabulary>;
 type EntityResponseVersionType = HttpResponse<IVersion>;
 type EntityResponseConceptType = HttpResponse<IConcept>;
 type EntityResponseCommentType = HttpResponse<IComment>;
+type EntityResponseMetadataValueType = HttpResponse<IMetadataValue>;
 
 @Injectable({ providedIn: 'root' })
 export class EditorService {
@@ -26,6 +28,7 @@ export class EditorService {
   public resourceEditorVocabularyUrl = SERVER_API_URL + 'api/editors/vocabularies';
   public resourceEditorCodeUrl = SERVER_API_URL + 'api/editors/codes';
   public resourceEditorCommentUrl = SERVER_API_URL + 'api/editors/comments';
+  public resourceEditorMetadataUrl = SERVER_API_URL + 'api/editors/metadatas';
   public resourceDownloadUrl = SERVER_API_URL + 'api/download';
 
   constructor(protected http: HttpClient) {}
@@ -129,5 +132,17 @@ export class EditorService {
       res.body.dateTime = res.body.dateTime ? moment(res.body.dateTime) : undefined;
     }
     return res;
+  }
+
+  createAppMetadata(metadataValue: IMetadataValue): Observable<EntityResponseMetadataValueType> {
+    return this.http.post<IMetadataValue>(this.resourceEditorMetadataUrl, metadataValue, { observe: 'response' });
+  }
+
+  updateAppMetadata(metadataValue: IMetadataValue): Observable<EntityResponseMetadataValueType> {
+    return this.http.put<IMetadataValue>(this.resourceEditorMetadataUrl, metadataValue, { observe: 'response' });
+  }
+
+  deleteAppMetadata(metadataValueId: number): Observable<HttpResponse<{}>> {
+    return this.http.delete(`${this.resourceEditorMetadataUrl}/${metadataValueId}`, { observe: 'response' });
   }
 }

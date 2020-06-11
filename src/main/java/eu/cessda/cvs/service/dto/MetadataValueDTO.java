@@ -1,15 +1,16 @@
 package eu.cessda.cvs.service.dto;
 
+import eu.cessda.cvs.domain.enumeration.ObjectType;
+
+import javax.persistence.Lob;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Lob;
-import eu.cessda.cvs.domain.enumeration.ObjectType;
 
 /**
  * A DTO for the {@link eu.cessda.cvs.domain.MetadataValue} entity.
  */
 public class MetadataValueDTO implements Serializable {
-    
+
     private Long id;
 
     @Lob
@@ -19,9 +20,10 @@ public class MetadataValueDTO implements Serializable {
 
     private Long objectId;
 
-
     private Long metadataFieldId;
-    
+
+    private String metadataKey;
+
     public Long getId() {
         return id;
     }
@@ -60,6 +62,14 @@ public class MetadataValueDTO implements Serializable {
 
     public void setMetadataFieldId(Long metadataFieldId) {
         this.metadataFieldId = metadataFieldId;
+    }
+
+    public String getMetadataKey() {
+        return metadataKey;
+    }
+
+    public void setMetadataKey(String metadataKey) {
+        this.metadataKey = metadataKey;
     }
 
     @Override

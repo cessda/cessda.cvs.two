@@ -12,6 +12,7 @@ import org.mapstruct.Mapping;
 public interface MetadataValueMapper extends EntityMapper<MetadataValueDTO, MetadataValue> {
 
     @Mapping(source = "metadataField.id", target = "metadataFieldId")
+    @Mapping(source = "metadataField.metadataKey", target = "metadataKey")
     MetadataValueDTO toDto(MetadataValue metadataValue);
 
     @Mapping(source = "metadataFieldId", target = "metadataField")

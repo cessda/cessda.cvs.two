@@ -258,7 +258,6 @@ ui bootstrap tweaks
 
 .sk-select,
 .sk-select-min {
-  background-color: #fff;
   border: 2px solid #eaeae8;
   background: #fff;
   outline: 0;
@@ -982,7 +981,11 @@ button.invisible-button:focus {
     min-height: 200px;
   }
 }
-
+.large-quill {
+  .ql-editor {
+    min-height: 500px;
+  }
+}
 .ql-editor-buttons {
   display: flex;
   justify-content: flex-end;

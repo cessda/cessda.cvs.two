@@ -1,16 +1,20 @@
 package eu.cessda.cvs.service.dto;
 
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.Lob;
 import eu.cessda.cvs.domain.enumeration.ObjectType;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * A DTO for the {@link eu.cessda.cvs.domain.MetadataField} entity.
  */
 public class MetadataFieldDTO implements Serializable {
-    
+
     private Long id;
 
     @NotNull
@@ -22,7 +26,8 @@ public class MetadataFieldDTO implements Serializable {
 
     private ObjectType objectType;
 
-    
+    private Set<MetadataValueDTO> metadataValues = new LinkedHashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -53,6 +58,24 @@ public class MetadataFieldDTO implements Serializable {
 
     public void setObjectType(ObjectType objectType) {
         this.objectType = objectType;
+    }
+
+    public Set<MetadataValueDTO> getMetadataValues() {
+        return metadataValues;
+    }
+
+    public void setMetadataValues(Set<MetadataValueDTO> metadataValues) {
+        this.metadataValues = metadataValues;
+    }
+
+    public MetadataFieldDTO addMetadataValue(MetadataValueDTO metadataValue ) {
+        this.metadataValues.add(metadataValue);
+        return this;
+    }
+
+    public MetadataFieldDTO removeMetadataValue( MetadataValueDTO metadataValue ) {
+        this.metadataValues.remove(metadataValue);
+        return this;
     }
 
     @Override

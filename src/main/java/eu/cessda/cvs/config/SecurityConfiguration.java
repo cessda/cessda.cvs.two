@@ -1,8 +1,8 @@
 package eu.cessda.cvs.config;
 
-import eu.cessda.cvs.security.*;
-import eu.cessda.cvs.security.jwt.*;
-
+import eu.cessda.cvs.security.AuthoritiesConstants;
+import eu.cessda.cvs.security.jwt.JWTConfigurer;
+import eu.cessda.cvs.security.jwt.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpMethod;
@@ -82,6 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/editor/**").permitAll()
             .antMatchers("/api/search").permitAll()
             .antMatchers(HttpMethod.GET, "/api/agencies").permitAll()
+            .antMatchers(HttpMethod.GET, "/api/metadata-fields/**").permitAll()
             .antMatchers("/api/search/**").permitAll()
             .antMatchers("/api/download").permitAll()
             .antMatchers("/api/download/**").permitAll()

@@ -1,16 +1,15 @@
 package eu.cessda.cvs.domain;
 
+import eu.cessda.cvs.domain.enumeration.ObjectType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-
-import eu.cessda.cvs.domain.enumeration.ObjectType;
 
 /**
  * A MetadataField.
@@ -28,7 +27,7 @@ public class MetadataField implements Serializable {
 
     @NotNull
     @Size(max = 240)
-    @Column(name = "metadata_key", length = 240, nullable = false)
+    @Column(name = "metadata_key", length = 240, nullable = false, unique = true)
     private String metadataKey;
 
     @Lob
@@ -39,8 +38,8 @@ public class MetadataField implements Serializable {
     @Column(name = "object_type")
     private ObjectType objectType;
 
-    @OneToMany(mappedBy = "metadataField")
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @OneToMany(mappedBy = "metadataField", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+        @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<MetadataValue> metadataValues = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
