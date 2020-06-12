@@ -48,6 +48,10 @@ p {
   margin: 0;
 }
 
+.container-fluid {
+  display: flex;
+}
+
 .dropdown-item:hover {
   color: $dropdown-link-hover-color;
 }
@@ -77,6 +81,9 @@ Generic styles
 .jh-card {
   border: none;
   margin-bottom: 500px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 .error {

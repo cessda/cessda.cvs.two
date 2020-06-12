@@ -1,5 +1,5 @@
 <div class="row">
-    <form name="searchForm" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="searchForm">
+    <form name="searchForm" class="w-100" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="searchForm">
         <jhi-alert-error></jhi-alert-error>
         <jhi-alert></jhi-alert>
         <div class="alert alert-warning" *ngIf="vocabularies?.length === 0">
