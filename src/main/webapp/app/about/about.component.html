@@ -2,7 +2,7 @@
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
 
-    <div class="row-detail form-group clearfix">
+    <div class="row-detail form-group mt-0">
         <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
             <button *ngIf="!isWriteAbout" type="button" ngbTooltip="Edit comment" class="btn btn-sm btn-primary-outline float-right" data-dismiss="modal" (click)="isWriteAbout = !isWriteAbout">
                 <fa-icon class="text-secondary" [icon]="'edit'"></fa-icon>
@@ -23,7 +23,5 @@
                 </button>
             </div>
         </form>
-        <div class="clearfix"></div>
     </div>
-
 </div>

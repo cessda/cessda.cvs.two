@@ -2,6 +2,27 @@
     <jhi-alert-error></jhi-alert-error>
     <jhi-alert></jhi-alert>
 
-    <h2>User guide</h2>
+    <div class="row-detail form-group">
+        <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
+            <button *ngIf="!isWriteUserGuide" type="button" ngbTooltip="Edit comment" class="btn btn-sm btn-primary-outline float-right" data-dismiss="modal" (click)="isWriteUserGuide = !isWriteUserGuide">
+                <fa-icon class="text-secondary" [icon]="'edit'"></fa-icon>
+                <span> Edit</span>
+            </button>
+        </div>
+        <div *ngIf="!isWriteUserGuide" class="detail-column" [innerHTML]="userGuideForm.get('content')? userGuideForm.get('content')!.value : 'no information'">        </div>
+        <form novalidate [formGroup]="userGuideForm">
+            <div *ngIf="isWriteUserGuide">
+                <quill-editor class="large-quill" formControlName="content"></quill-editor>
+            </div>
+            <div *ngIf="isWriteUserGuide" class="ql-editor-buttons">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriteUserGuide = !isWriteUserGuide">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="button" id="save-ddi-usage" [disabled]="userGuideForm.invalid || isSaving" (click)="saveUserGuide()" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
 
 </div>
