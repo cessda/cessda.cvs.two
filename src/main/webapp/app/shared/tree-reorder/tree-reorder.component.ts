@@ -28,7 +28,7 @@ export class TreeReorderComponent implements OnInit, OnDestroy {
   }
 
   selectConcept(concept: IConcept): void {
-    if (concept.status !== 'REORDER') {
+    if (concept.status !== 'REORDER' && concept.status !== 'UNSELECTABLE' && concept.status !== 'PIVOT') {
       this.eventManager.broadcast({ name: 'selectReorderConcept', content: concept });
     }
   }

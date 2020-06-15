@@ -145,12 +145,6 @@
 
                                 <div *ngIf="concept">
                                     <div *ngIf="version!.status !== 'FINAL_REVIEW'">
-                                        <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
-                                                class="btn sk-select-min sk-input-f mtop10" (click)="openAddCodeAsChildPopup()">
-                                            <fa-icon [icon]="'plus-square'"></fa-icon>
-                                            <span>Add child code</span>
-                                        </button>
-
                                         <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
                                                 class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
                                             <fa-icon [icon]="'edit'"></fa-icon>
@@ -159,12 +153,6 @@
                                     </div>
                                     <div *ngIf="version!.status === 'FINAL_REVIEW'">
                                         <div *jhiHasAnyAgencyAuthority="{actionType:'PERFORM_ACTION_IN_FINAL_REVIEW', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}">
-                                            <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
-                                                    class="btn sk-select-min sk-input-f mtop10" (click)="openAddCodeAsChildPopup()">
-                                                <fa-icon [icon]="'plus-square'"></fa-icon>
-                                                <span>Add child code</span>
-                                            </button>
-
                                             <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
                                                     class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
                                                 <fa-icon [icon]="'edit'"></fa-icon>
@@ -172,13 +160,13 @@
                                             </button>
                                         </div>
                                     </div>
-
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
-                                            class="btn sk-select-min sk-input-f mtop10" (click)="openReorderCode()">
-                                        <fa-icon [icon]="'stream'"></fa-icon>
-                                        <span>Move code</span>
-                                    </button>
-
+                                    <div *ngIf="version!.concepts!.length > 1">
+                                        <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
+                                                class="btn sk-select-min sk-input-f mtop10" (click)="openReorderCode()">
+                                            <fa-icon [icon]="'stream'"></fa-icon>
+                                            <span>Move code</span>
+                                        </button>
+                                    </div>
                                     <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openDeleteCodePopup()">
                                         <fa-icon [icon]="'trash'"></fa-icon>

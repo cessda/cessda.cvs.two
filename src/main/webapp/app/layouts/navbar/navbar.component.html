@@ -127,7 +127,7 @@
                         </a>
                     </li>
                     <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
-                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="nav-item dropdown pointer secondary-menu" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                             <span>
                                 <fa-icon icon="th-list"></fa-icon>
@@ -218,7 +218,7 @@
                         </ul>
                     </li>
 
-                    <li *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_TECHNICAL']" ngbDropdown class="nav-item dropdown pointer" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    <li *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_TECHNICAL']" ngbDropdown class="nav-item dropdown pointer secondary-menu" display="dynamic" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu-technical">
                             <span>
                                 <fa-icon icon="tools"></fa-icon>

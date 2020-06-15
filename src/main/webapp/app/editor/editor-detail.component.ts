@@ -1,4 +1,4 @@
-import { AfterViewChecked, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
@@ -529,11 +529,11 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   openAddCodeAsRootPopup(): void {
-    this.openAddEditCodePopup(true, 'INSERT_AS_ROOT');
+    this.openAddEditCodePopup(true);
   }
 
   openAddCodeAsChildPopup(): void {
-    this.openAddEditCodePopup(true, 'INSERT_AS_CHILD');
+    this.openAddEditCodePopup(true);
   }
 
   openEditCodePopup(): void {

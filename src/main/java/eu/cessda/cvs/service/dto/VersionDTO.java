@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.Version;
 import eu.cessda.cvs.domain.VocabularySnippet;
+import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.utils.VersionUtils;
 
 import javax.persistence.Lob;
@@ -485,13 +485,11 @@ public class VersionDTO implements Serializable {
             conceptLists.add(position, concept);
             // update concept position information after this index
             Iterator<ConceptDTO> conceptsIterator = conceptLists.iterator();
-            int index = 0;
             while ( conceptsIterator.hasNext() ) {
                 ConceptDTO c = conceptsIterator.next();
-                if( index > position) {
+                if( c.getPosition() >= position && !c.equals(concept)) {
                     c.setPosition( c.getPosition() + 1);
                 }
-                index++;
             }
         }
         setConcepts( new LinkedHashSet<>(conceptLists ));

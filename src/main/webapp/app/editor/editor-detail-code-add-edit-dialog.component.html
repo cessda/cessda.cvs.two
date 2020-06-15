@@ -1,10 +1,10 @@
 <form name="cvAddForm" role="form" (ngSubmit)="save()" novalidate [formGroup]="codeAddEditForm">
     <div class="modal-header">
         <div class="modal-title" style="display: flex;">
-            <span *ngIf="isNew">Add code for {{versionParam!.notation}}</span>
-            <span *ngIf="!isNew && isSlForm">Edit {{getLangIsoFormatted(versionParam!.language!)}} code from <strong>{{conceptParam!.notation}}</strong></span>
-            <span *ngIf="!isNew && !isSlForm && !conceptParam!.title">Add {{getLangIsoFormatted(versionParam!.language!)}} code translation for <strong>{{conceptParam!.notation}}</strong></span>
-            <span *ngIf="!isNew && !isSlForm && conceptParam!.title">Edit {{getLangIsoFormatted(versionParam!.language!)}} code translation for <strong>{{conceptParam!.notation}}</strong></span>
+            <span *ngIf="isNew">Add code for {{versionParam.notation}}</span>
+            <span *ngIf="!isNew && isSlForm">Edit {{getLangIsoFormatted(versionParam.language!)}} code from <strong>{{conceptParam!.notation}}</strong></span>
+            <span *ngIf="!isNew && !isSlForm && !conceptParam!.title">Add {{getLangIsoFormatted(versionParam.language!)}} code translation for <strong>{{conceptParam!.notation}}</strong></span>
+            <span *ngIf="!isNew && !isSlForm && conceptParam!.title">Edit {{getLangIsoFormatted(versionParam.language!)}} code translation for <strong>{{conceptParam!.notation}}</strong></span>
         </div>
 
         <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
@@ -24,9 +24,13 @@
                         <span ngbTooltip="required field" class="label-required">Code</span>
                     </div>
                     <div *ngIf="isSlForm" class="detail-column">
-                        <span *ngIf="codeInsertMode === 'INSERT_AS_CHILD'">{{conceptParam!.notation}}.</span>
+                        <div *ngIf="isNew && isEnablePreview">
+                            <span *ngIf="codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AS_CHILD'">{{conceptParam!.notation}}.</span>
+                            <span *ngIf="conceptParam !== null && conceptParam!.parent  && (codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_AFTER' ||
+                                codeAddEditForm.get('codeInsertMode')!.value === 'INSERT_BEFORE')">{{conceptParam!.parent}}.</span>
+                        </div>
                         <span *ngIf="!isNew && conceptParam!.parent">{{conceptParam!.parent}}.</span>
-                        <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation"/>
+                        <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation" (input)="updateTreePreview()"/>
                         <div *ngIf="codeAddEditForm.get('notation')!.invalid && (codeAddEditForm.get('notation')!.dirty || codeAddEditForm.get('notation')!.touched)">
                             <small class="form-text text-danger"
                                    *ngIf="codeAddEditForm.get('notation')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -54,7 +58,7 @@
                 </div>
                 <div *ngIf="!isSlForm" class="row-detail form-group">
                     <div class="label-column-input">
-                        <span>Code ({{versionParam!.languageSl}})</span>
+                        <span>Code ({{versionParam.languageSl}})</span>
                     </div>
                     <div class="detail-column label-column-value">
                         <span>{{conceptParam!.notation}}</span>
@@ -65,14 +69,14 @@
                         <span>Language</span>
                     </div>
                     <div class="detail-column  label-column-value">
-                        <span>{{getLangIsoFormatted(versionParam!.language!)}}</span>
+                        <span>{{getLangIsoFormatted(versionParam.language!)}}</span>
                     </div>
                 </div>
             </div>
 
             <div *ngIf="!isSlForm" class="row-detail form-group">
                 <div class="label-column-input">
-                    <span>Descriptive term ({{versionParam!.languageSl}})</span>
+                    <span>Descriptive term ({{versionParam.languageSl}})</span>
                 </div>
                 <div class="detail-column  label-column-value">
                     <span>{{conceptParam!.titleSl}}</span>
@@ -81,7 +85,7 @@
 
             <div class="row-detail form-group">
                 <div class="label-column-input">
-                    <span ngbTooltip="required field" class="label-required">Descriptive term ({{versionParam!.language}})</span>
+                    <span ngbTooltip="required field" class="label-required">Descriptive term ({{versionParam.language}})</span>
                 </div>
                 <div class="detail-column">
                     <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
@@ -96,7 +100,7 @@
 
             <div *ngIf="!isSlForm" class="row-detail form-group">
                 <div class="label-column-input">
-                    <span>Definition ({{versionParam!.languageSl}})</span>
+                    <span>Definition ({{versionParam.languageSl}})</span>
                 </div>
                 <div class="detail-column  label-column-value">
                     <span>{{conceptParam!.definitionSl}}</span>
@@ -105,10 +109,39 @@
 
             <div class="row-detail form-group">
                 <div class="label-column-input">
-                    <span>Definition ({{versionParam!.language}})</span>
+                    <span>Definition ({{versionParam.language}})</span>
                 </div>
                 <div class="detail-column">
                     <textarea class="form-control"  id="field_definition" name="definition" formControlName="definition" rows="10"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="isEnablePreview && conceptParam !== null" class="row-content">
+            <div class="row-details">
+                <div class="row-detail form-group">
+                    <div class="btn-group btn-group-toggle" ngbRadioGroup name="insert-choice" formControlName="codeInsertMode" (ngModelChange)="updateTreePreview()">
+                        <label ngbButtonLabel class="btn-primary">
+                            <input ngbButton type="radio" value="INSERT_AFTER"> Insert after
+                        </label>
+                        <label ngbButtonLabel class="btn-primary">
+                            <input ngbButton type="radio" value="INSERT_BEFORE"> Insert before
+                        </label>
+                        <label ngbButtonLabel class="btn-primary">
+                            <input ngbButton type="radio" value="INSERT_AS_CHILD"> Insert as child
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="isEnablePreview" class="row-content">
+            <div class="row-details">
+                <div class="row-detail form-group">
+                    <div class="tree-box h-300">
+                        <div class="head">Preview</div>
+                        <jhi-tree-reorder [parentNotation]="" [conceptList]="conceptsToPlace" [level]="0"></jhi-tree-reorder>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
@@ -12,7 +12,7 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
 import { EditorService } from 'app/editor/editor.service';
 import { IVersion } from 'app/shared/model/version.model';
-import { IConcept } from 'app/shared/model/concept.model';
+import { Concept, IConcept } from 'app/shared/model/concept.model';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 
 @Component({
@@ -26,16 +26,21 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   languages: string[] = [];
   errorCodeExists = false;
   codeSnippet?: ICodeSnippet;
-  versionParam?: IVersion;
+  versionParam!: IVersion;
   conceptParam?: IConcept;
   codeInsertMode?: string;
   isNew?: boolean;
   isSlForm?: boolean;
+  isEnablePreview: boolean;
+
+  conceptsToPlace?: IConcept[] = [];
+  conceptsToPlaceTemp?: IConcept[] = [];
 
   codeAddEditForm = this.fb.group({
     notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[_+A-Za-z0-9-]*$')]],
     title: ['', [Validators.required]],
-    definition: ['', []]
+    definition: ['', []],
+    codeInsertMode: []
   });
 
   constructor(
@@ -44,9 +49,12 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private _ngZone: NgZone
   ) {
     this.isSaving = false;
+    this.isEnablePreview = false;
+    this.codeInsertMode = 'INSERT_AS_ROOT';
   }
 
   private fillForm(): void {
@@ -83,24 +91,56 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
         this.fillForm();
       }
     });
+
+    this.isEnablePreview = (this.isNew && this.versionParam.concepts!.length > 0)!;
+    if (this.isEnablePreview) {
+      // deep copy so the changes will not influence the original concepts
+      this.conceptsToPlaceTemp = this.versionParam.concepts!.map(x => Object.assign({ ...x }));
+      this.conceptsToPlaceTemp.forEach(c => {
+        if (this.conceptParam && c.notation === this.conceptParam.notation) {
+          c.status = 'PIVOT';
+        } else {
+          c.status = 'UNSELECTABLE';
+        }
+      });
+      if (this.conceptParam! !== null) {
+        this.codeAddEditForm.patchValue({ codeInsertMode: 'INSERT_AFTER' });
+      } else {
+        this.codeAddEditForm.patchValue({ codeInsertMode: 'INSERT_AS_ROOT' });
+      }
+
+      this.updateTreePreview();
+    } else {
+      this.codeAddEditForm.removeControl('codeInsertMode');
+      this.codeInsertMode = 'INSERT_AS_ROOT';
+    }
   }
 
   private createFromForm(): ICodeSnippet {
     if (this.isNew) {
+      if (this.conceptParam != null) {
+        this.codeInsertMode = this.codeAddEditForm.get('codeInsertMode')!.value;
+      }
+
+      const pos = this.calculatePosition();
+
       const codeSnippet = {
         ...new CodeSnippet(),
         actionType: 'CREATE_CODE',
-        versionId: this.versionParam!.id,
+        versionId: this.versionParam.id,
         title: this.codeAddEditForm.get(['title'])!.value,
-        definition: this.codeAddEditForm.get(['definition'])!.value
+        definition: this.codeAddEditForm.get(['definition'])!.value,
+        position: pos
       };
       if (this.codeInsertMode === 'INSERT_AS_ROOT') {
-        codeSnippet.position = this.versionParam!.concepts!.length;
         codeSnippet.notation = this.codeAddEditForm.get(['notation'])!.value;
       } else if (this.codeInsertMode === 'INSERT_AS_CHILD') {
         codeSnippet.parent = this.conceptParam!.notation;
-        codeSnippet.position = this.conceptParam!.position! + 1;
         codeSnippet.notation = codeSnippet.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
+      } else {
+        codeSnippet.parent = this.conceptParam!.parent;
+        codeSnippet.notation =
+          (codeSnippet.parent !== undefined ? codeSnippet.parent + '.' : '') + this.codeAddEditForm.get(['notation'])!.value;
       }
       return codeSnippet;
     } else {
@@ -109,7 +149,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           ...this.codeSnippet,
           actionType: 'EDIT_CODE',
           conceptId: this.conceptParam!.id,
-          versionId: this.versionParam!.id,
+          versionId: this.versionParam.id,
           notation: this.codeAddEditForm.get(['notation'])!.value,
           title: this.codeAddEditForm.get(['title'])!.value,
           definition: this.codeAddEditForm.get(['definition'])!.value
@@ -123,7 +163,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           ...this.codeSnippet,
           actionType: 'ADD_TL_CODE',
           conceptId: this.conceptParam!.id,
-          versionId: this.versionParam!.id,
+          versionId: this.versionParam.id,
           title: this.codeAddEditForm.get(['title'])!.value,
           definition: this.codeAddEditForm.get(['definition'])!.value
         };
@@ -133,6 +173,18 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
         return cdSnippet;
       }
     }
+  }
+
+  private calculatePosition(): number {
+    let index = this.versionParam.concepts!.length;
+    if (this.conceptParam !== null) {
+      index = this.conceptParam!.position! + 1;
+    }
+
+    if (this.codeInsertMode === 'INSERT_BEFORE') {
+      index--;
+    }
+    return index;
   }
 
   save(): void {
@@ -156,9 +208,9 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   protected onSaveSuccess(): void {
     this.isSaving = false;
     if (this.isSlForm) {
-      this.router.navigate(['/editor/vocabulary/' + this.versionParam!.notation]);
+      this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation]);
     } else {
-      this.router.navigate(['/editor/vocabulary/' + this.versionParam!.notation], { queryParams: { lang: this.versionParam!.language } });
+      this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation], { queryParams: { lang: this.versionParam.language } });
     }
     this.activeModal.dismiss(true);
     this.eventManager.broadcast('deselectConcept');
@@ -177,5 +229,43 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       this.errorCodeExists = true;
       this.isSaving = false;
     }
+  }
+
+  updateTreePreview(): void {
+    if (!this.isEnablePreview) {
+      return;
+    }
+
+    this.conceptsToPlace = [...this.conceptsToPlaceTemp!]; // shallow copy for preview
+
+    this.codeInsertMode = this.codeAddEditForm.get('codeInsertMode')!.value;
+
+    const pos = this.calculatePosition();
+
+    const newConcept = {
+      ...new Concept(),
+      status: 'TO_BE_INSERTED',
+      position: pos
+    };
+
+    if (this.codeInsertMode === 'INSERT_AS_ROOT') {
+      newConcept.parent = undefined;
+      newConcept.notation = this.codeAddEditForm.get(['notation'])!.value;
+    } else if (this.codeInsertMode === 'INSERT_AS_CHILD') {
+      newConcept.parent = this.conceptParam!.notation;
+      newConcept.notation = newConcept.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
+    } else {
+      newConcept.parent = this.conceptParam!.parent;
+      newConcept.notation =
+        (newConcept.parent !== undefined ? newConcept.parent + '.' : '') + this.codeAddEditForm.get(['notation'])!.value;
+    }
+
+    this.conceptsToPlace.splice(pos, 0, newConcept);
+    this._ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        const element = document.querySelector('.to-be-inserted');
+        element!.scrollIntoView({ behavior: 'smooth' });
+      }, 500);
+    });
   }
 }

@@ -24,7 +24,7 @@
             </div>
             <form *ngIf="versionParam"  novalidate [formGroup]="commentForm">
                 <div *ngIf="isWriteComment">
-                    <quill-editor class="small-quill" [modules]="quillModules" name="content" formControlName="content"></quill-editor>
+                    <quill-editor class="small-quill"[placeholder]="'what you want to say?'" [modules]="quillModules" name="content" formControlName="content"></quill-editor>
                     <div *ngIf="commentForm.get('content')!.invalid && (commentForm.get('content')!.dirty || commentForm.get('content')!.touched)">
                         <small class="form-text text-danger"
                                *ngIf="commentForm.get('content')?.errors?.required" jhiTranslate="entity.validation.required">

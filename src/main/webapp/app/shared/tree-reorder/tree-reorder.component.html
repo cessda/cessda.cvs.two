@@ -2,7 +2,8 @@
     <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
         <li id="code_{{concept.notation.split('.').join('')}}">
             <div class="concept-row" (click)="selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation,
-            'reorder': concept.status === 'REORDER'}">
+            'reorder': concept.status === 'REORDER', 'text-muted': concept.status === 'UNSELECTABLE', 'pivot': concept.status === 'PIVOT',
+            'to-be-inserted': concept.status === 'TO_BE_INSERTED'}">
                 <span class="column1 coll-mar-{{level!}}">
                     <span *ngIf="isConceptHasChildren(concept.notation,conceptList)" class="invisible-button">
                         <fa-icon icon="caret-down"></fa-icon>

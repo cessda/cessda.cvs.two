@@ -63,11 +63,12 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
     // deep copy so that original concepts not affected
     const clonedConcepts = this.versionParam.concepts!.map(x => Object.assign({ ...x }));
 
-    // normalize code, so the first selected element is always a root code
+    // normalize selected code, so the first selected element is always a root code
     this.conceptsToMove = [
       clonedConcepts.filter(c => c.notation === this.conceptParam.notation)[0],
       ...clonedConcepts.filter(c => c.parent && c.parent.startsWith(this.conceptParam.notation!))
     ];
+    // normalize selected code/code block
     const baseParent = this.conceptsToMove[0].parent;
     this.conceptsToMove.forEach(c => {
       if (baseParent !== undefined) {
@@ -81,7 +82,7 @@ export class EditorDetailCodeReorderDialogComponent implements OnInit, OnDestroy
       c.status = 'REORDER';
     });
 
-    // initial value for preview
+    // initial value for preview, remove selected concepts from concept preview
     this.conceptsToPlaceTemp = clonedConcepts.filter(c => !this.conceptsToMove!.includes(c));
     this.conceptsToPlace = [...this.conceptsToPlaceTemp];
 

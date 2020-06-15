@@ -653,8 +653,13 @@ button.invisible-button:focus {
     color: #fff;
   }
 }
-.concept-row.reorder {
+.concept-row.reorder,
+.concept-row.pivot {
   background-color: #d4d4d4;
+}
+.concept-row.to-be-inserted {
+  background-color: #ff0;
+  min-height: 22px;
 }
 .btn-group-toggle {
   display: none;
@@ -1053,4 +1058,7 @@ button.invisible-button:focus {
     margin-left: 0;
     margin-right: 0;
   }
+}
+.h-300 {
+  height: 300px;
 }
