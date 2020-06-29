@@ -1,5 +1,6 @@
 package eu.cessda.cvs.config;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -14,7 +15,6 @@ import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.EntityMapper;
 import org.springframework.data.mapping.MappingException;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +22,7 @@ import java.util.Map;
 @EnableConfigurationProperties(ElasticsearchProperties.class)
 public class ElasticsearchConfiguration {
 
-    private ObjectMapper mapper;
+    private final ObjectMapper mapper;
 
     public ElasticsearchConfiguration(ObjectMapper mapper) {
         this.mapper = mapper;
@@ -39,9 +39,9 @@ public class ElasticsearchConfiguration {
         return new ElasticsearchTemplate(client, new CustomEntityMapper(objectMapper));
     }
 
-    public class CustomEntityMapper implements EntityMapper {
+    public static class CustomEntityMapper implements EntityMapper {
 
-        private ObjectMapper objectMapper;
+        private final ObjectMapper objectMapper;
 
         public CustomEntityMapper(ObjectMapper objectMapper) {
             this.objectMapper = objectMapper;
@@ -53,12 +53,12 @@ public class ElasticsearchConfiguration {
         }
 
         @Override
-        public String mapToString(Object object) throws IOException {
+        public String mapToString(Object object) throws JsonProcessingException {
             return objectMapper.writeValueAsString(object);
         }
 
         @Override
-        public <T> T mapToObject(String source, Class<T> clazz) throws IOException {
+        public <T> T mapToObject(String source, Class<T> clazz) throws JsonProcessingException {
             return objectMapper.readValue(source, clazz);
         }
 
@@ -67,7 +67,7 @@ public class ElasticsearchConfiguration {
         public Map<String, Object> mapObject(Object source) {
             try {
                 return objectMapper.readValue(mapToString(source), HashMap.class);
-            } catch (IOException e) {
+            } catch (JsonProcessingException e) {
                 throw new MappingException(e.getMessage(), e);
             }
         }
@@ -76,7 +76,7 @@ public class ElasticsearchConfiguration {
         public <T> T readObject (Map<String, Object> source, Class<T> targetType) {
             try {
                 return mapToObject(mapToString(source), targetType);
-            } catch (IOException e) {
+            } catch (JsonProcessingException e) {
                 throw new MappingException(e.getMessage(), e);
             }
         }
