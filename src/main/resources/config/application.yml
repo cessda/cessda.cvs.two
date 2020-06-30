@@ -142,7 +142,7 @@ jhipster:
   #     allow-credentials: true
   #     max-age: 1800
   mail:
-    from: cvs@localhost
+    from: no-reply@cessda.eu
   swagger:
     default-include-pattern: /api/.*
     title: cvs API

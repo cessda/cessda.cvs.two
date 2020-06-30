@@ -55,8 +55,8 @@ spring:
           logs: target/elasticsearch/log
           data: target/elasticsearch/data
   mail:
-    host: localhost
-    port: 25
+    host: smtp-relay.gmail.com
+    port: 465
     username:
     password:
   thymeleaf:
