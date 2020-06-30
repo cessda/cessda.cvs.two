@@ -63,6 +63,10 @@ export class EditorService {
       .pipe(map((res: EntityResponseConceptType) => this.convertVocabularyDateFromServer(res)));
   }
 
+  createBatchCode(codeSnippets: ICodeSnippet[]): Observable<HttpResponse<{}>> {
+    return this.http.post<IConcept>(`${this.resourceEditorCodeUrl}/batch`, codeSnippets, { observe: 'response' });
+  }
+
   updateCode(codeSnippet: ICodeSnippet): Observable<EntityResponseConceptType> {
     return this.http.put<IConcept>(this.resourceEditorCodeUrl, codeSnippet, { observe: 'response' });
   }

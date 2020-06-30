@@ -386,6 +386,11 @@ public class VocabularyServiceImpl implements VocabularyService {
         VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_FIND_VERSION + codeSnippet.getVersionId()));
 
+        // reject if version status is published
+        if( versionDTO.getStatus().equals( Status.PUBLISHED.toString() )) {
+            throw new IllegalArgumentException( "Unable to add Code " + codeSnippet.getNotation() + ", Version is already PUBLISHED" );
+        }
+
         VocabularyDTO vocabularyDTO = findOne(versionDTO.getVocabularyId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_FIND_VOCABULARY + versionDTO.getVocabularyId()));
 
@@ -478,7 +483,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
         // create concept by codeSnippet
         ConceptDTO newConceptDTO = new ConceptDTO( codeSnippet );
-        // add concept to version ans save version to save new concept
+        // add concept to version and save version to save new concept
         versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
         versionDTO = versionService.save(versionDTO);
 

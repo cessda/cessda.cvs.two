@@ -137,13 +137,13 @@
                             </div>
                             <div class="vocab-ver">
                                 <span>Version: {{getVersionByLang(vocabulary)}}</span>
-                                <a [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{tab:'export'}">
+                                <a [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang, tab:'export'}">
                                     <span>Download</span>
                                 </a>
                             </div>
                             <div class="vocab-code">
                                 <div *ngFor="let code of vocabulary.codes ;trackBy: trackNotation" class="vocab-code-item">
-                                    <a [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{code:code.notation.split('.').join('')}">
+                                    <a [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang, code:code.notation.split('.').join('')}">
                                         <span [innerHTML]="getCodeTitleByLang(code, vocabulary.selectedLang)"></span>
                                     </a>
                                     :&nbsp;&nbsp;

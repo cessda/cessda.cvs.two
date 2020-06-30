@@ -24,8 +24,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing {@link Vocabulary}.
@@ -387,6 +389,34 @@ public class EditorResource {
         return ResponseEntity.created(new URI("/api/concepts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_CODE_NAME, result.getNotation()))
             .body(result);
+    }
+
+    /**
+     * {@code POST  /editors/codes/batch} : Create batch of new codes/concepts via editor Rest API.
+     *
+     * @param codeSnippets the conceptDTOs helper to create.
+     *
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ConceptDTO, or with status {@code 400 (Bad Request)} if the concept has already an ID.
+     * @throws URISyntaxException if the Location URI syntax is incorrect.
+     * @throws CodeAlreadyExistException {@code 400 (Bad Request)} if the codes is already exist.
+     * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
+     */
+    @PostMapping("/editors/codes/batch")
+    public ResponseEntity<Void> createBatchCode(@Valid @RequestBody CodeSnippet[] codeSnippets) throws URISyntaxException {
+        boolean isSaved = false;
+        for (CodeSnippet codeSnippet : codeSnippets) {
+            log.debug("REST request to save Code/Concept : {}", codeSnippet);
+
+            if (codeSnippet.getConceptId() != null) {
+                throw new BadRequestAlertException("A new code/concept cannot already have an ID", ENTITY_CODE_NAME, "idexists");
+            }
+        }
+
+        for (CodeSnippet codeSnippet : codeSnippets) {
+            ConceptDTO result = vocabularyService.saveCode(codeSnippet);
+        }
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityCreationAlert(applicationName, true,
+            ENTITY_CODE_NAME, Arrays.stream(codeSnippets).map(c -> c.getNotation()).collect(Collectors.joining(", ")))).build();
     }
 
     /**

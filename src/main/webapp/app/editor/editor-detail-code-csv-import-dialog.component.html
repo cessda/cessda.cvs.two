@@ -1,0 +1,109 @@
+<form name="importForm" (ngSubmit)="doCsvImport()">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span>Import codes for <strong>{{versionParam.notation}} - {{getLangIsoFormatted(versionParam!.language!)}}</strong> from a CSV file.</span>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div *ngIf="csvImportWorkflow === 'UPLOAD'" class="form-group">
+            <div class="w-100">
+                <p>The codes import process from a CSV files composed into 3 steps:</p>
+                <dl class="row">
+                    <dt class="col-sm-2">UPLOAD</dt>
+                    <dd class="col-sm-10">This current process to upload a CSV file. After a CSV file is uploaded, the system will automatically read the file and display the file contents in the second step "SELECT".</dd>
+                    <dt class="col-sm-2">SELECT</dt>
+                    <dd class="col-sm-10">The contents on the CSV file will be parsed and displayed in a table. You need to carefully check if the CSV file parse process is done successfully. By default all CV-codes will be imported. You can ignore codes by uncheck the checkbox on the left side of the code.</dd>
+                    <dt class="col-sm-2">IMPORT</dt>
+                    <dd class="col-sm-10">In the final step, a preview of the imported code will be generated. You need to carefully check if the code structure is generated correctly, before importing the new codes.</dd>
+                </dl>
+                <hr/>
+                <h2>UPLOAD</h2>
+                <p> Please upload a CSV file. The following requirements are necessary:</p>
+                <p>- The CSV file content delimiter must be with <i>comma (,)</i>. If the content contains a comma, use <i>double-quote (")</i> as the content enclosure.</p>
+                <p>- The first row of the file will be read as header. The header will be shown in the preview but will be ignored for the import. </p>
+                <p>- The first 3 column of the CSV file will be read as "Code value", "Code descriptive term" and "Code definition".</p>
+                <p>- The first and second columns must be not empty.</p>
+                <p class="mt-1 ">Example of a valid CSV file content:</p>
+                <pre><small>Code,Term,Definition
+Individual,Individual,"Any individual person, irrespective of demographic..."
+Organization,Organization,"Any kind of formal administrative\" and functional structure...."
+Family,Family,"Two or more people related by blood, marriage (including step-relations)..."
+Family.Household,Family: Household family,"A more specific term, refers only to related..." </small>
+                </pre>
+                <input #csvInput type="file" (change)="onFileSelect($event.target)" name="csv-input"  accept=".csv">
+                <div *ngIf="isImportError" class="text-danger w-100">Error: No row is extracted. <br/>Unable to extract, please see example above and check the validity of the CSV file. </div>
+            </div>
+        </div>
+        <div *ngIf="csvImportWorkflow === 'SELECT'" class="form-group">
+            <div class="w-100">
+                <h2>SELECT</h2>
+                <p>Please carefully check if the CSV file parse process was done successfully. By default all CV-codes will be imported. You can ignore codes by uncheck the checkbox on the left side of the code.</p>
+                <div class="concept-row row-header">
+                    <span class="column1">
+                        <input type="checkbox" [checked]="!(markedRows.indexOf(false) > -1)" (change)="importAll = !importAll;fillIsRowImported()"/>&nbsp;
+                        <span>Code Value</span><span class="csv-header">&lt;&lt;{{csvHeaders[0]}}&gt;&gt;</span>
+                    </span>
+                    <span class="column2">
+                        <span>Code Term</span><span class="csv-header">&lt;&lt;{{csvHeaders[1]}}&gt;&gt;</span>
+                    </span>
+                    <span class="column3">
+                        <span>Code Definition</span><span class="csv-header">&lt;&lt;{{csvHeaders[2]}}&gt;&gt;</span>
+                    </span>
+                </div>
+                <div *ngFor="let contents of csvContents; let i = index" class="concept-row">
+                    <span class="column1">
+                        <input type="checkbox" [checked]="markedRows[i]" (change)="markedRows[i] = !markedRows[i]"/>&nbsp;
+                        <span>{{ contents[0] }}</span>
+                    </span>
+                    <span class="column2">
+                        <span>{{ contents[1] }}</span>
+                    </span>
+                    <span class="column3">
+                        <span>{{ contents[2] }}</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="csvImportWorkflow === 'IMPORT'" class="form-group">
+            <div class="w-100">
+                <h2>IMPORT</h2>
+                <p>Please carefully check if the code structure was generated correctly, before importing the new codes.</p>
+                <div class="concept-row row-header">
+                    <span class="column1">
+                        <input type="checkbox" [checked]="!(markedRows.indexOf(false) > -1)" (change)="importAll = !importAll;fillIsRowImported()"/>&nbsp;
+                        <span>Code Value</span>
+                    </span>
+                    <span class="column2">
+                        <span>Code Term</span>
+                    </span>
+                    <span class="column3">
+                        <span>Code Definition</span>
+                    </span>
+                </div>
+                <jhi-tree [parentNotation]="" [conceptList]="concepts" [level]="0"></jhi-tree>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button *ngIf="csvImportWorkflow === 'SELECT'" type="button" class="btn btn-secondary" (click)="backToUploadStage()">
+            <fa-icon *ngIf="isSlForm" [icon]="'caret-left'"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+        <button *ngIf="csvImportWorkflow === 'SELECT'" type="button" [disabled]="markedRows.indexOf(true) === -1" class="btn btn-primary"
+        (click)="createCodePreview()">
+            <span>Next</span>&nbsp;<fa-icon *ngIf="isSlForm" [icon]="'caret-right'"></fa-icon>
+        </button>
+        <button *ngIf="csvImportWorkflow === 'IMPORT'" type="button" class="btn btn-secondary" (click)="backToSelectStage()">
+            <fa-icon *ngIf="isSlForm" [icon]="'caret-left'"></fa-icon>&nbsp;<span>Back</span>
+        </button>
+        <button *ngIf="csvImportWorkflow === 'IMPORT'" type="button" [disabled]="isSaving" class="btn btn-primary"
+                (click)="doCsvImport()">
+            <fa-icon *ngIf="isSlForm" [icon]="'upload'"></fa-icon>&nbsp;<span>Import</span>
+        </button>
+    </div>
+</form>

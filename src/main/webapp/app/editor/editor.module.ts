@@ -8,15 +8,16 @@ import {
   EditorCvAddDialogComponent,
   EditorCvAddPopupComponent,
   EditorDetailCodeAddEditDialogComponent,
+  EditorDetailCodeCsvImportDialogComponent,
   EditorDetailCodeDeleteDialogComponent,
   EditorDetailCodeReorderDialogComponent,
   EditorDetailComponent,
   EditorDetailCvAddEditDialogComponent,
+  EditorDetailCvCommentDialogComponent,
+  EditorDetailCvCommentItemComponent,
   EditorDetailCvDeleteDialogComponent,
   EditorDetailCvForwardStatusDialogComponent,
-  EditorDetailCvNewVersionDialogComponent,
-  EditorDetailCvCommentDialogComponent,
-  EditorDetailCvCommentItemComponent
+  EditorDetailCvNewVersionDialogComponent
 } from './';
 import { TagInputModule } from 'ngx-chips';
 import { QuillModule } from 'ngx-quill';
@@ -34,10 +35,11 @@ import { NgxTextDiffModule } from 'ngx-text-diff';
     EditorDetailCvForwardStatusDialogComponent,
     EditorDetailCvNewVersionDialogComponent,
     EditorDetailCvCommentDialogComponent,
+    EditorDetailCvCommentItemComponent,
     EditorDetailCodeAddEditDialogComponent,
+    EditorDetailCodeCsvImportDialogComponent,
     EditorDetailCodeReorderDialogComponent,
-    EditorDetailCodeDeleteDialogComponent,
-    EditorDetailCvCommentItemComponent
+    EditorDetailCodeDeleteDialogComponent
   ],
   entryComponents: [
     EditorCvAddDialogComponent,
@@ -48,6 +50,7 @@ import { NgxTextDiffModule } from 'ngx-text-diff';
     EditorDetailCvNewVersionDialogComponent,
     EditorDetailCvCommentDialogComponent,
     EditorDetailCodeAddEditDialogComponent,
+    EditorDetailCodeCsvImportDialogComponent,
     EditorDetailCodeReorderDialogComponent,
     EditorDetailCodeDeleteDialogComponent
   ],

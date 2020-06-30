@@ -21,7 +21,8 @@ import { EditorDetailCvForwardStatusDialogComponent } from 'app/editor/editor-de
 import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 import { HttpResponse } from '@angular/common/http';
 import { EditorDetailCvNewVersionDialogComponent } from 'app/editor/editor-detail-cv-new-version-dialog.component';
-import { EditorDetailCvCommentDialogComponent } from '.';
+import { EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent } from '.';
+import * as moment from 'moment';
 
 @Component({
   selector: 'jhi-editor-detail',
@@ -528,11 +529,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
   }
 
-  openAddCodeAsRootPopup(): void {
-    this.openAddEditCodePopup(true);
-  }
-
-  openAddCodeAsChildPopup(): void {
+  openAddCodePopup(): void {
     this.openAddEditCodePopup(true);
   }
 
@@ -560,6 +557,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.ngbModalRef = this.modalService.open(EditorDetailCodeDeleteDialogComponent as Component, { size: 'xl', backdrop: 'static' });
     this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.conceptParam = this.concept;
+    this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
+  }
+
+  openCsvImportCodeWindow(): void {
+    this.ngbModalRef = this.modalService.open(EditorDetailCodeCsvImportDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
   }
 
@@ -623,5 +626,44 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   closeNotes(): void {
     this.isNotesEdit = false;
     this.detailForm.patchValue({ notes: this.version!.notes });
+  }
+
+  exportAsCsv(): void {
+    // specify how you want to handle null values here
+    const header = ['Code value', 'Code term', 'Code definition'];
+    const csv = this.version!.concepts!.map(concept =>
+      [this.escapeCsvContent(concept.notation), this.escapeCsvContent(concept.title), this.escapeCsvContent(concept.definition)].join(',')
+    );
+    csv.unshift(header.join(','));
+    const csvArray = csv.join('\r\n');
+
+    const a = document.createElement('a');
+    const blob = new Blob([csvArray], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+
+    a.href = url;
+    a.download =
+      this.version!.notation +
+      '_' +
+      this.version!.language +
+      '_' +
+      this.version!.number +
+      '(' +
+      this.version!.status +
+      ')_' +
+      moment().format('YYYY-MM-DD') +
+      '.csv';
+    a.click();
+    window.URL.revokeObjectURL(url);
+    a.remove();
+  }
+
+  escapeCsvContent(content?: string): string {
+    let escapedContent = content === null || content === undefined ? '' : content;
+    escapedContent = escapedContent.replace(/\n+$/, '').replace(/"/g, '""');
+    if (escapedContent.search(/("|,|\n)/g) >= 0) {
+      escapedContent = `"${escapedContent}"`;
+    }
+    return escapedContent;
   }
 }
