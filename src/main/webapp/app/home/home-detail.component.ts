@@ -196,7 +196,11 @@ export class HomeDetailComponent implements OnInit {
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
       this.vocabulary = vocabulary;
       if (this.initialLangSelect !== null) {
-        this.vocabulary!.selectedLang = this.initialLangSelect!;
+        if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
+          this.vocabulary!.selectedLang = this.vocabulary!.sourceLanguage!;
+        } else {
+          this.vocabulary!.selectedLang = this.initialLangSelect!;
+        }
       }
 
       const langs: string[] = this.getUniqueVersionLang();

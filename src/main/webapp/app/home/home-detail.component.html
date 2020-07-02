@@ -13,10 +13,16 @@
                 <span class="">
                     {{vocabulary!.notation}} v.{{getSlVersion()!.number}}
                 </span>
+
+                <span class="cmt-scn" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT','ROLE_USER']">
+                    <a type="button" class="btn btn-primary btn-sm" ngbTooltip="Go to editor" [routerLink]="['/editor/vocabulary', vocabulary!.notation ]" [queryParams]="{lang: vocabulary!.selectedLang}">
+                        <fa-icon icon="eye"></fa-icon>
+                        <span class="d-none d-sm-inline-block"> Editor</span>
+                    </a>
+                </span>
             </div>
         </div>
         <div class="row-content">
-
             <ngb-alert class="text-center" [dismissible]="false" *ngIf="vocabulary!.versionNumber !== getSlVersion()!.number">
                 <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
                     {{vocabulary!.notation}} v.{{vocabulary!.versionNumber}}

@@ -15,11 +15,15 @@
                 </span>
 
                 <span class="cmt-scn">
-                    <button type="button" class="btn btn-primary btn-sm" (click)="openCvCommentPopup()">
+                    <button type="button"ngbTooltip="View/Add comments"  class="btn btn-primary btn-sm" (click)="openCvCommentPopup()">
                         <fa-icon icon="comment"></fa-icon>
-                        <span> Comments</span>
+                        <span class="d-none d-sm-inline-block"> Comments</span>
                         <span class="badge badge-light">{{version!.comments!.length}}</span>
                     </button>
+                    <a *ngIf="version!.status === 'PUBLISHED'" ngbTooltip="Go to publication" type="button" class="btn btn-primary btn-sm" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{lang: vocabulary!.selectedLang}">
+                        <fa-icon icon="eye"></fa-icon>
+                        <span class="d-none d-sm-inline-block"> Publication</span>
+                    </a>
                 </span>
             </div>
         </div>

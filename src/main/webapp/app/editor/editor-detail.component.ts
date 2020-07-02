@@ -307,7 +307,11 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
       this.vocabulary = vocabulary;
       if (this.initialLangSelect !== null) {
-        this.setActiveVersion(this.initialLangSelect!);
+        if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
+          this.setActiveVersion(this.vocabulary!.sourceLanguage!);
+        } else {
+          this.setActiveVersion(this.initialLangSelect!);
+        }
       } else {
         this.setActiveVersion(this.vocabulary!.selectedLang!);
       }
