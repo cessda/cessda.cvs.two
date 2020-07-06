@@ -1,11 +1,13 @@
 package eu.cessda.cvs.service.dto;
 
 import eu.cessda.cvs.config.Constants;
-
 import eu.cessda.cvs.domain.Authority;
 import eu.cessda.cvs.domain.User;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -187,6 +189,10 @@ public class UserDTO {
 
     public void setUserAgencies(Set<UserAgencyDTO> userAgencies) {
         this.userAgencies = userAgencies;
+    }
+
+    public String getName() {
+        return (this.firstName != null ? this.firstName : "") + (this.lastName != null ? " " +this.lastName : "");
     }
 
     @Override

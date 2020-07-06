@@ -9,7 +9,7 @@ export interface ICodeSnippet {
   definition?: any;
   position?: number;
   changeType?: any;
-  changeDescription?: any;
+  changeDesc?: any;
   conceptStructures?: string[];
   conceptStructureIds?: number[];
 }
@@ -26,7 +26,7 @@ export class CodeSnippet implements ICodeSnippet {
     public definition?: any,
     public position?: number,
     public changeType?: any,
-    public changeDescription?: any,
+    public changeDesc?: any,
     public conceptStructures?: string[],
     public conceptStructureIds?: number[]
   ) {}

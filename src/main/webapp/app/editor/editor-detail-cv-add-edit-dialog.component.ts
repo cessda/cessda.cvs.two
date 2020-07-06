@@ -49,7 +49,9 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
           '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
         )
       ]
-    ]
+    ],
+    changeType: ['', [Validators.required]],
+    changeDesc: []
   });
 
   constructor(
@@ -99,6 +101,8 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     }
     if (this.isNew) {
       this.cvAddEditForm.patchValue({ language: this.languages[0]! });
+      this.cvAddEditForm.removeControl('changeType');
+      this.cvAddEditForm.removeControl('changeDesc');
     } else {
       this.vocabularyParam!.selectedLang = this.vocabularyParam!.sourceLanguage;
       this.cvAddEditForm.removeControl('language');
@@ -113,6 +117,15 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
           translateAgency: this.versionParam!.translateAgency,
           translateAgencyLink: this.versionParam!.translateAgencyLink
         });
+      }
+      if (
+        !this.versionParam!.initialVersion ||
+        (this.versionParam!.initialVersion && this.versionParam!.initialVersion === this.versionParam!.id)
+      ) {
+        this.cvAddEditForm.removeControl('changeType');
+        this.cvAddEditForm.removeControl('changeDesc');
+      } else {
+        this.cvAddEditForm.patchValue({ changeDesc: this.versionParam!.notation });
       }
     }
   }

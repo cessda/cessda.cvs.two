@@ -316,15 +316,14 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         this.setActiveVersion(this.vocabulary!.selectedLang!);
       }
       // build download checkbox
-      const langs: string[] = this.getUniqueVersionLang();
-      for (let i = 0; i < langs.length; i++) {
-        const versions: IVersion[] = this.getVersionsByLanguage(langs[i]);
-        this.dwnldCbVal[i] = langs[i] + '-' + versions[0].number;
-        const cbInitialValue = langs[i] === this.vocabulary!.sourceLanguage;
-        this.skosSelected[i] = cbInitialValue;
-        this.pdfSelected[i] = cbInitialValue;
-        this.htmlSelected[i] = cbInitialValue;
-        this.docxSelected[i] = cbInitialValue;
+      const languages: string[] = this.getUniqueVersionLang();
+      for (let i = 0; i < languages.length; i++) {
+        const versions: IVersion[] = this.getVersionsByLanguage(languages[i]);
+        this.dwnldCbVal[i] = languages[i] + '-' + versions[0].number;
+        this.skosSelected[i] = true;
+        this.pdfSelected[i] = true;
+        this.htmlSelected[i] = true;
+        this.docxSelected[i] = true;
       }
 
       // open popup, based on query param
@@ -341,7 +340,13 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.detailForm.patchValue({ tabSelected: this.initialTabSelected });
+    this.detailForm.patchValue({
+      tabSelected: this.initialTabSelected,
+      skosItems: this.skosSelected,
+      pdfItems: this.pdfSelected,
+      htmlItems: this.htmlSelected,
+      docxItems: this.docxSelected
+    });
 
     this.subscribeSelectConceptEvent();
 

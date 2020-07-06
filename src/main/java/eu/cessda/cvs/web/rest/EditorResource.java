@@ -23,10 +23,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -225,6 +222,10 @@ public class EditorResource {
         }
         // save at the end
         vocabularyDTO = vocabularyService.save( vocabularyDTO );
+        // check if SL published and not initial version, is there any TL needs to be cloned as DRAFT?
+        if( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED) && !versionDTO.isInitialVersion()) {
+            vocabularyDTO = cloneTLsIfAny(vocabularyDTO, versionDTO);
+        }
         // indexing editor
         vocabularyService.indexEditor(vocabularyDTO );
         // indexing publication
@@ -234,6 +235,34 @@ public class EditorResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
             .body(versionDTO);
+    }
+
+    private VocabularyDTO cloneTLsIfAny(VocabularyDTO vocabularyDTO, VersionDTO versionDTO) {
+        // find previous SL version, check if there is TLs
+        Optional<VersionDTO> prevVersionSlOpt = versionService.findOne(versionDTO.getPreviousVersion());
+        if ( prevVersionSlOpt.isPresent() ) {
+            VersionDTO prevVersionSl = prevVersionSlOpt.get();
+            List<VersionDTO> clonedTls = new ArrayList<>();
+            VocabularyDTO prevVocabDTO = vocabularyService.getWithVersionsByNotationAndVersion(vocabularyDTO.getNotation(), prevVersionSl.getNumber());
+            prevVocabDTO.getVersions().forEach(prevVersion -> {
+                if( prevVersion.getItemType().equals(ItemType.SL.toString())) {
+                    return;
+                }
+                log.info( "Clone {0} TL {1} version {2} to version {3}_DRAFT", versionDTO.getNotation(),
+                    prevVersion.getLanguage(), prevVersion.getNumber() + "_" + prevVersion.getStatus(), versionDTO.getNumber() + ".1" );
+                // cloning need currentSL (as main reference for notation and position), previousSl (as secondary reference if notation is changed in the current SL),
+                // and previous TL for the rest of properties
+                clonedTls.add(vocabularyService.cloneTl( versionDTO, prevVersionSl, prevVersion));
+            });
+            if( !clonedTls.isEmpty() ) // save if any TLs is cloned
+            {
+                vocabularyDTO.getVersions().addAll( clonedTls );
+                vocabularyDTO = vocabularyService.save( vocabularyDTO );
+            }
+        } else {
+            log.info( "Unable to check for available TLs to be cloned, unable to find prev SL version with ID {0}",  versionDTO.getPreviousVersion());
+        }
+        return vocabularyDTO;
     }
 
     /**

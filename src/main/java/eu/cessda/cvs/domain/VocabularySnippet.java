@@ -27,6 +27,8 @@ public class VocabularySnippet implements Serializable {
     private String ddiUsage;
     private String translateAgency;
     private String translateAgencyLink;
+    private String changeType;
+    private String changeDesc;
 
     public ActionType getActionType() {
         return actionType;
@@ -186,6 +188,22 @@ public class VocabularySnippet implements Serializable {
 
     public void setTranslateAgencyLink(String translateAgencyLink) {
         this.translateAgencyLink = translateAgencyLink;
+    }
+
+    public String getChangeType() {
+        return changeType;
+    }
+
+    public void setChangeType(String changeType) {
+        this.changeType = changeType;
+    }
+
+    public String getChangeDesc() {
+        return changeDesc;
+    }
+
+    public void setChangeDesc(String changeDesc) {
+        this.changeDesc = changeDesc;
     }
 
     @Override

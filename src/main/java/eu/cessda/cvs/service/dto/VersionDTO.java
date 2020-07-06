@@ -10,7 +10,6 @@ import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionUtils;
 
 import javax.persistence.Lob;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -187,7 +186,6 @@ public class VersionDTO implements Serializable {
 
     private Set<CommentDTO> comments = new LinkedHashSet<>();
 
-    @Transient
     private List<Map<String, String>> versionHistories = new ArrayList<>();
 
     public Long getId() {
@@ -584,14 +582,14 @@ public class VersionDTO implements Serializable {
             ", creator=" + getCreator() +
             ", publisher=" + getPublisher() +
             ", notes='" + getNotes() + "'" +
-            ", versionNotes='" + getVersionNotes() + "'" +
-            ", versionChanges='" + getVersionChanges() + "'" +
-            ", discussionNotes='" + getDiscussionNotes() + "'" +
+//            ", versionNotes='" + getVersionNotes() + "'" +  // commented to shorter debug
+//            ", versionChanges='" + getVersionChanges() + "'" + // commented to shorter debug
+//            ", discussionNotes='" + getDiscussionNotes() + "'" + // commented to shorter debug
             ", copyright='" + getCopyright() + "'" +
             ", license='" + getLicense() + "'" +
             ", licenseId=" + getLicenseId() +
             ", citation='" + getCitation() + "'" +
-            ", ddiUsage='" + getDdiUsage() + "'" +
+//            ", ddiUsage='" + getDdiUsage() + "'" + // commented to shorter debug
             ", translateAgency='" + getTranslateAgency() + "'" +
             ", translateAgencyLink='" + getTranslateAgencyLink() + "'" +
             ", vocabularyId=" + getVocabularyId() +

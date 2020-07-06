@@ -5,7 +5,6 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
-
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -92,6 +91,15 @@ public interface VocabularyService {
      * @return the vocabulary
      */
     VocabularyDTO getByNotation(String notation);
+
+    /**
+     * CLone TL version during Source Language (SL) publication if any
+     * @param currentVersionSl, the main reference/blueprint for the code structure
+     * @param prevVersionSl, the second reference/blueprint for the code structure, in case code notation changed
+     * @param prevVersionTl, the TL to be cloned
+     * @return
+     */
+    VersionDTO cloneTl(VersionDTO currentVersionSl, VersionDTO prevVersionSl, VersionDTO prevVersionTl);
 
     /**
      * get Vocabulary by notation with the specific versions
@@ -206,4 +214,16 @@ public interface VocabularyService {
      * @return the generated file
      */
     File generateVocabularyPublishFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
+
+    /**
+     * Generate files to be exported for specific vocabulary from the editor
+     *
+     * @param vocabularyNotation the vocabulary notation
+     * @param versionSl the Source Language version
+     * @param languageVersion combination of language anf version number. e.g en_1.0
+     * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
+     * @param request HttpServletRequest for statistical purpose
+     * @return the generated file
+     */
+    File generateVocabularyEditorFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
 }

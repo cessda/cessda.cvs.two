@@ -249,7 +249,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         VersionDTO newVersion;
         if( prevVersionDTO.getItemType().equals( ItemType.SL.toString() )) {
-            // check if user authorized to edit ddi-usage VocabularyResource
+            // check if user authorized to create new SL version
             SecurityUtils.checkResourceAuthorization(ActionType.CREATE_NEW_CV_SL_VERSION,
                 vocabularyDTO.getAgencyId(), ActionType.CREATE_NEW_CV_SL_VERSION.getAgencyRoles(), prevVersionDTO.getLanguage());
             newVersion = new VersionDTO( prevVersionDTO, null);
@@ -257,7 +257,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             vocabularyDTO.setVersionNumber( newVersion.getNumber());
             vocabularyDTO.setStatus( Status.DRAFT.toString() );
         } else {
-            // check if user authorized to edit ddi-usage VocabularyResource
+            // check if user authorized to create new TL version
             SecurityUtils.checkResourceAuthorization(ActionType.CREATE_NEW_CV_TL_VERSION,
                 vocabularyDTO.getAgencyId(), ActionType.CREATE_NEW_CV_TL_VERSION.getAgencyRoles(), prevVersionDTO.getLanguage());
             newVersion = new VersionDTO( prevVersionDTO, currentSlVersion);
@@ -413,6 +413,9 @@ public class VocabularyServiceImpl implements VocabularyService {
         conceptDTO = versionDTO.getConcepts().stream().filter(c -> c.getId().equals(codeSnippet.getConceptId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getConceptId()));
 
+        // use for temp store the original notation
+        String notationFromDb = conceptDTO.getNotation();
+
         // check duplicated code notation
         if( codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) && !conceptDTO.getNotation().equals( codeSnippet.getNotation()) ) {
             if (versionDTO.getConcepts().stream()
@@ -444,6 +447,14 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         // save versionDTO together with concepts
         versionDTO = versionService.save(versionDTO);
+
+        // check if codeSnippet contains changetype
+        if ( codeSnippet.getChangeType() != null ) {
+            codeSnippet.setVersionId( versionDTO.getId());
+            VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO( codeSnippet, SecurityUtils.getCurrentUser(),
+                versionDTO.getVocabularyId() );
+            vocabularyChangeService.save(vocabularyChangeDTO );
+        }
 
         // find the newly created code from version
         conceptDTO = versionDTO.findConceptByNotation(conceptDTO.getNotation());
@@ -611,6 +622,46 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
+    public VersionDTO cloneTl(VersionDTO currentVersionSl, VersionDTO prevVersionSl, VersionDTO prevVersionTl) {
+        VersionDTO newTlVersion = new VersionDTO( prevVersionTl, currentVersionSl);
+        newTlVersion.setCreator( SecurityUtils.getCurrentUserId() );
+        newTlVersion = versionService.save( newTlVersion );
+
+        VersionDTO finalNewTlVersion = newTlVersion;
+        currentVersionSl.getConcepts().forEach(conceptSlDTO -> {
+            ConceptDTO newConceptTl = new ConceptDTO( conceptSlDTO );
+            newConceptTl.setVersionId( finalNewTlVersion.getId() );
+
+            if( conceptSlDTO.getPreviousConcept() != null ){
+                // try to find concept title, definition from previous concept
+                // first, try to find the previous concept. in this case the TL prev concept will be found
+                // if there is no change in the notation between prev and current SL concept
+                ConceptDTO prevConceptTl = prevVersionTl.getConcepts().stream()
+                    .filter(c -> c.getNotation().equals(conceptSlDTO.getNotation())).findFirst().orElse(null);
+                // if not found, try to find old notation from the previous SL concept
+                if( prevConceptTl == null ) {
+                    String oldSlNotation = prevVersionSl.getConcepts().stream()
+                        .filter(c -> c.getId().equals(conceptSlDTO.getPreviousConcept())).map(c -> c.getNotation()).findFirst().orElse(null);
+                    if( oldSlNotation != null ) {
+                        prevConceptTl = prevVersionTl.getConcepts().stream()
+                            .filter(c -> c.getNotation().equals(oldSlNotation)).findFirst().orElse(null);
+                    }
+                }
+                // assign title and definition if previous TL concept found
+                if( prevConceptTl != null ) {
+                    newConceptTl.setTitle( prevConceptTl.getTitle());
+                    newConceptTl.setDefinition(prevConceptTl.getDefinition());
+                    newConceptTl.setPreviousConcept( prevConceptTl.getId() );
+                }
+            }
+
+            finalNewTlVersion.addConcept(newConceptTl);
+        });
+
+        return newTlVersion;
+    }
+
+    @Override
     public VocabularyDTO getWithVersionsByNotationAndVersion(String notation, String slVersionNumber) {
         if( slVersionNumber == null || slVersionNumber.isEmpty()) {
             log.error("Error version number could not be empty or null");
@@ -638,6 +689,10 @@ public class VocabularyServiceImpl implements VocabularyService {
             LinkedHashSet<ConceptDTO> sortedConcepts = version.getConcepts().stream()
                 .sorted(Comparator.comparing(ConceptDTO::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new));
             version.setConcepts(sortedConcepts);
+
+            // add history
+            addVersionHistories(vocabulary, version);
+
             versionDTOS.add(version);
         }
         vocabulary.setVersions( versionDTOS );
@@ -1213,8 +1268,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private void addVersionHistories(VocabularyDTO vocabulary, VersionDTO version) {
         // enable this after the data is corrected
-//        if( version.isInitialVersion())
-//            return;
+        if( version.isInitialVersion())
+            return;
         List<VersionDTO> olderVersions = versionService.findOlderPublishedByVocabularyLanguageId(vocabulary.getId(), version.getLanguage(), version.getId());
         List<Map<String,String>> olderVersionHistories = new ArrayList<>();
         for (VersionDTO olderVersion : olderVersions) {
@@ -1272,10 +1327,23 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public File generateVocabularyPublishFileDownload(
         String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
+        log.info( "Publication generate file {0} for Vocabulary {1} versionSl {2}", downloadType.toString(), vocabularyNotation, versionSl );
         Path path = Paths.get(applicationProperties.getVocabJsonPath() + vocabularyNotation + File.separator +
                 versionSl + File.separator + vocabularyNotation + "_" + versionSl + JSON_FORMAT);
 
         VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath(path);
+        return generateVocabularyFileDownload(vocabularyNotation, versionSl, versionList, downloadType, request, vocabularyDTO);
+    }
+
+    @Override
+    public File generateVocabularyEditorFileDownload(
+        String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
+        log.info( "Editor generate file {0} for Vocabulary {1} versionSl {2}", downloadType.toString(), vocabularyNotation, versionSl );
+        VocabularyDTO vocabularyDTO = getWithVersionsByNotationAndVersion(vocabularyNotation, versionSl);
+        return generateVocabularyFileDownload(vocabularyNotation, versionSl, versionList, downloadType, request, vocabularyDTO);
+    }
+
+    private File generateVocabularyFileDownload(String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request, VocabularyDTO vocabularyDTO) {
         // filter out version
         Set<VersionDTO> includedVersions = new LinkedHashSet<>();
         String[] versionSplits = versionList.split("_");
@@ -1332,7 +1400,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
         return null;
     }
-
 
 
     private void prepareAdditionalAttributesForNonSkos(VocabularyDTO vocabularyDTO, Map<String, Object> map, AgencyDTO agencyDTO) {

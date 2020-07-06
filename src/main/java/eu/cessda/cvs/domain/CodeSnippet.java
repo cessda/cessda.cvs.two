@@ -25,7 +25,7 @@ public class CodeSnippet implements Serializable {
     private String definition;
     private Integer position;
     private String changeType;
-    private String changeDescription;
+    private String changeDesc;
     private List<String> conceptStructures = new ArrayList<>();
     private List<Long> conceptStructureIds = new ArrayList<>();
 
@@ -109,12 +109,12 @@ public class CodeSnippet implements Serializable {
         this.changeType = changeType;
     }
 
-    public String getChangeDescription() {
-        return changeDescription;
+    public String getChangeDesc() {
+        return changeDesc;
     }
 
-    public void setChangeDescription(String changeDescription) {
-        this.changeDescription = changeDescription;
+    public void setChangeDesc(String changeDesc) {
+        this.changeDesc = changeDesc;
     }
 
     public List<String> getConceptStructures() {

@@ -1,16 +1,19 @@
 package eu.cessda.cvs.service.dto;
 
-import java.time.LocalDate;
-import javax.validation.constraints.*;
-import java.io.Serializable;
-import java.util.Objects;
+import eu.cessda.cvs.domain.CodeSnippet;
+
 import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * A DTO for the {@link eu.cessda.cvs.domain.VocabularyChange} entity.
  */
 public class VocabularyChangeDTO implements Serializable {
-    
+
     private Long id;
 
     private Long vocabularyId;
@@ -31,7 +34,21 @@ public class VocabularyChangeDTO implements Serializable {
 
     private LocalDate date;
 
-    
+    public VocabularyChangeDTO(){}
+
+    public VocabularyChangeDTO(CodeSnippet codeSnippet, UserDTO currentUser, Long vocabularyId) {
+        this.vocabularyId = vocabularyId;
+        this.versionId = codeSnippet.getVersionId();
+        this.changeType = codeSnippet.getChangeType();
+        this.description = codeSnippet.getChangeDesc() != null ? codeSnippet.getChangeDesc() : "";
+        this.date = LocalDate.now();
+        if( currentUser != null ) {
+            this.userId = currentUser.getId();
+            this.userName = currentUser.getName();
+        }
+    }
+
+
     public Long getId() {
         return id;
     }

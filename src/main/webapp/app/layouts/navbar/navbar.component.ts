@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
@@ -10,7 +10,7 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { LoginService } from 'app/core/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { fromEvent, Subscription } from 'rxjs';
-import { debounceTime, map, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 
 @Component({
@@ -140,5 +140,15 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   getImageUrl(): string {
     return this.isAuthenticated() ? this.accountService.getImageUrl() : '';
+  }
+
+  isLinkActive(link: string): boolean {
+    const url = this.router.url.substring(1, this.router.url.length);
+    if (link === '/') {
+      return url.startsWith('?') || url.startsWith('vocabulary');
+    } else if (link === 'editor') {
+      return url.startsWith('editor');
+    }
+    return false;
   }
 }

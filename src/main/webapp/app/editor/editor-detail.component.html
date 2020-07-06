@@ -1,7 +1,5 @@
 <div class="row">
     <form name="detailForm" class="detail-form" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="detailForm">
-        <jhi-alert-error></jhi-alert-error>
-        <jhi-alert></jhi-alert>
         <div class="bc">
             <div class="bc-inner">
                 <a href="javascript:void(0);" (click)="goToCvSearch()">
@@ -232,7 +230,8 @@
                     </div>
                 </div>
                 <div class="content-right">
-
+                    <jhi-alert-error></jhi-alert-error>
+                    <jhi-alert></jhi-alert>
                     <div class="row-detail">
                         <div class="label-column">
                             <div class="vocab-logo">
@@ -326,21 +325,19 @@
                             </div>
                         </div>
                         <div class="row-detail">
-                            <div class="label-column">
-                                <span>Version</span>
+                            <div class="label-column label-right">
+                                <span>Version&nbsp; </span>
                             </div>
                             <div class="detail-column">
                                 <span>{{version!.status !== 'PUBLISHED' ? version!.status + '-' + version!.number: version!.number}}</span>
                             </div>
                         </div>
                         <div *ngIf="version!.publicationDate" class="row-detail">
-                            <div class="label-column">
-                                <span>Date of publication</span>
+                            <div class="label-column label-right">
+                                <span>Date of publication&nbsp; </span>
                             </div>
                             <div class="detail-column">
-                                <span>
-                                    {{version!.publicationDate!}}
-                                </span>
+                                <span>{{version!.publicationDate!}}</span>
                             </div>
                         </div>
                     </div>
@@ -657,7 +654,7 @@
                                         <!-- determine multiple version with same lang -->
                                         <span *ngIf="getVersionsByLanguage(lang)!.length === 1; else versionDropDown">
                                             <span *ngFor="let version of getVersionsByLanguage(lang)!">
-                                                {{version!.number}}
+                                                {{version!.number}}{{version!.status !== 'PUBLISHED' ? '_' + version!.status : ''}}
                                             </span>
                                         </span>
                                         <ng-template #versionDropDown>

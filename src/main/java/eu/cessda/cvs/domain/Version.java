@@ -5,8 +5,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -580,13 +580,13 @@ public class Version implements Serializable {
             ", creator=" + getCreator() +
             ", publisher=" + getPublisher() +
             ", notes='" + getNotes() + "'" +
-            ", versionNotes='" + getVersionNotes() + "'" +
-            ", versionChanges='" + getVersionChanges() + "'" +
-            ", discussionNotes='" + getDiscussionNotes() + "'" +
+//            ", versionNotes='" + getVersionNotes() + "'" +  // commented to shorter debug
+//            ", versionChanges='" + getVersionChanges() + "'" + // commented to shorter debug
+//            ", discussionNotes='" + getDiscussionNotes() + "'" + // commented to shorter debug
             ", license='" + getLicense() + "'" +
             ", licenseId=" + getLicenseId() +
             ", citation='" + getCitation() + "'" +
-            ", ddiUsage='" + getDdiUsage() + "'" +
+//            ", ddiUsage='" + getDdiUsage() + "'" + // commented to shorter debug
             ", translateAgency='" + getTranslateAgency() + "'" +
             ", translateAgencyLink='" + getTranslateAgencyLink() + "'" +
             "}";

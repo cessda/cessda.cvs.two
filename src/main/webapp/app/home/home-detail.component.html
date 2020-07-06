@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            <div class="row-detail">
+            <div *ngIf="getSlVersion()!.notes && getSlVersion()!.notes !== ''" class="row-detail">
                 <div class="label-column">
                     <span>CV notes</span>
                 </div>
@@ -104,21 +104,19 @@
                     </div>
                 </div>
                 <div class="row-detail">
-                    <div class="label-column">
-                        <span>Version</span>
+                    <div class="label-column label-right">
+                        <span>Version&nbsp; </span>
                     </div>
                     <div class="detail-column">
                         <span>{{getVersionByLangNumber()!.number}}</span>
                     </div>
                 </div>
                 <div class="row-detail">
-                    <div class="label-column">
-                        <span>Date of publication</span>
+                    <div class="label-column label-right">
+                        <span>Date of publication&nbsp; </span>
                     </div>
                     <div class="detail-column">
-                        <span>
-                            {{getVersionByLangNumber()!.publicationDate!}}
-                        </span>
+                        <span>{{getVersionByLangNumber()!.publicationDate!}}</span>
                     </div>
                 </div>
             </div>

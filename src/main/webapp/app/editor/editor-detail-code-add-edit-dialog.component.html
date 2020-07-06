@@ -146,6 +146,43 @@
             </div>
         </div>
 
+        <div *ngIf="codeAddEditForm.get('changeType')" class="row-content">
+            <div class="card bg-light w-100">
+                <div class="card-header">
+                    Change notes
+                </div>
+                <div class="card-body">
+                    <div class="row-detail form-group">
+                        <div class="label-column-input">
+                            <span class="label-required">Type</span>
+                        </div>
+                        <div class="detail-column">
+                            <select class="form-control w-100 sk-select" id="field_changeType" name="changeType" formControlName="changeType">
+                                <option value="Code value changed">Code value changed</option>
+                                <option value="Code descriptive term rephrased">Code descriptive term rephrased</option>
+                                <option value="Code definition amended with meaning change">Code definition amended with meaning change</option>
+                                <option value="Code definition rephrased">Code definition rephrased</option>
+                            </select>
+                            <div *ngIf="codeAddEditForm.get('changeType')!.invalid && (codeAddEditForm.get('changeType')!.dirty || codeAddEditForm.get('changeType')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="codeAddEditForm.get('changeType')?.errors?.required" jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-detail form-group">
+                        <div class="label-column-input">
+                            <span>Description</span>
+                        </div>
+                        <div class="detail-column">
+                            <input type="text" class="form-control" id="field_changeDesc" name="changeDesc" formControlName="changeDesc"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

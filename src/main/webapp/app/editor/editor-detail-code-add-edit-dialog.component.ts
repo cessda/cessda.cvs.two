@@ -40,7 +40,9 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[_+A-Za-z0-9-]*$')]],
     title: ['', [Validators.required]],
     definition: ['', []],
-    codeInsertMode: []
+    codeInsertMode: [],
+    changeType: ['', [Validators.required]],
+    changeDesc: []
   });
 
   constructor(
@@ -76,6 +78,15 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           notation: this.conceptParam!.notation!.substring(this.conceptParam!.parent.length + 1)
         });
       }
+    }
+    if (
+      this.isNew ||
+      !this.versionParam.initialVersion || (this.versionParam.initialVersion && this.versionParam.initialVersion === this.versionParam.id)
+    ) {
+      this.codeAddEditForm.removeControl('changeType');
+      this.codeAddEditForm.removeControl('changeDesc');
+    } else {
+      this.codeAddEditForm.patchValue({ changeDesc: this.conceptParam!.notation });
     }
   }
 
@@ -152,7 +163,9 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           versionId: this.versionParam.id,
           notation: this.codeAddEditForm.get(['notation'])!.value,
           title: this.codeAddEditForm.get(['title'])!.value,
-          definition: this.codeAddEditForm.get(['definition'])!.value
+          definition: this.codeAddEditForm.get(['definition'])!.value,
+          changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : undefined,
+          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : undefined
         };
         if (this.conceptParam!.parent) {
           cdSnippet.notation = this.conceptParam!.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
@@ -165,7 +178,9 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           conceptId: this.conceptParam!.id,
           versionId: this.versionParam.id,
           title: this.codeAddEditForm.get(['title'])!.value,
-          definition: this.codeAddEditForm.get(['definition'])!.value
+          definition: this.codeAddEditForm.get(['definition'])!.value,
+          changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : undefined,
+          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : undefined
         };
         if (this.conceptParam!.title) {
           cdSnippet.actionType = 'EDIT_TL_CODE';

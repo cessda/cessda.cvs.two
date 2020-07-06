@@ -169,6 +169,40 @@
                     </div>
                 </div>
             </div>
+
+            <div *ngIf="cvAddEditForm.get('changeType')" class="card bg-light w-100">
+                <div class="card-header">
+                    Change notes
+                </div>
+                <div class="card-body">
+                    <div class="row-detail form-group">
+                        <div class="label-column-input">
+                            <span class="label-required">Type</span>
+                        </div>
+                        <div class="detail-column">
+                            <select class="form-control w-auto sk-select" id="field_changeType" name="changeType" formControlName="changeType">
+                                <option value="CV name changed">CV name changed</option>
+                                <option value="CV definition amended with meaning change">CV definition amended with meaning change</option>
+                                <option value="CV definition rephrased">CV definition rephrased</option>
+                            </select>
+                            <div *ngIf="cvAddEditForm.get('changeType')!.invalid && (cvAddEditForm.get('changeType')!.dirty || cvAddEditForm.get('changeType')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="cvAddEditForm.get('changeType')?.errors?.required" jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-detail form-group">
+                        <div class="label-column-input">
+                            <span>Description</span>
+                        </div>
+                        <div class="detail-column">
+                            <input type="text" class="form-control" id="field_changeDesc" name="changeDesc" formControlName="changeDesc"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal-footer">

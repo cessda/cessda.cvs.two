@@ -207,7 +207,6 @@ export class HomeDetailComponent implements OnInit {
       for (let i = 0; i < langs.length; i++) {
         const versions: IVersion[] = this.getVersionsByLanguage(langs[i]);
         this.dwnldCbVal[i] = langs[i] + '-' + versions[0].number;
-        // const cbInitialValue = langs[i] === this.vocabulary!.sourceLanguage;
         this.skosSelected[i] = true;
         this.pdfSelected[i] = true;
         this.htmlSelected[i] = true;

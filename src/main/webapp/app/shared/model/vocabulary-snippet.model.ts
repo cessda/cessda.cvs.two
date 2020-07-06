@@ -19,6 +19,8 @@ export interface IVocabularySnippet {
   ddiUsage?: any;
   translateAgency?: string;
   translateAgencyLink?: string;
+  changeType?: string;
+  changeDesc?: string;
 }
 
 export class VocabularySnippet implements IVocabularySnippet {
@@ -42,6 +44,8 @@ export class VocabularySnippet implements IVocabularySnippet {
     public discussionNotes?: any,
     public ddiUsage?: any,
     public translateAgency?: string,
-    public translateAgencyLink?: string
+    public translateAgencyLink?: string,
+    public changeType?: string,
+    public changeDesc?: string
   ) {}
 }
