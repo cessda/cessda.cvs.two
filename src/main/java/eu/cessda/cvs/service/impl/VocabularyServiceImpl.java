@@ -515,7 +515,8 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Transactional(readOnly = true)
     public List<VocabularyDTO> findAll() {
         log.debug("Request to get all Vocabularies");
-        return vocabularyRepository.findAll().stream()
+        List<Vocabulary> all = vocabularyRepository.findAll();
+        return all.stream()
             .map(vocabularyMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
@@ -566,10 +567,10 @@ public class VocabularyServiceImpl implements VocabularyService {
         vocabularyEditorSearchRepository.deleteById(id);
         vocabularyPublishSearchRepository.deleteById(id);
         // delete files if any
-        deleteDirectoryAndContent(applicationProperties.getVocabJsonPath() + notation);
+        deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + notation);
     }
 
-    private void deleteDirectoryAndContent(String path) {
+    public void deleteCvJsonDirectoryAndContent(String path) {
         File dirPath = new File( path );
         if( dirPath.isDirectory() ) {
             try {
@@ -796,8 +797,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
         vocabularyPublishSearchRepository.save( vocab );
-        // generate json resource
-        generateJsonVocabularyPublish(vocabulary);
+        // TODO: move this not in indexing during publishbing generate json resource
+//        generateJsonVocabularyPublish(vocabulary);
     }
 
     @Override
@@ -1149,7 +1150,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public void generateJsonAllVocabularyPublish() {
         // remove all static JSON files on vocabulary (delete entire and including vocabulary directory)
-        deleteDirectoryAndContent(applicationProperties.getVocabJsonPath());
+        deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath());
 
         List<VocabularyDTO> vocabularyDTOS = findAll();
         generateJsonVocabularyPublish( vocabularyDTOS.toArray(new VocabularyDTO[0]) );
@@ -1245,8 +1246,6 @@ public class VocabularyServiceImpl implements VocabularyService {
             version.setLicenseName( licence.getName() );
             version.setLicenseLogo( licence.getLogoLink() );
         }
-        version.setPreviousVersion(null);
-        version.setInitialVersion(null);
         version.setCreator(null);
         version.setDiscussionNotes(null);
         version.setVocabularyId(null);

@@ -26,8 +26,15 @@ export class EditorDetailCvDeleteDialogComponent implements OnInit {
     this.activeModal.dismiss();
   }
 
-  confirmDelete(id: number): void {
-    this.editorService.deleteVocabulary(id).subscribe(() => {
+  confirmDelete(): void {
+    let versionId = this.versionParam.id!;
+    if (this.deleteType === 'vocabulary') {
+      if (this.versionParam.initialVersion !== undefined && this.versionParam.initialVersion !== null) {
+        versionId = this.versionParam.initialVersion;
+      }
+    }
+
+    this.editorService.deleteVocabulary(versionId).subscribe(() => {
       if (this.deleteType === 'vocabulary') {
         this.router.navigate(['/editor']);
       } else {
@@ -41,7 +48,7 @@ export class EditorDetailCvDeleteDialogComponent implements OnInit {
   ngOnInit(): void {
     if (this.versionParam.itemType === 'SL') {
       this.deleteType = 'versionSl';
-      if (!this.versionParam.initialVersion) {
+      if (this.versionParam.initialVersion === undefined || this.versionParam.initialVersion === this.versionParam.id) {
         this.deleteType = 'vocabulary';
       }
     }

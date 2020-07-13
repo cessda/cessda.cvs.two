@@ -85,6 +85,12 @@ public interface VocabularyService {
     void delete(Long id);
 
     /**
+     * Delete the entire CV publish JSON directory given path
+     * @param path of the JSON CV published files
+     */
+    void deleteCvJsonDirectoryAndContent(String path);
+
+    /**
      * get Vocabulary by notation
      *
      * @param notation the vocabulary notation

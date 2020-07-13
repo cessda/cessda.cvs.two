@@ -1,5 +1,6 @@
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.config.ApplicationProperties;
 import eu.cessda.cvs.domain.CodeSnippet;
 import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.VocabularySnippet;
@@ -60,8 +61,11 @@ public class EditorResource {
 
     private final MetadataValueService metadataValueService;
 
+    private final ApplicationProperties applicationProperties;
+
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
-                          LicenceService licenceService, AgencyService agencyService, CommentService commentService, MetadataFieldService metadataFieldService, MetadataValueService metadataValueService) {
+                          LicenceService licenceService, AgencyService agencyService, CommentService commentService,
+                          MetadataFieldService metadataFieldService, MetadataValueService metadataValueService, ApplicationProperties applicationProperties) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
@@ -70,6 +74,7 @@ public class EditorResource {
         this.commentService = commentService;
         this.metadataFieldService = metadataFieldService;
         this.metadataValueService = metadataValueService;
+        this.applicationProperties = applicationProperties;
     }
 
     /**
@@ -228,7 +233,7 @@ public class EditorResource {
         }
         // indexing editor
         vocabularyService.indexEditor(vocabularyDTO );
-        // indexing publication
+        // indexing publication, delete existing one
         if ( versionDTO.getStatus().equals( Status.PUBLISHED.toString()) ) {
             vocabularyService.indexPublished(vocabularyDTO);
         }
@@ -343,12 +348,12 @@ public class EditorResource {
         // first check version and determine delete strategy
         VersionDTO versionDTO = versionService.findOne(id)
             .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + id + " to be deleted" ));
-        VersionDTO finalVersionDTO = versionDTO;
-        VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
-            .orElseThrow( () -> new EntityNotFoundException("Unable to find vocabulary with Id " + finalVersionDTO.getVocabularyId() ));
+        Long vocabId = versionDTO.getVocabularyId();
+        VocabularyDTO vocabularyDTO = vocabularyService.findOne( vocabId )
+            .orElseThrow( () -> new EntityNotFoundException("Unable to find vocabulary with Id " + vocabId ));
         // replace the equal Version object with the one from VocabularyDto
-        versionDTO = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals( finalVersionDTO.getId())).findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + finalVersionDTO.getId()  ));
+        versionDTO = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals( id )).findFirst()
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + id  ));
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CV,
@@ -362,8 +367,27 @@ public class EditorResource {
                 vocabularyService.delete(versionDTO.getVocabularyId());
             } else {
                 // delete version SL and related TLs
-                List<VersionDTO> versionDTOs = versionService.findAllByVocabularyAnyVersionSl(versionDTO.getVocabularyId(), versionDTO.getNumber());
-                versionDTOs.forEach( v -> versionService.delete(v.getId()));
+                VersionDTO finalVersionDTO = versionDTO;
+                List<VersionDTO> versionDTOs = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().startsWith( finalVersionDTO.getNumber())).collect(Collectors.toList());
+                vocabularyDTO.getVersions().removeAll(versionDTOs);
+                // change vocabulary version id to the previous version number
+                vocabularyDTO.clearContent();
+
+                VersionDTO prevSlVersionDto = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals(finalVersionDTO.getPreviousVersion())).findFirst()
+                    .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + finalVersionDTO.getId()  ));
+
+                vocabularyDTO.setVersionNumber( prevSlVersionDto.getNumber());
+                Set<VersionDTO> prevVersions = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().startsWith(prevSlVersionDto.getNumber())).collect(Collectors.toSet());
+                VocabularyDTO.fillVocabularyByVersions(vocabularyDTO, prevVersions);
+                vocabularyDTO = vocabularyService.save(vocabularyDTO);
+                // indexing editor
+                vocabularyService.indexEditor(vocabularyDTO);
+
+                if( versionDTO.getStatus().equals( Status.PUBLISHED.toString())) {
+                    // remove published JSON file and republish
+                    vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
+                    vocabularyService.indexPublished(vocabularyDTO);
+                }
             }
         }
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_VERSION_NAME, id.toString())).build();
@@ -388,7 +412,7 @@ public class EditorResource {
                 }
             }
         }
-        versionService.delete( versionDTO.getId() );
+        vocabularyDTO.removeVersion( versionDTO );
         vocabularyDTO = vocabularyService.save(vocabularyDTO);
         vocabularyService.indexEditor( vocabularyDTO );
         if( isTlPublished ) {
