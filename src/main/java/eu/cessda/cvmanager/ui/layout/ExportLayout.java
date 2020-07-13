@@ -458,9 +458,7 @@ public class ExportLayout extends MCssLayout implements Translatable
 	private ByteArrayOutputStream createTextFile( String contents ) throws IOException
 	{
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		OutputStreamWriter outputStreamWriter = new OutputStreamWriter( stream, StandardCharsets.UTF_8 );
-		outputStreamWriter.write( contents );
-		outputStreamWriter.close();
+		stream.write(contents.getBytes());
 		return stream;
 	}
 
