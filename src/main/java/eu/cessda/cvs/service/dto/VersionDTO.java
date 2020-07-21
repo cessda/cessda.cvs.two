@@ -633,6 +633,8 @@ public class VersionDTO implements Serializable {
     }
 
     private void preparePublishing(VocabularySnippet vocabularySnippet, LicenceDTO licenceDTO, AgencyDTO agencyDTO) {
+        this.versionNotes = vocabularySnippet.getVersionNotes();
+        this.versionChanges = vocabularySnippet.getVersionChanges();
         this.number = vocabularySnippet.getVersionNumber();
         this.publicationDate = LocalDate.now();
         this.licenseId = licenceDTO.getId();

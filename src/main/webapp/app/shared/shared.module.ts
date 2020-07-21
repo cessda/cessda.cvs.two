@@ -10,11 +10,13 @@ import { TreeComponent } from './tree/tree.component';
 import { TreeEditorComponent } from './tree-editor/tree-editor.component';
 import { RouteEventsService } from 'app/shared/service/route-events.service';
 import { TreeReorderComponent } from 'app/shared/tree-reorder/tree-reorder.component';
+import { LinkHttpPipe } from 'app/shared/pipe/link-http-pipe';
 
 @NgModule({
   imports: [CvsSharedLibsModule],
   declarations: [
     FindLanguageFromKeyPipe,
+    LinkHttpPipe,
     AlertComponent,
     AlertErrorComponent,
     LoginModalComponent,
@@ -28,6 +30,7 @@ import { TreeReorderComponent } from 'app/shared/tree-reorder/tree-reorder.compo
   exports: [
     CvsSharedLibsModule,
     FindLanguageFromKeyPipe,
+    LinkHttpPipe,
     AlertComponent,
     AlertErrorComponent,
     LoginModalComponent,

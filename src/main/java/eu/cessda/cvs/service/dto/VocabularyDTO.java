@@ -3,10 +3,10 @@ package eu.cessda.cvs.service.dto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.Vocabulary;
-import eu.cessda.cvs.domain.enumeration.Language;
-import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.domain.enumeration.Language;
+import eu.cessda.cvs.domain.enumeration.Status;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A DTO for the {@link Vocabulary} entity.
@@ -1343,6 +1344,32 @@ public class VocabularyDTO implements Serializable {
             return this;
         this.versions.remove( version );
         return this;
+    }
+
+    public List<VersionDTO> getVersionByGroup( String slVersionNumber, boolean noSameLanguage){
+        Comparator<VersionDTO> comparator = Comparator.comparing(VersionDTO::getItemType)
+            .thenComparing(VersionDTO::getLanguage)
+            .thenComparing(VersionDTO::getNumber, Comparator.reverseOrder());
+
+        List<VersionDTO> versionGroups = new ArrayList<>();
+        List<VersionDTO> vGroups = this.versions.stream()
+            .filter(v -> v.getNumber().startsWith(slVersionNumber))
+            .sorted( comparator )
+            .collect(Collectors.toList());
+
+        if( noSameLanguage ) {
+            Set<String> langs = new HashSet<>();
+            for (VersionDTO vg : vGroups) {
+                if ( langs.contains( vg.getLanguage()))
+                    continue;
+                langs.add(vg.getLanguage());
+                versionGroups.add(vg);
+            }
+        } else {
+            versionGroups = vGroups;
+        }
+
+        return versionGroups;
     }
 
     public String getSelectedLang() {

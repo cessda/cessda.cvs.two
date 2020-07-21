@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -92,5 +91,13 @@ public class VocabularyChangeServiceImpl implements VocabularyChangeService {
     @Override
     public Page<VocabularyChangeDTO> search(String query, Pageable pageable) {
         return null;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<VocabularyChangeDTO> findByVersionId(Long versionId) {
+        log.debug("Request to get all VocabularyChanges by versionId {}", versionId);
+        return vocabularyChangeRepository.findByVersionId(versionId).stream()
+            .map(vocabularyChangeMapper::toDto).collect(Collectors.toList());
     }
 }

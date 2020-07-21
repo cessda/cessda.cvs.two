@@ -79,4 +79,8 @@ export class VocabularyChangeService {
     }
     return res;
   }
+
+  getByVersionId(versionId: number): Observable<EntityArrayResponseType> {
+    return this.http.get<IVocabularyChange[]>(`${this.resourceUrl}/version-id/${versionId}`, { observe: 'response' });
+  }
 }

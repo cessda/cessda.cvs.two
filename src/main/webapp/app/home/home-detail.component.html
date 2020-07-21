@@ -319,7 +319,7 @@
                         <div class="detail-column-row">
                             <span>{{getVersionByLangNumber()!.translateAgency}} </span>
                             &nbsp;
-                            <a *ngIf="getVersionByLangNumber()!.translateAgencyLink" [href]="getVersionByLangNumber()!.translateAgencyLink" target="_blank">
+                            <a *ngIf="getVersionByLangNumber()!.translateAgencyLink" [href]="getVersionByLangNumber()!.translateAgencyLink! | linkHttp" target="_blank">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
                         </div>

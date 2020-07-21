@@ -449,7 +449,7 @@
                                             <span>Version notes</span>
                                         </div>
                                         <div class="detail-column">
-                                            <span>{{version!.versionNotes}}</span>
+                                            <span [innerHTML]="version!.versionNotes"></span>
                                         </div>
                                     </div>
                                     <div class="row-detail small-block-info" *ngIf="version!.versionChanges">
@@ -457,7 +457,7 @@
                                             <span>Version changes</span>
                                         </div>
                                         <div class="detail-column">
-                                            <span class="ta-mode">{{version!.versionChanges}}</span>
+                                            <span class="ta-mode" [innerHTML]="version!.versionChanges"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -483,7 +483,7 @@
                                             <span>Version notes</span>
                                         </div>
                                         <div class="detail-column">
-                                            <span>{{vh.note}}</span>
+                                            <span [innerHTML]="vh.note"></span>
                                         </div>
                                     </div>
                                     <div class="row-detail small-block-info" *ngIf="vh.changes">
@@ -491,7 +491,7 @@
                                             <span>Version changes</span>
                                         </div>
                                         <div class="detail-column">
-                                            <span class="ta-mode">{{vh.changes}}</span>
+                                            <span class="ta-mode" [innerHTML]="vh.changes">{{vh.changes}}</span>
                                         </div>
                                     </div>
                                     <div class="row-detail" *ngIf="!vh.changes && !vh.note">
@@ -547,10 +547,10 @@
                                 <div class="label-column">
                                     <span>Translating agency</span>
                                 </div>
-                                <div class="detail-column">
+                                <div class="detail-column-row">
                                     <span>{{version!.translateAgency}} </span>
                                     &nbsp;
-                                    <a *ngIf="version!.translateAgencyLink" [href]="version!.translateAgencyLink" target="_blank">
+                                    <a *ngIf="version!.translateAgencyLink" [href]="version!.translateAgencyLink! | linkHttp" target="_blank">
                                         <fa-icon icon="external-link-alt"></fa-icon>
                                     </a>
                                 </div>

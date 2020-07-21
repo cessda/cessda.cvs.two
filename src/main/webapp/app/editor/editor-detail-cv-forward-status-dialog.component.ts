@@ -18,6 +18,8 @@ import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
 import { IComment } from 'app/shared/model/comment.model';
+import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
+import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-forward-status-dialog',
@@ -38,9 +40,11 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   tlProposedVersionNumber = 1;
   missingTranslations: string[] = [];
   comments: IComment[] | undefined = [];
+  vocabularyChanges: IVocabularyChange[] | null = [];
 
   isCommentCollapse = true;
   isTextDiffCollapse = true;
+  isVocabularyChangeCollapse = true;
 
   compareNoOfDifference = 0;
   comparePrevVersion = '';
@@ -52,7 +56,12 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   contentObservable: Subject<DiffContent> = new Subject<DiffContent>();
   contentObservable$: Observable<DiffContent> = this.contentObservable.asObservable();
 
+  quillSimpleModule: any = {
+    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']]
+  };
+
   cvForwardStatusForm = this.fb.group({
+    versionNotes: [],
     versionChanges: [],
     versionNumberSl: ['', [Validators.required, Validators.pattern('^\\d{1,2}\\.\\d{1,2}$')]],
     versionNumberTl: ['', [Validators.required, Validators.pattern('^\\d{1,2}$')]],
@@ -63,6 +72,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     private licenceService: LicenceService,
     private accountService: AccountService,
     protected vocabularyService: VocabularyService,
+    protected vocabularyChangeService: VocabularyChangeService,
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     protected eventManager: JhiEventManager,
@@ -89,6 +99,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.account = account;
 
         if (this.versionParam!.status !== 'FINAL_REVIEW') {
+          this.cvForwardStatusForm.removeControl('versionNotes');
           this.cvForwardStatusForm.removeControl('versionChanges');
           this.cvForwardStatusForm.removeControl('versionNumberSl');
           this.cvForwardStatusForm.removeControl('versionNumberTl');
@@ -105,7 +116,8 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
             );
           }
           // no need version changes on initial version
-          if (!this.versionParam!.previousVersion || this.versionParam!.previousVersion === null) {
+          if (this.versionParam!.previousVersion === undefined || this.versionParam!.previousVersion === null) {
+            this.cvForwardStatusForm.removeControl('versionNotes');
             this.cvForwardStatusForm.removeControl('versionChanges');
           }
           this.licenceService
@@ -122,8 +134,8 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       }
     });
 
-    // compare version
-    if (this.versionParam!.previousVersion && this.versionParam!.previousVersion != null) {
+    // compare version and version changes
+    if (this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== null) {
       this.editorService.getVocabularyCompare(this.versionParam!.id!).subscribe((res: HttpResponse<string[]>) => {
         const newContent: DiffContent = {
           leftContent: res.body![0],
@@ -131,6 +143,13 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         };
         this.contentObservable.next(newContent);
         this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
+      });
+
+      this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
+        this.vocabularyChanges = res.body;
+        this.cvForwardStatusForm.patchValue({
+          versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ' - ' + vc.description).join('</br>')
+        });
       });
     }
   }
@@ -168,8 +187,13 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_PUBLISHED' : 'FORWARD_CV_TL_STATUS_PUBLISHED';
       vocabularySnippet.licenseId = this.cvForwardStatusForm.get(['licenseId'])!.value;
 
-      if (this.versionParam!.previousVersion) {
-        vocabularySnippet.versionChanges = this.cvForwardStatusForm.get(['versionChanges'])!.value;
+      if (this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== null) {
+        vocabularySnippet.versionNotes = this.cvForwardStatusForm.get(['versionNotes'])
+          ? this.cvForwardStatusForm.get(['versionNotes'])!.value
+          : undefined;
+        vocabularySnippet.versionChanges = this.cvForwardStatusForm.get(['versionChanges'])
+          ? this.cvForwardStatusForm.get(['versionChanges'])!.value
+          : undefined;
       }
       // check validity
       if (this.isSlForm) {

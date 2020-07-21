@@ -208,6 +208,15 @@ public class VocabularyServiceImpl implements VocabularyService {
                 // only title, definition, notes, translateAgency, translateAgencyLink
                 vocabularyDTO.setContentByVocabularySnippet( vocabularySnippet );
                 versionDTO.setContentByVocabularySnippet( vocabularySnippet );
+
+                // check if codeSnippet contains changetype
+                if ( vocabularySnippet.getChangeType() != null ) {
+                    vocabularySnippet.setVersionId( versionDTO.getId());
+                    VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO( vocabularySnippet, SecurityUtils.getCurrentUser(),
+                        versionDTO.getVocabularyId() );
+                    vocabularyChangeService.save(vocabularyChangeDTO );
+                }
+
                 return save( vocabularyDTO );
             } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV )) {
                 // check if user authorized to edit ddi-usage VocabularyResource
@@ -797,8 +806,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
         vocabularyPublishSearchRepository.save( vocab );
-        // TODO: move this not in indexing during publishbing generate json resource
-//        generateJsonVocabularyPublish(vocabulary);
     }
 
     @Override

@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
@@ -162,7 +164,7 @@ public class EditorResource {
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PutMapping("/editors/vocabularies/forward-status")
-    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException {
+    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException, IOException {
         log.debug("REST request to update Vocabulary : {}", vocabularySnippet);
         if (vocabularySnippet.getVersionId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_VOCABULARY_NAME, "idnull");
@@ -225,31 +227,36 @@ public class EditorResource {
             default:
                 throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
         }
-        // save at the end
-        vocabularyDTO = vocabularyService.save( vocabularyDTO );
+
         // check if SL published and not initial version, is there any TL needs to be cloned as DRAFT?
         if( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED) && !versionDTO.isInitialVersion()) {
-            vocabularyDTO = cloneTLsIfAny(vocabularyDTO, versionDTO);
+            cloneTLsIfAny(vocabularyDTO, versionDTO);
         }
-        // indexing editor
-        vocabularyService.indexEditor(vocabularyDTO );
+        // save at the end
+        vocabularyService.save( vocabularyDTO );
         // indexing publication, delete existing one
         if ( versionDTO.getStatus().equals( Status.PUBLISHED.toString()) ) {
-            vocabularyService.indexPublished(vocabularyDTO);
+            // generate json files
+            vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
+            // reindex published json
+            File cvDirectory = new File( applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation() + File.separator +
+                vocabularyDTO.getNotation() + ".json");
+            vocabularyService.indexPublished(cvDirectory.toPath());
         }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
             .body(versionDTO);
     }
 
-    private VocabularyDTO cloneTLsIfAny(VocabularyDTO vocabularyDTO, VersionDTO versionDTO) {
+    private void cloneTLsIfAny(VocabularyDTO vocabularyDTO, VersionDTO versionDTO) {
         // find previous SL version, check if there is TLs
         Optional<VersionDTO> prevVersionSlOpt = versionService.findOne(versionDTO.getPreviousVersion());
         if ( prevVersionSlOpt.isPresent() ) {
             VersionDTO prevVersionSl = prevVersionSlOpt.get();
             List<VersionDTO> clonedTls = new ArrayList<>();
-            VocabularyDTO prevVocabDTO = vocabularyService.getWithVersionsByNotationAndVersion(vocabularyDTO.getNotation(), prevVersionSl.getNumber());
-            prevVocabDTO.getVersions().forEach(prevVersion -> {
+            List<VersionDTO> prevVersions = vocabularyDTO.getVersionByGroup(prevVersionSl.getNumber(), true);
+
+            prevVersions.forEach(prevVersion -> {
                 if( prevVersion.getItemType().equals(ItemType.SL.toString())) {
                     return;
                 }
@@ -262,12 +269,10 @@ public class EditorResource {
             if( !clonedTls.isEmpty() ) // save if any TLs is cloned
             {
                 vocabularyDTO.getVersions().addAll( clonedTls );
-                vocabularyDTO = vocabularyService.save( vocabularyDTO );
             }
         } else {
             log.info( "Unable to check for available TLs to be cloned, unable to find prev SL version with ID {0}",  versionDTO.getPreviousVersion());
         }
-        return vocabularyDTO;
     }
 
     /**

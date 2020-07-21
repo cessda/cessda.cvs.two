@@ -192,7 +192,9 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
         title: this.cvAddEditForm.get(['title'])!.value,
         definition: this.cvAddEditForm.get(['definition'])!.value,
         translateAgency: this.isSlForm ? null : this.cvAddEditForm.get(['translateAgency'])!.value,
-        translateAgencyLink: this.isSlForm ? null : this.cvAddEditForm.get(['translateAgencyLink'])!.value
+        translateAgencyLink: this.isSlForm ? null : this.cvAddEditForm.get(['translateAgencyLink'])!.value,
+        changeType: this.cvAddEditForm.get('changeType') ? this.cvAddEditForm.get('changeType')!.value : undefined,
+        changeDesc: this.cvAddEditForm.get('changeDesc') ? this.cvAddEditForm.get('changeDesc')!.value : undefined
       };
     }
   }

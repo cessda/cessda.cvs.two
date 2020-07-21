@@ -20,4 +20,6 @@ public interface VocabularyChangeRepository extends JpaRepository<VocabularyChan
     List<VocabularyChange> findAllByVocabularyVersionId(
         @Param( "vocabularyId" ) Long vocabularyId,
         @Param( "versionId" ) Long versionId );
+
+    List<VocabularyChange> findByVersionId(Long versionId);
 }

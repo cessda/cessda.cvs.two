@@ -13,7 +13,7 @@
             <br/>
             The following TL versions would also be cloned as DRAFT after this new SL version is published:
             <div *ngFor="let version of vocabularyParam.versions">
-                <span *ngIf="version.itemType === 'TL'">- TL {{getLangIsoFormatted(version.language!)}} {{version.status!}}</span><br/>
+                <span *ngIf="version.itemType === 'TL'">- TL {{getLangIsoFormatted(version.language!)}} {{version.number!}}-{{version.status!}}</span><br/>
             </div>
         </div>
     </div>

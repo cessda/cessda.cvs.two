@@ -1,10 +1,10 @@
 package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.service.dto.VocabularyChangeDTO;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -47,9 +47,18 @@ public interface VocabularyChangeService {
      * Search for the vocabularyChange corresponding to the query.
      *
      * @param query the query of the search.
-     * 
+     *
      * @param pageable the pagination information.
      * @return the list of entities.
      */
     Page<VocabularyChangeDTO> search(String query, Pageable pageable);
+
+    /**
+     * Get all vocabularyChange corresponding to the version ID.
+     *
+     * @param versionId the ID of version.
+     *
+     * @return the list of entities.
+     */
+    List<VocabularyChangeDTO> findByVersionId(Long versionId);
 }
