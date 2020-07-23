@@ -8,6 +8,7 @@ import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Component({
   templateUrl: './editor-detail-code-csv-import-dialog.component.html'
@@ -28,9 +29,12 @@ export class EditorDetailCodeCsvImportDialogComponent {
   // UPLOAD ~ file upload visible
   // SELECT ~ chose which dataset to import
   // IMPORT ~ import codes
+  // RESULT ~ importing codes completed
   csvImportWorkflow?: string;
   importAll: boolean;
   isImportError: boolean;
+  resultInfo?: string;
+  resultBody: IConcept[] = [];
 
   constructor(
     protected editorService: EditorService,
@@ -90,13 +94,15 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.codeSnippets = [];
   }
 
-  backToUploadStage(): void {
+  backToUploadStage($element: any): void {
     this.csvImportWorkflow = 'UPLOAD';
     this.csvInput.nativeElement.value = '';
+    $element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
   }
 
-  backToSelectStage(): void {
+  backToSelectStage($element: any): void {
     this.csvImportWorkflow = 'SELECT';
+    $element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
   }
 
   fillIsRowImported(): void {
@@ -123,7 +129,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     return headerArray;
   }
 
-  createCodePreview(): void {
+  createCodePreview($element: any): void {
     this.resetConceptsAndCodeSnippets();
 
     for (let i = 0; i < this.csvContents.length; i++) {
@@ -172,6 +178,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
       this.codeSnippets.push(this.createCodeFromConcept(newConcept));
     }
     this.csvImportWorkflow = 'IMPORT';
+    $element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
   }
 
   findLastChildForPosition(parentConcept: IConcept): IConcept {
@@ -187,13 +194,19 @@ export class EditorDetailCodeCsvImportDialogComponent {
   doCsvImport(): void {
     this.isSaving = true;
     this.editorService.createBatchCode(this.codeSnippets).subscribe(
-      () => this.onSaveSuccess(),
+      (res: HttpResponse<IConcept[]>) => this.onSaveSuccess(res.headers, res.body),
       () => this.onSaveError()
     );
   }
 
-  protected onSaveSuccess(): void {
+  protected onSaveSuccess(headers: HttpHeaders, body: IConcept[] | null): void {
+    this.resultInfo = headers.get('import-status') ? headers.get('import-status')! : '';
+    this.resultBody = body === null ? [] : body;
     this.isSaving = false;
+    this.csvImportWorkflow = 'RESULT';
+  }
+
+  onCloseSuccess(): void {
     if (this.isSlForm) {
       this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation]);
     } else {

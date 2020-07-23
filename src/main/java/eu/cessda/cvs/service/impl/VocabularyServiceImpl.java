@@ -489,7 +489,8 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     private ConceptDTO createCode(CodeSnippet codeSnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO) {
-        ConceptDTO conceptDTO;// check for authorization
+        ConceptDTO conceptDTO;
+        // check for authorization
         SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
             vocabularyDTO.getAgencyId(), ActionType.CREATE_CODE.getAgencyRoles(), versionDTO.getLanguage());
 

@@ -1,6 +1,6 @@
 <form name="importForm" (ngSubmit)="doCsvImport()">
     <div class="modal-header">
-        <h4 class="modal-title">
+        <h4 class="modal-title" #modalhead>
             <span>Import codes for <strong>{{versionParam.notation}} - {{getLangIsoFormatted(versionParam!.language!)}}</strong> from a CSV file.</span>
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -73,7 +73,6 @@ Family.Household,Family: Household family,"A more specific term, refers only to 
                 <p>Please carefully check if the code structure was generated correctly, before importing the new codes.</p>
                 <div class="concept-row row-header">
                     <span class="column1">
-                        <input type="checkbox" [checked]="!(markedRows.indexOf(false) > -1)" (change)="importAll = !importAll;fillIsRowImported()"/>&nbsp;
                         <span>Code Value</span>
                     </span>
                     <span class="column2">
@@ -84,26 +83,65 @@ Family.Household,Family: Household family,"A more specific term, refers only to 
                     </span>
                 </div>
                 <jhi-tree [parentNotation]="" [conceptList]="concepts" [level]="0"></jhi-tree>
+
+                <div class="alert alert-warning" role="alert">
+                    <fa-icon [icon]="'exclamation-triangle'"></fa-icon>
+                    <span>Note: Depending on the number of codes imported. The import process could take few minutes to be completed. Please do not close this window until the process is completed!</span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="csvImportWorkflow === 'RESULT'"  class="form-group">
+            <div class="w-100">
+                <h2>RESULT</h2>
+                <p>{{resultInfo}}</p>
+                <p>The following are the successfully imported codes:<br/></p>
+                <div class="concept-row row-header">
+                    <span class="column1">
+                        <span>Code Value</span>
+                    </span>
+                    <span class="column2">
+                        <span>Code Term</span>
+                    </span>
+                    <span class="column3">
+                        <span>Code Definition</span>
+                    </span>
+                </div>
+                <div *ngFor="let c of resultBody; let i = index" class="concept-row">
+                    <span class="column1">
+                        {{c.notation}}
+                    </span>
+                        <span class="column2">
+                        {{c.title}}
+                    </span>
+                        <span class="column3">
+                        {{c.definition}}
+                    </span>
+                </div>
             </div>
         </div>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+        <button *ngIf="csvImportWorkflow !== 'RESULT'"type="button" [disabled]="isSaving" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
-        <button *ngIf="csvImportWorkflow === 'SELECT'" type="button" class="btn btn-secondary" (click)="backToUploadStage()">
-            <fa-icon *ngIf="isSlForm" [icon]="'caret-left'"></fa-icon>&nbsp;<span>Back</span>
+        <button *ngIf="csvImportWorkflow === 'SELECT'" type="button" class="btn btn-secondary" (click)="backToUploadStage(modalhead)">
+            <fa-icon [icon]="'caret-left'"></fa-icon>&nbsp;<span>Back</span>
         </button>
         <button *ngIf="csvImportWorkflow === 'SELECT'" type="button" [disabled]="markedRows.indexOf(true) === -1" class="btn btn-primary"
-        (click)="createCodePreview()">
-            <span>Next</span>&nbsp;<fa-icon *ngIf="isSlForm" [icon]="'caret-right'"></fa-icon>
+        (click)="createCodePreview(modalhead)">
+            <span>Next</span>&nbsp;<fa-icon [icon]="'caret-right'"></fa-icon>
         </button>
-        <button *ngIf="csvImportWorkflow === 'IMPORT'" type="button" class="btn btn-secondary" (click)="backToSelectStage()">
-            <fa-icon *ngIf="isSlForm" [icon]="'caret-left'"></fa-icon>&nbsp;<span>Back</span>
+        <button *ngIf="csvImportWorkflow === 'IMPORT' && !isSaving" type="button" class="btn btn-secondary" (click)="backToSelectStage(modalhead)">
+            <fa-icon [icon]="'caret-left'"></fa-icon>&nbsp;<span>Back</span>
         </button>
         <button *ngIf="csvImportWorkflow === 'IMPORT'" type="button" [disabled]="isSaving" class="btn btn-primary"
                 (click)="doCsvImport()">
-            <fa-icon *ngIf="isSlForm" [icon]="'upload'"></fa-icon>&nbsp;<span>Import</span>
+            <fa-icon *ngIf="!isSaving" [icon]="'upload'"></fa-icon>
+            <fa-icon *ngIf="isSaving" [icon]="'circle-notch'" [spin]="true"></fa-icon>
+            &nbsp;<span>Import</span>
+        </button>
+        <button *ngIf="csvImportWorkflow === 'RESULT'" type="button" class="btn btn-secondary" (click)="onCloseSuccess()">
+            <fa-icon [icon]="'times-circle'"></fa-icon>&nbsp;<span>Close</span>
         </button>
     </div>
 </form>

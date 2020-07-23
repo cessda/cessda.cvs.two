@@ -460,21 +460,63 @@ public class EditorResource {
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PostMapping("/editors/codes/batch")
-    public ResponseEntity<Void> createBatchCode(@Valid @RequestBody CodeSnippet[] codeSnippets) throws URISyntaxException {
-        boolean isSaved = false;
+    public ResponseEntity<List<ConceptDTO>> createBatchCode(@Valid @RequestBody CodeSnippet[] codeSnippets) throws URISyntaxException {
+        if( codeSnippets.length == 0 ) {
+            throw new IllegalArgumentException( "CodeSnippet[] can not be empty array" );
+        }
+
+        // get version
+        VersionDTO versionDTO = versionService.findOne(codeSnippets[0].getVersionId())
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + codeSnippets[0].getVersionId()));
+
+        // reject if version status is published
+        if( versionDTO.getStatus().equals( Status.PUBLISHED.toString() )) {
+            throw new IllegalArgumentException( "Unable to add Code " + codeSnippets[0].getNotation() + ", Version is already PUBLISHED" );
+        }
+
+        final Long vocabularyId = versionDTO.getVocabularyId();
+        VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularyId)
+            .orElseThrow(() -> new EntityNotFoundException("Unable to add Vocabulary " + vocabularyId));
+
+        // check for authorization
+        SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
+            vocabularyDTO.getAgencyId(), ActionType.CREATE_CODE.getAgencyRoles(), versionDTO.getLanguage());
+
+        List<ConceptDTO> storedCodes = new ArrayList<>();
         for (CodeSnippet codeSnippet : codeSnippets) {
             log.debug("REST request to save Code/Concept : {}", codeSnippet);
 
-            if (codeSnippet.getConceptId() != null) {
-                throw new BadRequestAlertException("A new code/concept cannot already have an ID", ENTITY_CODE_NAME, "idexists");
+            // check if concept already exist for new concept
+            if (versionDTO.getConcepts().stream()
+                .anyMatch(c -> c.getNotation().equals( codeSnippet.getNotation()))) {
+                throw new CodeAlreadyExistException();
             }
+            // set position if not available
+            if( codeSnippet.getPosition() == null )
+                codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
+            // create concept by codeSnippet
+            ConceptDTO newConceptDTO = new ConceptDTO( codeSnippet );
+            // add concept to version and save version to save new concept
+            versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
+            versionDTO = versionService.save(versionDTO);
+
+            // find the newly created code from version
+            ConceptDTO conceptDTO = versionDTO.findConceptByNotation(newConceptDTO.getNotation());
+            storedCodes.add( conceptDTO );
         }
 
-        for (CodeSnippet codeSnippet : codeSnippets) {
-            ConceptDTO result = vocabularyService.saveCode(codeSnippet);
+        // index editor
+        vocabularyService.indexEditor(vocabularyDTO);
+
+        String conceptsNotation = storedCodes.stream().map(c -> c.getNotation()).collect(Collectors.joining());
+        if( conceptsNotation.length() > 20) {
+            conceptsNotation = conceptsNotation.substring(0, 20) + "...";
         }
-        return ResponseEntity.noContent().headers(HeaderUtil.createEntityCreationAlert(applicationName, true,
-            ENTITY_CODE_NAME, Arrays.stream(codeSnippets).map(c -> c.getNotation()).collect(Collectors.joining(", ")))).build();
+        conceptsNotation += " (" + storedCodes.size() + " new codes added)";
+
+        HttpHeaders headers = HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_CODE_NAME, conceptsNotation);
+        headers.add("import-status", "Successfully importing " + storedCodes.size() + " codes");
+        return ResponseEntity.ok().headers(headers).body(storedCodes);
     }
 
     /**
