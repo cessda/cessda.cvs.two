@@ -10,6 +10,8 @@ import eu.cessda.cvs.domain.*;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.domain.search.VocabularyEditor;
+import eu.cessda.cvs.domain.search.VocabularyPublish;
 import eu.cessda.cvs.repository.AgencyRepository;
 import eu.cessda.cvs.repository.LicenceRepository;
 import eu.cessda.cvs.repository.VocabularyRepository;

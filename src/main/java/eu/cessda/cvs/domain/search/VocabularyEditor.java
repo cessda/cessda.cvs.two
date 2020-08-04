@@ -1,5 +1,7 @@
-package eu.cessda.cvs.domain;
+package eu.cessda.cvs.domain.search;
 
+import eu.cessda.cvs.domain.Code;
+import eu.cessda.cvs.domain.VocabularyBase;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -9,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Document(indexName = "vocabularyeditor")
-public class VocabularyEditor extends VocabularyBase{
+public class VocabularyEditor extends VocabularyBase {
 
     @Field( type = FieldType.Nested, store = true )
     private Set<Code> codes = new HashSet<>();

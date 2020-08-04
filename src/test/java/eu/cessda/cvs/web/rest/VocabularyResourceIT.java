@@ -1,7 +1,11 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
-import eu.cessda.cvs.domain.*;
+import eu.cessda.cvs.domain.Agency;
+import eu.cessda.cvs.domain.Authority;
+import eu.cessda.cvs.domain.User;
+import eu.cessda.cvs.domain.Vocabulary;
+import eu.cessda.cvs.domain.search.VocabularyEditor;
 import eu.cessda.cvs.repository.AgencyRepository;
 import eu.cessda.cvs.repository.AuthorityRepository;
 import eu.cessda.cvs.repository.UserRepository;
@@ -13,17 +17,13 @@ import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.mapper.VocabularyEditorMapper;
 import eu.cessda.cvs.service.mapper.VocabularyMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -33,23 +33,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
-import java.util.Collections;
+import java.time.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import static eu.cessda.cvs.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 

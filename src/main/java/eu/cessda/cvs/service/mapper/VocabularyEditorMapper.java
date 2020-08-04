@@ -1,6 +1,6 @@
 package eu.cessda.cvs.service.mapper;
 
-import eu.cessda.cvs.domain.VocabularyEditor;
+import eu.cessda.cvs.domain.search.VocabularyEditor;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
