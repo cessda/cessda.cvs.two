@@ -23,6 +23,8 @@ import { HttpResponse } from '@angular/common/http';
 import { EditorDetailCvNewVersionDialogComponent } from 'app/editor/editor-detail-cv-new-version-dialog.component';
 import { EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent } from '.';
 import * as moment from 'moment';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
 
 @Component({
   selector: 'jhi-editor-detail',
@@ -36,6 +38,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   @ViewChild('usagePanel', { static: true }) usagePanel!: ElementRef;
   @ViewChild('licensePanel', { static: true }) licensePanel!: ElementRef;
   @ViewChild('exportPanel', { static: true }) exportPanel!: ElementRef;
+
+  account!: Account;
 
   eventSubscriber?: Subscription;
   eventSubscriber2?: Subscription;
@@ -63,6 +67,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   pdfSelected: boolean[];
   htmlSelected: boolean[];
   docxSelected: boolean[];
+
+  availableLanguages: string[] = [];
+  availableTlLanguages: string[] = [];
+  tlLanguageStatus = 'none';
 
   currentSelectedCode?: string;
   activePopup?: string;
@@ -101,6 +109,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   });
 
   constructor(
+    private accountService: AccountService,
     protected dataUtils: JhiDataUtils,
     protected activatedRoute: ActivatedRoute,
     protected router: Router,
@@ -306,6 +315,23 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
       this.vocabulary = vocabulary;
+      this.availableLanguages = VocabularyUtil.getAvailableCvLanguage(vocabulary.versions);
+      this.accountService.identity().subscribe(account => {
+        if (account) {
+          this.account = account;
+          this.account.userAgencies.forEach(ua => {
+            if (
+              ua.agencyRole === 'ADMIN_TL' &&
+              ua.agencyId === this.vocabulary!.agencyId &&
+              ua.language &&
+              this.availableLanguages.includes(ua.language)
+            ) {
+              this.availableTlLanguages.push(ua.language);
+            }
+          });
+          this.tlLanguageStatus = this.availableTlLanguages.length ? 'any' : 'none';
+        }
+      });
       if (this.initialLangSelect !== null) {
         if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
           this.setActiveVersion(this.vocabulary!.sourceLanguage!);

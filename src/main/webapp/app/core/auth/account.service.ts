@@ -3,13 +3,13 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { JhiLanguageService } from 'ng-jhipster';
 import { SessionStorageService } from 'ngx-webstorage';
-import { Observable, ReplaySubject, of } from 'rxjs';
-import { shareReplay, tap, catchError } from 'rxjs/operators';
+import { Observable, of, ReplaySubject } from 'rxjs';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
 import { StateStorageService } from 'app/core/auth/state-storage.service';
 
 import { SERVER_API_URL } from 'app/app.constants';
 import { Account } from 'app/core/user/account.model';
-import {IUserAgency} from 'app/shared/model/user-agency.model';
+import { IUserAgency } from 'app/shared/model/user-agency.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -73,6 +73,9 @@ export class AccountService {
       case 'FORWARD_CV_SL_STATUS_INITIAL_REVIEW':
       case 'FORWARD_CV_SL_STATUS_FINAL_REVIEW':
       case 'FORWARD_CV_SL_STATUS_PUBLISH':
+      case 'FORWARD_CV_TL_STATUS_INITIAL_REVIEW':
+      case 'FORWARD_CV_TL_STATUS_FINAL_REVIEW':
+      case 'FORWARD_CV_TL_STATUS_PUBLISH':
       case 'CREATE_CODE':
       case 'EDIT_CODE':
       case 'REORDER_CODE':
@@ -95,6 +98,9 @@ export class AccountService {
   }
 
   private hasAgencyRole(agencyId: number, agencyRoles: string[], language?: string): boolean {
+    if (language && language === 'none') {
+      return false;
+    }
     let hasAuth = false;
     if (agencyId === 0) {
       // only check for agencyRoles
@@ -103,7 +109,7 @@ export class AccountService {
       // check for agency, roles and language
       this.userIdentity!.userAgencies.forEach(userAgency => {
         if (userAgency.agencyId === agencyId && agencyRoles.includes(userAgency.agencyRole!)) {
-          if (language) {
+          if (language && language !== 'any') {
             if (language === userAgency.language) {
               hasAuth = true;
             }

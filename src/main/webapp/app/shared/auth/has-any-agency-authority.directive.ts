@@ -9,10 +9,12 @@ import { AccountService } from 'app/core/auth/account.service';
  *
  * @howToUse
  * ```
- *     <some-element *jhiHasAnyAgencyAuthority="'ROLE_ADMIN'">...</some-element>
- *
- *     <some-element *jhiHasAnyAgencyAuthority="['ROLE_ADMIN', 'ROLE_USER']">...</some-element>
- * ```
+ *     <some-element *jhiHasAnyAgencyAuthority="{actionType:'SOME_ACTION', agencyId:1, agencyRoles:['ADMIN','ADMIN_SL'], language:en}">...</some-element>
+ ** ```
+ * note
+ *  - agencyId = 0 (means Any.Agency or ignore specific agency)
+ *  - language param is optional, it can also set to the specific language e.g. en, or a special literals "any" or "none"
+ *     - any is equal with
  */
 @Directive({
   selector: '[jhiHasAnyAgencyAuthority]'

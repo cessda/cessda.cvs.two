@@ -223,7 +223,10 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     if (this.isSlForm) {
       this.router.navigate(['/editor/vocabulary/' + this.notation]);
     } else {
-      this.router.navigate(['/editor/vocabulary/' + this.notation], { queryParams: { lang: this.vocabularySnippet!.language } });
+      // unable to complete refresh
+      // this.router.navigate(['/editor/vocabulary/' + this.notation], { queryParams: { lang: this.vocabularySnippet!.language } });
+      // changed to below, in order to complete refresh
+      window.location.href = '/editor/vocabulary/' + this.notation + '?lang=' + this.vocabularySnippet!.language;
     }
     this.activeModal.dismiss(true);
     this.eventManager.broadcast('deselectConcept');
