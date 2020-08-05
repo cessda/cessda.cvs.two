@@ -348,7 +348,7 @@ public class EditorResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/editors/vocabularies/{id}")
-    public ResponseEntity<Void> deleteVocabulary(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteVocabulary(@PathVariable Long id) throws IOException {
         log.debug("REST request to delete Version : {}", id);
         // first check version and determine delete strategy
         VersionDTO versionDTO = versionService.findOne(id)
@@ -389,8 +389,9 @@ public class EditorResource {
                 vocabularyService.indexEditor(vocabularyDTO);
 
                 if( versionDTO.getStatus().equals( Status.PUBLISHED.toString())) {
-                    // remove published JSON file and republish
+                    // remove published JSON file, re-create the JSON file and re-index for publishec vocabulary
                     vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
+                    vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
                     vocabularyService.indexPublished(vocabularyDTO);
                 }
             }
@@ -398,7 +399,7 @@ public class EditorResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_VERSION_NAME, id.toString())).build();
     }
 
-    private void deleteTlVocabulary(VersionDTO versionDTO, VocabularyDTO vocabularyDTO) {
+    private void deleteTlVocabulary(VersionDTO versionDTO, VocabularyDTO vocabularyDTO) throws IOException {
         boolean isTlPublished = versionDTO.getStatus().equals( Status.PUBLISHED.toString());
         vocabularyDTO.removeVersion( versionDTO);
         if( isTlPublished ) {
@@ -421,6 +422,9 @@ public class EditorResource {
         vocabularyDTO = vocabularyService.save(vocabularyDTO);
         vocabularyService.indexEditor( vocabularyDTO );
         if( isTlPublished ) {
+            // remove published JSON file, re-create the JSON file and re-index for publishec vocabulary
+            vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
+            vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
             vocabularyService.indexPublished(vocabularyDTO );
         }
     }
