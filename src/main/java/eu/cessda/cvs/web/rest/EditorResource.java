@@ -662,7 +662,8 @@ public class EditorResource {
         @Valid CommentDTO finalCommentDTO = commentDTO;
         VersionDTO versionDTO = versionService.findOne(commentDTO.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + finalCommentDTO.getVersionId() ));
-        commentDTO.setUserId( SecurityUtils.getCurrentUserId() );
+        if( commentDTO.getUserId() == null )
+            commentDTO.setUserId( SecurityUtils.getCurrentUserId() );
         ZonedDateTime dateTime = ZonedDateTime.now();
         commentDTO.setDateTime( dateTime );
         versionDTO.addComment( commentDTO );
@@ -816,7 +817,6 @@ public class EditorResource {
         MetadataValueDTO result  = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getId().equals(metadataValueDTO.getId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + metadataValueDTO.getId() ));
 
-        // update comment from version
         result.setValue( metadataValueDTO.getValue() );
         metadataFieldService.save( metadataFieldDTO );
 

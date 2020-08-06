@@ -87,6 +87,7 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
     const newComment = {
       ...new Comment(),
       info: this.account.lastName + (this.account.firstName ? ', ' + this.account.firstName : ''),
+      userId: this.account.id,
       content: this.commentForm.get(['content'])!.value,
       versionId: this.versionParam.id
     };
