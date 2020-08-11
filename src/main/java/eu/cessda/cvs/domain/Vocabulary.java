@@ -1,11 +1,8 @@
 package eu.cessda.cvs.domain;
 
-import org.hibernate.annotations.Cache;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -23,12 +20,6 @@ public class Vocabulary extends VocabularyBase
 
     private static final long serialVersionUID = 1L;
 
-    // both sl and tl statuses
-    @Column( name = "statuses" )
-    @ElementCollection( targetClass = String.class )
-    @Field( type = FieldType.Keyword )
-    private Set<String> statuses;
-
     public Vocabulary() {
         // default constructor for jackson
     }
@@ -36,16 +27,6 @@ public class Vocabulary extends VocabularyBase
     @JsonIgnore
     @OneToMany( mappedBy = "vocabulary", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true )
     private Set<Version> versions = new HashSet<>();
-
-    public Set<String> getStatuses()
-    {
-        return statuses;
-    }
-
-    public void setStatuses( Set<String> statuses )
-    {
-        this.statuses = statuses;
-    }
 
     public Set<Version> getVersions() {
         return versions;
