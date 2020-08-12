@@ -199,7 +199,7 @@ public class AgencyPublish {
             @Field( type = FieldType.Keyword )
             private String language;
 
-            @Field(type = FieldType.Date, format = DateFormat.basic_date)
+            @Field(type = FieldType.Date, format = DateFormat.custom, pattern = "yyyy-MM-dd")
             private LocalDate publicationDate;
 
             private Integer noOfCodes;

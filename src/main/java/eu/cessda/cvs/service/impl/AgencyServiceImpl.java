@@ -9,6 +9,7 @@ import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.domain.search.AgencyPublish;
 import eu.cessda.cvs.repository.AgencyRepository;
 import eu.cessda.cvs.repository.VocabularyRepository;
+import eu.cessda.cvs.repository.search.AgencyPublishSearchRepository;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.AgencyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
@@ -47,12 +48,15 @@ public class AgencyServiceImpl implements AgencyService {
 
     private final JHipsterProperties jHipsterProperties;
 
-    public AgencyServiceImpl(AgencyRepository agencyRepository, VocabularyRepository vocabularyRepository, AgencyMapper agencyMapper, ApplicationProperties applicationProperties, JHipsterProperties jHipsterProperties) {
+    private final AgencyPublishSearchRepository agencyPublishSearchRepository;
+
+    public AgencyServiceImpl(AgencyRepository agencyRepository, VocabularyRepository vocabularyRepository, AgencyMapper agencyMapper, ApplicationProperties applicationProperties, JHipsterProperties jHipsterProperties, AgencyPublishSearchRepository agencyPublishSearchRepository) {
         this.agencyRepository = agencyRepository;
         this.vocabularyRepository = vocabularyRepository;
         this.agencyMapper = agencyMapper;
         this.applicationProperties = applicationProperties;
         this.jHipsterProperties = jHipsterProperties;
+        this.agencyPublishSearchRepository = agencyPublishSearchRepository;
     }
 
     /**
@@ -153,6 +157,8 @@ public class AgencyServiceImpl implements AgencyService {
                     version.getConcepts().stream().map(Concept::getNotation).collect(Collectors.toList()));
             }
         }
+
+        agencyPublishSearchRepository.save(agencyEs );
     }
 
     @Override
@@ -164,6 +170,6 @@ public class AgencyServiceImpl implements AgencyService {
             findAll( PageRequest.of(page, size) ).get()
                 .forEach(this::index);
             page++;
-        } while ( agencyCount < page * size);
+        } while ( agencyCount > page * size);
     }
 }
