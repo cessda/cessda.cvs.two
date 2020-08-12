@@ -1,7 +1,7 @@
 {
   "id": 56,
   "status": "PUBLISHED",
-  "uri": "https://vocabularies.cessda.eu/TopicClassification/en/4.0",
+  "uri": "https://vocabularies.cessda.eu/TopicClassification/en/4.1",
   "notation": "TopicClassification",
   "versionNumber": "4.0",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "CESSDA",
   "agencyLogo": "cessda.png",
   "agencyLink": "https://www.cessda.eu/",
-  "publicationDate": "2019-05-20",
+  "publicationDate": "2020-06-07",
   "notes": "Top terms should only be used if no narrower terms are applicable. More than one term can be used for classifying a dataset.",
   "versions": [
     {
@@ -25,6 +25,8 @@
       "notation": "TopicClassification",
       "title": "CESSDA Topic Classification",
       "definition": "A typology of main themes or subjects of data.",
+      "previousVersion": 0,
+      "initialVersion": 251,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -766,6 +768,42 @@
           "position": 82
         },
         {
+          "id": 2103,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.ReligionAndValues/en/2.0",
+          "notation": "SocietyAndCulture.ReligionAndValues",
+          "title": "Religion and values",
+          "definition": "Data which addresses questions of religious behaviour, religious movements, spirituality, morality and other values.",
+          "parent": "SocietyAndCulture",
+          "position": 83
+        },
+        {
+          "id": 2104,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.CommunityUrbanAndRuralLife/en/2.0",
+          "notation": "SocietyAndCulture.CommunityUrbanAndRuralLife",
+          "title": "Community, urban and rural life",
+          "definition": "Data related to different aspects of life in the community, or in urban and rural areas. Opinions on and images of the neighbourhood, or of urban or rural areas. Services, facilities and business opportunities in the neighbourhood.",
+          "parent": "SocietyAndCulture",
+          "position": 84
+        },
+        {
+          "id": 2105,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.TimeUse/en/2.0",
+          "notation": "SocietyAndCulture.TimeUse",
+          "title": "Time use",
+          "definition": "Data on the amount of time spent by the population on various activities.",
+          "parent": "SocietyAndCulture",
+          "position": 85
+        },
+        {
+          "id": 2106,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.SocialChange/en/2.0",
+          "notation": "SocietyAndCulture.SocialChange",
+          "title": "Social change",
+          "definition": "Data on changes in the society, including attitudinal changes.",
+          "parent": "SocietyAndCulture",
+          "position": 86
+        },
+        {
           "id": 2096,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#TradeIndustryAndMarkets/en/2.0",
           "notation": "TradeIndustryAndMarkets",
@@ -815,42 +853,6 @@
           "title": "OTHER",
           "definition": "Use if the topic is known, but not found in the list.",
           "position": 92
-        },
-        {
-          "id": 2103,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.ReligionAndValues/en/2.0",
-          "notation": "SocietyAndCulture.ReligionAndValues",
-          "title": "Religion and values",
-          "definition": "Data which addresses questions of religious behaviour, religious movements, spirituality, morality and other values.",
-          "parent": "SocietyAndCulture",
-          "position": 83
-        },
-        {
-          "id": 2104,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.CommunityUrbanAndRuralLife/en/2.0",
-          "notation": "SocietyAndCulture.CommunityUrbanAndRuralLife",
-          "title": "Community, urban and rural life",
-          "definition": "Data related to different aspects of life in the community, or in urban and rural areas. Opinions on and images of the neighbourhood, or of urban or rural areas. Services, facilities and business opportunities in the neighbourhood.",
-          "parent": "SocietyAndCulture",
-          "position": 84
-        },
-        {
-          "id": 2105,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.TimeUse/en/2.0",
-          "notation": "SocietyAndCulture.TimeUse",
-          "title": "Time use",
-          "definition": "Data on the amount of time spent by the population on various activities.",
-          "parent": "SocietyAndCulture",
-          "position": 85
-        },
-        {
-          "id": 2106,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.SocialChange/en/2.0",
-          "notation": "SocietyAndCulture.SocialChange",
-          "title": "Social change",
-          "definition": "Data on changes in the society, including attitudinal changes.",
-          "parent": "SocietyAndCulture",
-          "position": 86
         }
       ],
       "comments": [],
@@ -869,6 +871,8 @@
       "notation": "TopicClassification",
       "title": "CESSDA Emne Klassifikation",
       "definition": "En typology over hovedtemaer eller emner af data.",
+      "previousVersion": 0,
+      "initialVersion": 295,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -1356,6 +1360,15 @@
           "position": 53
         },
         {
+          "id": 3652,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.Elections/da/2.0.1",
+          "notation": "Politics.Elections",
+          "title": "Valg",
+          "definition": "Data om valg, folkeafstemninger, valgkampagner, valgresultater, kandidater, valg af kandidater, valgstøtte mm.",
+          "parent": "Politics",
+          "position": 54
+        },
+        {
           "id": 3615,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.PoliticalIdeology/da/2.0.1",
           "notation": "Politics.PoliticalIdeology",
@@ -1415,6 +1428,15 @@
           "definition": "Informations- og kommunikationsteknologi der er brugt i hjemmet, på arbejdspladsen eller andre fælleskaber. Bemærk at brugen og indflydelsen af disse teknologier er dækket af 'Informationssamfund'.",
           "parent": "ScienceAndTechnology",
           "position": 61
+        },
+        {
+          "id": 3653,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.Biotechnology/da/2.0.1",
+          "notation": "ScienceAndTechnology.Biotechnology",
+          "title": "Bioteknologi",
+          "definition": "Brug af biomolekylære og cellulære processer til at skabe nye produkter og teknologiske processer.",
+          "parent": "ScienceAndTechnology",
+          "position": 62
         },
         {
           "id": 3622,
@@ -1679,24 +1701,6 @@
           "title": "ANDET",
           "definition": "",
           "position": 92
-        },
-        {
-          "id": 3652,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.Elections/da/2.0.1",
-          "notation": "Politics.Elections",
-          "title": "Valg",
-          "definition": "Data om valg, folkeafstemninger, valgkampagner, valgresultater, kandidater, valg af kandidater, valgstøtte mm.",
-          "parent": "Politics",
-          "position": 54
-        },
-        {
-          "id": 3653,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.Biotechnology/da/2.0.1",
-          "notation": "ScienceAndTechnology.Biotechnology",
-          "title": "Bioteknologi",
-          "definition": "Brug af biomolekylære og cellulære processer til at skabe nye produkter og teknologiske processer.",
-          "parent": "ScienceAndTechnology",
-          "position": 62
         }
       ],
       "comments": [],
@@ -1715,6 +1719,8 @@
       "notation": "TopicClassification",
       "title": "CESSDA Themenklassifikation",
       "definition": "Thematische Klassifikation für Daten",
+      "previousVersion": 0,
+      "initialVersion": 259,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -2561,6 +2567,8 @@
       "notation": "TopicClassification",
       "title": "CESSDAn aihepiiriluokitus",
       "definition": "Aineiston pääasiallisten aiheiden luokittelu.",
+      "previousVersion": 0,
+      "initialVersion": 258,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -3407,6 +3415,8 @@
       "notation": "TopicClassification",
       "title": "CESSDA Emneklassifisering",
       "definition": "En typologi for hovedtemaer eller emnekategorier for data.",
+      "previousVersion": 0,
+      "initialVersion": 262,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -3964,6 +3974,15 @@
           "position": 61
         },
         {
+          "id": 3049,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.Biotechnology/no/2.0.1",
+          "notation": "ScienceAndTechnology.Biotechnology",
+          "title": "Bioteknologi",
+          "definition": "Bruker biomolekylære og cellulære prosesser for å skape nye produkter og teknologiske prosesser.",
+          "parent": "ScienceAndTechnology",
+          "position": 62
+        },
+        {
           "id": 3019,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings/no/2.0.1",
           "notation": "SocialStratificationAndGroupings",
@@ -4226,15 +4245,6 @@
           "title": "ANNET",
           "definition": "Bruk hvis emnet er kjent, men ikke finnes i listen.",
           "position": 92
-        },
-        {
-          "id": 3049,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.Biotechnology/no/2.0.1",
-          "notation": "ScienceAndTechnology.Biotechnology",
-          "title": "Bioteknologi",
-          "definition": "Bruker biomolekylære og cellulære prosesser for å skape nye produkter og teknologiske prosesser.",
-          "parent": "ScienceAndTechnology",
-          "position": 62
         }
       ],
       "comments": [],
@@ -4253,6 +4263,8 @@
       "notation": "TopicClassification",
       "title": "Vsebinska področja CESSDA",
       "definition": "Tipologija glavnih vsebinskih področij raziskav.",
+      "previousVersion": 0,
+      "initialVersion": 261,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -5099,6 +5111,8 @@
       "notation": "TopicClassification",
       "title": "CESSDA Ämnesklassificering",
       "definition": "En typologi för större teman eller ämneskategorier för data.",
+      "previousVersion": 0,
+      "initialVersion": 260,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",

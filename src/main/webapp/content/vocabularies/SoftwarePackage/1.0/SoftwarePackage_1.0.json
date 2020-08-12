@@ -25,6 +25,8 @@
       "notation": "SoftwarePackage",
       "title": "Software Package",
       "definition": "Indicates the statistical software package used in the production/processing/dissemination of the data. Data collection software is not covered in this list.",
+      "previousVersion": 0,
+      "initialVersion": 290,
       "notes": "Lists a number of commonly used statistical software packages but is not meant to be an exhaustive list. This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",

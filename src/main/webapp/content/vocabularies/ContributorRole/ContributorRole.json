@@ -25,6 +25,8 @@
       "notation": "ContributorRole",
       "title": "Contributor Role",
       "definition": "A classification of contributor roles.",
+      "previousVersion": 0,
+      "initialVersion": 350,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -70,14 +72,6 @@
           "position": 3
         },
         {
-          "id": 5574,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesignSamplingDesign/en/1.0",
-          "notation": "ProjectOrStudyDesignSamplingDesign",
-          "title": "Project/Study design: Sampling design",
-          "definition": "Defining which elements of the target population are included in the sample, as well as the rules and procedures by which they will be selected. ",
-          "position": 7
-        },
-        {
           "id": 5575,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesign.WeightsDesign/en/1.0",
           "notation": "ProjectOrStudyDesign.WeightsDesign",
@@ -103,6 +97,14 @@
           "definition": "Creating a data model based on an analysis of data objects and their relationships, data properties, as well as data flows and processes. It is often the first step in database creation, tool and standards development, etc., and typically involves a progression from a conceptual model to a logical model, and then to a physical schema. ",
           "parent": "ProjectOrStudyDesign",
           "position": 6
+        },
+        {
+          "id": 5574,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesignSamplingDesign/en/1.0",
+          "notation": "ProjectOrStudyDesignSamplingDesign",
+          "title": "Project/Study design: Sampling design",
+          "definition": "Defining which elements of the target population are included in the sample, as well as the rules and procedures by which they will be selected. ",
+          "position": 7
         },
         {
           "id": 5578,
@@ -261,6 +263,14 @@
           "position": 26
         },
         {
+          "id": 5615,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#EquipmentDevelopment/en/1.0",
+          "notation": "EquipmentDevelopment",
+          "title": "Equipment development",
+          "definition": "Creating and maintaining equipment needed at any stage of the data life cycle. ",
+          "position": 27
+        },
+        {
           "id": 5597,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Evaluation/en/1.0",
           "notation": "Evaluation",
@@ -390,14 +400,6 @@
           "title": "Software development",
           "definition": "Creating and maintaining software needed at any stage of the data life cycle. ",
           "position": 43
-        },
-        {
-          "id": 5615,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#EquipmentDevelopment/en/1.0",
-          "notation": "EquipmentDevelopment",
-          "title": "Equipment development",
-          "definition": "Creating and maintaining equipment needed at any stage of the data life cycle. ",
-          "position": 27
         },
         {
           "id": 5616,

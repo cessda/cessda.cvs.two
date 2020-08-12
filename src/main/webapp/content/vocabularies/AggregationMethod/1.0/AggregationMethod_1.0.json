@@ -25,6 +25,8 @@
       "notation": "AggregationMethod",
       "title": "Aggregation Method",
       "definition": "Identifies the type of aggregation used to combine related categories, usually within a common branch of a hierarchy, to provide information at a broader level than the level at which detailed observations are taken. (From: The OECD Glossary of Statistical Terms)",
+      "previousVersion": 0,
+      "initialVersion": 268,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",

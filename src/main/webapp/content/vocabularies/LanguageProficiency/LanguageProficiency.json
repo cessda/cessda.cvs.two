@@ -25,6 +25,8 @@
       "notation": "LanguageProficiency",
       "title": "Language Proficiency",
       "definition": "Describes the level of proficiency of an individual in a natural language.",
+      "previousVersion": 0,
+      "initialVersion": 280,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",

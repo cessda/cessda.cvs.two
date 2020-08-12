@@ -1,6 +1,6 @@
 {
   "id": 47,
-  "status": "PUBLISHED",
+  "status": "DRAFT",
   "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.0",
   "notation": "AnalysisUnit",
   "versionNumber": "2.0",
@@ -25,6 +25,8 @@
       "notation": "AnalysisUnit",
       "title": "Analysis Unit",
       "definition": "Describes the entity being observed or analyzed in the study or in the variable.",
+      "previousVersion": 206,
+      "initialVersion": 206,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "A number of amendments were made based on user feedback. New code PoliticalAdministrativeArea added. New code MediaUnit and its subterms added. TextUnit was made a narrower term in the MediaUnit hierarchy. Several code definitions and the vocabulary definition were amended for clarity. Usage information updated.",
       "versionChanges": "CV definition amended\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organization rephrased into Organization/Institution\nCode descriptive term rephrased: Housing Unit rephrased into Housing unit\nCode descriptive term rephrased: Event/Process rephrased into Event/Process/Activity\nCode descriptive term rephrased: Geographic Unit rephrased into Geographic unit\nCode descriptive term rephrased: Time Unit rephrased into Time unit\nCode descriptive term rephrased: Text Unit rephrased into Media unit: Text\nCode definition amended with meaning change: OrganizationOrInstitution\nCode definition amended with meaning change: EventOrProcessOrActivity\nCode definition rephrased: Individual\nCode definition rephrased: Family\nCode definition rephrased: Family.HouseholdFamily\nCode definition rephrased: Geographic unit\nCode definition rephrased: MediaUnit.Text\nCode definition rephrased: Group\n",
@@ -33,16 +35,16 @@
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
       "licenseLogo": "/content/images/license/by.png",
       "citation": "DDI Alliance. (2019). Analysis Unit (Version 2.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AnalysisUnit:2.0. ",
-      "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: reusable \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\">AnalysisUnit</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.1/DTD/Documentation/anlyUnitType.html\">anlyUnit@unit</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.1/DTD/Documentation/anlysUnitType.html\">anlysUnit</a> \n</div> \n<p><br /></p> \n<!--[if gte mso 9]><xml>\n <w:WordDocument>\n  <w:View>Normal</w:View>\n  <w:Zoom>0</w:Zoom>\n  <w:TrackMoves/>\n  <w:TrackFormatting/>\n  <w:HyphenationZone>21</w:HyphenationZone>\n  <w:PunctuationKerning/>\n  <w:ValidateAgainstSchemas/>\n  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>\n  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>\n  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>\n  <w:DoNotPromoteQF/>\n  <w:LidThemeOther>FI</w:LidThemeOther>\n  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>\n  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>\n  <w:Compatibility>\n   <w:BreakWrappedTables/>\n   <w:SnapToGridInCell/>\n   <w:WrapTextWithPunct/>\n   <w:UseAsianBreakRules/>\n   <w:DontGrowAutofit/>\n   <w:SplitPgBreakAndParaMark/>\n   <w:EnableOpenTypeKerning/>\n   <w:DontFlipMirrorIndents/>\n   <w:OverrideTableStyleHps/>\n  </w:Compatibility>\n  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>\n  <m:mathPr>\n   <m:mathFont m:val=\"Cambria Math\"/>\n   <m:brkBin m:val=\"before\"/>\n   <m:brkBinSub m:val=\"&#45;-\"/>\n   <m:smallFrac m:val=\"off\"/>\n   <m:dispDef/>\n   <m:lMargin m:val=\"0\"/>\n   <m:rMargin m:val=\"0\"/>\n   <m:defJc m:val=\"centerGroup\"/>\n   <m:wrapIndent m:val=\"1440\"/>\n   <m:intLim m:val=\"subSup\"/>\n   <m:naryLim m:val=\"undOvr\"/>\n  </m:mathPr></w:WordDocument>\n</xml><![endif]--> \n<!--[if gte mso 9]><xml>\n <w:LatentStyles DefLockedState=\"false\" DefUnhideWhenUsed=\"false\"\n  DefSemiHidden=\"false\" DefQFormat=\"false\" DefPriority=\"99\"\n  LatentStyleCount=\"371\">\n  <w:LsdException Locked=\"false\" Priority=\"0\" QFormat=\"true\" Name=\"Normal\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" QFormat=\"true\" Name=\"heading 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 7\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 8\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 9\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 6\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 7\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 8\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 9\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 7\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 8\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 9\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Normal Indent\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"footnote text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"annotation text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"header\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"footer\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index heading\"/>\n  <w:LsdException Locked=\"false\" Priority=\"35\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"caption\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"table of figures\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"envelope address\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"envelope return\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"footnote reference\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"annotation reference\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"line number\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"page number\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"endnote reference\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"endnote text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"table of authorities\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"macro\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"toa heading\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"10\" QFormat=\"true\" Name=\"Title\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Closing\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Signature\"/>\n  <w:LsdException Locked=\"false\" Priority=\"1\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"Default Paragraph Font\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text Indent\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Message Header\"/>\n  <w:LsdException Locked=\"false\" Priority=\"11\" QFormat=\"true\" Name=\"Subtitle\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Salutation\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Date\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text First Indent\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text First Indent 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Note Heading\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text Indent 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text Indent 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Block Text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Hyperlink\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"FollowedHyperlink\"/>\n  <w:LsdException Locked=\"false\" Priority=\"22\" QFormat=\"true\" Name=\"Strong\"/>\n  <w:LsdException Locked=\"false\" Priority=\"20\" QFormat=\"true\" Name=\"Emphasis\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Document Map\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Plain Text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"E-mail Signature\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Top of Form\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Bottom of Form\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Normal (Web)\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Acronym\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Address\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Cite\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Code\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Definition\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Keyboard\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Preformatted\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Sample\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Typewriter\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Variable\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Normal Table\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"annotation subject\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"No List\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Outline List 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Outline List 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Outline List 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Simple 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Simple 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Simple 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Classic 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Classic 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Classic 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Classic 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Colorful 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Colorful 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Colorful 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 6\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 7\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 8\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 6\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 7\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 8\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table 3D effects 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table 3D effects 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table 3D effects 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Contemporary\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Elegant\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Professional\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Subtle 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Subtle 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Web 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Web 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Web 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Balloon Text\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" Name=\"Table Grid\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Theme\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" Name=\"Placeholder Text\"/>\n  <w:LsdException Locked=\"false\" Priority=\"1\" QFormat=\"true\" Name=\"No Spacing\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" Name=\"Revision\"/>\n  <w:LsdException Locked=\"false\" Priority=\"34\" QFormat=\"true\"\n   Name=\"List Paragraph\"/>\n  <w:LsdException Locked=\"false\" Priority=\"29\" QFormat=\"true\" Name=\"Quote\"/>\n  <w:LsdException Locked=\"false\" Priority=\"30\" QFormat=\"true\"\n   Name=\"Intense Quote\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"19\" QFormat=\"true\"\n   Name=\"Subtle Emphasis\"/>\n  <w:LsdException Locked=\"false\" Priority=\"21\" QFormat=\"true\"\n   Name=\"Intense Emphasis\"/>\n  <w:LsdException Locked=\"false\" Priority=\"31\" QFormat=\"true\"\n   Name=\"Subtle Reference\"/>\n  <w:LsdException Locked=\"false\" Priority=\"32\" QFormat=\"true\"\n   Name=\"Intense Reference\"/>\n  <w:LsdException Locked=\"false\" Priority=\"33\" QFormat=\"true\" Name=\"Book Title\"/>\n  <w:LsdException Locked=\"false\" Priority=\"37\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"Bibliography\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"TOC Heading\"/>\n  <w:LsdException Locked=\"false\" Priority=\"41\" Name=\"Plain Table 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"42\" Name=\"Plain Table 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"43\" Name=\"Plain Table 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"44\" Name=\"Plain Table 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"45\" Name=\"Plain Table 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"40\" Name=\"Grid Table Light\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\" Name=\"Grid Table 1 Light\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\" Name=\"Grid Table 6 Colorful\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\" Name=\"Grid Table 7 Colorful\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\" Name=\"List Table 1 Light\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\" Name=\"List Table 6 Colorful\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\" Name=\"List Table 7 Colorful\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 6\"/>\n </w:LatentStyles>\n</xml><![endif]--> \n<!--[if gte mso 10]>\n<style>\n /* Style Definitions */\n table.MsoNormalTable\n\t{mso-style-name:\"Table Normal\";\n\tmso-tstyle-rowband-size:0;\n\tmso-tstyle-colband-size:0;\n\tmso-style-noshow:yes;\n\tmso-style-priority:99;\n\tmso-style-parent:\"\";\n\tmso-padding-alt:0cm 5.4pt 0cm 5.4pt;\n\tmso-para-margin:0cm;\n\tmso-para-margin-bottom:.0001pt;\n\tmso-pagination:widow-orphan;\n\tfont-size:10.0pt;\n\tfont-family:\"Times New Roman\",serif;}\n</style>\n<![endif]-->",
+      "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: reusable \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\">AnalysisUnit</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/anlyUnit.html\">anlyUnit@unit</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/anlysUnit.html\">anlysUnit</a> \n</div> \n<p><br /></p> \n<!--[if gte mso 9]><xml>\n <w:WordDocument>\n  <w:View>Normal</w:View>\n  <w:Zoom>0</w:Zoom>\n  <w:TrackMoves/>\n  <w:TrackFormatting/>\n  <w:HyphenationZone>21</w:HyphenationZone>\n  <w:PunctuationKerning/>\n  <w:ValidateAgainstSchemas/>\n  <w:SaveIfXMLInvalid>false</w:SaveIfXMLInvalid>\n  <w:IgnoreMixedContent>false</w:IgnoreMixedContent>\n  <w:AlwaysShowPlaceholderText>false</w:AlwaysShowPlaceholderText>\n  <w:DoNotPromoteQF/>\n  <w:LidThemeOther>FI</w:LidThemeOther>\n  <w:LidThemeAsian>X-NONE</w:LidThemeAsian>\n  <w:LidThemeComplexScript>X-NONE</w:LidThemeComplexScript>\n  <w:Compatibility>\n   <w:BreakWrappedTables/>\n   <w:SnapToGridInCell/>\n   <w:WrapTextWithPunct/>\n   <w:UseAsianBreakRules/>\n   <w:DontGrowAutofit/>\n   <w:SplitPgBreakAndParaMark/>\n   <w:EnableOpenTypeKerning/>\n   <w:DontFlipMirrorIndents/>\n   <w:OverrideTableStyleHps/>\n  </w:Compatibility>\n  <w:BrowserLevel>MicrosoftInternetExplorer4</w:BrowserLevel>\n  <m:mathPr>\n   <m:mathFont m:val=\"Cambria Math\"/>\n   <m:brkBin m:val=\"before\"/>\n   <m:brkBinSub m:val=\"&#45;-\"/>\n   <m:smallFrac m:val=\"off\"/>\n   <m:dispDef/>\n   <m:lMargin m:val=\"0\"/>\n   <m:rMargin m:val=\"0\"/>\n   <m:defJc m:val=\"centerGroup\"/>\n   <m:wrapIndent m:val=\"1440\"/>\n   <m:intLim m:val=\"subSup\"/>\n   <m:naryLim m:val=\"undOvr\"/>\n  </m:mathPr></w:WordDocument>\n</xml><![endif]--> \n<!--[if gte mso 9]><xml>\n <w:LatentStyles DefLockedState=\"false\" DefUnhideWhenUsed=\"false\"\n  DefSemiHidden=\"false\" DefQFormat=\"false\" DefPriority=\"99\"\n  LatentStyleCount=\"371\">\n  <w:LsdException Locked=\"false\" Priority=\"0\" QFormat=\"true\" Name=\"Normal\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" QFormat=\"true\" Name=\"heading 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 7\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 8\"/>\n  <w:LsdException Locked=\"false\" Priority=\"9\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"heading 9\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 6\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 7\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 8\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index 9\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 7\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 8\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"toc 9\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Normal Indent\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"footnote text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"annotation text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"header\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"footer\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"index heading\"/>\n  <w:LsdException Locked=\"false\" Priority=\"35\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"caption\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"table of figures\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"envelope address\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"envelope return\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"footnote reference\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"annotation reference\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"line number\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"page number\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"endnote reference\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"endnote text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"table of authorities\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"macro\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"toa heading\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Bullet 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Number 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"10\" QFormat=\"true\" Name=\"Title\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Closing\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Signature\"/>\n  <w:LsdException Locked=\"false\" Priority=\"1\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"Default Paragraph Font\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text Indent\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"List Continue 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Message Header\"/>\n  <w:LsdException Locked=\"false\" Priority=\"11\" QFormat=\"true\" Name=\"Subtitle\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Salutation\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Date\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text First Indent\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text First Indent 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Note Heading\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text Indent 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Body Text Indent 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Block Text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Hyperlink\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"FollowedHyperlink\"/>\n  <w:LsdException Locked=\"false\" Priority=\"22\" QFormat=\"true\" Name=\"Strong\"/>\n  <w:LsdException Locked=\"false\" Priority=\"20\" QFormat=\"true\" Name=\"Emphasis\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Document Map\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Plain Text\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"E-mail Signature\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Top of Form\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Bottom of Form\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Normal (Web)\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Acronym\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Address\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Cite\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Code\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Definition\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Keyboard\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Preformatted\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Sample\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Typewriter\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"HTML Variable\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Normal Table\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"annotation subject\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"No List\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Outline List 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Outline List 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Outline List 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Simple 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Simple 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Simple 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Classic 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Classic 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Classic 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Classic 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Colorful 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Colorful 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Colorful 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Columns 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 6\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 7\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Grid 8\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 4\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 5\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 6\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 7\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table List 8\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table 3D effects 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table 3D effects 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table 3D effects 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Contemporary\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Elegant\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Professional\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Subtle 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Subtle 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Web 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Web 2\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Web 3\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Balloon Text\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" Name=\"Table Grid\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" UnhideWhenUsed=\"true\"\n   Name=\"Table Theme\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" Name=\"Placeholder Text\"/>\n  <w:LsdException Locked=\"false\" Priority=\"1\" QFormat=\"true\" Name=\"No Spacing\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 1\"/>\n  <w:LsdException Locked=\"false\" SemiHidden=\"true\" Name=\"Revision\"/>\n  <w:LsdException Locked=\"false\" Priority=\"34\" QFormat=\"true\"\n   Name=\"List Paragraph\"/>\n  <w:LsdException Locked=\"false\" Priority=\"29\" QFormat=\"true\" Name=\"Quote\"/>\n  <w:LsdException Locked=\"false\" Priority=\"30\" QFormat=\"true\"\n   Name=\"Intense Quote\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"60\" Name=\"Light Shading Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"61\" Name=\"Light List Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"62\" Name=\"Light Grid Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"63\" Name=\"Medium Shading 1 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"64\" Name=\"Medium Shading 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"65\" Name=\"Medium List 1 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"66\" Name=\"Medium List 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"67\" Name=\"Medium Grid 1 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"68\" Name=\"Medium Grid 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"69\" Name=\"Medium Grid 3 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"70\" Name=\"Dark List Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"71\" Name=\"Colorful Shading Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"72\" Name=\"Colorful List Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"73\" Name=\"Colorful Grid Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"19\" QFormat=\"true\"\n   Name=\"Subtle Emphasis\"/>\n  <w:LsdException Locked=\"false\" Priority=\"21\" QFormat=\"true\"\n   Name=\"Intense Emphasis\"/>\n  <w:LsdException Locked=\"false\" Priority=\"31\" QFormat=\"true\"\n   Name=\"Subtle Reference\"/>\n  <w:LsdException Locked=\"false\" Priority=\"32\" QFormat=\"true\"\n   Name=\"Intense Reference\"/>\n  <w:LsdException Locked=\"false\" Priority=\"33\" QFormat=\"true\" Name=\"Book Title\"/>\n  <w:LsdException Locked=\"false\" Priority=\"37\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" Name=\"Bibliography\"/>\n  <w:LsdException Locked=\"false\" Priority=\"39\" SemiHidden=\"true\"\n   UnhideWhenUsed=\"true\" QFormat=\"true\" Name=\"TOC Heading\"/>\n  <w:LsdException Locked=\"false\" Priority=\"41\" Name=\"Plain Table 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"42\" Name=\"Plain Table 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"43\" Name=\"Plain Table 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"44\" Name=\"Plain Table 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"45\" Name=\"Plain Table 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"40\" Name=\"Grid Table Light\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\" Name=\"Grid Table 1 Light\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\" Name=\"Grid Table 6 Colorful\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\" Name=\"Grid Table 7 Colorful\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"Grid Table 1 Light Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"Grid Table 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"Grid Table 3 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"Grid Table 4 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"Grid Table 5 Dark Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"Grid Table 6 Colorful Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"Grid Table 7 Colorful Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\" Name=\"List Table 1 Light\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\" Name=\"List Table 6 Colorful\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\" Name=\"List Table 7 Colorful\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 1\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 2\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 3\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 4\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 5\"/>\n  <w:LsdException Locked=\"false\" Priority=\"46\"\n   Name=\"List Table 1 Light Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"47\" Name=\"List Table 2 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"48\" Name=\"List Table 3 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"49\" Name=\"List Table 4 Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"50\" Name=\"List Table 5 Dark Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"51\"\n   Name=\"List Table 6 Colorful Accent 6\"/>\n  <w:LsdException Locked=\"false\" Priority=\"52\"\n   Name=\"List Table 7 Colorful Accent 6\"/>\n </w:LatentStyles>\n</xml><![endif]--> \n<!--[if gte mso 10]>\n<style>\n /* Style Definitions */\n table.MsoNormalTable\n\t{mso-style-name:\"Table Normal\";\n\tmso-tstyle-rowband-size:0;\n\tmso-tstyle-colband-size:0;\n\tmso-style-noshow:yes;\n\tmso-style-priority:99;\n\tmso-style-parent:\"\";\n\tmso-padding-alt:0cm 5.4pt 0cm 5.4pt;\n\tmso-para-margin:0cm;\n\tmso-para-margin-bottom:.0001pt;\n\tmso-pagination:widow-orphan;\n\tfont-size:10.0pt;\n\tfont-family:\"Times New Roman\",serif;}\n</style>\n<![endif]-->",
       "concepts": [
         {
-          "id": 5820,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Group/en/2.0",
-          "notation": "Group",
-          "title": "Group",
-          "definition": "Two or more individuals assembled together or having some unifying relationship or characteristic. In surveys, the questions are mainly focused on the group and the attitudes/experiences of the group, rather than on those of the individual respondents. If questions cover both the group and the individual, use  both as analysis units.\n",
-          "previousConcept": 1176,
-          "position": 15
+          "id": 5827,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/en/2.0",
+          "notation": "Individual",
+          "title": "Individual",
+          "definition": "Any individual person.",
+          "previousConcept": 1166,
+          "position": 0
         },
         {
           "id": 5821,
@@ -52,60 +54,6 @@
           "definition": "Any kind of formal administrative and functional structure - includes associations, institutions, agencies, businesses, political parties, schools, etc. The data are collected about the organizations or institutions, even if the questions are answered by individuals. For example, data on the environmental policies of businesses, data on enrollment or graduation rates at national universities, etc.\n",
           "previousConcept": 1167,
           "position": 1
-        },
-        {
-          "id": 5822,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/en/2.0",
-          "notation": "Household",
-          "title": "Household",
-          "definition": "A person or a group of persons who share the same dwelling unit and common living arrangements. These common living arrangements may include pooling some, or all, of their income and wealth, and consuming certain types of goods and services collectively, mainly housing and food (Eurostat).",
-          "previousConcept": 1170,
-          "position": 4
-        },
-        {
-          "id": 5823,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/en/2.0",
-          "notation": "EventOrProcessOrActivity",
-          "title": "Event/Process/Activity",
-          "definition": "Any type of incident, occurrence, or activity. Events are usually one-time, individual occurrences, with a limited or short duration. Examples: criminal offenses, riots, meetings, elections, sports competitions, terrorist attacks, natural disasters like floods, etc. Processes typically take place over time, and may include multiple 'events' or gradual changes that ultimately lead, or are projected to lead, to a particular result. Examples: court trials, criminal investigations, political campaigns, medical treatments, education, athletes' training, etc. Use when the main focus is more on the event, process or activity itself. For example, a field observation study on slot machine gambling; or data collected on child abuse cases, such as the type and duration of abuse, the role of the persons involved, etc.",
-          "previousConcept": 1172,
-          "position": 6
-        },
-        {
-          "id": 5824,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/en/2.0",
-          "notation": "Object",
-          "title": "Object",
-          "definition": "Anything material, but inanimate, that has an independent existence and may be perceived by the senses. Examples: objects of art (paintings, sculptures, etc.) or weapons, or vehicles, etc.",
-          "previousConcept": 1177,
-          "position": 16
-        },
-        {
-          "id": 5825,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/en/2.0",
-          "notation": "Other",
-          "title": "Other",
-          "definition": "Use if the unit of analysis is known, but not found in the list.",
-          "previousConcept": 1178,
-          "position": 17
-        },
-        {
-          "id": 5826,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/en/2.0",
-          "notation": "TimeUnit",
-          "title": "Time unit",
-          "definition": "Any period of time: year, week, month, day, or bimonthly or quarterly periods, etc.",
-          "previousConcept": 1174,
-          "position": 9
-        },
-        {
-          "id": 5827,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/en/2.0",
-          "notation": "Individual",
-          "title": "Individual",
-          "definition": "Any individual person.",
-          "previousConcept": 1166,
-          "position": 0
         },
         {
           "id": 5828,
@@ -127,6 +75,15 @@
           "position": 3
         },
         {
+          "id": 5822,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/en/2.0",
+          "notation": "Household",
+          "title": "Household",
+          "definition": "A person or a group of persons who share the same dwelling unit and common living arrangements. These common living arrangements may include pooling some, or all, of their income and wealth, and consuming certain types of goods and services collectively, mainly housing and food (Eurostat).",
+          "previousConcept": 1170,
+          "position": 4
+        },
+        {
           "id": 5830,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/en/2.0",
           "notation": "HousingUnit",
@@ -134,6 +91,15 @@
           "definition": "U.S. Census: A housing unit is a house, an apartment, a mobile home, a group of rooms, or a single room that is occupied (or if vacant, is intended for occupancy) as separate living quarters. Separate living quarters are those in which the occupants live and eat separately from any other persons in the building and which have direct access from the outside of the building or through a common hall.",
           "previousConcept": 1171,
           "position": 5
+        },
+        {
+          "id": 5823,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/en/2.0",
+          "notation": "EventOrProcessOrActivity",
+          "title": "Event/Process/Activity",
+          "definition": "Any type of incident, occurrence, or activity. Events are usually one-time, individual occurrences, with a limited or short duration. Examples: criminal offenses, riots, meetings, elections, sports competitions, terrorist attacks, natural disasters like floods, etc. Processes typically take place over time, and may include multiple 'events' or gradual changes that ultimately lead, or are projected to lead, to a particular result. Examples: court trials, criminal investigations, political campaigns, medical treatments, education, athletes' training, etc. Use when the main focus is more on the event, process or activity itself. For example, a field observation study on slot machine gambling; or data collected on child abuse cases, such as the type and duration of abuse, the role of the persons involved, etc.",
+          "previousConcept": 1172,
+          "position": 6
         },
         {
           "id": 5831,
@@ -153,21 +119,21 @@
           "position": 8
         },
         {
+          "id": 5826,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/en/2.0",
+          "notation": "TimeUnit",
+          "title": "Time unit",
+          "definition": "Any period of time: year, week, month, day, or bimonthly or quarterly periods, etc.",
+          "previousConcept": 1174,
+          "position": 9
+        },
+        {
           "id": 5833,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/en/2.0",
           "notation": "MediaUnit",
           "title": "Media unit",
           "definition": "Includes text, still image, video and sound.",
           "position": 10
-        },
-        {
-          "id": 5834,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/en/2.0",
-          "notation": "MediaUnit.Text",
-          "title": "Media unit: Text",
-          "definition": "Any written piece/entity, such as books, articles, tweets, blogs, etc. For example, a study on hate speech in tweets, or a study of the way newspapers present certain political/social issues over time, like women's or minorities' rights, etc.",
-          "parent": "MediaUnit",
-          "position": 13
         },
         {
           "id": 5835,
@@ -188,6 +154,15 @@
           "position": 12
         },
         {
+          "id": 5834,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/en/2.0",
+          "notation": "MediaUnit.Text",
+          "title": "Media unit: Text",
+          "definition": "Any written piece/entity, such as books, articles, tweets, blogs, etc. For example, a study on hate speech in tweets, or a study of the way newspapers present certain political/social issues over time, like women's or minorities' rights, etc.",
+          "parent": "MediaUnit",
+          "position": 13
+        },
+        {
           "id": 5837,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Video/en/2.0",
           "notation": "MediaUnit.Video",
@@ -195,6 +170,33 @@
           "definition": "Moving images. May include films, animation, digital recordings, visual output from simulations, recorded television programs, diagnostic/medical videos like ultrasound scans, etc. May be mute or may include synchronized sound.",
           "parent": "MediaUnit",
           "position": 14
+        },
+        {
+          "id": 5820,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Group/en/2.0",
+          "notation": "Group",
+          "title": "Group",
+          "definition": "Two or more individuals assembled together or having some unifying relationship or characteristic. In surveys, the questions are mainly focused on the group and the attitudes/experiences of the group, rather than on those of the individual respondents. If questions cover both the group and the individual, use  both as analysis units.\n",
+          "previousConcept": 1176,
+          "position": 15
+        },
+        {
+          "id": 5824,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/en/2.0",
+          "notation": "Object",
+          "title": "Object",
+          "definition": "Anything material, but inanimate, that has an independent existence and may be perceived by the senses. Examples: objects of art (paintings, sculptures, etc.) or weapons, or vehicles, etc.",
+          "previousConcept": 1177,
+          "position": 16
+        },
+        {
+          "id": 5825,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/en/2.0",
+          "notation": "Other",
+          "title": "Other",
+          "definition": "Use if the unit of analysis is known, but not found in the list.",
+          "previousConcept": 1178,
+          "position": 17
         }
       ],
       "comments": [],
@@ -219,6 +221,8 @@
       "notation": "AnalysisUnit",
       "title": "Analyseenhed",
       "definition": "Beskriver den enhed, som observeres eller analyseres i studiet eller i variablen.",
+      "previousVersion": 217,
+      "initialVersion": 217,
       "versionNotes": "",
       "versionChanges": "CV name changed: Analysenhed to Analyseenhed\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organisation rephrased into Organisation/Institution \nCode descriptive term rephrased: Event/Proces rephrased into Event/Proces/Aktivitet\nCode descriptive term rephrased:  Tekst rephrased into Medieenhed: Tekst\nCode definition rephrased: Organisation/Institution\nCode definition rephrased: Husstand\nCode definition rephrased:  Boligenhed\nCode definition amended with meaning change: Event/Proces/Aktivitet\nCode definition rephrased: Geografisk enhed\nCode definition rephrased: Gruppe\nCode definition rephrased: Objekt\nCode definition rephrased:  Andet\n",
       "license": "BY",
@@ -231,49 +235,12 @@
       "translateAgencyLink": "https://www.sa.dk",
       "concepts": [
         {
-          "id": 7125,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/da/2.0.1",
-          "notation": "HousingUnit",
-          "title": "Boligenhed",
-          "definition": "USA’s folketælling: En boligenhed er et hus, en lejlighed, et mobilhjem, en gruppe af værelser eller et enkelt værelse, der er beboet (eller hvis ikke beboet, tiltænkt beboelse) som en separat bolig. Separate boliger er boliger, hvor beboerne lever og spiser hver for sig og har direkte adgang til området fra bygningens yderside eller gennem en fælles indgang.",
-          "previousConcept": 1309,
-          "position": 5
-        },
-        {
-          "id": 7127,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/da/2.0.1",
-          "notation": "Household",
-          "title": "Husstand",
-          "definition": "En person eller gruppe af personer, der deler den samme bopæl og deler almindelig livsindretninger. Disse former for livsindretninger kan omfatte deling eller delvis deling af indkomst og velstand, og forbrug af nogle typer af varer og serviceydelser kollektivt, primært mad og bopæl (Eurostat).",
-          "previousConcept": 1308,
-          "position": 4
-        },
-        {
-          "id": 7128,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/da/2.0.1",
-          "notation": "Object",
-          "title": "Objekt",
-          "definition": "Ethvert livløst materiale, der har en uafhængig eksistens, og som kan opfattes af sanserne. Eksempler: kunstobjekter (malerier, skulpturer etc.) eller våben eller køretøjer etc.",
-          "previousConcept": 1315,
-          "position": 16
-        },
-        {
-          "id": 7129,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/da/2.0.1",
-          "notation": "TimeUnit",
-          "title": "Tidsenhed",
-          "definition": "Enhver periode af tid: År, uge, måned, dag, hver anden måned, kvartaler mm.",
-          "previousConcept": 1312,
-          "position": 9
-        },
-        {
-          "id": 7130,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TextUnit/da/2.0.1",
-          "notation": "TextUnit",
-          "title": "Tekstenhed",
-          "definition": "Bøger, artikler eller anden skreven tekst.",
-          "previousConcept": 1313,
-          "position": 9
+          "id": 7553,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/da/2.0.1",
+          "notation": "Individual",
+          "title": "Individ",
+          "definition": "Enhver individuel person.",
+          "position": 0
         },
         {
           "id": 7131,
@@ -285,22 +252,39 @@
           "position": 1
         },
         {
-          "id": 7133,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/da/2.0.1",
-          "notation": "Other",
-          "title": "Andet",
-          "definition": "Brug denne, hvis analyseenheden er kendt, men ikke fremgår af listen.",
-          "previousConcept": 1316,
-          "position": 17
+          "id": 7554,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/da/2.0.1",
+          "notation": "Family",
+          "title": "Familie",
+          "definition": "To eller flere mennesker beslægtet ved blod, ægteskab (herunder stedrelationer), samlever eller registreret partnerskab, adoption eller pleje, og hvem som måske eller måske ikke lever sammen. Fx data om, hvilke offentlige tjenester familien bruger eller vil kræve; eller hvor ofte familiemedlemmer er i kontakt med hinanden.",
+          "position": 2
         },
         {
-          "id": 7135,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/da/2.0.1",
-          "notation": "GeographicUnit",
-          "title": "Geografisk enhed",
-          "definition": "Enhver enhed, der rummeligt kan defineres som et geografisk område med enten naturlige (fysiske) eller administrative grænser. Fx data om salg af hjem, landskabsforandringer, nye konstruktioner, eller ændringer i den demografiske sammensætning af bestemte regioner eller distrikter.",
-          "previousConcept": 1311,
-          "position": 7
+          "id": 7555,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family.HouseholdFamily/da/2.0.1",
+          "notation": "Family.HouseholdFamily",
+          "title": "Familie: Husstandsfamilie",
+          "definition": "Et mere specifikt begreb, der alene refererer til mennesker, der er beslægtede gennem familiebånd (se definition for ’Familie’) og bor i samme husstand på et givent tidspunkt. Hvis det er usikkert, hvorvidt analyseenheden er 'Familie' eller 'Familie: Husstandsfamilie' brug da 'Familie'.",
+          "parent": "Family",
+          "position": 3
+        },
+        {
+          "id": 7127,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/da/2.0.1",
+          "notation": "Household",
+          "title": "Husstand",
+          "definition": "En person eller gruppe af personer, der deler den samme bopæl og deler almindelig livsindretninger. Disse former for livsindretninger kan omfatte deling eller delvis deling af indkomst og velstand, og forbrug af nogle typer af varer og serviceydelser kollektivt, primært mad og bopæl (Eurostat).",
+          "previousConcept": 1308,
+          "position": 4
+        },
+        {
+          "id": 7125,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/da/2.0.1",
+          "notation": "HousingUnit",
+          "title": "Boligenhed",
+          "definition": "USA’s folketælling: En boligenhed er et hus, en lejlighed, et mobilhjem, en gruppe af værelser eller et enkelt værelse, der er beboet (eller hvis ikke beboet, tiltænkt beboelse) som en separat bolig. Separate boliger er boliger, hvor beboerne lever og spiser hver for sig og har direkte adgang til området fra bygningens yderside eller gennem en fælles indgang.",
+          "previousConcept": 1309,
+          "position": 5
         },
         {
           "id": 7137,
@@ -312,12 +296,30 @@
           "position": 6
         },
         {
+          "id": 7135,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/da/2.0.1",
+          "notation": "GeographicUnit",
+          "title": "Geografisk enhed",
+          "definition": "Enhver enhed, der rummeligt kan defineres som et geografisk område med enten naturlige (fysiske) eller administrative grænser. Fx data om salg af hjem, landskabsforandringer, nye konstruktioner, eller ændringer i den demografiske sammensætning af bestemte regioner eller distrikter.",
+          "previousConcept": 1311,
+          "position": 7
+        },
+        {
           "id": 7547,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/da/2.0.1",
           "notation": "PoliticalAdministrativeArea",
           "title": "Politisk-administrativt område",
           "definition": "Et geografisk område styret af en suveræn myndighed, der har beføjelsen til at træffe administrative eller politiske beslutninger for dette område. Dette inkluderer områder på det overnationale (fx sammenslutninger af stater som Den Europæiske Union), nationale (fx individuelle stater eller lande), subnationale (fx administrative underafdelinger af føderale stater, provinser etc.) og lokale (fx kommuner) niveauer.",
           "position": 8
+        },
+        {
+          "id": 7129,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/da/2.0.1",
+          "notation": "TimeUnit",
+          "title": "Tidsenhed",
+          "definition": "Enhver periode af tid: År, uge, måned, dag, hver anden måned, kvartaler mm.",
+          "previousConcept": 1312,
+          "position": 9
         },
         {
           "id": 7548,
@@ -364,37 +366,30 @@
           "position": 14
         },
         {
-          "id": 7553,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/da/2.0.1",
-          "notation": "Individual",
-          "title": "Individ",
-          "definition": "Enhver individuel person.",
-          "position": 0
-        },
-        {
-          "id": 7554,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/da/2.0.1",
-          "notation": "Family",
-          "title": "Familie",
-          "definition": "To eller flere mennesker beslægtet ved blod, ægteskab (herunder stedrelationer), samlever eller registreret partnerskab, adoption eller pleje, og hvem som måske eller måske ikke lever sammen. Fx data om, hvilke offentlige tjenester familien bruger eller vil kræve; eller hvor ofte familiemedlemmer er i kontakt med hinanden.",
-          "position": 2
-        },
-        {
-          "id": 7555,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family.HouseholdFamily/da/2.0.1",
-          "notation": "Family.HouseholdFamily",
-          "title": "Familie: Husstandsfamilie",
-          "definition": "Et mere specifikt begreb, der alene refererer til mennesker, der er beslægtede gennem familiebånd (se definition for ’Familie’) og bor i samme husstand på et givent tidspunkt. Hvis det er usikkert, hvorvidt analyseenheden er 'Familie' eller 'Familie: Husstandsfamilie' brug da 'Familie'.",
-          "parent": "Family",
-          "position": 3
-        },
-        {
           "id": 7556,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Group/da/2.0.1",
           "notation": "Group",
           "title": "Gruppe",
           "definition": "To eller flere individer samlet sammen eller, eller som har et forenende forhold eller karakteristik. I undersøgelser er spørgsmålene hovedsageligt fokuseret på gruppen og holdningerne/oplevelserne i gruppen snarere end de individuelle respondenters. Hvis spørgsmål dækker både gruppen og den individuelle, brug begge som analyseenheder.",
           "position": 15
+        },
+        {
+          "id": 7128,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/da/2.0.1",
+          "notation": "Object",
+          "title": "Objekt",
+          "definition": "Ethvert livløst materiale, der har en uafhængig eksistens, og som kan opfattes af sanserne. Eksempler: kunstobjekter (malerier, skulpturer etc.) eller våben eller køretøjer etc.",
+          "previousConcept": 1315,
+          "position": 16
+        },
+        {
+          "id": 7133,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/da/2.0.1",
+          "notation": "Other",
+          "title": "Andet",
+          "definition": "Brug denne, hvis analyseenheden er kendt, men ikke fremgår af listen.",
+          "previousConcept": 1316,
+          "position": 17
         }
       ],
       "comments": [],
@@ -419,6 +414,8 @@
       "notation": "AnalysisUnit",
       "title": "Analyseeinheit",
       "definition": "Beschreibt die Entität, die in der Studie oder in der Variable analysiert wird.",
+      "previousVersion": 0,
+      "initialVersion": 211,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -552,6 +549,8 @@
       "notation": "AnalysisUnit",
       "title": "Havainto/aineistoyksikkötyyppi",
       "definition": "Määrittelee yksikön, jota tutkimuksessa/muuttujassa havannoidaan tai analysoidaan.\n",
+      "previousVersion": 387,
+      "initialVersion": 208,
       "notes": "",
       "versionNotes": " ",
       "versionChanges": "Code descriptive term rephrased: Muu havaintoyksikkö/aineistoyksikkötyyppi rephrased into Muu havainto/aineistoyksikkötyyppi.\n",
@@ -565,58 +564,31 @@
       "translateAgencyLink": "https://www.fsd.uta.fi/en/",
       "concepts": [
         {
-          "id": 8666,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/fi",
-          "notation": "TimeUnit",
-          "title": "Aikajakso",
-          "definition": "Minkä mittainen aikajakso tahansa: sekunti, tunti, vuorokausi, viikko, kuukausi, vuosi yms.",
-          "previousConcept": 7077,
-          "position": 9
+          "id": 8678,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/fi",
+          "notation": "Individual",
+          "title": "Henkilö",
+          "definition": "Tutkimuksen tarkastelukohteena ovat yksittäiset henkilöt",
+          "previousConcept": 8506,
+          "position": 0
         },
         {
-          "id": 8667,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/fi",
-          "notation": "EventOrProcessOrActivity",
-          "title": "Tapahtuma/prosessi/toiminta",
-          "definition": "Tapahtuma, tapahtumasarja, toiminta tai prosessi. Tapahtumat ovat usein lyhytaikaisia ja kertaluonteisia, esimerkiksi mellakat, kokoukset, urheilukilpailut, terroristihyökkäykset ja luonnonkatastrofit. Prosessit ovat tyypillisesti pidempikestoisia, voivat sisältää useampia tapahtumia tai vähittäisiä muutoksia, jotka lopuksi johtavat tiettyyn tulokseen. Esimerkiksi oikeusjutut, rikostutkimukset, poliittiset kampanjat, kuntoutushoidot, koulutus. Tapahtuma/prosessi/toiminta -termiä käytetään silloin, kun tutkimuksessa keskitytään kyseiseen tapahtumaan, prosessiin tai toimintaan, ei henkilöihin sinänsä. Esimerkiksi havainnointitutkimus peliautomaattipelaamisesta; tutkimus lasten pahoinpitelytapauksista, niiden tyypistä ja kestosta, osallistuvien henkilöiden roolista niissä.",
-          "previousConcept": 7085,
-          "position": 6
+          "id": 8674,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#OrganizationOrInstitution/fi",
+          "notation": "OrganizationOrInstitution",
+          "title": "Organisaatio",
+          "definition": "Mikä tahansa hallinnollinen tai toiminnallinen organisaatio, esimerkiksi järjestö, koulu, instituutti, toimisto, yritys, poliittinen puolue, jne. Kysymykset kohdistuvat itse organisaatioon vaikka vastaajina ovatkin yksittäiset henkilöt. Esimerkiksi tutkittaessa yritysten ympäristöpolitiikkaa tai korkeakouluista valmistuneiden määriä suhteessa opiskelijoihin jne.",
+          "previousConcept": 7080,
+          "position": 1
         },
         {
-          "id": 8668,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/fi",
-          "notation": "HousingUnit",
-          "title": "Asuntokunta",
-          "definition": "Asuntokunta voi sijaita talossa, huoneistossa, asuntovaunussa, tai asunnon tietyssä huoneessa tai huoneissa. Asuntokunnnan asuintilassa elävillä henkilöillä on oma erillinen ruokataloutensa ja järjestelynsä. Yhdessä asunnossa voi olla useampia asuntokuntia. Esimerkiksi soluasunnoissa asuvilla opiskelijoilla voi kullakin olla oma ruoka- ja asuntokuntansa. Termi käytössä etenkin Yhdysvalloissa.",
-          "previousConcept": 7081,
-          "position": 5
-        },
-        {
-          "id": 8669,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/fi",
-          "notation": "Object",
-          "title": "Eloton objekti/esine",
-          "definition": "Mikä tahansa konkreettinen, eloton esine/kohde, joka voidaan aistein havaita. Esimerkiksi taideteokset (veistokset, maalaukset), aseet, ajoneuvot jne.",
-          "previousConcept": 7083,
-          "position": 16
-        },
-        {
-          "id": 8670,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/fi",
-          "notation": "MediaUnit",
-          "title": "Mediatyyppi (teksti, ääni, still-kuva, liikkuva kuva)",
-          "definition": "Sisältää teksti-, kuva- ja äänimuodossa olevan viestinnän.",
-          "previousConcept": 8500,
-          "position": 10
-        },
-        {
-          "id": 8671,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/fi",
-          "notation": "Other",
-          "title": "Muu havainto/aineistoyksikkötyyppi",
-          "definition": "Käytä mikäli havaintoyksikkö on tiedossa, mutta ei löydy sanastosta.",
-          "previousConcept": 7076,
-          "position": 17
+          "id": 8681,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/fi",
+          "notation": "Family",
+          "title": "Perhe",
+          "definition": "Kaksi tai useampia henkilöitä, jotka liittyvät toisiinsa sukulaisuuden, avo- tai avioliiton (laskien mukaan esim. sisar- ja velipuolet), rekisteröidyn parisuhteen, adoption tai sijaisvanhemmuuden kautta, riippumatta siitä, asuvatko he yhdessä vai eivät. Esimerkiksi tutkittaessa mitä julkisia palveluja perhe käyttää; tai kuinka usein perheenjäsenet ovat yhteydessä toisiinsa.",
+          "previousConcept": 8497,
+          "position": 2
         },
         {
           "id": 8672,
@@ -629,33 +601,67 @@
           "position": 3
         },
         {
-          "id": 8673,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Video/fi",
-          "notation": "MediaUnit.Video",
-          "title": "Mediatyyppi: liikkuva kuva",
-          "definition": "Liikkuva kuva äänellä tai ilman. Esimerkiksi elokuvat, animaatiot, digitaaliset taltiot, simulaatioiden liikkuvat kuvat, taltioidut televisio-ohjelmat ja ultraäänikuvat.",
-          "previousConcept": 8504,
-          "parent": "MediaUnit",
-          "position": 14
+          "id": 8679,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/fi",
+          "notation": "Household",
+          "title": "Kotitalous",
+          "definition": "Kotitalouden muodostaa yksi henkilö tai ryhmä henkilöitä, jotka asuvat yhdessä ja joilla on kokonaan tai osittain yhteinen ruokatalous tai jotka muuten käyttävät tulojaan ja varallisuuttaan ainakin osittain yhdessä.",
+          "previousConcept": 7079,
+          "position": 4
         },
         {
-          "id": 8674,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#OrganizationOrInstitution/fi",
-          "notation": "OrganizationOrInstitution",
-          "title": "Organisaatio",
-          "definition": "Mikä tahansa hallinnollinen tai toiminnallinen organisaatio, esimerkiksi järjestö, koulu, instituutti, toimisto, yritys, poliittinen puolue, jne. Kysymykset kohdistuvat itse organisaatioon vaikka vastaajina ovatkin yksittäiset henkilöt. Esimerkiksi tutkittaessa yritysten ympäristöpolitiikkaa tai korkeakouluista valmistuneiden määriä suhteessa opiskelijoihin jne.",
-          "previousConcept": 7080,
-          "position": 1
+          "id": 8668,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/fi",
+          "notation": "HousingUnit",
+          "title": "Asuntokunta",
+          "definition": "Asuntokunta voi sijaita talossa, huoneistossa, asuntovaunussa, tai asunnon tietyssä huoneessa tai huoneissa. Asuntokunnnan asuintilassa elävillä henkilöillä on oma erillinen ruokataloutensa ja järjestelynsä. Yhdessä asunnossa voi olla useampia asuntokuntia. Esimerkiksi soluasunnoissa asuvilla opiskelijoilla voi kullakin olla oma ruoka- ja asuntokuntansa. Termi käytössä etenkin Yhdysvalloissa.",
+          "previousConcept": 7081,
+          "position": 5
         },
         {
-          "id": 8675,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/fi",
-          "notation": "MediaUnit.Text",
-          "title": "Mediatyyppi: teksti",
-          "definition": "Kirja, artikkeli, tweet, blogikirjoitus tai mikä tahansa muu tekstiyksikkö. Esimerkiksi tutkittaessa miten sanomalehdet ovat käsitelleet tiettyä aihetta ajan saatossa tai tutkittaessa vihapuhetta blogikirjoituksissa.",
-          "previousConcept": 8503,
-          "parent": "MediaUnit",
-          "position": 13
+          "id": 8667,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/fi",
+          "notation": "EventOrProcessOrActivity",
+          "title": "Tapahtuma/prosessi/toiminta",
+          "definition": "Tapahtuma, tapahtumasarja, toiminta tai prosessi. Tapahtumat ovat usein lyhytaikaisia ja kertaluonteisia, esimerkiksi mellakat, kokoukset, urheilukilpailut, terroristihyökkäykset ja luonnonkatastrofit. Prosessit ovat tyypillisesti pidempikestoisia, voivat sisältää useampia tapahtumia tai vähittäisiä muutoksia, jotka lopuksi johtavat tiettyyn tulokseen. Esimerkiksi oikeusjutut, rikostutkimukset, poliittiset kampanjat, kuntoutushoidot, koulutus. Tapahtuma/prosessi/toiminta -termiä käytetään silloin, kun tutkimuksessa keskitytään kyseiseen tapahtumaan, prosessiin tai toimintaan, ei henkilöihin sinänsä. Esimerkiksi havainnointitutkimus peliautomaattipelaamisesta; tutkimus lasten pahoinpitelytapauksista, niiden tyypistä ja kestosta, osallistuvien henkilöiden roolista niissä.",
+          "previousConcept": 7085,
+          "position": 6
+        },
+        {
+          "id": 8682,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/fi",
+          "notation": "GeographicUnit",
+          "title": "Maantieteellinen yksikkö",
+          "definition": "Mikä tahansa maantieteellisesti määriteltävissä oleva alue, jolla on joko luontaiset fyysiset rajat tai hallinnolliset rajat. Esimerkiksi muutokset tiettyjen alueiden väestössä tai asuntojen myyntiluvut tai rakennusluvat tietyllä alueella.",
+          "previousConcept": 7078,
+          "position": 7
+        },
+        {
+          "id": 8680,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/fi",
+          "notation": "PoliticalAdministrativeArea",
+          "title": "Poliittis-hallinnollinen alue",
+          "definition": "Maantieteellinen alue, jota hallinnoivilla viranomaisilla tai päätäntäelimillä on oikeus tehdä aluetta koskevia hallinnollisia tai poliittisia päätöksiä. Sisältää ylikansalliset (esim. Euroopan unioni), kansalliset (esim. valtiot), maansisäiset (esim. maakunnat) ja paikalliset (esim. kunnat) alueet.",
+          "previousConcept": 8499,
+          "position": 8
+        },
+        {
+          "id": 8666,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/fi",
+          "notation": "TimeUnit",
+          "title": "Aikajakso",
+          "definition": "Minkä mittainen aikajakso tahansa: sekunti, tunti, vuorokausi, viikko, kuukausi, vuosi yms.",
+          "previousConcept": 7077,
+          "position": 9
+        },
+        {
+          "id": 8670,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/fi",
+          "notation": "MediaUnit",
+          "title": "Mediatyyppi (teksti, ääni, still-kuva, liikkuva kuva)",
+          "definition": "Sisältää teksti-, kuva- ja äänimuodossa olevan viestinnän.",
+          "previousConcept": 8500,
+          "position": 10
         },
         {
           "id": 8676,
@@ -678,49 +684,24 @@
           "position": 12
         },
         {
-          "id": 8678,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/fi",
-          "notation": "Individual",
-          "title": "Henkilö",
-          "definition": "Tutkimuksen tarkastelukohteena ovat yksittäiset henkilöt",
-          "previousConcept": 8506,
-          "position": 0
+          "id": 8675,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/fi",
+          "notation": "MediaUnit.Text",
+          "title": "Mediatyyppi: teksti",
+          "definition": "Kirja, artikkeli, tweet, blogikirjoitus tai mikä tahansa muu tekstiyksikkö. Esimerkiksi tutkittaessa miten sanomalehdet ovat käsitelleet tiettyä aihetta ajan saatossa tai tutkittaessa vihapuhetta blogikirjoituksissa.",
+          "previousConcept": 8503,
+          "parent": "MediaUnit",
+          "position": 13
         },
         {
-          "id": 8679,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/fi",
-          "notation": "Household",
-          "title": "Kotitalous",
-          "definition": "Kotitalouden muodostaa yksi henkilö tai ryhmä henkilöitä, jotka asuvat yhdessä ja joilla on kokonaan tai osittain yhteinen ruokatalous tai jotka muuten käyttävät tulojaan ja varallisuuttaan ainakin osittain yhdessä.",
-          "previousConcept": 7079,
-          "position": 4
-        },
-        {
-          "id": 8680,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/fi",
-          "notation": "PoliticalAdministrativeArea",
-          "title": "Poliittis-hallinnollinen alue",
-          "definition": "Maantieteellinen alue, jota hallinnoivilla viranomaisilla tai päätäntäelimillä on oikeus tehdä aluetta koskevia hallinnollisia tai poliittisia päätöksiä. Sisältää ylikansalliset (esim. Euroopan unioni), kansalliset (esim. valtiot), maansisäiset (esim. maakunnat) ja paikalliset (esim. kunnat) alueet.",
-          "previousConcept": 8499,
-          "position": 8
-        },
-        {
-          "id": 8681,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/fi",
-          "notation": "Family",
-          "title": "Perhe",
-          "definition": "Kaksi tai useampia henkilöitä, jotka liittyvät toisiinsa sukulaisuuden, avo- tai avioliiton (laskien mukaan esim. sisar- ja velipuolet), rekisteröidyn parisuhteen, adoption tai sijaisvanhemmuuden kautta, riippumatta siitä, asuvatko he yhdessä vai eivät. Esimerkiksi tutkittaessa mitä julkisia palveluja perhe käyttää; tai kuinka usein perheenjäsenet ovat yhteydessä toisiinsa.",
-          "previousConcept": 8497,
-          "position": 2
-        },
-        {
-          "id": 8682,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/fi",
-          "notation": "GeographicUnit",
-          "title": "Maantieteellinen yksikkö",
-          "definition": "Mikä tahansa maantieteellisesti määriteltävissä oleva alue, jolla on joko luontaiset fyysiset rajat tai hallinnolliset rajat. Esimerkiksi muutokset tiettyjen alueiden väestössä tai asuntojen myyntiluvut tai rakennusluvat tietyllä alueella.",
-          "previousConcept": 7078,
-          "position": 7
+          "id": 8673,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Video/fi",
+          "notation": "MediaUnit.Video",
+          "title": "Mediatyyppi: liikkuva kuva",
+          "definition": "Liikkuva kuva äänellä tai ilman. Esimerkiksi elokuvat, animaatiot, digitaaliset taltiot, simulaatioiden liikkuvat kuvat, taltioidut televisio-ohjelmat ja ultraäänikuvat.",
+          "previousConcept": 8504,
+          "parent": "MediaUnit",
+          "position": 14
         },
         {
           "id": 8683,
@@ -730,6 +711,24 @@
           "definition": "Kaksi tai useampia henkilöitä, jotka ovat joko kokoontuneet yhteen tai joita yhdistää jokin muu tekijä. Mikäli kyselytutkimus, kysymykset koskevat pääasiassa itse ryhmää, ryhmän kokemuksia ja asenteita ryhmää kohtaan, ei henkilöä itseään. Mikäli kysymykset koskevat sekä ryhmää että henkilöä, käytä havaintoyksikkönä molempia.",
           "previousConcept": 8505,
           "position": 15
+        },
+        {
+          "id": 8669,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/fi",
+          "notation": "Object",
+          "title": "Eloton objekti/esine",
+          "definition": "Mikä tahansa konkreettinen, eloton esine/kohde, joka voidaan aistein havaita. Esimerkiksi taideteokset (veistokset, maalaukset), aseet, ajoneuvot jne.",
+          "previousConcept": 7083,
+          "position": 16
+        },
+        {
+          "id": 8671,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/fi",
+          "notation": "Other",
+          "title": "Muu havainto/aineistoyksikkötyyppi",
+          "definition": "Käytä mikäli havaintoyksikkö on tiedossa, mutta ei löydy sanastosta.",
+          "previousConcept": 7076,
+          "position": 17
         }
       ],
       "comments": [],
@@ -760,6 +759,8 @@
       "notation": "AnalysisUnit",
       "title": "Havainto/aineistoyksikkötyyppi",
       "definition": "Määrittelee yksikön, jota tutkimuksessa/muuttujassa havannoidaan tai analysoidaan.\n",
+      "previousVersion": 208,
+      "initialVersion": 208,
       "notes": "",
       "versionNotes": "",
       "versionChanges": "CV definition rephrased.\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Maantieteellinen alue rephrased into Maantieteellinen yksikkö\nCode descriptive term rephrased: Teksti rephrased into Mediatyyppi: teksti\nCode definition rephrased: Henkilö\nCode definition rephrased: Perhe\nCode definition rephrased: Perhe: perhekotitalous\nCode definition rephrased: Kotitalous\nCode definition rephrased: Asuntokunta\nCode definition rephrased: Tapahtuma/prosessi/toiminta\nCode definition rephrased: Maantieteellinen yksikkö\nCode definition rephrased: Mediayksikkö: teksti\nCode definition rephrased: Ryhmä",
@@ -773,40 +774,12 @@
       "translateAgencyLink": "https://www.fsd.uta.fi/en/",
       "concepts": [
         {
-          "id": 7076,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/fi",
-          "notation": "Other",
-          "title": "Muu havaintoyksikkö/aineistoyksikkötyyppi",
-          "definition": "Käytä mikäli havaintoyksikkö on tiedossa, mutta ei löydy sanastosta.",
-          "previousConcept": 1203,
-          "position": 17
-        },
-        {
-          "id": 7077,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/fi",
-          "notation": "TimeUnit",
-          "title": "Aikajakso",
-          "definition": "Minkä mittainen aikajakso tahansa: sekunti, tunti, vuorokausi, viikko, kuukausi, vuosi yms.",
-          "previousConcept": 1199,
-          "position": 9
-        },
-        {
-          "id": 7078,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/fi",
-          "notation": "GeographicUnit",
-          "title": "Maantieteellinen yksikkö",
-          "definition": "Mikä tahansa maantieteellisesti määriteltävissä oleva alue, jolla on joko luontaiset fyysiset rajat tai hallinnolliset rajat. Esimerkiksi muutokset tiettyjen alueiden väestössä tai asuntojen myyntiluvut tai rakennusluvat tietyllä alueella.",
-          "previousConcept": 1198,
-          "position": 7
-        },
-        {
-          "id": 7079,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/fi",
-          "notation": "Household",
-          "title": "Kotitalous",
-          "definition": "Kotitalouden muodostaa yksi henkilö tai ryhmä henkilöitä, jotka asuvat yhdessä ja joilla on kokonaan tai osittain yhteinen ruokatalous tai jotka muuten käyttävät tulojaan ja varallisuuttaan ainakin osittain yhdessä.",
-          "previousConcept": 1195,
-          "position": 4
+          "id": 8506,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/fi",
+          "notation": "Individual",
+          "title": "Henkilö",
+          "definition": "Tutkimuksen tarkastelukohteena ovat yksittäiset henkilöt",
+          "position": 0
         },
         {
           "id": 7080,
@@ -816,42 +789,6 @@
           "definition": "Mikä tahansa hallinnollinen tai toiminnallinen organisaatio, esimerkiksi järjestö, koulu, instituutti, toimisto, yritys, poliittinen puolue, jne. Kysymykset kohdistuvat itse organisaatioon vaikka vastaajina ovatkin yksittäiset henkilöt. Esimerkiksi tutkittaessa yritysten ympäristöpolitiikkaa tai korkeakouluista valmistuneiden määriä suhteessa opiskelijoihin jne.",
           "previousConcept": 1192,
           "position": 1
-        },
-        {
-          "id": 7081,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/fi",
-          "notation": "HousingUnit",
-          "title": "Asuntokunta",
-          "definition": "Asuntokunta voi sijaita talossa, huoneistossa, asuntovaunussa, tai asunnon tietyssä huoneessa tai huoneissa. Asuntokunnnan asuintilassa elävillä henkilöillä on oma erillinen ruokataloutensa ja järjestelynsä. Yhdessä asunnossa voi olla useampia asuntokuntia. Esimerkiksi soluasunnoissa asuvilla opiskelijoilla voi kullakin olla oma ruoka- ja asuntokuntansa. Termi käytössä etenkin Yhdysvalloissa.",
-          "previousConcept": 1196,
-          "position": 5
-        },
-        {
-          "id": 7082,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TextUnit/fi",
-          "notation": "TextUnit",
-          "title": "Teksti",
-          "definition": "Kirja, artikkeli tai mikä tahansa muu tekstiyksikkö. Lisäohje kansainväliseen määritelmään: Esimerkiksi sanomalehtiartikkelit autismista tai kirjoituskilpailuissa kerätyt elämänkerrat.",
-          "previousConcept": 1200,
-          "position": 9
-        },
-        {
-          "id": 7083,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/fi",
-          "notation": "Object",
-          "title": "Eloton objekti/esine",
-          "definition": "Mikä tahansa konkreettinen, eloton esine/kohde, joka voidaan aistein havaita. Esimerkiksi taideteokset (veistokset, maalaukset), aseet, ajoneuvot jne.",
-          "previousConcept": 1202,
-          "position": 16
-        },
-        {
-          "id": 7085,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/fi",
-          "notation": "EventOrProcessOrActivity",
-          "title": "Tapahtuma/prosessi/toiminta",
-          "definition": "Tapahtuma, tapahtumasarja, toiminta tai prosessi. Tapahtumat ovat usein lyhytaikaisia ja kertaluonteisia, esimerkiksi mellakat, kokoukset, urheilukilpailut, terroristihyökkäykset ja luonnonkatastrofit. Prosessit ovat tyypillisesti pidempikestoisia, voivat sisältää useampia tapahtumia tai vähittäisiä muutoksia, jotka lopuksi johtavat tiettyyn tulokseen. Esimerkiksi oikeusjutut, rikostutkimukset, poliittiset kampanjat, kuntoutushoidot, koulutus. Tapahtuma/prosessi/toiminta -termiä käytetään silloin, kun tutkimuksessa keskitytään kyseiseen tapahtumaan, prosessiin tai toimintaan, ei henkilöihin sinänsä. Esimerkiksi havainnointitutkimus peliautomaattipelaamisesta; tutkimus lasten pahoinpitelytapauksista, niiden tyypistä ja kestosta, osallistuvien henkilöiden roolista niissä.",
-          "previousConcept": 1197,
-          "position": 6
         },
         {
           "id": 8497,
@@ -871,12 +808,57 @@
           "position": 3
         },
         {
+          "id": 7079,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/fi",
+          "notation": "Household",
+          "title": "Kotitalous",
+          "definition": "Kotitalouden muodostaa yksi henkilö tai ryhmä henkilöitä, jotka asuvat yhdessä ja joilla on kokonaan tai osittain yhteinen ruokatalous tai jotka muuten käyttävät tulojaan ja varallisuuttaan ainakin osittain yhdessä.",
+          "previousConcept": 1195,
+          "position": 4
+        },
+        {
+          "id": 7081,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/fi",
+          "notation": "HousingUnit",
+          "title": "Asuntokunta",
+          "definition": "Asuntokunta voi sijaita talossa, huoneistossa, asuntovaunussa, tai asunnon tietyssä huoneessa tai huoneissa. Asuntokunnnan asuintilassa elävillä henkilöillä on oma erillinen ruokataloutensa ja järjestelynsä. Yhdessä asunnossa voi olla useampia asuntokuntia. Esimerkiksi soluasunnoissa asuvilla opiskelijoilla voi kullakin olla oma ruoka- ja asuntokuntansa. Termi käytössä etenkin Yhdysvalloissa.",
+          "previousConcept": 1196,
+          "position": 5
+        },
+        {
+          "id": 7085,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/fi",
+          "notation": "EventOrProcessOrActivity",
+          "title": "Tapahtuma/prosessi/toiminta",
+          "definition": "Tapahtuma, tapahtumasarja, toiminta tai prosessi. Tapahtumat ovat usein lyhytaikaisia ja kertaluonteisia, esimerkiksi mellakat, kokoukset, urheilukilpailut, terroristihyökkäykset ja luonnonkatastrofit. Prosessit ovat tyypillisesti pidempikestoisia, voivat sisältää useampia tapahtumia tai vähittäisiä muutoksia, jotka lopuksi johtavat tiettyyn tulokseen. Esimerkiksi oikeusjutut, rikostutkimukset, poliittiset kampanjat, kuntoutushoidot, koulutus. Tapahtuma/prosessi/toiminta -termiä käytetään silloin, kun tutkimuksessa keskitytään kyseiseen tapahtumaan, prosessiin tai toimintaan, ei henkilöihin sinänsä. Esimerkiksi havainnointitutkimus peliautomaattipelaamisesta; tutkimus lasten pahoinpitelytapauksista, niiden tyypistä ja kestosta, osallistuvien henkilöiden roolista niissä.",
+          "previousConcept": 1197,
+          "position": 6
+        },
+        {
+          "id": 7078,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/fi",
+          "notation": "GeographicUnit",
+          "title": "Maantieteellinen yksikkö",
+          "definition": "Mikä tahansa maantieteellisesti määriteltävissä oleva alue, jolla on joko luontaiset fyysiset rajat tai hallinnolliset rajat. Esimerkiksi muutokset tiettyjen alueiden väestössä tai asuntojen myyntiluvut tai rakennusluvat tietyllä alueella.",
+          "previousConcept": 1198,
+          "position": 7
+        },
+        {
           "id": 8499,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/fi",
           "notation": "PoliticalAdministrativeArea",
           "title": "Poliittis-hallinnollinen alue",
           "definition": "Maantieteellinen alue, jota hallinnoivilla viranomaisilla tai päätäntäelimillä on oikeus tehdä aluetta koskevia hallinnollisia tai poliittisia päätöksiä. Sisältää ylikansalliset (esim. Euroopan unioni), kansalliset (esim. valtiot), maansisäiset (esim. maakunnat) ja paikalliset (esim. kunnat) alueet.",
           "position": 8
+        },
+        {
+          "id": 7077,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/fi",
+          "notation": "TimeUnit",
+          "title": "Aikajakso",
+          "definition": "Minkä mittainen aikajakso tahansa: sekunti, tunti, vuorokausi, viikko, kuukausi, vuosi yms.",
+          "previousConcept": 1199,
+          "position": 9
         },
         {
           "id": 8500,
@@ -931,12 +913,22 @@
           "position": 15
         },
         {
-          "id": 8506,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/fi",
-          "notation": "Individual",
-          "title": "Henkilö",
-          "definition": "Tutkimuksen tarkastelukohteena ovat yksittäiset henkilöt",
-          "position": 0
+          "id": 7083,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/fi",
+          "notation": "Object",
+          "title": "Eloton objekti/esine",
+          "definition": "Mikä tahansa konkreettinen, eloton esine/kohde, joka voidaan aistein havaita. Esimerkiksi taideteokset (veistokset, maalaukset), aseet, ajoneuvot jne.",
+          "previousConcept": 1202,
+          "position": 16
+        },
+        {
+          "id": 7076,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/fi",
+          "notation": "Other",
+          "title": "Muu havaintoyksikkö/aineistoyksikkötyyppi",
+          "definition": "Käytä mikäli havaintoyksikkö on tiedossa, mutta ei löydy sanastosta.",
+          "previousConcept": 1203,
+          "position": 17
         }
       ],
       "comments": [],
@@ -961,6 +953,8 @@
       "notation": "AnalysisUnit",
       "title": "Unité d'analyse",
       "definition": "<span style=\"color: rgb(55, 64, 78); font-family: Arial; font-size: 15px; white-space: pre-wrap; background-color: rgb(250, 250, 250);\">Décrit l'entité analysée dans l'étude ou dans la variable.</span>",
+      "previousVersion": 394,
+      "initialVersion": 394,
       "versionNotes": "",
       "versionChanges": "Code descriptive term rephrased: Espace politico-administatif rephrased into Espace politico-administratif\n",
       "license": "BY",
@@ -991,13 +985,59 @@
           "position": 1
         },
         {
-          "id": 8430,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/fr",
-          "notation": "MediaUnit",
-          "title": "Média",
-          "definition": "Inclut le texte, l'image fixe, la vidéo et le son.",
-          "previousConcept": 7974,
-          "position": 10
+          "id": 8444,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/fr",
+          "notation": "Family",
+          "title": "Famille",
+          "definition": "Deux personnes ou plus liées par le sang, le mariage (incluant les relations par alliance), la cohabitation ou un partenariat enregistré, l'adoption ou le placement familial et qui peuvent ou non vivre ensemble. Par exemple, des données sur quel type de services publics la famille utilise ou demanderait ; ou à quelle fréquence des membres de la famille sont en contact les uns avec les autres.",
+          "previousConcept": 7235,
+          "position": 2
+        },
+        {
+          "id": 8438,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family.HouseholdFamily/fr",
+          "notation": "Family.HouseholdFamily",
+          "title": "Famille : ménage",
+          "definition": "Un terme plus spécifique, se réfère aux personnes qui sont liées par des liens familiaux (voir la définition pour 'Famille') et qui vivent dans le même ménage à un moment donné. Si vous ne savez pas si l'unité d'analyse est 'Famille' ou 'Famille : ménage', utilisez 'Famille'.",
+          "previousConcept": 7236,
+          "parent": "Family",
+          "position": 3
+        },
+        {
+          "id": 8435,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/fr",
+          "notation": "Household",
+          "title": "Ménage",
+          "definition": "Une personne ou un groupe de personnes qui partagent la même unité d'habitation et les mêmes conditions de vie. Ces conditions de vie peuvent inclure la mise en commun d'une partie, ou de la totalité, des revenus et des richesses, et la consommation de certains types de biens et de services, principalement le logement et la nourriture (Eurostat).",
+          "previousConcept": 7237,
+          "position": 4
+        },
+        {
+          "id": 8434,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/fr",
+          "notation": "HousingUnit",
+          "title": "Logement",
+          "definition": "Recensement US : une unité d'habitation est une maison, un appartement, un mobile home, un groupe de pièces, ou une pièce unique qui est occupée (ou si vacant, est destinée à l'occupation) comme lieu de vie séparé. Les lieux de vie séparés sont ceux dans lesquels les occupants vivent et mangent séparément de toute autre personne dans le bâtiment et qui ont un accès direct depuis l'extérieur du bâtiment ou par un hall commun.",
+          "previousConcept": 7238,
+          "position": 5
+        },
+        {
+          "id": 8433,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/fr",
+          "notation": "EventOrProcessOrActivity",
+          "title": "Événement / Processus / Activité",
+          "definition": "Tout type d'incident, d'événement ou d'activité. Les événements sont habituellement ponctuels, individuels, avec une durée limitée ou courte. Exemples : infractions criminelles, émeutes, réunions, élections, compétitions sportives, attaques terroristes, catastrophes naturelles comme des inondations, etc. Les processus se déroulement typiquement au fil du temps, et peuvent inclure de multiple 'événements' ou de changements graduels qui aboutissent, ou devraient aboutir, à un résultat particulier. Exemples : procès, enquêtes criminelles, campagnes politiques, traitements médicaux, éducation, entraînement d'athlètes, etc. Utilisez quand l'intérêt principal est plus porté sur l’événement, le processus ou l'activité lui-même. Par exemple, une observation sur le jeu aux machines à sous ; ou des données sur les cas de abus infantiles, comme le type et la durée de l'abus, le rôle des personnes impliquées, etc.",
+          "previousConcept": 7239,
+          "position": 6
+        },
+        {
+          "id": 8443,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/fr",
+          "notation": "GeographicUnit",
+          "title": "Unité géographique",
+          "definition": "Toute entité qui peut être définie spatialement comme une zone géographique, avec soit des limites naturelles (physiques) ou des frontières administratives. Par exemple, des données sur les ventes de maisons, les changements de paysage, les nouvelles constructions, ou les changements dans la composition démographique de certaines régions ou districts.",
+          "previousConcept": 7240,
+          "position": 7
         },
         {
           "id": 8431,
@@ -1018,40 +1058,23 @@
           "position": 9
         },
         {
-          "id": 8433,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/fr",
-          "notation": "EventOrProcessOrActivity",
-          "title": "Événement / Processus / Activité",
-          "definition": "Tout type d'incident, d'événement ou d'activité. Les événements sont habituellement ponctuels, individuels, avec une durée limitée ou courte. Exemples : infractions criminelles, émeutes, réunions, élections, compétitions sportives, attaques terroristes, catastrophes naturelles comme des inondations, etc. Les processus se déroulement typiquement au fil du temps, et peuvent inclure de multiple 'événements' ou de changements graduels qui aboutissent, ou devraient aboutir, à un résultat particulier. Exemples : procès, enquêtes criminelles, campagnes politiques, traitements médicaux, éducation, entraînement d'athlètes, etc. Utilisez quand l'intérêt principal est plus porté sur l’événement, le processus ou l'activité lui-même. Par exemple, une observation sur le jeu aux machines à sous ; ou des données sur les cas de abus infantiles, comme le type et la durée de l'abus, le rôle des personnes impliquées, etc.",
-          "previousConcept": 7239,
-          "position": 6
+          "id": 8430,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/fr",
+          "notation": "MediaUnit",
+          "title": "Média",
+          "definition": "Inclut le texte, l'image fixe, la vidéo et le son.",
+          "previousConcept": 7974,
+          "position": 10
         },
         {
-          "id": 8434,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/fr",
-          "notation": "HousingUnit",
-          "title": "Logement",
-          "definition": "Recensement US : une unité d'habitation est une maison, un appartement, un mobile home, un groupe de pièces, ou une pièce unique qui est occupée (ou si vacant, est destinée à l'occupation) comme lieu de vie séparé. Les lieux de vie séparés sont ceux dans lesquels les occupants vivent et mangent séparément de toute autre personne dans le bâtiment et qui ont un accès direct depuis l'extérieur du bâtiment ou par un hall commun.",
-          "previousConcept": 7238,
-          "position": 5
-        },
-        {
-          "id": 8435,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/fr",
-          "notation": "Household",
-          "title": "Ménage",
-          "definition": "Une personne ou un groupe de personnes qui partagent la même unité d'habitation et les mêmes conditions de vie. Ces conditions de vie peuvent inclure la mise en commun d'une partie, ou de la totalité, des revenus et des richesses, et la consommation de certains types de biens et de services, principalement le logement et la nourriture (Eurostat).",
-          "previousConcept": 7237,
-          "position": 4
-        },
-        {
-          "id": 8436,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/fr",
-          "notation": "Other",
-          "title": "Autre",
-          "definition": "Utilisez si l'unité d'analyse est connue, mais pas présente dans la liste.",
-          "previousConcept": 7250,
-          "position": 17
+          "id": 8440,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Sound/fr",
+          "notation": "MediaUnit.Sound",
+          "title": "Média : son",
+          "definition": "Son enregistré, incluant la voix, la musique, etc.",
+          "previousConcept": 7975,
+          "parent": "MediaUnit",
+          "position": 11
         },
         {
           "id": 8437,
@@ -1064,16 +1087,6 @@
           "position": 12
         },
         {
-          "id": 8438,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family.HouseholdFamily/fr",
-          "notation": "Family.HouseholdFamily",
-          "title": "Famille : ménage",
-          "definition": "Un terme plus spécifique, se réfère aux personnes qui sont liées par des liens familiaux (voir la définition pour 'Famille') et qui vivent dans le même ménage à un moment donné. Si vous ne savez pas si l'unité d'analyse est 'Famille' ou 'Famille : ménage', utilisez 'Famille'.",
-          "previousConcept": 7236,
-          "parent": "Family",
-          "position": 3
-        },
-        {
           "id": 8439,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/fr",
           "notation": "MediaUnit.Text",
@@ -1082,16 +1095,6 @@
           "previousConcept": 7977,
           "parent": "MediaUnit",
           "position": 13
-        },
-        {
-          "id": 8440,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Sound/fr",
-          "notation": "MediaUnit.Sound",
-          "title": "Média : son",
-          "definition": "Son enregistré, incluant la voix, la musique, etc.",
-          "previousConcept": 7975,
-          "parent": "MediaUnit",
-          "position": 11
         },
         {
           "id": 8441,
@@ -1113,24 +1116,6 @@
           "position": 15
         },
         {
-          "id": 8443,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/fr",
-          "notation": "GeographicUnit",
-          "title": "Unité géographique",
-          "definition": "Toute entité qui peut être définie spatialement comme une zone géographique, avec soit des limites naturelles (physiques) ou des frontières administratives. Par exemple, des données sur les ventes de maisons, les changements de paysage, les nouvelles constructions, ou les changements dans la composition démographique de certaines régions ou districts.",
-          "previousConcept": 7240,
-          "position": 7
-        },
-        {
-          "id": 8444,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/fr",
-          "notation": "Family",
-          "title": "Famille",
-          "definition": "Deux personnes ou plus liées par le sang, le mariage (incluant les relations par alliance), la cohabitation ou un partenariat enregistré, l'adoption ou le placement familial et qui peuvent ou non vivre ensemble. Par exemple, des données sur quel type de services publics la famille utilise ou demanderait ; ou à quelle fréquence des membres de la famille sont en contact les uns avec les autres.",
-          "previousConcept": 7235,
-          "position": 2
-        },
-        {
           "id": 8445,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/fr",
           "notation": "Object",
@@ -1138,6 +1123,15 @@
           "definition": "Tout ce qui est matériel, mais inanimé, qui a une existence indépendante et peut être perçu par les sens. Exemples : objets d'art (peintures, sculptures, etc.) ou armes, ou véhicules, etc.",
           "previousConcept": 7249,
           "position": 16
+        },
+        {
+          "id": 8436,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/fr",
+          "notation": "Other",
+          "title": "Autre",
+          "definition": "Utilisez si l'unité d'analyse est connue, mais pas présente dans la liste.",
+          "previousConcept": 7250,
+          "position": 17
         }
       ],
       "comments": [],
@@ -1162,6 +1156,8 @@
       "notation": "AnalysisUnit",
       "title": "Unité d'analyse",
       "definition": "<span style=\"color: rgb(55, 64, 78); font-family: Arial; font-size: 15px; white-space: pre-wrap; background-color: rgb(250, 250, 250);\">Décrit l'entité analysée dans l'étude ou dans la variable.</span>",
+      "previousVersion": 0,
+      "initialVersion": 394,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -1239,36 +1235,20 @@
           "position": 7
         },
         {
-          "id": 7242,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/fr/2.0.1",
-          "notation": "TimeUnit",
-          "title": "Unité de temps",
-          "definition": "Toute période de temps : année, semaine, mois, jour, ou périodes bimensuelles ou trimestrielles, etc.",
-          "position": 9
-        },
-        {
-          "id": 7249,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/fr/2.0.1",
-          "notation": "Object",
-          "title": "Objet",
-          "definition": "Tout ce qui est matériel, mais inanimé, qui a une existence indépendante et peut être perçu par les sens. Exemples : objets d'art (peintures, sculptures, etc.) ou armes, ou véhicules, etc.",
-          "position": 16
-        },
-        {
-          "id": 7250,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/fr/2.0.1",
-          "notation": "Other",
-          "title": "Autre",
-          "definition": "Utilisez si l'unité d'analyse est connue, mais pas présente dans la liste.",
-          "position": 17
-        },
-        {
           "id": 7973,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/fr#PoliticalAdministrativeArea/fr/2.0.1",
           "notation": "PoliticalAdministrativeArea",
           "title": "Espace politico-administatif",
           "definition": "Un espace géographique gouverné par une autorité souveraine qui a le pouvoir de prendre des décisions administratives ou politiques pour cet espace. Cela inclut des espaces de niveau supranational (e. g. les unions d'États comme l'Union européenne), national (e. g. des États ou des pays individuels), sous-national (e. g. des subdivisions administratives comme des États fédéraux, des provinces, etc.), et local (e. g. des municipalités).",
           "position": 8
+        },
+        {
+          "id": 7242,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/fr/2.0.1",
+          "notation": "TimeUnit",
+          "title": "Unité de temps",
+          "definition": "Toute période de temps : année, semaine, mois, jour, ou périodes bimensuelles ou trimestrielles, etc.",
+          "position": 9
         },
         {
           "id": 7974,
@@ -1321,6 +1301,22 @@
           "title": "Groupe",
           "definition": "Deux ou plus individus réunis ou ayant une relation ou une caractéristique unificatrice. Dans les enquêtes, les questions sont principalement axées sur le groupe et les attitudes / expériences du groupe, plutôt que sur celles des répondants individuels. Si des questions couvrent à la fois le groupe et l'individu, utilisez les deux comme unité d'analyse.",
           "position": 15
+        },
+        {
+          "id": 7249,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/fr/2.0.1",
+          "notation": "Object",
+          "title": "Objet",
+          "definition": "Tout ce qui est matériel, mais inanimé, qui a une existence indépendante et peut être perçu par les sens. Exemples : objets d'art (peintures, sculptures, etc.) ou armes, ou véhicules, etc.",
+          "position": 16
+        },
+        {
+          "id": 7250,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/fr/2.0.1",
+          "notation": "Other",
+          "title": "Autre",
+          "definition": "Utilisez si l'unité d'analyse est connue, mais pas présente dans la liste.",
+          "position": 17
         }
       ],
       "comments": [],
@@ -1339,6 +1335,8 @@
       "notation": "AnalysisUnit",
       "title": "Unità analisi",
       "definition": "Descrive l'entità osservata o analizzata nello studio o nella variabile",
+      "previousVersion": 0,
+      "initialVersion": 425,
       "notes": "",
       "versionNotes": "",
       "versionChanges": "CV definition amended\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organizzazione rephrased into Organizzazione/Istituzione\nCode descriptive term rephrased: Evento/Processo rephrased into Evento/Processo/Attività\nCode descriptive term rephrased: Unità testuale rephrased into Unità di supporto: testo\nCode definition amended with meaning change: OrganizationOrInstitution\nCode definition amended with meaning change: EventOrProcessOrActivity\nCode definition rephrased: Individual\nCode definition rephrased: Family\nCode definition rephrased: Family.HouseholdFamily\nCode definition rephrased: Geographic unit\nCode definition rephrased: MediaUnit.Text\nCode definition rephrased: Group",
@@ -1517,6 +1515,8 @@
       "notation": "AnalysisUnit",
       "title": "Analyseenhet",
       "definition": "Beskrivelse av enhet som blir analysert i studien eller i variablene.",
+      "previousVersion": 313,
+      "initialVersion": 216,
       "versionNotes": "",
       "versionChanges": "Code added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Organisasjon rephrased into Organisasjon/Institusjon\nCode descriptive term rephrased: Bruksenhet rephrased into Boenhet\nCode descriptive term rephrased: Hendelse/prosess rephrased into Hendelse/prosess/aktivitet\nCode descriptive term rephrased:  Tekst rephrased into Medieenhet: Tekst\nCode definition amended with meaning change: OrganizationOrInstitution\nCode definition rephrased: Individual\nCode definition rephrased: Family\nCode definition rephrased: Family.HouseholdFamily\nCode definition rephrased: EventOrProcessOrActivity\nCode definition rephrased: GeographicUnit\nCode definition rephrased: MediaUnit.Text\nCode definition rephrased: Group\n",
       "license": "BY",
@@ -1529,6 +1529,14 @@
       "translateAgencyLink": "https://nsd.no",
       "concepts": [
         {
+          "id": 8262,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/no",
+          "notation": "Individual",
+          "title": "Individ",
+          "definition": "Enhver individuell person.",
+          "position": 0
+        },
+        {
           "id": 7064,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#OrganizationOrInstitution/no",
           "notation": "OrganizationOrInstitution",
@@ -1536,77 +1544,6 @@
           "definition": "Former for formelle administrative og funksjonelle strukturerer - inkluderer foreninger, institusjoner, foretak, bedrifter, politiske partier, skoler etc. Data er samlet om organisasjoner eller institusjoner selv om spørsmålene er besvart av individer. For eksempel data om virksomheters miljøpolitikk, data om opptak eller avgangsgrader ved nasjonale universitet, etc.",
           "previousConcept": 4590,
           "position": 1
-        },
-        {
-          "id": 7066,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/no",
-          "notation": "Household",
-          "title": "Husholdning",
-          "definition": "En person eller en gruppe av personer som har samme boligenhet og leveforhold. Disse felles leveforholdene kan inkludere at deler av, eller alt av inntekt og eiendom er felles, og at visse type varer og tjenester konsumeres i fellesskap, hovedsakelig bosted og mat (Eurostat).",
-          "previousConcept": 4587,
-          "position": 4
-        },
-        {
-          "id": 7067,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/no",
-          "notation": "TimeUnit",
-          "title": "Tidsenhet",
-          "definition": "Tidsperiode: år, uke, måned, dag, annenhver måned eller kvartal etc.",
-          "previousConcept": 4591,
-          "position": 9
-        },
-        {
-          "id": 7068,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/no",
-          "notation": "EventOrProcessOrActivity",
-          "title": "Hendelse/prosess/aktivitet",
-          "definition": "Enhver form for hendelse, begivenhet eller aktivitet. Hendelser er som oftest enkeltstående med begrenset eller kort varighet. For eksempel: kriminell handling, opptøyer, møter, valg, idrettsbegivenheter, terroristangrep, naturkatastrofer osv. Prosesser finner som regel sted over tid, og kan inkludere flere 'hendelser' eller gradvise endringer som etterhvert fører til, eller er anslått å føre til, et bestemt resultat. For eksempel: rettsaker, kriminaletterforskning, politiske kampanjer, medisinsk behandling, utdanning, idrettsutøveres treninger etc. Bruk når selve fokuset er mer på hendelsen, prosessen eller aktiviteten. For eksempel: feltobservasjonsstudie på spillemaskiner; eller data samlet inn om barnemishandlingssaker, med hensyn til type og varigheten til mishandlingen og rollen personer involvert har etc.",
-          "previousConcept": 4582,
-          "position": 6
-        },
-        {
-          "id": 7069,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/no",
-          "notation": "Other",
-          "title": "Annet",
-          "definition": "Benytt hvis analyseenheten er kjent, men ikke finnes i listen.",
-          "previousConcept": 4583,
-          "position": 17
-        },
-        {
-          "id": 7070,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/no",
-          "notation": "GeographicUnit",
-          "title": "Geografisk enhet",
-          "definition": "Enhver enhet som romlig kan defineres som et geografisk område, med enten naturlige (fysiske) eller administrative grenser. For eksempel: data om boligsalg, landskapsforandringer, nye konstruksjoner eller endringer i den demografiske sammensetningen i bestemte regioner eller distrikter.",
-          "previousConcept": 4581,
-          "position": 7
-        },
-        {
-          "id": 7072,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/no",
-          "notation": "Object",
-          "title": "Objekt",
-          "definition": "Noe fysisk, men ikke levende som eksisterer som en uavhengig enhet og som kan oppfattes av sansene. For eksempel: kunst (malerier, skulpturer osv.), våpen, kjøretøy etc.",
-          "previousConcept": 4592,
-          "position": 16
-        },
-        {
-          "id": 7073,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/no",
-          "notation": "HousingUnit",
-          "title": "Boenhet",
-          "definition": "USAs folketelling: En boenhet er et hus, en leilighet, et mobilt hjem (campingvogn), eller ett eller flere rom som er bebodd (eventuelt ledig, men som er ment å være bebodd), som adskilte enheter. Med adskilte enheter menes det at personer bor og spiser uavhengig av andre personer i samme boenhet, og som har direkte tilgang til enheten utenfra, eller gjennom en felles inngang.",
-          "previousConcept": 4580,
-          "position": 5
-        },
-        {
-          "id": 8262,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/no",
-          "notation": "Individual",
-          "title": "Individ",
-          "definition": "Enhver individuell person.",
-          "position": 0
         },
         {
           "id": 8263,
@@ -1626,12 +1563,57 @@
           "position": 3
         },
         {
+          "id": 7066,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/no",
+          "notation": "Household",
+          "title": "Husholdning",
+          "definition": "En person eller en gruppe av personer som har samme boligenhet og leveforhold. Disse felles leveforholdene kan inkludere at deler av, eller alt av inntekt og eiendom er felles, og at visse type varer og tjenester konsumeres i fellesskap, hovedsakelig bosted og mat (Eurostat).",
+          "previousConcept": 4587,
+          "position": 4
+        },
+        {
+          "id": 7073,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/no",
+          "notation": "HousingUnit",
+          "title": "Boenhet",
+          "definition": "USAs folketelling: En boenhet er et hus, en leilighet, et mobilt hjem (campingvogn), eller ett eller flere rom som er bebodd (eventuelt ledig, men som er ment å være bebodd), som adskilte enheter. Med adskilte enheter menes det at personer bor og spiser uavhengig av andre personer i samme boenhet, og som har direkte tilgang til enheten utenfra, eller gjennom en felles inngang.",
+          "previousConcept": 4580,
+          "position": 5
+        },
+        {
+          "id": 7068,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/no",
+          "notation": "EventOrProcessOrActivity",
+          "title": "Hendelse/prosess/aktivitet",
+          "definition": "Enhver form for hendelse, begivenhet eller aktivitet. Hendelser er som oftest enkeltstående med begrenset eller kort varighet. For eksempel: kriminell handling, opptøyer, møter, valg, idrettsbegivenheter, terroristangrep, naturkatastrofer osv. Prosesser finner som regel sted over tid, og kan inkludere flere 'hendelser' eller gradvise endringer som etterhvert fører til, eller er anslått å føre til, et bestemt resultat. For eksempel: rettsaker, kriminaletterforskning, politiske kampanjer, medisinsk behandling, utdanning, idrettsutøveres treninger etc. Bruk når selve fokuset er mer på hendelsen, prosessen eller aktiviteten. For eksempel: feltobservasjonsstudie på spillemaskiner; eller data samlet inn om barnemishandlingssaker, med hensyn til type og varigheten til mishandlingen og rollen personer involvert har etc.",
+          "previousConcept": 4582,
+          "position": 6
+        },
+        {
+          "id": 7070,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/no",
+          "notation": "GeographicUnit",
+          "title": "Geografisk enhet",
+          "definition": "Enhver enhet som romlig kan defineres som et geografisk område, med enten naturlige (fysiske) eller administrative grenser. For eksempel: data om boligsalg, landskapsforandringer, nye konstruksjoner eller endringer i den demografiske sammensetningen i bestemte regioner eller distrikter.",
+          "previousConcept": 4581,
+          "position": 7
+        },
+        {
           "id": 8265,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/no",
           "notation": "PoliticalAdministrativeArea",
           "title": "Politisk administrativt område",
           "definition": "Et geografisk område styrt av en suveren myndighet som har makten til beslutte administrative eller politiske avgjørelser for det området. Dette inkluderer områder på overstatlig (f.eks sammenslutninger av stater som Den Europeiske Union), nasjonalt (f.eks individuelle stater eller land), subnasjonalt (f.eks administrative oppdelinger som føderale stater, provinser etc.) og lokalt (f.eks kommuner) nivå.",
           "position": 8
+        },
+        {
+          "id": 7067,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/no",
+          "notation": "TimeUnit",
+          "title": "Tidsenhet",
+          "definition": "Tidsperiode: år, uke, måned, dag, annenhver måned eller kvartal etc.",
+          "previousConcept": 4591,
+          "position": 9
         },
         {
           "id": 8266,
@@ -1684,6 +1666,24 @@
           "title": "Gruppe",
           "definition": "To eller flere personer som samles eller som har et forhold som forener dem. I spørreundersøkelser er spørsmålene hovedsaklig rettet mot gruppen og holdningen/opplevelsene til gruppen i steden for de individuelle respondentene. Hvis spørsmål angår både gruppen og individene, bruk begge som analyseenhet.",
           "position": 15
+        },
+        {
+          "id": 7072,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/no",
+          "notation": "Object",
+          "title": "Objekt",
+          "definition": "Noe fysisk, men ikke levende som eksisterer som en uavhengig enhet og som kan oppfattes av sansene. For eksempel: kunst (malerier, skulpturer osv.), våpen, kjøretøy etc.",
+          "previousConcept": 4592,
+          "position": 16
+        },
+        {
+          "id": 7069,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/no",
+          "notation": "Other",
+          "title": "Annet",
+          "definition": "Benytt hvis analyseenheten er kjent, men ikke finnes i listen.",
+          "previousConcept": 4583,
+          "position": 17
         }
       ],
       "comments": [],
@@ -1708,6 +1708,8 @@
       "notation": "AnalysisUnit",
       "title": "Unidade de Análise",
       "definition": "Descreve a entidade que está a ser observada ou analisada no estudo ou na variável.",
+      "previousVersion": 0,
+      "initialVersion": 391,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -1785,6 +1787,14 @@
           "position": 7
         },
         {
+          "id": 8099,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/pt",
+          "notation": "PoliticalAdministrativeArea",
+          "title": "Área político-administrativa",
+          "definition": "Uma área geográfica governada por autoridade soberana que tem o poder de tomar decisões políticas ou administrativas para aquela área. Isto inclui áreas ao nível supranacional (por exemplo, uniões de vários estados como a União Europeia), nacional (por exemplo, estados individuais ou países), subnacional (por exemplo, subdivisões administrativas como estados federais, províncias, etc.), e local (por exemplo, municípios).",
+          "position": 8
+        },
+        {
           "id": 7149,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/pt",
           "notation": "TimeUnit",
@@ -1793,28 +1803,12 @@
           "position": 9
         },
         {
-          "id": 7157,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/pt",
-          "notation": "Other",
-          "title": "Outro ",
-          "definition": "Usar se a unidade de análise for conhecida, mas não se encontrar na lista.",
-          "position": 17
-        },
-        {
-          "id": 7159,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/pt",
-          "notation": "Object",
-          "title": "Objeto",
-          "definition": "Qualquer coisa material, mas inanimada, que tenha uma existência independente e possa ser percebida pelos sentidos. Exemplos: objetos de arte (pinturas, esculturas, etc.) ou armas, ou veículos, etc.",
-          "position": 16
-        },
-        {
-          "id": 8099,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/pt",
-          "notation": "PoliticalAdministrativeArea",
-          "title": "Área político-administrativa",
-          "definition": "Uma área geográfica governada por autoridade soberana que tem o poder de tomar decisões políticas ou administrativas para aquela área. Isto inclui áreas ao nível supranacional (por exemplo, uniões de vários estados como a União Europeia), nacional (por exemplo, estados individuais ou países), subnacional (por exemplo, subdivisões administrativas como estados federais, províncias, etc.), e local (por exemplo, municípios).",
-          "position": 8
+          "id": 8104,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/pt",
+          "notation": "MediaUnit",
+          "title": "Unidade de Media",
+          "definition": "Inclui texto, imagem, vídeo e som.",
+          "position": 10
         },
         {
           "id": 8101,
@@ -1835,22 +1829,6 @@
           "position": 12
         },
         {
-          "id": 8103,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Group/pt",
-          "notation": "Group",
-          "title": "Grupo",
-          "definition": "Dois ou mais indivíduos que se assemelham ou que têm uma relação ou característica unificadora. Nos inquéritos, as questões são principalmente focadas no grupo e nas atitudes e experiências do grupo, e não tanto nos indivíduos entrevistados. Se as questões abrangem o indivíduo e o grupo, usar ambos como unidades de análise.",
-          "position": 15
-        },
-        {
-          "id": 8104,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/pt",
-          "notation": "MediaUnit",
-          "title": "Unidade de Media",
-          "definition": "Inclui texto, imagem, vídeo e som.",
-          "position": 10
-        },
-        {
           "id": 8105,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/pt",
           "notation": "MediaUnit.Text",
@@ -1867,6 +1845,30 @@
           "definition": "Imagens em movimento. Pode incluir filmes, animação, gravações digitais, output visual de simulações, programas televisivos gravados, vídeos médicos/de diagnóstico como ultrasons, etc. Podem ser silenciosos ou podem incluir som sincronizado.",
           "parent": "MediaUnit",
           "position": 14
+        },
+        {
+          "id": 8103,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Group/pt",
+          "notation": "Group",
+          "title": "Grupo",
+          "definition": "Dois ou mais indivíduos que se assemelham ou que têm uma relação ou característica unificadora. Nos inquéritos, as questões são principalmente focadas no grupo e nas atitudes e experiências do grupo, e não tanto nos indivíduos entrevistados. Se as questões abrangem o indivíduo e o grupo, usar ambos como unidades de análise.",
+          "position": 15
+        },
+        {
+          "id": 7159,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/pt",
+          "notation": "Object",
+          "title": "Objeto",
+          "definition": "Qualquer coisa material, mas inanimada, que tenha uma existência independente e possa ser percebida pelos sentidos. Exemplos: objetos de arte (pinturas, esculturas, etc.) ou armas, ou veículos, etc.",
+          "position": 16
+        },
+        {
+          "id": 7157,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/pt",
+          "notation": "Other",
+          "title": "Outro ",
+          "definition": "Usar se a unidade de análise for conhecida, mas não se encontrar na lista.",
+          "position": 17
         }
       ],
       "comments": [],
@@ -1885,6 +1887,8 @@
       "notation": "AnalysisUnit",
       "title": "Jedinica analize",
       "definition": "Opisuje entitet koji se posmatra ili analizira u studiji ili u promenljivoj (varijabli).",
+      "previousVersion": 0,
+      "initialVersion": 408,
       "notes": "Ovaj rečnik prvi put je objavio DDI Alliance. Molimo pogledajte: https://ddialliance.org/control-vocabularies/all",
       "versionNotes": "",
       "versionChanges": "",
@@ -2063,6 +2067,8 @@
       "notation": "AnalysisUnit",
       "title": "Analysenhet",
       "definition": "Beskriver den enhet som analyseras i studien eller i variabeln.",
+      "previousVersion": 214,
+      "initialVersion": 214,
       "versionNotes": "",
       "versionChanges": "Code added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Organisation rephrased into  Organisation/institution\nCode descriptive term rephrased: Händelse/process rephrased into Händelse/process/aktivitet\nCode descriptive term rephrased: Text rephrased into Mediaenhet: Text\nCode definition rephrased: Organisation/institution\nCode definition rephrased: Familj\nCode definition rephrased: Familj: familjehushåll\nCode definition rephrased: Händelse/process/aktivitet\nCode definition rephrased: Geografisk enhet\nCode definition rephrased: Mediaenhet: Text\nCode definition rephrased: Grupp\nCode definition rephrased: Föremål\n",
       "license": "BY",
@@ -2075,76 +2081,12 @@
       "translateAgencyLink": "https://snd.gu.se",
       "concepts": [
         {
-          "id": 7087,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/sv",
-          "notation": "HousingUnit",
-          "title": "Bostadsenhet",
-          "definition": "En bostadsenhet är ett hus, en lägenhet, en husvagn, eller ett eller flera rum som bebos (eller, om den är tom, är avsett att bebos) som avskild inkvartering. Med avskild inkvartering menas att de som är inkvarterade där bor och äter avskiljt från andra personer i byggnaden och kan komma in direkt utifrån eller via en gemensam entré (U.S. Census).",
-          "previousConcept": 1270,
-          "position": 5
-        },
-        {
-          "id": 7090,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TextUnit/sv",
-          "notation": "TextUnit",
-          "title": "Textenhet",
-          "definition": "Böcker, artiklar, eller annan skriven text.",
-          "previousConcept": 1274,
-          "position": 9
-        },
-        {
-          "id": 7091,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/sv",
-          "notation": "TimeUnit",
-          "title": "Tidsenhet",
-          "definition": "En tidsperiod: år, månad, vecka, dag, kvartal, tvåmånaders period, e.dyl.",
-          "previousConcept": 1273,
-          "position": 9
-        },
-        {
-          "id": 7092,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/sv",
-          "notation": "Other",
-          "title": "Övrigt",
-          "definition": "Använd om analysenheten är känd men saknas i listan.",
-          "previousConcept": 1277,
-          "position": 17
-        },
-        {
-          "id": 7093,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/sv",
-          "notation": "Object",
-          "title": "Föremål",
-          "definition": "Något fysiskt men icke levande som existerar som en oberoende enhet och kan uppfattas av sinnena. Exempel: konstföremål (tavlor, skulpturer, o.dyl.), vapen, fordon m.m.",
-          "previousConcept": 1276,
-          "position": 16
-        },
-        {
-          "id": 7094,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/sv",
-          "notation": "GeographicUnit",
-          "title": "Geografisk enhet",
-          "definition": "En enhet som kan definieras spatialt som ett geografiskt område med antingen naturliga (fysiska) eller administrativa gränser. Till exempel data om husförsäljning, landskapsförändringar, nybyggen eller förändringar av den demografiska sammansättningen i vissa regioner eller distrikt.",
-          "previousConcept": 1272,
-          "position": 7
-        },
-        {
-          "id": 7095,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/sv",
-          "notation": "EventOrProcessOrActivity",
-          "title": "Händelse/process/aktivitet",
-          "definition": "Någon typ av företeelse, tilldragelse eller aktivitet. Händelser är vanligtvis enstaka företeelser med begränsad eller kort varaktighet. Exempel: brott, upplopp, möten, val, idrottstävlingar, terroristangrepp, naturkatastrofer som översvämningar o.dyl. Processer utspelar sig vanligtvis över tid och kan omfatta flera \"händelser\" eller gradvisa förändringar som slutligen resulterar i, eller kan tänkas resultera i, en visst utgång. Exempel: rättegångar, brottsutredningar, politiska kampanjer, medicinska behandlingar, utbildning, en idrottsutövares träning, m.m. Använd när fokus ligger på själva händelsen, processen eller aktiviteten. Till exempel en fältobservationsstudie om spel på spelautomater; eller data om fall av övergrepp på barn, som typ av och varaktighet för övergreppet, de inblandade personernas roller osv.",
-          "previousConcept": 1271,
-          "position": 6
-        },
-        {
-          "id": 7097,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/sv",
-          "notation": "Household",
-          "title": "Hushåll",
-          "definition": "En person eller grupp som har gemensam bostadsenhet och levnadsförhållanden. Dessa delade levnadsförhållanden kan inkludera att viss eller all inkomst och egendom är gemensam, och att vissa sorters varor och tjänster konsumeras gemensamt, företrädelsevis bostad och mat (Eurostat).",
-          "previousConcept": 1269,
-          "position": 4
+          "id": 8281,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/sv",
+          "notation": "Individual",
+          "title": "Individ",
+          "definition": "En enskild person.",
+          "position": 0
         },
         {
           "id": 7099,
@@ -2154,14 +2096,6 @@
           "definition": "Någon typ av formell administrativ och funktionell struktur. Inkluderar föreningar, institutioner, företag, myndigheter, politiska partier, skolor, m.m. Data om organisationerna eller institutionerna samlas in, även om frågorna besvaras av enskilda personer. Till exempel data om företags miljöpolicyer, data om antagningar eller examensfrekvens vid nationella universitet m.m.",
           "previousConcept": 1266,
           "position": 1
-        },
-        {
-          "id": 8281,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/sv",
-          "notation": "Individual",
-          "title": "Individ",
-          "definition": "En enskild person.",
-          "position": 0
         },
         {
           "id": 8282,
@@ -2181,12 +2115,57 @@
           "position": 3
         },
         {
+          "id": 7097,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/sv",
+          "notation": "Household",
+          "title": "Hushåll",
+          "definition": "En person eller grupp som har gemensam bostadsenhet och levnadsförhållanden. Dessa delade levnadsförhållanden kan inkludera att viss eller all inkomst och egendom är gemensam, och att vissa sorters varor och tjänster konsumeras gemensamt, företrädelsevis bostad och mat (Eurostat).",
+          "previousConcept": 1269,
+          "position": 4
+        },
+        {
+          "id": 7087,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/sv",
+          "notation": "HousingUnit",
+          "title": "Bostadsenhet",
+          "definition": "En bostadsenhet är ett hus, en lägenhet, en husvagn, eller ett eller flera rum som bebos (eller, om den är tom, är avsett att bebos) som avskild inkvartering. Med avskild inkvartering menas att de som är inkvarterade där bor och äter avskiljt från andra personer i byggnaden och kan komma in direkt utifrån eller via en gemensam entré (U.S. Census).",
+          "previousConcept": 1270,
+          "position": 5
+        },
+        {
+          "id": 7095,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/sv",
+          "notation": "EventOrProcessOrActivity",
+          "title": "Händelse/process/aktivitet",
+          "definition": "Någon typ av företeelse, tilldragelse eller aktivitet. Händelser är vanligtvis enstaka företeelser med begränsad eller kort varaktighet. Exempel: brott, upplopp, möten, val, idrottstävlingar, terroristangrepp, naturkatastrofer som översvämningar o.dyl. Processer utspelar sig vanligtvis över tid och kan omfatta flera \"händelser\" eller gradvisa förändringar som slutligen resulterar i, eller kan tänkas resultera i, en visst utgång. Exempel: rättegångar, brottsutredningar, politiska kampanjer, medicinska behandlingar, utbildning, en idrottsutövares träning, m.m. Använd när fokus ligger på själva händelsen, processen eller aktiviteten. Till exempel en fältobservationsstudie om spel på spelautomater; eller data om fall av övergrepp på barn, som typ av och varaktighet för övergreppet, de inblandade personernas roller osv.",
+          "previousConcept": 1271,
+          "position": 6
+        },
+        {
+          "id": 7094,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/sv",
+          "notation": "GeographicUnit",
+          "title": "Geografisk enhet",
+          "definition": "En enhet som kan definieras spatialt som ett geografiskt område med antingen naturliga (fysiska) eller administrativa gränser. Till exempel data om husförsäljning, landskapsförändringar, nybyggen eller förändringar av den demografiska sammansättningen i vissa regioner eller distrikt.",
+          "previousConcept": 1272,
+          "position": 7
+        },
+        {
           "id": 8284,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/sv",
           "notation": "PoliticalAdministrativeArea",
           "title": "Politiskt förvaltningsområde",
           "definition": "Ett geografiskt område som styrs av en bestämmande myndighet med makt att fatta administrativa eller politiska beslut för området. Detta inkluderar områden på överstatlig (t.ex. unioner av stater som EU), statlig (t.ex. delstater eller länder), subnationell/regional (t.ex. förvaltningsområden som federala delstater, provinser osv.) och lokal (t.ex. kommuner) nivå.",
           "position": 8
+        },
+        {
+          "id": 7091,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/sv",
+          "notation": "TimeUnit",
+          "title": "Tidsenhet",
+          "definition": "En tidsperiod: år, månad, vecka, dag, kvartal, tvåmånaders period, e.dyl.",
+          "previousConcept": 1273,
+          "position": 9
         },
         {
           "id": 8285,
@@ -2239,6 +2218,24 @@
           "title": "Grupp",
           "definition": "Två eller fler personer som samlats eller som har någon form av relation eller egenskap som förenar dem. I surveyundersökningar fokuserar frågorna framför allt på gruppen och gruppens attityder/erfarenheter, snarare än på de enskilda respondenterna. Om frågorna gäller både gruppen och individen, använd båda som analysenheter.",
           "position": 15
+        },
+        {
+          "id": 7093,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/sv",
+          "notation": "Object",
+          "title": "Föremål",
+          "definition": "Något fysiskt men icke levande som existerar som en oberoende enhet och kan uppfattas av sinnena. Exempel: konstföremål (tavlor, skulpturer, o.dyl.), vapen, fordon m.m.",
+          "previousConcept": 1276,
+          "position": 16
+        },
+        {
+          "id": 7092,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/sv",
+          "notation": "Other",
+          "title": "Övrigt",
+          "definition": "Använd om analysenheten är känd men saknas i listan.",
+          "previousConcept": 1277,
+          "position": 17
         }
       ],
       "comments": [],

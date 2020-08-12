@@ -25,6 +25,8 @@
       "notation": "DateType",
       "title": "Date Type",
       "definition": "Specifies the type of date.\n",
+      "previousVersion": 0,
+      "initialVersion": 277,
       "notes": "The present list is based on ISO 8601 usage.\nThis vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",

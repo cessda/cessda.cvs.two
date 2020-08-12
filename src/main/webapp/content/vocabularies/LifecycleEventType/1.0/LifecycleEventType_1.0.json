@@ -25,6 +25,8 @@
       "notation": "LifecycleEventType",
       "title": "Lifecycle Event Type",
       "definition": "Specifies the event happening over the data life cycle that is considered significant enough to document.",
+      "previousVersion": 0,
+      "initialVersion": 281,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",

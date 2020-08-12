@@ -25,6 +25,8 @@
       "notation": "NumericType",
       "title": "Numeric Type",
       "definition": "Specifies the type of numeric data.",
+      "previousVersion": 0,
+      "initialVersion": 307,
       "notes": "This Controlled Vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all",
       "versionNotes": "",
       "versionChanges": "",

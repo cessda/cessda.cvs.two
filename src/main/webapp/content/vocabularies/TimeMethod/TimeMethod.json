@@ -25,6 +25,8 @@
       "notation": "TimeMethod",
       "title": "Time Method",
       "definition": "Describes the time dimension of the data collection.",
+      "previousVersion": 0,
+      "initialVersion": 333,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
@@ -69,6 +71,15 @@
           "definition": "Data collected over time from, or about, the same sample of respondents. Differs from cohort/event-based data in that the selection of respondents is not based on their being connected in some way or having shared some significant experience.",
           "parent": "Longitudinal",
           "position": 3
+        },
+        {
+          "id": 5341,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal.Panel.Continuous/en/1.2",
+          "notation": "Longitudinal.Panel.Continuous",
+          "title": "Longitudinal: Panel: Continuous",
+          "definition": "Data collected from a panel of respondents on a regular basis.",
+          "parent": "Longitudinal.Panel",
+          "position": 4
         },
         {
           "id": 5334,
@@ -128,15 +139,6 @@
           "title": "Other",
           "definition": "Use if the time method is known, but not found in the list.",
           "position": 11
-        },
-        {
-          "id": 5341,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal.Panel.Continuous/en/1.2",
-          "notation": "Longitudinal.Panel.Continuous",
-          "title": "Longitudinal: Panel: Continuous",
-          "definition": "Data collected from a panel of respondents on a regular basis.",
-          "parent": "Longitudinal.Panel",
-          "position": 4
         }
       ],
       "comments": [],
@@ -155,6 +157,8 @@
       "notation": "TimeMethod",
       "title": "Tidsmetode",
       "definition": "Beskriver tidsdimensionen for dataindsamlingen.",
+      "previousVersion": 0,
+      "initialVersion": 334,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -166,48 +170,6 @@
       "translateAgency": "Danish National Archives (DNA)",
       "translateAgencyLink": "https://www.sa.dk",
       "concepts": [
-        {
-          "id": 5348,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/da/1.2.1",
-          "notation": "TimeSeries",
-          "title": "Tidsserier",
-          "definition": "Data indsamlet gentagne gange over tid for at studere ændringer i observationer. Disse er typisk ’objektive’ målinger af fænomener, der kan observeres udefra, i modsætning til holdninger/meninger eller følelser. Eksempler kan inkludere økonomiske/finansielle indikatorer, naturlige/meteorologiske fænomener, afgørende statistikker mm.",
-          "position": 6
-        },
-        {
-          "id": 5349,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/da/1.2.1",
-          "notation": "TimeSeries.Continuous",
-          "title": "Tidsserier: Kontinuerlig",
-          "definition": "Målinger foretages hvert øjeblik i tid. Eksempler: løgnedetektorer, elektrokardiogrammer (EKG) mm.",
-          "parent": "TimeSeries",
-          "position": 7
-        },
-        {
-          "id": 5350,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/da/1.2.1",
-          "notation": "TimeSeries.Discrete",
-          "title": "Tidsserier: Diskret",
-          "definition": "Målinger foretages (normalt regelmæssigt) i tidsintervaller. Eksempler: makroøkonomi (ugentlige aktiekurser, månedlige fortjenester, salg); meteorologi (timetemperatur); målinger af individer (blodtryk, vægt, højde); sociologi (kriminalitetstal, beskæftigelsestal) mm.",
-          "parent": "TimeSeries",
-          "position": 8
-        },
-        {
-          "id": 5351,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/da/1.2.1",
-          "notation": "CrossSection",
-          "title": "Tværsnit",
-          "definition": "Data indsamlet ved observation af subjekter inden for undersøgelsesperioden uden hensyntagen til ændringer over tid. Kan inkludere mere end en indsamlingsbegivenhed. Analyse af tværsnitdata består ofte i sammenligning af forskellene og lighederne mellem subjekter.",
-          "position": 9
-        },
-        {
-          "id": 5352,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/da/1.2.1",
-          "notation": "CrossSectionAdHocFollowUp",
-          "title": "Tværsnit ad-hoc-opfølgning",
-          "definition": "Data indsamlet på et tidspunkt for at færdiggøre information indsamlet i en tidligere tværsnitundersøgelse; beslutningen om at indsamle opfølgningsdata var ikke inkluderet i det originale undersøgelsesdesign.",
-          "position": 10
-        },
         {
           "id": 7955,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/da#Longitudinal/da/1.2.1",
@@ -262,6 +224,48 @@
           "position": 5
         },
         {
+          "id": 5348,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/da/1.2.1",
+          "notation": "TimeSeries",
+          "title": "Tidsserier",
+          "definition": "Data indsamlet gentagne gange over tid for at studere ændringer i observationer. Disse er typisk ’objektive’ målinger af fænomener, der kan observeres udefra, i modsætning til holdninger/meninger eller følelser. Eksempler kan inkludere økonomiske/finansielle indikatorer, naturlige/meteorologiske fænomener, afgørende statistikker mm.",
+          "position": 6
+        },
+        {
+          "id": 5349,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/da/1.2.1",
+          "notation": "TimeSeries.Continuous",
+          "title": "Tidsserier: Kontinuerlig",
+          "definition": "Målinger foretages hvert øjeblik i tid. Eksempler: løgnedetektorer, elektrokardiogrammer (EKG) mm.",
+          "parent": "TimeSeries",
+          "position": 7
+        },
+        {
+          "id": 5350,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/da/1.2.1",
+          "notation": "TimeSeries.Discrete",
+          "title": "Tidsserier: Diskret",
+          "definition": "Målinger foretages (normalt regelmæssigt) i tidsintervaller. Eksempler: makroøkonomi (ugentlige aktiekurser, månedlige fortjenester, salg); meteorologi (timetemperatur); målinger af individer (blodtryk, vægt, højde); sociologi (kriminalitetstal, beskæftigelsestal) mm.",
+          "parent": "TimeSeries",
+          "position": 8
+        },
+        {
+          "id": 5351,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/da/1.2.1",
+          "notation": "CrossSection",
+          "title": "Tværsnit",
+          "definition": "Data indsamlet ved observation af subjekter inden for undersøgelsesperioden uden hensyntagen til ændringer over tid. Kan inkludere mere end en indsamlingsbegivenhed. Analyse af tværsnitdata består ofte i sammenligning af forskellene og lighederne mellem subjekter.",
+          "position": 9
+        },
+        {
+          "id": 5352,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/da/1.2.1",
+          "notation": "CrossSectionAdHocFollowUp",
+          "title": "Tværsnit ad-hoc-opfølgning",
+          "definition": "Data indsamlet på et tidspunkt for at færdiggøre information indsamlet i en tidligere tværsnitundersøgelse; beslutningen om at indsamle opfølgningsdata var ikke inkluderet i det originale undersøgelsesdesign.",
+          "position": 10
+        },
+        {
           "id": 7961,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/da#Other/da/1.2.1",
           "notation": "Other",
@@ -286,6 +290,8 @@
       "notation": "TimeMethod",
       "title": "Tutkimuksen aikaulottuvuus",
       "definition": "Aineistonkeruun aikaulottuvuus.",
+      "previousVersion": 0,
+      "initialVersion": 336,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -297,48 +303,6 @@
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
       "translateAgencyLink": "https://www.fsd.uta.fi/en/",
       "concepts": [
-        {
-          "id": 5372,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/fi/1.2.1",
-          "notation": "TimeSeries",
-          "title": "Aikasarja-aineisto",
-          "definition": "Dataa kerätty havaintoyksiköstä useilta eri ajanjaksoilta havainnossa tapahtuvan muutoksen tutkimiseksi. Yleensä viittaa 'objektiivisiin' mittauksiin ilmiöistä, joita voidaan havainnoida ulkoisesti eli ei asenteiden tai tuntemusten tutkimiseen. Esimerkiksi taloudelliset indikaattorit, luonnonilmiöt, väestönmuutostekijät (kuolemat, syntymät, sairastavuus, avioliitot ja -erot) yms.",
-          "position": 6
-        },
-        {
-          "id": 5373,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/fi/1.2.1",
-          "notation": "TimeSeries.Continuous",
-          "title": "Aikasarja-aineisto: jatkuva",
-          "definition": "Mittaus on havaintoperiodin aikana jatkuvaa, esim. valheenpaljastuskoneet, EKG (sydänkäyrä) jne.",
-          "parent": "TimeSeries",
-          "position": 7
-        },
-        {
-          "id": 5374,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/fi/1.2.1",
-          "notation": "TimeSeries.Discrete",
-          "title": "Aikasarja-aineisto: diskreetti",
-          "definition": "Havaintoperiodin aikana havaintoja mitataan erillisinä ajanhetkinä, usein tasaisin väliajoin. Esimerkiksi makrotaloustieteessä (kuukausittaiset myynnit, vuotuinen bruttokansantuote), meteorologiassa (järviveden lämpötila), sosiologiassa (vuosittaiset rikosluvut), ihmisiin kohdistuvissa mittauksissa (verenpaine, paino, pituus).",
-          "parent": "TimeSeries",
-          "position": 8
-        },
-        {
-          "id": 5375,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/fi/1.2.1",
-          "notation": "CrossSection",
-          "title": "Poikkileikkausaineisto",
-          "definition": "Dataa on kerätty vain tietyn tutkimusajankohdan sisällä. Useimmiten tehdään yksi aineistonkeruu mutta joissakin tapauksissa on saatettu kerätä dataa useammassa jaksossa saman tutkimusajankohdan sisällä. Aineiston avulla ei ole tarkoitus tutkia ajallista muutosta vaan esimerkiksi havaintoyksiköiden välisiä eroavaisuuksia tai samankaltaisuuksia tiettynä ajankohtana.",
-          "position": 9
-        },
-        {
-          "id": 5376,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/fi/1.2.1",
-          "notation": "CrossSectionAdHocFollowUp",
-          "title": "Poikkileikkausaineisto: täydennys/seurantakeruu",
-          "definition": "Aineistoa kerätään tietojen täydentämiseksi saman tutkimuksen sisällä tai seurantatutkimuksena. Täydennys- tai uusintakeruu ei ole sisältynyt alkuperäiseen tutkimussuunnitelmaan.",
-          "position": 10
-        },
         {
           "id": 7920,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/fi#Longitudinal/fi/1.2.1",
@@ -393,6 +357,48 @@
           "position": 5
         },
         {
+          "id": 5372,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/fi/1.2.1",
+          "notation": "TimeSeries",
+          "title": "Aikasarja-aineisto",
+          "definition": "Dataa kerätty havaintoyksiköstä useilta eri ajanjaksoilta havainnossa tapahtuvan muutoksen tutkimiseksi. Yleensä viittaa 'objektiivisiin' mittauksiin ilmiöistä, joita voidaan havainnoida ulkoisesti eli ei asenteiden tai tuntemusten tutkimiseen. Esimerkiksi taloudelliset indikaattorit, luonnonilmiöt, väestönmuutostekijät (kuolemat, syntymät, sairastavuus, avioliitot ja -erot) yms.",
+          "position": 6
+        },
+        {
+          "id": 5373,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/fi/1.2.1",
+          "notation": "TimeSeries.Continuous",
+          "title": "Aikasarja-aineisto: jatkuva",
+          "definition": "Mittaus on havaintoperiodin aikana jatkuvaa, esim. valheenpaljastuskoneet, EKG (sydänkäyrä) jne.",
+          "parent": "TimeSeries",
+          "position": 7
+        },
+        {
+          "id": 5374,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/fi/1.2.1",
+          "notation": "TimeSeries.Discrete",
+          "title": "Aikasarja-aineisto: diskreetti",
+          "definition": "Havaintoperiodin aikana havaintoja mitataan erillisinä ajanhetkinä, usein tasaisin väliajoin. Esimerkiksi makrotaloustieteessä (kuukausittaiset myynnit, vuotuinen bruttokansantuote), meteorologiassa (järviveden lämpötila), sosiologiassa (vuosittaiset rikosluvut), ihmisiin kohdistuvissa mittauksissa (verenpaine, paino, pituus).",
+          "parent": "TimeSeries",
+          "position": 8
+        },
+        {
+          "id": 5375,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/fi/1.2.1",
+          "notation": "CrossSection",
+          "title": "Poikkileikkausaineisto",
+          "definition": "Dataa on kerätty vain tietyn tutkimusajankohdan sisällä. Useimmiten tehdään yksi aineistonkeruu mutta joissakin tapauksissa on saatettu kerätä dataa useammassa jaksossa saman tutkimusajankohdan sisällä. Aineiston avulla ei ole tarkoitus tutkia ajallista muutosta vaan esimerkiksi havaintoyksiköiden välisiä eroavaisuuksia tai samankaltaisuuksia tiettynä ajankohtana.",
+          "position": 9
+        },
+        {
+          "id": 5376,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/fi/1.2.1",
+          "notation": "CrossSectionAdHocFollowUp",
+          "title": "Poikkileikkausaineisto: täydennys/seurantakeruu",
+          "definition": "Aineistoa kerätään tietojen täydentämiseksi saman tutkimuksen sisällä tai seurantatutkimuksena. Täydennys- tai uusintakeruu ei ole sisältynyt alkuperäiseen tutkimussuunnitelmaan.",
+          "position": 10
+        },
+        {
           "id": 7926,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/fi#Other/fi/1.2.1",
           "notation": "Other",
@@ -417,6 +423,8 @@
       "notation": "TimeMethod",
       "title": "Méthode temporelle",
       "definition": "Décrit la dimension temporelle de la collecte des données",
+      "previousVersion": 396,
+      "initialVersion": 396,
       "versionNotes": "",
       "versionChanges": "Code descriptive term rephrased: Série temporelle : continue\n",
       "license": "BY",
@@ -429,6 +437,15 @@
       "translateAgencyLink": "https://cdsp.sciences-po.fr/fr/",
       "concepts": [
         {
+          "id": 8313,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal/fr",
+          "notation": "Longitudinal",
+          "title": "Longitudinale",
+          "definition": "Données collectées à plusieurs reprises au fil du temps pour permettre d'étudier les changements dans une population. Au moins certaines des questions ou modules sont répétés au fil des vagues. Utilisez ce terme quand aucun des sous-termes ne convient.",
+          "previousConcept": 7251,
+          "position": 0
+        },
+        {
           "id": 8303,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal.CohortEventBased/fr",
           "notation": "Longitudinal.CohortEventBased",
@@ -437,44 +454,6 @@
           "previousConcept": 7252,
           "parent": "Longitudinal",
           "position": 1
-        },
-        {
-          "id": 8304,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal.Panel.Continuous/fr",
-          "notation": "Longitudinal.Panel.Continuous",
-          "title": "Longitudinale : panel : continu",
-          "definition": "Données recueillies auprès d'un panel de répondant sur une base régulière.",
-          "previousConcept": 7255,
-          "parent": "Longitudinal.Panel",
-          "position": 4
-        },
-        {
-          "id": 8305,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/fr",
-          "notation": "TimeSeries",
-          "title": "Série temporelle",
-          "definition": "Données collectées à plusieurs reprises au fil du temps pour étudier les changements dans les observations. Celles-ci sont typiquement des mesures \"objectives\" de phénomènes qui peuvent être observé de l'extérieur, comme l'opposition attitudes / opinions ou sentiments. Les exemples peuvent inclure des indicateurs économiques / financiers, de phénomènes naturels / météorologiques, de statistiques de l'état civil, etc.",
-          "previousConcept": 7257,
-          "position": 6
-        },
-        {
-          "id": 8306,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal.Panel/fr",
-          "notation": "Longitudinal.Panel",
-          "title": "Longitudinale : panel",
-          "definition": "Données collectées au fil du temps auprès, ou à peu près, du même échantillon de répondants. Diffèrent des données de cohorte dans le fait que la sélection des répondants n'est pas basée sur le fait qu'ils sont liés d'une façon ou d'un d'autre ou qu'ils ont partagé une expérience significative.",
-          "previousConcept": 7254,
-          "parent": "Longitudinal",
-          "position": 3
-        },
-        {
-          "id": 8307,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/fr",
-          "notation": "CrossSectionAdHocFollowUp",
-          "title": "Transversale ponctuelle complémentaire",
-          "definition": "Données collectées à un moment donné pour compléter des informations collectées dans une étude transversale précédente ; la décision de collecter ces données complémentaires n'étaient pas incluse dans la conception initiale de l'étude.",
-          "previousConcept": 7261,
-          "position": 10
         },
         {
           "id": 8308,
@@ -487,13 +466,53 @@
           "position": 2
         },
         {
-          "id": 8309,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Other/fr",
-          "notation": "Other",
-          "title": "Autre",
-          "definition": "Use if the time method is known, but not found in the list.<span style=\"white-space:pre\">\t</span>Utilisez si la méthode temporelle est connue, mais pas présente dans la liste.",
-          "previousConcept": 7262,
-          "position": 11
+          "id": 8306,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal.Panel/fr",
+          "notation": "Longitudinal.Panel",
+          "title": "Longitudinale : panel",
+          "definition": "Données collectées au fil du temps auprès, ou à peu près, du même échantillon de répondants. Diffèrent des données de cohorte dans le fait que la sélection des répondants n'est pas basée sur le fait qu'ils sont liés d'une façon ou d'un d'autre ou qu'ils ont partagé une expérience significative.",
+          "previousConcept": 7254,
+          "parent": "Longitudinal",
+          "position": 3
+        },
+        {
+          "id": 8304,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal.Panel.Continuous/fr",
+          "notation": "Longitudinal.Panel.Continuous",
+          "title": "Longitudinale : panel : continu",
+          "definition": "Données recueillies auprès d'un panel de répondant sur une base régulière.",
+          "previousConcept": 7255,
+          "parent": "Longitudinal.Panel",
+          "position": 4
+        },
+        {
+          "id": 8312,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal.Panel.Interval/fr",
+          "notation": "Longitudinal.Panel.Interval",
+          "title": "Longitudinale : panel : intervalle",
+          "definition": "Données collectées auprès d'un panel de répondants seulement lorsque des informations sont nécessaires.",
+          "previousConcept": 7256,
+          "parent": "Longitudinal.Panel",
+          "position": 5
+        },
+        {
+          "id": 8305,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/fr",
+          "notation": "TimeSeries",
+          "title": "Série temporelle",
+          "definition": "Données collectées à plusieurs reprises au fil du temps pour étudier les changements dans les observations. Celles-ci sont typiquement des mesures \"objectives\" de phénomènes qui peuvent être observé de l'extérieur, comme l'opposition attitudes / opinions ou sentiments. Les exemples peuvent inclure des indicateurs économiques / financiers, de phénomènes naturels / météorologiques, de statistiques de l'état civil, etc.",
+          "previousConcept": 7257,
+          "position": 6
+        },
+        {
+          "id": 8314,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/fr",
+          "notation": "TimeSeries.Continuous",
+          "title": "Série temporelle : continue",
+          "definition": "Les mesures sont prises à chaque instant dans le temps. Exemple : détecteurs de mensonges, électrocardiogrammes, etc.",
+          "previousConcept": 7258,
+          "parent": "TimeSeries",
+          "position": 7
         },
         {
           "id": 8310,
@@ -515,33 +534,22 @@
           "position": 9
         },
         {
-          "id": 8312,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal.Panel.Interval/fr",
-          "notation": "Longitudinal.Panel.Interval",
-          "title": "Longitudinale : panel : intervalle",
-          "definition": "Données collectées auprès d'un panel de répondants seulement lorsque des informations sont nécessaires.",
-          "previousConcept": 7256,
-          "parent": "Longitudinal.Panel",
-          "position": 5
+          "id": 8307,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/fr",
+          "notation": "CrossSectionAdHocFollowUp",
+          "title": "Transversale ponctuelle complémentaire",
+          "definition": "Données collectées à un moment donné pour compléter des informations collectées dans une étude transversale précédente ; la décision de collecter ces données complémentaires n'étaient pas incluse dans la conception initiale de l'étude.",
+          "previousConcept": 7261,
+          "position": 10
         },
         {
-          "id": 8313,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Longitudinal/fr",
-          "notation": "Longitudinal",
-          "title": "Longitudinale",
-          "definition": "Données collectées à plusieurs reprises au fil du temps pour permettre d'étudier les changements dans une population. Au moins certaines des questions ou modules sont répétés au fil des vagues. Utilisez ce terme quand aucun des sous-termes ne convient.",
-          "previousConcept": 7251,
-          "position": 0
-        },
-        {
-          "id": 8314,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/fr",
-          "notation": "TimeSeries.Continuous",
-          "title": "Série temporelle : continue",
-          "definition": "Les mesures sont prises à chaque instant dans le temps. Exemple : détecteurs de mensonges, électrocardiogrammes, etc.",
-          "previousConcept": 7258,
-          "parent": "TimeSeries",
-          "position": 7
+          "id": 8309,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#Other/fr",
+          "notation": "Other",
+          "title": "Autre",
+          "definition": "Use if the time method is known, but not found in the list.<span style=\"white-space:pre\">\t</span>Utilisez si la méthode temporelle est connue, mais pas présente dans la liste.",
+          "previousConcept": 7262,
+          "position": 11
         }
       ],
       "comments": [],
@@ -566,6 +574,8 @@
       "notation": "TimeMethod",
       "title": "Méthode temporelle",
       "definition": "Décrit la dimension temporelle de la collecte des données",
+      "previousVersion": 0,
+      "initialVersion": 396,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -697,6 +707,8 @@
       "notation": "TimeMethod",
       "title": "Dimensione temporale",
       "definition": "Descrive la dimensione temporale dei dati",
+      "previousVersion": 0,
+      "initialVersion": 337,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -708,48 +720,6 @@
       "translateAgency": "UniData - Bicocca Data Archive",
       "translateAgencyLink": "https://www.unidata.unimib.it/",
       "concepts": [
-        {
-          "id": 5384,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/it/1.2.1",
-          "notation": "TimeSeries",
-          "title": "Serie temporali",
-          "definition": "Dati raccolti ripetutamente nel tempo per studiare il cambiamento dei fenomeni. Si tratta in genere di misurazioni \"oggettive\" di fenomeni che possono essere osservati esternamente, a differenza di atteggiamenti, opinioni o sentimenti. Gli esempi possono includere indicatori economici/finanziari, fenomeni naturali/meteorologici, statistiche anagrafiche, ecc.",
-          "position": 6
-        },
-        {
-          "id": 5385,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/it/1.2.1",
-          "notation": "TimeSeries.Continuous",
-          "title": "Serie temporali: continue",
-          "definition": "Le misurazioni sono rilevate in ogni istante temporale. Esempi: macchine della verità, elettrocardiogrammi, ecc.",
-          "parent": "TimeSeries",
-          "position": 7
-        },
-        {
-          "id": 5386,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/it/1.2.1",
-          "notation": "TimeSeries.Discrete",
-          "title": "Serie temporali: discrete",
-          "definition": "Le misurazioni sono prese a intervalli regolari. Esempi: macroeconomia (prezzi delle azioni settimanali, profitti mensili, vendite); meteorologia (temperatura oraria); rilievi sugli individui (pressione arteriosa, peso, altezza); sociologia (tassi di criminalità, tassi occupazionali), ecc.",
-          "parent": "TimeSeries",
-          "position": 8
-        },
-        {
-          "id": 5387,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/it/1.2.1",
-          "notation": "CrossSection",
-          "title": "Trasversale",
-          "definition": "Dati raccolti osservando i soggetti in un determinato periodo di tempo, senza prendere in esame i cambiamenti nel tempo. Può includere più di una rilevazione. L'analisi dei dati trasversali si basa spesso sulle differenze e sulle somiglianze tra i soggetti.",
-          "position": 9
-        },
-        {
-          "id": 5388,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/it/1.2.1",
-          "notation": "CrossSectionAdHocFollowUp",
-          "title": "Trasversale: follow-up ad hoc",
-          "definition": "Dati raccolti in un specifico momento per completare le informazioni raccolte in un precedente studio trasversale; la decisione di raccogliere i dati di follow-up non era stata inclusa nel progetto di studio originale.",
-          "position": 10
-        },
         {
           "id": 7927,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/it#Longitudinal/it/1.2.1",
@@ -804,6 +774,48 @@
           "position": 5
         },
         {
+          "id": 5384,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/it/1.2.1",
+          "notation": "TimeSeries",
+          "title": "Serie temporali",
+          "definition": "Dati raccolti ripetutamente nel tempo per studiare il cambiamento dei fenomeni. Si tratta in genere di misurazioni \"oggettive\" di fenomeni che possono essere osservati esternamente, a differenza di atteggiamenti, opinioni o sentimenti. Gli esempi possono includere indicatori economici/finanziari, fenomeni naturali/meteorologici, statistiche anagrafiche, ecc.",
+          "position": 6
+        },
+        {
+          "id": 5385,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/it/1.2.1",
+          "notation": "TimeSeries.Continuous",
+          "title": "Serie temporali: continue",
+          "definition": "Le misurazioni sono rilevate in ogni istante temporale. Esempi: macchine della verità, elettrocardiogrammi, ecc.",
+          "parent": "TimeSeries",
+          "position": 7
+        },
+        {
+          "id": 5386,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/it/1.2.1",
+          "notation": "TimeSeries.Discrete",
+          "title": "Serie temporali: discrete",
+          "definition": "Le misurazioni sono prese a intervalli regolari. Esempi: macroeconomia (prezzi delle azioni settimanali, profitti mensili, vendite); meteorologia (temperatura oraria); rilievi sugli individui (pressione arteriosa, peso, altezza); sociologia (tassi di criminalità, tassi occupazionali), ecc.",
+          "parent": "TimeSeries",
+          "position": 8
+        },
+        {
+          "id": 5387,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/it/1.2.1",
+          "notation": "CrossSection",
+          "title": "Trasversale",
+          "definition": "Dati raccolti osservando i soggetti in un determinato periodo di tempo, senza prendere in esame i cambiamenti nel tempo. Può includere più di una rilevazione. L'analisi dei dati trasversali si basa spesso sulle differenze e sulle somiglianze tra i soggetti.",
+          "position": 9
+        },
+        {
+          "id": 5388,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/it/1.2.1",
+          "notation": "CrossSectionAdHocFollowUp",
+          "title": "Trasversale: follow-up ad hoc",
+          "definition": "Dati raccolti in un specifico momento per completare le informazioni raccolte in un precedente studio trasversale; la decisione di raccogliere i dati di follow-up non era stata inclusa nel progetto di studio originale.",
+          "position": 10
+        },
+        {
           "id": 7933,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/it#Other/it/1.2.1",
           "notation": "Other",
@@ -828,6 +840,8 @@
       "notation": "TimeMethod",
       "title": "Tidsmetode",
       "definition": "Beskrivelse av tidsdimensjonen for datainnsamlingen.",
+      "previousVersion": 0,
+      "initialVersion": 338,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -839,48 +853,6 @@
       "translateAgency": "NSD - Norwegian Centre for Research Data",
       "translateAgencyLink": "https://nsd.no/",
       "concepts": [
-        {
-          "id": 5396,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/no/1.2.1",
-          "notation": "TimeSeries",
-          "title": "Tidsserie",
-          "definition": "Data samlet inn gjentatte ganger over tid for å studere endring i observasjoner. Dette er typiske 'objektive' målinger av fenomener som kan observeres eksternt, i motsetning til holdninger/meninger eller følelser. For eksempel økonomiske/finansielle indikatorer, natur/meteorologiske fenomener, befolkningsstatistikk etc.",
-          "position": 6
-        },
-        {
-          "id": 5397,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/no/1.2.1",
-          "notation": "TimeSeries.Continuous",
-          "title": "Tidsserie: Kontinuerlig",
-          "definition": "Målinger blir gjennomført ved et gitt tidspunkt. For eksempel løgndetektor, elektrokardiogram (EKG) etc.",
-          "parent": "TimeSeries",
-          "position": 7
-        },
-        {
-          "id": 5398,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/no/1.2.1",
-          "notation": "TimeSeries.Discrete",
-          "title": "Tidsserie: Diskret",
-          "definition": "Målinger basert på (ofte regelmessige) intervaller. For eksempel makroøknonomi (ukentlige aksjekurser, månedlig fortjeneste, salg), meteorologi (temperatur hver time), målinger hos individer (blodtrykk, vekt, høyde), sosiologi (statistikk på lovbrudd, sysselsetting) etc.",
-          "parent": "TimeSeries",
-          "position": 8
-        },
-        {
-          "id": 5399,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/no/1.2.1",
-          "notation": "CrossSection",
-          "title": "Tverrsnitt",
-          "definition": "Data samlet inn ved å observere subjekter under studieperioden, uten å ta hensyn til endringer over tid. Kan inkludere mer enn ett innsamlingstilfelle. Analyse av data fra tverrsnittstudier består ofte i å sammenligne likheter og ulikheter mellom subjektene.",
-          "position": 9
-        },
-        {
-          "id": 5400,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/no/1.2.1",
-          "notation": "CrossSectionAdHocFollowUp",
-          "title": "Tverrsnitt ad-hoc oppfølging",
-          "definition": "Data innsamlet på et tidspunkt for å fullføre informasjon som er samlet inn i en tidligere tverrsnittstudie. Beslutningen om å samle inn oppfølgingsdata var ikke en del av det opprinnelige studiedesignet.",
-          "position": 10
-        },
         {
           "id": 7934,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/no#Longitudinal/no/1.2.1",
@@ -935,6 +907,48 @@
           "position": 5
         },
         {
+          "id": 5396,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/no/1.2.1",
+          "notation": "TimeSeries",
+          "title": "Tidsserie",
+          "definition": "Data samlet inn gjentatte ganger over tid for å studere endring i observasjoner. Dette er typiske 'objektive' målinger av fenomener som kan observeres eksternt, i motsetning til holdninger/meninger eller følelser. For eksempel økonomiske/finansielle indikatorer, natur/meteorologiske fenomener, befolkningsstatistikk etc.",
+          "position": 6
+        },
+        {
+          "id": 5397,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/no/1.2.1",
+          "notation": "TimeSeries.Continuous",
+          "title": "Tidsserie: Kontinuerlig",
+          "definition": "Målinger blir gjennomført ved et gitt tidspunkt. For eksempel løgndetektor, elektrokardiogram (EKG) etc.",
+          "parent": "TimeSeries",
+          "position": 7
+        },
+        {
+          "id": 5398,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/no/1.2.1",
+          "notation": "TimeSeries.Discrete",
+          "title": "Tidsserie: Diskret",
+          "definition": "Målinger basert på (ofte regelmessige) intervaller. For eksempel makroøknonomi (ukentlige aksjekurser, månedlig fortjeneste, salg), meteorologi (temperatur hver time), målinger hos individer (blodtrykk, vekt, høyde), sosiologi (statistikk på lovbrudd, sysselsetting) etc.",
+          "parent": "TimeSeries",
+          "position": 8
+        },
+        {
+          "id": 5399,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/no/1.2.1",
+          "notation": "CrossSection",
+          "title": "Tverrsnitt",
+          "definition": "Data samlet inn ved å observere subjekter under studieperioden, uten å ta hensyn til endringer over tid. Kan inkludere mer enn ett innsamlingstilfelle. Analyse av data fra tverrsnittstudier består ofte i å sammenligne likheter og ulikheter mellom subjektene.",
+          "position": 9
+        },
+        {
+          "id": 5400,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/no/1.2.1",
+          "notation": "CrossSectionAdHocFollowUp",
+          "title": "Tverrsnitt ad-hoc oppfølging",
+          "definition": "Data innsamlet på et tidspunkt for å fullføre informasjon som er samlet inn i en tidligere tverrsnittstudie. Beslutningen om å samle inn oppfølgingsdata var ikke en del av det opprinnelige studiedesignet.",
+          "position": 10
+        },
+        {
           "id": 7940,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/no#Other/no/1.2.1",
           "notation": "Other",
@@ -959,6 +973,8 @@
       "notation": "TimeMethod",
       "title": "Dimensão temporal",
       "definition": "Descreve a dimensão temporal da recolha de dados.",
+      "previousVersion": 0,
+      "initialVersion": 375,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -1090,6 +1106,8 @@
       "notation": "TimeMethod",
       "title": "Časovna metoda",
       "definition": "Opisuje časovno dimenzijo zbiranja podatkov.",
+      "previousVersion": 0,
+      "initialVersion": 339,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -1101,48 +1119,6 @@
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
       "translateAgencyLink": "https://www.adp.fdv.uni-lj.si/",
       "concepts": [
-        {
-          "id": 5408,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/sl/1.2.1",
-          "notation": "TimeSeries",
-          "title": "Časovne vrste",
-          "definition": "Podatki zbirani v času s ponovitvami z namenom preučevanja sprememb v opazovanjih. To so običajno 'objektivne' meritve pojavov, ki jih je mogoče opazovati navzven, v nasprotju s stališči/mnenji ali občutki. Primeri lahko vključujejo ekonomske/finančne kazalnike, naravne/meteorološke pojave, vitalno statistiko itd.",
-          "position": 6
-        },
-        {
-          "id": 5409,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/sl/1.2.1",
-          "notation": "TimeSeries.Continuous",
-          "title": "Časovne vrste: kontinuirane",
-          "definition": "Meritve se izvajajo v celotnem obdobju merjenja. Primeri: detektorji laži, elektrokardiogrami itd.",
-          "parent": "TimeSeries",
-          "position": 7
-        },
-        {
-          "id": 5410,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/sl/1.2.1",
-          "notation": "TimeSeries.Discrete",
-          "title": "Časovne vrste: diskretne",
-          "definition": "Meritve se izvajajo v (običajno enako) razmaknjenih intervalih. Primeri: makroekonomija (tedensko gibanje cen delnic, meseči dobički, prodaja); meteorologija (temperatura po urah); meritve posameznikov (krvni tlak, teža, višina); sociologija (podatki o kriminalu, podatki o zaposlenosti) itd.",
-          "parent": "TimeSeries",
-          "position": 8
-        },
-        {
-          "id": 5411,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/sl/1.2.1",
-          "notation": "CrossSection",
-          "title": "Presečno",
-          "definition": "Podatki, zbrani z opazovanjem udeležencev znotraj obdobja raziskovanja, ne glede na spremembe skozi čas. Lahko vključuje več kot en dogodek zbiranja podatkov. Analiza presečnih podatkov pogosto vsebuje primerjavo razlik in podobnosti med udeleženci.",
-          "position": 9
-        },
-        {
-          "id": 5412,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/sl/1.2.1",
-          "notation": "CrossSectionAdHocFollowUp",
-          "title": "Presečno ad-hoc nadaljevalno",
-          "definition": "Podatki, zbrani v določenem trenutku, z namenom dopolnitve informacije, zbrane v predhodni presečni raziskavi; odločitev o naknadnem zbiranju podatkov ni bila vključena v prvotni raziskovalni načrt.",
-          "position": 10
-        },
         {
           "id": 7941,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/sl#Longitudinal/sl/1.2.1",
@@ -1197,6 +1173,48 @@
           "position": 5
         },
         {
+          "id": 5408,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/sl/1.2.1",
+          "notation": "TimeSeries",
+          "title": "Časovne vrste",
+          "definition": "Podatki zbirani v času s ponovitvami z namenom preučevanja sprememb v opazovanjih. To so običajno 'objektivne' meritve pojavov, ki jih je mogoče opazovati navzven, v nasprotju s stališči/mnenji ali občutki. Primeri lahko vključujejo ekonomske/finančne kazalnike, naravne/meteorološke pojave, vitalno statistiko itd.",
+          "position": 6
+        },
+        {
+          "id": 5409,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/sl/1.2.1",
+          "notation": "TimeSeries.Continuous",
+          "title": "Časovne vrste: kontinuirane",
+          "definition": "Meritve se izvajajo v celotnem obdobju merjenja. Primeri: detektorji laži, elektrokardiogrami itd.",
+          "parent": "TimeSeries",
+          "position": 7
+        },
+        {
+          "id": 5410,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/sl/1.2.1",
+          "notation": "TimeSeries.Discrete",
+          "title": "Časovne vrste: diskretne",
+          "definition": "Meritve se izvajajo v (običajno enako) razmaknjenih intervalih. Primeri: makroekonomija (tedensko gibanje cen delnic, meseči dobički, prodaja); meteorologija (temperatura po urah); meritve posameznikov (krvni tlak, teža, višina); sociologija (podatki o kriminalu, podatki o zaposlenosti) itd.",
+          "parent": "TimeSeries",
+          "position": 8
+        },
+        {
+          "id": 5411,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/sl/1.2.1",
+          "notation": "CrossSection",
+          "title": "Presečno",
+          "definition": "Podatki, zbrani z opazovanjem udeležencev znotraj obdobja raziskovanja, ne glede na spremembe skozi čas. Lahko vključuje več kot en dogodek zbiranja podatkov. Analiza presečnih podatkov pogosto vsebuje primerjavo razlik in podobnosti med udeleženci.",
+          "position": 9
+        },
+        {
+          "id": 5412,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/sl/1.2.1",
+          "notation": "CrossSectionAdHocFollowUp",
+          "title": "Presečno ad-hoc nadaljevalno",
+          "definition": "Podatki, zbrani v določenem trenutku, z namenom dopolnitve informacije, zbrane v predhodni presečni raziskavi; odločitev o naknadnem zbiranju podatkov ni bila vključena v prvotni raziskovalni načrt.",
+          "position": 10
+        },
+        {
           "id": 7947,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/sl#Other/sl/1.2.1",
           "notation": "Other",
@@ -1221,6 +1239,8 @@
       "notation": "TimeMethod",
       "title": "Vremenski metod",
       "definition": "Opisuje vremensku dimenziju kolekcije podataka.",
+      "previousVersion": 0,
+      "initialVersion": 411,
       "notes": "",
       "versionNotes": "",
       "versionChanges": "",
@@ -1353,6 +1373,8 @@
       "notation": "TimeMethod",
       "title": "Tidsdimension/studiedesign",
       "definition": "Beskriver hur datainsamlingen lagts upp för att ske över tid.",
+      "previousVersion": 0,
+      "initialVersion": 340,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -1364,48 +1386,6 @@
       "translateAgency": "Swedish National Data Service (SND)",
       "translateAgencyLink": "https://snd.gu.se/",
       "concepts": [
-        {
-          "id": 5420,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/sv/1.2.1",
-          "notation": "TimeSeries",
-          "title": "Tidsserie",
-          "definition": "Data samlas in upprepade gånger över tid så att det går att studera förändringar i observationerna. Dessa är generellt \"objektiva\" mätningar av externa, observerbara fenomen, i motsats till attityder/åsikter eller känslor. Exempel kan inkludera ekonomiska/finansiella indikatorer, naturliga/meteorologiska fenomen, befolkningsstatistik m.m.",
-          "position": 6
-        },
-        {
-          "id": 5421,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/sv/1.2.1",
-          "notation": "TimeSeries.Continuous",
-          "title": "Tidsserie: Kontinuerlig",
-          "definition": "Mätvärden tas vid varje given tidpunkt. Exempel: lögndetektorer, elektrokardiogram (EKG) m.m.",
-          "parent": "TimeSeries",
-          "position": 7
-        },
-        {
-          "id": 5422,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/sv/1.2.1",
-          "notation": "TimeSeries.Discrete",
-          "title": "Tidsserie: Diskret",
-          "definition": "Mätvärden tas med (vanligtvis regelbundna) intervall. Exempel: makroekonomi (aktiekurser varje vecka, månatliga vinster, försäljningssiffror); meteorologi (temperaturen varje timme); mätningar på individer (blodtryck, vikt, längd); sociologi (brottsstatistik, arbetslöshetstal) m.m.",
-          "parent": "TimeSeries",
-          "position": 8
-        },
-        {
-          "id": 5423,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/sv/1.2.1",
-          "notation": "CrossSection",
-          "title": "Tvärsnitt",
-          "definition": "Data samlas in genom att observera subjekten under studieperioden utan att ta hänsyn till förändring över tid. Kan inkludera mer än ett insamlingstillfälle. Analys av tvärsnittsdata består ofta i att jämföra likheter och skillnader mellan subjekten.",
-          "position": 9
-        },
-        {
-          "id": 5424,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/sv/1.2.1",
-          "notation": "CrossSectionAdHocFollowUp",
-          "title": "Tvärsnitt ad hoc uppföljning",
-          "definition": "Data samlas in vid ett tillfälle för att komplettera information som har samlats in vid en tidigare tvärsnittsstudie; beslutet att samla in uppföljningsdata var inte en del av den ursprungliga studiedesignen.",
-          "position": 10
-        },
         {
           "id": 7948,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/sv#Longitudinal/sv/1.2.1",
@@ -1458,6 +1438,48 @@
           "definition": "Data samlas in från en panel med respondenter endast när informationen behövs.",
           "parent": "Longitudinal.Panel",
           "position": 5
+        },
+        {
+          "id": 5420,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries/sv/1.2.1",
+          "notation": "TimeSeries",
+          "title": "Tidsserie",
+          "definition": "Data samlas in upprepade gånger över tid så att det går att studera förändringar i observationerna. Dessa är generellt \"objektiva\" mätningar av externa, observerbara fenomen, i motsats till attityder/åsikter eller känslor. Exempel kan inkludera ekonomiska/finansiella indikatorer, naturliga/meteorologiska fenomen, befolkningsstatistik m.m.",
+          "position": 6
+        },
+        {
+          "id": 5421,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Continuous/sv/1.2.1",
+          "notation": "TimeSeries.Continuous",
+          "title": "Tidsserie: Kontinuerlig",
+          "definition": "Mätvärden tas vid varje given tidpunkt. Exempel: lögndetektorer, elektrokardiogram (EKG) m.m.",
+          "parent": "TimeSeries",
+          "position": 7
+        },
+        {
+          "id": 5422,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#TimeSeries.Discrete/sv/1.2.1",
+          "notation": "TimeSeries.Discrete",
+          "title": "Tidsserie: Diskret",
+          "definition": "Mätvärden tas med (vanligtvis regelbundna) intervall. Exempel: makroekonomi (aktiekurser varje vecka, månatliga vinster, försäljningssiffror); meteorologi (temperaturen varje timme); mätningar på individer (blodtryck, vikt, längd); sociologi (brottsstatistik, arbetslöshetstal) m.m.",
+          "parent": "TimeSeries",
+          "position": 8
+        },
+        {
+          "id": 5423,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSection/sv/1.2.1",
+          "notation": "CrossSection",
+          "title": "Tvärsnitt",
+          "definition": "Data samlas in genom att observera subjekten under studieperioden utan att ta hänsyn till förändring över tid. Kan inkludera mer än ett insamlingstillfälle. Analys av tvärsnittsdata består ofta i att jämföra likheter och skillnader mellan subjekten.",
+          "position": 9
+        },
+        {
+          "id": 5424,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeMethod#CrossSectionAdHocFollowUp/sv/1.2.1",
+          "notation": "CrossSectionAdHocFollowUp",
+          "title": "Tvärsnitt ad hoc uppföljning",
+          "definition": "Data samlas in vid ett tillfälle för att komplettera information som har samlats in vid en tidigare tvärsnittsstudie; beslutet att samla in uppföljningsdata var inte en del av den ursprungliga studiedesignen.",
+          "position": 10
         },
         {
           "id": 7954,

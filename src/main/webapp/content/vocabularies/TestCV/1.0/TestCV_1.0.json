@@ -25,6 +25,8 @@
       "notation": "TestCV",
       "title": "Test CV",
       "definition": "This is a test CV.",
+      "previousVersion": 0,
+      "initialVersion": 345,
       "versionNotes": "",
       "versionChanges": "",
       "citation": "CESSDA. (2019). Test CV (Version 1.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TestCV:1.0. ",

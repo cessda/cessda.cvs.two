@@ -25,6 +25,8 @@
       "notation": "TypeOfTelephone",
       "title": "Type of Telephone",
       "definition": "Identifies the type of telephone entered as contact information for an individual or an organization.",
+      "previousVersion": 0,
+      "initialVersion": 294,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",

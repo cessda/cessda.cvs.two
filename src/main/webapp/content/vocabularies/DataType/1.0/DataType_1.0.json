@@ -25,6 +25,8 @@
       "notation": "DataType",
       "title": "Data Type",
       "definition": "Identifies the type of data, which has a bearing on the acceptable data values, the operations that can be performed with the data, and the ways in which the data are stored.",
+      "previousVersion": 0,
+      "initialVersion": 276,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all. The present list is based on the W3C data types (http://www.w3.org/TR/xmlschema-2/), and includes the terms relevant for documenting research data.",
       "versionNotes": "",
       "versionChanges": "",

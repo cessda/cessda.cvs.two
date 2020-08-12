@@ -1,6 +1,6 @@
 {
   "id": 47,
-  "status": "PUBLISHED",
+  "status": "DRAFT",
   "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.0",
   "notation": "AnalysisUnit",
   "versionNumber": "2.0",
@@ -25,6 +25,8 @@
       "notation": "AnalysisUnit",
       "title": "Analysis Unit",
       "definition": "Describes the entity being analyzed in the study or in the variable.",
+      "previousVersion": 0,
+      "initialVersion": 206,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -156,6 +158,8 @@
       "notation": "AnalysisUnit",
       "title": "Analysenhed",
       "definition": "Beskriver den enhed som analyseres i studiet eller i variablen.",
+      "previousVersion": 0,
+      "initialVersion": 217,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -289,6 +293,8 @@
       "notation": "AnalysisUnit",
       "title": "Analyseeinheit",
       "definition": "Beschreibt die Entität, die in der Studie oder in der Variable analysiert wird.",
+      "previousVersion": 0,
+      "initialVersion": 211,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -422,6 +428,8 @@
       "notation": "AnalysisUnit",
       "title": "Havainto/aineistoyksikkötyyppi",
       "definition": "Yksikkö, jonka edustajana vastataan/esiinnytään ja/tai jota havainnoidaan.",
+      "previousVersion": 0,
+      "initialVersion": 208,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -555,6 +563,8 @@
       "notation": "AnalysisUnit",
       "title": "Analyseenhet",
       "definition": "Beskrivelse av enhet som blir analysert i studien eller i variablene.",
+      "previousVersion": 0,
+      "initialVersion": 216,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -598,6 +608,14 @@
           "definition": "Et mer spesifikt begrep som kun referer til personer som bor i samme husholdning på et gitt tidspunkt. Om det ikke er kjent om analyseenheten er 'Familie' eller 'Familiehusholdning' skal begrepet 'Familie' benyttes.",
           "parent": "Family",
           "position": 3
+        },
+        {
+          "id": 1303,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/no/1.0.1",
+          "notation": "Household",
+          "title": "Husholdning",
+          "definition": "En person eller en gruppe av personer som har samme boligenhet og leveforhold. Disse felles leveforholdene kan inkludere at deler av, eller alt av inntekt og eiendom er felles, og at visse type varer og tjenester konsumeres i fellesskap, hovedsakelig bosted og mat (Eurostat).",
+          "position": 4
         },
         {
           "id": 1295,
@@ -662,14 +680,6 @@
           "title": "Annet",
           "definition": "Benytt hvis analyseenheten er kjent, men ikke finnes i listen.",
           "position": 12
-        },
-        {
-          "id": 1303,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/no/1.0.1",
-          "notation": "Household",
-          "title": "Husholdning",
-          "definition": "En person eller en gruppe av personer som har samme boligenhet og leveforhold. Disse felles leveforholdene kan inkludere at deler av, eller alt av inntekt og eiendom er felles, og at visse type varer og tjenester konsumeres i fellesskap, hovedsakelig bosted og mat (Eurostat).",
-          "position": 4
         }
       ],
       "comments": [],
@@ -688,6 +698,8 @@
       "notation": "AnalysisUnit",
       "title": "Analysenhet",
       "definition": "Beskriver den enhet som analyseras i studien eller i variabeln.",
+      "previousVersion": 0,
+      "initialVersion": 214,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",

@@ -25,6 +25,8 @@
       "notation": "ResponseUnit",
       "title": "Response Unit",
       "definition": "Indicates the entity that provided the information carried by the variable.",
+      "previousVersion": 0,
+      "initialVersion": 282,
       "notes": "This controlled vocabulary is applicable only to survey-type data. \nThis vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",

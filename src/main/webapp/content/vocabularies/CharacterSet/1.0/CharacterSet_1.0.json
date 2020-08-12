@@ -25,6 +25,8 @@
       "notation": "CharacterSet",
       "title": "Character Set",
       "definition": "Standard set of characters upon which many character encodings are based (Wikipedia).",
+      "previousVersion": 0,
+      "initialVersion": 274,
       "notes": "This vocabulary lists some popular character sets but is not exhaustive. If the character set is not mentioned in the list, use 'Other' for this element and enter the specific name into the OtherValue element. You can search for the name of the character set in the list published by IANA (Internet Assigned Character Numbers). Use the \"preferred MIME-name\" if the IANA list specifies one, otherwise use the format in the Name field - http://www.iana.org/assignments/character-sets.\n\nThe vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",

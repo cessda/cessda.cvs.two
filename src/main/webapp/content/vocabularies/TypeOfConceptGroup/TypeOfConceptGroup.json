@@ -25,6 +25,8 @@
       "notation": "TypeOfConceptGroup",
       "title": "Type of Concept Group",
       "definition": "Specifies the rationale for creating a concept group.",
+      "previousVersion": 0,
+      "initialVersion": 292,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",

@@ -25,6 +25,8 @@
       "notation": "SummaryStatisticType",
       "title": "Summary Statistic Type",
       "definition": "Specifies the type of summary statistic. Summary statistics are a single number representation of the characteristics of a set of values.",
+      "previousVersion": 0,
+      "initialVersion": 249,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
@@ -404,6 +406,8 @@
       "notation": "SummaryStatisticType",
       "title": "Typen af sammenfattende statistik",
       "definition": "Specificerer typen af sammenfattende statistik. Sammenfattende statistik er en repræsentation af et sæt af værdiers karakteristika ved hjælp af et enkelt tal.",
+      "previousVersion": 0,
+      "initialVersion": 279,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -784,6 +788,8 @@
       "notation": "SummaryStatisticType",
       "title": "Tilastollisen tunnusluvun tyyppi",
       "definition": "Tilastolliset tunnusluvut kuvaavat tietyn arvojoukon, esimerkiksi otoksen havaintojen sisältämää informaatiota. Usein tunnusluvut ovat nimensä mukaisesti yksittäisiä lukuja.",
+      "previousVersion": 0,
+      "initialVersion": 270,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -1164,6 +1170,8 @@
       "notation": "SummaryStatisticType",
       "title": "Tipo di statistiche riassuntive",
       "definition": "Specifica il tipo di statistica riassuntiva. Tali statistiche sono una rappresentazione sintetica delle caratteristiche di un insieme di valori.",
+      "previousVersion": 0,
+      "initialVersion": 344,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -1544,6 +1552,8 @@
       "notation": "SummaryStatisticType",
       "title": "Tipo de estatística sumária",
       "definition": "Especifica o tipo de estatística sumária. As estatísticas sumárias são medidas/números/valores usados para descrever as características de um conjunto de dados.",
+      "previousVersion": 0,
+      "initialVersion": 383,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -1668,12 +1678,36 @@
           "position": 13
         },
         {
-          "id": 7019,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#Other/pt",
-          "notation": "Other",
-          "title": "Outro",
-          "definition": "Usar se o tipo de estatística sumária for conhecido, mas não se encontrar na lista.",
-          "position": 43
+          "id": 7046,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#StandardDeviation/pt",
+          "notation": "StandardDeviation",
+          "title": "Desvio padrão",
+          "definition": "Indica em que medida os indivíduos de uma amostra diferem da média da mesma.",
+          "position": 14
+        },
+        {
+          "id": 7045,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#CoefficientOfVariation/pt",
+          "notation": "CoefficientOfVariation",
+          "title": "Coeficiente de variação",
+          "definition": "Desvio padrão dividido pela média.",
+          "position": 15
+        },
+        {
+          "id": 7047,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#AverageAbsoluteDeviation/pt",
+          "notation": "AverageAbsoluteDeviation",
+          "title": "Desvio absoluto médio",
+          "definition": "A média das diferenças absolutas entre cada valor e a média geral. Medida de dispersão estatística em torno da média, alternativa ao desvio padrão.",
+          "position": 16
+        },
+        {
+          "id": 7048,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#MedianAbsoluteDeviation/pt",
+          "notation": "MedianAbsoluteDeviation",
+          "title": "Desvio absoluto mediano",
+          "definition": "O desvio absoluto mediano da mediana. Medida de dispersão estatística em torno da mediana.",
+          "position": 17
         },
         {
           "id": 7020,
@@ -1876,36 +1910,12 @@
           "position": 42
         },
         {
-          "id": 7045,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#CoefficientOfVariation/pt",
-          "notation": "CoefficientOfVariation",
-          "title": "Coeficiente de variação",
-          "definition": "Desvio padrão dividido pela média.",
-          "position": 15
-        },
-        {
-          "id": 7046,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#StandardDeviation/pt",
-          "notation": "StandardDeviation",
-          "title": "Desvio padrão",
-          "definition": "Indica em que medida os indivíduos de uma amostra diferem da média da mesma.",
-          "position": 14
-        },
-        {
-          "id": 7047,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#AverageAbsoluteDeviation/pt",
-          "notation": "AverageAbsoluteDeviation",
-          "title": "Desvio absoluto médio",
-          "definition": "A média das diferenças absolutas entre cada valor e a média geral. Medida de dispersão estatística em torno da média, alternativa ao desvio padrão.",
-          "position": 16
-        },
-        {
-          "id": 7048,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#MedianAbsoluteDeviation/pt",
-          "notation": "MedianAbsoluteDeviation",
-          "title": "Desvio absoluto mediano",
-          "definition": "O desvio absoluto mediano da mediana. Medida de dispersão estatística em torno da mediana.",
-          "position": 17
+          "id": 7019,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SummaryStatisticType#Other/pt",
+          "notation": "Other",
+          "title": "Outro",
+          "definition": "Usar se o tipo de estatística sumária for conhecido, mas não se encontrar na lista.",
+          "position": 43
         }
       ],
       "comments": [],
@@ -1924,6 +1934,8 @@
       "notation": "SummaryStatisticType",
       "title": "Vrsta zbirne statistike",
       "definition": "Določa vrsto zbirne statistike. Zbirna statistika je številka, s katero predstavimo značilnosti niza vrednosti.",
+      "previousVersion": 0,
+      "initialVersion": 273,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",
@@ -2304,6 +2316,8 @@
       "notation": "SummaryStatisticType",
       "title": "Vrsta zbirne statistike",
       "definition": "Određuje vrstu zbirne statistike. Zbirna statistika predstavlja jednoznačan broj karakteristika skupa vrednosti. ",
+      "previousVersion": 0,
+      "initialVersion": 410,
       "notes": "",
       "versionNotes": "",
       "versionChanges": "",
@@ -2685,6 +2699,8 @@
       "notation": "SummaryStatisticType",
       "title": "Typ av sammanfattande statistik",
       "definition": "Anger typ av sammanfattande statistik. Sammanfattande statistik är ett enda värde som representerar egenskaperna hos en mängd värden.",
+      "previousVersion": 0,
+      "initialVersion": 272,
       "versionNotes": "",
       "versionChanges": "",
       "license": "BY",

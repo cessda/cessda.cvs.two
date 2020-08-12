@@ -25,6 +25,8 @@
       "notation": "TypeOfNote",
       "title": "Type of Note",
       "definition": "Includes a typology of notes.",
+      "previousVersion": 0,
+      "initialVersion": 293,
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
