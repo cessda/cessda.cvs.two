@@ -96,11 +96,4 @@ public class VocabularySearchResource {
         return ResponseEntity.ok().body("Done generating json");
     }
 
-    @GetMapping("/search/index")
-    public ResponseEntity<String> getIndexPublish() throws IOException {
-        log.debug("REST request to get a page of Vocabularies");
-        vocabularyService.indexAllPublished();
-        return ResponseEntity.ok().body("Done index publish");
-    }
-
 }
