@@ -513,8 +513,7 @@
                                 </div>
                                 <div class="detail-column-row">
                                     <span>{{version!.canonicalUri!.substr(0, version!.canonicalUri!.length - 4)}} </span>
-                                    &nbsp;
-                                    <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
+                                    <a [href]="'/urn/' + version!.canonicalUri!.substr(0, version!.canonicalUri!.length - 4)" target="_blank">
                                         <fa-icon icon="external-link-alt"></fa-icon>
                                     </a>
                                 </div>
@@ -526,7 +525,7 @@
                                 <div class="detail-column-row">
                                     <span>{{version!.canonicalUri}} </span>
                                     &nbsp;
-                                    <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersion()!.number}">
+                                    <a [href]="'/urn/' + version!.canonicalUri + '?lang=' + version!.language">
                                         <fa-icon icon="external-link-alt"></fa-icon>
                                     </a>
                                 </div>

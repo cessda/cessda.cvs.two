@@ -283,7 +283,7 @@
                         <div class="detail-column-row">
                             <span>{{getVersionByLangNumber()!.canonicalUri!.substr(0, getVersionByLangNumber()!.canonicalUri!.length - 4)}} </span>
                             &nbsp;
-                            <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
+                            <a [href]="'/urn/' + getVersionByLangNumber()!.canonicalUri!.substr(0, getVersionByLangNumber()!.canonicalUri!.length - 4)" target="_blank">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
                         </div>
@@ -294,8 +294,7 @@
                         </div>
                         <div class="detail-column-row">
                             <span>{{getVersionByLangNumber()!.canonicalUri}} </span>
-                            &nbsp;
-                            <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersion()!.number}">
+                            <a [href]="'/urn/' + getVersionByLangNumber()!.canonicalUri + '?lang=' + getVersionByLangNumber()!.language" target="_blank">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
                         </div>

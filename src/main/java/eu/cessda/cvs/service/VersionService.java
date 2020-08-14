@@ -1,7 +1,6 @@
 package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.service.dto.VersionDTO;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -70,8 +69,13 @@ public interface VersionService {
      */
     List<VersionDTO> findOlderPublishedByVocabularyLanguageId(Long vocabularyId, String languageIso, Long versionId);
 
-    VersionDTO findOneByNotationLangVersion(String notation, String languageIso, String versionNumber);
-
+    /**
+     * Find all versions than given versionId, from specific vocabulary and language
+     *
+     * @param vocabularyId
+     * @param versionNumberSl
+     * @return
+     */
     List<VersionDTO> findAllByVocabularyAnyVersionSl(Long vocabularyId, String versionNumberSl);
 
     /**
@@ -83,4 +87,19 @@ public interface VersionService {
      * @return the list of entities.
      */
     Page<VersionDTO> search(String query, Pageable pageable);
+
+    /**
+     * Get list of versions by URN
+     * @param urn
+     * @return
+     */
+    List<VersionDTO> findByUrn(String urn);
+
+    /**
+     * Get list of versions by URN that starting with
+     * @param urn
+     * @return
+     */
+    List<VersionDTO> findByUrnStartingWith(String urn);
+
 }

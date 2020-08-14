@@ -114,13 +114,6 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public VersionDTO findOneByNotationLangVersion(String notation, String languageIso, String versionNumber) {
-        log.debug("Request to get versions by notation {}, languageIso {}, versionNumber {}", notation, languageIso, versionNumber);
-        Version version = versionRepository.findOneByNotationLangVersion(notation, languageIso, versionNumber);
-        return versionMapper.toDto( version );
-    }
-
-    @Override
     public List<VersionDTO> findAllByVocabularyAnyVersionSl(Long vocabularyId, String versionNumberSl) {
         log.debug("Request to get versions by vocabularyId {}, versionNumberSl {}", vocabularyId, versionNumberSl);
         return versionRepository.findAllByVocabularyIdAndVersionNumberSl( vocabularyId, versionNumberSl ).stream()
@@ -131,5 +124,21 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public Page<VersionDTO> search(String query, Pageable pageable) {
         return null;
+    }
+
+    @Override
+    public List<VersionDTO> findByUrn(String urn) {
+        log.debug("Request to get versions with URN {}", urn);
+        return versionRepository.findByCanonicalUri(urn ).stream()
+            .map(versionMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public List<VersionDTO> findByUrnStartingWith(String urn) {
+        log.debug("Request to get versions with URN starting with{}", urn);
+        return versionRepository.findByCanonicalUriStartingWith(urn ).stream()
+            .map(versionMapper::toDto)
+            .collect(Collectors.toCollection(LinkedList::new));
     }
 }
