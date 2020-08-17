@@ -27,6 +27,7 @@ import eu.cessda.cvs.service.mapper.VocabularyPublishMapper;
 import eu.cessda.cvs.service.search.EsFilter;
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
+import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.search.join.ScoreMode;
@@ -759,8 +760,24 @@ public class VocabularyServiceImpl implements VocabularyService {
     public void indexEditor(VocabularyDTO vocabulary) {
         log.info("Indexing editor vocabulary with id {} and notation {}", vocabulary.getId(), vocabulary.getNotation());
         // filter only include latest vocabulary
+        // get latest version
+        final VersionDTO maxSlVersion = vocabulary.getVersions().stream()
+            .filter(v -> v.getItemType().equals(ItemType.SL.toString()))
+            .max((v1, v2) -> VersionUtils.compareVersion(v1.getNumber(), v2.getNumber()))
+            .orElse(null);
+
+        if( maxSlVersion == null )
+            return;
+
+        // normalize the vocabulary version for older data
+        if( !vocabulary.getVersionNumber().equals(maxSlVersion.getNumber())){
+            vocabulary.setVersionNumber( maxSlVersion.getNumber() );
+            save(vocabulary);
+        }
+
+
         vocabulary.setVersions( vocabulary.getVersions().stream()
-            .filter(v -> v.getNumber().startsWith( vocabulary.getVersionNumber())).collect(Collectors.toSet()));
+            .filter(v -> v.getNumber().startsWith( maxSlVersion.getNumber())).collect(Collectors.toSet()) );
         // fill vocabulary with versions
         VocabularyDTO.fillVocabularyByVersions(vocabulary, vocabulary.getVersions());
         // fill CodeDTO object from versions
