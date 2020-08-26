@@ -226,7 +226,7 @@
                                     <span>Version changes</span>
                                 </div>
                                 <div class="detail-column">
-                                    <span class="ta-mode">{{getVersionByLangNumber()!.versionChanges}}</span>
+                                    <span class="ta-mode" [innerHTML]="getVersionByLangNumber()!.versionChanges"></span>
                                 </div>
                             </div>
                         </div>
@@ -260,7 +260,7 @@
                                     <span>Version changes</span>
                                 </div>
                                 <div class="detail-column">
-                                    <span class="ta-mode">{{vh.changes}}</span>
+                                    <span class="ta-mode" [innerHTML]="vh.changes"></span>
                                 </div>
                             </div>
                             <div class="row-detail" *ngIf="!vh.changes && !vh.note">
