@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 
 import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
@@ -21,7 +21,8 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
     if (notation) {
       return this.service
         .getVocabularyFile(notation, {
-          v: version
+          v: version,
+          rand: new Date().getTime()
         })
         .pipe(
           flatMap((vocabulary: HttpResponse<Vocabulary>) => {

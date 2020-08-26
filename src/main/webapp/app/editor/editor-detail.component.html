@@ -504,7 +504,7 @@
                         <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleIdentityPanel()">&nbsp;
                             <fa-icon *ngIf="!isIdentityCollapse" icon="caret-down"></fa-icon>
                             <fa-icon *ngIf="isIdentityCollapse" icon="caret-right"></fa-icon>
-                            <span>Identitys</span>
+                            <span>Identity</span>
                         </a>
                         <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'identity', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'identity'}" #identityPanel id="identityPanel">
                             <div *ngIf="version!.canonicalUri" class="row-detail small-block-n">
