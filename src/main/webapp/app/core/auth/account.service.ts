@@ -83,7 +83,9 @@ export class AccountService {
       case 'ADD_TL_CODE':
       case 'EDIT_TL_CODE':
       case 'DELETE_TL_CODE':
-      case 'PERFORM_ACTION_IN_FINAL_REVIEW': {
+      case 'PERFORM_ACTION_IN_FINAL_REVIEW':
+      case 'CREATE_NEW_CV_SL_VERSION':
+      case 'CREATE_NEW_CV_TL_VERSION': {
         return this.hasAgencyRole(agencyId, agencyRoles, language);
       }
     }
