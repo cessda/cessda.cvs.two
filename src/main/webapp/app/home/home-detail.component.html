@@ -51,6 +51,15 @@
 
             <div class="row-detail">
                 <div class="label-column">
+                    <span>CV short name</span>
+                </div>
+                <div class="detail-column">
+                    <span>{{vocabulary!.notation}}</span>
+                </div>
+            </div>
+
+            <div class="row-detail">
+                <div class="label-column">
                     <span>CV definition</span>
                 </div>
                 <div class="detail-column">
@@ -64,15 +73,6 @@
                 </div>
                 <div class="detail-column">
                     <span>{{getSlVersion()!.notes}}</span>
-                </div>
-            </div>
-
-            <div class="row-detail">
-                <div class="label-column">
-                    <span>CV short name</span>
-                </div>
-                <div class="detail-column">
-                    <span>{{vocabulary!.notation}}</span>
                 </div>
             </div>
 
@@ -91,6 +91,15 @@
                 </div>
                 <div class="detail-column">
                     <span>{{getVersionByLangNumber()!.definition}}</span>
+                </div>
+            </div>
+
+            <div class="row-detail" *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage && getVersionByLangNumber()!.notes && getVersionByLangNumber()!.notes !== ''">
+                <div class="label-column">
+                    <span>CV notes ({{vocabulary!.selectedLang}})</span>
+                </div>
+                <div class="detail-column">
+                    <span>{{getVersionByLangNumber()!.notes}}</span>
                 </div>
             </div>
 

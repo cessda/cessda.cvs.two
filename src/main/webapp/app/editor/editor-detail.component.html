@@ -254,6 +254,15 @@
 
                     <div class="row-detail">
                         <div class="label-column">
+                            <span>CV short name</span>
+                        </div>
+                        <div class="detail-column">
+                            <span>{{vocabulary!.notation}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row-detail">
+                        <div class="label-column">
                             <span>CV definition</span>
                         </div>
                         <div class="detail-column">
@@ -261,9 +270,37 @@
                         </div>
                     </div>
 
-                    <div class="row-detail">
+                    <div class="row-detail" *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">
                         <div class="label-column">
                             <span>CV notes</span>
+                        </div>
+                        <div class="detail-column">
+                            <span>{{getSlVersion()!.notes}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row-detail" *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">
+                        <div class="label-column">
+                            <span>CV name ({{vocabulary!.selectedLang}})</span>
+                        </div>
+                        <div class="detail-column">
+                            <span>{{version!.title}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row-detail" *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">
+                        <div class="label-column">
+                            <span>CV definition ({{vocabulary!.selectedLang}})</span>
+                        </div>
+                        <div class="detail-column">
+                            <span>{{version!.definition}}</span>
+                        </div>
+                    </div>
+
+                    <div class="row-detail">
+                        <div class="label-column">
+                            <span *ngIf="vocabulary!.selectedLang === vocabulary!.sourceLanguage">CV notes</span>
+                            <span *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">CV notes ({{vocabulary!.selectedLang}})</span>
                         </div>
                         <div class="detail-column">
                             <div *ngIf="!isNotesEdit" [innerHTML]="detailForm.get(['notes'])!.value ? detailForm.get(['notes'])!.value: ''"></div>
@@ -285,33 +322,6 @@
                                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                                 </button>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row-detail">
-                        <div class="label-column">
-                            <span>CV short name</span>
-                        </div>
-                        <div class="detail-column">
-                            <span>{{vocabulary!.notation}}</span>
-                        </div>
-                    </div>
-
-                    <div class="row-detail" *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">
-                        <div class="label-column">
-                            <span>CV name ({{vocabulary!.selectedLang}})</span>
-                        </div>
-                        <div class="detail-column">
-                            <span>{{version!.title}}</span>
-                        </div>
-                    </div>
-
-                    <div class="row-detail" *ngIf="vocabulary!.selectedLang !== vocabulary!.sourceLanguage">
-                        <div class="label-column">
-                            <span>CV definition ({{vocabulary!.selectedLang}})</span>
-                        </div>
-                        <div class="detail-column">
-                            <span>{{version!.definition}}</span>
                         </div>
                     </div>
 

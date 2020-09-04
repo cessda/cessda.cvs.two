@@ -196,10 +196,10 @@
 				<dd th:text="${version.notation}"></dd>
 				<dt>CV name:</dt>
 				<dd th:text="${version.title}"></dd>
+                <dt th:if="${version.notes != null}">CV notes:</dt>
+                <dd th:if="${version.notes != null}" th:text="${version.notes}"></dd>
 				<dt>Language:</dt>
 				<dd th:text="${version.getFormattedLanguage()}"></dd>
-				<dt th:if="${version.notes != null}">CV notes:</dt>
-				<dd th:if="${version.notes != null}" th:text="${version.notes}"></dd>
 				<dt th:if="${version.number != null}">Version:</dt>
 				<dd th:if="${version.number != null}"th:text="${version.number}">1.0</dd>
 				<dt th:if="${version.versionNotes != null and version.versionNotes != ''}">Version notes:</dt>
