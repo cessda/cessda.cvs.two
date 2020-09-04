@@ -1302,7 +1302,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             Map<String, String> versionHistoryMap = new LinkedHashMap<>();
             versionHistoryMap.put("version" , olderVersion.getNumber() );
             versionHistoryMap.put("date" , olderVersion.getPublicationDate().toString() );
-            versionHistoryMap.put("note" , olderVersion.getNotes() );
+            versionHistoryMap.put("note" , olderVersion.getVersionNotes());
             versionHistoryMap.put("changes", olderVersion.getVersionChanges());
             olderVersionHistories.add(versionHistoryMap);
         }
