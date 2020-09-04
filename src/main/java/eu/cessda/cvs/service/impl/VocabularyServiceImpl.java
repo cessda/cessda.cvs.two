@@ -1449,8 +1449,10 @@ public class VocabularyServiceImpl implements VocabularyService {
                 log.error( e.getMessage() );
             }
             map.put("licenseLogo", "data:image/png;base64," + data);
-            int index = version.getCanonicalUri().lastIndexOf(':');
-            map.put("cvUrn", version.getCanonicalUri().substring(0, index));
+            if( version.getCanonicalUri() != null ) {
+                int index = version.getCanonicalUri().lastIndexOf(':');
+                map.put("cvUrn", version.getCanonicalUri().substring(0, index));
+            }
         }
     }
 

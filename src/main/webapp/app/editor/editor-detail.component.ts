@@ -418,26 +418,26 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   downloadSkos(): void {
-    this.downloadVocabularyFile('rdf', this.getCheckedItems(this.skosSelected), 'text/xml');
+    this.downloadEditorVocabularyFile('rdf', this.getCheckedItems(this.skosSelected), 'text/xml');
   }
 
   downloadPdf(): void {
-    this.downloadVocabularyFile('pdf', this.getCheckedItems(this.pdfSelected), 'application/pdf');
+    this.downloadEditorVocabularyFile('pdf', this.getCheckedItems(this.pdfSelected), 'application/pdf');
   }
 
   downloadHtml(): void {
-    this.downloadVocabularyFile('html', this.getCheckedItems(this.htmlSelected), 'text/html');
+    this.downloadEditorVocabularyFile('html', this.getCheckedItems(this.htmlSelected), 'text/html');
   }
 
   downloadDocx(): void {
-    this.downloadVocabularyFile(
+    this.downloadEditorVocabularyFile(
       'docx',
       this.getCheckedItems(this.docxSelected),
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     );
   }
 
-  private downloadVocabularyFile(fileFormat: string, checkedItems: string, mimeType: string): void {
+  private downloadEditorVocabularyFile(fileFormat: string, checkedItems: string, mimeType: string): void {
     this.editorService
       .downloadVocabularyFile(this.vocabulary!.notation!, this.getSlVersion()!.number!, fileFormat, {
         lv: checkedItems

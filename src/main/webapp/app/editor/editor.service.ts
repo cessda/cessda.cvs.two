@@ -29,7 +29,7 @@ export class EditorService {
   public resourceEditorCodeUrl = SERVER_API_URL + 'api/editors/codes';
   public resourceEditorCommentUrl = SERVER_API_URL + 'api/editors/comments';
   public resourceEditorMetadataUrl = SERVER_API_URL + 'api/editors/metadatas';
-  public resourceDownloadUrl = SERVER_API_URL + 'api/download';
+  public resourceDownloadUrl = SERVER_API_URL + 'api/editors/download';
 
   constructor(protected http: HttpClient) {}
 

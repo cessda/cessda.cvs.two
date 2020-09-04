@@ -15,16 +15,21 @@ import io.github.jhipster.web.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,6 +42,8 @@ import java.util.stream.Collectors;
 public class EditorResource {
 
     private final Logger log = LoggerFactory.getLogger(EditorResource.class);
+
+    public static final String ATTACHMENT_FILENAME = "attachment; filename=";
 
     private static final String ENTITY_VOCABULARY_NAME = "vocabulary";
     private static final String ENTITY_VERSION_NAME = "version";
@@ -847,5 +854,83 @@ public class EditorResource {
 
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true,
             ENTITY_METADATAVALUE_NAME, id.toString())).build();
+    }
+
+    /**
+     *  get a SKOS file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
+     *
+     * @param cv controlled vocabulary
+     * @param v controlled vocabulary version
+     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
+     * @return
+     * @throws IOException
+     */
+    @GetMapping("/editors/download/rdf/{cv}/{v}")
+    public ResponseEntity<Resource> getVocabularyInSkos(
+        HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
+        @RequestParam(name = "lv", required = true) String lv
+    ) throws IOException {
+        log.debug("Editor REST request to get a SKOS-RDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
+        File rdfFile = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.SKOS, request );
+
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(rdfFile.toPath()) );
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + rdfFile.getName() );
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentType(MediaType.parseMediaType("text/xml"))
+            .body(resource);
+    }
+
+    /**
+     *  get a PDF file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
+     *
+     * @param cv controlled vocabulary
+     * @param v controlled vocabulary version
+     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
+     * @return
+     * @throws IOException
+     */
+    @GetMapping("/editors/download/pdf/{cv}/{v}")
+    public ResponseEntity<Resource> getVocabularyInPdf(
+        HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
+        @RequestParam(name = "lv", required = true) String lv
+    ) throws IOException {
+        log.debug("Editor REST request to get a PDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
+        File pdfFile = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.PDF, request );
+
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(pdfFile.toPath()) );
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + pdfFile.getName() );
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentType(MediaType.parseMediaType("application/pdf"))
+            .body(resource);
+    }
+
+    /**
+     *  get a HTML file of vocabulary {cv} with version {v} with included versions {lv} from Editor DB
+     *
+     * @param cv controlled vocabulary
+     * @param v controlled vocabulary version
+     * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
+     * @return
+     * @throws IOException
+     */
+    @GetMapping("/editors/download/html/{cv}/{v}")
+    public ResponseEntity<Resource> getVocabularyInHtml(
+        HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
+        @RequestParam(name = "lv", required = true) String lv
+    ) throws IOException {
+        log.debug("Editor REST request to get a HTML file of vocabulary {} with version {} with included versions {}", cv, v, lv);
+        File htmlFile = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.HTML, request );
+
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(htmlFile.toPath()) );
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + htmlFile.getName() );
+        return ResponseEntity.ok()
+            .headers(headers)
+            .contentType(MediaType.parseMediaType("text/html"))
+            .body(resource);
     }
 }
