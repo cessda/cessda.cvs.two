@@ -208,10 +208,6 @@
 				<dd th:if="${version.versionChanges != null and version.versionChanges != ''}" th:utext="${#strings.replace(version.versionChanges,'&#10;','&lt;br&gt;')}"></dd>
 				<dt th:if="${version.canonicalUri != null}">Canonical URI:</dt>
 				<dd>
-					<a rel="canonical URN" th:href="${baseUrl + '/urn/' + cvUrn}" th:text="${cvUrn}"></a>
-				</dd>
-				<dt th:if="${version.canonicalUri != null}">Canonical URI of this version:</dt>
-				<dd>
 					<a rel="canonical URN this version" th:href="${baseUrl + '/urn/' + version.canonicalUri}" th:text="${version.canonicalUri}"></a>
 				</dd>
 

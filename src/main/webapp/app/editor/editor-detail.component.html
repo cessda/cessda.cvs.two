@@ -512,17 +512,6 @@
                                     <span>Canonical URI</span>
                                 </div>
                                 <div class="detail-column-row">
-                                    <span>{{version!.canonicalUri!.substr(0, version!.canonicalUri!.length - 4)}} </span>
-                                    <a [href]="'/urn/' + version!.canonicalUri!.substr(0, version!.canonicalUri!.length - 4)" target="_blank">
-                                        <fa-icon icon="external-link-alt"></fa-icon>
-                                    </a>
-                                </div>
-                            </div>
-                            <div *ngIf="version!.canonicalUri" class="row-detail small-block-n">
-                                <div class="label-column">
-                                    <span>Canonical URI of this version</span>
-                                </div>
-                                <div class="detail-column-row">
                                     <span>{{version!.canonicalUri}} </span>
                                     &nbsp;
                                     <a [href]="'/urn/' + version!.canonicalUri + '?lang=' + version!.language">
