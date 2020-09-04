@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import eu.cessda.cvs.service.ConfigurationService;
+import eu.cessda.cvs.service.dto.ConceptDTO;
+import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.search.EsFilter;
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
@@ -22,6 +24,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class VocabularyUtils {
     private static final Logger log = LoggerFactory.getLogger(VocabularyUtils.class);
@@ -35,6 +38,14 @@ public final class VocabularyUtils {
         VocabularyDTO vocabularyDTO = null;
         try {
             vocabularyDTO = mapper.readValue(jsonPath.toFile(), VocabularyDTO.class);
+            // reorder concepts
+            for (VersionDTO version : vocabularyDTO.getVersions()) {
+                version.setConcepts(
+                    version.getConcepts().stream().sorted(Comparator.comparing(ConceptDTO::getPosition))
+                        .collect(Collectors.toCollection(LinkedHashSet::new))
+                );
+            }
+
         } catch (IOException e) {
             log.error(e.getMessage());
         }

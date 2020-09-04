@@ -1429,7 +1429,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 
 
     private void prepareAdditionalAttributesForNonSkos(VocabularyDTO vocabularyDTO, Map<String, Object> map, AgencyDTO agencyDTO) {
-        File logoFile = new File(applicationProperties.getStaticFilePath() + vocabularyDTO.getAgencyLogo() );
+        File logoFile = new File(applicationProperties.getStaticFilePath() + File.separator + "content" +
+            File.separator + "images" + File.separator + "agency" + File.separator + vocabularyDTO.getAgencyLogo() );
         String data = null;
         try {
             data = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile.toPath()));
