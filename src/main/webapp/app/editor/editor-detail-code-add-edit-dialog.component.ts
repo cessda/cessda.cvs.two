@@ -156,6 +156,8 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
         codeSnippet.notation =
           (codeSnippet.parent !== undefined ? codeSnippet.parent + '.' : '') + this.codeAddEditForm.get(['notation'])!.value;
       }
+      codeSnippet.changeType = 'Code added';
+      codeSnippet.changeDesc = codeSnippet.notation;
       return codeSnippet;
     } else {
       if (this.isSlForm) {

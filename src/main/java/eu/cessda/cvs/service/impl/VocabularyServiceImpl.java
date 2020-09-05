@@ -425,9 +425,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         conceptDTO = versionDTO.getConcepts().stream().filter(c -> c.getId().equals(codeSnippet.getConceptId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getConceptId()));
 
-        // use for temp store the original notation
-        String notationFromDb = conceptDTO.getNotation();
-
         // check duplicated code notation
         if( codeSnippet.getActionType().equals( ActionType.EDIT_CODE ) && !conceptDTO.getNotation().equals( codeSnippet.getNotation()) ) {
             if (versionDTO.getConcepts().stream()
@@ -460,13 +457,8 @@ public class VocabularyServiceImpl implements VocabularyService {
         // save versionDTO together with concepts
         versionDTO = versionService.save(versionDTO);
 
-        // check if codeSnippet contains changetype
-        if ( codeSnippet.getChangeType() != null ) {
-            codeSnippet.setVersionId( versionDTO.getId());
-            VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO( codeSnippet, SecurityUtils.getCurrentUser(),
-                versionDTO.getVocabularyId() );
-            vocabularyChangeService.save(vocabularyChangeDTO );
-        }
+        // check if codeSnippet contains changeType, store if exist
+        storeChangeType(codeSnippet, versionDTO);
 
         // find the newly created code from version
         conceptDTO = versionDTO.findConceptByNotation(conceptDTO.getNotation());
@@ -474,6 +466,15 @@ public class VocabularyServiceImpl implements VocabularyService {
         // index editor
         indexEditor(vocabularyDTO);
         return conceptDTO;
+    }
+
+    private void storeChangeType(CodeSnippet codeSnippet, VersionDTO versionDTO) {
+        if ( codeSnippet.getChangeType() != null && !versionDTO.isInitialVersion()) {
+            codeSnippet.setVersionId( versionDTO.getId());
+            VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO(codeSnippet, SecurityUtils.getCurrentUser(),
+                versionDTO.getVocabularyId() );
+            vocabularyChangeService.save(vocabularyChangeDTO );
+        }
     }
 
     private void checkEditCodeAuthorization(CodeSnippet codeSnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO) {
@@ -510,6 +511,9 @@ public class VocabularyServiceImpl implements VocabularyService {
         // add concept to version and save version to save new concept
         versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
         versionDTO = versionService.save(versionDTO);
+
+        // check if codeSnippet contains changeType, dtore if exist
+        storeChangeType(codeSnippet, versionDTO);
 
         // find the newly created code from version
         conceptDTO = versionDTO.findConceptByNotation(newConceptDTO.getNotation());
@@ -655,7 +659,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                 // if not found, try to find old notation from the previous SL concept
                 if( prevConceptTl == null ) {
                     String oldSlNotation = prevVersionSl.getConcepts().stream()
-                        .filter(c -> c.getId().equals(conceptSlDTO.getPreviousConcept())).map(c -> c.getNotation()).findFirst().orElse(null);
+                        .filter(c -> c.getId().equals(conceptSlDTO.getPreviousConcept())).map(ConceptDTO::getNotation).findFirst().orElse(null);
                     if( oldSlNotation != null ) {
                         prevConceptTl = prevVersionTl.getConcepts().stream()
                             .filter(c -> c.getNotation().equals(oldSlNotation)).findFirst().orElse(null);
@@ -1353,7 +1357,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public File generateVocabularyPublishFileDownload(
         String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
-        log.info( "Publication generate file {0} for Vocabulary {1} versionSl {2}", downloadType.toString(), vocabularyNotation, versionSl );
+        log.info( "Publication generate file {0} for Vocabulary {1} versionSl {2}", downloadType, vocabularyNotation, versionSl );
         Path path = Paths.get(applicationProperties.getVocabJsonPath() + vocabularyNotation + File.separator +
                 versionSl + File.separator + vocabularyNotation + "_" + versionSl + JSON_FORMAT);
 
@@ -1364,7 +1368,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public File generateVocabularyEditorFileDownload(
         String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
-        log.info( "Editor generate file {0} for Vocabulary {1} versionSl {2}", downloadType.toString(), vocabularyNotation, versionSl );
+        log.info( "Editor generate file {0} for Vocabulary {1} versionSl {2}", downloadType, vocabularyNotation, versionSl );
         VocabularyDTO vocabularyDTO = getWithVersionsByNotationAndVersion(vocabularyNotation, versionSl);
         return generateVocabularyFileDownload(vocabularyNotation, versionSl, versionList, downloadType, request, vocabularyDTO);
     }

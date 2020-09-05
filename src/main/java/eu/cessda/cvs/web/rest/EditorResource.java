@@ -72,9 +72,12 @@ public class EditorResource {
 
     private final ApplicationProperties applicationProperties;
 
+    private final VocabularyChangeService vocabularyChangeService;
+
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
                           LicenceService licenceService, AgencyService agencyService, CommentService commentService,
-                          MetadataFieldService metadataFieldService, MetadataValueService metadataValueService, ApplicationProperties applicationProperties) {
+                          MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
+                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
@@ -84,6 +87,7 @@ public class EditorResource {
         this.metadataFieldService = metadataFieldService;
         this.metadataValueService = metadataValueService;
         this.applicationProperties = applicationProperties;
+        this.vocabularyChangeService = vocabularyChangeService;
     }
 
     /**
@@ -511,6 +515,13 @@ public class EditorResource {
             versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
             versionDTO = versionService.save(versionDTO);
 
+            // check if codeSnippet contains changeType, store if exist
+            if (codeSnippet.getChangeType() != null && !versionDTO.isInitialVersion()) {
+                VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO( SecurityUtils.getCurrentUser(),
+                    versionDTO.getVocabularyId(), versionDTO.getId(), codeSnippet.getChangeType(), codeSnippet.getChangeDesc());
+                vocabularyChangeService.save(vocabularyChangeDTO );
+            }
+
             // find the newly created code from version
             ConceptDTO conceptDTO = versionDTO.findConceptByNotation(newConceptDTO.getNotation());
             storedCodes.add( conceptDTO );
@@ -519,7 +530,7 @@ public class EditorResource {
         // index editor
         vocabularyService.indexEditor(vocabularyDTO);
 
-        String conceptsNotation = storedCodes.stream().map(c -> c.getNotation()).collect(Collectors.joining());
+        String conceptsNotation = storedCodes.stream().map(ConceptDTO::getNotation).collect(Collectors.joining());
         if( conceptsNotation.length() > 20) {
             conceptsNotation = conceptsNotation.substring(0, 20) + "...";
         }
@@ -582,12 +593,19 @@ public class EditorResource {
 
         // remove parent-child link and save, orphan concept will be automatically deleted
         versionDTO.removeConcept( conceptDTO );
+
+        // store changes if not initial version
+        recordCodeDeleteAction(conceptDTO, versionDTO);
+
         // remove any child if exist
         Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
         while ( conceptIterator.hasNext() ) {
             ConceptDTO conceptNext = conceptIterator.next();
             if( conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation()) ){
                 conceptIterator.remove();
+
+                // store changes if not initial version
+                recordCodeDeleteAction(conceptNext, versionDTO);
             }
         }
         versionService.save(versionDTO);
@@ -595,6 +613,14 @@ public class EditorResource {
         // index editor after delete
         vocabularyService.indexEditor( vocabularyDTO );
         return ResponseEntity.noContent().headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_CODE_NAME, conceptDTO.getNotation())).build();
+    }
+
+    private void recordCodeDeleteAction(ConceptDTO conceptDTO, VersionDTO versionDTO) {
+        if( !versionDTO.isInitialVersion() ) {
+            VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO(SecurityUtils.getCurrentUser(),
+                versionDTO.getVocabularyId(), versionDTO.getId(), "Code deleted", conceptDTO.getNotation());
+            vocabularyChangeService.save(vocabularyChangeDTO);
+        }
     }
 
     /**
@@ -933,4 +959,5 @@ public class EditorResource {
             .contentType(MediaType.parseMediaType("text/html"))
             .body(resource);
     }
+
 }

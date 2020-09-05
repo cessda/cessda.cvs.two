@@ -229,7 +229,9 @@ export class EditorDetailCodeCsvImportDialogComponent {
       parent: concept.parent,
       title: concept.title,
       definition: concept.definition,
-      position: concept.position
+      position: concept.position,
+      changeType: 'Code added',
+      changeDesc: concept.notation
     };
   }
 
