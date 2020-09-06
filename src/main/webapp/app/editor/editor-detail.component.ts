@@ -403,6 +403,15 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         }, 1500);
       });
     }
+    // deselect all export checkbox -workaround
+    this._ngZone.runOutsideAngular(() => {
+      setTimeout(() => {
+        this.fillBolleanArray(this.skosSelected, false);
+        this.fillBolleanArray(this.pdfSelected, false);
+        this.fillBolleanArray(this.htmlSelected, false);
+        this.fillBolleanArray(this.docxSelected, false);
+      }, 1000);
+    });
   }
 
   private subscribeSelectConceptEvent(): void {
