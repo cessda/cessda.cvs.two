@@ -66,6 +66,7 @@ export class AccountService {
       case 'EDIT_CV':
       case 'EDIT_DDI_CV':
       case 'EDIT_NOTE_CV':
+      case 'EDIT_VERSION_INFO_CV':
       case 'DELETE_CV':
       case 'ADD_USAGE_CV':
       case 'ADD_TL_CV':

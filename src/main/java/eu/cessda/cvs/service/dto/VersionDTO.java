@@ -179,14 +179,13 @@ public class VersionDTO implements Serializable {
             this.translateAgencyLink = prevVersion.getTranslateAgencyLink();
             this.uriSl = currentSlVersion.getUri();
         }
-
     }
 
     private Set<ConceptDTO> concepts = new LinkedHashSet<>();
 
     private Set<CommentDTO> comments = new LinkedHashSet<>();
 
-    private List<Map<String, String>> versionHistories = new ArrayList<>();
+    private transient List<Map<String, Object>> versionHistories = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -512,15 +511,15 @@ public class VersionDTO implements Serializable {
         return this;
     }
 
-    public List<Map<String, String>> getVersionHistories() {
+    public List<Map<String, Object>> getVersionHistories() {
         return versionHistories;
     }
 
-    public void setVersionHistories(List<Map<String, String>> versionHistories) {
+    public void setVersionHistories(List<Map<String, Object>> versionHistories) {
         this.versionHistories = versionHistories;
     }
 
-    public VersionDTO addVersionHistory( Map<String, String> vHistory ) {
+    public VersionDTO addVersionHistory( Map<String, Object> vHistory ) {
         if( this.versionHistories == null )
             this.versionHistories = new ArrayList<>();
 

@@ -14,6 +14,7 @@ public enum ActionType {
     CREATE_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL))),
     EDIT_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.ADMIN_TL))),
     EDIT_DDI_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.ADMIN_TL))),
+    EDIT_VERSION_INFO_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.ADMIN_TL))),
     EDIT_NOTE_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.ADMIN_TL))),
     DELETE_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.ADMIN_TL))),
     ADD_USAGE_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.CONTRIBUTOR_SL, AgencyRole.ADMIN_TL, AgencyRole.CONTRIBUTOR_TL))),

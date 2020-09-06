@@ -79,6 +79,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   protected ngbModalRef?: NgbModalRef | null;
 
+  isCurrentVersionInfoEdit = false;
   isDdiUsageEdit = false;
   isNotesEdit = false;
 
@@ -105,7 +106,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     htmlItems: [],
     docxItems: [],
     ddiUsage: [],
-    notes: []
+    notes: [],
+    versionNotes: [],
+    versionChanges: [],
+    versionHistories: []
   });
 
   constructor(
@@ -160,7 +164,13 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.vocabulary!.selectedLang = language;
     this.vocabulary!.selectedVersion = versionNumber;
     this.version = VocabularyUtil.getVersionByLangAndNumber(this.vocabulary!, versionNumber);
-    this.detailForm.patchValue({ ddiUsage: this.version.ddiUsage, notes: this.version.notes });
+    this.detailForm.patchValue({
+      ddiUsage: this.version.ddiUsage,
+      notes: this.version.notes,
+      versionNotes: this.version.versionNotes,
+      versionChanges: this.version.versionChanges,
+      versionHistories: this.version.versionHistories
+    });
 
     this.noOfComments = this.version.comments!.length;
 
@@ -641,6 +651,21 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
 
+  saveCurrentVersionInfo(): void {
+    const vocabSnippet = {
+      ...new VocabularySnippet(),
+      actionType: 'EDIT_VERSION_INFO_CV',
+      agencyId: this.vocabulary!.agencyId,
+      vocabularyId: this.vocabulary!.id,
+      versionId: this.version!.id,
+      language: this.version!.language,
+      itemType: this.version!.itemType,
+      versionNotes: this.detailForm.get(['versionNotes'])!.value,
+      versionChanges: this.detailForm.get(['versionChanges'])!.value
+    };
+    this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
+  }
+
   subscribeToSaveResponse(result: Observable<HttpResponse<IVocabulary>>, vocabSnippet: IVocabularySnippet): void {
     result.subscribe(() => {
       if (vocabSnippet.actionType === 'EDIT_DDI_CV') {
@@ -649,6 +674,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       } else if (vocabSnippet.actionType === 'EDIT_NOTE_CV') {
         this.isNotesEdit = !this.isNotesEdit;
         this.version!.notes = vocabSnippet.notes;
+      } else if (vocabSnippet.actionType === 'EDIT_VERSION_INFO_CV') {
+        this.isCurrentVersionInfoEdit = !this.isCurrentVersionInfoEdit;
+        this.version!.versionNotes = vocabSnippet.versionNotes;
+        this.version!.versionChanges = vocabSnippet.versionChanges;
       }
     });
   }
@@ -661,6 +690,11 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   closeNotes(): void {
     this.isNotesEdit = false;
     this.detailForm.patchValue({ notes: this.version!.notes });
+  }
+
+  closeCurrentVersionInfo(): void {
+    this.isCurrentVersionInfoEdit = false;
+    this.detailForm.patchValue({ versionNotes: this.version!.versionNotes, versionChanges: this.version!.versionChanges });
   }
 
   exportAsCsv(): void {

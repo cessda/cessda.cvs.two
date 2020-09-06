@@ -180,6 +180,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         } else if(
             vocabularySnippet.getActionType().equals( ActionType.EDIT_CV ) ||
             vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV) ||
+            vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV) ||
             vocabularySnippet.getActionType().equals( ActionType.EDIT_NOTE_CV)
         ){
             // get Vocabulary from database
@@ -219,23 +220,35 @@ public class VocabularyServiceImpl implements VocabularyService {
                         versionDTO.getVocabularyId() );
                     vocabularyChangeService.save(vocabularyChangeDTO );
                 }
-
-                return save( vocabularyDTO );
             } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV )) {
                 // check if user authorized to edit ddi-usage VocabularyResource
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_DDI_CV,
                     vocabularySnippet.getAgencyId(), ActionType.EDIT_DDI_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
 
                 versionDTO.setDdiUsage( vocabularySnippet.getDdiUsage() );
-                return save( vocabularyDTO );
             } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_NOTE_CV )) {
                 // check if user authorized to edit ddi-usage VocabularyResource
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_NOTE_CV,
                     vocabularySnippet.getAgencyId(), ActionType.EDIT_NOTE_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
 
                 versionDTO.setNotes( vocabularySnippet.getNotes() );
-                return save( vocabularyDTO );
+            } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV )) {
+                // check if user authorized to edit ddi-usage VocabularyResource
+                SecurityUtils.checkResourceAuthorization(ActionType.EDIT_VERSION_INFO_CV,
+                    vocabularySnippet.getAgencyId(), ActionType.EDIT_VERSION_INFO_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
+
+                versionDTO.setVersionNotes( vocabularySnippet.getVersionNotes() );
+                versionDTO.setVersionChanges( vocabularySnippet.getVersionChanges() );
             }
+
+            vocabularyDTO = save( vocabularyDTO );
+
+            // regenerate json file is version already published
+            if( versionDTO.getStatus().equals(Status.PUBLISHED.toString())){
+                generateJsonVocabularyPublish( vocabularyDTO );
+            }
+
+            return vocabularyDTO;
         }
         return null;// change with exception "Action not found"
     }
@@ -1301,9 +1314,10 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( version.isInitialVersion())
             return;
         List<VersionDTO> olderVersions = versionService.findOlderPublishedByVocabularyLanguageId(vocabulary.getId(), version.getLanguage(), version.getId());
-        List<Map<String,String>> olderVersionHistories = new ArrayList<>();
+        List<Map<String,Object>> olderVersionHistories = new ArrayList<>();
         for (VersionDTO olderVersion : olderVersions) {
-            Map<String, String> versionHistoryMap = new LinkedHashMap<>();
+            Map<String, Object> versionHistoryMap = new LinkedHashMap<>();
+            versionHistoryMap.put("id" , olderVersion.getId() );
             versionHistoryMap.put("version" , olderVersion.getNumber() );
             versionHistoryMap.put("date" , olderVersion.getPublicationDate().toString() );
             versionHistoryMap.put("note" , olderVersion.getVersionNotes());

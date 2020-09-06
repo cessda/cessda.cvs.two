@@ -446,33 +446,70 @@
                         <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'version', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'version'}" #versionPanel id="versionPanel">
                             <!-- self version -->
                             <div class="item-panel">
-                                <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen"
-                                   [attr.aria-expanded]="isCurrentVersionHistoryOpen" aria-controls="self-history">&nbsp;
-                                    <fa-icon *ngIf="isCurrentVersionHistoryOpen" icon="caret-down"></fa-icon>
-                                    <fa-icon *ngIf="!isCurrentVersionHistoryOpen" icon="caret-right"></fa-icon>
-                                    <span>{{version!.language}}: {{version!.number}}</span>
-                                    <span>&nbsp;&nbsp;&nbsp; Published: {{version!.publicationDate}}</span>
+                                <a class="option-label col-12 v-label" href="javascript:void(0);"
+                                   [attr.aria-expanded]="isCurrentVersionHistoryOpen" aria-controls="self-history"
+                                   (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen">
+                                        <fa-icon *ngIf="isCurrentVersionHistoryOpen" icon="caret-down"></fa-icon>
+                                        <fa-icon *ngIf="!isCurrentVersionHistoryOpen" icon="caret-right"></fa-icon>
+                                        <span>{{version!.language}}: {{version!.number}}</span>
+                                        <span>&nbsp;&nbsp;&nbsp; Published: {{version!.publicationDate}}</span>
                                 </a>
+                                <span *ngIf="isCurrentVersionHistoryOpen" class="float-right">
+                                    <span *jhiHasAnyAgencyAuthority="{actionType:'EDIT_VERSION_INFO_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:version!.language}">
+                                        <a *ngIf="!isCurrentVersionInfoEdit" ngbTooltip="edit current version info" href="javascript:void(0);" (click)="isCurrentVersionInfoEdit = !isCurrentVersionInfoEdit">
+                                            <fa-icon icon="edit"></fa-icon>
+                                        </a>
+                                    </span>
+                                </span>
                                 <div id="self-history" [ngbCollapse]="!isCurrentVersionHistoryOpen">
-                                    <div class="row-detail small-block-info" *ngIf="version!.versionNotes">
-                                        <div class="label-column">
-                                            <span>Version notes</span>
+                                    <div *ngIf="!isCurrentVersionInfoEdit">
+                                        <div class="row-detail small-block-info" *ngIf="version!.versionNotes">
+                                            <div class="label-column">
+                                                <span>Version notes</span>
+                                            </div>
+                                            <div class="detail-column">
+                                                <span [innerHTML]="version!.versionNotes"></span>
+                                            </div>
                                         </div>
-                                        <div class="detail-column">
-                                            <span [innerHTML]="version!.versionNotes"></span>
+                                        <div class="row-detail small-block-info" *ngIf="version!.versionChanges">
+                                            <div class="label-column">
+                                                <span>Version changes</span>
+                                            </div>
+                                            <div class="detail-column">
+                                                <span class="ta-mode" [innerHTML]="version!.versionChanges"></span>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="row-detail small-block-info" *ngIf="version!.versionChanges">
-                                        <div class="label-column">
-                                            <span>Version changes</span>
+                                    <div class="row-detail" *ngIf="!version!.versionNotes && !version!.versionChanges && !isCurrentVersionInfoEdit">
+                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
+                                    </div>
+                                    <div *ngIf="isCurrentVersionInfoEdit">
+                                        <div class="row-detail small-block-info">
+                                            <div class="label-column">
+                                                <span>Version notes</span>
+                                            </div>
+                                            <div class="detail-column">
+                                                <quill-editor class="medium-quill" [modules]="quillModules" name="ddiUsage" formControlName="versionNotes"></quill-editor>
+                                            </div>
                                         </div>
-                                        <div class="detail-column">
-                                            <span class="ta-mode" [innerHTML]="version!.versionChanges"></span>
+                                        <br/><br/>
+                                        <div class="row-detail small-block-info">
+                                            <div class="label-column">
+                                                <span>Version changes</span>
+                                            </div>
+                                            <div class="detail-column">
+                                                <quill-editor class="medium-quill" [modules]="quillModules" name="ddiUsage" formControlName="versionChanges"></quill-editor>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeCurrentVersionInfo()">
+                                                <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+                                            </button>
+                                            <button type="button" id="save-current-version-info" (click)="saveCurrentVersionInfo()" class="btn btn-primary">
+                                                <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                                            </button>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row-detail" *ngIf="!version!.versionNotes && !version!.versionChanges">
-                                    <span>no additional information</span>
                                 </div>
                             </div>
                             <!-- other older versions -->
@@ -505,7 +542,7 @@
                                         </div>
                                     </div>
                                     <div class="row-detail" *ngIf="!vh.changes && !vh.note">
-                                        <span>no additional information</span>
+                                        <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
                                     </div>
                                 </div>
                             </div>
