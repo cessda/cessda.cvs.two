@@ -219,6 +219,12 @@
 				<dd>
 					<a th:href="${agency.link}" th:text="${agency.name}"></a>
 				</dd>
+                <dt th:if="${version.translateAgency != null}">Translator Agency: </dt>
+                <dd th:if="${version.translateAgency != null and version.translateAgencyLink != null}">
+                    <a th:href="${version.translateAgencyLink}" th:text="${version.translateAgency}"></a>
+                </dd>
+                <dd th:if="${version.translateAgency != null and version.translateAgencyLink == null}" th:text="${version.translateAgency}">
+                </dd>
 			</dl>
 		</div>
 		<hr />
