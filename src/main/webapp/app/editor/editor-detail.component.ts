@@ -164,6 +164,9 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.vocabulary!.selectedLang = language;
     this.vocabulary!.selectedVersion = versionNumber;
     this.version = VocabularyUtil.getVersionByLangAndNumber(this.vocabulary!, versionNumber);
+    this.closeNotes();
+    this.closeCurrentVersionInfo();
+    this.closeDdiUsage();
     this.detailForm.patchValue({
       ddiUsage: this.version.ddiUsage,
       notes: this.version.notes,
