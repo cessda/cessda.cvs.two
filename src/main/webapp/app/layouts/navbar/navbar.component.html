@@ -22,7 +22,10 @@
                         <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">
                           <span *ngIf="!getImageUrl()">
                             <fa-icon icon="user"></fa-icon>
-                            <span jhiTranslate="global.menu.account.main">
+                            <span *ngSwitchCase="true">
+                              {{getUserName()}}
+                            </span>
+                            <span *ngSwitchCase="false" jhiTranslate="global.menu.account.main">
                               Account
                             </span>
                           </span>

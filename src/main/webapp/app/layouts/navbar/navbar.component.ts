@@ -142,6 +142,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     return this.isAuthenticated() ? this.accountService.getImageUrl() : '';
   }
 
+  getUserName(): string {
+    return this.isAuthenticated() ? this.accountService.geUserName() : '';
+  }
+
   isLinkActive(link: string): boolean {
     const url = this.router.url.substring(1, this.router.url.length);
     if (link === '/') {

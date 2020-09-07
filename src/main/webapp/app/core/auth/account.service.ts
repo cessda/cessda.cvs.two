@@ -164,6 +164,14 @@ export class AccountService {
     return this.userIdentity ? this.userIdentity.imageUrl : '';
   }
 
+  geUserName(): string {
+    let userName = '';
+    if (this.userIdentity) {
+      userName = this.userIdentity.firstName ? this.userIdentity.firstName : this.userIdentity.lastName;
+    }
+    return userName;
+  }
+
   private fetch(): Observable<Account> {
     return this.http.get<Account>(SERVER_API_URL + 'api/account');
   }
