@@ -41,6 +41,12 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class EditorResource {
 
+    public static final String UNABLE_TO_FIND_VERSION = "Unable to find version with Id ";
+    public static final String TO_BE_DELETED = " to be deleted";
+    public static final String UNABLE_TO_FIND_VOCABULARY = "Unable to find vocabulary with Id ";
+    public static final String INVALID_ID = "Invalid id";
+    public static final String ID_EXIST = "idexists";
+    public static final String ID_NULL = "idnull";
     private final Logger log = LoggerFactory.getLogger(EditorResource.class);
 
     public static final String ATTACHMENT_FILENAME = "attachment; filename=";
@@ -108,7 +114,7 @@ public class EditorResource {
                 ActionType.CREATE_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
 
             if (vocabularySnippet.getVocabularyId() != null) {
-                throw new BadRequestAlertException("A new vocabulary cannot already have an ID", ENTITY_VOCABULARY_NAME, "idexists");
+                throw new BadRequestAlertException("A new vocabulary cannot already have an ID", ENTITY_VOCABULARY_NAME, ID_EXIST);
             }
         }
         else if( vocabularySnippet.getActionType().equals( ActionType.ADD_TL_CV )) {
@@ -155,7 +161,7 @@ public class EditorResource {
     public ResponseEntity<VocabularyDTO> updateVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException {
         log.debug("REST request to update Vocabulary : {}", vocabularySnippet);
         if (vocabularySnippet.getVocabularyId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_VOCABULARY_NAME, "idnull");
+            throw new BadRequestAlertException(INVALID_ID, ENTITY_VOCABULARY_NAME, ID_NULL);
         }
         VocabularyDTO result = vocabularyService.saveVocabulary( vocabularySnippet );
         return ResponseEntity.ok()
@@ -178,13 +184,13 @@ public class EditorResource {
     public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException, IOException {
         log.debug("REST request to update Vocabulary : {}", vocabularySnippet);
         if (vocabularySnippet.getVersionId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_VOCABULARY_NAME, "idnull");
+            throw new BadRequestAlertException(INVALID_ID, ENTITY_VOCABULARY_NAME, ID_NULL);
         }
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
-            .orElseThrow( () -> new EntityNotFoundException("Unable to find vocabulary with Id " + vocabularySnippet.getVocabularyId() ));
+            .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId() ));
         // pick version from vocabularyDTO
         VersionDTO versionDTO = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals( vocabularySnippet.getVersionId())).findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + vocabularySnippet.getVersionId()  ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + vocabularySnippet.getVersionId()  ));
 
         LicenceDTO licenceDTO = null;
         AgencyDTO agencyDTO = null;
@@ -297,12 +303,12 @@ public class EditorResource {
     public ResponseEntity<List<String>> getVocabularyComparePrev(@PathVariable Long id) {
         log.debug("REST request to get Vocabulary comparison text: {}", id);
         VersionDTO versionDTO = versionService.findOne(id)
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + id));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + id));
         if( versionDTO.getPreviousVersion() == null ) {
             throw new IllegalArgumentException( "Unable to create previous comparison text, previous version is missing!" );
         }
         VersionDTO prevVersionDTO = versionService.findOne(versionDTO.getPreviousVersion())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + versionDTO.getPreviousVersion()));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + versionDTO.getPreviousVersion()));
 
         // create comparison based on current version
         StringBuilder currentVersionCvSb = new StringBuilder();
@@ -363,13 +369,13 @@ public class EditorResource {
         log.debug("REST request to delete Version : {}", id);
         // first check version and determine delete strategy
         VersionDTO versionDTO = versionService.findOne(id)
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + id + " to be deleted" ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + id + TO_BE_DELETED));
         Long vocabId = versionDTO.getVocabularyId();
         VocabularyDTO vocabularyDTO = vocabularyService.findOne( vocabId )
-            .orElseThrow( () -> new EntityNotFoundException("Unable to find vocabulary with Id " + vocabId ));
+            .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabId ));
         // replace the equal Version object with the one from VocabularyDto
         versionDTO = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals( id )).findFirst()
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + id  ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + id  ));
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CV,
@@ -390,7 +396,7 @@ public class EditorResource {
                 vocabularyDTO.clearContent();
 
                 VersionDTO prevSlVersionDto = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals(finalVersionDTO.getPreviousVersion())).findFirst()
-                    .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + finalVersionDTO.getId()  ));
+                    .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + finalVersionDTO.getId()  ));
 
                 vocabularyDTO.setVersionNumber( prevSlVersionDto.getNumber());
                 Set<VersionDTO> prevVersions = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().startsWith(prevSlVersionDto.getNumber())).collect(Collectors.toSet());
@@ -455,7 +461,7 @@ public class EditorResource {
         log.debug("REST request to save Code/Concept : {}", codeSnippet);
 
         if (codeSnippet.getConceptId() != null) {
-            throw new BadRequestAlertException("A new code/concept cannot already have an ID", ENTITY_CODE_NAME, "idexists");
+            throw new BadRequestAlertException("A new code/concept cannot already have an ID", ENTITY_CODE_NAME, ID_EXIST);
         }
 
         ConceptDTO result = vocabularyService.saveCode( codeSnippet );
@@ -482,7 +488,7 @@ public class EditorResource {
 
         // get version
         VersionDTO versionDTO = versionService.findOne(codeSnippets[0].getVersionId())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + codeSnippets[0].getVersionId()));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippets[0].getVersionId()));
 
         // reject if version status is published
         if( versionDTO.getStatus().equals( Status.PUBLISHED.toString() )) {
@@ -561,7 +567,7 @@ public class EditorResource {
             codeSnippet.getActionType().equals( ActionType.DELETE_TL_CODE )))
             throw new IllegalArgumentException( "Action type " + codeSnippet.getActionType() + "not supported" );
         if (codeSnippet.getConceptId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_CODE_NAME, "idnull");
+            throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
         }
         ConceptDTO result = vocabularyService.saveCode( codeSnippet );
         return ResponseEntity.ok()
@@ -581,11 +587,11 @@ public class EditorResource {
         log.debug("REST request to delete Code/Concept : {}", id);
         // first check version and determine delete strategy
         ConceptDTO conceptDTO = conceptService.findOne(id)
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + id + " to be deleted" ));
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + id + TO_BE_DELETED));
         VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + conceptDTO.getVersionId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + conceptDTO.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
-            .orElseThrow( () -> new EntityNotFoundException("Unable to find vocabulary with Id " + versionDTO.getVocabularyId() ));
+            .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CODE,
@@ -639,9 +645,9 @@ public class EditorResource {
         }
 
         VersionDTO versionDTO = versionService.findOne(codeSnippet.getVersionId())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + codeSnippet.getVersionId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippet.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
-            .orElseThrow( () -> new EntityNotFoundException("Unable to find vocabulary with Id " + versionDTO.getVocabularyId() ));
+            .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
 
         // check if user authorized to reorder VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.REORDER_CODE,
@@ -685,7 +691,7 @@ public class EditorResource {
         log.debug("REST request to save Comment : {}", commentDTO);
 
         if (commentDTO.getId() != null) {
-            throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_CODE_NAME, "idexists");
+            throw new BadRequestAlertException("A new comment cannot already have an ID", ENTITY_CODE_NAME, ID_EXIST);
         }
 
         if (commentDTO.getVersionId() == null) {
@@ -694,7 +700,7 @@ public class EditorResource {
 
         @Valid CommentDTO finalCommentDTO = commentDTO;
         VersionDTO versionDTO = versionService.findOne(commentDTO.getVersionId())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + finalCommentDTO.getVersionId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + finalCommentDTO.getVersionId() ));
         if( commentDTO.getUserId() == null )
             commentDTO.setUserId( SecurityUtils.getCurrentUserId() );
         ZonedDateTime dateTime = ZonedDateTime.now();
@@ -728,12 +734,12 @@ public class EditorResource {
     public ResponseEntity<CommentDTO> updateComment(@Valid @RequestBody CommentDTO commentDTO) {
         log.debug("REST request to update Comment : {}", commentDTO);
         if (commentDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_CODE_NAME, "idnull");
+            throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
         }
 
         // find version
         VersionDTO versionDTO = versionService.findOne(commentDTO.getVersionId())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + commentDTO.getVersionId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + commentDTO.getVersionId() ));
         // find comment from version
         CommentDTO commentFromVersion = versionDTO.getComments().stream().filter(c -> c.getId().equals( commentDTO.getId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Unable to find comment with Id " + commentDTO.getId() ));
@@ -759,9 +765,9 @@ public class EditorResource {
         log.debug("REST request to delete Comment : {}", id);
         // first check version and determine delete strategy
         CommentDTO commentDTO = commentService.findOne(id)
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find comment with Id " + id + " to be deleted" ));
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find comment with Id " + id + TO_BE_DELETED));
         VersionDTO versionDTO = versionService.findOne(commentDTO.getVersionId())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find version with Id " + commentDTO.getId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + commentDTO.getId() ));
         commentDTO.setVersionId( null );
         versionDTO.removeComment(commentDTO);
         // automatically remove comment
@@ -784,7 +790,7 @@ public class EditorResource {
         log.debug("REST request to save MetadataValue : {}", metadataValueDTO);
 
         if (metadataValueDTO.getId() != null) {
-            throw new BadRequestAlertException("A new metadataValueDTO cannot already have an ID", ENTITY_CODE_NAME, "idexists");
+            throw new BadRequestAlertException("A new metadataValueDTO cannot already have an ID", ENTITY_CODE_NAME, ID_EXIST);
         }
 
         if (metadataValueDTO.getMetadataKey() == null) {
@@ -837,7 +843,7 @@ public class EditorResource {
     public ResponseEntity<MetadataValueDTO> updateAppMetadata(@Valid @RequestBody MetadataValueDTO metadataValueDTO) {
         log.debug("REST request to update MetadataValue : {}", metadataValueDTO);
         if (metadataValueDTO.getId() == null) {
-            throw new BadRequestAlertException("Invalid id", ENTITY_CODE_NAME, "idnull");
+            throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
         }
 
         if (metadataValueDTO.getMetadataFieldId() == null) {
@@ -869,7 +875,7 @@ public class EditorResource {
         log.debug("REST request to delete Metadata : {}", id);
         // first check version and determine delete strategy
         MetadataValueDTO metadataValueDTO = metadataValueService.findOne(id)
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + id + " to be deleted" ));
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + id + TO_BE_DELETED));
         MetadataFieldDTO metadataFieldDTO = metadataFieldService.findOne(metadataValueDTO.getMetadataFieldId())
             .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataField with Id " + metadataValueDTO.getMetadataFieldId() ));
 

@@ -214,12 +214,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                 versionDTO.setContentByVocabularySnippet( vocabularySnippet );
 
                 // check if codeSnippet contains changetype
-                if ( vocabularySnippet.getChangeType() != null ) {
-                    vocabularySnippet.setVersionId( versionDTO.getId());
-                    VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO( vocabularySnippet, SecurityUtils.getCurrentUser(),
-                        versionDTO.getVocabularyId() );
-                    vocabularyChangeService.save(vocabularyChangeDTO );
-                }
+                storeChangeType(vocabularySnippet, versionDTO);
             } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV )) {
                 // check if user authorized to edit ddi-usage VocabularyResource
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_DDI_CV,
@@ -479,6 +474,15 @@ public class VocabularyServiceImpl implements VocabularyService {
         // index editor
         indexEditor(vocabularyDTO);
         return conceptDTO;
+    }
+
+    private void storeChangeType(VocabularySnippet vocabularySnippet, VersionDTO versionDTO) {
+        if ( vocabularySnippet.getChangeType() != null ) {
+            vocabularySnippet.setVersionId( versionDTO.getId());
+            VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO(vocabularySnippet, SecurityUtils.getCurrentUser(),
+                versionDTO.getVocabularyId() );
+            vocabularyChangeService.save(vocabularyChangeDTO );
+        }
     }
 
     private void storeChangeType(CodeSnippet codeSnippet, VersionDTO versionDTO) {
