@@ -1,10 +1,10 @@
 package eu.cessda.cvs.service;
 
-import eu.cessda.cvs.config.Constants;
-
 import eu.cessda.cvs.CvsApp;
+import eu.cessda.cvs.config.Constants;
 import eu.cessda.cvs.domain.User;
 import io.github.jhipster.config.JHipsterProperties;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -18,22 +18,21 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
+import javax.mail.MessagingException;
 import javax.mail.Multipart;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URI;
-import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -94,33 +93,33 @@ public class MailServiceIT {
     }
 
     @Test
-    public void testSendEmail() throws Exception {
+    public void testSendEmail() throws MessagingException, IOException {
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("testSubject");
-        assertThat(message.getAllRecipients()[0].toString()).isEqualTo("john.doe@example.com");
-        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
+        assertThat(message.getAllRecipients()[0]).hasToString("john.doe@example.com");
+        assertThat(message.getFrom()[0]).hasToString(jHipsterProperties.getMail().getFrom());
         assertThat(message.getContent()).isInstanceOf(String.class);
-        assertThat(message.getContent().toString()).isEqualTo("testContent");
+        assertThat(message.getContent()).hasToString("testContent");
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/plain; charset=UTF-8");
     }
 
     @Test
-    public void testSendHtmlEmail() throws Exception {
+    public void testSendHtmlEmail() throws MessagingException, IOException {
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, true);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("testSubject");
-        assertThat(message.getAllRecipients()[0].toString()).isEqualTo("john.doe@example.com");
-        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
+        assertThat(message.getAllRecipients()[0]).hasToString("john.doe@example.com");
+        assertThat(message.getFrom()[0]).hasToString(jHipsterProperties.getMail().getFrom());
         assertThat(message.getContent()).isInstanceOf(String.class);
-        assertThat(message.getContent().toString()).isEqualTo("testContent");
+        assertThat(message.getContent()).hasToString("testContent");
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
     @Test
-    public void testSendMultipartEmail() throws Exception {
+    public void testSendMultipartEmail() throws IOException, MessagingException {
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, false);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
@@ -129,15 +128,15 @@ public class MailServiceIT {
         ByteArrayOutputStream aos = new ByteArrayOutputStream();
         part.writeTo(aos);
         assertThat(message.getSubject()).isEqualTo("testSubject");
-        assertThat(message.getAllRecipients()[0].toString()).isEqualTo("john.doe@example.com");
-        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
+        assertThat(message.getAllRecipients()[0]).hasToString("john.doe@example.com");
+        assertThat(message.getFrom()[0]).hasToString(jHipsterProperties.getMail().getFrom());
         assertThat(message.getContent()).isInstanceOf(Multipart.class);
-        assertThat(aos.toString()).isEqualTo("\r\ntestContent");
+        assertThat(aos).hasToString("\r\ntestContent");
         assertThat(part.getDataHandler().getContentType()).isEqualTo("text/plain; charset=UTF-8");
     }
 
     @Test
-    public void testSendMultipartHtmlEmail() throws Exception {
+    public void testSendMultipartHtmlEmail() throws IOException, MessagingException {
         mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", true, true);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
@@ -146,15 +145,15 @@ public class MailServiceIT {
         ByteArrayOutputStream aos = new ByteArrayOutputStream();
         part.writeTo(aos);
         assertThat(message.getSubject()).isEqualTo("testSubject");
-        assertThat(message.getAllRecipients()[0].toString()).isEqualTo("john.doe@example.com");
-        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
+        assertThat(message.getAllRecipients()[0]).hasToString("john.doe@example.com");
+        assertThat(message.getFrom()[0]).hasToString(jHipsterProperties.getMail().getFrom());
         assertThat(message.getContent()).isInstanceOf(Multipart.class);
-        assertThat(aos.toString()).isEqualTo("\r\ntestContent");
+        assertThat(aos).hasToString("\r\ntestContent");
         assertThat(part.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
     @Test
-    public void testSendEmailFromTemplate() throws Exception {
+    public void testSendEmailFromTemplate() throws MessagingException {
         User user = new User();
         user.setLogin("john");
         user.setEmail("john.doe@example.com");
@@ -163,13 +162,13 @@ public class MailServiceIT {
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
         assertThat(message.getSubject()).isEqualTo("test title");
-        assertThat(message.getAllRecipients()[0].toString()).isEqualTo(user.getEmail());
-        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
+        assertThat(message.getAllRecipients()[0]).hasToString(user.getEmail());
+        assertThat(message.getFrom()[0]).hasToString(jHipsterProperties.getMail().getFrom());
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
     @Test
-    public void testSendActivationEmail() throws Exception {
+    public void testSendActivationEmail() throws MessagingException, IOException {
         User user = new User();
         user.setLangKey(Constants.DEFAULT_LANGUAGE);
         user.setLogin("john");
@@ -177,14 +176,14 @@ public class MailServiceIT {
         mailService.sendActivationEmail(user);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
-        assertThat(message.getAllRecipients()[0].toString()).isEqualTo(user.getEmail());
-        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
+        assertThat(message.getAllRecipients()[0].toString()).hasToString(user.getEmail());
+        assertThat(message.getFrom()[0].toString()).hasToString(jHipsterProperties.getMail().getFrom());
         assertThat(message.getContent().toString()).isNotEmpty();
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
     @Test
-    public void testCreationEmail() throws Exception {
+    public void testCreationEmail() throws MessagingException, IOException {
         User user = new User();
         user.setLangKey(Constants.DEFAULT_LANGUAGE);
         user.setLogin("john");
@@ -192,14 +191,14 @@ public class MailServiceIT {
         mailService.sendCreationEmail(user);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
-        assertThat(message.getAllRecipients()[0].toString()).isEqualTo(user.getEmail());
-        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
+        assertThat(message.getAllRecipients()[0]).hasToString(user.getEmail());
+        assertThat(message.getFrom()[0]).hasToString(jHipsterProperties.getMail().getFrom());
         assertThat(message.getContent().toString()).isNotEmpty();
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
 
     @Test
-    public void testSendPasswordResetMail() throws Exception {
+    public void testSendPasswordResetMail() throws MessagingException, IOException {
         User user = new User();
         user.setLangKey(Constants.DEFAULT_LANGUAGE);
         user.setLogin("john");
@@ -207,8 +206,8 @@ public class MailServiceIT {
         mailService.sendPasswordResetMail(user);
         verify(javaMailSender).send(messageCaptor.capture());
         MimeMessage message = messageCaptor.getValue();
-        assertThat(message.getAllRecipients()[0].toString()).isEqualTo(user.getEmail());
-        assertThat(message.getFrom()[0].toString()).isEqualTo(jHipsterProperties.getMail().getFrom());
+        assertThat(message.getAllRecipients()[0]).hasToString(user.getEmail());
+        assertThat(message.getFrom()[0]).hasToString(jHipsterProperties.getMail().getFrom());
         assertThat(message.getContent().toString()).isNotEmpty();
         assertThat(message.getDataHandler().getContentType()).isEqualTo("text/html;charset=UTF-8");
     }
@@ -218,13 +217,13 @@ public class MailServiceIT {
         doThrow(MailSendException.class).when(javaMailSender).send(any(MimeMessage.class));
         try {
             mailService.sendEmail("john.doe@example.com", "testSubject", "testContent", false, false);
-        } catch (Exception e) {
-            fail("Exception shouldn't have been thrown");
+        } catch (RuntimeException e) {
+            Assertions.fail("Exception shouldn't have been thrown", e);
         }
     }
 
     @Test
-    public void testSendLocalizedEmailForAllSupportedLanguages() throws Exception {
+    public void testSendLocalizedEmailForAllSupportedLanguages() throws IOException, MessagingException {
         User user = new User();
         user.setLogin("john");
         user.setEmail("john.doe@example.com");
@@ -235,13 +234,14 @@ public class MailServiceIT {
             MimeMessage message = messageCaptor.getValue();
 
             String propertyFilePath = "i18n/messages_" + getJavaLocale(langKey) + ".properties";
-            URL resource = this.getClass().getClassLoader().getResource(propertyFilePath);
-            File file = new File(new URI(resource.getFile()).getPath());
-            Properties properties = new Properties();
-            properties.load(new InputStreamReader(new FileInputStream(file), Charset.forName("UTF-8")));
+            try (InputStream resource = this.getClass().getClassLoader().getResourceAsStream(propertyFilePath)) {
+                Properties properties = new Properties();
+                assert resource != null;
+                properties.load(new InputStreamReader(resource, StandardCharsets.UTF_8));
 
-            String emailTitle = (String) properties.get("email.test.title");
-            assertThat(message.getSubject()).isEqualTo(emailTitle);
+                String emailTitle = (String) properties.get("email.test.title");
+                assertThat(message.getSubject()).isEqualTo(emailTitle);
+            }
         }
     }
 
