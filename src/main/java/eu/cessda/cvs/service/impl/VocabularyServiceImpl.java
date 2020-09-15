@@ -47,6 +47,8 @@ import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBui
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -1405,9 +1407,15 @@ public class VocabularyServiceImpl implements VocabularyService {
         vocabularyDTO.setVersions( includedVersions );
 
         Map<String, Object> map = new HashMap<>();
+        // escaping HTML to strict XHTML
+        for (VersionDTO includedVersion : includedVersions) {
+            includedVersion.setVersionNotes( toStrictXhtml(includedVersion.getVersionNotes()));
+            includedVersion.setVersionChanges( toStrictXhtml(includedVersion.getVersionChanges()));
+            includedVersion.setDdiUsage( toStrictXhtml(includedVersion.getDdiUsage()));
+        }
 
         // sorted versions
-        map.put("versions", vocabularyDTO.getVersions());
+        map.put("versions", includedVersions);
 
         // agency object
         AgencyDTO agencyDTO = new AgencyDTO();
@@ -1416,7 +1424,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         if( downloadType.equals( ExportService.DownloadType.SKOS ))
         {
-            VersionDTO version = vocabularyDTO.getVersions().iterator().next();
+            VersionDTO version = includedVersions.iterator().next();
             String uriSl = version.getUri();
             if( uriSl == null )
                 uriSl = version.getUriSl();
@@ -1431,9 +1439,10 @@ public class VocabularyServiceImpl implements VocabularyService {
             map.put("docVersion", versionNumberSl );
             map.put("docLicense", version.getLicenseName() );
             map.put("docRight", version.getLicenseName() );
-            map.put(CODE_PATH, CodeDTO.generateCodesFromVersion(vocabularyDTO.getVersions(), false));
+            map.put(CODE_PATH, CodeDTO.generateCodesFromVersion(includedVersions, false));
         }
         else {
+            vocabularyDTO.setVersions(includedVersions);
             prepareAdditionalAttributesForNonSkos(vocabularyDTO, map, agencyDTO);
         }
 
@@ -1447,6 +1456,14 @@ public class VocabularyServiceImpl implements VocabularyService {
             log.error(e.getMessage());
         }
         return null;
+    }
+
+    private String toStrictXhtml(String text) {
+        if( text == null )
+            return null;
+        final Document document = Jsoup.parse(text);
+        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        return document.html();
     }
 
 
