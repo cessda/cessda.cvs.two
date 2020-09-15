@@ -148,7 +148,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
         this.vocabularyChanges = res.body;
         this.cvForwardStatusForm.patchValue({
-          versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('</br>')
+          versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('<br/>')
         });
       });
     }
