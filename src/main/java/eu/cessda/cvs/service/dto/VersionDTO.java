@@ -599,6 +599,9 @@ public class VersionDTO implements Serializable {
         this.title = vocabularySnippet.getTitle();
         this.definition = vocabularySnippet.getDefinition();
         this.notes = vocabularySnippet.getNotes();
+
+        this.translateAgency = vocabularySnippet.getTranslateAgency();
+        this.translateAgencyLink = vocabularySnippet.getTranslateAgencyLink();
     }
 
     public void prepareSlPublishing(VocabularySnippet vocabularySnippet, LicenceDTO licenceDTO, AgencyDTO agencyDTO) {
