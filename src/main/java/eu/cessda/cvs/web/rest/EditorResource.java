@@ -310,6 +310,16 @@ public class EditorResource {
         VersionDTO prevVersionDTO = versionService.findOne(versionDTO.getPreviousVersion())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + versionDTO.getPreviousVersion()));
 
+        List<String> compareCurrentPrev = buildComparisonCurrentAndPreviousCV(versionDTO, prevVersionDTO);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Prev-Cv-Version", prevVersionDTO.getNotation() + " " +prevVersionDTO.getItemType() + " v." + prevVersionDTO.getNumber());
+        headers.add("X-Current-Cv-Version", versionDTO.getNotation() + " " +versionDTO.getItemType() + " v." + versionDTO.getNumber());
+
+        return ResponseEntity.ok().headers(headers).body(compareCurrentPrev);
+    }
+
+    private List<String> buildComparisonCurrentAndPreviousCV(VersionDTO versionDTO, VersionDTO prevVersionDTO) {
         // create comparison based on current version
         StringBuilder currentVersionCvSb = new StringBuilder();
         StringBuilder prevVersionCvSb = new StringBuilder();
@@ -324,6 +334,7 @@ public class EditorResource {
 
         // get concepts and sorted by position
         List<ConceptDTO> currentConcepts = conceptService.findByVersion(versionDTO.getId());
+        Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         currentConcepts.forEach(currentConcept -> {
             currentVersionCvSb.append( "Code: " + currentConcept.getNotation()+ "\n");
             currentVersionCvSb.append( "Code Term: " + currentConcept.getTitle() + "\n");
@@ -341,21 +352,29 @@ public class EditorResource {
                 prevVersionCvSb.append( "Code Term: \n");
                 prevVersionCvSb.append( "Code Def: \n\n");
             } else {
+                existingConceptsInPrevAndCurrent.add( prevConceptDTO );
                 prevVersionCvSb.append( "Code: " + prevConceptDTO.getNotation()+ "\n");
                 prevVersionCvSb.append( "Code Term: " + prevConceptDTO.getTitle() + "\n");
                 prevVersionCvSb.append( "Code Def: " + prevConceptDTO.getDefinition() + "\n\n");
             }
         });
 
+        // put deleted concept at the end
+        prevVersionDTO.getConcepts().removeAll(existingConceptsInPrevAndCurrent);
+
+        for (ConceptDTO prevConcept : prevVersionDTO.getConcepts()) {
+            currentVersionCvSb.append( "Code: \n");
+            currentVersionCvSb.append( "Code Term: \n");
+            currentVersionCvSb.append( "Code Def: \n\n");
+            prevVersionCvSb.append( "Code: " + prevConcept.getNotation()+ "\n");
+            prevVersionCvSb.append( "Code Term: " + prevConcept.getTitle() + "\n");
+            prevVersionCvSb.append( "Code Def: " + prevConcept.getDefinition() + "\n\n");
+        }
+
         List<String> compareCurrentPrev = new ArrayList<>();
         compareCurrentPrev.add( prevVersionCvSb.toString() );
         compareCurrentPrev.add( currentVersionCvSb.toString() );
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Prev-Cv-Version", prevVersionDTO.getNotation() + " " +prevVersionDTO.getItemType() + " v." + prevVersionDTO.getNumber());
-        headers.add("X-Current-Cv-Version", versionDTO.getNotation() + " " +versionDTO.getItemType() + " v." + versionDTO.getNumber());
-
-        return ResponseEntity.ok().headers(headers).body(compareCurrentPrev);
+        return compareCurrentPrev;
     }
 
     /**
