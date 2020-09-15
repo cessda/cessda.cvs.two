@@ -482,6 +482,7 @@ tag-ripple {
     display: flex;
     flex-direction: column;
     flex: 1 1 100%;
+    clear: both;
     .label-column,
     .label-column-input,
     .label-column-value {
@@ -752,6 +753,9 @@ button.invisible-button:focus {
 }
 .item-panel {
   margin-bottom: 15px;
+  display: block;
+  clear: both;
+  min-height: 25px;
 }
 .hide-block {
   display: none;

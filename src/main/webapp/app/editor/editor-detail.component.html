@@ -306,8 +306,8 @@
                             <div *ngIf="!isNotesEdit" [innerHTML]="detailForm.get(['notes'])!.value ? detailForm.get(['notes'])!.value: ''"></div>
 
                             <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_NOTE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}">
-                                <a *ngIf="!isNotesEdit" ngbTooltip="edit notes" href="javascript:void(0);" (click)="isNotesEdit = !isNotesEdit">
-                                    <fa-icon icon="edit"></fa-icon>
+                                <a *ngIf="!isNotesEdit" class="btn btn-sm btn-primary" ngbTooltip="edit notes" href="javascript:void(0);" (click)="isNotesEdit = !isNotesEdit">
+                                    <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                 </a>
                             </div>
 
@@ -446,21 +446,22 @@
                         <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'version', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'version'}" #versionPanel id="versionPanel">
                             <!-- self version -->
                             <div class="item-panel">
-                                <a class="option-label col-12 v-label" href="javascript:void(0);"
+                                <a class="option-label m-w-300 v-label float-left" href="javascript:void(0);"
                                    [attr.aria-expanded]="isCurrentVersionHistoryOpen" aria-controls="self-history"
-                                   (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen">
+                                   (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen">&nbsp;
                                         <fa-icon *ngIf="isCurrentVersionHistoryOpen" icon="caret-down"></fa-icon>
                                         <fa-icon *ngIf="!isCurrentVersionHistoryOpen" icon="caret-right"></fa-icon>
                                         <span>{{version!.language}}: {{version!.number}}</span>
                                         <span>&nbsp;&nbsp;&nbsp; Published: {{version!.publicationDate}}</span>
                                 </a>
-                                <span *ngIf="isCurrentVersionHistoryOpen" class="float-right">
-                                    <span *jhiHasAnyAgencyAuthority="{actionType:'EDIT_VERSION_INFO_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:version!.language}">
-                                        <a *ngIf="!isCurrentVersionInfoEdit" ngbTooltip="edit current version info" href="javascript:void(0);" (click)="isCurrentVersionInfoEdit = !isCurrentVersionInfoEdit">
-                                            <fa-icon icon="edit"></fa-icon>
+                                <span *ngIf="isCurrentVersionHistoryOpen && version!.status === 'PUBLISHED'">
+                                    &nbsp;<span *jhiHasAnyAgencyAuthority="{actionType:'EDIT_VERSION_INFO_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:version!.language}">
+                                        <a *ngIf="!isCurrentVersionInfoEdit" class="btn btn-primary btn-sm" ngbTooltip="edit current version info" href="javascript:void(0);" (click)="isCurrentVersionInfoEdit = !isCurrentVersionInfoEdit">
+                                            <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                         </a>
                                     </span>
                                 </span>
+
                                 <div id="self-history" [ngbCollapse]="!isCurrentVersionHistoryOpen">
                                     <div *ngIf="!isCurrentVersionInfoEdit">
                                         <div class="row-detail small-block-info" *ngIf="version!.versionNotes">
@@ -484,6 +485,7 @@
                                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
                                     </div>
                                     <div *ngIf="isCurrentVersionInfoEdit">
+                                        <br/><br/>
                                         <div class="row-detail small-block-info">
                                             <div class="label-column">
                                                 <span>Version notes</span>
@@ -601,8 +603,8 @@
                             <div *ngIf="!isDdiUsageEdit" class="small-block-n" [innerHTML]="version!.ddiUsage ? version!.ddiUsage: 'no information'"></div>
 
                             <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_DDI_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_SL','CONTRIBUTOR_SL','ADMIN_TL','CONTRIBUTOR_TL'], language:version!.language}">
-                                <a *ngIf="!isDdiUsageEdit" ngbTooltip="edit ddi-usage" href="javascript:void(0);" (click)="isDdiUsageEdit = !isDdiUsageEdit">
-                                    <fa-icon icon="edit"></fa-icon>
+                                <a *ngIf="!isDdiUsageEdit" class="btn btn-primary btn-sm" ngbTooltip="edit ddi-usage" href="javascript:void(0);" (click)="isDdiUsageEdit = !isDdiUsageEdit">
+                                    <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                 </a>
                             </div>
 
