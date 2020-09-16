@@ -32,7 +32,6 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   isVersionInvalid: boolean;
   account!: Account;
   languages: string[] = [];
-  errorNotationExists = false;
   vocabularyParam?: IVocabulary;
   versionParam?: IVersion;
   isSlForm?: boolean;
@@ -145,25 +144,40 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
       });
 
-      this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
-        this.vocabularyChanges = res.body;
-        this.cvForwardStatusForm.patchValue({
-          versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('<br/>')
+      if (this.versionParam!.versionNotes) {
+        this.cvForwardStatusForm.patchValue({ versionNotes: this.versionParam!.versionNotes });
+      }
+
+      if (this.versionParam!.versionChanges) {
+        this.cvForwardStatusForm.patchValue({ versionChanges: this.versionParam!.versionChanges });
+      } else {
+        this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
+          this.vocabularyChanges = res.body;
+          this.cvForwardStatusForm.patchValue({
+            versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('<br/>')
+          });
         });
-      });
+      }
     }
   }
 
   private fillForm(): void {
     if (this.isSlForm) {
       this.cvForwardStatusForm.patchValue({
-        versionNumberSl: this.versionParam!.number,
-        licenseId: this.licences?.length ? this.licences[0].id : null
+        versionNumberSl: this.versionParam!.number
       });
     } else {
       this.cvForwardStatusForm.patchValue({
-        versionNumberTl: this.tlProposedVersionNumber,
-        licenseId: this.licences![0].id
+        versionNumberTl: this.tlProposedVersionNumber
+      });
+    }
+    if (this.versionParam!.licenseId) {
+      this.cvForwardStatusForm.patchValue({
+        licenseId: this.versionParam!.licenseId
+      });
+    } else {
+      this.cvForwardStatusForm.patchValue({
+        licenseId: this.licences?.length ? this.licences[0].id : null
       });
     }
   }
@@ -214,9 +228,33 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     return vocabularySnippet;
   }
 
+  saveVersionInfo(): void {
+    this.isSaving = true;
+    const vocabularySnippet = {
+      ...new VocabularySnippet(),
+      actionType: 'EDIT_VERSION_INFO_CV',
+      versionId: this.versionParam!.id,
+      vocabularyId: this.vocabularyParam!.id,
+      agencyId: this.vocabularyParam!.agencyId,
+      language: this.versionParam!.language,
+      itemType: this.versionParam!.itemType,
+      status: this.versionParam!.status,
+      versionNotes: this.cvForwardStatusForm.get(['versionNotes']) ? this.cvForwardStatusForm.get(['versionNotes'])!.value : undefined,
+      versionChanges: this.cvForwardStatusForm.get(['versionChanges'])
+        ? this.cvForwardStatusForm.get(['versionChanges'])!.value
+        : undefined,
+      licenseId: this.cvForwardStatusForm.get(['licenseId'])!.value
+    };
+    if (this.isSlForm) {
+      vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value;
+    } else {
+      vocabularySnippet.versionNumber = this.slVersionNumber + '.' + this.cvForwardStatusForm.get(['versionNumberTl'])!.value;
+    }
+    this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabularySnippet));
+  }
+
   forwardStatus(): void {
     this.isSaving = true;
-    this.errorNotationExists = false;
     const vocabularySnippet = this.createFromForm();
     if (!this.isVersionInvalid && this.missingTranslations.length === 0) {
       this.subscribeToSaveResponse(this.editorService.forwardStatusVocabulary(vocabularySnippet));

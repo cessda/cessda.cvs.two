@@ -234,8 +234,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_VERSION_INFO_CV,
                     vocabularySnippet.getAgencyId(), ActionType.EDIT_VERSION_INFO_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
 
-                versionDTO.setVersionNotes( vocabularySnippet.getVersionNotes() );
-                versionDTO.setVersionChanges( vocabularySnippet.getVersionChanges() );
+                updateCvVersionInfo(vocabularySnippet, versionDTO);
             }
 
             vocabularyDTO = save( vocabularyDTO );
@@ -248,6 +247,16 @@ public class VocabularyServiceImpl implements VocabularyService {
             return vocabularyDTO;
         }
         return null;// change with exception "Action not found"
+    }
+
+    private void updateCvVersionInfo(VocabularySnippet vocabularySnippet, VersionDTO versionDTO) {
+        versionDTO.setVersionNotes( vocabularySnippet.getVersionNotes() );
+        versionDTO.setVersionChanges( vocabularySnippet.getVersionChanges() );
+
+        if( vocabularySnippet.getVersionNumber() != null )
+            versionDTO.setNumber( vocabularySnippet.getVersionNumber() );
+        if( vocabularySnippet.getLicenseId() != null )
+            versionDTO.setLicenseId( vocabularySnippet.getLicenseId() );
     }
 
     @Override
@@ -1377,7 +1386,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public File generateVocabularyPublishFileDownload(
         String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
-        log.info( "Publication generate file {0} for Vocabulary {1} versionSl {2}", downloadType, vocabularyNotation, versionSl );
+        log.info( "Publication generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
         Path path = Paths.get(applicationProperties.getVocabJsonPath() + vocabularyNotation + File.separator +
                 versionSl + File.separator + vocabularyNotation + "_" + versionSl + JSON_FORMAT);
 
