@@ -135,7 +135,7 @@
                     <!-- determine multiple version with same lang -->
                     <span *ngIf="getVersionsByLanguage(lang)!.length === 1; else buttonDropDown">
                         <button *ngFor="let version of getVersionsByLanguage(lang)!"
-                                (click)="vocabulary!.selectedLang = version!.language;vocabulary!.selectedVersion = version!.number"
+                                (click)="setVocabularyLangVersion( version!.language, version!.number);"
                                 class="vocab-lang-button"
                                 [ngClass]="{'active': lang === vocabulary!.selectedLang, 'source-lang': lang === vocabulary!.sourceLanguage}"
                                 ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
@@ -150,7 +150,7 @@
                                 {{lang}}</button>
                             <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownBasic'+lang">
                                 <button ngbDropdownItem *ngFor="let version of getVersionsByLanguage(lang)!"
-                                        (click)="vocabulary!.selectedLang = version.language;vocabulary!.selectedVersion = version.number"
+                                        (click)="setVocabularyLangVersion( version!.language, version!.number);"
                                         [ngClass]="{'active': lang === vocabulary!.selectedLang && version.number === vocabulary!.selectedVersion}"
                                         ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
                                     v.{{version.number}}
@@ -238,13 +238,37 @@
                                     <span class="ta-mode" [innerHTML]="getVersionByLangNumber()!.versionChanges"></span>
                                 </div>
                             </div>
+
+                            <div class="row-detail" *ngIf="!getVersionByLangNumber()!.versionNotes && !getVersionByLangNumber()!.versionChanges">
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
+                            </div>
+                            <a *ngIf="getVersionByLangNumber()!.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);"
+                               (click)="isTextDiffCollapse = !isTextDiffCollapse;doCurrentCvCompare( getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.number,
+                           getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![0].version)"
+                               [attr.aria-expanded]="isTextDiffCollapse" aria-controls="text-diff-panel">
+                                &nbsp;
+                                <fa-icon *ngIf="!isTextDiffCollapse" icon="caret-down"></fa-icon>
+                                <fa-icon *ngIf="isTextDiffCollapse" icon="caret-right"></fa-icon>
+                                <span>&nbsp;<fa-icon icon="compress"></fa-icon> Compare current version {{getVersionByLangNumber()!.number}} with previous version {{getVersionByLangNumber()!.versionHistories![0].version}}</span>
+                            </a>
+                            <div *ngIf="getVersionByLangNumber().previousVersion" id="text-diff-panel" class="acc-body" [ngbCollapse]="isTextDiffCollapse">
+                                <div>
+                                    <td-ngx-text-diff
+                                        [left]="''"
+                                        [right]="''"
+                                        [loading]="true"
+                                        [showToolbar]="true"
+                                        [diffContent]="contentObservable$"
+                                    >
+                                    </td-ngx-text-diff>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="row-detail" *ngIf="!getVersionByLangNumber()!.versionNotes && !getVersionByLangNumber()!.versionChanges">
-                            <span>no additonal information</span>
-                        </div>
+
                     </div>
                     <!-- other older versions -->
-                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber()!.versionHistories">
+                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber()!.versionHistories; let i = index">
                         <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
                            [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
                             <fa-icon *ngIf="vh.visible" icon="caret-down"></fa-icon>
@@ -273,7 +297,13 @@
                                 </div>
                             </div>
                             <div class="row-detail" *ngIf="!vh.changes && !vh.note">
-                                <span>no information</span>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
+                            </div>
+
+                            <div *ngIf="i < getVersionByLangNumber()!.versionHistories!.length -1">
+                                <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="getVersionByLangNumber()!.language + '-' + vh.version"
+                                         [langVersion2]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![i + 1].version">
+                                </jhi-version-compare>
                             </div>
                         </div>
                     </div>

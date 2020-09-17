@@ -9,6 +9,9 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { FormBuilder } from '@angular/forms';
 import { HomeService } from 'app/home/home.service';
 import { RouteEventsService } from 'app/shared';
+import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { Observable, Subject } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'jhi-home-detail',
@@ -31,6 +34,8 @@ export class HomeDetailComponent implements OnInit {
   isLicenseCollapse = true;
   isExportCollapse = true;
 
+  isTextDiffCollapse = true;
+
   isCurrentVersionHistoryOpen = true;
 
   initialTabSelected?: string;
@@ -45,6 +50,9 @@ export class HomeDetailComponent implements OnInit {
   currentSelectedCode?: string;
 
   enableDocxExport = false;
+
+  contentObservable: Subject<DiffContent> = new Subject<DiffContent>();
+  contentObservable$: Observable<DiffContent> = this.contentObservable.asObservable();
 
   detailForm = this.fb.group({
     tabSelected: [],
@@ -88,6 +96,12 @@ export class HomeDetailComponent implements OnInit {
         }
       }
     });
+  }
+
+  setVocabularyLangVersion(language: string, number: string): void {
+    this.vocabulary!.selectedLang = language;
+    this.vocabulary!.selectedVersion = number;
+    this.isTextDiffCollapse = true;
   }
 
   getSlVersion(): IVersion {
@@ -350,5 +364,15 @@ export class HomeDetailComponent implements OnInit {
     for (let i = 0; i < bollArray.length; i++) {
       bollArray[i] = checked;
     }
+  }
+
+  doCurrentCvCompare(lv1: string, lv2: string): void {
+    this.homeService.getVocabularyCompare(this.vocabulary!.notation!, lv1, lv2).subscribe((res: HttpResponse<string[]>) => {
+      const newContent: DiffContent = {
+        leftContent: res.body![0],
+        rightContent: res.body![1]
+      };
+      this.contentObservable.next(newContent);
+    });
   }
 }

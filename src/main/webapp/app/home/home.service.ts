@@ -12,9 +12,10 @@ type EntityResponseType = HttpResponse<IVocabulary>;
 @Injectable({ providedIn: 'root' })
 export class HomeService {
   public resourceUrl = SERVER_API_URL + 'api/vocabulary';
-  public resourceSearchUrl = SERVER_API_URL + 'api/search';
+  public resourceSearchUrl = SERVER_API_URL + 'v2/search';
   public vocabularyStaticUrl = SERVER_API_URL + 'content/vocabularies';
   public resourceDownloadUrl = SERVER_API_URL + 'api/download';
+  public resourceCvCompareUrl = SERVER_API_URL + 'v2/compare-vocabulary';
 
   constructor(protected http: HttpClient) {}
 
@@ -44,5 +45,9 @@ export class HomeService {
       params: options,
       responseType: 'blob'
     });
+  }
+
+  getVocabularyCompare(notation: string, lv1: string, lv2: string): Observable<HttpResponse<string[]>> {
+    return this.http.get<string[]>(`${this.resourceCvCompareUrl}/${notation}/${lv1}/${lv2}`, { observe: 'response' });
   }
 }

@@ -1,0 +1,20 @@
+<a class="acc-header option-label col-12 mtop10" href="javascript:void(0);"
+   (click)="isOpen=!isOpen"
+   [attr.aria-expanded]="isOpen">
+    &nbsp;
+    <fa-icon *ngIf="isOpen" icon="caret-down"></fa-icon>
+    <fa-icon *ngIf="!isOpen" icon="caret-right"></fa-icon>
+    <span>&nbsp;<fa-icon icon="compress"></fa-icon> Compare version {{langVersion1}} with previous version {{langVersion2}}</span>
+</a>
+<div class="acc-body" [ngbCollapse]="!isOpen">
+    <div>
+        <td-ngx-text-diff
+            [left]="''"
+            [right]="''"
+            [loading]="true"
+            [showToolbar]="true"
+            [diffContent]="contentObservable$"
+        >
+        </td-ngx-text-diff>
+    </div>
+</div>

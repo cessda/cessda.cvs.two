@@ -10,6 +10,7 @@ import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.*;
 import eu.cessda.cvs.service.dto.*;
+import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.slf4j.Logger;
@@ -310,71 +311,13 @@ public class EditorResource {
         VersionDTO prevVersionDTO = versionService.findOne(versionDTO.getPreviousVersion())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + versionDTO.getPreviousVersion()));
 
-        List<String> compareCurrentPrev = buildComparisonCurrentAndPreviousCV(versionDTO, prevVersionDTO);
+        List<String> compareCurrentPrev = VersionUtils.buildComparisonCurrentAndPreviousCV(versionDTO, prevVersionDTO);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Prev-Cv-Version", prevVersionDTO.getNotation() + " " +prevVersionDTO.getItemType() + " v." + prevVersionDTO.getNumber());
         headers.add("X-Current-Cv-Version", versionDTO.getNotation() + " " +versionDTO.getItemType() + " v." + versionDTO.getNumber());
 
         return ResponseEntity.ok().headers(headers).body(compareCurrentPrev);
-    }
-
-    private List<String> buildComparisonCurrentAndPreviousCV(VersionDTO versionDTO, VersionDTO prevVersionDTO) {
-        // create comparison based on current version
-        StringBuilder currentVersionCvSb = new StringBuilder();
-        StringBuilder prevVersionCvSb = new StringBuilder();
-
-        currentVersionCvSb.append( "Cv Name: " + versionDTO.getTitle() + "\n");
-        currentVersionCvSb.append( "Cv Def: " + versionDTO.getDefinition() + "\n");
-        currentVersionCvSb.append( "Cv Notes: " + versionDTO.getNotes() + "\n\n\n");
-
-        prevVersionCvSb.append( "Cv Name: " + prevVersionDTO.getTitle() + "\n");
-        prevVersionCvSb.append( "Cv Def: " + prevVersionDTO.getDefinition() + "\n");
-        prevVersionCvSb.append( "Cv Notes: " + prevVersionDTO.getNotes() + "\n\n\n");
-
-        // get concepts and sorted by position
-        List<ConceptDTO> currentConcepts = conceptService.findByVersion(versionDTO.getId());
-        Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
-        currentConcepts.forEach(currentConcept -> {
-            currentVersionCvSb.append( "Code: " + currentConcept.getNotation()+ "\n");
-            currentVersionCvSb.append( "Code Term: " + currentConcept.getTitle() + "\n");
-            currentVersionCvSb.append( "Code Def: " + currentConcept.getDefinition() + "\n\n");
-
-            ConceptDTO prevConceptDTO = null;
-
-            if( currentConcept.getPreviousConcept() != null )
-                prevConceptDTO = prevVersionDTO.getConcepts().stream()
-                    .filter(prevConcept -> currentConcept.getPreviousConcept().equals( prevConcept.getId())).findFirst()
-                    .orElse(null);
-
-            if ( prevConceptDTO == null ) {
-                prevVersionCvSb.append( "Code: \n");
-                prevVersionCvSb.append( "Code Term: \n");
-                prevVersionCvSb.append( "Code Def: \n\n");
-            } else {
-                existingConceptsInPrevAndCurrent.add( prevConceptDTO );
-                prevVersionCvSb.append( "Code: " + prevConceptDTO.getNotation()+ "\n");
-                prevVersionCvSb.append( "Code Term: " + prevConceptDTO.getTitle() + "\n");
-                prevVersionCvSb.append( "Code Def: " + prevConceptDTO.getDefinition() + "\n\n");
-            }
-        });
-
-        // put deleted concept at the end
-        prevVersionDTO.getConcepts().removeAll(existingConceptsInPrevAndCurrent);
-
-        for (ConceptDTO prevConcept : prevVersionDTO.getConcepts()) {
-            currentVersionCvSb.append( "Code: \n");
-            currentVersionCvSb.append( "Code Term: \n");
-            currentVersionCvSb.append( "Code Def: \n\n");
-            prevVersionCvSb.append( "Code: " + prevConcept.getNotation()+ "\n");
-            prevVersionCvSb.append( "Code Term: " + prevConcept.getTitle() + "\n");
-            prevVersionCvSb.append( "Code Def: " + prevConcept.getDefinition() + "\n\n");
-        }
-
-        List<String> compareCurrentPrev = new ArrayList<>();
-        compareCurrentPrev.add( prevVersionCvSb.toString() );
-        compareCurrentPrev.add( currentVersionCvSb.toString() );
-        return compareCurrentPrev;
     }
 
     /**
