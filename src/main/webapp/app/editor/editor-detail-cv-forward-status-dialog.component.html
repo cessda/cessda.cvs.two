@@ -181,7 +181,7 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
                 </button>
-                <button type="button" ngbTooltip="Save current information, without changing CV status" class="btn btn-primary" data-dismiss="modal" (click)="saveVersionInfo()">
+                <button *ngIf="versionParam!.status === 'FINAL_REVIEW'" type="button" ngbTooltip="Save current information, without changing CV status" class="btn btn-primary" data-dismiss="modal" (click)="saveVersionInfo()">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
                 </button>
                 <button type="submit" id="save-new-cv" [disabled]="cvForwardStatusForm.invalid || isSaving" class="btn btn-primary">
