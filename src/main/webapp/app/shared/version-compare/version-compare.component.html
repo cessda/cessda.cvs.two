@@ -4,8 +4,8 @@
     &nbsp;
     <fa-icon *ngIf="isOpen" icon="caret-down"></fa-icon>
     <fa-icon *ngIf="!isOpen" icon="caret-right"></fa-icon>
-    <span *ngIf="dataSource === 'JSON' || dataSource === 'json'">&nbsp;<fa-icon icon="compress"></fa-icon> Compare version {{langVersion1}} with previous version {{langVersion2}}</span>
-    <span *ngIf="dataSource !== 'JSON' && dataSource !== 'json'">&nbsp;<fa-icon icon="compress"></fa-icon> Compare current unpublished version with previous version</span>
+    <span *ngIf="dataSource === 'JSON' || dataSource === 'json'">&nbsp;<fa-icon icon="compress"></fa-icon> Compare previous version {{langVersion2}} with version {{langVersion1}}</span>
+    <span *ngIf="dataSource !== 'JSON' && dataSource !== 'json'">&nbsp;<fa-icon icon="compress"></fa-icon> Compare previous version with current unpublished version</span>
 </a>
 <div class="acc-body" [ngbCollapse]="!isOpen">
     <div>
