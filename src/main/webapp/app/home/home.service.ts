@@ -31,6 +31,9 @@ export class HomeService {
   getVocabularyFile(notation: string, req?: any): Observable<HttpResponse<IVocabulary>> {
     const options = createRequestOption(req);
     if (req.v) {
+      if (req.v.match(/\./g).length === 2) {
+        req.v = req.v.substring(0, req.v.lastIndexOf('.'));
+      }
       return this.http.get<IVocabulary>(`${this.vocabularyStaticUrl}/${notation}/${req.v}/${notation}_${req.v}.json`, {
         params: options,
         observe: 'response'

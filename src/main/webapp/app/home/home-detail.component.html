@@ -182,7 +182,7 @@
                         <input ngbButton type="radio" value="license"> License and Citation
                     </label>
                     <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="export"> Export/Download
+                        <input ngbButton type="radio" value="export" (click)="resetExport()"> Export/Download
                     </label>
                 </div>
 
@@ -427,10 +427,17 @@
                                     </select>
                                 </ng-template>
                             </td>
-                            <td class="tac"><input type="checkbox" [checked]="skosSelected[i]" name="skosItems" formControlName="skosItems" value="{{dwnldCbVal[i]}}" (change)="skosSelected[i] = $event.target.checked"/></td>
-                            <td class="tac"><input type="checkbox" [checked]="pdfSelected[i]" name="pdfItems" formControlName="pdfItems" value="{{dwnldCbVal[i]}}" (change)="pdfSelected[i] = $event.target.checked"/></td>
-                            <td class="tac"><input type="checkbox" [checked]="htmlSelected[i]" name="htmlItems" formControlName="htmlItems" value="{{dwnldCbVal[i]}}" (change)="htmlSelected[i] = $event.target.checked"/></td>
-                            <td *ngIf="enableDocxExport" class="tac"><input type="checkbox" [checked]="docxSelected[i]" name="docxItems" formControlName="docxItems" value="{{dwnldCbVal[i]}}" (change)="docxSelected[i] = $event.target.checked"/></td>
+
+                            <td *ngIf="!getVersionsByLanguage(lang)![0]!.number!.startsWith(getSlVersion()!.number!)" class="tac" colspan="3">
+                                The {{getFormattedLang(lang)}} {{getSlVersion()!.number}}.x has not been released yet. You could export this version
+                                <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getVersionsByLanguage(lang)![0]!.number, lang:lang, tab:'export'}" target="_blank">here</a>.
+                            </td>
+                            <ng-container *ngIf="getVersionsByLanguage(lang)![0]!.number!.startsWith(getSlVersion()!.number!)">
+                                <td class="tac"><input type="checkbox" [checked]="skosSelected[i]" name="skosItems" formControlName="skosItems" value="{{dwnldCbVal[i]}}" (change)="skosSelected[i] = $event.target.checked"/></td>
+                                <td class="tac"><input type="checkbox" [checked]="pdfSelected[i]" name="pdfItems" formControlName="pdfItems" value="{{dwnldCbVal[i]}}" (change)="pdfSelected[i] = $event.target.checked"/></td>
+                                <td class="tac"><input type="checkbox" [checked]="htmlSelected[i]" name="htmlItems" formControlName="htmlItems" value="{{dwnldCbVal[i]}}" (change)="htmlSelected[i] = $event.target.checked"/></td>
+                                <td *ngIf="enableDocxExport" class="tac"><input type="checkbox" [checked]="docxSelected[i]" name="docxItems" formControlName="docxItems" value="{{dwnldCbVal[i]}}" (change)="docxSelected[i] = $event.target.checked"/></td>
+                            </ng-container>
                         </tr>
                         <tr>
                             <th scope="row">Download</th>

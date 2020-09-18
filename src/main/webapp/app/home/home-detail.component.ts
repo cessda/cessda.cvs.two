@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
@@ -16,7 +16,7 @@ import { Observable, Subject } from 'rxjs';
   selector: 'jhi-home-detail',
   templateUrl: './home-detail.component.html'
 })
-export class HomeDetailComponent implements OnInit {
+export class HomeDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
   @ViewChild('versionPanel', { static: true }) versionPanel!: ElementRef;
   @ViewChild('identityPanel', { static: true }) identityPanel!: ElementRef;
@@ -115,7 +115,14 @@ export class HomeDetailComponent implements OnInit {
   getUniqueVersionLang(): string[] {
     const uniqueLang: string[] = [];
     this.vocabulary!.versions!.forEach(v => {
-      uniqueLang.push(v.language!);
+      if (v.number!.startsWith(this.vocabulary!.versions![0]!.number!)) {
+        uniqueLang.push(v.language!);
+      }
+    });
+    this.vocabulary!.versions!.forEach(v => {
+      if (!v.number!.startsWith(this.vocabulary!.versions![0]!.number!)) {
+        uniqueLang.push(v.language!);
+      }
     });
     return [...new Set(uniqueLang)];
   }
@@ -216,11 +223,13 @@ export class HomeDetailComponent implements OnInit {
       const langs: string[] = this.getUniqueVersionLang();
       for (let i = 0; i < langs.length; i++) {
         const versions: IVersion[] = this.getVersionsByLanguage(langs[i]);
-        this.dwnldCbVal[i] = langs[i] + '-' + versions[0].number;
-        this.skosSelected[i] = true;
-        this.pdfSelected[i] = true;
-        this.htmlSelected[i] = true;
-        this.docxSelected[i] = true;
+        if (versions[0].number!.startsWith(this.getVersionsByLanguage(langs[0])[0].number!)) {
+          this.dwnldCbVal[i] = langs[i] + '-' + versions[0].number;
+          this.skosSelected[i] = true;
+          this.pdfSelected[i] = true;
+          this.htmlSelected[i] = true;
+          this.docxSelected[i] = true;
+        }
       }
     });
 
@@ -246,16 +255,18 @@ export class HomeDetailComponent implements OnInit {
         }, 1500);
       });
     }
-
-    // deselect all export checkbox -workaround
-    this._ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.fillBolleanArray(this.skosSelected, false);
-        this.fillBolleanArray(this.pdfSelected, false);
-        this.fillBolleanArray(this.htmlSelected, false);
-        this.fillBolleanArray(this.docxSelected, false);
-      }, 1000);
+  }
+  ngAfterViewInit(): void {
+    this._ngZone.run(() => {
+      this.resetExport();
     });
+  }
+
+  resetExport(): void {
+    this.fillBolleanArray(this.skosSelected, false);
+    this.fillBolleanArray(this.pdfSelected, false);
+    this.fillBolleanArray(this.htmlSelected, false);
+    this.fillBolleanArray(this.docxSelected, false);
   }
 
   byteSize(base64String: string): string {

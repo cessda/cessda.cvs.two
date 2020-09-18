@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
@@ -31,7 +31,7 @@ import { Account } from 'app/core/user/account.model';
   templateUrl: './editor-detail.component.html',
   styleUrls: ['editor.scss']
 })
-export class EditorDetailComponent implements OnInit, OnDestroy {
+export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
   @ViewChild('versionPanel', { static: true }) versionPanel!: ElementRef;
   @ViewChild('identityPanel', { static: true }) identityPanel!: ElementRef;
@@ -403,17 +403,19 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         }, 1500);
       });
     }
-    // deselect all export checkbox -workaround
-    this._ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.fillBolleanArray(this.skosSelected, false);
-        this.fillBolleanArray(this.pdfSelected, false);
-        this.fillBolleanArray(this.htmlSelected, false);
-        this.fillBolleanArray(this.docxSelected, false);
-      }, 1000);
+  }
+  ngAfterViewInit(): void {
+    this._ngZone.run(() => {
+      this.resetExport();
     });
   }
 
+  resetExport(): void {
+    this.fillBolleanArray(this.skosSelected, false);
+    this.fillBolleanArray(this.pdfSelected, false);
+    this.fillBolleanArray(this.htmlSelected, false);
+    this.fillBolleanArray(this.docxSelected, false);
+  }
   private subscribeSelectConceptEvent(): void {
     this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<IConcept>) => {
       this.concept = response.content;
