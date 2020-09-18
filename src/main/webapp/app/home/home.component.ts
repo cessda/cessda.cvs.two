@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, of, Subscription } from 'rxjs';
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -9,7 +9,7 @@ import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, Jh
 import { HomeService } from 'app/home/home.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
-import { ITEMS_PER_PAGE, AGGR_AGENCY, AGGR_LANGUAGE_PUBLISHED, PAGING_SIZE } from 'app/shared';
+import { AGGR_AGENCY, AGGR_LANGUAGE_PUBLISHED, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
 import { ICvResult } from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { ICode } from 'app/shared/model/code.model';
@@ -149,7 +149,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     const pageToLoad: number = page ? page : this.page;
     this.homeService
       .search({
-        page: this.page - 1,
+        page: pageToLoad - 1,
         q: this.currentSearch,
         size: this.itemsPerPage,
         sort: this.sort(),

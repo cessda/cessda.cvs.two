@@ -242,26 +242,12 @@
                             <div class="row-detail" *ngIf="!getVersionByLangNumber()!.versionNotes && !getVersionByLangNumber()!.versionChanges">
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
                             </div>
-                            <a *ngIf="getVersionByLangNumber()!.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);"
-                               (click)="isTextDiffCollapse = !isTextDiffCollapse;doCurrentCvCompare( getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.number,
-                           getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![0].version)"
-                               [attr.aria-expanded]="isTextDiffCollapse" aria-controls="text-diff-panel">
-                                &nbsp;
-                                <fa-icon *ngIf="!isTextDiffCollapse" icon="caret-down"></fa-icon>
-                                <fa-icon *ngIf="isTextDiffCollapse" icon="caret-right"></fa-icon>
-                                <span>&nbsp;<fa-icon icon="compress"></fa-icon> Compare current version {{getVersionByLangNumber()!.number}} with previous version {{getVersionByLangNumber()!.versionHistories![0].version}}</span>
-                            </a>
-                            <div *ngIf="getVersionByLangNumber().previousVersion" id="text-diff-panel" class="acc-body" [ngbCollapse]="isTextDiffCollapse">
-                                <div>
-                                    <td-ngx-text-diff
-                                        [left]="''"
-                                        [right]="''"
-                                        [loading]="true"
-                                        [showToolbar]="true"
-                                        [diffContent]="contentObservable$"
-                                    >
-                                    </td-ngx-text-diff>
-                                </div>
+
+                            <div *ngIf="getVersionByLangNumber()!.previousVersion">
+                                <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.number"
+                                                     [langVersion2]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![0].version"
+                                                     [dataSource]="'JSON'">
+                                </jhi-version-compare>
                             </div>
 
                         </div>
@@ -302,7 +288,8 @@
 
                             <div *ngIf="i < getVersionByLangNumber()!.versionHistories!.length -1">
                                 <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="getVersionByLangNumber()!.language + '-' + vh.version"
-                                         [langVersion2]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![i + 1].version">
+                                         [langVersion2]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![i + 1].version"
+                                            [dataSource]="'JSON'">
                                 </jhi-version-compare>
                             </div>
                         </div>

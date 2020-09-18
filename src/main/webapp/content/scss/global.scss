@@ -920,6 +920,9 @@ button.invisible-button:focus {
 }
 
 @media screen and (min-width: 1024px) {
+  .editor-comparator {
+    max-width: calc(100vw - 340px);
+  }
   .content {
     flex-direction: row;
     .content-left {

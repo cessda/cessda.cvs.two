@@ -512,10 +512,20 @@
                                             </button>
                                         </div>
                                     </div>
+
+<!--                                    <div class="editor-comparator" *ngIf="version!.previousVersion && version!.status !== 'PUBLISHED'">-->
+<!--                                        <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.id" [dataSource]="'DB'"></jhi-version-compare>-->
+<!--                                    </div>-->
+                                    <div class="editor-comparator" *ngIf="version!.previousVersion && version!.status === 'PUBLISHED'">
+                                        <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.language + '-' + version!.number"
+                                                             [langVersion2]="version!.language + '-' + version!.versionHistories![0].version"
+                                                             [dataSource]="'JSON'">
+                                        </jhi-version-compare>
+                                    </div>
                                 </div>
                             </div>
                             <!-- other older versions -->
-                            <div class="item-panel" *ngFor="let vh of version!.versionHistories">
+                            <div class="item-panel" *ngFor="let vh of version!.versionHistories; let i = index">
                                 <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
                                    [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
                                     <fa-icon *ngIf="vh.visible" icon="caret-down"></fa-icon>
@@ -545,6 +555,13 @@
                                     </div>
                                     <div class="row-detail" *ngIf="!vh.changes && !vh.note">
                                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
+                                    </div>
+
+                                    <div class="editor-comparator" *ngIf="i < version!.versionHistories!.length -1">
+                                        <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.language + '-' + vh.version"
+                                                             [langVersion2]="version!.language + '-' + version!.versionHistories![i + 1].version"
+                                                            [dataSource]="'JSON'">
+                                        </jhi-version-compare>
                                     </div>
                                 </div>
                             </div>
