@@ -408,7 +408,7 @@
                                 <input ngbButton type="radio" value="license"> License and Citation
                             </label>
                             <label ngbButtonLabel class="btn-primary tab-label">
-                                <input ngbButton type="radio" value="export" resetExport()> Export/Download
+                                <input ngbButton type="radio" value="export" (click)="resetExport()"> Export/Download
                             </label>
                         </div>
 
