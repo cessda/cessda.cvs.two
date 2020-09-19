@@ -3,7 +3,7 @@
   "status": "DRAFT",
   "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/en/3.0",
   "notation": "ModeOfCollection",
-  "versionNumber": "3.0",
+  "versionNumber": "3.1",
   "withdrawn": false,
   "sourceLanguage": "en",
   "agencyId": 2,
@@ -1765,8 +1765,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 371,
           "version": "3.0.1",
           "date": "2019-10-22",
+          "note": "",
           "changes": ""
         }
       ]

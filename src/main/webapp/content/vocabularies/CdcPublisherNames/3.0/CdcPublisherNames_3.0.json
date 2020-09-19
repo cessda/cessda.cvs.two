@@ -207,15 +207,17 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 454,
           "version": "2.0",
           "date": "2020-07-09",
-          "note": "Used for the Publisher filter in CDC. No need for other language versions.",
+          "note": "",
           "changes": "Code added: SODA\nCode added: FORS\n"
         },
         {
+          "id": 450,
           "version": "1.0",
           "date": "2020-06-23",
-          "note": "Used for the Publisher filter in CDC. No need for other language versions.",
+          "note": "",
           "changes": ""
         }
       ]

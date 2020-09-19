@@ -131,9 +131,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 307,
           "version": "1.0",
           "date": "2019-11-25",
-          "note": "This Controlled Vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all",
+          "note": "",
           "changes": ""
         }
       ]

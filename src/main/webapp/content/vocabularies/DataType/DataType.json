@@ -329,12 +329,291 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 276,
           "version": "1.0",
           "date": "2019-11-25",
-          "note": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all. The present list is based on the W3C data types (http://www.w3.org/TR/xmlschema-2/), and includes the terms relevant for documenting research data.",
+          "note": "",
           "changes": ""
         }
       ]
+    },
+    {
+      "id": 604,
+      "status": "PUBLISHED",
+      "itemType": "TL",
+      "language": "fi",
+      "publicationDate": "2020-09-18",
+      "number": "1.1.1",
+      "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType/fi/1.1.1",
+      "canonicalUri": "urn:ddi:int.ddi.cv:DataType:1.1",
+      "uriSl": "http://www.ddialliance.org/Specification/DDI-CV/DataType/en/1.1",
+      "notation": "DataType",
+      "title": "Aineiston tyyppi",
+      "definition": "Kertoo aineiston tyypin, jolla on vaikutusta hyväksyttäviin aineiston arvoihin, aineistolla toteutettaviin toimenpiteisiin ja aineiston tallennusmuotoon.",
+      "notes": "DDI Alliancen julkaisema sanasto. Katso https://ddialliance.org/controlled-vocabularies/all",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
+      "citation": "DDI Alliance. (2020). DataType[Aineiston tyyppi] (Version 1.1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DataType:1.1.1. ",
+      "translateAgency": "Finnish Social Science Data Archive (FSD)",
+      "translateAgencyLink": "www.fsd.tuni.fi",
+      "concepts": [
+        {
+          "id": 13464,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#String/fi/1.1.1",
+          "notation": "String",
+          "title": "Merkkijono",
+          "definition": "Rajallinen määrä merkkejä. Kirjoitusmerkki on kirjoitetun viestinnän pienin yksikkö, jota ei ole tarkemmin määritelty paitsi että jokaisella merkillä on sitä vastaava kokonaislukuna esitetty koodiarvo yleismaailmallisessa merkistössä.",
+          "position": 0
+        },
+        {
+          "id": 13477,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#NormalizedString/fi/1.1.1",
+          "notation": "NormalizedString",
+          "title": "Normalisoitu merkkijono",
+          "definition": "Merkkijono, jossa mikä tahansa tyhjä tila (esim. sarkaimet ja rivinvaihdot) on korvattu välilyönnillä.",
+          "position": 1
+        },
+        {
+          "id": 13451,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Boolean/fi/1.1.1",
+          "notation": "Boolean",
+          "title": "Totuusarvomuuttuja",
+          "definition": "Tosi tai epätosi. Voidaan esittää arvoilla 1 ja 0.",
+          "position": 2
+        },
+        {
+          "id": 13469,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Decimal/fi/1.1.1",
+          "notation": "Decimal",
+          "title": "Desimaali",
+          "definition": "Reaalilukujen osajoukko, joka voidaan esittää äärellisenä numerojonona, jonka muodostavat kokonaisosa, desimaalierotin (pilkku tai piste) ja sitä seuraavat osia kuvaavat numerot. ",
+          "position": 3
+        },
+        {
+          "id": 13473,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Integer/fi/1.1.1",
+          "notation": "Integer",
+          "title": "Kokonaisluku",
+          "definition": "Kokonaisluvut, joita on ääretön määrä ilman minimi- tai maksimiarvoja.",
+          "position": 4
+        },
+        {
+          "id": 13468,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#PositiveInteger/fi/1.1.1",
+          "notation": "PositiveInteger",
+          "title": "Positiivinen kokonaisluku",
+          "definition": "Nollaa suuremmat kokonaisluvut.",
+          "position": 5
+        },
+        {
+          "id": 13462,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#NegativeInteger/fi/1.1.1",
+          "notation": "NegativeInteger",
+          "title": "Negatiivinen kokonaisluku",
+          "definition": "Nollaa pienemmät kokonaisluvut.",
+          "position": 6
+        },
+        {
+          "id": 13459,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#NonNegativeInteger/fi/1.1.1",
+          "notation": "NonNegativeInteger",
+          "title": "Epänegatiivinen kokonaisluku",
+          "definition": "Kokonaisluvut, jotka ovat suurempia kuin -1.",
+          "position": 7
+        },
+        {
+          "id": 13478,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#NonPositiveInteger/fi/1.1.1",
+          "notation": "NonPositiveInteger",
+          "title": "Epäpositiivinen kokonaisluku",
+          "definition": "Kokonaisluvut, jotka ovat pienempiä kuin 1. ",
+          "position": 8
+        },
+        {
+          "id": 13467,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Long/fi/1.1.1",
+          "notation": "Long",
+          "title": "Long",
+          "definition": "Kokonaisluvut välillä -9223372036854775808 – 9223372036854775807.",
+          "position": 9
+        },
+        {
+          "id": 13480,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Int/fi/1.1.1",
+          "notation": "Int",
+          "title": "Int",
+          "definition": "Kokonaisluvut välillä -2147483648 – 2147483647.",
+          "position": 10
+        },
+        {
+          "id": 13463,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Short/fi/1.1.1",
+          "notation": "Short",
+          "title": "Short",
+          "definition": "Kokonaisluvut välillä -32768 – 32767.",
+          "position": 11
+        },
+        {
+          "id": 13450,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Byte/fi/1.1.1",
+          "notation": "Byte",
+          "title": "Byte",
+          "definition": "Kokonaisluvut välillä -128 – 127.",
+          "position": 12
+        },
+        {
+          "id": 13454,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#UnsignedLong/fi/1.1.1",
+          "notation": "UnsignedLong",
+          "title": "Etumerkitön long",
+          "definition": "Kokonaisluvut välillä 0 – 18446744073709551615.",
+          "position": 13
+        },
+        {
+          "id": 13457,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#UnsignedInt/fi/1.1.1",
+          "notation": "UnsignedInt",
+          "title": "Etumerkitön int",
+          "definition": "Kokonaisluvut välillä 0 – 4294967295.",
+          "position": 14
+        },
+        {
+          "id": 13476,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#UnsignedShort/fi/1.1.1",
+          "notation": "UnsignedShort",
+          "title": "Etumerkitön short",
+          "definition": "Kokonaisluvut välillä 0 – 65535.",
+          "position": 15
+        },
+        {
+          "id": 13465,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#UnsignedByte/fi/1.1.1",
+          "notation": "UnsignedByte",
+          "title": "Etumerkitön byte",
+          "definition": "Kokonaisluvut välillä 0 – 255 (järjestelmästä riippuen).",
+          "position": 16
+        },
+        {
+          "id": 13470,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Float/fi/1.1.1",
+          "notation": "Float",
+          "title": "Float",
+          "position": 17
+        },
+        {
+          "id": 13453,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Double/fi/1.1.1",
+          "notation": "Double",
+          "title": "Double",
+          "position": 18
+        },
+        {
+          "id": 13479,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#DateTime/fi/1.1.1",
+          "notation": "DateTime",
+          "title": "PvmAika",
+          "definition": "Kokonaisluvuin esitetty vuosi, kuukausi, päivä, tunti ja minuutit sekä desimaaliluvuin esitetyt sekunnin murto-osat. Lisäksi aikavyöhykkeen tunti ja minuutit (esim., 2002-10-10T12:00:00-05:00).",
+          "position": 19
+        },
+        {
+          "id": 13472,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Time/fi/1.1.1",
+          "notation": "Time",
+          "title": "Aika",
+          "definition": "Vasemmalle lyhennetty PvmAika, esim. 13:20:00+02:00 (13.20 Itä-Euroopan aikaa).",
+          "position": 20
+        },
+        {
+          "id": 13475,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Date/fi/1.1.1",
+          "notation": "Date",
+          "title": "Pvm",
+          "definition": "Kokonaisluvuin ilmaistu vuosi, kuukausi, päivä ja aikavyöhykkeen tunti ja minuutit, esim. 2003-06-30+02:00 (30. kesäkuuta 2003 Itä-Euroopan aika).",
+          "position": 21
+        },
+        {
+          "id": 13449,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GYearMonth/fi/1.1.1",
+          "notation": "GYearMonth",
+          "title": "VuosiKuukausi",
+          "definition": "Kokonaisluvuin ilmaistut vuosi ja kuukausi, esim. 2004-11.",
+          "position": 22
+        },
+        {
+          "id": 13455,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GYear/fi/1.1.1",
+          "notation": "GYear",
+          "title": "Vuosi",
+          "definition": "Kokonaisluvulla ilmaistu vuosi, esim. 2005.",
+          "position": 23
+        },
+        {
+          "id": 13456,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GMonthDay/fi/1.1.1",
+          "notation": "GMonthDay",
+          "title": "KuukausiPäivä",
+          "definition": "Kokonaisluvuin ilmaistut kuukausi ja päivä, esim. 12-31.",
+          "position": 24
+        },
+        {
+          "id": 13461,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GDay/fi/1.1.1",
+          "notation": "GDay",
+          "title": "Päivä",
+          "definition": "Kokonaisluvulla ilmaistu päivä, esim. 24",
+          "position": 25
+        },
+        {
+          "id": 13474,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#GMonth/fi/1.1.1",
+          "notation": "GMonth",
+          "title": "Kuukausi",
+          "definition": "Kokonaisluvulla ilmaistu kuukausi, esim. 03.",
+          "position": 26
+        },
+        {
+          "id": 13458,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Duration/fi/1.1.1",
+          "notation": "Duration",
+          "title": "Ajankulku",
+          "definition": "",
+          "position": 27
+        },
+        {
+          "id": 13460,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#HexBinary/fi/1.1.1",
+          "notation": "HexBinary",
+          "title": "HeksaBinääri",
+          "position": 28
+        },
+        {
+          "id": 13471,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Base64Binary/fi/1.1.1",
+          "notation": "Base64Binary",
+          "title": "64binääri",
+          "position": 29
+        },
+        {
+          "id": 13452,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#AnyURI/fi/1.1.1",
+          "notation": "AnyURI",
+          "title": "URI",
+          "definition": "Uniform Resource Identifier, kuten ftp, http tai mailto, esim. http://www.w3.org/TR/xmlschema-2.",
+          "position": 30
+        },
+        {
+          "id": 13466,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DataType#Other/fi/1.1.1",
+          "notation": "Other",
+          "title": "Muu",
+          "definition": "Käytä, jos datan tyyppi on tiedossa, mutta ei listassa.",
+          "position": 31
+        }
+      ],
+      "comments": [],
+      "versionHistories": []
     }
   ]
 }

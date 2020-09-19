@@ -70,8 +70,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 345,
           "version": "1.0",
           "date": "2019-07-04",
+          "note": "",
           "changes": ""
         }
       ]

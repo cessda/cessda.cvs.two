@@ -1,17 +1,16 @@
 {
   "id": 61,
   "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType/en/1.1",
+  "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType/en/1.1/1.2",
   "notation": "DateType",
-  "versionNumber": "1.1",
+  "versionNumber": "1.2",
   "withdrawn": false,
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2019-11-25",
-  "notes": "The present list is based on ISO 8601 usage.\nThe previous version of this vocabulary may be accessed on the DDI Alliance site, at: http://www.ddialliance.org/controlled-vocabularies/all",
+  "publicationDate": "2020-08-31",
   "versions": [
     {
       "id": 277,

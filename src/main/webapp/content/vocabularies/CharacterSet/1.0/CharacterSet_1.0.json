@@ -1,16 +1,16 @@
 {
   "id": 58,
-  "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet/en/1.0",
+  "status": "DRAFT",
+  "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet/en/1.0/2.0",
   "notation": "CharacterSet",
-  "versionNumber": "1.0",
+  "versionNumber": "2.1",
   "withdrawn": false,
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2020-02-05",
+  "publicationDate": "2020-09-07",
   "notes": "This vocabulary lists some popular character sets but is not exhaustive. If the character set is not mentioned in the list, use 'Other' for this element and enter the specific name into the OtherValue element. You can search for the name of the character set in the list published by IANA (Internet Assigned Character Numbers). Use the \"preferred MIME-name\" if the IANA list specifies one, otherwise use the format in the Name field - http://www.iana.org/assignments/character-sets.",
   "versions": [
     {

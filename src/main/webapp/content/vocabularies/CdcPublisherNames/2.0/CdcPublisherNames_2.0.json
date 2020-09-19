@@ -205,9 +205,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 450,
           "version": "1.0",
           "date": "2020-06-23",
-          "note": "Used for the Publisher filter in CDC. No need for other language versions.",
+          "note": "",
           "changes": ""
         }
       ]

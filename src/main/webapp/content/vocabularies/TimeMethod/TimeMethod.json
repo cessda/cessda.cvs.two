@@ -555,8 +555,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 396,
           "version": "1.2.1",
           "date": "2019-10-22",
+          "note": "",
           "changes": ""
         }
       ]

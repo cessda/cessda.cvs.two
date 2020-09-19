@@ -231,8 +231,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 230,
           "version": "2.0.1",
           "date": "2019-07-23",
+          "note": "",
           "changes": ""
         }
       ]
@@ -1117,8 +1119,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 228,
           "version": "2.0.1",
           "date": "2019-04-03",
+          "note": "",
           "changes": ""
         }
       ]

@@ -1,17 +1,16 @@
 {
   "id": 47,
-  "status": "DRAFT",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.0",
+  "status": "PUBLISHED",
+  "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.0/3.0",
   "notation": "AnalysisUnit",
-  "versionNumber": "2.0",
+  "versionNumber": "3.0",
   "withdrawn": false,
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2019-10-13",
-  "notes": "<span style=\"line-height: 107%;\">This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all</span>",
+  "publicationDate": "2020-08-19",
   "versions": [
     {
       "id": 206,

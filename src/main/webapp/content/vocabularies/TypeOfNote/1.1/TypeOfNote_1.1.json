@@ -95,9 +95,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 293,
           "version": "1.0",
           "date": "2020-02-21",
-          "note": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
+          "note": "",
           "changes": ""
         }
       ]

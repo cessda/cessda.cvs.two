@@ -1,17 +1,16 @@
 {
   "id": 47,
-  "status": "DRAFT",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.0",
+  "status": "PUBLISHED",
+  "uri": "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.0/3.0",
   "notation": "AnalysisUnit",
-  "versionNumber": "2.0",
+  "versionNumber": "3.0",
   "withdrawn": false,
   "sourceLanguage": "en",
   "agencyId": 2,
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2019-10-13",
-  "notes": "<span style=\"line-height: 107%;\">This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all</span>",
+  "publicationDate": "2020-08-19",
   "versions": [
     {
       "id": 359,
@@ -202,8 +201,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 206,
           "version": "1.0",
           "date": "2019-04-02",
+          "note": "",
           "changes": ""
         }
       ]
@@ -395,8 +396,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 217,
           "version": "1.0.1",
           "date": "2019-04-02",
+          "note": "",
           "changes": ""
         }
       ]
@@ -599,14 +602,17 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 387,
           "version": "2.0.1",
           "date": "2020-01-16",
           "note": "",
           "changes": "CV definition rephrased.\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Maantieteellinen alue rephrased into Maantieteellinen yksikkö\nCode descriptive term rephrased: Teksti rephrased into Mediatyyppi: teksti\nCode definition rephrased: Henkilö\nCode definition rephrased: Perhe\nCode definition rephrased: Perhe: perhekotitalous\nCode definition rephrased: Kotitalous\nCode definition rephrased: Asuntokunta\nCode definition rephrased: Tapahtuma/prosessi/toiminta\nCode definition rephrased: Maantieteellinen yksikkö\nCode definition rephrased: Mediayksikkö: teksti\nCode definition rephrased: Ryhmä"
         },
         {
+          "id": 208,
           "version": "1.0.1",
           "date": "2019-04-02",
+          "note": "",
           "changes": ""
         }
       ]
@@ -799,8 +805,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 208,
           "version": "1.0.1",
           "date": "2019-04-02",
+          "note": "",
           "changes": ""
         }
       ]
@@ -1002,8 +1010,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 394,
           "version": "2.0.1",
           "date": "2019-10-22",
+          "note": "",
           "changes": ""
         }
       ]
@@ -1554,8 +1564,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 216,
           "version": "1.0.1",
           "date": "2019-04-02",
+          "note": "",
           "changes": ""
         }
       ]
@@ -2106,8 +2118,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 214,
           "version": "1.0.1",
           "date": "2019-04-02",
+          "note": "",
           "changes": ""
         }
       ]

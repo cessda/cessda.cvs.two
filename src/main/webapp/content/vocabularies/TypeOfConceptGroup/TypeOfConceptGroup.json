@@ -1,9 +1,9 @@
 {
   "id": 67,
-  "status": "PUBLISHED",
+  "status": "REVIEW",
   "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup/en/1.0",
   "notation": "TypeOfConceptGroup",
-  "versionNumber": "1.0",
+  "versionNumber": "1.1",
   "withdrawn": false,
   "sourceLanguage": "en",
   "agencyId": 2,

@@ -176,6 +176,71 @@
       "versionHistories": []
     },
     {
+      "id": 548,
+      "status": "PUBLISHED",
+      "itemType": "TL",
+      "language": "sr",
+      "publicationDate": "2020-09-07",
+      "number": "1.0.2",
+      "uri": "http://www.ddialliance.org/Specification/DDI-CV/CommonalityType/sr/1.0.2",
+      "canonicalUri": "urn:ddi:int.ddi.cv:CommonalityType:1.0",
+      "uriSl": "http://www.ddialliance.org/Specification/DDI-CV/CommonalityType/en/1.0",
+      "notation": "CommonalityType",
+      "title": "Vrste sličnosti",
+      "definition": "Opisuje stepen sličnosti između dve stavke, predmeta ili šeme (zbirke stavki).",
+      "previousVersion": 413,
+      "initialVersion": 413,
+      "notes": "",
+      "versionChanges": "<p>Translator agency link edited.</p>",
+      "license": "BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "/content/images/license/by.png",
+      "citation": "DDI Alliance. (2020). CommonalityType[Vrste sličnosti] (Version 1.0.2) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:CommonalityType:1.0.2. ",
+      "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module name: comparative \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/comparative_xsd/elements/CommonalityTypeCoded.html\">CommonalityTypeCoded</a> \n <br /> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary. \n</div>",
+      "translateAgency": "Data Centre Serbia for Social Sciences (DCS)",
+      "translateAgencyLink": "http://datacentarserbia.com",
+      "concepts": [
+        {
+          "id": 13055,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CommonalityType#Identical/sr/1.0.2",
+          "notation": "Identical",
+          "title": "Istovetno / identično",
+          "definition": "Koristite kada stavke koje poredite imaju identičan sadržaj. Na primer, za promenljive, svi elementi opisa promenljive (naziv, oznaka, tekst pitanja, vrednosti kategorije i kodovi, univerzum, koncept) su istovetni (identični).",
+          "previousConcept": 8096,
+          "position": 0
+        },
+        {
+          "id": 13056,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CommonalityType#Some/sr/1.0.2",
+          "notation": "Some",
+          "title": "Delimično",
+          "definition": "Koristite kada stavke koje poredite imaju sličan, ali ne identičan sadržaj. Na primer, za promenljive, neki elementi opisa promenljive (naziv, oznaka, tekst pitanja, vrednosti kategorije i kodovi, populacija, koncept) će biti istovetni (identični) po obliku, dok će drugi biti različiti.",
+          "previousConcept": 8097,
+          "position": 1
+        },
+        {
+          "id": 13057,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CommonalityType#None/sr/1.0.2",
+          "notation": "None",
+          "title": "Neuporedivo",
+          "definition": "Obično se ne koristi, jer se ne bi moglo očekivati poređenje stavki koji nemaju ništa zajedničko. Ovaj izraz je bio neophodan za kompletiranje opšteg raspona i može se upotrebljavati u posebnim slučajevima, prema potrebama korisnika (na primer, kada se uporedivost očekivala, ali nije pronađena).",
+          "previousConcept": 8098,
+          "position": 2
+        }
+      ],
+      "comments": [],
+      "versionHistories": [
+        {
+          "id": 413,
+          "version": "1.0.1",
+          "date": "2020-01-13",
+          "note": "",
+          "changes": ""
+        }
+      ]
+    },
+    {
       "id": 413,
       "status": "PUBLISHED",
       "itemType": "TL",

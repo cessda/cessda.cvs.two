@@ -777,13 +777,17 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 404,
           "version": "1.1.2",
           "date": "2019-11-06",
+          "note": "",
           "changes": "Probabiliste : stratifié => [séparées et mutuellement exclusives] => [séparées et mutuellement exclusifs]"
         },
         {
+          "id": 398,
           "version": "1.1.1",
           "date": "2019-10-22",
+          "note": "",
           "changes": ""
         }
       ]
@@ -993,8 +997,10 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 398,
           "version": "1.1.1",
           "date": "2019-10-22",
+          "note": "",
           "changes": ""
         }
       ]
