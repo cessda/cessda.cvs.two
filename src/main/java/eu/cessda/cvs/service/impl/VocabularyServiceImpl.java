@@ -1434,9 +1434,9 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( downloadType.equals( ExportService.DownloadType.SKOS ))
         {
             VersionDTO version = includedVersions.iterator().next();
-            String uriSl = version.getUri();
+            String uriSl = version.getUriSl();
             if( uriSl == null )
-                uriSl = version.getUriSl();
+                uriSl = version.getUri();
             // e.g. http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/en/1.2
             int index1 = uriSl.lastIndexOf("/" + vocabularyDTO.getSourceLanguage());
             int index2 = uriSl.lastIndexOf('/' );
