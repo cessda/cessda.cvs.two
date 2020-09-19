@@ -177,7 +177,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.noOfComments = this.version.comments!.length;
 
-    if (this.version.status === 'FINAL_REVIEW') {
+    if (this.version.status === 'REVIEW') {
       this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL'];
     } else {
       this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'CONTRIBUTOR_TL'];

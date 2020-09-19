@@ -206,8 +206,7 @@
                                         'active': lang === vocabulary.selectedLang,
                                         'source-lang': lang === vocabulary.sourceLanguage,
                                         'status-draft': isVersionContains( vocabulary, lang, 'DRAFT'),
-                                        'status-review-initial': isVersionContains( vocabulary, lang, 'INITIAL_REVIEW'),
-                                        'status-review-final': isVersionContains( vocabulary, lang, 'FINAL_REVIEW')}"
+                                        'status-review': isVersionContains( vocabulary, lang, 'REVIEW')}"
                                         ngbTooltip="{{getFormattedLangIso(vocabulary, lang, vocabulary.sourceLanguage)}}">
                                     {{lang}}
                                 </button>

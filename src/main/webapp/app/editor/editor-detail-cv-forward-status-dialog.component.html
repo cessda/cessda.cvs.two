@@ -1,7 +1,7 @@
     <div class="modal-header">
         <div class="modal-title" style="display: flex;">
-            <span *ngIf="versionParam!.status !== 'FINAL_REVIEW'">Confirm status change for Cv {{versionParam!.itemType}} {{getLangIsoFormatted(versionParam!.language!)}} <strong>{{versionParam!.notation}}</strong> </span>
-            <span *ngIf="versionParam!.status === 'FINAL_REVIEW'">Confirm publishing Cv {{versionParam!.itemType}} {{getLangIsoFormatted(versionParam!.language!)}} <strong>{{versionParam!.notation}}</strong> </span>
+            <span *ngIf="versionParam!.status !== 'REVIEW'">Confirm status change for Cv {{versionParam!.itemType}} {{getLangIsoFormatted(versionParam!.language!)}} <strong>{{versionParam!.notation}}</strong> </span>
+            <span *ngIf="versionParam!.status === 'REVIEW'">Confirm publishing Cv {{versionParam!.itemType}} {{getLangIsoFormatted(versionParam!.language!)}} <strong>{{versionParam!.notation}}</strong> </span>
         </div>
 
         <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
@@ -81,13 +81,12 @@
         <form name="cvForwardStatusForm" role="form" (ngSubmit)="forwardStatus()" novalidate [formGroup]="cvForwardStatusForm">
             <div class="row-content">
                 <a class="acc-header option-label col-12 mtop10" href="javascript:void(0);">
-                    <span *ngIf="versionParam!.status === 'FINAL_REVIEW'">&nbsp;<fa-icon [icon]="'archive'"></fa-icon> Manage Cv publication</span>
-                    <span *ngIf="versionParam!.status !== 'FINAL_REVIEW'">&nbsp;<fa-icon [icon]="'level-up-alt'"></fa-icon> Manage Cv status</span>
+                    <span *ngIf="versionParam!.status === 'REVIEW'">&nbsp;<fa-icon [icon]="'archive'"></fa-icon> Manage Cv publication</span>
+                    <span *ngIf="versionParam!.status !== 'REVIEW'">&nbsp;<fa-icon [icon]="'level-up-alt'"></fa-icon> Manage Cv status</span>
                 </a>
                 <div class="acc-body">
-                    <span *ngIf="versionParam!.status === 'DRAFT'">Are you sure to change Cv {{versionParam!.itemType}} <strong>{{versionParam!.notation}}</strong> status from DRAFT to INITIAL_REVIEW?</span>
-                    <span *ngIf="versionParam!.status === 'INITIAL_REVIEW'">Are you sure to change Cv {{versionParam!.itemType}} <strong>{{versionParam!.notation}}</strong> status from INITIAL_REVIEW to FINAL_REVIEW?</span>
-                    <div *ngIf="versionParam!.status === 'FINAL_REVIEW' && versionParam!.previousVersion" class="row-detail form-group mb-4">
+                    <span *ngIf="versionParam!.status === 'DRAFT'">Are you sure to change Cv {{versionParam!.itemType}} <strong>{{versionParam!.notation}}</strong> status from DRAFT to REVIEW?</span>
+                    <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group mb-4">
                         <div class="label-column-input label-right">
                             <span>Version notes</span>
                         </div>
@@ -95,10 +94,10 @@
                             <quill-editor class="small-quill" [placeholder]="''" [modules]="quillSimpleModule" name="versionNotes" formControlName="versionNotes"></quill-editor>
                         </div>
                     </div>
-                    <div *ngIf="versionParam!.status === 'FINAL_REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
+                    <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
                         <br/>
                     </div>
-                    <div *ngIf="versionParam!.status === 'FINAL_REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
+                    <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
                         <div class="label-column-input label-right">
                             <span>Version changes</span>
                         </div>
@@ -106,10 +105,10 @@
                             <quill-editor class="medium-quill" [placeholder]="''" [modules]="quillSimpleModule" name="versionChanges" formControlName="versionChanges"></quill-editor>
                         </div>
                     </div>
-                    <div *ngIf="versionParam!.status === 'FINAL_REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
+                    <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
                         <br/>
                     </div>
-                    <div *ngIf="versionParam!.status === 'FINAL_REVIEW'" class="row-detail form-group">
+                    <div *ngIf="versionParam!.status === 'REVIEW'" class="row-detail form-group">
                         <div class="label-column-input label-right">
                             <span class="label-required">License</span>
                         </div>
@@ -119,7 +118,7 @@
                             </select>
                         </div>
                     </div>
-                    <div *ngIf="versionParam!.status === 'FINAL_REVIEW' && isSlForm" class="row-detail form-group">
+                    <div *ngIf="versionParam!.status === 'REVIEW' && isSlForm" class="row-detail form-group">
                         <div class="label-column-input label-right">
                             <span class="label-required">Version number</span>
                         </div>
@@ -142,7 +141,7 @@
                             </small>
                         </div>
                     </div>
-                    <div *ngIf="versionParam!.status === 'FINAL_REVIEW' && !isSlForm" class="row-detail form-group">
+                    <div *ngIf="versionParam!.status === 'REVIEW' && !isSlForm" class="row-detail form-group">
                         <div class="label-column-input label-right">
                             <span class="label-required">Version number</span>
                         </div>
@@ -181,14 +180,13 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
                     <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
                 </button>
-                <button *ngIf="versionParam!.status === 'FINAL_REVIEW'" type="button" ngbTooltip="Save current information, without changing CV status" class="btn btn-primary" data-dismiss="modal" (click)="saveVersionInfo()">
+                <button *ngIf="versionParam!.status === 'REVIEW'" type="button" ngbTooltip="Save current information, without changing CV status" class="btn btn-primary" data-dismiss="modal" (click)="saveVersionInfo()">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Save</span>
                 </button>
                 <button type="submit" id="save-new-cv" [disabled]="cvForwardStatusForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;
-                    <span *ngIf="versionParam!.status === 'DRAFT'">INITIAL_REVIEW</span>
-                    <span *ngIf="versionParam!.status === 'INITIAL_REVIEW'">FINAL_REVIEW</span>
-                    <span *ngIf="versionParam!.status === 'FINAL_REVIEW'">PUBLISH</span>
+                    <span *ngIf="versionParam!.status === 'DRAFT'">REVIEW</span>
+                    <span *ngIf="versionParam!.status === 'REVIEW'">PUBLISH</span>
                 </button>
             </div>
         </form>

@@ -71,11 +71,9 @@ export class AccountService {
       case 'ADD_USAGE_CV':
       case 'ADD_TL_CV':
       case 'WITHDRAWN_CV':
-      case 'FORWARD_CV_SL_STATUS_INITIAL_REVIEW':
-      case 'FORWARD_CV_SL_STATUS_FINAL_REVIEW':
+      case 'FORWARD_CV_SL_STATUS_REVIEW':
       case 'FORWARD_CV_SL_STATUS_PUBLISH':
-      case 'FORWARD_CV_TL_STATUS_INITIAL_REVIEW':
-      case 'FORWARD_CV_TL_STATUS_FINAL_REVIEW':
+      case 'FORWARD_CV_TL_STATUS_REVIEW':
       case 'FORWARD_CV_TL_STATUS_PUBLISH':
       case 'CREATE_CODE':
       case 'EDIT_CODE':
@@ -84,7 +82,7 @@ export class AccountService {
       case 'ADD_TL_CODE':
       case 'EDIT_TL_CODE':
       case 'DELETE_TL_CODE':
-      case 'PERFORM_ACTION_IN_FINAL_REVIEW':
+      case 'PERFORM_ACTION_IN_REVIEW':
       case 'CREATE_NEW_CV_SL_VERSION':
       case 'CREATE_NEW_CV_TL_VERSION': {
         return this.hasAgencyRole(agencyId, agencyRoles, language);

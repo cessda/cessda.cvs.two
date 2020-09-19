@@ -204,17 +204,11 @@ public class EditorResource {
         }
         // check authorization
         switch ( vocabularySnippet.getActionType() ){
-            case FORWARD_CV_SL_STATUS_INITIAL_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_INITIAL_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_INITIAL_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.INITIAL_REVIEW.toString());
-                vocabularyDTO.setStatus(Status.INITIAL_REVIEW.toString());
-                break;
-            case FORWARD_CV_SL_STATUS_FINAL_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_FINAL_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_FINAL_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.FINAL_REVIEW.toString());
-                vocabularyDTO.setStatus(Status.FINAL_REVIEW.toString());
+            case FORWARD_CV_SL_STATUS_REVIEW:
+                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_REVIEW,
+                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
+                versionDTO.setStatus(Status.REVIEW.toString());
+                vocabularyDTO.setStatus(Status.REVIEW.toString());
                 break;
             case FORWARD_CV_SL_STATUS_PUBLISHED:
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_PUBLISHED,
@@ -224,15 +218,10 @@ public class EditorResource {
                 versionDTO.prepareSlPublishing(vocabularySnippet, licenceDTO, agencyDTO);
                 vocabularyDTO.prepareSlPublishing(versionDTO);
                 break;
-            case FORWARD_CV_TL_STATUS_INITIAL_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_INITIAL_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_INITIAL_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.INITIAL_REVIEW.toString());
-                break;
-            case FORWARD_CV_TL_STATUS_FINAL_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_FINAL_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_FINAL_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.FINAL_REVIEW.toString());
+            case FORWARD_CV_TL_STATUS_REVIEW:
+                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_REVIEW,
+                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
+                versionDTO.setStatus(Status.REVIEW.toString());
                 break;
             case FORWARD_CV_TL_STATUS_PUBLISHED:
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_PUBLISHED,

@@ -7,7 +7,7 @@
                         <fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon>
                         <fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon>
                     </button>
-                    {{concept.notation}}
+                    {{concept.position}} {{concept.notation}}
                 </span>
                 <span *ngIf="concept.titleSl" class="columnSl2">
                     {{concept.titleSl}}

@@ -97,7 +97,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       if (account) {
         this.account = account;
 
-        if (this.versionParam!.status !== 'FINAL_REVIEW') {
+        if (this.versionParam!.status !== 'REVIEW') {
           this.cvForwardStatusForm.removeControl('versionNotes');
           this.cvForwardStatusForm.removeControl('versionChanges');
           this.cvForwardStatusForm.removeControl('versionNumberSl');
@@ -194,10 +194,8 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     };
 
     if (this.versionParam!.status === 'DRAFT') {
-      vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_INITIAL_REVIEW' : 'FORWARD_CV_TL_STATUS_INITIAL_REVIEW';
-    } else if (this.versionParam!.status === 'INITIAL_REVIEW') {
-      vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_FINAL_REVIEW' : 'FORWARD_CV_TL_STATUS_FINAL_REVIEW';
-    } else if (this.versionParam!.status === 'FINAL_REVIEW') {
+      vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_REVIEW' : 'FORWARD_CV_TL_STATUS_REVIEW';
+    } else if (this.versionParam!.status === 'REVIEW') {
       vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_PUBLISHED' : 'FORWARD_CV_TL_STATUS_PUBLISHED';
       vocabularySnippet.licenseId = this.cvForwardStatusForm.get(['licenseId'])!.value;
 
