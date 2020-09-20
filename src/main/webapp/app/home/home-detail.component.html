@@ -287,10 +287,12 @@
                             </div>
 
                             <div *ngIf="i < getVersionByLangNumber()!.versionHistories!.length -1">
-                                <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="getVersionByLangNumber()!.language + '-' + vh.version"
-                                         [langVersion2]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![i + 1].version"
-                                            [dataSource]="'JSON'">
-                                </jhi-version-compare>
+                                <ng-container *ngIf="vh.prevVersion">
+                                    <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="getVersionByLangNumber()!.language + '-' + vh.version"
+                                             [langVersion2]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![i + 1].version"
+                                                [dataSource]="'JSON'">
+                                    </jhi-version-compare>
+                                </ng-container>
                             </div>
                         </div>
                     </div>

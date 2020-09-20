@@ -671,6 +671,11 @@ public class VocabularyServiceImpl implements VocabularyService {
     public VersionDTO cloneTl(VersionDTO currentVersionSl, VersionDTO prevVersionSl, VersionDTO prevVersionTl) {
         VersionDTO newTlVersion = new VersionDTO( prevVersionTl, currentVersionSl);
         newTlVersion.setCreator( SecurityUtils.getCurrentUserId() );
+        // if previous TL version is not published yet, assign version as initial version
+        if( !prevVersionTl.getStatus().equals( Status.PUBLISHED.toString()) ) {
+            newTlVersion.setPreviousVersion( null );
+            newTlVersion.setInitialVersion( null );
+        }
         newTlVersion = versionService.save( newTlVersion );
 
         VersionDTO finalNewTlVersion = newTlVersion;
@@ -698,6 +703,12 @@ public class VocabularyServiceImpl implements VocabularyService {
                     newConceptTl.setTitle( prevConceptTl.getTitle());
                     newConceptTl.setDefinition(prevConceptTl.getDefinition());
                     newConceptTl.setPreviousConcept( prevConceptTl.getId() );
+                    // if previous TL version is not published yet, assign concept as initial concept
+                    if( !prevVersionTl.getStatus().equals( Status.PUBLISHED.toString()) ) {
+                        newConceptTl.setPreviousConcept( null );
+                    } else {
+                        newConceptTl.setPreviousConcept( prevConceptTl.getId() );
+                    }
                 }
             }
 
@@ -1337,6 +1348,8 @@ public class VocabularyServiceImpl implements VocabularyService {
             versionHistoryMap.put("date" , olderVersion.getPublicationDate().toString() );
             versionHistoryMap.put("note" , olderVersion.getVersionNotes());
             versionHistoryMap.put("changes", olderVersion.getVersionChanges());
+            if ( olderVersion.getPreviousVersion() != null && !olderVersion.getPreviousVersion().equals(olderVersion.getId()))
+                versionHistoryMap.put("prevVersion", olderVersion.getPreviousVersion());
             olderVersionHistories.add(versionHistoryMap);
         }
         version.setVersionHistories(olderVersionHistories);

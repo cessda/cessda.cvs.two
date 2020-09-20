@@ -543,10 +543,12 @@
                                     </div>
 
                                     <div class="editor-comparator" *ngIf="i < version!.versionHistories!.length -1">
-                                        <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.language + '-' + vh.version"
-                                                             [langVersion2]="version!.language + '-' + version!.versionHistories![i + 1].version"
-                                                            [dataSource]="'JSON'">
-                                        </jhi-version-compare>
+                                        <ng-container *ngIf="vh.prevVersion">
+                                            <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.language + '-' + vh.version"
+                                                                 [langVersion2]="version!.language + '-' + version!.versionHistories![i + 1].version"
+                                                                 [dataSource]="'JSON'">
+                                            </jhi-version-compare>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>

@@ -1,27 +1,52 @@
-<form name="newVersionForm" (ngSubmit)="confirmCreateNewVersion(versionParam.id!)">
+<form name="newVersionForm" (ngSubmit)="confirmCreateNewVersion(versionParam.id!)" novalidate [formGroup]="newVersionForm">
     <div class="modal-header">
         <h4 class="modal-title">
-            <span>Confirm create new version from <strong>{{vocabularyParam.notation}}</strong> {{versionParam.itemType}} {{getLangIsoFormatted(versionParam.language!)}}</span>
+            <span>Confirm create new version from {{versionParam.itemType}} {{getLangIsoFormatted(versionParam.language!)}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}</span>
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <span>Are you sure to create new version from <strong>{{vocabularyParam.notation}}</strong> {{versionParam.itemType}} {{getLangIsoFormatted(versionParam.language!)}}</span>
+        <span>Are you sure to create new version from {{versionParam.itemType}} {{getLangIsoFormatted(versionParam.language!)}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}?</span>
+        <br/><br/>
         <div *ngIf="versionParam.itemType === 'SL' && vocabularyParam.versions && vocabularyParam.versions!.length > 1">
-            <br/>
-            The following TL versions would also be cloned as DRAFT after this new SL version is published:
+            The following TLs will also be cloned as DRAFT after this new SL version is published:
             <div *ngFor="let version of vocabularyParam.versions">
-                <span *ngIf="version.itemType === 'TL'">- TL {{getLangIsoFormatted(version.language!)}} {{version.number!}}-{{version.status!}}</span><br/>
+                <span *ngIf="version.itemType === 'TL'">- TL {{getLangIsoFormatted(version.language!)}} {{version.number!}}-{{version.status!}}<br/></span>
             </div>
+        </div>
+        <br/>
+        <div *ngIf="unPublishedTls && unPublishedTls !== ''" class="alert alert-danger" role="alert">
+            <fa-icon style="font-size:200%" [icon]="'exclamation-triangle'"></fa-icon>
+            <span>Warning: The following Translated-Languages (TLs) are not yet published:</span><br/>
+            <span [innerHTML]="unPublishedTls"></span><br/><br/>
+            <span>Unpublished TLs will be removed from this version <strong>{{versionParam.number}}</strong>. Therefore, the following will be applied:</span><br/>
+            <span>- The unpublished then cloned TLs in the new version will be assigned as a new initial version if they are published.</span><br/>
+            <span>- The TLs version-histories, including the past ones, are still accessible from the TL's version tab.</span><br/>
+            <span>- However, the prev-next version compare feature will not work, since the new TLs will not be linked to the previous ones </span><br/><br/>
+
+            <div class="form-check">
+                <label class="form-check-label" for="agreeNewVersion">
+                    <input class="form-check-input" type="checkbox" name="agreeNewVersion" id="agreeNewVersion" formControlName="agreeNewVersion" required />
+                    <span>I understand the circumstance, let me create a new version for SL {{getLangIsoFormatted(versionParam.language!)}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}.</span>
+                </label>
+                <div *ngIf="newVersionForm.get('agreeNewVersion')!.invalid && (newVersionForm.get('agreeNewVersion')!.dirty || newVersionForm.get('agreeNewVersion')!.touched)">
+                    <small class="form-text text-danger"
+                           *ngIf="newVersionForm.get('agreeNewVersion')?.errors?.required"
+                           jhiTranslate="global.messages.validate.email.required">
+                        Please agree by checks this checkbox.
+                    </small>
+                </div>
+            </div>
+
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
-        <button id="jhi-confirm-delete-vocabulary" [disabled]="isSaving" type="submit" class="btn btn-primary">
+        <button id="jhi-confirm-delete-vocabulary" [disabled]="newVersionForm.invalid || isSaving" type="submit" class="btn btn-primary">
             <fa-icon [icon]="'folder-plus'"></fa-icon>&nbsp;<span>Create new version</span>
         </button>
     </div>
