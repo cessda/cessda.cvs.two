@@ -14,7 +14,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="cvsApp.licence.name" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
-                           formControlName="name"/>
+                           formControlName="name" placeholder="e.g. Creative Commons Attribution 4.0 International"/>
                     <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
                         <small class="form-text text-danger"
                                *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -30,7 +30,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="cvsApp.licence.link" for="field_link">Link</label>
                     <input type="text" class="form-control" name="link" id="field_link"
-                           formControlName="link"/>
+                           formControlName="link" placeholder="e.g. http://creativecommons.org/licenses/by/4.0/"/>
                     <div *ngIf="editForm.get('link')!.invalid && (editForm.get('link')!.dirty || editForm.get('link')!.touched)">
                         <small class="form-text text-danger"
                                *ngIf="editForm.get('link')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">
@@ -54,7 +54,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="cvsApp.licence.abbr" for="field_abbr">Abbr</label>
                     <input type="text" class="form-control" name="abbr" id="field_abbr"
-                           formControlName="abbr"/>
+                           formControlName="abbr" placeholder="e.g. BY"/>
                     <div *ngIf="editForm.get('abbr')!.invalid && (editForm.get('abbr')!.dirty || editForm.get('abbr')!.touched)">
                         <small class="form-text text-danger"
                                *ngIf="editForm.get('abbr')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 255 }">

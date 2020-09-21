@@ -18,7 +18,8 @@
       },
       "name": "Name",
       "link": "Link",
-      "logoLink": "Logo Link"
+      "logoLink": "Logo Link",
+      "abbr": "Abbreviation"
     }
   }
 }
