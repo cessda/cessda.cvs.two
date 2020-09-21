@@ -113,18 +113,21 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   }
 
   getUniqueVersionLang(): string[] {
-    const uniqueLang: string[] = [];
+    let uniqueLang: string[] = [];
     this.vocabulary!.versions!.forEach(v => {
-      if (v.number!.startsWith(this.vocabulary!.versions![0]!.number!)) {
+      if (v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some( l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
+    // sort only the SL & TLs in the current version
+    uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
+
     this.vocabulary!.versions!.forEach(v => {
-      if (!v.number!.startsWith(this.vocabulary!.versions![0]!.number!)) {
+      if (!v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some( l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
-    return [...new Set(uniqueLang)];
+    return uniqueLang;
   }
 
   getVersionsByLanguage(lang?: string): IVersion[] {

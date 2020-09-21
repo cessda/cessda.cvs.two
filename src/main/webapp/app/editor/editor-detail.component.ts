@@ -229,9 +229,11 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getUniqueVersionLang(): string[] {
     const uniqueLang: string[] = [];
     this.vocabulary!.versions!.forEach(v => {
-      uniqueLang.push(v.language!);
+      if( !uniqueLang.some( l => l === v.language)) {
+        uniqueLang.push(v.language!);
+      }
     });
-    return [...new Set(uniqueLang)];
+    return VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
   }
 
   getVersionsByLanguage(lang?: string): IVersion[] {
