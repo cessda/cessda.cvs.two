@@ -235,7 +235,8 @@
           "version": "2.0.1",
           "date": "2019-07-23",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -1123,7 +1124,8 @@
           "version": "2.0.1",
           "date": "2019-04-03",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },

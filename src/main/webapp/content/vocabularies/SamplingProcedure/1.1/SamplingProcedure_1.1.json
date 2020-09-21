@@ -781,14 +781,16 @@
           "version": "1.1.2",
           "date": "2019-11-06",
           "note": "",
-          "changes": "Probabiliste : stratifié => [séparées et mutuellement exclusives] => [séparées et mutuellement exclusifs]"
+          "changes": "Probabiliste : stratifié => [séparées et mutuellement exclusives] => [séparées et mutuellement exclusifs]",
+          "prevVersion": 398
         },
         {
           "id": 398,
           "version": "1.1.1",
           "date": "2019-10-22",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -1001,7 +1003,8 @@
           "version": "1.1.1",
           "date": "2019-10-22",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },

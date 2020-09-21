@@ -74,7 +74,8 @@
           "version": "1.0",
           "date": "2019-07-04",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

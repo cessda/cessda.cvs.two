@@ -217,14 +217,16 @@
           "version": "2.0",
           "date": "2019-10-13",
           "note": "A number of amendments were made based on user feedback. New code PoliticalAdministrativeArea added. New code MediaUnit and its subterms added. TextUnit was made a narrower term in the MediaUnit hierarchy. Several code definitions and the vocabulary definition were amended for clarity. Usage information updated.",
-          "changes": "CV definition amended\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organization rephrased into Organization/Institution\nCode descriptive term rephrased: Housing Unit rephrased into Housing unit\nCode descriptive term rephrased: Event/Process rephrased into Event/Process/Activity\nCode descriptive term rephrased: Geographic Unit rephrased into Geographic unit\nCode descriptive term rephrased: Time Unit rephrased into Time unit\nCode descriptive term rephrased: Text Unit rephrased into Media unit: Text\nCode definition amended with meaning change: OrganizationOrInstitution\nCode definition amended with meaning change: EventOrProcessOrActivity\nCode definition rephrased: Individual\nCode definition rephrased: Family\nCode definition rephrased: Family.HouseholdFamily\nCode definition rephrased: Geographic unit\nCode definition rephrased: MediaUnit.Text\nCode definition rephrased: Group\n"
+          "changes": "CV definition amended\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organization rephrased into Organization/Institution\nCode descriptive term rephrased: Housing Unit rephrased into Housing unit\nCode descriptive term rephrased: Event/Process rephrased into Event/Process/Activity\nCode descriptive term rephrased: Geographic Unit rephrased into Geographic unit\nCode descriptive term rephrased: Time Unit rephrased into Time unit\nCode descriptive term rephrased: Text Unit rephrased into Media unit: Text\nCode definition amended with meaning change: OrganizationOrInstitution\nCode definition amended with meaning change: EventOrProcessOrActivity\nCode definition rephrased: Individual\nCode definition rephrased: Family\nCode definition rephrased: Family.HouseholdFamily\nCode definition rephrased: Geographic unit\nCode definition rephrased: MediaUnit.Text\nCode definition rephrased: Group\n",
+          "prevVersion": 206
         },
         {
           "id": 206,
           "version": "1.0",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -436,28 +438,32 @@
           "id": 471,
           "version": "3.0.2",
           "date": "2020-08-21",
-          "changes": "Code descriptive term rephrased - Graphics</br>CV definition rephrased - AnalysisUnit"
+          "changes": "Code descriptive term rephrased - Graphics</br>CV definition rephrased - AnalysisUnit",
+          "prevVersion": 458
         },
         {
           "id": 458,
           "version": "3.0.1",
           "date": "2020-08-21",
           "note": "<p>fsdfserfgercfsdfrew</p>",
-          "changes": "<p>CV definition amended with meaning change - AnalysisUnit</p><p>Code descriptive term rephrased - Objects</p><p>Code definition amended with meaning change - HousingUnit</p>"
+          "changes": "<p>CV definition amended with meaning change - AnalysisUnit</p><p>Code descriptive term rephrased - Objects</p><p>Code definition amended with meaning change - HousingUnit</p>",
+          "prevVersion": 390
         },
         {
           "id": 390,
           "version": "2.0.1",
           "date": "2019-11-04",
           "note": "",
-          "changes": "CV name changed: Analysenhed to Analyseenhed\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organisation rephrased into Organisation/Institution \nCode descriptive term rephrased: Event/Proces rephrased into Event/Proces/Aktivitet\nCode descriptive term rephrased:  Tekst rephrased into Medieenhed: Tekst\nCode definition rephrased: Organisation/Institution\nCode definition rephrased: Husstand\nCode definition rephrased:  Boligenhed\nCode definition amended with meaning change: Event/Proces/Aktivitet\nCode definition rephrased: Geografisk enhed\nCode definition rephrased: Gruppe\nCode definition rephrased: Objekt\nCode definition rephrased:  Andet\n"
+          "changes": "CV name changed: Analysenhed to Analyseenhed\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organisation rephrased into Organisation/Institution \nCode descriptive term rephrased: Event/Proces rephrased into Event/Proces/Aktivitet\nCode descriptive term rephrased:  Tekst rephrased into Medieenhed: Tekst\nCode definition rephrased: Organisation/Institution\nCode definition rephrased: Husstand\nCode definition rephrased:  Boligenhed\nCode definition amended with meaning change: Event/Proces/Aktivitet\nCode definition rephrased: Geografisk enhed\nCode definition rephrased: Gruppe\nCode definition rephrased: Objekt\nCode definition rephrased:  Andet\n",
+          "prevVersion": 217
         },
         {
           "id": 217,
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -670,21 +676,24 @@
           "version": "3.0.1",
           "date": "2020-08-21",
           "note": "<p>fsdfserfgercfsdfrew</p>",
-          "changes": "<p>CV definition amended with meaning change - AnalysisUnit</p><p>Code descriptive term rephrased - Objects</p><p>Code definition amended with meaning change - HousingUnit</p>"
+          "changes": "<p>CV definition amended with meaning change - AnalysisUnit</p><p>Code descriptive term rephrased - Objects</p><p>Code definition amended with meaning change - HousingUnit</p>",
+          "prevVersion": 390
         },
         {
           "id": 390,
           "version": "2.0.1",
           "date": "2019-11-04",
           "note": "",
-          "changes": "CV name changed: Analysenhed to Analyseenhed\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organisation rephrased into Organisation/Institution \nCode descriptive term rephrased: Event/Proces rephrased into Event/Proces/Aktivitet\nCode descriptive term rephrased:  Tekst rephrased into Medieenhed: Tekst\nCode definition rephrased: Organisation/Institution\nCode definition rephrased: Husstand\nCode definition rephrased:  Boligenhed\nCode definition amended with meaning change: Event/Proces/Aktivitet\nCode definition rephrased: Geografisk enhed\nCode definition rephrased: Gruppe\nCode definition rephrased: Objekt\nCode definition rephrased:  Andet\n"
+          "changes": "CV name changed: Analysenhed to Analyseenhed\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organisation rephrased into Organisation/Institution \nCode descriptive term rephrased: Event/Proces rephrased into Event/Proces/Aktivitet\nCode descriptive term rephrased:  Tekst rephrased into Medieenhed: Tekst\nCode definition rephrased: Organisation/Institution\nCode definition rephrased: Husstand\nCode definition rephrased:  Boligenhed\nCode definition amended with meaning change: Event/Proces/Aktivitet\nCode definition rephrased: Geografisk enhed\nCode definition rephrased: Gruppe\nCode definition rephrased: Objekt\nCode definition rephrased:  Andet\n",
+          "prevVersion": 217
         },
         {
           "id": 217,
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -896,14 +905,16 @@
           "version": "2.0.1",
           "date": "2019-11-04",
           "note": "",
-          "changes": "CV name changed: Analysenhed to Analyseenhed\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organisation rephrased into Organisation/Institution \nCode descriptive term rephrased: Event/Proces rephrased into Event/Proces/Aktivitet\nCode descriptive term rephrased:  Tekst rephrased into Medieenhed: Tekst\nCode definition rephrased: Organisation/Institution\nCode definition rephrased: Husstand\nCode definition rephrased:  Boligenhed\nCode definition amended with meaning change: Event/Proces/Aktivitet\nCode definition rephrased: Geografisk enhed\nCode definition rephrased: Gruppe\nCode definition rephrased: Objekt\nCode definition rephrased:  Andet\n"
+          "changes": "CV name changed: Analysenhed to Analyseenhed\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organisation rephrased into Organisation/Institution \nCode descriptive term rephrased: Event/Proces rephrased into Event/Proces/Aktivitet\nCode descriptive term rephrased:  Tekst rephrased into Medieenhed: Tekst\nCode definition rephrased: Organisation/Institution\nCode definition rephrased: Husstand\nCode definition rephrased:  Boligenhed\nCode definition amended with meaning change: Event/Proces/Aktivitet\nCode definition rephrased: Geografisk enhed\nCode definition rephrased: Gruppe\nCode definition rephrased: Objekt\nCode definition rephrased:  Andet\n",
+          "prevVersion": 217
         },
         {
           "id": 217,
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -1244,14 +1255,16 @@
           "version": "2.0.1",
           "date": "2020-01-16",
           "note": "",
-          "changes": "CV definition rephrased.\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Maantieteellinen alue rephrased into Maantieteellinen yksikkö\nCode descriptive term rephrased: Teksti rephrased into Mediatyyppi: teksti\nCode definition rephrased: Henkilö\nCode definition rephrased: Perhe\nCode definition rephrased: Perhe: perhekotitalous\nCode definition rephrased: Kotitalous\nCode definition rephrased: Asuntokunta\nCode definition rephrased: Tapahtuma/prosessi/toiminta\nCode definition rephrased: Maantieteellinen yksikkö\nCode definition rephrased: Mediayksikkö: teksti\nCode definition rephrased: Ryhmä"
+          "changes": "CV definition rephrased.\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Maantieteellinen alue rephrased into Maantieteellinen yksikkö\nCode descriptive term rephrased: Teksti rephrased into Mediatyyppi: teksti\nCode definition rephrased: Henkilö\nCode definition rephrased: Perhe\nCode definition rephrased: Perhe: perhekotitalous\nCode definition rephrased: Kotitalous\nCode definition rephrased: Asuntokunta\nCode definition rephrased: Tapahtuma/prosessi/toiminta\nCode definition rephrased: Maantieteellinen yksikkö\nCode definition rephrased: Mediayksikkö: teksti\nCode definition rephrased: Ryhmä",
+          "prevVersion": 208
         },
         {
           "id": 208,
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -1456,7 +1469,8 @@
           "version": "2.0.1",
           "date": "2019-10-22",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -1831,7 +1845,8 @@
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -2385,7 +2400,8 @@
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

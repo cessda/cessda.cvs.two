@@ -211,14 +211,16 @@
           "version": "2.0",
           "date": "2020-07-09",
           "note": "",
-          "changes": "Code added: SODA\nCode added: FORS\n"
+          "changes": "Code added: SODA\nCode added: FORS\n",
+          "prevVersion": 450
         },
         {
           "id": 450,
           "version": "1.0",
           "date": "2020-06-23",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

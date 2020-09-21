@@ -236,7 +236,8 @@
           "version": "1.0.1",
           "date": "2020-01-13",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },

@@ -99,7 +99,8 @@
           "version": "1.0",
           "date": "2020-02-21",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

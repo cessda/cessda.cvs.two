@@ -205,7 +205,8 @@
           "version": "1.0",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -400,7 +401,8 @@
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -606,14 +608,16 @@
           "version": "2.0.1",
           "date": "2020-01-16",
           "note": "",
-          "changes": "CV definition rephrased.\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Maantieteellinen alue rephrased into Maantieteellinen yksikkö\nCode descriptive term rephrased: Teksti rephrased into Mediatyyppi: teksti\nCode definition rephrased: Henkilö\nCode definition rephrased: Perhe\nCode definition rephrased: Perhe: perhekotitalous\nCode definition rephrased: Kotitalous\nCode definition rephrased: Asuntokunta\nCode definition rephrased: Tapahtuma/prosessi/toiminta\nCode definition rephrased: Maantieteellinen yksikkö\nCode definition rephrased: Mediayksikkö: teksti\nCode definition rephrased: Ryhmä"
+          "changes": "CV definition rephrased.\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Maantieteellinen alue rephrased into Maantieteellinen yksikkö\nCode descriptive term rephrased: Teksti rephrased into Mediatyyppi: teksti\nCode definition rephrased: Henkilö\nCode definition rephrased: Perhe\nCode definition rephrased: Perhe: perhekotitalous\nCode definition rephrased: Kotitalous\nCode definition rephrased: Asuntokunta\nCode definition rephrased: Tapahtuma/prosessi/toiminta\nCode definition rephrased: Maantieteellinen yksikkö\nCode definition rephrased: Mediayksikkö: teksti\nCode definition rephrased: Ryhmä",
+          "prevVersion": 208
         },
         {
           "id": 208,
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -809,7 +813,8 @@
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -1014,7 +1019,8 @@
           "version": "2.0.1",
           "date": "2019-10-22",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -1568,7 +1574,8 @@
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -2122,7 +2129,8 @@
           "version": "1.0.1",
           "date": "2019-04-02",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

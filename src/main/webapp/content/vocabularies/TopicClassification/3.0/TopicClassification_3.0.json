@@ -955,7 +955,8 @@
           "version": "2.0",
           "date": "2019-05-06",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -1854,7 +1855,8 @@
           "version": "2.0.1",
           "date": "2019-05-15",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -2753,7 +2755,8 @@
           "version": "2.0.1",
           "date": "2019-05-15",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -3652,14 +3655,16 @@
           "version": "3.0.1",
           "date": "2019-06-03",
           "note": "New Finnish version published to include code values changes made to SL 3.0. Typo corrections to definitions.",
-          "changes": "Code definition rephrased: sairastuvuus ja kuolleisuus\nCode definition rephrased: talouden tila ja tunnusluvut\nCode definition rephrased: talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö\nCode definition rephrased: toisen ja korkea-asteen koulutus\nCode definition rephrased: täydennys- ja jatkokoulutus,  elinikäinen oppiminen\nCode definition rephrased: koulutuspolitiikka\nCode definition rephrased: terveyspalvelut ja terveyspolitiikka\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: terveyskäyttäytyminen\nCode definition rephrased: työpaikkakoulutus\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: tietoyhteiskunta\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: KULKEMINEN, KULJETUS JA LIIKENNE\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry"
+          "changes": "Code definition rephrased: sairastuvuus ja kuolleisuus\nCode definition rephrased: talouden tila ja tunnusluvut\nCode definition rephrased: talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö\nCode definition rephrased: toisen ja korkea-asteen koulutus\nCode definition rephrased: täydennys- ja jatkokoulutus,  elinikäinen oppiminen\nCode definition rephrased: koulutuspolitiikka\nCode definition rephrased: terveyspalvelut ja terveyspolitiikka\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: terveyskäyttäytyminen\nCode definition rephrased: työpaikkakoulutus\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: tietoyhteiskunta\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: KULKEMINEN, KULJETUS JA LIIKENNE\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry",
+          "prevVersion": 258
         },
         {
           "id": 258,
           "version": "2.0.1",
           "date": "2019-05-15",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -4558,7 +4563,8 @@
           "version": "2.0.1",
           "date": "2019-05-15",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -6260,7 +6266,8 @@
           "version": "2.0.1",
           "date": "2019-05-16",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -7159,7 +7166,8 @@
           "version": "2.0.1",
           "date": "2019-05-16",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -8058,7 +8066,8 @@
           "version": "2.0.1",
           "date": "2019-05-16",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

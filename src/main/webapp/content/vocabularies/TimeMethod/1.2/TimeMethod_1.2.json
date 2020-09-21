@@ -559,7 +559,8 @@
           "version": "1.2.1",
           "date": "2019-10-22",
           "note": "",
-          "changes": ""
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
