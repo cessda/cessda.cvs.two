@@ -431,7 +431,7 @@
                             </td>
 
                             <td *ngIf="!getVersionsByLanguage(lang)![0]!.number!.startsWith(getSlVersion()!.number!)" class="tac" colspan="3">
-                                The {{getFormattedLang(lang)}} {{getSlVersion()!.number}}.x has not been released yet. You could export this version
+                                The {{getFormattedLang(lang)}} {{getSlVersion()!.number}}.x has not been released yet. You can export the previous version
                                 <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getVersionsByLanguage(lang)![0]!.number, lang:lang, tab:'export'}" target="_blank">here</a>.
                             </td>
                             <ng-container *ngIf="getVersionsByLanguage(lang)![0]!.number!.startsWith(getSlVersion()!.number!)">
