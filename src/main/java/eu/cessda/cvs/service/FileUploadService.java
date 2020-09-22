@@ -23,10 +23,11 @@ public class FileUploadService {
     public void uploadFile (FileUploadHelper fileUploadHelper) {
         switch ( fileUploadHelper.getFileUploadType()) {
             case IMAGE_AGENCY:
+            case IMAGE_LICENSE:
                 uploadImage(fileUploadHelper );
                 break;
             case CSV:
-
+                // STILL EMPTY, NO IMPLEMENTATION
                 break;
             default:
         }

@@ -720,6 +720,9 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     @Override
     public VocabularyDTO getWithVersionsByNotationAndVersion(String notation, String slVersionNumber) {
+        // get all available licenses
+        final List<Licence> licenceList = licenceRepository.findAll();
+
         if( slVersionNumber == null || slVersionNumber.isEmpty()) {
             log.error("Error version number could not be empty or null");
             throw new IllegalArgumentException("Error version number  could not be empty or null");
@@ -746,6 +749,14 @@ public class VocabularyServiceImpl implements VocabularyService {
             LinkedHashSet<ConceptDTO> sortedConcepts = version.getConcepts().stream()
                 .sorted(Comparator.comparing(ConceptDTO::getPosition)).collect(Collectors.toCollection(LinkedHashSet::new));
             version.setConcepts(sortedConcepts);
+
+            // assign licence
+            licenceList.stream().filter(l -> l.getId().equals(version.getLicenseId())).findFirst().ifPresent(l -> {
+                version.setLicense( l.getAbbr() );
+                version.setLicenseLink( l.getLink() );
+                version.setLicenseName( l.getName() );
+                version.setLicenseLogo( l.getLogoLink() );
+            });
 
             // add history
             addVersionHistories(vocabulary, version);

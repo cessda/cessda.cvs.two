@@ -35,12 +35,12 @@ public class FileUploadResource {
     }
 
     /**
-     * {@code POST  /upload-agency-image} : Upload Agency Image.
+     * {@code POST  /agency-image} : Upload Agency Image.
      * @param file the MultipartFile to be uploaded
      * @return the UUID of uploaded file name
      */
     @PostMapping("/agency-image")
-    public ResponseEntity<String> handleFileUpload(
+    public ResponseEntity<String> uploadAgenyImage(
         @RequestParam("file") MultipartFile file) {
         log.info( "Uploading file " + file.getName() );
         try {
@@ -52,6 +52,28 @@ public class FileUploadResource {
            fileUploadService.uploadFile( fileUploadHelper );
 
            return ResponseEntity.status(HttpStatus.OK).body(fileUploadHelper.getUploadedFile().getName());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("");
+        }
+    }
+    /**
+     * {@code POST  /license-image} : Upload License Image.
+     * @param file the MultipartFile to be uploaded
+     * @return the UUID of uploaded file name
+     */
+    @PostMapping("/license-image")
+    public ResponseEntity<String> uploadLicenseImage(
+        @RequestParam("file") MultipartFile file) {
+        log.info( "Uploading file " + file.getName() );
+        try {
+            FileUploadHelper fileUploadHelper = new FileUploadHelper()
+                .fileUploadType(FileUploadType.IMAGE_LICENSE)
+                .sourceFile(file)
+                .uploadBaseDirectory(applicationProperties.getLicenseImagePath());
+
+            fileUploadService.uploadFile( fileUploadHelper );
+
+            return ResponseEntity.status(HttpStatus.OK).body(fileUploadHelper.getUploadedFile().getName());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("");
         }

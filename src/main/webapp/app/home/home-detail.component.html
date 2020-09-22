@@ -364,14 +364,14 @@
                             {{getVersionByLangNumber()!.publicationDate!.toString().substr(0,4)}}
                         </p>
                     </div>
-                    <div class="row-detail small-block-n" *ngIf="getVersionByLangNumber()!.license === 'BY'">
+                    <div class="row-detail small-block-n">
                         <div class="label-column">
-                            <span>
-                                <img style="max-width:120px" alt="Creative Commons Attribution 4.0 International" src="/content/images/license/by.png">
+                            <span *ngIf="getVersionByLangNumber()!.licenseLogo">
+                                <img style="max-width:120px" alt="Creative Commons Attribution 4.0 International" src="{{getVersionByLangNumber()!.licenseLogo}}">
                             </span>
                         </div>
                         <div class="detail-column">
-                            <span>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>.</span>
+                            <span>This work is licensed under a <a rel="license" href="{{getVersionByLangNumber()!.licenseLink}}">{{getVersionByLangNumber()!.licenseName}} - {{getVersionByLangNumber()!.license}}</a>.</span>
                         </div>
                     </div>
                     <div class="row-detail small-block-n">

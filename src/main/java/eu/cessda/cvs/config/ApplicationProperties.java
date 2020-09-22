@@ -13,6 +13,7 @@ public class ApplicationProperties {
     private String vocabJsonPath;
     private String staticFilePath;
     private String agencyImagePath;
+    private String licenseImagePath;
 
     public String getVocabJsonPath() {
         return vocabJsonPath;
@@ -36,5 +37,13 @@ public class ApplicationProperties {
 
     public void setAgencyImagePath(String agencyImagePath) {
         this.agencyImagePath = agencyImagePath;
+    }
+
+    public String getLicenseImagePath() {
+        return licenseImagePath;
+    }
+
+    public void setLicenseImagePath(String licenseImagePath) {
+        this.licenseImagePath = licenseImagePath;
     }
 }

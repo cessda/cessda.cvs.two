@@ -31,10 +31,11 @@ export class AgencyUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
-    name: [null, [Validators.maxLength(240)]],
+    name: [null, [Validators.required, Validators.maxLength(240)]],
     link: [
       null,
       [
+        Validators.required,
         Validators.pattern(
           '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
         )
