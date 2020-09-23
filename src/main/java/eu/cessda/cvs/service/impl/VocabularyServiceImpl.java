@@ -663,6 +663,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         Vocabulary vocabulary = vocabularyRepository.findByNotation(notation);
         if( vocabulary == null) {
             log.error("Error vocabulary with notation {} does not exist", notation);
+            throw new EntityNotFoundException( UNABLE_FIND_VOCABULARY + "or notation " + notation);
         }
         return vocabularyMapper.toDto(vocabulary);
     }
@@ -723,11 +724,18 @@ public class VocabularyServiceImpl implements VocabularyService {
         // get all available licenses
         final List<Licence> licenceList = licenceRepository.findAll();
 
+        // get all available agency
+        final List<Agency> agencyList = agencyRepository.findAll();
+
         if( slVersionNumber == null || slVersionNumber.isEmpty()) {
             log.error("Error version number could not be empty or null");
             throw new IllegalArgumentException("Error version number  could not be empty or null");
         }
         VocabularyDTO vocabulary = getByNotation(notation);
+        final Agency agency = agencyRepository.getOne(vocabulary.getAgencyId());
+        vocabulary.setAgencyLink(agency.getLink());
+        vocabulary.setAgencyLogo(agency.getLogopath());
+        vocabulary.setAgencyLink(agency.getLink());
 
         if( slVersionNumber.equals(ALL))
             return vocabulary;
