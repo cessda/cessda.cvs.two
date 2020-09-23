@@ -1,28 +1,21 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {Observable, of, Subscription} from 'rxjs';
-import {LoginModalService} from 'app/core/login/login-modal.service';
-import {AccountService} from 'app/core/auth/account.service';
-import {Account} from 'app/core/user/account.model';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {
-  JhiAlertService,
-  JhiDataUtils,
-  JhiEventManager,
-  JhiEventWithContent,
-  JhiLanguageService,
-  JhiParseLinks
-} from 'ng-jhipster';
-import {EditorService} from 'app/editor/editor.service';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { Observable, of, Subscription } from 'rxjs';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiLanguageService, JhiParseLinks } from 'ng-jhipster';
+import { EditorService } from 'app/editor/editor.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
-import {AGGR_AGENCY, AGGR_LANGUAGE, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE} from 'app/shared';
-import {ICvResult} from 'app/shared/model/cv-result.model';
+import { AGGR_AGENCY, AGGR_LANGUAGE, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
+import { ICvResult } from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {ICode} from 'app/shared/model/code.model';
-import {IAggr} from 'app/shared/model/aggr';
-import {FormBuilder} from '@angular/forms';
-import {IBucket} from 'app/shared/model/bucket';
+import { ICode } from 'app/shared/model/code.model';
+import { IAggr } from 'app/shared/model/aggr';
+import { FormBuilder } from '@angular/forms';
+import { IBucket } from 'app/shared/model/bucket';
 
 @Component({
   selector: 'jhi-editor',
@@ -94,6 +87,9 @@ export class EditorComponent implements OnInit, OnDestroy {
       if (params['size']) {
         this.itemsPerPage = params['size'];
       }
+      if (params['page']) {
+        this.page = params['page'];
+      }
       if (params['sort']) {
         this.sortByOption = params['sort'];
         const sortProp: string[] = params['sort'].split(',');
@@ -163,6 +159,11 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.eventManager.broadcast({ name: 'onSearching', content: true });
 
     const pageToLoad: number = page ? page : this.page;
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { page: pageToLoad },
+      queryParamsHandling: 'merge'
+    });
     this.editorService
       .search({
         page: pageToLoad - 1,

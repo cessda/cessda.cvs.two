@@ -81,6 +81,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       if (params['size']) {
         this.itemsPerPage = params['size'];
       }
+      if (params['page']) {
+        this.page = params['page'];
+      }
       if (params['sort']) {
         this.sortByOption = params['sort'];
         const sortProp: string[] = params['sort'].split(',');
@@ -147,6 +150,13 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.eventManager.broadcast({ name: 'onSearching', content: true });
 
     const pageToLoad: number = page ? page : this.page;
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { page: pageToLoad },
+      queryParamsHandling: 'merge'
+    });
+
     this.homeService
       .search({
         page: pageToLoad - 1,
