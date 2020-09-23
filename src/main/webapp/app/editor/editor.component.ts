@@ -159,11 +159,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.eventManager.broadcast({ name: 'onSearching', content: true });
 
     const pageToLoad: number = page ? page : this.page;
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: { page: pageToLoad },
-      queryParamsHandling: 'merge'
-    });
     this.editorService
       .search({
         page: pageToLoad - 1,
@@ -334,6 +329,16 @@ export class EditorComponent implements OnInit, OnDestroy {
   public formatFilterText(value: any): Observable<object> {
     value.name = value.f;
     return of(value);
+  }
+
+  loadPageClicked(pageNo: number): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { page: pageNo },
+      queryParamsHandling: 'merge'
+    });
+    this.page = pageNo;
+    this.loadPage();
   }
 
   refreshSearchBySize(s: string): void {

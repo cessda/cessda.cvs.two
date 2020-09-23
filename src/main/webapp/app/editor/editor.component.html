@@ -220,7 +220,7 @@
 <!--                        <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>-->
 <!--                    </div>-->
                     <div class="row justify-content-center">
-                        <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+                        <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPageClicked($event)"></ngb-pagination>
                     </div>
                 </div>
             </div>

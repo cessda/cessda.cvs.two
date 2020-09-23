@@ -338,6 +338,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.loadPage();
   }
 
+  loadPageClicked(pageNo: number): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { page: pageNo },
+      queryParamsHandling: 'merge'
+    });
+    this.page = pageNo;
+    this.loadPage();
+  }
+
   refreshSearchBySort(s: string): void {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
