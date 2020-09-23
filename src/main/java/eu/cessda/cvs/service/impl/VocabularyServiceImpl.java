@@ -937,9 +937,6 @@ public class VocabularyServiceImpl implements VocabularyService {
             for( VocabularyDTO vocab : vocabularyPage.getContent())
                 vocab.setCodes( Collections.emptySet() );
         }
-        // set selected language in case language filter is selected with specific language
-        setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage,
-            esQueryResultDetail.getSearchScope().equals( SearchScope.EDITORSEARCH) ? EsFilter.LANGS_AGG: EsFilter.LANGS_PUB_AGG);
 
         esQueryResultDetail.setVocabularies(vocabularyPage);
 
@@ -1203,29 +1200,6 @@ public class VocabularyServiceImpl implements VocabularyService {
             aggBuilders.add(filtersAggregation);
         }
         return aggBuilders;
-    }
-
-    private void setVocabularySelectedLanguage(EsQueryResultDetail esQueryResultDetail,
-                                               Page<VocabularyDTO> vocabularyPage, String fieldType) {
-        if( esQueryResultDetail.isAnyFilterActive() ) {
-            esQueryResultDetail.getEsFilterByField(fieldType).ifPresent( langFilter -> {
-                if( langFilter.getValues().size() == 1 ) {
-                    for( VocabularyDTO vocab : vocabularyPage.getContent()){
-                        vocab.setSelectedLang(langFilter.getValues().get(0));
-                    }
-                } else {
-                    setSelectedLangToSourceLang(vocabularyPage);
-                }
-            });
-        } else {
-            setSelectedLangToSourceLang(vocabularyPage);
-        }
-    }
-
-    private void setSelectedLangToSourceLang(Page<VocabularyDTO> vocabularyPage) {
-        for (VocabularyDTO vocab : vocabularyPage.getContent()) {
-            vocab.setSelectedLang(vocab.getSourceLanguage());
-        }
     }
 
     @Override
