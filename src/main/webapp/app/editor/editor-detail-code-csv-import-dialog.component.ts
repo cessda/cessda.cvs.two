@@ -115,7 +115,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any): any {
     // TL only allow existing code notations
-    let existingCode: string[] = [];
+    const existingCode: string[] = [];
     this.ignoredRows = 0;
     if (!this.isSlForm) {
       const slVersion = this.vocabularyParam.versions!.filter(v => v.itemType === 'SL')[0];
