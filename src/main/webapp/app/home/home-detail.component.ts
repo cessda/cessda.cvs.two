@@ -115,7 +115,7 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   getUniqueVersionLang(): string[] {
     let uniqueLang: string[] = [];
     this.vocabulary!.versions!.forEach(v => {
-      if (v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some( l => l === v.language)) {
+      if (v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
@@ -123,7 +123,7 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
     uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
 
     this.vocabulary!.versions!.forEach(v => {
-      if (!v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some( l => l === v.language)) {
+      if (!v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
@@ -374,5 +374,18 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < bollArray.length; i++) {
       bollArray[i] = checked;
     }
+  }
+
+  getMissingTlVersion(version: string): string {
+    let i = 0;
+    this.getSlVersion()!.versionHistories!.forEach(function(vhSl, index): void {
+      if (version.startsWith(vhSl.version!)) {
+        i = index + 1;
+      }
+    });
+    if (i > 0) {
+      return this.getSlVersion()!.versionHistories![i]!.version + '.x';
+    }
+    return '';
   }
 }

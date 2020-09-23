@@ -286,13 +286,16 @@
                                 <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
                             </div>
 
-                            <div *ngIf="i < getVersionByLangNumber()!.versionHistories!.length -1">
+                            <div *ngIf="i < getVersionByLangNumber()!.versionHistories!.length - 1">
                                 <ng-container *ngIf="vh.prevVersion">
                                     <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="getVersionByLangNumber()!.language + '-' + vh.version"
                                              [langVersion2]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![i + 1].version"
                                                 [dataSource]="'JSON'">
                                     </jhi-version-compare>
                                 </ng-container>
+                                <div *ngIf="!vh.prevVersion && i !== getVersionByLangNumber()!.versionHistories!.length" class="acc-header option-label col-12 mtop10">
+                                    Prev-next comparison not available, due to {{getVersionByLangNumber()!.language}}-{{getMissingTlVersion(vh.version)}} missing!
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -19,23 +19,22 @@
         <br/>
         <div *ngIf="unPublishedTls && unPublishedTls !== ''" class="alert alert-danger" role="alert">
             <fa-icon style="font-size:200%" [icon]="'exclamation-triangle'"></fa-icon>
-            <span>Warning: The following Translated-Languages (TLs) are not yet published:</span><br/>
+            <span>Warning: The following translations (TLs) have not yet been published:</span><br/>
             <span [innerHTML]="unPublishedTls"></span><br/><br/>
-            <span>Unpublished TLs will be removed from this version <strong>{{versionParam.number}}</strong>. Therefore, the following will be applied:</span><br/>
-            <span>- The unpublished then cloned TLs in the new version will be assigned as a new initial version if they are published.</span><br/>
-            <span>- The TLs version-histories, including the past ones, are still accessible from the TL's version tab.</span><br/>
-            <span>- However, the prev-next version compare feature will not work, since the new TLs will not be linked to the previous ones </span><br/><br/>
-
+            <span>When you create a new SL version, these unpublished TLs will be:</span><br/>
+            <span>- Cloned as TL drafts to the new SL version.</span><br/>
+            <span>- They will be treated by the system as the first ever version of the TL. There will no change log or comparison table to previous version.</span><br/>
+            <span>- TL version history and comparison tables of any previous versions are retained.</span><br/><br/>
+            <span>If you are unsure how to proceed, please contact the CVS Content Contact.</span>
             <div class="form-check">
                 <label class="form-check-label" for="agreeNewVersion">
-                    <input class="form-check-input" type="checkbox" name="agreeNewVersion" id="agreeNewVersion" formControlName="agreeNewVersion" required />
-                    <span>I understand the circumstance, let me create a new version for SL {{getLangIsoFormatted(versionParam.language!)}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}.</span>
+                    <input class="form-check-input checkbox-2x" type="checkbox" name="agreeNewVersion" id="agreeNewVersion" formControlName="agreeNewVersion" required />
+                    <span>I have read the warning and want to create the new SL version.</span>
                 </label>
                 <div *ngIf="newVersionForm.get('agreeNewVersion')!.invalid && (newVersionForm.get('agreeNewVersion')!.dirty || newVersionForm.get('agreeNewVersion')!.touched)">
-                    <small class="form-text text-danger"
-                           *ngIf="newVersionForm.get('agreeNewVersion')?.errors?.required"
-                           jhiTranslate="global.messages.validate.email.required">
-                        Please agree by checks this checkbox.
+                    <small class="form-text"
+                           *ngIf="newVersionForm.get('agreeNewVersion')?.errors?.required">
+                        Please checks the checkbox to continue.
                     </small>
                 </div>
             </div>
