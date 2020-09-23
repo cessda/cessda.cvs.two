@@ -205,7 +205,8 @@
 				<dt>Language:</dt>
 				<dd th:text="${version.getFormattedLanguage()}"></dd>
 				<dt th:if="${version.number != null}">Version:</dt>
-				<dd th:if="${version.number != null}"th:text="${version.number}">1.0</dd>
+				<dd th:if="${version.number != null and version.status == 'PUBLISHED'}" th:text="${version.number}"></dd>
+                <dd th:if="${version.number != null and version.status != 'PUBLISHED'}" th:text="${version.number + '-' + version.status}"></dd>
 				<dt th:if="${version.versionNotes != null and version.versionNotes != ''}">Version notes:</dt>
 				<dd th:if="${version.versionNotes != null and version.versionNotes != ''}" th:utext="${version.versionNotes}"></dd>
 				<dt th:if="${version.versionChanges != null and version.versionChanges != ''}">Version changes:</dt>
@@ -259,7 +260,7 @@
         <p>Copyright © <a th:href="${agency.link}" th:text="${agency.name}"></a> <span th:text="${year}"></span>.</p>
         <p th:if="${version.licenseName != null}">
             <a rel="license" th:href="${version.licenseLink}">
-                <img style="border-width:0;width:140px" th:attr="src=${licenseLogo},title=${version.licenseName},alt=${version.licenseName}" />
+                <img style="border-width:0;width:140px" th:attr="src=${version.licenseLogo},title=${version.licenseName},alt=${version.licenseName}" />
             </a>
             <span>This work is licensed under a
 						<a rel="license" th:href="${version.licenseLink}" th:text="${version.licenseName}"></a>.
