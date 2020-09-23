@@ -437,7 +437,8 @@
                                         <fa-icon *ngIf="isCurrentVersionHistoryOpen" icon="caret-down"></fa-icon>
                                         <fa-icon *ngIf="!isCurrentVersionHistoryOpen" icon="caret-right"></fa-icon>
                                         <span>{{version!.language}}: {{version!.number}}</span>
-                                        <span>&nbsp;&nbsp;&nbsp; Published: {{version!.publicationDate}}</span>
+                                        <span *ngIf="version!.status === 'PUBLISHED'">&nbsp;&nbsp;&nbsp; Published: {{version!.publicationDate}}</span>
+                                        <span *ngIf="version!.status !== 'PUBLISHED'">&nbsp;&nbsp;&nbsp; {{version!.status}}</span>
                                 </a>
                                 <span *ngIf="isCurrentVersionHistoryOpen && version!.status === 'PUBLISHED'">
                                     &nbsp;<span *jhiHasAnyAgencyAuthority="{actionType:'EDIT_VERSION_INFO_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:version!.language}">
@@ -639,17 +640,17 @@
                                     <span *ngIf="version!.publicationDate"> {{version!.publicationDate!.toString().substr(0,4)}}</span>
                                 </p>
                             </div>
-                            <div class="row-detail small-block-n">
+                            <div class="row-detail small-block-n" *ngIf="version!.licenseName">
                                 <div class="label-column">
-                            <span *ngIf="version!.licenseLogo">
-                                <img style="max-width:120px" alt="Creative Commons Attribution 4.0 International" src="/content/images/license/{{version!.licenseLogo}}">
-                            </span>
+                                    <span *ngIf="version!.licenseLogo">
+                                        <img style="max-width:120px" alt="Creative Commons Attribution 4.0 International" src="/content/images/license/{{version!.licenseLogo}}">
+                                    </span>
                                 </div>
                                 <div class="detail-column">
                                     <span>This work is licensed under a <a rel="license" href="{{version!.licenseLink}}">{{version!.licenseName}} - {{version!.license}}</a>.</span>
                                 </div>
                             </div>
-                            <div class="row-detail small-block-n">
+                            <div class="row-detail small-block-n" *ngIf="version!.citation">
                                 <div class="label-column">
                                     <span>Citation</span>
                                 </div>
@@ -657,7 +658,7 @@
                                     <span>{{version!.citation}} </span>
                                 </div>
                             </div>
-                            <div class="row-detail small-block-n">
+                            <div class="row-detail small-block-n" *ngIf="version!.canonicalUri">
                                 <div class="label-column">
                                     <span>Available from</span>
                                 </div>
