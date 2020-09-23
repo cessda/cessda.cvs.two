@@ -735,15 +735,22 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( slVersionNumber.equals(LATEST))
             slVersionNumber = vocabulary.getVersionNumber();
 
-        Set<VersionDTO> versionDTOS = new LinkedHashSet<>();
+        getOneLatestVersionEachLanguage(slVersionNumber, licenceList, vocabulary, true);
+
+        return vocabulary;
+    }
+
+    private void getOneLatestVersionEachLanguage(String slVersionNumber, List<Licence> licenceList,
+                                                 VocabularyDTO vocabulary, boolean isAddHistory) {
+        Set<VersionDTO> versionDTOs = new LinkedHashSet<>();
         List<VersionDTO> versionsGroup = versionService.findAllByVocabularyAnyVersionSl(vocabulary.getId(), slVersionNumber);
 
-        Set<String> langs = new HashSet<>();
+        Set<String> languages = new HashSet<>();
         for (VersionDTO version : versionsGroup) {
             // check for more than one version in one language, only return latest one
-            if (langs.contains(version.getLanguage()))
+            if (languages.contains(version.getLanguage()))
                 continue;
-            langs.add(version.getLanguage());
+            languages.add(version.getLanguage());
 
             // add version to new list and sort concepts
             LinkedHashSet<ConceptDTO> sortedConcepts = version.getConcepts().stream()
@@ -751,20 +758,22 @@ public class VocabularyServiceImpl implements VocabularyService {
             version.setConcepts(sortedConcepts);
 
             // assign licence
-            licenceList.stream().filter(l -> l.getId().equals(version.getLicenseId())).findFirst().ifPresent(l -> {
-                version.setLicense( l.getAbbr() );
-                version.setLicenseLink( l.getLink() );
-                version.setLicenseName( l.getName() );
-                version.setLicenseLogo( l.getLogoLink() );
-            });
+            if( licenceList != null ) {
+                licenceList.stream().filter(l -> l.getId().equals(version.getLicenseId())).findFirst().ifPresent(l -> {
+                    version.setLicense(l.getAbbr());
+                    version.setLicenseLink(l.getLink());
+                    version.setLicenseName(l.getName());
+                    version.setLicenseLogo(l.getLogoLink());
+                });
+            }
 
             // add history
-            addVersionHistories(vocabulary, version);
+            if( isAddHistory )
+                addVersionHistories(vocabulary, version);
 
-            versionDTOS.add(version);
+            versionDTOs.add(version);
         }
-        vocabulary.setVersions( versionDTOS );
-        return vocabulary;
+        vocabulary.setVersions( versionDTOs );
     }
 
     @Override
@@ -823,15 +832,13 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( maxSlVersion == null )
             return;
 
-        // normalize the vocabulary version for older data
+        // on editor set Version to be latest SL of any version
         if( !vocabulary.getVersionNumber().equals(maxSlVersion.getNumber())){
             vocabulary.setVersionNumber( maxSlVersion.getNumber() );
-            save(vocabulary);
         }
 
+        getOneLatestVersionEachLanguage(maxSlVersion.getNumber(), null, vocabulary, false);
 
-        vocabulary.setVersions( vocabulary.getVersions().stream()
-            .filter(v -> v.getNumber().startsWith( maxSlVersion.getNumber())).collect(Collectors.toSet()) );
         // fill vocabulary with versions
         VocabularyDTO.fillVocabularyByVersions(vocabulary, vocabulary.getVersions());
         // fill CodeDTO object from versions
@@ -1475,27 +1482,32 @@ public class VocabularyServiceImpl implements VocabularyService {
 
 
     private void prepareAdditionalAttributesForNonSkos(VocabularyDTO vocabularyDTO, Map<String, Object> map, AgencyDTO agencyDTO) {
-        File logoFile = new File(applicationProperties.getStaticFilePath() + File.separator + "content" +
-            File.separator + "images" + File.separator + "agency" + File.separator + vocabularyDTO.getAgencyLogo() );
-        String data = null;
-        try {
-            data = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile.toPath()));
-        } catch (IOException e) {
-            log.error( e.getMessage() );
-        }
-        agencyDTO.setLogo( "data:image/png;base64," + data );
-        if( !vocabularyDTO.getVersions().isEmpty() ) {
-            // get license logo from one of version
-            VersionDTO version = vocabularyDTO.getVersions().iterator().next();
-            String licensePic = version.getLicenseLogo();
-            logoFile = new File(applicationProperties.getStaticFilePath() + licensePic );
-            data = null;
+        if( vocabularyDTO.getAgencyLogo() != null ) {
+            File logoFile = new File(applicationProperties.getStaticFilePath() + File.separator + "content" +
+                File.separator + "images" + File.separator + "agency" + File.separator + vocabularyDTO.getAgencyLogo() );
+            String data = null;
             try {
                 data = DatatypeConverter.printBase64Binary(Files.readAllBytes(logoFile.toPath()));
             } catch (IOException e) {
                 log.error( e.getMessage() );
             }
-            map.put("licenseLogo", "data:image/png;base64," + data);
+            agencyDTO.setLogo( "data:image/png;base64," + data );
+        }
+        if( !vocabularyDTO.getVersions().isEmpty() ) {
+            vocabularyDTO.getVersions().forEach(version -> {
+                if( version.getLicenseLogo() == null)
+                    return;
+                File versionLogo = new File(applicationProperties.getLicenseImagePath() + version.getLicenseLogo() );
+                String versionBase64LogoData = null;
+                try {
+                    versionBase64LogoData = DatatypeConverter.printBase64Binary(Files.readAllBytes(versionLogo.toPath()));
+                } catch (IOException e) {
+                    log.error( e.getMessage() );
+                }
+                version.setLicenseLogo( "data:image/png;base64," + versionBase64LogoData );
+            });
+
+            VersionDTO version = vocabularyDTO.getVersions().iterator().next();
             if( version.getCanonicalUri() != null ) {
                 int index = version.getCanonicalUri().lastIndexOf(':');
                 map.put("cvUrn", version.getCanonicalUri().substring(0, index));
