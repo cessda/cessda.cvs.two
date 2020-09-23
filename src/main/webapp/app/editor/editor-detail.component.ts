@@ -229,7 +229,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   getUniqueVersionLang(): string[] {
     const uniqueLang: string[] = [];
     this.vocabulary!.versions!.forEach(v => {
-      if( !uniqueLang.some( l => l === v.language)) {
+      if (!uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
@@ -623,6 +623,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   openCsvImportCodeWindow(): void {
     this.ngbModalRef = this.modalService.open(EditorDetailCodeCsvImportDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
     this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
   }

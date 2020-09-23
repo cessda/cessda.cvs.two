@@ -9,6 +9,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
 
 @Component({
   templateUrl: './editor-detail-code-csv-import-dialog.component.html'
@@ -17,6 +18,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
   @ViewChild('csvInput', { static: true }) csvInput!: ElementRef;
   isSaving: boolean;
 
+  vocabularyParam!: IVocabulary;
   versionParam!: IVersion;
   concepts: IConcept[] = [];
   codeSnippets: ICodeSnippet[] = [];
@@ -35,6 +37,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
   isImportError: boolean;
   resultInfo?: string;
   resultBody: IConcept[] = [];
+  ignoredRows: number;
 
   constructor(
     protected editorService: EditorService,
@@ -46,6 +49,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.importAll = true;
     this.isImportError = false;
     this.isSaving = false;
+    this.ignoredRows = 0;
   }
 
   getLangIsoFormatted(langIso: string): string {
@@ -110,10 +114,24 @@ export class EditorDetailCodeCsvImportDialogComponent {
   }
 
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any): any {
+    // TL only allow existing code notations
+    let existingCode: string[] = [];
+    this.ignoredRows = 0;
+    if (!this.isSlForm) {
+      const slVersion = this.vocabularyParam.versions!.filter(v => v.itemType === 'SL')[0];
+      slVersion.concepts!.forEach(c => {
+        existingCode.push(c.notation!);
+      });
+    }
+
     const csvArr = [];
     for (let i = 1; i < csvRecordsArray.length; i++) {
       const splittedContent = this.parseCSVToArray(csvRecordsArray[i] as string);
       if (splittedContent && splittedContent.length > 2 && splittedContent[0].trim() !== '' && splittedContent[1].trim() !== '') {
+        if (!this.isSlForm && !existingCode.some(notation => notation === splittedContent[0])) {
+          this.ignoredRows++;
+          continue;
+        }
         csvArr.push([splittedContent[0], splittedContent[1], splittedContent[2]]);
       }
     }
