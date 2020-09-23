@@ -148,15 +148,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   loadPage(page?: number): void {
     this.eventManager.broadcast({ name: 'onSearching', content: true });
-
     const pageToLoad: number = page ? page : this.page;
-
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: { page: pageToLoad },
-      queryParamsHandling: 'merge'
-    });
-
     this.homeService
       .search({
         page: pageToLoad - 1,
