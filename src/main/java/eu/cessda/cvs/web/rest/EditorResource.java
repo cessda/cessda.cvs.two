@@ -6,6 +6,7 @@ import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.*;
@@ -31,6 +32,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -81,10 +83,13 @@ public class EditorResource {
 
     private final VocabularyChangeService vocabularyChangeService;
 
+    private final AgencyStatSearchRepository agencyStatSearchRepository;
+
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
                           LicenceService licenceService, AgencyService agencyService, CommentService commentService,
                           MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService) {
+                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService,
+                          AgencyStatSearchRepository agencyStatSearchRepository) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
@@ -95,6 +100,7 @@ public class EditorResource {
         this.metadataValueService = metadataValueService;
         this.applicationProperties = applicationProperties;
         this.vocabularyChangeService = vocabularyChangeService;
+        this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
     /**
@@ -187,6 +193,9 @@ public class EditorResource {
         if (vocabularySnippet.getVersionId() == null) {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_VOCABULARY_NAME, ID_NULL);
         }
+        if (vocabularySnippet.getActionType() == null) {
+            throw new IllegalArgumentException( "Missing action type" );
+        }
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
             .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId() ));
         // pick version from vocabularyDTO
@@ -208,6 +217,7 @@ public class EditorResource {
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_REVIEW,
                     vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
                 versionDTO.setStatus(Status.REVIEW.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
                 vocabularyDTO.setStatus(Status.REVIEW.toString());
                 break;
             case FORWARD_CV_SL_STATUS_PUBLISHED:
@@ -215,6 +225,7 @@ public class EditorResource {
                     vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_PUBLISHED.getAgencyRoles(), vocabularySnippet.getLanguage());
 
                 versionDTO.setStatus(Status.PUBLISHED.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
                 versionDTO.prepareSlPublishing(vocabularySnippet, licenceDTO, agencyDTO);
                 vocabularyDTO.prepareSlPublishing(versionDTO);
                 break;
@@ -222,12 +233,14 @@ public class EditorResource {
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_REVIEW,
                     vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
                 versionDTO.setStatus(Status.REVIEW.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
                 break;
             case FORWARD_CV_TL_STATUS_PUBLISHED:
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_PUBLISHED,
                     vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_PUBLISHED.getAgencyRoles(), vocabularySnippet.getLanguage());
 
                 versionDTO.setStatus(Status.PUBLISHED.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
                 versionDTO.prepareTlPublishing(vocabularySnippet, licenceDTO, agencyDTO);
 
                 break;
@@ -240,7 +253,7 @@ public class EditorResource {
             cloneTLsIfAny(vocabularyDTO, versionDTO);
         }
         // save at the end
-        vocabularyService.save( vocabularyDTO );
+        VocabularyDTO vocabularyDTOSaved = vocabularyService.save( vocabularyDTO );
         // indexing publication, delete existing one
         if ( versionDTO.getStatus().equals( Status.PUBLISHED.toString()) ) {
             // generate json files
@@ -357,10 +370,11 @@ public class EditorResource {
                 vocabularyService.indexEditor(vocabularyDTO);
 
                 if( versionDTO.getStatus().equals( Status.PUBLISHED.toString())) {
-                    // remove published JSON file, re-create the JSON file and re-index for publishec vocabulary
+                    // remove published JSON file, re-create the JSON file and re-index for published vocabulary
                     vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
                     vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
                     vocabularyService.indexPublished(vocabularyDTO);
+                    vocabularyService.indexVocabForAgency(vocabularyDTO);
                 }
             }
         }
@@ -394,6 +408,7 @@ public class EditorResource {
             vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
             vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
             vocabularyService.indexPublished(vocabularyDTO );
+            vocabularyService.indexVocabForAgency(vocabularyDTO );
         }
     }
 

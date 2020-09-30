@@ -10,11 +10,14 @@ import eu.cessda.cvs.domain.*;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.domain.search.Vocab;
 import eu.cessda.cvs.domain.search.VocabularyEditor;
 import eu.cessda.cvs.domain.search.VocabularyPublish;
 import eu.cessda.cvs.repository.AgencyRepository;
 import eu.cessda.cvs.repository.LicenceRepository;
 import eu.cessda.cvs.repository.VocabularyRepository;
+import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
+import eu.cessda.cvs.repository.search.VocabSearchRepository;
 import eu.cessda.cvs.repository.search.VocabularyEditorSearchRepository;
 import eu.cessda.cvs.repository.search.VocabularyPublishSearchRepository;
 import eu.cessda.cvs.security.ActionType;
@@ -29,6 +32,7 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
+import io.github.jhipster.config.JHipsterProperties;
 import org.apache.commons.io.FileUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
@@ -81,6 +85,8 @@ import java.util.stream.Stream;
 @Transactional
 public class VocabularyServiceImpl implements VocabularyService {
 
+    private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
+
     public static final String COUNT = "_count";
     public static final String TITLE = "title";
     public static final String DEFINITION = "definition";
@@ -92,7 +98,10 @@ public class VocabularyServiceImpl implements VocabularyService {
     public static final String UNABLE_FIND_VERSION = "Unable to find version with Id ";
     public static final String LATEST = "latest";
     public static final String ALL = "all";
-    private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
+
+    private final Comparator<VersionDTO> versionComparator = Comparator.comparing(VersionDTO::getItemType)
+        .thenComparing(VersionDTO::getLanguage)
+        .thenComparing(VersionDTO::getNumber, Comparator.reverseOrder());
 
     private static final String CODE_PATH = "codes";
 
@@ -124,11 +133,21 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private final ApplicationProperties applicationProperties;
 
-    public VocabularyServiceImpl(AgencyRepository agencyRepository, ConceptService conceptService, ExportService exportService, LicenceRepository licenceRepository, VersionService versionService,
-                                 VocabularyChangeService vocabularyChangeService, VocabularyRepository vocabularyRepository, VocabularyMapper vocabularyMapper,
-                                 VocabularyEditorMapper vocabularyEditorMapper, VocabularyPublishMapper vocabularyPublishMapper, VocabularyEditorSearchRepository vocabularyEditorSearchRepository,
+    private final JHipsterProperties jHipsterProperties;
+
+    private final VocabSearchRepository vocabSearchRepository;
+
+    private final AgencyStatSearchRepository agencyStatSearchRepository;
+
+    public VocabularyServiceImpl(AgencyRepository agencyRepository, ConceptService conceptService, ExportService exportService,
+                                 LicenceRepository licenceRepository, VersionService versionService,
+                                 VocabularyChangeService vocabularyChangeService, VocabularyRepository vocabularyRepository,
+                                 VocabularyMapper vocabularyMapper, VocabularyEditorMapper vocabularyEditorMapper,
+                                 VocabularyPublishMapper vocabularyPublishMapper, VocabularyEditorSearchRepository vocabularyEditorSearchRepository,
                                  VocabularyPublishSearchRepository vocabularyPublishSearchRepository,
-                                 ElasticsearchTemplate elasticsearchTemplate, ApplicationProperties applicationProperties) {
+                                 ElasticsearchTemplate elasticsearchTemplate, ApplicationProperties applicationProperties,
+                                 JHipsterProperties jHipsterProperties, VocabSearchRepository vocabSearchRepository,
+                                 AgencyStatSearchRepository agencyStatSearchRepository) {
         this.agencyRepository = agencyRepository;
         this.conceptService = conceptService;
         this.exportService = exportService;
@@ -143,6 +162,9 @@ public class VocabularyServiceImpl implements VocabularyService {
         this.vocabularyPublishSearchRepository = vocabularyPublishSearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.applicationProperties = applicationProperties;
+        this.jHipsterProperties = jHipsterProperties;
+        this.vocabSearchRepository = vocabSearchRepository;
+        this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
     /**
@@ -560,10 +582,20 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Transactional(readOnly = true)
     public List<VocabularyDTO> findAll() {
         log.debug("Request to get all Vocabularies");
-        List<Vocabulary> all = vocabularyRepository.findAll();
-        return all.stream()
+        List<VocabularyDTO> vocabulariesDTO = vocabularyRepository.findAll().stream()
             .map(vocabularyMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
+
+        sortVocabularyVersions( vocabulariesDTO);
+        return vocabulariesDTO;
+    }
+
+    private void sortVocabularyVersions(List<VocabularyDTO> vocabulariesDTO) {
+        for (VocabularyDTO vocabularyDTO : vocabulariesDTO) {
+            LinkedHashSet<VersionDTO> sortedVersion = vocabularyDTO.getVersions().stream().sorted(versionComparator)
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+            vocabularyDTO.setVersions(sortedVersion);
+        }
     }
 
     /**
@@ -576,8 +608,10 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Transactional(readOnly = true)
     public Page<VocabularyDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Vocabularies");
-        return vocabularyRepository.findAll(pageable)
-            .map(vocabularyMapper::toDto);
+        final Page<VocabularyDTO> vocabPage = vocabularyRepository.findAll(pageable).map(vocabularyMapper::toDto);
+        sortVocabularyVersions( vocabPage.getContent());
+        return vocabPage;
+
     }
 
 
@@ -607,6 +641,12 @@ public class VocabularyServiceImpl implements VocabularyService {
             .orElseThrow( () -> new EntityNotFoundException(UNABLE_FIND_VOCABULARY + id ));
         String notation = vocabularyDTO.getNotation();
 
+        // update/create agency publish
+        agencyStatSearchRepository.findById(vocabularyDTO.getAgencyId()).ifPresent(agencyPublish -> {
+            agencyPublish.deleteVocabStat( vocabularyDTO.getNotation() );
+            agencyStatSearchRepository.save(agencyPublish );
+        });
+
         vocabularyRepository.deleteById(id);
         // delete index
         vocabularyEditorSearchRepository.deleteById(id);
@@ -635,6 +675,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( getPublishedCvPaths() != null && !getPublishedCvPaths().isEmpty() && vocabularyPublishSearchRepository.count() == 0 || force) {
             log.info( "Performing indexing on all Published Vocabularies" );
             indexAllPublished();
+            indexAllVocabForAgency();
         }
     }
 
@@ -847,6 +888,13 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         getOneLatestVersionEachLanguage(maxSlVersion.getNumber(), null, vocabulary, false);
 
+        // update/create agency publish
+        agencyStatSearchRepository.findById(vocabulary.getAgencyId()).ifPresent(agencyPublish -> {
+            agencyPublish.updateVocabStat( vocabulary);
+            agencyStatSearchRepository.save(agencyPublish );
+        });
+
+
         // fill vocabulary with versions
         VocabularyDTO.fillVocabularyByVersions(vocabulary, vocabulary.getVersions());
         // fill CodeDTO object from versions
@@ -854,6 +902,26 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         VocabularyEditor vocab = vocabularyEditorMapper.toEntity( vocabulary);
         vocabularyEditorSearchRepository.save( vocab );
+    }
+
+    @Override
+    public void indexAllAgencyStats() {
+        log.info("INDEXING ALL AGENCY VOCABULARIES STATISTIC START");
+        findAll().forEach(v -> {
+            if( Boolean.TRUE.equals( v.isWithdrawn()) )
+                return;
+            indexAgencyStats(v);
+        });
+        log.info("INDEXING ALL AGENCY VOCABULARIES STATISTIC FINISHED");
+    }
+
+    @Override
+    public void indexAgencyStats(VocabularyDTO vocabulary) {
+        // update/create agency publish
+        agencyStatSearchRepository.findById(vocabulary.getAgencyId()).ifPresent(agencyPublish -> {
+            agencyPublish.updateVocabStat( vocabulary);
+            agencyStatSearchRepository.save(agencyPublish );
+        });
     }
 
     @Override
@@ -895,6 +963,53 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
         vocabularyPublishSearchRepository.save( vocab );
+    }
+
+    @Override
+    public void indexAllVocabForAgency() {
+        log.info("INDEXING ALL PUBLISHED VOCABULARIES FOR AGENCY START");
+        // remove any indexed vocabularies for agency
+        vocabSearchRepository.deleteAll();
+        // indexing vocab for agency
+        List<Path> jsonPaths = getPublishedCvPaths();
+        jsonPaths.forEach( this::indexVocabForAgency );
+        log.info("INDEXING ALL PUBLISHED VOCABULARIES FOR AGENCY FINISHED");
+    }
+
+    @Override
+    public void indexVocabForAgency(Path jsonPath) {
+        log.info("Indexing published vocabulary with path {}", jsonPath);
+        indexVocabForAgency(VocabularyUtils.generateVocabularyByPath(jsonPath));
+    }
+
+    @Override
+    public void indexVocabForAgency(VocabularyDTO vocabularyDTO) {
+        Vocabulary vocabulary = vocabularyMapper.toEntity(vocabularyDTO);
+        Comparator<Version> comparator = Comparator.comparing(Version::getItemType)
+            .thenComparing(Version::getLanguage)
+            .thenComparing(Version::getNumber, Comparator.reverseOrder());
+
+        final String vocabUrl = jHipsterProperties.getMail().getBaseUrl() + "/vocabulary/" + vocabulary.getNotation();
+
+        final List<Version> publishedVersions = vocabulary.getVersions().stream().filter(v -> v.getStatus()
+            .equals(Status.PUBLISHED.toString()))
+            .sorted(comparator)
+            .collect(Collectors.toList());
+
+        final LinkedHashSet<String> languages = publishedVersions.stream().map(Version::getLanguage)
+            .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        final Vocab vocabEs = new Vocab(vocabulary.getAgencyId(), vocabulary.getAgencyName(), vocabulary.getUri(),
+            vocabUrl, vocabulary.getSourceLanguage(), vocabulary.getNotation(), languages);
+
+        for (Version version : publishedVersions) {
+            vocabEs.addVersion(version.getCanonicalUri(), vocabUrl + "?v=" +
+                    version.getCanonicalUri().substring(version.getCanonicalUri().lastIndexOf(':')) +
+                    "&lang=" + version.getLanguage(), version.getNumber(), version.getItemType(),
+                version.getLanguage(), version.getPublicationDate(),
+                version.getConcepts().stream().map(Concept::getNotation).collect(Collectors.toList()));
+        }
+        vocabSearchRepository.save(vocabEs);
     }
 
     @Override

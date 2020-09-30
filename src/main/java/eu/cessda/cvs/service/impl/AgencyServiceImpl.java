@@ -2,14 +2,11 @@ package eu.cessda.cvs.service.impl;
 
 import eu.cessda.cvs.config.ApplicationProperties;
 import eu.cessda.cvs.domain.Agency;
-import eu.cessda.cvs.domain.Concept;
-import eu.cessda.cvs.domain.Version;
-import eu.cessda.cvs.domain.Vocabulary;
-import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.domain.search.AgencyPublish;
+import eu.cessda.cvs.domain.search.AgencyStat;
 import eu.cessda.cvs.repository.AgencyRepository;
 import eu.cessda.cvs.repository.VocabularyRepository;
-import eu.cessda.cvs.repository.search.AgencyPublishSearchRepository;
+import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
+import eu.cessda.cvs.repository.search.VocabSearchRepository;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.AgencyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
@@ -23,11 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing {@link Agency}.
@@ -48,15 +41,18 @@ public class AgencyServiceImpl implements AgencyService {
 
     private final JHipsterProperties jHipsterProperties;
 
-    private final AgencyPublishSearchRepository agencyPublishSearchRepository;
+    private final AgencyStatSearchRepository agencyStatSearchRepository;
 
-    public AgencyServiceImpl(AgencyRepository agencyRepository, VocabularyRepository vocabularyRepository, AgencyMapper agencyMapper, ApplicationProperties applicationProperties, JHipsterProperties jHipsterProperties, AgencyPublishSearchRepository agencyPublishSearchRepository) {
+    private final VocabSearchRepository vocabSearchRepository;
+
+    public AgencyServiceImpl(AgencyRepository agencyRepository, VocabularyRepository vocabularyRepository, AgencyMapper agencyMapper, ApplicationProperties applicationProperties, JHipsterProperties jHipsterProperties, AgencyStatSearchRepository agencyStatSearchRepository, VocabSearchRepository vocabSearchRepository) {
         this.agencyRepository = agencyRepository;
         this.vocabularyRepository = vocabularyRepository;
         this.agencyMapper = agencyMapper;
         this.applicationProperties = applicationProperties;
         this.jHipsterProperties = jHipsterProperties;
-        this.agencyPublishSearchRepository = agencyPublishSearchRepository;
+        this.agencyStatSearchRepository = agencyStatSearchRepository;
+        this.vocabSearchRepository = vocabSearchRepository;
     }
 
     /**
@@ -121,44 +117,18 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
-    public Page<AgencyDTO> search(String query, Pageable pageable) {
+    public Page<AgencyStat> search(String query, Pageable pageable) {
+        log.debug("Request to search Agency : {}", query);
+        if ( query.equals( "match_all" ))
+            return agencyStatSearchRepository.findAll(pageable);
+
         return null;
     }
 
     @Override
     public void index(AgencyDTO agencyDTO) {
-        AgencyPublish agencyEs = new AgencyPublish( agencyDTO );
-
-        Comparator<Version> comparator = Comparator.comparing(Version::getItemType)
-            .thenComparing(Version::getLanguage)
-            .thenComparing(Version::getNumber, Comparator.reverseOrder());
-
-        List<Vocabulary> vocabularies = vocabularyRepository.findAll();
-        for (Vocabulary vocabulary : vocabularies) {
-            final String vocabUrl = jHipsterProperties.getMail().getBaseUrl() + "/vocabulary/" + vocabulary.getNotation();
-
-            final List<Version> publishedVersions = vocabulary.getVersions().stream().filter(v -> v.getStatus()
-                .equals(Status.PUBLISHED.toString()))
-                .sorted(comparator)
-                .collect(Collectors.toList());
-
-            final LinkedHashSet<String> languages = publishedVersions.stream().map(Version::getLanguage)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-
-            final AgencyPublish.Vocabulary vocabEs = agencyEs.addVocabulary(vocabulary.getUri(),
-                vocabUrl, vocabulary.getSourceLanguage(), vocabulary.getNotation(), languages);
-
-
-            for (Version version : publishedVersions) {
-                vocabEs.addVersion(version.getCanonicalUri(), vocabUrl + "?v=" +
-                        version.getCanonicalUri().substring(version.getCanonicalUri().lastIndexOf(':')) +
-                        "&lang=" + version.getLanguage(), version.getNumber(), version.getItemType(),
-                    version.getLanguage(), version.getPublicationDate(),
-                    version.getConcepts().stream().map(Concept::getNotation).collect(Collectors.toList()));
-            }
-        }
-
-        agencyPublishSearchRepository.save(agencyEs );
+        AgencyStat agencyEs = new AgencyStat( agencyDTO );
+        agencyStatSearchRepository.save(agencyEs );
     }
 
     @Override

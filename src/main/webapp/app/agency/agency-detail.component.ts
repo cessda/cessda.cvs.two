@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
 import { IAgency } from 'app/shared/model/agency.model';
+import { AgencyService } from 'app/agency/agency.service';
 
 @Component({
   selector: 'jhi-agency-detail',
@@ -10,11 +11,13 @@ import { IAgency } from 'app/shared/model/agency.model';
 })
 export class AgencyDetailComponent implements OnInit {
   agency: IAgency | null = null;
+  agencyStatistic?: any;
 
-  constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute) {}
+  constructor(protected dataUtils: JhiDataUtils, protected activatedRoute: ActivatedRoute, protected agencyService: AgencyService) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ agency }) => (this.agency = agency));
+    this.agencyService.statistic(this.agency!.id!).subscribe(res => (this.agencyStatistic = res.body));
   }
 
   byteSize(base64String: string): string {

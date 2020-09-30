@@ -120,6 +120,9 @@ public class Version implements Serializable {
     @Column(name = "translate_agency_link")
     private String translateAgencyLink;
 
+    @Column(name = "last_status_change_date")
+    private LocalDate lastStatusChangeDate;
+
     @OneToMany(mappedBy = "version", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true )
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Concept> concepts = new HashSet<>();
@@ -477,6 +480,14 @@ public class Version implements Serializable {
 
     public void setTranslateAgencyLink(String translateAgencyLink) {
         this.translateAgencyLink = translateAgencyLink;
+    }
+
+    public LocalDate getLastStatusChangeDate() {
+        return lastStatusChangeDate;
+    }
+
+    public void setLastStatusChangeDate(LocalDate lastStatusChangeDate) {
+        this.lastStatusChangeDate = lastStatusChangeDate;
     }
 
     public Set<Concept> getConcepts() {

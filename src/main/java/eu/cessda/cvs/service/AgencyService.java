@@ -1,5 +1,6 @@
 package eu.cessda.cvs.service;
 
+import eu.cessda.cvs.domain.search.AgencyStat;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,7 +51,7 @@ public interface AgencyService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    Page<AgencyDTO> search(String query, Pageable pageable);
+    Page<AgencyStat> search(String query, Pageable pageable);
 
     /**
      * Perform indexing in a Agency for statistic purpose
