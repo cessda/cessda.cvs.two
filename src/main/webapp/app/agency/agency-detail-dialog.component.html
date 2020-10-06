@@ -1,0 +1,117 @@
+<div class="modal-header">
+    <div class="modal-title w-100">
+        <div class="row">
+            <div class="col-4">
+                <img *ngIf="agency.logopath" [src]="'/content/images/agency/' + agency.logopath" class="w-100 mh-60px" alt=""/>
+            </div>
+            <div class="col-8" class="card-title">
+                <h4>{{ agency.name }}</h4>
+                <a href="{{ agency.link }}" target="_blank">
+                    <span class="font-italic font-weight-bold">{{urlCleaner(agency.link!)}} </span>
+                    <fa-icon icon="external-link-alt"></fa-icon>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+    <p class="card-text">{{ agency.description }}</p>
+    <br/>
+
+    <jhi-alert-error></jhi-alert-error>
+
+    <dl class="row-md jh-entity-details">
+        <dt><span>Default CVs license</span></dt>
+        <dd>
+            <span>{{ agency.license }}</span>
+        </dd>
+        <dt><span jhiTranslate="cvsApp.agency.uri">Uri</span></dt>
+        <dd>
+            <span>{{ agency.uri }}</span>
+        </dd>
+        <dt><span jhiTranslate="cvsApp.agency.canonicalUri">Canonical Uri</span></dt>
+        <dd>
+            <span>{{ agency.canonicalUri }}</span>
+        </dd>
+    </dl>
+
+    <div class="card">
+        <div class="card-header">
+            Statistics
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm">
+                    <dl class="row-md jh-entity-details">
+                        <dt><span>Number of CVs Published</span></dt>
+                        <dd>
+                            <span>{{numberCvPublished}} CVs</span>
+                        </dd>
+                        <dt><span>Number of CVs SL and TL versions published </span></dt>
+                        <dd>
+                            <span>{{numberCvVersionSlPublished + numberCvVersionTlPublished}} CVs from {{numberCvVersionSlPublished}} SL and {{numberCvVersionTlPublished}} TL versions</span>
+                        </dd>
+                        <dt><span>Number of Codes in latest published CVs</span></dt>
+                        <dd>
+                            <span>{{numberCodePublished}} CV Codes from {{numberCvPublished}} CVs</span>
+                        </dd>
+                        <dt><span>Number of Codes from All Published Versions</span></dt>
+                        <dd>
+                            <span>{{numberCodeVersionPublished}} CV Codes</span>
+                        </dd>
+                    </dl>
+                </div>
+                <div *ngIf="languageComposition.length > 0" class="col-sm">
+                    <strong class="text-center w-100 d-block">Published CVs versions by languages composition</strong>
+                    <ngx-charts-pie-chart [results]="languageComposition" [labels]="true"></ngx-charts-pie-chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" *ngIf="unpublishedVersions.length > 0">
+        <div class="card-header">
+            Unpublished CVs
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th scope="col"><span>CV</span></th>
+                                <th scope="col"><span>Version</span></th>
+                                <th scope="col"><span>Date</span></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr *ngFor="let unpublishedVersion of unpublishedVersions; let i = index">
+                                <td>{{unpublishedVersion.cv}}</td>
+                                <td>
+                                    <a href="javascript:void(0)" (click)="closeAndNavigate( unpublishedVersion.cv, unpublishedVersion.language)">
+                                        {{unpublishedVersion.type}} {{unpublishedVersion.language}} {{unpublishedVersion.versionNumber}}-{{unpublishedVersion.status}}
+                                    </a>
+                                </td>
+                                <td>{{unpublishedVersion.date}}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <br/>
+
+    <div class="clearfix">Statistic JSON</div>
+    <div><pre>{{agencyStatistic | json}}</pre></div>
+</div>
