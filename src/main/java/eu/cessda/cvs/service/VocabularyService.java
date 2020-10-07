@@ -201,26 +201,6 @@ public interface VocabularyService {
     void indexPublished( VocabularyDTO vocabulary );
 
     /**
-     * Perform indexing in all published vocabularies
-     */
-    void indexAllVocabForAgency();
-
-    /**
-     * Perform indexing in a published vocabulary given JSON file path
-     *
-     * @param jsonPath the VocabularyDTO JSON file path
-     */
-    void indexVocabForAgency( Path jsonPath );
-
-
-    /**
-     * Perform indexing in a vocab for agency matrices and statistic
-     *
-     * @param vocabulary the VocabularyDTO needs to be re-indexed
-     */
-    void indexVocabForAgency( VocabularyDTO vocabulary );
-
-    /**
      * Find all vocabularies given ElasticSearch (ES) query
      *
      * @param esQueryResultDetail contains ES query details

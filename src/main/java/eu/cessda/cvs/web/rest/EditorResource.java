@@ -374,7 +374,6 @@ public class EditorResource {
                     vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
                     vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
                     vocabularyService.indexPublished(vocabularyDTO);
-                    vocabularyService.indexVocabForAgency(vocabularyDTO);
                 }
             }
         }
@@ -408,7 +407,6 @@ public class EditorResource {
             vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
             vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
             vocabularyService.indexPublished(vocabularyDTO );
-            vocabularyService.indexVocabForAgency(vocabularyDTO );
         }
     }
 

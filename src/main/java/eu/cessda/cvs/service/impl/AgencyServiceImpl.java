@@ -6,7 +6,6 @@ import eu.cessda.cvs.domain.search.AgencyStat;
 import eu.cessda.cvs.repository.AgencyRepository;
 import eu.cessda.cvs.repository.VocabularyRepository;
 import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
-import eu.cessda.cvs.repository.search.VocabSearchRepository;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.AgencyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
@@ -43,16 +42,15 @@ public class AgencyServiceImpl implements AgencyService {
 
     private final AgencyStatSearchRepository agencyStatSearchRepository;
 
-    private final VocabSearchRepository vocabSearchRepository;
-
-    public AgencyServiceImpl(AgencyRepository agencyRepository, VocabularyRepository vocabularyRepository, AgencyMapper agencyMapper, ApplicationProperties applicationProperties, JHipsterProperties jHipsterProperties, AgencyStatSearchRepository agencyStatSearchRepository, VocabSearchRepository vocabSearchRepository) {
+    public AgencyServiceImpl(AgencyRepository agencyRepository, VocabularyRepository vocabularyRepository,
+                             AgencyMapper agencyMapper, ApplicationProperties applicationProperties,
+                             JHipsterProperties jHipsterProperties, AgencyStatSearchRepository agencyStatSearchRepository) {
         this.agencyRepository = agencyRepository;
         this.vocabularyRepository = vocabularyRepository;
         this.agencyMapper = agencyMapper;
         this.applicationProperties = applicationProperties;
         this.jHipsterProperties = jHipsterProperties;
         this.agencyStatSearchRepository = agencyStatSearchRepository;
-        this.vocabSearchRepository = vocabSearchRepository;
     }
 
     /**

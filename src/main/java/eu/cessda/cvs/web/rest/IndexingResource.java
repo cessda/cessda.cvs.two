@@ -60,11 +60,4 @@ public class IndexingResource {
         vocabularyService.indexAllAgencyStats();
         return ResponseEntity.ok().body("Done indexing Agency Stats");
     }
-
-    @GetMapping("/agency-vocabulary")
-    public ResponseEntity<String> indexAgencyVocabulary() throws IOException {
-        log.debug("REST request to index published Vocabularies for agency");
-        vocabularyService.indexAllVocabForAgency();
-        return ResponseEntity.ok().body("Done indexing published Vocabularies for agency");
-    }
 }

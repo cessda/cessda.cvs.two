@@ -10,14 +10,12 @@ import eu.cessda.cvs.domain.*;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.domain.search.Vocab;
 import eu.cessda.cvs.domain.search.VocabularyEditor;
 import eu.cessda.cvs.domain.search.VocabularyPublish;
 import eu.cessda.cvs.repository.AgencyRepository;
 import eu.cessda.cvs.repository.LicenceRepository;
 import eu.cessda.cvs.repository.VocabularyRepository;
 import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
-import eu.cessda.cvs.repository.search.VocabSearchRepository;
 import eu.cessda.cvs.repository.search.VocabularyEditorSearchRepository;
 import eu.cessda.cvs.repository.search.VocabularyPublishSearchRepository;
 import eu.cessda.cvs.security.ActionType;
@@ -135,8 +133,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private final JHipsterProperties jHipsterProperties;
 
-    private final VocabSearchRepository vocabSearchRepository;
-
     private final AgencyStatSearchRepository agencyStatSearchRepository;
 
     public VocabularyServiceImpl(AgencyRepository agencyRepository, ConceptService conceptService, ExportService exportService,
@@ -146,8 +142,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                                  VocabularyPublishMapper vocabularyPublishMapper, VocabularyEditorSearchRepository vocabularyEditorSearchRepository,
                                  VocabularyPublishSearchRepository vocabularyPublishSearchRepository,
                                  ElasticsearchTemplate elasticsearchTemplate, ApplicationProperties applicationProperties,
-                                 JHipsterProperties jHipsterProperties, VocabSearchRepository vocabSearchRepository,
-                                 AgencyStatSearchRepository agencyStatSearchRepository) {
+                                 JHipsterProperties jHipsterProperties, AgencyStatSearchRepository agencyStatSearchRepository) {
         this.agencyRepository = agencyRepository;
         this.conceptService = conceptService;
         this.exportService = exportService;
@@ -163,7 +158,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.applicationProperties = applicationProperties;
         this.jHipsterProperties = jHipsterProperties;
-        this.vocabSearchRepository = vocabSearchRepository;
         this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
@@ -675,7 +669,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( getPublishedCvPaths() != null && !getPublishedCvPaths().isEmpty() && vocabularyPublishSearchRepository.count() == 0 || force) {
             log.info( "Performing indexing on all Published Vocabularies" );
             indexAllPublished();
-            indexAllVocabForAgency();
         }
     }
 
@@ -963,53 +956,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
         vocabularyPublishSearchRepository.save( vocab );
-    }
-
-    @Override
-    public void indexAllVocabForAgency() {
-        log.info("INDEXING ALL PUBLISHED VOCABULARIES FOR AGENCY START");
-        // remove any indexed vocabularies for agency
-        vocabSearchRepository.deleteAll();
-        // indexing vocab for agency
-        List<Path> jsonPaths = getPublishedCvPaths();
-        jsonPaths.forEach( this::indexVocabForAgency );
-        log.info("INDEXING ALL PUBLISHED VOCABULARIES FOR AGENCY FINISHED");
-    }
-
-    @Override
-    public void indexVocabForAgency(Path jsonPath) {
-        log.info("Indexing published vocabulary with path {}", jsonPath);
-        indexVocabForAgency(VocabularyUtils.generateVocabularyByPath(jsonPath));
-    }
-
-    @Override
-    public void indexVocabForAgency(VocabularyDTO vocabularyDTO) {
-        Vocabulary vocabulary = vocabularyMapper.toEntity(vocabularyDTO);
-        Comparator<Version> comparator = Comparator.comparing(Version::getItemType)
-            .thenComparing(Version::getLanguage)
-            .thenComparing(Version::getNumber, Comparator.reverseOrder());
-
-        final String vocabUrl = jHipsterProperties.getMail().getBaseUrl() + "/vocabulary/" + vocabulary.getNotation();
-
-        final List<Version> publishedVersions = vocabulary.getVersions().stream().filter(v -> v.getStatus()
-            .equals(Status.PUBLISHED.toString()))
-            .sorted(comparator)
-            .collect(Collectors.toList());
-
-        final LinkedHashSet<String> languages = publishedVersions.stream().map(Version::getLanguage)
-            .collect(Collectors.toCollection(LinkedHashSet::new));
-
-        final Vocab vocabEs = new Vocab(vocabulary.getAgencyId(), vocabulary.getAgencyName(), vocabulary.getUri(),
-            vocabUrl, vocabulary.getSourceLanguage(), vocabulary.getNotation(), languages);
-
-        for (Version version : publishedVersions) {
-            vocabEs.addVersion(version.getCanonicalUri(), vocabUrl + "?v=" +
-                    version.getCanonicalUri().substring(version.getCanonicalUri().lastIndexOf(':')) +
-                    "&lang=" + version.getLanguage(), version.getNumber(), version.getItemType(),
-                version.getLanguage(), version.getPublicationDate(),
-                version.getConcepts().stream().map(Concept::getNotation).collect(Collectors.toList()));
-        }
-        vocabSearchRepository.save(vocabEs);
     }
 
     @Override
