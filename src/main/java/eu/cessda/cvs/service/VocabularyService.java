@@ -246,4 +246,11 @@ public interface VocabularyService {
      * @return the generated file
      */
     File generateVocabularyEditorFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
+
+    /**
+     * Perform concept normalization by checking the similarity of SL and TL position, and parent by matching notation
+     * @param vocabularyDTOs
+     * @return
+     */
+    String performConceptSlAndTlNormalization(VocabularyDTO ...vocabularyDTOs);
 }

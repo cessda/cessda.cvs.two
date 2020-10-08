@@ -4,7 +4,7 @@
             <span *ngIf="deleteType === 'vocabulary'">Confirm delete Vocabulary <strong>{{vocabularyParam.notation}}</strong></span>
             <span *ngIf="deleteType === 'versionSl'">Confirm delete
                 {{ (versionParam.initialVersion === undefined || versionParam.initialVersion === versionParam.id) ? 'Vocabulary or ': '' }} SL & TLs versions <strong>{{versionParam.notation}}</strong> v.{{versionParam.number}}</span>
-            <span *ngIf="deleteType === 'versionTl'">Confirm delete TL version <strong>{{versionParam.notation}}</strong> v.{{versionParam.number}}</span>
+            <span *ngIf="deleteType === 'versionTl'">Confirm delete TL version <strong>{{versionParam.notation}}-{{versionParam.language}}</strong> v.{{versionParam.number}}</span>
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
@@ -19,7 +19,7 @@
         <p *ngIf="deleteType === 'versionSl' && !(versionParam.initialVersion && versionParam.initialVersion !== versionParam.id)">
             Are you sure you want to delete Vocabulary <strong>{{vocabularyParam.notation}}</strong>?
         </p>
-        <p *ngIf="deleteType === 'versionTl'">Are you sure you want to delete TL version <strong>{{versionParam.notation}}</strong> v.{{versionParam.number}}?</p>
+        <p *ngIf="deleteType === 'versionTl'">Are you sure you want to delete TL version <strong>{{versionParam.notation}}-{{versionParam.language}}</strong> v.{{versionParam.number}}?</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

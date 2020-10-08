@@ -3,7 +3,7 @@
   "status": "DRAFT",
   "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/en/3.0",
   "notation": "ModeOfCollection",
-  "versionNumber": "3.1",
+  "versionNumber": "3.0",
   "withdrawn": false,
   "sourceLanguage": "en",
   "agencyId": 2,
@@ -30,12 +30,13 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Mode Of Collection (Version 3.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0.",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n</div>",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 4976,
@@ -457,14 +458,15 @@
       "initialVersion": 326,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Indsamlingsmetode [Mode Of Collection] (Version 3.0.1; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n</div>",
       "translateAgency": "Danish National Archives (DNA)",
       "translateAgencyLink": "https://www.sa.dk",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7820,
@@ -886,14 +888,15 @@
       "initialVersion": 328,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Keruumenetelmä [Mode Of Collection] (Version 3.0.1; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 2.3.1.6 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n <br /> \n</div>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
       "translateAgencyLink": "https://www.fsd.uta.fi/en/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7838,
@@ -1315,14 +1318,15 @@
       "initialVersion": 371,
       "versionNotes": "",
       "versionChanges": "Code descriptive term rephrased: Aggrégation\n",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Mode de collecte [Mode Of Collection] (Version 3.0.2; Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n</div>",
       "translateAgency": "Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
       "translateAgencyLink": "https://cdsp.sciences-po.fr/fr/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7786,
@@ -1775,6 +1779,436 @@
       ]
     },
     {
+      "id": 371,
+      "status": "PUBLISHED",
+      "itemType": "TL",
+      "language": "fr",
+      "publicationDate": "2019-10-22",
+      "number": "3.0.1",
+      "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr/3.0.1",
+      "canonicalUri": "urn:ddi:int.ddi.cv:ModeOfCollection:3.0",
+      "uriSl": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/en/3.0",
+      "notation": "ModeOfCollection",
+      "title": "Mode de collecte",
+      "definition": "<span style=\"color: rgb(55, 64, 78); font-family: Arial; white-space: pre-wrap; background-color: rgb(250, 250, 250);\">La procédure, la technique ou le mode d'enquête utilisé pour obtenir les données.</span>",
+      "previousVersion": 0,
+      "initialVersion": 371,
+      "versionNotes": "",
+      "versionChanges": "",
+      "license": "CC BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "by.png",
+      "citation": "DDI Alliance. (2019). Mode de collecte [Mode Of Collection] (Version 3.0.1; Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
+      "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n</div>",
+      "translateAgency": "Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
+      "translateAgencyLink": "https://cdsp.sciences-po.fr/fr/",
+      "lastStatusChangeDate": "2020-10-01",
+      "concepts": [
+        {
+          "id": 7794,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview/fr/3.0.1",
+          "notation": "Interview",
+          "title": "Entretien",
+          "definition": "Un échange prévu entre deux (ou plusieurs) personnes - l(es) enquêteur(s) et l(es) enquêté(s) - dans lequel des informations sont obtenus par l(es) enquêteur(s) d(es) enquêté(s). Si l'interaction de groupe fait partie de la méthode, utilisez \"Focus group\"",
+          "position": 0
+        },
+        {
+          "id": 7795,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.FaceToFace/fr/3.0.1",
+          "notation": "Interview.FaceToFace",
+          "title": "Entretien en face-à-face",
+          "definition": "Méthode de recueil de données dans laquelle un enquêteur conduit un entretien personnel, posant des questions et écrivant les réponses. Utilisez ce terme si pas CAPI ou PAPI, ou si vous ne savez pas si CAPI/PAPI ou pas.",
+          "parent": "Interview",
+          "position": 1
+        },
+        {
+          "id": 7796,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Telephone/fr/3.0.1",
+          "notation": "Interview.Telephone",
+          "title": "Entretien téléphonique",
+          "definition": "Entretien administré par téléphone. Utilisez ce terme si pas CATI, ou si vous ne savez pas si CATI ou pas.",
+          "parent": "Interview",
+          "position": 2
+        },
+        {
+          "id": 7797,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Email/fr/3.0.1",
+          "notation": "Interview.Email",
+          "title": "Entretien par e-mail",
+          "definition": "Entretiens conduits via e-mail, habituellement consistant en plusieurs courriels qui permettent la discussion qui continue au-delà d'une première série de questions et de réponses, ou d'un premier échange de courriels.",
+          "parent": "Interview",
+          "position": 3
+        },
+        {
+          "id": 7798,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.WebBased/fr/3.0.1",
+          "notation": "Interview.WebBased",
+          "title": "Entretien par Internet",
+          "definition": "Un entretien conduit via l'Internet. Par exemple, des entretiens conduits à l'intérieur de forums en ligne ou en utilisant des technologies web audio-vidéo qui permettent au(x) enquêteur(s) et au(x) répondant(s) de communiquer en temps réel.",
+          "parent": "Interview",
+          "position": 4
+        },
+        {
+          "id": 7799,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.FaceToFace.CAPIorCAMI/fr/3.0.1",
+          "notation": "Interview.FaceToFace.CAPIorCAMI",
+          "title": "Entretien en face-à-face : assisté par ordinateur (CAPI / CAMI)",
+          "definition": "Entretien assisté par ordinateur (CAPI), ou entretien assisté par un appareil mobile (CAMI). Méthode de collecte des données dans laquelle l'enquêteur lit les questions aux répondants depuis l'écran d'un ordinateur, d'un ordinateur portable ou d'un appareil mobile tel qu'une tablette ou un smartphone, et entre les réponses sur le même appareil. L'administration de l'entretien est géré par un programme / application spécialement conçue.",
+          "parent": "Interview.FaceToFace",
+          "position": 5
+        },
+        {
+          "id": 7800,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.FaceToFace.PAPI/fr/3.0.1",
+          "notation": "Interview.FaceToFace.PAPI",
+          "title": "Entretien en face-à-face : papier et crayon (PAPI)",
+          "definition": "Entretien avec papier et crayon (PAPI). L'enquêteur utilise un questionnaire papier traditionnel pour lire les questions et écrire les réponses.",
+          "parent": "Interview.FaceToFace",
+          "position": 6
+        },
+        {
+          "id": 7801,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Telephone.CATI/fr/3.0.1",
+          "notation": "Interview.Telephone.CATI",
+          "title": "Entretien téléphonique : assisté par ordinateur (CATI)",
+          "definition": "Entretien téléphonique assisté par ordinateur (CATI). L'enquêteur pose des questions selon les directives de l'ordinateur, des réponses sont saisies directement dans l'ordinateur et l'administration de l'entretien est géré pas un programme spécialement conçu.",
+          "parent": "Interview.Telephone",
+          "position": 7
+        },
+        {
+          "id": 7170,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire/fr/3.0.1",
+          "notation": "SelfAdministeredQuestionnaire",
+          "title": "Questionnaire auto-administré",
+          "definition": "Méthode de collecte de données dans laquelle l'enquêté lit ou écoute les questions et saisit les réponses par lui-même ; aucun enquêteur n'est présent, ou participe à l'administration du questionnaire. Si possible, utilisez un terme plus précis. Utilisez ce terme si la méthode n'est pas décrite par aucun des termes plus précis - par exemple, pour les questionnaires PDF ou sur disquette.",
+          "position": 8
+        },
+        {
+          "id": 7171,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.Email/fr/3.0.1",
+          "notation": "SelfAdministeredQuestionnaire.Email",
+          "title": "Questionnaire auto-administré : e-mail",
+          "definition": "Enquête auto-administrée dans laquelle les questions sont présentées au répondant dans le corps d'un e-mail ou dans une pièce jointe, mais pas comme un lien vers une enquête par Internet. Les réponses sont alors renvoyées via e-mail, dans le corps du message ou comme une pièce jointe.",
+          "parent": "SelfAdministeredQuestionnaire",
+          "position": 9
+        },
+        {
+          "id": 7172,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.Paper/fr/3.0.1",
+          "notation": "SelfAdministeredQuestionnaire.Paper",
+          "title": "Questionnaire auto-administré : papier",
+          "definition": "Enquête auto-administrée utilisant un traditionnel questionnaire papier distribué et / ou recueilli par courrier (services postaux), par fax, ou en personne par soit par un enquêteur ou par un répondant.",
+          "parent": "SelfAdministeredQuestionnaire",
+          "position": 10
+        },
+        {
+          "id": 7173,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.SMSorMMS/fr/3.0.1",
+          "notation": "SelfAdministeredQuestionnaire.SMSorMMS",
+          "title": "Questionnaire auto-administré : par messagerie (SMS / MMS)",
+          "definition": "Enquête auto-administrée dans laquelle les répondants reçoivent les questions par SMS (messages texte) ou MMS (messages incluant des contenus multimédia) et envoient leurs réponses dans le même format.",
+          "parent": "SelfAdministeredQuestionnaire",
+          "position": 11
+        },
+        {
+          "id": 7174,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.CAWI/fr/3.0.1",
+          "notation": "SelfAdministeredQuestionnaire.CAWI",
+          "title": "Questionnaire auto-administré : par Internet (CAWI)",
+          "definition": "Entretien par Internet assisté par ordinateur (CAWI). Des données sont collectées en utilisant un questionnaire en ligne, produit avec un programme de création d'enquête en ligne. Le programme peut personnaliser le déroulement du questionnaire en fonction des réponses fournies, et peut permettre au questionnaire de contenir des images, des clips audio et vidéo, des liens vers différentes pages Web, etc.",
+          "parent": "SelfAdministeredQuestionnaire",
+          "position": 12
+        },
+        {
+          "id": 7175,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.CASI/fr/3.0.1",
+          "notation": "SelfAdministeredQuestionnaire.CASI",
+          "title": "Questionnaire auto-administré : assisté par ordinateur (CASI)",
+          "definition": "Entretien auto-administré assisté par ordinateur (CASI). Des répondants entrent les réponses dans un ordinateur (ordinateur de bureau, ordinateur portable, Palm / assistant personnel, tablette, etc.) par eux-mêmes. L'administration du questionnaire est gérée par un programme / une application spécialement conçu mais il n'y a pas de transfert de données en temps réel comme dans un CAWI, les réponses sont stockées sur l'appareil utilisé pour l'entretien. Le questionnaire peut être figé ou interactif. Sont inclus les VCASI (entretien vidéo auto-administré assisté par ordinateur), les ACASI (entretien audio auto-administré assisté par ordinateur) et les TACASI (entretien auto-administré par téléphone assisté par ordinateur).",
+          "parent": "SelfAdministeredQuestionnaire",
+          "position": 13
+        },
+        {
+          "id": 7176,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup/fr/3.0.1",
+          "notation": "FocusGroup",
+          "title": "Focus group",
+          "definition": "Un groupe de discussions sur un sujet particulier, organisé à des fins de recherche. Les individus sont sélectionnés en fonction du sujet, et les interactions entre participants sont utilisées dans le cadre de la méthode.",
+          "position": 14
+        },
+        {
+          "id": 7177,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup.FaceToFace/fr/3.0.1",
+          "notation": "FocusGroup.FaceToFace",
+          "title": "Focus group en face-à-face",
+          "definition": "Les participants du focus group se rencontrent en personne pour mener la discussion.",
+          "parent": "FocusGroup",
+          "position": 15
+        },
+        {
+          "id": 7178,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup.Telephone/fr/3.0.1",
+          "notation": "FocusGroup.Telephone",
+          "title": "Focus group par téléphone",
+          "definition": "Les discussions du focus group se font par téléphone.",
+          "parent": "FocusGroup",
+          "position": 16
+        },
+        {
+          "id": 7180,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup.Online/fr/3.0.1",
+          "notation": "FocusGroup.Online",
+          "title": "Focus group en ligne",
+          "definition": "Les discussions du focus group se font par l'Internet de façon interactive.",
+          "parent": "FocusGroup",
+          "position": 17
+        },
+        {
+          "id": 7181,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries/fr/3.0.1",
+          "notation": "SelfAdministeredWritingsAndDiaries",
+          "title": "Écrits et / ou journaux intimes auto-administrés",
+          "definition": "Des récits, des histoires, des journaux intimes, et des textes écrits crées par le sujet de recherche.",
+          "position": 18
+        },
+        {
+          "id": 7182,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries.Email/fr/3.0.1",
+          "notation": "SelfAdministeredWritingsAndDiaries.Email",
+          "title": "crits et / ou journaux intimes auto-administrés : e-mail",
+          "definition": "Des récits, des histoires, des journaux intimes, et des textes écrits soumis par courriel.",
+          "parent": "SelfAdministeredWritingsAndDiaries",
+          "position": 19
+        },
+        {
+          "id": 7183,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries.Paper/fr/3.0.1",
+          "notation": "SelfAdministeredWritingsAndDiaries.Paper",
+          "title": "Écrits et / ou journaux intimes auto-administrés : papier",
+          "definition": "Des récits, des histoires, des journaux intimes, et des textes écrits crées et rassemblés sous forme papier.",
+          "parent": "SelfAdministeredWritingsAndDiaries",
+          "position": 20
+        },
+        {
+          "id": 7184,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries.WebBased/fr/3.0.1",
+          "notation": "SelfAdministeredWritingsAndDiaries.WebBased",
+          "title": "Écrits et / ou journaux intimes auto-administrés : en ligne",
+          "definition": "Des récits, des histoires, des journaux intimes, et des textes écrits provenant d'Internet, e. g. des sites Internet, des blogs, des forums de discussion.",
+          "parent": "SelfAdministeredWritingsAndDiaries",
+          "position": 21
+        },
+        {
+          "id": 7185,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation/fr/3.0.1",
+          "notation": "Observation",
+          "title": "Observation",
+          "definition": "Méthode de recherche qui consiste à collecter des données au fur et à mesure qu'elle se produisent (par exemple, observation de comportements, d’événements, de l'évolution d'un état ou d'une maladie, etc.), sans tentative de manipuler aucune des variables indépendantes.",
+          "position": 22
+        },
+        {
+          "id": 7186,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field/fr/3.0.1",
+          "notation": "Observation.Field",
+          "title": "Observation sur le terrain",
+          "definition": "Observation qui a été conduite dans un environnement naturel.",
+          "parent": "Observation",
+          "position": 23
+        },
+        {
+          "id": 7189,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Laboratory/fr/3.0.1",
+          "notation": "Observation.Laboratory",
+          "title": "Observation en laboratoire",
+          "definition": "Observation qui a été conduite dans un configuration contrôlée, artificiellement créée. Par exemple, l'observation du jeu des enfants dans une salle de jeux de laboratoire.",
+          "parent": "Observation",
+          "position": 24
+        },
+        {
+          "id": 7190,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Laboratory.Participant/fr/3.0.1",
+          "notation": "Observation.Laboratory.Participant",
+          "title": "Observation participante en laboratoire",
+          "definition": "Type d'observation en laboratoire dans lequel le sujet interagit avec les sujets et joue souvent un rôle dans la situation sociale sous observation. Par exemple, l'observation du jeu des enfants dans une salle de jeux de laboratoire avec le chercheur prenant part au jeu.",
+          "parent": "Observation.Laboratory",
+          "position": 25
+        },
+        {
+          "id": 7192,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.ComputerBased/fr/3.0.1",
+          "notation": "Observation.ComputerBased",
+          "title": "Observation assisté par ordinateur",
+          "definition": "Type d'observation dans lequel les données relatives à l'utilisation de l'ordinateur ont été collectées par un logiciel qui peut être intégré dans un programme informatique lui-même ou qui peut être un programme séparé. Des informations peuvent être collectées à propos du nombre d'utilisateurs, les façons dans lesquels les utilisateurs interagissent avec le(s) programme(s), combien de temps ils passent sur une page, comment ils utilisent des sections spécifiques des applications, comment ils naviguent d'une page à l'autre ou d'une application à l'autre, etc.",
+          "parent": "Observation",
+          "position": 26
+        },
+        {
+          "id": 7187,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field.Participant/fr/3.0.1",
+          "notation": "Observation.Field.Participant",
+          "title": "Observation participante sur le terrain",
+          "definition": "Type d'observation sur le terrain dans lequel le chercheur interagit avec les sujets et joue souvent un rôle dans la situation sociale sous observation.",
+          "parent": "Observation.Field",
+          "position": 27
+        },
+        {
+          "id": 7188,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field.Nonparticipant/fr/3.0.1",
+          "notation": "Observation.Field.Nonparticipant",
+          "title": "Observation non-participante sur le terrain",
+          "definition": "Observation qui a été conduite dans une configuration naturelle et non contrôlée sans aucune interaction entre le chercheur et ses sujets.",
+          "parent": "Observation.Field",
+          "position": 28
+        },
+        {
+          "id": 7191,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Laboratory.Nonparticipant/fr/3.0.1",
+          "notation": "Observation.Laboratory.Nonparticipant",
+          "title": "Observation non-participante en laboratoire",
+          "definition": "Type d'observation en laboratoire qui a été conduite sans aucune interaction entre le chercheur et ses sujets.",
+          "parent": "Observation.Laboratory",
+          "position": 29
+        },
+        {
+          "id": 7193,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment/fr/3.0.1",
+          "notation": "Experiment",
+          "title": "Expérimentation",
+          "definition": "Méthode de recherche impliquant la manipulation d'une partie ou de toutes les variables indépendantes incluses dans les hypothèses.",
+          "position": 30
+        },
+        {
+          "id": 7194,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.Laboratory/fr/3.0.1",
+          "notation": "Experiment.Laboratory",
+          "title": "Expérimentation en laboratoire",
+          "definition": "Une expérimentation conduite dans une configuration physique contrôlée, créée artificiellement, dans laquelle un chercheur manipule une ou plusieurs variables indépendantes et mesure son / leur effet sur la variable dépendante.",
+          "parent": "Experiment",
+          "position": 31
+        },
+        {
+          "id": 7195,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.FieldIntervention/fr/3.0.1",
+          "notation": "Experiment.FieldIntervention",
+          "title": "Expérimentation sur le terrain",
+          "definition": "Une expérimentation conduite dans une configuration naturelle, non contrôlée, dans laquelle le chercheur manipule une ou plusieurs variables indépendantes. Des études cliniques sont un exemple d'expérimentations sur le terrain.",
+          "parent": "Experiment",
+          "position": 32
+        },
+        {
+          "id": 7196,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.WebBased/fr/3.0.1",
+          "notation": "Experiment.WebBased",
+          "title": "Expérimentation par Internet",
+          "definition": "Une expérimentation conduite dans une configuration virtuelle du Web, dans laquelle des matériaux expérimentaux sont programmés pour mettre en œuvre des situations ou des évènements artificiels pour être étudiés dans un environnement distribué. (Reips, U.-D. (2002). Theory and techniques of Web experimenting. In B. Batinic, U.-D. Reips, &amp; M. Bosnjak (Eds.), Online Social Sciences. Seattle: Hogrefe &amp; Huber. Available at: http://www.websm.org/uploadi/editor/Reips_2002_Theory_and_techniques.pdf [07 June 2013])",
+          "parent": "Experiment",
+          "position": 33
+        },
+        {
+          "id": 7197,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Recording/fr/3.0.1",
+          "notation": "Recording",
+          "title": "Enregistrement",
+          "definition": "Enregistrement par des moyens mécaniques ou électroniques, sous une forme qui permet que les informations soient récupérées et / ou reproduites. Par exemple, des images ou des sons sur disque ou bande magnétique.",
+          "position": 34
+        },
+        {
+          "id": 7198,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#ContentCoding/fr/3.0.1",
+          "notation": "ContentCoding",
+          "title": "Codage de contenu",
+          "definition": "Comme un mode secondaire de collecte de données, le codage de contenu applique des techniques de codage pour transformer des données qualitatives (textuel, vidéo, audio, ou image fixe) originalement produites à d'autres finalités en données quantitatives (exprimées dans des matrices unité-par-variable) en accord avec des schémas de catégorisations prédéfinis. Par exemple, les données recodées des programmes des partis politiques comme les \"L'Étude électorale du parlement européens 2019, étude des programmes\" (doi:10.4232/1.10204).",
+          "position": 35
+        },
+        {
+          "id": 7199,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Transcription/fr/3.0.1",
+          "notation": "Transcription",
+          "title": "Transcription",
+          "definition": "Collecte des informations par écrit à partir d'une source différente, ou à partir d'un support différent, d'un alphabet, ou d'une forme de notation, comme des formules scientifiques, ou des notes de musique. Pour des entretiens ou des observations transcrits, il est recommandé de documenter le mode de collecte initial, en utilisant l'un des termes propres à l'entretien ou à l'observation.",
+          "position": 36
+        },
+        {
+          "id": 7200,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#CompilationSynthesis/fr/3.0.1",
+          "notation": "CompilationSynthesis",
+          "title": "Compilation / synthèse",
+          "definition": "Collecte et assemblage de données depuis de multiples sources souvent hétérogènes qui ont un ou plusieurs points de référence en commun, et dont au moins une des sources a été produite à l'origine à d'autres fins. Les données sont incorporées dans une nouvelle entité. Par exemple, fournir des données sur le nombre d'universités au cours des 150 dernières années utilisant une variété de sources disponibles (e. g. des documents financiers, des statistiques officielles, des registres universitaires), en combinant les données d'enquête avec des informations sur les zones géographiques provenant des statistiques officielles (e. g. la densité de population, médecins par habitants, etc.), ou en utilisant RSS pour collecter des articles de blogs ou des tweets, etc.",
+          "position": 37
+        },
+        {
+          "id": 7201,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Summary/fr/3.0.1",
+          "notation": "Summary",
+          "title": "Résumé",
+          "definition": "Présentation d'informations dans une forme condensée, en les réduisant à leurs points importants. Par exemple, des résumés d'entretiens ou de rapports qui sont publiés et utilisés comme des données plutôt que des entretiens ou des rapports complets.",
+          "position": 38
+        },
+        {
+          "id": 7202,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Aggregation/fr/3.0.1",
+          "notation": "Aggregation",
+          "title": "Aggrégation",
+          "definition": "Statistiques qui concernent des classes, des groupes, ou des catégories. Les données sont calculées en moyenne, additionnées, ou autrement dérivées des données au niveau individuel, et il n'est plus possible de distinguer les caractéristiques des individus au sein de ces classes, groupes, ou catégories. Par exemple, le nombre et le groupe d'âge des chômeurs dans des régions géographiques spécifiques, ou des statistiques nationales sur l'apparition de certaines infractions, tirées originellement des statistiques de différents districts de police.",
+          "position": 39
+        },
+        {
+          "id": 7203,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Simulation/fr/3.0.1",
+          "notation": "Simulation",
+          "title": "Simulation",
+          "definition": "Modélisation ou représentation imitative de processus, d’événements ou de systèmes réels, utilisant souvent des programmes informatiques. Par exemple, un programme modélisant des réactions de la consommation des ménages aux changement des impôts indirects ; ou un jeu de données sur des patients hypothétiques et leur exposition aux médicaments, aux conditions environnementales, et aux effets indésirables connus.",
+          "position": 40
+        },
+        {
+          "id": 7204,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests/fr/3.0.1",
+          "notation": "MeasurementsAndTests",
+          "title": "Mesures et tests",
+          "definition": "Évaluer des propriétés spécifiques (ou caractéristiques) d'êtres, de choses, de phénomènes, (et / ou processus) en appliquant des standards préétablis et / ou des instruments ou des techniques spécialisés.",
+          "position": 41
+        },
+        {
+          "id": 7205,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests.Educational/fr/3.0.1",
+          "notation": "MeasurementsAndTests.Educational",
+          "title": "Mesures et tests d'enseignement",
+          "definition": "Évaluation de connaissances, de compétences, d'aptitudes, ou de résultats scolaires au moyen de mesures ou tests spécialisés.",
+          "parent": "MeasurementsAndTests",
+          "position": 42
+        },
+        {
+          "id": 7206,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests.Physical/fr/3.0.1",
+          "notation": "MeasurementsAndTests.Physical",
+          "title": "Mesures et tests de caractéristiques physiques",
+          "definition": "Évaluation des propriétés physiques d'êtres vivants, d'objets, de matériaux, ou de phénomènes naturels. Par exemple, des résultats d'examens cliniques (e. g. palpation, auscultation), mesures cliniques and tests de laboratoire comme analyse de sang, pression sanguine, rythme cardiaque, poids et taille du corps, de même que des mesures générales de temps, de distance, de masse, de température, de force, de puissance, de vitesse, de données de localisation sur des mouvements physiques ou d'autres paramètres ou variables physiques comme des données géospatiales.",
+          "parent": "MeasurementsAndTests",
+          "position": 43
+        },
+        {
+          "id": 7207,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests.Psychological/fr/3.0.1",
+          "notation": "MeasurementsAndTests.Psychological",
+          "title": "Mesures et tests psychologiques",
+          "definition": "Évaluation des traits de personnalités ou de réponses psychologiques / comportementales au moyen de mesures ou tests spécialisés. Par exemple, des tests objectifs comme mesure d'auto-évaluation avec un format restreint de réponses, ou des méthodes projectives permettant des réponses libres, incluant l'association de mots, l'achèvement de phrase ou d'histoire, des vignettes, des tests animés, des tests thématiques d'apperception, du jeu de rôle, des tests de dessin, des tests de tâches d'encre, des exercices de classement, etc.",
+          "parent": "MeasurementsAndTests",
+          "position": 44
+        },
+        {
+          "id": 7208,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Other/fr/3.0.1",
+          "notation": "Other",
+          "title": "Autre",
+          "definition": "Utilisez si le mode de collecte est connu, mais pas présent dans la liste.",
+          "position": 45
+        }
+      ],
+      "comments": [],
+      "versionHistories": []
+    },
+    {
       "id": 341,
       "status": "PUBLISHED",
       "itemType": "TL",
@@ -1791,14 +2225,15 @@
       "initialVersion": 341,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Metodo di raccolta dei dati [Mode Of Collection] (Version 3.0.1; UniData - Bicocca Data Archive, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 2.3.1.6 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n <br /> \n</div>",
       "translateAgency": "UniData - Bicocca Data Archive",
       "translateAgencyLink": "https://www.unidata.unimib.it/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7802,
@@ -2220,14 +2655,15 @@
       "initialVersion": 329,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Innsamlingsmetode [Mode Of Collection] (Version 3.0.1; NSD - Norwegian Centre for Research Data, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n</div>",
       "translateAgency": "NSD - Norwegian Centre for Research Data",
       "translateAgencyLink": "https://nsd.no/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7856,
@@ -2649,14 +3085,15 @@
       "initialVersion": 373,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Método de recolha de dados [Mode Of Collection] (Version 3.0.1; Arquivo Português de Informação Social (APIS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n</div>",
       "translateAgency": "Arquivo Português de Informação Social (APIS)",
       "translateAgencyLink": "http://www.apis.ics.ulisboa.pt/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7527,
@@ -3078,14 +3515,15 @@
       "initialVersion": 330,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Način zbiranja podatkov [Mode Of Collection] (Version 3.0.1; Social Science Data Archives (ADP), Slovenia, Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 2.3.1.6 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n <br /> \n</div>",
       "translateAgency": "Social Science Data Archives (ADP), Slovenia",
       "translateAgencyLink": "https://www.adp.fdv.uni-lj.si/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7874,
@@ -3508,14 +3946,15 @@
       "notes": "Ovaj vokabular prvi put je objavio DDI Alliance. Molimo pogledajte: https://ddialliance.org/control-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2020). Način prikupljanja [Mode Of Collection] (Version 3.0.1; Data Centre Serbia for Social Sciences (DCS), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n</div>",
       "translateAgency": "Data Centre Serbia for Social Sciences (DCS)",
       "translateAgencyLink": "http://datacentarserbia.com",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 8507,
@@ -3937,14 +4376,15 @@
       "initialVersion": 331,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Insamlingsmetod [Mode Of Collection] (Version 3.0.1; Swedish National Data Service (SND), Transl.) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:3.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\">DDI 3.2</a> \n <br /> Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\">TypeOfModeOfCollection</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Number in DDI 2.1: 2.3.1.6 \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\">collMode</a> \n <br /> \n</div>",
       "translateAgency": "Swedish National Data Service (SND)",
       "translateAgencyLink": "https://snd.gu.se",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7892,

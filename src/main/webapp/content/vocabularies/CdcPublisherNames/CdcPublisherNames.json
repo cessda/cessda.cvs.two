@@ -31,6 +31,7 @@
       "versionNotes": "Organisation official name change.",
       "versionChanges": "Code value changed: SODA changed into SODHA\nCode descriptive term rephrased: SODA changed into Social Sciences and Digital Humanities Archive (SODHA)\n",
       "citation": "CESSDA. (2020). CDC Publisher Names (Version 3.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:CdcPublisherNames:3.0. ",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 10840,

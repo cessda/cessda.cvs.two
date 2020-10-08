@@ -774,8 +774,10 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( slVersionNumber.equals(ALL))
             return vocabulary;
 
-        if( slVersionNumber.equals(LATEST))
-            slVersionNumber = vocabulary.getVersionNumber();
+        if( slVersionNumber.equals(LATEST)) {
+            final VersionDTO latestSlVersion = vocabulary.getVersions().stream().sorted(versionComparator).findFirst().orElse(null);
+            slVersionNumber = latestSlVersion.getNumber();
+        }
 
         getOneLatestVersionEachLanguage(slVersionNumber, licenceList, vocabulary, true);
 
@@ -1474,6 +1476,11 @@ public class VocabularyServiceImpl implements VocabularyService {
         log.info( "Editor generate file {0} for Vocabulary {1} versionSl {2}", downloadType, vocabularyNotation, versionSl );
         VocabularyDTO vocabularyDTO = getWithVersionsByNotationAndVersion(vocabularyNotation, versionSl);
         return generateVocabularyFileDownload(vocabularyNotation, versionSl, versionList, downloadType, request, vocabularyDTO);
+    }
+
+    @Override
+    public String performConceptSlAndTlNormalization(VocabularyDTO... vocabularyDTOs) {
+        return null;
     }
 
     private File generateVocabularyFileDownload(String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request, VocabularyDTO vocabularyDTO) {
