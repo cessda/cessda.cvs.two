@@ -167,6 +167,20 @@ public interface VocabularyService {
      */
     void indexEditor( VocabularyDTO vocabulary );
 
+
+    /**
+     * Perform indexing in all agency statistic
+     */
+    void indexAllAgencyStats();
+
+    /**
+     * Perform indexing in agency statistic
+     *
+     *  @param vocabulary the VocabularyDTO needs to be re-indexed
+     */
+    void indexAgencyStats( VocabularyDTO vocabulary );
+
+
     /**
      * Perform indexing in all published vocabularies
      */
@@ -180,7 +194,7 @@ public interface VocabularyService {
     void indexPublished( Path jsonPath );
 
     /**
-     * Perform indexing in a vocabulary in the Editor
+     * Perform indexing in a published vocabulary for the publication
      *
      * @param vocabulary the VocabularyDTO needs to be re-indexed
      */
@@ -232,4 +246,11 @@ public interface VocabularyService {
      * @return the generated file
      */
     File generateVocabularyEditorFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
+
+    /**
+     * Perform concept normalization by checking the similarity of SL and TL position, and parent by matching notation
+     * @param vocabularyDTOs
+     * @return
+     */
+    String performConceptSlAndTlNormalization(VocabularyDTO ...vocabularyDTOs);
 }

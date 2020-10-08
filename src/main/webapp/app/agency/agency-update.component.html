@@ -12,10 +12,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.agency.name" for="field_name">Name</label>
+                    <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.name" for="field_name">Name</label>
                     <input type="text" class="form-control" name="name" id="field_name"
                            formControlName="name"/>
                     <div *ngIf="editForm.get('name')!.invalid && (editForm.get('name')!.dirty || editForm.get('name')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('name')?.errors?.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
                         <small class="form-text text-danger"
                                *ngIf="editForm.get('name')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" [translateValues]="{ max: 240 }">
                         This field cannot be longer than 240 characters.
@@ -24,10 +28,14 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="cvsApp.agency.link" for="field_link">Link</label>
+                    <label class="form-control-label label-required" jhiTranslate="cvsApp.agency.link" for="field_link">Link</label>
                     <input type="text" class="form-control" name="link" id="field_link"
                            formControlName="link"/>
                     <div *ngIf="editForm.get('link')!.invalid && (editForm.get('link')!.dirty || editForm.get('link')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('link')?.errors?.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
                         <small class="form-text text-danger"
                                *ngIf="editForm.get('link')?.errors?.pattern">
                             Not a valid URL.

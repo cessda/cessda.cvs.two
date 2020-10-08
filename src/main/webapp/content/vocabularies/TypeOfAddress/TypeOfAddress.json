@@ -30,12 +30,13 @@
       "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "Code definition rephrased with no meaning change: Mailing.Residential; Visiting.Residential",
       "versionChanges": "Code definition rephrased: Mailing address: Residential\nCode definition rephrased: Visiting address: Residential\n",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2020). Type of Address (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfAddress:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module name: archive \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/TypeOfAddress.html\">TypeOfAddress</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5&nbsp;</a> \n</div> \n<div>\n  DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary. \n</div>",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 8812,
@@ -108,10 +109,12 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 291,
           "version": "1.0",
           "date": "2020-02-21",
-          "note": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

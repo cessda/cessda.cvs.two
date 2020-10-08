@@ -1,9 +1,10 @@
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.domain.search.AgencyStat;
+import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
 import eu.cessda.cvs.service.AgencyService;
-import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import eu.cessda.cvs.service.dto.AgencyDTO;
-
+import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -13,19 +14,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.Agency}.
@@ -43,8 +40,11 @@ public class AgencyResource {
 
     private final AgencyService agencyService;
 
-    public AgencyResource(AgencyService agencyService) {
+    private final AgencyStatSearchRepository agencyStatSearchRepository;
+
+    public AgencyResource(AgencyService agencyService, AgencyStatSearchRepository agencyStatSearchRepository) {
         this.agencyService = agencyService;
+        this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
     /**
@@ -135,10 +135,23 @@ public class AgencyResource {
      * @return the result of the search.
      */
     @GetMapping("/_search/agencies")
-    public ResponseEntity<List<AgencyDTO>> searchAgencies(@RequestParam String query, Pageable pageable) {
+    public ResponseEntity<List<AgencyStat>> searchAgencies(@RequestParam String query, Pageable pageable) {
         log.debug("REST request to search for a page of Agencies for query {}", query);
-        Page<AgencyDTO> page = agencyService.search(query, pageable);
+        Page<AgencyStat> page = agencyService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /agencies-statistic/:id} : get the "id" agency.
+     *
+     * @param id the id of the agencyDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the agencyDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/agencies-stat/{id}")
+    public ResponseEntity<AgencyStat> getAgencyStatistic(@PathVariable Long id) {
+        log.debug("REST request to get Agency : {}", id);
+        Optional<AgencyStat> agencyStat = agencyStatSearchRepository.findById(id);
+        return ResponseUtil.wrapOrNotFound(agencyStat);
     }
 }

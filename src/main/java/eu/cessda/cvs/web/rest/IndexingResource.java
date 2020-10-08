@@ -53,4 +53,11 @@ public class IndexingResource {
         agencyService.indexAll();
         return ResponseEntity.ok().body("Done indexing Agency");
     }
+
+    @GetMapping("/agency-stats")
+    public ResponseEntity<String> indexAgencyStats() throws IOException {
+        log.debug("REST request to index Agencies Stats");
+        vocabularyService.indexAllAgencyStats();
+        return ResponseEntity.ok().body("Done indexing Agency Stats");
+    }
 }

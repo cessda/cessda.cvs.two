@@ -184,8 +184,8 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           versionId: this.versionParam.id,
           title: this.codeAddEditForm.get(['title'])!.value,
           definition: this.codeAddEditForm.get(['definition'])!.value,
-          changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : undefined,
-          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : undefined
+          changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : 'Code translation added',
+          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : this.conceptParam!.notation
         };
         if (this.conceptParam!.title) {
           cdSnippet.actionType = 'EDIT_TL_CODE';

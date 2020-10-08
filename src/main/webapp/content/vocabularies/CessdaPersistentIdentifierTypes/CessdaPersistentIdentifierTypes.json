@@ -32,6 +32,7 @@
       "versionChanges": "",
       "citation": "CESSDA. (2020). CESSDA Persistent Identifier Types (Version 1.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:CessdaPersistentIdentifierTypes:1.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: reusable \n <br /> \n</div> \n<div>\n Subelement \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/ManagingAgency.html\">Managing Agency</a> in element \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/InternationalIdentifier.html\">InternationalIdentifier</a> \n</div>\n<div>\n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/IDNo.html\">&nbsp;IDNo</a> \n</div> \n<div>\n  Attribute Name: @Agency \n</div>",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 8987,

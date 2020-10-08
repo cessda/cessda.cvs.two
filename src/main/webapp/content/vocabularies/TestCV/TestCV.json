@@ -30,6 +30,7 @@
       "versionNotes": "",
       "versionChanges": "Code added: Test4\nCode definition rephrased: Test 1\n",
       "citation": "CESSDA. (2019). Test CV (Version 2.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TestCV:2.0. ",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 5556,
@@ -70,9 +71,12 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 345,
           "version": "1.0",
           "date": "2019-07-04",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

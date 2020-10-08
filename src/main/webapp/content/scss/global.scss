@@ -482,6 +482,7 @@ tag-ripple {
     display: flex;
     flex-direction: column;
     flex: 1 1 100%;
+    clear: both;
     .label-column,
     .label-column-input,
     .label-column-value {
@@ -752,6 +753,9 @@ button.invisible-button:focus {
 }
 .item-panel {
   margin-bottom: 15px;
+  display: block;
+  clear: both;
+  min-height: 25px;
 }
 .hide-block {
   display: none;
@@ -916,6 +920,9 @@ button.invisible-button:focus {
 }
 
 @media screen and (min-width: 1024px) {
+  .editor-comparator {
+    max-width: calc(100vw - 340px);
+  }
   .content {
     flex-direction: row;
     .content-left {
@@ -1075,4 +1082,15 @@ button.invisible-button:focus {
 }
 .m-w-300 {
   max-width: 300px;
+}
+.checkbox-2x {
+  transform: scale(1.5);
+  -webkit-transform: scale(1.5);
+}
+.m-t-5px {
+  margin: 5px 0 0 0 !important;
+}
+.agency-btn-block {
+  padding: 0;
+  margin-top: 15px;
 }

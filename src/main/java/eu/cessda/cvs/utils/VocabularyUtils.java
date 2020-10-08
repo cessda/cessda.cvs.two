@@ -52,6 +52,12 @@ public final class VocabularyUtils {
         return vocabularyDTO;
     }
 
+    public static VersionDTO generateVersionByPath(Path jsonPath, String language, String versionNumber) {
+        VocabularyDTO vocabularyDTO = generateVocabularyByPath(jsonPath);
+        return vocabularyDTO.getVersions().stream().filter(v -> v.getLanguage().equals(language) && v.getNumber().equals(versionNumber))
+            .findFirst().orElse(null);
+    }
+
     public static EsQueryResultDetail prepareEsQuerySearching(String q, String f, Pageable pageable, SearchScope searchScope) {
         if (q == null)
             q = "";

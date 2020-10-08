@@ -119,11 +119,12 @@ export class EditorCvAddDialogComponent implements OnInit {
   }
 
   private createFromForm(): IVocabularySnippet {
-    const selectedAgency = this.agencies.filter(a => a.id === this.cvAddForm.get(['agency'])!.value)[0];
+    const selectedAgencyId = this.cvAddForm.get(['agency'])!.value;
+    const selectedAgency = this.agencies.find(a => a.id === +selectedAgencyId);
     return {
       ...new VocabularySnippet(),
       actionType: 'CREATE_CV',
-      agencyId: selectedAgency.id,
+      agencyId: selectedAgency!.id,
       language: this.cvAddForm.get(['sourceLanguage'])!.value,
       itemType: 'SL',
       notation: this.cvAddForm.get(['notation'])!.value,

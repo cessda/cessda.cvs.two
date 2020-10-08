@@ -24,6 +24,7 @@
     "@ng-bootstrap/ng-bootstrap": "6.0.0",
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
+    "@swimlane/ngx-charts": "^16.0.0",
     "bootstrap": "4.4.1",
     "bootswatch": "4.4.1",
     "dependencies": "0.0.1",

@@ -56,7 +56,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class VocabularyResourceIT {
 
     private static final String DEFAULT_STATUS = "DRAFT";
-    private static final String UPDATED_STATUS = "INITIAL_REVIEW";
+    private static final String UPDATED_STATUS = "REVIEW";
 
     private static final String DEFAULT_URI = "AAAAAAAAAA";
     private static final String UPDATED_URI = "BBBBBBBBBB";

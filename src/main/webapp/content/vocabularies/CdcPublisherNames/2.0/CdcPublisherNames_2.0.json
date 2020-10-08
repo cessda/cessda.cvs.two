@@ -31,6 +31,7 @@
       "versionNotes": "",
       "versionChanges": "Code added: SODA\nCode added: FORS\n",
       "citation": "CESSDA. (2020). CDC Publisher Names (Version 2.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:CdcPublisherNames:2.0. ",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 10812,
@@ -205,10 +206,12 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 450,
           "version": "1.0",
           "date": "2020-06-23",
-          "note": "Used for the Publisher filter in CDC. No need for other language versions.",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

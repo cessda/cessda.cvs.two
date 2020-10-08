@@ -6,10 +6,12 @@ import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.*;
 import eu.cessda.cvs.service.dto.*;
+import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.slf4j.Logger;
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -80,10 +83,13 @@ public class EditorResource {
 
     private final VocabularyChangeService vocabularyChangeService;
 
+    private final AgencyStatSearchRepository agencyStatSearchRepository;
+
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
                           LicenceService licenceService, AgencyService agencyService, CommentService commentService,
                           MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService) {
+                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService,
+                          AgencyStatSearchRepository agencyStatSearchRepository) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
@@ -94,6 +100,7 @@ public class EditorResource {
         this.metadataValueService = metadataValueService;
         this.applicationProperties = applicationProperties;
         this.vocabularyChangeService = vocabularyChangeService;
+        this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
     /**
@@ -186,6 +193,9 @@ public class EditorResource {
         if (vocabularySnippet.getVersionId() == null) {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_VOCABULARY_NAME, ID_NULL);
         }
+        if (vocabularySnippet.getActionType() == null) {
+            throw new IllegalArgumentException( "Missing action type" );
+        }
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
             .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId() ));
         // pick version from vocabularyDTO
@@ -203,41 +213,34 @@ public class EditorResource {
         }
         // check authorization
         switch ( vocabularySnippet.getActionType() ){
-            case FORWARD_CV_SL_STATUS_INITIAL_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_INITIAL_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_INITIAL_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.INITIAL_REVIEW.toString());
-                vocabularyDTO.setStatus(Status.INITIAL_REVIEW.toString());
-                break;
-            case FORWARD_CV_SL_STATUS_FINAL_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_FINAL_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_FINAL_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.FINAL_REVIEW.toString());
-                vocabularyDTO.setStatus(Status.FINAL_REVIEW.toString());
+            case FORWARD_CV_SL_STATUS_REVIEW:
+                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_REVIEW,
+                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
+                versionDTO.setStatus(Status.REVIEW.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
+                vocabularyDTO.setStatus(Status.REVIEW.toString());
                 break;
             case FORWARD_CV_SL_STATUS_PUBLISHED:
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_PUBLISHED,
                     vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_PUBLISHED.getAgencyRoles(), vocabularySnippet.getLanguage());
 
                 versionDTO.setStatus(Status.PUBLISHED.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
                 versionDTO.prepareSlPublishing(vocabularySnippet, licenceDTO, agencyDTO);
                 vocabularyDTO.prepareSlPublishing(versionDTO);
                 break;
-            case FORWARD_CV_TL_STATUS_INITIAL_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_INITIAL_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_INITIAL_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.INITIAL_REVIEW.toString());
-                break;
-            case FORWARD_CV_TL_STATUS_FINAL_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_FINAL_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_FINAL_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.FINAL_REVIEW.toString());
+            case FORWARD_CV_TL_STATUS_REVIEW:
+                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_REVIEW,
+                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
+                versionDTO.setStatus(Status.REVIEW.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
                 break;
             case FORWARD_CV_TL_STATUS_PUBLISHED:
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_PUBLISHED,
                     vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_PUBLISHED.getAgencyRoles(), vocabularySnippet.getLanguage());
 
                 versionDTO.setStatus(Status.PUBLISHED.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
                 versionDTO.prepareTlPublishing(vocabularySnippet, licenceDTO, agencyDTO);
 
                 break;
@@ -250,7 +253,7 @@ public class EditorResource {
             cloneTLsIfAny(vocabularyDTO, versionDTO);
         }
         // save at the end
-        vocabularyService.save( vocabularyDTO );
+        VocabularyDTO vocabularyDTOSaved = vocabularyService.save( vocabularyDTO );
         // indexing publication, delete existing one
         if ( versionDTO.getStatus().equals( Status.PUBLISHED.toString()) ) {
             // generate json files
@@ -310,46 +313,7 @@ public class EditorResource {
         VersionDTO prevVersionDTO = versionService.findOne(versionDTO.getPreviousVersion())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + versionDTO.getPreviousVersion()));
 
-        // create comparison based on current version
-        StringBuilder currentVersionCvSb = new StringBuilder();
-        StringBuilder prevVersionCvSb = new StringBuilder();
-
-        currentVersionCvSb.append( "Cv Name: " + versionDTO.getTitle() + "\n");
-        currentVersionCvSb.append( "Cv Def: " + versionDTO.getDefinition() + "\n");
-        currentVersionCvSb.append( "Cv Notes: " + versionDTO.getNotes() + "\n\n\n");
-
-        prevVersionCvSb.append( "Cv Name: " + prevVersionDTO.getTitle() + "\n");
-        prevVersionCvSb.append( "Cv Def: " + prevVersionDTO.getDefinition() + "\n");
-        prevVersionCvSb.append( "Cv Notes: " + prevVersionDTO.getNotes() + "\n\n\n");
-
-        // get concepts and sorted by position
-        List<ConceptDTO> currentConcepts = conceptService.findByVersion(versionDTO.getId());
-        currentConcepts.forEach(currentConcept -> {
-            currentVersionCvSb.append( "Code: " + currentConcept.getNotation()+ "\n");
-            currentVersionCvSb.append( "Code Term: " + currentConcept.getTitle() + "\n");
-            currentVersionCvSb.append( "Code Def: " + currentConcept.getDefinition() + "\n\n");
-
-            ConceptDTO prevConceptDTO = null;
-
-            if( currentConcept.getPreviousConcept() != null )
-                prevConceptDTO = prevVersionDTO.getConcepts().stream()
-                    .filter(prevConcept -> currentConcept.getPreviousConcept().equals( prevConcept.getId())).findFirst()
-                    .orElse(null);
-
-            if ( prevConceptDTO == null ) {
-                prevVersionCvSb.append( "Code: \n");
-                prevVersionCvSb.append( "Code Term: \n");
-                prevVersionCvSb.append( "Code Def: \n\n");
-            } else {
-                prevVersionCvSb.append( "Code: " + prevConceptDTO.getNotation()+ "\n");
-                prevVersionCvSb.append( "Code Term: " + prevConceptDTO.getTitle() + "\n");
-                prevVersionCvSb.append( "Code Def: " + prevConceptDTO.getDefinition() + "\n\n");
-            }
-        });
-
-        List<String> compareCurrentPrev = new ArrayList<>();
-        compareCurrentPrev.add( prevVersionCvSb.toString() );
-        compareCurrentPrev.add( currentVersionCvSb.toString() );
+        List<String> compareCurrentPrev = VersionUtils.buildComparisonCurrentAndPreviousCV(versionDTO, prevVersionDTO);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Prev-Cv-Version", prevVersionDTO.getNotation() + " " +prevVersionDTO.getItemType() + " v." + prevVersionDTO.getNumber());
@@ -406,7 +370,7 @@ public class EditorResource {
                 vocabularyService.indexEditor(vocabularyDTO);
 
                 if( versionDTO.getStatus().equals( Status.PUBLISHED.toString())) {
-                    // remove published JSON file, re-create the JSON file and re-index for publishec vocabulary
+                    // remove published JSON file, re-create the JSON file and re-index for published vocabulary
                     vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
                     vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
                     vocabularyService.indexPublished(vocabularyDTO);

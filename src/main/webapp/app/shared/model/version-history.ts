@@ -4,6 +4,7 @@ export interface IVersionHistory {
   date?: string;
   note?: string;
   changes?: string;
+  prevVersion?: number;
   visible?: boolean;
 }
 
@@ -14,6 +15,7 @@ export class VersionHistory implements IVersionHistory {
     public date?: string,
     public note?: string,
     public changes?: string,
+    public prevVersion?: number,
     public visible?: boolean
   ) {
     this.visible = false;

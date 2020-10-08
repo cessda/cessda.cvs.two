@@ -64,20 +64,13 @@
                             </div>
                             <div *ngIf="version!.itemType === 'SL'">
                                 <div *ngIf="version!.status === 'DRAFT'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_INITIAL_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS__REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'level-up-alt'"></fa-icon>
-                                        <span>Initial review {{version!.itemType}} {{version!.language}}</span>
+                                        <span>Review {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
-                                <div *ngIf="version!.status === 'INITIAL_REVIEW'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_FINAL_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
-                                            class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
-                                        <fa-icon [icon]="'level-up-alt'"></fa-icon>
-                                        <span>Final review {{version!.itemType}} {{version!.language}}</span>
-                                    </button>
-                                </div>
-                                <div *ngIf="version!.status === 'FINAL_REVIEW'">
+                                <div *ngIf="version!.status === 'REVIEW'">
                                     <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_PUBLISH', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'archive'"></fa-icon>
@@ -94,20 +87,13 @@
                             </div>
                             <div *ngIf="version!.itemType === 'TL'">
                                 <div *ngIf="version!.status === 'DRAFT'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_INITIAL_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','CONTRIBUTOR_TL'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','CONTRIBUTOR_TL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'level-up-alt'"></fa-icon>
-                                        <span>Initial review {{version!.itemType}} {{version!.language}}</span>
+                                        <span>Review {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
-                                <div *ngIf="version!.status === 'INITIAL_REVIEW'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_FINAL_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL'], language:version!.language}"
-                                            class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
-                                        <fa-icon [icon]="'level-up-alt'"></fa-icon>
-                                        <span>Final review {{version!.itemType}} {{version!.language}}</span>
-                                    </button>
-                                </div>
-                                <div *ngIf="version!.status === 'FINAL_REVIEW'">
+                                <div *ngIf="version!.status === 'REVIEW'">
                                     <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_PUBLISH', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'archive'"></fa-icon>
@@ -153,15 +139,15 @@
                                     </button>
 
                                     <div *ngIf="concept">
-                                        <div *ngIf="version!.status !== 'FINAL_REVIEW'">
+                                        <div *ngIf="version!.status !== 'REVIEW'">
                                             <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
                                                     class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
                                                 <fa-icon [icon]="'edit'"></fa-icon>
                                                 <span>Edit code</span>
                                             </button>
                                         </div>
-                                        <div *ngIf="version!.status === 'FINAL_REVIEW'">
-                                            <div *jhiHasAnyAgencyAuthority="{actionType:'PERFORM_ACTION_IN_FINAL_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}">
+                                        <div *ngIf="version!.status === 'REVIEW'">
+                                            <div *jhiHasAnyAgencyAuthority="{actionType:'PERFORM_ACTION_IN_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
                                                     <fa-icon [icon]="'edit'"></fa-icon>
@@ -306,8 +292,8 @@
                             <div *ngIf="!isNotesEdit" [innerHTML]="detailForm.get(['notes'])!.value ? detailForm.get(['notes'])!.value: ''"></div>
 
                             <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_NOTE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}">
-                                <a *ngIf="!isNotesEdit" ngbTooltip="edit notes" href="javascript:void(0);" (click)="isNotesEdit = !isNotesEdit">
-                                    <fa-icon icon="edit"></fa-icon>
+                                <a *ngIf="!isNotesEdit" class="btn btn-sm btn-primary" ngbTooltip="edit notes" href="javascript:void(0);" (click)="isNotesEdit = !isNotesEdit">
+                                    <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                 </a>
                             </div>
 
@@ -363,8 +349,7 @@
                                         'active': lang === vocabulary!.selectedLang,
                                         'source-lang': lang === vocabulary!.sourceLanguage,
                                         'status-draft': isVersionStatus( lang, 'DRAFT'),
-                                        'status-review-initial': isVersionStatus( lang, 'INITIAL_REVIEW'),
-                                        'status-review-final': isVersionStatus(  lang, 'FINAL_REVIEW')}"
+                                        'status-review': isVersionStatus( lang, 'REVIEW')}"
                                         ngbTooltip="{{getFormattedVersionTooltip(v, vocabulary!.sourceLanguage)}}">
                                     {{lang}}
                                 </button>
@@ -408,7 +393,7 @@
                                 <input ngbButton type="radio" value="license"> License and Citation
                             </label>
                             <label ngbButtonLabel class="btn-primary tab-label">
-                                <input ngbButton type="radio" value="export"> Export/Download
+                                <input ngbButton type="radio" value="export" (click)="resetExport()"> Export/Download
                             </label>
                         </div>
 
@@ -446,21 +431,23 @@
                         <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'version', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'version'}" #versionPanel id="versionPanel">
                             <!-- self version -->
                             <div class="item-panel">
-                                <a class="option-label col-12 v-label" href="javascript:void(0);"
+                                <a class="option-label m-w-300 v-label float-left" href="javascript:void(0);"
                                    [attr.aria-expanded]="isCurrentVersionHistoryOpen" aria-controls="self-history"
-                                   (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen">
+                                   (click)="isCurrentVersionHistoryOpen = !isCurrentVersionHistoryOpen">&nbsp;
                                         <fa-icon *ngIf="isCurrentVersionHistoryOpen" icon="caret-down"></fa-icon>
                                         <fa-icon *ngIf="!isCurrentVersionHistoryOpen" icon="caret-right"></fa-icon>
                                         <span>{{version!.language}}: {{version!.number}}</span>
-                                        <span>&nbsp;&nbsp;&nbsp; Published: {{version!.publicationDate}}</span>
+                                        <span *ngIf="version!.status === 'PUBLISHED'">&nbsp;&nbsp;&nbsp; Published: {{version!.publicationDate}}</span>
+                                        <span *ngIf="version!.status !== 'PUBLISHED'">&nbsp;&nbsp;&nbsp; {{version!.status}}</span>
                                 </a>
-                                <span *ngIf="isCurrentVersionHistoryOpen" class="float-right">
-                                    <span *jhiHasAnyAgencyAuthority="{actionType:'EDIT_VERSION_INFO_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:version!.language}">
-                                        <a *ngIf="!isCurrentVersionInfoEdit" ngbTooltip="edit current version info" href="javascript:void(0);" (click)="isCurrentVersionInfoEdit = !isCurrentVersionInfoEdit">
-                                            <fa-icon icon="edit"></fa-icon>
+                                <span *ngIf="isCurrentVersionHistoryOpen && version!.status === 'PUBLISHED'">
+                                    &nbsp;<span *jhiHasAnyAgencyAuthority="{actionType:'EDIT_VERSION_INFO_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:version!.language}">
+                                        <a *ngIf="!isCurrentVersionInfoEdit" class="btn btn-primary btn-sm" ngbTooltip="edit current version info" href="javascript:void(0);" (click)="isCurrentVersionInfoEdit = !isCurrentVersionInfoEdit">
+                                            <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                         </a>
                                     </span>
                                 </span>
+
                                 <div id="self-history" [ngbCollapse]="!isCurrentVersionHistoryOpen">
                                     <div *ngIf="!isCurrentVersionInfoEdit">
                                         <div class="row-detail small-block-info" *ngIf="version!.versionNotes">
@@ -484,6 +471,7 @@
                                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
                                     </div>
                                     <div *ngIf="isCurrentVersionInfoEdit">
+                                        <br/><br/>
                                         <div class="row-detail small-block-info">
                                             <div class="label-column">
                                                 <span>Version notes</span>
@@ -510,10 +498,20 @@
                                             </button>
                                         </div>
                                     </div>
+
+<!--                                    <div class="editor-comparator" *ngIf="version!.previousVersion && version!.status !== 'PUBLISHED'">-->
+<!--                                        <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.id" [dataSource]="'DB'"></jhi-version-compare>-->
+<!--                                    </div>-->
+                                    <div class="editor-comparator" *ngIf="version!.previousVersion && version!.status === 'PUBLISHED'">
+                                        <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.language + '-' + version!.number"
+                                                             [langVersion2]="version!.language + '-' + version!.versionHistories![0].version"
+                                                             [dataSource]="'JSON'">
+                                        </jhi-version-compare>
+                                    </div>
                                 </div>
                             </div>
                             <!-- other older versions -->
-                            <div class="item-panel" *ngFor="let vh of version!.versionHistories">
+                            <div class="item-panel" *ngFor="let vh of version!.versionHistories; let i = index">
                                 <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
                                    [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
                                     <fa-icon *ngIf="vh.visible" icon="caret-down"></fa-icon>
@@ -543,6 +541,15 @@
                                     </div>
                                     <div class="row-detail" *ngIf="!vh.changes && !vh.note">
                                         <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
+                                    </div>
+
+                                    <div class="editor-comparator" *ngIf="i < version!.versionHistories!.length -1">
+                                        <ng-container *ngIf="vh.prevVersion">
+                                            <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.language + '-' + vh.version"
+                                                                 [langVersion2]="version!.language + '-' + version!.versionHistories![i + 1].version"
+                                                                 [dataSource]="'JSON'">
+                                            </jhi-version-compare>
+                                        </ng-container>
                                     </div>
                                 </div>
                             </div>
@@ -601,8 +608,8 @@
                             <div *ngIf="!isDdiUsageEdit" class="small-block-n" [innerHTML]="version!.ddiUsage ? version!.ddiUsage: 'no information'"></div>
 
                             <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_DDI_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_SL','CONTRIBUTOR_SL','ADMIN_TL','CONTRIBUTOR_TL'], language:version!.language}">
-                                <a *ngIf="!isDdiUsageEdit" ngbTooltip="edit ddi-usage" href="javascript:void(0);" (click)="isDdiUsageEdit = !isDdiUsageEdit">
-                                    <fa-icon icon="edit"></fa-icon>
+                                <a *ngIf="!isDdiUsageEdit" class="btn btn-primary btn-sm" ngbTooltip="edit ddi-usage" href="javascript:void(0);" (click)="isDdiUsageEdit = !isDdiUsageEdit">
+                                    <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                 </a>
                             </div>
 
@@ -633,17 +640,17 @@
                                     <span *ngIf="version!.publicationDate"> {{version!.publicationDate!.toString().substr(0,4)}}</span>
                                 </p>
                             </div>
-                            <div class="row-detail small-block-n" *ngIf="version!.license === 'BY'">
+                            <div class="row-detail small-block-n" *ngIf="version!.licenseName">
                                 <div class="label-column">
-                                    <span>
-                                        <img style="max-width:120px" alt="Creative Commons Attribution 4.0 International" src="/content/images/license/by.png">
+                                    <span *ngIf="version!.licenseLogo">
+                                        <img style="max-width:120px" alt="license img" src="/content/images/license/{{version!.licenseLogo}}">
                                     </span>
                                 </div>
                                 <div class="detail-column">
-                                    <span>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>.</span>
+                                    <span>This work is licensed under a <a rel="license" href="{{version!.licenseLink}}">{{version!.licenseName}} - {{version!.license}}</a>.</span>
                                 </div>
                             </div>
-                            <div class="row-detail small-block-n">
+                            <div class="row-detail small-block-n" *ngIf="version!.citation">
                                 <div class="label-column">
                                     <span>Citation</span>
                                 </div>
@@ -651,7 +658,7 @@
                                     <span>{{version!.citation}} </span>
                                 </div>
                             </div>
-                            <div class="row-detail small-block-n">
+                            <div class="row-detail small-block-n" *ngIf="version!.canonicalUri">
                                 <div class="label-column">
                                     <span>Available from</span>
                                 </div>

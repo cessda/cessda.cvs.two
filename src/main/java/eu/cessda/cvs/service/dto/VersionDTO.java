@@ -100,6 +100,8 @@ public class VersionDTO implements Serializable {
 
     private String translateAgencyLink;
 
+    private LocalDate lastStatusChangeDate;
+
     private Long vocabularyId;
 
     public VersionDTO(){}
@@ -446,6 +448,14 @@ public class VersionDTO implements Serializable {
         this.translateAgencyLink = translateAgencyLink;
     }
 
+    public LocalDate getLastStatusChangeDate() {
+        return lastStatusChangeDate;
+    }
+
+    public void setLastStatusChangeDate(LocalDate lastStatusChangeDate) {
+        this.lastStatusChangeDate = lastStatusChangeDate;
+    }
+
     public Long getVocabularyId() {
         return vocabularyId;
     }
@@ -599,6 +609,9 @@ public class VersionDTO implements Serializable {
         this.title = vocabularySnippet.getTitle();
         this.definition = vocabularySnippet.getDefinition();
         this.notes = vocabularySnippet.getNotes();
+
+        this.translateAgency = vocabularySnippet.getTranslateAgency();
+        this.translateAgencyLink = vocabularySnippet.getTranslateAgencyLink();
     }
 
     public void prepareSlPublishing(VocabularySnippet vocabularySnippet, LicenceDTO licenceDTO, AgencyDTO agencyDTO) {

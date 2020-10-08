@@ -30,12 +30,13 @@
       "notes": "This controlled vocabulary is applicable only to survey-type data. \nThis vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2020). Response Unit (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ResponseUnit:1.0. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2&nbsp;</a> \n<div>\n  Module name: datacollection \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/ResponseUnit.html\">ResponseUnit</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/respUnit.html\"> respUnit</a> \n</div> \n<div>\n <br />\n</div> \n<div> \n <div> \n  <br /> \n </div> \n</div>",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 3238,

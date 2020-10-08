@@ -2,7 +2,7 @@
     <h2 id="page-heading">
         <span jhiTranslate="cvsApp.licence.home.title">Licences</span>
 
-        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-licence" [routerLink]="['/licence/new']">
+        <button id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-licence" [routerLink]="['/admin/licence/new']">
             <fa-icon icon="plus"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="cvsApp.licence.home.createLabel">
             Create a new Licence
@@ -14,24 +14,6 @@
 
     <jhi-alert></jhi-alert>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'cvsApp.licence.home.search' | translate }}">
-
-                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <fa-icon icon="search"></fa-icon>
-                    </button>
-
-                    <button class="input-group-append btn btn-danger" (click)="search('')" *ngIf="currentSearch">
-                        <fa-icon icon="trash-alt"></fa-icon>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
     <div class="alert alert-warning" id="no-result" *ngIf="licences?.length === 0">
         <span jhiTranslate="cvsApp.licence.home.notFound">No licences found</span>
     </div>
@@ -42,30 +24,30 @@
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="name"><span jhiTranslate="cvsApp.licence.name">Name</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="link"><span jhiTranslate="cvsApp.licence.link">Link</span> <fa-icon icon="sort"></fa-icon></th>
-                    <th scope="col"  jhiSortBy="logoLink"><span jhiTranslate="cvsApp.licence.logoLink">Logo Link</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="abbr"><span jhiTranslate="cvsApp.licence.abbr">Abbr</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="link"><span jhiTranslate="cvsApp.licence.link">Link</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"  jhiSortBy="logoLink"><span jhiTranslate="cvsApp.licence.logoLink">Logo</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let licence of licences ;trackBy: trackId">
-                    <td><a [routerLink]="['/licence', licence.id, 'view']">{{ licence.id }}</a></td>
+                    <td><a [routerLink]="['/admin/licence', licence.id, 'view']">{{ licence.id }}</a></td>
                     <td>{{ licence.name }}</td>
-                    <td>{{ licence.link }}</td>
-                    <td>{{ licence.logoLink }}</td>
                     <td>{{ licence.abbr }}</td>
+                    <td>{{ licence.link }}</td>
+                    <td><img *ngIf="licence.logoLink" [src]="'/content/images/license/' + licence.logoLink" class="mh-60px" alt="logo of {{ licence.name }}"/></td>
                     <td class="text-right">
                         <div class="btn-group">
                             <button type="submit"
-                                    [routerLink]="['/licence', licence.id, 'view']"
+                                    [routerLink]="['/admin/licence', licence.id, 'view']"
                                     class="btn btn-info btn-sm">
                                 <fa-icon icon="eye"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
 
                             <button type="submit"
-                                    [routerLink]="['/licence', licence.id, 'edit']"
+                                    [routerLink]="['/admin/licence', licence.id, 'edit']"
                                     class="btn btn-primary btn-sm">
                                 <fa-icon icon="pencil-alt"></fa-icon>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>

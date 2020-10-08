@@ -1,4 +1,4 @@
-import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { JhiDataUtils } from 'ng-jhipster';
 
@@ -9,12 +9,14 @@ import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { FormBuilder } from '@angular/forms';
 import { HomeService } from 'app/home/home.service';
 import { RouteEventsService } from 'app/shared';
+import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'jhi-home-detail',
   templateUrl: './home-detail.component.html'
 })
-export class HomeDetailComponent implements OnInit {
+export class HomeDetailComponent implements OnInit, AfterViewInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
   @ViewChild('versionPanel', { static: true }) versionPanel!: ElementRef;
   @ViewChild('identityPanel', { static: true }) identityPanel!: ElementRef;
@@ -45,6 +47,9 @@ export class HomeDetailComponent implements OnInit {
   currentSelectedCode?: string;
 
   enableDocxExport = false;
+
+  contentObservable: Subject<DiffContent> = new Subject<DiffContent>();
+  contentObservable$: Observable<DiffContent> = this.contentObservable.asObservable();
 
   detailForm = this.fb.group({
     tabSelected: [],
@@ -90,6 +95,11 @@ export class HomeDetailComponent implements OnInit {
     });
   }
 
+  setVocabularyLangVersion(language: string, number: string): void {
+    this.vocabulary!.selectedLang = language;
+    this.vocabulary!.selectedVersion = number;
+  }
+
   getSlVersion(): IVersion {
     return VocabularyUtil.getSlVersion(this.vocabulary!);
   }
@@ -103,11 +113,21 @@ export class HomeDetailComponent implements OnInit {
   }
 
   getUniqueVersionLang(): string[] {
-    const uniqueLang: string[] = [];
+    let uniqueLang: string[] = [];
     this.vocabulary!.versions!.forEach(v => {
-      uniqueLang.push(v.language!);
+      if (v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some(l => l === v.language)) {
+        uniqueLang.push(v.language!);
+      }
     });
-    return [...new Set(uniqueLang)];
+    // sort only the SL & TLs in the current version
+    uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
+
+    this.vocabulary!.versions!.forEach(v => {
+      if (!v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some(l => l === v.language)) {
+        uniqueLang.push(v.language!);
+      }
+    });
+    return uniqueLang;
   }
 
   getVersionsByLanguage(lang?: string): IVersion[] {
@@ -206,11 +226,13 @@ export class HomeDetailComponent implements OnInit {
       const langs: string[] = this.getUniqueVersionLang();
       for (let i = 0; i < langs.length; i++) {
         const versions: IVersion[] = this.getVersionsByLanguage(langs[i]);
-        this.dwnldCbVal[i] = langs[i] + '-' + versions[0].number;
-        this.skosSelected[i] = true;
-        this.pdfSelected[i] = true;
-        this.htmlSelected[i] = true;
-        this.docxSelected[i] = true;
+        if (versions[0].number!.startsWith(this.getVersionsByLanguage(langs[0])[0].number!)) {
+          this.dwnldCbVal[i] = langs[i] + '-' + versions[0].number;
+          this.skosSelected[i] = true;
+          this.pdfSelected[i] = true;
+          this.htmlSelected[i] = true;
+          this.docxSelected[i] = true;
+        }
       }
     });
 
@@ -236,16 +258,18 @@ export class HomeDetailComponent implements OnInit {
         }, 1500);
       });
     }
-
-    // deselect all export checkbox -workaround
-    this._ngZone.runOutsideAngular(() => {
-      setTimeout(() => {
-        this.fillBolleanArray(this.skosSelected, false);
-        this.fillBolleanArray(this.pdfSelected, false);
-        this.fillBolleanArray(this.htmlSelected, false);
-        this.fillBolleanArray(this.docxSelected, false);
-      }, 1000);
+  }
+  ngAfterViewInit(): void {
+    this._ngZone.run(() => {
+      this.resetExport();
     });
+  }
+
+  resetExport(): void {
+    this.fillBolleanArray(this.skosSelected, false);
+    this.fillBolleanArray(this.pdfSelected, false);
+    this.fillBolleanArray(this.htmlSelected, false);
+    this.fillBolleanArray(this.docxSelected, false);
   }
 
   byteSize(base64String: string): string {
@@ -350,5 +374,18 @@ export class HomeDetailComponent implements OnInit {
     for (let i = 0; i < bollArray.length; i++) {
       bollArray[i] = checked;
     }
+  }
+
+  getMissingTlVersion(version: string): string {
+    let i = 0;
+    this.getSlVersion()!.versionHistories!.forEach(function(vhSl, index): void {
+      if (version.startsWith(vhSl.version!)) {
+        i = index + 1;
+      }
+    });
+    if (i > 0) {
+      return this.getSlVersion()!.versionHistories![i]!.version + '.x';
+    }
+    return '';
   }
 }

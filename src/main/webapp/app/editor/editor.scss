@@ -54,12 +54,8 @@ Main page styles
   box-shadow: inset 0 -5px #f00;
 }
 
-.status-review-initial {
+.status-review {
   box-shadow: inset 0 -5px #ffa500;
-}
-
-.status-review-final {
-  box-shadow: inset 0 -5px #0014ff;
 }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */

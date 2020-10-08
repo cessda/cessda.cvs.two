@@ -30,4 +30,13 @@ public class VersionUtilsTest {
     public void getBaseVersionUriTest(){
         assertThat( VersionUtils.getBaseVersionUri("https://vocabularies.cessda.eu/aaa/sq/1.0.1", "aaa" ) ).isEqualTo("https://vocabularies.cessda.eu");
     }
+
+    @Test
+    public void splitLanguageVersionTest(){
+        String[] methodOutput1 = {"2.1", "2.1", "en", "SL"};
+        assertThat( VersionUtils.splitLanguageVersion( "en-2.1" ) ).isEqualTo(methodOutput1);
+
+        String[] methodOutput2 = {"2.0", "2.0.1", "de", "TL"};
+        assertThat( VersionUtils.splitLanguageVersion( "de-2.0.1" ) ).isEqualTo(methodOutput2);
+    }
 }

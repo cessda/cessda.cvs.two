@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 import { JhiResolvePagingParams } from 'ng-jhipster';
-import { Observable, of, EMPTY } from 'rxjs';
+import { EMPTY, Observable, of } from 'rxjs';
 import { flatMap } from 'rxjs/operators';
 
 import { Authority } from 'app/shared/constants/authority.constants';
 import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { IAgency, Agency } from 'app/shared/model/agency.model';
+import { Agency, IAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from './agency.service';
 import { AgencyComponent } from './agency.component';
-import { AgencyDetailComponent } from './agency-detail.component';
+import { AgencyDetailPopupComponent } from './agency-detail-dialog.component';
 import { AgencyUpdateComponent } from './agency-update.component';
 
 @Injectable({ providedIn: 'root' })
@@ -49,7 +49,7 @@ export const agencyRoute: Routes = [
   },
   {
     path: ':id/view',
-    component: AgencyDetailComponent,
+    component: AgencyDetailPopupComponent,
     resolve: {
       agency: AgencyResolve
     },
@@ -57,7 +57,8 @@ export const agencyRoute: Routes = [
       authorities: [Authority.ADMIN],
       pageTitle: 'cvsApp.agency.home.title'
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
+    outlet: 'popup'
   },
   {
     path: 'new',

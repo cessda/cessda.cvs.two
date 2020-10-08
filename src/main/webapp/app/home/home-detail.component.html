@@ -135,7 +135,7 @@
                     <!-- determine multiple version with same lang -->
                     <span *ngIf="getVersionsByLanguage(lang)!.length === 1; else buttonDropDown">
                         <button *ngFor="let version of getVersionsByLanguage(lang)!"
-                                (click)="vocabulary!.selectedLang = version!.language;vocabulary!.selectedVersion = version!.number"
+                                (click)="setVocabularyLangVersion( version!.language, version!.number);"
                                 class="vocab-lang-button"
                                 [ngClass]="{'active': lang === vocabulary!.selectedLang, 'source-lang': lang === vocabulary!.sourceLanguage}"
                                 ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
@@ -150,7 +150,7 @@
                                 {{lang}}</button>
                             <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownBasic'+lang">
                                 <button ngbDropdownItem *ngFor="let version of getVersionsByLanguage(lang)!"
-                                        (click)="vocabulary!.selectedLang = version.language;vocabulary!.selectedVersion = version.number"
+                                        (click)="setVocabularyLangVersion( version!.language, version!.number);"
                                         [ngClass]="{'active': lang === vocabulary!.selectedLang && version.number === vocabulary!.selectedVersion}"
                                         ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
                                     v.{{version.number}}
@@ -182,7 +182,7 @@
                         <input ngbButton type="radio" value="license"> License and Citation
                     </label>
                     <label ngbButtonLabel class="btn-primary tab-label">
-                        <input ngbButton type="radio" value="export"> Export/Download
+                        <input ngbButton type="radio" value="export" (click)="resetExport()"> Export/Download
                     </label>
                 </div>
 
@@ -238,13 +238,23 @@
                                     <span class="ta-mode" [innerHTML]="getVersionByLangNumber()!.versionChanges"></span>
                                 </div>
                             </div>
+
+                            <div class="row-detail" *ngIf="!getVersionByLangNumber()!.versionNotes && !getVersionByLangNumber()!.versionChanges">
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
+                            </div>
+
+                            <div *ngIf="getVersionByLangNumber()!.previousVersion">
+                                <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.number"
+                                                     [langVersion2]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![0].version"
+                                                     [dataSource]="'JSON'">
+                                </jhi-version-compare>
+                            </div>
+
                         </div>
-                        <div class="row-detail" *ngIf="!getVersionByLangNumber()!.versionNotes && !getVersionByLangNumber()!.versionChanges">
-                            <span>no additonal information</span>
-                        </div>
+
                     </div>
                     <!-- other older versions -->
-                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber()!.versionHistories">
+                    <div class="item-panel" *ngFor="let vh of getVersionByLangNumber()!.versionHistories; let i = index">
                         <a class="option-label col-12 v-label" href="javascript:void(0);" (click)="vh.visible = !vh.visible"
                            [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
                             <fa-icon *ngIf="vh.visible" icon="caret-down"></fa-icon>
@@ -273,7 +283,19 @@
                                 </div>
                             </div>
                             <div class="row-detail" *ngIf="!vh.changes && !vh.note">
-                                <span>no information</span>
+                                <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no additional information</span>
+                            </div>
+
+                            <div *ngIf="i < getVersionByLangNumber()!.versionHistories!.length - 1">
+                                <ng-container *ngIf="vh.prevVersion">
+                                    <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="getVersionByLangNumber()!.language + '-' + vh.version"
+                                             [langVersion2]="getVersionByLangNumber()!.language + '-' + getVersionByLangNumber()!.versionHistories![i + 1].version"
+                                                [dataSource]="'JSON'">
+                                    </jhi-version-compare>
+                                </ng-container>
+                                <div *ngIf="!vh.prevVersion && i !== getVersionByLangNumber()!.versionHistories!.length" class="acc-header option-label col-12 mtop10">
+                                    Prev-next comparison not available, due to {{getVersionByLangNumber()!.language}}-{{getMissingTlVersion(vh.version)}} missing!
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -345,14 +367,14 @@
                             {{getVersionByLangNumber()!.publicationDate!.toString().substr(0,4)}}
                         </p>
                     </div>
-                    <div class="row-detail small-block-n" *ngIf="getVersionByLangNumber()!.license === 'BY'">
+                    <div class="row-detail small-block-n">
                         <div class="label-column">
-                            <span>
-                                <img style="max-width:120px" alt="Creative Commons Attribution 4.0 International" src="/content/images/license/by.png">
+                            <span *ngIf="getVersionByLangNumber()!.licenseLogo">
+                                <img style="max-width:120px" alt="license logo" src="/content/images/license/{{getVersionByLangNumber()!.licenseLogo}}">
                             </span>
                         </div>
                         <div class="detail-column">
-                            <span>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International</a>.</span>
+                            <span>This work is licensed under a <a rel="license" href="{{getVersionByLangNumber()!.licenseLink}}">{{getVersionByLangNumber()!.licenseName}} - {{getVersionByLangNumber()!.license}}</a>.</span>
                         </div>
                     </div>
                     <div class="row-detail small-block-n">
@@ -410,10 +432,17 @@
                                     </select>
                                 </ng-template>
                             </td>
-                            <td class="tac"><input type="checkbox" [checked]="skosSelected[i]" name="skosItems" formControlName="skosItems" value="{{dwnldCbVal[i]}}" (change)="skosSelected[i] = $event.target.checked"/></td>
-                            <td class="tac"><input type="checkbox" [checked]="pdfSelected[i]" name="pdfItems" formControlName="pdfItems" value="{{dwnldCbVal[i]}}" (change)="pdfSelected[i] = $event.target.checked"/></td>
-                            <td class="tac"><input type="checkbox" [checked]="htmlSelected[i]" name="htmlItems" formControlName="htmlItems" value="{{dwnldCbVal[i]}}" (change)="htmlSelected[i] = $event.target.checked"/></td>
-                            <td *ngIf="enableDocxExport" class="tac"><input type="checkbox" [checked]="docxSelected[i]" name="docxItems" formControlName="docxItems" value="{{dwnldCbVal[i]}}" (change)="docxSelected[i] = $event.target.checked"/></td>
+
+                            <td *ngIf="!getVersionsByLanguage(lang)![0]!.number!.startsWith(getSlVersion()!.number!)" class="tac" colspan="3">
+                                The {{getFormattedLang(lang)}} {{getSlVersion()!.number}}.x has not been released yet. You can export the previous version
+                                <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getVersionsByLanguage(lang)![0]!.number, lang:lang, tab:'export'}" target="_blank">here</a>.
+                            </td>
+                            <ng-container *ngIf="getVersionsByLanguage(lang)![0]!.number!.startsWith(getSlVersion()!.number!)">
+                                <td class="tac"><input type="checkbox" [checked]="skosSelected[i]" name="skosItems" formControlName="skosItems" value="{{dwnldCbVal[i]}}" (change)="skosSelected[i] = $event.target.checked"/></td>
+                                <td class="tac"><input type="checkbox" [checked]="pdfSelected[i]" name="pdfItems" formControlName="pdfItems" value="{{dwnldCbVal[i]}}" (change)="pdfSelected[i] = $event.target.checked"/></td>
+                                <td class="tac"><input type="checkbox" [checked]="htmlSelected[i]" name="htmlItems" formControlName="htmlItems" value="{{dwnldCbVal[i]}}" (change)="htmlSelected[i] = $event.target.checked"/></td>
+                                <td *ngIf="enableDocxExport" class="tac"><input type="checkbox" [checked]="docxSelected[i]" name="docxItems" formControlName="docxItems" value="{{dwnldCbVal[i]}}" (change)="docxSelected[i] = $event.target.checked"/></td>
+                            </ng-container>
                         </tr>
                         <tr>
                             <th scope="row">Download</th>

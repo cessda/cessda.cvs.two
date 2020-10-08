@@ -74,6 +74,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.search(text);
       });
 
+    fromEvent(this.searchInput.nativeElement, 'paste')
+      .pipe(
+        map((event: any) => {
+          return event.target.value;
+        })
+      )
+      .subscribe((text: string) => {
+        this.isSearching = true;
+        this.search(text);
+      });
+
     this.registerCvOnSearchEvent();
   }
 

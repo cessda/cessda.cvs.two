@@ -30,6 +30,9 @@ export interface IVersion {
   discussionNotes?: any;
   license?: string;
   licenseId?: number;
+  licenseName?: string;
+  licenseLink?: string;
+  licenseLogo?: string;
   citation?: any;
   ddiUsage?: any;
   translateAgency?: string;
@@ -69,6 +72,9 @@ export class Version implements IVersion {
     public discussionNotes?: any,
     public license?: string,
     public licenseId?: number,
+    public licenseName?: string,
+    public licenseLink?: string,
+    public licenseLogo?: string,
     public citation?: any,
     public ddiUsage?: any,
     public translateAgency?: string,

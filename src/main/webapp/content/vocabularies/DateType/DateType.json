@@ -30,12 +30,13 @@
       "notes": "The present list is based on ISO 8601 usage.\nThis vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Date Type (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DateType:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module name: reusable \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/DateTypeCode.html\">DateTypeCode</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div>\n<div>\n Element/Attribute name: \n <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/varFormat.html\">varFormat@category</a>\n</div> \n<div>\n For the \"category attribute\", a value from a controlled vocabulary may be provided if the \"other\" value is chosen. In this case, the term from the controlled vocabulary should be placed in the \"otherCategory\" attribute, and the controlledVocabUsed element (in the Document Description section) should also be filled in.\n</div>",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 3174,

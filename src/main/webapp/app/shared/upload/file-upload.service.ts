@@ -25,4 +25,19 @@ export class FileUploadService {
 
     return this.http.request(req);
   }
+  /**
+   * return the  uploaded filename
+   * @param file
+   */
+  uploadLicenseImage(file: File): Observable<HttpEvent<{}>> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+
+    const req = new HttpRequest('POST', `${this.resourceUrl}/license-image`, formdata, {
+      reportProgress: true,
+      responseType: 'text'
+    });
+
+    return this.http.request(req);
+  }
 }

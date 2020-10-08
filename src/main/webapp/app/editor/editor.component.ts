@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, of, Subscription } from 'rxjs';
 import { LoginModalService } from 'app/core/login/login-modal.service';
@@ -9,11 +9,10 @@ import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, Jh
 import { EditorService } from 'app/editor/editor.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
-import { ITEMS_PER_PAGE, AGGR_AGENCY, PAGING_SIZE, AGGR_LANGUAGE, AGGR_STATUS } from 'app/shared';
+import { AGGR_AGENCY, AGGR_LANGUAGE, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
 import { ICvResult } from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { ICode } from 'app/shared/model/code.model';
-import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
 import { IAggr } from 'app/shared/model/aggr';
 import { FormBuilder } from '@angular/forms';
 import { IBucket } from 'app/shared/model/bucket';
@@ -88,6 +87,9 @@ export class EditorComponent implements OnInit, OnDestroy {
       if (params['size']) {
         this.itemsPerPage = params['size'];
       }
+      if (params['page']) {
+        this.page = params['page'];
+      }
       if (params['sort']) {
         this.sortByOption = params['sort'];
         const sortProp: string[] = params['sort'].split(',');
@@ -159,7 +161,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     const pageToLoad: number = page ? page : this.page;
     this.editorService
       .search({
-        page: this.page - 1,
+        page: pageToLoad - 1,
         q: this.currentSearch,
         size: this.itemsPerPage,
         sort: this.sort(),
@@ -311,17 +313,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   sortLangByEnum(languages: string[], sourceLang: string): string[] {
-    const sortedLang: string[] = [sourceLang];
-    const sortedLangIsos: LanguageIso[] = [];
-    // convert languages to enum so it can be sorted
-    languages.forEach(l => {
-      if (l !== sourceLang) {
-        sortedLangIsos.push(LanguageIso[l]);
-      }
-    });
-    sortedLangIsos.sort((a, b) => a - b);
-    sortedLangIsos.forEach(lIso => sortedLang.push(VocabularyUtil.getLangIsoByEnum(lIso)));
-    return sortedLang;
+    return VocabularyUtil.sortLangByEnum(languages, sourceLang);
   }
 
   getFormattedLangIso(vocab: IVocabulary, lang: string, sourceLang: string): string {
@@ -337,6 +329,16 @@ export class EditorComponent implements OnInit, OnDestroy {
   public formatFilterText(value: any): Observable<object> {
     value.name = value.f;
     return of(value);
+  }
+
+  loadPageClicked(pageNo: number): void {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { page: pageNo },
+      queryParamsHandling: 'merge'
+    });
+    this.page = pageNo;
+    this.loadPage();
   }
 
   refreshSearchBySize(s: string): void {

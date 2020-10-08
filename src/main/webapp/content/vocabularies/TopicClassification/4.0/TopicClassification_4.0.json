@@ -1,16 +1,16 @@
 {
   "id": 56,
   "status": "PUBLISHED",
-  "uri": "https://vocabularies.cessda.eu/TopicClassification/en/4.1",
+  "uri": "https://vocabularies.cessda.eu/TopicClassification/en/4.1/4.1",
   "notation": "TopicClassification",
-  "versionNumber": "4.0",
+  "versionNumber": "4.1",
   "withdrawn": false,
   "sourceLanguage": "en",
   "agencyId": 1,
   "agencyName": "CESSDA",
   "agencyLogo": "cessda.png",
   "agencyLink": "https://www.cessda.eu/",
-  "publicationDate": "2020-06-07",
+  "publicationDate": "2020-10-08",
   "notes": "Top terms should only be used if no narrower terms are applicable. More than one term can be used for classifying a dataset.",
   "versions": [
     {
@@ -29,12 +29,13 @@
       "initialVersion": 251,
       "versionNotes": "One code was deleted and three new codes added. Twelve code values were edited for consistency with other entries. Narrower terms were reordered alphabetically. A typo was corrected in one definition.",
       "versionChanges": "Code deleted: Code Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2019). CESSDA Topic Classification (Version 4.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 5790,
@@ -207,6 +208,15 @@
           "definition": "Nutritional processes, eating patterns and practices, and measurable nutritional parameters such as body mass index (BMI), weight, vitamin levels.",
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10852,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/en/4.0",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 5777,
@@ -955,14 +965,20 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 298,
           "version": "3.0",
           "date": "2019-05-20",
-          "changes": "Code value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed to MediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode definition rephrased: Vocational education and training\nCode definition rephrased: Working conditions\nCode definition rephrased: Equality, inequality and social exclusion\nCode definition rephrased: Educational policy\nCode definition rephrased: Leisure, tourism and sport\nCode definition rephrased: Compulsory and pre-school education\nCode definition rephrased: Employee training\nCode definition rephrased: Media\nCode definition rephrased: Health behaviour"
+          "note": "Ten code values were edited for consistency with other entries. Typos were corrected in nine definitions.",
+          "changes": "Code value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed to MediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode definition rephrased: Vocational education and training\nCode definition rephrased: Working conditions\nCode definition rephrased: Equality, inequality and social exclusion\nCode definition rephrased: Educational policy\nCode definition rephrased: Leisure, tourism and sport\nCode definition rephrased: Compulsory and pre-school education\nCode definition rephrased: Employee training\nCode definition rephrased: Media\nCode definition rephrased: Health behaviour",
+          "prevVersion": 251
         },
         {
+          "id": 251,
           "version": "2.0",
           "date": "2019-05-06",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -983,14 +999,15 @@
       "initialVersion": 295,
       "versionNotes": "",
       "versionChanges": "Code definition rephrased: Generel sundhed og trivsel\nTL code added: Health.DietAndNutrition\nTL code added: Health.DrugAbuseAlcoholAndSmoking\nCode deleted: Code Health.DrugAbuseAlcoholAndSmoking deleted\nTL code added: Health.DrugAbuseAlcoholAndSmoking\nTL code added: Health.PhysicalFitnessAndExercise\nTL code added: Politics.GovernmentPoliticalSystemsAndOrganisations\nTL code added: Economics.EconomicPolicyPublicExpenditureAndRevenue\nTL code added: Demography.Censuses\n",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2020). CESSDA Emne Klassifikation [CESSDA Topic Classification] (Version 4.0.1; Danish National Archives (DNA), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": "Danish National Archives (DNA)",
       "translateAgencyLink": "https://www.sa.dk",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 5951,
@@ -1154,6 +1171,15 @@
           "definition": "Ernæringsprocesser, spisemønstre og praksisser, og målbare ernæringsparametre såsom kropsmasseindeks (BMI), vægt, vitaminniveauer.",
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10853,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/da/4.0.1",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 5888,
@@ -1902,14 +1928,20 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 304,
           "version": "3.0.1",
           "date": "2019-07-29",
-          "changes": "Code definition rephrased: Sygelighed og dødelighed\nCode definition rephrased: ANDET\nCode descriptive term rephrased: DEMOGRAFI (BEFOLKNING, BEFOLKNINGSUDVIKLING OG FOLKETÆLLINGER)\nCode definition rephrased: Sygelighed og dødelighed\nCode descriptive term rephrased: Sygelighed og dødelighed\nCode definition rephrased: Folketællinger\nCode descriptive term rephrased: Indvandring\nCode definition amended with meaning change: Migration\nCode definition rephrased: Økonomiske forhold og indikatorer\nCode definition amended with meaning change: Forbrug og forbrugeradfærd\nCode descriptive term rephrased: Økonomisk politik, offentlige udgifter og offentlige indtægter\nCode definition rephrased: Økonomisk politik, offentlige udgifter og indtægter\nCode definition rephrased: Indkomst, ejendom og investering/opsparing\nCode definition rephrased: Økonomiske systemer og udvikling\nCode descriptive term rephrased: Sundhedsvæsenet og sundhedspolitik\nCode definition amended with meaning change: Sundhedsydelser og -politikker\nCode descriptive term rephrased: Specifikke sygdomme, lidelser og sygdomslidelser\nCode definition amended with meaning change: Specifikke sygdomme, lidelser og medicinske tilstande\nCode definition rephrased: Tegn på sygdom og symptomer; patalogiske lidelser\nCode definition rephrased: Tegn  og symptomer; patologiske lidelser\nCode definition amended with meaning change: Sår og skader\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Generel sundhed og trivsel\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Folkesundhed\nCode definition rephrased: Reproduktiv sundhed\nCode definition rephrased: Sundhed på arbejdspladsen\nCode descriptive term rephrased: Sundhed på arbejdspladsen\nCode definition rephrased: Sundhedsadfærd\nCode definition amended with meaning change: HISTORIE\nCode definition rephrased: HISTORIE\nCode definition amended with meaning change: Bolig\nCode definition rephrased: Arealanvendelse og planlægning\nCode descriptive term rephrased: ARBEJDE OG BESKÆFTIGELSE\nCode descriptive term rephrased: BOLIG OG AREAL ANVENDELSE\nCode definition amended with meaning change: Beskæftigelse\nCode definition amended with meaning change: Arbejdsløshed\nCode definition amended with meaning change: Pensionering\nCode descriptive term rephrased: Uddannelse af medarbejdere\nCode definition amended with meaning change: Medarbejderuddannelse\nCode descriptive term rephrased: Relationer og konflikter på arbejdsmarkedet\nCode definition rephrased: Arbejdsvilkår\nCode descriptive term rephrased: Arbejdsmarkedspolitk og beskæftigelsespolitik\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode descriptive term rephrased: LOV, KRIMINALITET OG RETSYSTEMER\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode definition rephrased: Lovgivning og retssystemer\nCode definition rephrased: Kriminalitet og retshåndhævelse\nCode definition rephrased: Medier\nCode definition rephrased: Offentlige relationer (PR)\nCode definition amended with meaning change: Informationssamfund\nCode definition rephrased: Informationssamfund\nCode definition rephrased: Sprog og lingvistik\nCode descriptive term rephrased: Miljø og bevarelse\nCode definition rephrased: Miljø og bevaring\nCode definition rephrased: Energi og naturrressourcer\nCode definition rephrased: Planter og dyr\nCode descriptive term rephrased: Politisk adfærd og holdning\nCode definition rephrased: Politisk adfærd og holdninger\nCode definition rephrased: Valg\nCode definition rephrased: Politisk ideologi\nCode definition rephrased: Regering, politiske systemer og organisationer\nCode descriptive term rephrased: International polik og organisation\nCode definition rephrased: International politik og organisationer\nCode definition rephrased: Konflikt, sikkerhed og fred\nCode descriptive term rephrased: PSYCHOLOGI \nCode definition rephrased: Informationsteknologi\nCode descriptive term rephrased: SOCIAL STRATIFICATION OG GRUPPERINGER\nCode descriptive term rephrased: Lighed, ulighed og social eksklusion\nCode definition rephrased: Social- og erhvervsmobilitet\nCode definition rephrased: Køn og kønsroller\nCode definition rephrased: Familieliv og ægteskab\nCode descriptive term rephrased: Minoritet\nCode definition rephrased: Eliter og lederskab\nCode descriptive term rephrased: VELFÆRDSPOLITIK OG VELFÆRDSSYSTEMER\nCode descriptive term rephrased: Velfærdsspolitik\nCode definition rephrased: Social velfærdsspolitik\nCode descriptive term rephrased: Velfrædssystemer/strukturerer\nCode definition rephrased: Sociale velfærdssystemer/strukturer\nCode descriptive term rephrased: Specifikke sociale service: Deres brug og tilgængelighed\nCode definition rephrased: Specifikke sociale ydelser: Brug og tilgængelighed\nCode descriptive term rephrased: Social adfærd pg attitude\nCode definition rephrased: Social adfærd og holdninger\nCode descriptive term rephrased: Sociale vilkår og tegn\nCode definition rephrased: Sociale forhold og indikatorer\nCode definition rephrased: Kulturelle aktiviteter og deltagelse\nCode definition rephrased: Kulturel og national identitet\nCode definition rephrased: Fritid, turisme og sport\nCode definition rephrased: Religion og værdier\nCode descriptive term rephrased: Lokalsamfund, byliv og landligt liv\nCode definition rephrased: Lokalsamfund, byliv og landligt liv\nCode definition rephrased: Forbrug af tid\nCode descriptive term rephrased: Sociale ændringer\nCode definition rephrased: Social forandring\nCode descriptive term rephrased: HANDEL, INDUSTRI OG MARKED\nCode definition rephrased: Forretnings/industriel ledelse og organisation\nCode definition rephrased: Landbrug og landlig industri\nCode descriptive term rephrased: Handel med udlandet\nCode definition rephrased: Udenrigshandel\nCode descriptive term rephrased: TRANSPORT OG REJSER\nCode definition rephrased: TRANSPORT OG REJSE\nCode definition rephrased: Sundhedsydelser og -politikker\nCode definition rephrased: Tegn  og symptomer; patologiske lidelser\nCode definition rephrased: Sår og skader\nCode definition rephrased: HISTORIE\nCode definition rephrased: Beskæftigelse\nCode definition rephrased: Arbejdsvilkår\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode definition rephrased: Politisk adfærd og holdninger\nCode definition rephrased: Konflikt, sikkerhed og fred\nCode definition rephrased: Informationsteknologi\nCode definition rephrased: Køn og kønsroller\nCode definition rephrased: Minoriteter\nCode definition rephrased: Social velfærdsspolitik\nCode definition rephrased: Fritid, turisme og sport\nCode definition rephrased: Generel sundhed og trivsel\nCode definition rephrased: Sprog og lingvistik\nCode descriptive term rephrased: Ungdomsuddanelser og videregående uddannelse\nCode descriptive term rephrased: Obligatorisk undervisning og daginstitutioner\nCode definition amended with meaning change: Obligatorisk undervisning og dagtilbud\nCode definition amended with meaning change: Ungdomsuddanelse og videregående uddannelse\nCode definition amended with meaning change: Erhvervsuddannelse\nCode definition amended with meaning change: Livslang uddannelse/efteruddannelse\nCode definition amended with meaning change: Uddannelsespolitik\n"
+          "note": "",
+          "changes": "Code definition rephrased: Sygelighed og dødelighed\nCode definition rephrased: ANDET\nCode descriptive term rephrased: DEMOGRAFI (BEFOLKNING, BEFOLKNINGSUDVIKLING OG FOLKETÆLLINGER)\nCode definition rephrased: Sygelighed og dødelighed\nCode descriptive term rephrased: Sygelighed og dødelighed\nCode definition rephrased: Folketællinger\nCode descriptive term rephrased: Indvandring\nCode definition amended with meaning change: Migration\nCode definition rephrased: Økonomiske forhold og indikatorer\nCode definition amended with meaning change: Forbrug og forbrugeradfærd\nCode descriptive term rephrased: Økonomisk politik, offentlige udgifter og offentlige indtægter\nCode definition rephrased: Økonomisk politik, offentlige udgifter og indtægter\nCode definition rephrased: Indkomst, ejendom og investering/opsparing\nCode definition rephrased: Økonomiske systemer og udvikling\nCode descriptive term rephrased: Sundhedsvæsenet og sundhedspolitik\nCode definition amended with meaning change: Sundhedsydelser og -politikker\nCode descriptive term rephrased: Specifikke sygdomme, lidelser og sygdomslidelser\nCode definition amended with meaning change: Specifikke sygdomme, lidelser og medicinske tilstande\nCode definition rephrased: Tegn på sygdom og symptomer; patalogiske lidelser\nCode definition rephrased: Tegn  og symptomer; patologiske lidelser\nCode definition amended with meaning change: Sår og skader\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Generel sundhed og trivsel\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Folkesundhed\nCode definition rephrased: Reproduktiv sundhed\nCode definition rephrased: Sundhed på arbejdspladsen\nCode descriptive term rephrased: Sundhed på arbejdspladsen\nCode definition rephrased: Sundhedsadfærd\nCode definition amended with meaning change: HISTORIE\nCode definition rephrased: HISTORIE\nCode definition amended with meaning change: Bolig\nCode definition rephrased: Arealanvendelse og planlægning\nCode descriptive term rephrased: ARBEJDE OG BESKÆFTIGELSE\nCode descriptive term rephrased: BOLIG OG AREAL ANVENDELSE\nCode definition amended with meaning change: Beskæftigelse\nCode definition amended with meaning change: Arbejdsløshed\nCode definition amended with meaning change: Pensionering\nCode descriptive term rephrased: Uddannelse af medarbejdere\nCode definition amended with meaning change: Medarbejderuddannelse\nCode descriptive term rephrased: Relationer og konflikter på arbejdsmarkedet\nCode definition rephrased: Arbejdsvilkår\nCode descriptive term rephrased: Arbejdsmarkedspolitk og beskæftigelsespolitik\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode descriptive term rephrased: LOV, KRIMINALITET OG RETSYSTEMER\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode definition rephrased: Lovgivning og retssystemer\nCode definition rephrased: Kriminalitet og retshåndhævelse\nCode definition rephrased: Medier\nCode definition rephrased: Offentlige relationer (PR)\nCode definition amended with meaning change: Informationssamfund\nCode definition rephrased: Informationssamfund\nCode definition rephrased: Sprog og lingvistik\nCode descriptive term rephrased: Miljø og bevarelse\nCode definition rephrased: Miljø og bevaring\nCode definition rephrased: Energi og naturrressourcer\nCode definition rephrased: Planter og dyr\nCode descriptive term rephrased: Politisk adfærd og holdning\nCode definition rephrased: Politisk adfærd og holdninger\nCode definition rephrased: Valg\nCode definition rephrased: Politisk ideologi\nCode definition rephrased: Regering, politiske systemer og organisationer\nCode descriptive term rephrased: International polik og organisation\nCode definition rephrased: International politik og organisationer\nCode definition rephrased: Konflikt, sikkerhed og fred\nCode descriptive term rephrased: PSYCHOLOGI \nCode definition rephrased: Informationsteknologi\nCode descriptive term rephrased: SOCIAL STRATIFICATION OG GRUPPERINGER\nCode descriptive term rephrased: Lighed, ulighed og social eksklusion\nCode definition rephrased: Social- og erhvervsmobilitet\nCode definition rephrased: Køn og kønsroller\nCode definition rephrased: Familieliv og ægteskab\nCode descriptive term rephrased: Minoritet\nCode definition rephrased: Eliter og lederskab\nCode descriptive term rephrased: VELFÆRDSPOLITIK OG VELFÆRDSSYSTEMER\nCode descriptive term rephrased: Velfærdsspolitik\nCode definition rephrased: Social velfærdsspolitik\nCode descriptive term rephrased: Velfrædssystemer/strukturerer\nCode definition rephrased: Sociale velfærdssystemer/strukturer\nCode descriptive term rephrased: Specifikke sociale service: Deres brug og tilgængelighed\nCode definition rephrased: Specifikke sociale ydelser: Brug og tilgængelighed\nCode descriptive term rephrased: Social adfærd pg attitude\nCode definition rephrased: Social adfærd og holdninger\nCode descriptive term rephrased: Sociale vilkår og tegn\nCode definition rephrased: Sociale forhold og indikatorer\nCode definition rephrased: Kulturelle aktiviteter og deltagelse\nCode definition rephrased: Kulturel og national identitet\nCode definition rephrased: Fritid, turisme og sport\nCode definition rephrased: Religion og værdier\nCode descriptive term rephrased: Lokalsamfund, byliv og landligt liv\nCode definition rephrased: Lokalsamfund, byliv og landligt liv\nCode definition rephrased: Forbrug af tid\nCode descriptive term rephrased: Sociale ændringer\nCode definition rephrased: Social forandring\nCode descriptive term rephrased: HANDEL, INDUSTRI OG MARKED\nCode definition rephrased: Forretnings/industriel ledelse og organisation\nCode definition rephrased: Landbrug og landlig industri\nCode descriptive term rephrased: Handel med udlandet\nCode definition rephrased: Udenrigshandel\nCode descriptive term rephrased: TRANSPORT OG REJSER\nCode definition rephrased: TRANSPORT OG REJSE\nCode definition rephrased: Sundhedsydelser og -politikker\nCode definition rephrased: Tegn  og symptomer; patologiske lidelser\nCode definition rephrased: Sår og skader\nCode definition rephrased: HISTORIE\nCode definition rephrased: Beskæftigelse\nCode definition rephrased: Arbejdsvilkår\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode definition rephrased: Politisk adfærd og holdninger\nCode definition rephrased: Konflikt, sikkerhed og fred\nCode definition rephrased: Informationsteknologi\nCode definition rephrased: Køn og kønsroller\nCode definition rephrased: Minoriteter\nCode definition rephrased: Social velfærdsspolitik\nCode definition rephrased: Fritid, turisme og sport\nCode definition rephrased: Generel sundhed og trivsel\nCode definition rephrased: Sprog og lingvistik\nCode descriptive term rephrased: Ungdomsuddanelser og videregående uddannelse\nCode descriptive term rephrased: Obligatorisk undervisning og daginstitutioner\nCode definition amended with meaning change: Obligatorisk undervisning og dagtilbud\nCode definition amended with meaning change: Ungdomsuddanelse og videregående uddannelse\nCode definition amended with meaning change: Erhvervsuddannelse\nCode definition amended with meaning change: Livslang uddannelse/efteruddannelse\nCode definition amended with meaning change: Uddannelsespolitik\n",
+          "prevVersion": 295
         },
         {
+          "id": 295,
           "version": "2.0.1",
           "date": "2019-05-15",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -1930,14 +1962,15 @@
       "initialVersion": 259,
       "versionNotes": "",
       "versionChanges": "Code deleted: Code Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nTL code descriptive term rephrased: Einkommen, Vermögen und Geldanlagen rephrased into Sparen to Einkommen, Vermögen und Geldanlagen/Sparen\nTL code descriptive term rephrased: Öffentliche Gesundheit rephrased into Public Health to Öffentliche Gesundheit/Public Health\nTL code descriptive term rephrased: Öffentlichkeitsarbeit rephrased into Public Relations to Öffentlichkeitsarbeit/Public Relations",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2019). CESSDA Themenklassifikation [CESSDA Topic Classification] (Version 4.0.1; GESIS - Leibniz Institute for the Social Sciences, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": "GESIS - Leibniz Institute for the Social Sciences",
       "translateAgencyLink": "https://www.gesis.org/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 5984,
@@ -2110,6 +2143,15 @@
           "definition": "Ernährungsweisen, Essverhalten und messbare Kenngrößen zur Ernährungsweise wie Body-Maß-Index (BMI), Gewicht, Vitaminspiegel.",
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10854,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/de/4.0.1",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 6000,
@@ -2858,14 +2900,20 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 299,
           "version": "3.0.1",
           "date": "2019-06-11",
-          "changes": "Code value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry"
+          "note": "First German version of SL 3.0 published.",
+          "changes": "Code value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry",
+          "prevVersion": 259
         },
         {
+          "id": 259,
           "version": "2.0.1",
           "date": "2019-05-15",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -2887,14 +2935,15 @@
       "notes": "Pääluokkia käytetään vain silloin, kun sopivaa alatermiä ei ole. Yhtä aineistoa voidaan kuvailla useammalla kuin yhdellä termillä.",
       "versionNotes": "",
       "versionChanges": "All Finnish code descriptive terms edited to start with uppercase letter.",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2020). CESSDAn aihepiiriluokitus [CESSDA Topic Classification] (Version 4.0.2; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
       "translateAgencyLink": "https://www.fsd.uta.fi/en/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 8758,
@@ -3071,6 +3120,16 @@
           "previousConcept": 6130,
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10866,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/fi/4.0.2",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "previousConcept": 10855,
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 8776,
@@ -3821,25 +3880,36 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 363,
           "version": "4.0.1",
           "date": "2019-11-22",
-          "note": "Pääluokkia käytetään vain silloin, kun sopivaa alatermiä ei ole. Yhtä aineistoa voidaan kuvailla useammalla kuin yhdellä termillä.",
-          "changes": "Code deleted: Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\n\nCode definition rephrased: History\nCode definition rephrased: LabourAndEmployment.EmployeeTraining\n"
+          "note": "",
+          "changes": "Code deleted: Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\n\nCode definition rephrased: History\nCode definition rephrased: LabourAndEmployment.EmployeeTraining\n",
+          "prevVersion": 324
         },
         {
+          "id": 324,
           "version": "3.0.2",
           "date": "2019-07-03",
-          "changes": "Code definition rephrased: joukkoviestimet\nCode definition rephrased: HISTORIA\nCode definition rephrased: vähemmistöt\nCode definition rephrased: sosiaaliset olot ja indikaattorit\nCode definition rephrased: maankäyttö, suunnittelu ja kaavoitus\nCode descriptive term rephrased: sukupuoli ja sukuoliroolit changed to sukupuoli ja sukupuoliroolit\n"
+          "note": "Typo corrections to code definitions and a code descriptive term. References to obsolete terms updated.",
+          "changes": "Code definition rephrased: joukkoviestimet\nCode definition rephrased: HISTORIA\nCode definition rephrased: vähemmistöt\nCode definition rephrased: sosiaaliset olot ja indikaattorit\nCode definition rephrased: maankäyttö, suunnittelu ja kaavoitus\nCode descriptive term rephrased: sukupuoli ja sukuoliroolit changed to sukupuoli ja sukupuoliroolit\n",
+          "prevVersion": 318
         },
         {
+          "id": 318,
           "version": "3.0.1",
           "date": "2019-06-03",
-          "changes": "Code definition rephrased: sairastuvuus ja kuolleisuus\nCode definition rephrased: talouden tila ja tunnusluvut\nCode definition rephrased: talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö\nCode definition rephrased: toisen ja korkea-asteen koulutus\nCode definition rephrased: täydennys- ja jatkokoulutus,  elinikäinen oppiminen\nCode definition rephrased: koulutuspolitiikka\nCode definition rephrased: terveyspalvelut ja terveyspolitiikka\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: terveyskäyttäytyminen\nCode definition rephrased: työpaikkakoulutus\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: tietoyhteiskunta\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: KULKEMINEN, KULJETUS JA LIIKENNE\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry"
+          "note": "New Finnish version published to include code values changes made to SL 3.0. Typo corrections to definitions.",
+          "changes": "Code definition rephrased: sairastuvuus ja kuolleisuus\nCode definition rephrased: talouden tila ja tunnusluvut\nCode definition rephrased: talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö\nCode definition rephrased: toisen ja korkea-asteen koulutus\nCode definition rephrased: täydennys- ja jatkokoulutus,  elinikäinen oppiminen\nCode definition rephrased: koulutuspolitiikka\nCode definition rephrased: terveyspalvelut ja terveyspolitiikka\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: terveyskäyttäytyminen\nCode definition rephrased: työpaikkakoulutus\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: tietoyhteiskunta\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: KULKEMINEN, KULJETUS JA LIIKENNE\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry",
+          "prevVersion": 258
         },
         {
+          "id": 258,
           "version": "2.0.1",
           "date": "2019-05-15",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -3861,14 +3931,15 @@
       "notes": "Pääluokkia käytetään vain silloin, kun sopivaa alatermiä ei ole. Yhtä aineistoa voidaan kuvailla useammalla kuin yhdellä termillä.",
       "versionNotes": "",
       "versionChanges": "Code deleted: Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\n\nCode definition rephrased: History\nCode definition rephrased: LabourAndEmployment.EmployeeTraining\n",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2019). CESSDAn aihepiiriluokitus [CESSDA Topic Classification] (Version 4.0.1; Finnish Social Science Data Archive (FSD), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: reusable \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <br /> \n</div>",
       "translateAgency": "Finnish Social Science Data Archive (FSD)",
       "translateAgencyLink": "https://www.fsd.uta.fi/en/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 8110,
@@ -4030,914 +4101,13 @@
           "position": 17
         },
         {
-          "id": 6046,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "joukkoviestimet",
-          "definition": "Mikä tahansa yleisölle tarkoitettu media, mukaan lukien painetut sanomalehdet, verkkolehdet, aikakauslehdet, televisio ja radio. HUOM! Sosiaaliseen mediaan liittyvät aiheet sisältyvät termiin 'tietoyhteiskunta'.",
-          "previousConcept": 4964,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6047,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "SOSIAALITURVA, SOSIAALIPALVELUT JA SOSIAALIPOLITIIKKA",
-          "definition": "",
-          "previousConcept": 4942,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6048,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "tietoyhteiskunta",
-          "definition": "Tiedon tuottaminen, jakelu, käyttö, integrointi ja manipulaatio taloudellisena, poliittisena ja kulttuurisena toimintana. Esimerkiksi verkkokaupankäynti, julkishallinnon sähköiset palvelut, sosiaalinen media, internetin ja mobiililaitteiden käyttö, sähköisen viestinnän tietosuoja, kirjasto- ja informaatiopalvelut. HUOM! Puhuttaessa varsinaisesta teknologiasta, käytetään termiä 'tietotekniikka'.",
-          "previousConcept": 4939,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6049,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "energia- ja luonnonvarat",
-          "definition": "Luontaisesti esiintyvät luonnonvarat kuten maa, metsät, energialähteet, vesi, mineraalit, joita voidaan käyttää taloudelliseen tuotantoon tai kuluttaa. Energiavarat sisältävät sekä uusiutuvat että uusiutumattomat energialähteet, esimerkiksi öljy, maakaasu, hiili, ydinvoima, aurinko, vesi, tuuli ja bioenergia.",
-          "previousConcept": 4943,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6050,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "poliittinen käyttäytyminen, poliittiset asenteet ja mielipiteet",
-          "definition": "Poliittiset asenteet, mielipiteet puolueista, osallistuminen poliittiseen päätöksentekoon, äänestyskäyttäytyminen, tyytyväisyys päätöksentekijöihin ja hallitukseen.",
-          "previousConcept": 4959,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6051,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "terveyspalvelut ja terveyspolitiikka",
-          "definition": "Terveyspalvelujen laatu ja saavutettavuus, terveysalan henkilöstö, tilat ja laitteet. Terveydenhoidon talouskysymykset sekä terveyspolitiikka kansallisella, alueellisella ja paikallisella tasolla. HUOM! Puhuttaessa jo olemassa olevista, terveydenhoitoon liittyvistä laeista ja määräyksistä, käytetään termiä 'lainsäädäntö ja oikeusjärjestelmät' ja tarvittaessa tarkempaa Terveys-hierarkian termiä.",
-          "previousConcept": 4966,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6052,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "yhteiskunnallinen ja sosiaalinen muutos",
-          "definition": "Yhteiskunnassa tapahtuva muutos, mukaan lukien asenteiden muutokset.",
-          "previousConcept": 4953,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6053,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "eliitit ja vaikuttajat",
-          "definition": "Aiheet, jotka liittyvät erilaisten eliittien olemassaoloon, rooliin ja vaikutukseen. Eliitit ovat henkilöitä tai ryhmiä, joilla on suuri vaikutusvalta jollain yhteiskunnan alalla tai yhteiskunnassa yleensä, joko päätöksentekijöinä tai ilmaisemiensa ajatusten tai tunteiden kautta. Esimerkkejä: poliittiset päätöksentekijät, puoluejohtajat, tunnetut taiteilijat tai sosiaalisen median vaikuttajat.",
-          "previousConcept": 4886,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6054,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "ulkomaankauppa",
-          "definition": "Tavaroiden ja palvelujen ulkomaankauppa, pääomansiirrot rajojen yli.",
-          "previousConcept": 4949,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6055,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "koulutuspolitiikka",
-          "definition": "Aiheet, jotka liittyvät kansalliseen, alueelliseen tai paikallisen koulutuspolitiikkaan, niihin liittyvä keskustelu ja päätökset. HUOM! Jos puhutaan olemassa olevista, koulutukseen liittyvistä laeista ja määräyksistä, käytetään termiä 'lainsäädäntö ja oikeusjärjestelmät' sekä tarvittaessa koulutusasteen termiä.",
-          "previousConcept": 4887,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6056,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "VÄESTÖ, VÄESTÖTILASTOT JA VÄESTÖNLASKENTA",
-          "definition": "",
-          "previousConcept": 4955,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6057,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "LAKI, RIKOLLISUUS JA OIKEUSJÄRJESTELMÄT",
-          "definition": "",
-          "previousConcept": 4914,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6058,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "KAUPPA, TEOLLISUUS, TOIMIALAT JA MARKKINAT",
-          "definition": "",
-          "previousConcept": 4970,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6059,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "luonnonmaisemat",
-          "definition": "Maisemat ja maa-alueet, jotka eivät ole ihmisen muokkaamia.",
-          "previousConcept": 4947,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6060,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "ASUMINEN JA MAANKÄYTTÖ",
-          "definition": "",
-          "previousConcept": 4911,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6061,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "sosiaaliset olot ja indikaattorit",
-          "definition": "Kattaa kaikki yksilön ja yhteiskunnan elämänlaatuun ja hyvinvointiin liittyvät aiheet, mukaan lukien ihmisten käsitykset niistä. HUOM! Aiheesta riippuen myös termit 'yleinen terveydentila ja hyvinvointi', 'tasa-arvo, eriarvoisuus ja syrjäytyminen', 'talouden tila ja tunnusluvut' jne. saattavat olla hyödyllisiä.",
-          "previousConcept": 4950,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6062,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "TYÖVOIMA JA TYÖELÄMÄ",
-          "definition": "",
-          "previousConcept": 4929,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6063,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "eläkkeelle siirtyminen",
-          "definition": "Kaikki eläkkeisiin liittyvät aiheet, mukaan lukien eläköitymisikä, varhaiseläke, vanhuuseläkkeet, kansaneläkkeet, työeläke, eläkkeelle siirtymisen vaikutukset yksilöön jne.",
-          "previousConcept": 4968,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6064,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "kansainvälinen politiikka ja järjestöt",
-          "definition": "Globaali hallinta, diplomatia, maan ulkopolitiikka, maiden väliset suhteet, kansainväliset järjestöt (esim. EU, YK, Maailman terveysjärjestö WHO, Maailman kauppajärjestö WTO) sekä kansainväliset sopimukset.",
-          "previousConcept": 4933,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6065,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "tietyt taudit, sairaudet ja terveydentilat",
-          "definition": "Tutkimukset, jotka käsittelevät tiettyä diagnosoitua sairautta tai terveysongelmaa. Esimerkkejä: diabeteksen syntymekanismiin liittyvä lääketieteellinen tutkimus tai tutkimus sydänleikkauksen läpikäyneiden potilaiden fyysisestä ja henkisestä toipumisprosessista.",
-          "previousConcept": 4903,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6066,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "kielet ja kielitiede",
-          "definition": "Kielet, kielten osaaminen ja käyttö, kielipolitiikka, kieliin liittyvät asenteet, sosiolingvistiikka, murteet.",
-          "previousConcept": 4935,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6067,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "TIEDOTUS, VIESTINTÄ JA KIELI",
-          "definition": "",
-          "previousConcept": 4910,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6068,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "perhe-elämä, avioliitto ja sukupolvet",
-          "definition": "Perheisiin, sukuun, sukupolviin ja kotitalouden koostumukseen liittyvät aiheet. Esim. perhesuhteet, lastenkasvatus, perheen sisäinen työnjako, perheen ja suvun antama tuki.",
-          "previousConcept": 4891,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6069,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "talouden tila ja tunnusluvut",
-          "definition": "Talouden tunnusluvut kertovat mihin suuntaan talous on menossa. Tunnuslukuja ovat esimerkiksi bruttokansantuotteen muutokset, työllisuusaste, korkotaso, kuluttajahintaindeksi, kotitalouksien velkaantumisaste, investoinnit, innovaatiotoiminta. Termiä käytetään myös kuvaamaan tutkimuksia yksilöiden ja kotitalouksien taloustilanteesta.",
-          "previousConcept": 4969,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6070,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "sairastuvuus ja kuolleisuus",
-          "definition": "Sairastuvuus kertoo tietyn sairauden tai sairausryhmän ilmaantuvuuden väestössä eli kuinka moni kärsii kyseisestä taudista tai sairastuu siihen tiettynä ajanjaksona. Esim. keuhkosyövän ilmaantuvuus tietyssä maassa tai tietyllä maantieteellisellä alueella vuoden aikana. Kuolleisuus on mittaluku, joka kertoo vuoden aikana kuolleiden lukumäärän tuhatta asukasta kohti. Kuolleisuus voidaan eritellä maantieteellisen sijainnin, ajan, syyn tai henkilöryhmän mukaan. Esim. lapsikuolleisuus Lapissa. HUOM! Tutkimusten osanottajien omat arviot terveydentilastaan luokitellaan TERVEYS-hierarkian termeillä.",
-          "previousConcept": 4932,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6071,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "lapset",
-          "definition": "Saattaa tarvita toisen aihetermin, jos lapsia tutkitaan jostain tietystä näkökulmasta.",
-          "previousConcept": 4963,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6072,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "uskonto ja arvot",
-          "definition": "Aiheet, jotka liittyvät uskonnolliseen käyttäytymiseen, uskonnollisiin liikkeisiin, henkisyyteen, moraaliin ja muihin arvoihin, tai syrjintään uskonnon perusteella.",
-          "previousConcept": 4960,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6073,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "työterveys",
-          "definition": "Työhyvinvointi, työterveyshuolto, työturvallisuus, sairausloma, työkyky, työkyvyttömyyseläke.",
-          "previousConcept": 4896,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6074,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "työvoima- ja työllisyyspolitiikka",
-          "definition": "Työvoima- ja työllisyyspolitiikka koskien mm. työelämän suhteita, tasa-arvo ja syrjintämääräyksiä, työvoiman kysyntää ja tarjontaa kansallisella tasolla, työmarkkinoiden toimivuutta. HUOM! Puhuttaessa jo olemassa olevasta lainsäädännöstä ja määräyksistä, käytetään termiä 'lainsäädäntö ja oikeusjärjestelmät'.",
-          "previousConcept": 4965,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6075,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "TIEDE JA TEKNOLOGIA",
-          "definition": "",
-          "previousConcept": 4944,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6076,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "LUONTO JA YMPÄRISTÖ",
-          "definition": "",
-          "previousConcept": 4901,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6077,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "maankäyttö, suunnittelu ja kaavoitus",
-          "definition": "Maankäyttö, sen suunnittelu ja kaavoitus kaupungeissa ja maaseudulla.",
-          "previousConcept": 4913,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6078,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö",
-          "definition": "Käytetään aineistoihin, joissa käsitellään erilaisia talousjärjestelmiä (kapitalistinen, sosialistinen, markkinatalous). Sisältää myös kehitysyhteistyöhön liittyvät aiheet.",
-          "previousConcept": 4941,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6079,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "perhesuunnittelu ja lisääntymisterveys",
-          "definition": "Lisääntymiseen liittyvät aiheet, mukaan lukien perhesuunnittelu, raskaus, synnytys, ehkäisy, abortti, vaihdevuodet.",
-          "previousConcept": 4904,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6080,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "kulttuuri- ja kansallinen identiteetti",
-          "definition": "Yksilöiden ja kansakuntien identiteetti ja sen muotoutuminen; yksilöiden käsitys omasta itsestään ja siitä, mihin he kuuluvat. Kulttuurisen ja kansallisen identiteetin suhde edustavuuteen ja toisten määrittelemiseen 'ei kuulu meihin' -joukkoon (toiseuttaminen). Erilaisten identiteettiryhmien tavat ja tottumukset. Mielipiteet omana pidetystä identiteettiryhmästä ja muista ryhmistä.",
-          "previousConcept": 4951,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6081,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "lähiympäristö, kaupunki- ja maaseutuelämä",
-          "definition": "Kaikki maaseutu- ja kaupunkielämään sekä lähiympäristöön liittyvät aiheet. Mielipiteet ja mielikuvat omasta lähiympäristöstä, tai yleensä maaseudusta ja kaupungeista. Oman lähiympäristön palvelut, tilat ja liiketoiminnan edellytykset.",
-          "previousConcept": 4902,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6082,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "hoito ja lääkitys",
-          "definition": "Sairauksien ja oireiden lääkitys ja hoito, mukaan lukien ennaltaehkäisyyn tähtäävä toiminta. Potilaan hoito yksilötasolla. Tutkimus tietyn taudin lääkityksestä ja hoidosta. Aineistot saattavat käsitellä esimerkiksi kirurgisia toimenpiteitä, kuntoutusta, lääkärien antamaa hoitoa, fysikaalista hoitoa, sairaala- tai kotihoitoa, psykoterapiaa, annettua lääkitystä jne.",
-          "previousConcept": 4884,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6083,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "tulot, omaisuus ja investoinnit/säästäminen",
-          "definition": "Termiä käytetään tutkittaessa yksilöiden ja kotitalouksien tuloja, omaisuutta, investointeja ja säästämistä.",
-          "previousConcept": 4957,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6084,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "kulttuuritoiminta ja -osallistuminen, mielipiteet kulttuurista",
-          "definition": "Osallistuminen aktiivisena toimijana tai katsojana mihin tahansa kulttuuritoimintaan. Mielipiteet ja käsitykset kulttuurista.",
-          "previousConcept": 4973,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6085,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "vapaa-aika, matkailu ja urheilu",
-          "definition": "Vapaa-ajan viettotavat, aktiviteetit ja harrastukset. Sisältää vapaa-ajan matkailun sekä kilpaurheilun ja sen katsomisen. HUOM! Kuntoilusta puhuttaessa käytetään termiä 'terveyskäyttäytyminen'.",
-          "previousConcept": 4934,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6086,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "sosiaalinen käyttäytyminen ja asenteet",
-          "definition": "Sosiaalinen käyttäytyminen; sosiaalinen vuorovaikutus ja verkostot; sosiaaliset velvollisuudet; sosiaaliset normit ja tavat; mielipiteet näistä aiheista.",
-          "previousConcept": 4906,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6087,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "biotekniikka",
-          "definition": "Elävien organismien, niiden osien tai ominaisuuksien hyödyntäminen tuotteissa, tuotantoprosesseissa ja palveluissa. (OECD).",
-          "previousConcept": 4922,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6088,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "esi- ja peruskoulu",
-          "definition": "Kattaa kaikki aiheet, jotka liittyvät esi- tai peruskouluun, mukaan lukien koululaiset, opettajat ja muu henkilökunta, oppialat, koulutuksen sisältö, tilat ja välineet.",
-          "previousConcept": 4885,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6089,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "konfliktit, turvallisuus ja rauha",
-          "definition": "Kansallinen ja kansainvälinen turvallisuus, sisäiset ja kansainväliset konfliktit, sota ja rauha, kansallinen puolustus ja puolustusvoimat. HUOM! Poliisi ja poliisin toiminta sisältyy termiin 'rikollisuus ja lainvalvonta'.",
-          "previousConcept": 4956,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6090,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "rikollisuus ja lainvalvonta",
-          "definition": "Rikollisuus, rikokset, rikollisuuden ehkäisy, rikosten uhrit, rikolliset, vankilat ja muut rangaistuslaitokset. Lainvalvonta kattaa mm. poliisin, suojelupoliisin, rajanvalvonnan ja tullin.",
-          "previousConcept": 4898,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6091,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "kasvit ja eläimet",
-          "definition": "Koti-, tuotanto- ja villieläimet sekä kaikentyyppiset kasvit (kukat, puut, sammal, vihannekset jne).",
-          "previousConcept": 4962,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6092,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "työmarkkinasuhteet ja -järjestöt",
-          "definition": "Työnantajajärjestöt, ammattiliitot ja muut ammattijärjestöt, työnantajien ja työntekijöiden suhteet.",
-          "previousConcept": 4908,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6093,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "lainsäädäntö ja oikeusjärjestelmät",
-          "definition": "Kansalliset ja kansainväliset lait ja säädökset, hallinnolliset säädökset, oikeusjärjestelmä eli tuomioistuimet sekä niiden toimivalta ja toiminta, rangaistukset, yhdyskuntapalvelu, sovittelu.",
-          "previousConcept": 4938,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6094,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "TERVEYS",
-          "definition": "",
-          "previousConcept": 4975,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6095,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "talouspolitiikka, julkiset menot ja tulot",
-          "definition": "Talouspolitiikka, mukaan lukien budjetti, finanssipolitiikka, julkiset menot ja tulot.",
-          "previousConcept": 4883,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6096,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "YHTEISKUNTA, KULTTUURI JA ELÄMÄNTAPA",
-          "definition": "",
-          "previousConcept": 4893,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6097,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "työttömyys ja työttömät",
-          "definition": "Työttömyysaste ja -tilastot, työllisyysohjelmat, työttömyyden kesto, työttömyysjaksot, työttömyyden sosiaaliset ja psykologiset vaikutukset, työttömät jne.",
-          "previousConcept": 4940,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6098,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "terveydentilaan liittyvät oireet, löydökset ja patologiset tilat",
-          "definition": "Tutkimus terveydentilaan liittyvistä löydöksistä tai oireista, joko objektiivisesti mitattuna tai itsearvioituna. Eroaa termistä 'tietyt taudit, sairaudet ja terveydentilat' siten, että kyse ei ole lääkärin diagnosoimista taudeista. Esim. kipu, ripuli, yksilön jalkojen pituusero, unettomuus, hampaiden narskuttelu, rytmihäiriöt, tulehdus.",
-          "previousConcept": 4920,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6099,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "TALOUS",
-          "definition": "",
-          "previousConcept": 4928,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6100,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "yleinen terveydentila ja hyvinvointi",
-          "definition": "Väestön, ryhmän tai yksilön yleinen terveydentila tai hyvinvointi. Voi olla objektiivisesti mitattu tai osanottajien itse arvioima. Hyvinvointi sisältää esimerkiksi fyysisen, henkisen ja sosiaalisen tilan tai toimintakyvyn. Esimerkkiaineistoja: vanhusten tai tietyn alueen asukkaiden hyvinvointitutkimukset.",
-          "previousConcept": 4892,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6101,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "yritysten hallinto, johtaminen ja organisaatio",
-          "definition": "Yrityksiin ja muuhun liike-elämään liittyvät aiheet. Yritysten johto ja hallinto, yritysrakenne, tuottavuus, kasvu ja supistuminen, investoinnit tutkimukseen ja kehittämiseen, markkinat, markkinaosuus.",
-          "previousConcept": 4946,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6102,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "HISTORIA",
-          "definition": "Käytetään historiallisten aineistojen kohdalla tätä päätermiä sekä aihekohtaista termiä. Jos tutkitaan päihteidenkäyttöä 1960-luvulla, käytetään sekä termiä 'historia' että 'terveyskäyttäytyminen'.",
-          "previousConcept": 4930,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6103,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "MUU AIHE",
-          "definition": "Käytetään, mikäli aihe on tiedossa, mutta ei listassa.",
-          "previousConcept": 4954,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6104,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "sukupuoli ja sukupuoliroolit",
-          "definition": "Sukupuoli-identiteetti; sukupuolten edustus ja huomioonotto (esim. sukupuolijakauma päättävissä elimisissä, miesten ja naisten määrä haastateltavina tai esiintyjinä mediassa); nais- ja miestutkimus; naisiin ja miehiin liitetyt sosiaaliset, kulttuuriset ja psykologiset ominaisuudet; odotukset naisten ja miesten käyttäytymisestä ja valinnoista ja niiden vaikutukset (esim. ammattivalintaan).",
-          "previousConcept": 4907,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6105,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "tasa-arvo, eriarvoisuus ja syrjäytyminen",
-          "definition": "Aiheet, jotka käsittelevät sitä, onko kaikilla yksilöillä tai ryhmillä sama status ja mahdollisuudet yhteiskunnassa. Tasa-arvoa voidaan tutkia esimerkiksi koulutuksen, varallisuuden ja tulojen, ammattiaseman, vallan, vaikutusvallan, työolojen, palvelujen saatavuuden tai sosiaalisten suhteiden näkökulmasta. Syrjäytyminen voi johtua heikosta asemasta usealla eri elämänalueella. Syrjäytyneet saattavat kärsiä esimerkiksi oikeuksien, mahdollisuuksien, resurssien ja sosiaalisen integraation puutteesta. Aineistoesimerkkejä: tilastotiedot varallisuudesta ja tulotasosta; mielipidetutkimus syrjitäänkö tiettyjä ryhmiä (esim. ulkomaalaiset, asunnottomat, turvapaikanhakijat); tutkimus havaituista eroista naisten ja miesten mahdollisuuksissa kohota korkeaan asemaan politiikassa; vanhempien työttömyyden vaikutus lasten koulutustasoon ja sosiaalisiin verkostoihin.",
-          "previousConcept": 4952,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6106,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "sosiaalipolitiikka",
-          "definition": "Sosiaaliturvaa, sen rahoitusta ja järjestämistä koskevat periaatteet ja päätökset kansallisella, alueellisella tai kunnallisella tasolla. Kenellä on oikeus mihinkin sosiaaliturvaan tai -palveluihin, mikä on sosiaaliturvan taso, millaisilla tahoilla on oikeus järjestää sosiaaliturvapalveluita.  Esimerkkejä: periaate, jonka mukaan ikääntyneiden ihmisten tulisi asua kotonaan niin kauan kuin mahdollista tai päätös, kuinka kauan ihmiset voivat saada työttömyyskorvausta. HUOM! Puhuttaessa jo olemassa olevasta lainsäädännöstä, käytetään myös termiä 'lainsäädäntö ja oikeusjärjestelmät'.",
-          "previousConcept": 4936,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6107,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "ajankäyttö",
-          "definition": "Aineistot, jotka käsittelevät paljonko aikaa ihmiset käyttävät eri aktiviteetteihin.",
-          "previousConcept": 4972,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6108,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "PSYKOLOGIA",
-          "definition": "",
-          "previousConcept": 4948,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6109,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "KULKEMINEN, KULJETUS JA LIIKENNE",
-          "definition": "Tavarankuljetus, työmatkat, julkinen liikenne (junat, bussit, metro jne.), kaupunkien liikenneverkot. Ihmisten liikkuminen paikasta toiseen. Esimerkkejä: ostosmatkat rajan yli tai kysymykset useimmiten käytetyistä reiteistä ja kulkuvälineistä. HUOM! Vapaa-ajan matkustamisesta käytetään termiä 'vapaa-aika, matkailu ja urheilu'.",
-          "previousConcept": 4927,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6110,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "työolot",
-          "definition": "Työntekijöiden työolot. Työsopimukset, työaika ja -vuorot, lomat, ylityöt, tauot, palkkaus, palkkiot ja muut etuudet, työn fyysiset ja psyykkiset vaatimukset, työntekijöiden oikeudet ja velvollisuudet, työmäärä, työntekijöiden osallistuminen päätöksentekoon, työn autonomisuus, fyysinen työympäristö. HUOM! Työturvallisuudesta puhuttaessa käytetään termiä 'työterveys'.",
-          "previousConcept": 4890,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6111,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "täydennys- ja jatkokoulutus,  elinikäinen oppiminen",
-          "definition": "Viittaa erilaisiin aikuisille suunnattuihin, yleensä tutkintoon johtamattomiin koulutuksiin. Koulutuksen tavoitteena saattaa olla parantaa tietoja ja taitoja, kouluttautua uuteen ammattiin tai vain oppia jotain uutta. Esimerkiksi työväen- ja kansalaisopistojen opinnot. HUOM! Työpaikan antamasta tai maksamasta koulutuksesta käytetään termiä 'työpaikkakoulutus'.",
-          "previousConcept": 4926,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6112,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "mainonta, tiedotus- ja suhdetoiminta",
-          "definition": "",
-          "previousConcept": 4961,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6113,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "tietotekniikka",
-          "definition": "Kotona, työpaikalla ja muualla käytettävä tieto- ja tietoliikennetekniikka. HUOM! Tämä termi kattaa itse tekniikan. Jos aiheena on tietotekniikan vaikutukset ja käyttö, käytetään termiä 'tietoyhteiskunta'.",
-          "previousConcept": 4889,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6114,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "SOSIAALINEN KERROSTUNEISUUS JA SOSIAALISET RYHMÄT",
-          "definition": "",
-          "previousConcept": 4918,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6115,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "ympäristönsuojelu ja ympäristöongelmat",
-          "definition": "Sisältää mm. ympäristön saastumiseen, ympäristönsuojeluun, ilmastonmuutokseen, eroosion ja tulvasuojeluun liittyvät aiheet.",
-          "previousConcept": 4899,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6116,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "väestönlaskennat",
-          "definition": "Tutkimukset, joiden kohderyhmänä on koko väestö ilman otantaa. Käytetään usein väestön laskemiseksi. Pohjoismaissa tämä tieto yleensä saadaan virallisista tilastoista.",
-          "previousConcept": 4921,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6117,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "sosiaaliturvajärjestelmä",
-          "definition": "Sosiaaliturva käytännössä eli kuka palvelut tarjoaa ja missä laajuudessa, miten palvelut on rakennettu. Esimerkiksi kysymykset siitä, kuinka vanhuspalvelut on järjestetty paikallistasolla.",
-          "previousConcept": 4912,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6118,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "ammatillinen koulutus",
-          "definition": "Kattaa ISCEDin 3 ja 4 asteiden ammatillisen koulutuksen, oppisopimuskoulutuksen sekä työharjoittelun. Tutkintoja ovat ammatilliset tutkinnot/perustutkinnot ja erikoisammattitutkinnot. Myös näiden koulutusasteiden opiskelijat, opettajat ja muu henkilökunta, oppialat, koulutuksen sisältö, tilat ja välineet.",
-          "previousConcept": 4915,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6119,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "KOULUTUS",
-          "definition": "",
-          "previousConcept": 4945,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6120,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "kansanterveys",
-          "definition": "Väestön terveyteen vaikuttavat kysymykset. Väestön fyysisen ja henkisen terveydentilan edistäminen kansallisella, alueellisella tai kunnallisella tasolla. Sairauksien ja tapaturmien ennaltaehkäisy. Esim. terveysvalistus, rokotusohjelmien vaikutus, neuvolat ja terveystarkastukset, epidemiat, sairauksien esiintymiseen vaikuttavat tekijät.",
-          "previousConcept": 4897,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6121,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "nuoret",
-          "definition": "Saattaa tarvita toisen aihetermin, jos nuoria tutkitaan jostain tietystä näkökulmasta.",
-          "previousConcept": 4924,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6122,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "toisen ja korkea-asteen koulutus",
-          "definition": "Kattaa kaikki aiheet, jotka liittyvät peruskoulun jälkeisiin tutkintoihin johtavaan koulutukseen, mukaan lukien lukio, ammattikorkeakoulu ja yliopisto. Myös näiden koulutusasteiden opiskelijat, opettajat ja muu henkilökunta, oppialat, koulutuksen sisältö, tilat ja välineet. HUOM! Toisen asteen ammatillisesta koulutuksesta käytetään termiä 'ammatillinen koulutus'.",
-          "previousConcept": 4974,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6123,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "valtiovalta, julkinen hallinto, poliittiset organisaatiot, puolueet",
-          "definition": "Aiheet, jotka liittyvät kansalliseen, alueelliseen ja paikalliseen päätöksentekoon, päättäviin elimiin (esim. hallitus, eduskunta, kunnalliset päätöksentekoelimet), julkiseen hallintoon yleensä ja poliittisiin puolueisiin. Esim. hallituksen politiikka, poliittisten puolueiden politiikka, puoluejohto, kansalaisten luottamus eduskuntaan ja hallitukseen. HUOM! Joskus on käytettävä myös tarkemman aiheen mukaista termiä.",
-          "previousConcept": 4971,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6124,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "maa- ja metsätalous, kalastus, maaseutuelinkeinot",
-          "definition": "",
-          "previousConcept": 4958,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6125,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "asuminen ja asunnot",
-          "definition": "Sisältää yleisen asumistason yhteisössä, mukaan lukien tuetun asumisen. Asumisen kustannukset, varustetaso ja asuntojen saatavuus. Kattaa sekä pääasialliset asunnot että loma-asunnot.",
-          "previousConcept": 4909,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6126,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "työllisyys ja työllistyminen",
-          "definition": "Työllisyysaste ja -tilastot, työmarkkinat, työpaikat, työnhaku, tiettyjen ryhmien työtilanne (esim. nuoret tai vähemmistöt), työvoimapalvelut, ura. HUOM! Palkkaukseen ja palkkioihin liittyvissä aiheissa käytetään termiä 'työolot'.",
-          "previousConcept": 4888,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6127,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "kulutus ja kuluttajakäyttäytyminen",
-          "definition": "Yksilön, yhteisön tai yhteiskunnan hankinnat tai palvelujen käyttö. Esimerkiksi yksilöiden ja kotitalouksen kulutustottumukset, muutokset kuluttamisessa sekä kuluttamiseen liittyvät eettiset valinnat. Esim. kuinka usein ihmiset ostavat tiettyjä tuotteita, missä ja milloin he tekevät ostoksia, muuttavatko kulutuskäyttäytymistään eettisin perustein.",
-          "previousConcept": 4937,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6128,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "vaalit, ehdokkaat ja kansanäänestykset",
-          "definition": "Vaaliehdokkaat, vaalikampanjat, vaalirahoitus, vaalikoneet, vaalien tulokset, kansanäänestykset.",
-          "previousConcept": 4900,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6129,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "POLITIIKKA",
-          "definition": "",
-          "previousConcept": 4967,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6130,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "loukkaantumiset, haavat ja vammat",
-          "definition": "Sisältää tapaturman tai väkivallan aiheuttamat loukkaantumiset, haavat ja vammat, sekä fyysiset että henkiset. HUOM! Jos kysymyksessä työhön liittyvistä loukkaantumisista ja vammoista, käytetään termiä 'työterveys'.",
-          "previousConcept": 4916,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6131,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "yhteiskunnallinen ja ammatillinen liikkuvuus",
-          "definition": "Muutokset yksilöiden, perheiden tai ryhmien yhteiskunnallisessa ja ammatillisessa asemassa ajan myötä. Muutos voi olla horisontaalista eli yhteiskunnallinen luokka pysyy samana vaikka ammatti voi muuttua, tai vertikaalista, jolloin yksilöt liikkuvat joko ylöspäin tai alaspäin luokka-asteikolla. Esimerkiksi tehdastyöläiset saattavat siirtyä työskentelemään toisen alan tehtaaseen (horisontaalinen ammatillinen liikkuvuus), tai köyhien perheiden lapset voivat saavuttaa paljon korkeamman ammatillisen aseman kuin vanhempansa (sukupolvien välinen yhteiskunnallinen liikkuvuus).",
-          "previousConcept": 4895,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6132,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "ikääntyneet",
-          "definition": "Saattaa tarvita toisen aihetermin, jos ikääntyneitä tutkitaan jostain tietystä näkökulmasta.",
-          "previousConcept": 4923,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6133,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "vähemmistöt",
-          "definition": "Ryhmät, jotka poikkeavat jonkin ominaisuuden suhteen enemmistöstä. Eroava ominaisuus saattaa olla esimerkiksi etninen alkuperä, uskonto, terveydentila, seksuaalinen suuntautuminen, äidinkieli tai kulttuuri. Huomioi, että aiheesta riippuen voidaan käyttää myös muita termejä kuten 'tasa-arvo, eriarvoisuus ja syrjäytyminen', 'uskonto ja arvot' tai 'kielet ja kielitiede'.",
-          "previousConcept": 4905,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6134,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "maahanmuutto,  maastamuutto ja sisäinen muuttoliike",
-          "definition": "Kattaa kaikentyyppisen muuttoliikkeen, mukaan lukien maan sisäisen muuttoliikkeen.",
-          "previousConcept": 4925,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6135,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "sosiaalipalveluiden käyttö ja saatavuus",
-          "definition": "Missä määrin ihmiset ovat käyttäneet tiettyjä sosiaalipalveluja, mielipiteet niiden riittävyydestä ja saavutettavuudesta ja yleinen tyytyväisyys niihin. Esimerkiksi tilastotiedot tiettyjen palvelujen käytöstä tai ikääntyneille esitetyt kysymykset siitä, mitä vanhuspalveluja he ovat käyttäneet.",
-          "previousConcept": 4917,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6136,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/fi",
-          "notation": "Health.DietAndNutrition",
-          "title": "työpaikkakoulutus",
-          "definition": "Työnantajan työntekijöilleen maksama tai järjestämä koulutus. Ei sisällä työharjoittelua, joka sisältyy termiin 'ammatillinen koulutus'.",
-          "previousConcept": 4919,
-          "parent": "Health",
-          "position": 17
+          "id": 10855,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/fi/4.0.1",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 8126,
@@ -5612,19 +4782,28 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 324,
           "version": "3.0.2",
           "date": "2019-07-03",
-          "changes": "Code definition rephrased: joukkoviestimet\nCode definition rephrased: HISTORIA\nCode definition rephrased: vähemmistöt\nCode definition rephrased: sosiaaliset olot ja indikaattorit\nCode definition rephrased: maankäyttö, suunnittelu ja kaavoitus\nCode descriptive term rephrased: sukupuoli ja sukuoliroolit changed to sukupuoli ja sukupuoliroolit\n"
+          "note": "Typo corrections to code definitions and a code descriptive term. References to obsolete terms updated.",
+          "changes": "Code definition rephrased: joukkoviestimet\nCode definition rephrased: HISTORIA\nCode definition rephrased: vähemmistöt\nCode definition rephrased: sosiaaliset olot ja indikaattorit\nCode definition rephrased: maankäyttö, suunnittelu ja kaavoitus\nCode descriptive term rephrased: sukupuoli ja sukuoliroolit changed to sukupuoli ja sukupuoliroolit\n",
+          "prevVersion": 318
         },
         {
+          "id": 318,
           "version": "3.0.1",
           "date": "2019-06-03",
-          "changes": "Code definition rephrased: sairastuvuus ja kuolleisuus\nCode definition rephrased: talouden tila ja tunnusluvut\nCode definition rephrased: talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö\nCode definition rephrased: toisen ja korkea-asteen koulutus\nCode definition rephrased: täydennys- ja jatkokoulutus,  elinikäinen oppiminen\nCode definition rephrased: koulutuspolitiikka\nCode definition rephrased: terveyspalvelut ja terveyspolitiikka\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: terveyskäyttäytyminen\nCode definition rephrased: työpaikkakoulutus\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: tietoyhteiskunta\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: KULKEMINEN, KULJETUS JA LIIKENNE\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry"
+          "note": "New Finnish version published to include code values changes made to SL 3.0. Typo corrections to definitions.",
+          "changes": "Code definition rephrased: sairastuvuus ja kuolleisuus\nCode definition rephrased: talouden tila ja tunnusluvut\nCode definition rephrased: talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö\nCode definition rephrased: toisen ja korkea-asteen koulutus\nCode definition rephrased: täydennys- ja jatkokoulutus,  elinikäinen oppiminen\nCode definition rephrased: koulutuspolitiikka\nCode definition rephrased: terveyspalvelut ja terveyspolitiikka\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: terveyskäyttäytyminen\nCode definition rephrased: työpaikkakoulutus\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: tietoyhteiskunta\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: KULKEMINEN, KULJETUS JA LIIKENNE\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry",
+          "prevVersion": 258
         },
         {
+          "id": 258,
           "version": "2.0.1",
           "date": "2019-05-15",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -5645,14 +4824,15 @@
       "initialVersion": 400,
       "versionNotes": "Correction scories",
       "versionChanges": "Code value changed: olitique économique, dépenses publiques et recettes\n",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2020). Nomenclature CESSDA des thématiques [CESSDA Topic Classification] (Version 4.0.4;  Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
       "translateAgencyLink": "https://cdsp.sciences-po.fr/fr/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 8663,
@@ -5829,6 +5009,16 @@
           "previousConcept": 8415,
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10865,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/fr/4.0.4",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "previousConcept": 10864,
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 8611,
@@ -6579,19 +5769,28 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 421,
           "version": "4.0.3",
           "date": "2019-12-17",
-          "changes": "Code descriptive term rephrased: LOI, CRIMINALITÉ ET SYSTÈME LEGAL rephrased into LOI, CRIMINALITÉ ET SYSTÈME LÉGAL\nCode descriptive term rephrased: Signes et symptomes ; conditions pathologiques rephrased into Signes et symptômes ; conditions pathologiques\n"
+          "note": "Some corrections",
+          "changes": "Code descriptive term rephrased: LOI, CRIMINALITÉ ET SYSTÈME LEGAL rephrased into LOI, CRIMINALITÉ ET SYSTÈME LÉGAL\nCode descriptive term rephrased: Signes et symptomes ; conditions pathologiques rephrased into Signes et symptômes ; conditions pathologiques\n",
+          "prevVersion": 406
         },
         {
+          "id": 406,
           "version": "4.0.2",
           "date": "2019-11-06",
-          "changes": "Code descriptive term rephrased: Fécondité rephrased into Santé reproductive\nCode descriptive term rephrased: LOGEMENT ET UTILISATION DU TERRITOIRE rephrased into LOGEMENT ET UTILISATION DES TERRES\nCode definition rephrased: Economics.EconomicConditionsAndIndicators\nCode definition rephrased: Education.HigherAndFurtherEducation\nCode definition rephrased: Education.VocationalEducationAndTraining\nCode definition rephrased: Health.DrugAbuseAlcoholAndSmoking\nCode definition rephrased: HousingAndLandUse.LandUseAndPlanning\nCode definition rephrased: SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nCode definition rephrased: SocietyAndCulture.CulturalAndNationalIdentity\n"
+          "note": "Some corrections form Belgium team",
+          "changes": "Code descriptive term rephrased: Fécondité rephrased into Santé reproductive\nCode descriptive term rephrased: LOGEMENT ET UTILISATION DU TERRITOIRE rephrased into LOGEMENT ET UTILISATION DES TERRES\nCode definition rephrased: Economics.EconomicConditionsAndIndicators\nCode definition rephrased: Education.HigherAndFurtherEducation\nCode definition rephrased: Education.VocationalEducationAndTraining\nCode definition rephrased: Health.DrugAbuseAlcoholAndSmoking\nCode definition rephrased: HousingAndLandUse.LandUseAndPlanning\nCode definition rephrased: SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nCode definition rephrased: SocietyAndCulture.CulturalAndNationalIdentity\n",
+          "prevVersion": 400
         },
         {
+          "id": 400,
           "version": "4.0.1",
           "date": "2019-10-22",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -6612,14 +5811,15 @@
       "initialVersion": 400,
       "versionNotes": "Some corrections",
       "versionChanges": "Code descriptive term rephrased: LOI, CRIMINALITÉ ET SYSTÈME LEGAL rephrased into LOI, CRIMINALITÉ ET SYSTÈME LÉGAL\nCode descriptive term rephrased: Signes et symptomes ; conditions pathologiques rephrased into Signes et symptômes ; conditions pathologiques\n",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2019). Nomenclature CESSDA des thématiques [CESSDA Topic Classification] (Version 4.0.3;  Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
       "translateAgencyLink": "https://cdsp.sciences-po.fr/fr/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 8412,
@@ -6796,6 +5996,16 @@
           "previousConcept": 7593,
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10864,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/fr/4.0.3",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "previousConcept": 10863,
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 8348,
@@ -7546,14 +6756,20 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 406,
           "version": "4.0.2",
           "date": "2019-11-06",
-          "changes": "Code descriptive term rephrased: Fécondité rephrased into Santé reproductive\nCode descriptive term rephrased: LOGEMENT ET UTILISATION DU TERRITOIRE rephrased into LOGEMENT ET UTILISATION DES TERRES\nCode definition rephrased: Economics.EconomicConditionsAndIndicators\nCode definition rephrased: Education.HigherAndFurtherEducation\nCode definition rephrased: Education.VocationalEducationAndTraining\nCode definition rephrased: Health.DrugAbuseAlcoholAndSmoking\nCode definition rephrased: HousingAndLandUse.LandUseAndPlanning\nCode definition rephrased: SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nCode definition rephrased: SocietyAndCulture.CulturalAndNationalIdentity\n"
+          "note": "Some corrections form Belgium team",
+          "changes": "Code descriptive term rephrased: Fécondité rephrased into Santé reproductive\nCode descriptive term rephrased: LOGEMENT ET UTILISATION DU TERRITOIRE rephrased into LOGEMENT ET UTILISATION DES TERRES\nCode definition rephrased: Economics.EconomicConditionsAndIndicators\nCode definition rephrased: Education.HigherAndFurtherEducation\nCode definition rephrased: Education.VocationalEducationAndTraining\nCode definition rephrased: Health.DrugAbuseAlcoholAndSmoking\nCode definition rephrased: HousingAndLandUse.LandUseAndPlanning\nCode definition rephrased: SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nCode definition rephrased: SocietyAndCulture.CulturalAndNationalIdentity\n",
+          "prevVersion": 400
         },
         {
+          "id": 400,
           "version": "4.0.1",
           "date": "2019-10-22",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -7574,14 +6790,15 @@
       "initialVersion": 400,
       "versionNotes": "Some corrections form Belgium team",
       "versionChanges": "Code descriptive term rephrased: Fécondité rephrased into Santé reproductive\nCode descriptive term rephrased: LOGEMENT ET UTILISATION DU TERRITOIRE rephrased into LOGEMENT ET UTILISATION DES TERRES\nCode definition rephrased: Economics.EconomicConditionsAndIndicators\nCode definition rephrased: Education.HigherAndFurtherEducation\nCode definition rephrased: Education.VocationalEducationAndTraining\nCode definition rephrased: Health.DrugAbuseAlcoholAndSmoking\nCode definition rephrased: HousingAndLandUse.LandUseAndPlanning\nCode definition rephrased: SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nCode definition rephrased: SocietyAndCulture.CulturalAndNationalIdentity\n",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2019). Nomenclature CESSDA des thématiques [CESSDA Topic Classification] (Version 4.0.2;  Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
       "translateAgencyLink": "https://cdsp.sciences-po.fr/fr/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7597,
@@ -7758,6 +6975,16 @@
           "previousConcept": 7347,
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10863,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/fr/4.0.2",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "previousConcept": 10861,
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 7631,
@@ -8508,9 +7735,12 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 400,
           "version": "4.0.1",
           "date": "2019-10-22",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -8531,14 +7761,15 @@
       "initialVersion": 400,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2019). Nomenclature CESSDA des thématiques [CESSDA Topic Classification] (Version 4.0.1;  Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
       "translateAgencyLink": "https://cdsp.sciences-po.fr/fr/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7333,
@@ -8697,6 +7928,15 @@
           "definition": "Processus nutritionnel, habitudes et pratiques alimentaires et, paramètres nutritionnels mesurables tels que l'indice de masse corporelle (IMC), le poids, les niveaux de vitamines.",
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10861,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/fr/4.0.1",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 7348,
@@ -9388,14 +8628,15 @@
       "initialVersion": 320,
       "versionNotes": "",
       "versionChanges": "Code deleted: Code Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nCode definition rephrased: Tempo libero, turismo e sport\nCode definition rephrased: Migrazioni\nCode definition rephrased: Morbilità e mortalità",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2020). Classificazione CESSDA degli argomenti [CESSDA Topic Classification] (Version 4.0.1; UniData - Bicocca Data Archive, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": "UniData - Bicocca Data Archive",
       "translateAgencyLink": "https://www.unidata.unimib.it/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 6218,
@@ -9570,94 +8811,13 @@
           "position": 17
         },
         {
-          "id": 6155,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/it",
-          "notation": "Health.DietAndNutrition",
-          "title": "MEDIA, COMUNICAZIONE E LINGUAGGIO",
-          "definition": "",
-          "previousConcept": 4850,
+          "id": 10856,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/it/4.0.1",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
           "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6165,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/it",
-          "notation": "Health.DietAndNutrition",
-          "title": "Servizi sociali specifici: utilizzo e disponibilità",
-          "definition": "Ad esempio, dati sull'utilizzo di specifici servizi sociali da parte delle persone, opinioni sull'adeguatezza, accessibilità e disponibilità di tali servizi e grado di soddisfazione generale. Ad esempio, questioni relative al tipo di servizi utilizzati dagli anziani intervistati oppure statistiche sull'utilizzo di particolari servizi.",
-          "previousConcept": 4856,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6168,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/it",
-          "notation": "Health.DietAndNutrition",
-          "title": "Media",
-          "definition": "Dati riferiti a qualsiasi tipo di mass media. Ad esempio, quotidiani stampati o online, riviste, televisione e radio. Si noti che i social media sono classificati con il termine \"Società dell'informazione\".",
-          "previousConcept": 4851,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6198,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/it",
-          "notation": "Health.DietAndNutrition",
-          "title": "Società dell'informazione",
-          "definition": "La creazione, distribuzione, utilizzo, integrazione e manipolazione delle informazioni come attività economica, politica e culturale rilevante. Ad esempio, i dati relativi all'e-commerce, e-government, social media, dispositivi mobili, accesso e uso di Internet, e-privacy, informazioni e risorse bibliotecarie. Utilizzare \"Tecnologie dell'informazione\" quando si tratta di tecnologie in senso stretto.",
-          "previousConcept": 4853,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6200,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/it",
-          "notation": "Health.DietAndNutrition",
-          "title": "Istruzione obbligatoria e pre-scolastica",
-          "definition": "L'istruzione obbligatoria si riferisce al periodo di istruzione richiesto a tutte le persone che vivono in un paese ed è imposto dalla legge. L'istruzione pre-scolastica si riferisce alla scuola dell'infanzia e all'educazione impartita prima dell'istruzione obbligatoria. Utilizzare questo termine per classificare i dati relativi alle fasi di istruzione prescolare, primaria e secondaria di primo grado, indipendentemente dal fatto che i dati si concentrino su studenti, insegnanti, materie o abilità insegnate, strutture, ecc.",
-          "previousConcept": 4848,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6208,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/it",
-          "notation": "Health.DietAndNutrition",
-          "title": "Linguaggio e linguistica",
-          "definition": "I dati includono studi linguistici, analisi linguistiche e sociolinguistiche, nonché dati sulle politiche linguistiche, le competenze linguistiche delle persone, le lingue parlate sul posto di lavoro o in ambiti domestici, gli atteggiamenti nei confronti delle minoranze linguistiche, ecc.",
-          "previousConcept": 4854,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6216,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/it",
-          "notation": "Health.DietAndNutrition",
-          "title": "Sistemi/strutture di welfare",
-          "definition": "Questioni relative all'erogazione di servizi di assistenza sociale, quali soggetti forniscono servizi di assistenza sociale nella pratica e in che misura, come sono strutturati i servizi esistenti. Ad esempio, questioni relative alle modalità attraverso cui un governo locale ha organizzato i servizi per gli anziani.",
-          "previousConcept": 4855,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6221,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/it",
-          "notation": "Health.DietAndNutrition",
-          "title": "Relazioni pubbliche",
-          "definition": "Misure adottate per migliorare o preservare l'immagine di individui, aziende, organizzazioni e governi, ad esempio mediante pubblicità, lobbying, ecc.",
-          "previousConcept": 4852,
-          "parent": "Health",
-          "position": 17
-        },
-        {
-          "id": 6139,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/it",
-          "notation": "Health.DietAndNutrition",
-          "title": "Regime alimentare e nutrizione",
-          "definition": "Processi nutrizionali, modelli e pratiche alimentari e parametri nutrizionali misurabili come l'indice di massa corporea (IMC), il peso, i livelli di vitamine.",
-          "previousConcept": 4857,
-          "parent": "Health",
-          "position": 17
+          "position": 18
         },
         {
           "id": 8886,
@@ -10397,9 +9557,12 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 320,
           "version": "3.0.1",
           "date": "2019-07-11",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -10421,14 +9584,15 @@
       "notes": "",
       "versionNotes": "",
       "versionChanges": "Code deleted: Code Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2019). CESSDA Emneklassifisering [CESSDA Topic Classification] (Version 4.0.1; NSD - Norwegian Centre for Research Data, Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": "NSD - Norwegian Centre for Research Data",
       "translateAgencyLink": "https://nsd.no/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 6254,
@@ -10601,6 +9765,15 @@
           "definition": "Ernæringsprosesser, spisemønstre og -vaner, og målbare ernæringsparametre, som kroppsmasseindeks (BMI), vekt, vitaminnivå.",
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10857,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/no/4.0.1",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 6237,
@@ -11349,14 +10522,20 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 300,
           "version": "3.0.1",
           "date": "2019-06-12",
-          "changes": "Code value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode definition rephrased: Migrasjon\nCode definition rephrased: Økonomiske forhold og indikatorer\nCode descriptive term rephrased: Konsum/konsumentatferd\nCode definition rephrased: Tegn og symptomer; patologiske tilstander\nCode descriptive term rephrased: Reproduktiv Helse\nCode definition rephrased: Folkehelse\nCode definition rephrased: Arealbruk og arealplanlegging\nCode definition rephrased: Arbeidsledighet\nCode definition rephrased: Opplæring av ansatte\nCode definition rephrased: Arbeidsbetingelser\nCode definition rephrased: Publikumskontakt\nCode definition rephrased: Informasjonssamfunn\nCode definition rephrased: Valg\nCode definition rephrased: Ungdom\nCode definition rephrased: Eldre\nCode definition rephrased: Barn\nCode definition rephrased: Sosial velferdspolitikk\nCode definition rephrased: Sosial velferdspolitikk"
+          "note": "Norwegian version published to include code values changes made to SL 3.0. Typo corrections to definitions.",
+          "changes": "Code value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode definition rephrased: Migrasjon\nCode definition rephrased: Økonomiske forhold og indikatorer\nCode descriptive term rephrased: Konsum/konsumentatferd\nCode definition rephrased: Tegn og symptomer; patologiske tilstander\nCode descriptive term rephrased: Reproduktiv Helse\nCode definition rephrased: Folkehelse\nCode definition rephrased: Arealbruk og arealplanlegging\nCode definition rephrased: Arbeidsledighet\nCode definition rephrased: Opplæring av ansatte\nCode definition rephrased: Arbeidsbetingelser\nCode definition rephrased: Publikumskontakt\nCode definition rephrased: Informasjonssamfunn\nCode definition rephrased: Valg\nCode definition rephrased: Ungdom\nCode definition rephrased: Eldre\nCode definition rephrased: Barn\nCode definition rephrased: Sosial velferdspolitikk\nCode definition rephrased: Sosial velferdspolitikk",
+          "prevVersion": 262
         },
         {
+          "id": 262,
           "version": "2.0.1",
           "date": "2019-05-16",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     },
@@ -11377,14 +10556,15 @@
       "initialVersion": 370,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2019). Classificação dos temas (CESSDA) [CESSDA Topic Classification] (Version 4.0.1; Arquivo Português de Informação Social (APIS), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n <br /> \n</div> \n<div>\n  Module Name: reusable \n <br /> \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a> \n <br /> \n</div>",
       "translateAgency": "Arquivo Português de Informação Social (APIS)",
       "translateAgencyLink": "http://www.apis.ics.ulisboa.pt/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 6531,
@@ -11543,6 +10723,15 @@
           "definition": "Processos de nutrição, padrões e práticas alimentares e parâmetros mensuráveis de nutrição, como índice de massa corporal (IMC), peso ou nível de vitaminas.",
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10860,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/pt/4.0.1",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 6550,
@@ -12234,14 +11423,15 @@
       "initialVersion": 403,
       "versionNotes": "",
       "versionChanges": "",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2020). Tematske oblasti CESSDA [CESSDA Topic Classification] (Version 4.0.1; Data Centre Serbia for Social Sciences (DCS), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
       "translateAgency": "Data Centre Serbia for Social Sciences (DCS)",
       "translateAgencyLink": "http://datacentarserbia.com",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 7429,
@@ -12400,6 +11590,15 @@
           "definition": "Prehrambeni procesi, obrasci i postupci ishrane i merljivi nutritivni parametri, kao što su indeks telesne mase (BMI), težina, nivo vitamina, i dr.",
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10862,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/sr/4.0.1",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 7447,
@@ -13091,14 +12290,15 @@
       "initialVersion": 260,
       "versionNotes": "",
       "versionChanges": "Code deleted: Code Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nCode definition rephrased: Informationssamhället\nCode definition rephrased: Jämlikhet, ojämlikhet och socialt utanförskap\n",
-      "license": "BY",
+      "license": "CC BY",
       "licenseName": "Creative Commons Attribution 4.0 International",
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "/content/images/license/by.png",
+      "licenseLogo": "by.png",
       "citation": "CESSDA. (2019). CESSDA Ämnesklassificering [CESSDA Topic Classification] (Version 4.0.1; Swedish National Data Service (SND), Transl.) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.0. ",
       "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: reusable \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <br /> \n</div>",
       "translateAgency": "Swedish National Data Service (SND)",
       "translateAgencyLink": "https://snd.gu.se/",
+      "lastStatusChangeDate": "2020-10-01",
       "concepts": [
         {
           "id": 6425,
@@ -13271,6 +12471,15 @@
           "definition": "Näringsprocesser, ätmönster och matvanor, och mätbara näringsparametrar som kroppsmasseindex (BMI), vikt och vitaminnivåer.",
           "parent": "Health",
           "position": 17
+        },
+        {
+          "id": 10859,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/sv/4.0.1",
+          "notation": "Health.DrugAbuseAlcoholAndSmoking",
+          "title": "Drug abuse, alcohol and smoking",
+          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "parent": "Health",
+          "position": 18
         },
         {
           "id": 6456,
@@ -14019,14 +13228,20 @@
       "comments": [],
       "versionHistories": [
         {
+          "id": 302,
           "version": "3.0.1",
           "date": "2019-07-17",
-          "changes": "Code definition rephrased: Konsumtion och konsumentbeteende\nCode definition rephrased: Livslångt lärande/vidareutbildning\nCode definition rephrased: Tecken och symtom; patologiska tillstånd\nCode definition rephrased: Hälsobeteende\nCode definition rephrased: Energi och naturresurser\nCode definition rephrased: Ungdomar\nCode descriptive term rephrased: Kriminalitet och rättstillämpning\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed to MediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\n"
+          "note": "",
+          "changes": "Code definition rephrased: Konsumtion och konsumentbeteende\nCode definition rephrased: Livslångt lärande/vidareutbildning\nCode definition rephrased: Tecken och symtom; patologiska tillstånd\nCode definition rephrased: Hälsobeteende\nCode definition rephrased: Energi och naturresurser\nCode definition rephrased: Ungdomar\nCode descriptive term rephrased: Kriminalitet och rättstillämpning\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed to MediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\n",
+          "prevVersion": 260
         },
         {
+          "id": 260,
           "version": "2.0.1",
           "date": "2019-05-16",
-          "changes": ""
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
         }
       ]
     }

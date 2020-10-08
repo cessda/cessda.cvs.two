@@ -11,9 +11,11 @@ import { TreeEditorComponent } from './tree-editor/tree-editor.component';
 import { RouteEventsService } from 'app/shared/service/route-events.service';
 import { TreeReorderComponent } from 'app/shared/tree-reorder/tree-reorder.component';
 import { LinkHttpPipe } from 'app/shared/pipe/link-http-pipe';
+import { VersionCompareComponent } from './version-compare/version-compare.component';
+import { NgxTextDiffModule } from 'ngx-text-diff';
 
 @NgModule({
-  imports: [CvsSharedLibsModule],
+  imports: [CvsSharedLibsModule, NgxTextDiffModule],
   declarations: [
     FindLanguageFromKeyPipe,
     LinkHttpPipe,
@@ -24,7 +26,8 @@ import { LinkHttpPipe } from 'app/shared/pipe/link-http-pipe';
     HasAnyAgencyAuthorityDirective,
     TreeComponent,
     TreeEditorComponent,
-    TreeReorderComponent
+    TreeReorderComponent,
+    VersionCompareComponent
   ],
   entryComponents: [LoginModalComponent],
   exports: [
@@ -38,7 +41,8 @@ import { LinkHttpPipe } from 'app/shared/pipe/link-http-pipe';
     HasAnyAgencyAuthorityDirective,
     TreeComponent,
     TreeEditorComponent,
-    TreeReorderComponent
+    TreeReorderComponent,
+    VersionCompareComponent
   ],
   providers: [RouteEventsService]
 })

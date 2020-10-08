@@ -515,4 +515,18 @@ export default class VocabularyUtil {
     }
     return availableLanguages;
   }
+
+  static sortLangByEnum(languages: string[], sourceLang: string): string[] {
+    const sortedLang: string[] = [sourceLang];
+    const sortedLangIsos: LanguageIso[] = [];
+    // convert languages to enum so it can be sorted
+    languages.forEach(l => {
+      if (l !== sourceLang) {
+        sortedLangIsos.push(LanguageIso[l]);
+      }
+    });
+    sortedLangIsos.sort((a, b) => a - b);
+    sortedLangIsos.forEach(lIso => sortedLang.push(VocabularyUtil.getLangIsoByEnum(lIso)));
+    return sortedLang;
+  }
 }

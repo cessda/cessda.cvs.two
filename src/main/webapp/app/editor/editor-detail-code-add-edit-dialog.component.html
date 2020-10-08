@@ -158,7 +158,8 @@
                         </div>
                         <div class="detail-column">
                             <select class="form-control w-100 sk-select" id="field_changeType" name="changeType" formControlName="changeType">
-                                <option value="Code value changed">Code value changed</option>
+                                <option></option>
+                                <option *ngIf="versionParam.itemType === 'SL'" value="Code value changed">Code value changed</option>
                                 <option value="Code descriptive term rephrased">Code descriptive term rephrased</option>
                                 <option value="Code definition amended with meaning change">Code definition amended with meaning change</option>
                                 <option value="Code definition rephrased">Code definition rephrased</option>
