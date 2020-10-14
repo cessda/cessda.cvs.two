@@ -26,11 +26,6 @@
             </div>
         </div>
         <div class="row-content">
-            <ngb-alert class="text-center" [dismissible]="false" *ngIf="vocabulary!.versionNumber !== getSlVersion()!.number">
-                <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
-                    {{vocabulary!.notation}} v.{{vocabulary!.versionNumber}}
-                </a></strong>
-            </ngb-alert>
             <div class="content">
                 <div class="content-left">
                     <div class="sticky-panel">
