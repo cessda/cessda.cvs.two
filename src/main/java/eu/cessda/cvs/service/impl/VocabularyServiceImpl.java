@@ -1371,7 +1371,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private void updateConceptContentForJsonfy(List<ConceptDTO> concepts) {
         for (ConceptDTO concept : concepts) {
-            concept.setDefinition( concept.getDefinition().trim());
+            if( concept.getDefinition() != null )
+                concept.setDefinition( concept.getDefinition().trim());
             concept.setSlConcept(null);
             concept.setVersionId( null );
         }
