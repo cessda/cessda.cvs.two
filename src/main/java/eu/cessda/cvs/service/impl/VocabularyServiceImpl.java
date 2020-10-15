@@ -1407,9 +1407,6 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     private void addVersionHistories(VocabularyDTO vocabulary, VersionDTO version) {
-        // enable this after the data is corrected
-        if( version.isInitialVersion())
-            return;
         List<VersionDTO> olderVersions = versionService.findOlderPublishedByVocabularyLanguageId(vocabulary.getId(), version.getLanguage(), version.getId());
         List<Map<String,Object>> olderVersionHistories = new ArrayList<>();
         for (VersionDTO olderVersion : olderVersions) {

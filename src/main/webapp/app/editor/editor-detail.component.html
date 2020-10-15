@@ -503,6 +503,9 @@
                                                              [dataSource]="'JSON'">
                                         </jhi-version-compare>
                                     </div>
+                                    <div *ngIf="!version!.previousVersion && version!.versionHistories!.length > 0" class="acc-header option-label col-12 mtop10">
+                                        Prev-next comparison not available, due to {{version!.language}}-{{getMissingTlVersion(version!.number!)}} missing!
+                                    </div>
                                 </div>
                             </div>
                             <!-- other older versions -->
@@ -545,6 +548,9 @@
                                                                  [dataSource]="'JSON'">
                                             </jhi-version-compare>
                                         </ng-container>
+                                        <div *ngIf="!vh.prevVersion && i !== version!.versionHistories!.length" class="acc-header option-label col-12 mtop10">
+                                            Prev-next comparison not available, due to {{version!.language}}-{{getMissingTlVersion(vh.version)}} missing!
+                                        </div>
                                     </div>
                                 </div>
                             </div>

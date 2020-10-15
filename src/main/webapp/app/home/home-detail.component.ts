@@ -379,6 +379,9 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   }
 
   getMissingTlVersion(version: string): string {
+    if (version.startsWith(this.getSlVersion()!.number!)) {
+      return this.getSlVersion()!.versionHistories![0]!.version + '.x';
+    }
     let i = 0;
     this.getSlVersion()!.versionHistories!.forEach(function(vhSl, index): void {
       if (version.startsWith(vhSl.version!)) {

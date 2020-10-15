@@ -249,6 +249,9 @@
                                                      [dataSource]="'JSON'">
                                 </jhi-version-compare>
                             </div>
+                            <div *ngIf="!getVersionByLangNumber()!.previousVersion && getVersionByLangNumber()!.versionHistories!.length > 0" class="acc-header option-label col-12 mtop10">
+                                Prev-next comparison not available, due to {{getVersionByLangNumber()!.language}}-{{getMissingTlVersion(getVersionByLangNumber()!.number!)}} missing!
+                            </div>
 
                         </div>
 
