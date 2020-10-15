@@ -1016,7 +1016,12 @@ public class VocabularyServiceImpl implements VocabularyService {
                 vocab.setCodes( Collections.emptySet() );
         }
 
+        // set selected language in case language filter is selected with specific language
+        setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage,
+            esQueryResultDetail.getSearchScope().equals( SearchScope.EDITORSEARCH) ? EsFilter.LANGS_AGG: EsFilter.LANGS_PUB_AGG);
+
         esQueryResultDetail.setVocabularies(vocabularyPage);
+
 
         return esQueryResultDetail;
     }
@@ -1366,6 +1371,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private void updateConceptContentForJsonfy(List<ConceptDTO> concepts) {
         for (ConceptDTO concept : concepts) {
+            concept.setDefinition( concept.getDefinition().trim());
             concept.setSlConcept(null);
             concept.setVersionId( null );
         }
@@ -1379,6 +1385,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             version.setLicenseName( licence.getName() );
             version.setLicenseLogo( licence.getLogoLink() );
         }
+        version.setNotes( version.getNotes() == null ? "": version.getNotes().trim());
         version.setCreator(null);
         version.setDiscussionNotes(null);
         version.setVocabularyId(null);
@@ -1479,8 +1486,110 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
-    public String performConceptSlAndTlNormalization(VocabularyDTO... vocabularyDTOs) {
-        return null;
+    public String performTlMigrationNormalizationChecking() {
+        return performTlMigrationNormalization( true, "_all");
+    }
+
+    @Override
+    public String performTlMigrationNormalization(boolean isChecking, String notations) {
+        StringBuilder results = new StringBuilder();
+        List<VocabularyDTO> vocabularies = new ArrayList<>();
+        if(notations.equals( "_all") ) {
+            vocabularies = findAll();
+            results.append( "Perform concepts TL normalization for entire CVs with _all param" );
+        } else {
+            for (String s : notations.split(",")) {
+                VocabularyDTO cv = getByNotation(s.trim());
+                if( cv == null ) {
+                    results.append( "Error: Unable to find vocabulary with notation " + s.trim() );
+                } else {
+                    vocabularies.add( cv );
+                }
+            }
+        }
+        return performTlMigrationNormalization( isChecking, vocabularies.stream().toArray(VocabularyDTO[]::new));
+    }
+
+    @Override
+    public String performTlMigrationNormalization(boolean isChecking, VocabularyDTO... vocabularyDTOs) {
+        log.info( "Perform concept TLs normalization on ", Arrays.stream(vocabularyDTOs).map(VocabularyDTO::getNotation).collect(Collectors.joining(", ")) );
+        StringBuilder results = new StringBuilder();
+        results.append( "Perform concepts TL normalization in mode " + (isChecking ? "CHECKING": "WRITE" ) + " for the following Vocabularies:\n" );
+        for (VocabularyDTO vocabularyDTO : vocabularyDTOs) {
+
+            final List<VersionDTO> slVersions = vocabularyDTO.getVersions().stream()
+                .filter(v -> v.getItemType().equals(ItemType.SL.toString()))
+                .sorted(versionComparator).collect(Collectors.toList());
+
+            results.append("\nCV " + vocabularyDTO.getNotation() + "latest version" + slVersions.get(0).getNumber() + "\n");
+
+            for (VersionDTO slVersion : slVersions) {
+                results.append("Examining TLs from SL " + slVersion.getLanguage() + "-" + slVersion.getNumber() + "-" + slVersion.getStatus() + "\n");
+                final List<VersionDTO> tlVersionGroup = vocabularyDTO.getVersions().stream()
+                    .filter(v -> v.getNumber().startsWith(slVersion.getNumber()) && v.getItemType().equals(ItemType.TL.toString())).collect(Collectors.toList());
+                results.append( tlNormalization(isChecking, slVersion, tlVersionGroup));
+            }
+        }
+        return results.toString();
+    }
+
+    private String tlNormalization(boolean isChecking, VersionDTO slVersion, List<VersionDTO> tlVersionGroup) {
+        StringBuilder results = new StringBuilder();
+        for (VersionDTO tlVersion : tlVersionGroup) {
+            results.append("Examining SL " + slVersion.getLanguage() + "-" + slVersion.getNumber() + "-" + slVersion.getStatus() +
+                " with TL " + tlVersion.getLanguage() + "-" + tlVersion.getNumber() + "-" + tlVersion.getStatus() + "\n");
+            final Set<ConceptDTO> tlConcepts = tlVersion.getConcepts();
+            for (ConceptDTO slConcept : slVersion.getConcepts()) {
+                ConceptDTO tlConcept = tlConcepts.stream().filter(c -> c.getNotation().equals(slConcept.getNotation())).findFirst().orElse(null);
+                if( tlConcept != null ) {
+                  if( slConcept.getParent() != null && tlConcept.getParent() != null && !tlConcept.getParent().equals(slConcept.getParent()) &&
+                      !tlConcept.getPosition().equals(slConcept.getPosition())) {
+                      results.append( "Problem: Un-match SL and TL concept parent and/or position with notation " + slConcept.getNotation() +
+                          " SL id, parent and notation " + slConcept.getId() + " - " + slConcept.getParent() + " - " + slConcept.getPosition() +
+                           " TL id, parent and notation " + tlConcept.getId() + " - " + tlConcept.getParent() + " - " + tlConcept.getPosition() + "\n"
+                          );
+                      if( !isChecking ) {
+                          tlConcept.setParent( slConcept.getParent());
+                          tlConcept.setPosition( slConcept.getPosition() );
+                          conceptService.save(tlConcept);
+                          results.append( "Solution: Save TL concept with parent and position based on SL concept \n" );
+                      }
+                  }
+                  tlConcepts.remove(tlConcept);
+                } else {
+                    if( tlVersion.getStatus().equals(Status.PUBLISHED.toString())) {
+                        results.append( "Problem: Concept TL is missing with notation " + slConcept.getNotation() + "\n" );
+                        if( !isChecking ) {
+                            tlConcept = new ConceptDTO();
+                            tlConcept.setNotation( slConcept.getNotation());
+                            tlConcept.setParent( slConcept.getParent() );
+                            tlConcept.setPosition( slConcept.getPosition());
+                            tlConcept.setSlConcept( slConcept.getId());
+                            tlConcept.setVersionId( tlVersion.getId() );
+                            if( tlVersion.getUri() != null ) {
+                                final int index = tlVersion.getUri().lastIndexOf("/" + tlVersion.getLanguage() + "/");
+                                if(index > 0 ) {
+                                    tlConcept.setUri( tlVersion.getUri().substring(0, index) + "#" +
+                                        tlConcept.getNotation() + tlVersion.getUri().substring(index));
+                                }
+                            }
+                            if( tlVersion.getStatus().equals(Status.PUBLISHED.toString())) {
+                                tlConcept.setTitle( slConcept.getTitle());
+                                tlConcept.setDefinition( slConcept.getDefinition() );
+                                results.append( "Solution: Save a new TL concept with complete attributes " + tlConcept.toString() + " \n" );
+                            } else {
+                                results.append( "Solution: Save a new TL concept with necessary attributes " + tlConcept.toString() + " \n" );
+                            }
+                        }
+                    }
+                }
+            }
+            // print remaining TL set if any
+            for (ConceptDTO concept : tlConcepts) {
+                results.append( "Problem: Concept TL is not sync with SL " + concept.getNotation() + "\n" );
+            }
+        }
+        return results.toString();
     }
 
     private File generateVocabularyFileDownload(String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request, VocabularyDTO vocabularyDTO) {
@@ -1593,5 +1702,27 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private String getURLWithContextPath(HttpServletRequest request) {
         return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    }
+
+    private void setVocabularySelectedLanguage(EsQueryResultDetail esQueryResultDetail,
+                                               Page<VocabularyDTO> vocabularyPage, String fieldType) {
+        if( esQueryResultDetail.isAnyFilterActive() ) {
+            esQueryResultDetail.getEsFilterByField(fieldType).ifPresent( langFilter -> {
+                if( langFilter.getValues().size() == 1 ) {
+                    for( VocabularyDTO vocab : vocabularyPage.getContent()){
+                        vocab.setSelectedLang(langFilter.getValues().get(0));
+                    }
+                }
+            });
+        } else {
+            setSelectedLangToSourceLang(vocabularyPage);
+        }
+    }
+
+    private void setSelectedLangToSourceLang(Page<VocabularyDTO> vocabularyPage) {
+        for (VocabularyDTO vocab : vocabularyPage.getContent()) {
+            if( vocab.getSelectedLang() == null )
+                vocab.setSelectedLang(vocab.getSourceLanguage());
+        }
     }
 }

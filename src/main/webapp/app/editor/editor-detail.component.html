@@ -357,7 +357,7 @@
                                         {{lang}}</button>
                                     <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownBasic'+lang">
                                         <button ngbDropdownItem *ngFor="let version of getVersionsByLanguage(lang)!"
-                                                (click)="vocabulary!.selectedLang = version!.language;vocabulary!.selectedVersion = version!.number"
+                                                (click)="switchLang()"
                                                 [ngClass]="{'active': lang === vocabulary!.selectedLang && version!.number === vocabulary!.selectedVersion}"
                                                 ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
                                             v.{{version!.number}}

@@ -74,11 +74,11 @@ public class VersionUtils {
 
         currentVersionCvSb.append( "Cv Name: " + versionDTO.getTitle() + "\n");
         currentVersionCvSb.append( "Cv Def: " + versionDTO.getDefinition() + "\n");
-        currentVersionCvSb.append( "Cv Notes: " + versionDTO.getNotes() + "\n\n\n");
+        currentVersionCvSb.append( "Cv Notes: " + (versionDTO.getNotes() == null ? "": versionDTO.getNotes()) + "\n\n\n");
 
         prevVersionCvSb.append( "Cv Name: " + prevVersionDTO.getTitle() + "\n");
         prevVersionCvSb.append( "Cv Def: " + prevVersionDTO.getDefinition() + "\n");
-        prevVersionCvSb.append( "Cv Notes: " + prevVersionDTO.getNotes() + "\n\n\n");
+        prevVersionCvSb.append( "Cv Notes: " + (prevVersionDTO.getNotes() == null ? "": prevVersionDTO.getNotes()) + "\n\n\n");
 
         // get concepts and sorted by position
         List<ConceptDTO> currentConcepts = versionDTO.getConcepts().stream()
@@ -95,6 +95,12 @@ public class VersionUtils {
                 prevConceptDTO = prevVersionDTO.getConcepts().stream()
                     .filter(prevConcept -> currentConcept.getPreviousConcept().equals( prevConcept.getId())).findFirst()
                     .orElse(null);
+
+            if( prevConceptDTO == null ) {
+                prevConceptDTO = prevVersionDTO.getConcepts().stream()
+                    .filter(prevConcept -> currentConcept.getNotation().equals( prevConcept.getNotation())).findFirst()
+                    .orElse(null);
+            }
 
             if ( prevConceptDTO == null ) {
                 prevVersionCvSb.append( "Code: \n");

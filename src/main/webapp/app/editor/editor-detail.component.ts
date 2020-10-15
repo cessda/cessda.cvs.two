@@ -752,4 +752,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     }
     return escapedContent;
   }
+
+  switchLang(): void {
+    this.vocabulary!.selectedLang = this.version!.language;
+    this.vocabulary!.selectedVersion = this.version!.number;
+    this.eventManager.broadcast({ name: 'closeComparison', content: true });
+  }
 }

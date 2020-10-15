@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { JhiDataUtils } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 
 import { IVocabulary } from 'app/shared/model/vocabulary.model';
 import { IVersion } from 'app/shared/model/version.model';
@@ -65,7 +65,8 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
     protected homeService: HomeService,
     private fb: FormBuilder,
     private routeEventsService: RouteEventsService,
-    private _ngZone: NgZone
+    private _ngZone: NgZone,
+    protected eventManager: JhiEventManager
   ) {
     this.initialTabSelected = 'detail';
     this.dwnldCbVal = [];
@@ -98,6 +99,7 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   setVocabularyLangVersion(language: string, number: string): void {
     this.vocabulary!.selectedLang = language;
     this.vocabulary!.selectedVersion = number;
+    this.eventManager.broadcast({ name: 'closeComparison', content: true });
   }
 
   getSlVersion(): IVersion {
