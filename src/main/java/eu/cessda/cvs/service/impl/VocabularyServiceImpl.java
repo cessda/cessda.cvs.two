@@ -1519,19 +1519,28 @@ public class VocabularyServiceImpl implements VocabularyService {
                 .filter(v -> v.getItemType().equals(ItemType.SL.toString()))
                 .sorted(versionComparator).collect(Collectors.toList());
 
-            results.append("\nCV " + vocabularyDTO.getNotation() + "latest version" + slVersions.get(0).getNumber() + "\n");
+            results.append("\nCV " + vocabularyDTO.getNotation() + " latest version: " + slVersions.get(0).getNumber() + "\n");
 
-            for (VersionDTO slVersion : slVersions) {
+            for (int i = 0; i < slVersions.size(); i++) {
+                VersionDTO slVersion = slVersions.get(i);
                 results.append("Examining TLs from SL " + slVersion.getLanguage() + "-" + slVersion.getNumber() + "-" + slVersion.getStatus() + "\n");
                 final List<VersionDTO> tlVersionGroup = vocabularyDTO.getVersions().stream()
                     .filter(v -> v.getNumber().startsWith(slVersion.getNumber()) && v.getItemType().equals(ItemType.TL.toString())).collect(Collectors.toList());
-                results.append( tlNormalization(isChecking, slVersion, tlVersionGroup));
+
+                List<VersionDTO> tlVersionGroupPrev = null;
+                if( (i + 1 ) < slVersions.size() ) {
+                    int finalI = i;
+                    tlVersionGroupPrev = vocabularyDTO.getVersions().stream()
+                        .filter(v -> v.getNumber().startsWith(slVersions.get(finalI + 1).getNumber()) && v.getItemType().equals(ItemType.TL.toString())).collect(Collectors.toList());
+                }
+
+                results.append( tlNormalization(isChecking, slVersion, tlVersionGroup, tlVersionGroupPrev));
             }
         }
         return results.toString();
     }
 
-    private String tlNormalization(boolean isChecking, VersionDTO slVersion, List<VersionDTO> tlVersionGroup) {
+    private String tlNormalization(boolean isChecking, VersionDTO slVersion, List<VersionDTO> tlVersionGroup, List<VersionDTO> tlVersionGroupPrev) {
         StringBuilder results = new StringBuilder();
         for (VersionDTO tlVersion : tlVersionGroup) {
             results.append("Examining SL " + slVersion.getLanguage() + "-" + slVersion.getNumber() + "-" + slVersion.getStatus() +
@@ -1555,36 +1564,49 @@ public class VocabularyServiceImpl implements VocabularyService {
                   }
                   tlConcepts.remove(tlConcept);
                 } else {
-                    if( tlVersion.getStatus().equals(Status.PUBLISHED.toString())) {
-                        results.append( "Problem: Concept TL is missing with notation " + slConcept.getNotation() + "\n" );
-                        if( !isChecking ) {
-                            tlConcept = new ConceptDTO();
-                            tlConcept.setNotation( slConcept.getNotation());
-                            tlConcept.setParent( slConcept.getParent() );
-                            tlConcept.setPosition( slConcept.getPosition());
-                            tlConcept.setSlConcept( slConcept.getId());
-                            tlConcept.setVersionId( tlVersion.getId() );
-                            if( tlVersion.getUri() != null ) {
-                                final int index = tlVersion.getUri().lastIndexOf("/" + tlVersion.getLanguage() + "/");
-                                if(index > 0 ) {
-                                    tlConcept.setUri( tlVersion.getUri().substring(0, index) + "#" +
-                                        tlConcept.getNotation() + tlVersion.getUri().substring(index));
-                                }
+                    results.append( "Problem: Concept TL is missing with notation " + slConcept.getNotation() + "\n" );
+                    // find the prev concept if exist
+                    ConceptDTO prevConcept = null;
+                    if( tlVersionGroupPrev != null && !tlVersionGroupPrev.isEmpty()) {
+                        VersionDTO versionTlPrev = tlVersionGroupPrev.stream().filter(v -> v.getLanguage().equals( tlVersion.getLanguage() )).findFirst().orElse(null);
+                        if( versionTlPrev != null ) {
+                            prevConcept = versionTlPrev.getConcepts().stream().filter(c -> c.getNotation().equals(slConcept.getNotation())).findFirst().orElse(null);
+                        }
+                    }
+                    if( !isChecking ) {
+                        tlConcept = new ConceptDTO();
+                        tlConcept.setNotation( slConcept.getNotation());
+                        tlConcept.setParent( slConcept.getParent() );
+                        tlConcept.setPosition( slConcept.getPosition());
+                        tlConcept.setSlConcept( slConcept.getId());
+                        tlConcept.setVersionId( tlVersion.getId() );
+                        if( tlVersion.getUri() != null ) {
+                            final int index = tlVersion.getUri().lastIndexOf("/" + tlVersion.getLanguage() + "/");
+                            if(index > 0 ) {
+                                tlConcept.setUri( tlVersion.getUri().substring(0, index) + "#" +
+                                    tlConcept.getNotation() + tlVersion.getUri().substring(index));
                             }
+                        }
+                        if( prevConcept != null ) {
+                            results.append( "Previous concept FOUND " + prevConcept.toString() + "\n" );
+                            tlConcept.setTitle( prevConcept.getTitle());
+                            tlConcept.setDefinition( prevConcept.getDefinition() );
+                            tlConcept.setPreviousConcept( prevConcept.getId() );
+                        } else {
+                            results.append( "Previous concept NOT-FOUND\n" );
                             if( tlVersion.getStatus().equals(Status.PUBLISHED.toString())) {
                                 tlConcept.setTitle( slConcept.getTitle());
                                 tlConcept.setDefinition( slConcept.getDefinition() );
-                                results.append( "Solution: Save a new TL concept with complete attributes " + tlConcept.toString() + " \n" );
-                            } else {
-                                results.append( "Solution: Save a new TL concept with necessary attributes " + tlConcept.toString() + " \n" );
                             }
                         }
+                        tlConcept = conceptService.save(tlConcept);
+                        results.append( "Solution: Save a new TL concept with details " + tlConcept.toString() + " \n" );
                     }
                 }
             }
-            // print remaining TL set if any
-            for (ConceptDTO concept : tlConcepts) {
-                results.append( "Problem: Concept TL is not sync with SL " + concept.getNotation() + "\n" );
+            // print remaining TL set if any and remove
+            for (ConceptDTO tlConcept : tlConcepts) {
+                results.append( "Problem: Concept TL is redundant with SL " + tlConcept.toString() + "\n" );
             }
         }
         return results.toString();
