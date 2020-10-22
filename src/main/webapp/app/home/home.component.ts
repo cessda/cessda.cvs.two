@@ -9,7 +9,7 @@ import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, Jh
 import { HomeService } from 'app/home/home.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
-import { AGGR_AGENCY, AGGR_LANGUAGE_PUBLISHED, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
+import { AGGR_AGENCY, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
 import { ICvResult } from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { ICode } from 'app/shared/model/code.model';
@@ -41,13 +41,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngbPaginationPage = 1;
 
   aggAgencyBucket?: IBucket[];
-  aggLanguageBucket?: IBucket[];
   activeAggAgency?: string[];
   activeAggLanguage?: string[];
   activeAgg = '';
 
   isAggAgencyCollapsed = true;
-  isAggLanguageCollapsed = true;
   isFilterCollapse = true;
 
   searchForm = this.fb.group({
@@ -107,7 +105,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     this.isAggAgencyCollapsed = this.activeAggAgency.length === 0;
-    this.isAggLanguageCollapsed = this.activeAggLanguage.length === 0;
   }
 
   toggleFilterPanelHidden(): void {
@@ -270,9 +267,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         // format bucket and add as autocomplete and patch form value
         this.aggAgencyBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
         this.searchForm.patchValue({ aggAgency: this.prepareActiveBuckets(this.aggAgencyBucket, aggr) });
-      } else if (aggr.field === AGGR_LANGUAGE_PUBLISHED) {
-        this.aggLanguageBucket = this.formatBucketLanguages(aggr.buckets!.concat(aggr.filteredBuckets!));
-        this.searchForm.patchValue({ aggLanguage: this.prepareActiveBuckets(this.aggLanguageBucket, aggr) });
       }
     });
   }
@@ -372,18 +366,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   onRemoveAgency(removedItem?: IBucket): void {
     this.activeAggAgency!.forEach((item, index) => {
       if (item === removedItem!.k!) this.activeAggAgency!.splice(index, 1);
-    });
-    this.buildFilterAndRefreshSearch();
-  }
-
-  onAddLanguage(addedItem?: IBucket): void {
-    this.activeAggLanguage!.push(addedItem!.k!);
-    this.buildFilterAndRefreshSearch();
-  }
-
-  onRemoveLanguage(removedItem?: IBucket): void {
-    this.activeAggLanguage!.forEach((item, index) => {
-      if (item === removedItem!.k!) this.activeAggLanguage!.splice(index, 1);
     });
     this.buildFilterAndRefreshSearch();
   }

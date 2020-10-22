@@ -73,39 +73,6 @@
                         </div>
                     </div>
 
-
-<!--                    <div class="filter-panel">-->
-<!--                        <a class="acc-header option-label col-12" href="javascript:void(0);" (click)="isAggLanguageCollapsed = !isAggLanguageCollapsed"-->
-<!--                           [attr.aria-expanded]="isAggLanguageCollapsed" aria-controls="language-filter">&nbsp;-->
-<!--                            <fa-icon *ngIf="!isAggLanguageCollapsed" icon="caret-down"></fa-icon>-->
-<!--                            <fa-icon *ngIf="isAggLanguageCollapsed" icon="caret-right"></fa-icon>-->
-<!--                            <span>Language</span>-->
-<!--                            <fa-icon icon="question-circle" style="float:right" ngbTooltip="Vocabulary languages"></fa-icon>-->
-<!--                        </a>-->
-<!--                        <div id="language-filter" class="acc-body" [ngbCollapse]="isAggLanguageCollapsed">-->
-<!--                            <div class="form-group mb-0">-->
-<!--                                <div>-->
-<!--                                    <tag-input [formControlName]="'aggLanguage'"-->
-<!--                                               [class] = "'sk-select-min'"-->
-<!--                                               (onAdd)="onAddLanguage($event)"-->
-<!--                                               (onRemove)="onRemoveLanguage($event)"-->
-<!--                                               [animationDuration]="{ enter: '0ms', leave: '0ms' }"-->
-<!--                                               [placeholder]="'Search languages'"-->
-<!--                                               [secondaryPlaceholder]="'Search languages'"-->
-<!--                                               [onlyFromAutocomplete]="true">-->
-<!--                                        <tag-input-dropdown-->
-<!--                                            [showDropdownIfEmpty]="true"-->
-<!--                                            [keepOpen]="false"-->
-<!--                                            [dynamicUpdate]="false"-->
-<!--                                            [focusFirstElement]="true"-->
-<!--                                            [autocompleteItems]="aggLanguageBucket">-->
-<!--                                        </tag-input-dropdown>-->
-<!--                                    </tag-input>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </div>-->
-
                     <div class="filter-panel">
                         <a class="acc-header option-label col-12" href="javascript:void(0);" (click)="isAggStatusCollapsed = !isAggStatusCollapsed"
                            [attr.aria-expanded]="isAggStatusCollapsed" aria-controls="status-filter">&nbsp;
@@ -216,9 +183,6 @@
                     </div>
                 </div>
                 <div *ngIf="vocabularies?.length > 0">
-<!--                    <div class="row justify-content-center">-->
-<!--                        <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>-->
-<!--                    </div>-->
                     <div class="row justify-content-center">
                         <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPageClicked($event)"></ngb-pagination>
                     </div>

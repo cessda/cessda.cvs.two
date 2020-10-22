@@ -9,7 +9,7 @@ import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, Jh
 import { EditorService } from 'app/editor/editor.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
-import { AGGR_AGENCY, AGGR_LANGUAGE, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
+import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
 import { ICvResult } from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { ICode } from 'app/shared/model/code.model';
@@ -41,7 +41,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   ngbPaginationPage = 1;
 
   aggAgencyBucket?: IBucket[];
-  aggLanguageBucket?: IBucket[];
   aggStatusBucket?: IBucket[];
   activeAggAgency?: string[];
   activeAggLanguage?: string[];
@@ -49,14 +48,12 @@ export class EditorComponent implements OnInit, OnDestroy {
   activeAgg = '';
 
   isAggAgencyCollapsed = true;
-  isAggLanguageCollapsed = true;
   isAggStatusCollapsed = true;
   isFilterCollapse = false;
   isActionCollapse = false;
 
   searchForm = this.fb.group({
     aggAgency: [],
-    aggLanguage: [],
     aggStatus: [],
     size: [this.itemsPerPage],
     sortBy: ['code,asc']
@@ -115,7 +112,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     });
 
     this.isAggAgencyCollapsed = this.activeAggAgency.length === 0;
-    this.isAggLanguageCollapsed = this.activeAggLanguage.length === 0;
     this.isAggStatusCollapsed = this.activeAggStatus.length === 0;
   }
 
@@ -211,7 +207,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.activeAggStatus = [];
     this.activeAgg = '';
     this.searchForm.patchValue({ aggAgency: [] });
-    this.searchForm.patchValue({ aggLanguage: [] });
     this.searchForm.patchValue({ aggStatus: [] });
   }
 
@@ -281,9 +276,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         // format bucket and add as autocomplete and patch form value
         this.aggAgencyBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
         this.searchForm.patchValue({ aggAgency: this.prepareActiveBuckets(this.aggAgencyBucket, aggr) });
-      } else if (aggr.field === AGGR_LANGUAGE) {
-        this.aggLanguageBucket = this.formatBucketLanguages(aggr.buckets!.concat(aggr.filteredBuckets!));
-        this.searchForm.patchValue({ aggLanguage: this.prepareActiveBuckets(this.aggLanguageBucket, aggr) });
       } else if (aggr.field === AGGR_STATUS) {
         this.aggStatusBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
         this.searchForm.patchValue({ aggStatus: this.prepareActiveBuckets(this.aggStatusBucket, aggr) });
@@ -382,18 +374,6 @@ export class EditorComponent implements OnInit, OnDestroy {
   onRemoveAgency(removedItem?: IBucket): void {
     this.activeAggAgency!.forEach((item, index) => {
       if (item === removedItem!.k!) this.activeAggAgency!.splice(index, 1);
-    });
-    this.buildFilterAndRefreshSearch();
-  }
-
-  onAddLanguage(addedItem?: IBucket): void {
-    this.activeAggLanguage!.push(addedItem!.k!);
-    this.buildFilterAndRefreshSearch();
-  }
-
-  onRemoveLanguage(removedItem?: IBucket): void {
-    this.activeAggLanguage!.forEach((item, index) => {
-      if (item === removedItem!.k!) this.activeAggLanguage!.splice(index, 1);
     });
     this.buildFilterAndRefreshSearch();
   }

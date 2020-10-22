@@ -161,6 +161,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   collapseNavbar(): void {
     this.isNavbarCollapsed = true;
+    this.currentLang = 'en';
   }
 
   isAuthenticated(): boolean {
