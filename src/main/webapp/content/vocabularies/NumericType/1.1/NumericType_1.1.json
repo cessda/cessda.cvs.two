@@ -1,145 +1,130 @@
 {
-  "id": 70,
-  "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType/en/1.1",
-  "notation": "NumericType",
-  "versionNumber": "1.1",
-  "withdrawn": false,
-  "sourceLanguage": "en",
-  "agencyId": 2,
-  "agencyName": "DDI Alliance",
-  "agencyLogo": "ddi.png",
-  "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2019-11-25",
-  "notes": "",
-  "versions": [
-    {
-      "id": 417,
-      "status": "PUBLISHED",
-      "itemType": "SL",
-      "language": "en",
-      "publicationDate": "2019-11-25",
-      "number": "1.1",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType/en/1.1",
-      "canonicalUri": "urn:ddi:int.ddi.cv:NumericType:1.1",
-      "notation": "NumericType",
-      "title": "Numeric Type",
-      "definition": "Specifies the type of numeric data.",
-      "previousVersion": 307,
-      "initialVersion": 307,
-      "notes": "This Controlled Vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all",
-      "versionNotes": "Float, Double: Code definition edited to eliminate suspicious character.",
-      "versionChanges": "Code definition rephrased: Float\nCode definition rephrased: Double\n",
-      "license": "CC BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "by.png",
-      "citation": "DDI Alliance. (2019). Numeric Type (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:NumericType:1.1. ",
-      "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<div>\n Module name: reusable\n</div>\n<div>\n Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/NumericTypeCode.html\">NumericTypeCode</a>\n</div>\n<div>\n <br />\n</div>\n<div>\n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n</div>\n<div>\n Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/varFormat.html\">varFormat@category</a>\n</div>",
-      "lastStatusChangeDate": "2020-10-01",
-      "concepts": [
-        {
-          "id": 8221,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Integer/en/1.1",
-          "notation": "Integer",
-          "title": "Integer",
-          "definition": "Whole numbers,  the infinite set of integers, no minimum or maximum value.  An integer datatype corresponding to the W3C XML Schema's xs:integer datatype.",
-          "previousConcept": 4524,
-          "position": 0
-        },
-        {
-          "id": 8227,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Int/en/1.1",
-          "notation": "Int",
-          "title": "Int ",
-          "definition": "Whole numbers in the range -2147483648 .. 2147483647. An integer datatype corresponding to the W3C XML Schema's xs:int datatype.",
-          "previousConcept": 4525,
-          "position": 1
-        },
-        {
-          "id": 8224,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Long/en/1.1",
-          "notation": "Long",
-          "title": "Long",
-          "definition": "Whole numbers in the range -9223372036854775808 .. 9223372036854775807. A numeric datatype corresponding to the W3C XML Schema's xs:long datatype.",
-          "previousConcept": 4526,
-          "position": 2
-        },
-        {
-          "id": 8225,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Short/en/1.1",
-          "notation": "Short",
-          "title": "Short",
-          "definition": "Whole numbers in the range -32768 .. 32767. A numeric datatype corresponding to the W3C XML Schema's xs:short datatype.",
-          "previousConcept": 4527,
-          "position": 3
-        },
-        {
-          "id": 8220,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Decimal/en/1.1",
-          "notation": "Decimal",
-          "title": "Decimal",
-          "definition": "A subset of real numbers, which can be represented by a finite-length sequence of decimal digits (0-9) separated by a period as a decimal indicator. An optional leading sign is allowed. If the sign is omitted, \"+\" is assumed. Leading and trailing zeroes are optional. If the fractional part is zero, the period and following zero(es) can be omitted. For example: -1.23, 12678967.543233, +100000.00, 210. A numeric datatype corresponding to the W3C XML Schema's xs:decimal datatype.",
-          "previousConcept": 4528,
-          "position": 4
-        },
-        {
-          "id": 8229,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Float/en/1.1",
-          "notation": "Float",
-          "title": "Float",
-          "definition": "Single-precision 32-bit floating point type: The basic value space of float consists of the values m*2^e, where m is an integer whose absolute value is less than 2^24, and e is an integer between -149 and 104, inclusive. In addition, it also contains the following three special values: positive and negative infinity and not-a-number (NaN). The special values positive and negative infinity and not-a-number have lexical representations INF, -INF and NaN, respectively. Lexical representations for zero may take a positive or negative sign. For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for float. A numeric datatype corresponding to the W3C XML Schema's xs:float datatype.",
-          "previousConcept": 4529,
-          "position": 5
-        },
-        {
-          "id": 8223,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Double/en/1.1",
-          "notation": "Double",
-          "title": "Double",
-          "definition": "Double-precision 64-bit floating point type. The basic value space of double consists of the values m*2^e, where m is an integer whose absolute value is less than 2^53, and e is an integer between -1075 and 970, inclusive. In addition to the basic value space described above, the value space of double also contains the following three special values: positive and negative infinity and not-a-number (NaN). The special values positive and negative infinity and not-a-number have lexical representations INF, -INF and NaN, respectively. Lexical representations for zero may take a positive or negative sign. For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for double. A numeric datatype corresponding to the W3C XML Schema's xs:double datatype.",
-          "previousConcept": 4530,
-          "position": 6
-        },
-        {
-          "id": 8228,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Count/en/1.1",
-          "notation": "Count",
-          "title": "Count",
-          "definition": "Ordinal number of objects in a finite set, discrete. A simple incrementing Integer type. When using in DDI-L, the \"isSequence\" facet must be set to true, and the \"interval\" facet must be set to \"1\".",
-          "previousConcept": 4531,
-          "position": 7
-        },
-        {
-          "id": 8222,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Incremental/en/1.1",
-          "notation": "Incremental",
-          "title": "Incremental",
-          "definition": "A value that increases continuously and infinitely by a given amount. Use of this term in DDI-L indicates that the value increases by the amount provided in the \"interval\" facet; the \"isSequence\" facet will be set to \"true\".",
-          "previousConcept": 4532,
-          "position": 8
-        },
-        {
-          "id": 8226,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Other/en/1.1",
-          "notation": "Other",
-          "title": "Other",
-          "definition": "Use if the numeric type is known, but not found in the list.",
-          "previousConcept": 4533,
-          "position": 9
-        }
-      ],
-      "comments": [],
-      "versionHistories": [
-        {
-          "id": 307,
-          "version": "1.0",
-          "date": "2019-11-25",
-          "note": "",
-          "changes": "",
-          "prevVersion": 0
-        }
-      ]
-    }
-  ]
+  "id" : 70,
+  "status" : "PUBLISHED",
+  "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType/en/1.1",
+  "notation" : "NumericType",
+  "versionNumber" : "1.1",
+  "withdrawn" : false,
+  "sourceLanguage" : "en",
+  "agencyId" : 2,
+  "agencyName" : "DDI Alliance",
+  "agencyLogo" : "ddi.png",
+  "agencyLink" : "http://www.ddialliance.org/",
+  "publicationDate" : "2019-11-25",
+  "notes" : "",
+  "versions" : [ {
+    "id" : 417,
+    "status" : "PUBLISHED",
+    "itemType" : "SL",
+    "language" : "en",
+    "publicationDate" : "2019-11-25",
+    "number" : "1.1",
+    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType/en/1.1",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:NumericType:1.1",
+    "notation" : "NumericType",
+    "title" : "Numeric Type",
+    "definition" : "Specifies the type of numeric data.",
+    "previousVersion" : 307,
+    "initialVersion" : 307,
+    "notes" : "This Controlled Vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all",
+    "versionNotes" : "Float, Double: Code definition edited to eliminate suspicious character.",
+    "versionChanges" : "Code definition rephrased: Float\nCode definition rephrased: Double\n",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2019). Numeric Type (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:NumericType:1.1. ",
+    "ddiUsage" : "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<div>\n Module name: reusable\n</div>\n<div>\n Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/NumericTypeCode.html\">NumericTypeCode</a>\n</div>\n<div>\n <br />\n</div>\n<div>\n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n</div>\n<div>\n Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/varFormat.html\">varFormat@category</a>\n</div>",
+    "lastStatusChangeDate" : "2020-10-01",
+    "concepts" : [ {
+      "id" : 8221,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Integer/en/1.1",
+      "notation" : "Integer",
+      "title" : "Integer",
+      "definition" : "Whole numbers,  the infinite set of integers, no minimum or maximum value.  An integer datatype corresponding to the W3C XML Schema's xs:integer datatype.",
+      "previousConcept" : 4524,
+      "position" : 0
+    }, {
+      "id" : 8227,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Int/en/1.1",
+      "notation" : "Int",
+      "title" : "Int ",
+      "definition" : "Whole numbers in the range -2147483648 .. 2147483647. An integer datatype corresponding to the W3C XML Schema's xs:int datatype.",
+      "previousConcept" : 4525,
+      "position" : 1
+    }, {
+      "id" : 8224,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Long/en/1.1",
+      "notation" : "Long",
+      "title" : "Long",
+      "definition" : "Whole numbers in the range -9223372036854775808 .. 9223372036854775807. A numeric datatype corresponding to the W3C XML Schema's xs:long datatype.",
+      "previousConcept" : 4526,
+      "position" : 2
+    }, {
+      "id" : 8225,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Short/en/1.1",
+      "notation" : "Short",
+      "title" : "Short",
+      "definition" : "Whole numbers in the range -32768 .. 32767. A numeric datatype corresponding to the W3C XML Schema's xs:short datatype.",
+      "previousConcept" : 4527,
+      "position" : 3
+    }, {
+      "id" : 8220,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Decimal/en/1.1",
+      "notation" : "Decimal",
+      "title" : "Decimal",
+      "definition" : "A subset of real numbers, which can be represented by a finite-length sequence of decimal digits (0-9) separated by a period as a decimal indicator. An optional leading sign is allowed. If the sign is omitted, \"+\" is assumed. Leading and trailing zeroes are optional. If the fractional part is zero, the period and following zero(es) can be omitted. For example: -1.23, 12678967.543233, +100000.00, 210. A numeric datatype corresponding to the W3C XML Schema's xs:decimal datatype.",
+      "previousConcept" : 4528,
+      "position" : 4
+    }, {
+      "id" : 8229,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Float/en/1.1",
+      "notation" : "Float",
+      "title" : "Float",
+      "definition" : "Single-precision 32-bit floating point type: The basic value space of float consists of the values m*2^e, where m is an integer whose absolute value is less than 2^24, and e is an integer between -149 and 104, inclusive. In addition, it also contains the following three special values: positive and negative infinity and not-a-number (NaN). The special values positive and negative infinity and not-a-number have lexical representations INF, -INF and NaN, respectively. Lexical representations for zero may take a positive or negative sign. For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for float. A numeric datatype corresponding to the W3C XML Schema's xs:float datatype.",
+      "previousConcept" : 4529,
+      "position" : 5
+    }, {
+      "id" : 8223,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Double/en/1.1",
+      "notation" : "Double",
+      "title" : "Double",
+      "definition" : "Double-precision 64-bit floating point type. The basic value space of double consists of the values m*2^e, where m is an integer whose absolute value is less than 2^53, and e is an integer between -1075 and 970, inclusive. In addition to the basic value space described above, the value space of double also contains the following three special values: positive and negative infinity and not-a-number (NaN). The special values positive and negative infinity and not-a-number have lexical representations INF, -INF and NaN, respectively. Lexical representations for zero may take a positive or negative sign. For example, -1E4, 1267.43233E12, 12.78e-2, 12 , -0, 0 and INF are all legal literals for double. A numeric datatype corresponding to the W3C XML Schema's xs:double datatype.",
+      "previousConcept" : 4530,
+      "position" : 6
+    }, {
+      "id" : 8228,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Count/en/1.1",
+      "notation" : "Count",
+      "title" : "Count",
+      "definition" : "Ordinal number of objects in a finite set, discrete. A simple incrementing Integer type. When using in DDI-L, the \"isSequence\" facet must be set to true, and the \"interval\" facet must be set to \"1\".",
+      "previousConcept" : 4531,
+      "position" : 7
+    }, {
+      "id" : 8222,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Incremental/en/1.1",
+      "notation" : "Incremental",
+      "title" : "Incremental",
+      "definition" : "A value that increases continuously and infinitely by a given amount. Use of this term in DDI-L indicates that the value increases by the amount provided in the \"interval\" facet; the \"isSequence\" facet will be set to \"true\".",
+      "previousConcept" : 4532,
+      "position" : 8
+    }, {
+      "id" : 8226,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/NumericType#Other/en/1.1",
+      "notation" : "Other",
+      "title" : "Other",
+      "definition" : "Use if the numeric type is known, but not found in the list.",
+      "previousConcept" : 4533,
+      "position" : 9
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ {
+      "id" : 307,
+      "version" : "1.0",
+      "date" : "2019-11-25",
+      "note" : "",
+      "changes" : "",
+      "prevVersion" : 0
+    } ]
+  } ]
 }

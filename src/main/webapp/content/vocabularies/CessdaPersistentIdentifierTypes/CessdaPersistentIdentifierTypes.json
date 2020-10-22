@@ -1,74 +1,67 @@
 {
-  "id": 76,
-  "status": "PUBLISHED",
-  "uri": "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes/en/1.0",
-  "notation": "CessdaPersistentIdentifierTypes",
-  "versionNumber": "1.0",
-  "withdrawn": false,
-  "sourceLanguage": "en",
-  "agencyId": 1,
-  "agencyName": "CESSDA",
-  "agencyLogo": "cessda.png",
-  "agencyLink": "https://www.cessda.eu/",
-  "publicationDate": "2020-06-23",
-  "notes": "No other language versions needed.",
-  "versions": [
-    {
-      "id": 435,
-      "status": "PUBLISHED",
-      "itemType": "SL",
-      "language": "en",
-      "publicationDate": "2020-06-23",
-      "number": "1.0",
-      "uri": "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes/en/1.0",
-      "canonicalUri": "urn:ddi:int.cessda.cv:CessdaPersistentIdentifierTypes:1.0",
-      "notation": "CessdaPersistentIdentifierTypes",
-      "title": "CESSDA Persistent Identifier Types",
-      "definition": "Lists the types of persistent identifiers that CESSDA accepts as study level PIDs in its data catalogue.",
-      "previousVersion": 0,
-      "initialVersion": 435,
-      "notes": "Note: No other language versions needed. \nCode values are the same that the DataCite relatedIdentifierType uses\nhttps://schema.datacite.org/meta/kernel-4.3/include/datacite-relatedIdentifierType-v4.xsd.",
-      "versionNotes": "",
-      "versionChanges": "",
-      "citation": "CESSDA. (2020). CESSDA Persistent Identifier Types (Version 1.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:CessdaPersistentIdentifierTypes:1.0. ",
-      "ddiUsage": "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: reusable \n <br /> \n</div> \n<div>\n Subelement \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/ManagingAgency.html\">Managing Agency</a> in element \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/InternationalIdentifier.html\">InternationalIdentifier</a> \n</div>\n<div>\n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/IDNo.html\">&nbsp;IDNo</a> \n</div> \n<div>\n  Attribute Name: @Agency \n</div>",
-      "lastStatusChangeDate": "2020-10-01",
-      "concepts": [
-        {
-          "id": 8987,
-          "uri": "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes#ARK/en/1.0",
-          "notation": "ARK",
-          "title": "ARK",
-          "definition": "Archival Resource Key",
-          "position": 0
-        },
-        {
-          "id": 8986,
-          "uri": "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes#DOI/en/1.0",
-          "notation": "DOI",
-          "title": "DOI",
-          "definition": "Digital Object Identifier",
-          "position": 1
-        },
-        {
-          "id": 8988,
-          "uri": "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes#Handle/en/1.0",
-          "notation": "Handle",
-          "title": "Handle",
-          "definition": "The Handle system. Includes ePIC Handles.",
-          "position": 2
-        },
-        {
-          "id": 8989,
-          "uri": "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes#URN/en/1.0",
-          "notation": "URN",
-          "title": "URN",
-          "definition": "Universal Resource Name",
-          "position": 3
-        }
-      ],
-      "comments": [],
-      "versionHistories": []
-    }
-  ]
+  "id" : 76,
+  "status" : "PUBLISHED",
+  "uri" : "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes/en/1.0",
+  "notation" : "CessdaPersistentIdentifierTypes",
+  "versionNumber" : "1.0",
+  "withdrawn" : false,
+  "sourceLanguage" : "en",
+  "agencyId" : 1,
+  "agencyName" : "CESSDA",
+  "agencyLogo" : "cessda.png",
+  "agencyLink" : "https://www.cessda.eu/",
+  "publicationDate" : "2020-06-23",
+  "notes" : "No other language versions needed.",
+  "versions" : [ {
+    "id" : 435,
+    "status" : "PUBLISHED",
+    "itemType" : "SL",
+    "language" : "en",
+    "publicationDate" : "2020-06-23",
+    "number" : "1.0",
+    "uri" : "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes/en/1.0",
+    "canonicalUri" : "urn:ddi:int.cessda.cv:CessdaPersistentIdentifierTypes:1.0",
+    "notation" : "CessdaPersistentIdentifierTypes",
+    "title" : "CESSDA Persistent Identifier Types",
+    "definition" : "Lists the types of persistent identifiers that CESSDA accepts as study level PIDs in its data catalogue.",
+    "previousVersion" : 0,
+    "initialVersion" : 435,
+    "notes" : "Note: No other language versions needed. \nCode values are the same that the DataCite relatedIdentifierType uses\nhttps://schema.datacite.org/meta/kernel-4.3/include/datacite-relatedIdentifierType-v4.xsd.",
+    "versionNotes" : "",
+    "versionChanges" : "",
+    "citation" : "CESSDA. (2020). CESSDA Persistent Identifier Types (Version 1.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:CessdaPersistentIdentifierTypes:1.0. ",
+    "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: reusable \n <br /> \n</div> \n<div>\n Subelement \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/ManagingAgency.html\">Managing Agency</a> in element \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/InternationalIdentifier.html\">InternationalIdentifier</a> \n</div>\n<div>\n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/IDNo.html\">&nbsp;IDNo</a> \n</div> \n<div>\n  Attribute Name: @Agency \n</div>",
+    "lastStatusChangeDate" : "2020-10-01",
+    "concepts" : [ {
+      "id" : 8987,
+      "uri" : "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes#ARK/en/1.0",
+      "notation" : "ARK",
+      "title" : "ARK",
+      "definition" : "Archival Resource Key",
+      "position" : 0
+    }, {
+      "id" : 8986,
+      "uri" : "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes#DOI/en/1.0",
+      "notation" : "DOI",
+      "title" : "DOI",
+      "definition" : "Digital Object Identifier",
+      "position" : 1
+    }, {
+      "id" : 8988,
+      "uri" : "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes#Handle/en/1.0",
+      "notation" : "Handle",
+      "title" : "Handle",
+      "definition" : "The Handle system. Includes ePIC Handles.",
+      "position" : 2
+    }, {
+      "id" : 8989,
+      "uri" : "https://vocabularies.cessda.eu/CessdaPersistentIdentifierTypes#URN/en/1.0",
+      "notation" : "URN",
+      "title" : "URN",
+      "definition" : "Universal Resource Name",
+      "position" : 3
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ ]
+  } ]
 }
