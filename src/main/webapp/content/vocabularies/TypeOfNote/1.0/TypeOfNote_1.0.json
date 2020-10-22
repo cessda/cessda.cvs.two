@@ -51,7 +51,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfNote#Addendum/en/1.0",
           "notation": "Addendum",
           "title": "Addendum",
-          "definition": "\tAdditional information, usually of a factual nature (as opposed to a comment), intended to clarify the content of a DDI section or module.",
+          "definition": "Additional information, usually of a factual nature (as opposed to a comment), intended to clarify the content of a DDI section or module.",
           "position": 1
         },
         {

@@ -10,7 +10,7 @@
   "agencyName": "CESSDA",
   "agencyLogo": "cessda.png",
   "agencyLink": "https://www.cessda.eu/",
-  "publicationDate": "2020-10-08",
+  "publicationDate": "2020-10-07",
   "notes": "Top terms should only be used if no narrower terms are applicable. More than one term can be used for classifying a dataset.",
   "versions": [
     {
@@ -27,6 +27,7 @@
       "definition": "A typology of main themes or subjects of data.",
       "previousVersion": 0,
       "initialVersion": 251,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -46,22 +47,13 @@
           "position": 0
         },
         {
-          "id": 2011,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/en/2.0",
-          "notation": "Demography.MorbidityAndMortality",
-          "title": "Morbidity and mortality",
-          "definition": "Morbidity refers to incidence of ill health in a population. Data may cover the incidence or morbidity rate of a medical condition. For example, the number of people who suffer from lung cancer in a country or a geographic area during a single year. Mortality data indicate the numbers of deaths in a population by place, time, cause, or type of individual etc. For example, maternal mortality rate, child mortality rate. Note that self-reported survey data on illnesses and medical conditions are indexed with HEALTH hierarchy terms.",
-          "parent": "Demography",
-          "position": 1
-        },
-        {
           "id": 2012,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/en/2.0",
           "notation": "Demography.Censuses",
           "title": "Censuses",
           "definition": "Surveys of an entire population, as opposed to a sample survey. Often used for official enumerations of a population, usually including the collection of related demographic information. Note that in some countries censuses are not used as demographic information can be obtained from official registers.",
           "parent": "Demography",
-          "position": 2
+          "position": 1
         },
         {
           "id": 2013,
@@ -69,6 +61,15 @@
           "notation": "Demography.Migration",
           "title": "Migration",
           "definition": "Includes immigration, emigration, internal migration as well as other types of geographical mobility. Immigration means coming to settle in another country than one's home country. Emigration means leaving one's home country to settle in another country. Migration is an umbrella term for both. Migration also includes internal migration, that is, movement of people within one country at different geographical levels.",
+          "parent": "Demography",
+          "position": 2
+        },
+        {
+          "id": 2011,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/en/2.0",
+          "notation": "Demography.MorbidityAndMortality",
+          "title": "Morbidity and mortality",
+          "definition": "Morbidity refers to incidence of ill health in a population. Data may cover the incidence or morbidity rate of a medical condition. For example, the number of people who suffer from lung cancer in a country or a geographic area during a single year. Mortality data indicate the numbers of deaths in a population by place, time, cause, or type of individual etc. For example, maternal mortality rate, child mortality rate. Note that self-reported survey data on illnesses and medical conditions are indexed with HEALTH hierarchy terms.",
           "parent": "Demography",
           "position": 3
         },
@@ -604,7 +605,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.EqualityAndInequality/en/2.0",
           "notation": "SocialStratificationAndGroupings.EqualityAndInequality",
           "title": "Equality, inequality and social exclusion",
-          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differencies between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.\n",
+          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differencies between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.",
           "parent": "SocialStratificationAndGroupings",
           "position": 64
         },
@@ -874,6 +875,7 @@
       "definition": "En typology over hovedtemaer eller emner af data.",
       "previousVersion": 0,
       "initialVersion": 295,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -895,22 +897,13 @@
           "position": 0
         },
         {
-          "id": 3562,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/da/2.0.1",
-          "notation": "Demography.MorbidityAndMortality",
-          "title": "Sygelighed og dødelighed",
-          "definition": "Dødelighed refererer til forekomsten af dårligt helbred i en population. Data kan dække forekomsten eller dødelighedsgraden af en medicinsk tilstand. Det kan eksempelvis være antallet af personer, der lider af lungekræft i et land eller et geografisk område i løbet af et år. Dødelighedsdata angiver antallet af dødsfald i en befolkning efter fx tid, sted, årsag eller typer af individer. Det kan fx være mødredødelighed eller barnedødelighed. Bemærk at selvrapporterede survey data om sygdomme og medicinske forhold er indekset med SUNDHED hierarki udtryk. ",
-          "parent": "Demography",
-          "position": 1
-        },
-        {
           "id": 3563,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/da/2.0.1",
           "notation": "Demography.Censuses",
           "title": "Folketællinger",
           "definition": "Oversigter over en hel befolkning i modsætning til et udsnit af en befolkning. Det bliver ofte brugt til officielle opregninger af en befolkning, ofte i samspil med en samling af relateret demografisk information. Bemærk at i nogle lande bliver folketællinger ikke brugt som demografisk information. Man kan skaffe sig adgang til disse ved hjælp af officielle registre.",
           "parent": "Demography",
-          "position": 2
+          "position": 1
         },
         {
           "id": 3564,
@@ -918,6 +911,15 @@
           "notation": "Demography.Migration",
           "title": "Indvandring",
           "definition": "Begrebet omfatter indvandring, udvandring, intern migration såvel som andre former for geografisk mobilitet. Indvandring dækker over at bosætte sig i et andet land end sit hjemland. Udvandring betyder at forlade sit hjemland for at bosætte sig i et andet land. Migration er en paraplybetegnelse for de to begreber. Migration omfatter også intern migration, som dækker over, at migranter bosætter sig et et andet sted i landet.",
+          "parent": "Demography",
+          "position": 2
+        },
+        {
+          "id": 3562,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/da/2.0.1",
+          "notation": "Demography.MorbidityAndMortality",
+          "title": "Sygelighed og dødelighed",
+          "definition": "Dødelighed refererer til forekomsten af dårligt helbred i en population. Data kan dække forekomsten eller dødelighedsgraden af en medicinsk tilstand. Det kan eksempelvis være antallet af personer, der lider af lungekræft i et land eller et geografisk område i løbet af et år. Dødelighedsdata angiver antallet af dødsfald i en befolkning efter fx tid, sted, årsag eller typer af individer. Det kan fx være mødredødelighed eller barnedødelighed. Bemærk at selvrapporterede survey data om sygdomme og medicinske forhold er indekset med SUNDHED hierarki udtryk.",
           "parent": "Demography",
           "position": 3
         },
@@ -1393,7 +1395,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.InternationalPoliticsAndOrganisations/da/2.0.1",
           "notation": "Politics.InternationalPoliticsAndOrganisations",
           "title": "International polik og organisation",
-          "definition": "Global ledelse, diplomati, udenrigspolitik, relationer mellem lande, internationale organisationer (fx EU, WHO, FN, WTO) og internationale aftaler. ",
+          "definition": "Global ledelse, diplomati, udenrigspolitik, relationer mellem lande, internationale organisationer (fx EU, WHO, FN, WTO) og internationale aftaler.",
           "parent": "Politics",
           "position": 57
         },
@@ -1480,7 +1482,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.FamilyLifeAndMarriage/da/2.0.1",
           "notation": "SocialStratificationAndGroupings.FamilyLifeAndMarriage",
           "title": "Familieliv og ægteskab",
-          "definition": "Dækker emner der relaterer sig til familie, slægtninge og sammensætning af husholdningen. Fx er der data om børneopdragelse, arbejdsdeling i familien og støtte fra familiemedlemmer. ",
+          "definition": "Dækker emner der relaterer sig til familie, slægtninge og sammensætning af husholdningen. Fx er der data om børneopdragelse, arbejdsdeling i familien og støtte fra familiemedlemmer.",
           "parent": "SocialStratificationAndGroupings",
           "position": 67
         },
@@ -1723,6 +1725,7 @@
       "definition": "Thematische Klassifikation für Daten",
       "previousVersion": 0,
       "initialVersion": 259,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -1744,22 +1747,13 @@
           "position": 0
         },
         {
-          "id": 2216,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/de/2.0.1",
-          "notation": "Demography.MorbidityAndMortality",
-          "title": "Morbidität und Mortalität",
-          "definition": "Unter Morbidität wird die Krankheitshäufigkeit innerhalb einer Bevölkerungsgruppe verstanden. Daten können sich auf das Vorkommen oder die Morbiditätsrate einer Krankheit beziehen, zum Beispiel die Anzahl der an Lungenkrebs leidenden Personen in einem Land im Zeitraum eines Jahres. Daten zur Mortalität geben die Anzahl der Todesfälle in einer Bevölkerungsgruppe nach Ort, Zeit, Ursache, Personengruppe o.ä. an. Beispiele sind Müttersterblichkeit und Säuglingssterblichkeit. Für Mikrodaten zu Krankheiten und Gesundheitsproblemen bitte die entsprechenden Unterklassen der Klasse GESUNDHEIT verwenden.",
-          "parent": "Demography",
-          "position": 1
-        },
-        {
           "id": 2217,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/de/2.0.1",
           "notation": "Demography.Censuses",
           "title": "Volkszählungen",
           "definition": "Befragungen der Gesamtbevölkerung, im Gegensatz zu Stichprobenbefragungen. In der Regel ist der Zweck eine offizielle Erhebung der Bevölkerungszahl, üblicherweise bei gleichzeitiger Erhebung weiterer demographischer Informationen. In manchen Ländern sind Volkszählungen nicht üblich, da entsprechende demographische Informationen der offiziellen Statistik bzw. amtlichen Verzeichnissen entnommen werden können.",
           "parent": "Demography",
-          "position": 2
+          "position": 1
         },
         {
           "id": 2218,
@@ -1767,6 +1761,15 @@
           "notation": "Demography.Migration",
           "title": "Migration",
           "definition": "Beinhaltet Immigration, Emigration, Binnenmigration sowie andere Formen geographischer Mobilität. Immigration bedeutet, in einem anderen als dem Heimatland sesshaft zu werden. Emigration bedeutet, das Heimatland zu verlassen, um in einem anderen Land sesshaft zu werden. Der Begriff Migration umfasst beide Sachverhalte. Migration schließt auch Binnenmigration ein, das heißt Mobilität innerhalb eines Landes, zwischen Regionen, Kommunen etc.",
+          "parent": "Demography",
+          "position": 2
+        },
+        {
+          "id": 2216,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/de/2.0.1",
+          "notation": "Demography.MorbidityAndMortality",
+          "title": "Morbidität und Mortalität",
+          "definition": "Unter Morbidität wird die Krankheitshäufigkeit innerhalb einer Bevölkerungsgruppe verstanden. Daten können sich auf das Vorkommen oder die Morbiditätsrate einer Krankheit beziehen, zum Beispiel die Anzahl der an Lungenkrebs leidenden Personen in einem Land im Zeitraum eines Jahres. Daten zur Mortalität geben die Anzahl der Todesfälle in einer Bevölkerungsgruppe nach Ort, Zeit, Ursache, Personengruppe o.ä. an. Beispiele sind Müttersterblichkeit und Säuglingssterblichkeit. Für Mikrodaten zu Krankheiten und Gesundheitsproblemen bitte die entsprechenden Unterklassen der Klasse GESUNDHEIT verwenden.",
           "parent": "Demography",
           "position": 3
         },
@@ -2572,6 +2575,7 @@
       "definition": "Aineiston pääasiallisten aiheiden luokittelu.",
       "previousVersion": 0,
       "initialVersion": 258,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -2593,22 +2597,13 @@
           "position": 0
         },
         {
-          "id": 2539,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/fi/2.0.1",
-          "notation": "Demography.MorbidityAndMortality",
-          "title": "sairastuvuus ja kuolleisuus",
-          "definition": "Sairastuvuus kertoo tietyn sairauden tai sairausryhmän ilmaantuvuuden väestössä eli kuinka moni kärsii kyseisestä taudista tai sairastuu siihen tiettynä ajanjaksona. Esim. keuhkosyövän ilmantuvuus tietyssä maassa tai tietyllä maantieteellisellä alueella vuoden aikana. Kuolleisuus on mittaluku, joka kertoo vuoden aikana kuolleiden lukumäärän tuhatta asukasta kohti. Kuolleisuus voidaan eritellä maantieteellisen sijainnin, ajan, syyn tai henkilöryhmän mukaan. Esim. lapsikuolleisuus Lapissa. HUOM! Tutkimusten osanottajien omat arviot terveydentilastaan luokitellaan TERVEYS-hierarkian termeillä.",
-          "parent": "Demography",
-          "position": 1
-        },
-        {
           "id": 2540,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/fi/2.0.1",
           "notation": "Demography.Censuses",
           "title": "väestönlaskennat",
           "definition": "Tutkimukset, joiden kohderyhmänä on koko väestö ilman otantaa. Käytetään usein väestön laskemiseksi. Pohjoismaissa tämä tieto yleensä saadaan virallisista tilastoista.",
           "parent": "Demography",
-          "position": 2
+          "position": 1
         },
         {
           "id": 2541,
@@ -2616,6 +2611,15 @@
           "notation": "Demography.Migration",
           "title": "maahanmuutto,  maastamuutto ja sisäinen muuttoliike",
           "definition": "Kattaa kaikentyyppisen muuttoliikkeen, mukaan lukien maan sisäisen muuttoliikkeen.",
+          "parent": "Demography",
+          "position": 2
+        },
+        {
+          "id": 2539,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/fi/2.0.1",
+          "notation": "Demography.MorbidityAndMortality",
+          "title": "sairastuvuus ja kuolleisuus",
+          "definition": "Sairastuvuus kertoo tietyn sairauden tai sairausryhmän ilmaantuvuuden väestössä eli kuinka moni kärsii kyseisestä taudista tai sairastuu siihen tiettynä ajanjaksona. Esim. keuhkosyövän ilmantuvuus tietyssä maassa tai tietyllä maantieteellisellä alueella vuoden aikana. Kuolleisuus on mittaluku, joka kertoo vuoden aikana kuolleiden lukumäärän tuhatta asukasta kohti. Kuolleisuus voidaan eritellä maantieteellisen sijainnin, ajan, syyn tai henkilöryhmän mukaan. Esim. lapsikuolleisuus Lapissa. HUOM! Tutkimusten osanottajien omat arviot terveydentilastaan luokitellaan TERVEYS-hierarkian termeillä.",
           "parent": "Demography",
           "position": 3
         },
@@ -3421,6 +3425,7 @@
       "definition": "En typologi for hovedtemaer eller emnekategorier for data.",
       "previousVersion": 0,
       "initialVersion": 262,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -3442,22 +3447,13 @@
           "position": 0
         },
         {
-          "id": 2958,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/no/2.0.1",
-          "notation": "Demography.MorbidityAndMortality",
-          "title": "Sykelighet og dødelighet",
-          "definition": "Sykelighet refererer til forekomst av dårlig helse i en befolkning. Data kan dekke forekomsten eller sykdomsgraden av en medisinsk tilstand. For eksempel antall personer som lider av lungekreft i et land eller i et geografisk område i løpet av ett år. Data om dødelighet indikerer antall dødsfall i en befolkning etter sted, tid, årsak, individ osv. For eksempel mødre-, barnedødelighet. Vær oppmerksom på at selvrapporterte undersøkelsesdata om sykdommer og medisinske forhold er indeksert med HELSE-hierarki begreper.",
-          "parent": "Demography",
-          "position": 1
-        },
-        {
           "id": 2959,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/no/2.0.1",
           "notation": "Demography.Censuses",
           "title": "Folketellinger",
           "definition": "Undersøkelser av en hel befolkning, i motsetning til undersøkelser av et utvalg. Ofte brukt i sammenheng med offisielle fortegnelser av en befolkning, og inkluderer vanligvis relatert demografisk informasjon. Legg merke til at det i noen land ikke blir brukt folketellinger ettersom demografisk informasjon foreligger i offisielle registre.",
           "parent": "Demography",
-          "position": 2
+          "position": 1
         },
         {
           "id": 2960,
@@ -3465,6 +3461,15 @@
           "notation": "Demography.Migration",
           "title": "Migrasjon",
           "definition": "Omfatter immigrasjon, emigrasjon, flytting internt i et land og andre typer av geografisk mobilitet. Immigrasjon betyr å bosette seg i et annet land enn sitt hjemland. Emigrasjon betyr at man forlater sitt hjemland for å bosette seg i et annet land. Migrasjon er et parapblybegrep for immigrasjon og emigrasjon. Migrasjon omfatter også flytting internt i et land, det vil si forflytninger av mennesker i ett land på forskjellige geografiske enheter.",
+          "parent": "Demography",
+          "position": 2
+        },
+        {
+          "id": 2958,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/no/2.0.1",
+          "notation": "Demography.MorbidityAndMortality",
+          "title": "Sykelighet og dødelighet",
+          "definition": "Sykelighet refererer til forekomst av dårlig helse i en befolkning. Data kan dekke forekomsten eller sykdomsgraden av en medisinsk tilstand. For eksempel antall personer som lider av lungekreft i et land eller i et geografisk område i løpet av ett år. Data om dødelighet indikerer antall dødsfall i en befolkning etter sted, tid, årsak, individ osv. For eksempel mødre-, barnedødelighet. Vær oppmerksom på at selvrapporterte undersøkelsesdata om sykdommer og medisinske forhold er indeksert med HELSE-hierarki begreper.",
           "parent": "Demography",
           "position": 3
         },
@@ -3490,7 +3495,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.ConsumptionAndConsumerBehaviour/no/2.0.1",
           "notation": "Economics.ConsumptionAndConsumerBehaviour",
           "title": "Konsum/konsumentatferd",
-          "definition": "Refererer til handlingen om å tilegne seg og/eller evne til å møte behov og ønsker hos en person, fellesskapet eller samfunnet. Data i denne kategorien omfatter også konsum på personlige- og husholdninsartikler, endringer i konsumentatferd, og studier om konsument og etikk. For eksempel data om hvor ofte personer kjøper en type ting, hvor og når de handler; om etiske betraktninger påvirker konsumvalget. ",
+          "definition": "Refererer til handlingen om å tilegne seg og/eller evne til å møte behov og ønsker hos en person, fellesskapet eller samfunnet. Data i denne kategorien omfatter også konsum på personlige- og husholdninsartikler, endringer i konsumentatferd, og studier om konsument og etikk. For eksempel data om hvor ofte personer kjøper en type ting, hvor og når de handler; om etiske betraktninger påvirker konsumvalget.",
           "parent": "Economics",
           "position": 6
         },
@@ -4000,7 +4005,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.EqualityAndInequality/no/2.0.1",
           "notation": "SocialStratificationAndGroupings.EqualityAndInequality",
           "title": "Likhet, ulikhet og sosial eksklusjon",
-          "definition": "Problemstillinger knyttet til om alle individer eller grupper av individer har samme status og muligheter i et samfunn. Likhet kan studeres for eksempel ved å se på utdannelse, formue eller inntekt, yrke, makt, prestisje, betingelser for arbeid og fritid, tilgang til tjenester, og sosiale relasjoner. Marginalisering og sosial eksklusjon kan være et resultat av ugunstige forhold på flere områder i livet, og mennesker det gjelder kan bli fratatt rettigheter, muligheter, ressurser og sosial integrering. Eksempler på data: Statistikk over inntekt og likhet, oppfattelsen av gruppefokusert diskriminering (for eksempel mot innvandrere, hjemløse, asylsøkere); oppfattelsen av forskjeller mellom menn og kvinner når det gjelder mulighet for ledende politiske roller; innvirkningen av foreldres arbeidsløshet på barns utdanningsnivå og sosiale nettverk. ",
+          "definition": "Problemstillinger knyttet til om alle individer eller grupper av individer har samme status og muligheter i et samfunn. Likhet kan studeres for eksempel ved å se på utdannelse, formue eller inntekt, yrke, makt, prestisje, betingelser for arbeid og fritid, tilgang til tjenester, og sosiale relasjoner. Marginalisering og sosial eksklusjon kan være et resultat av ugunstige forhold på flere områder i livet, og mennesker det gjelder kan bli fratatt rettigheter, muligheter, ressurser og sosial integrering. Eksempler på data: Statistikk over inntekt og likhet, oppfattelsen av gruppefokusert diskriminering (for eksempel mot innvandrere, hjemløse, asylsøkere); oppfattelsen av forskjeller mellom menn og kvinner når det gjelder mulighet for ledende politiske roller; innvirkningen av foreldres arbeidsløshet på barns utdanningsnivå og sosiale nettverk.",
           "parent": "SocialStratificationAndGroupings",
           "position": 64
         },
@@ -4270,6 +4275,7 @@
       "definition": "Tipologija glavnih vsebinskih področij raziskav.",
       "previousVersion": 0,
       "initialVersion": 261,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -4291,22 +4297,13 @@
           "position": 0
         },
         {
-          "id": 3382,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/sl/2.0.1",
-          "notation": "Demography.MorbidityAndMortality",
-          "title": "obolevnost in smrtnost",
-          "definition": "Obolevnost se nanaša na pojav bolezni na populaciji. Podatki lahko pokrivajo stopnjo pojavnosti ali obolevnosti določenega zdravstvenega stanja. Na primer, število ljudi, obolelih za pljučnim rakom v državi ali na nekem geografskem območju v določenem letu. Podatki o smrtnosti kažejo število smrti v populaciji glede na kraj, čas, vzrok smrti ali značilnosti posameznika itd. Na primer, smrtnost porodnic, smrtnost otrok. Upoštevajte, da se podatki o boleznih in zdravstvenih stanjih, o katerih posamezniki sami poročajo, indeksirajo znotraj vsebinskega področja v hierarhiji \"ZDRAVJE\".",
-          "parent": "Demography",
-          "position": 1
-        },
-        {
           "id": 3383,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/sl/2.0.1",
           "notation": "Demography.Censuses",
           "title": "popisi",
           "definition": "Ankete na celotni populaciji, v nasprotju z vzorčnimi raziskavami. Pogosto se uporabljajo za uradno štetje prebivalstva, ki običajno vključuje zbiranje povezanih demografskih informacij. Upoštevajte, da se v nekaterih državah popisi ne uporabljajo, saj se lahko demografske informacije pridobijo iz uradnih registrov.",
           "parent": "Demography",
-          "position": 2
+          "position": 1
         },
         {
           "id": 3384,
@@ -4314,6 +4311,15 @@
           "notation": "Demography.Migration",
           "title": "selitve",
           "definition": "Vključuje priseljevanje, izseljevanje, notranje selitve in druge vrste geografske mobilnosti. Priseljevanje predstavlja naselitev posameznika v državi, ki ni njegova matična država. O izseljevanju govorimo, ko posameznik zapusti matično državo in se naseli v drugi državi. Selitve so krovni izraz za obe obliki. Selitve vključujejo tudi notranje selitve, to je gibanje ljudi znotraj države na različnih geografskih ravneh.",
+          "parent": "Demography",
+          "position": 2
+        },
+        {
+          "id": 3382,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/sl/2.0.1",
+          "notation": "Demography.MorbidityAndMortality",
+          "title": "obolevnost in smrtnost",
+          "definition": "Obolevnost se nanaša na pojav bolezni na populaciji. Podatki lahko pokrivajo stopnjo pojavnosti ali obolevnosti določenega zdravstvenega stanja. Na primer, število ljudi, obolelih za pljučnim rakom v državi ali na nekem geografskem območju v določenem letu. Podatki o smrtnosti kažejo število smrti v populaciji glede na kraj, čas, vzrok smrti ali značilnosti posameznika itd. Na primer, smrtnost porodnic, smrtnost otrok. Upoštevajte, da se podatki o boleznih in zdravstvenih stanjih, o katerih posamezniki sami poročajo, indeksirajo znotraj vsebinskega področja v hierarhiji \"ZDRAVJE\".",
           "parent": "Demography",
           "position": 3
         },
@@ -5119,6 +5125,7 @@
       "definition": "En typologi för större teman eller ämneskategorier för data.",
       "previousVersion": 0,
       "initialVersion": 260,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -5140,22 +5147,13 @@
           "position": 0
         },
         {
-          "id": 2865,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/sv/2.0.1",
-          "notation": "Demography.MorbidityAndMortality",
-          "title": "Morbiditet och mortalitet",
-          "definition": "Morbiditet beskriver antal sjukdomsfall eller skadefrekvensen i en population. Data kan gälla incidensen eller morbiditetstalet för ett medicinskt tillstånd, t.ex. antal personer med lungcancer i ett land eller ett geografiskt område under ett år. Mortalitet beskriver antal dödsfall i en population, mätt efter plats, tid, orsak, typ av person och så vidare, t.ex. mödradödlighet och barnadödlighet. Observera att egenrapporterade enkätdata om sjukdomar och medicinska tillstånd indexeras med termer i hierarkin HÄLSA.",
-          "parent": "Demography",
-          "position": 1
-        },
-        {
           "id": 2866,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/sv/2.0.1",
           "notation": "Demography.Censuses",
           "title": "Folkräkningar",
           "definition": "Studie av en hel befolkning till skillnad från studier av urvalsgrupper. Används ofta för statens räkning av en befolkning och innehåller vanligtvis även insamling av relevant demografisk information. Observera att i vissa länder görs inte folkräkningar eftersom demografisk information kan erhållas från officiella register.",
           "parent": "Demography",
-          "position": 2
+          "position": 1
         },
         {
           "id": 2867,
@@ -5163,6 +5161,15 @@
           "notation": "Demography.Migration",
           "title": "Migration",
           "definition": "Inkluderar immigration, emigration, intern migration samt andra typer av geografisk rörlighet. Immigration (invandring) innebär att bosätta sig i ett annat land än sitt hemland. Emigration (utvandring) innebär att lämna sitt hemland för att bosätta sig i ett annat land. Migration används som ett paraplybegrepp för båda förflyttningarna. Migration omfattar även intern migration, det vill säga geografiska folkförflyttningar inom ett land.",
+          "parent": "Demography",
+          "position": 2
+        },
+        {
+          "id": 2865,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/sv/2.0.1",
+          "notation": "Demography.MorbidityAndMortality",
+          "title": "Morbiditet och mortalitet",
+          "definition": "Morbiditet beskriver antal sjukdomsfall eller skadefrekvensen i en population. Data kan gälla incidensen eller morbiditetstalet för ett medicinskt tillstånd, t.ex. antal personer med lungcancer i ett land eller ett geografiskt område under ett år. Mortalitet beskriver antal dödsfall i en population, mätt efter plats, tid, orsak, typ av person och så vidare, t.ex. mödradödlighet och barnadödlighet. Observera att egenrapporterade enkätdata om sjukdomar och medicinska tillstånd indexeras med termer i hierarkin HÄLSA.",
           "parent": "Demography",
           "position": 3
         },

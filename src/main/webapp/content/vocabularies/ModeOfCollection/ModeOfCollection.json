@@ -56,40 +56,13 @@
           "position": 1
         },
         {
-          "id": 4980,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone/en/3.0",
-          "notation": "Interview.Telephone",
-          "title": "Telephone interview",
-          "definition": "Interview administered on the telephone. Use this broader term if not CATI, or if not known whether CATI or not.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 4982,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Email/en/3.0",
-          "notation": "Interview.Email",
-          "title": "E-mail interview",
-          "definition": "Interviews conducted via e-mail, usually consisting of several e-mail messages that allow the discussion to continue beyond the first set of questions and answers, or the first e-mail exchange.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 4983,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.WebBased/en/3.0",
-          "notation": "Interview.WebBased",
-          "title": "Web-based interview",
-          "definition": "An interview conducted via the Internet. For example, interviews conducted within online forums or using web-based audio-visual technology that enables the interviewer(s) and interviewee(s) to communicate in real time.",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 5023,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.FaceToFace.CAPIorCAMI/en/3.0",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Face-to-face interview: Computer-assisted (CAPI/CAMI)",
           "definition": "Computer-assisted personal interviewing (CAPI), or computer-assisted mobile interviewing (CAMI). Data collection method in which the interviewer reads questions to the respondents from the screen of a computer, laptop, or a mobile device like tablet or smartphone, and enters the answers in the same device. The administration of the interview is managed by a specifically designed program/application.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 5022,
@@ -98,7 +71,16 @@
           "title": "Face-to-face interview: Paper-and-pencil (PAPI)",
           "definition": "Paper-and-pencil interviewing (PAPI). The interviewer uses a traditional paper questionnaire to read the questions and enter the answers.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 4980,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone/en/3.0",
+          "notation": "Interview.Telephone",
+          "title": "Telephone interview",
+          "definition": "Interview administered on the telephone. Use this broader term if not CATI, or if not known whether CATI or not.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 4981,
@@ -107,6 +89,24 @@
           "title": "Telephone interview: Computer-assisted (CATI)",
           "definition": "Computer-assisted telephone interviewing (CATI). The interviewer asks questions as directed by a computer, responses are keyed directly into the computer and the administration of the interview is managed by a specifically designed program.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 4982,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Email/en/3.0",
+          "notation": "Interview.Email",
+          "title": "E-mail interview",
+          "definition": "Interviews conducted via e-mail, usually consisting of several e-mail messages that allow the discussion to continue beyond the first set of questions and answers, or the first e-mail exchange.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 4983,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.WebBased/en/3.0",
+          "notation": "Interview.WebBased",
+          "title": "Web-based interview",
+          "definition": "An interview conducted via the Internet. For example, interviews conducted within online forums or using web-based audio-visual technology that enables the interviewer(s) and interviewee(s) to communicate in real time.",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -456,6 +456,7 @@
       "definition": "Fremgangsmåden, teknikken eller undersøgelsesmetoden, der er anvendt til at opnå dataene.",
       "previousVersion": 0,
       "initialVersion": 326,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -486,40 +487,13 @@
           "position": 1
         },
         {
-          "id": 7822,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/da#Interview.Telephone/da/3.0.1",
-          "notation": "Interview.Telephone",
-          "title": "Telefoninterview",
-          "definition": "Interview gennemført over telefon. Brug dette bredere begreb, hvis det ikke er CATI, eller hvis det ikke vides, om det er CATI.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 7823,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/da#Interview.Email/da/3.0.1",
-          "notation": "Interview.Email",
-          "title": "E-mail-interview",
-          "definition": "Interviews gennemført via e-mail, som regel bestående af flere e-mail-beskeder, der tillader diskussionen at fortsætte efter det første sæt af spørgsmål og svar eller den første udveksling af e-mails.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 7824,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/da#Interview.WebBased/da/3.0.1",
-          "notation": "Interview.WebBased",
-          "title": "Webbaseret interview",
-          "definition": "Et interview gennemført via internettet. For eksempel interviews gennemført på online fora eller ved brug af webbaseret audiovisuel teknologi, der gør det muligt for interviewere(n) og de(n) interviewede at kommunikere i realtid.",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 7825,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/da#Interview.FaceToFace.CAPIorCAMI/da/3.0.1",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Personligt interview: Computerassisteret (CAPI/CAMI)",
           "definition": "Computer-assisted personal interviewing (CAPI) eller computer-assisted mobile interviewing (CAMI). Dataindsamlingsmetode, hvor intervieweren læser spørgsmål op til respondenterne fra skærmen på en computer, bærbar eller en mobil enhed såsom tablet eller smartphone og indtaster svarene på den samme enhed. Administrationen af interviewet styres af et specifikt designet program/applikation.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 7826,
@@ -528,7 +502,16 @@
           "title": "Personligt interview: Papir og pen (PAPI)",
           "definition": "Paper-and-pencil interviewing (PAPI). Intervieweren anvender et traditionelt spørgeskema på papir til at oplæse spørgsmålene og registrere svarene.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 7822,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/da#Interview.Telephone/da/3.0.1",
+          "notation": "Interview.Telephone",
+          "title": "Telefoninterview",
+          "definition": "Interview gennemført over telefon. Brug dette bredere begreb, hvis det ikke er CATI, eller hvis det ikke vides, om det er CATI.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 7827,
@@ -537,6 +520,24 @@
           "title": "Telefoninterview: Computerassisteret (CATI)",
           "definition": "Computer-assisted telephone interviewing (CATI). Intervieweren stiller spørgsmål ved hjælp af en computer, svarene indtastes direkte i computeren, og administrationen af interviewet styres af et specifikt designet program.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 7823,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/da#Interview.Email/da/3.0.1",
+          "notation": "Interview.Email",
+          "title": "E-mail-interview",
+          "definition": "Interviews gennemført via e-mail, som regel bestående af flere e-mail-beskeder, der tillader diskussionen at fortsætte efter det første sæt af spørgsmål og svar eller den første udveksling af e-mails.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 7824,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/da#Interview.WebBased/da/3.0.1",
+          "notation": "Interview.WebBased",
+          "title": "Webbaseret interview",
+          "definition": "Et interview gennemført via internettet. For eksempel interviews gennemført på online fora eller ved brug af webbaseret audiovisuel teknologi, der gør det muligt for interviewere(n) og de(n) interviewede at kommunikere i realtid.",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -720,7 +721,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field.Nonparticipant/da/3.0.1",
           "notation": "Observation.Field.Nonparticipant",
           "title": "Feltobservation uden deltager",
-          "definition": "Observation, der udføres i en naturlig, ikke-kontrolleret opsætning uden nogen interaktion mellem forsker og hans/hendes subjekter. ",
+          "definition": "Observation, der udføres i en naturlig, ikke-kontrolleret opsætning uden nogen interaktion mellem forsker og hans/hendes subjekter.",
           "parent": "Observation.Field",
           "position": 28
         },
@@ -886,6 +887,7 @@
       "definition": "Kuvailtavan aineiston ensisijainen keruumenetelmä.",
       "previousVersion": 0,
       "initialVersion": 328,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -916,40 +918,13 @@
           "position": 1
         },
         {
-          "id": 7840,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fi#Interview.Telephone/fi/3.0.1",
-          "notation": "Interview.Telephone",
-          "title": "Puhelinhaastattelu",
-          "definition": "Puhelimitse tehty haastattelu. Termiä voi käyttää sekä kvalitatiivisesta että kvantitatiivisesta haastattelusta.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 7841,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fi#Interview.Email/fi/3.0.1",
-          "notation": "Interview.Email",
-          "title": "Sähköpostihaastattelu",
-          "definition": "Haastattelu tehdään sähköpostin välityksellä. Usein sisältää useita sähköpostiviestejä, jotka mahdollistavat keskustelun jatkumisen alussa esitettyjen kysymysten ja niihin saatujen vastausten jälkeen.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 7842,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fi#Interview.WebBased/fi/3.0.1",
-          "notation": "Interview.WebBased",
-          "title": "Verkkohaastattelu",
-          "definition": "Verkon välityksellä tehty haastattelu, esimerkiksi verkkokeskustelufoorumilla tai käyttäen teknologiaa, jonka avulla haastattelija ja haastateltava(t) voivat keskustella samanaikaisesti (chat, skype, videokonferenssit).",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 7843,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fi#Interview.FaceToFace.CAPIorCAMI/fi/3.0.1",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Kasvokkainen haastattelu: tietokoneavusteinen (CAPI tai CAMI)",
           "definition": "Computer-assisted personal interviewing (CAPI) tai Computer-assisted mobile interviewing (CAMI). Haastattelija lukee kysymykset kannettavalta tietokoneelta, kämmentietokoneelta, tabletista tai älypuhelimesta ja tallentaa haastateltavan vastaukset suoraan laitteeseen.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 7844,
@@ -958,7 +933,16 @@
           "title": "Kasvokkainen haastattelu: paperikyselylomake (PAPI)",
           "definition": "Paper-and-pencil interviewing (PAPI). Paperilomaketta käyttäen tehty henkilökohtainen haastattelu. Haastattelija lukee kysymykset paperilomakkeelta ja kirjoittaa haastateltavan vastaukset lomakkeelle.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 7840,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fi#Interview.Telephone/fi/3.0.1",
+          "notation": "Interview.Telephone",
+          "title": "Puhelinhaastattelu",
+          "definition": "Puhelimitse tehty haastattelu. Termiä voi käyttää sekä kvalitatiivisesta että kvantitatiivisesta haastattelusta.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 7845,
@@ -967,6 +951,24 @@
           "title": "Puhelinhaastattelu: tietokoneavusteinen (CATI)",
           "definition": "Computer-assisted telephone interviewing (CATI). Haastattelija lukee kysymykset tietokoneelta puhelimessa ja tallentaa haastateltavan vastaukset suoraan tietokoneelle.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 7841,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fi#Interview.Email/fi/3.0.1",
+          "notation": "Interview.Email",
+          "title": "Sähköpostihaastattelu",
+          "definition": "Haastattelu tehdään sähköpostin välityksellä. Usein sisältää useita sähköpostiviestejä, jotka mahdollistavat keskustelun jatkumisen alussa esitettyjen kysymysten ja niihin saatujen vastausten jälkeen.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 7842,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fi#Interview.WebBased/fi/3.0.1",
+          "notation": "Interview.WebBased",
+          "title": "Verkkohaastattelu",
+          "definition": "Verkon välityksellä tehty haastattelu, esimerkiksi verkkokeskustelufoorumilla tai käyttäen teknologiaa, jonka avulla haastattelija ja haastateltava(t) voivat keskustella samanaikaisesti (chat, skype, videokonferenssit).",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -1313,9 +1315,10 @@
       "uriSl": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/en/3.0",
       "notation": "ModeOfCollection",
       "title": "Mode de collecte",
-      "definition": "<span style=\"color: rgb(55, 64, 78); font-family: Arial; white-space: pre-wrap; background-color: rgb(250, 250, 250);\">La procédure, la technique ou le mode d'enquête utilisé pour obtenir les données.</span>",
+      "definition": "La procédure, la technique ou le mode d'enquête utilisé pour obtenir les données.",
       "previousVersion": 371,
       "initialVersion": 371,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Code descriptive term rephrased: Aggrégation\n",
       "license": "CC BY",
@@ -1346,40 +1349,13 @@
           "position": 1
         },
         {
-          "id": 7788,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Telephone/fr/3.0.2",
-          "notation": "Interview.Telephone",
-          "title": "Entretien téléphonique",
-          "definition": "Entretien administré par téléphone. Utilisez ce terme si pas CATI, ou si vous ne savez pas si CATI ou pas.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 7789,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Email/fr/3.0.2",
-          "notation": "Interview.Email",
-          "title": "Entretien par e-mail",
-          "definition": "Entretiens conduits via e-mail, habituellement consistant en plusieurs courriels qui permettent la discussion qui continue au-delà d'une première série de questions et de réponses, ou d'un premier échange de courriels.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 7790,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.WebBased/fr/3.0.2",
-          "notation": "Interview.WebBased",
-          "title": "Entretien par Internet",
-          "definition": "Un entretien conduit via l'Internet. Par exemple, des entretiens conduits à l'intérieur de forums en ligne ou en utilisant des technologies web audio-vidéo qui permettent au(x) enquêteur(s) et au(x) répondant(s) de communiquer en temps réel.",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 7791,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.FaceToFace.CAPIorCAMI/fr/3.0.2",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Entretien en face-à-face : assisté par ordinateur (CAPI / CAMI)",
           "definition": "Entretien assisté par ordinateur (CAPI), ou entretien assisté par un appareil mobile (CAMI). Méthode de collecte des données dans laquelle l'enquêteur lit les questions aux répondants depuis l'écran d'un ordinateur, d'un ordinateur portable ou d'un appareil mobile tel qu'une tablette ou un smartphone, et entre les réponses sur le même appareil. L'administration de l'entretien est géré par un programme / application spécialement conçue.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 7792,
@@ -1388,7 +1364,16 @@
           "title": "Entretien en face-à-face : papier et crayon (PAPI)",
           "definition": "Entretien avec papier et crayon (PAPI). L'enquêteur utilise un questionnaire papier traditionnel pour lire les questions et écrire les réponses.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 7788,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Telephone/fr/3.0.2",
+          "notation": "Interview.Telephone",
+          "title": "Entretien téléphonique",
+          "definition": "Entretien administré par téléphone. Utilisez ce terme si pas CATI, ou si vous ne savez pas si CATI ou pas.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 7793,
@@ -1397,6 +1382,24 @@
           "title": "Entretien téléphonique : assisté par ordinateur (CATI)",
           "definition": "Entretien téléphonique assisté par ordinateur (CATI). L'enquêteur pose des questions selon les directives de l'ordinateur, des réponses sont saisies directement dans l'ordinateur et l'administration de l'entretien est géré pas un programme spécialement conçu.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 7789,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Email/fr/3.0.2",
+          "notation": "Interview.Email",
+          "title": "Entretien par e-mail",
+          "definition": "Entretiens conduits via e-mail, habituellement consistant en plusieurs courriels qui permettent la discussion qui continue au-delà d'une première série de questions et de réponses, ou d'un premier échange de courriels.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 7790,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.WebBased/fr/3.0.2",
+          "notation": "Interview.WebBased",
+          "title": "Entretien par Internet",
+          "definition": "Un entretien conduit via l'Internet. Par exemple, des entretiens conduits à l'intérieur de forums en ligne ou en utilisant des technologies web audio-vidéo qui permettent au(x) enquêteur(s) et au(x) répondant(s) de communiquer en temps réel.",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -1790,9 +1793,10 @@
       "uriSl": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/en/3.0",
       "notation": "ModeOfCollection",
       "title": "Mode de collecte",
-      "definition": "<span style=\"color: rgb(55, 64, 78); font-family: Arial; white-space: pre-wrap; background-color: rgb(250, 250, 250);\">La procédure, la technique ou le mode d'enquête utilisé pour obtenir les données.</span>",
+      "definition": "La procédure, la technique ou le mode d'enquête utilisé pour obtenir les données.",
       "previousVersion": 0,
       "initialVersion": 371,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -1823,40 +1827,13 @@
           "position": 1
         },
         {
-          "id": 7796,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Telephone/fr/3.0.1",
-          "notation": "Interview.Telephone",
-          "title": "Entretien téléphonique",
-          "definition": "Entretien administré par téléphone. Utilisez ce terme si pas CATI, ou si vous ne savez pas si CATI ou pas.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 7797,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Email/fr/3.0.1",
-          "notation": "Interview.Email",
-          "title": "Entretien par e-mail",
-          "definition": "Entretiens conduits via e-mail, habituellement consistant en plusieurs courriels qui permettent la discussion qui continue au-delà d'une première série de questions et de réponses, ou d'un premier échange de courriels.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 7798,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.WebBased/fr/3.0.1",
-          "notation": "Interview.WebBased",
-          "title": "Entretien par Internet",
-          "definition": "Un entretien conduit via l'Internet. Par exemple, des entretiens conduits à l'intérieur de forums en ligne ou en utilisant des technologies web audio-vidéo qui permettent au(x) enquêteur(s) et au(x) répondant(s) de communiquer en temps réel.",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 7799,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.FaceToFace.CAPIorCAMI/fr/3.0.1",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Entretien en face-à-face : assisté par ordinateur (CAPI / CAMI)",
           "definition": "Entretien assisté par ordinateur (CAPI), ou entretien assisté par un appareil mobile (CAMI). Méthode de collecte des données dans laquelle l'enquêteur lit les questions aux répondants depuis l'écran d'un ordinateur, d'un ordinateur portable ou d'un appareil mobile tel qu'une tablette ou un smartphone, et entre les réponses sur le même appareil. L'administration de l'entretien est géré par un programme / application spécialement conçue.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 7800,
@@ -1865,7 +1842,16 @@
           "title": "Entretien en face-à-face : papier et crayon (PAPI)",
           "definition": "Entretien avec papier et crayon (PAPI). L'enquêteur utilise un questionnaire papier traditionnel pour lire les questions et écrire les réponses.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 7796,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Telephone/fr/3.0.1",
+          "notation": "Interview.Telephone",
+          "title": "Entretien téléphonique",
+          "definition": "Entretien administré par téléphone. Utilisez ce terme si pas CATI, ou si vous ne savez pas si CATI ou pas.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 7801,
@@ -1874,6 +1860,24 @@
           "title": "Entretien téléphonique : assisté par ordinateur (CATI)",
           "definition": "Entretien téléphonique assisté par ordinateur (CATI). L'enquêteur pose des questions selon les directives de l'ordinateur, des réponses sont saisies directement dans l'ordinateur et l'administration de l'entretien est géré pas un programme spécialement conçu.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 7797,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.Email/fr/3.0.1",
+          "notation": "Interview.Email",
+          "title": "Entretien par e-mail",
+          "definition": "Entretiens conduits via e-mail, habituellement consistant en plusieurs courriels qui permettent la discussion qui continue au-delà d'une première série de questions et de réponses, ou d'un premier échange de courriels.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 7798,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/fr#Interview.WebBased/fr/3.0.1",
+          "notation": "Interview.WebBased",
+          "title": "Entretien par Internet",
+          "definition": "Un entretien conduit via l'Internet. Par exemple, des entretiens conduits à l'intérieur de forums en ligne ou en utilisant des technologies web audio-vidéo qui permettent au(x) enquêteur(s) et au(x) répondant(s) de communiquer en temps réel.",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -2223,6 +2227,7 @@
       "definition": "La procedura, la tecnica o la modalità di indagine utilizzata per ottenere i dati.",
       "previousVersion": 0,
       "initialVersion": 341,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -2253,40 +2258,13 @@
           "position": 1
         },
         {
-          "id": 7804,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/it#Interview.Telephone/it/3.0.1",
-          "notation": "Interview.Telephone",
-          "title": "Intervista telefonica",
-          "definition": "Intervista somministrata via telefono. Utilizzare questo termine più generale se non è CATI, o se non si è in grado di stabilire se lo sia.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 7805,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/it#Interview.Email/it/3.0.1",
-          "notation": "Interview.Email",
-          "title": "Intervista e-mail",
-          "definition": "Interviste condotte via e-mail, di solito costituite da diversi messaggi di posta elettronica che consentono alla discussione di continuare oltre la prima serie di domande e risposte, oppure dopo il primo scambio di e-mail.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 7806,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/it#Interview.WebBased/it/3.0.1",
-          "notation": "Interview.WebBased",
-          "title": "Intervista web",
-          "definition": "Un'intervista condotta via Internet. Ad esempio, interviste condotte all'interno di forum online o utilizzando la tecnologia audiovisiva basata sul web che consente all'intervistatore e agli intervistati di comunicare in tempo reale.",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 7807,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/it#Interview.FaceToFace.CAPIorCAMI/it/3.0.1",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Intervista faccia a faccia: computer-assistita (CAPI/CAMI)",
           "definition": "Interviste personali assistite da computer (CAPI) o da cellulare (CAMI). Metodo di raccolta dei dati in cui l'intervistatore legge le domande ai rispondenti dallo schermo di un computer, laptop o dispositivo mobile come un tablet o uno smartphone e inserisce le risposte nello stesso dispositivo. L'intervista è gestita da un programma/applicazione appositamente progettata.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 7808,
@@ -2295,7 +2273,16 @@
           "title": "Intervista faccia a faccia: carta e penna (PAPI)",
           "definition": "Interviste con carta e penna (PAPI). L'intervistatore utilizza un tradizionale questionario cartaceo per leggere le domande e inserire le risposte.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 7804,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/it#Interview.Telephone/it/3.0.1",
+          "notation": "Interview.Telephone",
+          "title": "Intervista telefonica",
+          "definition": "Intervista somministrata via telefono. Utilizzare questo termine più generale se non è CATI, o se non si è in grado di stabilire se lo sia.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 7809,
@@ -2304,6 +2291,24 @@
           "title": "Intervista telefonica: assistita da computer (CATI)",
           "definition": "Intervista telefonica assistita da computer (CATI). L'intervistatore pone le domande indicate dal computer, le risposte sono immesse direttamente nel computer e l'intervista è gestita da un programma appositamente progettato.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 7805,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/it#Interview.Email/it/3.0.1",
+          "notation": "Interview.Email",
+          "title": "Intervista e-mail",
+          "definition": "Interviste condotte via e-mail, di solito costituite da diversi messaggi di posta elettronica che consentono alla discussione di continuare oltre la prima serie di domande e risposte, oppure dopo il primo scambio di e-mail.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 7806,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/it#Interview.WebBased/it/3.0.1",
+          "notation": "Interview.WebBased",
+          "title": "Intervista web",
+          "definition": "Un'intervista condotta via Internet. Ad esempio, interviste condotte all'interno di forum online o utilizzando la tecnologia audiovisiva basata sul web che consente all'intervistatore e agli intervistati di comunicare in tempo reale.",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -2364,7 +2369,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup/it/3.0.1",
           "notation": "FocusGroup",
           "title": "Focus group",
-          "definition": "Una discussione di gruppo focalizzata su un argomento particolare, organizzata per scopi di ricerca. I singoli individui sono selezionati in base all'argomento trattato, e l'interazione tra i partecipanti viene utilizzata come parte della tecnica.\n",
+          "definition": "Una discussione di gruppo focalizzata su un argomento particolare, organizzata per scopi di ricerca. I singoli individui sono selezionati in base all'argomento trattato, e l'interazione tra i partecipanti viene utilizzata come parte della tecnica.",
           "position": 14
         },
         {
@@ -2653,6 +2658,7 @@
       "definition": "Framgangsmåten, teknikken, eller metoden som er anvendt for å samle inn data.",
       "previousVersion": 0,
       "initialVersion": 329,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -2683,40 +2689,13 @@
           "position": 1
         },
         {
-          "id": 7858,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/no#Interview.Telephone/no/3.0.1",
-          "notation": "Interview.Telephone",
-          "title": "Telefonintervju",
-          "definition": "Intervju som gjennomføres over telefon. Bruk dette bredere begrepet dersom det ikke er CATI, eller dersom det er uvisst om det er CATI.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 7859,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/no#Interview.Email/no/3.0.1",
-          "notation": "Interview.Email",
-          "title": "E-post intervju",
-          "definition": "Intervjuer gjennomført over e-post, vanligvis bestående av en rekke e-poster som gjør at diskusjonen kan fortsette utover de første settene med spørsmål og svar, eller den første e-postutvekslingen.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 7860,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/no#Interview.WebBased/no/3.0.1",
-          "notation": "Interview.WebBased",
-          "title": "Webbasert intervju",
-          "definition": "Intervju gjennomført over internett. For eksempel, intervjuer gjennomført på internettforum eller ved bruk av internettbasert audiovisuell teknologi som muliggjør fortløpende kommunikasjon mellom intervjuer(e) og Intervjuobjekt(er).",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 7861,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/no#Interview.FaceToFace.CAPIorCAMI/no/3.0.1",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Personlig intervju: CAPI/CAMI",
           "definition": "Dataassistert personlig intervjuing (CAPI). Datainnsamlingsmetode hvor intervjueren leser opp spørsmål for respondenten fra skjermen til en datamaskin, bærbar datamaskin, smarttelefon eller nettbrett, og registrerer svarene på det samme apparatet. Administreringen av intervjuet er styrt av et spesialdesignet program eller en applikasjon.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 7862,
@@ -2725,7 +2704,16 @@
           "title": "Personlig intervju: PAPI",
           "definition": "Penn og papir intervju. Intervjueren bruker et tradisjonelt papirspørreskjema for å lese opp spørsmålene og til å registrere svarene.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 7858,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/no#Interview.Telephone/no/3.0.1",
+          "notation": "Interview.Telephone",
+          "title": "Telefonintervju",
+          "definition": "Intervju som gjennomføres over telefon. Bruk dette bredere begrepet dersom det ikke er CATI, eller dersom det er uvisst om det er CATI.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 7863,
@@ -2734,6 +2722,24 @@
           "title": "Telefonintervju: CATI",
           "definition": "Dataassistert telefonintervju. Intervjueren stiller spørsmål ifølge instrukser fra en datamaskin, registrerer svarene direkte på datamaskinen og administreringen av intervjuet er styrt av et spesialdesignet dataprogram.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 7859,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/no#Interview.Email/no/3.0.1",
+          "notation": "Interview.Email",
+          "title": "E-post intervju",
+          "definition": "Intervjuer gjennomført over e-post, vanligvis bestående av en rekke e-poster som gjør at diskusjonen kan fortsette utover de første settene med spørsmål og svar, eller den første e-postutvekslingen.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 7860,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/no#Interview.WebBased/no/3.0.1",
+          "notation": "Interview.WebBased",
+          "title": "Webbasert intervju",
+          "definition": "Intervju gjennomført over internett. For eksempel, intervjuer gjennomført på internettforum eller ved bruk av internettbasert audiovisuell teknologi som muliggjør fortløpende kommunikasjon mellom intervjuer(e) og Intervjuobjekt(er).",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -3080,9 +3086,10 @@
       "uriSl": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/en/3.0",
       "notation": "ModeOfCollection",
       "title": "Método de recolha de dados",
-      "definition": "<div>Procedimentos, técnicas ou métodos de recolha de dados.<br></div>",
+      "definition": "Procedimentos, técnicas ou métodos de recolha de dados.",
       "previousVersion": 0,
       "initialVersion": 373,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -3113,40 +3120,13 @@
           "position": 1
         },
         {
-          "id": 7532,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone/pt/3.0.1",
-          "notation": "Interview.Telephone",
-          "title": "Entrevista telefónica",
-          "definition": "Entrevista realizada pelo telefone. Usar este termo mais amplo se não for CATI, ou se não souber se é CATI ou não.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 7534,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Email/pt/3.0.1",
-          "notation": "Interview.Email",
-          "title": "Entrevista por email/correio eletrónico",
-          "definition": "Entrevistas realizadas via email, consistindo geralmente em várias mensagens de email que permitem que a discussão continue além do primeiro conjunto de perguntas e respostas, ou da primeira troca de emails.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 7535,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.WebBased/pt/3.0.1",
-          "notation": "Interview.WebBased",
-          "title": "Entrevista via web (online)",
-          "definition": "Entrevistas realizadas via Internet. Por exemplo, entrevistas conduzidas em fóruns online ou utilizando tecnologia audiovisual baseada na web que permite ao(s) entrevistador(es) e entrevistado(s) comunicar em tempo real.",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 7530,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.FaceToFace.CAPIorCAMI/pt/3.0.1",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Entrevista presencial: Assistida por computador (CAPI/CAMI)",
           "definition": "Entrevista pessoal assistida por computador (Computer Assisted Personal Interviewing - CAPI) ou entrevista móvel assistida por computador (Computer Assisted Mobile Interviewing - CAMI). Modo de recolha de dados em que o entrevistador lê perguntas aos entrevistados na tela de um computador, laptop ou dispositivo móvel, como tablet ou smartphone, e insere as respostas no mesmo dispositivo. A administração da entrevista é gerida por um programa especialmente elaborado para o efeito.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 7531,
@@ -3155,7 +3135,16 @@
           "title": "Entrevista presencial: Papel e lápis (PAPI)",
           "definition": "Entrevista de papel e lápis (PAPI - Paper-and-pencil interviewing). O entrevistador usa um questionário tradicional em papel para ler as perguntas e inserir as respostas.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 7532,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone/pt/3.0.1",
+          "notation": "Interview.Telephone",
+          "title": "Entrevista telefónica",
+          "definition": "Entrevista realizada pelo telefone. Usar este termo mais amplo se não for CATI, ou se não souber se é CATI ou não.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 7533,
@@ -3164,6 +3153,24 @@
           "title": "Entrevista telefónica: Assistida por computador  (CATI)",
           "definition": "Entrevista telefónica assistida por computador (Computer Assisted Telephone Interviewing - CATI). O entrevistador faz perguntas orientado por um computador, as respostas são inseridas diretamente no computador e a realização da entrevista é gerida por um programa especialmente elaborado para o efeito.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 7534,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Email/pt/3.0.1",
+          "notation": "Interview.Email",
+          "title": "Entrevista por email/correio eletrónico",
+          "definition": "Entrevistas realizadas via email, consistindo geralmente em várias mensagens de email que permitem que a discussão continue além do primeiro conjunto de perguntas e respostas, ou da primeira troca de emails.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 7535,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.WebBased/pt/3.0.1",
+          "notation": "Interview.WebBased",
+          "title": "Entrevista via web (online)",
+          "definition": "Entrevistas realizadas via Internet. Por exemplo, entrevistas conduzidas em fóruns online ou utilizando tecnologia audiovisual baseada na web que permite ao(s) entrevistador(es) e entrevistado(s) comunicar em tempo real.",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -3513,6 +3520,7 @@
       "definition": "Postopki, tehnike ali načini raziskovanja, uporabljeni za pridobivanje podatkov.",
       "previousVersion": 0,
       "initialVersion": 330,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -3543,40 +3551,13 @@
           "position": 1
         },
         {
-          "id": 7876,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sl#Interview.Telephone/sl/3.0.1",
-          "notation": "Interview.Telephone",
-          "title": "Telefonski intervju",
-          "definition": "Intervju, izveden preko telefona. Uporabite ta širši izraz, če ni CATI, oziroma ne veste, ali je CATI ali ne.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 7877,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sl#Interview.Email/sl/3.0.1",
-          "notation": "Interview.Email",
-          "title": "Intervju preko elektronske pošte",
-          "definition": "Intervju, izveden preko elektronske pošte. Običajno ga sestavlja več elektronskih sporočil, ki omogočajo, da se pogovor nadaljuje tudi po prvem nizu vprašanj in odgovorov, ali po prvi izmenjavi elektronskih sporočil.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 7878,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sl#Interview.WebBased/sl/3.0.1",
-          "notation": "Interview.WebBased",
-          "title": "Spletni intervju",
-          "definition": "Intervju preko spleta. Na primer, intervjuji izvedeni znotraj spletnih forumov ali z uporabo spletno osnovanih avdio-vizualnih tehnologij, ki omogočajo komunikacijo spraševalca(-cev) in spraševanca(-cev) v realnem času.",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 7879,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sl#Interview.FaceToFace.CAPIorCAMI/sl/3.0.1",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Osebni intervju: CAPI/CAMI",
           "definition": "Računalniško podprto osebno intervjuvanje (CAPI). Metoda zbiranja podatkov, kjer spraševalec prebere vprašanja spraševancu z zaslona na računalniku, prenosnem računalniku ali mobilni napravi, kot na primer na tablici ali pametnemu telefonu, in vnese odgovore v isto napravo. Intervju izvedemo s pomočjo posebej zasnovanega programa/ aplikacije.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 7880,
@@ -3585,7 +3566,16 @@
           "title": "Osebni intervju: PAPI",
           "definition": "\"Intervjuvanje s papirjem in svinčnikom\". Spraševalec uporabi tradicionalni papirnati vprašalnik, s katerega prebere vprašanja in vnese odgovore.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 7876,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sl#Interview.Telephone/sl/3.0.1",
+          "notation": "Interview.Telephone",
+          "title": "Telefonski intervju",
+          "definition": "Intervju, izveden preko telefona. Uporabite ta širši izraz, če ni CATI, oziroma ne veste, ali je CATI ali ne.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 7881,
@@ -3594,6 +3584,24 @@
           "title": "Telefonski intervju: CATI",
           "definition": "Računalniško podprto telefonsko intervjuvanje. Spraševanec postavlja vprašanja, ki jih ponuja računalnik, odgovori se vnašajo neposredno v računalnik in intervju upravlja posebej za to zasnovan program.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 7877,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sl#Interview.Email/sl/3.0.1",
+          "notation": "Interview.Email",
+          "title": "Intervju preko elektronske pošte",
+          "definition": "Intervju, izveden preko elektronske pošte. Običajno ga sestavlja več elektronskih sporočil, ki omogočajo, da se pogovor nadaljuje tudi po prvem nizu vprašanj in odgovorov, ali po prvi izmenjavi elektronskih sporočil.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 7878,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sl#Interview.WebBased/sl/3.0.1",
+          "notation": "Interview.WebBased",
+          "title": "Spletni intervju",
+          "definition": "Intervju preko spleta. Na primer, intervjuji izvedeni znotraj spletnih forumov ali z uporabo spletno osnovanih avdio-vizualnih tehnologij, ki omogočajo komunikacijo spraševalca(-cev) in spraševanca(-cev) v realnem času.",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -3974,40 +3982,13 @@
           "position": 1
         },
         {
-          "id": 8511,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone/sr",
-          "notation": "Interview.Telephone",
-          "title": "Telefonski upitnik",
-          "definition": "Intervju administriran telefonom. Koristite ovaj širi pojam ukoliko nije spcifikovano da je u pitanu telefonski upitnik podržan računarom (CATI) ili ako vam nije poznato koji tip telefonskog upitnika je korišćen.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 8513,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Email/sr",
-          "notation": "Interview.Email",
-          "title": "Upitnik putem elektronske pošte",
-          "definition": "Intervju koji se vodi putem elektronske pošte, koji se obično sastoji od nekoliko poruka e-pošte koje omogućavaju da se diskusija nastavi izvan prvog skupa pitanja i odgovora ili prve razmene e-pošte.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 8514,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.WebBased/sr",
-          "notation": "Interview.WebBased",
-          "title": "Veb upitnik",
-          "definition": "Intervju koji se sprovodi putem interneta. Na primer, intervjui vođeni na internet forumima ili korišćenjem internet audio-vizuelne tehnologije koja omogućava anketarima i anketiranim licima da komuniciraju u realnom vremenu.",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 8509,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.FaceToFace.CAPIorCAMI/sr",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Intervju licem u lice: Podržan računarom (CAPI/CAMI)",
           "definition": "Računarsko lično intervjuisanje (CAPI) ili računarsko potpomognuto mobilno intervjuisanje (CAMI). Način prikupljanja podataka u kojem anketar čita pitanja anketiranima sa ekrana računara, laptopa ili mobilnog uređaja poput tableta ili pametnog telefona i unosi odgovore u isti uređaj. Administriranjem intervjua upravlja se posebno dizajniranim programom / aplikacijom.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 8510,
@@ -4016,7 +3997,16 @@
           "title": "Intervju licem u lice: beleži se na papiru (PAPI)",
           "definition": "Intervju sa papirom i olovkom (PAPI). Anketar koristi tradicionalni papirni upitnik za čitanje pitanja i unos odgovora.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 8511,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone/sr",
+          "notation": "Interview.Telephone",
+          "title": "Telefonski upitnik",
+          "definition": "Intervju administriran telefonom. Koristite ovaj širi pojam ukoliko nije spcifikovano da je u pitanu telefonski upitnik podržan računarom (CATI) ili ako vam nije poznato koji tip telefonskog upitnika je korišćen.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 8512,
@@ -4025,6 +4015,24 @@
           "title": "Telefonski intervju: Podržan računarom (CATI)",
           "definition": "Telefonski intervju (CATI) podržan računarom je onaj u kome anketar postavlja pitanja u skladu sa uputstvom računara, odgovori se unose direktno u računar, a administracijom intervjua upravlja posebno dizajniran program.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 8513,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Email/sr",
+          "notation": "Interview.Email",
+          "title": "Upitnik putem elektronske pošte",
+          "definition": "Intervju koji se vodi putem elektronske pošte, koji se obično sastoji od nekoliko poruka e-pošte koje omogućavaju da se diskusija nastavi izvan prvog skupa pitanja i odgovora ili prve razmene e-pošte.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 8514,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.WebBased/sr",
+          "notation": "Interview.WebBased",
+          "title": "Veb upitnik",
+          "definition": "Intervju koji se sprovodi putem interneta. Na primer, intervjui vođeni na internet forumima ili korišćenjem internet audio-vizuelne tehnologije koja omogućava anketarima i anketiranim licima da komuniciraju u realnom vremenu.",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -4374,6 +4382,7 @@
       "definition": "Den process, metod eller teknik som användes för att samla in data.",
       "previousVersion": 0,
       "initialVersion": 331,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -4404,40 +4413,13 @@
           "position": 1
         },
         {
-          "id": 7894,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sv#Interview.Telephone/sv/3.0.1",
-          "notation": "Interview.Telephone",
-          "title": "Telefonintervju",
-          "definition": "Intervju som genomförs över telefon. Använd denna bredare term om det inte rör sig om CATI, eller om det inte är känt huruvida det rör sig om CATI.",
-          "parent": "Interview",
-          "position": 2
-        },
-        {
-          "id": 7895,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sv#Interview.Email/sv/3.0.1",
-          "notation": "Interview.Email",
-          "title": "E-postintervju",
-          "definition": "Intervju som genomförs via e-post, vanligtvis över flera meddelanden som möjliggör att diskussionen fortsätter från den första uppsättningen av frågor och svar eller det första utbytet av e-brev.",
-          "parent": "Interview",
-          "position": 3
-        },
-        {
-          "id": 7896,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sv#Interview.WebBased/sv/3.0.1",
-          "notation": "Interview.WebBased",
-          "title": "Webbaserad intervju",
-          "definition": "Intervju som genomförs över Internet. Exempel inkluderar intervjuer genomförda på onlineforum eller med hjälp av webbaserad audiovisuell teknik som tillåter att intervjuare och intervjuobjekt kan kommunicera i realtid.",
-          "parent": "Interview",
-          "position": 4
-        },
-        {
           "id": 7897,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sv#Interview.FaceToFace.CAPIorCAMI/sv/3.0.1",
           "notation": "Interview.FaceToFace.CAPIorCAMI",
           "title": "Personlig intervju: CAPI/CAMI",
           "definition": "Datorstödd personlig intervju. Intervjuaren läser frågor för respondenterna från en datorskärm eller mobil enhet (t.ex. surfplatta eller mobiltelefon) och skriver in svaren direkt i datorn. Intervjun hanteras med ett program som utvecklats för detta syfte.",
           "parent": "Interview.FaceToFace",
-          "position": 5
+          "position": 2
         },
         {
           "id": 7898,
@@ -4446,7 +4428,16 @@
           "title": "Personlig intervju: PAPI",
           "definition": "Papper-och-penna-intervju. Intervjuaren använder ett traditionellt frågeformulär på papper för att läsa frågorna och skriva ned svaren.",
           "parent": "Interview.FaceToFace",
-          "position": 6
+          "position": 3
+        },
+        {
+          "id": 7894,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sv#Interview.Telephone/sv/3.0.1",
+          "notation": "Interview.Telephone",
+          "title": "Telefonintervju",
+          "definition": "Intervju som genomförs över telefon. Använd denna bredare term om det inte rör sig om CATI, eller om det inte är känt huruvida det rör sig om CATI.",
+          "parent": "Interview",
+          "position": 4
         },
         {
           "id": 7899,
@@ -4455,6 +4446,24 @@
           "title": "Telefonintervju: CATI",
           "definition": "Datorstödd telefonintervju. Intervjuaren läser frågor för respondenterna från en datorskärm och skriver in svaren direkt i datorn. Intervjun hanteras genom ett program som utvecklats för detta syfte.",
           "parent": "Interview.Telephone",
+          "position": 5
+        },
+        {
+          "id": 7895,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sv#Interview.Email/sv/3.0.1",
+          "notation": "Interview.Email",
+          "title": "E-postintervju",
+          "definition": "Intervju som genomförs via e-post, vanligtvis över flera meddelanden som möjliggör att diskussionen fortsätter från den första uppsättningen av frågor och svar eller det första utbytet av e-brev.",
+          "parent": "Interview",
+          "position": 6
+        },
+        {
+          "id": 7896,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sv#Interview.WebBased/sv/3.0.1",
+          "notation": "Interview.WebBased",
+          "title": "Webbaserad intervju",
+          "definition": "Intervju som genomförs över Internet. Exempel inkluderar intervjuer genomförda på onlineforum eller med hjälp av webbaserad audiovisuell teknik som tillåter att intervjuare och intervjuobjekt kan kommunicera i realtid.",
+          "parent": "Interview",
           "position": 7
         },
         {
@@ -4682,7 +4691,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.WebBased/sv/3.0.1",
           "notation": "Experiment.WebBased",
           "title": "Webbaserat experiment",
-          "definition": "Ett experiment som utförs i en virtuell miljö på webben, där experimentella material programmeras för att skapa artificiella situationer eller händelser som undersöks i en distribuerad miljö.  (Reips, U.-D. (2002). Theory and techniques of Web experimenting. In B. Batinic, U.-D. Reips, & M. Bosnjak (Eds.), Online Social Sciences. Seattle: Hogrefe & Huber. Tillgänglig: http://www.websm.org/uploadi/editor/Reips_2002_Theory_and_techniques.pdf [8 september, 2016]) ",
+          "definition": "Ett experiment som utförs i en virtuell miljö på webben, där experimentella material programmeras för att skapa artificiella situationer eller händelser som undersöks i en distribuerad miljö.  (Reips, U.-D. (2002). Theory and techniques of Web experimenting. In B. Batinic, U.-D. Reips, & M. Bosnjak (Eds.), Online Social Sciences. Seattle: Hogrefe & Huber. Tillgänglig: http://www.websm.org/uploadi/editor/Reips_2002_Theory_and_techniques.pdf [8 september, 2016])",
           "parent": "Experiment",
           "position": 33
         },

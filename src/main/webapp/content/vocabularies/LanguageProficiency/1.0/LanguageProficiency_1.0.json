@@ -51,7 +51,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#Native.Fluent/en/1.0",
           "notation": "Native.Fluent",
           "title": "Native: Fluent",
-          "definition": "\tThe individual is a native user with excellent mastery of the language, including breadth of vocabulary and idiom, and confident command of the grammar.",
+          "definition": "The individual is a native user with excellent mastery of the language, including breadth of vocabulary and idiom, and confident command of the grammar.",
           "parent": "Native",
           "position": 1
         },
@@ -86,7 +86,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#NonNative.Fluent/en/1.0",
           "notation": "NonNative.Fluent",
           "title": "Non-native: Fluent",
-          "definition": "\tThe individual is a non-native user with excellent mastery of the language, including breadth of vocabulary and idiom, and confident command of the grammar.",
+          "definition": "The individual is a non-native user with excellent mastery of the language, including breadth of vocabulary and idiom, and confident command of the grammar.",
           "parent": "NonNative",
           "position": 5
         },

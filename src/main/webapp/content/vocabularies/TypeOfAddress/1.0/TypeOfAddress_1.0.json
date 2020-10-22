@@ -60,7 +60,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress#Mailing.Nonresidential/en/1.0",
           "notation": "Mailing.Nonresidential",
           "title": "Mailing address: Nonresidential",
-          "definition": "\tAddress for directing physical/conventional mail to a business, organization, or other type of association.",
+          "definition": "Address for directing physical/conventional mail to a business, organization, or other type of association.",
           "parent": "Mailing",
           "position": 2
         },

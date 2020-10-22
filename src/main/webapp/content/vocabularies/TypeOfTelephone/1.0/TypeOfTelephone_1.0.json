@@ -43,7 +43,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Fixed/en/1.0",
           "notation": "Fixed",
           "title": "Fixed telephone",
-          "definition": "A telephone that transmits signals converted from audio data through physical media, such as wire or fiber optic cable; also known as landline. ",
+          "definition": "A telephone that transmits signals converted from audio data through physical media, such as wire or fiber optic cable; also known as landline.",
           "position": 0
         },
         {
@@ -69,7 +69,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Mobile/en/1.0",
           "notation": "Mobile",
           "title": "Mobile telephone",
-          "definition": "A portable telephone connected to a wireless communications network through radio waves or satellite transmissions; includes phones known as cellular (or cell) phones, hand phones, as well as satellite phones. ",
+          "definition": "A portable telephone connected to a wireless communications network through radio waves or satellite transmissions; includes phones known as cellular (or cell) phones, hand phones, as well as satellite phones.",
           "position": 3
         },
         {

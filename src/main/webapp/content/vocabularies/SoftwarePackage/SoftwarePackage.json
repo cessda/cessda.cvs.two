@@ -419,7 +419,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Other/en/1.0",
           "notation": "Other",
           "title": "Other",
-          "definition": "Use if the software package is known, but not found in the list. ",
+          "definition": "Use if the software package is known, but not found in the list.",
           "position": 47
         }
       ],

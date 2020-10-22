@@ -59,7 +59,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/ResponseUnit#Proxy/en/1.0",
           "notation": "Proxy",
           "title": "Proxy",
-          "definition": "\tUnit of response is different than the unit of analysis because the sampled unit is unavailable/unable to participate. Proxies may be allowed by the study design, but their identity is not specifically designated (for example, anyone in the household can provide information about another household member, or any available student can provide information about another student, etc.).",
+          "definition": "Unit of response is different than the unit of analysis because the sampled unit is unavailable/unable to participate. Proxies may be allowed by the study design, but their identity is not specifically designated (for example, anyone in the household can provide information about another household member, or any available student can provide information about another student, etc.).",
           "position": 2
         },
         {

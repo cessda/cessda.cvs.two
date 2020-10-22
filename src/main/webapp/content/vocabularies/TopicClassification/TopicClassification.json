@@ -10,7 +10,7 @@
   "agencyName": "CESSDA",
   "agencyLogo": "cessda.png",
   "agencyLink": "https://www.cessda.eu/",
-  "publicationDate": "2020-10-08",
+  "publicationDate": "2020-10-07",
   "notes": "Top terms should only be used if no narrower terms are applicable. More than one term can be used for classifying a dataset.",
   "versions": [
     {
@@ -719,7 +719,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion/en/4.1",
           "notation": "SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion",
           "title": "Equality, inequality and social exclusion",
-          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differences between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.\n",
+          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differences between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.",
           "previousConcept": 5720,
           "parent": "SocialStratificationAndGroupings",
           "position": 69
@@ -1013,6 +1013,7 @@
       "definition": "En typology over hovedtemaer eller emner af data.",
       "previousVersion": 304,
       "initialVersion": 295,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Code definition rephrased: Generel sundhed og trivsel\nTL code added: Health.DietAndNutrition\nTL code added: Health.DrugAbuseAlcoholAndSmoking\nCode deleted: Code Health.DrugAbuseAlcoholAndSmoking deleted\nTL code added: Health.DrugAbuseAlcoholAndSmoking\nTL code added: Health.PhysicalFitnessAndExercise\nTL code added: Politics.GovernmentPoliticalSystemsAndOrganisations\nTL code added: Economics.EconomicPolicyPublicExpenditureAndRevenue\nTL code added: Demography.Censuses\n",
       "license": "CC BY",
@@ -1112,6 +1113,16 @@
           "position": 8
         },
         {
+          "id": 11900,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestmentSaving/da/4.0.1",
+          "notation": "Economics.IncomePropertyAndInvestmentSaving",
+          "title": "Indkomst, ejendom og investering/opsparing",
+          "definition": "Indkomst, ejendom og investering/opsparing",
+          "previousConcept": 11909,
+          "parent": "Economics",
+          "position": 9
+        },
+        {
           "id": 5937,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Education/da",
           "notation": "Education",
@@ -1125,7 +1136,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Education.CompulsoryAndPreschoolEducation/da",
           "notation": "Education.CompulsoryAndPreschoolEducation",
           "title": "Obligatorisk undervisning og dagtilbud",
-          "definition": "Obligatorisk uddannelse refererer til den uddannelsesperiode, der kræves af alle personer, som bor i et land og er pålagt ved lov. Dagtilbud refererer til formel børnepasning og uddannelse, der gives forud for obligatorisk uddannelse. Anvend dette udtryk til indeksdata vedrørende dagtilbud og folkeskoleniveau, uanset om dataene fokuserer på studerende, lærere, fag eller underviste færdigheder mm. ",
+          "definition": "Obligatorisk uddannelse refererer til den uddannelsesperiode, der kræves af alle personer, som bor i et land og er pålagt ved lov. Dagtilbud refererer til formel børnepasning og uddannelse, der gives forud for obligatorisk uddannelse. Anvend dette udtryk til indeksdata vedrørende dagtilbud og folkeskoleniveau, uanset om dataene fokuserer på studerende, lærere, fag eller underviste færdigheder mm.",
           "previousConcept": 4408,
           "parent": "Education",
           "position": 11
@@ -1192,8 +1203,8 @@
           "id": 10853,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/da/4.0.1",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
-          "title": "Drug abuse, alcohol and smoking",
-          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "title": "Stofmisbrug, alkohol og rygning",
+          "definition": "Data om stofmisbrug og andet stofmisbrug. Data om rygning og drikkevaner. Anvend ’Medicinering og behandling’ til data, der dækker medicinsk brug af ’rekreative’ stoffer (såsom medicinsk brug af cannabis).",
           "parent": "Health",
           "position": 18
         },
@@ -1261,7 +1272,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.ReproductiveHealth/da",
           "notation": "Health.ReproductiveHealth",
           "title": "Reproduktiv sundhed",
-          "definition": "Reproduktionsproces, funktion eller system på ethvert stadium i livet. Inkluderer data om graviditet, fødsel, familieplanlægning, prævention og abort, overgangsalder. ",
+          "definition": "Reproduktionsproces, funktion eller system på ethvert stadium i livet. Inkluderer data om graviditet, fødsel, familieplanlægning, prævention og abort, overgangsalder.",
           "previousConcept": 4490,
           "parent": "Health",
           "position": 25
@@ -1456,7 +1467,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#MediaCommunicationAndLanguage.InformationSociety/da",
           "notation": "MediaCommunicationAndLanguage.InformationSociety",
           "title": "Informationssamfund",
-          "definition": "Oprettelsen, distributionen, anvendelsen, integrationen og manipulationen af information som en væsentlig økonomisk, politisk eller kulturel aktivitet. For eksempel data, der relaterer sig til e-handel, digital forvaltning, sociale medier, mobile enheder, adgang til og brug af internettet, e-privacy, information og biblioteksressourcer. Anvend 'Informationsteknologi', når der tales om de faktiske teknologier. ",
+          "definition": "Oprettelsen, distributionen, anvendelsen, integrationen og manipulationen af information som en væsentlig økonomisk, politisk eller kulturel aktivitet. For eksempel data, der relaterer sig til e-handel, digital forvaltning, sociale medier, mobile enheder, adgang til og brug af internettet, e-privacy, information og biblioteksressourcer. Anvend 'Informationsteknologi', når der tales om de faktiske teknologier.",
           "previousConcept": 4436,
           "parent": "MediaCommunicationAndLanguage",
           "position": 45
@@ -1769,7 +1780,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures/da",
           "notation": "SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures",
           "title": "Sociale velfærdssystemer/strukturer",
-          "definition": "Emner, der relaterer sig til den faktiske tilvejebringelse af social velfærd, hvem der i praksis leverer sociale velfærdsydelser og i hvilket omfang, hvordan de faktiske ydelser er struktureret. For eksempel, spørgsmål om, hvordan en lokal myndighed har organiseret ydelser for de ældre. ",
+          "definition": "Emner, der relaterer sig til den faktiske tilvejebringelse af social velfærd, hvem der i praksis leverer sociale velfærdsydelser og i hvilket omfang, hvordan de faktiske ydelser er struktureret. For eksempel, spørgsmål om, hvordan en lokal myndighed har organiseret ydelser for de ældre.",
           "previousConcept": 4403,
           "parent": "SocialWelfarePolicyAndSystems",
           "position": 77
@@ -1868,7 +1879,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.SocialConditionsAndIndicators/da",
           "notation": "SocietyAndCulture.SocialConditionsAndIndicators",
           "title": "Sociale forhold og indikatorer",
-          "definition": "Dækker alle aspekter af livskvaliteten og trivsel hos personer og samfund, såvel folks opfattelser heraf. Bemærk venligst ifølge det studerede aspekt, at begreberne 'Generel sundhed og trivsel', 'Lighed, ulighed og social udstødelse' og 'Økonomiske forhold og indikatorer' mm. også kan være relevante. ",
+          "definition": "Dækker alle aspekter af livskvaliteten og trivsel hos personer og samfund, såvel folks opfattelser heraf. Bemærk venligst ifølge det studerede aspekt, at begreberne 'Generel sundhed og trivsel', 'Lighed, ulighed og social udstødelse' og 'Økonomiske forhold og indikatorer' mm. også kan være relevante.",
           "previousConcept": 4433,
           "parent": "SocietyAndCulture",
           "position": 87
@@ -1907,7 +1918,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#TradeIndustryAndMarkets.BusinessIndustrialManagementAndOrganisation/da",
           "notation": "TradeIndustryAndMarkets.BusinessIndustrialManagementAndOrganisation",
           "title": "Forretnings/industriel ledelse og organisation",
-          "definition": "Data om industri og forretning såsom ledelse, produktivitet, vækst og nedgang, organisationsstruktur, administration, investering i F&U, markeder og markedsandel. ",
+          "definition": "Data om industri og forretning såsom ledelse, produktivitet, vækst og nedgang, organisationsstruktur, administration, investering i F&U, markeder og markedsandel.",
           "previousConcept": 4404,
           "parent": "TradeIndustryAndMarkets",
           "position": 91
@@ -1927,7 +1938,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#TransportAndTravel/da",
           "notation": "TransportAndTravel",
           "title": "TRANSPORT OG REJSE",
-          "definition": "Inkluderer alle typer af godstransport såvel som pendling, offentlig transport (tog, busser, undergrund mm.) og transportnetværk i by. Data om mobilitetsvaner, for eksempel, grænsehandel, ruter og midler, der anvendes til at få adgang til en lokation. Anvend begrebet 'Fritid, turisme og sport' til fritidsrejse. ",
+          "definition": "Inkluderer alle typer af godstransport såvel som pendling, offentlig transport (tog, busser, undergrund mm.) og transportnetværk i by. Data om mobilitetsvaner, for eksempel, grænsehandel, ruter og midler, der anvendes til at få adgang til en lokation. Anvend begrebet 'Fritid, turisme og sport' til fritidsrejse.",
           "previousConcept": 4427,
           "position": 93
         },
@@ -1976,6 +1987,7 @@
       "definition": "Thematische Klassifikation für Daten",
       "previousVersion": 299,
       "initialVersion": 259,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Code deleted: Code Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nTL code descriptive term rephrased: Einkommen, Vermögen und Geldanlagen rephrased into Sparen to Einkommen, Vermögen und Geldanlagen/Sparen\nTL code descriptive term rephrased: Öffentliche Gesundheit rephrased into Public Health to Öffentliche Gesundheit/Public Health\nTL code descriptive term rephrased: Öffentlichkeitsarbeit rephrased into Public Relations to Öffentlichkeitsarbeit/Public Relations",
       "license": "CC BY",
@@ -2164,8 +2176,8 @@
           "id": 10854,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/de/4.0.1",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
-          "title": "Drug abuse, alcohol and smoking",
-          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "title": "Drogenmissbrauch, Alkoholkonsum und Rauchen",
+          "definition": "Daten zu Missbrauch von Drogen und anderen Substanzen. Daten zu Rauch- und Trinkgewohnheiten. Für Daten zum medizinischen Gebrauch von Drogen (z. B. medizinischer Gebrauch von Cannabis) verwenden Sie \"Medizinische Behandlung und Medikation\"",
           "parent": "Health",
           "position": 18
         },
@@ -3141,8 +3153,8 @@
           "id": 10866,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/fi/4.0.2",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
-          "title": "Drug abuse, alcohol and smoking",
-          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "title": "Päihteiden käyttö ja tupakointi",
+          "definition": "Huumeiden, alkoholin ja muiden päihteiden käyttöön sekä tupakointiin liittyvät teemat. HUOM! Jos tutkitaan huumausaineiden (kuten kannabiksen) lääkinnällistä käyttöä, käytä termiä 'hoito ja lääkitys'.",
           "previousConcept": 10855,
           "parent": "Health",
           "position": 18
@@ -3944,6 +3956,7 @@
       "definition": "Une typologie des thèmes principaux ou des sujets des données",
       "previousVersion": 421,
       "initialVersion": 400,
+      "notes": "",
       "versionNotes": "Correction scories",
       "versionChanges": "Code value changed: olitique économique, dépenses publiques et recettes\n",
       "license": "CC BY",
@@ -4136,8 +4149,8 @@
           "id": 10865,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/fr/4.0.4",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
-          "title": "Drug abuse, alcohol and smoking",
-          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "title": "Toxicomanie, alcool et tabagisme ",
+          "definition": "Données sur l'abus de drogues et d’autres produits psychotropes. Données sur les habitudes de consommation d'alcool e de tabac. Notez : Pour les données relatives à l'usage médicinal des drogues (comme l'usage médicinal du cannabis), utilisez 'Médicaments et traitements'.",
           "previousConcept": 10864,
           "parent": "Health",
           "position": 18
@@ -4931,6 +4944,7 @@
       "definition": "Tipologia dei temi o argomenti principali trattati dai dati",
       "previousVersion": 320,
       "initialVersion": 320,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Code deleted: Code Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nCode definition rephrased: Tempo libero, turismo e sport\nCode definition rephrased: Migrazioni\nCode definition rephrased: Morbilità e mortalità",
       "license": "CC BY",
@@ -4958,6 +4972,7 @@
           "notation": "Demography.Censuses",
           "title": "Censimenti",
           "definition": "Indagini su un'intera popolazione, a differenza di un'indagine campionaria. Spesso utilizzati per le statistiche ufficiali di una popolazione, in genere includono la raccolta delle informazioni demografiche. Si noti che in alcuni paesi i censimenti non vengono utilizzati in quanto le informazioni demografiche possono essere ottenute dai registri ufficiali.",
+          "previousConcept": 11926,
           "parent": "Demography",
           "position": 1
         },
@@ -5016,6 +5031,7 @@
           "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
           "title": "Politica economica, spesa pubblica ed entrate",
           "definition": "Dati sulla politica economica, compresi bilancio e politica fiscale, spesa pubblica ed entrate pubbliche.",
+          "previousConcept": 11925,
           "parent": "Economics",
           "position": 7
         },
@@ -5035,6 +5051,7 @@
           "notation": "Economics.IncomePropertyAndInvestmentSaving",
           "title": "Reddito, proprietà e forme di risparmio/investimento",
           "definition": "Utilizzato per studi sull'accumulo di beni personali, inclusi reddito, proprietà, investimenti e risparmi.",
+          "previousConcept": 11929,
           "parent": "Economics",
           "position": 9
         },
@@ -5119,8 +5136,8 @@
           "id": 10856,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/it/4.0.1",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
-          "title": "Drug abuse, alcohol and smoking",
-          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "title": "Abuso di sostanze, alcol e fumo",
+          "definition": "Dati sull'abuso di droghe e altre sostanze. Dati sulle abitudini legate al consumo di fumo e alcol. Per i dati relativi all'uso medicinale di droghe \"ricreative\" (come l'uso medicinale della cannabis), utilizzare \"Cure e terapie\".",
           "parent": "Health",
           "position": 18
         },
@@ -5197,7 +5214,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.SignsAndSymptomsPathologicalConditions/it",
           "notation": "Health.SignsAndSymptomsPathologicalConditions",
           "title": "Segni e sintomi; condizioni patologiche",
-          "definition": " Studi sulla presenza di condizioni anatomiche o fisiologiche anormali e sulle manifestazioni oggettive o soggettive di malattia/sintomi, non classificate come malattia o sindrome (nel qual caso si utilizzerebbero \"Malattie particolari, disturbi o condizioni mediche\"). Include manifestazioni cliniche che possono essere obiettive se osservate da un professionista medico o soggettive quando percepite dal paziente. Per esempio: dolore, diarrea, eruzioni cutanee,  lunghezza diseguale delle gambe, insonnia, digrignamento dei denti, infiammazione, aritmia.",
+          "definition": "Studi sulla presenza di condizioni anatomiche o fisiologiche anormali e sulle manifestazioni oggettive o soggettive di malattia/sintomi, non classificate come malattia o sindrome (nel qual caso si utilizzerebbero \"Malattie particolari, disturbi o condizioni mediche\"). Include manifestazioni cliniche che possono essere obiettive se osservate da un professionista medico o soggettive quando percepite dal paziente. Per esempio: dolore, diarrea, eruzioni cutanee,  lunghezza diseguale delle gambe, insonnia, digrignamento dei denti, infiammazione, aritmia.",
           "previousConcept": 4783,
           "parent": "Health",
           "position": 26
@@ -5496,6 +5513,7 @@
           "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
           "title": "Governo, sistemi e organizzazioni politici",
           "definition": "Questioni relative a governi nazionali, regionali e locali, organi di governo (ad esempio Governo, Parlamento, enti governativi locali), amministrazione pubblica, altre organizzazioni politiche come i partiti politici. Ad esempio, dati sulle politiche governative, i partiti politici e le loro politiche, i leader dei partiti politici, la fiducia negli organismi governativi. Si noti che potrebbe essere necessario affiancare a questo termine anche altri termini più specifici del vocabolario.",
+          "previousConcept": 11928,
           "parent": "Politics",
           "position": 57
         },
@@ -5951,7 +5969,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.ConsumptionAndConsumerBehaviour/no",
           "notation": "Economics.ConsumptionAndConsumerBehaviour",
           "title": "Konsum og konsumentatferd",
-          "definition": "Refererer til handlingen om å tilegne seg og/eller evne til å møte behov og ønsker hos en person, fellesskapet eller samfunnet. Data i denne kategorien omfatter også konsum på personlige- og husholdninsartikler, endringer i konsumentatferd, og studier om konsument og etikk. For eksempel data om hvor ofte personer kjøper en type ting, hvor og når de handler; om etiske betraktninger påvirker konsumvalget. ",
+          "definition": "Refererer til handlingen om å tilegne seg og/eller evne til å møte behov og ønsker hos en person, fellesskapet eller samfunnet. Data i denne kategorien omfatter også konsum på personlige- og husholdninsartikler, endringer i konsumentatferd, og studier om konsument og etikk. For eksempel data om hvor ofte personer kjøper en type ting, hvor og når de handler; om etiske betraktninger påvirker konsumvalget.",
           "previousConcept": 4048,
           "parent": "Economics",
           "position": 5
@@ -6075,8 +6093,8 @@
           "id": 10857,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/no/4.0.1",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
-          "title": "Drug abuse, alcohol and smoking",
-          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "title": "Stoffmisbruk, alkohol og røyking",
+          "definition": "Data om narkotiske stoffer og misbruk av rusmidler. Data om tobakks- og alkoholvaner. Når det gjelder data som omhandler medisinsk bruk av 'avslappende' stoffer , brukes termen 'Medisiner og behandling'.",
           "parent": "Health",
           "position": 18
         },
@@ -6573,7 +6591,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion/no",
           "notation": "SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion",
           "title": "Likhet, ulikhet og sosial eksklusjon",
-          "definition": "Problemstillinger knyttet til om alle individer eller grupper av individer har samme status og muligheter i et samfunn. Likhet kan studeres for eksempel ved å se på utdannelse, formue eller inntekt, yrke, makt, prestisje, betingelser for arbeid og fritid, tilgang til tjenester, og sosiale relasjoner. Marginalisering og sosial eksklusjon kan være et resultat av ugunstige forhold på flere områder i livet, og mennesker det gjelder kan bli fratatt rettigheter, muligheter, ressurser og sosial integrering. Eksempler på data: Statistikk over inntekt og likhet, oppfattelsen av gruppefokusert diskriminering (for eksempel mot innvandrere, hjemløse, asylsøkere); oppfattelsen av forskjeller mellom menn og kvinner når det gjelder mulighet for ledende politiske roller; innvirkningen av foreldres arbeidsløshet på barns utdanningsnivå og sosiale nettverk. ",
+          "definition": "Problemstillinger knyttet til om alle individer eller grupper av individer har samme status og muligheter i et samfunn. Likhet kan studeres for eksempel ved å se på utdannelse, formue eller inntekt, yrke, makt, prestisje, betingelser for arbeid og fritid, tilgang til tjenester, og sosiale relasjoner. Marginalisering og sosial eksklusjon kan være et resultat av ugunstige forhold på flere områder i livet, og mennesker det gjelder kan bli fratatt rettigheter, muligheter, ressurser og sosial integrering. Eksempler på data: Statistikk over inntekt og likhet, oppfattelsen av gruppefokusert diskriminering (for eksempel mot innvandrere, hjemløse, asylsøkere); oppfattelsen av forskjeller mellom menn og kvinner når det gjelder mulighet for ledende politiske roller; innvirkningen av foreldres arbeidsløshet på barns utdanningsnivå og sosiale nettverk.",
           "previousConcept": 4026,
           "parent": "SocialStratificationAndGroupings",
           "position": 69
@@ -6859,6 +6877,7 @@
       "definition": "Tipologia (classificação por tópicos) dos principais temas dos dados.",
       "previousVersion": 0,
       "initialVersion": 370,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -7033,8 +7052,8 @@
           "id": 10860,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/pt/4.0.1",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
-          "title": "Drug abuse, alcohol and smoking",
-          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "title": "Abuso de drogas, álcool e tabagismo ",
+          "definition": "Dados sobre abuso de drogas e outras substâncias. Dados sobre hábitos de tabagismo e consumo de álcool. Para dados sobre uso de drogas medicamente prescritas (como por exemplo o uso de canábis para fins terapêuticos), usar 'Medicação e tratamento'.",
           "parent": "Health",
           "position": 18
         },
@@ -7726,6 +7745,7 @@
       "definition": "Tipologija glavnih vsebinskih področij raziskav.",
       "previousVersion": 261,
       "initialVersion": 261,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Changed few typos.",
       "license": "CC BY",
@@ -7746,6 +7766,16 @@
           "definition": "",
           "previousConcept": 3381,
           "position": 0
+        },
+        {
+          "id": 11936,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/sl/3.0.1",
+          "notation": "Demography.Censuses",
+          "title": "popisi",
+          "definition": "Ankete na celotni populaciji, v nasprotju z vzorčnimi raziskavami. Pogosto se uporabljajo za uradno štetje prebivalstva, ki običajno vključuje zbiranje povezanih demografskih informacij. Upoštevajte, da se v nekaterih državah popisi ne uporabljajo, saj se lahko demografske informacije pridobijo iz uradnih registrov.",
+          "previousConcept": 3383,
+          "parent": "Demography",
+          "position": 1
         },
         {
           "id": 4312,
@@ -7797,12 +7827,32 @@
           "position": 6
         },
         {
+          "id": 11935,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/sl/3.0.1",
+          "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
+          "title": "gospodarska politika, javna poraba in proračun",
+          "definition": "Podatki o gospodarski politiki, vključno s proračunsko in fiskalno politiko, javno porabo in prihodki.",
+          "previousConcept": 3388,
+          "parent": "Economics",
+          "position": 7
+        },
+        {
           "id": 4384,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.SystemsAndDevelopment/sl/3.0.1",
           "notation": "Economics.SystemsAndDevelopment",
           "title": "gospodarski sistemi in razvoj",
           "definition": "Uporabite za raziskave kapitalističnih, socialističnih in drugih ekonomskih sistemov ter za raziskave, na primer mednarodnih razvojnih programov.",
           "previousConcept": 3390,
+          "parent": "Economics",
+          "position": 8
+        },
+        {
+          "id": 11939,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestment/sl/3.0.1",
+          "notation": "Economics.IncomePropertyAndInvestment",
+          "title": "dohodek, lastnina in vlaganje/varčevanje",
+          "definition": "Uporabite za raziskave o kopičenju osebnih sredstev, vključno s prihodki, premoženjem, naložbami in prihranki.",
+          "previousConcept": 3389,
           "parent": "Economics",
           "position": 8
         },
@@ -7941,6 +7991,16 @@
           "title": "znaki in simptomi; patološki pogoji",
           "definition": "Raziskave nenormalnih anatomskih ali fizioloških razmer ter objektivnih ali subjektivnih pojavnosti bolezni/simptomov, ki niso razvrščeni kot bolezen ali sindrom (v tem primeru bi uporabili izraz \"Posebne bolezni, motnje ali zdravstvene razmere\"). Vključuje klinične pojavnosti, ki so lahko objektivne, če jih opazuje zdravstveni delavec, ali subjektivne, ko jih zazna posameznik sam. Npr. bolečina, driska, izpuščaj, neenakost dolžine nog, nespečnost, škripanje z zobmi, vnetje, aritmija.",
           "previousConcept": 3400,
+          "parent": "Health",
+          "position": 26
+        },
+        {
+          "id": 11937,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/sl/3.0.1",
+          "notation": "Health.HealthBehaviour",
+          "title": "skrb za zdravje",
+          "definition": "Vedenja posameznikov, ki vplivajo, ščitijo, ohranjajo ali spodbujajo njihovo zdravstveno stanje in s tem povezan življenjski slog. Življenjski slog je tesno povezan s skrbjo za zdravje; dejavniki, ki vplivajo na življenjski slog, so socioekonomski, izobraževalni in kulturni. Vključuje: prehrambene pojave in procese, vzorce prehranjevanja in navade ter merljive prehranske parametre; podatke o splošni ravni telesne pripravljenosti, telesni dejavnosti in gibanju; podatke o uporabi in zlorabi drog, alkohola in drugih snovi ter podatke o kajenju.",
+          "previousConcept": 3407,
           "parent": "Health",
           "position": 26
         },
@@ -8234,6 +8294,16 @@
           "title": "volitve",
           "definition": "Podatki o volitvah, referendumih, volilnih kampanjah, rezultatih volitev, kandidatih na volitvah, financiranju volitev itd.",
           "previousConcept": 3435,
+          "parent": "Politics",
+          "position": 56
+        },
+        {
+          "id": 11938,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/sl/3.0.1",
+          "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
+          "title": "vlada, politični sistemi in organizacije",
+          "definition": "Vprašanja v zvezi z državnimi, regionalnimi in lokalnimi oblastmi, upravnimi organi (npr. vlado, parlamentom, organi lokalne skupnosti), javno upravo, drugimi političnimi organizacijami, kot so politične stranke. Na primer, podatki o vladnih politikah, političnih strankah in njihovih politikah, podatki o voditeljih političnih strank, zaupanju v vladne organe. Upoštevajte, da boste morda morali uporabiti tudi dodatno vsebinsko področje.",
+          "previousConcept": 3437,
           "parent": "Politics",
           "position": 56
         },
@@ -8627,6 +8697,7 @@
       "definition": "Tipologija glavnih oblasti ili tema na koje se podaci odnose.",
       "previousVersion": 0,
       "initialVersion": 403,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -9494,6 +9565,7 @@
       "definition": "En typologi för större teman eller ämneskategorier för data.",
       "previousVersion": 302,
       "initialVersion": 260,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Code deleted: Code Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability\nCode definition rephrased: Informationssamhället\nCode definition rephrased: Jämlikhet, ojämlikhet och socialt utanförskap\n",
       "license": "CC BY",
@@ -9682,8 +9754,8 @@
           "id": 10859,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/sv/4.0.1",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
-          "title": "Drug abuse, alcohol and smoking",
-          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "title": "Drogmissbruk, alkohol och rökning",
+          "definition": "Data om missbruk av narkotika och andra droger. Data om rökning och alkoholvanor. Använd 'Medicinering och behandlingar' om det handlar om medicinskt bruk av rekreativa droger (t.ex. användning av cannabis i medicinskt syfte).",
           "parent": "Health",
           "position": 18
         },

@@ -10,7 +10,7 @@
   "agencyName": "CESSDA",
   "agencyLogo": "cessda.png",
   "agencyLink": "https://www.cessda.eu/",
-  "publicationDate": "2020-10-08",
+  "publicationDate": "2020-10-07",
   "notes": "Top terms should only be used if no narrower terms are applicable. More than one term can be used for classifying a dataset.",
   "versions": [
     {
@@ -27,6 +27,7 @@
       "definition": "A typology of main themes or subjects of data.",
       "previousVersion": 251,
       "initialVersion": 251,
+      "notes": "",
       "versionNotes": "Ten code values were edited for consistency with other entries. Typos were corrected in nine definitions.",
       "versionChanges": "Code value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed to MediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode definition rephrased: Vocational education and training\nCode definition rephrased: Working conditions\nCode definition rephrased: Equality, inequality and social exclusion\nCode definition rephrased: Educational policy\nCode definition rephrased: Leisure, tourism and sport\nCode definition rephrased: Compulsory and pre-school education\nCode definition rephrased: Employee training\nCode definition rephrased: Media\nCode definition rephrased: Health behaviour",
       "license": "CC BY",
@@ -47,16 +48,6 @@
           "position": 0
         },
         {
-          "id": 3926,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/en/3.0",
-          "notation": "Demography.MorbidityAndMortality",
-          "title": "Morbidity and mortality",
-          "definition": "Morbidity refers to incidence of ill health in a population. Data may cover the incidence or morbidity rate of a medical condition. For example, the number of people who suffer from lung cancer in a country or a geographic area during a single year. Mortality data indicate the numbers of deaths in a population by place, time, cause, or type of individual etc. For example, maternal mortality rate, child mortality rate. Note that self-reported survey data on illnesses and medical conditions are indexed with HEALTH hierarchy terms.",
-          "previousConcept": 2011,
-          "parent": "Demography",
-          "position": 1
-        },
-        {
           "id": 3881,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/en/3.0",
           "notation": "Demography.Censuses",
@@ -64,7 +55,7 @@
           "definition": "Surveys of an entire population, as opposed to a sample survey. Often used for official enumerations of a population, usually including the collection of related demographic information. Note that in some countries censuses are not used as demographic information can be obtained from official registers.",
           "previousConcept": 2012,
           "parent": "Demography",
-          "position": 2
+          "position": 1
         },
         {
           "id": 3894,
@@ -73,6 +64,16 @@
           "title": "Migration",
           "definition": "Includes immigration, emigration, internal migration as well as other types of geographical mobility. Immigration means coming to settle in another country than one's home country. Emigration means leaving one's home country to settle in another country. Migration is an umbrella term for both. Migration also includes internal migration, that is, movement of people within one country at different geographical levels.",
           "previousConcept": 2013,
+          "parent": "Demography",
+          "position": 2
+        },
+        {
+          "id": 3926,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/en/3.0",
+          "notation": "Demography.MorbidityAndMortality",
+          "title": "Morbidity and mortality",
+          "definition": "Morbidity refers to incidence of ill health in a population. Data may cover the incidence or morbidity rate of a medical condition. For example, the number of people who suffer from lung cancer in a country or a geographic area during a single year. Mortality data indicate the numbers of deaths in a population by place, time, cause, or type of individual etc. For example, maternal mortality rate, child mortality rate. Note that self-reported survey data on illnesses and medical conditions are indexed with HEALTH hierarchy terms.",
+          "previousConcept": 2011,
           "parent": "Demography",
           "position": 3
         },
@@ -668,7 +669,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.EqualityAndInequality/en/3.0",
           "notation": "SocialStratificationAndGroupings.EqualityAndInequality",
           "title": "Equality, inequality and social exclusion",
-          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differences between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.\n",
+          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differences between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.",
           "previousConcept": 2074,
           "parent": "SocialStratificationAndGroupings",
           "position": 64
@@ -976,6 +977,7 @@
       "definition": "En typology over hovedtemaer eller emner af data.",
       "previousVersion": 295,
       "initialVersion": 295,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Code definition rephrased: Sygelighed og dødelighed\nCode definition rephrased: ANDET\nCode descriptive term rephrased: DEMOGRAFI (BEFOLKNING, BEFOLKNINGSUDVIKLING OG FOLKETÆLLINGER)\nCode definition rephrased: Sygelighed og dødelighed\nCode descriptive term rephrased: Sygelighed og dødelighed\nCode definition rephrased: Folketællinger\nCode descriptive term rephrased: Indvandring\nCode definition amended with meaning change: Migration\nCode definition rephrased: Økonomiske forhold og indikatorer\nCode definition amended with meaning change: Forbrug og forbrugeradfærd\nCode descriptive term rephrased: Økonomisk politik, offentlige udgifter og offentlige indtægter\nCode definition rephrased: Økonomisk politik, offentlige udgifter og indtægter\nCode definition rephrased: Indkomst, ejendom og investering/opsparing\nCode definition rephrased: Økonomiske systemer og udvikling\nCode descriptive term rephrased: Sundhedsvæsenet og sundhedspolitik\nCode definition amended with meaning change: Sundhedsydelser og -politikker\nCode descriptive term rephrased: Specifikke sygdomme, lidelser og sygdomslidelser\nCode definition amended with meaning change: Specifikke sygdomme, lidelser og medicinske tilstande\nCode definition rephrased: Tegn på sygdom og symptomer; patalogiske lidelser\nCode definition rephrased: Tegn  og symptomer; patologiske lidelser\nCode definition amended with meaning change: Sår og skader\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Generel sundhed og trivsel\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Medicinering og behandling\nCode definition rephrased: Folkesundhed\nCode definition rephrased: Reproduktiv sundhed\nCode definition rephrased: Sundhed på arbejdspladsen\nCode descriptive term rephrased: Sundhed på arbejdspladsen\nCode definition rephrased: Sundhedsadfærd\nCode definition amended with meaning change: HISTORIE\nCode definition rephrased: HISTORIE\nCode definition amended with meaning change: Bolig\nCode definition rephrased: Arealanvendelse og planlægning\nCode descriptive term rephrased: ARBEJDE OG BESKÆFTIGELSE\nCode descriptive term rephrased: BOLIG OG AREAL ANVENDELSE\nCode definition amended with meaning change: Beskæftigelse\nCode definition amended with meaning change: Arbejdsløshed\nCode definition amended with meaning change: Pensionering\nCode descriptive term rephrased: Uddannelse af medarbejdere\nCode definition amended with meaning change: Medarbejderuddannelse\nCode descriptive term rephrased: Relationer og konflikter på arbejdsmarkedet\nCode definition rephrased: Arbejdsvilkår\nCode descriptive term rephrased: Arbejdsmarkedspolitk og beskæftigelsespolitik\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode descriptive term rephrased: LOV, KRIMINALITET OG RETSYSTEMER\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode definition rephrased: Lovgivning og retssystemer\nCode definition rephrased: Kriminalitet og retshåndhævelse\nCode definition rephrased: Medier\nCode definition rephrased: Offentlige relationer (PR)\nCode definition amended with meaning change: Informationssamfund\nCode definition rephrased: Informationssamfund\nCode definition rephrased: Sprog og lingvistik\nCode descriptive term rephrased: Miljø og bevarelse\nCode definition rephrased: Miljø og bevaring\nCode definition rephrased: Energi og naturrressourcer\nCode definition rephrased: Planter og dyr\nCode descriptive term rephrased: Politisk adfærd og holdning\nCode definition rephrased: Politisk adfærd og holdninger\nCode definition rephrased: Valg\nCode definition rephrased: Politisk ideologi\nCode definition rephrased: Regering, politiske systemer og organisationer\nCode descriptive term rephrased: International polik og organisation\nCode definition rephrased: International politik og organisationer\nCode definition rephrased: Konflikt, sikkerhed og fred\nCode descriptive term rephrased: PSYCHOLOGI \nCode definition rephrased: Informationsteknologi\nCode descriptive term rephrased: SOCIAL STRATIFICATION OG GRUPPERINGER\nCode descriptive term rephrased: Lighed, ulighed og social eksklusion\nCode definition rephrased: Social- og erhvervsmobilitet\nCode definition rephrased: Køn og kønsroller\nCode definition rephrased: Familieliv og ægteskab\nCode descriptive term rephrased: Minoritet\nCode definition rephrased: Eliter og lederskab\nCode descriptive term rephrased: VELFÆRDSPOLITIK OG VELFÆRDSSYSTEMER\nCode descriptive term rephrased: Velfærdsspolitik\nCode definition rephrased: Social velfærdsspolitik\nCode descriptive term rephrased: Velfrædssystemer/strukturerer\nCode definition rephrased: Sociale velfærdssystemer/strukturer\nCode descriptive term rephrased: Specifikke sociale service: Deres brug og tilgængelighed\nCode definition rephrased: Specifikke sociale ydelser: Brug og tilgængelighed\nCode descriptive term rephrased: Social adfærd pg attitude\nCode definition rephrased: Social adfærd og holdninger\nCode descriptive term rephrased: Sociale vilkår og tegn\nCode definition rephrased: Sociale forhold og indikatorer\nCode definition rephrased: Kulturelle aktiviteter og deltagelse\nCode definition rephrased: Kulturel og national identitet\nCode definition rephrased: Fritid, turisme og sport\nCode definition rephrased: Religion og værdier\nCode descriptive term rephrased: Lokalsamfund, byliv og landligt liv\nCode definition rephrased: Lokalsamfund, byliv og landligt liv\nCode definition rephrased: Forbrug af tid\nCode descriptive term rephrased: Sociale ændringer\nCode definition rephrased: Social forandring\nCode descriptive term rephrased: HANDEL, INDUSTRI OG MARKED\nCode definition rephrased: Forretnings/industriel ledelse og organisation\nCode definition rephrased: Landbrug og landlig industri\nCode descriptive term rephrased: Handel med udlandet\nCode definition rephrased: Udenrigshandel\nCode descriptive term rephrased: TRANSPORT OG REJSER\nCode definition rephrased: TRANSPORT OG REJSE\nCode definition rephrased: Sundhedsydelser og -politikker\nCode definition rephrased: Tegn  og symptomer; patologiske lidelser\nCode definition rephrased: Sår og skader\nCode definition rephrased: HISTORIE\nCode definition rephrased: Beskæftigelse\nCode definition rephrased: Arbejdsvilkår\nCode definition rephrased: Arbejdsmarkeds- og beskæftigelsespolitik\nCode definition rephrased: Politisk adfærd og holdninger\nCode definition rephrased: Konflikt, sikkerhed og fred\nCode definition rephrased: Informationsteknologi\nCode definition rephrased: Køn og kønsroller\nCode definition rephrased: Minoriteter\nCode definition rephrased: Social velfærdsspolitik\nCode definition rephrased: Fritid, turisme og sport\nCode definition rephrased: Generel sundhed og trivsel\nCode definition rephrased: Sprog og lingvistik\nCode descriptive term rephrased: Ungdomsuddanelser og videregående uddannelse\nCode descriptive term rephrased: Obligatorisk undervisning og daginstitutioner\nCode definition amended with meaning change: Obligatorisk undervisning og dagtilbud\nCode definition amended with meaning change: Ungdomsuddanelse og videregående uddannelse\nCode definition amended with meaning change: Erhvervsuddannelse\nCode definition amended with meaning change: Livslang uddannelse/efteruddannelse\nCode definition amended with meaning change: Uddannelsespolitik\n",
       "license": "CC BY",
@@ -996,6 +998,16 @@
           "definition": "",
           "previousConcept": 3561,
           "position": 0
+        },
+        {
+          "id": 11906,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/da/3.0.1",
+          "notation": "Demography.Censuses",
+          "title": "Folketællinger",
+          "definition": "Oversigter over en hel befolkning i modsætning til et udsnit af en befolkning. Det bliver ofte brugt til officielle opregninger af en befolkning, ofte i samspil med en samling af relateret demografisk information. Bemærk at i nogle lande bliver folketællinger ikke brugt som demografisk information. Man kan skaffe sig adgang til disse ved hjælp af officielle registre.",
+          "previousConcept": 3563,
+          "parent": "Demography",
+          "position": 1
         },
         {
           "id": 4418,
@@ -1047,12 +1059,32 @@
           "position": 6
         },
         {
+          "id": 11905,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/da/3.0.1",
+          "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
+          "title": "Økonomisk politik, offentlige udgifter og offentlige indtægter",
+          "definition": "Data om økonomisk politik, herunder budgetlægning og finanspolitik, offentlige udgifter og offentlige indtægter.",
+          "previousConcept": 3568,
+          "parent": "Economics",
+          "position": 7
+        },
+        {
           "id": 4434,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.SystemsAndDevelopment/da/3.0.1",
           "notation": "Economics.SystemsAndDevelopment",
           "title": "Økonomiske systemer og udvikling",
           "definition": "Anvend til undersøgelser, der forsker i kapitalistiske, socialistiske og andre økonomiske systemer og til undersøgelser, for eksempel, om internationale udviklingsprogrammer.",
           "previousConcept": 3570,
+          "parent": "Economics",
+          "position": 8
+        },
+        {
+          "id": 11909,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestment/da/3.0.1",
+          "notation": "Economics.IncomePropertyAndInvestment",
+          "title": "Indkomst, ejendom og investering/opsparing",
+          "definition": "Bruges til studier af akkumulering af personlige aktiver, herunder indkomst, ejendom, investeringer og opsparinger.",
+          "previousConcept": 3569,
           "parent": "Economics",
           "position": 8
         },
@@ -1070,7 +1102,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Education.CompulsoryAndPreschool/da/3.0.1",
           "notation": "Education.CompulsoryAndPreschool",
           "title": "Obligatorisk undervisning og dagtilbud",
-          "definition": "Obligatorisk uddannelse refererer til den uddannelsesperiode, der kræves af alle personer, som bor i et land og er pålagt ved lov. Dagtilbud refererer til formel børnepasning og uddannelse, der gives forud for obligatorisk uddannelse. Anvend dette udtryk til indeksdata vedrørende dagtilbud og folkeskoleniveau, uanset om dataene fokuserer på studerende, lærere, fag eller underviste færdigheder mm. ",
+          "definition": "Obligatorisk uddannelse refererer til den uddannelsesperiode, der kræves af alle personer, som bor i et land og er pålagt ved lov. Dagtilbud refererer til formel børnepasning og uddannelse, der gives forud for obligatorisk uddannelse. Anvend dette udtryk til indeksdata vedrørende dagtilbud og folkeskoleniveau, uanset om dataene fokuserer på studerende, lærere, fag eller underviste færdigheder mm.",
           "previousConcept": 3572,
           "parent": "Education",
           "position": 11
@@ -1179,7 +1211,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.Reproductive/da/3.0.1",
           "notation": "Health.Reproductive",
           "title": "Reproduktiv sundhed",
-          "definition": "Reproduktionsproces, funktion eller system på ethvert stadium i livet. Inkluderer data om graviditet, fødsel, familieplanlægning, prævention og abort, overgangsalder. ",
+          "definition": "Reproduktionsproces, funktion eller system på ethvert stadium i livet. Inkluderer data om graviditet, fødsel, familieplanlægning, prævention og abort, overgangsalder.",
           "previousConcept": 3585,
           "parent": "Health",
           "position": 25
@@ -1191,6 +1223,16 @@
           "title": "Tegn  og symptomer; patologiske lidelser",
           "definition": "Undersøgelse af unormale anatomiske eller fysiologiske tilstande og objektive eller subjektive manifestationer af sygdom/symptomer, der ikke er klassificeret som sygdom eller syndrom (i hvilket tilfælde 'Specifikke sygdomme, lidelser og medicinske tilstande' ville blive anvendt). Inkluderer kliniske manifestationer, der kan være objektive, når de observeres af en medicinsk professionel eller subjektive, når de opfattes af patienten. For eksempel smerte, diarré, udslæt, ulighed i benlængde, søvnløshed, skæren tænder, betændelse, arytmi.",
           "previousConcept": 3580,
+          "parent": "Health",
+          "position": 26
+        },
+        {
+          "id": 11907,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/da/3.0.1",
+          "notation": "Health.HealthBehaviour",
+          "title": "Sundhedsadfærd",
+          "definition": "Individers adfærd, der påvirker, beskytter, opretholder og fremmer deres sundhedstilstand og deres livsstil. Livsstil er associeret med sundhedsadfærd. De faktorer der påvirker livsstil er socioøkonomi, uddannelse og det kulturelle. Inkluderer: ernæringsfænomener og processer, spisevaner og mønstre og målbare ernæringsparametre, data om menneskers generelle kondition, fysisk aktivitet, mængden af motion; data om brug og misburg af stoffer, alkohol og andre substanser og rygning.",
+          "previousConcept": 3587,
           "parent": "Health",
           "position": 26
         },
@@ -1374,7 +1416,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#MediaCommunicationAndLanguage.InformationSociety/da/3.0.1",
           "notation": "MediaCommunicationAndLanguage.InformationSociety",
           "title": "Informationssamfund",
-          "definition": "Oprettelsen, distributionen, anvendelsen, integrationen og manipulationen af information som en væsentlig økonomisk, politisk eller kulturel aktivitet. For eksempel data, der relaterer sig til e-handel, digital forvaltning, sociale medier, mobile enheder, adgang til og brug af internettet, e-privacy, information og biblioteksressourcer. Anvend 'Informationsteknologi', når der tales om de faktiske teknologier. ",
+          "definition": "Oprettelsen, distributionen, anvendelsen, integrationen og manipulationen af information som en væsentlig økonomisk, politisk eller kulturel aktivitet. For eksempel data, der relaterer sig til e-handel, digital forvaltning, sociale medier, mobile enheder, adgang til og brug af internettet, e-privacy, information og biblioteksressourcer. Anvend 'Informationsteknologi', når der tales om de faktiske teknologier.",
           "previousConcept": 3606,
           "parent": "MediaCommunicationAndLanguage",
           "position": 45
@@ -1476,6 +1518,16 @@
           "previousConcept": 3618,
           "parent": "Politics",
           "position": 55
+        },
+        {
+          "id": 11908,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/da/3.0.1",
+          "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
+          "title": "Regering, politiske systemer og organisationer",
+          "definition": "Emner der relaterer sig til nationalt, regionalt og lokalt styre, ledende instanser (regering, parlament og lokale ledende instanser), offentlig administration og andre politiske organisationer, såsom politiske partier. Fx data om regeringspolitik, politiske partier og deres politik, politiske partiers ledere samt tillid til statslige instanser.",
+          "previousConcept": 3616,
+          "parent": "Politics",
+          "position": 56
         },
         {
           "id": 4487,
@@ -1678,7 +1730,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures/da/3.0.1",
           "notation": "SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures",
           "title": "Sociale velfærdssystemer/strukturer",
-          "definition": "Emner, der relaterer sig til den faktiske tilvejebringelse af social velfærd, hvem der i praksis leverer sociale velfærdsydelser og i hvilket omfang, hvordan de faktiske ydelser er struktureret. For eksempel, spørgsmål om, hvordan en lokal myndighed har organiseret ydelser for de ældre. ",
+          "definition": "Emner, der relaterer sig til den faktiske tilvejebringelse af social velfærd, hvem der i praksis leverer sociale velfærdsydelser og i hvilket omfang, hvordan de faktiske ydelser er struktureret. For eksempel, spørgsmål om, hvordan en lokal myndighed har organiseret ydelser for de ældre.",
           "previousConcept": 3634,
           "parent": "SocialWelfarePolicyAndSystems",
           "position": 77
@@ -1777,7 +1829,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.SocialConditionsAndIndicators/da/3.0.1",
           "notation": "SocietyAndCulture.SocialConditionsAndIndicators",
           "title": "Sociale forhold og indikatorer",
-          "definition": "Dækker alle aspekter af livskvaliteten og trivsel hos personer og samfund, såvel folks opfattelser heraf. Bemærk venligst ifølge det studerede aspekt, at begreberne 'Generel sundhed og trivsel', 'Lighed, ulighed og social udstødelse' og 'Økonomiske forhold og indikatorer' mm. også kan være relevante. ",
+          "definition": "Dækker alle aspekter af livskvaliteten og trivsel hos personer og samfund, såvel folks opfattelser heraf. Bemærk venligst ifølge det studerede aspekt, at begreberne 'Generel sundhed og trivsel', 'Lighed, ulighed og social udstødelse' og 'Økonomiske forhold og indikatorer' mm. også kan være relevante.",
           "previousConcept": 3638,
           "parent": "SocietyAndCulture",
           "position": 87
@@ -1816,7 +1868,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#TradeIndustryAndMarkets.BusinessIndustrialManagementAndOrganisation/da/3.0.1",
           "notation": "TradeIndustryAndMarkets.BusinessIndustrialManagementAndOrganisation",
           "title": "Forretnings/industriel ledelse og organisation",
-          "definition": "Data om industri og forretning såsom ledelse, produktivitet, vækst og nedgang, organisationsstruktur, administration, investering i F&U, markeder og markedsandel. ",
+          "definition": "Data om industri og forretning såsom ledelse, produktivitet, vækst og nedgang, organisationsstruktur, administration, investering i F&U, markeder og markedsandel.",
           "previousConcept": 3647,
           "parent": "TradeIndustryAndMarkets",
           "position": 91
@@ -1836,7 +1888,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#TransportAndTravel/da/3.0.1",
           "notation": "TransportAndTravel",
           "title": "TRANSPORT OG REJSE",
-          "definition": "Inkluderer alle typer af godstransport såvel som pendling, offentlig transport (tog, busser, undergrund mm.) og transportnetværk i by. Data om mobilitetsvaner, for eksempel, grænsehandel, ruter og midler, der anvendes til at få adgang til en lokation. Anvend begrebet 'Fritid, turisme og sport' til fritidsrejse. ",
+          "definition": "Inkluderer alle typer af godstransport såvel som pendling, offentlig transport (tog, busser, undergrund mm.) og transportnetværk i by. Data om mobilitetsvaner, for eksempel, grænsehandel, ruter og midler, der anvendes til at få adgang til en lokation. Anvend begrebet 'Fritid, turisme og sport' til fritidsrejse.",
           "previousConcept": 3650,
           "position": 93
         },
@@ -1877,6 +1929,7 @@
       "definition": "Thematische Klassifikation für Daten",
       "previousVersion": 259,
       "initialVersion": 259,
+      "notes": "",
       "versionNotes": "First German version of SL 3.0 published.",
       "versionChanges": "Code value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry",
       "license": "CC BY",
@@ -1897,6 +1950,16 @@
           "definition": "",
           "previousConcept": 2215,
           "position": 0
+        },
+        {
+          "id": 11911,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/de/3.0.1",
+          "notation": "Demography.Censuses",
+          "title": "Volkszählungen",
+          "definition": "Befragungen der Gesamtbevölkerung, im Gegensatz zu Stichprobenbefragungen. In der Regel ist der Zweck eine offizielle Erhebung der Bevölkerungszahl, üblicherweise bei gleichzeitiger Erhebung weiterer demographischer Informationen. In manchen Ländern sind Volkszählungen nicht üblich, da entsprechende demographische Informationen der offiziellen Statistik bzw. amtlichen Verzeichnissen entnommen werden können.",
+          "previousConcept": 2217,
+          "parent": "Demography",
+          "position": 1
         },
         {
           "id": 3937,
@@ -1946,6 +2009,26 @@
           "previousConcept": 2220,
           "parent": "Economics",
           "position": 6
+        },
+        {
+          "id": 11910,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/de/3.0.1",
+          "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
+          "title": "Wirtschaftspolitik, öffentliche Ausgaben und Einnahmen",
+          "definition": "Daten zu Wirtschaftspolitik, einschließlich Haushalts- und Finanzpolitik, Staatsausgaben und Staatseinnahmen.",
+          "previousConcept": 2222,
+          "parent": "Economics",
+          "position": 7
+        },
+        {
+          "id": 11914,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestment/de/3.0.1",
+          "notation": "Economics.IncomePropertyAndInvestment",
+          "title": "Einkommen, Vermögen und Geldanlagen / Sparen",
+          "definition": "Zu verwenden für Studien zu persönlichem Vermögenszuwachs, einschließlich Einkommen, Vermögen, Geldanlagen und Ersparnisse.",
+          "previousConcept": 2223,
+          "parent": "Economics",
+          "position": 8
         },
         {
           "id": 3987,
@@ -2092,6 +2175,16 @@
           "title": "Krankheitszeichen, Symptome und krankhafte Befunde",
           "definition": "Daten zu anatomischen oder physiologischen Befunden und objektiven oder subjektiven Anzeichen von Erkrankungen oder Symptomen, die nicht als Krankheit oder Syndrom eingeordnet werden (in solchen Fällen bitte die Klasse 'Spezifische Krankheiten, Störungen und Gesundheitsprobleme' verwenden). Davon erfasst sind klinische Anzeichen, die entweder objektiv von medizinisch ausgebildeten Personen oder subjektiv durch Betroffene wahrgenommen werden. Beispiele sind Schmerzen, Durchfall, Ausschlag, Beinlängendifferenz, Schlafstörungen, Zähneknirschen, Entzündung, Herzrhythmusstörung.",
           "previousConcept": 2234,
+          "parent": "Health",
+          "position": 26
+        },
+        {
+          "id": 11912,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/de/3.0.1",
+          "notation": "Health.HealthBehaviour",
+          "title": "Gesundheitsverhalten",
+          "definition": "Gesundheitsverhalten ist individuelles Verhalten (inklusive Lebensstil), das die Gesundheit beeinflusst, schützt, erhält oder fördert. Das Gesundheitsverhalten steht in enger Verbindung zur Lebensweise, die wiederum von sozioökonomischen Faktoren, Bildung und Kultur beeinflusst wird. Umfasst Daten zu Ernährungsweisen, Essgewohnheiten und messbaren Ernährungsparametern; Daten zur allgemeinen körperlichen Fitness von Personen, zu deren körperlicher Aktivität und sportlicher Betätigung; Daten zu Drogen-, Alkohol- oder sonstigem Substanzkonsum, einschließlich Rauchen.",
+          "previousConcept": 2241,
           "parent": "Health",
           "position": 26
         },
@@ -2385,6 +2478,16 @@
           "title": "Wahlen",
           "definition": "Daten zu Wahlen, Volksabstimmungen, Wahlkampagnen, Wahlergebnissen, Kandidatinnen und Kandidaten, Wahlempfehlungsanwendungen, Wahlkampffinanzierung usw. Für Wahlverhalten bitte zusätzlich die Klasse 'Politisches Verhalten und politische Einstellungen' vergeben.",
           "previousConcept": 2269,
+          "parent": "Politics",
+          "position": 56
+        },
+        {
+          "id": 11913,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/de/3.0.1",
+          "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
+          "title": "Regierung, politische Systeme, Parteien und Organisationen",
+          "definition": "Die Klasse bezieht sich auf Angelegenheiten nationaler, regionaler und lokaler politischer institutionen (z.B. Regierung, Parlament, Lokalregierungen), öffentliche Verwaltung und andere politische Organisationsformen wie politische Parteien. Zum Beispiel Daten zur Regierungspolitik, zu politischen Parteien und deren Politik, zu Führungspersonen politischer Parteien oder zum Vertrauen in Regierungsinstitutionen. Je nach Thema muss diese Klasse möglicherweise mit einer anderen kombiniert vergeben werden.",
+          "previousConcept": 2271,
           "parent": "Politics",
           "position": 56
         },
@@ -2778,6 +2881,7 @@
       "definition": "Aineiston pääasiallisten aiheiden luokittelu.",
       "previousVersion": 318,
       "initialVersion": 258,
+      "notes": "",
       "versionNotes": "Typo corrections to code definitions and a code descriptive term. References to obsolete terms updated.",
       "versionChanges": "Code definition rephrased: joukkoviestimet\nCode definition rephrased: HISTORIA\nCode definition rephrased: vähemmistöt\nCode definition rephrased: sosiaaliset olot ja indikaattorit\nCode definition rephrased: maankäyttö, suunnittelu ja kaavoitus\nCode descriptive term rephrased: sukupuoli ja sukuoliroolit changed to sukupuoli ja sukupuoliroolit\n",
       "license": "CC BY",
@@ -2798,6 +2902,16 @@
           "definition": "",
           "previousConcept": 4760,
           "position": 0
+        },
+        {
+          "id": 11916,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/fi/3.0.2",
+          "notation": "Demography.Censuses",
+          "title": "väestönlaskennat",
+          "definition": "Tutkimukset, joiden kohderyhmänä on koko väestö ilman otantaa. Käytetään usein väestön laskemiseksi. Pohjoismaissa tämä tieto yleensä saadaan virallisista tilastoista.",
+          "previousConcept": 2540,
+          "parent": "Demography",
+          "position": 1
         },
         {
           "id": 4925,
@@ -2849,12 +2963,32 @@
           "position": 6
         },
         {
+          "id": 11915,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/fi/3.0.2",
+          "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
+          "title": "talouspolitiikka, julkiset menot ja tulot",
+          "definition": "Talouspolitiikka, mukaan lukien budjetti, finanssipolitiikka, julkiset menot ja tulot.",
+          "previousConcept": 2545,
+          "parent": "Economics",
+          "position": 7
+        },
+        {
           "id": 4941,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.SystemsAndDevelopment/fi/3.0.2",
           "notation": "Economics.SystemsAndDevelopment",
           "title": "talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö",
           "definition": "Käytetään aineistoihin, joissa käsitellään erilaisia talousjärjestelmiä (kapitalistinen, sosialistinen, markkinatalous). Sisältää myös kehitysyhteistyöhön liittyvät aiheet.",
           "previousConcept": 4727,
+          "parent": "Economics",
+          "position": 8
+        },
+        {
+          "id": 11919,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestment/fi/3.0.2",
+          "notation": "Economics.IncomePropertyAndInvestment",
+          "title": "tulot, omaisuus ja investoinnit/säästäminen",
+          "definition": "Termiä käytetään tutkittaessa yksilöiden ja kotitalouksien tuloja, omaisuutta, investointeja ja säästämistä.",
+          "previousConcept": 2546,
           "parent": "Economics",
           "position": 8
         },
@@ -2993,6 +3127,16 @@
           "title": "terveydentilaan liittyvät oireet, löydökset ja patologiset tilat",
           "definition": "Tutkimus terveydentilaan liittyvistä löydöksistä tai oireista, joko objektiivisesti mitattuna tai itsearvioituna. Eroaa termistä 'tietyt taudit, sairaudet ja terveydentilat' siten, että kyse ei ole lääkärin diagnosoimista taudeista. Esim. kipu, ripuli, yksilön jalkojen pituusero, unettomuus, hampaiden narskuttelu, rytmihäiriöt, tulehdus.",
           "previousConcept": 4741,
+          "parent": "Health",
+          "position": 26
+        },
+        {
+          "id": 11917,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/fi/3.0.2",
+          "notation": "Health.HealthBehaviour",
+          "title": "terveyskäyttäytyminen",
+          "definition": "Tutkitaan käyttäytymismalleja, jotka vaikuttavat, haittaavat, ylläpitävät tai edistävät yksilöiden terveydentilaa. Myös näihin asioihin liittyvä elämäntyyli. Esimerkiksi ruokavalio ja ruokailutottumukset,fyysinen kunto, fyysinen aktiivisuus ja liikuntatottumukset, alkoholin ja muiden päihteiden käyttö ja tupakointi.",
+          "previousConcept": 2564,
           "parent": "Health",
           "position": 26
         },
@@ -3286,6 +3430,16 @@
           "title": "vaalit, ehdokkaat ja kansanäänestykset",
           "definition": "Vaaliehdokkaat, vaalikampanjat, vaalirahoitus, vaalikoneet, vaalien tulokset, kansanäänestykset.",
           "previousConcept": 4730,
+          "parent": "Politics",
+          "position": 56
+        },
+        {
+          "id": 11918,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/fi/3.0.2",
+          "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
+          "title": "valtiovalta, julkinen hallinto, poliittiset organisaatiot, puolueet",
+          "definition": "Aiheet, jotka liittyvät kansalliseen, alueelliseen ja paikalliseen päätöksentekoon, päättäviin elimiin (esim. hallitus, eduskunta, kunnalliset päätöksentekoelimet), julkiseen hallintoon yleensä ja poliittisiin puolueisiin. Esim. hallituksen politiikka, poliittisten puolueiden politiikka, puoluejohto, kansalaisten luottamus eduskuntaan ja hallitukseen. HUOM! Joskus on käytettävä myös tarkemman aiheen mukaista termiä.",
+          "previousConcept": 2594,
           "parent": "Politics",
           "position": 56
         },
@@ -3687,6 +3841,7 @@
       "definition": "Aineiston pääasiallisten aiheiden luokittelu.",
       "previousVersion": 258,
       "initialVersion": 258,
+      "notes": "",
       "versionNotes": "New Finnish version published to include code values changes made to SL 3.0. Typo corrections to definitions.",
       "versionChanges": "Code definition rephrased: sairastuvuus ja kuolleisuus\nCode definition rephrased: talouden tila ja tunnusluvut\nCode definition rephrased: talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö\nCode definition rephrased: toisen ja korkea-asteen koulutus\nCode definition rephrased: täydennys- ja jatkokoulutus,  elinikäinen oppiminen\nCode definition rephrased: koulutuspolitiikka\nCode definition rephrased: terveyspalvelut ja terveyspolitiikka\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: terveyskäyttäytyminen\nCode definition rephrased: työpaikkakoulutus\nCode definition rephrased: työvoima- ja työllisyyspolitiikka\nCode definition rephrased: tietoyhteiskunta\nCode definition rephrased: sosiaalipolitiikka\nCode definition rephrased: KULKEMINEN, KULJETUS JA LIIKENNE\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry",
       "license": "CC BY",
@@ -3707,6 +3862,16 @@
           "definition": "",
           "previousConcept": 2538,
           "position": 0
+        },
+        {
+          "id": 11921,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/fi/3.0.1",
+          "notation": "Demography.Censuses",
+          "title": "väestönlaskennat",
+          "definition": "Tutkimukset, joiden kohderyhmänä on koko väestö ilman otantaa. Käytetään usein väestön laskemiseksi. Pohjoismaissa tämä tieto yleensä saadaan virallisista tilastoista.",
+          "previousConcept": 2540,
+          "parent": "Demography",
+          "position": 1
         },
         {
           "id": 4689,
@@ -3758,12 +3923,32 @@
           "position": 6
         },
         {
+          "id": 11920,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/fi/3.0.1",
+          "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
+          "title": "talouspolitiikka, julkiset menot ja tulot",
+          "definition": "Talouspolitiikka, mukaan lukien budjetti, finanssipolitiikka, julkiset menot ja tulot.",
+          "previousConcept": 2545,
+          "parent": "Economics",
+          "position": 7
+        },
+        {
           "id": 4727,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.SystemsAndDevelopment/fi/3.0.1",
           "notation": "Economics.SystemsAndDevelopment",
           "title": "talousjärjestelmät, taloudellinen kehitys ja kehitysyhteistyö",
           "definition": "Käytetään aineistoihin, joissa käsitellään erilaisia talousjärjestelmiä (kapitalistinen, sosialistinen, markkinatalous). Sisältää myös kehitysyhteistyöhön liittyvät aiheet.",
           "previousConcept": 2547,
+          "parent": "Economics",
+          "position": 8
+        },
+        {
+          "id": 11924,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestment/fi/3.0.1",
+          "notation": "Economics.IncomePropertyAndInvestment",
+          "title": "tulot, omaisuus ja investoinnit/säästäminen",
+          "definition": "Termiä käytetään tutkittaessa yksilöiden ja kotitalouksien tuloja, omaisuutta, investointeja ja säästämistä.",
+          "previousConcept": 2546,
           "parent": "Economics",
           "position": 8
         },
@@ -3902,6 +4087,16 @@
           "title": "terveydentilaan liittyvät oireet, löydökset ja patologiset tilat",
           "definition": "Tutkimus terveydentilaan liittyvistä löydöksistä tai oireista, joko objektiivisesti mitattuna tai itsearvioituna. Eroaa termistä 'tietyt taudit, sairaudet ja terveydentilat' siten, että kyse ei ole lääkärin diagnosoimista taudeista. Esim. kipu, ripuli, yksilön jalkojen pituusero, unettomuus, hampaiden narskuttelu, rytmihäiriöt, tulehdus.",
           "previousConcept": 2557,
+          "parent": "Health",
+          "position": 26
+        },
+        {
+          "id": 11922,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/fi/3.0.1",
+          "notation": "Health.HealthBehaviour",
+          "title": "terveyskäyttäytyminen",
+          "definition": "Tutkitaan käyttäytymismalleja, jotka vaikuttavat, haittaavat, ylläpitävät tai edistävät yksilöiden terveydentilaa. Myös näihin asioihin liittyvä elämäntyyli. Esimerkiksi ruokavalio ja ruokailutottumukset,fyysinen kunto, fyysinen aktiivisuus ja liikuntatottumukset, alkoholin ja muiden päihteiden käyttö ja tupakointi.",
+          "previousConcept": 2564,
           "parent": "Health",
           "position": 26
         },
@@ -4195,6 +4390,16 @@
           "title": "vaalit, ehdokkaat ja kansanäänestykset",
           "definition": "Vaaliehdokkaat, vaalikampanjat, vaalirahoitus, vaalikoneet, vaalien tulokset, kansanäänestykset.",
           "previousConcept": 2592,
+          "parent": "Politics",
+          "position": 56
+        },
+        {
+          "id": 11923,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/fi/3.0.1",
+          "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
+          "title": "valtiovalta, julkinen hallinto, poliittiset organisaatiot, puolueet",
+          "definition": "Aiheet, jotka liittyvät kansalliseen, alueelliseen ja paikalliseen päätöksentekoon, päättäviin elimiin (esim. hallitus, eduskunta, kunnalliset päätöksentekoelimet), julkiseen hallintoon yleensä ja poliittisiin puolueisiin. Esim. hallituksen politiikka, poliittisten puolueiden politiikka, puoluejohto, kansalaisten luottamus eduskuntaan ja hallitukseen. HUOM! Joskus on käytettävä myös tarkemman aiheen mukaista termiä.",
+          "previousConcept": 2594,
           "parent": "Politics",
           "position": 56
         },
@@ -4588,6 +4793,7 @@
       "definition": "Tipologia dei temi o argomenti principali trattati dai dati",
       "previousVersion": 0,
       "initialVersion": 320,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -4607,6 +4813,15 @@
           "title": "DEMOGRAFIA (POPOLAZIONE, STATISTICHE DEMOGRAFICHE E CENSIMENTI)",
           "definition": "",
           "position": 0
+        },
+        {
+          "id": 11926,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/it/3.0.1",
+          "notation": "Demography.Censuses",
+          "title": "Censimenti",
+          "definition": "Indagini su un'intera popolazione, a differenza di un'indagine campionaria. Spesso utilizzati per le statistiche ufficiali di una popolazione, in genere includono la raccolta delle informazioni demografiche. Si noti che in alcuni paesi i censimenti non vengono utilizzati in quanto le informazioni demografiche possono essere ottenute dai registri ufficiali.",
+          "parent": "Demography",
+          "position": 1
         },
         {
           "id": 4768,
@@ -4651,6 +4866,24 @@
           "definition": "Gli indicatori economici mostrano l'evoluzione e l'andamento economico e comprendono, ad esempio, il tasso di crescita del PIL, l'occupazione, l'inflazione e il tasso di interesse, l'attività dei consumatori e degli investitori, il debito delle famiglie. Quest'ultimo è anche utilizzato per stimare le condizioni economiche degli individui e delle famiglie intervistate.",
           "parent": "Economics",
           "position": 6
+        },
+        {
+          "id": 11925,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/it/3.0.1",
+          "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
+          "title": "Politica economica, spesa pubblica ed entrate",
+          "definition": "Dati sulla politica economica, compresi bilancio e politica fiscale, spesa pubblica ed entrate pubbliche.",
+          "parent": "Economics",
+          "position": 7
+        },
+        {
+          "id": 11929,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestment/it/3.0.1",
+          "notation": "Economics.IncomePropertyAndInvestment",
+          "title": "Reddito, proprietà e forme di risparmio/investimento",
+          "definition": "Utilizzato per studi sull'accumulo di beni personali, inclusi reddito, proprietà, investimenti e risparmi.",
+          "parent": "Economics",
+          "position": 8
         },
         {
           "id": 4774,
@@ -4777,11 +5010,20 @@
           "position": 25
         },
         {
+          "id": 11927,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/it/3.0.1",
+          "notation": "Health.HealthBehaviour",
+          "title": "Health behaviour",
+          "definition": "Behaviours expressed by individuals that affect, protect, maintain or promote their health status, as well as related life style. Life style is closely associated with health behaviour and factors influencing life style are socioeconomic, educational, and cultural. Includes: nutritional phenomena and processes, eating patterns and habits, and measurable nutritional parameters; data on people's general level of fitness, physical activity and exercise they take; data on drug, alcohol and other substance use and abuse, and smoking.",
+          "parent": "Health",
+          "position": 26
+        },
+        {
           "id": 4783,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.SignsAndSymptomsPathologicalConditions/it/3.0.1",
           "notation": "Health.SignsAndSymptomsPathologicalConditions",
           "title": "Segni e sintomi; condizioni patologiche",
-          "definition": " Studi sulla presenza di condizioni anatomiche o fisiologiche anormali e sulle manifestazioni oggettive o soggettive di malattia/sintomi, non classificate come malattia o sindrome (nel qual caso si utilizzerebbero \"Malattie particolari, disturbi o condizioni mediche\"). Include manifestazioni cliniche che possono essere obiettive se osservate da un professionista medico o soggettive quando percepite dal paziente. Per esempio: dolore, diarrea, eruzioni cutanee,  lunghezza diseguale delle gambe, insonnia, digrignamento dei denti, infiammazione, aritmia.",
+          "definition": "Studi sulla presenza di condizioni anatomiche o fisiologiche anormali e sulle manifestazioni oggettive o soggettive di malattia/sintomi, non classificate come malattia o sindrome (nel qual caso si utilizzerebbero \"Malattie particolari, disturbi o condizioni mediche\"). Include manifestazioni cliniche che possono essere obiettive se osservate da un professionista medico o soggettive quando percepite dal paziente. Per esempio: dolore, diarrea, eruzioni cutanee,  lunghezza diseguale delle gambe, insonnia, digrignamento dei denti, infiammazione, aritmia.",
           "parent": "Health",
           "position": 26
         },
@@ -5038,6 +5280,15 @@
           "definition": "Misure e condizioni di sicurezza interna e internazionale; conflitti interni e internazionali; guerre e processi di pace; difesa nazionale e forze di difesa (esercito). Si noti che le forze dell'ordine (polizia) rientrano nel termine \"Criminalità e applicazione della legge\".",
           "parent": "Politics",
           "position": 55
+        },
+        {
+          "id": 11928,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/it/3.0.1",
+          "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
+          "title": "Governo, sistemi e organizzazioni politici",
+          "definition": "Questioni relative a governi nazionali, regionali e locali, organi di governo (ad esempio Governo, Parlamento, enti governativi locali), amministrazione pubblica, altre organizzazioni politiche come i partiti politici. Ad esempio, dati sulle politiche governative, i partiti politici e le loro politiche, i leader dei partiti politici, la fiducia negli organismi governativi. Si noti che potrebbe essere necessario affiancare a questo termine anche altri termini più specifici del vocabolario.",
+          "parent": "Politics",
+          "position": 56
         },
         {
           "id": 4812,
@@ -5392,6 +5643,7 @@
       "definition": "En typologi for hovedtemaer eller emnekategorier for data.",
       "previousVersion": 262,
       "initialVersion": 262,
+      "notes": "",
       "versionNotes": "Norwegian version published to include code values changes made to SL 3.0. Typo corrections to definitions.",
       "versionChanges": "Code value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed toMediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode definition rephrased: Migrasjon\nCode definition rephrased: Økonomiske forhold og indikatorer\nCode descriptive term rephrased: Konsum/konsumentatferd\nCode definition rephrased: Tegn og symptomer; patologiske tilstander\nCode descriptive term rephrased: Reproduktiv Helse\nCode definition rephrased: Folkehelse\nCode definition rephrased: Arealbruk og arealplanlegging\nCode definition rephrased: Arbeidsledighet\nCode definition rephrased: Opplæring av ansatte\nCode definition rephrased: Arbeidsbetingelser\nCode definition rephrased: Publikumskontakt\nCode definition rephrased: Informasjonssamfunn\nCode definition rephrased: Valg\nCode definition rephrased: Ungdom\nCode definition rephrased: Eldre\nCode definition rephrased: Barn\nCode definition rephrased: Sosial velferdspolitikk\nCode definition rephrased: Sosial velferdspolitikk",
       "license": "CC BY",
@@ -5412,6 +5664,16 @@
           "definition": "",
           "previousConcept": 2957,
           "position": 0
+        },
+        {
+          "id": 11931,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/no/3.0.1",
+          "notation": "Demography.Censuses",
+          "title": "Folketellinger",
+          "definition": "Undersøkelser av en hel befolkning, i motsetning til undersøkelser av et utvalg. Ofte brukt i sammenheng med offisielle fortegnelser av en befolkning, og inkluderer vanligvis relatert demografisk informasjon. Legg merke til at det i noen land ikke blir brukt folketellinger ettersom demografisk informasjon foreligger i offisielle registre.",
+          "previousConcept": 2959,
+          "parent": "Demography",
+          "position": 1
         },
         {
           "id": 4029,
@@ -5447,7 +5709,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.ConsumptionAndConsumerBehaviour/no/3.0.1",
           "notation": "Economics.ConsumptionAndConsumerBehaviour",
           "title": "Konsum og konsumentatferd",
-          "definition": "Refererer til handlingen om å tilegne seg og/eller evne til å møte behov og ønsker hos en person, fellesskapet eller samfunnet. Data i denne kategorien omfatter også konsum på personlige- og husholdninsartikler, endringer i konsumentatferd, og studier om konsument og etikk. For eksempel data om hvor ofte personer kjøper en type ting, hvor og når de handler; om etiske betraktninger påvirker konsumvalget. ",
+          "definition": "Refererer til handlingen om å tilegne seg og/eller evne til å møte behov og ønsker hos en person, fellesskapet eller samfunnet. Data i denne kategorien omfatter også konsum på personlige- og husholdninsartikler, endringer i konsumentatferd, og studier om konsument og etikk. For eksempel data om hvor ofte personer kjøper en type ting, hvor og når de handler; om etiske betraktninger påvirker konsumvalget.",
           "previousConcept": 2963,
           "parent": "Economics",
           "position": 5
@@ -5463,12 +5725,32 @@
           "position": 6
         },
         {
+          "id": 11930,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/no/3.0.1",
+          "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
+          "title": "Økonomisk politikk, offentlige utgifter og inntekter",
+          "definition": "Data om økonomisk politikk, omfatter budsjett- og finanspolitikk, statlige utgifter og inntekter.",
+          "previousConcept": 2964,
+          "parent": "Economics",
+          "position": 7
+        },
+        {
           "id": 4097,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.SystemsAndDevelopment/no/3.0.1",
           "notation": "Economics.SystemsAndDevelopment",
           "title": "Økonomiske systemer og utvikling",
           "definition": "Brukes på studier om kapitalistiske, sosialistiske og andre øknomiske systemer, og studier om  for eksempel internasjonale utviklingsprogram.",
           "previousConcept": 2966,
+          "parent": "Economics",
+          "position": 8
+        },
+        {
+          "id": 11934,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestment/no/3.0.1",
+          "notation": "Economics.IncomePropertyAndInvestment",
+          "title": "Inntekt, formue og investeringer/sparing",
+          "definition": "Brukes på studier som omhandler akkumulasjon av personlige eiendeler, inkludert inntekt, eiendom, investeringer og sparing.",
+          "previousConcept": 2965,
           "parent": "Economics",
           "position": 8
         },
@@ -5599,6 +5881,16 @@
           "previousConcept": 2981,
           "parent": "Health",
           "position": 25
+        },
+        {
+          "id": 11932,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/no/3.0.1",
+          "notation": "Health.HealthBehaviour",
+          "title": "Helseatferd",
+          "definition": "Individers uttrykte atferd, som påvirker, beskytter, opprettholder eller fremmer deres helsetilstand, samt relatert livsstil. Livsstil er tett knyttet til helseatferd og faktorer som påvirker livsstil er sosioøkonomiske, utdanningsmessige og kulturelle. Omfatter: Ernæringsmessige fenomener og prosesser, spisemønster og spisevaner, og målbare enæringsparametre; data om personers generelle form, fysisk aktivitet og trening de utfører; data om narkotika, alkohol og annen substansbruk og misbruk, og røyking.",
+          "previousConcept": 2983,
+          "parent": "Health",
+          "position": 26
         },
         {
           "id": 4051,
@@ -5894,6 +6186,16 @@
           "position": 55
         },
         {
+          "id": 11933,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/no/3.0.1",
+          "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
+          "title": "Styresett, politiske systemer og organisasjoner",
+          "definition": "Problemstillinger knyttet til nasjonal, regional eller lokal regjerende organer (for eksempel regjering, parliament, kommynestyre), statsforvaltning, andre politiske organisasjoner som politiske partier. Kan være f. eks data om regjerende politikk, politiske partier og deres politikk, ledere i politiske partier, tiltro til regjerende organer. Vær oppmerksom på at det kan være behov for å bruke et 'topical term' i tillegg.",
+          "previousConcept": 3013,
+          "parent": "Politics",
+          "position": 56
+        },
+        {
           "id": 4030,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.Elections/no/3.0.1",
           "notation": "Politics.Elections",
@@ -6015,7 +6317,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.EqualityAndInequality/no/3.0.1",
           "notation": "SocialStratificationAndGroupings.EqualityAndInequality",
           "title": "Likhet, ulikhet og sosial eksklusjon",
-          "definition": "Problemstillinger knyttet til om alle individer eller grupper av individer har samme status og muligheter i et samfunn. Likhet kan studeres for eksempel ved å se på utdannelse, formue eller inntekt, yrke, makt, prestisje, betingelser for arbeid og fritid, tilgang til tjenester, og sosiale relasjoner. Marginalisering og sosial eksklusjon kan være et resultat av ugunstige forhold på flere områder i livet, og mennesker det gjelder kan bli fratatt rettigheter, muligheter, ressurser og sosial integrering. Eksempler på data: Statistikk over inntekt og likhet, oppfattelsen av gruppefokusert diskriminering (for eksempel mot innvandrere, hjemløse, asylsøkere); oppfattelsen av forskjeller mellom menn og kvinner når det gjelder mulighet for ledende politiske roller; innvirkningen av foreldres arbeidsløshet på barns utdanningsnivå og sosiale nettverk. ",
+          "definition": "Problemstillinger knyttet til om alle individer eller grupper av individer har samme status og muligheter i et samfunn. Likhet kan studeres for eksempel ved å se på utdannelse, formue eller inntekt, yrke, makt, prestisje, betingelser for arbeid og fritid, tilgang til tjenester, og sosiale relasjoner. Marginalisering og sosial eksklusjon kan være et resultat av ugunstige forhold på flere områder i livet, og mennesker det gjelder kan bli fratatt rettigheter, muligheter, ressurser og sosial integrering. Eksempler på data: Statistikk over inntekt og likhet, oppfattelsen av gruppefokusert diskriminering (for eksempel mot innvandrere, hjemløse, asylsøkere); oppfattelsen av forskjeller mellom menn og kvinner når det gjelder mulighet for ledende politiske roller; innvirkningen av foreldres arbeidsløshet på barns utdanningsnivå og sosiale nettverk.",
           "previousConcept": 3020,
           "parent": "SocialStratificationAndGroupings",
           "position": 69
@@ -6293,6 +6595,7 @@
       "definition": "Tipologija glavnih vsebinskih področij raziskav.",
       "previousVersion": 261,
       "initialVersion": 261,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Changed few typos.",
       "license": "CC BY",
@@ -6313,6 +6616,16 @@
           "definition": "",
           "previousConcept": 3381,
           "position": 0
+        },
+        {
+          "id": 11936,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/sl/3.0.1",
+          "notation": "Demography.Censuses",
+          "title": "popisi",
+          "definition": "Ankete na celotni populaciji, v nasprotju z vzorčnimi raziskavami. Pogosto se uporabljajo za uradno štetje prebivalstva, ki običajno vključuje zbiranje povezanih demografskih informacij. Upoštevajte, da se v nekaterih državah popisi ne uporabljajo, saj se lahko demografske informacije pridobijo iz uradnih registrov.",
+          "previousConcept": 3383,
+          "parent": "Demography",
+          "position": 1
         },
         {
           "id": 4312,
@@ -6364,12 +6677,32 @@
           "position": 6
         },
         {
+          "id": 11935,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/sl/3.0.1",
+          "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
+          "title": "gospodarska politika, javna poraba in proračun",
+          "definition": "Podatki o gospodarski politiki, vključno s proračunsko in fiskalno politiko, javno porabo in prihodki.",
+          "previousConcept": 3388,
+          "parent": "Economics",
+          "position": 7
+        },
+        {
           "id": 4384,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.SystemsAndDevelopment/sl/3.0.1",
           "notation": "Economics.SystemsAndDevelopment",
           "title": "gospodarski sistemi in razvoj",
           "definition": "Uporabite za raziskave kapitalističnih, socialističnih in drugih ekonomskih sistemov ter za raziskave, na primer mednarodnih razvojnih programov.",
           "previousConcept": 3390,
+          "parent": "Economics",
+          "position": 8
+        },
+        {
+          "id": 11939,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestment/sl/3.0.1",
+          "notation": "Economics.IncomePropertyAndInvestment",
+          "title": "dohodek, lastnina in vlaganje/varčevanje",
+          "definition": "Uporabite za raziskave o kopičenju osebnih sredstev, vključno s prihodki, premoženjem, naložbami in prihranki.",
+          "previousConcept": 3389,
           "parent": "Economics",
           "position": 8
         },
@@ -6508,6 +6841,16 @@
           "title": "znaki in simptomi; patološki pogoji",
           "definition": "Raziskave nenormalnih anatomskih ali fizioloških razmer ter objektivnih ali subjektivnih pojavnosti bolezni/simptomov, ki niso razvrščeni kot bolezen ali sindrom (v tem primeru bi uporabili izraz \"Posebne bolezni, motnje ali zdravstvene razmere\"). Vključuje klinične pojavnosti, ki so lahko objektivne, če jih opazuje zdravstveni delavec, ali subjektivne, ko jih zazna posameznik sam. Npr. bolečina, driska, izpuščaj, neenakost dolžine nog, nespečnost, škripanje z zobmi, vnetje, aritmija.",
           "previousConcept": 3400,
+          "parent": "Health",
+          "position": 26
+        },
+        {
+          "id": 11937,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/sl/3.0.1",
+          "notation": "Health.HealthBehaviour",
+          "title": "skrb za zdravje",
+          "definition": "Vedenja posameznikov, ki vplivajo, ščitijo, ohranjajo ali spodbujajo njihovo zdravstveno stanje in s tem povezan življenjski slog. Življenjski slog je tesno povezan s skrbjo za zdravje; dejavniki, ki vplivajo na življenjski slog, so socioekonomski, izobraževalni in kulturni. Vključuje: prehrambene pojave in procese, vzorce prehranjevanja in navade ter merljive prehranske parametre; podatke o splošni ravni telesne pripravljenosti, telesni dejavnosti in gibanju; podatke o uporabi in zlorabi drog, alkohola in drugih snovi ter podatke o kajenju.",
+          "previousConcept": 3407,
           "parent": "Health",
           "position": 26
         },
@@ -6801,6 +7144,16 @@
           "title": "volitve",
           "definition": "Podatki o volitvah, referendumih, volilnih kampanjah, rezultatih volitev, kandidatih na volitvah, financiranju volitev itd.",
           "previousConcept": 3435,
+          "parent": "Politics",
+          "position": 56
+        },
+        {
+          "id": 11938,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/sl/3.0.1",
+          "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
+          "title": "vlada, politični sistemi in organizacije",
+          "definition": "Vprašanja v zvezi z državnimi, regionalnimi in lokalnimi oblastmi, upravnimi organi (npr. vlado, parlamentom, organi lokalne skupnosti), javno upravo, drugimi političnimi organizacijami, kot so politične stranke. Na primer, podatki o vladnih politikah, političnih strankah in njihovih politikah, podatki o voditeljih političnih strank, zaupanju v vladne organe. Upoštevajte, da boste morda morali uporabiti tudi dodatno vsebinsko področje.",
+          "previousConcept": 3437,
           "parent": "Politics",
           "position": 56
         },
@@ -7194,6 +7547,7 @@
       "definition": "En typologi för större teman eller ämneskategorier för data.",
       "previousVersion": 260,
       "initialVersion": 260,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Code definition rephrased: Konsumtion och konsumentbeteende\nCode definition rephrased: Livslångt lärande/vidareutbildning\nCode definition rephrased: Tecken och symtom; patologiska tillstånd\nCode definition rephrased: Hälsobeteende\nCode definition rephrased: Energi och naturresurser\nCode definition rephrased: Ungdomar\nCode descriptive term rephrased: Kriminalitet och rättstillämpning\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed to MediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\n",
       "license": "CC BY",
@@ -7214,6 +7568,16 @@
           "definition": "",
           "previousConcept": 2864,
           "position": 0
+        },
+        {
+          "id": 11941,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/sv/3.0.1",
+          "notation": "Demography.Censuses",
+          "title": "Folkräkningar",
+          "definition": "Studie av en hel befolkning till skillnad från studier av urvalsgrupper. Används ofta för statens räkning av en befolkning och innehåller vanligtvis även insamling av relevant demografisk information. Observera att i vissa länder görs inte folkräkningar eftersom demografisk information kan erhållas från officiella register.",
+          "previousConcept": 2866,
+          "parent": "Demography",
+          "position": 1
         },
         {
           "id": 4275,
@@ -7265,12 +7629,32 @@
           "position": 6
         },
         {
+          "id": 11940,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/sv/3.0.1",
+          "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
+          "title": "Ekonomisk politik, offentliga utgifter och intäkter",
+          "definition": "Data om ekonomisk politik, inklusive budget- och finanspolitik, offentliga utgifter och offentliga intäkter.",
+          "previousConcept": 2871,
+          "parent": "Economics",
+          "position": 7
+        },
+        {
           "id": 4234,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.SystemsAndDevelopment/sv/3.0.1",
           "notation": "Economics.SystemsAndDevelopment",
           "title": "Ekonomiska system och ekonomisk utveckling",
           "definition": "Används för studier om kapitalism, socialism och andra ekonomiska system samt vid studier om till exempel internationella utvecklingsprogram.",
           "previousConcept": 2873,
+          "parent": "Economics",
+          "position": 8
+        },
+        {
+          "id": 11944,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestment/sv/3.0.1",
+          "notation": "Economics.IncomePropertyAndInvestment",
+          "title": "Inkomster, egendom och investeringar/sparande",
+          "definition": "Används för studier om ackumulering av personliga tillgångar, inklusive inkomst, egendom, investeringar och sparkapital.",
+          "previousConcept": 2872,
           "parent": "Economics",
           "position": 8
         },
@@ -7409,6 +7793,16 @@
           "title": "Tecken och symtom; patologiska tillstånd",
           "definition": "Studier om abnorma anatomiska eller fysiologiska tillstånd samt objektiva eller subjektiva manifestationer av sjukdomar/symtom som inte klassificeras som sjukdomar eller syndrom (i så fall används \"Specifika sjukdomar, störningar och medicinska tillstånd\"). Detta gäller kliniska manifestationer som kan vara objektiva när de observeras av hälso- och sjukvårdspersonal eller subjektiva när de gäller patientens upplevelse. Exempel på detta är smärta, diarré, klåda, olika benlängd, sömnsvårigheter, tandgnisslan, inflammationer och arytmi.",
           "previousConcept": 2883,
+          "parent": "Health",
+          "position": 26
+        },
+        {
+          "id": 11942,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/sv/3.0.1",
+          "notation": "Health.HealthBehaviour",
+          "title": "Hälsobeteende",
+          "definition": "Människors beteenden som påverkar, skyddar eller främjar deras hälsa och livsstil. Livsstil är nära associerad med hälsobeteende, och livsstilen påverkas av socioekonomiska, utbildningsrelaterade och kulturella faktorer. Inkluderar: nutritionsfenomen och -processer, matmönster och -vanor och mätbara nutritionsparametrar; data om människors kondition, fysiska aktivitet och träning; data om rökning, och om bruk och missbruk av droger, alkohol och andra substanser.",
+          "previousConcept": 2890,
           "parent": "Health",
           "position": 26
         },
@@ -7694,6 +8088,16 @@
           "previousConcept": 2922,
           "parent": "Politics",
           "position": 55
+        },
+        {
+          "id": 11943,
+          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/sv/3.0.1",
+          "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
+          "title": "Regering, politiska system och organisationer",
+          "definition": "Ämnen om politisk styrning på nationell, regional och lokal nivå, deras förvaltningar (t.ex. regering, riksdag och kommunfullmäktige), offentlig förvaltning och andra politiska organisationer, som politiska partier. Till exempel data om regeringspolitik, politiska partier och deras politik, partiledare, förtroendet för det politiska systemet. Observera att du även kan behöva använda en ämnesterm.",
+          "previousConcept": 2920,
+          "parent": "Politics",
+          "position": 56
         },
         {
           "id": 4285,

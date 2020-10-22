@@ -82,49 +82,13 @@
           "position": 4
         },
         {
-          "id": 1995,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/en/1.1",
-          "notation": "Probability.Cluster",
-          "title": "Probability: Cluster",
-          "definition": "The target population is divided into naturally occurring segments (clusters) and a probability sample of the clusters is selected. Data are then collected from all units within each selected cluster. Sampling is often clustered by geography, or time period. Use this broader term if a more specific type of cluster sampling is not known or is difficult to identify.",
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 2009,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/en/1.1",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Probability: Cluster: Simple random",
-          "definition": "The target population is divided into naturally occurring segments (clusters) and a simple random sample of the clusters is selected. Data are then collected from all units within each selected cluster. For example, for a sample of students in a city, a number of schools would be chosen using the random selection method, and then all of the students from every sampled school would be included.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 1998,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/en/1.1",
-          "notation": "Probability.Multistage",
-          "title": "Probability: Multistage",
-          "definition": "Sampling is carried out in stages using smaller and smaller units at each stage, and all stages involve a probability selection. The type of probability sampling procedure may be different at each stage. For example, for a sample of students in a city, schools are randomly selected in the first stage. A random sample of classes within each selected school is drawn in the second stage. Students are then randomly selected from each of these classes in the third stage.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 2008,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/en/1.1",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Probability: Cluster: Stratified random",
-          "definition": "The target population is divided into naturally occurring segments (clusters); next, these are divided into mutually exclusive strata and a random sample of clusters is selected from each stratum. Data are then collected from all units within each selected cluster. For example, for a sample of students in a city, schools would be divided into two strata by school type (private vs. public); schools would be then randomly selected from each stratum, and all of the students from every sampled school would be included.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 2006,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/en/1.1",
           "notation": "Probability.Stratified.Proportional",
           "title": "Probability: Stratified: Proportional",
           "definition": "The target population is subdivided into separate and mutually exclusive segments (strata) that cover the entire population. In proportional stratified sampling the number of elements chosen from each stratum is proportional to the population size of the stratum when viewed against the entire population. For example, a country is divided into two regional strata that comprise 80 percent (West) and 20 percent (East) of the total population. For a sample of 1,000 people, 800 (i.e., 80 percent) would be drawn from the West and 200 (i.e., 20 percent) from the East to accurately represent their proportion in the total population.",
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 1994,
@@ -133,6 +97,42 @@
           "title": "Probability: Stratified: Disproportional",
           "definition": "The target population is subdivided into separate and mutually exclusive segments (strata) that cover the entire population. In disproportional sampling the number of units chosen from each stratum is not proportional to the population size of the stratum when viewed against the entire population. The number of sampled units from each stratum can be equal, optimal, or can reflect the purpose of the study, like oversampling of different subgroups of the population. For example, a country is divided into two regional strata that comprise 80 percent (West) and 20 precent (East) of the country's population. If equal representation of the two regions is needed in a study, half the sample may be drawn from the West and half from the East, so that each region is represented by 50 percent of the sample. If a more detailed analysis of the population from the East is needed, 40 percent of the units may be drawn from the West and 60 percent from the East, so that the East is over-represented.",
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 1995,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/en/1.1",
+          "notation": "Probability.Cluster",
+          "title": "Probability: Cluster",
+          "definition": "The target population is divided into naturally occurring segments (clusters) and a probability sample of the clusters is selected. Data are then collected from all units within each selected cluster. Sampling is often clustered by geography, or time period. Use this broader term if a more specific type of cluster sampling is not known or is difficult to identify.",
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 2009,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/en/1.1",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Probability: Cluster: Simple random",
+          "definition": "The target population is divided into naturally occurring segments (clusters) and a simple random sample of the clusters is selected. Data are then collected from all units within each selected cluster. For example, for a sample of students in a city, a number of schools would be chosen using the random selection method, and then all of the students from every sampled school would be included.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 2008,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/en/1.1",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Probability: Cluster: Stratified random",
+          "definition": "The target population is divided into naturally occurring segments (clusters); next, these are divided into mutually exclusive strata and a random sample of clusters is selected from each stratum. Data are then collected from all units within each selected cluster. For example, for a sample of students in a city, schools would be divided into two strata by school type (private vs. public); schools would be then randomly selected from each stratum, and all of the students from every sampled school would be included.",
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 1998,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/en/1.1",
+          "notation": "Probability.Multistage",
+          "title": "Probability: Multistage",
+          "definition": "Sampling is carried out in stages using smaller and smaller units at each stage, and all stages involve a probability selection. The type of probability sampling procedure may be different at each stage. For example, for a sample of students in a city, schools are randomly selected in the first stage. A random sample of classes within each selected school is drawn in the second stage. Students are then randomly selected from each of these classes in the third stage.",
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -214,6 +214,7 @@
       "definition": "En typologi af stikprøvemetoder.",
       "previousVersion": 0,
       "initialVersion": 257,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -247,7 +248,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.SimpleRandom/da/1.1.1",
           "notation": "Probability.SimpleRandom",
           "title": "Sandsynlighed: Simpel tilfældig",
-          "definition": "Alle enheder i en målpopulation har en lige sandsynlighed for at blive inkluderet i stikprøven. Hele befolkningen er typisk oplistet i stikprøverammen, og enheder udvælges derefter fra denne ramme ved brug af en tilfældig udvælgelsesmetode. ",
+          "definition": "Alle enheder i en målpopulation har en lige sandsynlighed for at blive inkluderet i stikprøven. Hele befolkningen er typisk oplistet i stikprøverammen, og enheder udvælges derefter fra denne ramme ved brug af en tilfældig udvælgelsesmetode.",
           "parent": "Probability",
           "position": 2
         },
@@ -270,49 +271,13 @@
           "position": 4
         },
         {
-          "id": 2204,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/da/1.1.1",
-          "notation": "Probability.Cluster",
-          "title": "Sandsynlighed: Klynge",
-          "definition": "Målpopulationen er opdelt i naturligt forekommende segmenter (klynger), og en sandsynlighedsbaseret stikprøve af klyngerne er udvalgt. Data indsamles derefter fra alle enheder inden for hver udvalgt klynge. Stikprøveudvælgelse er ofte klyngegrupperet efter geografi eller tidsperiode. Anvend dette bredere udtryk, hvis en mere specifik type af klyngeudvælgelse ikke er kendt eller er vanskelig at identificere.",
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 2205,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/da/1.1.1",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Sandsynlighed: Klynge: Simpel tilfældig",
-          "definition": "Målpopulationen er opdelt i naturligt forekommende segmenter (klynger), og en simpel tilfældig stikprøve af klyngerne er udvalgt. Data indsamles derefter fra alle enheder inden for hver udvalgt klynge. For eksempel for en stikprøve af studerende i en by ville et antal af skoler blive udvalgt ved brug af den tilfældige udvælgelsesmetode, hvorefter studerende fra hver udvalgt skole ville blive inkluderet.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 2207,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/da/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Sandsynlighed: Flertrin",
-          "definition": "Stikprøveudvælgelse udføres i trin ved brug af mindre og mindre enheder for hvert trin, og alle trin involverer en sandsynlighedsudvælgelse. Typen af procedure for sandsynlighedsstikprøveudvælgelse kan være forskellig for hvert trin. For eksempel for en stikprøve af studerende i en by er skoler tilfældigt udvalgt i det første trin. En tilfældig stikprøve af klasser inden for hver udvalgt skole udtrækkes i det andet trin. Studerende udvælges derefter tilfældigt fra hver af disse klasser i det tredje trin. ",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 2206,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/da/1.1.1",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Sandsynlighed: Klynge: Stratificeret tilfældig",
-          "definition": "Målpopulationen er opdelt i naturligt forekommende segmenter (klynger); Dernæst er disse opdelt i gensidigt udelukkende strata og en tilfældig stikprøve af klynger er udvalgt fra hver klynge. Data indsamles derefter fra alle enheder inden for hver udvalgt klynge. For eksempel for en stikprøve af studerende i en by ville skolerne blive opdelt i to strata efter skoletype (privat eller offentlig); skoler ville derefter blive tilfældigt udvalgt fra hvert stratum, og alle eleverne fra hver udvalgt skole ville blive inkluderet.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 2202,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/da/1.1.1",
           "notation": "Probability.Stratified.Proportional",
           "title": "Sandsynlighed: Stratificeret: Proportionel",
-          "definition": "Målpopulationen er opdelt i separate og gensidigt udelukkende segmenter (strata), der dækker hele befolkningen. I proportionel stratificeret stikprøveudvælgelse er antallet af elementer udvalgt fra hvert stratum proportionelt med befolkningsstørrelsen af stratummet set i forhold til hele befolkningen. For eksempel er et land opdelt i to regionale strata, der dækker 80 procent (vest) og 20 procent (øst) af den samlede befolkning. For en stikprøve på 1000 personer ville 800 (80 procent) trækkes fra vest og 200 (20 procent) fra øst for nøjagtigt at repræsentere deres andel i den samlede befolkning. ",
+          "definition": "Målpopulationen er opdelt i separate og gensidigt udelukkende segmenter (strata), der dækker hele befolkningen. I proportionel stratificeret stikprøveudvælgelse er antallet af elementer udvalgt fra hvert stratum proportionelt med befolkningsstørrelsen af stratummet set i forhold til hele befolkningen. For eksempel er et land opdelt i to regionale strata, der dækker 80 procent (vest) og 20 procent (øst) af den samlede befolkning. For en stikprøve på 1000 personer ville 800 (80 procent) trækkes fra vest og 200 (20 procent) fra øst for nøjagtigt at repræsentere deres andel i den samlede befolkning.",
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 2203,
@@ -321,6 +286,42 @@
           "title": "Sandsylighed: Stratificeret: Disproportionel",
           "definition": "Målpopulationen er opdelt i separate og gensidigt udelukkende segmenter (strata), der dækker hele befolkningen. I disproportional stikprøveudvælgelse er antallet af enhederne udvalgt fra hvert lag ikke proportional med stratummets befolkningsstørrelse set i forhold til hele befolkningen. Antallet af stikprøveenheder fra hvert stratum kan være ens, optimalt, eller kan afspejle undersøgelsens formål, såsom oversampling af forskellige undergrupper af befolkningen. For eksempel er et land opdelt i to regionale strata, der dækker 80 procent (vest) og 20 procent (øst) af landets befolkning. Hvis der er behov for ligevægtig repræsentation af de to regioner i en undersøgelse, kan halvdelen af stikprøven udtrækkes fra vest og halvdelen fra øst, således at hver region er repræsenteret i 50 procent af stikprøven. Hvis en mere detaljeret analyse af befolkningen fra øst er nødvendig, kan 40 procent af enhederne udtrækkes fra vest og 60 procent fra øst, således øst er overrepræsenteret.",
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 2204,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/da/1.1.1",
+          "notation": "Probability.Cluster",
+          "title": "Sandsynlighed: Klynge",
+          "definition": "Målpopulationen er opdelt i naturligt forekommende segmenter (klynger), og en sandsynlighedsbaseret stikprøve af klyngerne er udvalgt. Data indsamles derefter fra alle enheder inden for hver udvalgt klynge. Stikprøveudvælgelse er ofte klyngegrupperet efter geografi eller tidsperiode. Anvend dette bredere udtryk, hvis en mere specifik type af klyngeudvælgelse ikke er kendt eller er vanskelig at identificere.",
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 2205,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/da/1.1.1",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Sandsynlighed: Klynge: Simpel tilfældig",
+          "definition": "Målpopulationen er opdelt i naturligt forekommende segmenter (klynger), og en simpel tilfældig stikprøve af klyngerne er udvalgt. Data indsamles derefter fra alle enheder inden for hver udvalgt klynge. For eksempel for en stikprøve af studerende i en by ville et antal af skoler blive udvalgt ved brug af den tilfældige udvælgelsesmetode, hvorefter studerende fra hver udvalgt skole ville blive inkluderet.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 2206,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/da/1.1.1",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Sandsynlighed: Klynge: Stratificeret tilfældig",
+          "definition": "Målpopulationen er opdelt i naturligt forekommende segmenter (klynger); Dernæst er disse opdelt i gensidigt udelukkende strata og en tilfældig stikprøve af klynger er udvalgt fra hver klynge. Data indsamles derefter fra alle enheder inden for hver udvalgt klynge. For eksempel for en stikprøve af studerende i en by ville skolerne blive opdelt i to strata efter skoletype (privat eller offentlig); skoler ville derefter blive tilfældigt udvalgt fra hvert stratum, og alle eleverne fra hver udvalgt skole ville blive inkluderet.",
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 2207,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/da/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Sandsynlighed: Flertrin",
+          "definition": "Stikprøveudvælgelse udføres i trin ved brug af mindre og mindre enheder for hvert trin, og alle trin involverer en sandsynlighedsudvælgelse. Typen af procedure for sandsynlighedsstikprøveudvælgelse kan være forskellig for hvert trin. For eksempel for en stikprøve af studerende i en by er skoler tilfældigt udvalgt i det første trin. En tilfældig stikprøve af klasser inden for hver udvalgt skole udtrækkes i det andet trin. Studerende udvælges derefter tilfældigt fra hver af disse klasser i det tredje trin.",
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -336,7 +337,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Availability/da/1.1.1",
           "notation": "Nonprobability.Availability",
           "title": "Ikke-sandsynlighed: Tilgængelighed",
-          "definition": "Stikprøveudvælgelsen er baseret på enhedernes tilgængelighed/relative lethed af adgang. De er måske lette at tilgå eller kan selv vælge at deltage i undersøgelsen (selvudvælgelse). Forskere kan måske have en bestemt målgruppe i tankerne, men de kontrollerer ikke mekanismerne for stikprøveudvælgelsen. For eksempel kan studerende, der forlader en bestemt bygning på campus, blive opsøgt, eller individer kan frivilligt deltage som svar på invitationer, der ikke er målrettet dem specifikt, men en større gruppe, som de kan tilhøre. Også kaldt ”bekvemmeligheds-” eller ”mulighedsstikprøveudvælgelse”. ",
+          "definition": "Stikprøveudvælgelsen er baseret på enhedernes tilgængelighed/relative lethed af adgang. De er måske lette at tilgå eller kan selv vælge at deltage i undersøgelsen (selvudvælgelse). Forskere kan måske have en bestemt målgruppe i tankerne, men de kontrollerer ikke mekanismerne for stikprøveudvælgelsen. For eksempel kan studerende, der forlader en bestemt bygning på campus, blive opsøgt, eller individer kan frivilligt deltage som svar på invitationer, der ikke er målrettet dem specifikt, men en større gruppe, som de kan tilhøre. Også kaldt ”bekvemmeligheds-” eller ”mulighedsstikprøveudvælgelse”.",
           "parent": "Nonprobability",
           "position": 12
         },
@@ -345,7 +346,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.Purposive/da/1.1.1",
           "notation": "Nonprobability.Purposive",
           "title": "Ikke-sandsynlighed: Formålsbestemt",
-          "definition": "Stikprøveenheder er specifikt identificeret, udvalgt og kontaktet for de oplysninger, de kan give om det undersøgte emne. Udvælgelsen er baseret på forskellige karakteristika for den uafhængige og/eller afhængige variable under undersøgelse og beror sig forskernes vurdering. Undersøgelsens forfattere, eller personer, der er autoriseret af dem, har kontrol over mekanismen for stikprøveudvælgelse, og universet er defineret i henhold til udvælgelseskriterierne. Også kaldet ”vurderingsstikprøveudvælgelse”. For eksempel kan en medicinsk forsker med vilje udvælge individer, der er ens i de fleste henseender, undtagen på resultatet af forskningsemnet, der kan være en specifik sygdom. Nogle typer af formålsbestemt stikprøveudvælgelse er typisk/afvigende cases, homogen/maksimum variation-, ekspert- eller kritisk caseudvælgelse. ",
+          "definition": "Stikprøveenheder er specifikt identificeret, udvalgt og kontaktet for de oplysninger, de kan give om det undersøgte emne. Udvælgelsen er baseret på forskellige karakteristika for den uafhængige og/eller afhængige variable under undersøgelse og beror sig forskernes vurdering. Undersøgelsens forfattere, eller personer, der er autoriseret af dem, har kontrol over mekanismen for stikprøveudvælgelse, og universet er defineret i henhold til udvælgelseskriterierne. Også kaldet ”vurderingsstikprøveudvælgelse”. For eksempel kan en medicinsk forsker med vilje udvælge individer, der er ens i de fleste henseender, undtagen på resultatet af forskningsemnet, der kan være en specifik sygdom. Nogle typer af formålsbestemt stikprøveudvælgelse er typisk/afvigende cases, homogen/maksimum variation-, ekspert- eller kritisk caseudvælgelse.",
           "parent": "Nonprobability",
           "position": 13
         },
@@ -363,7 +364,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Nonprobability.RespondentAssisted/da/1.1.1",
           "notation": "Nonprobability.RespondentAssisted",
           "title": "Ikke-sandsynlighed: Respondentassisteret",
-          "definition": "Stikprøveenheder idenficeres i en målpopulation med hjælp fra enheder, der allerede er udvalgt (tilpasset fra ”Public Health Research Methods\", ed. Greg Guest, Emily E. Namey, 2014.) Et typisk tilfælde er snowball stikprøveudvælgelse, hvor en forsker identificerer en gruppe af enheder, der passer til et bestemt kvalifikationskriterium. Sidstnævnte bliver bedt om at rekruttere andre medlemmer af samme population, der opfylder de samme kvalifikationskriterier (stikprøveudvælgelse af specifikke populationer, såsom migranter mm.) ",
+          "definition": "Stikprøveenheder idenficeres i en målpopulation med hjælp fra enheder, der allerede er udvalgt (tilpasset fra ”Public Health Research Methods\", ed. Greg Guest, Emily E. Namey, 2014.) Et typisk tilfælde er snowball stikprøveudvælgelse, hvor en forsker identificerer en gruppe af enheder, der passer til et bestemt kvalifikationskriterium. Sidstnævnte bliver bedt om at rekruttere andre medlemmer af samme population, der opfylder de samme kvalifikationskriterier (stikprøveudvælgelse af specifikke populationer, såsom migranter mm.)",
           "parent": "Nonprobability",
           "position": 15
         },
@@ -402,6 +403,7 @@
       "definition": "Aineistossa käytetyn otantamenetelmän tyyppiluokittelu.",
       "previousVersion": 0,
       "initialVersion": 252,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -458,49 +460,13 @@
           "position": 4
         },
         {
-          "id": 2114,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fi/1.1.1",
-          "notation": "Probability.Cluster",
-          "title": "Todennäköisyysotanta: ryväsotanta",
-          "definition": "Perusjoukon yksiköt ryhmitellään luontaisesti muodostuviin rypäisiin. Otokseen poimitaan todennäköisyysotannalla vain osa rypäistä. Valituista rypäistä otetaan mukaan tutkimukseen kaikki yksiköt. Rypäät saattavat olla esim. maantieteellisiä, ajallisia tai hallinnollisia yksiköitä. Käytä tätä laajempaa termiä vain mikäli tarkempi ryväsotannan muoto ei ole tiedossa tai on vaikeasti määriteltävissä.",
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 2115,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fi/1.1.1",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Todennäköisyysotanta: yksiasteinen ryväsotanta",
-          "definition": "Perusjoukon yksiköt ryhmitellään luontaisesti ilmeneviin rypäisiin. Otokseen poimitaan todennäköisyysotannalla vain osa rypäistä. Valituista rypäistä otetaan mukaan tutkimukseen kaikki yksiköt. Esimerkiksi jos halutaan otos kaupungin koululaisista, kukin koulu muodostaa yhden rypään, kouluista valitaan mukaan satunnaisotannalla vain osa ja otokseen tulleista kouluista kutsutaan mukaan kaikki koululaiset. Ryväsotanta eroaa ositetusta otannasta siten, että ositetussa otannassa valitaan satunnaisotannalla yksiköitä kaikista ositteista, kun taas yksiasteisessa ryväsotannassa poimitaan satunnaisotannalla itse rypäät ja niiden sisällä otetaan mukaan kaikki yksiköt.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 2117,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fi/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Todennäköisyysotanta: monivaiheinen otanta",
-          "definition": "Otanta tehdään kahdessa tai useammassa eri vaiheessa siten, että jokaisessa vaiheessa otos pienenee ja kaikissa vaiheissa käytetään jotain todennäköisyysotantaa (eli missään vaiheessa ei oteta mukaan kaikkia yksiköitä). Todennäköisyysotannan menetelmä saattaa vaihtua eri vaiheissa. Esimerkiksi jos halutaan otos kaupungin koululaisista, valitaan ensin mukaan osa kaupungin kouluista. Seuraavassa vaiheessa valitaan otokseen tulleista kouluista osa luokista. Viimeisessä vaiheessa valitaan jokaisesta mukaan tulleesta luokasta osa koululaisista.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 2116,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fi/1.1.1",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Todennäköisyysotanta: ositettu ryväsotanta",
-          "definition": "Perusjoukon yksiköt ryhmitellään ensin luontaisesti ilmeneviin rypäisiin. Seuraavaksi rypäiden joukko jaetaan toisensa poissulkeviin ositteisiin ja kustakin ositteesta valitaan todennäköisyysotannalla vain osa siihen sisältyvistä rypäistä. Valittujen rypäiden sisällä mukaan otetaan kaikki yksiköt. Esimerkiksi jos halutaan otos kaupungin koululaisista, koulut (luontaiset rypäät) jaetaan kolmeen ositteeseen niiden koon mukaan (pienet, keskisuuret ja suuret koulut) ja kustakin ositetyypistä valitaan satunnaisotannalla mukaan osa kouluista. Näin mukaan tulee kaikenkokoisia kouluja. Valittujen koulujen sisällä pyydetään mukaan kaikki koululaiset.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 2112,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fi/1.1.1",
           "notation": "Probability.Stratified.Proportional",
           "title": "Todennäköisyysotanta: suhteutettu ositettu otanta",
           "definition": "Perusjoukko jaetaan ensin erillisiin, toisensa poissulkeviin ositteisiin jonkin ominaisuuden mukaan. Suhteutetussa ositetussa otannassa kunkin ositteen otoskoko suhteessa kokonaisotokseen on sama kuin tämän ositteen suhteellinen koko perusjoukossa. Esimerkki: maa on jaettu kahteen alueelliseen ositteeseen, joissa länsiosa sisältää 80 % ja itäosa 20 % maan kokonaisväestöstä. Jos 1000 henkilön otos on suhteutettu ositettu otanta, otokseen valitaan 800 henkilöä lännestä (80 %) ja 200 henkilöä idästä (20 %).",
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 2113,
@@ -509,6 +475,42 @@
           "title": "Todennäköisyysotanta: suhteuttamaton ositettu otanta",
           "definition": "Perusjoukko jaetaan ensin jonkin ominaisuuden mukaan erillisiin, toisensa poissulkeviin ositteisiin. Suhteuttamattomassa ositetussa otannassa kunkin ositteen otoskoko suhteessa kokonaisotokseen ei ole sama kuin ositteen suhteellinen koko perusjoukossa. Eri ositteista valittu otoskoko voi olla samansuuruinen, optimaalinen tai se saattaa heijastaa tutkimuksen tavoitteita (esim. tehdään yliotos tietystä perusjoukon osasta). Esimerkki: maa jaetaan kahteen alueelliseen ositteeseen, joissa länsiosa sisältää 80 % ja itäosa 20 % maan kokonaisväestöstä. Jos halutaan samansuuruiset otokset, puolet yksiköistä valitaan lännestä ja puolet idästä, niin että molemmat muodostavat 50 % kokonaisotoksesta. Jos itäosan väestöä halutaan tutkia tarkemmin, voidaan tehdä otos, jossa 40 % yksiköistä valitaan lännestä ja 60 % idästä, joten itäosasta on tehty yliotos.",
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 2114,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fi/1.1.1",
+          "notation": "Probability.Cluster",
+          "title": "Todennäköisyysotanta: ryväsotanta",
+          "definition": "Perusjoukon yksiköt ryhmitellään luontaisesti muodostuviin rypäisiin. Otokseen poimitaan todennäköisyysotannalla vain osa rypäistä. Valituista rypäistä otetaan mukaan tutkimukseen kaikki yksiköt. Rypäät saattavat olla esim. maantieteellisiä, ajallisia tai hallinnollisia yksiköitä. Käytä tätä laajempaa termiä vain mikäli tarkempi ryväsotannan muoto ei ole tiedossa tai on vaikeasti määriteltävissä.",
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 2115,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fi/1.1.1",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Todennäköisyysotanta: yksiasteinen ryväsotanta",
+          "definition": "Perusjoukon yksiköt ryhmitellään luontaisesti ilmeneviin rypäisiin. Otokseen poimitaan todennäköisyysotannalla vain osa rypäistä. Valituista rypäistä otetaan mukaan tutkimukseen kaikki yksiköt. Esimerkiksi jos halutaan otos kaupungin koululaisista, kukin koulu muodostaa yhden rypään, kouluista valitaan mukaan satunnaisotannalla vain osa ja otokseen tulleista kouluista kutsutaan mukaan kaikki koululaiset. Ryväsotanta eroaa ositetusta otannasta siten, että ositetussa otannassa valitaan satunnaisotannalla yksiköitä kaikista ositteista, kun taas yksiasteisessa ryväsotannassa poimitaan satunnaisotannalla itse rypäät ja niiden sisällä otetaan mukaan kaikki yksiköt.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 2116,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fi/1.1.1",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Todennäköisyysotanta: ositettu ryväsotanta",
+          "definition": "Perusjoukon yksiköt ryhmitellään ensin luontaisesti ilmeneviin rypäisiin. Seuraavaksi rypäiden joukko jaetaan toisensa poissulkeviin ositteisiin ja kustakin ositteesta valitaan todennäköisyysotannalla vain osa siihen sisältyvistä rypäistä. Valittujen rypäiden sisällä mukaan otetaan kaikki yksiköt. Esimerkiksi jos halutaan otos kaupungin koululaisista, koulut (luontaiset rypäät) jaetaan kolmeen ositteeseen niiden koon mukaan (pienet, keskisuuret ja suuret koulut) ja kustakin ositetyypistä valitaan satunnaisotannalla mukaan osa kouluista. Näin mukaan tulee kaikenkokoisia kouluja. Valittujen koulujen sisällä pyydetään mukaan kaikki koululaiset.",
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 2117,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fi/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Todennäköisyysotanta: monivaiheinen otanta",
+          "definition": "Otanta tehdään kahdessa tai useammassa eri vaiheessa siten, että jokaisessa vaiheessa otos pienenee ja kaikissa vaiheissa käytetään jotain todennäköisyysotantaa (eli missään vaiheessa ei oteta mukaan kaikkia yksiköitä). Todennäköisyysotannan menetelmä saattaa vaihtua eri vaiheissa. Esimerkiksi jos halutaan otos kaupungin koululaisista, valitaan ensin mukaan osa kaupungin kouluista. Seuraavassa vaiheessa valitaan otokseen tulleista kouluista osa luokista. Viimeisessä vaiheessa valitaan jokaisesta mukaan tulleesta luokasta osa koululaisista.",
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -590,6 +592,7 @@
       "definition": "Une typologie des méthodes d'échantillonnage",
       "previousVersion": 404,
       "initialVersion": 398,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Code descriptive term rephrased: Probabiliste : stratifié : disproportionnel\n",
       "license": "CC BY",
@@ -651,46 +654,6 @@
           "position": 4
         },
         {
-          "id": 8321,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fr",
-          "notation": "Probability.Cluster",
-          "title": "Probabiliste : grappe",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectées à partir de tous les unités dans chaque groupe sélectionné. L'échantillonnage est souvent regroupé selon la géographie, ou la période de temps. Utilisez ce terme si un terme plus spécifique d'échantillonnage en grappes n'est pas connu ou est difficile à identifier.",
-          "previousConcept": 7570,
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 8319,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fr",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Probabiliste : grappe : aléatoire simple",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectés à partir de tous les unités dans chaque groupe sélectionné. Par exemple, pour un échantillon d'élèves d'une ville, un nombre d'écoles devrait être choisi en utilisant une méthode de sélection aléatoire, et puis tous les élèves de chaque école échantillonnée seraient inclus.",
-          "previousConcept": 7571,
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 8326,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr",
-          "notation": "Probability.Multistage",
-          "title": "Probabiliste : multi-étapes",
-          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
-          "previousConcept": 7558,
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 8320,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Probabiliste : grappe : aléatoire stratifié",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
-          "previousConcept": 7560,
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 8330,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fr",
           "notation": "Probability.Stratified.Proportional",
@@ -698,7 +661,7 @@
           "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon stratifié proportionnel le nombre d'éléments choisis dans chaque strate est proportionnel à la taille de la population de la strate par rapport à la population entière. Par exemple, un pays est divisé en deux strates régionales qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population totale. Pour un échantillon de 1 000 personnes, 800 (i. e., 80 pour cent) devraient être tirées à partir de l'Ouest et 200 (i. e., 20 pour cent) à partir de l'Est pour représenter fidèlement leur proportion dans la population totale.",
           "previousConcept": 7565,
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 8323,
@@ -708,6 +671,46 @@
           "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon disproportionnel le nombre des unités choisies à partir de chaque strate n'est pas proportionnel à la taille de population de la strate par rapport à la population entière. Le nombre d'unités échantillonnées à partir de chaque strate peut être égal, optimal, ou peut refléter la raison de l'enquête, comme le sur-échantillonnage de différents sous-groupes de la population. Par exemple, un pays est divisé en deux strates qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population du pays. Si une représentation égale des deux régions est nécessaire dans une étude, la moitié de l'échantillon peut être tirée à partir de l'Ouest et la moitié de l'Est, tel que chaque région est représentée par 50 pour cent de l'échantillon. Si une analyse plus détaillée de la population de l'Est est nécessaire, 40 pour cent des unités peuvent être tirées à partir de l'Ouest et 60 pour cent à partir de l'Est, tel que l'Est est surreprésenté.",
           "previousConcept": 7562,
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 8321,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fr",
+          "notation": "Probability.Cluster",
+          "title": "Probabiliste : grappe",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectées à partir de tous les unités dans chaque groupe sélectionné. L'échantillonnage est souvent regroupé selon la géographie, ou la période de temps. Utilisez ce terme si un terme plus spécifique d'échantillonnage en grappes n'est pas connu ou est difficile à identifier.",
+          "previousConcept": 7570,
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 8319,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fr",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Probabiliste : grappe : aléatoire simple",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectés à partir de tous les unités dans chaque groupe sélectionné. Par exemple, pour un échantillon d'élèves d'une ville, un nombre d'écoles devrait être choisi en utilisant une méthode de sélection aléatoire, et puis tous les élèves de chaque école échantillonnée seraient inclus.",
+          "previousConcept": 7571,
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 8320,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Probabiliste : grappe : aléatoire stratifié",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
+          "previousConcept": 7560,
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 8326,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr",
+          "notation": "Probability.Multistage",
+          "title": "Probabiliste : multi-étapes",
+          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
+          "previousConcept": 7558,
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -813,6 +816,7 @@
       "definition": "Une typologie des méthodes d'échantillonnage",
       "previousVersion": 398,
       "initialVersion": 398,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "Probabiliste : stratifié => [séparées et mutuellement exclusives] => [séparées et mutuellement exclusifs]",
       "license": "CC BY",
@@ -874,46 +878,6 @@
           "position": 4
         },
         {
-          "id": 7570,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fr/1.1.2",
-          "notation": "Probability.Cluster",
-          "title": "Probabiliste : grappe",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectées à partir de tous les unités dans chaque groupe sélectionné. L'échantillonnage est souvent regroupé selon la géographie, ou la période de temps. Utilisez ce terme si un terme plus spécifique d'échantillonnage en grappes n'est pas connu ou est difficile à identifier.",
-          "previousConcept": 7316,
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 7571,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fr/1.1.2",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Probabiliste : grappe : aléatoire simple",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectés à partir de tous les unités dans chaque groupe sélectionné. Par exemple, pour un échantillon d'élèves d'une ville, un nombre d'écoles devrait être choisi en utilisant une méthode de sélection aléatoire, et puis tous les élèves de chaque école échantillonnée seraient inclus.",
-          "previousConcept": 7317,
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 7558,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr/1.1.2",
-          "notation": "Probability.Multistage",
-          "title": "Probabiliste : multi-étapes",
-          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
-          "previousConcept": 7319,
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 7560,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr/1.1.2",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Probabiliste : grappe : aléatoire stratifié",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
-          "previousConcept": 7318,
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 7565,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fr/1.1.2",
           "notation": "Probability.Stratified.Proportional",
@@ -921,7 +885,7 @@
           "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon stratifié proportionnel le nombre d'éléments choisis dans chaque strate est proportionnel à la taille de la population de la strate par rapport à la population entière. Par exemple, un pays est divisé en deux strates régionales qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population totale. Pour un échantillon de 1 000 personnes, 800 (i. e., 80 pour cent) devraient être tirées à partir de l'Ouest et 200 (i. e., 20 pour cent) à partir de l'Est pour représenter fidèlement leur proportion dans la population totale.",
           "previousConcept": 7314,
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 7562,
@@ -931,6 +895,46 @@
           "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon disproportionnel le nombre des unités choisies à partir de chaque strate n'est pas proportionnel à la taille de population de la strate par rapport à la population entière. Le nombre d'unités échantillonnées à partir de chaque strate peut être égal, optimal, ou peut refléter la raison de l'enquête, comme le sur-échantillonnage de différents sous-groupes de la population. Par exemple, un pays est divisé en deux strates qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population du pays. Si une représentation égale des deux régions est nécessaire dans une étude, la moitié de l'échantillon peut être tirée à partir de l'Ouest et la moitié de l'Est, tel que chaque région est représentée par 50 pour cent de l'échantillon. Si une analyse plus détaillée de la population de l'Est est nécessaire, 40 pour cent des unités peuvent être tirées à partir de l'Ouest et 60 pour cent à partir de l'Est, tel que l'Est est surreprésenté.",
           "previousConcept": 7315,
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 7570,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fr/1.1.2",
+          "notation": "Probability.Cluster",
+          "title": "Probabiliste : grappe",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectées à partir de tous les unités dans chaque groupe sélectionné. L'échantillonnage est souvent regroupé selon la géographie, ou la période de temps. Utilisez ce terme si un terme plus spécifique d'échantillonnage en grappes n'est pas connu ou est difficile à identifier.",
+          "previousConcept": 7316,
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 7571,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fr/1.1.2",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Probabiliste : grappe : aléatoire simple",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectés à partir de tous les unités dans chaque groupe sélectionné. Par exemple, pour un échantillon d'élèves d'une ville, un nombre d'écoles devrait être choisi en utilisant une méthode de sélection aléatoire, et puis tous les élèves de chaque école échantillonnée seraient inclus.",
+          "previousConcept": 7317,
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 7560,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr/1.1.2",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Probabiliste : grappe : aléatoire stratifié",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
+          "previousConcept": 7318,
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 7558,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr/1.1.2",
+          "notation": "Probability.Multistage",
+          "title": "Probabiliste : multi-étapes",
+          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
+          "previousConcept": 7319,
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -1028,6 +1032,7 @@
       "definition": "Une typologie des méthodes d'échantillonnage",
       "previousVersion": 0,
       "initialVersion": 398,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -1084,49 +1089,13 @@
           "position": 4
         },
         {
-          "id": 7316,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fr/1.1.1",
-          "notation": "Probability.Cluster",
-          "title": "Probabiliste : grappe",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectées à partir de tous les unités dans chaque groupe sélectionné. L'échantillonnage est souvent regroupé selon la géographie, ou la période de temps. Utilisez ce terme si un terme plus spécifique d'échantillonnage en grappes n'est pas connu ou est difficile à identifier.",
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 7317,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fr/1.1.1",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Probabiliste : grappe : aléatoire simple",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectés à partir de tous les unités dans chaque groupe sélectionné. Par exemple, pour un échantillon d'élèves d'une ville, un nombre d'écoles devrait être choisi en utilisant une méthode de sélection aléatoire, et puis tous les élèves de chaque école échantillonnée seraient inclus.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 7319,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Probabiliste : multi-étapes",
-          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 7318,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr/1.1.1",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Probabiliste : grappe : aléatoire stratifié",
-          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 7314,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/fr/1.1.1",
           "notation": "Probability.Stratified.Proportional",
           "title": "Probabiliste : stratifié : proportionnel",
           "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon stratifié proportionnel le nombre d'éléments choisis dans chaque strate est proportionnel à la taille de la population de la strate par rapport à la population entière. Par exemple, un pays est divisé en deux strates régionales qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population totale. Pour un échantillon de 1 000 personnes, 800 (i. e., 80 pour cent) devraient être tirées à partir de l'Ouest et 200 (i. e., 20 pour cent) à partir de l'Est pour représenter fidèlement leur proportion dans la population totale.",
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 7315,
@@ -1135,6 +1104,42 @@
           "title": "Probabiliste : stratifié : disproportionnel",
           "definition": "La population cible est subdivisée dans des segments (strates) séparées et mutuellement exclusives qui couvrent la population entière. Dans un échantillon disproportionnel le nombre des unités choisies à partir de chaque strate n'est pas proportionnel à la taille de population de la strate par rapport à la population entière. Le nombre d'unités échantillonnées à partir de chaque strate peut être égal, optimal, ou peut refléter la raison de l'enquête, comme le sur-échantillonnage de différents sous-groupes de la population. Par exemple, un pays est divisé en deux strates qui comprend 80 pour cent (Ouest) et 20 pour cent (Est) de la population du pays. Si une représentation égale des deux régions est nécessaire dans une étude, la moitié de l'échantillon peut être tirée à partir de l'Ouest et la moitié de l'Est, tel que chaque région est représentée par 50 pour cent de l'échantillon. Si une analyse plus détaillée de la population de l'Est est nécessaire, 40 pour cent des unités peuvent être tirées à partir de l'Ouest et 60 pour cent à partir de l'Est, tel que l'Est est surreprésenté.",
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 7316,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/fr/1.1.1",
+          "notation": "Probability.Cluster",
+          "title": "Probabiliste : grappe",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectées à partir de tous les unités dans chaque groupe sélectionné. L'échantillonnage est souvent regroupé selon la géographie, ou la période de temps. Utilisez ce terme si un terme plus spécifique d'échantillonnage en grappes n'est pas connu ou est difficile à identifier.",
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 7317,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/fr/1.1.1",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Probabiliste : grappe : aléatoire simple",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) et un échantillon probabiliste de groupes est sélectionné. Des données sont alors collectés à partir de tous les unités dans chaque groupe sélectionné. Par exemple, pour un échantillon d'élèves d'une ville, un nombre d'écoles devrait être choisi en utilisant une méthode de sélection aléatoire, et puis tous les élèves de chaque école échantillonnée seraient inclus.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 7318,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/fr/1.1.1",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Probabiliste : grappe : aléatoire stratifié",
+          "definition": "La population cible est divisée dans des segments existants naturellement (grappes) ; Ensuite, ceux-ci sont divisés dans des strates mutuellement exclusives et un échantillon aléatoire des groupes est sélectionné depuis chaque strate. Les données sont alors collectées depuis toutes les unités au sein de chaque groupe. Par exemple, pour un échantillon d'élèves d'une ville, les écoles seraient divisées en deux strates par type d'école (privée vs. public) ; Les écoles seraient alors sélectionnées aléatoirement depuis chaque strate, et tous les élèves de chaque école échantillonnée seraient inclus.",
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 7319,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/fr/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Probabiliste : multi-étapes",
+          "definition": "L'échantillonnage est effectué par étapes en utilisant des unités plus en plus petites à chaque étape, et toutes les étapes impliquent une sélection aléatoire. Le type de procédure d'échantillonnage aléatoire peut être différent à chaque étape. Par exemple, pour un échantillon d'élèves d'une ville, les écoles sont sélectionnées aléatoirement dans une première étape. Un échantillon aléatoire de classes des écoles sélectionnées est tiré dans une deuxième étape. Les élèves sont alors sélectionnés aléatoirement depuis chacune de ces classes dans une troisième étape.",
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -1216,6 +1221,7 @@
       "definition": "Tipologia dei metodi di campionamento.",
       "previousVersion": 0,
       "initialVersion": 332,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -1272,49 +1278,13 @@
           "position": 4
         },
         {
-          "id": 5318,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/it/1.1.1",
-          "notation": "Probability.Cluster",
-          "title": "Probabilistico: a grappoli",
-          "definition": "La popolazione di riferimento è divisa in modo naturale in gruppi (cluster) e viene selezionato un campione probabilistico dei cluster. I dati vengono quindi raccolti da tutte le unità individuate all'interno di ciascun cluster selezionato. Il campionamento è spesso raggruppato su base geografica o temporale. Utilizzare questo termine più ampio se non è conosciuto oppure è difficile identificare un tipo più specifico di campionamento a grappoli.",
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 5319,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/it/1.1.1",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Probabilistico: a grappoli casuale semplice",
-          "definition": "La popolazione di riferimento è divisa in modo naturale in gruppi (cluster) e viene selezionato un campione probabilistico dei cluster. I dati vengono quindi raccolti da tutte le unità individuate all'interno di ciascun cluster selezionato. Ad esempio, per selezionare un campione di studenti in una città, viene scelto casualmente un determinato numero di scuole e, successivamente, saranno inclusi tutti gli studenti di ogni scuola selezionata.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 5321,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/it/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Probabilistico: multistadio",
-          "definition": "Il campionamento viene eseguito in differenti stadi, utilizzando unità sempre più piccole in ogni stadio. Tutti gli stadi implicano un campionamento probabilistico che può essere diverso in ogni stadio. Ad esempio, per selezionare un campione di studenti in una città, nel primo stadio si selezionano in modo casuale le scuole. Nel secondo stadio si effettua un campione casuale di classi all'interno di ciascuna scuola selezionata. Nel terzo stadio, infine, vengono selezionati in modo casuale gli studenti da ciascuna delle classi identificate.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 5320,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/it/1.1.1",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Probabilistico: a grappoli stratificato",
-          "definition": "La popolazione di riferimento è divisa in modo naturale in gruppi (cluster); successivamente, i cluster sono divisi in strati mutualmente esclusivi e, per ogni strato, viene selezionato in modo casuale un campione di cluster. I dati vengono quindi raccolti da tutte le unità individuate all'interno di ciascun cluster. Ad esempio, per selezionare un campione di studenti in una città, si suddividono le scuole in due strati a seconda del tipo di scuola (privato vs pubblico); le scuole saranno quindi selezionate in modo casuale per ogni strato, e saranno successivamente inclusi tutti gli studenti di ogni scuola selezionata.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 5316,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/it/1.1.1",
           "notation": "Probability.Stratified.Proportional",
           "title": "Probabilistisco: stratificato proporzionale",
           "definition": "La popolazione di riferimento è suddivisa in segmenti separati e mutuamente esclusivi (strati) che coprono l'intera popolazione. Nel campionamento stratificato proporzionale il numero di elementi scelti da ogni strato è proporzionale alla dimensione della popolazione dello strato, in rapporto all'intera popolazione. Ad esempio, un paese è diviso in due strati regionali che comprendono l'80% (ovest) e il 20% (est) della popolazione totale. Per un campione di 1.000 persone, 800 (cioè l'80%) saranno estratte dalla regione Ovest e 200 (ossia il 20%) dalla regione Est, mantenendo adeguatamente la relativa proporzione rispetto alla popolazione totale.",
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 5317,
@@ -1323,6 +1293,42 @@
           "title": "Probabilistisco: stratificato non proporzionale",
           "definition": "La popolazione di riferimento è suddivisa in segmenti separati e mutuamente esclusivi (strati) che coprono l'intera popolazione. Nel campionamento non proporzionale il numero di unità scelte da ogni strato non è proporzionale alla dimensione della popolazione dello strato in rapporto all'intera popolazione. Il numero di unità campionarie provenienti da ogni strato può essere uguale oppure riflettere lo scopo dello studio, come nel caso di sovracampionamento di diversi sottogruppi della popolazione. Ad esempio, un paese è diviso in due strati regionali che comprendono l'80% (ovest) e il 20% (est) della popolazione totale. Se in uno studio è necessaria una uguale rappresentazione delle due regioni, metà del campione sarà estratto dalla regione Est, in modo che ciascuna regione sia rappresentata dal 50% del campione. Se invece è necessaria un'analisi più dettagliata della popolazione proveniente dalla regione Est, potrà essere estratto il 40% delle unità dalla regione Ovest e il restante 60% dalla regione Est, in modo che quest'ultima sia sovrarappresentata.",
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 5318,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/it/1.1.1",
+          "notation": "Probability.Cluster",
+          "title": "Probabilistico: a grappoli",
+          "definition": "La popolazione di riferimento è divisa in modo naturale in gruppi (cluster) e viene selezionato un campione probabilistico dei cluster. I dati vengono quindi raccolti da tutte le unità individuate all'interno di ciascun cluster selezionato. Il campionamento è spesso raggruppato su base geografica o temporale. Utilizzare questo termine più ampio se non è conosciuto oppure è difficile identificare un tipo più specifico di campionamento a grappoli.",
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 5319,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/it/1.1.1",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Probabilistico: a grappoli casuale semplice",
+          "definition": "La popolazione di riferimento è divisa in modo naturale in gruppi (cluster) e viene selezionato un campione probabilistico dei cluster. I dati vengono quindi raccolti da tutte le unità individuate all'interno di ciascun cluster selezionato. Ad esempio, per selezionare un campione di studenti in una città, viene scelto casualmente un determinato numero di scuole e, successivamente, saranno inclusi tutti gli studenti di ogni scuola selezionata.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 5320,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/it/1.1.1",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Probabilistico: a grappoli stratificato",
+          "definition": "La popolazione di riferimento è divisa in modo naturale in gruppi (cluster); successivamente, i cluster sono divisi in strati mutualmente esclusivi e, per ogni strato, viene selezionato in modo casuale un campione di cluster. I dati vengono quindi raccolti da tutte le unità individuate all'interno di ciascun cluster. Ad esempio, per selezionare un campione di studenti in una città, si suddividono le scuole in due strati a seconda del tipo di scuola (privato vs pubblico); le scuole saranno quindi selezionate in modo casuale per ogni strato, e saranno successivamente inclusi tutti gli studenti di ogni scuola selezionata.",
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 5321,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/it/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Probabilistico: multistadio",
+          "definition": "Il campionamento viene eseguito in differenti stadi, utilizzando unità sempre più piccole in ogni stadio. Tutti gli stadi implicano un campionamento probabilistico che può essere diverso in ogni stadio. Ad esempio, per selezionare un campione di studenti in una città, nel primo stadio si selezionano in modo casuale le scuole. Nel secondo stadio si effettua un campione casuale di classi all'interno di ciascuna scuola selezionata. Nel terzo stadio, infine, vengono selezionati in modo casuale gli studenti da ciascuna delle classi identificate.",
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -1404,6 +1410,7 @@
       "definition": "Tipologia de métodos de amostragem.",
       "previousVersion": 0,
       "initialVersion": 374,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -1460,49 +1467,13 @@
           "position": 4
         },
         {
-          "id": 6818,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/pt",
-          "notation": "Probability.Cluster",
-          "title": "Probabilística: Clusters (por conglomerados)",
-          "definition": "A população-alvo é dividida em segmentos que ocorrem naturalmente (clusters) e uma amostra probabilística de clusters é selecionada. Os dados são recolhidos de todas as unidades dentro de cada cluster selecionado. A amostragem por clusters é bastante usada por localização geográfica ou período de tempo. Usar este termo mais amplo se o tipo específico de amostragem por clusters não for conhecido ou for difícil de identificar.",
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 6819,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/pt",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Probabilística: Clusters: Aleatória simples",
-          "definition": "A população-alvo é dividida em segmentos que ocorrem naturalmente (clusters) e uma amostra aleatória simples de clusters é selecionada. Os dados são recolhidos de todas as unidades em cada cluster selecionado. Por exemplo, para uma amostra de estudantes numa cidade, várias escolas seriam escolhidas usando o método de seleção aleatória e todos os alunos de todas as escolas selecionadas para amostra seriam incluídos.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 6821,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/pt",
-          "notation": "Probability.Multistage",
-          "title": "Probabilística: Multietapas",
-          "definition": "A amostragem é realizada por etapas, havendo, em cada etapa, cada vez menos unidades, já que todas as etapas envolvem uma seleção probabilística. O tipo de procedimento da amostragem probabilística pode ser diferente em cada etapa. Por exemplo, para uma amostra de alunos numa cidade, as escolas são selecionadas aleatoriamente na primeira etapa. Numa segunda etapa, uma amostra aleatória das turmas é extraída em cada escola selecionada. Numa terceira etapa, os alunos são selecionados aleatoriamente dentro de cada uma dessas turmas.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 6820,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/pt",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Probabilística: Clusters: Aleatória estratificada",
-          "definition": "A população-alvo é dividida em segmentos que ocorrem naturalmente (clusters); de seguida, estes são divididos em estratos mutuamente exclusivos e uma amostra aleatória de clusters é selecionada em cada estrato. Os dados são recolhidos de todas as unidades dentro de cada cluster selecionado. Por exemplo, para uma amostra de estudantes numa cidade, as escolas seriam divididas em dois estratos por tipo de escola (privada vs. pública); as escolas seriam selecionadas aleatoriamente de cada estrato e todos os alunos de todas as escolas selecionadas para amostra seriam incluídos.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 6816,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/pt",
           "notation": "Probability.Stratified.Proportional",
           "title": "Probabilística: Estratificada: Proporcional",
           "definition": "A população-alvo é subdividida em segmentos separados e mutuamente exclusivos (estratos) que cobrem toda a população. Na amostragem estratificada proporcional, o número de elementos escolhidos em cada estrato é proporcional à dimensão da população do estrato tendo em conta o seu peso na população total. Por exemplo, um país é dividido em dois estratos regionais que compreendem 80% (oeste) e 20% (leste) da população total. Para uma amostra de 1000 pessoas, 800 (ou seja, 80%) seriam retiradas do oeste e 200 (ou seja, 20%) do leste, por forma a representar com precisão a sua proporção na população total.",
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 6817,
@@ -1511,6 +1482,42 @@
           "title": "Probabilística: Estratificada: Não proporcional",
           "definition": "A população-alvo é subdividida em segmentos separados e mutuamente exclusivos (estratos) que cobrem toda a população. Na amostragem não proporcional, o número de unidades escolhidas de cada estrato não é proporcional à dimensão da população do estrato quando visto em relação à população total. O número de unidades selecionadas de cada estrato pode ser igual, ideal, ou pode refletir o objetivo do estudo, como a sobreamostragem de diferentes subgrupos da população. Por exemplo, um país é dividido em dois estratos regionais que abrangem 80% (oeste) e 20% (leste) da população do país. Se uma representação igual das duas regiões for necessária num estudo, metade da amostra pode ser extraída do oeste e metade do leste, de modo que cada região é representada por 50% da amostra. Se for necessária uma análise mais detalhada da população do leste, 40% das unidades podem ser retiradas do oeste e 60% do leste para que este esteja sobrerepresentado.",
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 6818,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/pt",
+          "notation": "Probability.Cluster",
+          "title": "Probabilística: Clusters (por conglomerados)",
+          "definition": "A população-alvo é dividida em segmentos que ocorrem naturalmente (clusters) e uma amostra probabilística de clusters é selecionada. Os dados são recolhidos de todas as unidades dentro de cada cluster selecionado. A amostragem por clusters é bastante usada por localização geográfica ou período de tempo. Usar este termo mais amplo se o tipo específico de amostragem por clusters não for conhecido ou for difícil de identificar.",
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 6819,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/pt",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Probabilística: Clusters: Aleatória simples",
+          "definition": "A população-alvo é dividida em segmentos que ocorrem naturalmente (clusters) e uma amostra aleatória simples de clusters é selecionada. Os dados são recolhidos de todas as unidades em cada cluster selecionado. Por exemplo, para uma amostra de estudantes numa cidade, várias escolas seriam escolhidas usando o método de seleção aleatória e todos os alunos de todas as escolas selecionadas para amostra seriam incluídos.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 6820,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/pt",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Probabilística: Clusters: Aleatória estratificada",
+          "definition": "A população-alvo é dividida em segmentos que ocorrem naturalmente (clusters); de seguida, estes são divididos em estratos mutuamente exclusivos e uma amostra aleatória de clusters é selecionada em cada estrato. Os dados são recolhidos de todas as unidades dentro de cada cluster selecionado. Por exemplo, para uma amostra de estudantes numa cidade, as escolas seriam divididas em dois estratos por tipo de escola (privada vs. pública); as escolas seriam selecionadas aleatoriamente de cada estrato e todos os alunos de todas as escolas selecionadas para amostra seriam incluídos.",
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 6821,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/pt",
+          "notation": "Probability.Multistage",
+          "title": "Probabilística: Multietapas",
+          "definition": "A amostragem é realizada por etapas, havendo, em cada etapa, cada vez menos unidades, já que todas as etapas envolvem uma seleção probabilística. O tipo de procedimento da amostragem probabilística pode ser diferente em cada etapa. Por exemplo, para uma amostra de alunos numa cidade, as escolas são selecionadas aleatoriamente na primeira etapa. Numa segunda etapa, uma amostra aleatória das turmas é extraída em cada escola selecionada. Numa terceira etapa, os alunos são selecionados aleatoriamente dentro de cada uma dessas turmas.",
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -1592,6 +1599,7 @@
       "definition": "Vključuje razvrstitev metod vzorčenja.",
       "previousVersion": 0,
       "initialVersion": 255,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -1648,49 +1656,13 @@
           "position": 4
         },
         {
-          "id": 2168,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/sl/1.1.1",
-          "notation": "Probability.Cluster",
-          "title": "Verjetnostno: po skupinah",
-          "definition": "Ciljna populacija je razdeljena na skupine, ki obstajajo same po sebi in izbran je verjetnostni vzorec skupin. Podatki se nato zbirajo na vseh enotah znotraj vsake izbrane skupine. Vzorčene skupine so pogosto določene glede na geografsko območje ali časovno obdobje. Uporabite ta širši izraz, če bolj določena vrsta vzorčenja skupin ni znana ali jo je težko prepoznati.",
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 2169,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/sl/1.1.1",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Verjetnostno: po skupinah: enostavno slučajno",
-          "definition": "Ciljna populacija je razdeljena na skupine, ki obstajajo same po sebi in izbran je enostavni slučajni vzorec skupin. Podatki se nato zbirajo na vseh enotah znotraj vsake izbrane skupine. Na primer, za vzorec učencev v mestu izberemo več šol z metodo slučajnega izbora, nato pa vključimo vse učence iz vsake izbrane šole.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 2171,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sl/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Verjetnostno: večstopenjsko",
-          "definition": "Vzorčenje se izvaja stopenjsko z vključitvijo vedno manjšega števila enot na vsaki stopnji, vse stopnje vključujejo verjetnostno izbiro. Vrsta postopka verjetnostnega vzorčenja je lahko različna na vsaki stopnji. Na primer, za vzorec učencev v mestu najprej na prvi stopnji slučajno izberemo šole. Na drugi stopnji poteka izbor slučajnega vzorca razredov v vsaki izmed izbranih šol. Na tretji stopnji nato slučajno izberemo učence iz vsakega od izbranih razredov.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 2170,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/sl/1.1.1",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Verjetnostno: po skupinah: stratificirano slučajno",
-          "definition": "Ciljna populacija je razdeljena na skupine, ki obstajajo same po sebi; te so nato razdeljene na medsebojno izključujoče se sloje in naključni vzorec skupin je izbran iz vsakega sloja. Podatki se zbirajo na vseh enotah znotraj vsake izbrane skupine. Na primer, za vzorec učencev v mestu bi šole razdelili na dva sloja glede na vrsto šole (zasebne in javne); šole bodo nato slučajno izbrane iz vsakega sloja in vključeni bodo vsi učenci iz vsake izbrane šole.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 2166,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/sl/1.1.1",
           "notation": "Probability.Stratified.Proportional",
           "title": "Verjetnostno: stratificiano: proporcionalno",
           "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke (stratume/sloje), ki pokrivajo celotno populacijo. Pri proporcionalnem stratificiranem vzorčenju je število elementov, izbranih iz vsakega sloja, sorazmerno z velikostjo populacije v sloju glede na celotno populacijo. Na primer, država je razdeljena na dva regionalna odseka, ki obsegata 80 odstotkov (zahod) in 20 odstotkov (vzhod) celotnega prebivalstva. Za vzorec 1.000 prebivalcev bi iz zahodnega odseka vzeli 800 (tj. 80 odstotkov) udeležencev in iz vzhodnega odseka 200 (tj. 20 odstotkov), kar bi natančno predstavljalo njihov delež v celotni populaciji.",
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 2167,
@@ -1699,6 +1671,42 @@
           "title": "Verjetnostno: startificirano: disproporcionalno",
           "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke (stratume/sloje), ki pokrivajo celotno populacijo. Število enot, izbranih iz vsakega odseka, pri disproporcionalnem vzorčenju ni sorazmerno z velikostjo populacije odseka glede na celotno populacijo. Število vzorčenih enot iz vsakega odseka je lahko enako, optimalno oziroma lahko odraža namen raziskave, kot je nadvzorčenje različnih podskupin prebivalstva. Na primer, država je razdeljena na dva regionalna odseka, ki obsegata 80 odstotkov (zahod) in 20 odstotkov (vzhod) prebivalstva države. Če je v raziskavi potrebna enakopravna zastopanost obeh regij, se v vzorec lahko vzame polovica udeležencev iz zahoda in polovica iz vzhoda, tako da vsaka regija predstavlja 50 odstotkov vzorca. Če je potrebna podrobnejša analiza prebivalstva z vzhoda, lahko vzamemo 40 odstotkov enot iz zahoda in 60 odstotkov iz vzhoda, tako da je vzhod prekomerno zastopan.",
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 2168,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/sl/1.1.1",
+          "notation": "Probability.Cluster",
+          "title": "Verjetnostno: po skupinah",
+          "definition": "Ciljna populacija je razdeljena na skupine, ki obstajajo same po sebi in izbran je verjetnostni vzorec skupin. Podatki se nato zbirajo na vseh enotah znotraj vsake izbrane skupine. Vzorčene skupine so pogosto določene glede na geografsko območje ali časovno obdobje. Uporabite ta širši izraz, če bolj določena vrsta vzorčenja skupin ni znana ali jo je težko prepoznati.",
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 2169,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/sl/1.1.1",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Verjetnostno: po skupinah: enostavno slučajno",
+          "definition": "Ciljna populacija je razdeljena na skupine, ki obstajajo same po sebi in izbran je enostavni slučajni vzorec skupin. Podatki se nato zbirajo na vseh enotah znotraj vsake izbrane skupine. Na primer, za vzorec učencev v mestu izberemo več šol z metodo slučajnega izbora, nato pa vključimo vse učence iz vsake izbrane šole.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 2170,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/sl/1.1.1",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Verjetnostno: po skupinah: stratificirano slučajno",
+          "definition": "Ciljna populacija je razdeljena na skupine, ki obstajajo same po sebi; te so nato razdeljene na medsebojno izključujoče se sloje in naključni vzorec skupin je izbran iz vsakega sloja. Podatki se zbirajo na vseh enotah znotraj vsake izbrane skupine. Na primer, za vzorec učencev v mestu bi šole razdelili na dva sloja glede na vrsto šole (zasebne in javne); šole bodo nato slučajno izbrane iz vsakega sloja in vključeni bodo vsi učenci iz vsake izbrane šole.",
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 2171,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sl/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Verjetnostno: večstopenjsko",
+          "definition": "Vzorčenje se izvaja stopenjsko z vključitvijo vedno manjšega števila enot na vsaki stopnji, vse stopnje vključujejo verjetnostno izbiro. Vrsta postopka verjetnostnega vzorčenja je lahko različna na vsaki stopnji. Na primer, za vzorec učencev v mestu najprej na prvi stopnji slučajno izberemo šole. Na drugi stopnji poteka izbor slučajnega vzorca razredov v vsaki izmed izbranih šol. Na tretji stopnji nato slučajno izberemo učence iz vsakega od izbranih razredov.",
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -1732,7 +1740,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure/sl#Nonprobability.Quota/sl/1.1.1",
           "notation": "Nonprobability.Quota",
           "title": "Neverjetnostno: kvotno",
-          "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke v skladu z nekaterimi vnaprej določenimi merili za izračune. Porazdelitev meril za izračune (razmerje med spoloma/starostjo/etnično pripadnostjo ali drugimi značilnostmi, kot so vera, izobraževanje itd.) naj bi odražala resnično strukturo ciljne populacije ali strukturo želene preučevane populacije. Iz vsakega odseka se nato vzamejo neverjetnostni vzorci, dokler ni doseženo določeno število enot. Na primer, če ciljno populacijo sestavlja 45 odstotkov žensk in 55 odstotkov moških, bo v proporcionalni kvotni vzorec vključen enak odstotek udeležencev glede na spol, medtem ko so v neproporcionalni kvotni vzorec vključeni različni odstotki, ki izhajajo iz razmislekov v povezavi z raziskavo (na primer, nadvzorčenje nekaterih manj zastopanih delov populacije). ",
+          "definition": "Ciljna populacija je razdeljena na ločene in medsebojno izključujoče se odseke v skladu z nekaterimi vnaprej določenimi merili za izračune. Porazdelitev meril za izračune (razmerje med spoloma/starostjo/etnično pripadnostjo ali drugimi značilnostmi, kot so vera, izobraževanje itd.) naj bi odražala resnično strukturo ciljne populacije ali strukturo želene preučevane populacije. Iz vsakega odseka se nato vzamejo neverjetnostni vzorci, dokler ni doseženo določeno število enot. Na primer, če ciljno populacijo sestavlja 45 odstotkov žensk in 55 odstotkov moških, bo v proporcionalni kvotni vzorec vključen enak odstotek udeležencev glede na spol, medtem ko so v neproporcionalni kvotni vzorec vključeni različni odstotki, ki izhajajo iz razmislekov v povezavi z raziskavo (na primer, nadvzorčenje nekaterih manj zastopanih delov populacije).",
           "parent": "Nonprobability",
           "position": 14
         },
@@ -1837,49 +1845,13 @@
           "position": 4
         },
         {
-          "id": 8015,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/sr",
-          "notation": "Probability.Cluster",
-          "title": "Verovatnoća: Klaster",
-          "definition": "Ciljna populacija je podeljena na segmente (klastere) koji se javljaju u prirodi i odabran je verovatni uzorak klastera. Podaci se zatim prikupljaju iz svih jedinica unutar svakog odabranog klastera. Uzorkovanje je često grupisano prema geografskoj lokaciji ili vremenskom periodu. Upotrebite ovaj širi pojam ako se ne zna određenija vrsta uzorkovanja klastera ili ju je teško identifikovati.",
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 8016,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/sr",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Verovatnoća: Klaster: Jednostavna slučajna",
-          "definition": "Ciljna populacija je podeljena na segmente (klastere) koji se javljaju u prirodi&nbsp; i odabran je jednostavan slučajni uzorak klastera. Podaci se zatim prikupljaju iz svih jedinica unutar svakog odabranog klastera. Na primer, za uzorak učenika u gradu, jedan broj škola birao bi se metodom nasumičnog odabira i tada bi bili uključeni svi učenici iz svake uzorkovane škole.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 8018,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sr",
-          "notation": "Probability.Multistage",
-          "title": "Verovatnoća: Višefazna",
-          "definition": "Uzorkovanje se vrši u fazama koristeći sve manje i manje jedinice u svakoj fazi, a sve faze uključuju izbornu verovatnoće. Vrsta postupka uzorkovanja verovatnoće može biti različita u svakoj fazi. Na primer, za uzorak učenika u gradu, škole se nasumično biraju u prvoj fazi, dok se u drugoj fazi primenjuje nasumični uzorak časova u svakoj odabranoj školi. Potom se, u trećoj fazi, učenici nasumično biraju iz svake od ovih klasa.",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 8017,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/sr",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Verovatnoća: Klaster: Stratifikovana slučajna",
-          "definition": "Ciljna populacija je podeljena na segmente koji se javljaju u prirodi (klastere). Nakon toga, oni se dele u međusobno isključujuće stratume i iz svakog stratuma se bira slučajni uzorak klastera. Podaci se zatim prikupljaju iz svih jedinica unutar svakog odabranog klastera. Na primer, za uzorak učenika u gradu, škole bi bile podeljene u dva stratuma, prema vrsti škole (privatne i javne). Škole bi se zatim nasumično birale iz svakog stratuma i uključivali bi se svi učenici iz svake uzorkovane škole.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 8013,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/sr",
           "notation": "Probability.Stratified.Proportional",
           "title": "Verovatnoća: Stratifikovana: Proporcionalna",
           "definition": "Ciljna populacija je podeljena u odvojene i međusobno isključujuće segmente (stratume) koji pokrivaju celokupnu populaciju. U proporcionalnom stratifikovanom uzorkovanju, broj elemenata odabranih iz svakog stratuma proporcionalan je veličini populacije stratuma u odnosu na celokupnu populaciju. Na primer, zemlja je podeljena na dva regionalna stratuma koji čine 80 procenata (zapad) i 20 procenata (istok) ukupnog stanovništva. Za uzorak od 1.000 ljudi, 800 (80%) bilo bi izvučeno sa zapada, a 200 (20%) sa istoka, da bi tačno predstavljali njihov udeo u ukupnom broju stanovnika.",
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 8014,
@@ -1888,6 +1860,42 @@
           "title": "Verovatnoća: Stratifikovana: Neproporcionalna",
           "definition": "Ciljna populacija je podeljena u odvojene i međusobno isključujuće segmente (stratume) koji pokrivaju celokupnu populaciju. U neproporcionalnom uzorkovanju, broj jedinica odabranih iz svakog stratuma nije proporcionalan veličini populacije stratuma u odnosu na celokupnu populaciju. Broj uzorkovanih jedinica iz svakog stratuma može biti jednak, optimalan ili može odražavati svrhu studije, poput prekomernog uzorkovanja različitih podgrupa stanovništva. Na primer, zemlja je podeljena u dva regionalna stratuma koji čine 80% (zapad) i 20% (istok) stanovništva. Ako je potrebna jednaka zastupljenost dva regiona u studiji, polovina uzorka se može uzeti sa zapada, a polovina sa istoka, tako da je svaki region predstavljen sa 50% u uzorku. Ako je potrebna detaljnija analiza stanovništva sa istoka, 40% jedinica može se skupiti sa zapada, a 60% sa istoka, tako da je istok dominantno zastupljen.",
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 8015,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/sr",
+          "notation": "Probability.Cluster",
+          "title": "Verovatnoća: Klaster",
+          "definition": "Ciljna populacija je podeljena na segmente (klastere) koji se javljaju u prirodi i odabran je verovatni uzorak klastera. Podaci se zatim prikupljaju iz svih jedinica unutar svakog odabranog klastera. Uzorkovanje je često grupisano prema geografskoj lokaciji ili vremenskom periodu. Upotrebite ovaj širi pojam ako se ne zna određenija vrsta uzorkovanja klastera ili ju je teško identifikovati.",
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 8016,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/sr",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Verovatnoća: Klaster: Jednostavna slučajna",
+          "definition": "Ciljna populacija je podeljena na segmente (klastere) koji se javljaju u prirodi&nbsp; i odabran je jednostavan slučajni uzorak klastera. Podaci se zatim prikupljaju iz svih jedinica unutar svakog odabranog klastera. Na primer, za uzorak učenika u gradu, jedan broj škola birao bi se metodom nasumičnog odabira i tada bi bili uključeni svi učenici iz svake uzorkovane škole.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 8017,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/sr",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Verovatnoća: Klaster: Stratifikovana slučajna",
+          "definition": "Ciljna populacija je podeljena na segmente koji se javljaju u prirodi (klastere). Nakon toga, oni se dele u međusobno isključujuće stratume i iz svakog stratuma se bira slučajni uzorak klastera. Podaci se zatim prikupljaju iz svih jedinica unutar svakog odabranog klastera. Na primer, za uzorak učenika u gradu, škole bi bile podeljene u dva stratuma, prema vrsti škole (privatne i javne). Škole bi se zatim nasumično birale iz svakog stratuma i uključivali bi se svi učenici iz svake uzorkovane škole.",
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 8018,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sr",
+          "notation": "Probability.Multistage",
+          "title": "Verovatnoća: Višefazna",
+          "definition": "Uzorkovanje se vrši u fazama koristeći sve manje i manje jedinice u svakoj fazi, a sve faze uključuju izbornu verovatnoće. Vrsta postupka uzorkovanja verovatnoće može biti različita u svakoj fazi. Na primer, za uzorak učenika u gradu, škole se nasumično biraju u prvoj fazi, dok se u drugoj fazi primenjuje nasumični uzorak časova u svakoj odabranoj školi. Potom se, u trećoj fazi, učenici nasumično biraju iz svake od ovih klasa.",
+          "parent": "Probability",
           "position": 10
         },
         {
@@ -1969,6 +1977,7 @@
       "definition": "Innehåller en typologi av olika urvalsmetoder.",
       "previousVersion": 0,
       "initialVersion": 254,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -2025,49 +2034,13 @@
           "position": 4
         },
         {
-          "id": 2150,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/sv/1.1.1",
-          "notation": "Probability.Cluster",
-          "title": "Sannolikhetsurval: klusterurval",
-          "definition": "Målpopulationen är uppdelad i naturligt förekommande segment (kluster) och ett sannolikhetsurval av klustren görs. Data samlas sedan in från alla element i varje utvalt kluster. Urvalet påverkas ofta av geografiska eller tidsmässiga kluster. Använd den här bredare termen om det är okänt vilken mer specifik typ av klusterurval det rör sig om eller om typen är svår att identifiera.",
-          "parent": "Probability",
-          "position": 5
-        },
-        {
-          "id": 2151,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/sv/1.1.1",
-          "notation": "Probability.Cluster.SimpleRandom",
-          "title": "Sannolikhetsurval: klusterurval: obundet slumpmässigt urval",
-          "definition": "Målpopulationen är uppdelad i naturligt förekommande segment (kluster) och ett obundet slumpmässigt urval av klustren görs. Data samlas sedan in från alla element i varje utvalt kluster. Exempel: för att få ett sampel av elever i en stad så skulle ett antal skolor väljas slumpmässigt och alla elever på de utvalda skolorna skulle sedan ingå i samplet.",
-          "parent": "Probability.Cluster",
-          "position": 6
-        },
-        {
-          "id": 2153,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sv/1.1.1",
-          "notation": "Probability.Multistage",
-          "title": "Sannolikhetsurval: flerstegsurval",
-          "definition": "Urvalet sker stegvis med allt mindre enheter för varje steg, och varje steg omfattar ett sannolikhetsurval. Urvalsmetoden kan skilja sig från steg till steg. Exempel: för att få ett sampel av elever i en stad så kan skolor väljas slumpmässigt i första steget. Ett slumpmässigt urval av klasser görs i steg två. Elever väljs sedan från dessa klasser i ett tredje steg. ",
-          "parent": "Probability",
-          "position": 7
-        },
-        {
-          "id": 2152,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/sv/1.1.1",
-          "notation": "Probability.Cluster.StratifiedRandom",
-          "title": "Sannolikhetsurval: klusterurval: stratifierat slumpmässigt urval",
-          "definition": "Målpopulationen är uppdelad i naturligt förekommande segment (kluster). Dessa delas sedan upp i ömsesidigt uteslutande strata och det görs ett slumpmässigt urval av kluster från varje stratum. Data samlas in från alla element inom varje utvalt kluster. Exempel: för att få ett sampel av elever i en stad så delas skolorna upp i två strata efter typ av skola (kommunala skolor och friskolor). Skolor väljs sedan ut slumpmässigt från varje stratum och alla elever i de utvalda skolorna ingår i samplet.",
-          "parent": "Probability.Cluster",
-          "position": 8
-        },
-        {
           "id": 2148,
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Stratified.Proportional/sv/1.1.1",
           "notation": "Probability.Stratified.Proportional",
           "title": "Sannolikhetsurval: stratifierat: proportionerligt urval",
           "definition": "Målpopulationen är uppdelad i flera delar (strata) som utesluter varandra och täcker hela populationen. För ett proportionerligt stratifierat urval står antalet element som väljs från varje stratum i proportion till storleken på stratumet i förhållande till hela populationen. Exempel: ett land är uppdelat i två regionala strata som motsvarar 80 procent (Väst) respektive 20 procent (Öst) av hela populationen. För ett sampel på 1.000 personer skulle 800 (dvs. 80 %) väljas från Väst och 200 (dvs. 20 %) från Öst för att ge en korrekt representation av deras andel av hela populationen.",
           "parent": "Probability.Stratified",
-          "position": 9
+          "position": 5
         },
         {
           "id": 2149,
@@ -2076,6 +2049,42 @@
           "title": "Sannolikhetsurval: stratifierat: oproportionerligt urval",
           "definition": "Målpopulationen är uppdelad i flera delar (strata) som utesluter varandra och täcker hela populationen. För ett oproportionerligt urval så står antalet element som väljs från varje stratum inte i proportion till stratumets populationsstorlek i förhållande till hela populationen. Sampelstorleken kan vara lika stor, optimal eller kan avspegla studiens syfte genom ett avsiktligt större urval från olika undergrupper i populationen. Exempel: ett land är uppdelat i två regionala strata som motsvarar 80 procent (Väst) respektive 20 procent (Öst) av hela populationen. Om lika representation av båda regionerna behövs i studien kan halva samplet dras från Öst och andra halvan från Väst så att varje region representeras av 50 % av samplet. Om det behövs en mer detaljerad analys av population i Öst kan 40 % av elementen dras från Väst och 60 % från Öst så att Öst är överrepresenterat.",
           "parent": "Probability.Stratified",
+          "position": 6
+        },
+        {
+          "id": 2150,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster/sv/1.1.1",
+          "notation": "Probability.Cluster",
+          "title": "Sannolikhetsurval: klusterurval",
+          "definition": "Målpopulationen är uppdelad i naturligt förekommande segment (kluster) och ett sannolikhetsurval av klustren görs. Data samlas sedan in från alla element i varje utvalt kluster. Urvalet påverkas ofta av geografiska eller tidsmässiga kluster. Använd den här bredare termen om det är okänt vilken mer specifik typ av klusterurval det rör sig om eller om typen är svår att identifiera.",
+          "parent": "Probability",
+          "position": 7
+        },
+        {
+          "id": 2151,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.SimpleRandom/sv/1.1.1",
+          "notation": "Probability.Cluster.SimpleRandom",
+          "title": "Sannolikhetsurval: klusterurval: obundet slumpmässigt urval",
+          "definition": "Målpopulationen är uppdelad i naturligt förekommande segment (kluster) och ett obundet slumpmässigt urval av klustren görs. Data samlas sedan in från alla element i varje utvalt kluster. Exempel: för att få ett sampel av elever i en stad så skulle ett antal skolor väljas slumpmässigt och alla elever på de utvalda skolorna skulle sedan ingå i samplet.",
+          "parent": "Probability.Cluster",
+          "position": 8
+        },
+        {
+          "id": 2152,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Cluster.StratifiedRandom/sv/1.1.1",
+          "notation": "Probability.Cluster.StratifiedRandom",
+          "title": "Sannolikhetsurval: klusterurval: stratifierat slumpmässigt urval",
+          "definition": "Målpopulationen är uppdelad i naturligt förekommande segment (kluster). Dessa delas sedan upp i ömsesidigt uteslutande strata och det görs ett slumpmässigt urval av kluster från varje stratum. Data samlas in från alla element inom varje utvalt kluster. Exempel: för att få ett sampel av elever i en stad så delas skolorna upp i två strata efter typ av skola (kommunala skolor och friskolor). Skolor väljs sedan ut slumpmässigt från varje stratum och alla elever i de utvalda skolorna ingår i samplet.",
+          "parent": "Probability.Cluster",
+          "position": 9
+        },
+        {
+          "id": 2153,
+          "uri": "http://www.ddialliance.org/Specification/DDI-CV/SamplingProcedure#Probability.Multistage/sv/1.1.1",
+          "notation": "Probability.Multistage",
+          "title": "Sannolikhetsurval: flerstegsurval",
+          "definition": "Urvalet sker stegvis med allt mindre enheter för varje steg, och varje steg omfattar ett sannolikhetsurval. Urvalsmetoden kan skilja sig från steg till steg. Exempel: för att få ett sampel av elever i en stad så kan skolor väljas slumpmässigt i första steget. Ett slumpmässigt urval av klasser görs i steg två. Elever väljs sedan från dessa klasser i ett tredje steg.",
+          "parent": "Probability",
           "position": 10
         },
         {

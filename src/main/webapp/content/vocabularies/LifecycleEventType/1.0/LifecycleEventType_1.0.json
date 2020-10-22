@@ -358,7 +358,7 @@
           "uri": "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Other/en/1.0",
           "notation": "Other",
           "title": "Other",
-          "definition": "Use if the event type is known, but not found in the list. ",
+          "definition": "Use if the event type is known, but not found in the list.",
           "position": 38
         }
       ],

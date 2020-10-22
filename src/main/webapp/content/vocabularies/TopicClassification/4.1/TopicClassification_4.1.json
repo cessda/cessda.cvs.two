@@ -10,7 +10,7 @@
   "agencyName": "CESSDA",
   "agencyLogo": "cessda.png",
   "agencyLink": "https://www.cessda.eu/",
-  "publicationDate": "2020-10-08",
+  "publicationDate": "2020-10-07",
   "notes": "Top terms should only be used if no narrower terms are applicable. More than one term can be used for classifying a dataset.",
   "versions": [
     {
@@ -719,7 +719,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion/en/4.1",
           "notation": "SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion",
           "title": "Equality, inequality and social exclusion",
-          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differences between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.\n",
+          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differences between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.",
           "previousConcept": 5720,
           "parent": "SocialStratificationAndGroupings",
           "position": 69
