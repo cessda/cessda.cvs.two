@@ -12,6 +12,7 @@ import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
 @Component({
   selector: 'jhi-navbar',
@@ -20,6 +21,7 @@ import { Location } from '@angular/common';
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
+  @ViewChild('searchLang', { static: true }) searchLang!: ElementRef;
   inProduction?: boolean;
   eventSubscriber?: Subscription;
   isNavbarCollapsed = true;
@@ -27,9 +29,11 @@ export class NavbarComponent implements OnInit, OnDestroy {
   swaggerEnabled?: boolean;
   version: string;
   currentSearch?: string;
+  currentLang?: string;
   isSearching: boolean;
 
   isEditorSearch = false;
+  searchLangs: string[] = ['en', 'da', 'fi', 'fr', 'de', 'it', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
 
   constructor(
     private loginService: LoginService,
@@ -45,9 +49,26 @@ export class NavbarComponent implements OnInit, OnDestroy {
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
     this.isSearching = false;
+    this.currentLang = 'en';
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.currentSearch = params['q'];
+
+      if (params['f']) {
+        const activeFilters: string[] = params['f'].split(';', 2);
+        activeFilters.forEach(af => {
+          const activeFilter: string[] = af.split(':', 2);
+          if (activeFilter.length === 2) {
+            if (activeFilter[0] === 'language') {
+              if (this.searchLangs.some(lang => lang === activeFilter[1])) {
+                this.currentLang = activeFilter[1];
+              } else {
+                this.currentLang = 'en';
+              }
+            }
+          }
+        });
+      }
     });
 
     this.router.events.subscribe(() => {
@@ -85,6 +106,17 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.search(text);
       });
 
+    fromEvent(this.searchLang.nativeElement, 'change')
+      .pipe(
+        map((event: any) => {
+          return event.target.value;
+        })
+      )
+      .subscribe((text: string) => {
+        this.isSearching = true;
+        this.search(this.currentSearch ? this.currentSearch : '');
+      });
+
     this.registerCvOnSearchEvent();
   }
 
@@ -103,18 +135,18 @@ export class NavbarComponent implements OnInit, OnDestroy {
   search(query: string): void {
     if (query !== null && query !== '') {
       if (this.isEditorSearch) {
-        this.router.navigate(['/editor'], { queryParams: { q: query, sort: 'relevance' } });
+        this.router.navigate(['/editor'], { queryParams: { q: query, f: 'language:' + this.currentLang, sort: 'relevance' } });
       } else {
-        this.router.navigate([''], { queryParams: { q: query, sort: 'relevance' } });
+        this.router.navigate([''], { queryParams: { q: query, f: 'language:' + this.currentLang, sort: 'relevance' } });
       }
     } else {
       if (this.isEditorSearch) {
-        this.router.navigate(['/editor']);
+        this.router.navigate(['/editor'], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
       } else {
-        this.router.navigate(['']);
+        this.router.navigate([''], { queryParams: { f: 'language:' + this.currentLang, sort: 'code,asc' } });
       }
     }
-    this.eventManager.broadcast({ name: 'doCvPublicationSearch', content: query });
+    this.eventManager.broadcast({ name: 'doCvPublicationSearch', content: { term: query, lang: this.currentLang } });
   }
 
   clear(): void {
@@ -165,5 +197,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
       return url.startsWith('editor');
     }
     return false;
+  }
+
+  getLangFormatted(lang: string): string {
+    if (lang === '_all') return 'All languages';
+    return VocabularyUtil.getLangIsoFormatted(lang);
   }
 }

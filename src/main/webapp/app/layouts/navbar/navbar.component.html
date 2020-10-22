@@ -84,7 +84,7 @@
                         <span class="square-icon">
                             <fa-icon [icon]="'search'"></fa-icon>
                         </span>
-                        <input #searchInput type="text" class="search-input form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch"
+                        <input #searchInput type="text" class="search-input form-control" [(ngModel)]="currentSearch" id="searchInput" name="searchInput"
                                placeholder="{{ (isEditorSearch ? 'global.searchEditor':'global.search') | translate }}">
                         <span class="square-icon" style="margin-right:12px" *ngIf="isSearching">
                             <fa-icon [icon]="'circle-notch'" [spin]="true"></fa-icon>
@@ -92,6 +92,9 @@
                         <button *ngIf="!isSearching" class="input-group-append btn" (click)="clear()" [ngClass]="currentSearch ? 'visible':'not-visible'">
                             <span class="square-icon m-t-5px"><fa-icon [icon]="'times'"></fa-icon></span>
                         </button>
+                        <select #searchLang class="lang-input form-control" id="searchLang" name="searchLang" [(ngModel)]="currentLang">
+                            <option *ngFor="let lang of searchLangs" value="{{lang}}">{{getLangFormatted(lang)}}</option>
+                        </select>
                     </div>
                 </form>
             </div>

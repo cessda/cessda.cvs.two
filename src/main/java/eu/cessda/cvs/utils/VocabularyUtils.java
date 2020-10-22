@@ -12,6 +12,7 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.web.rest.domain.Aggr;
 import eu.cessda.cvs.web.rest.domain.CvResult;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -54,6 +55,8 @@ public final class VocabularyUtils {
 
     public static VersionDTO generateVersionByPath(Path jsonPath, String language, String versionNumber) {
         VocabularyDTO vocabularyDTO = generateVocabularyByPath(jsonPath);
+        if ( vocabularyDTO == null )
+            return null;
         return vocabularyDTO.getVersions().stream().filter(v -> v.getLanguage().equals(language) && v.getNumber().equals(versionNumber))
             .findFirst().orElse(null);
     }
@@ -61,14 +64,16 @@ public final class VocabularyUtils {
     public static EsQueryResultDetail prepareEsQuerySearching(String q, String f, Pageable pageable, SearchScope searchScope) {
         if (q == null)
             q = "";
-        Pageable newPageable = VocabularyUtils.buildNewPageable(pageable);
 
         EsQueryResultDetail esq = new EsQueryResultDetail(searchScope);
         esq.setSearchTerm(q);
-        esq.setPage(newPageable);
+
         // prepare filter
         if ( f != null && !f.isEmpty())
             VocabularyUtils.prepareActiveFilters(f, esq, searchScope);
+
+        Pageable newPageable = VocabularyUtils.buildNewPageable(pageable, esq.getSortLanguage() );
+        esq.setPage(newPageable);
 
         return esq;
     }
@@ -81,37 +86,61 @@ public final class VocabularyUtils {
         }
         if( f != null && !f.isEmpty()){
             for (String filterChunk : f.split(";")) {
-                String[] filterSplit = filterChunk.split(":");
-                String field = null;
-                List<String> activeFilters = new ArrayList<>();
-                if( filterSplit.length != 2 )
-                    continue;
-                // prepare the field
-                if( filterSplit[0].equals( "agency") )
-                    field = EsFilter.AGENCY_AGG;
-                if( filterSplit[0].equals( "language") ){
-                    if( searchScope.equals( SearchScope.PUBLICATIONSEARCH ))
-                        field = EsFilter.LANGS_PUB_AGG;
-                    else
-                        field = EsFilter.LANGS_AGG;
-                }
-                if( filterSplit[0].equals( "status") )
-                    field = EsFilter.STATUS_AGG;
-                // prepare the selected filter
-                String[] enableFilters = filterSplit[1].split(",");
-                Collections.addAll(activeFilters, enableFilters);
-                // add the filter
-                String finalField = field;
-                esq.getEsFilters().forEach(esf -> {
-                    if( esf.getField().equals(finalField)){
-                        esf.setValues( activeFilters );
-                    }
-                });
+                processFilterChunk(esq, searchScope, filterChunk);
             }
         }
     }
 
-    public static Pageable buildNewPageable(Pageable pageable) {
+    private static void processFilterChunk(EsQueryResultDetail esq, SearchScope searchScope, String filterChunk) {
+        String[] filterSplit = filterChunk.split(":");
+        if( filterSplit.length != 2 )
+            return;
+        // prepare the field
+        String field = setAggField(searchScope, filterSplit);
+        if( field == null )
+            return;
+        // prepare the selected filter
+        List<String> activeFilters = new ArrayList<>();
+        if( field.equals( EsFilter.LANGS_PUB_AGG ) || field.equals( EsFilter.LANGS_AGG ) ) {
+            if( filterSplit[1].contains("_all") ) {
+                esq.setSearchAllLanguages( true );
+                return;
+            }
+            else if( filterSplit[1].contains(",") ) {
+                activeFilters.add(filterSplit[1]);
+            } else {
+                activeFilters.add(filterSplit[1]);
+                esq.setSortLanguage(filterSplit[1]);
+            }
+        } else {
+            String[] enableFilters = filterSplit[1].split(",");
+            Collections.addAll(activeFilters, enableFilters);
+        }
+
+        // add the filter
+        esq.getEsFilters().forEach(esf -> {
+            if( esf.getField().equals(field)){
+                esf.setValues( activeFilters );
+            }
+        });
+    }
+
+    private static String setAggField(SearchScope searchScope, String[] filterSplit) {
+        String field = null;
+        if( filterSplit[0].equals( "agency") )
+            field = EsFilter.AGENCY_AGG;
+        if( filterSplit[0].equals( "language") ){
+            if( searchScope.equals( SearchScope.PUBLICATIONSEARCH ))
+                field = EsFilter.LANGS_PUB_AGG;
+            else
+                field = EsFilter.LANGS_AGG;
+        }
+        if( filterSplit[0].equals( "status") )
+            field = EsFilter.STATUS_AGG;
+        return field;
+    }
+
+    public static Pageable buildNewPageable(Pageable pageable, String sortLanguage) {
         if( pageable.getSort().isUnsorted()) {
             return pageable;
         }
@@ -123,7 +152,7 @@ public final class VocabularyUtils {
             sortProperty = "_score";
             direction = Sort.Direction.ASC;
         } else if (sortOrder.getProperty().equals("code")) {
-            sortProperty = "notation";
+            sortProperty = "title" + StringUtils.capitalize(sortLanguage) + ".Key";
         }
         return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortProperty));
     }
