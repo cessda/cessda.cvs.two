@@ -1549,7 +1549,9 @@ public class VocabularyServiceImpl implements VocabularyService {
             for (ConceptDTO slConcept : slVersion.getConcepts()) {
                 ConceptDTO tlConcept = tlConcepts.stream().filter(c -> c.getNotation().equals(slConcept.getNotation())).findFirst().orElse(null);
                 if( tlConcept != null ) {
-                  if( slConcept.getParent() != null && tlConcept.getParent() != null && !tlConcept.getParent().equals(slConcept.getParent()) &&
+                  if( (slConcept.getParent() != null && tlConcept.getParent() == null) ||
+                      (slConcept.getParent() == null && tlConcept.getParent() != null) ||
+                      (slConcept.getParent() != null && tlConcept.getParent() != null && !tlConcept.getParent().equals(slConcept.getParent())) ||
                       !tlConcept.getPosition().equals(slConcept.getPosition())) {
                       results.append( "Problem: Un-match SL and TL concept parent and/or position with notation " + slConcept.getNotation() +
                           " SL id, parent and notation " + slConcept.getId() + " - " + slConcept.getParent() + " - " + slConcept.getPosition() +
