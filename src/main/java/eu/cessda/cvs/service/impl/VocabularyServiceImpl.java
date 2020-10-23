@@ -1196,8 +1196,8 @@ public class VocabularyServiceImpl implements VocabularyService {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         if( languageFields.size() == 1 ) {
             boolQuery
-                .should( QueryBuilders.matchQuery( TITLE + languageFields.get(0), term).boost( 1000.0f ))
-                .should( QueryBuilders.matchQuery( DEFINITION + languageFields.get(0), term).boost( 100.0f ));
+                .should( QueryBuilders.matchQuery( TITLE + languageFields.get(0), term).fuzziness(0.7).boost( 10.0f ))
+                .should( QueryBuilders.matchQuery( DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 4.0f ));
         } else {
             List<String> fields = new ArrayList<>();
             for(String langIso : languageFields) {
@@ -1215,8 +1215,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         if( languageFields.size() == 1 ) {
             boolQuery
-                .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + languageFields.get(0), term).boost( 100.0f ))
-                .should( QueryBuilders.matchQuery( CODE_PATH +"." + DEFINITION + languageFields.get(0), term).boost( 10.0f ));
+                .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + languageFields.get(0), term).fuzziness(0.7).boost( 2.0f ))
+                .should( QueryBuilders.matchQuery( CODE_PATH +"." + DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 1.0f ));
         }
         else {
             QueryStringQueryBuilder queryStringQueryBuilder = QueryBuilders.queryStringQuery("*" + term + "*");
@@ -1230,10 +1230,10 @@ public class VocabularyServiceImpl implements VocabularyService {
 
 
         if( term.length() > 2)
-            return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
+            return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total)
                 .innerHit( new InnerHitBuilder( CODE_PATH )
                     .setHighlightBuilder( nestedHighlightBuilder( languageFields ) ));
-        return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
+        return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total)
             .innerHit( new InnerHitBuilder( CODE_PATH ) );
     }
 

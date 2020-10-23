@@ -150,7 +150,7 @@ public final class VocabularyUtils {
         Sort.Direction direction = sortOrder.getDirection();
         if (sortOrder.getProperty().equals("relevance")) {
             sortProperty = "_score";
-            direction = Sort.Direction.ASC;
+            direction = Sort.Direction.DESC;
         } else if (sortOrder.getProperty().equals("code")) {
             sortProperty = "title" + StringUtils.capitalize(sortLanguage) + ".Key";
         }
