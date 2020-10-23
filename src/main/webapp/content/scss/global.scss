@@ -48,10 +48,6 @@ p {
   margin: 0;
 }
 
-.container-fluid {
-  display: flex;
-}
-
 .dropdown-item:hover {
   color: $dropdown-link-hover-color;
 }
@@ -469,7 +465,7 @@ tag-ripple {
 .row-content {
   width: 100%;
   margin: 0;
-  padding: 5px 0.75rem 0.75rem 0.75rem;
+  padding: 5px 0 0.75rem 0;
   .row-details {
     display: flex;
     justify-content: space-between;
@@ -537,6 +533,7 @@ tag-ripple {
 
 @media screen and (min-width: 768px) {
   .row-content {
+    padding: 5px 0.75rem 0.75rem 0.75rem;
     .row-details {
       justify-content: unset;
       flex-direction: row;
@@ -1031,6 +1028,8 @@ button.invisible-button:focus {
 }
 
 .container-fluid {
+  display: flex;
+  padding: 0;
   .container-inner {
     max-width: 1280px;
     min-width: 370px;
@@ -1043,6 +1042,7 @@ button.invisible-button:focus {
 
 @media (min-width: 576px) {
   .container-fluid {
+    padding: 0 15px 0 15px;
     .container-inner {
       .card-columns {
         -moz-column-count: 1;
@@ -1054,6 +1054,7 @@ button.invisible-button:focus {
 
 @media (min-width: 840px) {
   .container-fluid {
+    padding: 0 15px 0 15px;
     .container-inner {
       .card-columns {
         -moz-column-count: 2;
