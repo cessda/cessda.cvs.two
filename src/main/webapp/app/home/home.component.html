@@ -2,9 +2,6 @@
     <form name="searchForm" class="w-100" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="searchForm">
         <jhi-alert-error></jhi-alert-error>
         <jhi-alert></jhi-alert>
-        <div class="alert alert-warning" *ngIf="vocabularies?.length === 0">
-            <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
-        </div>
         <div class="search-option-column">
             <div class="count-column">
                 <div class="level-row">
@@ -128,6 +125,9 @@
                         </div>
 
                     </div>
+                </div>
+                <div class="alert alert-warning" *ngIf="vocabularies?.length === 0">
+                    <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
                 </div>
                 <div *ngIf="vocabularies?.length > 0">
                     <div class="row justify-content-center">

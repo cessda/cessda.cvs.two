@@ -10,7 +10,7 @@ import { LoginModalService } from 'app/core/login/login-modal.service';
 import { LoginService } from 'app/core/login/login.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { fromEvent, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
+import { debounceTime, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
@@ -87,8 +87,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
         map((event: any) => {
           return event.target.value;
         }),
-        debounceTime(500),
-        distinctUntilChanged()
+        debounceTime(500)
+        // distinctUntilChanged()
       )
       .subscribe((text: string) => {
         this.isSearching = true;

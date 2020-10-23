@@ -30,16 +30,13 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
-import io.github.jhipster.config.JHipsterProperties;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.InnerHitBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
@@ -131,8 +128,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private final ApplicationProperties applicationProperties;
 
-    private final JHipsterProperties jHipsterProperties;
-
     private final AgencyStatSearchRepository agencyStatSearchRepository;
 
     public VocabularyServiceImpl(AgencyRepository agencyRepository, ConceptService conceptService, ExportService exportService,
@@ -142,7 +137,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                                  VocabularyPublishMapper vocabularyPublishMapper, VocabularyEditorSearchRepository vocabularyEditorSearchRepository,
                                  VocabularyPublishSearchRepository vocabularyPublishSearchRepository,
                                  ElasticsearchTemplate elasticsearchTemplate, ApplicationProperties applicationProperties,
-                                 JHipsterProperties jHipsterProperties, AgencyStatSearchRepository agencyStatSearchRepository) {
+                                 AgencyStatSearchRepository agencyStatSearchRepository) {
         this.agencyRepository = agencyRepository;
         this.conceptService = conceptService;
         this.exportService = exportService;
@@ -157,7 +152,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         this.vocabularyPublishSearchRepository = vocabularyPublishSearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.applicationProperties = applicationProperties;
-        this.jHipsterProperties = jHipsterProperties;
         this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
@@ -726,12 +720,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                     .filter(c -> c.getNotation().equals(conceptSlDTO.getNotation())).findFirst().orElse(null);
                 // if not found, try to find old notation from the previous SL concept
                 if( prevConceptTl == null ) {
-                    String oldSlNotation = prevVersionSl.getConcepts().stream()
-                        .filter(c -> c.getId().equals(conceptSlDTO.getPreviousConcept())).map(ConceptDTO::getNotation).findFirst().orElse(null);
-                    if( oldSlNotation != null ) {
-                        prevConceptTl = prevVersionTl.getConcepts().stream()
-                            .filter(c -> c.getNotation().equals(oldSlNotation)).findFirst().orElse(null);
-                    }
+                    prevConceptTl = getPrevTlConceptByPrevSlNotation(prevVersionSl, prevVersionTl, conceptSlDTO, prevConceptTl);
                 }
                 // assign title and definition if previous TL concept found
                 if( prevConceptTl != null ) {
@@ -753,13 +742,20 @@ public class VocabularyServiceImpl implements VocabularyService {
         return newTlVersion;
     }
 
+    private ConceptDTO getPrevTlConceptByPrevSlNotation(VersionDTO prevVersionSl, VersionDTO prevVersionTl, ConceptDTO conceptSlDTO, ConceptDTO prevConceptTl) {
+        String oldSlNotation = prevVersionSl.getConcepts().stream()
+            .filter(c -> c.getId().equals(conceptSlDTO.getPreviousConcept())).map(ConceptDTO::getNotation).findFirst().orElse(null);
+        if( oldSlNotation != null ) {
+            prevConceptTl = prevVersionTl.getConcepts().stream()
+                .filter(c -> c.getNotation().equals(oldSlNotation)).findFirst().orElse(null);
+        }
+        return prevConceptTl;
+    }
+
     @Override
     public VocabularyDTO getWithVersionsByNotationAndVersion(String notation, String slVersionNumber) {
         // get all available licenses
         final List<Licence> licenceList = licenceRepository.findAll();
-
-        // get all available agency
-        final List<Agency> agencyList = agencyRepository.findAll();
 
         if( slVersionNumber == null || slVersionNumber.isEmpty()) {
             log.error("Error version number could not be empty or null");
@@ -776,7 +772,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         if( slVersionNumber.equals(LATEST)) {
             final VersionDTO latestSlVersion = vocabulary.getVersions().stream().sorted(versionComparator).findFirst().orElse(null);
-            slVersionNumber = latestSlVersion.getNumber();
+            if( latestSlVersion != null )
+                slVersionNumber = latestSlVersion.getNumber();
         }
 
         getOneLatestVersionEachLanguage(slVersionNumber, licenceList, vocabulary, true);
@@ -972,7 +969,12 @@ public class VocabularyServiceImpl implements VocabularyService {
             indiceType = "vocabularyeditor";
         }
         // search on all fields
-        List<String> languageFields = new ArrayList<>(Language.getCapitalizedIsos());
+        List<String> languageFields = new ArrayList<>();
+        if( !esQueryResultDetail.isSearchAllLanguages() ) {
+            languageFields.add(StringUtils.capitalize(esQueryResultDetail.getSortLanguage()));
+        } else {
+            languageFields.addAll(Language.getCapitalizedIsos());
+        }
 
         // build query builder
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
@@ -1192,13 +1194,18 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     public static QueryBuilder generateMainQuery(String term, List<String> languageFields ) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        for(String langIso : languageFields) {
+        if( languageFields.size() == 1 ) {
             boolQuery
-                .should( QueryBuilders.matchQuery( TITLE + langIso, term).boost( 1000.0f ))
-                .should( QueryBuilders.matchQuery( DEFINITION + langIso, term).boost( 100.0f ))
-                .should( QueryBuilders.queryStringQuery( "*" + term + "*").field( TITLE + langIso).field(DEFINITION + langIso));
+                .should( QueryBuilders.matchQuery( TITLE + languageFields.get(0), term).boost( 1000.0f ))
+                .should( QueryBuilders.matchQuery( DEFINITION + languageFields.get(0), term).boost( 100.0f ));
+        } else {
+            List<String> fields = new ArrayList<>();
+            for(String langIso : languageFields) {
+                fields.add(TITLE + langIso);
+                fields.add(DEFINITION + langIso);
+            }
+            boolQuery.should(QueryBuilders.multiMatchQuery(term, fields.toArray(new String[0])));
         }
-
         return boolQuery;
     }
 
@@ -1206,13 +1213,21 @@ public class VocabularyServiceImpl implements VocabularyService {
         // query for all languages
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
-        // all language fields
-        for(String langIso : languageFields) {
+        if( languageFields.size() == 1 ) {
             boolQuery
-                .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + langIso, term).boost( 1000.0f ))
-                .should( QueryBuilders.matchQuery( CODE_PATH +"." + DEFINITION + langIso, term).boost( 10.0f ))
-                .should( QueryBuilders.queryStringQuery( "*" + term + "*").field( CODE_PATH +"." + TITLE + langIso).field(CODE_PATH +"." + DEFINITION + langIso));
+                .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + languageFields.get(0), term).boost( 100.0f ))
+                .should( QueryBuilders.matchQuery( CODE_PATH +"." + DEFINITION + languageFields.get(0), term).boost( 10.0f ));
         }
+        else {
+            QueryStringQueryBuilder queryStringQueryBuilder = QueryBuilders.queryStringQuery("*" + term + "*");
+            List<String> fields = new ArrayList<>();
+            for(String langIso : languageFields) {
+                fields.add(CODE_PATH +"." + TITLE + langIso);
+                fields.add(CODE_PATH +"." + DEFINITION + langIso);
+            }
+            boolQuery.should(QueryBuilders.multiMatchQuery(term, fields.toArray(new String[0])));
+        }
+
 
         if( term.length() > 2)
             return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
@@ -1510,7 +1525,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     @Override
     public String performTlMigrationNormalization(boolean isChecking, VocabularyDTO... vocabularyDTOs) {
-        log.info( "Perform concept TLs normalization on ", Arrays.stream(vocabularyDTOs).map(VocabularyDTO::getNotation).collect(Collectors.joining(", ")) );
+        final String vocabulariesChecked = Arrays.stream(vocabularyDTOs).map(VocabularyDTO::getNotation).collect(Collectors.joining(", "));
+        log.info( "Perform concept TLs normalization on {}",  vocabulariesChecked);
         StringBuilder results = new StringBuilder();
         results.append( "Perform concepts TL normalization in mode " + (isChecking ? "CHECKING": "WRITE" ) + " for the following Vocabularies:\n" );
         for (VocabularyDTO vocabularyDTO : vocabularyDTOs) {
@@ -1549,61 +1565,10 @@ public class VocabularyServiceImpl implements VocabularyService {
             for (ConceptDTO slConcept : slVersion.getConcepts()) {
                 ConceptDTO tlConcept = tlConcepts.stream().filter(c -> c.getNotation().equals(slConcept.getNotation())).findFirst().orElse(null);
                 if( tlConcept != null ) {
-                  if( (slConcept.getParent() != null && tlConcept.getParent() == null) ||
-                      (slConcept.getParent() == null && tlConcept.getParent() != null) ||
-                      (slConcept.getParent() != null && tlConcept.getParent() != null && !tlConcept.getParent().equals(slConcept.getParent())) ||
-                      !tlConcept.getPosition().equals(slConcept.getPosition())) {
-                      results.append( "Problem: Un-match SL and TL concept parent and/or position with notation " + slConcept.getNotation() +
-                          " SL id, parent and notation " + slConcept.getId() + " - " + slConcept.getParent() + " - " + slConcept.getPosition() +
-                           " TL id, parent and notation " + tlConcept.getId() + " - " + tlConcept.getParent() + " - " + tlConcept.getPosition() + "\n"
-                          );
-                      if( !isChecking ) {
-                          tlConcept.setParent( slConcept.getParent());
-                          tlConcept.setPosition( slConcept.getPosition() );
-                          conceptService.save(tlConcept);
-                          results.append( "Solution: Save TL concept with parent and position based on SL concept \n" );
-                      }
-                  }
-                  tlConcepts.remove(tlConcept);
+                    checkExistingTlCodeWithSl(isChecking, results, slConcept, tlConcept);
+                    tlConcepts.remove(tlConcept);
                 } else {
-                    results.append( "Problem: Concept TL is missing with notation " + slConcept.getNotation() + "\n" );
-                    // find the prev concept if exist
-                    ConceptDTO prevConcept = null;
-                    if( tlVersionGroupPrev != null && !tlVersionGroupPrev.isEmpty()) {
-                        VersionDTO versionTlPrev = tlVersionGroupPrev.stream().filter(v -> v.getLanguage().equals( tlVersion.getLanguage() )).findFirst().orElse(null);
-                        if( versionTlPrev != null ) {
-                            prevConcept = versionTlPrev.getConcepts().stream().filter(c -> c.getNotation().equals(slConcept.getNotation())).findFirst().orElse(null);
-                        }
-                    }
-                    if( !isChecking ) {
-                        tlConcept = new ConceptDTO();
-                        tlConcept.setNotation( slConcept.getNotation());
-                        tlConcept.setParent( slConcept.getParent() );
-                        tlConcept.setPosition( slConcept.getPosition());
-                        tlConcept.setSlConcept( slConcept.getId());
-                        tlConcept.setVersionId( tlVersion.getId() );
-                        if( tlVersion.getUri() != null ) {
-                            final int index = tlVersion.getUri().lastIndexOf("/" + tlVersion.getLanguage() + "/");
-                            if(index > 0 ) {
-                                tlConcept.setUri( tlVersion.getUri().substring(0, index) + "#" +
-                                    tlConcept.getNotation() + tlVersion.getUri().substring(index));
-                            }
-                        }
-                        if( prevConcept != null ) {
-                            results.append( "Previous concept FOUND " + prevConcept.toString() + "\n" );
-                            tlConcept.setTitle( prevConcept.getTitle());
-                            tlConcept.setDefinition( prevConcept.getDefinition() );
-                            tlConcept.setPreviousConcept( prevConcept.getId() );
-                        } else {
-                            results.append( "Previous concept NOT-FOUND\n" );
-                            if( tlVersion.getStatus().equals(Status.PUBLISHED.toString())) {
-                                tlConcept.setTitle( slConcept.getTitle());
-                                tlConcept.setDefinition( slConcept.getDefinition() );
-                            }
-                        }
-                        tlConcept = conceptService.save(tlConcept);
-                        results.append( "Solution: Save a new TL concept with details " + tlConcept.toString() + " \n" );
-                    }
+                    checkMissingTlCode(isChecking, tlVersionGroupPrev, results, tlVersion, slConcept);
                 }
             }
             // print remaining TL set if any and remove
@@ -1612,6 +1577,70 @@ public class VocabularyServiceImpl implements VocabularyService {
             }
         }
         return results.toString();
+    }
+
+    private void checkMissingTlCode(boolean isChecking, List<VersionDTO> tlVersionGroupPrev, StringBuilder results, VersionDTO tlVersion, ConceptDTO slConcept) {
+        results.append( "Problem: Concept TL is missing with notation " + slConcept.getNotation() + "\n" );
+        // find the prev concept if exist
+        ConceptDTO prevConcept = null;
+        if( tlVersionGroupPrev != null && !tlVersionGroupPrev.isEmpty()) {
+            VersionDTO versionTlPrev = tlVersionGroupPrev.stream().filter(v -> v.getLanguage().equals( tlVersion.getLanguage() )).findFirst().orElse(null);
+            if( versionTlPrev != null ) {
+                prevConcept = versionTlPrev.getConcepts().stream().filter(c -> c.getNotation().equals(slConcept.getNotation())).findFirst().orElse(null);
+            }
+        }
+        if( !isChecking) {
+            createMissingTlCode(results, tlVersion, slConcept, prevConcept);
+        }
+    }
+
+    private void createMissingTlCode(StringBuilder results, VersionDTO tlVersion, ConceptDTO slConcept, ConceptDTO prevConcept) {
+        ConceptDTO tlConcept;
+        tlConcept = new ConceptDTO();
+        tlConcept.setNotation( slConcept.getNotation());
+        tlConcept.setParent( slConcept.getParent() );
+        tlConcept.setPosition( slConcept.getPosition());
+        tlConcept.setSlConcept( slConcept.getId());
+        tlConcept.setVersionId( tlVersion.getId() );
+        if( tlVersion.getUri() != null ) {
+            final int index = tlVersion.getUri().lastIndexOf("/" + tlVersion.getLanguage() + "/");
+            if(index > 0 ) {
+                tlConcept.setUri( tlVersion.getUri().substring(0, index) + "#" +
+                    tlConcept.getNotation() + tlVersion.getUri().substring(index));
+            }
+        }
+        if( prevConcept != null ) {
+            results.append( "Previous concept FOUND " + prevConcept.toString() + "\n" );
+            tlConcept.setTitle( prevConcept.getTitle());
+            tlConcept.setDefinition( prevConcept.getDefinition() );
+            tlConcept.setPreviousConcept( prevConcept.getId() );
+        } else {
+            results.append( "Previous concept NOT-FOUND\n" );
+            if( tlVersion.getStatus().equals(Status.PUBLISHED.toString())) {
+                tlConcept.setTitle( slConcept.getTitle());
+                tlConcept.setDefinition( slConcept.getDefinition() );
+            }
+        }
+        tlConcept = conceptService.save(tlConcept);
+        results.append( "Solution: Save a new TL concept with details " + tlConcept.toString() + " \n" );
+    }
+
+    private void checkExistingTlCodeWithSl(boolean isChecking, StringBuilder results, ConceptDTO slConcept, ConceptDTO tlConcept) {
+        if( (slConcept.getParent() != null && tlConcept.getParent() == null) ||
+            (slConcept.getParent() == null && tlConcept.getParent() != null) ||
+            (slConcept.getParent() != null && tlConcept.getParent() != null && !tlConcept.getParent().equals(slConcept.getParent())) ||
+            !tlConcept.getPosition().equals(slConcept.getPosition())) {
+            results.append( "Problem: Un-match SL and TL concept parent and/or position with notation " + slConcept.getNotation() +
+                " SL id, parent and notation " + slConcept.getId() + " - " + slConcept.getParent() + " - " + slConcept.getPosition() +
+                 " TL id, parent and notation " + tlConcept.getId() + " - " + tlConcept.getParent() + " - " + tlConcept.getPosition() + "\n"
+                );
+            if( !isChecking) {
+                tlConcept.setParent( slConcept.getParent());
+                tlConcept.setPosition( slConcept.getPosition() );
+                conceptService.save(tlConcept);
+                results.append( "Solution: Save TL concept with parent and position based on SL concept \n" );
+            }
+        }
     }
 
     private File generateVocabularyFileDownload(String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request, VocabularyDTO vocabularyDTO) {
