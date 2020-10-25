@@ -1095,3 +1095,33 @@ button.invisible-button:focus {
   padding: 0;
   margin-top: 15px;
 }
+.card-acc-stat {
+  padding: 0.25rem;
+  .card-header {
+    padding: 0.1rem 0.5rem;
+    button.btn-link {
+      color: #212529;
+      width: 100%;
+      text-align: left;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  }
+  .card-body {
+    padding: 0.25rem;
+    .row-content {
+      .row-detail {
+        .label-column {
+          font-weight: normal;
+        }
+      }
+    }
+  }
+  .version-acc {
+    .card-header {
+      button.btn-link {
+        font-size: 90%;
+      }
+    }
+  }
+}

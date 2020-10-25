@@ -40,12 +40,12 @@
     </dl>
 
     <div class="card">
-        <div class="card-header">
+        <div class="card-header font-weight-bold">
             Statistics
         </div>
         <div class="card-body">
             <div class="row">
-                <div class="col-sm">
+                <div class="col-md-6">
                     <dl class="row-md jh-entity-details">
                         <dt><span>Number of CVs Published</span></dt>
                         <dd>
@@ -65,53 +65,103 @@
                         </dd>
                     </dl>
                 </div>
-                <div *ngIf="languageComposition.length > 0" class="col-sm">
+                <div *ngIf="languageComposition.length > 0">
                     <strong class="text-center w-100 d-block">Published CVs versions by languages composition</strong>
                     <ngx-charts-pie-chart [results]="languageComposition" [labels]="true"></ngx-charts-pie-chart>
                 </div>
             </div>
         </div>
     </div>
+    <br/>
 
-    <div class="card" *ngIf="unpublishedVersions.length > 0">
-        <div class="card-header">
-            Unpublished CVs
+    <div class="card" *ngIf="vocabStats!.length > 0">
+        <div class="card-header font-weight-bold">
+            Vocabularies ({{numberCvPublished}} CVs)
         </div>
-        <div class="card-body">
+        <div class="card-body" class="card-acc-stat">
             <div class="row">
-                <div class="col-sm-12">
-
-                    <div class="table-responsive">
-                        <table class="table table-striped">
-                            <thead>
-                            <tr>
-                                <th scope="col"><span>CV</span></th>
-                                <th scope="col"><span>Version</span></th>
-                                <th scope="col"><span>Date</span></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr *ngFor="let unpublishedVersion of unpublishedVersions; let i = index">
-                                <td>{{unpublishedVersion.cv}}</td>
-                                <td>
-                                    <a href="javascript:void(0)" (click)="closeAndNavigate( unpublishedVersion.cv, unpublishedVersion.language)">
-                                        {{unpublishedVersion.type}} {{unpublishedVersion.language}} {{unpublishedVersion.versionNumber}}-{{unpublishedVersion.status}}
-                                    </a>
-                                </td>
-                                <td>{{unpublishedVersion.date}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                <div class="col-sm-12 p-0">
+                    <ngb-accordion>
+                        <ng-container *ngFor="let vocab of sortVocabStat(vocabStats!); let i = index">
+                            <ngb-panel *ngIf="vocab.versionCodeStats.length > 0" title="{{vocab.notation}} ({{vocab.versionCodeStats.length}} versions) (Source-language: {{getFormattedLang(vocab.sourceLanguage)}}">
+                                <ng-template ngbPanelContent>
+                                    <ngb-accordion class="version-acc">
+                                        <ngb-panel *ngFor="let vcode of vocab.versionCodeStats; let j = index" title="- Version {{vcode.versionNumber}} ({{vcode.codes.length}} codes)">
+                                            <ng-template ngbPanelContent>
+                                                <div class="row-content">
+                                                    <div class="font-weight-bold small">
+                                                        <span>Languages:</span>
+                                                    </div>
+                                                    <div>
+                                                        <ng-container *ngFor="let vStatus of getVersionStatus(vocab, vcode.versionNumber); let k = index">
+                                                            {{ k > 0 ? ', ' : ''}}
+                                                            <a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vStatus.language, vcode.versionNumber)">
+                                                                <span ngbTooltip="Published {{vStatus.date}}">{{getFormattedLang(vStatus.language)}}-{{vStatus.versionNumber}}</span>
+                                                            </a>
+                                                        </ng-container>
+                                                    </div>
+                                                    <div class="font-weight-bold small">
+                                                        <span>Codes:</span>
+                                                    </div>
+                                                    <div>
+                                                        <ng-container *ngFor="let code of vcode.codes; let k = index">
+                                                            {{ k > 0 ? ', ' : ''}}
+                                                            <a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vocab.sourceLanguage, vcode.versionNumber, code)">
+                                                                <span>{{code}}</span>
+                                                            </a>
+                                                        </ng-container>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </ngb-panel>
+                                    </ngb-accordion>
+                                </ng-template>
+                            </ngb-panel>
+                        </ng-container>
+                    </ngb-accordion>
 
                 </div>
             </div>
         </div>
     </div>
-
-
     <br/>
 
-    <div class="clearfix">Statistic JSON</div>
-    <div><pre>{{agencyStatistic | json}}</pre></div>
+    <ng-container *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:0, agencyRoles:['ADMIN','ADMIN_SL']}">
+        <div class="card" *ngIf="unpublishedVersions.length > 0">
+            <div class="card-header font-weight-bold">
+                Unpublished CVs
+            </div>
+            <div class="card-body p-0">
+                <div class="row">
+                    <div class="col-sm-12 p-0">
+
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th scope="col"><span>CV</span></th>
+                                    <th scope="col"><span>Version</span></th>
+                                    <th scope="col"><span>Date</span></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let unpublishedVersion of unpublishedVersions; let i = index">
+                                    <td>{{unpublishedVersion.cv}}</td>
+                                    <td>
+                                        <a href="javascript:void(0)" (click)="closeAndNavigate( unpublishedVersion.cv, unpublishedVersion.language)">
+                                            {{unpublishedVersion.type}} {{unpublishedVersion.language}} {{unpublishedVersion.versionNumber}}-{{unpublishedVersion.status}}
+                                        </a>
+                                    </td>
+                                    <td>{{unpublishedVersion.date}} ({{parseDateAgo(unpublishedVersion.date)}})</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>
+    </ng-container>
 </div>

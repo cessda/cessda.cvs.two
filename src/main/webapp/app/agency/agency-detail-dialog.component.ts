@@ -6,6 +6,8 @@ import { IAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from 'app/agency/agency.service';
 import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
+import * as moment from 'moment';
+import { Moment } from 'moment';
 
 @Component({
   selector: 'jhi-agency-detail-dialog',
@@ -48,11 +50,12 @@ export class AgencyDetailDialogComponent implements OnInit {
       if (this.vocabStats !== undefined) {
         const langComposition = {};
         for (const vocabStat of this.vocabStats) {
-          this.numberCvPublished++;
+          let hasAnySlPublished = false;
           for (const versionStatusStat of vocabStat.versionStatusStats) {
             langComposition[versionStatusStat.language] = (langComposition[versionStatusStat.language] || 0) + 1;
             if (versionStatusStat.status === 'PUBLISHED') {
               if (versionStatusStat.type === 'SL') {
+                hasAnySlPublished = true;
                 this.numberCvVersionSlPublished++;
               } else {
                 this.numberCvVersionTlPublished++;
@@ -68,7 +71,9 @@ export class AgencyDetailDialogComponent implements OnInit {
               });
             }
           }
-
+          if (hasAnySlPublished) {
+            this.numberCvPublished++;
+          }
           for (const versionCodeStat of vocabStat.versionCodeStats) {
             if (versionCodeStat.versionNumber === vocabStat.currentVersion) {
               this.numberCodePublished += versionCodeStat.codes.length;
@@ -100,8 +105,25 @@ export class AgencyDetailDialogComponent implements OnInit {
     window.history.back();
   }
 
-  closeAndNavigate(notation: string, language: string): void {
-    this.activeModal.dismiss({ nota: notation, lang: language });
+  closeAndNavigate(notation: string, language: string, vnumber?: string, cvcode?: string): void {
+    this.activeModal.dismiss({ nota: notation, lang: language, version: vnumber, code: cvcode });
+  }
+  parseDateAgo(dateTime: Moment): string {
+    return moment(dateTime).fromNow();
+  }
+
+  getFormattedLang(langIso?: string): string {
+    return VocabularyUtil.getLangIsoFormatted(langIso);
+  }
+
+  getVersionStatus(vocab: any, versionNumber: any): any {
+    return vocab.versionStatusStats.filter(
+      (vss: { versionNumber: string; status: string }) => vss.versionNumber.startsWith(versionNumber) && vss.status === 'PUBLISHED'
+    );
+  }
+
+  sortVocabStat(vocabStats: any[]): any[] {
+    return vocabStats.sort((a, b) => (a.notation < b.notation ? -1 : a.notation > b.notation ? 1 : 0));
   }
 }
 
@@ -126,7 +148,19 @@ export class AgencyDetailPopupComponent implements OnInit, OnDestroy {
         if (reason.nota === undefined) {
           this.router.navigate(['/agency', { outlets: { popup: null } }]);
         } else {
-          this.router.navigate(['/editor/vocabulary/' + reason.nota, { outlets: { popup: null } }], { queryParams: { lang: reason.lang } });
+          if (reason.version === undefined) {
+            this.router.navigate(['/editor/vocabulary/' + reason.nota, { outlets: { popup: null } }], {
+              queryParams: { lang: reason.lang }
+            });
+          } else {
+            this.router.navigate(['/vocabulary/' + reason.nota, { outlets: { popup: null } }], {
+              queryParams: {
+                lang: reason.lang,
+                v: reason.version ? reason.version : null,
+                code: reason.code ? reason.code.split('.').join('') : null
+              }
+            });
+          }
         }
         this.ngbModalRef = null;
       }
