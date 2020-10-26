@@ -5040,8 +5040,8 @@
           "id": 11927,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthBehaviour/it/3.0.1",
           "notation": "Health.HealthBehaviour",
-          "title": "Health behaviour",
-          "definition": "Behaviours expressed by individuals that affect, protect, maintain or promote their health status, as well as related life style. Life style is closely associated with health behaviour and factors influencing life style are socioeconomic, educational, and cultural. Includes: nutritional phenomena and processes, eating patterns and habits, and measurable nutritional parameters; data on people's general level of fitness, physical activity and exercise they take; data on drug, alcohol and other substance use and abuse, and smoking.",
+          "title": "Comportamenti di salute",
+          "definition": "Comportamenti espressi da individui che influenzano, proteggono, mantengono o promuovono il loro stato di salute, così come il relativo stile di vita. Lo stile di vita è strettamente associato ai comportamenti di salute ed è influenzato da fattori socioeconomici, educativi e culturali. Comprende: fenomeni e processi nutrizionali, abitudini alimentari, parametri nutrizionali misurabili; dati sul livello generale della forma fisica individuale, sull'attività fisica e sull'esercizio fisico; dati sul consumo di droghe, alcol, uso e abuso di altre sostanze, e fumo.",
           "parent": "Health",
           "position": 26
         },

@@ -8872,8 +8872,8 @@
           "id": 10862,
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/sr/4.0.1",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
-          "title": "Drug abuse, alcohol and smoking",
-          "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
+          "title": "Zloubotreba droge, alkohola i pušenja",
+          "definition": "Podaci o zloupotrebi droga i drugih supstanci. Podaci o navikama pušenja i konzumiranja alkohola. Napomena o upotrebi: Za podatke koji obuhvataju medicinsku upotrebu supstanci za rekreaciju (poput upotrebe kanabisa u medicinske svrhe) koristite „Lekovi i lečenje“.",
           "parent": "Health",
           "position": 18
         },
