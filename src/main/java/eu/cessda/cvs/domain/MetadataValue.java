@@ -1,14 +1,12 @@
 package eu.cessda.cvs.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import eu.cessda.cvs.domain.enumeration.ObjectType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
-
-import eu.cessda.cvs.domain.enumeration.ObjectType;
 
 /**
  * A MetadataValue.
@@ -24,6 +22,9 @@ public class MetadataValue implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "identifier")
+    private String identifier;
+
     @Lob
     @Column(name = "value")
     private String value;
@@ -34,6 +35,9 @@ public class MetadataValue implements Serializable {
 
     @Column(name = "object_id")
     private Long objectId;
+
+    @Column(name = "position")
+    private Integer position = 0;
 
     @ManyToOne
     @JsonIgnoreProperties("metadataValues")
@@ -99,7 +103,32 @@ public class MetadataValue implements Serializable {
     public void setMetadataField(MetadataField metadataField) {
         this.metadataField = metadataField;
     }
-    // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public MetadataValue identifier(String identifier) {
+        this.identifier = identifier;
+        return this;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
+    public MetadataValue position(Integer position) {
+        this.position = position;
+        return this;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -121,6 +150,8 @@ public class MetadataValue implements Serializable {
     public String toString() {
         return "MetadataValue{" +
             "id=" + getId() +
+            ", identifier='" + getIdentifier() + "'" +
+            ", position='" + getPosition() + "'" +
             ", value='" + getValue() + "'" +
             ", objectType='" + getObjectType() + "'" +
             ", objectId=" + getObjectId() +

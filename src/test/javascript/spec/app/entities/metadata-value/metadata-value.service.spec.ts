@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { MetadataValueService } from 'app/entities/metadata-value/metadata-value.service';
 import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
@@ -17,11 +17,12 @@ describe('Service Tests', () => {
         imports: [HttpClientTestingModule]
       });
       expectedResult = null;
+
       injector = getTestBed();
       service = injector.get(MetadataValueService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new MetadataValue(0, 'AAAAAAA', ObjectType.AGENCY, 0);
+      elemDefault = new MetadataValue(0, 'AAAAAAA', 'AAAAAAA', ObjectType.AGENCY, 0, 0);
     });
 
     describe('Service methods', () => {
@@ -55,9 +56,11 @@ describe('Service Tests', () => {
       it('should update a MetadataValue', () => {
         const returnedFromService = Object.assign(
           {
+            identifier: 'BBBBBB',
             value: 'BBBBBB',
             objectType: 'BBBBBB',
-            objectId: 1
+            objectId: 1,
+            position: 1
           },
           elemDefault
         );
@@ -74,9 +77,11 @@ describe('Service Tests', () => {
       it('should return a list of MetadataValue', () => {
         const returnedFromService = Object.assign(
           {
+            identifier: 'BBBBBB',
             value: 'BBBBBB',
             objectType: 'BBBBBB',
-            objectId: 1
+            objectId: 1,
+            position: 1
           },
           elemDefault
         );
