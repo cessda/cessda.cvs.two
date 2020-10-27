@@ -464,25 +464,29 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException("Unable to add Vocabulary " + vocabularyId));
 
         // check for authorization
-        SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
-            vocabularyDTO.getAgencyId(), ActionType.CREATE_CODE.getAgencyRoles(), versionDTO.getLanguage());
+        if( codeSnippets[0].getActionType().equals( ActionType.CREATE_CODE))
+            SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
+                vocabularyDTO.getAgencyId(), ActionType.CREATE_CODE.getAgencyRoles(), versionDTO.getLanguage());
+        else if( codeSnippets[0].getActionType().equals( ActionType.ADD_TL_CODE))
+            SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CODE,
+                vocabularyDTO.getAgencyId(), ActionType.ADD_TL_CODE.getAgencyRoles(), versionDTO.getLanguage());
 
         List<ConceptDTO> storedCodes = new ArrayList<>();
         for (CodeSnippet codeSnippet : codeSnippets) {
             log.debug("REST request to save Code/Concept : {}", codeSnippet);
 
-            // check if concept already exist for new concept
-            if (versionDTO.getConcepts().stream()
-                .anyMatch(c -> c.getNotation().equals( codeSnippet.getNotation()))) {
-                throw new CodeAlreadyExistException();
+            ConceptDTO conceptDTO = null;
+
+            if( codeSnippet.getActionType().equals( ActionType.CREATE_CODE)) {
+                conceptDTO = addNewConcept(versionDTO, codeSnippet);
+            } else if( codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE)) {
+                conceptDTO = versionDTO.getConcepts().stream().filter(c -> c.getId().equals(codeSnippet.getConceptId())).findFirst().orElse(null);
+                if( conceptDTO != null ) {
+                    conceptDTO.setTitle( codeSnippet.getTitle() );
+                    conceptDTO.setDefinition( codeSnippet.getDefinition() );
+                }
             }
-            // set position if not available
-            if( codeSnippet.getPosition() == null )
-                codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
-            // create concept by codeSnippet
-            ConceptDTO newConceptDTO = new ConceptDTO( codeSnippet );
-            // add concept to version and save version to save new concept
-            versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
+
             versionDTO = versionService.save(versionDTO);
 
             // check if codeSnippet contains changeType, store if exist
@@ -493,8 +497,8 @@ public class EditorResource {
             }
 
             // find the newly created code from version
-            ConceptDTO conceptDTO = versionDTO.findConceptByNotation(newConceptDTO.getNotation());
-            storedCodes.add( conceptDTO );
+            ConceptDTO concept= versionDTO.findConceptByNotation(conceptDTO.getNotation());
+            storedCodes.add( concept );
         }
 
         // index editor
@@ -509,6 +513,22 @@ public class EditorResource {
         HttpHeaders headers = HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_CODE_NAME, conceptsNotation);
         headers.add("import-status", "Successfully importing " + storedCodes.size() + " codes");
         return ResponseEntity.ok().headers(headers).body(storedCodes);
+    }
+
+    private ConceptDTO addNewConcept(VersionDTO versionDTO, CodeSnippet codeSnippet) {
+        // check if concept already exist for new concept
+        if (versionDTO.getConcepts().stream()
+            .anyMatch(c -> c.getNotation().equals( codeSnippet.getNotation()))) {
+            throw new CodeAlreadyExistException();
+        }
+        // set position if not available
+        if( codeSnippet.getPosition() == null )
+            codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
+        // create concept by codeSnippet
+        ConceptDTO newConceptDTO = new ConceptDTO(codeSnippet);
+        // add concept to version and save version to save new concept
+        versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
+        return newConceptDTO;
     }
 
     /**
