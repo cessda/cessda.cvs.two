@@ -9630,7 +9630,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/no",
           "notation": "Demography.Censuses",
           "title": "Folketellinger",
-          "definition": "Undersøkelser av en hel befolkning, i motsetning til undersøkelser av et utvalg. Ofte brukt i sammenheng med offisielle fortegnelser av en befolkning, og inkluderer vanligvis relatert demografisk informasjon. Legg merke til at det i noen land ikke blir brukt folketellinger ettersom demografisk informasjon foreligger i offisielle registre.<br>",
+          "definition": "Undersøkelser av en hel befolkning, i motsetning til undersøkelser av et utvalg. Ofte brukt i sammenheng med offisielle fortegnelser av en befolkning, og inkluderer vanligvis relatert demografisk informasjon. Legg merke til at det i noen land ikke blir brukt folketellinger ettersom demografisk informasjon foreligger i offisielle registre.",
           "parent": "Demography",
           "position": 1
         },
@@ -9688,7 +9688,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/no",
           "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
           "title": "Økonomisk politikk, offentlige utgifter og inntekter",
-          "definition": "Data om økonomisk politikk, omfatter budsjett- og finanspolitikk, statlige utgifter og inntekter.<br>",
+          "definition": "Data om økonomisk politikk, omfatter budsjett- og finanspolitikk, statlige utgifter og inntekter.",
           "parent": "Economics",
           "position": 7
         },
@@ -9707,7 +9707,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestmentSaving/no",
           "notation": "Economics.IncomePropertyAndInvestmentSaving",
           "title": "Inntekt, formue og investeringer/sparing",
-          "definition": "Brukes på studier som omhandler akkumulasjon av personlige eiendeler, inkludert inntekt, eiendom, investeringer og sparing.<br>",
+          "definition": "Brukes på studier som omhandler akkumulasjon av personlige eiendeler, inkludert inntekt, eiendom, investeringer og sparing.",
           "parent": "Economics",
           "position": 9
         },

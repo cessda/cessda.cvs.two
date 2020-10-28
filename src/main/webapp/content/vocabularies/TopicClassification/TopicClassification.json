@@ -35,7 +35,7 @@
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
       "licenseLogo": "by.png",
       "citation": "CESSDA. (2020). CESSDA Topic Classification (Version 4.1) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.1. ",
-      "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
+      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: reusable</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\" rel=\"noopener noreferrer\" target=\"_blank\">Subject</a></p><p><br></p><p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: reusable </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\" rel=\"noopener noreferrer\" target=\"_blank\"> Subject</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\" rel=\"noopener noreferrer\" target=\"_blank\">topcClas</a></p>",
       "lastStatusChangeDate": "2020-10-07",
       "concepts": [
         {
@@ -5931,7 +5931,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/no",
           "notation": "Demography.Censuses",
           "title": "Folketellinger",
-          "definition": "Undersøkelser av en hel befolkning, i motsetning til undersøkelser av et utvalg. Ofte brukt i sammenheng med offisielle fortegnelser av en befolkning, og inkluderer vanligvis relatert demografisk informasjon. Legg merke til at det i noen land ikke blir brukt folketellinger ettersom demografisk informasjon foreligger i offisielle registre.<br>",
+          "definition": "Undersøkelser av en hel befolkning, i motsetning til undersøkelser av et utvalg. Ofte brukt i sammenheng med offisielle fortegnelser av en befolkning, og inkluderer vanligvis relatert demografisk informasjon. Legg merke til at det i noen land ikke blir brukt folketellinger ettersom demografisk informasjon foreligger i offisielle registre.",
           "parent": "Demography",
           "position": 1
         },
@@ -5989,7 +5989,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/no",
           "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
           "title": "Økonomisk politikk, offentlige utgifter og inntekter",
-          "definition": "Data om økonomisk politikk, omfatter budsjett- og finanspolitikk, statlige utgifter og inntekter.<br>",
+          "definition": "Data om økonomisk politikk, omfatter budsjett- og finanspolitikk, statlige utgifter og inntekter.",
           "parent": "Economics",
           "position": 7
         },
@@ -6008,7 +6008,7 @@
           "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestmentSaving/no",
           "notation": "Economics.IncomePropertyAndInvestmentSaving",
           "title": "Inntekt, formue og investeringer/sparing",
-          "definition": "Brukes på studier som omhandler akkumulasjon av personlige eiendeler, inkludert inntekt, eiendom, investeringer og sparing.<br>",
+          "definition": "Brukes på studier som omhandler akkumulasjon av personlige eiendeler, inkludert inntekt, eiendom, investeringer og sparing.",
           "parent": "Economics",
           "position": 9
         },
