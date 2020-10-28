@@ -13,9 +13,11 @@ import { TreeReorderComponent } from 'app/shared/tree-reorder/tree-reorder.compo
 import { LinkHttpPipe } from 'app/shared/pipe/link-http-pipe';
 import { VersionCompareComponent } from './version-compare/version-compare.component';
 import { NgxTextDiffModule } from 'ngx-text-diff';
+import { MetadataItemComponent } from 'app/shared/metadata-item/metadata-item.component';
+import { QuillModule } from 'ngx-quill';
 
 @NgModule({
-  imports: [CvsSharedLibsModule, NgxTextDiffModule],
+  imports: [CvsSharedLibsModule, NgxTextDiffModule, QuillModule],
   declarations: [
     FindLanguageFromKeyPipe,
     LinkHttpPipe,
@@ -24,6 +26,7 @@ import { NgxTextDiffModule } from 'ngx-text-diff';
     LoginModalComponent,
     HasAnyAuthorityDirective,
     HasAnyAgencyAuthorityDirective,
+    MetadataItemComponent,
     TreeComponent,
     TreeEditorComponent,
     TreeReorderComponent,
@@ -39,6 +42,7 @@ import { NgxTextDiffModule } from 'ngx-text-diff';
     LoginModalComponent,
     HasAnyAuthorityDirective,
     HasAnyAgencyAuthorityDirective,
+    MetadataItemComponent,
     TreeComponent,
     TreeEditorComponent,
     TreeReorderComponent,

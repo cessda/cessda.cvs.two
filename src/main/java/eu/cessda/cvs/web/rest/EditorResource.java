@@ -840,6 +840,8 @@ public class EditorResource {
         MetadataValueDTO result  = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getId().equals(metadataValueDTO.getId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + metadataValueDTO.getId() ));
 
+        result.setIdentifier( metadataValueDTO.getIdentifier());
+        result.setPosition( metadataValueDTO.getPosition());
         result.setValue( metadataValueDTO.getValue() );
         metadataFieldService.save( metadataFieldDTO );
 

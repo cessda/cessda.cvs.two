@@ -66,16 +66,13 @@ export class EditorDetailCvCommentDialogComponent implements OnInit, OnDestroy {
         element!.scrollIntoView({ behavior: 'smooth' });
       }, 500);
     });
+    this.eventSubscriber = this.eventManager.subscribe('commentListModification', () => this.loadComment());
   }
 
   ngOnDestroy(): void {
     if (this.eventSubscriber) {
       this.eventSubscriber.unsubscribe();
     }
-  }
-
-  private registerCvSearchEvent(): void {
-    this.eventSubscriber = this.eventManager.subscribe('commentListModification', () => this.loadComment());
   }
 
   loadComment(): void {

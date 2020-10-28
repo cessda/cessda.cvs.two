@@ -2,6 +2,7 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataFieldDTO;
+import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -19,8 +20,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.MetadataField}.
@@ -119,6 +123,12 @@ public class MetadataFieldResource {
     public ResponseEntity<MetadataFieldDTO> getMetadataFieldByMetadataKey(@PathVariable String metadataKey) {
         log.debug("REST request to get MetadataField by metadataKey : {}", metadataKey);
         Optional<MetadataFieldDTO> metadataFieldDTO = metadataFieldService.findOneByMetadataKey(metadataKey);
+        // sort by position
+        if( metadataFieldDTO.isPresent() ) {
+            final LinkedHashSet<MetadataValueDTO> metadataValueDTOS = metadataFieldDTO.get().getMetadataValues().stream().sorted(Comparator.comparing(MetadataValueDTO::getPosition))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+            metadataFieldDTO.get().setMetadataValues(metadataValueDTOS);
+        }
         return ResponseUtil.wrapOrNotFound(metadataFieldDTO);
     }
 

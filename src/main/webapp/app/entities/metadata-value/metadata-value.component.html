@@ -41,6 +41,8 @@
             <thead>
                 <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" [callback]="loadPage.bind(this)">
                     <th scope="col"  jhiSortBy="id"><span jhiTranslate="global.field.id">ID</span> <fa-icon icon="sort"></fa-icon></th>
+                    <th scope="col"><span>Identifier</span></th>
+                    <th scope="col"><span>Position</span></th>
                     <th scope="col"  jhiSortBy="value"><span jhiTranslate="cvsApp.metadataValue.value">Value</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="objectType"><span jhiTranslate="cvsApp.metadataValue.objectType">Object Type</span> <fa-icon icon="sort"></fa-icon></th>
                     <th scope="col"  jhiSortBy="objectId"><span jhiTranslate="cvsApp.metadataValue.objectId">Object Id</span> <fa-icon icon="sort"></fa-icon></th>
@@ -51,6 +53,8 @@
             <tbody>
                 <tr *ngFor="let metadataValue of metadataValues ;trackBy: trackId">
                     <td><a [routerLink]="['/entity/metadata-value', metadataValue.id, 'view']">{{ metadataValue.id }}</a></td>
+                    <td>{{ metadataValue.identifier }}</td>
+                    <td>{{ metadataValue.position }}</td>
                     <td>{{ metadataValue.value }}</td>
                     <td jhiTranslate="{{ 'cvsApp.ObjectType.' + metadataValue.objectType }}">{{ metadataValue.objectType }}</td>
                     <td>{{ metadataValue.objectId }}</td>

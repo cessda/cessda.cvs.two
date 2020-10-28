@@ -1,0 +1,44 @@
+<div>
+    <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
+        <button *ngIf="!isWriting" type="button" ngbTooltip="Edit comment" class="btn btn-sm btn-primary-outline float-right" data-dismiss="modal" (click)="isWriting = !isWriting">
+            <fa-icon class="text-secondary" [icon]="'edit'"></fa-icon>
+            <span> Edit</span>
+        </button>
+    </div>
+    <div *ngIf="!isWriting" class="detail-column" [innerHTML]="metadataForm.get('content')? metadataForm.get('content')!.value : 'no information'"></div>
+    <form novalidate [formGroup]="metadataForm">
+        <div class="row-content">
+            <div *ngIf="isWriting" class="row-detail form-group">
+                <div class="label-column-input">
+                    <span>Identifier</span>
+                </div>
+                <div class="detail-column  label-column-value">
+                    <input type="text" class="form-control" id="field_identifier" name="identifier" formControlName="identifier"/>
+                </div>
+            </div>
+            <div *ngIf="isWriting" class="row-detail form-group">
+                <div class="label-column-input">
+                    <span>Position</span>
+                </div>
+                <div class="detail-column  label-column-value">
+                    <input type="number" class="form-control" name="position" id="field_position" formControlName="position"/>
+                </div>
+            </div>
+            <div *ngIf="isWriting">
+                <quill-editor class="large-quill" formControlName="content"></quill-editor>
+            </div>
+            <div *ngIf="isWriting" class="ql-editor-buttons">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriting = !isWriting">
+                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                </button>
+                <button type="button" id="save-metadata" [disabled]="metadataForm.invalid || isSaving" (click)="saveMetadata()" class="btn btn-primary">
+                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+
+                <button *ngIf="metadataValue.id" type="button" id="delete-metadata" [disabled]="metadataForm.invalid || isSaving" (click)="doDeleteMetadata()" class="btn btn-danger">
+                    <fa-icon [icon]="'trash'"></fa-icon>&nbsp;<span>Delete</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
