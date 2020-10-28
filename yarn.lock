@@ -8268,13 +8268,13 @@ ng2-material-dropdown@0.11.0:
   dependencies:
     tslib "^1.9.0"
 
-ngx-chips@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/ngx-chips/-/ngx-chips-2.1.0.tgz#aa299bcf40dc3e1f6288bf1d29e2fdfe9a132ed3"
-  integrity sha512-OQV4dTfD3nXm5d2mGKUSgwOtJOaMnZ4F+lwXOtd7DWRSUne0JQWwoZNHdOpuS6saBGhqCPDAwq6KxdR5XSgZUQ==
+ngx-chips@2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/ngx-chips/-/ngx-chips-2.2.1.tgz#266cc6b83f4b497f56bc43e323bcf6e9b2afc9f7"
+  integrity sha512-XruhoR/kCYBkLYelxtLYNR+4mP5TmVnVfW0wc/ylZmFvph5q4JqjqAtWYq5r8oBTDgUo+HsP4jByIZnVK5pw5A==
   dependencies:
     ng2-material-dropdown "0.11.0"
-    tslib "^1.9.0"
+    tslib "^1.10.0"
 
 ngx-cookie@4.0.2:
   version "4.0.2"
@@ -12153,10 +12153,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@3.7.5:
-  version "3.7.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
-  integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+typescript@4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.0.5.tgz#ae9dddfd1069f1cb5beb3ef3b2170dd7c1332389"
+  integrity sha512-ywmr/VrTVCmNTJ6iV2LwIrfG1P+lv6luD8sUJs+2eI9NLGigaN+nUQc13iHqisq7bra9lnmUSYqbJvegraBOPQ==
 
 ua-parser-js@0.7.17:
   version "0.7.17"
