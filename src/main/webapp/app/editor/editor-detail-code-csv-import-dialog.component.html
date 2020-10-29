@@ -44,10 +44,7 @@ Family.Household,Family: Household family,"A more specific term, refers only to 
                 <p>Please carefully check if the CSV file parse process was done successfully. By default all CV-codes will be imported. You can ignore codes by uncheck the checkbox on the left side of the code.</p>
                 <div class="alert-warning w-100" *ngIf="!isSlForm && ignoredRows > 0">Note: There are {{ignoredRows}} rows skipped from the CVS file, since they do not have matched SL Code Name.</div>
                 <div class="concept-row row-header">
-                    <span class="column1">
-                        <input type="checkbox" [checked]="!(markedRows.indexOf(false) > -1)" (change)="importAll = !importAll;fillIsRowImported()"/>&nbsp;
-                        <span>Code Value</span><span class="csv-header">&lt;&lt;{{csvHeaders[0]}}&gt;&gt;</span>
-                    </span>
+                    <span class="column1"><input type="checkbox" [checked]="!(markedRows.indexOf(false) > -1)" (change)="importAll = !importAll;fillIsRowImported()"/>&nbsp;<span>Code Value</span><span class="csv-header">&lt;&lt;{{csvHeaders[0]}}&gt;&gt;</span></span>
                     <span class="column2">
                         <span>Code Term</span><span class="csv-header">&lt;&lt;{{csvHeaders[1]}}&gt;&gt;</span>
                     </span>
@@ -56,10 +53,7 @@ Family.Household,Family: Household family,"A more specific term, refers only to 
                     </span>
                 </div>
                 <div *ngFor="let contents of csvContents; let i = index" class="concept-row">
-                    <span class="column1">
-                        <input type="checkbox" [checked]="markedRows[i]" (change)="markedRows[i] = !markedRows[i]"/>&nbsp;
-                        <span>{{ contents[0] }}</span>
-                    </span>
+                    <span class="column1"><input type="checkbox" [checked]="markedRows[i]" (change)="markedRows[i] = !markedRows[i]"/>&nbsp;<span>{{ contents[0] }}</span></span>
                     <span class="column2">
                         <span>{{ contents[1] }}</span>
                     </span>
