@@ -264,7 +264,7 @@
                             <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
                             <span>{{getVersionByLangNumber()!.language}}: {{vh.version}} </span>
                             <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                            <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
+                            <a *ngIf="!vh.version.startsWith(getSlVersion()!.number)" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
                         </a>
