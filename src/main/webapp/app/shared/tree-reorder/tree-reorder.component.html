@@ -4,12 +4,7 @@
             <div class="concept-row" (click)="selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation,
             'reorder': concept.status === 'REORDER', 'text-muted': concept.status === 'UNSELECTABLE', 'pivot': concept.status === 'PIVOT',
             'to-be-inserted': concept.status === 'TO_BE_INSERTED'}">
-                <span class="column1 coll-mar-{{level!}}">
-                    <span *ngIf="isConceptHasChildren(concept.notation,conceptList)" class="invisible-button">
-                        <fa-icon icon="caret-down"></fa-icon>
-                    </span>
-                    {{concept.notation}}
-                </span>
+                <span class="column1 coll-mar-{{level!}}"><span *ngIf="isConceptHasChildren(concept.notation,conceptList)" class="invisible-button"><fa-icon icon="caret-down"></fa-icon></span>{{concept.notation}}</span>
             </div>
             <jhi-tree-reorder *ngIf="isConceptHasChildren(concept.notation,conceptList)"
                       [ngClass]="{'display-none': concept.visible}"

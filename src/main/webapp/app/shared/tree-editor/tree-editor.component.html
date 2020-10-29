@@ -2,13 +2,7 @@
     <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
         <li id="code_{{concept.notation.split('.').join('')}}" [ngClass]="{'y-bgr': !concept.title}">
             <div class="concept-row" (click)="selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation}">
-                <span class="column1 coll-mar-{{level!}}">
-                    <button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button">
-                        <fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon>
-                        <fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon>
-                    </button>
-                    {{concept.position}} {{concept.notation}}
-                </span>
+                <span class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button>{{concept.position}} {{concept.notation}}</span>
                 <span *ngIf="concept.titleSl" class="columnSl2">
                     {{concept.titleSl}}
                 </span>
