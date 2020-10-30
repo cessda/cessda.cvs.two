@@ -259,9 +259,7 @@ public class EditorResource {
             // generate json files
             vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
             // reindex published json
-            File cvDirectory = new File( applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation() + File.separator +
-                vocabularyDTO.getNotation() + ".json");
-            vocabularyService.indexPublished(cvDirectory.toPath());
+            vocabularyService.indexPublished( vocabularyService.getPublishedCvPath(vocabularyDTO.getNotation()));
         }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))

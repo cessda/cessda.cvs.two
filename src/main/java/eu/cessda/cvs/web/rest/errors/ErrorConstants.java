@@ -13,6 +13,7 @@ public final class ErrorConstants {
     public static final URI EMAIL_ALREADY_USED_TYPE = URI.create(PROBLEM_BASE_URL + "/email-already-used");
     public static final URI LOGIN_ALREADY_USED_TYPE = URI.create(PROBLEM_BASE_URL + "/login-already-used");
     public static final URI VOCABULARY_ALREADY_EXIST_TYPE = URI.create(PROBLEM_BASE_URL + "/vocabulary-already-exist");
+    public static final URI VOCABULARY_NOT_FOUND_TYPE = URI.create(PROBLEM_BASE_URL + "/vocabulary-not-found-exist");
     public static final URI CODE_ALREADY_EXIST_TYPE = URI.create(PROBLEM_BASE_URL + "/code-already-exist");
     public static final URI INSUFFICIENT_VOCABULARY_AUTHORITY_TYPE = URI.create(PROBLEM_BASE_URL + "/insufficient-vocabulary-authority");
 

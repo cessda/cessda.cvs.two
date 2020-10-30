@@ -180,6 +180,25 @@ public interface VocabularyService {
      */
     void indexAgencyStats( VocabularyDTO vocabulary );
 
+    /**
+     * Get all of the published CV JSON path in specific version by notation
+     * @param notation
+     * @param versionNumber
+     * @return
+     */
+    Path getPublishedCvPath(String notation, String versionNumber);
+
+    /**
+     * Get all of the published CV JSON path (latest version by notation)
+     * @param notation
+     * @return
+     */
+    Path getPublishedCvPath(String notation);
+
+    /**
+     * Get all of the published CVs JSON path
+     */
+    List<Path> getPublishedCvPaths();
 
     /**
      * Perform indexing in all published vocabularies

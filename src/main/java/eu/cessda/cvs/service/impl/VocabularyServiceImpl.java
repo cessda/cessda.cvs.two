@@ -917,6 +917,25 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
+    public Path getPublishedCvPath(String notation, String versionNumber) {
+        Path path = null;
+        if( versionNumber == null ) {
+            path = Paths.get(applicationProperties.getVocabJsonPath() + notation + File.separator + notation + JSON_FORMAT);
+        } else {
+            path = Paths.get(applicationProperties.getVocabJsonPath() + notation + File.separator +
+                versionNumber + File.separator + notation + "_" + versionNumber + JSON_FORMAT);
+        }
+        if( path == null )
+            throw new VocabularyNotFoundException();
+        return path;
+    }
+
+    @Override
+    public Path getPublishedCvPath(String notation) {
+        return getPublishedCvPath(notation, null);
+    }
+
+    @Override
     public void indexAllPublished() {
         log.info("INDEXING ALL PUBLISHED VOCABULARIES START");
         // remove any indexed vocabularies
@@ -927,7 +946,8 @@ public class VocabularyServiceImpl implements VocabularyService {
         log.info("INDEXING ALL PUBLISHED VOCABULARIES FINISHED");
     }
 
-    private List<Path> getPublishedCvPaths() {
+    @Override
+    public List<Path> getPublishedCvPaths() {
         List<Path> jsonPaths = new ArrayList<>();
         try ( Stream<Path> paths = Files.walk(Paths.get(applicationProperties.getVocabJsonPath()), 2) ){
             jsonPaths = paths.filter(Files::isRegularFile).collect(Collectors.toList());
@@ -1483,10 +1503,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     public File generateVocabularyPublishFileDownload(
         String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
         log.info( "Publication generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
-        Path path = Paths.get(applicationProperties.getVocabJsonPath() + vocabularyNotation + File.separator +
-                versionSl + File.separator + vocabularyNotation + "_" + versionSl + JSON_FORMAT);
-
-        VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath(path);
+        VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath( getPublishedCvPath( vocabularyNotation,versionSl ) );
         return generateVocabularyFileDownload(vocabularyNotation, versionSl, versionList, downloadType, request, vocabularyDTO);
     }
 

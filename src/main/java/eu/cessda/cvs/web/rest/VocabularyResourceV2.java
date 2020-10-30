@@ -23,18 +23,18 @@ import java.nio.file.Files;
  * REST controller for managing {@link Vocabulary}.
  */
 @RestController
-@RequestMapping("/api")
-public class VocabularyDownloadResource {
+@RequestMapping("/v2")
+public class VocabularyResourceV2 {
 
     public static final String ATTACHMENT_FILENAME = "attachment; filename=";
-    private final Logger log = LoggerFactory.getLogger(VocabularyDownloadResource.class);
+    private final Logger log = LoggerFactory.getLogger(VocabularyResourceV2.class);
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
     private final VocabularyService vocabularyService;
 
-    public VocabularyDownloadResource(VocabularyService vocabularyService) {
+    public VocabularyResourceV2(VocabularyService vocabularyService) {
         this.vocabularyService = vocabularyService;
     }
 

@@ -22,10 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 
@@ -122,13 +119,8 @@ public class PublicationResource {
         final String[] splitLanguageVersion1 = VersionUtils.splitLanguageVersion(lv1);
         final String[] splitLanguageVersion2 = VersionUtils.splitLanguageVersion(lv2);
 
-        Path path1 = Paths.get(applicationProperties.getVocabJsonPath() + cv + File.separator +
-            splitLanguageVersion1[0] + File.separator + cv + "_" + splitLanguageVersion1[0] + JSON_FORMAT);
-        Path path2 = Paths.get(applicationProperties.getVocabJsonPath() + cv + File.separator +
-            splitLanguageVersion2[0] + File.separator + cv + "_" + splitLanguageVersion2[0] + JSON_FORMAT);
-
-        VersionDTO version1 = VocabularyUtils.generateVersionByPath(path1, splitLanguageVersion1[2], splitLanguageVersion1[1]);
-        VersionDTO version2 = VocabularyUtils.generateVersionByPath(path2, splitLanguageVersion2[2], splitLanguageVersion2[1]);
+        VersionDTO version1 = VocabularyUtils.generateVersionByPath(vocabularyService.getPublishedCvPath(cv, splitLanguageVersion1[0]), splitLanguageVersion1[2], splitLanguageVersion1[1]);
+        VersionDTO version2 = VocabularyUtils.generateVersionByPath(vocabularyService.getPublishedCvPath(cv, splitLanguageVersion2[0]), splitLanguageVersion2[2], splitLanguageVersion2[1]);
 
         List<String> compareVersions = VersionUtils.buildComparisonCurrentAndPreviousCV(version1, version2);
         HttpHeaders headers = new HttpHeaders();

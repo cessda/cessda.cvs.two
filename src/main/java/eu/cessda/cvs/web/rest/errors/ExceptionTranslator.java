@@ -1,7 +1,6 @@
 package eu.cessda.cvs.web.rest.errors;
 
 import io.github.jhipster.web.util.HeaderUtil;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.ConcurrencyFailureException;
 import org.springframework.http.ResponseEntity;
@@ -106,6 +105,12 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
     @ExceptionHandler
     public ResponseEntity<Problem> handleVocabularyAlreadyExistException(eu.cessda.cvs.service.VocabularyAlreadyExistException ex, NativeWebRequest request) {
         VocabularyAlreadyExistException problem = new VocabularyAlreadyExistException();
+        return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleVocabularyNotFoundException(eu.cessda.cvs.service.VocabularyNotFoundException ex, NativeWebRequest request) {
+        VocabularyNotFoundException problem = new VocabularyNotFoundException();
         return create(problem, request, HeaderUtil.createFailureAlert(applicationName,  true, problem.getEntityName(), problem.getErrorKey(), problem.getMessage()));
     }
 
