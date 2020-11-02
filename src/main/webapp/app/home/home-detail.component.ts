@@ -1,16 +1,16 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
 
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { IVersion } from 'app/shared/model/version.model';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {IVersion} from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { FormBuilder } from '@angular/forms';
-import { HomeService } from 'app/home/home.service';
-import { RouteEventsService } from 'app/shared';
-import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
-import { Observable, Subject } from 'rxjs';
+import {FormBuilder} from '@angular/forms';
+import {HomeService} from 'app/home/home.service';
+import {RouteEventsService} from 'app/shared';
+import {DiffContent} from 'ngx-text-diff/lib/ngx-text-diff.model';
+import {Observable, Subject} from 'rxjs';
 
 @Component({
   selector: 'jhi-home-detail',
@@ -313,7 +313,7 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   private downloadVocabularyFile(fileFormat: string, checkedItems: string, mimeType: string): void {
     this.homeService
       .downloadVocabularyFile(this.vocabulary!.notation!, this.getSlVersion()!.number!, fileFormat, {
-        lv: checkedItems
+        languageVersion: checkedItems
       })
       .subscribe((res: Blob) => {
         const newBlob = new Blob([res], { type: mimeType });

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import eu.cessda.cvs.service.ConfigurationService;
+import eu.cessda.cvs.service.VocabularyNotFoundException;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
@@ -31,6 +32,12 @@ public final class VocabularyUtils {
     private static final Logger log = LoggerFactory.getLogger(VocabularyUtils.class);
     private VocabularyUtils(){}
 
+    public static Comparator<VersionDTO> versionDtoComparator(){
+        return Comparator.comparing(VersionDTO::getItemType)
+            .thenComparing(VersionDTO::getLanguage)
+            .thenComparing(VersionDTO::getNumber, Comparator.reverseOrder());
+    }
+
     public static VocabularyDTO generateVocabularyByPath(Path jsonPath){
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
@@ -49,14 +56,17 @@ public final class VocabularyUtils {
 
         } catch (IOException e) {
             log.error(e.getMessage());
+            throw new VocabularyNotFoundException( "Published vocabulary not found, please check Vocabulary notation and SL version number!" );
         }
+        // reorder version
+        vocabularyDTO.setVersions( vocabularyDTO.getVersions().stream().sorted(versionDtoComparator())
+            .collect(Collectors.toCollection(LinkedHashSet::new)));
+
         return vocabularyDTO;
     }
 
     public static VersionDTO generateVersionByPath(Path jsonPath, String language, String versionNumber) {
         VocabularyDTO vocabularyDTO = generateVocabularyByPath(jsonPath);
-        if ( vocabularyDTO == null )
-            return null;
         return vocabularyDTO.getVersions().stream().filter(v -> v.getLanguage().equals(language) && v.getNumber().equals(versionNumber))
             .findFirst().orElse(null);
     }
@@ -194,6 +204,22 @@ public final class VocabularyUtils {
         if(!cvUriLink.endsWith("/"))
             cvUriLink += "/";
         return cvUriLink;
+    }
+
+    public static void setSkosMapAttribute(Map<String, Object> map, VocabularyDTO vocabularyDTO, VersionDTO version){
+        String uriSl = version.getUriSl();
+        if( uriSl == null )
+            uriSl = version.getUri();
+        int index1 = uriSl.lastIndexOf("/" + vocabularyDTO.getSourceLanguage());
+        int index2 = uriSl.lastIndexOf('/' );
+        String uriVocab = uriSl.substring(0, index1);
+        String versionNumberSl  = uriSl.substring(index2 + 1);
+        map.put("docId", uriVocab + "_" + versionNumberSl);
+        map.put("docVersionOf", uriVocab );
+        map.put("docNotation", vocabularyDTO.getNotation() );
+        map.put("docVersion", versionNumberSl );
+        map.put("docLicense", version.getLicenseName() );
+        map.put("docRight", version.getLicenseName() );
     }
 
 }

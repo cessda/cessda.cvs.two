@@ -1,15 +1,33 @@
-<div class="container-inner">
-    <jhi-alert-error></jhi-alert-error>
-    <jhi-alert></jhi-alert>
-    <div *ngFor="let metadataValue of metadataValues; let i = index" class="row-detail form-group">
-        <jhi-metadata-item [metadataField]="metadataField" [metadataValue]="metadataValue"
-           [isWriting]="metadataValue.id === undefined" [position]="(i + 1)"></jhi-metadata-item>
-    </div>
+<div class="row">
+    <div class="row-content">
+        <div class="content">
+            <div class="content-left">
+                <div class="sticky-panel">
 
-    <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
-        <button type="button" ngbTooltip="Add Section" (click)="addSection()" class="btn btn-sm btn-primary-outline float-right">
-            <fa-icon class="text-secondary" [icon]="'plus'"></fa-icon>
-            <span> Add Section</span>
-        </button>
+                    <a class="acc-header option-label col-12 mtop10" aria-controls="action-panel">
+                        <fa-icon icon="caret-down"></fa-icon>
+                        <span>APIs Documentation</span>
+                    </a>
+                    <div id="action-panel" class="acc-body" [ngbCollapse]="false">
+                        <a href="/swagger"><strong>See Swagger UI</strong></a>
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <jhi-alert-error></jhi-alert-error>
+                <jhi-alert></jhi-alert>
+                <div *ngFor="let metadataValue of metadataValues; let i = index" class="row-detail form-group">
+                    <jhi-metadata-item [metadataField]="metadataField" [metadataValue]="metadataValue"
+                                       [isWriting]="metadataValue.id === undefined" [position]="(i + 1)"></jhi-metadata-item>
+                </div>
+
+                <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
+                    <button type="button" ngbTooltip="Add Section" (click)="addSection()" class="btn btn-sm btn-primary-outline float-right">
+                        <fa-icon class="text-secondary" [icon]="'plus'"></fa-icon>
+                        <span> Add Section</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

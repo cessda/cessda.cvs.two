@@ -6,4 +6,7 @@ public class VocabularyNotFoundException extends RuntimeException {
         super("Vocabulary not found!");
     }
 
+    public VocabularyNotFoundException(String message) {
+        super(message);
+    }
 }

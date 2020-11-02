@@ -32,6 +32,13 @@ public class VocabularyMaintenanceResource {
         this.vocabularyService = vocabularyService;
     }
 
+    @GetMapping("/publication/generate-json")
+    public ResponseEntity<String> getGenerateJson() throws IOException {
+        log.debug("REST request to get a page of Vocabularies");
+        vocabularyService.generateJsonAllVocabularyPublish();
+        return ResponseEntity.ok().body("Done generating json");
+    }
+
     @GetMapping("/index/agency-stats")
     public ResponseEntity<String> indexAgencyStats() throws IOException {
         log.debug("REST request to index Agencies Stats");

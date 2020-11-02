@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service Interface for managing {@link eu.cessda.cvs.domain.Vocabulary}.
@@ -265,6 +266,14 @@ public interface VocabularyService {
      * @return the generated file
      */
     File generateVocabularyEditorFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
+
+    /**
+     * Filter-out vocabularyDTO.versions based on versionList e.g. (en-1.0, fr-1.0.1). Includes all if versionList is null
+     * @param versionList
+     * @param vocabularyDTO
+     * @return
+     */
+    Set<VersionDTO> filterOutVocabularyVersions(String versionList, VocabularyDTO vocabularyDTO);
 
     /**
      * Perform TL concepts checking for all vocabulary (see performTlMigrationNormalization)

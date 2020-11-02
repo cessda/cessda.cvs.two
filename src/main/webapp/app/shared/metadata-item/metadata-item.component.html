@@ -5,7 +5,7 @@
             <span> Edit</span>
         </button>
     </div>
-    <div *ngIf="!isWriting" class="detail-column" [innerHTML]="metadataForm.get('content')? metadataForm.get('content')!.value : 'no information'"></div>
+    <div *ngIf="!isWriting" id="{{metadataValue.identifier}}" class="detail-column" [innerHTML]="metadataForm.get('content')? metadataForm.get('content')!.value : 'no information'"></div>
     <form novalidate [formGroup]="metadataForm">
         <div class="row-content">
             <div *ngIf="isWriting" class="row-detail form-group">

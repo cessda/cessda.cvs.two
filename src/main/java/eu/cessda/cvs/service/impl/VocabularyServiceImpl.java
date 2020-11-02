@@ -36,7 +36,10 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.InnerHitBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
@@ -93,10 +96,6 @@ public class VocabularyServiceImpl implements VocabularyService {
     public static final String UNABLE_FIND_VERSION = "Unable to find version with Id ";
     public static final String LATEST = "latest";
     public static final String ALL = "all";
-
-    private final Comparator<VersionDTO> versionComparator = Comparator.comparing(VersionDTO::getItemType)
-        .thenComparing(VersionDTO::getLanguage)
-        .thenComparing(VersionDTO::getNumber, Comparator.reverseOrder());
 
     private static final String CODE_PATH = "codes";
 
@@ -580,7 +579,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private void sortVocabularyVersions(List<VocabularyDTO> vocabulariesDTO) {
         for (VocabularyDTO vocabularyDTO : vocabulariesDTO) {
-            LinkedHashSet<VersionDTO> sortedVersion = vocabularyDTO.getVersions().stream().sorted(versionComparator)
+            LinkedHashSet<VersionDTO> sortedVersion = vocabularyDTO.getVersions().stream().sorted(VocabularyUtils.versionDtoComparator())
                 .collect(Collectors.toCollection(LinkedHashSet::new));
             vocabularyDTO.setVersions(sortedVersion);
         }
@@ -771,7 +770,8 @@ public class VocabularyServiceImpl implements VocabularyService {
             return vocabulary;
 
         if( slVersionNumber.equals(LATEST)) {
-            final VersionDTO latestSlVersion = vocabulary.getVersions().stream().sorted(versionComparator).findFirst().orElse(null);
+            final VersionDTO latestSlVersion = vocabulary.getVersions().stream().sorted(VocabularyUtils.versionDtoComparator())
+                .findFirst().orElse(null);
             if( latestSlVersion != null )
                 slVersionNumber = latestSlVersion.getNumber();
         }
@@ -1239,7 +1239,6 @@ public class VocabularyServiceImpl implements VocabularyService {
                 .should( QueryBuilders.matchQuery( CODE_PATH +"." + DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 1.0f ));
         }
         else {
-            QueryStringQueryBuilder queryStringQueryBuilder = QueryBuilders.queryStringQuery("*" + term + "*");
             List<String> fields = new ArrayList<>();
             for(String langIso : languageFields) {
                 fields.add(CODE_PATH +"." + TITLE + langIso);
@@ -1550,7 +1549,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
             final List<VersionDTO> slVersions = vocabularyDTO.getVersions().stream()
                 .filter(v -> v.getItemType().equals(ItemType.SL.toString()))
-                .sorted(versionComparator).collect(Collectors.toList());
+                .sorted(VocabularyUtils.versionDtoComparator()).collect(Collectors.toList());
 
             results.append("\nCV " + vocabularyDTO.getNotation() + " latest version: " + slVersions.get(0).getNumber() + "\n");
 
@@ -1661,18 +1660,8 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     private File generateVocabularyFileDownload(String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request, VocabularyDTO vocabularyDTO) {
-        // filter out version
-        Set<VersionDTO> includedVersions = new LinkedHashSet<>();
-        String[] versionSplits = versionList.split("_");
-        for (String vs : versionSplits) {
-            String[] s = vs.split("-");
-            if( s.length != 2 )
-                continue;
-            Optional<VersionDTO> versionDTOOpt = vocabularyDTO.getVersions().stream().filter(v -> v.getLanguage().equals(s[0]) && v.getNumber().equals(s[1])).findFirst();
-            versionDTOOpt.ifPresent(includedVersions::add);
-        }
+        Set<VersionDTO> includedVersions = filterOutVocabularyVersions(versionList, vocabularyDTO);
         vocabularyDTO.setVersions( includedVersions );
-
         Map<String, Object> map = new HashMap<>();
         // escaping HTML to strict XHTML
         for (VersionDTO includedVersion : includedVersions) {
@@ -1691,21 +1680,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         if( downloadType.equals( ExportService.DownloadType.SKOS ))
         {
-            VersionDTO version = includedVersions.iterator().next();
-            String uriSl = version.getUriSl();
-            if( uriSl == null )
-                uriSl = version.getUri();
-            // e.g. http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/en/1.2
-            int index1 = uriSl.lastIndexOf("/" + vocabularyDTO.getSourceLanguage());
-            int index2 = uriSl.lastIndexOf('/' );
-            String uriVocab = uriSl.substring(0, index1);
-            String versionNumberSl  = uriSl.substring(index2 + 1);
-            map.put("docId", uriVocab + "_" + versionNumberSl);
-            map.put("docVersionOf", uriVocab );
-            map.put("docNotation", vocabularyDTO.getNotation() );
-            map.put("docVersion", versionNumberSl );
-            map.put("docLicense", version.getLicenseName() );
-            map.put("docRight", version.getLicenseName() );
+            VocabularyUtils.setSkosMapAttribute(map, vocabularyDTO, includedVersions.iterator().next());
             map.put(CODE_PATH, CodeDTO.generateCodesFromVersion(includedVersions, false));
         }
         else {
@@ -1723,6 +1698,25 @@ public class VocabularyServiceImpl implements VocabularyService {
             log.error(e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public Set<VersionDTO> filterOutVocabularyVersions(String versionList, VocabularyDTO vocabularyDTO) {
+        // filter out version
+        Set<VersionDTO> includedVersions = new LinkedHashSet<>();
+        if( versionList != null){
+            String[] versionSplits = versionList.split("_");
+            for (String vs : versionSplits) {
+                String[] s = vs.split("-");
+                if( s.length != 2 )
+                    continue;
+                Optional<VersionDTO> versionDTOOpt = vocabularyDTO.getVersions().stream().filter(v -> v.getLanguage().equals(s[0]) && v.getNumber().equals(s[1])).findFirst();
+                versionDTOOpt.ifPresent(includedVersions::add);
+            }
+        } else {
+            includedVersions = vocabularyDTO.getVersions();
+        }
+        return includedVersions;
     }
 
     private String toStrictXhtml(String text) {

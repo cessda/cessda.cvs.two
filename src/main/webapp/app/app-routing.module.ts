@@ -10,8 +10,8 @@ import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 
 const routerOptions: ExtraOptions = {
-  // useHash: false,
-  // anchorScrolling: 'enabled',
+  useHash: false,
+  anchorScrolling: 'enabled',
   scrollPositionRestoration: 'enabled',
   enableTracing: DEBUG_INFO_ENABLED,
   onSameUrlNavigation: 'reload'

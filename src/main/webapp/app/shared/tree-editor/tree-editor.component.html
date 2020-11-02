@@ -9,10 +9,10 @@
                 <span class="column2">
                     {{concept.title ? concept.title : ''}}
                 </span>
-                <span *ngIf="concept.titleSl" class="columnSl3">
+                <span *ngIf="concept.titleSl" class="columnSl3 break-long-word">
                     {{concept.definitionSl}}
                 </span>
-                <span class="column3">
+                <span class="column3 break-long-word">
                     {{concept.definition ? concept.definition : ''}}
                 </span>
             </div>

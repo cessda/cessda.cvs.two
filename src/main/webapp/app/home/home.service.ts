@@ -14,7 +14,7 @@ export class HomeService {
   public resourceUrl = SERVER_API_URL + 'api/vocabulary';
   public vocabularyStaticUrl = SERVER_API_URL + 'content/vocabularies';
   public resourceSearchUrl = SERVER_API_URL + 'v2/search';
-  public resourceDownloadUrl = SERVER_API_URL + 'v2/download';
+  public resourceDownloadUrl = SERVER_API_URL + 'v2/vocabularies';
   public resourceCvCompareUrl = SERVER_API_URL + 'v2/compare-vocabulary';
 
   constructor(protected http: HttpClient) {}
