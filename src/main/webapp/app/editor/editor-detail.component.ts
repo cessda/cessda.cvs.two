@@ -195,7 +195,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         const tlCodes = this.version.concepts!.filter(c => c.notation === slConcepts![i].notation);
         if (tlCodes.length) {
           tlCodes[0].position = slConcepts![i].position;
-          tlCodes[0].parent = slConcepts![i].parent ? slConcepts![i].parent: undefined,
+          tlCodes[0].parent = slConcepts![i].parent ? slConcepts![i].parent: undefined;
           tlCodes[0].titleSl = slConcepts![i].title;
           tlCodes[0].definitionSl = slConcepts![i].definition;
         } else {
