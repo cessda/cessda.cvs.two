@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.CodeSnippet;
 
 import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
@@ -19,6 +20,7 @@ public class ConceptDTO implements Serializable {
 
     private String uri;
 
+    @NotNull
     @Size(max = 240)
     private String notation;
 
@@ -39,7 +41,9 @@ public class ConceptDTO implements Serializable {
 
     private Long versionId;
 
-    public ConceptDTO(){}
+    public ConceptDTO(){
+        this.notation = "NEW_NOTATION";
+    }
 
     /**
      * Constructor to generate new concept, defined by Rest API

@@ -9,6 +9,7 @@ import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
 
 import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -28,12 +29,16 @@ public class VocabularyDTO implements Serializable {
         this.archived = false;
         this.withdrawn = false;
         this.discoverable = true;
+        this.status = Status.DRAFT.toString();
+        this.notation = "NEW_VOCABULARY";
+        this.versionNumber = "1.0";
+        this.sourceLanguage = "en";
+        this.agencyId = 0L;
+        this.agencyName = "DEFAULT_AGENCY";
     }
 
     public VocabularyDTO(VocabularySnippet vocabularySnippet) {
-        this.archived = false;
-        this.withdrawn = false;
-        this.discoverable = true;
+        this();
         this.agencyId = vocabularySnippet.getAgencyId();
         this.notation = vocabularySnippet.getNotation();
         if( vocabularySnippet.getItemType().equals(ItemType.SL))
@@ -57,15 +62,18 @@ public class VocabularyDTO implements Serializable {
         this.notes = vocabularySnippet.getNotes();
     }
 
+    @NotNull
     @Size(max = 20)
     private String status;
 
     @Size(max = 240)
     private String uri;
 
+    @NotNull
     @Size(max = 240)
     private String notation;
 
+    @NotNull
     @Size(max = 20)
     private String versionNumber;
 
@@ -79,11 +87,14 @@ public class VocabularyDTO implements Serializable {
 
     private Boolean discoverable;
 
+    @NotNull
     @Size(max = 20)
     private String sourceLanguage;
 
+    @NotNull
     private Long agencyId;
 
+    @NotNull
     private String agencyName;
 
     private String agencyLogo;

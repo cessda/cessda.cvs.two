@@ -6,32 +6,25 @@ import eu.cessda.cvs.repository.VocabularyChangeRepository;
 import eu.cessda.cvs.service.VocabularyChangeService;
 import eu.cessda.cvs.service.dto.VocabularyChangeDTO;
 import eu.cessda.cvs.service.mapper.VocabularyChangeMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -165,26 +158,6 @@ public class VocabularyChangeResourceIT {
         // Validate the VocabularyChange in the database
         List<VocabularyChange> vocabularyChangeList = vocabularyChangeRepository.findAll();
         assertThat(vocabularyChangeList).hasSize(databaseSizeBeforeCreate);
-    }
-
-
-    @Test
-    @Transactional
-    public void checkChangeTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = vocabularyChangeRepository.findAll().size();
-        // set the field null
-        vocabularyChange.setChangeType(null);
-
-        // Create the VocabularyChange, which fails.
-        VocabularyChangeDTO vocabularyChangeDTO = vocabularyChangeMapper.toDto(vocabularyChange);
-
-        restVocabularyChangeMockMvc.perform(post("/api/vocabulary-changes")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(vocabularyChangeDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<VocabularyChange> vocabularyChangeList = vocabularyChangeRepository.findAll();
-        assertThat(vocabularyChangeList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
