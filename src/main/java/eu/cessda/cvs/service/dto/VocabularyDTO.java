@@ -9,7 +9,6 @@ import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
 
 import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -58,18 +57,15 @@ public class VocabularyDTO implements Serializable {
         this.notes = vocabularySnippet.getNotes();
     }
 
-    @NotNull
     @Size(max = 20)
     private String status;
 
     @Size(max = 240)
     private String uri;
 
-    @NotNull
     @Size(max = 240)
     private String notation;
 
-    @NotNull
     @Size(max = 20)
     private String versionNumber;
 
@@ -83,14 +79,11 @@ public class VocabularyDTO implements Serializable {
 
     private Boolean discoverable;
 
-    @NotNull
     @Size(max = 20)
     private String sourceLanguage;
 
-    @NotNull
     private Long agencyId;
 
-    @NotNull
     private String agencyName;
 
     private String agencyLogo;

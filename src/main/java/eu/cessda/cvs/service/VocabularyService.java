@@ -55,6 +55,14 @@ public interface VocabularyService {
     ConceptDTO saveCode(CodeSnippet codeSnippet);
 
     /**
+     * save any vocabularyChange from codeSNippet if any
+     *
+     * @param codeSnippet
+     * @param versionDTO
+     */
+    void storeChangeType(CodeSnippet codeSnippet, VersionDTO versionDTO);
+
+    /**
      * Get all the vocabularies.
      *
      * @return the list of entities

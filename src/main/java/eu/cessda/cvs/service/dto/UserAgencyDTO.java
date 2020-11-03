@@ -1,13 +1,10 @@
 package eu.cessda.cvs.service.dto;
 
-import java.io.Serializable;
-import java.util.Objects;
-
 import eu.cessda.cvs.domain.UserAgency;
 import eu.cessda.cvs.domain.enumeration.AgencyRole;
-import eu.cessda.cvs.domain.enumeration.Language;
 
-import javax.validation.constraints.NotNull;
+import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A DTO for the {@link eu.cessda.cvs.domain.UserAgency} entity.
@@ -20,10 +17,8 @@ public class UserAgencyDTO implements Serializable {
 
     private String language;
 
-    @NotNull
     private Long userId;
 
-    @NotNull
     private Long agencyId;
 
     private String agencyName;

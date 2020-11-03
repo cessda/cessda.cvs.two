@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 	<title>Controlled Vocabulary</title>
@@ -183,7 +183,7 @@
 		<div class="page">
 			<div style="width: 100%;">
 				<div style="width:130px;float:left;padding-right:15px">
-					<img class="logo"/>
+					<img alt="agency-logo" class="logo" th:src="@{${agency.logo}}"/>
 				</div>
 				<div>
 					<h1 th:text="${agency.name + ' Controlled Vocabulary for ' + version.notation}"></h1>
@@ -231,13 +231,13 @@
 		<hr />
 
 		<div class="CodeList page">
-			<table>
+			<table aria-describedby="page-heading">
 				<caption>Code List</caption>
 				<thead>
 				<tr>
-                    <th style="width: 25%">Code value</th>
-                    <th style="width: 25%">Code descriptive term</th>
-                    <th style="width: 50%">Code definition</th>
+                    <th scope="col" style="width: 25%">Code value</th>
+                    <th scope="col" style="width: 25%">Code descriptive term</th>
+                    <th scope="col" style="width: 50%">Code definition</th>
 				</tr>
 				</thead>
 				<tbody>
@@ -260,7 +260,7 @@
         <p>Copyright © <a th:href="${agency.link}" th:text="${agency.name}"></a> <span th:text="${year}"></span>.</p>
         <p th:if="${version.licenseName != null}">
             <a rel="license" th:href="${version.licenseLink}">
-                <img style="border-width:0;width:140px" th:attr="src=${version.licenseLogo},title=${version.licenseName},alt=${version.licenseName}" />
+                <img style="border-width:0;width:140px" alt="licanse-logo" th:attr="src=${version.licenseLogo},title=${version.licenseName},alt=${version.licenseName}" />
             </a>
             <span>This work is licensed under a
 						<a rel="license" th:href="${version.licenseLink}" th:text="${version.licenseName}"></a>.

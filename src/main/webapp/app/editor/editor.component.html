@@ -56,6 +56,7 @@
                                                (onRemove)="onRemoveAgency($event)"
                                                [animationDuration]="{ enter: '0ms', leave: '0ms' }"
                                                [placeholder]="'Search agencies'"
+                                               [ripple]="false"
                                                [secondaryPlaceholder]="'Search agencies'">
                                         <tag-input-dropdown
                                             [showDropdownIfEmpty]="true"
@@ -84,6 +85,7 @@
                                     <tag-input [formControlName]="'aggStatus'"
                                                [onlyFromAutocomplete]="true"
                                                [class] = "'sk-select-min'"
+                                               [ripple]="false"
                                                (onAdd)="onAddStatus($event)"
                                                (onRemove)="onRemoveStatus($event)"
                                                [animationDuration]="{ enter: '0ms', leave: '0ms' }"

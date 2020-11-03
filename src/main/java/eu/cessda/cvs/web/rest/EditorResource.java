@@ -6,7 +6,6 @@ import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.*;
@@ -83,13 +82,11 @@ public class EditorResource {
 
     private final VocabularyChangeService vocabularyChangeService;
 
-    private final AgencyStatSearchRepository agencyStatSearchRepository;
 
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
                           LicenceService licenceService, AgencyService agencyService, CommentService commentService,
                           MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService,
-                          AgencyStatSearchRepository agencyStatSearchRepository) {
+                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
@@ -100,7 +97,6 @@ public class EditorResource {
         this.metadataValueService = metadataValueService;
         this.applicationProperties = applicationProperties;
         this.vocabularyChangeService = vocabularyChangeService;
-        this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
     /**
@@ -253,7 +249,7 @@ public class EditorResource {
             cloneTLsIfAny(vocabularyDTO, versionDTO);
         }
         // save at the end
-        VocabularyDTO vocabularyDTOSaved = vocabularyService.save( vocabularyDTO );
+        vocabularyService.save( vocabularyDTO );
         // indexing publication, delete existing one
         if ( versionDTO.getStatus().equals( Status.PUBLISHED.toString()) ) {
             // generate json files
@@ -484,15 +480,13 @@ public class EditorResource {
                     conceptDTO.setDefinition( codeSnippet.getDefinition() );
                 }
             }
+            if( conceptDTO == null )
+                continue;
 
             versionDTO = versionService.save(versionDTO);
 
             // check if codeSnippet contains changeType, store if exist
-            if (codeSnippet.getChangeType() != null && !versionDTO.isInitialVersion()) {
-                VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO( SecurityUtils.getCurrentUser(),
-                    versionDTO.getVocabularyId(), versionDTO.getId(), codeSnippet.getChangeType(), codeSnippet.getChangeDesc());
-                vocabularyChangeService.save(vocabularyChangeDTO );
-            }
+            vocabularyService.storeChangeType(codeSnippet, versionDTO);
 
             // find the newly created code from version
             ConceptDTO concept= versionDTO.findConceptByNotation(conceptDTO.getNotation());

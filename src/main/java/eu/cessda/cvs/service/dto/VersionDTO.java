@@ -10,7 +10,6 @@ import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionUtils;
 
 import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -25,11 +24,9 @@ public class VersionDTO implements Serializable {
 
     private Long id;
 
-    @NotNull
     @Size(max = 20)
     private String status;
 
-    @NotNull
     @Size(max = 20)
     private String itemType;
 

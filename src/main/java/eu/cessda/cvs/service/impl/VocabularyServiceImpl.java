@@ -505,7 +505,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
     }
 
-    private void storeChangeType(CodeSnippet codeSnippet, VersionDTO versionDTO) {
+    public void storeChangeType(CodeSnippet codeSnippet, VersionDTO versionDTO) {
         if ( codeSnippet.getChangeType() != null && !versionDTO.isInitialVersion()) {
             codeSnippet.setVersionId( versionDTO.getId());
             VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO(codeSnippet, SecurityUtils.getCurrentUser(),

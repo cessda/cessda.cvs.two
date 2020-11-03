@@ -3,10 +3,10 @@ package eu.cessda.cvs.service.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.CodeSnippet;
 
-import javax.validation.constraints.*;
+import javax.persistence.Lob;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link eu.cessda.cvs.domain.Concept} entity.
@@ -19,7 +19,6 @@ public class ConceptDTO implements Serializable {
 
     private String uri;
 
-    @NotNull
     @Size(max = 240)
     private String notation;
 

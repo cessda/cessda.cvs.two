@@ -4,7 +4,6 @@ import eu.cessda.cvs.domain.CodeSnippet;
 import eu.cessda.cvs.domain.VocabularySnippet;
 
 import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -21,7 +20,6 @@ public class VocabularyChangeDTO implements Serializable {
 
     private Long versionId;
 
-    @NotNull
     @Size(max = 60)
     private String changeType;
 

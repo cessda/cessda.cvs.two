@@ -679,7 +679,7 @@
                             <span>Exports</span>
                         </a>
                         <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'export', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'export'}" #exportPanel id="exportPanel">
-                            <table class="table table-striped">
+                            <table class="table table-striped" aria-describedby="page-heading">
                                 <thead>
                                 <tr>
                                     <th scope="col"><label>Language</label></th>

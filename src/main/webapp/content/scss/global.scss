@@ -301,19 +301,13 @@ tag {
   transition: none !important;
   max-width: none !important;
 }
-tag-input-form {
-  display: block;
-  width: 100%;
-}
-tag:not(.readonly):not(.tag--editing):focus,
-tag:not(.readonly):not(.tag--editing):active,
-tag:not(.readonly):not(.tag--editing):hover {
+
+.ng2-tag-input .ng-trigger:not(.readonly):not(.tag--editing):focus,
+.ng2-tag-input .ng-trigger:not(.readonly):not(.tag--editing):active,
+.ng2-tag-input .ng-trigger:not(.readonly):not(.tag--editing):hover {
   background: hsla(60, 12%, 95%, 1) !important;
   color: #555 !important;
   box-shadow: none !important;
-}
-tag-ripple {
-  visibility: hidden;
 }
 .ng2-tag-input {
   transition: none !important;

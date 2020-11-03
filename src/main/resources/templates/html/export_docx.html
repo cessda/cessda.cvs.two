@@ -1,7 +1,7 @@
 <!DOCTYPE html [
     <!ENTITY nbsp "&#160;">
 ]>
-<html>
+<html lang="en">
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
     <title>Controlled Vocabulary</title>
@@ -116,7 +116,7 @@ div.CodeList {
 		    <div class="">
 		      <div style="width: 100%;">
 		      	<div style="width:60px;float:left;padding-right:15px">
-		      		<img style="width:60px" th:src="@{${agency.logo}}"/>
+		      		<img style="width:60px" alt="agency-logo" th:src="@{${agency.logo}}"/>
 		    	</div>
 		    	<div>
 		    		<h1 th:text="${agency.name + ' Controlled Vocabulary for ' + version.notation}"></h1>
@@ -163,13 +163,13 @@ div.CodeList {
     		    <hr />
 
 			    <div>
-			      <table style="max-width: 1024px">
+			      <table aria-describedby="page-heading" style="max-width: 1024px">
 			        <caption>Code List</caption>
 			        <thead>
 			          <tr>
-			            <th style="width: 25%">Code value</th>
-			            <th style="width: 25%">Code descriptive term</th>
-			            <th style="width: 50%">Code definition</th>
+			            <th scope="col" style="width: 25%">Code value</th>
+			            <th scope="col" style="width: 25%">Code descriptive term</th>
+			            <th scope="col" style="width: 50%">Code definition</th>
 			          </tr>
 			        </thead>
 			        <tbody>
