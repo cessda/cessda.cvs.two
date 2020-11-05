@@ -1,13 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
-import { JhiEventManager } from 'ng-jhipster';
-import { FormBuilder } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
-import { IMetadataValue } from 'app/shared/model/metadata-value.model';
-import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
-import { EditorService } from 'app/editor/editor.service';
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
+import {JhiEventManager} from 'ng-jhipster';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {HttpResponse} from '@angular/common/http';
+import {IMetadataValue} from 'app/shared/model/metadata-value.model';
+import {ObjectType} from 'app/shared/model/enumerations/object-type.model';
+import {EditorService} from 'app/editor/editor.service';
+import {IMetadataField} from 'app/shared/model/metadata-field.model';
 
 @Component({
   selector: 'jhi-metadata-item',
@@ -18,6 +18,7 @@ export class MetadataItemComponent implements OnInit {
   @Input() metadataValue!: IMetadataValue;
   @Input() isWriting!: boolean;
   @Input() position!: number;
+  @Input() newTabLink!: boolean;
   isSaving = false;
 
   quillModules: any = {
@@ -25,16 +26,16 @@ export class MetadataItemComponent implements OnInit {
   };
 
   metadataForm = this.fb.group({
-    identifier: [''],
-    position: [''],
-    content: ['']
+    identifier: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(40), Validators.pattern('^[a-z0-9-]*$')]],
+    position: ['', [Validators.required]],
+    content: ['', [Validators.minLength(30)]]
   });
 
   constructor(protected editorService: EditorService, protected eventManager: JhiEventManager, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.metadataForm.patchValue({
-      identifier: this.metadataValue.identifier,
+      identifier: this.metadataValue.identifier ? this.metadataValue.identifier : 'section-' + this.position,
       position: this.metadataValue.position ? this.metadataValue.position : this.position,
       content: this.metadataValue.value
     });
@@ -68,6 +69,13 @@ export class MetadataItemComponent implements OnInit {
   saveMetadata(): void {
     this.isSaving = true;
     const metadataValue = this.createFromForm();
+    if ( !this.newTabLink ) {
+      // remove any target="_blank"
+      metadataValue.value = (metadataValue.value as string).split(' rel="noopener noreferrer" target="_blank"').join ('');
+      this.metadataForm.patchValue({
+        content: metadataValue.value
+      });
+    }
     if (this.metadataValue.id !== undefined) {
       this.subscribeToSaveResponse(this.editorService.updateAppMetadata(metadataValue));
     } else {

@@ -237,6 +237,14 @@ public interface VocabularyService {
     EsQueryResultDetail search (EsQueryResultDetail esQueryResultDetail);
 
     /**
+     * Find all vocabularies code given ElasticSearch (ES) query
+     *
+     * @param esQueryResultDetail contains ES query details
+     * @return esQueryResultDetail contains ES query details and results
+     */
+    EsQueryResultDetail searchCode (EsQueryResultDetail esQueryResultDetail);
+
+    /**
      * Generate JSON files for all published vocabularies.
      *
      * @throws IOException

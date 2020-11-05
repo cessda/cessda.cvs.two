@@ -70,7 +70,7 @@ public class VocabularyResourceV2 {
     public ResponseEntity<CvResult> getAllVocabularies(@ApiParam( value = "the query, e.g. Family" ) @RequestParam(name = "q", required = false) String q,
                                                        @ApiParam( value = "the filter, e.g agency:DDI Alliance;language:en" ) @RequestParam(name = "f", required = false) String f,
                                                        Pageable pageable) {
-        log.debug("REST request to get a page of Vocabularies");
+        log.debug("REST request search vocabulary by query");
         if (q == null)
             q = "";
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(q, f, pageable, SearchScope.PUBLICATIONSEARCH);
@@ -81,37 +81,90 @@ public class VocabularyResourceV2 {
         return ResponseEntity.ok().headers(headers).body( VocabularyUtils.mapResultToCvResult(esq, vocabulariesPage) );
     }
 
-//    /**
-//     * {@code GET  /search} : get all the vocabularies from elasticsearch.
-//     *
-//
-//     * @param q the query term.
-//     * @param pageable the pagination information.
-//
-//     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
-//     */
-//    @GetMapping("/search/jsonld")
-//    public ResponseEntity<List<Object>> getAllVocabulariesJsonLd(@RequestParam(name = "q", required = false) String q,
-//                                                       @RequestParam(name = "f", required = false) String f,
-//                                                       Pageable pageable) {
-//        log.debug("REST request to get a page of Vocabularies");
-//        if (q == null)
-//            q = "";
-//        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(q, f, pageable, SearchScope.PUBLICATIONSEARCH);
-//        vocabularyService.search(esq);
-//        Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
-//
-//        List<Object> vocabularyJsonLds = new ArrayList<>();
-//        if ( !vocabulariesPage.getContent().isEmpty() ) {
-//            vocabulariesPage.getContent().forEach(vocabularyDTO -> {
-//                List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO);
-//                vocabularyJsonLds.addAll(vocabularyJsonLdMap);
-//            });
-//        }
-//
-//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), vocabulariesPage);
-//        return ResponseEntity.ok().headers(headers).body( vocabularyJsonLds );
-//    }
+    /**
+     * {@code GET  /search} : get all the vocabularies from elasticsearch.
+     *
+
+     * @param query the query term.
+     * @param pageable the pagination information.
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
+     */
+    @GetMapping("/search-code")
+    @ApiOperation( value = "Searching the vocabularies code" )
+    public ResponseEntity<List<Object>> getAllVocabulariesCode(
+        @ApiParam( value = "the query, e.g. Interview or with wildcard inter*" ) @RequestParam(name = "query", required = true) String query,
+        @ApiParam( value = "the Agency, e.g. DDI Alliance" ) @RequestParam(name = "agency", required = false) String agency,
+        @ApiParam( value = "the Vocabulary, e.g. ModeOfCollection" ) @RequestParam(name = "vocab", required = false) String vocab,
+        @ApiParam( value = "the language, e.g en" ) @RequestParam(name = "lang", required = true) String lang,
+        Pageable pageable) {
+        log.debug("REST request to get a page of Vocabularies");
+        if (query == null)
+            query = "";
+        String filter = "language:" +lang;
+        if( agency != null ) {
+            filter += ";agency:" + agency;
+        }
+        if( vocab != null ) {
+            filter += ";vocab:" + vocab;
+        }
+        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, filter, pageable, SearchScope.PUBLICATIONSEARCH);
+        vocabularyService.searchCode(esq);
+        Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
+
+        Set<String> langSet = new HashSet<>();
+        langSet.add( lang );
+
+        List<Object> vocabularyJsonLds = new ArrayList<>();
+        if ( !vocabulariesPage.getContent().isEmpty() ) {
+            vocabulariesPage.getContent().forEach(vocabularyDTO -> {
+                List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLdSkosMos(vocabularyDTO, vocabularyDTO.getCodes(), langSet);
+                vocabularyJsonLds.addAll(vocabularyJsonLdMap);
+            });
+        }
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), vocabulariesPage);
+        return ResponseEntity.ok().headers(headers).body( vocabularyJsonLds );
+    }
+
+    /**
+     * {@code GET  /search} : get all the vocabularies from elasticsearch.
+     *
+
+     * @param q the query term.
+     * @param pageable the pagination information.
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
+     */
+    @GetMapping("/search/jsonld")
+    public ResponseEntity<List<Object>> getAllVocabulariesJsonLd(@RequestParam(name = "q", required = false) String q,
+                                                       @RequestParam(name = "f", required = false) String f,
+                                                       Pageable pageable) {
+        log.debug("REST request to get a page of Vocabularies");
+        if (q == null)
+            q = "";
+        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(q, f, pageable, SearchScope.PUBLICATIONSEARCH);
+        vocabularyService.search(esq);
+        Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
+
+
+
+        List<Object> vocabularyJsonLds = new ArrayList<>();
+        if ( !vocabulariesPage.getContent().isEmpty() ) {
+            vocabulariesPage.getContent().forEach(vocabularyDTO -> {
+                Set<String> languages = new LinkedHashSet<>();
+                if( esq.getSortLanguage() != null )
+                    languages.add( esq.getSortLanguage() );
+                else
+                    languages.addAll( vocabularyDTO.getLanguagesPublished());
+                List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO, vocabularyDTO.getCodes(), languages);
+                vocabularyJsonLds.addAll(vocabularyJsonLdMap);
+            });
+        }
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), vocabulariesPage);
+        return ResponseEntity.ok().headers(headers).body( vocabularyJsonLds );
+    }
 
 
     /**
@@ -191,7 +244,8 @@ public class VocabularyResourceV2 {
         VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
 
         List<Object> vocabularyJsonLds = new ArrayList<>();
-        List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO);
+        Set<CodeDTO> codeDtos = CodeDTO.generateCodesFromVersion(vocabularyDTO.getVersions(), false);
+        List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO, codeDtos, vocabularyDTO.getLanguagesPublished());
         vocabularyJsonLds.addAll(vocabularyJsonLdMap);
 
         return ResponseEntity.ok()
@@ -205,12 +259,65 @@ public class VocabularyResourceV2 {
         return vocabularyDTO;
     }
 
-    private List<Map<String, Object>> convertVocabularyDtoToJsonLd( VocabularyDTO vocabularyDTO){
+    private List<Map<String, Object>> convertVocabularyDtoToJsonLdSkosMos( VocabularyDTO vocabularyDTO, Set<CodeDTO> codeDtos, Set<String> languages){
+        List<Map<String, Object>> vocabularyJsonLds = new ArrayList<>();
+        String lang = "en";
+
+        Map<String, Object> skosAttributeMap = new HashMap<>();
+        VocabularyUtils.setSkosMapAttribute(skosAttributeMap, vocabularyDTO);
+        String docId = skosAttributeMap.get("docId").toString();
+
+        Map<String, Object> contextJsonLdMap = new LinkedHashMap<>();
+        vocabularyJsonLds.add( contextJsonLdMap);
+        Map<String, Object> contextContentMap = new LinkedHashMap<>();
+        contextJsonLdMap.put("@context", contextContentMap );
+
+        contextContentMap.put("skos", "http://www.w3.org/2004/02/skos/core#");
+        contextContentMap.put("owl", "http://www.w3.org/2002/07/owl#");
+        contextContentMap.put("uri", "@id");
+        contextContentMap.put("type", "@type");
+        contextContentMap.put("onki", "http://schema.onki.fi/onki#");
+        Map<String, Object> contextResultMap = new LinkedHashMap<>();
+        contextResultMap.put("@id", "onki:results");
+        contextResultMap.put("@container", "@list");
+        contextContentMap.put("results", contextResultMap);
+        contextContentMap.put("versionInfo", "skos:versionInfo");
+        contextContentMap.put("notation", "skos:notation");
+        contextContentMap.put("prefLabel", "skos:prefLabel");
+        contextContentMap.put("definition", "skos:definition");
+        if( languages != null && !languages.isEmpty()){
+            lang = languages.iterator().next();
+            contextContentMap.put("@language", lang);
+        }
+
+        contextJsonLdMap.put("versionInfo", skosAttributeMap.get("docVersion"));
+
+        Map<String, Object> contextResultsMap = new LinkedHashMap<>();
+        List<Object> results = new ArrayList<>();
+        Object[] resultObj = new Object[1];
+        resultObj[0] = results;
+        contextJsonLdMap.put("results", results );
+
+        // concepts
+        for (CodeDTO c : codeDtos) {
+            Map<String, Object> conceptJsonLdMap = new LinkedHashMap<>();
+            results.add( conceptJsonLdMap);
+            conceptJsonLdMap.put("uri", docId + "#" + c.getNotation());
+            conceptJsonLdMap.put("type", new String[]{"skos:Concept"});
+            conceptJsonLdMap.put("notation", c.getNotation());
+            conceptJsonLdMap.put("prefLabel", c.getTitleByLanguage(lang));
+            conceptJsonLdMap.put("definition", c.getDefinitionByLanguage(lang));
+            conceptJsonLdMap.put("lang", lang);
+            conceptJsonLdMap.put("vocab", vocabularyDTO.getNotation());
+        }
+        return vocabularyJsonLds;
+    }
+
+    private List<Map<String, Object>> convertVocabularyDtoToJsonLd( VocabularyDTO vocabularyDTO, Set<CodeDTO> codeDtos, Set<String> languages){
         List<Map<String, Object>> vocabularyJsonLds = new ArrayList<>();
 
         Map<String, Object> skosAttributeMap = new HashMap<>();
-        VocabularyUtils.setSkosMapAttribute(skosAttributeMap, vocabularyDTO, vocabularyDTO.getVersions().iterator().next());
-        final Set<CodeDTO> codeDtos = CodeDTO.generateCodesFromVersion(vocabularyDTO.getVersions(), false);
+        VocabularyUtils.setSkosMapAttribute(skosAttributeMap, vocabularyDTO);
 
         Map<String, Object> vocabularyJsonLdMap = new LinkedHashMap<>();
         vocabularyJsonLds.add( vocabularyJsonLdMap);
@@ -221,10 +328,10 @@ public class VocabularyResourceV2 {
         // desc
         List<Map<String,String>> descList = new ArrayList<>();
         vocabularyJsonLdMap.put("http://purl.org/dc/terms/description", descList);
-        vocabularyDTO.getVersions().forEach(v -> {
+        languages.forEach(v -> {
             Map<String, String> langValue = new LinkedHashMap<>();
-            langValue.put(LANGUAGE, v.getLanguage());
-            langValue.put(VALUE, v.getDefinition());
+            langValue.put(LANGUAGE, v);
+            langValue.put(VALUE, vocabularyDTO.getDefinitionByLanguage(v));
             descList.add(langValue);
         });
         // isVersionOf
@@ -234,11 +341,13 @@ public class VocabularyResourceV2 {
         isVersionOfMap.put(ID, skosAttributeMap.get("docVersionOf").toString());
         isVersionOfList.add(isVersionOfMap);
         // license
-        List<Map<String,String>> licenseList = new ArrayList<>();
-        vocabularyJsonLdMap.put("http://purl.org/dc/terms/license", licenseList);
-        Map<String, String> licenseMap = new LinkedHashMap<>();
-        licenseMap.put(ID, skosAttributeMap.get("docLicense").toString());
-        licenseList.add(licenseMap);
+        if( skosAttributeMap.get("docLicense") != null ) {
+            List<Map<String, String>> licenseList = new ArrayList<>();
+            vocabularyJsonLdMap.put("http://purl.org/dc/terms/license", licenseList);
+            Map<String, String> licenseMap = new LinkedHashMap<>();
+            licenseMap.put(ID, skosAttributeMap.get("docLicense").toString());
+            licenseList.add(licenseMap);
+        }
         // rights
         List<Map<String,String>> rightsList = new ArrayList<>();
         vocabularyJsonLdMap.put("http://purl.org/dc/terms/rights", rightsList);
@@ -248,10 +357,10 @@ public class VocabularyResourceV2 {
         // title
         List<Map<String,String>> titleList = new ArrayList<>();
         vocabularyJsonLdMap.put("http://purl.org/dc/terms/title", titleList);
-        vocabularyDTO.getVersions().forEach(v -> {
+        languages.forEach(v -> {
             Map<String, String> langValue = new LinkedHashMap<>();
-            langValue.put(LANGUAGE, v.getLanguage());
-            langValue.put(VALUE, v.getTitle());
+            langValue.put(LANGUAGE, v);
+            langValue.put(VALUE, vocabularyDTO.getTitleByLanguage(v));
             titleList.add(langValue);
         });
         // versionInfo
@@ -298,15 +407,15 @@ public class VocabularyResourceV2 {
             List<Map<String,String>> cTitleList = new ArrayList<>();
             conceptJsonLdMap.put("http://purl.org/dc/terms/title", cTitleList);
 
-            vocabularyDTO.getVersions().forEach(v -> {
+            languages.forEach(v -> {
                 Map<String, String> cDefMap = new LinkedHashMap<>();
-                cDefMap.put(LANGUAGE, v.getLanguage());
-                cDefMap.put(VALUE, c.getDefinitionByLanguage(v.getLanguage()));
+                cDefMap.put(LANGUAGE, v);
+                cDefMap.put(VALUE, c.getDefinitionByLanguage(v));
                 cDefList.add(cDefMap);
 
                 Map<String, String> cTitleMap = new LinkedHashMap<>();
-                cTitleMap.put(LANGUAGE, v.getLanguage());
-                cTitleMap.put(VALUE, c.getTitleByLanguage(v.getLanguage()));
+                cTitleMap.put(LANGUAGE, v);
+                cTitleMap.put(VALUE, c.getTitleByLanguage(v));
                 cTitleList.add(cTitleMap);
             });
 

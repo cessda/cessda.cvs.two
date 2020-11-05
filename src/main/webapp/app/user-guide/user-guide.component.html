@@ -3,7 +3,7 @@
     <jhi-alert></jhi-alert>
     <div *ngFor="let metadataValue of metadataValues; let i = index" class="row-detail form-group">
         <jhi-metadata-item [metadataField]="metadataField" [metadataValue]="metadataValue"
-                           [isWriting]="metadataValue.id === undefined" [position]="(i + 1)"></jhi-metadata-item>
+            [isWriting]="metadataValue.id === undefined" [position]="(i + 1)" [newTabLink]="true"></jhi-metadata-item>
     </div>
 
     <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">

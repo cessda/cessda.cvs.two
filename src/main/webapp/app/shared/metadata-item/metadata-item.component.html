@@ -1,4 +1,4 @@
-<div>
+<div class="{{metadataForm.get('identifier')}}">
     <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
         <button *ngIf="!isWriting" type="button" ngbTooltip="Edit comment" class="btn btn-sm btn-primary-outline float-right" data-dismiss="modal" (click)="isWriting = !isWriting">
             <fa-icon class="text-secondary" [icon]="'edit'"></fa-icon>
@@ -7,37 +7,74 @@
     </div>
     <div *ngIf="!isWriting" id="{{metadataValue.identifier}}" class="detail-column" [innerHTML]="metadataForm.get('content')? metadataForm.get('content')!.value : 'no information'"></div>
     <form novalidate [formGroup]="metadataForm">
-        <div class="row-content">
-            <div *ngIf="isWriting" class="row-detail form-group">
-                <div class="label-column-input">
-                    <span>Identifier</span>
-                </div>
-                <div class="detail-column  label-column-value">
-                    <input type="text" class="form-control" id="field_identifier" name="identifier" formControlName="identifier"/>
-                </div>
-            </div>
-            <div *ngIf="isWriting" class="row-detail form-group">
-                <div class="label-column-input">
-                    <span>Position</span>
-                </div>
-                <div class="detail-column  label-column-value">
-                    <input type="number" class="form-control" name="position" id="field_position" formControlName="position"/>
-                </div>
-            </div>
-            <div *ngIf="isWriting">
-                <quill-editor class="large-quill" formControlName="content"></quill-editor>
-            </div>
-            <div *ngIf="isWriting" class="ql-editor-buttons">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriting = !isWriting">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
-                </button>
-                <button type="button" id="save-metadata" [disabled]="metadataForm.invalid || isSaving" (click)="saveMetadata()" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-                </button>
+        <div *ngIf="isWriting" class="card w-100">
+            <div class="row-content">
+                <div class="row-detail form-group">
+                    <div class="label-column-input">
+                        <span>Identifier</span>
+                    </div>
+                    <div class="detail-column  label-column-value">
+                        <input type="text" class="form-control" id="field_identifier" name="identifier" formControlName="identifier"/>
+                        <div *ngIf="metadataForm.get('identifier')!.invalid && (metadataForm.get('identifier')!.dirty || metadataForm.get('identifier')!.touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="metadataForm.get('identifier')?.errors?.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
 
-                <button *ngIf="metadataValue.id" type="button" id="delete-metadata" [disabled]="metadataForm.invalid || isSaving" (click)="doDeleteMetadata()" class="btn btn-danger">
-                    <fa-icon [icon]="'trash'"></fa-icon>&nbsp;<span>Delete</span>
-                </button>
+                            <small class="form-text text-danger"
+                                   *ngIf="metadataForm.get('identifier')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
+                                   [translateValues]="{max: 240}">
+                                This field cannot be longer than 40 characters.
+                            </small>
+
+                            <small class="form-text text-danger"
+                                   *ngIf="metadataForm.get('identifier')?.errors?.minlength" jhiTranslate="entity.validation.minlength"
+                                   [translateValues]="{min: 2}">
+                                This field is required to be at least 2 characters.
+                            </small>
+
+                            <small class="form-text text-danger"
+                                   *ngIf="metadataForm.get('identifier')?.errors?.pattern">
+                                CV Short Name can only contain lowercase letters (a-z), digits (0-9) and hyphen/minus (-).
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div class="row-detail form-group">
+                    <div class="label-column-input">
+                        <span>Position</span>
+                    </div>
+                    <div class="detail-column  label-column-value">
+                        <input type="number" class="form-control" name="position" id="field_position" formControlName="position"/>
+                        <div *ngIf="metadataForm.get('position')!.invalid && (metadataForm.get('position')!.dirty || metadataForm.get('position')!.touched)">
+                            <small class="form-text text-danger"
+                                   *ngIf="metadataForm.get('position')?.errors?.required" jhiTranslate="entity.validation.required">
+                                This field is required.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <quill-editor class="large-quill" formControlName="content"></quill-editor>
+                    <div *ngIf="metadataForm.get('content')!.invalid && (metadataForm.get('content')!.dirty || metadataForm.get('content')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="metadataForm.get('content')?.errors?.minlength">
+                            This field is required with minimum of a short sentence content.
+                        </small>
+                    </div>
+                </div>
+                <div class="ql-editor-buttons">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriting = !isWriting">
+                        <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
+                    </button>
+                    <button type="button" id="save-metadata" [disabled]="metadataForm.invalid || isSaving" (click)="saveMetadata()" class="btn btn-primary">
+                        <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                    </button>
+
+                    <button *ngIf="metadataValue.id" [disabled]="isSaving" type="button" id="delete-metadata" [disabled]="metadataForm.invalid || isSaving" (click)="doDeleteMetadata()" class="btn btn-danger">
+                        <fa-icon [icon]="'trash'"></fa-icon>&nbsp;<span>Delete</span>
+                    </button>
+                </div>
             </div>
         </div>
     </form>

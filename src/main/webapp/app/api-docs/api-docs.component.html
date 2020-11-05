@@ -4,10 +4,11 @@
             <div class="content-left">
                 <div class="sticky-panel">
 
-                    <a class="acc-header option-label col-12 mtop10" aria-controls="action-panel">
-                        <fa-icon icon="caret-down"></fa-icon>
-                        <span>APIs Documentation</span>
-                    </a>
+                    <a class="acc-header option-label col-12 mtop10" aria-controls="action-panel"><strong>CVS API Docs</strong></a>
+                    <div *ngIf="metadataValueMenu" class="w-100">
+                        <jhi-metadata-item [metadataField]="metadataField" [metadataValue]="metadataValueMenu"
+                         [isWriting]="metadataValueMenu.id === undefined" [position]="0" [newTabLink]="false"></jhi-metadata-item>
+                    </div>
                     <div id="action-panel" class="acc-body" [ngbCollapse]="false">
                         <a href="/swagger"><strong>See Swagger UI</strong></a>
                     </div>
@@ -17,8 +18,8 @@
                 <jhi-alert-error></jhi-alert-error>
                 <jhi-alert></jhi-alert>
                 <div *ngFor="let metadataValue of metadataValues; let i = index" class="row-detail form-group">
-                    <jhi-metadata-item [metadataField]="metadataField" [metadataValue]="metadataValue"
-                                       [isWriting]="metadataValue.id === undefined" [position]="(i + 1)"></jhi-metadata-item>
+                    <jhi-metadata-item *ngIf="metadataValue.identifier !== 'overview'" [metadataField]="metadataField" [metadataValue]="metadataValue"
+                     [isWriting]="metadataValue.id === undefined" [position]="(i + 1)" [newTabLink]="true"></jhi-metadata-item>
                 </div>
 
                 <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">

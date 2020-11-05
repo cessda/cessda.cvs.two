@@ -139,6 +139,8 @@ public final class VocabularyUtils {
         String field = null;
         if( filterSplit[0].equals( "agency") )
             field = EsFilter.AGENCY_AGG;
+        if( filterSplit[0].equals( "vocab") )
+            field = EsFilter.NOTATION_AGG;
         if( filterSplit[0].equals( "language") ){
             if( searchScope.equals( SearchScope.PUBLICATIONSEARCH ))
                 field = EsFilter.LANGS_PUB_AGG;
@@ -220,6 +222,18 @@ public final class VocabularyUtils {
         map.put("docVersion", versionNumberSl );
         map.put("docLicense", version.getLicenseName() );
         map.put("docRight", version.getLicenseName() );
+    }
+
+    public static void setSkosMapAttribute(Map<String, Object> map, VocabularyDTO vocabularyDTO){
+        String uriSl = vocabularyDTO.getUri();
+        int index1 = uriSl.lastIndexOf("/" + vocabularyDTO.getSourceLanguage());
+        int index2 = uriSl.lastIndexOf('/' );
+        String uriVocab = uriSl.substring(0, index1);
+        String versionNumberSl  = uriSl.substring(index2 + 1);
+        map.put("docId", vocabularyDTO.getUri());
+        map.put("docVersionOf", uriVocab );
+        map.put("docNotation", vocabularyDTO.getNotation() );
+        map.put("docVersion", versionNumberSl );
     }
 
 }

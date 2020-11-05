@@ -36,10 +36,7 @@ import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.InnerHitBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
@@ -83,11 +80,13 @@ import java.util.stream.Stream;
 @Transactional
 public class VocabularyServiceImpl implements VocabularyService {
 
+    public static final String VOCABULARYPUBLISH = "vocabularypublish";
     private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
 
     public static final String COUNT = "_count";
     public static final String TITLE = "title";
     public static final String DEFINITION = "definition";
+    public static final String NOTATION = "notation";
     public static final String HIGHLIGHT_START = "<span class=\"highlight\">";
     public static final String HIGHLIGHT_END = "</span>";
     public static final int SIZE_OF_ITEMS_ON_AGGREGATION = 10000;
@@ -982,7 +981,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     public EsQueryResultDetail search(EsQueryResultDetail esQueryResultDetail) {
         // get user keyword
         String searchTerm = esQueryResultDetail.getSearchTerm();
-        String indiceType = "vocabularypublish";
+        String indiceType = VOCABULARYPUBLISH;
 
         // determine which language fields include into query
         if( esQueryResultDetail.getSearchScope().equals( SearchScope.EDITORSEARCH) ) {
@@ -1031,7 +1030,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         // update vocabulary based on highlight and inner hit
         if(isSearchWithKeyword)
-            applySearchHitAndHighlight(vocabularyPage, searchResponse);
+            applySearchHitAndHighlight(vocabularyPage, searchResponse, true);
         else {
             // remove unnecessary nested code entities
             for( VocabularyDTO vocab : vocabularyPage.getContent())
@@ -1045,6 +1044,62 @@ public class VocabularyServiceImpl implements VocabularyService {
         esQueryResultDetail.setVocabularies(vocabularyPage);
 
 
+        return esQueryResultDetail;
+    }
+
+    @Override
+    public EsQueryResultDetail searchCode(EsQueryResultDetail esQueryResultDetail) {
+        // params
+        String term = esQueryResultDetail.getSearchTerm();
+        String language = StringUtils.capitalize(esQueryResultDetail.getSortLanguage());
+
+        // nested query for codes
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+
+        if( term.contains("*")){
+            boolQuery
+                .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replaceAll(" ", "")).boost( 2.0f ));
+        } else {
+            boolQuery
+                .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + language, term).fuzziness(0.7).boost( 1.0f ))
+                .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replaceAll(" ", "") + "*").boost( 2.0f ));
+        }
+        final NestedQueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery(CODE_PATH, boolQuery, ScoreMode.Total)
+            .innerHit(new InnerHitBuilder(CODE_PATH));
+
+        // build query builder
+        NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
+            .withIndices(VOCABULARYPUBLISH).withTypes(VOCABULARYPUBLISH)
+            .withSearchType(SearchType.DEFAULT)
+            .withQuery( nestedQueryBuilder )
+            .withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
+            .withPageable( esQueryResultDetail.getPage());
+
+        // add aggregation
+        for(AbstractAggregationBuilder aggregation : generateAggregations( esQueryResultDetail ) )
+            searchQueryBuilder.addAggregation(aggregation);
+
+        // at the end build search query
+        SearchQuery searchQuery = searchQueryBuilder.build();
+
+        Page<VocabularyDTO> vocabularyPage  = elasticsearchTemplate.queryForPage(searchQuery, VocabularyPublish.class).map(vocabularyPublishMapper::toDto);
+        SearchResponse searchResponse = elasticsearchTemplate.query(searchQuery, response -> response );
+
+        for(SearchHit hit : searchResponse.getHits()) {
+            Optional<VocabularyDTO> vocabOpt = VocabularyDTO.findByIdFromList(vocabularyPage.getContent(), hit.getId());
+            if( vocabOpt.isPresent()) {
+                VocabularyDTO cvHit = vocabOpt.get();
+
+                if( hit.getInnerHits() == null )
+                    continue;
+
+                applyCodeHighlighter(hit, cvHit, esQueryResultDetail.isWithHighlight());
+
+            }
+        }
+
+        generateAggregationFilter(esQueryResultDetail, searchResponse);
+        esQueryResultDetail.setVocabularies(vocabularyPage);
         return esQueryResultDetail;
     }
 
@@ -1105,19 +1160,19 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
     }
 
-    private void applySearchHitAndHighlight(Page<VocabularyDTO> vocabularyPage, SearchResponse searchResponse) {
+    private void applySearchHitAndHighlight(Page<VocabularyDTO> vocabularyPage, SearchResponse searchResponse, boolean withHighlight) {
         for(SearchHit hit : searchResponse.getHits()) {
             Optional<VocabularyDTO> vocabOpt = VocabularyDTO.findByIdFromList(vocabularyPage.getContent(), hit.getId());
             if( vocabOpt.isPresent()) {
                 VocabularyDTO cvHit = vocabOpt.get();
 
-                if( hit.getHighlightFields() != null )
+                if( hit.getHighlightFields() != null && withHighlight)
                     applyVocabularyHighlighter(hit, cvHit);
 
                 if( hit.getInnerHits() == null )
                     continue;
 
-                applyCodeHighlighter(hit, cvHit);
+                applyCodeHighlighter(hit, cvHit, withHighlight);
 
             }
         }
@@ -1146,49 +1201,54 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
     }
 
-    private void applyCodeHighlighter(SearchHit hit, VocabularyDTO cvHit) {
+    private void applyCodeHighlighter(SearchHit hit, VocabularyDTO cvHit, boolean withHighlight) {
         Set<CodeDTO> newCodes = new LinkedHashSet<>();
 
         for( Map.Entry<String, SearchHits> innerHitEntry : hit.getInnerHits().entrySet()) {
 
             for( SearchHit innerHit: innerHitEntry.getValue()) {
 
-                if( innerHit.getHighlightFields().isEmpty() || cvHit.getCodes() == null || innerHit.getSourceAsMap().get("id") == null )
-                    continue;
+//                if( innerHit.getHighlightFields().isEmpty() || cvHit.getCodes() == null || innerHit.getSourceAsMap().get("id") == null )
+//                    continue;
 
-                highlightEachCode(cvHit, newCodes, innerHit);
+                highlightEachCode(cvHit, newCodes, innerHit, withHighlight);
             }
         }
 
         cvHit.setCodes(newCodes);
     }
 
-    private void highlightEachCode(VocabularyDTO cvHit, Set<CodeDTO> newCodes, SearchHit innerHit) {
+    private void highlightEachCode(VocabularyDTO cvHit, Set<CodeDTO> newCodes, SearchHit innerHit, boolean withHighlight) {
         Optional<CodeDTO> codeOpt = CodeDTO.findByIdFromList(cvHit.getCodes(), (int) innerHit.getSourceAsMap().get("id"));
         if( codeOpt.isPresent()) {
             CodeDTO codeHit = codeOpt.get();
-            for (Map.Entry<String, HighlightField> entry : innerHit.getHighlightFields().entrySet()) {
-                String fieldName = entry.getKey();
-                HighlightField highlighField = entry.getValue();
-                StringBuilder highLightText = new StringBuilder();
-                for( Text text: highlighField.getFragments()) {
-                    if( !fieldName.contains(TITLE) && !text.string().endsWith(".")) {
-                        highLightText.append(text.string()).append(" ... ");
-                    } else
-                        highLightText.append( text.string() );
-                }
-                java.lang.reflect.Field declaredField;
-                try {
-                    declaredField = CodeDTO.class.getDeclaredField( fieldName.substring( CODE_PATH.length() + 1 ) );
-                    declaredField.setAccessible( true );
-                    declaredField.set(codeHit, highLightText.toString());
-
-                    setSelectedLanguageByHighlight( cvHit, fieldName );
-                } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
+            if( withHighlight)
+                applyHighlightCode(cvHit, innerHit, codeHit);
             newCodes.add(codeHit);
+        }
+    }
+
+    private void applyHighlightCode(VocabularyDTO cvHit, SearchHit innerHit, CodeDTO codeHit) {
+        for (Map.Entry<String, HighlightField> entry : innerHit.getHighlightFields().entrySet()) {
+            String fieldName = entry.getKey();
+            HighlightField highlighField = entry.getValue();
+            StringBuilder highLightText = new StringBuilder();
+            for( Text text: highlighField.getFragments()) {
+                if( !fieldName.contains(TITLE) && !text.string().endsWith(".")) {
+                    highLightText.append(text.string()).append(" ... ");
+                } else
+                    highLightText.append( text.string() );
+            }
+            java.lang.reflect.Field declaredField;
+            try {
+                declaredField = CodeDTO.class.getDeclaredField( fieldName.substring( CODE_PATH.length() + 1 ) );
+                declaredField.setAccessible( true );
+                declaredField.set(codeHit, highLightText.toString());
+
+                setSelectedLanguageByHighlight(cvHit, fieldName );
+            } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
+                log.error(e.getMessage(), e);
+            }
         }
     }
 

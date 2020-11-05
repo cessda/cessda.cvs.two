@@ -12,7 +12,7 @@ const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 const routerOptions: ExtraOptions = {
   useHash: false,
   anchorScrolling: 'enabled',
-  scrollPositionRestoration: 'enabled',
+  // scrollPositionRestoration: 'enabled',
   enableTracing: DEBUG_INFO_ENABLED,
   onSameUrlNavigation: 'reload'
 };
