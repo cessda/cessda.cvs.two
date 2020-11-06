@@ -18,13 +18,13 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
   resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
     let notation = route.params['notation'];
     const codeIndex = (notation as string).indexOf("_");
-    let code = undefined;
+    let code = '';
     if( codeIndex > 0 ) {
       code = (notation as string).substring(codeIndex + 1).split('.').join('');
       notation = (notation as string).substring(0, codeIndex);
     }
     let version = route.queryParams['version'];
-    let lang = undefined;
+    let lang = '';
     if( route.params['version'] )
       version = route.params['version'];
     if( route.params['lang'] )
@@ -38,8 +38,8 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
         .pipe(
           flatMap((vocabulary: HttpResponse<Vocabulary>) => {
             if (vocabulary.body) {
-              vocabulary.body.selectedLang = lang ? lang: vocabulary.body.sourceLanguage;
-              if (code) {
+              vocabulary.body.selectedLang = lang !== '' ? lang: vocabulary.body.sourceLanguage;
+              if (code !== '') {
                 vocabulary.body.selectedCode = code;
               }
               return of(vocabulary.body);
