@@ -217,6 +217,9 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
       this.vocabulary = vocabulary;
+      if ( this.vocabulary!.selectedCode ) {
+        this.currentSelectedCode = this.vocabulary!.selectedCode;
+      }
       if (this.initialLangSelect !== null) {
         if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
           this.vocabulary!.selectedLang = this.vocabulary!.sourceLanguage!;
@@ -236,6 +239,21 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
           this.docxSelected[i] = true;
         }
       }
+
+      if (this.currentSelectedCode !== '') {
+        this._ngZone.runOutsideAngular(() => {
+          setTimeout(() => {
+            const element = document.querySelector('#code_' + this.currentSelectedCode);
+            element!.scrollIntoView({ behavior: 'smooth' });
+            element!.classList.add('highlight');
+            this._ngZone.runOutsideAngular(() => {
+              window.setTimeout(() => {
+                element!.classList.remove('highlight');
+              }, 5000);
+            });
+          }, 1500);
+        });
+      }
     });
 
     this.detailForm.patchValue({
@@ -245,21 +263,6 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
       htmlItems: this.htmlSelected,
       docxItems: this.docxSelected
     });
-
-    if (this.currentSelectedCode !== '') {
-      this._ngZone.runOutsideAngular(() => {
-        setTimeout(() => {
-          const element = document.querySelector('#code_' + this.currentSelectedCode);
-          element!.scrollIntoView({ behavior: 'smooth' });
-          element!.classList.add('highlight');
-          this._ngZone.runOutsideAngular(() => {
-            window.setTimeout(() => {
-              element!.classList.remove('highlight');
-            }, 5000);
-          });
-        }, 1500);
-      });
-    }
   }
   ngAfterViewInit(): void {
     this._ngZone.run(() => {
