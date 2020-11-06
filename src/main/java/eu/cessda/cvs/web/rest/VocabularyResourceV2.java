@@ -45,6 +45,7 @@ public class VocabularyResourceV2 {
     public static final String LANGUAGE = "@language";
     public static final String VALUE = "@value";
     public static final String ID = "@id";
+    public static final String TYPE = "@type";
     private final Logger log = LoggerFactory.getLogger(VocabularyResourceV2.class);
 
     @Value("${jhipster.clientApp.name}")
@@ -274,11 +275,11 @@ public class VocabularyResourceV2 {
 
         contextContentMap.put("skos", "http://www.w3.org/2004/02/skos/core#");
         contextContentMap.put("owl", "http://www.w3.org/2002/07/owl#");
-        contextContentMap.put("uri", "@id");
-        contextContentMap.put("type", "@type");
+        contextContentMap.put("uri", ID);
+        contextContentMap.put("type", TYPE);
         contextContentMap.put("onki", "http://schema.onki.fi/onki#");
         Map<String, Object> contextResultMap = new LinkedHashMap<>();
-        contextResultMap.put("@id", "onki:results");
+        contextResultMap.put(ID, "onki:results");
         contextResultMap.put("@container", "@list");
         contextContentMap.put("results", contextResultMap);
         contextContentMap.put("versionInfo", "skos:versionInfo");
@@ -287,12 +288,11 @@ public class VocabularyResourceV2 {
         contextContentMap.put("definition", "skos:definition");
         if( languages != null && !languages.isEmpty()){
             lang = languages.iterator().next();
-            contextContentMap.put("@language", lang);
+            contextContentMap.put(LANGUAGE, lang);
         }
 
         contextJsonLdMap.put("versionInfo", skosAttributeMap.get("docVersion"));
 
-        Map<String, Object> contextResultsMap = new LinkedHashMap<>();
         List<Object> results = new ArrayList<>();
         Object[] resultObj = new Object[1];
         resultObj[0] = results;
@@ -324,7 +324,7 @@ public class VocabularyResourceV2 {
         // scheme
         String docId = skosAttributeMap.get("docId").toString();
         vocabularyJsonLdMap.put(ID, docId);
-        vocabularyJsonLdMap.put("@type", new String[]{"http://www.w3.org/2004/02/skos/core#ConceptScheme"});
+        vocabularyJsonLdMap.put(TYPE, new String[]{"http://www.w3.org/2004/02/skos/core#ConceptScheme"});
         // desc
         List<Map<String,String>> descList = new ArrayList<>();
         vocabularyJsonLdMap.put("http://purl.org/dc/terms/description", descList);
@@ -392,7 +392,7 @@ public class VocabularyResourceV2 {
             vocabularyJsonLds.add( conceptJsonLdMap);
             // concept
             conceptJsonLdMap.put(ID, docId + "#" + c.getNotation());
-            conceptJsonLdMap.put("@type", new String[]{"http://www.w3.org/2004/02/skos/core#Concept"});
+            conceptJsonLdMap.put(TYPE, new String[]{"http://www.w3.org/2004/02/skos/core#Concept"});
             //inScheme
             List<Map<String,String>> inSchemeList = new ArrayList<>();
             conceptJsonLdMap.put("http://www.w3.org/2004/02/skos/core#inScheme", inSchemeList);
