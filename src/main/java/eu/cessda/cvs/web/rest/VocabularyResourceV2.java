@@ -32,6 +32,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -147,9 +148,6 @@ public class VocabularyResourceV2 {
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(q, f, pageable, SearchScope.PUBLICATIONSEARCH);
         vocabularyService.search(esq);
         Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
-
-
-
         List<Object> vocabularyJsonLds = new ArrayList<>();
         if ( !vocabulariesPage.getContent().isEmpty() ) {
             vocabulariesPage.getContent().forEach(vocabularyDTO -> {
@@ -246,7 +244,7 @@ public class VocabularyResourceV2 {
 
         List<Object> vocabularyJsonLds = new ArrayList<>();
         Set<CodeDTO> codeDtos = CodeDTO.generateCodesFromVersion(vocabularyDTO.getVersions(), false);
-        List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO, codeDtos, vocabularyDTO.getLanguagesPublished());
+        List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO, codeDtos, vocabularyDTO.getVersions().stream().map(v -> v.getLanguage()).collect(Collectors.toSet()));
         vocabularyJsonLds.addAll(vocabularyJsonLdMap);
 
         return ResponseEntity.ok()
@@ -302,7 +300,7 @@ public class VocabularyResourceV2 {
         for (CodeDTO c : codeDtos) {
             Map<String, Object> conceptJsonLdMap = new LinkedHashMap<>();
             results.add( conceptJsonLdMap);
-            conceptJsonLdMap.put("uri", docId + "#" + c.getNotation());
+            conceptJsonLdMap.put("uri", c.getUri());
             conceptJsonLdMap.put("type", new String[]{"skos:Concept"});
             conceptJsonLdMap.put("notation", c.getNotation());
             conceptJsonLdMap.put("prefLabel", c.getTitleByLanguage(lang));
@@ -375,7 +373,7 @@ public class VocabularyResourceV2 {
         codeDtos.forEach(c -> {
             if( c.getParent() == null ) {
                 Map<String, String> docIdMap = new LinkedHashMap<>();
-                docIdMap.put(ID, docId + "#" + c.getNotation());
+                docIdMap.put(ID, c.getUri());
                 hasTopConceptList.add(docIdMap);
             }
         });
@@ -391,7 +389,7 @@ public class VocabularyResourceV2 {
             Map<String, Object> conceptJsonLdMap = new LinkedHashMap<>();
             vocabularyJsonLds.add( conceptJsonLdMap);
             // concept
-            conceptJsonLdMap.put(ID, docId + "#" + c.getNotation());
+            conceptJsonLdMap.put(ID, c.getUri());
             conceptJsonLdMap.put(TYPE, new String[]{"http://www.w3.org/2004/02/skos/core#Concept"});
             //inScheme
             List<Map<String,String>> inSchemeList = new ArrayList<>();
@@ -431,7 +429,7 @@ public class VocabularyResourceV2 {
             codeDtos.forEach(c2 -> {
                 if( c2.getParent() != null && c2.getParent().equals(c.getNotation())) {
                     Map<String, String> cNarrowerMap = new LinkedHashMap<>();
-                    cNarrowerMap.put(ID, docId + "#" + c2.getNotation());
+                    cNarrowerMap.put(ID, c2.getUri());
                     cNarrowerList.add(cNarrowerMap);
                 }
             });

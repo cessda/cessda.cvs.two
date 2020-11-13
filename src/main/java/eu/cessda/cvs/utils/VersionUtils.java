@@ -45,6 +45,13 @@ public class VersionUtils {
                 ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
     }
 
+    public static String getSlNumberFromTl( String tlNumber ) {
+        if( StringUtils.countMatches( tlNumber, ".") == 2){
+            tlNumber = tlNumber.substring( 0, tlNumber.lastIndexOf("."));
+        }
+        return tlNumber;
+    }
+
     /**
      * Spit language version e.g. de-2.0.1 into several part
      * @param languageVersion

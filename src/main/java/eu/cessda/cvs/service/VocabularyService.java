@@ -318,4 +318,13 @@ public interface VocabularyService {
      * @return the information about the concept TL normalization
      */
     String performTlMigrationNormalization(boolean isChecking, VocabularyDTO ...vocabularyDTOs);
+
+
+    /**
+     *
+     * @param agencyId
+     * @param agencyUri
+     * @param agencyUriCode
+     */
+    void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode );
 }

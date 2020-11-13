@@ -8,6 +8,7 @@ import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionUtils;
+import eu.cessda.cvs.utils.VocabularyUtils;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -119,7 +120,6 @@ public class VersionDTO implements Serializable {
         this.itemType = ItemType.SL.toString();
         this.language = vocabularyDTO.getSourceLanguage();
         this.number = vocabularyDTO.getVersionNumber();
-        this.uri = vocabularyDTO.getUri();
         this.notation = vocabularyDTO.getNotation();
         this.title = vocabularyDTO.getTitleByLanguage( this.language );
         this.definition = vocabularyDTO.getDefinitionByLanguage( this.language );
@@ -139,8 +139,6 @@ public class VersionDTO implements Serializable {
         this.language = vocabularySnippet.getLanguage();
         this.number = vocabularySnippet.getVersionNumber();
         this.uriSl = versionSlDTO.getUri();
-        this.uri = VersionUtils.getBaseVersionUri( this.uriSl, vocabularySnippet.getNotation() )
-            + "/" + vocabularySnippet.getNotation() + "/" + vocabularySnippet.getLanguage();
         this.notation = vocabularySnippet.getNotation();
         this.title = vocabularySnippet.getTitle();
         this.definition = vocabularySnippet.getDefinition();
@@ -171,9 +169,6 @@ public class VersionDTO implements Serializable {
         // copy licence properties
         this.licenseId = prevVersion.getLicenseId();
         this.license = prevVersion.getLicense();
-
-        this.uri = VersionUtils.getBaseVersionUri( prevVersion.getUri(), this.getNotation() )
-            + "/" + this.getNotation() + "/" + this.getLanguage();
 
         // differentiate VersionNumber, uriSl between SL and TL version cloning
         if ( this.itemType.equals( ItemType.SL.toString())) {
@@ -628,6 +623,7 @@ public class VersionDTO implements Serializable {
         if( !agencyDTO.getName().toLowerCase().contains("cessda")) {
             citationSb.append( "CESSDA. ");
         }
+        // TODO: update canonicalUri
         citationSb.append( this.canonicalUri+ ". ");
         this.citation = citationSb.toString();
     }
@@ -643,6 +639,7 @@ public class VersionDTO implements Serializable {
         if( !agencyDTO.getName().toLowerCase().contains("cessda")) {
             citationSb.append( "CESSDA. ");
         }
+        // TODO: update canonicalUri
         citationSb.append( this.canonicalUri+ ". ");
         this.citation = citationSb.toString();
     }
@@ -654,9 +651,9 @@ public class VersionDTO implements Serializable {
         this.publicationDate = LocalDate.now();
         this.licenseId = licenceDTO.getId();
         this.license = licenceDTO.getName();
-        this.uri =  this.uri+ "/" + this.number;
+        this.uri = VocabularyUtils.generateUri(agencyDTO.getUri(), true, this.notation, this.number, this.language, null);
         this.canonicalUri = agencyDTO.getCanonicalUri() + this.notation + ":" + this.number;
-        this.concepts.forEach(c -> c.setUri( agencyDTO.getUri() + this.notation + "#" + c.getNotation() + "/" + this.language + "/" + this.number));
+        this.concepts.forEach(c -> c.setUri( VocabularyUtils.generateUri(agencyDTO.getUri(), false, this.notation, this.number, this.language, c.getNotation())));
     }
 
     /**

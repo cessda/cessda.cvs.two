@@ -3,7 +3,7 @@ package eu.cessda.cvs.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import eu.cessda.cvs.service.ConfigurationService;
+import eu.cessda.cvs.domain.Version;
 import eu.cessda.cvs.service.VocabularyNotFoundException;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
@@ -36,6 +36,12 @@ public final class VocabularyUtils {
         return Comparator.comparing(VersionDTO::getItemType)
             .thenComparing(VersionDTO::getLanguage)
             .thenComparing(VersionDTO::getNumber, Comparator.reverseOrder());
+    }
+
+    public static Comparator<Version> versionComparator(){
+        return Comparator.comparing(Version::getItemType)
+            .thenComparing(Version::getLanguage)
+            .thenComparing(Version::getNumber, Comparator.reverseOrder());
     }
 
     public static VocabularyDTO generateVocabularyByPath(Path jsonPath){
@@ -199,41 +205,38 @@ public final class VocabularyUtils {
         return cvResult;
     }
 
-    public static String generateAgencyBaseUri( String agencyUri) {
-        String cvUriLink = agencyUri;
-        if(cvUriLink == null )
-            cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
-        if(!cvUriLink.endsWith("/"))
-            cvUriLink += "/";
-        return cvUriLink;
-    }
-
-    public static void setSkosMapAttribute(Map<String, Object> map, VocabularyDTO vocabularyDTO, VersionDTO version){
-        String uriSl = version.getUriSl();
-        if( uriSl == null )
-            uriSl = version.getUri();
-        int index1 = uriSl.lastIndexOf("/" + vocabularyDTO.getSourceLanguage());
-        int index2 = uriSl.lastIndexOf('/' );
-        String uriVocab = uriSl.substring(0, index1);
-        String versionNumberSl  = uriSl.substring(index2 + 1);
-        map.put("docId", uriVocab + "_" + versionNumberSl);
-        map.put("docVersionOf", uriVocab );
-        map.put("docNotation", vocabularyDTO.getNotation() );
-        map.put("docVersion", versionNumberSl );
-        map.put("docLicense", version.getLicenseName() );
-        map.put("docRight", version.getLicenseName() );
-    }
-
     public static void setSkosMapAttribute(Map<String, Object> map, VocabularyDTO vocabularyDTO){
-        String uriSl = vocabularyDTO.getUri();
-        int index1 = uriSl.lastIndexOf("/" + vocabularyDTO.getSourceLanguage());
-        int index2 = uriSl.lastIndexOf('/' );
-        String uriVocab = uriSl.substring(0, index1);
-        String versionNumberSl  = uriSl.substring(index2 + 1);
         map.put("docId", vocabularyDTO.getUri());
-        map.put("docVersionOf", uriVocab );
+        map.put("docVersionOf", vocabularyDTO.getUri() + "/" + vocabularyDTO.getVersionNumber() );
         map.put("docNotation", vocabularyDTO.getNotation() );
-        map.put("docVersion", versionNumberSl );
+        map.put("docVersion", vocabularyDTO.getVersionNumber() );
+    }
+
+    /**
+     * Generated
+     * @param uri
+     * @param notation
+     * @return
+     */
+    public static String generateUri(String uri, Boolean isVersionUri, String notation, String version, String language, String code){
+        if( !uri.contains( "[VOCABULARY]" ))
+            throw new IllegalArgumentException( "Uri does not contains \"[VOCABULARY]\". Please check agency configuration");
+        String generatedUri = uri.replace("[VOCABULARY]", notation);
+        if( language != null ) {
+            generatedUri = generatedUri.replace("[LANGUAGE]", language);
+        }
+        if( isVersionUri != null ) {
+            // generate version or code URI
+            generatedUri = generatedUri.replace("[VERSION]", version);
+            if( !Boolean.TRUE.equals(isVersionUri) ) {
+                // generate code uri
+                generatedUri = generatedUri.replace("[CODE]", code);
+            }
+        } else {
+            // generate Vocabulary URI
+            generatedUri = generatedUri.split(notation)[0] + notation;
+        }
+        return generatedUri;
     }
 
 }

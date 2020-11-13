@@ -394,7 +394,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         vocabularyDTO.setAgencyLink( agency.getLink() );
         vocabularyDTO.setAgencyName( agency.getName() );
         vocabularyDTO.setAgencyLogo( agency.getLogopath() );
-        vocabularyDTO.setUri( VocabularyUtils.generateAgencyBaseUri( agency.getUri() ) + vocabularyDTO.getNotation() + "/" + vocabularyDTO.getSourceLanguage());
 
         // create a new version by vocabularyDTO
         VersionDTO versionDTO = new VersionDTO( vocabularyDTO );
@@ -680,18 +679,19 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
+    // TODO: need to change to list and create a new method to get vocabulary by agency and notation
     public VocabularyDTO getByNotation(String notation) {
         if( notation == null || notation.isEmpty()) {
             log.error("Error notation could not be empty or null");
             throw new IllegalArgumentException("Error notation could not be empty or null");
         }
         log.debug("Request to get Vocabulary by notation: {}", notation);
-        Vocabulary vocabulary = vocabularyRepository.findByNotation(notation);
-        if( vocabulary == null) {
+        final List<Vocabulary> vocabularies = vocabularyRepository.findAllByNotation(notation);
+        if( vocabularies.isEmpty()) {
             log.error("Error vocabulary with notation {} does not exist", notation);
             throw new EntityNotFoundException( UNABLE_FIND_VOCABULARY + "or notation " + notation);
         }
-        return vocabularyMapper.toDto(vocabulary);
+        return vocabularyMapper.toDto(vocabularies.get(0));
     }
 
     @Override
@@ -1065,7 +1065,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                 .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replaceAll(" ", "") + "*").boost( 2.0f ));
         }
         final NestedQueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery(CODE_PATH, boolQuery, ScoreMode.Total)
-            .innerHit(new InnerHitBuilder(CODE_PATH));
+            .innerHit(new InnerHitBuilder(CODE_PATH).setSize(100));
 
         // build query builder
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
@@ -1606,6 +1606,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         StringBuilder results = new StringBuilder();
         results.append( "Perform concepts TL normalization in mode " + (isChecking ? "CHECKING": "WRITE" ) + " for the following Vocabularies:\n" );
         for (VocabularyDTO vocabularyDTO : vocabularyDTOs) {
+            final Agency agency = agencyRepository.getOne(vocabularyDTO.getAgencyId());
 
             final List<VersionDTO> slVersions = vocabularyDTO.getVersions().stream()
                 .filter(v -> v.getItemType().equals(ItemType.SL.toString()))
@@ -1626,13 +1627,40 @@ public class VocabularyServiceImpl implements VocabularyService {
                         .filter(v -> v.getNumber().startsWith(slVersions.get(finalI + 1).getNumber()) && v.getItemType().equals(ItemType.TL.toString())).collect(Collectors.toList());
                 }
 
-                results.append( tlNormalization(isChecking, slVersion, tlVersionGroup, tlVersionGroupPrev));
+                results.append( tlNormalization(isChecking, slVersion, tlVersionGroup, tlVersionGroupPrev, agency));
             }
         }
         return results.toString();
     }
 
-    private String tlNormalization(boolean isChecking, VersionDTO slVersion, List<VersionDTO> tlVersionGroup, List<VersionDTO> tlVersionGroupPrev) {
+    @Override
+    @Transactional
+    public void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode ) {
+        final List<Vocabulary> vocabularies = vocabularyRepository.findAllByAgencyId( agencyId );
+        for (Vocabulary vocabulary : vocabularies) {
+            vocabulary.setUri(VocabularyUtils.generateUri(agencyUri, null, vocabulary.getNotation(), null, vocabulary.getSourceLanguage(), null));
+            final List<Version> versions = vocabulary.getVersions().stream().sorted(VocabularyUtils.versionComparator()).collect(Collectors.toList());
+            for (Version version : versions) {
+                if( version.getStatus().equals( Status.PUBLISHED.toString())) {
+                    version.setUri(VocabularyUtils.generateUri(agencyUri, true, vocabulary.getNotation(), version.getNumber(), version.getLanguage(), null));
+                    for (Concept concept : version.getConcepts()) {
+                        concept.setUri( VocabularyUtils.generateUri(agencyUriCode, false, vocabulary.getNotation(), version.getNumber(), version.getLanguage(), concept.getNotation()) );
+                    }
+                } else {
+                    version.setUri( null );
+                    for (Concept concept : version.getConcepts()) {
+                        concept.setUri( null );
+                    }
+                }
+                if( version.getUriSl() != null ) {
+                    version.setUriSl(VocabularyUtils.generateUri(agencyUri, true, vocabulary.getNotation(), VersionUtils.getSlNumberFromTl(version.getNumber()), vocabulary.getSourceLanguage(), null));
+                }
+            }
+            vocabularyRepository.save(vocabulary);
+        }
+    }
+
+    private String tlNormalization(boolean isChecking, VersionDTO slVersion, List<VersionDTO> tlVersionGroup, List<VersionDTO> tlVersionGroupPrev, Agency agency) {
         StringBuilder results = new StringBuilder();
         for (VersionDTO tlVersion : tlVersionGroup) {
             results.append("Examining SL " + slVersion.getLanguage() + "-" + slVersion.getNumber() + "-" + slVersion.getStatus() +
@@ -1644,7 +1672,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                     checkExistingTlCodeWithSl(isChecking, results, slConcept, tlConcept);
                     tlConcepts.remove(tlConcept);
                 } else {
-                    checkMissingTlCode(isChecking, tlVersionGroupPrev, results, tlVersion, slConcept);
+                    checkMissingTlCode(isChecking, tlVersionGroupPrev, results, tlVersion, slConcept, agency);
                 }
             }
             // print remaining TL set if any and remove
@@ -1655,7 +1683,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         return results.toString();
     }
 
-    private void checkMissingTlCode(boolean isChecking, List<VersionDTO> tlVersionGroupPrev, StringBuilder results, VersionDTO tlVersion, ConceptDTO slConcept) {
+    private void checkMissingTlCode(boolean isChecking, List<VersionDTO> tlVersionGroupPrev, StringBuilder results, VersionDTO tlVersion, ConceptDTO slConcept, Agency agency) {
         results.append( "Problem: Concept TL is missing with notation " + slConcept.getNotation() + "\n" );
         // find the prev concept if exist
         ConceptDTO prevConcept = null;
@@ -1666,11 +1694,11 @@ public class VocabularyServiceImpl implements VocabularyService {
             }
         }
         if( !isChecking) {
-            createMissingTlCode(results, tlVersion, slConcept, prevConcept);
+            createMissingTlCode(results, tlVersion, slConcept, prevConcept, agency);
         }
     }
 
-    private void createMissingTlCode(StringBuilder results, VersionDTO tlVersion, ConceptDTO slConcept, ConceptDTO prevConcept) {
+    private void createMissingTlCode(StringBuilder results, VersionDTO tlVersion, ConceptDTO slConcept, ConceptDTO prevConcept, Agency agency) {
         ConceptDTO tlConcept;
         tlConcept = new ConceptDTO();
         tlConcept.setNotation( slConcept.getNotation());
@@ -1681,8 +1709,9 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( tlVersion.getUri() != null ) {
             final int index = tlVersion.getUri().lastIndexOf("/" + tlVersion.getLanguage() + "/");
             if(index > 0 ) {
-                tlConcept.setUri( tlVersion.getUri().substring(0, index) + "#" +
-                    tlConcept.getNotation() + tlVersion.getUri().substring(index));
+                tlConcept.setUri(VocabularyUtils.generateUri(agency.getUriCode(), false,
+                    tlVersion.getNotation(), VersionUtils.getSlNumberFromTl(tlVersion.getNumber()),
+                    tlVersion.getLanguage(), tlConcept.getNotation()));
             }
         }
         if( prevConcept != null ) {
@@ -1740,7 +1769,16 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         if( downloadType.equals( ExportService.DownloadType.SKOS ))
         {
-            VocabularyUtils.setSkosMapAttribute(map, vocabularyDTO, includedVersions.iterator().next());
+            final VersionDTO versionIncluded = includedVersions.iterator().next();
+            String uriSl = versionIncluded.getUriSl();
+            if( uriSl == null )
+                uriSl = versionIncluded.getUri();
+            map.put("docId", uriSl );
+            map.put("docVersionOf", vocabularyDTO.getUri() );
+            map.put("docNotation", vocabularyDTO.getNotation() );
+            map.put("docVersion", VersionUtils.getSlNumberFromTl( versionIncluded.getNumber() ) );
+            map.put("docLicense", versionIncluded.getLicenseName() );
+            map.put("docRight", versionIncluded.getLicenseName() );
             map.put(CODE_PATH, CodeDTO.generateCodesFromVersion(includedVersions, false));
         }
         else {

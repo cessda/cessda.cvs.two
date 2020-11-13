@@ -1,4 +1,4 @@
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import {IUserAgency} from 'app/shared/model/user-agency.model';
 
 export interface IAgency {
   id?: number;
@@ -9,6 +9,7 @@ export interface IAgency {
   license?: string;
   licenseId?: number;
   uri?: string;
+  uriCode?: string;
   canonicalUri?: string;
   userAgencies?: IUserAgency[];
   deletable?: boolean;
@@ -24,6 +25,7 @@ export class Agency implements IAgency {
     public license?: string,
     public licenseId?: number,
     public uri?: string,
+    public uriCode?: string,
     public canonicalUri?: string,
     public userAgencies?: IUserAgency[],
     public deletable?: boolean

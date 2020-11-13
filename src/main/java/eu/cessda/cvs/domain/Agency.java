@@ -4,8 +4,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -50,6 +49,10 @@ public class Agency implements Serializable {
     @Size(max = 255)
     @Column(name = "uri", length = 255)
     private String uri;
+
+    @Size(max = 255)
+    @Column(name = "uri_code", length = 255)
+    private String uriCode;
 
     @Size(max = 255)
     @Column(name = "canonical_uri", length = 255)
@@ -159,6 +162,19 @@ public class Agency implements Serializable {
         this.uri = uri;
     }
 
+    public String getUriCode() {
+        return uriCode;
+    }
+
+    public Agency uriCode(String uriCode) {
+        this.uriCode = uriCode;
+        return this;
+    }
+
+    public void setUriCode(String uriCode) {
+        this.uriCode = uriCode;
+    }
+
     public String getCanonicalUri() {
         return canonicalUri;
     }
@@ -225,6 +241,7 @@ public class Agency implements Serializable {
             ", license='" + getLicense() + "'" +
             ", licenseId=" + getLicenseId() +
             ", uri='" + getUri() + "'" +
+            ", uriCode='" + getUriCode() + "'" +
             ", canonicalUri='" + getCanonicalUri() + "'" +
             "}";
     }

@@ -1,7 +1,7 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { AgencyService } from 'app/agency/agency.service';
-import { IAgency, Agency } from 'app/shared/model/agency.model';
+import {getTestBed, TestBed} from '@angular/core/testing';
+import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {AgencyService} from 'app/agency/agency.service';
+import {Agency, IAgency} from 'app/shared/model/agency.model';
 
 describe('Service Tests', () => {
   describe('Agency Service', () => {
@@ -20,7 +20,7 @@ describe('Service Tests', () => {
       service = injector.get(AgencyService);
       httpMock = injector.get(HttpTestingController);
 
-      elemDefault = new Agency(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 'AAAAAAA', 'AAAAAAA');
+      elemDefault = new Agency(0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 'AAAAAAA', 0, 'AAAAAAA', 'AAAAAAA', 'AAAAAAA');
     });
 
     describe('Service methods', () => {
@@ -61,6 +61,7 @@ describe('Service Tests', () => {
             license: 'BBBBBB',
             licenseId: 1,
             uri: 'BBBBBB',
+            uriCode: 'BBBBBB',
             canonicalUri: 'BBBBBB'
           },
           elemDefault
@@ -85,6 +86,7 @@ describe('Service Tests', () => {
             license: 'BBBBBB',
             licenseId: 1,
             uri: 'BBBBBB',
+            uriCode: 'BBBBBB',
             canonicalUri: 'BBBBBB'
           },
           elemDefault
