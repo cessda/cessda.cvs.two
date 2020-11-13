@@ -2,6 +2,7 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.service.AgencyService;
 import eu.cessda.cvs.service.VocabularyService;
+import eu.cessda.cvs.web.rest.domain.Maintenance;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,38 +34,43 @@ public class VocabularyMaintenanceResource {
     }
 
     @GetMapping("/publication/generate-json")
-    public ResponseEntity<String> getGenerateJson() throws IOException {
+    public ResponseEntity<Maintenance> getGenerateJson() throws IOException {
         log.debug("REST request to get a page of Vocabularies");
-        vocabularyService.generateJsonAllVocabularyPublish();
-        return ResponseEntity.ok().body("Done generating json");
+        final String output = vocabularyService.generateJsonAllVocabularyPublish();
+        Maintenance maintenanceOut = new Maintenance(output, "GENERATE_JSON");
+        return ResponseEntity.ok().body(maintenanceOut);
     }
 
     @GetMapping("/index/agency-stats")
-    public ResponseEntity<String> indexAgencyStats() throws IOException {
+    public ResponseEntity<Maintenance> indexAgencyStats() throws IOException {
         log.debug("REST request to index Agencies Stats");
         vocabularyService.indexAllAgencyStats();
-        return ResponseEntity.ok().body("Done indexing Agency Stats");
+        Maintenance maintenanceOut = new Maintenance("Done indexing Agency Stats", "INDEX_AGENCY_STAT");
+        return ResponseEntity.ok().body( maintenanceOut);
     }
 
     @GetMapping("/index/vocabulary")
-    public ResponseEntity<String> indexVocabulary() throws IOException {
+    public ResponseEntity<Maintenance> indexVocabulary() throws IOException {
         log.debug("REST request to index published Vocabularies");
         vocabularyService.indexAllPublished();
-        return ResponseEntity.ok().body("Done indexing published Vocabularies");
+        Maintenance maintenanceOut = new Maintenance("Done indexing published Vocabularies", "INDEX_VOCABULARY_PUBLISH");
+        return ResponseEntity.ok().body( maintenanceOut);
     }
 
     @GetMapping("/index/vocabulary/editor")
-    public ResponseEntity<String> indexVocabularyEditor() throws IOException {
+    public ResponseEntity<Maintenance> indexVocabularyEditor() throws IOException {
         log.debug("REST request to index Vocabularies in editor");
         vocabularyService.indexAllEditor();
-        return ResponseEntity.ok().body("Done indexing Vocabulary Editor");
+        Maintenance maintenanceOut = new Maintenance("Done indexing Vocabulary Editor", "INDEX_VOCABULARY_EDITOR");
+        return ResponseEntity.ok().body(maintenanceOut);
     }
 
     @GetMapping("/index/agency")
-    public ResponseEntity<String> indexAgency() throws IOException {
+    public ResponseEntity<Maintenance> indexAgency() throws IOException {
         log.debug("REST request to index Agencies");
         agencyService.indexAll();
-        return ResponseEntity.ok().body("Done indexing Agency");
+        Maintenance maintenanceOut = new Maintenance("Done indexing Agency", "INDEX_AGENCY");
+        return ResponseEntity.ok().body(maintenanceOut);
     }
 
     /**
@@ -74,9 +80,10 @@ public class VocabularyMaintenanceResource {
      * @throws IOException
      */
     @GetMapping("/check-all/tl-normalization")
-    public ResponseEntity<String> checkAllTlNormalization() throws IOException {
+    public ResponseEntity<Maintenance> checkAllTlNormalization() throws IOException {
         log.debug("REST request to check all Tl_normalization");
-        return ResponseEntity.ok().body(vocabularyService.performTlMigrationNormalizationChecking() );
+        Maintenance maintenanceOut = new Maintenance(vocabularyService.performTlMigrationNormalizationChecking(), "INDEX_AGENCY");
+        return ResponseEntity.ok().body( maintenanceOut );
     }
 
     /**

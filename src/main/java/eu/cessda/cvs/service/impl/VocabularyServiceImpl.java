@@ -1058,11 +1058,11 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         if( term.contains("*")){
             boolQuery
-                .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replaceAll(" ", "")).boost( 2.0f ));
+                .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replace(" ", "")).boost( 2.0f ));
         } else {
             boolQuery
                 .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + language, term).fuzziness(0.7).boost( 1.0f ))
-                .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replaceAll(" ", "") + "*").boost( 2.0f ));
+                .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replace(" ", "") + "*").boost( 2.0f ));
         }
         final NestedQueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery(CODE_PATH, boolQuery, ScoreMode.Total)
             .innerHit(new InnerHitBuilder(CODE_PATH).setSize(100));
@@ -1205,12 +1205,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         Set<CodeDTO> newCodes = new LinkedHashSet<>();
 
         for( Map.Entry<String, SearchHits> innerHitEntry : hit.getInnerHits().entrySet()) {
-
             for( SearchHit innerHit: innerHitEntry.getValue()) {
-
-//                if( innerHit.getHighlightFields().isEmpty() || cvHit.getCodes() == null || innerHit.getSourceAsMap().get("id") == null )
-//                    continue;
-
                 highlightEachCode(cvHit, newCodes, innerHit, withHighlight);
             }
         }
@@ -1380,16 +1375,23 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
-    public void generateJsonAllVocabularyPublish() {
+    public String generateJsonAllVocabularyPublish() {
+        StringBuilder output = new StringBuilder();
+        output.append( "Performing Vocabulary Publish JSON files creation.\n" );
         // remove all static JSON files on vocabulary (delete entire and including vocabulary directory)
         deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath());
+        output.append( "Clean up: All existing JSON files are deleted.\n" );
 
         List<VocabularyDTO> vocabularyDTOS = findAll();
-        generateJsonVocabularyPublish( vocabularyDTOS.toArray(new VocabularyDTO[0]) );
+        output.append( "Starting to generate new JSON files.\n" );
+        output.append(  generateJsonVocabularyPublish( vocabularyDTOS.toArray(new VocabularyDTO[0]) ));
+        output.append( "Generating new JSON files are done!\n" );
+        return output.toString();
     }
 
     @Override
-    public void generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) {
+    public String generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) {
+        StringBuilder output = new StringBuilder();
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.registerModule(new JavaTimeModule());
@@ -1400,6 +1402,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         Map<Long, Licence> licenceMap = licenceRepository.findAll().stream().collect( Collectors.toMap( Licence::getId, Function.identity() ));
 
         for (VocabularyDTO vocabulary : vocabularies) {
+            output.append("Generate JSON files for Vocabulary " + vocabulary.getNotation() + ".\n");
             // get all published versions (sorted by SL and number)
             List<VersionDTO> versions = versionService.findAllPublishedByVocabulary(vocabulary.getId());
             // skip vocabulary without published version
@@ -1415,10 +1418,12 @@ public class VocabularyServiceImpl implements VocabularyService {
             Set<String> latestVersionsLangs = new HashSet<>();
             slNumberVersionsMap.put( LATEST, latestVersionsAcrossSl);
             for (VersionDTO version : versions) {
+                output.append("Generate JSON file for Vocabulary " + vocabulary.getNotation() + " Version" + version.getNumber() + ".\n");
                 prepareVersionAndConceptForJsonfy(licenceMap, vocabulary, slNumberVersionsMap, version, latestVersionsAcrossSl, latestVersionsLangs);
             }
             generateJsonFile(mapper, vocabulary, slNumberVersionsMap);
         }
+        return output.toString();
     }
 
     private void prepareVersionAndConceptForJsonfy(Map<Long, Licence> licenceMap, VocabularyDTO vocabulary,
@@ -1641,22 +1646,26 @@ public class VocabularyServiceImpl implements VocabularyService {
             vocabulary.setUri(VocabularyUtils.generateUri(agencyUri, null, vocabulary.getNotation(), null, vocabulary.getSourceLanguage(), null));
             final List<Version> versions = vocabulary.getVersions().stream().sorted(VocabularyUtils.versionComparator()).collect(Collectors.toList());
             for (Version version : versions) {
-                if( version.getStatus().equals( Status.PUBLISHED.toString())) {
-                    version.setUri(VocabularyUtils.generateUri(agencyUri, true, vocabulary.getNotation(), version.getNumber(), version.getLanguage(), null));
-                    for (Concept concept : version.getConcepts()) {
-                        concept.setUri( VocabularyUtils.generateUri(agencyUriCode, false, vocabulary.getNotation(), version.getNumber(), version.getLanguage(), concept.getNotation()) );
-                    }
-                } else {
-                    version.setUri( null );
-                    for (Concept concept : version.getConcepts()) {
-                        concept.setUri( null );
-                    }
-                }
+                updateUriForVersionAndConcept(agencyUri, agencyUriCode, vocabulary, version);
                 if( version.getUriSl() != null ) {
                     version.setUriSl(VocabularyUtils.generateUri(agencyUri, true, vocabulary.getNotation(), VersionUtils.getSlNumberFromTl(version.getNumber()), vocabulary.getSourceLanguage(), null));
                 }
             }
             vocabularyRepository.save(vocabulary);
+        }
+    }
+
+    private void updateUriForVersionAndConcept(String agencyUri, String agencyUriCode, Vocabulary vocabulary, Version version) {
+        if( version.getStatus().equals( Status.PUBLISHED.toString())) {
+            version.setUri(VocabularyUtils.generateUri(agencyUri, true, vocabulary.getNotation(), version.getNumber(), version.getLanguage(), null));
+            for (Concept concept : version.getConcepts()) {
+                concept.setUri( VocabularyUtils.generateUri(agencyUriCode, false, vocabulary.getNotation(), version.getNumber(), version.getLanguage(), concept.getNotation()) );
+            }
+        } else {
+            version.setUri( null );
+            for (Concept concept : version.getConcepts()) {
+                concept.setUri( null );
+            }
         }
     }
 

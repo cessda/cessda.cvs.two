@@ -249,7 +249,7 @@ public interface VocabularyService {
      *
      * @throws IOException
      */
-    void generateJsonAllVocabularyPublish() throws IOException;
+    String generateJsonAllVocabularyPublish() throws IOException;
 
     /**
      * Generate JSON files for published vocabularies
@@ -257,7 +257,7 @@ public interface VocabularyService {
      * @param vocabularies the published vocabularyDTOs array
      * @throws IOException
      */
-    void generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) throws IOException;
+    String generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) throws IOException;
 
     /**
      * Generate files to be exported for specific vocabulary
