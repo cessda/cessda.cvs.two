@@ -205,13 +205,6 @@ public final class VocabularyUtils {
         return cvResult;
     }
 
-    public static void setSkosMapAttribute(Map<String, Object> map, VocabularyDTO vocabularyDTO){
-        map.put("docId", vocabularyDTO.getUri());
-        map.put("docVersionOf", vocabularyDTO.getUri() + "/" + vocabularyDTO.getVersionNumber() );
-        map.put("docNotation", vocabularyDTO.getNotation() );
-        map.put("docVersion", vocabularyDTO.getVersionNumber() );
-    }
-
     /**
      * Generated
      * @param uri

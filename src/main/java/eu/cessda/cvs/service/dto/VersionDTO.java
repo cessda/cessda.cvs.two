@@ -653,7 +653,7 @@ public class VersionDTO implements Serializable {
         this.license = licenceDTO.getName();
         this.uri = VocabularyUtils.generateUri(agencyDTO.getUri(), true, this.notation, this.number, this.language, null);
         this.canonicalUri = agencyDTO.getCanonicalUri() + this.notation + ":" + this.number;
-        this.concepts.forEach(c -> c.setUri( VocabularyUtils.generateUri(agencyDTO.getUri(), false, this.notation, this.number, this.language, c.getNotation())));
+        this.concepts.forEach(c -> c.setUri( VocabularyUtils.generateUri(agencyDTO.getUriCode(), false, this.notation, this.number, this.language, c.getNotation())));
     }
 
     /**
