@@ -726,7 +726,7 @@ public class VocabularyResourceIT {
         assertThat(vocabularyList).hasSize(databaseSizeBeforeCreate + 1);
         Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
         assertThat(testVocabulary.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testVocabulary.getUri()).isEqualTo(DEFAULT_URI + "/" + DEFAULT_URI + "/" + vocabularyDTO.getSourceLanguage());
+        assertThat(testVocabulary.getUri()).isEqualTo(DEFAULT_URI);
         assertThat(testVocabulary.getNotation()).isEqualTo(DEFAULT_NOTATION);
         assertThat(testVocabulary.getVersionNumber()).isEqualTo(DEFAULT_VERSION_NUMBER);
         assertThat(testVocabulary.getInitialPublication()).isEqualTo(DEFAULT_INITIAL_PUBLICATION);
