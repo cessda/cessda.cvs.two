@@ -1,7 +1,7 @@
 {
   "id" : 52,
   "status" : "PUBLISHED",
-  "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+  "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument",
   "notation" : "TypeOfInstrument",
   "versionNumber" : "1.1",
   "withdrawn" : false,
@@ -10,16 +10,16 @@
   "agencyName" : "DDI Alliance",
   "agencyLogo" : "ddi.png",
   "agencyLink" : "http://www.ddialliance.org/",
-  "publicationDate" : "2019-04-05",
+  "publicationDate" : "2019-04-04",
   "notes" : "",
   "versions" : [ {
     "id" : 240,
     "status" : "PUBLISHED",
     "itemType" : "SL",
     "language" : "en",
-    "publicationDate" : "2019-04-05",
+    "publicationDate" : "2019-04-04",
     "number" : "1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
     "notation" : "TypeOfInstrument",
     "title" : "Type of Instrument",
@@ -35,17 +35,17 @@
     "licenseLogo" : "by.png",
     "citation" : "DDI Alliance. (2019). Type of Instrument (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfInstrument:1.1. ",
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 1810,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Questionnaire",
       "definition" : "Set of pre-determined questions presented to study participants.",
       "position" : 0
     }, {
       "id" : 1811,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Structured questionnaire",
       "definition" : "Set of pre-determined questions, a great majority of which are closed-ended, although there may be a small proportion of open-ended questions.",
@@ -53,7 +53,7 @@
       "position" : 1
     }, {
       "id" : 1812,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Semi-structured questionnaire",
       "definition" : "Set of pre-determined questions, a significant proportion of which are open-ended (roughly one third to two thirds), and the rest are closed-ended.",
@@ -61,7 +61,7 @@
       "position" : 2
     }, {
       "id" : 1813,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Unstructured questionnaire",
       "definition" : "Set of pre-determined questions, a great majority of which are open-ended, although there may be a small proportion of close-ended questions.",
@@ -69,21 +69,21 @@
       "position" : 3
     }, {
       "id" : 1814,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Interview scheme and/or themes",
       "definition" : "Themes, topics, and/or questions used in an interview. Can vary between loosely defined themes to more exactly formulated questions. There is more flexibility than in an unstructured questionnaire regarding which questions are asked of each participant and how they are conveyed.",
       "position" : 4
     }, {
       "id" : 1815,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Data collection guidelines",
       "definition" : "Directions or instructions regarding the methods and procedures to be used for collecting the data. Use a more specific term if possible.",
       "position" : 5
     }, {
       "id" : 1816,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Data collection guidelines: Observation guide",
       "definition" : "Guidelines regarding what will be observed. Depending on the study design, an observation guide can be more or less structured, ranging from exact specifications and scales to loosely formulated ideas.",
@@ -91,7 +91,7 @@
       "position" : 6
     }, {
       "id" : 1817,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.DiscussionGuide/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Data collection guidelines: Discussion guide",
       "definition" : "Guidelines for a group discussion. Depending on the study design, a discussion guide can be more or less structured, ranging from exactly formulated questions to general ideas on what to discuss. For example, a list of topics to be discussed in a focus group, or themes formulated by a researcher to direct a blog discussion, etc.",
@@ -99,7 +99,7 @@
       "position" : 7
     }, {
       "id" : 1818,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Data collection guidelines: Self-administered writings guide",
       "definition" : "Guidelines regarding the desired, or expected content of self-written personal accounts or narratives from potential participants. The instructions can be supplied as part of the writing invitation or separately. For example, an invitation asking people suffering from a specific disease or disability to describe how it affects their feelings, social relations, and everyday life; or a writing invitation asking people to keep a diary of books read during a period of six months and the thoughts provoked by the books.",
@@ -107,7 +107,7 @@
       "position" : 8
     }, {
       "id" : 1819,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Data collection guidelines: Secondary data collection guide",
       "definition" : "Guidelines specifying what data are to be collected from previously existing sources originally created for other purposes. For example, directions on how to select and code data from qualitative sources to create a quantitative dataset.",
@@ -115,28 +115,28 @@
       "position" : 9
     }, {
       "id" : 1820,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Participant tasks",
       "definition" : "A description of tasks that participants are asked to carry out as a part of the data collection process. For example, marking places on a map, taking photographs, telling a fairy tale, etc.",
       "position" : 10
     }, {
       "id" : 1821,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Technical instrument(s)",
       "definition" : "Instruments used to collect objective data like measurements, images, etc. For example, chronometers, scales, speedometers, blood pressure monitors, thermometers, x-ray machines, etc.",
       "position" : 11
     }, {
       "id" : 1822,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Programming script",
       "definition" : "Programming script written in a data query language that is used to extract specific data, for instance from online social networks.",
       "position" : 12
     }, {
       "id" : 1823,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/en/1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html#Other",
       "notation" : "Other",
       "title" : "Other",
       "definition" : "Use when the type of instrument is known, but not found in the list.",
@@ -149,11 +149,11 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "da",
-    "publicationDate" : "2019-07-24",
+    "publicationDate" : "2019-07-23",
     "number" : "1.1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/da/1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "notation" : "TypeOfInstrument",
     "title" : "Instrumenttype",
     "definition" : "Indeholder en typologi af dataindsamlingsinstrumenter.",
@@ -170,17 +170,17 @@
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>",
     "translateAgency" : "Danish National Archives (DNA)",
     "translateAgencyLink" : "https://www.sa.dk",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 1907,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Spørgeskema",
       "definition" : "Sæt af forudbestemte spørgsmål præsenteret for undersøgelsesdeltagerne.",
       "position" : 0
     }, {
       "id" : 1908,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Struktureret spørgeskema",
       "definition" : "Sæt af forudbestemte spørgsmål, hvoraf en størstedel er lukkede, selvom der kan være en mindre del af åbne spørgsmål.",
@@ -188,7 +188,7 @@
       "position" : 1
     }, {
       "id" : 1909,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Semistruktueret spørgeskema",
       "definition" : "Sæt af forudbestemte spørgsmål, hvoraf en væsentlig del er åbne (rundt regnet en til to tredjedele), og resten er lukkede.",
@@ -196,7 +196,7 @@
       "position" : 2
     }, {
       "id" : 1910,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Ustruktureret spørgeskema",
       "definition" : "Sæt af forudbestemte spørgsmål, hvoraf en størstedel er åbne, selvom der kan være en mindre del af lukkede spørgsmål.",
@@ -204,21 +204,21 @@
       "position" : 3
     }, {
       "id" : 1911,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Interviewskema og/eller temaer",
       "definition" : "Temaer, emner, og/eller spørgsmål anvendt i et interview. Kan variere mellem løst definerede temaer til mere præcist formulerede spørgsmål. Der er mere fleksibilitet end i et ustruktureret spørgeskema i forhold til, hvilke spørgsmål deltageren stilles, og hvordan de stilles.",
       "position" : 4
     }, {
       "id" : 1912,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Retningslinjer for dataindsamling",
       "definition" : "Retningslinjer eller instruktioner vedrørende metoder og procedurer, der bør anvendes til indsamling af dataene. Anvend et mere specifikt begreb, hvis muligt.",
       "position" : 5
     }, {
       "id" : 1913,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Retningslinjer for dataindsamling: Observationsguide",
       "definition" : "Retningslinjer for, hvad der vil blive observeret. Afhængigt af undersøgelsesdesign kan en observationsvejledning være mere eller mindre struktureret, rangerende fra nøjagtige specifikationer og skaleringer til løst formulerede idéer.",
@@ -226,7 +226,7 @@
       "position" : 6
     }, {
       "id" : 7972,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/da#DataCollectionGuidelines.DiscussionGuide/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Retningslinjer for dataindsamling: Diskussionsguide",
       "definition" : "Retningslinjer for en gruppediskussion. Afhængigt af undersøgelsesdesignet kan en diskussion være mere eller mindre struktureret, rangererende fra præcist formulerede spørgsmål til generelle idéer om, hvad man skal diskutere. For eksempel en liste over emner, der skal diskuteres i en fokusgruppe eller temaer formuleret af en forsker, der skal lede en blogdiskussion mm.",
@@ -234,7 +234,7 @@
       "position" : 7
     }, {
       "id" : 1915,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Retningslinjer for dataindsamling: Selvadministreret skriveguide",
       "definition" : "Retningslinjer vedrørende det ønskede eller forventede indhold af selvskrevne, personlige beretninger eller fortællinger fra potentielle deltagere. Instruktionerne kan leveres som del af den skriftlige invitation eller separat. For eksempel en invitation, der beder folk, som lider af en specifik sygdom eller handicap om at beskrive, hvordan det påvirker deres følelser, sociale relationer og hverdagsliv; eller en skriftlig invitation, der beder folk om at holde en dagbog om bøger læst over seks måneder og de tanker, som bøger fremkalder.",
@@ -242,7 +242,7 @@
       "position" : 8
     }, {
       "id" : 1916,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Retningslinjer for dataindsamling: Guide for indsamling af sekundærdata",
       "definition" : "Retningslinjer, der angiver, hvilke data, som skal indsamles fra tidligere eksisterende kilder oprindeligt skabt til andre formål. For eksempel vejledning til, hvordan man vælger og koder data fra kvalitative kilder for at oprette et kvantitativt datasæt.",
@@ -250,28 +250,28 @@
       "position" : 9
     }, {
       "id" : 1917,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Deltageropgaver",
       "definition" : "En beskrivelse af opgaver, som deltagerne bliver bedt om at udføre som en del af dataindsamlingsprocessen. For eksempel markering af steder på et kort, tage fotografier, fortælle et eventyr mm.",
       "position" : 10
     }, {
       "id" : 1918,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Teknisk(e) instrument(er)",
       "definition" : "Instrumenter anvendt til at indsamle objektive data såsom målinger, billeder mm. For eksempel kronometer, vægte, hastighedsmålere, blodtryksmålere, termometre, røntgenapparater mm.",
       "position" : 11
     }, {
       "id" : 1919,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Programmeringsscript",
       "definition" : "Programmeringsscript skrevet på et programmeringssprog, der anvendes til at udtrække specifikke data, eksempelvis fra online sociale netværk.",
       "position" : 12
     }, {
       "id" : 1920,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/da/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Other",
       "notation" : "Other",
       "title" : "Andet",
       "definition" : "Anvend, når typen af instrument er kendt, men ikke findes i listen.",
@@ -284,11 +284,11 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "fi",
-    "publicationDate" : "2019-06-11",
+    "publicationDate" : "2019-06-10",
     "number" : "1.1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/fi/1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "notation" : "TypeOfInstrument",
     "title" : "Keruuväline",
     "definition" : "Tyyppiluokittelu tutkimusaineiston muodostamisessa käytetyille keruuvälineille, -ohjeistuksille tai -suunnitelmille.",
@@ -305,17 +305,17 @@
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>",
     "translateAgency" : "Finnish Social Science Data Archive (FSD)",
     "translateAgencyLink" : "https://www.fsd.uta.fi/en/",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 1837,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Lomake",
       "definition" : "Kysely- tai ilmoituslomake. Kysymykset ovat ennalta määriteltyjä.",
       "position" : 0
     }, {
       "id" : 1838,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Strukturoitu lomake",
       "definition" : "Kysely- tai ilmoituslomake. Kysymykset ovat ennalta määriteltyjä. Kysymyksiin on useimmiten laadittu valmiit vastausvaihtoehdot, joskin mukana saattaa olla pieni määrä avokysymyksiä.",
@@ -323,7 +323,7 @@
       "position" : 1
     }, {
       "id" : 1839,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Puolistrukturoitu lomake",
       "definition" : "Kysely- tai ilmoituslomake. Kysymykset ovat ennalta määriteltyjä. Avokysymysten osuus on merkittävä ja vaihtelee suunnilleen kolmasosasta kahteen kolmasosaan. Lopuissa kysymyksissä on valmiit vastausvaihtoehdot.",
@@ -331,7 +331,7 @@
       "position" : 2
     }, {
       "id" : 1840,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Strukturoimaton lomake",
       "definition" : "Kysely- tai ilmoituslomake. Kysymykset ovat ennalta määriteltyjä. Ne ovat useimmiten avokysymyksiä, vaikkakin mukana saattaa olla pieni määrä kysymyksiä, joissa on valmiit vastausvaihtoehdot.",
@@ -339,21 +339,21 @@
       "position" : 3
     }, {
       "id" : 1841,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Haastatteluteemat tai haastattelurunko",
       "definition" : "Haastattelututkimuksessa käytetyt haastatteluteemat tai -kysymykset. Vaihtelevat väljästi muotoilluista teemoista melko tarkasti muotoiltuihin kysymyksiin. Jälkimmäisessä tapauksessa ero strukturoimattomaan lomakkeeseen on siinä, että kaikille osanottajille ei esitetä kaikkia kysymyksiä tai kysymysten muotoilu on vapaampaa.",
       "position" : 4
     }, {
       "id" : 1842,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Aineistonkeruuohjeistus",
       "definition" : "Suunnitelma tai ohjeet, jotka määrittelevät aineistonkeruun menetelmät ja prosessit. Käytä tarkempaa termiä mikäli mahdollista.",
       "position" : 5
     }, {
       "id" : 1843,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Aineistonkeruuohjeistus: havainnointiohje tai -suunnitelma",
       "definition" : "Havainnointitutkimuksessa käytetty suunnitelma siitä, mitä havainnoidaan. Tutkimusasetelmasta riippuen havainnointisuunnitelma voi olla enemmän tai vähemmän strukturoitu, vaihdellen tarkoista määrittelyistä ja asteikoista väljästi muotoiltuihin ideoihin.",
@@ -361,7 +361,7 @@
       "position" : 6
     }, {
       "id" : 7967,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/fi#DataCollectionGuidelines.DiscussionGuide/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Aineistonkeruuohjeistus: keskusteluohje",
       "definition" : "Ryhmäkeskusteluun annetut ohjeet. Tutkimusasetelmasta riippuen saattavat olla enemmän tai vähemmän strukturoituja, vaihdellen väljästi muotoilluista keskusteluteemoista tarkasti muotoiltuihin kysymyksiin. Esimerkkejä: Lista keskustelun teemoista, tutkijan esille ottamat tarkat aiheet ja muu ohjaus blogikeskusteluun jne.",
@@ -369,7 +369,7 @@
       "position" : 7
     }, {
       "id" : 1845,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Aineistonkeruuohjeistus: kirjoitusohje",
       "definition" : "Kirjoitusaineistojen keräämistä varten annetut kirjoitusohjeet joko kirjoituskutsun osana tai erillisenä. Esimerkkejä: Kirjoituskutsussa pyydetään tietyn sairauden tai vamman omaavia ihmisiä  kuvailemaan kuinka se vaikuttaa heidän tunteisiinsa, ihmissuhteisiinsa ja jokapäiväiseen elämäänsä; ohjeistus lukupäiväkirjalle, johon osanottaja kirjaa lukemansa kirjat ja niiden herättämät ajatukset.",
@@ -377,7 +377,7 @@
       "position" : 8
     }, {
       "id" : 1846,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Aineistonkeruuohjeistus: poimintaohje tai -suunnitelma",
       "definition" : "Keruuohje tai -suunnitelma siitä, miten tutkimusaineisto muodostetaan jo aiemmin olemassa olevasta, muuta tarkoitusta varten tehdystä lähdemateriaalista. Esimerkiksi ohje sanomalehtimateriaalin poimimiseksi tutkimukseen tai poiminta- ja käsittelyohjeet jos jostain kvalitatiivisesta lähdemateriaalista muodostetaan numeerinen aineisto.",
@@ -385,28 +385,28 @@
       "position" : 9
     }, {
       "id" : 1847,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Osallistujatehtävä",
       "definition" : "Osanottajille annettu tehtävänanto, joka on osa aineistonkeruuprosessia. Esimerkiksi: Lempipaikkojen merkitseminen virtuaalikarttaan, valokuvien ottaminen, vitsien tai satujen kertominen.",
       "position" : 10
     }, {
       "id" : 1848,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Tekniset keruuvälineet",
       "definition" : "Objektiivisten havaintojen keräämiseen käytetyt välineet. Esimerkiksi verenpainemittarit, röntgenkuvat, ajanmittaus, nopeus- ja lämpötilamittarit jne.",
       "position" : 11
     }, {
       "id" : 1849,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Ohjelmointikoodi",
       "definition" : "Halutun kaltaista dataa on poimittu ohjelmallisesti, esimerkiksi sosiaalisesta mediasta tai muista verkkolähteistä.",
       "position" : 12
     }, {
       "id" : 1850,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/fi/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Other",
       "notation" : "Other",
       "title" : "Muu keruuväline",
       "definition" : "Käytetään jos keruuväline on tiedossa mutta ei listassa.",
@@ -419,11 +419,11 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "fr",
-    "publicationDate" : "2019-10-22",
+    "publicationDate" : "2019-10-21",
     "number" : "1.1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/fr/1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "notation" : "TypeOfInstrument",
     "title" : "Type d'instrument",
     "definition" : "Inclut une typologie des instruments de collecte de données",
@@ -440,17 +440,17 @@
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
     "translateAgency" : "Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
     "translateAgencyLink" : "https://cdsp.sciences-po.fr/fr/",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 7209,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Questionnaire",
       "definition" : "Ensemble de questions prédéterminées présentées aux participants de l'étude",
       "position" : 0
     }, {
       "id" : 7210,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Questionnaire structuré",
       "definition" : "Ensemble de questions prédéterminées, une grande majorité d'entre elles sont fermées, bien qu'il y ait peut-être une petite proportion de questions ouvertes.",
@@ -458,7 +458,7 @@
       "position" : 1
     }, {
       "id" : 7211,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Questionnaire semi-structuré",
       "definition" : "Ensemble de questions prédéterminées, une proportion significative d'entre elles sont ouvertes (environ un tiers à deux tiers), et les restantes sont fermées.",
@@ -466,7 +466,7 @@
       "position" : 2
     }, {
       "id" : 7212,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Questionnaire non structuré",
       "definition" : "Ensemble de questions prédéterminées, une grande majorité d'entre elles sont ouvertes, bien qu'il y ait peut-être une petite proportion de questions fermées.",
@@ -474,21 +474,21 @@
       "position" : 3
     }, {
       "id" : 7213,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Schéma et / ou thèmes d'entretien",
       "definition" : "Thèmes, sujets, et / ou questions utilisés dans un entretien. Peut varier entre des thèmes vaguement définis et des questions formulées plus précisément. Il y a plus de souplesse que dans un questionnaire non structuré en ce qui concerne les questions qui sont posées à chaque participant et la manière dont elles sont transmises.",
       "position" : 4
     }, {
       "id" : 7214,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Consignes de collecte de données",
       "definition" : "Directions ou instructions concernant les méthodes et les procédures à utiliser pour collecter les données. Utilisez un terme plus précis si possible.",
       "position" : 5
     }, {
       "id" : 7215,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Consignes de collecte de données : guide d'observation",
       "definition" : "Consignes concernant ce qui devra être observé. En fonction de la conception de l'étude, un guide d'observation peut être plus ou moins structuré, allant de spécifications et d'échelle à des idées vagues formulées.",
@@ -496,7 +496,7 @@
       "position" : 6
     }, {
       "id" : 7216,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.DiscussionGuide/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Consignes de collecte de données : guide de discussion",
       "definition" : "Consignes pour un groupe de discussion. En fonction de la conception de l'étude, un guide de discussion peut être plus ou moins structuré, allant de questions formulées précisément à des idées générales sur quoi discuter. Par exemple, une liste de sujets à discutés dans un focus group, ou des thèmes formulés par un chercheur pour diriger une discussion sur un blog, etc.",
@@ -504,7 +504,7 @@
       "position" : 7
     }, {
       "id" : 7217,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Consignes de collecte de données : guide des écrits auto-administrés",
       "definition" : "Consignes concernant le contenu attendu ou désiré des écrits personnels ou narratifs de participants potentiels. Les instructions peuvent être fournies dans le cadre de l'invitation écrite ou séparément. Par exemple, une invitation demandant aux personnes souffrant d'une maladie ou un handicap spécifique de décrire comment cela affecte leurs sentiments, leurs relations sociales et la vie quotidienne ; ou une invitation écrite demandant aux personnes de tenir un journal des livres lus pendant une période de six mois et les pensées provoquées par les livres.",
@@ -512,7 +512,7 @@
       "position" : 8
     }, {
       "id" : 7218,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Consignes de collecte de données : Guide de collecte de données secondaires",
       "definition" : "Consignes spécifiant quelles données sont collectées à partir de sources existantes précédemment créées pour d'autres fins. Par exemple, des directives sur comment sélectionner et coder des données à partir de sources qualitatives pour créer un ensemble de données quantitatives.",
@@ -520,28 +520,28 @@
       "position" : 9
     }, {
       "id" : 7219,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Tâches des participants",
       "definition" : "Une description de tâches que les participants sont invités à effectuer dans le cadre du processus de collecte des données. Par exemple, marquer des endroits sur une carte, prendre des photographies, raconter un conte de fées, etc.",
       "position" : 10
     }, {
       "id" : 7220,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Instrument(s) technique(s)",
       "definition" : "Instruments utilisé pour collecter des données objectives comme des mesures, des images, etc. Par exemple, chronomètres, balances, compteurs de vitesse, tensiomètres, thermomètres, appareils à rayons X, etc.",
       "position" : 11
     }, {
       "id" : 7221,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Script de programmation",
       "definition" : "Script de programmation écrit dans un langage de requête de données qui est utilisé pour extraire des données spécifiques, par exemple des réseaux sociaux en ligne.",
       "position" : 12
     }, {
       "id" : 7222,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/fr/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Other",
       "notation" : "Other",
       "title" : "Autre",
       "definition" : "Utilisez quand le type d'instrument est connu, mais pas présent dans la liste.",
@@ -554,11 +554,11 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "it",
-    "publicationDate" : "2019-07-22",
+    "publicationDate" : "2019-07-21",
     "number" : "1.1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/it/1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "notation" : "TypeOfInstrument",
     "title" : "Tipo di Strumento",
     "definition" : "Include una tipologia di strumenti per la raccolta dei dati.",
@@ -575,17 +575,17 @@
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
     "translateAgency" : "UniData - Bicocca Data Archive",
     "translateAgencyLink" : "https://www.unidata.unimib.it/",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 5495,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Questionario",
       "definition" : "Insieme di domande pre-determinate presentate ai partecipanti allo studio.",
       "position" : 0
     }, {
       "id" : 5496,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Questionario strutturato",
       "definition" : "Insieme di domande pre-determinate, la maggior parte delle quali prevede risposte chiuse, sebbene possa esserci una piccola percentuale di domande a risposta aperta.",
@@ -593,7 +593,7 @@
       "position" : 1
     }, {
       "id" : 5497,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Questionario semi-strutturato",
       "definition" : "Insieme di domande pre-determinate, di cui una parte significativa presenta risposta aperte (indicativamente tra un terzo e due terzi del totale), e le restanti sono chiuse.",
@@ -601,7 +601,7 @@
       "position" : 2
     }, {
       "id" : 5498,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Questionario non strutturato",
       "definition" : "Insieme di domande pre-determinate, la maggior parte delle quali prevede risposte aperte, sebbene possa esserci una piccola percentuale di domande a risposta chiusa.",
@@ -609,21 +609,21 @@
       "position" : 3
     }, {
       "id" : 5499,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Traccia e/o temi di intervista",
       "definition" : "Temi, argomenti e/o domande utilizzate in un'intervista. Può variare tra temi definiti in modo ampio e domande formulate in modo più preciso. Rispetto a un questionario non strutturato c'è una maggiore flessibilità riguardo a quali domande vengono effettivamente poste a ciascun partecipante e come esse vengono poste.",
       "position" : 4
     }, {
       "id" : 5500,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Linee guida per la raccolta dei dati",
       "definition" : "Indicazioni o istruzioni relative ai metodi e alle procedure da utilizzare per la raccolta dei dati. Utilizzare un termine più specifico, se possibile.",
       "position" : 5
     }, {
       "id" : 5501,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Linee guida per la raccolta dei dati: traccia di osservazione",
       "definition" : "Linee guida riguardanti ciò che verrà osservato. A seconda della disegno della ricerca, una guida all'osservazione può essere più o meno strutturata, variando da indicazioni e scale precise a idee formulate in modo generale.",
@@ -631,7 +631,7 @@
       "position" : 6
     }, {
       "id" : 7971,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/it#DataCollectionGuidelines.DiscussionGuide/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Linee guida per la raccolta dei dati: traccia di discussione",
       "definition" : "Linee guida per una discussione di gruppo. A seconda del progetto del disegno della ricerca, una guida alla discussione può essere più o meno strutturata, variando tra domande formulate con precisione a idee generali sui temi da sottoporre alla discussione. Ad esempio, un elenco di argomenti da discutere in un focus group o temi formulati da un ricercatore per indirizzare una discussione su un blog, ecc.",
@@ -639,7 +639,7 @@
       "position" : 7
     }, {
       "id" : 5503,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Linee guida per la raccolta dei dati: scritti autocompilati",
       "definition" : "Linee guida relative al contenuto desiderato o atteso di documenti o narrazioni personali dei potenziali partecipanti allo studio. Le istruzioni possono essere fornite come parte dell'invito a partecipare oppure separatamente. Ad esempio, un invito che chiede alle persone che soffrono di una specifica malattia o disabilità di descrivere come essa influisca sui loro sentimenti, sulle relazioni sociali e sulla vita quotidiana; oppure un invito a tenere un diario dei libri letti durante un periodo di sei mesi con la richiesta di riportare i pensieri suscitati dai libri.",
@@ -647,7 +647,7 @@
       "position" : 8
     }, {
       "id" : 5504,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Linee guida per la raccolta dei dati: dati secondari",
       "definition" : "Linee guida che specificano quali dati devono essere raccolti da fonti precedentemente esistenti ma create originariamente per altri scopi. Ad esempio, indicazioni su come selezionare e codificare i dati da fonti qualitative per creare un dataset quantitativo.",
@@ -655,28 +655,28 @@
       "position" : 9
     }, {
       "id" : 5505,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Compiti del partecipante",
       "definition" : "Una descrizione delle attività che i partecipanti sono invitati a svolgere come parte del processo di raccolta dei dati. Ad esempio, segnare i luoghi su una mappa, scattare fotografie, raccontare una fiaba, ecc.",
       "position" : 10
     }, {
       "id" : 5506,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Strumenti tecnici",
       "definition" : "Strumenti utilizzati per raccogliere dati oggettivi come misurazioni, immagini, ecc. Ad esempio, cronometri, scale, tachimetri, misuratori della pressione sanguigna, termometri, macchine a raggi X, ecc.",
       "position" : 11
     }, {
       "id" : 5507,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Script di programmazione",
       "definition" : "Script di programmazione sviluppato in un linguaggio di interrogazione dei dati che viene utilizzato per estrarre dati specifici, ad esempio dai social network online.",
       "position" : 12
     }, {
       "id" : 5508,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/it/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Other",
       "notation" : "Other",
       "title" : "Altro",
       "definition" : "Utilizzare quando il tipo di strumento è conosciuto, ma non è presente nell'elenco.",
@@ -689,11 +689,11 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "no",
-    "publicationDate" : "2019-07-23",
+    "publicationDate" : "2019-07-22",
     "number" : "1.1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/no/1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "notation" : "TypeOfInstrument",
     "title" : "Type instrument",
     "definition" : "Inneholder en typologi av ulike instrumenter for datainnsamling.",
@@ -710,17 +710,17 @@
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>",
     "translateAgency" : "NSD - Norwegian Centre for Research Data",
     "translateAgencyLink" : "www.nsd.uib.no",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 1893,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Spørreskjema",
       "definition" : "Oppsett med forhåndsbestemte spørsmål som blir presentert for studiedeltakerne.",
       "position" : 0
     }, {
       "id" : 1894,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Strukturert spørreskjema",
       "definition" : "Oppsett med forhåndsbestemte spørsmål hvor de fleste er lukkede. Det kan forekomme en liten andel åpne spørsmål.",
@@ -728,7 +728,7 @@
       "position" : 1
     }, {
       "id" : 1895,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Semistrukturert spørreskjema",
       "definition" : "Oppsett med forhåndsbestemte spørsmål hvor en betydelig andel er åpne (ca. én til to tredjedeler), og resten er lukket.",
@@ -736,7 +736,7 @@
       "position" : 2
     }, {
       "id" : 1896,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Ustrukturert spørreskjema",
       "definition" : "Oppsett med forhåndsbestemte spørsmål hvor de fleste er åpne. Det kan forekomme en liten andel lukkede spørsmål.",
@@ -744,21 +744,21 @@
       "position" : 3
     }, {
       "id" : 1897,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Intervjuskjema og/eller tema",
       "definition" : "Tema, emner og/eller spørsmål brukt i et intervju. Kan variere mellom løst definerte tema til mer nøyaktig formulerte spørsmål. Mer fleksibilitet enn i ustrukturerte spørreskjema når det kommer til hvilke spørsmål som blir stilt hver deltaker og hvordan de blir stilt.",
       "position" : 4
     }, {
       "id" : 1898,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Retningslinjer for datainnsamling",
       "definition" : "Retningslinjer og framgangsmåter som skal brukes for å samle inn dataene. Bruk et smalere begrep om mulig.",
       "position" : 5
     }, {
       "id" : 1899,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Retningslinjer for datainnsamling: Observasjonsguide",
       "definition" : "Retningslinjer til det som skal observeres. En observasjonsguide kan være mer eller mindre strukturert avhengig av studiedesignet. Den kan variere fra eksakte spesifikasjoner og skalaer til løst formulerte ideer.",
@@ -766,7 +766,7 @@
       "position" : 6
     }, {
       "id" : 7970,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/no#DataCollectionGuidelines.DiscussionGuide/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Retningslinjer for datainnsamling: Diskusjonsguide",
       "definition" : "Retningslinjer for en gruppediskusjon. En diskusjonsguide kan være mer eller mindre strukturert avhengig av studiedesignet. Den kan variere mellom nøyaktig formulerte spørsmål og løst formulerte ideer om hva en ønsker å diskutere. For eksempel en liste med tema å diskutere i en fokusgruppe, eller tema formulert av forsker for å lede en bloggdiskusjon, etc.",
@@ -774,7 +774,7 @@
       "position" : 7
     }, {
       "id" : 1901,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Retningslinjer for datainnsamling: Selvadministrert skriveguide",
       "definition" : "Retningslinjer angående ønsket eller forventet innhold i selvskrevne personlige fortellinger fra potensielle deltakere. Instruksjonene kan bli utdelt som del av invitasjonen til å skrive, eller den kan gis ut separat. For eksempel en invitasjon som ber folk med livstruende sykdommer beskrive hvordan sykdommen påvirker deres følelser, sosiale relasjoner og hverdagsliv; eller en skriveinvitasjon som ber folk føre en dagbok over hvilke bøker de leser over en seksmånedersperiode og hvilke tanker bøkene vekker.",
@@ -782,7 +782,7 @@
       "position" : 8
     }, {
       "id" : 1902,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Retningslinjer for datainnsamling: Guide for andregangsinnsamling av data",
       "definition" : "Retningslinjer som spesifiserer hvilke opplysninger som skal hentes fra eksisterende datakilder som opprinnelig ble samlet for andre formål. For eksempel retningslinjer for hvordan opplysninger fra kvalitative kilder skal velges og kodes for å utarbeide kvantitative datasett.",
@@ -790,28 +790,28 @@
       "position" : 9
     }, {
       "id" : 1903,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Deltakeroppgaver",
       "definition" : "En beskrivelse av oppgavene deltakere blir bedt om å utføre som del av datainnsamlingsprosessen. For eksempel markere steder på et kart, ta bilder, fortelle et eventyr, etc.",
       "position" : 10
     }, {
       "id" : 1904,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Tekniske instrument(er)",
       "definition" : "Instrumenter brukt for å samle inn objektive data, slik som mål, bilder, etc. For eksempel kronometre, vekter, speedometre, blodtrykksmonitorer, termometere, røntgenmaskiner, etc.",
       "position" : 11
     }, {
       "id" : 1905,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Programmeringsskript",
       "definition" : "Programmeringsskript som er skrevet i et skriptprogrammeringsspråk som blir brukt til å trekke ut bestemte opplysninger, for eksempel fra sosiale nettverk på internett.",
       "position" : 12
     }, {
       "id" : 1906,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/no/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Other",
       "notation" : "Other",
       "title" : "Annet",
       "definition" : "Bruk når instrumenttypen er kjent, men ikke finnes i listen.",
@@ -824,11 +824,11 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "pt",
-    "publicationDate" : "2019-11-13",
+    "publicationDate" : "2019-11-12",
     "number" : "1.1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/pt/1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "notation" : "TypeOfInstrument",
     "title" : "Tipo de instrumento de recolha de dados",
     "definition" : "Inclui uma tipologia de instrumentos de recolha de dados.",
@@ -845,17 +845,17 @@
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
     "translateAgency" : "Arquivo Português de Informação Social (APIS)",
     "translateAgencyLink" : "http://www.apis.ics.ulisboa.pt/",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 6990,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Questionário",
       "definition" : "Conjunto de questões pré-determinadas apresentadas aos participantes do estudo.",
       "position" : 0
     }, {
       "id" : 6991,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Questionário estruturado",
       "definition" : "Conjunto de questões pré-determinadas, das quais a grande maioria são fechadas, embora possa haver uma pequena proporção de questões abertas.",
@@ -863,7 +863,7 @@
       "position" : 1
     }, {
       "id" : 6992,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Questionário semiestruturado",
       "definition" : "Conjunto de questões pré-determinadas, das quais uma parte significativa são abertas (cerca de um terço a dois terços), sendo as restantes fechadas.",
@@ -871,7 +871,7 @@
       "position" : 2
     }, {
       "id" : 6993,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Questionário aberto/não estruturado",
       "definition" : "Conjunto de questões pré-determinadas, das quais a grande maioria são abertas, embora possa haver uma pequena proporção de questões fechadas.",
@@ -879,21 +879,21 @@
       "position" : 3
     }, {
       "id" : 6994,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Esquema/temas de entrevista",
       "definition" : "Temas, tópicos e/ou questões usados numa entrevista. Pode variar entre temas vagamente definidos para questões mais especificamente formuladas. Há mais flexibilidade do que num questionário não estruturado relativamente a que questões são colocadas a cada participante e como elas são abordadas.",
       "position" : 4
     }, {
       "id" : 6995,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Orientações para a recolha de dados",
       "definition" : "Orientações ou instruções sobre os métodos e procedimentos a utilizar para recolher os dados. Se possível, usar um termo mais específico.",
       "position" : 5
     }, {
       "id" : 6996,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Orientações para a recolha de dados: Grelha de observação",
       "definition" : "Orientações ou instruções sobre o que será observado. Dependendo da concepção do estudo, uma grelha de observação pode ser mais ou menos estruturada, variando de especificações exatas e escalas a ideias formuladas de uma forma vaga.",
@@ -901,7 +901,7 @@
       "position" : 6
     }, {
       "id" : 6999,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.DiscussionGuide/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Orientações para a recolha de dados: Guião de debate",
       "definition" : "Orientações ou instruções para uma discussão de grupo. Dependendo da concepção do estudo, um guião de discussão pode ser mais ou menos estruturado, variando de questões especificamente formuladas a ideias gerais sobre o que discutir/debater. Por exemplo, uma lista de tópicos a serem discutidos num grupo de foco, ou temas formulados por um investigador para orientar uma discussão num blog, etc.",
@@ -909,7 +909,7 @@
       "position" : 7
     }, {
       "id" : 6998,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Orientações para a recolha de dados: Guião para registos  de autopreenchimento",
       "definition" : "Orientações ou instruções sobre o conteúdo esperado ou desejado de relatos ou narrativas pessoais de potenciais participantes. As instruções podem ser fornecidas como parte do guião ou separadamente. Por exemplo, um convite pedindo/solicitando às pessoas que sofrem de uma doença específica ou incapacidade/limitação para descrever como isso afeta os sentimentos, as relações sociais e a vida quotidiana; ou um convite por escrito pedindo às pessoas para manterem um diário dos livros lidos durante um período de seis meses e dos pensamentos por eles suscitados.",
@@ -917,7 +917,7 @@
       "position" : 8
     }, {
       "id" : 7000,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Orientações para a recolha de dados: Guião para recolha de dados secundários",
       "definition" : "Orientações ou instruções que especificam que dados devem ser recolhidos de fontes anteriormente existentes criadas originalmente para outros fins. Por exemplo, instruções sobre como selecionar e codificar dados de fontes qualitativas para criar um conjunto de dados quantitativos.",
@@ -925,28 +925,28 @@
       "position" : 9
     }, {
       "id" : 7001,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Tarefas para os participantes",
       "definition" : "Descrição das tarefas que os participantes são convidados a realizar como parte do processo de recolha de dados. Por exemplo, marcar lugares num mapa, tirar fotografias, contar uma história infantil, etc.",
       "position" : 10
     }, {
       "id" : 7002,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Instrumento(s) técnico(s)",
       "definition" : "Instrumentos usados para recolher dados objetivos, como medições, imagens, etc. Por exemplo, cronómetros, balanças, velocímetros, monitores de pressão arterial, termómetros, máquinas de raio-x, etc.",
       "position" : 11
     }, {
       "id" : 7003,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Script/Esquema de programação",
       "definition" : "Script de programação escrito numa linguagem de pesquisa de dados, que é usado para extrair dados específicos, nomeadamente de redes sociais online.",
       "position" : 12
     }, {
       "id" : 7004,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/pt",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Other",
       "notation" : "Other",
       "title" : "Outro",
       "definition" : "Usar se o tipo de instrumento for conhecido, mas não se encontrar na lista.",
@@ -959,11 +959,11 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "sl",
-    "publicationDate" : "2019-07-18",
+    "publicationDate" : "2019-07-17",
     "number" : "1.1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/sl/1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "notation" : "TypeOfInstrument",
     "title" : "Vrste instrumentov",
     "definition" : "Vključuje razvrstitev instrumentov za zbiranje podatkov.",
@@ -980,17 +980,17 @@
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>",
     "translateAgency" : "Social Science Data Archives (ADP), Slovenia",
     "translateAgencyLink" : "https://www.adp.fdv.uni-lj.si",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 1879,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Vprašalnik",
       "definition" : "Nabor vnaprej določenih vprašanj, predstavljenih udeležencem raziskave.",
       "position" : 0
     }, {
       "id" : 1880,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Strukturiran vprašalnik",
       "definition" : "Nabor vnaprej določenih vprašanj, izmed katerih je velika večina vprašanj zaprtega tipa, čeprav je lahko majhen delež vprašanj tudi odprtega tipa.",
@@ -998,7 +998,7 @@
       "position" : 1
     }, {
       "id" : 1881,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Polstrukturiran vprašalnik",
       "definition" : "Nabor vnaprej določenih vprašanj, izmed katerih je pomemben delež vprašanj odprtega tipa (približno ena do dve tretjini), preostali del pa zaprtega tipa.",
@@ -1006,7 +1006,7 @@
       "position" : 2
     }, {
       "id" : 1882,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Nestrukturiran vprašalnik",
       "definition" : "Nabor vnaprej določenih vprašanj, izmed katerih je velika večina vprašanj odprtega tipa, čeprav je lahko majhen delež vprašanj tudi zaprtega tipa.",
@@ -1014,21 +1014,21 @@
       "position" : 3
     }, {
       "id" : 1883,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Načrt intervjuja in/ali teme",
       "definition" : "Teme in/ali vprašanja, uporabljena v intervjuju. Lahko se razteza od široko opredeljenih tem do natančneje oblikovanih vprašanj. V primerjavi z nestrukturiranim vprašalnikom je več prožnosti glede vprašanj, ki jih postavimo udeležencem, in načina, kako jih posredujemo.",
       "position" : 4
     }, {
       "id" : 1884,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Smernice za zbiranje podatkov",
       "definition" : "Smernice in navodila, ki opredeljujejo vsebino zajema podatkov. Če je mogoče, uporabite ožji izraz.",
       "position" : 5
     }, {
       "id" : 1885,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Smernice za zbiranje podatkov: vodnik za opazovanje",
       "definition" : "Smernice za opazovanje. Glede na načrt raziskave je vodnik za opazovanje lahko bolj ali manj strukturiran, od natančnih določitev in lestvic do ohlapno oblikovanih idej.",
@@ -1036,7 +1036,7 @@
       "position" : 6
     }, {
       "id" : 7969,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/sl#DataCollectionGuidelines.DiscussionGuide/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Smernice za zbiranje podatkov: vodnik za razpravo",
       "definition" : "Smernice za skupinsko razpravo. Glede na načrt raziskave je lahko vodnik za razpravo bolj ali manj strukturiran, od natančno oblikovanih vprašanj do splošnih idej o predmetu razprave. Na primer, seznam tem, o katerih bo razpravljala fokusna skupina, ali teme, ki jih oblikuje raziskovalec za usmerjanje razprave na spletnem blogu, itd.",
@@ -1044,7 +1044,7 @@
       "position" : 7
     }, {
       "id" : 1887,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Smernice za zbiranje podatkov: vodnik za samoizpolnjevanje",
       "definition" : "Smernice o želeni ali pričakovani vsebini samoizpolnjenih osebnih dnevnikov ali pripovedi potencialnih udeležencev. Navodila so lahko na voljo kot del napisanega vabila ali ločeno. Na primer, obvestilo o literarnem natečaju, ki vabi ljudi z življenjsko nevarno boleznijo, da opišejo, kako bolezen vpliva na njihove občutke, medsebojne odnose in vsakdanje življenje; ali pisno vabilo posameznikom, naj vodijo dnevnik prebranih knjig v šestih mesecih in si zapisujejo misli, ki se jim porajajo ob branju.",
@@ -1052,7 +1052,7 @@
       "position" : 8
     }, {
       "id" : 1888,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Smernice za zbiranje podatkov: vodnik za zbiranje sekundarnih podatkov",
       "definition" : "Smernice, ki določajo, katere podatke je potrebno zbrati iz že obstoječih virov, ki so bili prvotno ustvarjeni za druge namene. Na primer navodila za izbiranje in kodiranje podatkov iz kakovostnih virov z namenom oblikovanja kvantitativnega nabora podatkov.",
@@ -1060,28 +1060,28 @@
       "position" : 9
     }, {
       "id" : 1889,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Naloge udeležencev",
       "definition" : "Opis nalog, ki jih morajo udeleženci opraviti kot del postopka zbiranja podatkov. Na primer, označevanje mest na zemljevidu, fotografiranje, pripovedovanje pravljice itd.",
       "position" : 10
     }, {
       "id" : 1890,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Tehnični inštrument(i)",
       "definition" : "Pripomočki, ki se uporabljajo za zbiranje objektivnih podatkov, kot so meritve, slike itd. Na primer kronometri, lestvice, merilniki hitrosti, naprave za merjenje krvnega tlaka, termometri, rentgen itd.",
       "position" : 11
     }, {
       "id" : 1891,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Programska koda",
       "definition" : "Koda za programiranje, napisana v jeziku poizvedbe, ki se uporablja za pridobivanje določenih podatkov, na primer iz spletnih socialnih omrežij.",
       "position" : 12
     }, {
       "id" : 1892,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/sl/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Other",
       "notation" : "Other",
       "title" : "Drugo",
       "definition" : "Uporabite, ko je vrsta uporabljenega instrumenta znana, a je ne najdete na seznamu.",
@@ -1094,11 +1094,11 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "sr",
-    "publicationDate" : "2020-01-13",
+    "publicationDate" : "2020-01-12",
     "number" : "1.1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/sr/1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "notation" : "TypeOfInstrument",
     "title" : "Vrsta Instrumenta",
     "definition" : "Sadrži tipologiju instrumenata za prikupljanje podataka.",
@@ -1115,17 +1115,17 @@
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
     "translateAgency" : "Data Centre Serbia for Social Sciences (DCS)",
     "translateAgencyLink" : "http://datacentarserbia.com",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 8082,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Upitnik",
       "definition" : "Skup unapred utvrđenih pitanja koja su predstavljena učesnicima studije.",
       "position" : 0
     }, {
       "id" : 8083,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Strukturirana anketa",
       "definition" : "Skup unapred utvrđenih pitanja, od kojih je velika većina zatvorenih, mada može postojati i mali procenat otvorenih pitanja.",
@@ -1133,7 +1133,7 @@
       "position" : 1
     }, {
       "id" : 8084,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Polustrukturirana anketa",
       "definition" : "Skup unapred utvrđenih pitanja, čiji je značajan deo otvoren (otprilike jedna trećina do dve trećine), a ostala su zatvorena.",
@@ -1141,7 +1141,7 @@
       "position" : 2
     }, {
       "id" : 8085,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Nestrukturirana anketa",
       "definition" : "Skup unapred utvrđenih pitanja, od kojih je velika većina otvorena, mada može postojati mali deo bliskih pitanja.",
@@ -1149,21 +1149,21 @@
       "position" : 3
     }, {
       "id" : 8086,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Okvir intervjua i/ili teme",
       "definition" : "Teme i/ili pitanja koja se koriste u intervjuu. Mogu varirati između okvirno definisanih tema do precizno formulisanih pitanja. Postoji veća fleksibilnost nego u nestrukturiranom upitniku u vezi sa tim koja se pitanja postavljaju svakom učesniku i kako se prenose.",
       "position" : 4
     }, {
       "id" : 8087,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Smernice za prikupljanje podataka",
       "definition" : "Uputstva ili smernice u vezi sa metodama i postupcima koji će se koristiti za prikupljanje podataka. Koristite precizniji izraz ako je moguće.",
       "position" : 5
     }, {
       "id" : 8088,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Smernice za prikupljanje podataka: Uputstvo za posmatranje",
       "definition" : "Smernice o tome šta će se posmatrati. U zavisnosti od dizajna studije, uputstvo za posmatranje može biti manje ili više struktuirano, u rasponu od tačnih specifikacija i skala, do slabo formulisanih ideja.",
@@ -1171,7 +1171,7 @@
       "position" : 6
     }, {
       "id" : 8089,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.DiscussionGuide/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Smernice za prikupljanje podataka: Uputstvo za razgovor (diskusiju)",
       "definition" : "Smernice za grupnu diskusiju. Zavisno od dizajna studije, vodič za diskusiju može biti manje ili više strukturiran, u rasponu od tačno formulisanih pitanja do opštih ideja o tome o čemu treba razgovarati. Na primer, spisak tema o kojima će se razgovarati u fokus grupi ili teme koje je formulisao istraživač kako bi usmeravao raspravu na blogu, itd.",
@@ -1179,7 +1179,7 @@
       "position" : 7
     }, {
       "id" : 8090,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Smernice za prikupljanje podataka: Vodič za samostalno upravljanje zapisima",
       "definition" : "Smernice o željenom ili očekivanom sadržaju samostalno sastavljenih ličnih zapisa ili svedočanstvima potencijalnih učesnika. Uputstva se mogu biti deo pismenog poziva ili odvojena. Na primer, poziv koji traži od ljudi koji pate od određene bolesti ili invaliditeta da opišu kako to utiče na njihova osećanja, društvene odnose i svakodnevni život; ili poziv za pisanje kojim se traži da ljudi vode dnevnik čitanja knjiga tokom perioda od šest meseci i misli koje izazivaju knjige.",
@@ -1187,7 +1187,7 @@
       "position" : 8
     }, {
       "id" : 8091,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Smernice za prikupljanje podataka: Vodič za prikupljanje sekundarnih podataka",
       "definition" : "Smernice koje određuju koji se podaci prikupljaju iz prethodno postojećih izvora prvobitno kreiranih u druge svrhe. Na primer, uputstva o tome kako da odaberete i kodirate podatke iz kvalitativnih izvora kako biste stvorili kvantitativni skup podataka.",
@@ -1195,28 +1195,28 @@
       "position" : 9
     }, {
       "id" : 8092,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Zadaci učesnika",
       "definition" : "Opis zadataka koji se od učesnika traže da izvrše kao deo procesa prikupljanja podataka. Na primer, obeležavanje mesta na mapi, fotografisanje, pričanje bajke itd.",
       "position" : 10
     }, {
       "id" : 8093,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Tehnički instrument(i)",
       "definition" : "Instrumenti koji se koriste za prikupljanje objektivnih podataka kao što su merenja, slike, itd. Na primer, hronometri, vage, brzinomeri, merači krvnog pritiska, termometri, rendgenski aparati, itd.",
       "position" : 11
     }, {
       "id" : 8094,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Programska skripta",
       "definition" : "Programska skripta napisana na Data Query jeziku (DQL) koja se koriste za izvlačenje određenih podataka, na primer, iz društvenih mreža.",
       "position" : 12
     }, {
       "id" : 8095,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/sr",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Other",
       "notation" : "Other",
       "title" : "Ostalo",
       "definition" : "Koristiti kada je vrsta instrumenta poznata, ali se ne nalazi na listi.",
@@ -1229,11 +1229,11 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "sv",
-    "publicationDate" : "2019-07-17",
+    "publicationDate" : "2019-07-16",
     "number" : "1.1.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/sv/1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:TypeOfInstrument:1.1",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/en/1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.html",
     "notation" : "TypeOfInstrument",
     "title" : "Typ av instrument",
     "definition" : "Innehåller en typologi av olika instrument för datainsamling.",
@@ -1250,17 +1250,17 @@
     "ddiUsage" : "<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n</div> \n<div>\n  Module Name: datacollection \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfInstrument.html\">TypeOfInstrument</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/resInstru.html\">resInstru</a>\n <br /> \n</div>",
     "translateAgency" : "Swedish National Data Service (SND)",
     "translateAgencyLink" : "https://snd.gu.se",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 1865,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire",
       "notation" : "Questionnaire",
       "title" : "Frågeformulär",
       "definition" : "En uppsättning förutbestämda frågor som ställs till deltagare i studien.",
       "position" : 0
     }, {
       "id" : 1866,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Structured/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Structured",
       "notation" : "Questionnaire.Structured",
       "title" : "Strukturerat frågeformulär",
       "definition" : "En uppsättning förutbestämda frågor, av vilka en stor majoritet är slutna, även om det kan finnas en liten andel öppna frågor.",
@@ -1268,7 +1268,7 @@
       "position" : 1
     }, {
       "id" : 1867,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Semistructured/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Semistructured",
       "notation" : "Questionnaire.Semistructured",
       "title" : "Semistrukturerat frågeformulär",
       "definition" : "En uppsättning förutbestämda frågor, av vilka en signifikant majoritet är öppna (cirka en till två tredjedelar), och resten är slutna.",
@@ -1276,7 +1276,7 @@
       "position" : 2
     }, {
       "id" : 1868,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Questionnaire.Unstructured/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Questionnaire.Unstructured",
       "notation" : "Questionnaire.Unstructured",
       "title" : "Ostrukturerat frågeformulär",
       "definition" : "En uppsättning förutbestämda frågor, av vilka en stor majoritet är öppna, även om det kan finnas en liten andel slutna frågor.",
@@ -1284,21 +1284,21 @@
       "position" : 3
     }, {
       "id" : 1869,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#InterviewSchemeAndThemes/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#InterviewSchemeAndThemes",
       "notation" : "InterviewSchemeAndThemes",
       "title" : "Intervjuschema och/eller teman",
       "definition" : "Teman, ämnen och/eller frågor som används i en intervju. Kan variera mellan löst definierade teman och mer exakt formulerade frågor. Det finns mer flexibilitet än i ett ostrukturerat frågeformulär angående vilka frågor som ställs till varje deltagare och hur de förmedlas.",
       "position" : 4
     }, {
       "id" : 1870,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines",
       "notation" : "DataCollectionGuidelines",
       "title" : "Datainsamlingsguide",
       "definition" : "Guide och anvisningar som definierar innehållet i datainsamlingen. Använd en smalare term om möjligt.",
       "position" : 5
     }, {
       "id" : 1871,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.ObservationGuide/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.ObservationGuide",
       "notation" : "DataCollectionGuidelines.ObservationGuide",
       "title" : "Datainsamlingsguide: Observationsguide",
       "definition" : "Guide till det som ska observeras. Beroende på studiedesign kan en observationsguide vara mer eller mindre strukturerad, allt från exakta specifikationer och skalor till löst formulerade idéer.",
@@ -1306,7 +1306,7 @@
       "position" : 6
     }, {
       "id" : 7968,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument/sv#DataCollectionGuidelines.DiscussionGuide/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.DiscussionGuide",
       "notation" : "DataCollectionGuidelines.DiscussionGuide",
       "title" : "Datainsamlingsguide: Diskussionsguide",
       "definition" : "Guide för en gruppdiskussion. Beroende på studiedesign kan en diskussionsguide vara mer eller mindre strukturerad, allt från exakt formulerade frågor till allmänna idéer om vad man ska diskutera. Till exempel en lista över ämnen som ska diskuteras i en fokusgrupp eller teman formulerade av en forskare för att styra en bloggdiskussion osv.",
@@ -1314,7 +1314,7 @@
       "position" : 7
     }, {
       "id" : 1873,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SelfAdministeredWritingsGuide/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "notation" : "DataCollectionGuidelines.SelfAdministeredWritingsGuide",
       "title" : "Datainsamlingsguide: Guide för självadministrerade skriftliga uppgifter",
       "definition" : "Guide för önskat eller förväntat innehåll i självskrivna personliga redogörelser eller berättelser från potentiella deltagare. Anvisningarna kan levereras separat eller som en del av inbjudan att delta i skrivandet. Till exempel en inbjudan till människor med en viss sjukdom eller funktionsnedsättning om att beskriva hur det påverkar deras känslor, sociala relationer och vardagsliv. Eller en skrivinbjudan som ber människor att föra dagbok om vilka böcker de läser under en period av sex månader och de tankar som väcks av böckerna.",
@@ -1322,7 +1322,7 @@
       "position" : 8
     }, {
       "id" : 1874,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#DataCollectionGuidelines.SecondaryDataCollectionGuide/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "notation" : "DataCollectionGuidelines.SecondaryDataCollectionGuide",
       "title" : "Datainsamlingsguide: Guide för insamling av sekundärdata",
       "definition" : "Guide som anger vilka data som ska samlas in från befintliga källor som ursprungligen skapats för andra ändamål. Till exempel anvisningar om hur man väljer och kodar data från kvalitativa källor för att skapa ett kvantitativt dataset.",
@@ -1330,28 +1330,28 @@
       "position" : 9
     }, {
       "id" : 1875,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ParticipantTasks/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ParticipantTasks",
       "notation" : "ParticipantTasks",
       "title" : "Uppgifter för deltagarna",
       "definition" : "En beskrivning av uppgifter som deltagare ombeds att utföra som en del av datainsamlingsprocessen. Till exempel att markera platser på en karta, fotografera, berätta en saga osv.",
       "position" : 10
     }, {
       "id" : 1876,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#TechnicalInstruments/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#TechnicalInstruments",
       "notation" : "TechnicalInstruments",
       "title" : "Tekniskt/-a instrument",
       "definition" : "Instrument som används för att samla in objektiva data som mätningar, bilder osv. Till exempel kronometrar, vågar, hastighetsmätare, blodtrycksmätare, termometrar, röntgenapparater osv.",
       "position" : 11
     }, {
       "id" : 1877,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#ProgrammingScript/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#ProgrammingScript",
       "notation" : "ProgrammingScript",
       "title" : "Skript",
       "definition" : "Ett skript som är skrivet i ett förfrågningsspråk (data query language) och som används för att extrahera specifika data, t.ex. från sociala nätverk på nätet.",
       "position" : 12
     }, {
       "id" : 1878,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/TypeOfInstrument#Other/sv/1.1.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/TypeOfInstrument_1.1.1.html#Other",
       "notation" : "Other",
       "title" : "Övrigt",
       "definition" : "Använd när typ av instrument är känt men saknas i listan.",

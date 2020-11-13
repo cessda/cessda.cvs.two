@@ -1,86 +1,78 @@
 {
-  "id": 64,
-  "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/ResponseUnit/en/1.0",
-  "notation": "ResponseUnit",
-  "versionNumber": "1.0",
-  "withdrawn": false,
-  "sourceLanguage": "en",
-  "agencyId": 2,
-  "agencyName": "DDI Alliance",
-  "agencyLogo": "ddi.png",
-  "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2020-02-05",
-  "notes": "This controlled vocabulary is applicable only to survey-type data.",
-  "versions": [
-    {
-      "id": 282,
-      "status": "PUBLISHED",
-      "itemType": "SL",
-      "language": "en",
-      "publicationDate": "2020-02-05",
-      "number": "1.0",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/ResponseUnit/en/1.0",
-      "canonicalUri": "urn:ddi:int.ddi.cv:ResponseUnit:1.0",
-      "notation": "ResponseUnit",
-      "title": "Response Unit",
-      "definition": "Indicates the entity that provided the information carried by the variable.",
-      "previousVersion": 0,
-      "initialVersion": 282,
-      "notes": "This controlled vocabulary is applicable only to survey-type data. \nThis vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
-      "versionNotes": "",
-      "versionChanges": "",
-      "license": "CC BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "by.png",
-      "citation": "DDI Alliance. (2020). Response Unit (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ResponseUnit:1.0. ",
-      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/ResponseUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">ResponseUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2&nbsp;</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/ResponseUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">ResponseUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/respUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\"> respUnit</a></p><p><br></p>",
-      "lastStatusChangeDate": "2020-10-01",
-      "concepts": [
-        {
-          "id": 3238,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ResponseUnit#Self/en/1.0",
-          "notation": "Self",
-          "title": "Self",
-          "definition": "Unit of response is same as unit of observation/analysis.",
-          "position": 0
-        },
-        {
-          "id": 3239,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ResponseUnit#Informant/en/1.0",
-          "notation": "Informant",
-          "title": "Informant",
-          "definition": "Unit of response is different than the unit of observation as part of the study design, and the identity of the response unit is also pre-determined by the study design. Such studies are actually called \"informant surveys\" and they involve, for instance, obtaining information about a community from certain select members who hold specific information, like church leaders, business owners or leaders, physicians, school teachers, civic leaders, etc. Or, if a business or organization is the unit of observation, information may be sought at different administrative/professional levels, etc.",
-          "position": 1
-        },
-        {
-          "id": 3240,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ResponseUnit#Proxy/en/1.0",
-          "notation": "Proxy",
-          "title": "Proxy",
-          "definition": "Unit of response is different than the unit of analysis because the sampled unit is unavailable/unable to participate. Proxies may be allowed by the study design, but their identity is not specifically designated (for example, anyone in the household can provide information about another household member, or any available student can provide information about another student, etc.).",
-          "position": 2
-        },
-        {
-          "id": 3241,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ResponseUnit#Interviewer/en/1.0",
-          "notation": "Interviewer",
-          "title": "Interviewer",
-          "definition": "Data are entered directly by the interviewer, as a result of his/her own observations, and not by eliciting answers to a question.",
-          "position": 3
-        },
-        {
-          "id": 3242,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ResponseUnit#Other/en/1.0",
-          "notation": "Other",
-          "title": "Other",
-          "definition": "Use if the response unit is known, but not found in the list.",
-          "position": 4
-        }
-      ],
-      "comments": [],
-      "versionHistories": []
-    }
-  ]
+  "id" : 64,
+  "status" : "PUBLISHED",
+  "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit",
+  "notation" : "ResponseUnit",
+  "versionNumber" : "1.0",
+  "withdrawn" : false,
+  "sourceLanguage" : "en",
+  "agencyId" : 2,
+  "agencyName" : "DDI Alliance",
+  "agencyLogo" : "ddi.png",
+  "agencyLink" : "http://www.ddialliance.org/",
+  "publicationDate" : "2020-02-04",
+  "notes" : "This controlled vocabulary is applicable only to survey-type data.",
+  "versions" : [ {
+    "id" : 282,
+    "status" : "PUBLISHED",
+    "itemType" : "SL",
+    "language" : "en",
+    "publicationDate" : "2020-02-04",
+    "number" : "1.0",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.html",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:ResponseUnit:1.0",
+    "notation" : "ResponseUnit",
+    "title" : "Response Unit",
+    "definition" : "Indicates the entity that provided the information carried by the variable.",
+    "previousVersion" : 0,
+    "initialVersion" : 282,
+    "notes" : "This controlled vocabulary is applicable only to survey-type data. \nThis vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
+    "versionNotes" : "",
+    "versionChanges" : "",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). Response Unit (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ResponseUnit:1.0. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/ResponseUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">ResponseUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2&nbsp;</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/ResponseUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">ResponseUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/respUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\"> respUnit</a></p><p><br></p>",
+    "lastStatusChangeDate" : "2020-09-30",
+    "concepts" : [ {
+      "id" : 3238,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.html#Self",
+      "notation" : "Self",
+      "title" : "Self",
+      "definition" : "Unit of response is same as unit of observation/analysis.",
+      "position" : 0
+    }, {
+      "id" : 3239,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.html#Informant",
+      "notation" : "Informant",
+      "title" : "Informant",
+      "definition" : "Unit of response is different than the unit of observation as part of the study design, and the identity of the response unit is also pre-determined by the study design. Such studies are actually called \"informant surveys\" and they involve, for instance, obtaining information about a community from certain select members who hold specific information, like church leaders, business owners or leaders, physicians, school teachers, civic leaders, etc. Or, if a business or organization is the unit of observation, information may be sought at different administrative/professional levels, etc.",
+      "position" : 1
+    }, {
+      "id" : 3240,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.html#Proxy",
+      "notation" : "Proxy",
+      "title" : "Proxy",
+      "definition" : "Unit of response is different than the unit of analysis because the sampled unit is unavailable/unable to participate. Proxies may be allowed by the study design, but their identity is not specifically designated (for example, anyone in the household can provide information about another household member, or any available student can provide information about another student, etc.).",
+      "position" : 2
+    }, {
+      "id" : 3241,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.html#Interviewer",
+      "notation" : "Interviewer",
+      "title" : "Interviewer",
+      "definition" : "Data are entered directly by the interviewer, as a result of his/her own observations, and not by eliciting answers to a question.",
+      "position" : 3
+    }, {
+      "id" : 3242,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.html#Other",
+      "notation" : "Other",
+      "title" : "Other",
+      "definition" : "Use if the response unit is known, but not found in the list.",
+      "position" : 4
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ ]
+  } ]
 }
