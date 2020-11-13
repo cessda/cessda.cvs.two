@@ -15,6 +15,12 @@ public class VersionUtilsTest {
     }
 
     @Test
+    public void getSlNumberFromTlTest() {
+        assertThat( VersionUtils.getSlNumberFromTl("1.0.1" ) ).isEqualTo("1.0");
+        assertThat( VersionUtils.getSlNumberFromTl("1.0" ) ).isEqualTo("1.0");
+    }
+
+    @Test
     public void increaseSlVersionByOneTest(){
         assertThat( VersionUtils.increaseSlVersionByOne("1.0" ) ).isEqualTo("1.1");
         assertThat( VersionUtils.increaseSlVersionByOne("1.10" ) ).isEqualTo("1.11");
