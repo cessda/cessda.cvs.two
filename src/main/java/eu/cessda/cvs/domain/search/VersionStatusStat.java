@@ -22,16 +22,20 @@ public class VersionStatusStat implements Serializable {
     private String status;
 
     @Field( type = FieldType.Date, store = true  )
+    private LocalDate creationDate;
+
+    @Field( type = FieldType.Date, store = true  )
     private LocalDate date;
 
     public VersionStatusStat(){}
 
-    public VersionStatusStat(String language, String type, String versionNumber, String status, LocalDate date) {
+    public VersionStatusStat(String language, String type, String versionNumber, String status, LocalDate creationDate, LocalDate date) {
         this.language = language;
         this.type = type;
         this.versionNumber = versionNumber;
         this.status = status;
         this.date = date != null ? date : LocalDate.now();
+        this.creationDate = creationDate != null ? creationDate : this.date;
     }
 
     public String getLanguage() {
@@ -64,6 +68,14 @@ public class VersionStatusStat implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 
     public LocalDate getDate() {

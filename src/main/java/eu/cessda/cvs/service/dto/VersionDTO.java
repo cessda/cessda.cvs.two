@@ -37,6 +37,8 @@ public class VersionDTO implements Serializable {
     @Size(max = 20)
     private String language;
 
+    private LocalDate creationDate;
+
     private LocalDate publicationDate;
 
     private ZonedDateTime lastModified;
@@ -117,6 +119,7 @@ public class VersionDTO implements Serializable {
      */
     public VersionDTO(VocabularyDTO vocabularyDTO) {
         this.status = Status.DRAFT.toString();
+        this.creationDate = LocalDate.now();
         this.itemType = ItemType.SL.toString();
         this.language = vocabularyDTO.getSourceLanguage();
         this.number = vocabularyDTO.getVersionNumber();
@@ -134,6 +137,7 @@ public class VersionDTO implements Serializable {
      */
     public VersionDTO(VocabularySnippet vocabularySnippet, VersionDTO versionSlDTO) {
         this.vocabularyId = versionSlDTO.getVocabularyId();
+        this.creationDate = LocalDate.now();
         this.status = Status.DRAFT.toString();
         this.itemType = ItemType.TL.toString();
         this.language = vocabularySnippet.getLanguage();
@@ -217,6 +221,14 @@ public class VersionDTO implements Serializable {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 
     public LocalDate getPublicationDate() {
@@ -575,6 +587,7 @@ public class VersionDTO implements Serializable {
             ", status='" + getStatus() + "'" +
             ", itemType='" + getItemType() + "'" +
             ", language='" + getLanguage() + "'" +
+            ", creationDate='" + getCreationDate() + "'" +
             ", publicationDate='" + getPublicationDate() + "'" +
             ", lastModified='" + getLastModified() + "'" +
             ", number='" + getNumber() + "'" +
@@ -589,14 +602,10 @@ public class VersionDTO implements Serializable {
             ", creator=" + getCreator() +
             ", publisher=" + getPublisher() +
             ", notes='" + getNotes() + "'" +
-//            ", versionNotes='" + getVersionNotes() + "'" +  // commented to shorter debug
-//            ", versionChanges='" + getVersionChanges() + "'" + // commented to shorter debug
-//            ", discussionNotes='" + getDiscussionNotes() + "'" + // commented to shorter debug
             ", copyright='" + getCopyright() + "'" +
             ", license='" + getLicense() + "'" +
             ", licenseId=" + getLicenseId() +
             ", citation='" + getCitation() + "'" +
-//            ", ddiUsage='" + getDdiUsage() + "'" + // commented to shorter debug
             ", translateAgency='" + getTranslateAgency() + "'" +
             ", translateAgencyLink='" + getTranslateAgencyLink() + "'" +
             ", vocabularyId=" + getVocabularyId() +

@@ -41,6 +41,9 @@ public class Version implements Serializable {
     @Column(name = "language", length = 20)
     private String language;
 
+    @Column(name = "creation_date")
+    private LocalDate creationDate;
+
     @Column(name = "publication_date")
     private LocalDate publicationDate;
 
@@ -181,6 +184,19 @@ public class Version implements Serializable {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public Version creationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
+        return this;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 
     public LocalDate getPublicationDate() {
@@ -577,6 +593,7 @@ public class Version implements Serializable {
             ", status='" + getStatus() + "'" +
             ", itemType='" + getItemType() + "'" +
             ", language='" + getLanguage() + "'" +
+            ", creationDate='" + getCreationDate() + "'" +
             ", publicationDate='" + getPublicationDate() + "'" +
             ", lastModified='" + getLastModified() + "'" +
             ", number='" + getNumber() + "'" +
@@ -591,13 +608,9 @@ public class Version implements Serializable {
             ", creator=" + getCreator() +
             ", publisher=" + getPublisher() +
             ", notes='" + getNotes() + "'" +
-//            ", versionNotes='" + getVersionNotes() + "'" +  // commented to shorter debug
-//            ", versionChanges='" + getVersionChanges() + "'" + // commented to shorter debug
-//            ", discussionNotes='" + getDiscussionNotes() + "'" + // commented to shorter debug
             ", license='" + getLicense() + "'" +
             ", licenseId=" + getLicenseId() +
             ", citation='" + getCitation() + "'" +
-//            ", ddiUsage='" + getDdiUsage() + "'" + // commented to shorter debug
             ", translateAgency='" + getTranslateAgency() + "'" +
             ", translateAgencyLink='" + getTranslateAgencyLink() + "'" +
             "}";
