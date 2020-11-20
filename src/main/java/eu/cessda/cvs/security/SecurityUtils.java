@@ -100,9 +100,7 @@ public final class SecurityUtils {
 
     public static Long getCurrentUserId(){
         UserDTO currentUser = getCurrentUser();
-        if( currentUser == null )
-            return null;
-        return currentUser.getId();
+        return currentUser == null ? null : currentUser.getId();
     }
 
     public static boolean isAdminContent() {
@@ -110,29 +108,29 @@ public final class SecurityUtils {
         return isCurrentUserInRole("ROLE_ADMIN") || isCurrentUserInRole("ROLE_ADMIN_CONTENT" );
     }
 
-    public static boolean hasAnyAgencyAuthority(ActionType actionType, Long agencyId, Set<AgencyRole> agencyRoles, String language){
+    public static boolean hasAnyAgencyAuthority(ActionType actionType, Long agencyId, String language) {
         UserDTO currentUser = getCurrentUser();
-        if( currentUser == null )
+        if (currentUser == null)
             return false;
 
-        if( actionType == null ){
-            throw new IllegalArgumentException( "" );
+        if (actionType == null) {
+            throw new IllegalArgumentException("");
         }
 
-        if ( isAdminContent() )
+        if (isAdminContent())
             return true;
 
         // check based on UserAgencyRole
-        return hasAgencyRole(currentUser.getUserAgencies(), agencyId, agencyRoles, language);
+        return hasAgencyRole(currentUser.getUserAgencies(), agencyId, actionType.getAgencyRoles(), language);
     }
 
-    public static void checkResourceAuthorization(ActionType actionType, Long agencyId, Set<AgencyRole> agencyRoles, String language){
-        if (!SecurityUtils.hasAnyAgencyAuthority(actionType, agencyId, agencyRoles, language)) {
+    public static void checkResourceAuthorization(ActionType actionType, Long agencyId, String language) {
+        if (!SecurityUtils.hasAnyAgencyAuthority(actionType, agencyId, language)) {
             throw new InsufficientVocabularyAuthorityException();
         }
     }
 
-    public static boolean hasAgencyRole(Long agencyId, Set<AgencyRole> agencyRoles, String language){
+    public static boolean hasAgencyRole(Long agencyId, Set<AgencyRole> agencyRoles, String language) {
         getCurrectUserDetails().ifPresent(
             userDetails -> hasAgencyRole(userDetails.getUser().getUserAgencies(), agencyId, agencyRoles, language)
         );
@@ -140,22 +138,19 @@ public final class SecurityUtils {
     }
 
     public static boolean hasAgencyRole(Set<UserAgencyDTO> userAgencies, Long agencyId, Set<AgencyRole> agencyRoles, String language){
-        boolean hasAuth = false;
         if ( agencyId == null ) { // only check for agencyRoles
             for (AgencyRole agencyRole : agencyRoles) {
                 if( userAgencies.stream().anyMatch(ua -> ua.getAgencyRole().equals(agencyRole))){
-                    hasAuth = true;
-                    break;
+                    return true;
                 }
             }
         }
         for (UserAgencyDTO userAgency : userAgencies) {
-            if( userAgency.getAgencyId().equals(agencyId) && agencyRoles.contains( userAgency.getAgencyRole() ) &&
-                ( language == null || language.equals( userAgency.getLanguage() ))) {
-                hasAuth = true;
-                break;
+            if (userAgency.getAgencyId().equals(agencyId) && agencyRoles.contains(userAgency.getAgencyRole()) &&
+                (userAgency.getLanguage().equals(language))) {
+                return true;
             }
         }
-        return hasAuth;
+        return false;
     }
 }

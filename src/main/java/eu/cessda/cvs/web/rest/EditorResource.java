@@ -117,16 +117,14 @@ public class EditorResource {
         log.debug("REST request to save Vocabulary : {}", vocabularySnippet);
         // check if user authorized to add VocabularyResource
         if( vocabularySnippet.getActionType().equals( ActionType.CREATE_CV )) {
-            SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CV, vocabularySnippet.getAgencyId(),
-                ActionType.CREATE_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
+            SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
 
             if (vocabularySnippet.getVocabularyId() != null) {
                 throw new BadRequestAlertException("A new vocabulary cannot already have an ID", ENTITY_VOCABULARY_NAME, ID_EXIST);
             }
         }
         else if( vocabularySnippet.getActionType().equals( ActionType.ADD_TL_CV )) {
-            SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CV, vocabularySnippet.getAgencyId(),
-                ActionType.ADD_TL_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
+            SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CV, vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
         } else {
             throw new IllegalArgumentException( "Illegal action type for POST" + vocabularySnippet.getActionType() );
         }
@@ -215,14 +213,14 @@ public class EditorResource {
         switch ( vocabularySnippet.getActionType() ){
             case FORWARD_CV_SL_STATUS_REVIEW:
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
                 versionDTO.setStatus(Status.REVIEW.toString());
                 versionDTO.setLastStatusChangeDate(LocalDate.now());
                 vocabularyDTO.setStatus(Status.REVIEW.toString());
                 break;
             case FORWARD_CV_SL_STATUS_PUBLISHED:
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_PUBLISHED,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_SL_STATUS_PUBLISHED.getAgencyRoles(), vocabularySnippet.getLanguage());
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
 
                 versionDTO.setStatus(Status.PUBLISHED.toString());
                 versionDTO.setLastStatusChangeDate(LocalDate.now());
@@ -231,13 +229,13 @@ public class EditorResource {
                 break;
             case FORWARD_CV_TL_STATUS_REVIEW:
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_REVIEW,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_REVIEW.getAgencyRoles(), vocabularySnippet.getLanguage());
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
                 versionDTO.setStatus(Status.REVIEW.toString());
                 versionDTO.setLastStatusChangeDate(LocalDate.now());
                 break;
             case FORWARD_CV_TL_STATUS_PUBLISHED:
                 SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_PUBLISHED,
-                    vocabularySnippet.getAgencyId(), ActionType.FORWARD_CV_TL_STATUS_PUBLISHED.getAgencyRoles(), vocabularySnippet.getLanguage());
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
 
                 versionDTO.setStatus(Status.PUBLISHED.toString());
                 versionDTO.setLastStatusChangeDate(LocalDate.now());
@@ -343,7 +341,7 @@ public class EditorResource {
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CV,
-            vocabularyDTO.getAgencyId(), ActionType.DELETE_CV.getAgencyRoles(), versionDTO.getLanguage());
+            vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
         if( versionDTO.getItemType().equals(ItemType.TL.toString()) ){
             deleteTlVocabulary(versionDTO, vocabularyDTO);
@@ -465,7 +463,7 @@ public class EditorResource {
 
         // check for authorization
         SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
-            vocabularyDTO.getAgencyId(), ActionType.CREATE_CODE.getAgencyRoles(), versionDTO.getLanguage());
+            vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
         List<ConceptDTO> storedCodes = new ArrayList<>();
         for (CodeSnippet codeSnippet : codeSnippets) {
@@ -559,7 +557,7 @@ public class EditorResource {
 
         // check if user authorized to delete VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.DELETE_CODE,
-            vocabularyDTO.getAgencyId(), ActionType.DELETE_CODE.getAgencyRoles(), versionDTO.getLanguage());
+            vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
         // remove parent-child link and save, orphan concept will be automatically deleted
         versionDTO.removeConcept( conceptDTO );
@@ -615,7 +613,7 @@ public class EditorResource {
 
         // check if user authorized to reorder VocabularyResource
         SecurityUtils.checkResourceAuthorization(ActionType.REORDER_CODE,
-            vocabularyDTO.getAgencyId(), ActionType.REORDER_CODE.getAgencyRoles(), versionDTO.getLanguage());
+            vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
         for (int i = 0; i < codeSnippet.getConceptStructureIds().size(); i++) {
             int finalI = i;

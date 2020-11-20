@@ -223,7 +223,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             if( vocabularySnippet.getActionType().equals( ActionType.EDIT_CV ) ) {
                 // check if user authorized to edit VocabularyResource
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_CV,
-                    vocabularySnippet.getAgencyId(), ActionType.EDIT_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
                 // set non-editable (via edit-cv-form) versionNumber and language on vocabularySnippet with versionDTO
                 vocabularySnippet.setLanguage( versionDTO.getLanguage());
                 vocabularySnippet.setVersionNumber( versionDTO.getNumber() );
@@ -236,19 +236,19 @@ public class VocabularyServiceImpl implements VocabularyService {
             } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV )) {
                 // check if user authorized to edit ddi-usage VocabularyResource
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_DDI_CV,
-                    vocabularySnippet.getAgencyId(), ActionType.EDIT_DDI_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
 
                 versionDTO.setDdiUsage( vocabularySnippet.getDdiUsage() );
             } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_NOTE_CV )) {
                 // check if user authorized to edit ddi-usage VocabularyResource
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_NOTE_CV,
-                    vocabularySnippet.getAgencyId(), ActionType.EDIT_NOTE_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
 
                 versionDTO.setNotes( vocabularySnippet.getNotes() );
             } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV )) {
                 // check if user authorized to edit ddi-usage VocabularyResource
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_VERSION_INFO_CV,
-                    vocabularySnippet.getAgencyId(), ActionType.EDIT_VERSION_INFO_CV.getAgencyRoles(), vocabularySnippet.getLanguage());
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
 
                 updateCvVersionInfo(vocabularySnippet, versionDTO);
             }
@@ -298,16 +298,16 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( prevVersionDTO.getItemType().equals( ItemType.SL.toString() )) {
             // check if user authorized to create new SL version
             SecurityUtils.checkResourceAuthorization(ActionType.CREATE_NEW_CV_SL_VERSION,
-                vocabularyDTO.getAgencyId(), ActionType.CREATE_NEW_CV_SL_VERSION.getAgencyRoles(), prevVersionDTO.getLanguage());
-            newVersion = new VersionDTO( prevVersionDTO, null);
+                vocabularyDTO.getAgencyId(), prevVersionDTO.getLanguage());
+            newVersion = new VersionDTO(prevVersionDTO, null);
             // update vocabularyDTO
             vocabularyDTO.setVersionNumber( newVersion.getNumber());
             vocabularyDTO.setStatus( Status.DRAFT.toString() );
         } else {
             // check if user authorized to create new TL version
             SecurityUtils.checkResourceAuthorization(ActionType.CREATE_NEW_CV_TL_VERSION,
-                vocabularyDTO.getAgencyId(), ActionType.CREATE_NEW_CV_TL_VERSION.getAgencyRoles(), prevVersionDTO.getLanguage());
-            newVersion = new VersionDTO( prevVersionDTO, currentSlVersion);
+                vocabularyDTO.getAgencyId(), prevVersionDTO.getLanguage());
+            newVersion = new VersionDTO(prevVersionDTO, currentSlVersion);
         }
         newVersion.setCreator( SecurityUtils.getCurrentUserId() );
         newVersion = versionService.save( newVersion );
@@ -524,23 +524,23 @@ public class VocabularyServiceImpl implements VocabularyService {
     private void checkEditCodeAuthorization(CodeSnippet codeSnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO) {
         if( codeSnippet.getActionType().equals( ActionType.EDIT_CODE  ))
             SecurityUtils.checkResourceAuthorization(ActionType.EDIT_CODE,
-                vocabularyDTO.getAgencyId(), ActionType.EDIT_CODE.getAgencyRoles(), versionDTO.getLanguage());
+                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
         else if( codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE  ))
             SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CODE,
-                vocabularyDTO.getAgencyId(), ActionType.ADD_TL_CODE.getAgencyRoles(), versionDTO.getLanguage());
+                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
         else if( codeSnippet.getActionType().equals( ActionType.EDIT_TL_CODE  ))
             SecurityUtils.checkResourceAuthorization(ActionType.EDIT_TL_CODE,
-                vocabularyDTO.getAgencyId(), ActionType.EDIT_TL_CODE.getAgencyRoles(), versionDTO.getLanguage());
+                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
         else if( codeSnippet.getActionType().equals( ActionType.DELETE_TL_CODE  ))
             SecurityUtils.checkResourceAuthorization(ActionType.DELETE_TL_CODE,
-                vocabularyDTO.getAgencyId(), ActionType.DELETE_TL_CODE.getAgencyRoles(), versionDTO.getLanguage());
+                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
     }
 
     private ConceptDTO createCode(CodeSnippet codeSnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO) {
         ConceptDTO conceptDTO;
         // check for authorization
         SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
-            vocabularyDTO.getAgencyId(), ActionType.CREATE_CODE.getAgencyRoles(), versionDTO.getLanguage());
+            vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
         // check if concept already exist for new concept
         if (versionDTO.getConcepts().stream()
@@ -655,7 +655,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             try {
                 FileUtils.deleteDirectory(dirPath);
             } catch (IOException e) {
-                log.error( "Unable to delete file " + e.getMessage() );
+                log.error("Unable to delete directory: {}", e.toString());
             }
         }
     }
