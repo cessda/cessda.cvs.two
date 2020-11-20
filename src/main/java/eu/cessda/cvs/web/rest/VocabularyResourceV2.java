@@ -305,7 +305,7 @@ public class VocabularyResourceV2 {
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
             example = "en-4.0",
             required = false
-        ) @RequestParam String languageVersion
+        ) @RequestParam( required = false )  String languageVersion
     ) throws IOException {
         log.debug("REST request to redirect of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
         HttpHeaders headers = new HttpHeaders();
@@ -350,7 +350,7 @@ public class VocabularyResourceV2 {
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
             example = "en-4.0",
             required = false
-        ) @RequestParam String languageVersion
+        ) @RequestParam( required = false )  String languageVersion
     ) throws IOException {
         log.debug("REST request to get a HTML file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
         return transformVocabularyToHtml(request, vocabulary, versionNumberSl, languageVersion);
@@ -393,7 +393,7 @@ public class VocabularyResourceV2 {
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
             example = "en-4.0",
             required = false
-        ) @RequestParam String languageVersion
+        ) @RequestParam( required = false )  String languageVersion
     ) throws IOException {
         log.debug("REST request to get a JSON file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
         return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
@@ -436,7 +436,7 @@ public class VocabularyResourceV2 {
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
             example = "en-4.0",
             required = false
-        ) @RequestParam String languageVersion
+        ) @RequestParam( required = false )  String languageVersion
     ) throws IOException {
         log.debug("REST request to get a JSON file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
         return transformVocabularyToJsonLd(vocabulary, versionNumberSl, languageVersion);
@@ -479,7 +479,7 @@ public class VocabularyResourceV2 {
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
             example = "en-4.0",
             required = false
-        ) @RequestParam String languageVersion
+        ) @RequestParam( required = false )  String languageVersion
     ) throws IOException {
         log.debug("REST request to get a PDF file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
         return transformVocabularyToPdf(request, vocabulary, versionNumberSl, languageVersion);
@@ -522,7 +522,7 @@ public class VocabularyResourceV2 {
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
             example = "en-4.0",
             required = false
-        ) @RequestParam String languageVersion
+        ) @RequestParam( required = false )  String languageVersion
     ) throws IOException {
         log.debug("REST request to get a WORD-DOCX  file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
         return transformVocabularyToDocx(request, vocabulary, versionNumberSl, languageVersion);
@@ -565,7 +565,7 @@ public class VocabularyResourceV2 {
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
             example = "en-4.0",
             required = false
-        ) @RequestParam String languageVersion
+        ) @RequestParam( required = false ) String languageVersion
     ) throws IOException {
         log.debug("REST request to get a SKOS RDF file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
         return transformVocabularyToRdf(request, vocabulary, versionNumberSl, languageVersion);
