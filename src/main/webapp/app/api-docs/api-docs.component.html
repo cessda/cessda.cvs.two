@@ -1,28 +1,34 @@
-<div class="container-inner">
-    <jhi-alert-error></jhi-alert-error>
-    <jhi-alert></jhi-alert>
+<div class="row">
+    <div class="row-content">
+        <div class="content">
+            <div class="content-left">
+                <div class="sticky-panel">
 
-    <div class="row-detail form-group">
-        <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
-            <button *ngIf="!isWriteApiDocs" type="button" ngbTooltip="Edit comment" class="btn btn-sm btn-primary-outline float-right" data-dismiss="modal" (click)="isWriteApiDocs = !isWriteApiDocs">
-                <fa-icon class="text-secondary" [icon]="'edit'"></fa-icon>
-                <span> Edit</span>
-            </button>
+                    <a class="acc-header option-label col-12 mtop10" aria-controls="action-panel"><strong>CVS API Docs</strong></a>
+                    <div *ngIf="metadataValueMenu" class="w-100">
+                        <jhi-metadata-item [metadataField]="metadataField" [metadataValue]="metadataValueMenu"
+                         [isWriting]="metadataValueMenu.id === undefined" [position]="0" [newTabLink]="false"></jhi-metadata-item>
+                    </div>
+                    <div id="action-panel" class="acc-body" [ngbCollapse]="false">
+                        <a href="/swagger"><strong>See Swagger UI</strong></a>
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <jhi-alert-error></jhi-alert-error>
+                <jhi-alert></jhi-alert>
+                <div *ngFor="let metadataValue of metadataValues; let i = index" class="row-detail form-group">
+                    <jhi-metadata-item *ngIf="metadataValue.identifier !== 'overview'" [metadataField]="metadataField" [metadataValue]="metadataValue"
+                     [isWriting]="metadataValue.id === undefined" [position]="(i + 1)" [newTabLink]="true"></jhi-metadata-item>
+                </div>
+
+                <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
+                    <button type="button" ngbTooltip="Add Section" (click)="addSection()" class="btn btn-sm btn-primary-outline float-right">
+                        <fa-icon class="text-secondary" [icon]="'plus'"></fa-icon>
+                        <span> Add Section</span>
+                    </button>
+                </div>
+            </div>
         </div>
-        <div *ngIf="!isWriteApiDocs" class="detail-column" [innerHTML]="ApiDocsForm.get('content')? ApiDocsForm.get('content')!.value : 'no information'">        </div>
-        <form novalidate [formGroup]="ApiDocsForm">
-            <div *ngIf="isWriteApiDocs">
-                <quill-editor class="large-quill" formControlName="content"></quill-editor>
-            </div>
-            <div *ngIf="isWriteApiDocs" class="ql-editor-buttons">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="isWriteApiDocs = !isWriteApiDocs">
-                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
-                </button>
-                <button type="button" id="save-ddi-usage" [disabled]="ApiDocsForm.invalid || isSaving" (click)="saveApiDocs()" class="btn btn-primary">
-                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
-                </button>
-            </div>
-        </form>
     </div>
-
 </div>

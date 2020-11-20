@@ -6,29 +6,23 @@ import eu.cessda.cvs.repository.ConceptRepository;
 import eu.cessda.cvs.service.ConceptService;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.mapper.ConceptMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -168,26 +162,6 @@ public class ConceptResourceIT {
         // Validate the Concept in the database
         List<Concept> conceptList = conceptRepository.findAll();
         assertThat(conceptList).hasSize(databaseSizeBeforeCreate);
-    }
-
-
-    @Test
-    @Transactional
-    public void checkNotationIsRequired() throws Exception {
-        int databaseSizeBeforeTest = conceptRepository.findAll().size();
-        // set the field null
-        concept.setNotation(null);
-
-        // Create the Concept, which fails.
-        ConceptDTO conceptDTO = conceptMapper.toDto(concept);
-
-        restConceptMockMvc.perform(post("/api/concepts")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(conceptDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Concept> conceptList = conceptRepository.findAll();
-        assertThat(conceptList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test

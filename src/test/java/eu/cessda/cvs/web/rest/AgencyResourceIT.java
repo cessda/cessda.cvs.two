@@ -6,30 +6,23 @@ import eu.cessda.cvs.repository.AgencyRepository;
 import eu.cessda.cvs.service.AgencyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.mapper.AgencyMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -62,6 +55,9 @@ public class AgencyResourceIT {
 
     private static final String DEFAULT_URI = "AAAAAAAAAA";
     private static final String UPDATED_URI = "BBBBBBBBBB";
+
+    private static final String DEFAULT_URI_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_URI_CODE = "BBBBBBBBBB";
 
     private static final String DEFAULT_CANONICAL_URI = "AAAAAAAAAA";
     private static final String UPDATED_CANONICAL_URI = "BBBBBBBBBB";
@@ -98,6 +94,7 @@ public class AgencyResourceIT {
             .license(DEFAULT_LICENSE)
             .licenseId(DEFAULT_LICENSE_ID)
             .uri(DEFAULT_URI)
+            .uriCode(DEFAULT_URI_CODE)
             .canonicalUri(DEFAULT_CANONICAL_URI);
         return agency;
     }
@@ -116,6 +113,7 @@ public class AgencyResourceIT {
             .license(UPDATED_LICENSE)
             .licenseId(UPDATED_LICENSE_ID)
             .uri(UPDATED_URI)
+            .uriCode(UPDATED_URI_CODE)
             .canonicalUri(UPDATED_CANONICAL_URI);
         return agency;
     }
@@ -148,6 +146,7 @@ public class AgencyResourceIT {
         assertThat(testAgency.getLicense()).isEqualTo(DEFAULT_LICENSE);
         assertThat(testAgency.getLicenseId()).isEqualTo(DEFAULT_LICENSE_ID);
         assertThat(testAgency.getUri()).isEqualTo(DEFAULT_URI);
+        assertThat(testAgency.getUri()).isEqualTo(DEFAULT_URI_CODE);
         assertThat(testAgency.getCanonicalUri()).isEqualTo(DEFAULT_CANONICAL_URI);
     }
 
@@ -190,6 +189,7 @@ public class AgencyResourceIT {
             .andExpect(jsonPath("$.[*].license").value(hasItem(DEFAULT_LICENSE)))
             .andExpect(jsonPath("$.[*].licenseId").value(hasItem(DEFAULT_LICENSE_ID.intValue())))
             .andExpect(jsonPath("$.[*].uri").value(hasItem(DEFAULT_URI)))
+            .andExpect(jsonPath("$.[*].uriCode").value(hasItem(DEFAULT_URI_CODE)))
             .andExpect(jsonPath("$.[*].canonicalUri").value(hasItem(DEFAULT_CANONICAL_URI)));
     }
 
@@ -211,6 +211,7 @@ public class AgencyResourceIT {
             .andExpect(jsonPath("$.license").value(DEFAULT_LICENSE))
             .andExpect(jsonPath("$.licenseId").value(DEFAULT_LICENSE_ID.intValue()))
             .andExpect(jsonPath("$.uri").value(DEFAULT_URI))
+            .andExpect(jsonPath("$.uriCode").value(DEFAULT_URI_CODE))
             .andExpect(jsonPath("$.canonicalUri").value(DEFAULT_CANONICAL_URI));
     }
 
@@ -242,6 +243,7 @@ public class AgencyResourceIT {
             .license(UPDATED_LICENSE)
             .licenseId(UPDATED_LICENSE_ID)
             .uri(UPDATED_URI)
+            .uriCode(UPDATED_URI_CODE)
             .canonicalUri(UPDATED_CANONICAL_URI);
         AgencyDTO agencyDTO = agencyMapper.toDto(updatedAgency);
 
@@ -261,6 +263,7 @@ public class AgencyResourceIT {
         assertThat(testAgency.getLicense()).isEqualTo(UPDATED_LICENSE);
         assertThat(testAgency.getLicenseId()).isEqualTo(UPDATED_LICENSE_ID);
         assertThat(testAgency.getUri()).isEqualTo(UPDATED_URI);
+        assertThat(testAgency.getUriCode()).isEqualTo(UPDATED_URI_CODE);
         assertThat(testAgency.getCanonicalUri()).isEqualTo(UPDATED_CANONICAL_URI);
     }
 

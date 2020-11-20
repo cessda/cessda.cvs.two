@@ -26,11 +26,6 @@
             </div>
         </div>
         <div class="row-content">
-            <ngb-alert class="text-center" [dismissible]="false" *ngIf="vocabulary!.versionNumber !== getSlVersion()!.number">
-                <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
-                    {{vocabulary!.notation}} v.{{vocabulary!.versionNumber}}
-                </a></strong>
-            </ngb-alert>
             <div class="content">
                 <div class="content-left">
                     <div class="sticky-panel">
@@ -362,7 +357,7 @@
                                         {{lang}}</button>
                                     <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownBasic'+lang">
                                         <button ngbDropdownItem *ngFor="let version of getVersionsByLanguage(lang)!"
-                                                (click)="vocabulary!.selectedLang = version!.language;vocabulary!.selectedVersion = version!.number"
+                                                (click)="switchLang()"
                                                 [ngClass]="{'active': lang === vocabulary!.selectedLang && version!.number === vocabulary!.selectedVersion}"
                                                 ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
                                             v.{{version!.number}}
@@ -404,9 +399,7 @@
                         </a>
                         <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'detail', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'detail'}" #detailPanel id="detailPanel" >
                             <div class="concept-row row-header">
-                                <span class="column1">
-                                    Code value
-                                </span>
+                                <span class="column1">Code value</span>
                                 <span *ngIf="version!.languageSl" class="columnSl2">
                                     Code descriptive term ({{version!.languageSl}})
                                 </span>
@@ -508,6 +501,9 @@
                                                              [dataSource]="'JSON'">
                                         </jhi-version-compare>
                                     </div>
+                                    <div *ngIf="!version!.previousVersion && version!.versionHistories!.length > 0" class="acc-header option-label col-12 mtop10">
+                                        Prev-next comparison not available, due to {{version!.language}}-{{getMissingTlVersion(version!.number!)}} missing!
+                                    </div>
                                 </div>
                             </div>
                             <!-- other older versions -->
@@ -518,7 +514,7 @@
                                     <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
                                     <span>{{version!.language}}: {{vh.version}} </span>
                                     <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                                    <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
+                                    <a *ngIf="!vh.version.startsWith(getSlVersion()!.number)" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
                                         <fa-icon icon="external-link-alt"></fa-icon>
                                     </a>
                                 </a>
@@ -550,6 +546,9 @@
                                                                  [dataSource]="'JSON'">
                                             </jhi-version-compare>
                                         </ng-container>
+                                        <div *ngIf="!vh.prevVersion && i !== version!.versionHistories!.length" class="acc-header option-label col-12 mtop10">
+                                            Prev-next comparison not available, due to {{version!.language}}-{{getMissingTlVersion(vh.version)}} missing!
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -678,7 +677,7 @@
                             <span>Exports</span>
                         </a>
                         <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'export', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'export'}" #exportPanel id="exportPanel">
-                            <table class="table table-striped">
+                            <table class="table table-striped" aria-describedby="page-heading">
                                 <thead>
                                 <tr>
                                     <th scope="col"><label>Language</label></th>

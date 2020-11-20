@@ -1,9 +1,7 @@
 package eu.cessda.cvs.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.data.elasticsearch.annotations.DateFormat;
-import org.springframework.data.elasticsearch.annotations.Field;
-import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -33,17 +31,19 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 240)
     @Column(name = "uri", length = 240)
+    @Field( type = FieldType.Keyword )
     private String uri;
 
     @NotNull
     @Size(max = 240)
     @Column(name = "notation", length = 240, nullable = false)
-    @Field( type = FieldType.Text, fielddata = true )
+    @Field( type = FieldType.Keyword )
     private String notation;
 
     @NotNull
     @Size(max = 20)
     @Column(name = "version_number", length = 20, nullable = false)
+    @Field( type = FieldType.Keyword )
     private String versionNumber;
 
     @Column(name = "initial_publication")
@@ -77,6 +77,7 @@ public class VocabularyBase implements Serializable {
     private String agencyName;
 
     @Column(name = "agency_logo")
+    @Field( type = FieldType.Keyword )
     private String agencyLogo;
 
     @Transient
@@ -94,15 +95,22 @@ public class VocabularyBase implements Serializable {
 
     @Lob
     @Column(name = "notes")
+    @Field( type = FieldType.Text )
     private String notes;
 
     @Size(max = 20)
     @Column(name = "version_sq", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionSq;
 
     @Lob
     @Column(name = "title_sq")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleSq;
 
     @Lob
@@ -112,11 +120,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_bs", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionBs;
 
     @Lob
     @Column(name = "title_bs")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleBs;
 
     @Lob
@@ -126,11 +140,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_bg", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionBg;
 
     @Lob
     @Column(name = "title_bg")
-    @Field( type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "bulgarian", searchAnalyzer = "bulgarian" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleBg;
 
     @Lob
@@ -140,11 +160,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_hr", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionHr;
 
     @Lob
     @Column(name = "title_hr")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleHr;
 
     @Lob
@@ -154,11 +180,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_cs", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionCs;
 
     @Lob
     @Column(name = "title_cs")
-    @Field( type = FieldType.Text, store = true, analyzer = "czech", searchAnalyzer = "czech" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "czech", searchAnalyzer = "czech" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleCs;
 
     @Lob
@@ -168,11 +200,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_da", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionDa;
 
     @Lob
     @Column(name = "title_da")
-    @Field( type = FieldType.Text, store = true, analyzer = "danish", searchAnalyzer = "danish" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "danish", searchAnalyzer = "danish" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleDa;
 
     @Lob
@@ -182,11 +220,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_nl", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionNl;
 
     @Lob
     @Column(name = "title_nl")
-    @Field( type = FieldType.Text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "dutch", searchAnalyzer = "dutch" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleNl;
 
     @Lob
@@ -196,11 +240,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_en", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionEn;
 
     @Lob
     @Column(name = "title_en")
-    @Field( type = FieldType.Text, store = true, analyzer = "english", searchAnalyzer = "english" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "english", searchAnalyzer = "english" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleEn;
 
     @Lob
@@ -210,11 +260,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_et", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionEt;
 
     @Lob
     @Column(name = "title_et")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleEt;
 
     @Lob
@@ -224,11 +280,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_fi", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionFi;
 
     @Lob
     @Column(name = "title_fi")
-    @Field( type = FieldType.Text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "finnish", searchAnalyzer = "finnish" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleFi;
 
     @Lob
@@ -238,11 +300,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_fr", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionFr;
 
     @Lob
     @Column(name = "title_fr")
-    @Field( type = FieldType.Text, store = true, analyzer = "french", searchAnalyzer = "french" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "french", searchAnalyzer = "french" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleFr;
 
     @Lob
@@ -252,11 +320,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_de", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionDe;
 
     @Lob
     @Column(name = "title_de")
-    @Field( type = FieldType.Text, store = true, analyzer = "german", searchAnalyzer = "german" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "german", searchAnalyzer = "german" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleDe;
 
     @Lob
@@ -266,11 +340,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_el", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionEl;
 
     @Lob
     @Column(name = "title_el")
-    @Field( type = FieldType.Text, store = true, analyzer = "greek", searchAnalyzer = "greek" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "greek", searchAnalyzer = "greek" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleEl;
 
     @Lob
@@ -280,11 +360,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_hu", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionHu;
 
     @Lob
     @Column(name = "title_hu")
-    @Field( type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "hungarian", searchAnalyzer = "hungarian" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleHu;
 
     @Lob
@@ -294,11 +380,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_it", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionIt;
 
     @Lob
     @Column(name = "title_it")
-    @Field( type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "italian", searchAnalyzer = "italian" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleIt;
 
     @Lob
@@ -308,11 +400,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_ja", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionJa;
 
     @Lob
     @Column(name = "title_ja")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleJa;
 
     @Lob
@@ -322,11 +420,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_lt", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionLt;
 
     @Lob
     @Column(name = "title_lt")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleLt;
 
     @Lob
@@ -336,11 +440,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_mk", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionMk;
 
     @Lob
     @Column(name = "title_mk")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleMk;
 
     @Lob
@@ -350,11 +460,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_no", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionNo;
 
     @Lob
     @Column(name = "title_no")
-    @Field( type = FieldType.Text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "norwegian", searchAnalyzer = "norwegian" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleNo;
 
     @Lob
@@ -364,11 +480,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_pl", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionPl;
 
     @Lob
     @Column(name = "title_pl")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titlePl;
 
     @Lob
@@ -378,11 +500,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_pt", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionPt;
 
     @Lob
     @Column(name = "title_pt")
-    @Field( type = FieldType.Text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "portuguese", searchAnalyzer = "portuguese" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titlePt;
 
     @Lob
@@ -392,11 +520,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_ro", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionRo;
 
     @Lob
     @Column(name = "title_ro")
-    @Field( type = FieldType.Text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "romanian", searchAnalyzer = "romanian" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleRo;
 
     @Lob
@@ -406,11 +540,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_ru", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionRu;
 
     @Lob
     @Column(name = "title_ru")
-    @Field( type = FieldType.Text, store = true, analyzer = "russian", searchAnalyzer = "russian" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "russian", searchAnalyzer = "russian" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleRu;
 
     @Lob
@@ -420,11 +560,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_sr", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionSr;
 
     @Lob
     @Column(name = "title_sr")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleSr;
 
     @Lob
@@ -434,11 +580,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_sk", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionSk;
 
     @Lob
     @Column(name = "title_sk")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleSk;
 
     @Lob
@@ -448,11 +600,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_sl", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionSl;
 
     @Lob
     @Column(name = "title_sl")
-    @Field( type = FieldType.Text, store = true )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleSl;
 
     @Lob
@@ -462,11 +620,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_es", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionEs;
 
     @Lob
     @Column(name = "title_es")
-    @Field( type = FieldType.Text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "spanish", searchAnalyzer = "spanish" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleEs;
 
     @Lob
@@ -476,11 +640,17 @@ public class VocabularyBase implements Serializable {
 
     @Size(max = 20)
     @Column(name = "version_sv", length = 20)
+    @Field( type = FieldType.Keyword )
     private String versionSv;
 
     @Lob
     @Column(name = "title_sv")
-    @Field( type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" )
+    @MultiField(
+        mainField = @Field( type = FieldType.Text, store = true, analyzer = "swedish", searchAnalyzer = "swedish" ),
+        otherFields = {
+            @InnerField( suffix = "Key", type = FieldType.Keyword)
+        }
+    )
     private String titleSv;
 
     @Lob

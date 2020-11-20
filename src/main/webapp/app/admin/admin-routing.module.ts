@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+
 /* jhipster-needle-add-admin-module-import - JHipster will add admin modules imports here */
 
 @NgModule({
@@ -22,16 +23,16 @@ import { RouterModule } from '@angular/router';
         loadChildren: () => import('./configuration/configuration.module').then(m => m.ConfigurationModule)
       },
       {
-        path: 'docs',
-        loadChildren: () => import('./docs/docs.module').then(m => m.DocsModule)
-      },
-      {
         path: 'health',
         loadChildren: () => import('./health/health.module').then(m => m.HealthModule)
       },
       {
         path: 'logs',
         loadChildren: () => import('./logs/logs.module').then(m => m.LogsModule)
+      },
+      {
+        path: 'maintenance',
+        loadChildren: () => import('./maintenance/maintenance.module').then(m => m.MaintenanceModule)
       },
       {
         path: 'metrics',

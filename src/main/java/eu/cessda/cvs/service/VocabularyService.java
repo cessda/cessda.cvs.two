@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Service Interface for managing {@link eu.cessda.cvs.domain.Vocabulary}.
@@ -52,6 +53,14 @@ public interface VocabularyService {
      * @return
      */
     ConceptDTO saveCode(CodeSnippet codeSnippet);
+
+    /**
+     * save any vocabularyChange from codeSNippet if any
+     *
+     * @param codeSnippet
+     * @param versionDTO
+     */
+    void storeChangeType(CodeSnippet codeSnippet, VersionDTO versionDTO);
 
     /**
      * Get all the vocabularies.
@@ -180,6 +189,25 @@ public interface VocabularyService {
      */
     void indexAgencyStats( VocabularyDTO vocabulary );
 
+    /**
+     * Get all of the published CV JSON path in specific version by notation
+     * @param notation
+     * @param versionNumber
+     * @return
+     */
+    Path getPublishedCvPath(String notation, String versionNumber);
+
+    /**
+     * Get all of the published CV JSON path (latest version by notation)
+     * @param notation
+     * @return
+     */
+    Path getPublishedCvPath(String notation);
+
+    /**
+     * Get all of the published CVs JSON path
+     */
+    List<Path> getPublishedCvPaths();
 
     /**
      * Perform indexing in all published vocabularies
@@ -209,11 +237,19 @@ public interface VocabularyService {
     EsQueryResultDetail search (EsQueryResultDetail esQueryResultDetail);
 
     /**
+     * Find all vocabularies code given ElasticSearch (ES) query
+     *
+     * @param esQueryResultDetail contains ES query details
+     * @return esQueryResultDetail contains ES query details and results
+     */
+    EsQueryResultDetail searchCode (EsQueryResultDetail esQueryResultDetail);
+
+    /**
      * Generate JSON files for all published vocabularies.
      *
      * @throws IOException
      */
-    void generateJsonAllVocabularyPublish() throws IOException;
+    String generateJsonAllVocabularyPublish() throws IOException;
 
     /**
      * Generate JSON files for published vocabularies
@@ -221,7 +257,7 @@ public interface VocabularyService {
      * @param vocabularies the published vocabularyDTOs array
      * @throws IOException
      */
-    void generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) throws IOException;
+    String generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) throws IOException;
 
     /**
      * Generate files to be exported for specific vocabulary
@@ -248,9 +284,47 @@ public interface VocabularyService {
     File generateVocabularyEditorFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
 
     /**
-     * Perform concept normalization by checking the similarity of SL and TL position, and parent by matching notation
-     * @param vocabularyDTOs
+     * Filter-out vocabularyDTO.versions based on versionList e.g. (en-1.0, fr-1.0.1). Includes all if versionList is null
+     * @param versionList
+     * @param vocabularyDTO
      * @return
      */
-    String performConceptSlAndTlNormalization(VocabularyDTO ...vocabularyDTOs);
+    Set<VersionDTO> filterOutVocabularyVersions(String versionList, VocabularyDTO vocabularyDTO);
+
+    /**
+     * Perform TL concepts checking for all vocabulary (see performTlMigrationNormalization)
+     * @return the information about the concept TL normalization
+     */
+    String performTlMigrationNormalizationChecking();
+
+    /**
+     * Perform TL concepts normalization by checking the similarity of SL and TL position, and parent by matching notation,
+     * also check the missing concept notation in TLs
+     * For missing but published TL concepts. The concepts will be copied from SL if the prev concept not exist
+     * For missing but not-published TL concepts. The concept will be created without title and definition
+     * @param isChecking, when true, no changes will be made
+     * @param notations, notation List separated by comma"," e.g AnalysisUnit,TopicClassification, for all CV uses keyword "_all"
+     * @return the information about the concept TL normalization
+     */
+    String performTlMigrationNormalization( boolean isChecking, String notations);
+
+    /**
+     * Perform TL concepts normalization by checking the similarity of SL and TL position, and parent by matching notation,
+     * also check the missing concept notation in TLs
+     * For missing but published TL concepts. The concepts will be copied from SL if the prev concept not exist
+     * For missing but not-published TL concepts. The concept will be created without title and definition
+     * @param isChecking, when true, no changes will be made
+     * @param vocabularyDTOs
+     * @return the information about the concept TL normalization
+     */
+    String performTlMigrationNormalization(boolean isChecking, VocabularyDTO ...vocabularyDTOs);
+
+
+    /**
+     *
+     * @param agencyId
+     * @param agencyUri
+     * @param agencyUriCode
+     */
+    void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode );
 }

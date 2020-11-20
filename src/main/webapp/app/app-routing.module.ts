@@ -10,9 +10,9 @@ import { UserRouteAccessService } from 'app/core/auth/user-route-access-service'
 const LAYOUT_ROUTES = [navbarRoute, ...errorRoute];
 
 const routerOptions: ExtraOptions = {
-  // useHash: false,
-  // anchorScrolling: 'enabled',
-  scrollPositionRestoration: 'enabled',
+  useHash: false,
+  anchorScrolling: 'enabled',
+  // scrollPositionRestoration: 'enabled',
   enableTracing: DEBUG_INFO_ENABLED,
   onSameUrlNavigation: 'reload'
 };
@@ -52,6 +52,10 @@ const routerOptions: ExtraOptions = {
         {
           path: 'api-docs',
           loadChildren: () => import('./api-docs/api-docs.module').then(m => m.CvsApiDocsModule)
+        },
+        {
+          path: 'swagger',
+          loadChildren: () => import('./docs/docs.module').then(m => m.DocsModule)
         },
         {
           path: 'account',

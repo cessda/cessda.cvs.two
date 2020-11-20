@@ -1,4 +1,4 @@
-import { TestBed, getTestBed } from '@angular/core/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as moment from 'moment';
 import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
@@ -37,6 +37,7 @@ describe('Service Tests', () => {
         false,
         'AAAAAAA',
         'en',
+        'AAAAAAA',
         '1.0',
         0,
         'AAAAAAA',
@@ -187,6 +188,9 @@ describe('Service Tests', () => {
             withdrawn: true,
             discoverable: true,
             sourceLanguage: 'BBBBBB',
+            selectedLang: 'BBBBBB',
+            selectedCode: 'BBBBBB',
+            selectedVersion: 'BBBBBB',
             agencyId: 1,
             agencyName: 'BBBBBB',
             agencyLogo: 'BBBBBB',
@@ -310,6 +314,9 @@ describe('Service Tests', () => {
             withdrawn: true,
             discoverable: true,
             sourceLanguage: 'BBBBBB',
+            selectedLang: 'BBBBBB',
+            selectedCode: 'BBBBBB',
+            selectedVersion: 'BBBBBB',
             agencyId: 1,
             agencyName: 'BBBBBB',
             agencyLogo: 'BBBBBB',

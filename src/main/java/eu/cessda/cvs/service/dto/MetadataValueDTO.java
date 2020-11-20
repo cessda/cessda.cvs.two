@@ -13,6 +13,8 @@ public class MetadataValueDTO implements Serializable {
 
     private Long id;
 
+    private String identifier;
+
     @Lob
     private String value;
 
@@ -23,6 +25,8 @@ public class MetadataValueDTO implements Serializable {
     private Long metadataFieldId;
 
     private String metadataKey;
+
+    private Integer position = 0;
 
     public Long getId() {
         return id;
@@ -72,6 +76,22 @@ public class MetadataValueDTO implements Serializable {
         this.metadataKey = metadataKey;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -97,6 +117,8 @@ public class MetadataValueDTO implements Serializable {
     public String toString() {
         return "MetadataValueDTO{" +
             "id=" + getId() +
+            ", identifier='" + getIdentifier() + "'" +
+            ", position='" + getPosition() + "'" +
             ", value='" + getValue() + "'" +
             ", objectType='" + getObjectType() + "'" +
             ", objectId=" + getObjectId() +

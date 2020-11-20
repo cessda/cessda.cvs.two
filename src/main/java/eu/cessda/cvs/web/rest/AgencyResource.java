@@ -3,6 +3,7 @@ package eu.cessda.cvs.web.rest;
 import eu.cessda.cvs.domain.search.AgencyStat;
 import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
 import eu.cessda.cvs.service.AgencyService;
+import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
@@ -40,10 +41,14 @@ public class AgencyResource {
 
     private final AgencyService agencyService;
 
+    private final VocabularyService vocabularyService;
+
     private final AgencyStatSearchRepository agencyStatSearchRepository;
 
-    public AgencyResource(AgencyService agencyService, AgencyStatSearchRepository agencyStatSearchRepository) {
+    public AgencyResource(AgencyService agencyService, VocabularyService vocabularyService,
+                          AgencyStatSearchRepository agencyStatSearchRepository) {
         this.agencyService = agencyService;
+        this.vocabularyService = vocabularyService;
         this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
@@ -80,6 +85,12 @@ public class AgencyResource {
         if (agencyDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
+        // get agency and examine if there is difference in URI, URI-Code and URN
+        final AgencyDTO storedAgencyDTO = agencyService.findOne(agencyDTO.getId()).orElse(null);
+//        if( !storedAgencyDTO.getUri().equals(agencyDTO.getUri()) || !storedAgencyDTO.getUriCode().equals(agencyDTO.getUriCode())) {
+            vocabularyService.updateVocabularyUri(agencyDTO.getId(), agencyDTO.getUri(), agencyDTO.getUriCode());
+//        }
+
         AgencyDTO result = agencyService.save(agencyDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, agencyDTO.getId().toString()))

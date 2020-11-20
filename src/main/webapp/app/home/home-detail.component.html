@@ -249,6 +249,9 @@
                                                      [dataSource]="'JSON'">
                                 </jhi-version-compare>
                             </div>
+                            <div *ngIf="!getVersionByLangNumber()!.previousVersion && getVersionByLangNumber()!.versionHistories!.length > 0" class="acc-header option-label col-12 mtop10">
+                                Prev-next comparison not available, due to {{getVersionByLangNumber()!.language}}-{{getMissingTlVersion(getVersionByLangNumber()!.number!)}} missing!
+                            </div>
 
                         </div>
 
@@ -261,7 +264,7 @@
                             <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
                             <span>{{getVersionByLangNumber()!.language}}: {{vh.version}} </span>
                             <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                            <a [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
+                            <a *ngIf="!vh.version.startsWith(getSlVersion()!.number)" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
                         </a>
@@ -405,7 +408,7 @@
                     <span>Exports</span>
                 </a>
                 <div class="detail-panel" [ngClass]="{'select-by-tab': detailForm.get('tabSelected')!.value === 'export', 'not-select-by-tab': detailForm.get('tabSelected')!.value !== 'export'}" #exportPanel id="exportPanel">
-                    <table class="table table-striped">
+                    <table class="table table-striped" aria-describedby="page-heading">
                         <thead>
                         <tr>
                             <th scope="col"><label>Language</label></th>

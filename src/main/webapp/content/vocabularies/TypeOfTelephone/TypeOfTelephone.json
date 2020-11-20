@@ -1,7 +1,7 @@
 {
   "id": 69,
   "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone/en/1.0",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone",
   "notation": "TypeOfTelephone",
   "versionNumber": "1.0",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2020-02-21",
+  "publicationDate": "2020-02-20",
   "notes": "",
   "versions": [
     {
@@ -18,9 +18,9 @@
       "status": "PUBLISHED",
       "itemType": "SL",
       "language": "en",
-      "publicationDate": "2020-02-21",
+      "publicationDate": "2020-02-20",
       "number": "1.0",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone/en/1.0",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html",
       "canonicalUri": "urn:ddi:int.ddi.cv:TypeOfTelephone:1.0",
       "notation": "TypeOfTelephone",
       "title": "Type of Telephone",
@@ -36,19 +36,19 @@
       "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2020). Type of Telephone (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfTelephone:1.0. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<div>\n Module Name: archive\n</div>\n<div>\n Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/TypeOfTelephone.html\">TypeOfTelephone</a>\n</div>\n<div>\n <br />\n</div>\n<div>\n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5&nbsp;</a>\n</div>\n<div>\n DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary.\n</div>",
-      "lastStatusChangeDate": "2020-10-01",
+      "lastStatusChangeDate": "2020-09-30",
       "concepts": [
         {
           "id": 3551,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Fixed/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Fixed",
           "notation": "Fixed",
           "title": "Fixed telephone",
-          "definition": "A telephone that transmits signals converted from audio data through physical media, such as wire or fiber optic cable; also known as landline. ",
+          "definition": "A telephone that transmits signals converted from audio data through physical media, such as wire or fiber optic cable; also known as landline.",
           "position": 0
         },
         {
           "id": 3552,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Fixed.PersonalPrivate/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Fixed.PersonalPrivate",
           "notation": "Fixed.PersonalPrivate",
           "title": "Fixed telephone: Personal/Private",
           "definition": "A fixed telephone belonging to a private person, usually located in a home or a private dwelling unit.",
@@ -57,7 +57,7 @@
         },
         {
           "id": 3553,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Fixed.OrganizationBusiness/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Fixed.OrganizationBusiness",
           "notation": "Fixed.OrganizationBusiness",
           "title": "Fixed telephone: Organization/Business",
           "definition": "A fixed telephone of an organization, institution or business, or the work telephone of a person employed by the organization.",
@@ -66,15 +66,15 @@
         },
         {
           "id": 3554,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Mobile/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Mobile",
           "notation": "Mobile",
           "title": "Mobile telephone",
-          "definition": "A portable telephone connected to a wireless communications network through radio waves or satellite transmissions; includes phones known as cellular (or cell) phones, hand phones, as well as satellite phones. ",
+          "definition": "A portable telephone connected to a wireless communications network through radio waves or satellite transmissions; includes phones known as cellular (or cell) phones, hand phones, as well as satellite phones.",
           "position": 3
         },
         {
           "id": 3555,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Mobile.PersonalPrivate/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Mobile.PersonalPrivate",
           "notation": "Mobile.PersonalPrivate",
           "title": "Mobile telephone: Personal/Private",
           "definition": "A mobile telephone belonging to a private person.",
@@ -83,7 +83,7 @@
         },
         {
           "id": 3556,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Mobile.OrganizationBusiness/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Mobile.OrganizationBusiness",
           "notation": "Mobile.OrganizationBusiness",
           "title": "Mobile telephone: Organization/Business",
           "definition": "A mobile telephone of an organization, institution or business, or the mobile work telephone of a person employed by the organization.",
@@ -92,7 +92,7 @@
         },
         {
           "id": 3557,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Fax/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Fax",
           "notation": "Fax",
           "title": "Fax",
           "definition": "A fax (short for facsimile) is a device used for the telephonic transmission of scanned-in printed material (text or images), usually to a telephone number associated with a printer or other output device; also known as telecopying.",
@@ -100,7 +100,7 @@
         },
         {
           "id": 3558,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Fax.PersonalPrivate/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Fax.PersonalPrivate",
           "notation": "Fax.PersonalPrivate",
           "title": "Fax: Personal/Private",
           "definition": "A fax belonging to a private person.",
@@ -109,7 +109,7 @@
         },
         {
           "id": 3559,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Fax.OrganizationBusiness/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Fax.OrganizationBusiness",
           "notation": "Fax.OrganizationBusiness",
           "title": "Fax: Organization/Business",
           "definition": "The fax of an organization, institution or business, or the work fax of a person employed by the organization.",
@@ -118,7 +118,7 @@
         },
         {
           "id": 3560,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfTelephone#Other/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfTelephone_1.0.html#Other",
           "notation": "Other",
           "title": "Other",
           "definition": "Use when the type of telephone is known, but not found in the list.",

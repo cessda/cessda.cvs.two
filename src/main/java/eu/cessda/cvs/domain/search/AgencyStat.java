@@ -114,7 +114,7 @@ public class AgencyStat implements Serializable {
     public void deleteVocabStat(String cvNotation) {
         VocabStat vocabStat = this.vocabStats.stream().filter(v -> v.getNotation().equals( cvNotation ))
             .findFirst().orElse(null);
-        if( vocabStat == null ) {
+        if( vocabStat != null ) {
             this.vocabStats.remove(vocabStat);
         }
     }
@@ -131,14 +131,7 @@ public class AgencyStat implements Serializable {
         for (VersionDTO v : vocabularyDTO.getVersions()) {
             if( v.getItemType().equals(ItemType.SL.toString())){
                 if( v.getStatus().equals( Status.PUBLISHED.toString() )) {
-                    if( latestPublishedSlVersionNumber == null )
-                        latestPublishedSlVersionNumber = v.getNumber();
-
-                    VersionCodeStat versionCodeStat = new VersionCodeStat(v.getNumber());
-                    versionCodeStat.setCodes(v.getConcepts().stream()
-                        .sorted(Comparator.comparing(ConceptDTO::getPosition))
-                        .map(c -> c.getNotation()).collect(Collectors.toList()));
-                    versionCodeStats.add(versionCodeStat);
+                    latestPublishedSlVersionNumber = generatePublishedSlVersionCodeStats(latestPublishedSlVersionNumber, versionCodeStats, v);
                 }
                 if( latestSlVersionNumber == null ) {
                     latestSlVersionNumber = v.getNumber();
@@ -148,7 +141,8 @@ public class AgencyStat implements Serializable {
                 languages.add(v.getLanguage());
 
                 VersionStatusStat versionStatusStat = new VersionStatusStat(v.getLanguage(), v.getItemType(),
-                    v.getNumber(), v.getStatus(), v.getStatus().equals(Status.PUBLISHED.toString()) ? v.getPublicationDate() : v.getLastStatusChangeDate());
+                    v.getNumber(), v.getStatus(), v.getCreationDate(),
+                    v.getStatus().equals(Status.PUBLISHED.toString()) ? v.getPublicationDate() : v.getLastStatusChangeDate());
                 versionStatusStats.add( versionStatusStat );
             }
         }
@@ -161,9 +155,15 @@ public class AgencyStat implements Serializable {
         return this;
     }
 
-    private List<String> getPublishedLanguage(VocabularyDTO vocabularyDTO, String slVersion) {
-        return vocabularyDTO.getVersions().stream()
-            .filter(version -> version.getStatus().equals(Status.PUBLISHED.toString()) && version.getNumber().startsWith( slVersion ))
-            .map(VersionDTO::getLanguage).collect(Collectors.toList());
+    private String generatePublishedSlVersionCodeStats(String latestPublishedSlVersionNumber, List<VersionCodeStat> versionCodeStats, VersionDTO v) {
+        if( latestPublishedSlVersionNumber == null )
+            latestPublishedSlVersionNumber = v.getNumber();
+
+        VersionCodeStat versionCodeStat = new VersionCodeStat(v.getNumber());
+        versionCodeStat.setCodes(v.getConcepts().stream()
+            .sorted(Comparator.comparing(ConceptDTO::getPosition))
+            .map(ConceptDTO::getNotation).collect(Collectors.toList()));
+        versionCodeStats.add(versionCodeStat);
+        return latestPublishedSlVersionNumber;
     }
 }

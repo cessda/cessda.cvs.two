@@ -4,9 +4,9 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import { IAgency, Agency } from 'app/shared/model/agency.model';
+import { Agency, IAgency } from 'app/shared/model/agency.model';
 import { AgencyService } from './agency.service';
 import { AlertError } from 'app/shared/alert/alert-error.model';
 import { FileUploadService } from 'app/shared/upload/file-upload.service';
@@ -44,6 +44,7 @@ export class AgencyUpdateComponent implements OnInit {
     description: [],
     licenseId: [],
     uri: [null, [Validators.maxLength(255)]],
+    uriCode: [null, [Validators.maxLength(255)]],
     canonicalUri: [null, [Validators.maxLength(255)]]
   });
 
@@ -80,6 +81,7 @@ export class AgencyUpdateComponent implements OnInit {
       description: agency.description,
       licenseId: agency.licenseId,
       uri: agency.uri,
+      uriCode: agency.uriCode,
       canonicalUri: agency.canonicalUri
     });
     this.currentImage = agency.logopath;
@@ -125,6 +127,7 @@ export class AgencyUpdateComponent implements OnInit {
       description: this.editForm.get(['description'])!.value,
       licenseId: +this.editForm.get(['licenseId'])!.value,
       uri: this.editForm.get(['uri'])!.value,
+      uriCode: this.editForm.get(['uriCode'])!.value,
       canonicalUri: this.editForm.get(['canonicalUri'])!.value
     };
     if (agency.licenseId) {

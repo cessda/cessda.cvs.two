@@ -1,0 +1,162 @@
+<div class="container-inner">
+    <jhi-alert-error></jhi-alert-error>
+    <jhi-alert></jhi-alert>
+    <h2 id="logs-page-heading">Maintenance</h2>
+
+    <div class="card">
+        <div class="card-header font-weight-bold">
+            Published CVs JSON
+        </div>
+        <div class="card-body" class="card-acc-stat">
+            <div class="col-sm-12 p-0">
+                <ngb-accordion>
+                    <ngb-panel>
+                        <ng-template ngbPanelTitle>
+                            <span>Generate JSON files</span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                            <div class="row-content">
+                                <div class="w-100">
+                                    <span>Generate JSON files for published CVs:</span>
+                                    <button type="button" [disabled]="isGeneratingJson" class="btn btn-primary" (click)="performGeneratingJson()">
+                                        <span>Generate JSON</span>
+                                    </button>
+                                </div>
+                                <div class="w-100">
+                                    <span>Output:</span>
+                                    <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="generatingJsonOutput"></textarea>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="card">
+        <div class="card-header font-weight-bold">
+            Indexing
+        </div>
+        <div class="card-body" class="card-acc-stat">
+            <div class="col-sm-12 p-0">
+                <ngb-accordion>
+                    <ngb-panel>
+                        <ng-template ngbPanelTitle>
+                            <span>Indexing Agency</span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                            <div class="row-content">
+                                <div class="w-100">
+                                    <span>Perform indexing all agencies:</span>
+                                    <button type="button" [disabled]="isIndexingAgency" class="btn btn-primary" (click)="performIndexingAgency()">
+                                        <span>Index Agencies</span>
+                                    </button>
+                                </div>
+                                <div class="w-100">
+                                    <span>Output:</span>
+                                    <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="indexingAgencyOutput"></textarea>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+                <ngb-accordion>
+                    <ngb-panel>
+                        <ng-template ngbPanelTitle>
+                            <span>Indexing Agency Stat</span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                            <div class="row-content">
+                                <div class="w-100">
+                                    <span>Generate agency statistics by indexing voabularies in the agencies:</span>
+                                    <button type="button" [disabled]="isIndexingAgencyStat" class="btn btn-primary" (click)="performIndexingAgencyStat()">
+                                        <span>Index Agency Stats</span>
+                                    </button>
+                                </div>
+                                <div class="w-100">
+                                    <span>Output:</span>
+                                    <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="indexingAgencyStatOutput"></textarea>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+                <ngb-accordion>
+                    <ngb-panel>
+                        <ng-template ngbPanelTitle>
+                            <span>Indexing Vocabulary Publish</span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                            <div class="row-content">
+                                <div class="w-100">
+                                    <span>Perform indexing all published CVs:</span>
+                                    <button type="button" [disabled]="isIndexingVocabularyPublish" class="btn btn-primary" (click)="performIndexingVocabularyPublish()">
+                                        <span>Index Published CVs</span>
+                                    </button>
+                                </div>
+                                <div class="w-100">
+                                    <span>Output:</span>
+                                    <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="indexingVocabularyPublishOutput"></textarea>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+                <ngb-accordion>
+                    <ngb-panel>
+                        <ng-template ngbPanelTitle>
+                            <span>Indexing Vocabulary Editor</span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                            <div class="row-content">
+                                <div class="w-100">
+                                    <span>Perform indexing all CVs in the Editor:</span>
+                                    <button type="button" [disabled]="isIndexingVocabularyEditor" class="btn btn-primary" (click)="performIndexingVocabularyEditor()">
+                                        <span>Indexing</span>
+                                    </button>
+                                </div>
+                                <div class="w-100">
+                                    <span>Output:</span>
+                                    <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="indexingVocabularyEditorOutput"></textarea>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="card">
+        <div class="card-header font-weight-bold">
+            CVs content checking
+        </div>
+        <div class="card-body" class="card-acc-stat">
+            <div class="col-sm-12 p-0">
+                <ngb-accordion>
+                    <ngb-panel>
+                        <ng-template ngbPanelTitle>
+                            <span>TLs Checking</span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                            <div class="row-content">
+                                <div class="w-100">
+                                    <span>Checking if there is something wrong with the TLs, by comparing them with SL and the previous version</span>
+                                    <button type="button" [disabled]="isCheckingTls" class="btn btn-primary" (click)="performCheckingTls()">
+                                        <span>Check TLs versions</span>
+                                    </button>
+                                </div>
+                                <div class="w-100">
+                                    <span>Output:</span>
+                                    <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="checkingTlsOutput"></textarea>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+            </div>
+        </div>
+    </div>
+
+</div>

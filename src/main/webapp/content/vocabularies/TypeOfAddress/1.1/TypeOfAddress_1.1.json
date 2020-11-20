@@ -1,7 +1,7 @@
 {
   "id": 66,
   "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress/en/1.1",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfAddress",
   "notation": "TypeOfAddress",
   "versionNumber": "1.1",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2020-05-13",
+  "publicationDate": "2020-05-12",
   "notes": "",
   "versions": [
     {
@@ -18,9 +18,9 @@
       "status": "PUBLISHED",
       "itemType": "SL",
       "language": "en",
-      "publicationDate": "2020-05-13",
+      "publicationDate": "2020-05-12",
       "number": "1.1",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress/en/1.1",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfAddress_1.1.html",
       "canonicalUri": "urn:ddi:int.ddi.cv:TypeOfAddress:1.1",
       "notation": "TypeOfAddress",
       "title": "Type of Address",
@@ -36,11 +36,11 @@
       "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2020). Type of Address (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfAddress:1.1. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module name: archive \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/TypeOfAddress.html\">TypeOfAddress</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5&nbsp;</a> \n</div> \n<div>\n  DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary. \n</div>",
-      "lastStatusChangeDate": "2020-10-01",
+      "lastStatusChangeDate": "2020-09-30",
       "concepts": [
         {
           "id": 8812,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress#Mailing/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfAddress_1.1.html#Mailing",
           "notation": "Mailing",
           "title": "Mailing address",
           "definition": "Includes both \"street\", and P.O. Box addresses used for sending and receiving physical/conventional mail through the postal system.",
@@ -49,7 +49,7 @@
         },
         {
           "id": 8817,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress#Mailing.Residential/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfAddress_1.1.html#Mailing.Residential",
           "notation": "Mailing.Residential",
           "title": "Mailing address: Residential",
           "definition": "Address for directing physical/conventional mail to a person's residence, including institutional residence.",
@@ -59,7 +59,7 @@
         },
         {
           "id": 8814,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress#Mailing.Nonresidential/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfAddress_1.1.html#Mailing.Nonresidential",
           "notation": "Mailing.Nonresidential",
           "title": "Mailing address: Nonresidential",
           "definition": "Address for directing physical/conventional mail to a business, organization, or other type of association.",
@@ -69,7 +69,7 @@
         },
         {
           "id": 8818,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress#Visiting/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfAddress_1.1.html#Visiting",
           "notation": "Visiting",
           "title": "Visiting address",
           "definition": "Address used to identify a physical location (typically a building or a unit in a building) that may be accessed in person.",
@@ -78,7 +78,7 @@
         },
         {
           "id": 8816,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress#Visiting.Residential/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfAddress_1.1.html#Visiting.Residential",
           "notation": "Visiting.Residential",
           "title": "Visiting address: Residential",
           "definition": "Visiting address for a person's residence, including institutional residence.",
@@ -88,7 +88,7 @@
         },
         {
           "id": 8815,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress#Visiting.Nonresidential/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfAddress_1.1.html#Visiting.Nonresidential",
           "notation": "Visiting.Nonresidential",
           "title": "Visiting address: Nonresidential",
           "definition": "Visiting address for a business, organization, or other type of association.",
@@ -98,7 +98,7 @@
         },
         {
           "id": 8813,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfAddress#Other/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfAddress_1.1.html#Other",
           "notation": "Other",
           "title": "Other",
           "definition": "Use if type of address is known, but not found in the list.",
@@ -111,7 +111,7 @@
         {
           "id": 291,
           "version": "1.0",
-          "date": "2020-02-21",
+          "date": "2020-02-20",
           "note": "",
           "changes": "",
           "prevVersion": 0

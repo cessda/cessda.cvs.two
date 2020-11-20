@@ -14,6 +14,7 @@ export interface IVocabulary {
   withdrawn?: boolean;
   discoverable?: boolean;
   selectedLang?: string;
+  selectedCode?: string;
   selectedVersion?: string;
   sourceLanguage?: string;
   agencyId?: number;
@@ -127,6 +128,7 @@ export class Vocabulary implements IVocabulary {
     public discoverable?: boolean,
     public sourceLanguage?: string,
     public selectedLang?: string,
+    public selectedCode?: string,
     public selectedVersion?: string,
     public agencyId?: number,
     public agencyName?: string,

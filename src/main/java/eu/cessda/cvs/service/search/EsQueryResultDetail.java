@@ -18,9 +18,12 @@ public class EsQueryResultDetail implements Serializable {
 
     // Query properties with default value, to be updated during query
 	private String searchTerm = "";
+	private String sortLanguage = "en";
     private transient Pageable page = PageRequest.of( 0, PAGE_SIZE, Sort.by(Sort.Direction.ASC, "_score"));
-	private List<String> aggFields = new ArrayList<>( Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_PUB_AGG ));
+	private List<String> aggFields = new ArrayList<>( Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_PUB_AGG,EsFilter.NOTATION_AGG ));
 	private List<EsFilter> esFilters = new ArrayList<>();
+	private boolean isSearchAllLanguages = false;
+	private boolean withHighlight = false;
 
 	// Results
 	private transient Page<VocabularyDTO> vocabularies;
@@ -38,7 +41,7 @@ public class EsQueryResultDetail implements Serializable {
         if( searchScope.equals(SearchScope.EDITORSEARCH)) {
             aggFields = new ArrayList<>(Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_AGG, EsFilter.STATUS_AGG ));
         } else {
-            aggFields = new ArrayList<>(Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_PUB_AGG ));
+            aggFields = new ArrayList<>(Arrays.asList( EsFilter.AGENCY_AGG, EsFilter.LANGS_PUB_AGG, EsFilter.NOTATION_AGG ));
         }
         // initialize esfilter
         for( String field: aggFields) {
@@ -135,4 +138,28 @@ public class EsQueryResultDetail implements Serializable {
 		}
 		return false;
 	}
+
+    public String getSortLanguage() {
+        return sortLanguage;
+    }
+
+    public void setSortLanguage(String sortLanguage) {
+        this.sortLanguage = sortLanguage;
+    }
+
+    public boolean isSearchAllLanguages() {
+        return isSearchAllLanguages;
+    }
+
+    public void setSearchAllLanguages(boolean searchAllLanguages) {
+        isSearchAllLanguages = searchAllLanguages;
+    }
+
+    public boolean isWithHighlight() {
+        return withHighlight;
+    }
+
+    public void setWithHighlight(boolean withHighlight) {
+        this.withHighlight = withHighlight;
+    }
 }

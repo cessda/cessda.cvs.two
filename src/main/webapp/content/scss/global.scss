@@ -1,6 +1,5 @@
 @import 'bootstrap-variables';
 @import '~bootstrap/scss/functions';
-@import '~bootswatch/dist/flatly/variables';
 @import '~bootstrap/scss/variables';
 
 /* ==============================================================
@@ -46,10 +45,6 @@ a:hover {
 
 p {
   margin: 0;
-}
-
-.container-fluid {
-  display: flex;
 }
 
 .dropdown-item:hover {
@@ -298,7 +293,7 @@ ui bootstrap tweaks
   margin: 1px;
   padding: 4px 6px;
 }
-tag {
+.ng2-tag-input .ng-trigger {
   cursor: auto !important;
   width: 100% !important;
   padding: 0 !important;
@@ -306,19 +301,13 @@ tag {
   transition: none !important;
   max-width: none !important;
 }
-tag-input-form {
-  display: block;
-  width: 100%;
-}
-tag:not(.readonly):not(.tag--editing):focus,
-tag:not(.readonly):not(.tag--editing):active,
-tag:not(.readonly):not(.tag--editing):hover {
+
+.ng2-tag-input .ng-trigger:not(.readonly):not(.tag--editing):focus,
+.ng2-tag-input .ng-trigger:not(.readonly):not(.tag--editing):active,
+.ng2-tag-input .ng-trigger:not(.readonly):not(.tag--editing):hover {
   background: hsla(60, 12%, 95%, 1) !important;
   color: #555 !important;
   box-shadow: none !important;
-}
-tag-ripple {
-  visibility: hidden;
 }
 .ng2-tag-input {
   transition: none !important;
@@ -469,7 +458,7 @@ tag-ripple {
 .row-content {
   width: 100%;
   margin: 0;
-  padding: 5px 0.75rem 0.75rem 0.75rem;
+  padding: 5px 0 0.75rem 0;
   .row-details {
     display: flex;
     justify-content: space-between;
@@ -537,6 +526,7 @@ tag-ripple {
 
 @media screen and (min-width: 768px) {
   .row-content {
+    padding: 5px 0.75rem 0.75rem 0.75rem;
     .row-details {
       justify-content: unset;
       flex-direction: row;
@@ -1031,6 +1021,8 @@ button.invisible-button:focus {
 }
 
 .container-fluid {
+  display: flex;
+  padding: 0;
   .container-inner {
     max-width: 1280px;
     min-width: 370px;
@@ -1043,6 +1035,7 @@ button.invisible-button:focus {
 
 @media (min-width: 576px) {
   .container-fluid {
+    padding: 0 15px 0 15px;
     .container-inner {
       .card-columns {
         -moz-column-count: 1;
@@ -1054,6 +1047,7 @@ button.invisible-button:focus {
 
 @media (min-width: 840px) {
   .container-fluid {
+    padding: 0 15px 0 15px;
     .container-inner {
       .card-columns {
         -moz-column-count: 2;
@@ -1093,4 +1087,45 @@ button.invisible-button:focus {
 .agency-btn-block {
   padding: 0;
   margin-top: 15px;
+}
+.card-acc-stat {
+  padding: 0.25rem;
+  .card-header {
+    padding: 0.1rem 0.5rem;
+    button.btn-link {
+      color: #212529;
+      width: 100%;
+      text-align: left;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  }
+  .card-body {
+    padding: 0.25rem;
+    .row-content {
+      .row-detail {
+        .label-column {
+          font-weight: normal;
+        }
+      }
+    }
+  }
+  .version-acc {
+    .card-header {
+      button.btn-link {
+        font-size: 90%;
+      }
+    }
+  }
+}
+.break-long-word {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }

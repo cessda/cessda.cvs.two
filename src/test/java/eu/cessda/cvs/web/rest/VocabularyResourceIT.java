@@ -726,7 +726,7 @@ public class VocabularyResourceIT {
         assertThat(vocabularyList).hasSize(databaseSizeBeforeCreate + 1);
         Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
         assertThat(testVocabulary.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testVocabulary.getUri()).isEqualTo(DEFAULT_URI + "/" + DEFAULT_URI + "/" + vocabularyDTO.getSourceLanguage());
+        assertThat(testVocabulary.getUri()).isEqualTo(DEFAULT_URI);
         assertThat(testVocabulary.getNotation()).isEqualTo(DEFAULT_NOTATION);
         assertThat(testVocabulary.getVersionNumber()).isEqualTo(DEFAULT_VERSION_NUMBER);
         assertThat(testVocabulary.getInitialPublication()).isEqualTo(DEFAULT_INITIAL_PUBLICATION);
@@ -855,121 +855,6 @@ public class VocabularyResourceIT {
         // Validate the Vocabulary in the database
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSizeBeforeCreate);
-    }
-
-
-    @Test
-    @Transactional
-    public void checkStatusIsRequired() throws Exception {
-        int databaseSizeBeforeTest = vocabularyRepository.findAll().size();
-        // set the field null
-        vocabulary.setStatus(null);
-
-        // Create the Vocabulary, which fails.
-        VocabularyDTO vocabularyDTO = vocabularyMapper.toDto(vocabulary);
-
-        restVocabularyMockMvc.perform(post("/api/vocabularies")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(vocabularyDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
-        assertThat(vocabularyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkNotationIsRequired() throws Exception {
-        int databaseSizeBeforeTest = vocabularyRepository.findAll().size();
-        // set the field null
-        vocabulary.setNotation(null);
-
-        // Create the Vocabulary, which fails.
-        VocabularyDTO vocabularyDTO = vocabularyMapper.toDto(vocabulary);
-
-        restVocabularyMockMvc.perform(post("/api/vocabularies")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(vocabularyDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
-        assertThat(vocabularyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkVersionNumberIsRequired() throws Exception {
-        int databaseSizeBeforeTest = vocabularyRepository.findAll().size();
-        // set the field null
-        vocabulary.setVersionNumber(null);
-
-        // Create the Vocabulary, which fails.
-        VocabularyDTO vocabularyDTO = vocabularyMapper.toDto(vocabulary);
-
-        restVocabularyMockMvc.perform(post("/api/vocabularies")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(vocabularyDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
-        assertThat(vocabularyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkSourceLanguageIsRequired() throws Exception {
-        int databaseSizeBeforeTest = vocabularyRepository.findAll().size();
-        // set the field null
-        vocabulary.setSourceLanguage(null);
-
-        // Create the Vocabulary, which fails.
-        VocabularyDTO vocabularyDTO = vocabularyMapper.toDto(vocabulary);
-
-        restVocabularyMockMvc.perform(post("/api/vocabularies")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(vocabularyDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
-        assertThat(vocabularyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkAgencyIdIsRequired() throws Exception {
-        int databaseSizeBeforeTest = vocabularyRepository.findAll().size();
-        // set the field null
-        vocabulary.setAgencyId(null);
-
-        // Create the Vocabulary, which fails.
-        VocabularyDTO vocabularyDTO = vocabularyMapper.toDto(vocabulary);
-
-        restVocabularyMockMvc.perform(post("/api/vocabularies")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(vocabularyDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
-        assertThat(vocabularyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkAgencyNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = vocabularyRepository.findAll().size();
-        // set the field null
-        vocabulary.setAgencyName(null);
-
-        // Create the Vocabulary, which fails.
-        VocabularyDTO vocabularyDTO = vocabularyMapper.toDto(vocabulary);
-
-        restVocabularyMockMvc.perform(post("/api/vocabularies")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(vocabularyDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
-        assertThat(vocabularyList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test

@@ -195,15 +195,15 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         const tlCodes = this.version.concepts!.filter(c => c.notation === slConcepts![i].notation);
         if (tlCodes.length) {
           tlCodes[0].position = slConcepts![i].position;
-          (tlCodes[0].parent = slConcepts![i].parent === undefined ? undefined : slConcepts![i].parent),
-            (tlCodes[0].titleSl = slConcepts![i].title);
+          tlCodes[0].parent = slConcepts![i].parent ? slConcepts![i].parent : undefined;
+          tlCodes[0].titleSl = slConcepts![i].title;
           tlCodes[0].definitionSl = slConcepts![i].definition;
         } else {
           // TL code not found, generate new one from SL
           const nonExistTlCode = {
             ...new Concept(),
             position: slConcepts![i].position,
-            parent: slConcepts![i].parent === undefined ? undefined : slConcepts![i].parent,
+            parent: slConcepts![i].parent ? slConcepts![i].parent : undefined,
             notation: slConcepts![i].notation,
             titleSl: slConcepts![i].title,
             definitionSl: slConcepts![i].definition,
@@ -751,5 +751,27 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       escapedContent = `"${escapedContent}"`;
     }
     return escapedContent;
+  }
+
+  switchLang(): void {
+    this.vocabulary!.selectedLang = this.version!.language;
+    this.vocabulary!.selectedVersion = this.version!.number;
+    this.eventManager.broadcast({ name: 'closeComparison', content: true });
+  }
+
+  getMissingTlVersion(version: string): string {
+    if (version.startsWith(this.getSlVersion()!.number!)) {
+      return this.getSlVersion()!.versionHistories![0]!.version + '.x';
+    }
+    let i = 0;
+    this.getSlVersion()!.versionHistories!.forEach(function(vhSl, index): void {
+      if (version.startsWith(vhSl.version!)) {
+        i = index + 1;
+      }
+    });
+    if (i > 0) {
+      return this.getSlVersion()!.versionHistories![i]!.version + '.x';
+    }
+    return '';
   }
 }

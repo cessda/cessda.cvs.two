@@ -8,6 +8,7 @@ import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionUtils;
+import eu.cessda.cvs.utils.VocabularyUtils;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -35,6 +36,8 @@ public class VersionDTO implements Serializable {
 
     @Size(max = 20)
     private String language;
+
+    private LocalDate creationDate;
 
     private LocalDate publicationDate;
 
@@ -104,7 +107,10 @@ public class VersionDTO implements Serializable {
 
     private Long vocabularyId;
 
-    public VersionDTO(){}
+    public VersionDTO(){
+        this.status = Status.DRAFT.toString();
+        this.itemType = ItemType.SL.toString();
+    }
 
     /**
      * create initial SL version with vocabularyDTO
@@ -113,10 +119,10 @@ public class VersionDTO implements Serializable {
      */
     public VersionDTO(VocabularyDTO vocabularyDTO) {
         this.status = Status.DRAFT.toString();
+        this.creationDate = LocalDate.now();
         this.itemType = ItemType.SL.toString();
         this.language = vocabularyDTO.getSourceLanguage();
         this.number = vocabularyDTO.getVersionNumber();
-        this.uri = vocabularyDTO.getUri();
         this.notation = vocabularyDTO.getNotation();
         this.title = vocabularyDTO.getTitleByLanguage( this.language );
         this.definition = vocabularyDTO.getDefinitionByLanguage( this.language );
@@ -131,13 +137,12 @@ public class VersionDTO implements Serializable {
      */
     public VersionDTO(VocabularySnippet vocabularySnippet, VersionDTO versionSlDTO) {
         this.vocabularyId = versionSlDTO.getVocabularyId();
+        this.creationDate = LocalDate.now();
         this.status = Status.DRAFT.toString();
         this.itemType = ItemType.TL.toString();
         this.language = vocabularySnippet.getLanguage();
         this.number = vocabularySnippet.getVersionNumber();
         this.uriSl = versionSlDTO.getUri();
-        this.uri = VersionUtils.getBaseVersionUri( this.uriSl, vocabularySnippet.getNotation() )
-            + "/" + vocabularySnippet.getNotation() + "/" + vocabularySnippet.getLanguage();
         this.notation = vocabularySnippet.getNotation();
         this.title = vocabularySnippet.getTitle();
         this.definition = vocabularySnippet.getDefinition();
@@ -168,9 +173,6 @@ public class VersionDTO implements Serializable {
         // copy licence properties
         this.licenseId = prevVersion.getLicenseId();
         this.license = prevVersion.getLicense();
-
-        this.uri = VersionUtils.getBaseVersionUri( prevVersion.getUri(), this.getNotation() )
-            + "/" + this.getNotation() + "/" + this.getLanguage();
 
         // differentiate VersionNumber, uriSl between SL and TL version cloning
         if ( this.itemType.equals( ItemType.SL.toString())) {
@@ -219,6 +221,14 @@ public class VersionDTO implements Serializable {
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public LocalDate getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(LocalDate creationDate) {
+        this.creationDate = creationDate;
     }
 
     public LocalDate getPublicationDate() {
@@ -577,6 +587,7 @@ public class VersionDTO implements Serializable {
             ", status='" + getStatus() + "'" +
             ", itemType='" + getItemType() + "'" +
             ", language='" + getLanguage() + "'" +
+            ", creationDate='" + getCreationDate() + "'" +
             ", publicationDate='" + getPublicationDate() + "'" +
             ", lastModified='" + getLastModified() + "'" +
             ", number='" + getNumber() + "'" +
@@ -591,14 +602,10 @@ public class VersionDTO implements Serializable {
             ", creator=" + getCreator() +
             ", publisher=" + getPublisher() +
             ", notes='" + getNotes() + "'" +
-//            ", versionNotes='" + getVersionNotes() + "'" +  // commented to shorter debug
-//            ", versionChanges='" + getVersionChanges() + "'" + // commented to shorter debug
-//            ", discussionNotes='" + getDiscussionNotes() + "'" + // commented to shorter debug
             ", copyright='" + getCopyright() + "'" +
             ", license='" + getLicense() + "'" +
             ", licenseId=" + getLicenseId() +
             ", citation='" + getCitation() + "'" +
-//            ", ddiUsage='" + getDdiUsage() + "'" + // commented to shorter debug
             ", translateAgency='" + getTranslateAgency() + "'" +
             ", translateAgencyLink='" + getTranslateAgencyLink() + "'" +
             ", vocabularyId=" + getVocabularyId() +
@@ -625,6 +632,7 @@ public class VersionDTO implements Serializable {
         if( !agencyDTO.getName().toLowerCase().contains("cessda")) {
             citationSb.append( "CESSDA. ");
         }
+        // TODO: update canonicalUri
         citationSb.append( this.canonicalUri+ ". ");
         this.citation = citationSb.toString();
     }
@@ -640,6 +648,7 @@ public class VersionDTO implements Serializable {
         if( !agencyDTO.getName().toLowerCase().contains("cessda")) {
             citationSb.append( "CESSDA. ");
         }
+        // TODO: update canonicalUri
         citationSb.append( this.canonicalUri+ ". ");
         this.citation = citationSb.toString();
     }
@@ -651,9 +660,9 @@ public class VersionDTO implements Serializable {
         this.publicationDate = LocalDate.now();
         this.licenseId = licenceDTO.getId();
         this.license = licenceDTO.getName();
-        this.uri =  this.uri+ "/" + this.number;
+        this.uri = VocabularyUtils.generateUri(agencyDTO.getUri(), true, this.notation, this.number, this.language, null);
         this.canonicalUri = agencyDTO.getCanonicalUri() + this.notation + ":" + this.number;
-        this.concepts.forEach(c -> c.setUri( agencyDTO.getUri() + this.notation + "#" + c.getNotation() + "/" + this.language + "/" + this.number));
+        this.concepts.forEach(c -> c.setUri( VocabularyUtils.generateUri(agencyDTO.getUriCode(), false, this.notation, this.number, this.language, c.getNotation())));
     }
 
     /**

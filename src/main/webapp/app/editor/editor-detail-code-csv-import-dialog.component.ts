@@ -155,45 +155,49 @@ export class EditorDetailCodeCsvImportDialogComponent {
         continue;
       }
 
-      // check for existing concepts, skip if exist
+      //TODO: add checkbox for confirm overwriting
+
+      // check for existing concepts, overwrite if exist
       if (this.concepts.some(c => c.notation === this.csvContents[i][0])) {
-        continue;
-      }
-
-      let conceptPosition = this.concepts.length;
-      let parentConcept: IConcept | undefined;
-      const parentIndex = this.csvContents[i][0].lastIndexOf('.');
-      if (parentIndex > 1) {
-        // parent need at least 2 character
-        const parent = this.csvContents[i][0].substring(0, parentIndex);
-        // there is no parent on the
-        if (!this.concepts.some(c => c.notation === parent)) {
-          continue;
+        const concept = this.concepts.filter(c => c.notation === this.csvContents[i][0])[0];
+        concept.title = this.csvContents[i][1];
+        concept.definition = this.csvContents[i][2];
+        this.codeSnippets.push(this.editCodeFromConcept(concept));
+      } else {
+        let conceptPosition = this.concepts.length;
+        let parentConcept: IConcept | undefined;
+        const parentIndex = this.csvContents[i][0].lastIndexOf('.');
+        if (parentIndex > 1) {
+          // parent need at least 2 character
+          const parent = this.csvContents[i][0].substring(0, parentIndex);
+          // there is no parent on the
+          if (!this.concepts.some(c => c.notation === parent)) {
+            continue;
+          }
+          // find parent
+          parentConcept = this.concepts.filter(c => c.notation === parent)[0];
+          // calculate conceptPosition as last child of parent
+          const conceptChildren = this.concepts.filter(c => c.parent === parentConcept!.notation);
+          if (conceptChildren.length === 0) {
+            conceptPosition = parentConcept.position! + 1;
+          } else {
+            conceptPosition = this.findLastChildForPosition(parentConcept).position! + 1;
+            // check for equal or larger position if exist and increment to normalize
+            this.concepts.filter(c => c.position! >= conceptPosition).forEach(c => (c.position = c.position! + 1));
+          }
         }
-        // find parent
-        parentConcept = this.concepts.filter(c => c.notation === parent)[0];
-        // calculate conceptPosition as last child of parent
-        const conceptChildren = this.concepts.filter(c => c.parent === parentConcept!.notation);
-        if (conceptChildren.length === 0) {
-          conceptPosition = parentConcept.position! + 1;
-        } else {
-          conceptPosition = this.findLastChildForPosition(parentConcept).position! + 1;
-          // check for equal or larger position if exist and increment to normalize
-          this.concepts.filter(c => c.position! >= conceptPosition).forEach(c => (c.position = c.position! + 1));
-        }
+        const newConcept = {
+          ...new Concept(),
+          notation: this.csvContents[i][0],
+          parent: parentConcept !== undefined ? parentConcept.notation : undefined,
+          position: conceptPosition,
+          title: this.csvContents[i][1],
+          definition: this.csvContents[i][2],
+          visible: false
+        };
+        this.concepts.push(newConcept);
+        this.codeSnippets.push(this.createCodeFromConcept(newConcept));
       }
-
-      const newConcept = {
-        ...new Concept(),
-        notation: this.csvContents[i][0],
-        parent: parentConcept !== undefined ? parentConcept.notation : undefined,
-        position: conceptPosition,
-        title: this.csvContents[i][1],
-        definition: this.csvContents[i][2],
-        visible: false
-      };
-      this.concepts.push(newConcept);
-      this.codeSnippets.push(this.createCodeFromConcept(newConcept));
     }
     this.csvImportWorkflow = 'IMPORT';
     $element.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
@@ -236,6 +240,18 @@ export class EditorDetailCodeCsvImportDialogComponent {
 
   protected onSaveError(): void {
     this.isSaving = false;
+  }
+
+  private editCodeFromConcept(concept: IConcept): ICodeSnippet {
+    return {
+      ...new CodeSnippet(),
+      actionType: 'ADD_TL_CODE',
+      conceptId: concept.id,
+      notation: concept.notation,
+      versionId: concept.versionId,
+      title: concept.title,
+      definition: concept.definition
+    };
   }
 
   private createCodeFromConcept(concept: IConcept): ICodeSnippet {

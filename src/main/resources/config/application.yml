@@ -144,7 +144,7 @@ jhipster:
   mail:
     from: no-reply@cessda.eu
   swagger:
-    default-include-pattern: /(api|v1|v2|urn)/.*
+    default-include-pattern: /(v1|v2|urn)/.*
     title: cvs API
     description: cvs API documentation
     version: 0.0.1

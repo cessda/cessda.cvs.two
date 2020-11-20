@@ -35,7 +35,9 @@ public class VocabularyChangeDTO implements Serializable {
 
     private LocalDate date;
 
-    public VocabularyChangeDTO(){}
+    public VocabularyChangeDTO(){
+        this.changeType = "DEFAULT_CHANGE_TYPE";
+    }
 
     public VocabularyChangeDTO(CodeSnippet codeSnippet, UserDTO currentUser, Long vocabularyId) {
         this.vocabularyId = vocabularyId;

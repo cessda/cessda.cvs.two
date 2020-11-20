@@ -9,7 +9,7 @@ import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, Jh
 import { EditorService } from 'app/editor/editor.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
-import { AGGR_AGENCY, AGGR_LANGUAGE, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
+import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
 import { ICvResult } from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { ICode } from 'app/shared/model/code.model';
@@ -41,26 +41,22 @@ export class EditorComponent implements OnInit, OnDestroy {
   ngbPaginationPage = 1;
 
   aggAgencyBucket?: IBucket[];
-  aggLanguageBucket?: IBucket[];
   aggStatusBucket?: IBucket[];
   activeAggAgency?: string[];
   activeAggLanguage?: string[];
   activeAggStatus?: string[];
   activeAgg = '';
-  sortByOption = 'code,asc';
 
   isAggAgencyCollapsed = true;
-  isAggLanguageCollapsed = true;
   isAggStatusCollapsed = true;
   isFilterCollapse = false;
   isActionCollapse = false;
 
   searchForm = this.fb.group({
     aggAgency: [],
-    aggLanguage: [],
     aggStatus: [],
     size: [this.itemsPerPage],
-    sortBy: [this.sortByOption]
+    sortBy: ['code,asc']
   });
 
   constructor(
@@ -91,7 +87,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         this.page = params['page'];
       }
       if (params['sort']) {
-        this.sortByOption = params['sort'];
         const sortProp: string[] = params['sort'].split(',');
         this.predicate = sortProp[0];
         if (sortProp.length === 2) {
@@ -117,7 +112,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     });
 
     this.isAggAgencyCollapsed = this.activeAggAgency.length === 0;
-    this.isAggLanguageCollapsed = this.activeAggLanguage.length === 0;
     this.isAggStatusCollapsed = this.activeAggStatus.length === 0;
   }
 
@@ -192,12 +186,19 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.ngbPaginationPage = this.page;
   }
 
-  search(query: string): void {
+  search(query: string, pred?: string): void {
     this.page = 0;
     this.currentSearch = query;
     this.predicate = 'relevance';
+    if (query === '') {
+      this.ascending = true;
+      this.predicate = 'code';
+    }
     this.clearFilter();
-    this.loadPage(1);
+    if (pred) {
+      this.activeAggLanguage!.push(pred);
+    }
+    this.buildFilterAndRefreshSearch();
   }
 
   clearFilter(): void {
@@ -206,7 +207,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.activeAggStatus = [];
     this.activeAgg = '';
     this.searchForm.patchValue({ aggAgency: [] });
-    this.searchForm.patchValue({ aggLanguage: [] });
     this.searchForm.patchValue({ aggStatus: [] });
   }
 
@@ -228,6 +228,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   sort(): string[] {
+    if (this.predicate === 'relevance') return [this.predicate];
     return [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
   }
 
@@ -258,8 +259,8 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   private registerCvSearchEvent(): void {
-    this.eventSubscriber = this.eventManager.subscribe('doCvPublicationSearch', (response: JhiEventWithContent<string>) => {
-      this.search(response.content);
+    this.eventSubscriber = this.eventManager.subscribe('doCvPublicationSearch', (response: JhiEventWithContent<any>) => {
+      this.search(response.content.term, response.content.lang);
     });
   }
 
@@ -267,7 +268,7 @@ export class EditorComponent implements OnInit, OnDestroy {
     // patch value for sort and size
     this.searchForm.patchValue({
       size: this.itemsPerPage,
-      sortBy: this.sortByOption
+      sortBy: this.sort()
     });
     // patch value for filter
     aggrs.forEach(aggr => {
@@ -275,9 +276,6 @@ export class EditorComponent implements OnInit, OnDestroy {
         // format bucket and add as autocomplete and patch form value
         this.aggAgencyBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
         this.searchForm.patchValue({ aggAgency: this.prepareActiveBuckets(this.aggAgencyBucket, aggr) });
-      } else if (aggr.field === AGGR_LANGUAGE) {
-        this.aggLanguageBucket = this.formatBucketLanguages(aggr.buckets!.concat(aggr.filteredBuckets!));
-        this.searchForm.patchValue({ aggLanguage: this.prepareActiveBuckets(this.aggLanguageBucket, aggr) });
       } else if (aggr.field === AGGR_STATUS) {
         this.aggStatusBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
         this.searchForm.patchValue({ aggStatus: this.prepareActiveBuckets(this.aggStatusBucket, aggr) });
@@ -380,18 +378,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     this.buildFilterAndRefreshSearch();
   }
 
-  onAddLanguage(addedItem?: IBucket): void {
-    this.activeAggLanguage!.push(addedItem!.k!);
-    this.buildFilterAndRefreshSearch();
-  }
-
-  onRemoveLanguage(removedItem?: IBucket): void {
-    this.activeAggLanguage!.forEach((item, index) => {
-      if (item === removedItem!.k!) this.activeAggLanguage!.splice(index, 1);
-    });
-    this.buildFilterAndRefreshSearch();
-  }
-
   onAddStatus(addedItem?: IBucket): void {
     this.activeAggStatus!.push(addedItem!.k!);
     this.buildFilterAndRefreshSearch();
@@ -421,19 +407,16 @@ export class EditorComponent implements OnInit, OnDestroy {
       }
       this.activeAgg += 'status:' + this.activeAggStatus!.join(',');
     }
-    if (this.activeAgg === '') {
-      this.router.navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParams: { f: null },
-        queryParamsHandling: 'merge'
-      });
-    } else {
-      this.router.navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParams: { f: this.activeAgg },
-        queryParamsHandling: 'merge'
-      });
-    }
+
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {
+        q: this.currentSearch === '' ? null : this.currentSearch,
+        f: this.activeAgg === '' ? null : this.activeAgg,
+        sort: this.sort()
+      },
+      queryParamsHandling: 'merge'
+    });
     this.loadPage(1);
   }
 }

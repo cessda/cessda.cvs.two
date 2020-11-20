@@ -6,36 +6,25 @@ import eu.cessda.cvs.repository.VersionRepository;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.mapper.VersionMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
-import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
-import java.time.ZoneId;
-import java.util.Collections;
+import java.time.*;
 import java.util.List;
 
 import static eu.cessda.cvs.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -59,6 +48,9 @@ public class VersionResourceIT {
 
     private static final LocalDate DEFAULT_PUBLICATION_DATE = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_PUBLICATION_DATE = LocalDate.now(ZoneId.systemDefault());
+
+    private static final LocalDate DEFAULT_CREATION_DATE = LocalDate.ofEpochDay(0L);
+    private static final LocalDate UPDATED_CREATION_DATE = LocalDate.now(ZoneId.systemDefault());
 
     private static final ZonedDateTime DEFAULT_LAST_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_LAST_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -154,6 +146,7 @@ public class VersionResourceIT {
             .status(DEFAULT_STATUS)
             .itemType(DEFAULT_ITEM_TYPE)
             .language(DEFAULT_LANGUAGE)
+            .creationDate(DEFAULT_CREATION_DATE)
             .publicationDate(DEFAULT_PUBLICATION_DATE)
             .lastModified(DEFAULT_LAST_MODIFIED)
             .number(DEFAULT_NUMBER)
@@ -190,6 +183,7 @@ public class VersionResourceIT {
             .status(UPDATED_STATUS)
             .itemType(UPDATED_ITEM_TYPE)
             .language(UPDATED_LANGUAGE)
+            .creationDate(UPDATED_CREATION_DATE)
             .publicationDate(UPDATED_PUBLICATION_DATE)
             .lastModified(UPDATED_LAST_MODIFIED)
             .number(UPDATED_NUMBER)
@@ -240,6 +234,7 @@ public class VersionResourceIT {
         assertThat(testVersion.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testVersion.getItemType()).isEqualTo(DEFAULT_ITEM_TYPE);
         assertThat(testVersion.getLanguage()).isEqualTo(DEFAULT_LANGUAGE);
+        assertThat(testVersion.getCreationDate()).isEqualTo(DEFAULT_CREATION_DATE);
         assertThat(testVersion.getPublicationDate()).isEqualTo(DEFAULT_PUBLICATION_DATE);
         assertThat(testVersion.getLastModified()).isEqualTo(DEFAULT_LAST_MODIFIED);
         assertThat(testVersion.getNumber()).isEqualTo(DEFAULT_NUMBER);
@@ -285,45 +280,6 @@ public class VersionResourceIT {
         assertThat(versionList).hasSize(databaseSizeBeforeCreate);
     }
 
-
-    @Test
-    @Transactional
-    public void checkStatusIsRequired() throws Exception {
-        int databaseSizeBeforeTest = versionRepository.findAll().size();
-        // set the field null
-        version.setStatus(null);
-
-        // Create the Version, which fails.
-        VersionDTO versionDTO = versionMapper.toDto(version);
-
-        restVersionMockMvc.perform(post("/api/versions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(versionDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Version> versionList = versionRepository.findAll();
-        assertThat(versionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkItemTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = versionRepository.findAll().size();
-        // set the field null
-        version.setItemType(null);
-
-        // Create the Version, which fails.
-        VersionDTO versionDTO = versionMapper.toDto(version);
-
-        restVersionMockMvc.perform(post("/api/versions")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(versionDTO)))
-            .andExpect(status().isBadRequest());
-
-        List<Version> versionList = versionRepository.findAll();
-        assertThat(versionList).hasSize(databaseSizeBeforeTest);
-    }
-
     @Test
     @Transactional
     public void getAllVersions() throws Exception {
@@ -338,6 +294,7 @@ public class VersionResourceIT {
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
             .andExpect(jsonPath("$.[*].itemType").value(hasItem(DEFAULT_ITEM_TYPE)))
             .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE)))
+            .andExpect(jsonPath("$.[*].creationDate").value(hasItem(DEFAULT_CREATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].publicationDate").value(hasItem(DEFAULT_PUBLICATION_DATE.toString())))
             .andExpect(jsonPath("$.[*].lastModified").value(hasItem(sameInstant(DEFAULT_LAST_MODIFIED))))
             .andExpect(jsonPath("$.[*].number").value(hasItem(DEFAULT_NUMBER)))
@@ -377,6 +334,7 @@ public class VersionResourceIT {
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
             .andExpect(jsonPath("$.itemType").value(DEFAULT_ITEM_TYPE))
             .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE))
+            .andExpect(jsonPath("$.creationDate").value(DEFAULT_CREATION_DATE.toString()))
             .andExpect(jsonPath("$.publicationDate").value(DEFAULT_PUBLICATION_DATE.toString()))
             .andExpect(jsonPath("$.lastModified").value(sameInstant(DEFAULT_LAST_MODIFIED)))
             .andExpect(jsonPath("$.number").value(DEFAULT_NUMBER))
@@ -426,6 +384,7 @@ public class VersionResourceIT {
             .status(UPDATED_STATUS)
             .itemType(UPDATED_ITEM_TYPE)
             .language(UPDATED_LANGUAGE)
+            .creationDate(UPDATED_CREATION_DATE)
             .publicationDate(UPDATED_PUBLICATION_DATE)
             .lastModified(UPDATED_LAST_MODIFIED)
             .number(UPDATED_NUMBER)
@@ -463,6 +422,7 @@ public class VersionResourceIT {
         assertThat(testVersion.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testVersion.getItemType()).isEqualTo(UPDATED_ITEM_TYPE);
         assertThat(testVersion.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
+        assertThat(testVersion.getCreationDate()).isEqualTo(UPDATED_CREATION_DATE);
         assertThat(testVersion.getPublicationDate()).isEqualTo(UPDATED_PUBLICATION_DATE);
         assertThat(testVersion.getLastModified()).isEqualTo(UPDATED_LAST_MODIFIED);
         assertThat(testVersion.getNumber()).isEqualTo(UPDATED_NUMBER);

@@ -1,12 +1,12 @@
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { DatePipe, registerLocaleData } from '@angular/common';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { CookieModule } from 'ngx-cookie';
-import { TranslateModule, TranslateLoader, MissingTranslationHandler } from '@ngx-translate/core';
+import { CookieService } from 'ngx-cookie-service';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-import { NgJhipsterModule, translatePartialLoader, missingTranslationHandler, JhiConfigService, JhiLanguageService } from 'ng-jhipster';
+import { JhiConfigService, JhiLanguageService, missingTranslationHandler, NgJhipsterModule, translatePartialLoader } from 'ng-jhipster';
 import locale from '@angular/common/locales/en';
 
 import * as moment from 'moment';
@@ -19,12 +19,10 @@ import { ErrorHandlerInterceptor } from 'app/blocks/interceptor/errorhandler.int
 import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
 
 import { fontAwesomeIcons } from './icons/font-awesome-icons';
-import { fas } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   imports: [
     HttpClientModule,
-    CookieModule.forRoot(),
     NgxWebstorageModule.forRoot({ prefix: 'jhi', separator: '-' }),
     NgJhipsterModule.forRoot({
       // set below to true to make alerts look like toast
@@ -48,6 +46,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
   ],
   providers: [
     Title,
+    CookieService,
     {
       provide: LOCALE_ID,
       useValue: 'en'
@@ -79,7 +78,6 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 export class CvsCoreModule {
   constructor(iconLibrary: FaIconLibrary, dpConfig: NgbDatepickerConfig, languageService: JhiLanguageService) {
     registerLocaleData(locale);
-    iconLibrary.addIconPacks(fas);
     iconLibrary.addIcons(...fontAwesomeIcons);
     dpConfig.minDate = { year: moment().year() - 100, month: 1, day: 1 };
     languageService.init();

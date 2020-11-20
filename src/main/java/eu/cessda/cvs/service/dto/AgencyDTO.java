@@ -1,11 +1,12 @@
 package eu.cessda.cvs.service.dto;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.Agency;
 
-import javax.validation.constraints.*;
+import javax.persistence.Lob;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link Agency} entity.
@@ -37,6 +38,9 @@ public class AgencyDTO implements Serializable {
 
     @Size(max = 255)
     private String uri;
+
+    @Size(max = 255)
+    private String uriCode;
 
     @Size(max = 255)
     private String canonicalUri;
@@ -126,6 +130,15 @@ public class AgencyDTO implements Serializable {
         this.canonicalUri = canonicalUri;
     }
 
+    public String getUriCode() {
+        return uriCode;
+    }
+
+    public void setUriCode(String uriCode) {
+        this.uriCode = uriCode;
+    }
+
+
     public String getLogo() {
         return logo;
     }
@@ -175,6 +188,7 @@ public class AgencyDTO implements Serializable {
             ", license='" + getLicense() + "'" +
             ", licenseId=" + getLicenseId() +
             ", uri='" + getUri() + "'" +
+            ", uriCode='" + getUriCode() + "'" +
             ", canonicalUri='" + getCanonicalUri() + "'" +
             ", logo='" + getLogo() + "'" +
             "}";

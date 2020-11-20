@@ -13,6 +13,7 @@ public class EsFilter implements Serializable {
     public static final String LANGS_AGG = "languages";
     public static final String LANGS_PUB_AGG = "languagesPublished";
     public static final String STATUS_AGG = "statuses";
+    public static final String NOTATION_AGG = "notation";
 
 	private FilterType filterType;
 	private String field;

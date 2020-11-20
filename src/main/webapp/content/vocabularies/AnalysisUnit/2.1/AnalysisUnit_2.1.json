@@ -1,0 +1,229 @@
+{
+  "id": 47,
+  "status": "PUBLISHED",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit",
+  "notation": "AnalysisUnit",
+  "versionNumber": "2.1",
+  "withdrawn": false,
+  "sourceLanguage": "en",
+  "agencyId": 2,
+  "agencyName": "DDI Alliance",
+  "agencyLogo": "ddi.png",
+  "agencyLink": "http://www.ddialliance.org/",
+  "publicationDate": "2020-10-26",
+  "notes": "<span style=\"line-height: 107%;\">This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all</span>",
+  "versions": [
+    {
+      "id": 453,
+      "status": "PUBLISHED",
+      "itemType": "SL",
+      "language": "en",
+      "publicationDate": "2020-10-26",
+      "number": "2.1",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html",
+      "canonicalUri": "urn:ddi:int.ddi.cv:AnalysisUnit:2.1",
+      "notation": "AnalysisUnit",
+      "title": "Analysis Unit",
+      "definition": "Describes the entity being analyzed in the study or variable. This vocabulary can also be used to describe the unit of observation, which is the unit being observed, or from which data are collected. The unit of observation can be the same as, or different from the unit of analysis.",
+      "previousVersion": 359,
+      "initialVersion": 206,
+      "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all",
+      "versionChanges": "CV definition rephrased: CV definition rephrased without change in meaning",
+      "license": "CC BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "by.png",
+      "citation": "DDI Alliance. (2020). Analysis Unit (Version 2.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AnalysisUnit:2.1. ",
+      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/anlyUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlyUnit@unit</a></p><p>Element/Attribute Name: <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/anlysUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlysUnit</a></p>",
+      "lastStatusChangeDate": "2020-10-26",
+      "concepts": [
+        {
+          "id": 10803,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Individual",
+          "notation": "Individual",
+          "title": "Individual",
+          "definition": "Any individual person.",
+          "previousConcept": 5827,
+          "position": 0
+        },
+        {
+          "id": 10797,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#OrganizationOrInstitution",
+          "notation": "OrganizationOrInstitution",
+          "title": "Organization/Institution",
+          "definition": "Any kind of formal administrative and functional structure - includes associations, institutions, agencies, businesses, political parties, schools, etc. The data are collected about the organizations or institutions, even if the questions are answered by individuals. For example, data on the environmental policies of businesses, data on enrollment or graduation rates at national universities, etc.",
+          "previousConcept": 5821,
+          "position": 1
+        },
+        {
+          "id": 10806,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Family",
+          "notation": "Family",
+          "title": "Family",
+          "definition": "Two or more people related by blood, marriage (including step-relations), co-habitation or registered partnership, adoption or fostering, and who may or may not live together. For example, data on what kind of public services the family uses or would require; or how often family members are in contact with each other.",
+          "previousConcept": 5828,
+          "position": 2
+        },
+        {
+          "id": 10793,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Family.HouseholdFamily",
+          "notation": "Family.HouseholdFamily",
+          "title": "Family: Household family",
+          "definition": "A more specific term that refers only to people who are related through family ties (see definition for 'Family') and live in the same household at a point in time. If not known whether the analysis unit is 'Family' or 'Household family', use 'Family'.",
+          "previousConcept": 5829,
+          "parent": "Family",
+          "position": 3
+        },
+        {
+          "id": 10807,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Household",
+          "notation": "Household",
+          "title": "Household",
+          "definition": "A person or a group of persons who share the same dwelling unit and common living arrangements. These common living arrangements may include pooling some, or all, of their income and wealth, and consuming certain types of goods and services collectively, mainly housing and food (Eurostat).",
+          "previousConcept": 5822,
+          "position": 4
+        },
+        {
+          "id": 10800,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#HousingUnit",
+          "notation": "HousingUnit",
+          "title": "Housing unit",
+          "definition": "U.S. Census: A housing unit is a house, an apartment, a mobile home, a group of rooms, or a single room that is occupied (or if vacant, is intended for occupancy) as separate living quarters. Separate living quarters are those in which the occupants live and eat separately from any other persons in the building and which have direct access from the outside of the building or through a common hall.",
+          "previousConcept": 5830,
+          "position": 5
+        },
+        {
+          "id": 10791,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#EventOrProcessOrActivity",
+          "notation": "EventOrProcessOrActivity",
+          "title": "Event/Process/Activity",
+          "definition": "Any type of incident, occurrence, or activity. Events are usually one-time, individual occurrences, with a limited or short duration. Examples: criminal offenses, riots, meetings, elections, sports competitions, terrorist attacks, natural disasters like floods, etc. Processes typically take place over time, and may include multiple 'events' or gradual changes that ultimately lead, or are projected to lead, to a particular result. Examples: court trials, criminal investigations, political campaigns, medical treatments, education, athletes' training, etc. Use when the main focus is more on the event, process or activity itself. For example, a field observation study on slot machine gambling; or data collected on child abuse cases, such as the type and duration of abuse, the role of the persons involved, etc.",
+          "previousConcept": 5823,
+          "position": 6
+        },
+        {
+          "id": 10799,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#GeographicUnit",
+          "notation": "GeographicUnit",
+          "title": "Geographic unit",
+          "definition": "Any entity that can be spatially defined as a geographic area, with either natural (physical) or administrative boundaries. For example, data on home sales, landscaping changes, new constructions, or changes in the demographic composition of certain regions or districts.",
+          "previousConcept": 5831,
+          "position": 7
+        },
+        {
+          "id": 10804,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#PoliticalAdministrativeArea",
+          "notation": "PoliticalAdministrativeArea",
+          "title": "Political-administrative area",
+          "definition": "A geographical area governed by a sovereign authority that has the power to take administrative or policy decisions for that area. This includes areas at the supranational (e.g., unions of states like the European Union),  national (e.g., individual states or countries), sub-national (e.g., administrative subdivisions like federal states, provinces, etc.), and local (e.g., municipalities) levels.",
+          "previousConcept": 5832,
+          "position": 8
+        },
+        {
+          "id": 10795,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#TimeUnit",
+          "notation": "TimeUnit",
+          "title": "Time unit",
+          "definition": "Any period of time: year, week, month, day, or bimonthly or quarterly periods, etc.",
+          "previousConcept": 5826,
+          "position": 9
+        },
+        {
+          "id": 10794,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit",
+          "notation": "MediaUnit",
+          "title": "Media unit",
+          "definition": "Includes text, still image, video and sound.",
+          "previousConcept": 5833,
+          "position": 10
+        },
+        {
+          "id": 10801,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit.Sound",
+          "notation": "MediaUnit.Sound",
+          "title": "Media unit: Sound",
+          "definition": "Recorded sound, including voice, music, etc.",
+          "previousConcept": 5835,
+          "parent": "MediaUnit",
+          "position": 11
+        },
+        {
+          "id": 10808,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit.StillImage",
+          "notation": "MediaUnit.StillImage",
+          "title": "Media unit: Still image",
+          "definition": "Static images, such as graphs, drawings, photographs, diagnostic/medical images like X-rays and other types of imaging tests, etc.",
+          "previousConcept": 5836,
+          "parent": "MediaUnit",
+          "position": 12
+        },
+        {
+          "id": 10796,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit.Text",
+          "notation": "MediaUnit.Text",
+          "title": "Media unit: Text",
+          "definition": "Any written piece/entity, such as books, articles, tweets, blogs, etc. For example, a study on hate speech in tweets, or a study of the way newspapers present certain political/social issues over time, like women's or minorities' rights, etc.",
+          "previousConcept": 5834,
+          "parent": "MediaUnit",
+          "position": 13
+        },
+        {
+          "id": 10805,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit.Video",
+          "notation": "MediaUnit.Video",
+          "title": "Media unit: Video",
+          "definition": "Moving images. May include films, animation, digital recordings, visual output from simulations, recorded television programs, diagnostic/medical videos like ultrasound scans, etc. May be mute or may include synchronized sound.",
+          "previousConcept": 5837,
+          "parent": "MediaUnit",
+          "position": 14
+        },
+        {
+          "id": 10792,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Group",
+          "notation": "Group",
+          "title": "Group",
+          "definition": "Two or more individuals assembled together or having some unifying relationship or characteristic. In surveys, the questions are mainly focused on the group and the attitudes/experiences of the group, rather than on those of the individual respondents. If questions cover both the group and the individual, use  both as analysis units.",
+          "previousConcept": 5820,
+          "position": 15
+        },
+        {
+          "id": 10802,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Object",
+          "notation": "Object",
+          "title": "Object",
+          "definition": "Anything material, but inanimate, that has an independent existence and may be perceived by the senses. Examples: objects of art (paintings, sculptures, etc.) or weapons, or vehicles, etc.",
+          "previousConcept": 5824,
+          "position": 16
+        },
+        {
+          "id": 10798,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Other",
+          "notation": "Other",
+          "title": "Other",
+          "definition": "Use if the unit of analysis is known, but not found in the list.",
+          "previousConcept": 5825,
+          "position": 17
+        }
+      ],
+      "comments": [],
+      "versionHistories": [
+        {
+          "id": 359,
+          "version": "2.0",
+          "date": "2019-10-12",
+          "note": "A number of amendments were made based on user feedback. New code PoliticalAdministrativeArea added. New code MediaUnit and its subterms added. TextUnit was made a narrower term in the MediaUnit hierarchy. Several code definitions and the vocabulary definition were amended for clarity. Usage information updated.",
+          "changes": "CV definition amended\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organization rephrased into Organization/Institution\nCode descriptive term rephrased: Housing Unit rephrased into Housing unit\nCode descriptive term rephrased: Event/Process rephrased into Event/Process/Activity\nCode descriptive term rephrased: Geographic Unit rephrased into Geographic unit\nCode descriptive term rephrased: Time Unit rephrased into Time unit\nCode descriptive term rephrased: Text Unit rephrased into Media unit: Text\nCode definition amended with meaning change: OrganizationOrInstitution\nCode definition amended with meaning change: EventOrProcessOrActivity\nCode definition rephrased: Individual\nCode definition rephrased: Family\nCode definition rephrased: Family.HouseholdFamily\nCode definition rephrased: Geographic unit\nCode definition rephrased: MediaUnit.Text\nCode definition rephrased: Group\n",
+          "prevVersion": 206
+        },
+        {
+          "id": 206,
+          "version": "1.0",
+          "date": "2019-04-01",
+          "note": "",
+          "changes": "",
+          "prevVersion": 0
+        }
+      ]
+    }
+  ]
+}

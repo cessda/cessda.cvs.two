@@ -134,7 +134,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     });
 
     // compare version and version changes
-    if (this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== null) {
+    if (this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== 0) {
       this.editorService.getVocabularyCompare(this.versionParam!.id!).subscribe((res: HttpResponse<string[]>) => {
         const newContent: DiffContent = {
           leftContent: res.body![0],

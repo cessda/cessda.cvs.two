@@ -16,8 +16,20 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
   constructor(private service: HomeService, private router: Router) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
-    const notation = route.params['notation'];
-    const version = route.queryParams['v'];
+    let notation = route.params['notation'];
+    const codeIndex = (notation as string).indexOf('_');
+    let code = '';
+    if (codeIndex > 0) {
+      code = (notation as string)
+        .substring(codeIndex + 1)
+        .split('.')
+        .join('');
+      notation = (notation as string).substring(0, codeIndex);
+    }
+    let version = route.queryParams['version'];
+    let lang = '';
+    if (route.params['version']) version = route.params['version'];
+    if (route.params['lang']) lang = route.params['lang'];
     if (notation) {
       return this.service
         .getVocabularyFile(notation, {
@@ -27,7 +39,10 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
         .pipe(
           flatMap((vocabulary: HttpResponse<Vocabulary>) => {
             if (vocabulary.body) {
-              vocabulary.body.selectedLang = vocabulary.body.sourceLanguage;
+              vocabulary.body.selectedLang = lang !== '' ? lang : vocabulary.body.sourceLanguage;
+              if (code !== '') {
+                vocabulary.body.selectedCode = code;
+              }
               return of(vocabulary.body);
             } else {
               this.router.navigate(['404']);
@@ -54,6 +69,28 @@ export const HOME_ROUTE: Routes = [
   },
   {
     path: 'vocabulary/:notation',
+    component: HomeDetailComponent,
+    resolve: {
+      vocabulary: VocabularyResolve
+    },
+    data: {
+      pageTitle: 'home.title'
+    },
+    runGuardsAndResolvers: 'always'
+  },
+  {
+    path: 'vocabulary/:notation/:version',
+    component: HomeDetailComponent,
+    resolve: {
+      vocabulary: VocabularyResolve
+    },
+    data: {
+      pageTitle: 'home.title'
+    },
+    runGuardsAndResolvers: 'always'
+  },
+  {
+    path: 'vocabulary/:notation/:version/:lang',
     component: HomeDetailComponent,
     resolve: {
       vocabulary: VocabularyResolve

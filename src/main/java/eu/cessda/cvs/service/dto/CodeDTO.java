@@ -1038,10 +1038,10 @@ public class CodeDTO implements Serializable {
         if( isForEditor )
             codeIndex = 1L;
         for (VersionDTO version : versions) {
-            if( versionLangs.contains( version.getLanguage()) )
+            if( versionLangs.contains( version.getLanguage()) ) // skip existed version lang
                 continue;
 
-            long baseCodeId = version.getId() * 100;
+            long baseCodeId = version.getId() * 10000;
             versionLangs.add( version.getLanguage());
             for (ConceptDTO concept : version.getConcepts()) {
                 CodeDTO codeDTO = codeDTOsMap.get(concept.getNotation());
@@ -1049,6 +1049,7 @@ public class CodeDTO implements Serializable {
                     codeDTO = new CodeDTO();
                     codeDTO.setId( baseCodeId + codeIndex);
                     codeDTO.setNotation( concept.getNotation());
+                    codeDTO.setUri( concept.getUri() );
                     if( concept.getParent() != null )
                         codeDTO.setParent( concept.getParent() );
                     codeDTOsMap.put(concept.getNotation(), codeDTO);

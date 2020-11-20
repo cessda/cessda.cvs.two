@@ -30,16 +30,13 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
-import io.github.jhipster.config.JHipsterProperties;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.InnerHitBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
@@ -83,11 +80,13 @@ import java.util.stream.Stream;
 @Transactional
 public class VocabularyServiceImpl implements VocabularyService {
 
+    public static final String VOCABULARYPUBLISH = "vocabularypublish";
     private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
 
     public static final String COUNT = "_count";
     public static final String TITLE = "title";
     public static final String DEFINITION = "definition";
+    public static final String NOTATION = "notation";
     public static final String HIGHLIGHT_START = "<span class=\"highlight\">";
     public static final String HIGHLIGHT_END = "</span>";
     public static final int SIZE_OF_ITEMS_ON_AGGREGATION = 10000;
@@ -96,10 +95,6 @@ public class VocabularyServiceImpl implements VocabularyService {
     public static final String UNABLE_FIND_VERSION = "Unable to find version with Id ";
     public static final String LATEST = "latest";
     public static final String ALL = "all";
-
-    private final Comparator<VersionDTO> versionComparator = Comparator.comparing(VersionDTO::getItemType)
-        .thenComparing(VersionDTO::getLanguage)
-        .thenComparing(VersionDTO::getNumber, Comparator.reverseOrder());
 
     private static final String CODE_PATH = "codes";
 
@@ -131,8 +126,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private final ApplicationProperties applicationProperties;
 
-    private final JHipsterProperties jHipsterProperties;
-
     private final AgencyStatSearchRepository agencyStatSearchRepository;
 
     public VocabularyServiceImpl(AgencyRepository agencyRepository, ConceptService conceptService, ExportService exportService,
@@ -142,7 +135,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                                  VocabularyPublishMapper vocabularyPublishMapper, VocabularyEditorSearchRepository vocabularyEditorSearchRepository,
                                  VocabularyPublishSearchRepository vocabularyPublishSearchRepository,
                                  ElasticsearchTemplate elasticsearchTemplate, ApplicationProperties applicationProperties,
-                                 JHipsterProperties jHipsterProperties, AgencyStatSearchRepository agencyStatSearchRepository) {
+                                 AgencyStatSearchRepository agencyStatSearchRepository) {
         this.agencyRepository = agencyRepository;
         this.conceptService = conceptService;
         this.exportService = exportService;
@@ -157,7 +150,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         this.vocabularyPublishSearchRepository = vocabularyPublishSearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
         this.applicationProperties = applicationProperties;
-        this.jHipsterProperties = jHipsterProperties;
         this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
@@ -402,7 +394,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         vocabularyDTO.setAgencyLink( agency.getLink() );
         vocabularyDTO.setAgencyName( agency.getName() );
         vocabularyDTO.setAgencyLogo( agency.getLogopath() );
-        vocabularyDTO.setUri( VocabularyUtils.generateAgencyBaseUri( agency.getUri() ) + vocabularyDTO.getNotation() + "/" + vocabularyDTO.getSourceLanguage());
 
         // create a new version by vocabularyDTO
         VersionDTO versionDTO = new VersionDTO( vocabularyDTO );
@@ -512,7 +503,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
     }
 
-    private void storeChangeType(CodeSnippet codeSnippet, VersionDTO versionDTO) {
+    public void storeChangeType(CodeSnippet codeSnippet, VersionDTO versionDTO) {
         if ( codeSnippet.getChangeType() != null && !versionDTO.isInitialVersion()) {
             codeSnippet.setVersionId( versionDTO.getId());
             VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO(codeSnippet, SecurityUtils.getCurrentUser(),
@@ -586,7 +577,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private void sortVocabularyVersions(List<VocabularyDTO> vocabulariesDTO) {
         for (VocabularyDTO vocabularyDTO : vocabulariesDTO) {
-            LinkedHashSet<VersionDTO> sortedVersion = vocabularyDTO.getVersions().stream().sorted(versionComparator)
+            LinkedHashSet<VersionDTO> sortedVersion = vocabularyDTO.getVersions().stream().sorted(VocabularyUtils.versionDtoComparator())
                 .collect(Collectors.toCollection(LinkedHashSet::new));
             vocabularyDTO.setVersions(sortedVersion);
         }
@@ -688,18 +679,19 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
+    // TODO: need to change to list and create a new method to get vocabulary by agency and notation
     public VocabularyDTO getByNotation(String notation) {
         if( notation == null || notation.isEmpty()) {
             log.error("Error notation could not be empty or null");
             throw new IllegalArgumentException("Error notation could not be empty or null");
         }
         log.debug("Request to get Vocabulary by notation: {}", notation);
-        Vocabulary vocabulary = vocabularyRepository.findByNotation(notation);
-        if( vocabulary == null) {
+        final List<Vocabulary> vocabularies = vocabularyRepository.findAllByNotation(notation);
+        if( vocabularies.isEmpty()) {
             log.error("Error vocabulary with notation {} does not exist", notation);
             throw new EntityNotFoundException( UNABLE_FIND_VOCABULARY + "or notation " + notation);
         }
-        return vocabularyMapper.toDto(vocabulary);
+        return vocabularyMapper.toDto(vocabularies.get(0));
     }
 
     @Override
@@ -726,12 +718,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                     .filter(c -> c.getNotation().equals(conceptSlDTO.getNotation())).findFirst().orElse(null);
                 // if not found, try to find old notation from the previous SL concept
                 if( prevConceptTl == null ) {
-                    String oldSlNotation = prevVersionSl.getConcepts().stream()
-                        .filter(c -> c.getId().equals(conceptSlDTO.getPreviousConcept())).map(ConceptDTO::getNotation).findFirst().orElse(null);
-                    if( oldSlNotation != null ) {
-                        prevConceptTl = prevVersionTl.getConcepts().stream()
-                            .filter(c -> c.getNotation().equals(oldSlNotation)).findFirst().orElse(null);
-                    }
+                    prevConceptTl = getPrevTlConceptByPrevSlNotation(prevVersionSl, prevVersionTl, conceptSlDTO, prevConceptTl);
                 }
                 // assign title and definition if previous TL concept found
                 if( prevConceptTl != null ) {
@@ -753,13 +740,20 @@ public class VocabularyServiceImpl implements VocabularyService {
         return newTlVersion;
     }
 
+    private ConceptDTO getPrevTlConceptByPrevSlNotation(VersionDTO prevVersionSl, VersionDTO prevVersionTl, ConceptDTO conceptSlDTO, ConceptDTO prevConceptTl) {
+        String oldSlNotation = prevVersionSl.getConcepts().stream()
+            .filter(c -> c.getId().equals(conceptSlDTO.getPreviousConcept())).map(ConceptDTO::getNotation).findFirst().orElse(null);
+        if( oldSlNotation != null ) {
+            prevConceptTl = prevVersionTl.getConcepts().stream()
+                .filter(c -> c.getNotation().equals(oldSlNotation)).findFirst().orElse(null);
+        }
+        return prevConceptTl;
+    }
+
     @Override
     public VocabularyDTO getWithVersionsByNotationAndVersion(String notation, String slVersionNumber) {
         // get all available licenses
         final List<Licence> licenceList = licenceRepository.findAll();
-
-        // get all available agency
-        final List<Agency> agencyList = agencyRepository.findAll();
 
         if( slVersionNumber == null || slVersionNumber.isEmpty()) {
             log.error("Error version number could not be empty or null");
@@ -775,8 +769,10 @@ public class VocabularyServiceImpl implements VocabularyService {
             return vocabulary;
 
         if( slVersionNumber.equals(LATEST)) {
-            final VersionDTO latestSlVersion = vocabulary.getVersions().stream().sorted(versionComparator).findFirst().orElse(null);
-            slVersionNumber = latestSlVersion.getNumber();
+            final VersionDTO latestSlVersion = vocabulary.getVersions().stream().sorted(VocabularyUtils.versionDtoComparator())
+                .findFirst().orElse(null);
+            if( latestSlVersion != null )
+                slVersionNumber = latestSlVersion.getNumber();
         }
 
         getOneLatestVersionEachLanguage(slVersionNumber, licenceList, vocabulary, true);
@@ -920,6 +916,25 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
+    public Path getPublishedCvPath(String notation, String versionNumber) {
+        Path path = null;
+        if( versionNumber == null ) {
+            path = Paths.get(applicationProperties.getVocabJsonPath() + notation + File.separator + notation + JSON_FORMAT);
+        } else {
+            path = Paths.get(applicationProperties.getVocabJsonPath() + notation + File.separator +
+                versionNumber + File.separator + notation + "_" + versionNumber + JSON_FORMAT);
+        }
+        if( path == null )
+            throw new VocabularyNotFoundException();
+        return path;
+    }
+
+    @Override
+    public Path getPublishedCvPath(String notation) {
+        return getPublishedCvPath(notation, null);
+    }
+
+    @Override
     public void indexAllPublished() {
         log.info("INDEXING ALL PUBLISHED VOCABULARIES START");
         // remove any indexed vocabularies
@@ -930,7 +945,8 @@ public class VocabularyServiceImpl implements VocabularyService {
         log.info("INDEXING ALL PUBLISHED VOCABULARIES FINISHED");
     }
 
-    private List<Path> getPublishedCvPaths() {
+    @Override
+    public List<Path> getPublishedCvPaths() {
         List<Path> jsonPaths = new ArrayList<>();
         try ( Stream<Path> paths = Files.walk(Paths.get(applicationProperties.getVocabJsonPath()), 2) ){
             jsonPaths = paths.filter(Files::isRegularFile).collect(Collectors.toList());
@@ -965,14 +981,19 @@ public class VocabularyServiceImpl implements VocabularyService {
     public EsQueryResultDetail search(EsQueryResultDetail esQueryResultDetail) {
         // get user keyword
         String searchTerm = esQueryResultDetail.getSearchTerm();
-        String indiceType = "vocabularypublish";
+        String indiceType = VOCABULARYPUBLISH;
 
         // determine which language fields include into query
         if( esQueryResultDetail.getSearchScope().equals( SearchScope.EDITORSEARCH) ) {
             indiceType = "vocabularyeditor";
         }
         // search on all fields
-        List<String> languageFields = new ArrayList<>(Language.getCapitalizedIsos());
+        List<String> languageFields = new ArrayList<>();
+        if( !esQueryResultDetail.isSearchAllLanguages() ) {
+            languageFields.add(StringUtils.capitalize(esQueryResultDetail.getSortLanguage()));
+        } else {
+            languageFields.addAll(Language.getCapitalizedIsos());
+        }
 
         // build query builder
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
@@ -1009,15 +1030,76 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         // update vocabulary based on highlight and inner hit
         if(isSearchWithKeyword)
-            applySearchHitAndHighlight(vocabularyPage, searchResponse);
+            applySearchHitAndHighlight(vocabularyPage, searchResponse, true);
         else {
             // remove unnecessary nested code entities
             for( VocabularyDTO vocab : vocabularyPage.getContent())
                 vocab.setCodes( Collections.emptySet() );
         }
 
+        // set selected language in case language filter is selected with specific language
+        setVocabularySelectedLanguage(esQueryResultDetail, vocabularyPage,
+            esQueryResultDetail.getSearchScope().equals( SearchScope.EDITORSEARCH) ? EsFilter.LANGS_AGG: EsFilter.LANGS_PUB_AGG);
+
         esQueryResultDetail.setVocabularies(vocabularyPage);
 
+
+        return esQueryResultDetail;
+    }
+
+    @Override
+    public EsQueryResultDetail searchCode(EsQueryResultDetail esQueryResultDetail) {
+        // params
+        String term = esQueryResultDetail.getSearchTerm();
+        String language = StringUtils.capitalize(esQueryResultDetail.getSortLanguage());
+
+        // nested query for codes
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+
+        if( term.contains("*")){
+            boolQuery
+                .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replace(" ", "")).boost( 2.0f ));
+        } else {
+            boolQuery
+                .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + language, term).fuzziness(0.7).boost( 1.0f ))
+                .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replace(" ", "") + "*").boost( 2.0f ));
+        }
+        final NestedQueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery(CODE_PATH, boolQuery, ScoreMode.Total)
+            .innerHit(new InnerHitBuilder(CODE_PATH).setSize(100));
+
+        // build query builder
+        NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
+            .withIndices(VOCABULARYPUBLISH).withTypes(VOCABULARYPUBLISH)
+            .withSearchType(SearchType.DEFAULT)
+            .withQuery( nestedQueryBuilder )
+            .withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
+            .withPageable( esQueryResultDetail.getPage());
+
+        // add aggregation
+        for(AbstractAggregationBuilder aggregation : generateAggregations( esQueryResultDetail ) )
+            searchQueryBuilder.addAggregation(aggregation);
+
+        // at the end build search query
+        SearchQuery searchQuery = searchQueryBuilder.build();
+
+        Page<VocabularyDTO> vocabularyPage  = elasticsearchTemplate.queryForPage(searchQuery, VocabularyPublish.class).map(vocabularyPublishMapper::toDto);
+        SearchResponse searchResponse = elasticsearchTemplate.query(searchQuery, response -> response );
+
+        for(SearchHit hit : searchResponse.getHits()) {
+            Optional<VocabularyDTO> vocabOpt = VocabularyDTO.findByIdFromList(vocabularyPage.getContent(), hit.getId());
+            if( vocabOpt.isPresent()) {
+                VocabularyDTO cvHit = vocabOpt.get();
+
+                if( hit.getInnerHits() == null )
+                    continue;
+
+                applyCodeHighlighter(hit, cvHit, esQueryResultDetail.isWithHighlight());
+
+            }
+        }
+
+        generateAggregationFilter(esQueryResultDetail, searchResponse);
+        esQueryResultDetail.setVocabularies(vocabularyPage);
         return esQueryResultDetail;
     }
 
@@ -1078,19 +1160,19 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
     }
 
-    private void applySearchHitAndHighlight(Page<VocabularyDTO> vocabularyPage, SearchResponse searchResponse) {
+    private void applySearchHitAndHighlight(Page<VocabularyDTO> vocabularyPage, SearchResponse searchResponse, boolean withHighlight) {
         for(SearchHit hit : searchResponse.getHits()) {
             Optional<VocabularyDTO> vocabOpt = VocabularyDTO.findByIdFromList(vocabularyPage.getContent(), hit.getId());
             if( vocabOpt.isPresent()) {
                 VocabularyDTO cvHit = vocabOpt.get();
 
-                if( hit.getHighlightFields() != null )
+                if( hit.getHighlightFields() != null && withHighlight)
                     applyVocabularyHighlighter(hit, cvHit);
 
                 if( hit.getInnerHits() == null )
                     continue;
 
-                applyCodeHighlighter(hit, cvHit);
+                applyCodeHighlighter(hit, cvHit, withHighlight);
 
             }
         }
@@ -1119,49 +1201,49 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
     }
 
-    private void applyCodeHighlighter(SearchHit hit, VocabularyDTO cvHit) {
+    private void applyCodeHighlighter(SearchHit hit, VocabularyDTO cvHit, boolean withHighlight) {
         Set<CodeDTO> newCodes = new LinkedHashSet<>();
 
         for( Map.Entry<String, SearchHits> innerHitEntry : hit.getInnerHits().entrySet()) {
-
             for( SearchHit innerHit: innerHitEntry.getValue()) {
-
-                if( innerHit.getHighlightFields().isEmpty() || cvHit.getCodes() == null || innerHit.getSourceAsMap().get("id") == null )
-                    continue;
-
-                highlightEachCode(cvHit, newCodes, innerHit);
+                highlightEachCode(cvHit, newCodes, innerHit, withHighlight);
             }
         }
 
         cvHit.setCodes(newCodes);
     }
 
-    private void highlightEachCode(VocabularyDTO cvHit, Set<CodeDTO> newCodes, SearchHit innerHit) {
+    private void highlightEachCode(VocabularyDTO cvHit, Set<CodeDTO> newCodes, SearchHit innerHit, boolean withHighlight) {
         Optional<CodeDTO> codeOpt = CodeDTO.findByIdFromList(cvHit.getCodes(), (int) innerHit.getSourceAsMap().get("id"));
         if( codeOpt.isPresent()) {
             CodeDTO codeHit = codeOpt.get();
-            for (Map.Entry<String, HighlightField> entry : innerHit.getHighlightFields().entrySet()) {
-                String fieldName = entry.getKey();
-                HighlightField highlighField = entry.getValue();
-                StringBuilder highLightText = new StringBuilder();
-                for( Text text: highlighField.getFragments()) {
-                    if( !fieldName.contains(TITLE) && !text.string().endsWith(".")) {
-                        highLightText.append(text.string()).append(" ... ");
-                    } else
-                        highLightText.append( text.string() );
-                }
-                java.lang.reflect.Field declaredField;
-                try {
-                    declaredField = CodeDTO.class.getDeclaredField( fieldName.substring( CODE_PATH.length() + 1 ) );
-                    declaredField.setAccessible( true );
-                    declaredField.set(codeHit, highLightText.toString());
-
-                    setSelectedLanguageByHighlight( cvHit, fieldName );
-                } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-                    log.error(e.getMessage(), e);
-                }
-            }
+            if( withHighlight)
+                applyHighlightCode(cvHit, innerHit, codeHit);
             newCodes.add(codeHit);
+        }
+    }
+
+    private void applyHighlightCode(VocabularyDTO cvHit, SearchHit innerHit, CodeDTO codeHit) {
+        for (Map.Entry<String, HighlightField> entry : innerHit.getHighlightFields().entrySet()) {
+            String fieldName = entry.getKey();
+            HighlightField highlighField = entry.getValue();
+            StringBuilder highLightText = new StringBuilder();
+            for( Text text: highlighField.getFragments()) {
+                if( !fieldName.contains(TITLE) && !text.string().endsWith(".")) {
+                    highLightText.append(text.string()).append(" ... ");
+                } else
+                    highLightText.append( text.string() );
+            }
+            java.lang.reflect.Field declaredField;
+            try {
+                declaredField = CodeDTO.class.getDeclaredField( fieldName.substring( CODE_PATH.length() + 1 ) );
+                declaredField.setAccessible( true );
+                declaredField.set(codeHit, highLightText.toString());
+
+                setSelectedLanguageByHighlight(cvHit, fieldName );
+            } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
+                log.error(e.getMessage(), e);
+            }
         }
     }
 
@@ -1187,13 +1269,18 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     public static QueryBuilder generateMainQuery(String term, List<String> languageFields ) {
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        for(String langIso : languageFields) {
+        if( languageFields.size() == 1 ) {
             boolQuery
-                .should( QueryBuilders.matchQuery( TITLE + langIso, term).boost( 1000.0f ))
-                .should( QueryBuilders.matchQuery( DEFINITION + langIso, term).boost( 100.0f ))
-                .should( QueryBuilders.queryStringQuery( "*" + term + "*").field( TITLE + langIso).field(DEFINITION + langIso));
+                .should( QueryBuilders.matchQuery( TITLE + languageFields.get(0), term).fuzziness(0.7).boost( 10.0f ))
+                .should( QueryBuilders.matchQuery( DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 4.0f ));
+        } else {
+            List<String> fields = new ArrayList<>();
+            for(String langIso : languageFields) {
+                fields.add(TITLE + langIso);
+                fields.add(DEFINITION + langIso);
+            }
+            boolQuery.should(QueryBuilders.multiMatchQuery(term, fields.toArray(new String[0])));
         }
-
         return boolQuery;
     }
 
@@ -1201,19 +1288,26 @@ public class VocabularyServiceImpl implements VocabularyService {
         // query for all languages
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
-        // all language fields
-        for(String langIso : languageFields) {
+        if( languageFields.size() == 1 ) {
             boolQuery
-                .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + langIso, term).boost( 1000.0f ))
-                .should( QueryBuilders.matchQuery( CODE_PATH +"." + DEFINITION + langIso, term).boost( 10.0f ))
-                .should( QueryBuilders.queryStringQuery( "*" + term + "*").field( CODE_PATH +"." + TITLE + langIso).field(CODE_PATH +"." + DEFINITION + langIso));
+                .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + languageFields.get(0), term).fuzziness(0.7).boost( 2.0f ))
+                .should( QueryBuilders.matchQuery( CODE_PATH +"." + DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 1.0f ));
+        }
+        else {
+            List<String> fields = new ArrayList<>();
+            for(String langIso : languageFields) {
+                fields.add(CODE_PATH +"." + TITLE + langIso);
+                fields.add(CODE_PATH +"." + DEFINITION + langIso);
+            }
+            boolQuery.should(QueryBuilders.multiMatchQuery(term, fields.toArray(new String[0])));
         }
 
+
         if( term.length() > 2)
-            return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
+            return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total)
                 .innerHit( new InnerHitBuilder( CODE_PATH )
                     .setHighlightBuilder( nestedHighlightBuilder( languageFields ) ));
-        return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.None)
+        return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total)
             .innerHit( new InnerHitBuilder( CODE_PATH ) );
     }
 
@@ -1281,16 +1375,23 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
-    public void generateJsonAllVocabularyPublish() {
+    public String generateJsonAllVocabularyPublish() {
+        StringBuilder output = new StringBuilder();
+        output.append( "Performing Vocabulary Publish JSON files creation.\n" );
         // remove all static JSON files on vocabulary (delete entire and including vocabulary directory)
         deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath());
+        output.append( "Clean up: All existing JSON files are deleted.\n" );
 
         List<VocabularyDTO> vocabularyDTOS = findAll();
-        generateJsonVocabularyPublish( vocabularyDTOS.toArray(new VocabularyDTO[0]) );
+        output.append( "Starting to generate new JSON files.\n" );
+        output.append(  generateJsonVocabularyPublish( vocabularyDTOS.toArray(new VocabularyDTO[0]) ));
+        output.append( "Generating new JSON files are done!\n" );
+        return output.toString();
     }
 
     @Override
-    public void generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) {
+    public String generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) {
+        StringBuilder output = new StringBuilder();
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.registerModule(new JavaTimeModule());
@@ -1301,6 +1402,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         Map<Long, Licence> licenceMap = licenceRepository.findAll().stream().collect( Collectors.toMap( Licence::getId, Function.identity() ));
 
         for (VocabularyDTO vocabulary : vocabularies) {
+            output.append("Generate JSON files for Vocabulary " + vocabulary.getNotation() + ".\n");
             // get all published versions (sorted by SL and number)
             List<VersionDTO> versions = versionService.findAllPublishedByVocabulary(vocabulary.getId());
             // skip vocabulary without published version
@@ -1316,10 +1418,12 @@ public class VocabularyServiceImpl implements VocabularyService {
             Set<String> latestVersionsLangs = new HashSet<>();
             slNumberVersionsMap.put( LATEST, latestVersionsAcrossSl);
             for (VersionDTO version : versions) {
+                output.append("Generate JSON file for Vocabulary " + vocabulary.getNotation() + " Version" + version.getNumber() + ".\n");
                 prepareVersionAndConceptForJsonfy(licenceMap, vocabulary, slNumberVersionsMap, version, latestVersionsAcrossSl, latestVersionsLangs);
             }
             generateJsonFile(mapper, vocabulary, slNumberVersionsMap);
         }
+        return output.toString();
     }
 
     private void prepareVersionAndConceptForJsonfy(Map<Long, Licence> licenceMap, VocabularyDTO vocabulary,
@@ -1366,6 +1470,8 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private void updateConceptContentForJsonfy(List<ConceptDTO> concepts) {
         for (ConceptDTO concept : concepts) {
+            if( concept.getDefinition() != null )
+                concept.setDefinition( concept.getDefinition().trim());
             concept.setSlConcept(null);
             concept.setVersionId( null );
         }
@@ -1379,6 +1485,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             version.setLicenseName( licence.getName() );
             version.setLicenseLogo( licence.getLogoLink() );
         }
+        version.setNotes( version.getNotes() == null ? "": version.getNotes().trim());
         version.setCreator(null);
         version.setDiscussionNotes(null);
         version.setVocabularyId(null);
@@ -1399,9 +1506,6 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     private void addVersionHistories(VocabularyDTO vocabulary, VersionDTO version) {
-        // enable this after the data is corrected
-        if( version.isInitialVersion())
-            return;
         List<VersionDTO> olderVersions = versionService.findOlderPublishedByVocabularyLanguageId(vocabulary.getId(), version.getLanguage(), version.getId());
         List<Map<String,Object>> olderVersionHistories = new ArrayList<>();
         for (VersionDTO olderVersion : olderVersions) {
@@ -1463,10 +1567,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     public File generateVocabularyPublishFileDownload(
         String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
         log.info( "Publication generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
-        Path path = Paths.get(applicationProperties.getVocabJsonPath() + vocabularyNotation + File.separator +
-                versionSl + File.separator + vocabularyNotation + "_" + versionSl + JSON_FORMAT);
-
-        VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath(path);
+        VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath( getPublishedCvPath( vocabularyNotation,versionSl ) );
         return generateVocabularyFileDownload(vocabularyNotation, versionSl, versionList, downloadType, request, vocabularyDTO);
     }
 
@@ -1479,23 +1580,186 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
-    public String performConceptSlAndTlNormalization(VocabularyDTO... vocabularyDTOs) {
-        return null;
+    public String performTlMigrationNormalizationChecking() {
+        return performTlMigrationNormalization( true, "_all");
+    }
+
+    @Override
+    public String performTlMigrationNormalization(boolean isChecking, String notations) {
+        StringBuilder results = new StringBuilder();
+        List<VocabularyDTO> vocabularies = new ArrayList<>();
+        if(notations.equals( "_all") ) {
+            vocabularies = findAll();
+            results.append( "Perform concepts TL normalization for entire CVs with _all param" );
+        } else {
+            for (String s : notations.split(",")) {
+                VocabularyDTO cv = getByNotation(s.trim());
+                if( cv == null ) {
+                    results.append( "Error: Unable to find vocabulary with notation " + s.trim() );
+                } else {
+                    vocabularies.add( cv );
+                }
+            }
+        }
+        return performTlMigrationNormalization( isChecking, vocabularies.stream().toArray(VocabularyDTO[]::new));
+    }
+
+    @Override
+    public String performTlMigrationNormalization(boolean isChecking, VocabularyDTO... vocabularyDTOs) {
+        final String vocabulariesChecked = Arrays.stream(vocabularyDTOs).map(VocabularyDTO::getNotation).collect(Collectors.joining(", "));
+        log.info( "Perform concept TLs normalization on {}",  vocabulariesChecked);
+        StringBuilder results = new StringBuilder();
+        results.append( "Perform concepts TL normalization in mode " + (isChecking ? "CHECKING": "WRITE" ) + " for the following Vocabularies:\n" );
+        for (VocabularyDTO vocabularyDTO : vocabularyDTOs) {
+            final Agency agency = agencyRepository.getOne(vocabularyDTO.getAgencyId());
+
+            final List<VersionDTO> slVersions = vocabularyDTO.getVersions().stream()
+                .filter(v -> v.getItemType().equals(ItemType.SL.toString()))
+                .sorted(VocabularyUtils.versionDtoComparator()).collect(Collectors.toList());
+
+            results.append("\nCV " + vocabularyDTO.getNotation() + " latest version: " + slVersions.get(0).getNumber() + "\n");
+
+            for (int i = 0; i < slVersions.size(); i++) {
+                VersionDTO slVersion = slVersions.get(i);
+                results.append("Examining TLs from SL " + slVersion.getLanguage() + "-" + slVersion.getNumber() + "-" + slVersion.getStatus() + "\n");
+                final List<VersionDTO> tlVersionGroup = vocabularyDTO.getVersions().stream()
+                    .filter(v -> v.getNumber().startsWith(slVersion.getNumber()) && v.getItemType().equals(ItemType.TL.toString())).collect(Collectors.toList());
+
+                List<VersionDTO> tlVersionGroupPrev = null;
+                if( (i + 1 ) < slVersions.size() ) {
+                    int finalI = i;
+                    tlVersionGroupPrev = vocabularyDTO.getVersions().stream()
+                        .filter(v -> v.getNumber().startsWith(slVersions.get(finalI + 1).getNumber()) && v.getItemType().equals(ItemType.TL.toString())).collect(Collectors.toList());
+                }
+
+                results.append( tlNormalization(isChecking, slVersion, tlVersionGroup, tlVersionGroupPrev, agency));
+            }
+        }
+        return results.toString();
+    }
+
+    @Override
+    @Transactional
+    public void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode ) {
+        final List<Vocabulary> vocabularies = vocabularyRepository.findAllByAgencyId( agencyId );
+        for (Vocabulary vocabulary : vocabularies) {
+            vocabulary.setUri(VocabularyUtils.generateUri(agencyUri, null, vocabulary.getNotation(), null, vocabulary.getSourceLanguage(), null));
+            final List<Version> versions = vocabulary.getVersions().stream().sorted(VocabularyUtils.versionComparator()).collect(Collectors.toList());
+            for (Version version : versions) {
+                updateUriForVersionAndConcept(agencyUri, agencyUriCode, vocabulary, version);
+                if( version.getUriSl() != null ) {
+                    version.setUriSl(VocabularyUtils.generateUri(agencyUri, true, vocabulary.getNotation(), VersionUtils.getSlNumberFromTl(version.getNumber()), vocabulary.getSourceLanguage(), null));
+                }
+            }
+            vocabularyRepository.save(vocabulary);
+        }
+    }
+
+    private void updateUriForVersionAndConcept(String agencyUri, String agencyUriCode, Vocabulary vocabulary, Version version) {
+        if( version.getStatus().equals( Status.PUBLISHED.toString())) {
+            version.setUri(VocabularyUtils.generateUri(agencyUri, true, vocabulary.getNotation(), version.getNumber(), version.getLanguage(), null));
+            for (Concept concept : version.getConcepts()) {
+                concept.setUri( VocabularyUtils.generateUri(agencyUriCode, false, vocabulary.getNotation(), version.getNumber(), version.getLanguage(), concept.getNotation()) );
+            }
+        } else {
+            version.setUri( null );
+            for (Concept concept : version.getConcepts()) {
+                concept.setUri( null );
+            }
+        }
+    }
+
+    private String tlNormalization(boolean isChecking, VersionDTO slVersion, List<VersionDTO> tlVersionGroup, List<VersionDTO> tlVersionGroupPrev, Agency agency) {
+        StringBuilder results = new StringBuilder();
+        for (VersionDTO tlVersion : tlVersionGroup) {
+            results.append("Examining SL " + slVersion.getLanguage() + "-" + slVersion.getNumber() + "-" + slVersion.getStatus() +
+                " with TL " + tlVersion.getLanguage() + "-" + tlVersion.getNumber() + "-" + tlVersion.getStatus() + "\n");
+            final Set<ConceptDTO> tlConcepts = tlVersion.getConcepts();
+            for (ConceptDTO slConcept : slVersion.getConcepts()) {
+                ConceptDTO tlConcept = tlConcepts.stream().filter(c -> c.getNotation().equals(slConcept.getNotation())).findFirst().orElse(null);
+                if( tlConcept != null ) {
+                    checkExistingTlCodeWithSl(isChecking, results, slConcept, tlConcept);
+                    tlConcepts.remove(tlConcept);
+                } else {
+                    checkMissingTlCode(isChecking, tlVersionGroupPrev, results, tlVersion, slConcept, agency);
+                }
+            }
+            // print remaining TL set if any and remove
+            for (ConceptDTO tlConcept : tlConcepts) {
+                results.append( "Problem: Concept TL is redundant with SL " + tlConcept.toString() + "\n" );
+            }
+        }
+        return results.toString();
+    }
+
+    private void checkMissingTlCode(boolean isChecking, List<VersionDTO> tlVersionGroupPrev, StringBuilder results, VersionDTO tlVersion, ConceptDTO slConcept, Agency agency) {
+        results.append( "Problem: Concept TL is missing with notation " + slConcept.getNotation() + "\n" );
+        // find the prev concept if exist
+        ConceptDTO prevConcept = null;
+        if( tlVersionGroupPrev != null && !tlVersionGroupPrev.isEmpty()) {
+            VersionDTO versionTlPrev = tlVersionGroupPrev.stream().filter(v -> v.getLanguage().equals( tlVersion.getLanguage() )).findFirst().orElse(null);
+            if( versionTlPrev != null ) {
+                prevConcept = versionTlPrev.getConcepts().stream().filter(c -> c.getNotation().equals(slConcept.getNotation())).findFirst().orElse(null);
+            }
+        }
+        if( !isChecking) {
+            createMissingTlCode(results, tlVersion, slConcept, prevConcept, agency);
+        }
+    }
+
+    private void createMissingTlCode(StringBuilder results, VersionDTO tlVersion, ConceptDTO slConcept, ConceptDTO prevConcept, Agency agency) {
+        ConceptDTO tlConcept;
+        tlConcept = new ConceptDTO();
+        tlConcept.setNotation( slConcept.getNotation());
+        tlConcept.setParent( slConcept.getParent() );
+        tlConcept.setPosition( slConcept.getPosition());
+        tlConcept.setSlConcept( slConcept.getId());
+        tlConcept.setVersionId( tlVersion.getId() );
+        if( tlVersion.getUri() != null ) {
+            final int index = tlVersion.getUri().lastIndexOf("/" + tlVersion.getLanguage() + "/");
+            if(index > 0 ) {
+                tlConcept.setUri(VocabularyUtils.generateUri(agency.getUriCode(), false,
+                    tlVersion.getNotation(), VersionUtils.getSlNumberFromTl(tlVersion.getNumber()),
+                    tlVersion.getLanguage(), tlConcept.getNotation()));
+            }
+        }
+        if( prevConcept != null ) {
+            results.append( "Previous concept FOUND " + prevConcept.toString() + "\n" );
+            tlConcept.setTitle( prevConcept.getTitle());
+            tlConcept.setDefinition( prevConcept.getDefinition() );
+            tlConcept.setPreviousConcept( prevConcept.getId() );
+        } else {
+            results.append( "Previous concept NOT-FOUND\n" );
+            if( tlVersion.getStatus().equals(Status.PUBLISHED.toString())) {
+                tlConcept.setTitle( slConcept.getTitle());
+                tlConcept.setDefinition( slConcept.getDefinition() );
+            }
+        }
+        tlConcept = conceptService.save(tlConcept);
+        results.append( "Solution: Save a new TL concept with details " + tlConcept.toString() + " \n" );
+    }
+
+    private void checkExistingTlCodeWithSl(boolean isChecking, StringBuilder results, ConceptDTO slConcept, ConceptDTO tlConcept) {
+        if( (slConcept.getParent() != null && tlConcept.getParent() == null) ||
+            (slConcept.getParent() == null && tlConcept.getParent() != null) ||
+            (slConcept.getParent() != null && tlConcept.getParent() != null && !tlConcept.getParent().equals(slConcept.getParent())) ||
+            !tlConcept.getPosition().equals(slConcept.getPosition())) {
+            results.append( "Problem: Un-match SL and TL concept parent and/or position with notation " + slConcept.getNotation() +
+                " SL id, parent and notation " + slConcept.getId() + " - " + slConcept.getParent() + " - " + slConcept.getPosition() +
+                 " TL id, parent and notation " + tlConcept.getId() + " - " + tlConcept.getParent() + " - " + tlConcept.getPosition() + "\n"
+                );
+            if( !isChecking) {
+                tlConcept.setParent( slConcept.getParent());
+                tlConcept.setPosition( slConcept.getPosition() );
+                conceptService.save(tlConcept);
+                results.append( "Solution: Save TL concept with parent and position based on SL concept \n" );
+            }
+        }
     }
 
     private File generateVocabularyFileDownload(String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request, VocabularyDTO vocabularyDTO) {
-        // filter out version
-        Set<VersionDTO> includedVersions = new LinkedHashSet<>();
-        String[] versionSplits = versionList.split("_");
-        for (String vs : versionSplits) {
-            String[] s = vs.split("-");
-            if( s.length != 2 )
-                continue;
-            Optional<VersionDTO> versionDTOOpt = vocabularyDTO.getVersions().stream().filter(v -> v.getLanguage().equals(s[0]) && v.getNumber().equals(s[1])).findFirst();
-            versionDTOOpt.ifPresent(includedVersions::add);
-        }
+        Set<VersionDTO> includedVersions = filterOutVocabularyVersions(versionList, vocabularyDTO);
         vocabularyDTO.setVersions( includedVersions );
-
         Map<String, Object> map = new HashMap<>();
         // escaping HTML to strict XHTML
         for (VersionDTO includedVersion : includedVersions) {
@@ -1514,21 +1778,16 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         if( downloadType.equals( ExportService.DownloadType.SKOS ))
         {
-            VersionDTO version = includedVersions.iterator().next();
-            String uriSl = version.getUriSl();
+            final VersionDTO versionIncluded = includedVersions.iterator().next();
+            String uriSl = versionIncluded.getUriSl();
             if( uriSl == null )
-                uriSl = version.getUri();
-            // e.g. http://www.ddialliance.org/Specification/DDI-CV/TimeMethod/en/1.2
-            int index1 = uriSl.lastIndexOf("/" + vocabularyDTO.getSourceLanguage());
-            int index2 = uriSl.lastIndexOf('/' );
-            String uriVocab = uriSl.substring(0, index1);
-            String versionNumberSl  = uriSl.substring(index2 + 1);
-            map.put("docId", uriVocab + "_" + versionNumberSl);
-            map.put("docVersionOf", uriVocab );
+                uriSl = versionIncluded.getUri();
+            map.put("docId", uriSl );
+            map.put("docVersionOf", vocabularyDTO.getUri() );
             map.put("docNotation", vocabularyDTO.getNotation() );
-            map.put("docVersion", versionNumberSl );
-            map.put("docLicense", version.getLicenseName() );
-            map.put("docRight", version.getLicenseName() );
+            map.put("docVersion", VersionUtils.getSlNumberFromTl( versionIncluded.getNumber() ) );
+            map.put("docLicense", versionIncluded.getLicenseName() );
+            map.put("docRight", versionIncluded.getLicenseName() );
             map.put(CODE_PATH, CodeDTO.generateCodesFromVersion(includedVersions, false));
         }
         else {
@@ -1546,6 +1805,25 @@ public class VocabularyServiceImpl implements VocabularyService {
             log.error(e.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public Set<VersionDTO> filterOutVocabularyVersions(String versionList, VocabularyDTO vocabularyDTO) {
+        // filter out version
+        Set<VersionDTO> includedVersions = new LinkedHashSet<>();
+        if( versionList != null){
+            String[] versionSplits = versionList.split("_");
+            for (String vs : versionSplits) {
+                String[] s = vs.split("-");
+                if( s.length != 2 )
+                    continue;
+                Optional<VersionDTO> versionDTOOpt = vocabularyDTO.getVersions().stream().filter(v -> v.getLanguage().equals(s[0]) && v.getNumber().equals(s[1])).findFirst();
+                versionDTOOpt.ifPresent(includedVersions::add);
+            }
+        } else {
+            includedVersions = vocabularyDTO.getVersions();
+        }
+        return includedVersions;
     }
 
     private String toStrictXhtml(String text) {
@@ -1593,5 +1871,27 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private String getURLWithContextPath(HttpServletRequest request) {
         return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
+    }
+
+    private void setVocabularySelectedLanguage(EsQueryResultDetail esQueryResultDetail,
+                                               Page<VocabularyDTO> vocabularyPage, String fieldType) {
+        if( esQueryResultDetail.isAnyFilterActive() ) {
+            esQueryResultDetail.getEsFilterByField(fieldType).ifPresent( langFilter -> {
+                if( langFilter.getValues().size() == 1 ) {
+                    for( VocabularyDTO vocab : vocabularyPage.getContent()){
+                        vocab.setSelectedLang(langFilter.getValues().get(0));
+                    }
+                }
+            });
+        } else {
+            setSelectedLangToSourceLang(vocabularyPage);
+        }
+    }
+
+    private void setSelectedLangToSourceLang(Page<VocabularyDTO> vocabularyPage) {
+        for (VocabularyDTO vocab : vocabularyPage.getContent()) {
+            if( vocab.getSelectedLang() == null )
+                vocab.setSelectedLang(vocab.getSourceLanguage());
+        }
     }
 }

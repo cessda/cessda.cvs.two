@@ -17,15 +17,9 @@ import java.util.List;
 @Repository
 public interface VocabularyRepository extends JpaRepository<Vocabulary, Long>
 {
+    List<Vocabulary> findAllByAgencyId( Long agencyId );
 
-    @Query( "select v from Vocabulary v where v.uri = :cvUri" )
-    Vocabulary findByUri(@Param( "cvUri" ) String cvUri );
-
-    @Query( "select v from Vocabulary v where v.agencyId = :agencyId" )
-    List<Vocabulary> findByAgency(@Param( "agencyId" ) Long agencyId );
-
-    @Query( "select v from Vocabulary v where v.notation = :notation" )
-    Vocabulary findByNotation(@Param( "notation" ) String notation );
+    List<Vocabulary> findAllByNotation( String notation );
 
     boolean existsByNotation( String notation );
 
@@ -36,5 +30,4 @@ public interface VocabularyRepository extends JpaRepository<Vocabulary, Long>
 
     @Query( "select DISTINCT v from Vocabulary v where v.agencyId = :agencyId AND v.withdrawn IS true" )
     Page<Vocabulary> findAllWithdrawn(@Param( "agencyId" ) Long agencyId, Pageable pageable );
-
 }

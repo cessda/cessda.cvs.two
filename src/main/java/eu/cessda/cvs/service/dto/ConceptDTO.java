@@ -3,10 +3,11 @@ package eu.cessda.cvs.service.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.CodeSnippet;
 
-import javax.validation.constraints.*;
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.Lob;
 
 /**
  * A DTO for the {@link eu.cessda.cvs.domain.Concept} entity.
@@ -40,7 +41,9 @@ public class ConceptDTO implements Serializable {
 
     private Long versionId;
 
-    public ConceptDTO(){}
+    public ConceptDTO(){
+        this.notation = "NEW_NOTATION";
+    }
 
     /**
      * Constructor to generate new concept, defined by Rest API

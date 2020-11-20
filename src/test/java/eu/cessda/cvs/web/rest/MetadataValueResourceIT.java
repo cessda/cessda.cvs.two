@@ -2,38 +2,30 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.MetadataValue;
+import eu.cessda.cvs.domain.enumeration.ObjectType;
 import eu.cessda.cvs.repository.MetadataValueRepository;
 import eu.cessda.cvs.service.MetadataValueService;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.service.mapper.MetadataValueMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import eu.cessda.cvs.domain.enumeration.ObjectType;
 /**
  * Integration tests for the {@link MetadataValueResource} REST controller.
  */
@@ -43,6 +35,9 @@ import eu.cessda.cvs.domain.enumeration.ObjectType;
 @WithMockUser
 public class MetadataValueResourceIT {
 
+    private static final String DEFAULT_IDENTIFIER = "AAAAAAAAAA";
+    private static final String UPDATED_IDENTIFIER = "BBBBBBBBBB";
+
     private static final String DEFAULT_VALUE = "AAAAAAAAAA";
     private static final String UPDATED_VALUE = "BBBBBBBBBB";
 
@@ -51,6 +46,9 @@ public class MetadataValueResourceIT {
 
     private static final Long DEFAULT_OBJECT_ID = 1L;
     private static final Long UPDATED_OBJECT_ID = 2L;
+
+    private static final Integer DEFAULT_POSITION = 1;
+    private static final Integer UPDATED_POSITION = 2;
 
     @Autowired
     private MetadataValueRepository metadataValueRepository;
@@ -77,6 +75,8 @@ public class MetadataValueResourceIT {
      */
     public static MetadataValue createEntity(EntityManager em) {
         MetadataValue metadataValue = new MetadataValue()
+            .identifier(DEFAULT_IDENTIFIER)
+            .position(DEFAULT_POSITION)
             .value(DEFAULT_VALUE)
             .objectType(DEFAULT_OBJECT_TYPE)
             .objectId(DEFAULT_OBJECT_ID);
@@ -90,6 +90,8 @@ public class MetadataValueResourceIT {
      */
     public static MetadataValue createUpdatedEntity(EntityManager em) {
         MetadataValue metadataValue = new MetadataValue()
+            .identifier(UPDATED_IDENTIFIER)
+            .position(UPDATED_POSITION)
             .value(UPDATED_VALUE)
             .objectType(UPDATED_OBJECT_TYPE)
             .objectId(UPDATED_OBJECT_ID);
@@ -117,6 +119,8 @@ public class MetadataValueResourceIT {
         List<MetadataValue> metadataValueList = metadataValueRepository.findAll();
         assertThat(metadataValueList).hasSize(databaseSizeBeforeCreate + 1);
         MetadataValue testMetadataValue = metadataValueList.get(metadataValueList.size() - 1);
+        assertThat(testMetadataValue.getIdentifier()).isEqualTo(DEFAULT_IDENTIFIER);
+        assertThat(testMetadataValue.getPosition()).isEqualTo(DEFAULT_POSITION);
         assertThat(testMetadataValue.getValue()).isEqualTo(DEFAULT_VALUE);
         assertThat(testMetadataValue.getObjectType()).isEqualTo(DEFAULT_OBJECT_TYPE);
         assertThat(testMetadataValue.getObjectId()).isEqualTo(DEFAULT_OBJECT_ID);
@@ -154,6 +158,8 @@ public class MetadataValueResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(metadataValue.getId().intValue())))
+            .andExpect(jsonPath("$.[*].identifier").value(hasItem(DEFAULT_IDENTIFIER.toString())))
+            .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION.intValue())))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())))
             .andExpect(jsonPath("$.[*].objectType").value(hasItem(DEFAULT_OBJECT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].objectId").value(hasItem(DEFAULT_OBJECT_ID.intValue())));
@@ -170,6 +176,8 @@ public class MetadataValueResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(metadataValue.getId().intValue()))
+            .andExpect(jsonPath("$.identifier").value(DEFAULT_IDENTIFIER.toString()))
+            .andExpect(jsonPath("$.position").value(DEFAULT_POSITION.intValue()))
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.toString()))
             .andExpect(jsonPath("$.objectType").value(DEFAULT_OBJECT_TYPE.toString()))
             .andExpect(jsonPath("$.objectId").value(DEFAULT_OBJECT_ID.intValue()));
@@ -196,9 +204,11 @@ public class MetadataValueResourceIT {
         // Disconnect from session so that the updates on updatedMetadataValue are not directly saved in db
         em.detach(updatedMetadataValue);
         updatedMetadataValue
+            .identifier(UPDATED_IDENTIFIER)
             .value(UPDATED_VALUE)
             .objectType(UPDATED_OBJECT_TYPE)
-            .objectId(UPDATED_OBJECT_ID);
+            .objectId(UPDATED_OBJECT_ID)
+            .position(UPDATED_POSITION);
         MetadataValueDTO metadataValueDTO = metadataValueMapper.toDto(updatedMetadataValue);
 
         restMetadataValueMockMvc.perform(put("/api/metadata-values")
@@ -210,6 +220,8 @@ public class MetadataValueResourceIT {
         List<MetadataValue> metadataValueList = metadataValueRepository.findAll();
         assertThat(metadataValueList).hasSize(databaseSizeBeforeUpdate);
         MetadataValue testMetadataValue = metadataValueList.get(metadataValueList.size() - 1);
+        assertThat(testMetadataValue.getIdentifier()).isEqualTo(UPDATED_IDENTIFIER);
+        assertThat(testMetadataValue.getPosition()).isEqualTo(UPDATED_POSITION);
         assertThat(testMetadataValue.getValue()).isEqualTo(UPDATED_VALUE);
         assertThat(testMetadataValue.getObjectType()).isEqualTo(UPDATED_OBJECT_TYPE);
         assertThat(testMetadataValue.getObjectId()).isEqualTo(UPDATED_OBJECT_ID);

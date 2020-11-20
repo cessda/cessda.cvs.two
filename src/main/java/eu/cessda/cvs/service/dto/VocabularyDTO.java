@@ -7,6 +7,7 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.utils.VocabularyUtils;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -29,12 +30,16 @@ public class VocabularyDTO implements Serializable {
         this.archived = false;
         this.withdrawn = false;
         this.discoverable = true;
+        this.status = Status.DRAFT.toString();
+        this.notation = "NEW_VOCABULARY";
+        this.versionNumber = "1.0";
+        this.sourceLanguage = "en";
+        this.agencyId = 0L;
+        this.agencyName = "DEFAULT_AGENCY";
     }
 
     public VocabularyDTO(VocabularySnippet vocabularySnippet) {
-        this.archived = false;
-        this.withdrawn = false;
-        this.discoverable = true;
+        this();
         this.agencyId = vocabularySnippet.getAgencyId();
         this.notation = vocabularySnippet.getNotation();
         if( vocabularySnippet.getItemType().equals(ItemType.SL))
@@ -1347,14 +1352,10 @@ public class VocabularyDTO implements Serializable {
     }
 
     public List<VersionDTO> getVersionByGroup( String slVersionNumber, boolean noSameLanguage){
-        Comparator<VersionDTO> comparator = Comparator.comparing(VersionDTO::getItemType)
-            .thenComparing(VersionDTO::getLanguage)
-            .thenComparing(VersionDTO::getNumber, Comparator.reverseOrder());
-
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
             .filter(v -> v.getNumber().startsWith(slVersionNumber))
-            .sorted( comparator )
+            .sorted(VocabularyUtils.versionDtoComparator())
             .collect(Collectors.toList());
 
         if( noSameLanguage ) {

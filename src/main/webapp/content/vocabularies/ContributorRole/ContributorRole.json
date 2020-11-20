@@ -1,7 +1,7 @@
 {
   "id": 75,
   "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole/en/1.0",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole",
   "notation": "ContributorRole",
   "versionNumber": "1.0",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2019-12-11",
+  "publicationDate": "2019-12-10",
   "notes": "Recommendations regarding mapping to DataCite's ContributorType list have been included in the terms' definitions as appropriate.",
   "versions": [
     {
@@ -18,15 +18,16 @@
       "status": "PUBLISHED",
       "itemType": "SL",
       "language": "en",
-      "publicationDate": "2019-12-11",
+      "publicationDate": "2019-12-10",
       "number": "1.0",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole/en/1.0",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html",
       "canonicalUri": "urn:ddi:int.ddi.cv:ContributorRole:1.0",
       "notation": "ContributorRole",
       "title": "Contributor Role",
       "definition": "A classification of contributor roles.",
       "previousVersion": 0,
       "initialVersion": 350,
+      "notes": "",
       "versionNotes": "",
       "versionChanges": "",
       "license": "CC BY",
@@ -34,38 +35,38 @@
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
       "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Contributor Role (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ContributorRole:1.0. ",
-      "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module Name: reusable \n</div> \n<div>\n  Element Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/ContributorRole.html\">ContributorRole</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div>\n<div>\n DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary\n</div> \n<div> \n <br /> \n</div>",
-      "lastStatusChangeDate": "2020-10-01",
+      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: reusable</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/ContributorRole.html\" rel=\"noopener noreferrer\" target=\"_blank\">ContributorRole</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/ContributorRole.html\" rel=\"noopener noreferrer\" target=\"_blank\">ContributorRole</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary</p>",
+      "lastStatusChangeDate": "2020-09-30",
       "concepts": [
         {
           "id": 5570,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesign/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOrStudyDesign",
           "notation": "ProjectOrStudyDesign",
           "title": "Project/Study design",
-          "definition": "Describing the rationale, and putting together a specific plan for conducting a study or research project.\n",
+          "definition": "Describing the rationale, and putting together a specific plan for conducting a study or research project.",
           "position": 0
         },
         {
           "id": 5571,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesign.Conceptualization/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOrStudyDesign.Conceptualization",
           "notation": "ProjectOrStudyDesign.Conceptualization",
           "title": "Project/Study design: Conceptualization",
-          "definition": "Developing high-level research concepts as well as specific concepts to be measured. Conceptualization involves clarifying the concepts with verbal definitions and examples as well as expressing relationships among the concepts. ",
+          "definition": "Developing high-level research concepts as well as specific concepts to be measured. Conceptualization involves clarifying the concepts with verbal definitions and examples as well as expressing relationships among the concepts.",
           "parent": "ProjectOrStudyDesign",
           "position": 1
         },
         {
           "id": 5572,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesign.InstrumentDesign/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOrStudyDesign.InstrumentDesign",
           "notation": "ProjectOrStudyDesign.InstrumentDesign",
           "title": "Project/Study design: Instrument design",
-          "definition": "Conceiving and planning for the data collection instrument(s). May include the operationalization of concepts into questions and indicators, instrument testing, forward translation and subsequent changes in the master instrument(s),  as well as designing  and testing other types of data collection instruments than survey questionnaires. ",
+          "definition": "Conceiving and planning for the data collection instrument(s). May include the operationalization of concepts into questions and indicators, instrument testing, forward translation and subsequent changes in the master instrument(s),  as well as designing  and testing other types of data collection instruments than survey questionnaires.",
           "parent": "ProjectOrStudyDesign",
           "position": 2
         },
         {
           "id": 5573,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesign.MethodologyDevelopment/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOrStudyDesign.MethodologyDevelopment",
           "notation": "ProjectOrStudyDesign.MethodologyDevelopment",
           "title": "Project/Study design: Methodology development",
           "definition": "Developing guidelines or protocols for the methods used to conduct the study, and to process and analyze the data. For example, directions and instructions for collecting data, conducting interviews, translating questionnaires, input harmonization, using weights, etc.",
@@ -74,58 +75,58 @@
         },
         {
           "id": 5575,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesign.WeightsDesign/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOrStudyDesign.WeightsDesign",
           "notation": "ProjectOrStudyDesign.WeightsDesign",
           "title": "Project/Study design: Weights design",
-          "definition": "Developing weights to assist in adjusting the data to the desired objectives of the study, for example, to make the data representative of the target population.   ",
+          "definition": "Developing weights to assist in adjusting the data to the desired objectives of the study, for example, to make the data representative of the target population.",
           "parent": "ProjectOrStudyDesign",
           "position": 4
         },
         {
           "id": 5576,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesign.StandardsDevelopment/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOrStudyDesign.StandardsDevelopment",
           "notation": "ProjectOrStudyDesign.StandardsDevelopment",
           "title": "Project/Study design: Standards development",
-          "definition": "Developing models for the structure and distribution of data and metadata in fixed, predictable formats. For example, the DATS (Data Tag Suite) for describing biomedical data, the Data Documentation Initiative (DDI) for describing social, behavioral, economic, and health sciences data, etc. ",
+          "definition": "Developing models for the structure and distribution of data and metadata in fixed, predictable formats. For example, the DATS (Data Tag Suite) for describing biomedical data, the Data Documentation Initiative (DDI) for describing social, behavioral, economic, and health sciences data, etc.",
           "parent": "ProjectOrStudyDesign",
           "position": 5
         },
         {
           "id": 5577,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesign.DataModeling/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOrStudyDesign.DataModeling",
           "notation": "ProjectOrStudyDesign.DataModeling",
           "title": "Project/Study design: Data modeling",
-          "definition": "Creating a data model based on an analysis of data objects and their relationships, data properties, as well as data flows and processes. It is often the first step in database creation, tool and standards development, etc., and typically involves a progression from a conceptual model to a logical model, and then to a physical schema. ",
+          "definition": "Creating a data model based on an analysis of data objects and their relationships, data properties, as well as data flows and processes. It is often the first step in database creation, tool and standards development, etc., and typically involves a progression from a conceptual model to a logical model, and then to a physical schema.",
           "parent": "ProjectOrStudyDesign",
           "position": 6
         },
         {
           "id": 5574,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOrStudyDesignSamplingDesign/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOrStudyDesignSamplingDesign",
           "notation": "ProjectOrStudyDesignSamplingDesign",
           "title": "Project/Study design: Sampling design",
-          "definition": "Defining which elements of the target population are included in the sample, as well as the rules and procedures by which they will be selected. ",
+          "definition": "Defining which elements of the target population are included in the sample, as well as the rules and procedures by which they will be selected.",
           "position": 7
         },
         {
           "id": 5578,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataManagement/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataManagement",
           "notation": "DataManagement",
           "title": "Data management",
-          "definition": "Development and execution of architectures, policies, practices and procedures to handle data at any stage of its life cycle. Includes processes and activities related to the selection, organization and integration of data, their annotation, as well as their publication and preservation so that the data maintain their value over time, and remain available for reuse. ",
+          "definition": "Development and execution of architectures, policies, practices and procedures to handle data at any stage of its life cycle. Includes processes and activities related to the selection, organization and integration of data, their annotation, as well as their publication and preservation so that the data maintain their value over time, and remain available for reuse.",
           "position": 8
         },
         {
           "id": 5579,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#EthicsReview/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#EthicsReview",
           "notation": "EthicsReview",
           "title": "Ethics review",
-          "definition": "Reviewing whether a research proposal or study complies with ethical principles based on legislation or approved ethical guidelines (soft legislation). ",
+          "definition": "Reviewing whether a research proposal or study complies with ethical principles based on legislation or approved ethical guidelines (soft legislation).",
           "position": 9
         },
         {
           "id": 5580,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataCollection/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataCollection",
           "notation": "DataCollection",
           "title": "Data collection",
           "definition": "Activities relating to the process of gathering data in an established, systematic fashion that enables answering the stated research questions, testing hypotheses, and evaluating outcomes. Maps to 'DataCollector' in DataCite.",
@@ -133,23 +134,23 @@
         },
         {
           "id": 5581,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#SampleSelection/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#SampleSelection",
           "notation": "SampleSelection",
           "title": "Sample selection",
-          "definition": "Selecting units from the target population. ",
+          "definition": "Selecting units from the target population.",
           "position": 11
         },
         {
           "id": 5582,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataEntry/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataEntry",
           "notation": "DataEntry",
           "title": "Data entry",
-          "definition": "Entering or updating data into a computer system, often from other forms of media, like paper questionnaires, newspaper articles, etc. ",
+          "definition": "Entering or updating data into a computer system, often from other forms of media, like paper questionnaires, newspaper articles, etc.",
           "position": 12
         },
         {
           "id": 5583,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataProcessing/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataProcessing",
           "notation": "DataProcessing",
           "title": "Data processing",
           "definition": "Performing operations that result in changes to the data, including data cleaning, editing, post-harmonization, etc. Maps to 'DataCurator' in DataCite.",
@@ -157,43 +158,43 @@
         },
         {
           "id": 5584,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataProcessing.DisclosureControl/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataProcessing.DisclosureControl",
           "notation": "DataProcessing.DisclosureControl",
           "title": "Data processing: Disclosure control",
-          "definition": "Planning or using specific techniques to preserve the anonymity of individual or other entities that the data refer to. For example, anonymization, pseudonymization, or removal of direct and indirect identifiers. ",
+          "definition": "Planning or using specific techniques to preserve the anonymity of individual or other entities that the data refer to. For example, anonymization, pseudonymization, or removal of direct and indirect identifiers.",
           "parent": "DataProcessing",
           "position": 14
         },
         {
           "id": 5585,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataProcessing.DataAggregation/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataProcessing.DataAggregation",
           "notation": "DataProcessing.DataAggregation",
           "title": "Data processing: Data aggregation",
-          "definition": "Producing individually collected data in a summary form, for purposes such as statistical analysis. A common aggregation goal is to obtain more information about particular population groups, based on specific variables, such as age, profession, education, or income. ",
+          "definition": "Producing individually collected data in a summary form, for purposes such as statistical analysis. A common aggregation goal is to obtain more information about particular population groups, based on specific variables, such as age, profession, education, or income.",
           "parent": "DataProcessing",
           "position": 15
         },
         {
           "id": 5586,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataProcessing.DataIntegration/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataProcessing.DataIntegration",
           "notation": "DataProcessing.DataIntegration",
           "title": "Data processing: Data integration",
-          "definition": "Combining data from separate sources into meaningful information. For example, linking register data with survey data or integrating datasets collected in different countries into a cross-national dataset. ",
+          "definition": "Combining data from separate sources into meaningful information. For example, linking register data with survey data or integrating datasets collected in different countries into a cross-national dataset.",
           "parent": "DataProcessing",
           "position": 16
         },
         {
           "id": 5587,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataProcessing.DataValidation/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataProcessing.DataValidation",
           "notation": "DataProcessing.DataValidation",
           "title": "Data processing: Data validation",
-          "definition": "The process of checking data to ensure that all of them have acceptable values, that they are accurate, coherent, consistent, complete and in the expected format. ",
+          "definition": "The process of checking data to ensure that all of them have acceptable values, that they are accurate, coherent, consistent, complete and in the expected format.",
           "parent": "DataProcessing",
           "position": 17
         },
         {
           "id": 5588,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataAcquisition/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataAcquisition",
           "notation": "DataAcquisition",
           "title": "Data acquisition",
           "definition": "Acquiring data and supporting documentation from potential contributors for further preservation and/or dissemination.",
@@ -201,7 +202,7 @@
         },
         {
           "id": 5589,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#MetadataProduction/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#MetadataProduction",
           "notation": "MetadataProduction",
           "title": "Metadata production",
           "definition": "Generating data documentation. For example, a study description covering study rationale, methodology, and other characteristics of the dataset as a whole; variable-level documentation (labels, frequencies, question text); references to study-related materials or publications, etc.",
@@ -209,15 +210,15 @@
         },
         {
           "id": 5590,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataDistribution/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataDistribution",
           "notation": "DataDistribution",
           "title": "Data distribution",
-          "definition": "Distributing/disseminating the data to users and making them available for reuse. Maps to 'Distributor' in DataCite. ",
+          "definition": "Distributing/disseminating the data to users and making them available for reuse. Maps to 'Distributor' in DataCite.",
           "position": 20
         },
         {
           "id": 5591,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataHosting/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataHosting",
           "notation": "DataHosting",
           "title": "Data hosting",
           "definition": "Housing, servicing, and maintaining data and, usually, the accompanying  metadata or related documentation. Maps to to 'HostingInstitution' in DataCite.",
@@ -225,31 +226,31 @@
         },
         {
           "id": 5592,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#LongTermPreservationOrArchiving/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#LongTermPreservationOrArchiving",
           "notation": "LongTermPreservationOrArchiving",
           "title": "Long-term preservation/archiving",
-          "definition": "Protecting and maintaining the integrity and usability of data and accompanying metadata so that they remain available to future generations. Maps to 'DataManager' in DataCite. ",
+          "definition": "Protecting and maintaining the integrity and usability of data and accompanying metadata so that they remain available to future generations. Maps to 'DataManager' in DataCite.",
           "position": 22
         },
         {
           "id": 5593,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Consulting/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Consulting",
           "notation": "Consulting",
           "title": "Consulting",
-          "definition": "Providing expert advice. ",
+          "definition": "Providing expert advice.",
           "position": 23
         },
         {
           "id": 5594,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Contact/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Contact",
           "notation": "Contact",
           "title": "Contact",
-          "definition": "Individual, or organization that may be reached to obtain data-related information. Maps to  'ContactPerson' in DataCite.\n",
+          "definition": "Individual, or organization that may be reached to obtain data-related information. Maps to  'ContactPerson' in DataCite.",
           "position": 24
         },
         {
           "id": 5595,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#DataAnalysis/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#DataAnalysis",
           "notation": "DataAnalysis",
           "title": "Data analysis",
           "definition": "The process of investigating the data to help answer research questions and reach conclusions.",
@@ -257,7 +258,7 @@
         },
         {
           "id": 5596,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Editing/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Editing",
           "notation": "Editing",
           "title": "Editing",
           "definition": "Arranging, revising, and preparing materials (e.g., text, audio or video) for final production or publication. Maps to 'Editor' in DataCite.",
@@ -265,15 +266,15 @@
         },
         {
           "id": 5615,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#EquipmentDevelopment/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#EquipmentDevelopment",
           "notation": "EquipmentDevelopment",
           "title": "Equipment development",
-          "definition": "Creating and maintaining equipment needed at any stage of the data life cycle. ",
+          "definition": "Creating and maintaining equipment needed at any stage of the data life cycle.",
           "position": 27
         },
         {
           "id": 5597,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Evaluation/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Evaluation",
           "notation": "Evaluation",
           "title": "Evaluation",
           "definition": "Assessing quality, worth and significance. Includes, for example, establishing evaluation criteria, gathering evaluation inputs and conducting the process of evaluation.",
@@ -281,23 +282,23 @@
         },
         {
           "id": 5598,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#FundingProvision/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#FundingProvision",
           "notation": "FundingProvision",
           "title": "Funding provision",
-          "definition": "Providing financial support to a program or project, usually by an organization or government. Funding is made for a specific purpose for which the successful applicant must often account in full. ",
+          "definition": "Providing financial support to a program or project, usually by an organization or government. Funding is made for a specific purpose for which the successful applicant must often account in full.",
           "position": 29
         },
         {
           "id": 5599,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#FundingOrSponsorshipAcquisition/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#FundingOrSponsorshipAcquisition",
           "notation": "FundingOrSponsorshipAcquisition",
           "title": "Funding/sponsorship acquisition",
-          "definition": "Searching for, and/or obtaining financial or other type of support for a program or project. ",
+          "definition": "Searching for, and/or obtaining financial or other type of support for a program or project.",
           "position": 30
         },
         {
           "id": 5600,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Sponsorship/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Sponsorship",
           "notation": "Sponsorship",
           "title": "Sponsorship",
           "definition": "Providing support for research or for other work or activities. Includes in-kind support, for example, providing staff time, facilities or instrumentation. Maps to 'Sponsor' in DataCite.",
@@ -305,15 +306,15 @@
         },
         {
           "id": 5601,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#GraphicDesign/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#GraphicDesign",
           "notation": "GraphicDesign",
           "title": "Graphic design",
-          "definition": "Combining text and images to support and enhance content, and make it visually appealing and user-friendly. ",
+          "definition": "Combining text and images to support and enhance content, and make it visually appealing and user-friendly.",
           "position": 32
         },
         {
           "id": 5602,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOperations/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOperations",
           "notation": "ProjectOperations",
           "title": "Project operations",
           "definition": "Initiating, planning, executing, controlling, and closing the work of a team designed to achieve specific goals.",
@@ -321,7 +322,7 @@
         },
         {
           "id": 5603,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOperations.ProjectLeader/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOperations.ProjectLeader",
           "notation": "ProjectOperations.ProjectLeader",
           "title": "Project operations: Project leader",
           "definition": "Person officially designated as head of a project, or subproject team that carries out the work for developing a resource. The project leader remains closely involved in the work performed throughout the life of the project. Maps to 'ProjectLeader' in DataCite.",
@@ -330,7 +331,7 @@
         },
         {
           "id": 5604,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOperations.ProjectManager/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOperations.ProjectManager",
           "notation": "ProjectOperations.ProjectManager",
           "title": "Project operations: Project manager",
           "definition": "Person officially designated as manager of a project. This function normally has more administrative responsibilities than actual work involvement. Maps to 'ProjectManager' in DataCite.",
@@ -339,24 +340,24 @@
         },
         {
           "id": 5605,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ProjectOperations.ProjectMember/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ProjectOperations.ProjectMember",
           "notation": "ProjectOperations.ProjectMember",
           "title": "Project operations: Project member",
-          "definition": "Person that contributes and participates as a member in a designated project or project team. Maps to 'ProjectMember' in DataCite.\n",
+          "definition": "Person that contributes and participates as a member in a designated project or project team. Maps to 'ProjectMember' in DataCite.",
           "parent": "ProjectOperations",
           "position": 36
         },
         {
           "id": 5606,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Promotion/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Promotion",
           "notation": "Promotion",
           "title": "Promotion",
-          "definition": "Raising awareness and understanding of products and services, to attract potential users. ",
+          "definition": "Raising awareness and understanding of products and services, to attract potential users.",
           "position": 37
         },
         {
           "id": 5607,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#RegistrationAuthority/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#RegistrationAuthority",
           "notation": "RegistrationAuthority",
           "title": "Registration authority",
           "definition": "A standards-setting body from which Registration Agencies obtain official recognition and guidance. For example, the International DOI Foundation (IDF) serves as the registration authority for the International Standards Organization (ISO) in the area/domain of Digital Object Identifiers.",
@@ -364,7 +365,7 @@
         },
         {
           "id": 5610,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Researcher/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Researcher",
           "notation": "Researcher",
           "title": "Researcher",
           "definition": "An individual involved in analyzing the data or the study results, but whose role is to help with the research rather than be a creator.  For example, a researcher may seek, and find additional data from another source and correlate it to the study or experiment that is being conducted. Maps to 'Researcher' in DataCite.",
@@ -372,7 +373,7 @@
         },
         {
           "id": 5611,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#ResearchGroup/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#ResearchGroup",
           "notation": "ResearchGroup",
           "title": "Research group",
           "definition": "Group of individuals involved in the research. Maps to 'ResearchGroup' in DataCite.",
@@ -380,7 +381,7 @@
         },
         {
           "id": 5612,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#RightsHolding/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#RightsHolding",
           "notation": "RightsHolding",
           "title": "Rights holding",
           "definition": "Owning property rights, including intellectual property rights over the resource. Maps to 'RightsHolder' in DataCite.",
@@ -388,23 +389,23 @@
         },
         {
           "id": 5613,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#RightsManagement/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#RightsManagement",
           "notation": "RightsManagement",
           "title": "Rights management",
-          "definition": "Managing licenses for distributed data, tools, and other research materials on behalf of the rights holder.\n",
+          "definition": "Managing licenses for distributed data, tools, and other research materials on behalf of the rights holder.",
           "position": 42
         },
         {
           "id": 5614,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#SoftwareDevelopment/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#SoftwareDevelopment",
           "notation": "SoftwareDevelopment",
           "title": "Software development",
-          "definition": "Creating and maintaining software needed at any stage of the data life cycle. ",
+          "definition": "Creating and maintaining software needed at any stage of the data life cycle.",
           "position": 43
         },
         {
           "id": 5616,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Supervision/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Supervision",
           "notation": "Supervision",
           "title": "Supervision",
           "definition": "Overseeing one or more individuals or teams in their work. Maps to 'Supervisor' in DataCite.",
@@ -412,47 +413,47 @@
         },
         {
           "id": 5617,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Training/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Training",
           "notation": "Training",
           "title": "Training",
-          "definition": "Imparting information and/or instructions to improve the recipient's performance or to help attain a required level of knowledge or skills related to research or research data. For example, training interviewers, translators, data archivists, or data analysts. ",
+          "definition": "Imparting information and/or instructions to improve the recipient's performance or to help attain a required level of knowledge or skills related to research or research data. For example, training interviewers, translators, data archivists, or data analysts.",
           "position": 45
         },
         {
           "id": 5618,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Translation/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Translation",
           "notation": "Translation",
           "title": "Translation",
-          "definition": "Expressing the content of text or speech in a different language than the original language used. For example, questionnaire or study report translation. ",
+          "definition": "Expressing the content of text or speech in a different language than the original language used. For example, questionnaire or study report translation.",
           "position": 46
         },
         {
           "id": 5619,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#UserSupport/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#UserSupport",
           "notation": "UserSupport",
           "title": "User support",
-          "definition": "Providing assistance to users of data, metadata, tools, etc. ",
+          "definition": "Providing assistance to users of data, metadata, tools, etc.",
           "position": 47
         },
         {
           "id": 5620,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Visualization/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Visualization",
           "notation": "Visualization",
           "title": "Visualization",
-          "definition": "Representing data, analysis results, or other information as a chart, image or animation, to aid in the understanding of their meaning. ",
+          "definition": "Representing data, analysis results, or other information as a chart, image or animation, to aid in the understanding of their meaning.",
           "position": 48
         },
         {
           "id": 5621,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#WebsiteDevelopment/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#WebsiteDevelopment",
           "notation": "WebsiteDevelopment",
           "title": "Website development",
-          "definition": "Creating and maintaining a website related to the data. May include web design, building a user interface, network security configuration, etc. ",
+          "definition": "Creating and maintaining a website related to the data. May include web design, building a user interface, network security configuration, etc.",
           "position": 49
         },
         {
           "id": 5622,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/ContributorRole#Other/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/ContributorRole_1.0.html#Other",
           "notation": "Other",
           "title": "Other",
           "definition": "Use if the role is known but not in the list. Can be mapped to the roles 'RelatedPerson', 'Producer', and 'Work Package Leader' in DataCite.",

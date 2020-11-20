@@ -9,7 +9,7 @@ import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, Jh
 import { HomeService } from 'app/home/home.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
-import { AGGR_AGENCY, AGGR_LANGUAGE_PUBLISHED, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
+import { AGGR_AGENCY, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
 import { ICvResult } from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { ICode } from 'app/shared/model/code.model';
@@ -41,21 +41,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   ngbPaginationPage = 1;
 
   aggAgencyBucket?: IBucket[];
-  aggLanguageBucket?: IBucket[];
   activeAggAgency?: string[];
   activeAggLanguage?: string[];
   activeAgg = '';
-  sortByOption = 'code,asc';
 
   isAggAgencyCollapsed = true;
-  isAggLanguageCollapsed = true;
   isFilterCollapse = true;
 
   searchForm = this.fb.group({
     aggAgency: [],
     aggLanguage: [],
     size: [this.itemsPerPage],
-    sortBy: [this.sortByOption]
+    sortBy: ['code,asc']
   });
 
   constructor(
@@ -85,7 +82,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.page = params['page'];
       }
       if (params['sort']) {
-        this.sortByOption = params['sort'];
         const sortProp: string[] = params['sort'].split(',');
         this.predicate = sortProp[0];
         if (sortProp.length === 2) {
@@ -109,7 +105,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     this.isAggAgencyCollapsed = this.activeAggAgency.length === 0;
-    this.isAggLanguageCollapsed = this.activeAggLanguage.length === 0;
   }
 
   toggleFilterPanelHidden(): void {
@@ -182,12 +177,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.ngbPaginationPage = this.page;
   }
 
-  search(query: string): void {
+  search(query: string, pred?: string): void {
     this.page = 0;
     this.currentSearch = query;
     this.predicate = 'relevance';
+    this.predicate = 'relevance';
+    if (query === '') {
+      this.ascending = true;
+      this.predicate = 'code';
+    }
     this.clearFilter();
-    this.loadPage(1);
+    if (pred) {
+      this.activeAggLanguage!.push(pred);
+    }
+    this.buildFilterAndRefreshSearch();
   }
 
   clearFilter(): void {
@@ -216,6 +219,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   sort(): string[] {
+    if (this.predicate === 'relevance') return [this.predicate];
     return [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
   }
 
@@ -246,8 +250,8 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   private registerCvSearchEvent(): void {
-    this.eventSubscriber = this.eventManager.subscribe('doCvPublicationSearch', (response: JhiEventWithContent<string>) => {
-      this.search(response.content);
+    this.eventSubscriber = this.eventManager.subscribe('doCvPublicationSearch', (response: JhiEventWithContent<any>) => {
+      this.search(response.content.term, response.content.lang);
     });
   }
 
@@ -255,7 +259,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     // patch value for sort and size
     this.searchForm.patchValue({
       size: this.itemsPerPage,
-      sortBy: this.sortByOption
+      sortBy: this.sort()
     });
     // patch value for filter
     aggrs.forEach(aggr => {
@@ -263,9 +267,6 @@ export class HomeComponent implements OnInit, OnDestroy {
         // format bucket and add as autocomplete and patch form value
         this.aggAgencyBucket = this.formatBuckets(aggr.buckets!.concat(aggr.filteredBuckets!));
         this.searchForm.patchValue({ aggAgency: this.prepareActiveBuckets(this.aggAgencyBucket, aggr) });
-      } else if (aggr.field === AGGR_LANGUAGE_PUBLISHED) {
-        this.aggLanguageBucket = this.formatBucketLanguages(aggr.buckets!.concat(aggr.filteredBuckets!));
-        this.searchForm.patchValue({ aggLanguage: this.prepareActiveBuckets(this.aggLanguageBucket, aggr) });
       }
     });
   }
@@ -369,18 +370,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.buildFilterAndRefreshSearch();
   }
 
-  onAddLanguage(addedItem?: IBucket): void {
-    this.activeAggLanguage!.push(addedItem!.k!);
-    this.buildFilterAndRefreshSearch();
-  }
-
-  onRemoveLanguage(removedItem?: IBucket): void {
-    this.activeAggLanguage!.forEach((item, index) => {
-      if (item === removedItem!.k!) this.activeAggLanguage!.splice(index, 1);
-    });
-    this.buildFilterAndRefreshSearch();
-  }
-
   buildFilterAndRefreshSearch(): void {
     this.activeAgg = '';
     if (this.activeAggAgency!.length > 0) {
@@ -393,19 +382,15 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
       this.activeAgg += 'language:' + this.activeAggLanguage!.join(',');
     }
-    if (this.activeAgg === '') {
-      this.router.navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParams: { f: null },
-        queryParamsHandling: 'merge'
-      });
-    } else {
-      this.router.navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParams: { f: this.activeAgg },
-        queryParamsHandling: 'merge'
-      });
-    }
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: {
+        q: this.currentSearch === '' ? null : this.currentSearch,
+        f: this.activeAgg === '' ? null : this.activeAgg,
+        sort: this.sort()
+      },
+      queryParamsHandling: 'merge'
+    });
     this.loadPage(1);
   }
 }

@@ -1,7 +1,7 @@
 {
   "id": 61,
   "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType/en/1.1",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/DateType",
   "notation": "DateType",
   "versionNumber": "1.1",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2019-11-25",
+  "publicationDate": "2019-11-24",
   "notes": "The present list is based on ISO 8601 usage.\nThe previous version of this vocabulary may be accessed on the DDI Alliance site, at: http://www.ddialliance.org/controlled-vocabularies/all",
   "versions": [
     {
@@ -18,9 +18,9 @@
       "status": "PUBLISHED",
       "itemType": "SL",
       "language": "en",
-      "publicationDate": "2019-11-25",
+      "publicationDate": "2019-11-24",
       "number": "1.1",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType/en/1.1",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html",
       "canonicalUri": "urn:ddi:int.ddi.cv:DateType:1.1",
       "notation": "DateType",
       "title": "Date Type",
@@ -35,12 +35,12 @@
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
       "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2019). Date Type (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:DateType:1.1. ",
-      "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module name: reusable \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/DateTypeCode.html\">DateTypeCode</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div>\n<div>\n Element/Attribute name: \n <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/varFormat.html\">varFormat@category</a>\n</div> \n<div>\n For the \"category attribute\", a value from a controlled vocabulary may be provided if the \"other\" value is chosen. In this case, the term from the controlled vocabulary should be placed in the \"otherCategory\" attribute, and the controlledVocabUsed element (in the Document Description section) should also be filled in.\n</div>",
-      "lastStatusChangeDate": "2020-10-01",
+      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: reusable</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/DateTypeCode.html\" rel=\"noopener noreferrer\" target=\"_blank\">DateTypeCode</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module name: reusable</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/DateTypeCode.html\" rel=\"noopener noreferrer\" target=\"_blank\">DateTypeCode</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute name: <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/varFormat.html\" rel=\"noopener noreferrer\" target=\"_blank\">varFormat@category</a></p><p>For the \"category attribute\", a value from a controlled vocabulary may be provided if the \"other\" value is chosen. In this case, the term from the controlled vocabulary should be placed in the \"otherCategory\" attribute, and the controlledVocabUsed element (in the Document Description section) should also be filled in.</p>",
+      "lastStatusChangeDate": "2020-09-30",
       "concepts": [
         {
           "id": 3174,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#DateTime/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#DateTime",
           "notation": "DateTime",
           "title": "DateTime",
           "definition": "Used to specify a date and time in the form \"year, month, day, hour, minutes and seconds\" (YYYY-MM-DD hh:mm:ss). In a DateTime string expression, the time portion is preceded by a \"T\", for example, 2018-02-22T13:00:00. A time zone specification may be included either by entering the UTC date and time followed by a \"Z\", or by adding a positive or negative time after the stated time to indicate the offset from UTC time. For example, 1 pm U.S. Eastern Standard Time may be expressed as 2018-02-22T18:00:00Z, or as 2018-02-22T13:00:00-5:00.",
@@ -48,7 +48,7 @@
         },
         {
           "id": 3175,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#Time/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#Time",
           "notation": "Time",
           "title": "Time",
           "definition": "Used to specify a time in the form \"hour, minutes and seconds\" (hh:mm:ss). A time zone specification may be included either by entering the UTC time followed by a \"Z\", or by adding a positive or negative time after the stated time to indicate the offset from UTC time. For example, 1 pm U.S. Eastern Standard Time may be expressed as 18:00:00Z, or as 13:00:00-5:00.",
@@ -56,7 +56,7 @@
         },
         {
           "id": 3176,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#Date/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#Date",
           "notation": "Date",
           "title": "Date",
           "definition": "Used to specify a date in the form \"year, month, day\" (YYYY-MM-DD). A time zone specification may be included either by entering a UTC date followed by a \"Z\" or by adding a positive or negative time after the stated date to indicate the offset from UTC time. For example, February 20th, 2018 in Eastern Australia could be expressed as 2018-02-19Z, or as 2018-02-20+10:00.",
@@ -64,7 +64,7 @@
         },
         {
           "id": 3177,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#GYearMonth/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#GYearMonth",
           "notation": "GYearMonth",
           "title": "YearMonth",
           "definition": "Defines a part of a date - the year and month (YYYY-MM).",
@@ -72,7 +72,7 @@
         },
         {
           "id": 3178,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#GYear/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#GYear",
           "notation": "GYear",
           "title": "Year",
           "definition": "Defines a part of a date - the year (YYYY).",
@@ -80,7 +80,7 @@
         },
         {
           "id": 3179,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#GMonthDay/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#GMonthDay",
           "notation": "GMonthDay",
           "title": "MonthDay",
           "definition": "Defines a part of a date - the month and day (MM-DD).",
@@ -88,7 +88,7 @@
         },
         {
           "id": 3180,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#GDay/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#GDay",
           "notation": "GDay",
           "title": "Day",
           "definition": "Defines a part of a date - the day (DD).",
@@ -96,7 +96,7 @@
         },
         {
           "id": 3181,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#GMonth/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#GMonth",
           "notation": "GMonth",
           "title": "Month",
           "definition": "Defines a part of a date - the month (MM).",
@@ -104,7 +104,7 @@
         },
         {
           "id": 3182,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#Duration/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#Duration",
           "notation": "Duration",
           "title": "Duration",
           "definition": "Used to specify a time period or interval in the form \"number of years, number of months, number of days, number of hours, number of minutes, and number of seconds, preceded by a \"P\" (PnYnMnDTnHnMnS). The letter \"T\" indicates the start of the time section. For example, P5Y2M10DT15H stands for a period of five years, two months, 10 days, and 15 hours. A period preceded by the minus sign (\"-\") will indicate a negative duration, for example, -P10D stands for a period of minus 10 days.",
@@ -112,7 +112,7 @@
         },
         {
           "id": 3183,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#Timespan/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#Timespan",
           "notation": "Timespan",
           "title": "Timespan",
           "definition": "The TimeSpan structure represents a length of time (duration of time or elapsed time), and may be expressed as start/end, start/duration, or duration/end. Start, end, and duration are documented using the designated DateTime structures. Examples: start/end 2018-02-22T13:00:00/2018-02-22T14:30:00; start/duration 2018-02-Approved: The TimeSpan structure represents a length of time (duration of time or elapsed time), and may be expressed as start/end, start/duration, or duration/end. Start, end, and duration are documented using the designated DateTime structures. Examples: start/end 2018-02-22T13:00:00/2018-02-22T14:30:00; start/duration 2018-02-22T13:00:00/1H30M; duration/end 1H20M/2018-02-22T14:30:00. For start/end expressions, if any element is missing from the end value, it is assumed to be the same as for the start value, including the time zone if used. For example, a two-hour meeting on 14 Dec 2007 can be represented as 2007-12-14T13:30:00/15:30:00, or 2007-12-14T13:30:00/2H.",
@@ -120,7 +120,7 @@
         },
         {
           "id": 3184,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/DateType#Other/en/1.1",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/DateType_1.1.html#Other",
           "notation": "Other",
           "title": "Other",
           "definition": "Use if the date type is known, but not found in the list.",

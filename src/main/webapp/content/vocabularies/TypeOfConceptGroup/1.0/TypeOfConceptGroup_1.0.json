@@ -1,7 +1,7 @@
 {
   "id": 67,
   "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup/en/1.0",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup",
   "notation": "TypeOfConceptGroup",
   "versionNumber": "1.0",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2020-02-21",
+  "publicationDate": "2020-02-20",
   "notes": "",
   "versions": [
     {
@@ -18,9 +18,9 @@
       "status": "PUBLISHED",
       "itemType": "SL",
       "language": "en",
-      "publicationDate": "2020-02-21",
+      "publicationDate": "2020-02-20",
       "number": "1.0",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup/en/1.0",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup_1.0.html",
       "canonicalUri": "urn:ddi:int.ddi.cv:TypeOfConceptGroup:1.0",
       "notation": "TypeOfConceptGroup",
       "title": "Type of Concept Group",
@@ -36,11 +36,11 @@
       "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2020). Type of Concept Group (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TypeOfConceptGroup:1.0. ",
       "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2&nbsp;</a>\n<div>\n Module name: conceptualcomponent\n</div>\n<div>\n Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/conceptualcomponent_xsd/elements/TypeOfConceptGroup.html\">TypeOfConceptGroup</a>\n</div>\n<div>\n <br />\n</div>\n<div>\n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n</div>\n<div>\n DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element that would support this controlled vocabulary.\n</div>",
-      "lastStatusChangeDate": "2020-10-01",
+      "lastStatusChangeDate": "2020-09-30",
       "concepts": [
         {
           "id": 3542,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup#Administrative/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup_1.0.html#Administrative",
           "notation": "Administrative",
           "title": "Administrative",
           "definition": "A concept group created for administrative purposes, for instance for subsetting or reorganizing data.",
@@ -48,7 +48,7 @@
         },
         {
           "id": 3543,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup#Thematic/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup_1.0.html#Thematic",
           "notation": "Thematic",
           "title": "Thematic",
           "definition": "A concept group created to bring together concepts reflecting the same general theme, or topic; for example, a group called \"Trust\" can include trust in institutions, trust in government, as well as interpersonal trust.",
@@ -56,7 +56,7 @@
         },
         {
           "id": 3544,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup#Other/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TypeOfConceptGroup_1.0.html#Other",
           "notation": "Other",
           "title": "Other",
           "definition": "Use when the type of concept group is known, but not found in the list.",

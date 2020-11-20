@@ -1,7 +1,7 @@
 {
   "id": 58,
   "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet/en/1.0",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet",
   "notation": "CharacterSet",
   "versionNumber": "1.0",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2020-02-05",
+  "publicationDate": "2020-02-04",
   "notes": "This vocabulary lists some popular character sets but is not exhaustive. If the character set is not mentioned in the list, use 'Other' for this element and enter the specific name into the OtherValue element. You can search for the name of the character set in the list published by IANA (Internet Assigned Character Numbers). Use the \"preferred MIME-name\" if the IANA list specifies one, otherwise use the format in the Name field - http://www.iana.org/assignments/character-sets.",
   "versions": [
     {
@@ -18,9 +18,9 @@
       "status": "PUBLISHED",
       "itemType": "SL",
       "language": "en",
-      "publicationDate": "2020-02-05",
+      "publicationDate": "2020-02-04",
       "number": "1.0",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet/en/1.0",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html",
       "canonicalUri": "urn:ddi:int.ddi.cv:CharacterSet:1.0",
       "notation": "CharacterSet",
       "title": "Character Set",
@@ -35,12 +35,12 @@
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
       "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2020). Character Set (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:CharacterSet:1.0. ",
-      "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module name: reusable \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/CharacterSet.html\">CharacterSet</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/xhtml-datatypes-1_xsd/simpleTypes/Charset.html\"> @charset</a>\n</div>",
-      "lastStatusChangeDate": "2020-10-01",
+      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3 </a></p><p>Module name: reusable</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/CharacterSet.html\" rel=\"noopener noreferrer\" target=\"_blank\">CharacterSet</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module name: reusable</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/CharacterSet.html\" rel=\"noopener noreferrer\" target=\"_blank\">CharacterSet</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/xhtml-datatypes-1_xsd/simpleTypes/Charset.html\" rel=\"noopener noreferrer\" target=\"_blank\"> @charset</a></p>",
+      "lastStatusChangeDate": "2020-09-30",
       "concepts": [
         {
           "id": 4494,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ASCII/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ASCII",
           "notation": "ASCII",
           "title": "ASCII",
           "definition": "The official name is US-ASCII but use the format: ASCII. The ISO code for ASCII is ISO 14962.",
@@ -48,7 +48,7 @@
         },
         {
           "id": 4495,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO88591/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO88591",
           "notation": "ISO88591",
           "title": "ISO-8859-1",
           "definition": "For ISO standards, use format: ISO-n-n in Caption and ISOnn in Code. ISO standards are also known as Latin, for example, ISO-8859-1 as Latin1.",
@@ -56,7 +56,7 @@
         },
         {
           "id": 4496,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO88592/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO88592",
           "notation": "ISO88592",
           "title": "ISO-8859-2",
           "definition": "",
@@ -64,7 +64,7 @@
         },
         {
           "id": 4497,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO88593/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO88593",
           "notation": "ISO88593",
           "title": "ISO-8859-3",
           "definition": "",
@@ -72,7 +72,7 @@
         },
         {
           "id": 4498,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO88594/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO88594",
           "notation": "ISO88594",
           "title": "ISO-8859-4",
           "definition": "",
@@ -80,7 +80,7 @@
         },
         {
           "id": 4499,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO88595/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO88595",
           "notation": "ISO88595",
           "title": "ISO-8859-5",
           "definition": "",
@@ -88,7 +88,7 @@
         },
         {
           "id": 4500,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO88596/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO88596",
           "notation": "ISO88596",
           "title": "ISO-8859-6",
           "definition": "",
@@ -96,7 +96,7 @@
         },
         {
           "id": 4501,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO88597/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO88597",
           "notation": "ISO88597",
           "title": "ISO-8859-7",
           "definition": "",
@@ -104,7 +104,7 @@
         },
         {
           "id": 4502,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO88598/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO88598",
           "notation": "ISO88598",
           "title": "ISO-8859-8",
           "definition": "",
@@ -112,7 +112,7 @@
         },
         {
           "id": 4503,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO88599/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO88599",
           "notation": "ISO88599",
           "title": "ISO-8859-9",
           "definition": "",
@@ -120,7 +120,7 @@
         },
         {
           "id": 4504,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO885910/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO885910",
           "notation": "ISO885910",
           "title": "ISO-8859-10",
           "definition": "",
@@ -128,7 +128,7 @@
         },
         {
           "id": 4505,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO885911/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO885911",
           "notation": "ISO885911",
           "title": "ISO-8859-11",
           "definition": "",
@@ -136,7 +136,7 @@
         },
         {
           "id": 4506,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO885913/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO885913",
           "notation": "ISO885913",
           "title": "ISO-8859-13",
           "definition": "",
@@ -144,7 +144,7 @@
         },
         {
           "id": 4507,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO885914/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO885914",
           "notation": "ISO885914",
           "title": "ISO-8859-14",
           "definition": "",
@@ -152,7 +152,7 @@
         },
         {
           "id": 4508,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO885915/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO885915",
           "notation": "ISO885915",
           "title": "ISO-8859-15",
           "definition": "",
@@ -160,7 +160,7 @@
         },
         {
           "id": 4509,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#ISO885916/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#ISO885916",
           "notation": "ISO885916",
           "title": "ISO-8859-16",
           "definition": "",
@@ -168,7 +168,7 @@
         },
         {
           "id": 4510,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#MacOSRoman/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#MacOSRoman",
           "notation": "MacOSRoman",
           "title": "Mac OS Roman",
           "definition": "",
@@ -176,7 +176,7 @@
         },
         {
           "id": 4511,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#UTF8/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#UTF8",
           "notation": "UTF8",
           "title": "UTF-8",
           "definition": "For Unicode Transformation Formats, use format: UTF-n in Caption and UTFn in Code.",
@@ -184,7 +184,7 @@
         },
         {
           "id": 4512,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#UTF16/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#UTF16",
           "notation": "UTF16",
           "title": "UTF-16",
           "definition": "",
@@ -192,7 +192,7 @@
         },
         {
           "id": 4513,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#UTF32/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#UTF32",
           "notation": "UTF32",
           "title": "UTF-32",
           "definition": "",
@@ -200,7 +200,7 @@
         },
         {
           "id": 4514,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Windows1251/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Windows1251",
           "notation": "Windows1251",
           "title": "Windows-1251",
           "definition": "For MS-Windows character sets, use format: Windows-n in Caption and Windowsn in Code.",
@@ -208,7 +208,7 @@
         },
         {
           "id": 4515,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Windows1252/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Windows1252",
           "notation": "Windows1252",
           "title": "Windows-1252",
           "definition": "",
@@ -216,7 +216,7 @@
         },
         {
           "id": 4516,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Windows1253/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Windows1253",
           "notation": "Windows1253",
           "title": "Windows-1253",
           "definition": "",
@@ -224,7 +224,7 @@
         },
         {
           "id": 4517,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Windows1254/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Windows1254",
           "notation": "Windows1254",
           "title": "Windows-1254",
           "definition": "",
@@ -232,7 +232,7 @@
         },
         {
           "id": 4518,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Windows1255/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Windows1255",
           "notation": "Windows1255",
           "title": "Windows-1255",
           "definition": "",
@@ -240,7 +240,7 @@
         },
         {
           "id": 4519,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Windows1256/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Windows1256",
           "notation": "Windows1256",
           "title": "Windows-1256",
           "definition": "",
@@ -248,7 +248,7 @@
         },
         {
           "id": 4520,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Windows1257/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Windows1257",
           "notation": "Windows1257",
           "title": "Windows-1257",
           "definition": "",
@@ -256,7 +256,7 @@
         },
         {
           "id": 4521,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Windows1258/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Windows1258",
           "notation": "Windows1258",
           "title": "Windows-1258",
           "definition": "",
@@ -264,7 +264,7 @@
         },
         {
           "id": 4522,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Unspecified/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Unspecified",
           "notation": "Unspecified",
           "title": "Unspecified",
           "definition": "Use if the character set is not known, for example for some proprietary data files.",
@@ -272,7 +272,7 @@
         },
         {
           "id": 4523,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/CharacterSet#Other/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/CharacterSet_1.0.html#Other",
           "notation": "Other",
           "title": "Other",
           "definition": "Use if the character set is known, but not found in the list.",

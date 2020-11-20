@@ -6,7 +6,6 @@ import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.*;
@@ -83,13 +82,11 @@ public class EditorResource {
 
     private final VocabularyChangeService vocabularyChangeService;
 
-    private final AgencyStatSearchRepository agencyStatSearchRepository;
 
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
                           LicenceService licenceService, AgencyService agencyService, CommentService commentService,
                           MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
-                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService,
-                          AgencyStatSearchRepository agencyStatSearchRepository) {
+                          ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
@@ -100,7 +97,6 @@ public class EditorResource {
         this.metadataValueService = metadataValueService;
         this.applicationProperties = applicationProperties;
         this.vocabularyChangeService = vocabularyChangeService;
-        this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
     /**
@@ -251,15 +247,13 @@ public class EditorResource {
             cloneTLsIfAny(vocabularyDTO, versionDTO);
         }
         // save at the end
-        VocabularyDTO vocabularyDTOSaved = vocabularyService.save( vocabularyDTO );
+        vocabularyService.save( vocabularyDTO );
         // indexing publication, delete existing one
         if ( versionDTO.getStatus().equals( Status.PUBLISHED.toString()) ) {
             // generate json files
             vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
             // reindex published json
-            File cvDirectory = new File( applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation() + File.separator +
-                vocabularyDTO.getNotation() + ".json");
-            vocabularyService.indexPublished(cvDirectory.toPath());
+            vocabularyService.indexPublished( vocabularyService.getPublishedCvPath(vocabularyDTO.getNotation()));
         }
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
@@ -462,37 +456,39 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException("Unable to add Vocabulary " + vocabularyId));
 
         // check for authorization
-        SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
-            vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
+        if( codeSnippets[0].getActionType().equals( ActionType.CREATE_CODE))
+            SecurityUtils.checkResourceAuthorization(ActionType.CREATE_CODE,
+                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
+        else if( codeSnippets[0].getActionType().equals( ActionType.ADD_TL_CODE))
+            SecurityUtils.checkResourceAuthorization(ActionType.ADD_TL_CODE,
+                vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
         List<ConceptDTO> storedCodes = new ArrayList<>();
         for (CodeSnippet codeSnippet : codeSnippets) {
             log.debug("REST request to save Code/Concept : {}", codeSnippet);
 
-            // check if concept already exist for new concept
-            if (versionDTO.getConcepts().stream()
-                .anyMatch(c -> c.getNotation().equals( codeSnippet.getNotation()))) {
-                throw new CodeAlreadyExistException();
+            ConceptDTO conceptDTO = null;
+
+            if( codeSnippet.getActionType().equals( ActionType.CREATE_CODE)) {
+                conceptDTO = addNewConcept(versionDTO, codeSnippet);
+            } else if( codeSnippet.getActionType().equals( ActionType.ADD_TL_CODE)) {
+                conceptDTO = versionDTO.getConcepts().stream().filter(c -> c.getId().equals(codeSnippet.getConceptId())).findFirst().orElse(null);
+                if( conceptDTO != null ) {
+                    conceptDTO.setTitle( codeSnippet.getTitle() );
+                    conceptDTO.setDefinition( codeSnippet.getDefinition() );
+                }
             }
-            // set position if not available
-            if( codeSnippet.getPosition() == null )
-                codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
-            // create concept by codeSnippet
-            ConceptDTO newConceptDTO = new ConceptDTO( codeSnippet );
-            // add concept to version and save version to save new concept
-            versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
+            if( conceptDTO == null )
+                continue;
+
             versionDTO = versionService.save(versionDTO);
 
             // check if codeSnippet contains changeType, store if exist
-            if (codeSnippet.getChangeType() != null && !versionDTO.isInitialVersion()) {
-                VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO( SecurityUtils.getCurrentUser(),
-                    versionDTO.getVocabularyId(), versionDTO.getId(), codeSnippet.getChangeType(), codeSnippet.getChangeDesc());
-                vocabularyChangeService.save(vocabularyChangeDTO );
-            }
+            vocabularyService.storeChangeType(codeSnippet, versionDTO);
 
             // find the newly created code from version
-            ConceptDTO conceptDTO = versionDTO.findConceptByNotation(newConceptDTO.getNotation());
-            storedCodes.add( conceptDTO );
+            ConceptDTO concept= versionDTO.findConceptByNotation(conceptDTO.getNotation());
+            storedCodes.add( concept );
         }
 
         // index editor
@@ -507,6 +503,22 @@ public class EditorResource {
         HttpHeaders headers = HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_CODE_NAME, conceptsNotation);
         headers.add("import-status", "Successfully importing " + storedCodes.size() + " codes");
         return ResponseEntity.ok().headers(headers).body(storedCodes);
+    }
+
+    private ConceptDTO addNewConcept(VersionDTO versionDTO, CodeSnippet codeSnippet) {
+        // check if concept already exist for new concept
+        if (versionDTO.getConcepts().stream()
+            .anyMatch(c -> c.getNotation().equals( codeSnippet.getNotation()))) {
+            throw new CodeAlreadyExistException();
+        }
+        // set position if not available
+        if( codeSnippet.getPosition() == null )
+            codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
+        // create concept by codeSnippet
+        ConceptDTO newConceptDTO = new ConceptDTO(codeSnippet);
+        // add concept to version and save version to save new concept
+        versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
+        return newConceptDTO;
     }
 
     /**
@@ -818,6 +830,8 @@ public class EditorResource {
         MetadataValueDTO result  = metadataFieldDTO.getMetadataValues().stream().filter(v -> v.getId().equals(metadataValueDTO.getId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException("Unable to find metadataValue with Id " + metadataValueDTO.getId() ));
 
+        result.setIdentifier( metadataValueDTO.getIdentifier());
+        result.setPosition( metadataValueDTO.getPosition());
         result.setValue( metadataValueDTO.getValue() );
         metadataFieldService.save( metadataFieldDTO );
 

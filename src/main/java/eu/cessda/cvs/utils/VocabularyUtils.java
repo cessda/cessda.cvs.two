@@ -3,7 +3,8 @@ package eu.cessda.cvs.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import eu.cessda.cvs.service.ConfigurationService;
+import eu.cessda.cvs.domain.Version;
+import eu.cessda.cvs.service.VocabularyNotFoundException;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
@@ -12,6 +13,7 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.web.rest.domain.Aggr;
 import eu.cessda.cvs.web.rest.domain.CvResult;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -29,6 +31,18 @@ import java.util.stream.Collectors;
 public final class VocabularyUtils {
     private static final Logger log = LoggerFactory.getLogger(VocabularyUtils.class);
     private VocabularyUtils(){}
+
+    public static Comparator<VersionDTO> versionDtoComparator(){
+        return Comparator.comparing(VersionDTO::getItemType)
+            .thenComparing(VersionDTO::getLanguage)
+            .thenComparing(VersionDTO::getNumber, Comparator.reverseOrder());
+    }
+
+    public static Comparator<Version> versionComparator(){
+        return Comparator.comparing(Version::getItemType)
+            .thenComparing(Version::getLanguage)
+            .thenComparing(Version::getNumber, Comparator.reverseOrder());
+    }
 
     public static VocabularyDTO generateVocabularyByPath(Path jsonPath){
         ObjectMapper mapper = new ObjectMapper();
@@ -48,7 +62,12 @@ public final class VocabularyUtils {
 
         } catch (IOException e) {
             log.error(e.getMessage());
+            throw new VocabularyNotFoundException( "Published vocabulary not found, please check Vocabulary notation and SL version number!" );
         }
+        // reorder version
+        vocabularyDTO.setVersions( vocabularyDTO.getVersions().stream().sorted(versionDtoComparator())
+            .collect(Collectors.toCollection(LinkedHashSet::new)));
+
         return vocabularyDTO;
     }
 
@@ -61,14 +80,16 @@ public final class VocabularyUtils {
     public static EsQueryResultDetail prepareEsQuerySearching(String q, String f, Pageable pageable, SearchScope searchScope) {
         if (q == null)
             q = "";
-        Pageable newPageable = VocabularyUtils.buildNewPageable(pageable);
 
         EsQueryResultDetail esq = new EsQueryResultDetail(searchScope);
         esq.setSearchTerm(q);
-        esq.setPage(newPageable);
+
         // prepare filter
         if ( f != null && !f.isEmpty())
             VocabularyUtils.prepareActiveFilters(f, esq, searchScope);
+
+        Pageable newPageable = VocabularyUtils.buildNewPageable(pageable, esq.getSortLanguage() );
+        esq.setPage(newPageable);
 
         return esq;
     }
@@ -81,37 +102,63 @@ public final class VocabularyUtils {
         }
         if( f != null && !f.isEmpty()){
             for (String filterChunk : f.split(";")) {
-                String[] filterSplit = filterChunk.split(":");
-                String field = null;
-                List<String> activeFilters = new ArrayList<>();
-                if( filterSplit.length != 2 )
-                    continue;
-                // prepare the field
-                if( filterSplit[0].equals( "agency") )
-                    field = EsFilter.AGENCY_AGG;
-                if( filterSplit[0].equals( "language") ){
-                    if( searchScope.equals( SearchScope.PUBLICATIONSEARCH ))
-                        field = EsFilter.LANGS_PUB_AGG;
-                    else
-                        field = EsFilter.LANGS_AGG;
-                }
-                if( filterSplit[0].equals( "status") )
-                    field = EsFilter.STATUS_AGG;
-                // prepare the selected filter
-                String[] enableFilters = filterSplit[1].split(",");
-                Collections.addAll(activeFilters, enableFilters);
-                // add the filter
-                String finalField = field;
-                esq.getEsFilters().forEach(esf -> {
-                    if( esf.getField().equals(finalField)){
-                        esf.setValues( activeFilters );
-                    }
-                });
+                processFilterChunk(esq, searchScope, filterChunk);
             }
         }
     }
 
-    public static Pageable buildNewPageable(Pageable pageable) {
+    private static void processFilterChunk(EsQueryResultDetail esq, SearchScope searchScope, String filterChunk) {
+        String[] filterSplit = filterChunk.split(":");
+        if( filterSplit.length != 2 )
+            return;
+        // prepare the field
+        String field = setAggField(searchScope, filterSplit);
+        if( field == null )
+            return;
+        // prepare the selected filter
+        List<String> activeFilters = new ArrayList<>();
+        if( field.equals( EsFilter.LANGS_PUB_AGG ) || field.equals( EsFilter.LANGS_AGG ) ) {
+            if( filterSplit[1].contains("_all") ) {
+                esq.setSearchAllLanguages( true );
+                return;
+            }
+            else if( filterSplit[1].contains(",") ) {
+                activeFilters.add(filterSplit[1]);
+            } else {
+                activeFilters.add(filterSplit[1]);
+                esq.setSortLanguage(filterSplit[1]);
+            }
+        } else {
+            String[] enableFilters = filterSplit[1].split(",");
+            Collections.addAll(activeFilters, enableFilters);
+        }
+
+        // add the filter
+        esq.getEsFilters().forEach(esf -> {
+            if( esf.getField().equals(field)){
+                esf.setValues( activeFilters );
+            }
+        });
+    }
+
+    private static String setAggField(SearchScope searchScope, String[] filterSplit) {
+        String field = null;
+        if( filterSplit[0].equals( "agency") )
+            field = EsFilter.AGENCY_AGG;
+        if( filterSplit[0].equals( "vocab") )
+            field = EsFilter.NOTATION_AGG;
+        if( filterSplit[0].equals( "language") ){
+            if( searchScope.equals( SearchScope.PUBLICATIONSEARCH ))
+                field = EsFilter.LANGS_PUB_AGG;
+            else
+                field = EsFilter.LANGS_AGG;
+        }
+        if( filterSplit[0].equals( "status") )
+            field = EsFilter.STATUS_AGG;
+        return field;
+    }
+
+    public static Pageable buildNewPageable(Pageable pageable, String sortLanguage) {
         if( pageable.getSort().isUnsorted()) {
             return pageable;
         }
@@ -121,9 +168,9 @@ public final class VocabularyUtils {
         Sort.Direction direction = sortOrder.getDirection();
         if (sortOrder.getProperty().equals("relevance")) {
             sortProperty = "_score";
-            direction = Sort.Direction.ASC;
+            direction = Sort.Direction.DESC;
         } else if (sortOrder.getProperty().equals("code")) {
-            sortProperty = "notation";
+            sortProperty = "title" + StringUtils.capitalize(sortLanguage) + ".Key";
         }
         return PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), Sort.by(direction, sortProperty));
     }
@@ -158,13 +205,31 @@ public final class VocabularyUtils {
         return cvResult;
     }
 
-    public static String generateAgencyBaseUri( String agencyUri) {
-        String cvUriLink = agencyUri;
-        if(cvUriLink == null )
-            cvUriLink = ConfigurationService.DEFAULT_CV_LINK;
-        if(!cvUriLink.endsWith("/"))
-            cvUriLink += "/";
-        return cvUriLink;
+    /**
+     * Generated
+     * @param uri
+     * @param notation
+     * @return
+     */
+    public static String generateUri(String uri, Boolean isVersionUri, String notation, String version, String language, String code){
+        if( !uri.contains( "[VOCABULARY]" ))
+            throw new IllegalArgumentException( "Uri does not contains \"[VOCABULARY]\". Please check agency configuration");
+        String generatedUri = uri.replace("[VOCABULARY]", notation);
+        if( language != null ) {
+            generatedUri = generatedUri.replace("[LANGUAGE]", language);
+        }
+        if( isVersionUri != null ) {
+            // generate version or code URI
+            generatedUri = generatedUri.replace("[VERSION]", version);
+            if( !Boolean.TRUE.equals(isVersionUri) ) {
+                // generate code uri
+                generatedUri = generatedUri.replace("[CODE]", code);
+            }
+        } else {
+            // generate Vocabulary URI
+            generatedUri = generatedUri.split(notation)[0] + notation;
+        }
+        return generatedUri;
     }
 
 }

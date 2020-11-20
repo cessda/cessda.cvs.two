@@ -12,9 +12,9 @@ type EntityResponseType = HttpResponse<IVocabulary>;
 @Injectable({ providedIn: 'root' })
 export class HomeService {
   public resourceUrl = SERVER_API_URL + 'api/vocabulary';
-  public resourceSearchUrl = SERVER_API_URL + 'v2/search';
   public vocabularyStaticUrl = SERVER_API_URL + 'content/vocabularies';
-  public resourceDownloadUrl = SERVER_API_URL + 'api/download';
+  public resourceSearchUrl = SERVER_API_URL + 'v2/search';
+  public resourceDownloadUrl = SERVER_API_URL + 'v2/vocabularies';
   public resourceCvCompareUrl = SERVER_API_URL + 'v2/compare-vocabulary';
 
   constructor(protected http: HttpClient) {}

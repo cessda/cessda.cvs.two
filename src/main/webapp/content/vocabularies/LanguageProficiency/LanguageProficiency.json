@@ -1,7 +1,7 @@
 {
   "id": 62,
   "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency/en/1.0",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency",
   "notation": "LanguageProficiency",
   "versionNumber": "1.0",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2020-02-05",
+  "publicationDate": "2020-02-04",
   "notes": "",
   "versions": [
     {
@@ -18,9 +18,9 @@
       "status": "PUBLISHED",
       "itemType": "SL",
       "language": "en",
-      "publicationDate": "2020-02-05",
+      "publicationDate": "2020-02-04",
       "number": "1.0",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency/en/1.0",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html",
       "canonicalUri": "urn:ddi:int.ddi.cv:LanguageProficiency:1.0",
       "notation": "LanguageProficiency",
       "title": "Language Proficiency",
@@ -35,12 +35,12 @@
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
       "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2020). Language Proficiency (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:LanguageProficiency:1.0. ",
-      "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2&nbsp;</a> \n<div>\n  Module name: archive \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/Read.html\">Read</a> \n</div> \n<div> \n <span style=\"white-space:pre\"> </span>&nbsp; \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/Write.html\">Write</a> \n</div> \n<div> \n <span style=\"white-space:pre\"> </span>&nbsp; \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/Speak.html\">Speak</a> \n <br /> \n <div> \n  <br /> \n  <div> \n   <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\"> DDI 2.5</a> \n  </div> \n  <div>\n    DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary. \n  </div> \n  <div> \n   <br /> \n  </div> \n </div> \n</div>",
-      "lastStatusChangeDate": "2020-10-01",
+      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: archive</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/Read.html\" rel=\"noopener noreferrer\" target=\"_blank\">Read</a></p><p> &nbsp;<a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/Write.html\" rel=\"noopener noreferrer\" target=\"_blank\">Write</a></p><p> &nbsp;<a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/Speak.html\" rel=\"noopener noreferrer\" target=\"_blank\">Speak</a>  </p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2&nbsp;</a></p><p>Module name: archive</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/Read.html\" rel=\"noopener noreferrer\" target=\"_blank\">Read</a></p><p> &nbsp;<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/Write.html\" rel=\"noopener noreferrer\" target=\"_blank\">Write</a></p><p> &nbsp;<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/archive_xsd/elements/Speak.html\" rel=\"noopener noreferrer\" target=\"_blank\">Speak</a> </p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\"> DDI 2.5</a></p><p>DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary.</p>",
+      "lastStatusChangeDate": "2020-09-30",
       "concepts": [
         {
           "id": 3185,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#Native/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#Native",
           "notation": "Native",
           "title": "Native",
           "definition": "The individual is a native user of the language whose level of proficiency is unknown/unspecified.",
@@ -48,16 +48,16 @@
         },
         {
           "id": 3187,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#Native.Fluent/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#Native.Fluent",
           "notation": "Native.Fluent",
           "title": "Native: Fluent",
-          "definition": "\tThe individual is a native user with excellent mastery of the language, including breadth of vocabulary and idiom, and confident command of the grammar.",
+          "definition": "The individual is a native user with excellent mastery of the language, including breadth of vocabulary and idiom, and confident command of the grammar.",
           "parent": "Native",
           "position": 1
         },
         {
           "id": 3188,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#Native.Good/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#Native.Good",
           "notation": "Native.Good",
           "title": "Native: Good",
           "definition": "The individual is a native user of the language with good structural accuracy, vocabulary and comprehension.",
@@ -66,7 +66,7 @@
         },
         {
           "id": 3189,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#Native.Basic/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#Native.Basic",
           "notation": "Native.Basic",
           "title": "Native: Basic",
           "definition": "The individual is a native user of the language with limited vocabulary, use of grammar and comprehension.",
@@ -75,7 +75,7 @@
         },
         {
           "id": 3190,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#NonNative/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#NonNative",
           "notation": "NonNative",
           "title": "Non-native",
           "definition": "The individual is a non-native user of the language whose level of proficiency is unknown/unspecified.",
@@ -83,16 +83,16 @@
         },
         {
           "id": 3191,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#NonNative.Fluent/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#NonNative.Fluent",
           "notation": "NonNative.Fluent",
           "title": "Non-native: Fluent",
-          "definition": "\tThe individual is a non-native user with excellent mastery of the language, including breadth of vocabulary and idiom, and confident command of the grammar.",
+          "definition": "The individual is a non-native user with excellent mastery of the language, including breadth of vocabulary and idiom, and confident command of the grammar.",
           "parent": "NonNative",
           "position": 5
         },
         {
           "id": 3192,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#NonNative.Good/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#NonNative.Good",
           "notation": "NonNative.Good",
           "title": "Non-native: Good",
           "definition": "The individual is a non-native user of the language with good structural accuracy, vocabulary and comprehension.",
@@ -101,7 +101,7 @@
         },
         {
           "id": 3193,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#NonNative.Basic/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#NonNative.Basic",
           "notation": "NonNative.Basic",
           "title": "Non-native: Basic",
           "definition": "The individual is a non-native user of the language with limited vocabulary, use of grammar and comprehension.",
@@ -110,7 +110,7 @@
         },
         {
           "id": 3194,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#NativeStatusUnspecified/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#NativeStatusUnspecified",
           "notation": "NativeStatusUnspecified",
           "title": "Unspecified native status",
           "definition": "The individual's native status and her/his level of proficiency are both unknown, or not specified.",
@@ -118,7 +118,7 @@
         },
         {
           "id": 3195,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#NativeStatusUnspecified.Fluent/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#NativeStatusUnspecified.Fluent",
           "notation": "NativeStatusUnspecified.Fluent",
           "title": "Unspecified native status: Fluent",
           "definition": "The individual's native status is unknown/unspecified; s/he has excellent mastery of the language, including breadth of vocabulary and idiom, and confident command of the grammar.",
@@ -127,7 +127,7 @@
         },
         {
           "id": 3196,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#NativeStatusUnspecified.Good/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#NativeStatusUnspecified.Good",
           "notation": "NativeStatusUnspecified.Good",
           "title": "Unspecified native status: Good",
           "definition": "The individual's native status is unknown/unspecified; s/he has good structural accuracy, vocabulary and comprehension.",
@@ -136,7 +136,7 @@
         },
         {
           "id": 3197,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#NativeStatusUnspecified.Basic/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#NativeStatusUnspecified.Basic",
           "notation": "NativeStatusUnspecified.Basic",
           "title": "Unspecified native status: Basic",
           "definition": "The individual's native status is unknown/unspecified; s/he has limited vocabulary, use of grammar, and comprehension.",
@@ -145,7 +145,7 @@
         },
         {
           "id": 3198,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/LanguageProficiency#Other/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/LanguageProficiency_1.0.html#Other",
           "notation": "Other",
           "title": "Other",
           "definition": "Use if level of proficiency is known, but not found in the list. It is recommended that any new entry combine information about the individual's native/non-native status and his/her level of proficiency, following the format [native status].[proficiency level] as shown in the entries above.",

@@ -1,7 +1,7 @@
 {
   "id": 71,
   "status": "PUBLISHED",
-  "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone/en/1.0",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone",
   "notation": "TimeZone",
   "versionNumber": "1.0",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "DDI Alliance",
   "agencyLogo": "ddi.png",
   "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2020-05-13",
+  "publicationDate": "2020-05-12",
   "notes": "This is not an exhaustive list.",
   "versions": [
     {
@@ -18,9 +18,9 @@
       "status": "PUBLISHED",
       "itemType": "SL",
       "language": "en",
-      "publicationDate": "2020-05-13",
+      "publicationDate": "2020-05-12",
       "number": "1.0",
-      "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone/en/1.0",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html",
       "canonicalUri": "urn:ddi:int.ddi.cv:TimeZone:1.0",
       "notation": "TimeZone",
       "title": "Time Zone",
@@ -35,12 +35,12 @@
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
       "licenseLogo": "by.png",
       "citation": "DDI Alliance. (2020). Time Zone (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:TimeZone:1.0. ",
-      "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a> \n<div>\n  Module name: reusable \n</div> \n<div>\n  Element name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/TimeZone.html\">TimeZone</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary. \n</div>",
-      "lastStatusChangeDate": "2020-10-01",
+      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: reusable</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/TimeZone.html\" rel=\"noopener noreferrer\" target=\"_blank\">TimeZone</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module name: reusable</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/TimeZone.html\" rel=\"noopener noreferrer\" target=\"_blank\">TimeZone</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary.</p>",
+      "lastStatusChangeDate": "2020-09-30",
       "concepts": [
         {
           "id": 4632,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-12:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-12:00",
           "notation": "-12:00",
           "title": "UTC- 12:00",
           "definition": "Baker Island, Howland Island (both uninhabited)",
@@ -48,7 +48,7 @@
         },
         {
           "id": 4633,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-11:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-11:00",
           "notation": "-11:00",
           "title": "UTC- 11:00",
           "definition": "Samoa Standard Time (SST)",
@@ -56,7 +56,7 @@
         },
         {
           "id": 4634,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-10:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-10:00",
           "notation": "-10:00",
           "title": "UTC- 10:00",
           "definition": "Hawaii Standard Time (HST)",
@@ -64,7 +64,7 @@
         },
         {
           "id": 4635,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-09:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-09:30",
           "notation": "-09:30",
           "title": "UTC- 09:30",
           "definition": "Marquesas Time (MART)",
@@ -72,7 +72,7 @@
         },
         {
           "id": 4636,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-09:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-09:00",
           "notation": "-09:00",
           "title": "UTC- 09:00",
           "definition": "Alaska Standard Time (AKST)",
@@ -80,7 +80,7 @@
         },
         {
           "id": 4637,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-08:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-08:00",
           "notation": "-08:00",
           "title": "UTC- 08:00",
           "definition": "Pacific Standard Time (PST)",
@@ -88,7 +88,7 @@
         },
         {
           "id": 4638,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-07:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-07:00",
           "notation": "-07:00",
           "title": "UTC- 07:00",
           "definition": "Mountain Standard Time (North America) (MST)",
@@ -96,7 +96,7 @@
         },
         {
           "id": 4639,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-06:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-06:00",
           "notation": "-06:00",
           "title": "UTC- 06:00",
           "definition": "Central Standard Time (North and Central Americas) (CST)",
@@ -104,7 +104,7 @@
         },
         {
           "id": 4640,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-05:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-05:00",
           "notation": "-05:00",
           "title": "UTC- 05:00",
           "definition": "Eastern Standard Time (North and Central Americas, Caribbean) (EST)",
@@ -112,7 +112,7 @@
         },
         {
           "id": 4641,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-04:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-04:30",
           "notation": "-04:30",
           "title": "UTC- 04:30",
           "definition": "Venezuelan Standard Time (VET)",
@@ -120,7 +120,7 @@
         },
         {
           "id": 4642,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-04:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-04:00",
           "notation": "-04:00",
           "title": "UTC- 04:00",
           "definition": "Atlantic Standard Time (North America, Caribbean) (AST)",
@@ -128,7 +128,7 @@
         },
         {
           "id": 4643,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-03:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-03:30",
           "notation": "-03:30",
           "title": "UTC- 03:30",
           "definition": "Newfoundland Standard Time (NST)",
@@ -136,7 +136,7 @@
         },
         {
           "id": 4644,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-03:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-03:00",
           "notation": "-03:00",
           "title": "UTC- 03:00",
           "definition": "West Greenland Time (WGT)",
@@ -144,7 +144,7 @@
         },
         {
           "id": 4645,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-02:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-02:00",
           "notation": "-02:00",
           "title": "UTC- 02:00",
           "definition": "Fernando de Noronha Time (FNT)",
@@ -152,7 +152,7 @@
         },
         {
           "id": 4646,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#-01:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#-01:00",
           "notation": "-01:00",
           "title": "UTC- 01:00",
           "definition": "Central African Time (CAT)",
@@ -160,7 +160,7 @@
         },
         {
           "id": 4647,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#00:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#00:00",
           "notation": "00:00",
           "title": "UTC",
           "definition": "Universal Coordinated Time (UTC) / Greenwich Mean Time (GMT)",
@@ -168,7 +168,7 @@
         },
         {
           "id": 4648,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+01:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+01:00",
           "notation": "+01:00",
           "title": "UTC + 01:00",
           "definition": "European Central Time (ECT)",
@@ -176,7 +176,7 @@
         },
         {
           "id": 4649,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+02:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+02:00",
           "notation": "+02:00",
           "title": "UTC + 02:00",
           "definition": "Eastern European Time (EET), (Arabic) Egypt Standard Time (ART)",
@@ -184,7 +184,7 @@
         },
         {
           "id": 4650,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+03:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+03:00",
           "notation": "+03:00",
           "title": "UTC + 03:00",
           "definition": "Eastern African Time (EAT)",
@@ -192,7 +192,7 @@
         },
         {
           "id": 4651,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+03:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+03:30",
           "notation": "+03:30",
           "title": "UTC + 03:30",
           "definition": "Middle East Time (MET)",
@@ -200,7 +200,7 @@
         },
         {
           "id": 4652,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+04:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+04:00",
           "notation": "+04:00",
           "title": "UTC + 04:00",
           "definition": "Near East Time (NET)",
@@ -208,7 +208,7 @@
         },
         {
           "id": 4653,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+04:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+04:30",
           "notation": "+04:30",
           "title": "UTC + 04:30",
           "definition": "Afganistan Time (AFT)",
@@ -216,7 +216,7 @@
         },
         {
           "id": 4654,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+05:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+05:00",
           "notation": "+05:00",
           "title": "UTC + 05:00",
           "definition": "Pakistan Lahore Time (PLT)",
@@ -224,7 +224,7 @@
         },
         {
           "id": 4655,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+05:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+05:30",
           "notation": "+05:30",
           "title": "UTC + 05:30",
           "definition": "India Standard Time (IST)",
@@ -232,7 +232,7 @@
         },
         {
           "id": 4656,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+05:45/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+05:45",
           "notation": "+05:45",
           "title": "UTC + 05:45",
           "definition": "Nepal Time (NPT)",
@@ -240,7 +240,7 @@
         },
         {
           "id": 4657,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+06:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+06:00",
           "notation": "+06:00",
           "title": "UTC + 06:00",
           "definition": "Bangladesh Standard Time (BST)",
@@ -248,7 +248,7 @@
         },
         {
           "id": 4658,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+06:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+06:30",
           "notation": "+06:30",
           "title": "UTC + 06:30",
           "definition": "Cocos Islands Time (CCT)",
@@ -256,7 +256,7 @@
         },
         {
           "id": 4659,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+07:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+07:00",
           "notation": "+07:00",
           "title": "UTC + 07:00",
           "definition": "Vietnam Standard Time (VST)",
@@ -264,7 +264,7 @@
         },
         {
           "id": 4660,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+08:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+08:00",
           "notation": "+08:00",
           "title": "UTC + 08:00",
           "definition": "China Taiwan Time (CTT)",
@@ -272,7 +272,7 @@
         },
         {
           "id": 4661,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+09:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+09:00",
           "notation": "+09:00",
           "title": "UTC + 09:00",
           "definition": "Japan Standard Time (JST)",
@@ -280,7 +280,7 @@
         },
         {
           "id": 4662,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+09:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+09:30",
           "notation": "+09:30",
           "title": "UTC + 09:30",
           "definition": "Australia Central Time (ACT)",
@@ -288,7 +288,7 @@
         },
         {
           "id": 4663,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+10:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+10:00",
           "notation": "+10:00",
           "title": "UTC + 10:00",
           "definition": "Australia Eastern Time (AET)",
@@ -296,7 +296,7 @@
         },
         {
           "id": 4664,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+10:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+10:30",
           "notation": "+10:30",
           "title": "UTC + 10:30",
           "definition": "Lord Howe Standard Time (LHST)",
@@ -304,7 +304,7 @@
         },
         {
           "id": 4665,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+11:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+11:00",
           "notation": "+11:00",
           "title": "UTC + 11:00",
           "definition": "Solomon Standard Time (SST)",
@@ -312,7 +312,7 @@
         },
         {
           "id": 4666,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+11:30/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+11:30",
           "notation": "+11:30",
           "title": "UTC + 11:30",
           "definition": "Norfolk Time (Australia) (NFT)",
@@ -320,7 +320,7 @@
         },
         {
           "id": 4667,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+12:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+12:00",
           "notation": "+12:00",
           "title": "UTC + 12:00",
           "definition": "New Zealand Standard Time (NZST)",
@@ -328,7 +328,7 @@
         },
         {
           "id": 4668,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+12:45/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+12:45",
           "notation": "+12:45",
           "title": "UTC + 12:45",
           "definition": "Chatham Island Standard Time (CHAST)",
@@ -336,7 +336,7 @@
         },
         {
           "id": 4669,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+13:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+13:00",
           "notation": "+13:00",
           "title": "UTC + 13:00",
           "definition": "West Samoa Time (WST)",
@@ -344,7 +344,7 @@
         },
         {
           "id": 4670,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#+14:00/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#+14:00",
           "notation": "+14:00",
           "title": "UTC + 14:00",
           "definition": "Line Islands Time (LINT)",
@@ -352,7 +352,7 @@
         },
         {
           "id": 4671,
-          "uri": "http://www.ddialliance.org/Specification/DDI-CV/TimeZone#Other/en/1.0",
+          "uri": "https://ddialliance.org/Specification/DDI-CV/TimeZone_1.0.html#Other",
           "notation": "Other",
           "title": "Other",
           "definition": "Use if Time Zone is known, but not found in the list; enter new code in the same format used in this list, i.e., ±xx:xx as an offset from UTC.",

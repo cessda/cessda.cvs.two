@@ -1,95 +1,58 @@
-import { Component, OnInit } from '@angular/core';
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IMetadataField, MetadataField } from 'app/shared/model/metadata-field.model';
 import { EditorService } from 'app/editor/editor.service';
 import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
-import { FormBuilder } from '@angular/forms';
 import { METADATA_KEY_API } from 'app/shared/constants/metadata.constants';
 import { HttpResponse } from '@angular/common/http';
 import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
-import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
   selector: 'jhi-api-docs',
   templateUrl: './api-docs.component.html',
   styleUrls: ['./api-docs.component.scss']
 })
-export class ApiDocsComponent implements OnInit {
+export class ApiDocsComponent implements OnInit, OnDestroy {
   metadataField?: IMetadataField | null;
-  isWriteApiDocs = false;
-  isSaving = false;
+  metadataValues: IMetadataValue[] = [];
+  metadataValueMenu?: IMetadataValue;
+  metadataKey = METADATA_KEY_API;
 
-  quillModules: any = {
-    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']]
-  };
+  eventSubscriber?: Subscription;
 
-  ApiDocsForm = this.fb.group({
-    content: ['', []]
-  });
-
-  constructor(protected editorService: EditorService, private metadataFieldService: MetadataFieldService, private fb: FormBuilder) {}
+  constructor(
+    protected editorService: EditorService,
+    private metadataFieldService: MetadataFieldService,
+    protected eventManager: JhiEventManager
+  ) {}
 
   ngOnInit(): void {
-    this.loadApiDocsGuide();
+    this.refreshContent();
+    this.eventSubscriber = this.eventManager.subscribe('metadataListModification', () => this.refreshContent());
   }
 
-  private loadApiDocsGuide(): void {
-    this.metadataFieldService.findByKey(METADATA_KEY_API).subscribe((res: HttpResponse<IMetadataField>) => {
-      this.metadataField = res.body;
-
-      if (this.metadataField !== null) {
-        if (this.metadataField.metadataValues?.length) {
-          // add parent information to metadataValues
-          this.metadataField.metadataValues.forEach(mv => {
-            mv.metadataFieldId = this.metadataField!.id;
-            mv.metadataKey = this.metadataField!.metadataKey;
-          });
-          this.ApiDocsForm.patchValue({ content: this.metadataField.metadataValues[0].value });
-        }
+  private refreshContent(): void {
+    this.metadataFieldService.findByKey(this.metadataKey).subscribe((res: HttpResponse<IMetadataField>) => {
+      if (res.body !== null) {
+        this.metadataField = res.body;
+      } else {
+        this.metadataField = { ...new MetadataField(), metadataKey: this.metadataKey, metadataValues: [] };
+      }
+      if (this.metadataField && this.metadataField.metadataValues) {
+        this.metadataValues = this.metadataField.metadataValues;
+        this.metadataValueMenu = this.metadataValues.filter(mv => mv.identifier === 'overview')[0];
       }
     });
   }
 
-  private createFromForm(): IMetadataValue {
-    if (this.metadataField?.metadataValues?.length) {
-      return {
-        ...this.metadataField?.metadataValues[0],
-        value: this.ApiDocsForm.get(['content'])!.value
-      };
-    } else {
-      return {
-        ...new MetadataValue(),
-        value: this.ApiDocsForm.get(['content'])!.value,
-        objectType: ObjectType.SYSTEM,
-        metadataKey: METADATA_KEY_API
-      };
+  addSection(): void {
+    this.metadataField!.metadataValues!.push(new MetadataValue());
+  }
+
+  ngOnDestroy(): void {
+    if (this.eventSubscriber) {
+      this.eventSubscriber.unsubscribe();
     }
-  }
-
-  saveApiDocs(): void {
-    this.isSaving = true;
-    const metadataValue = this.createFromForm();
-    if (this.metadataField?.metadataValues?.length) {
-      this.subscribeToSaveResponse(this.editorService.updateAppMetadata(metadataValue));
-    } else {
-      this.subscribeToSaveResponse(this.editorService.createAppMetadata(metadataValue));
-    }
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IMetadataValue>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.isWriteApiDocs = false;
-    this.loadApiDocsGuide();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
   }
 }

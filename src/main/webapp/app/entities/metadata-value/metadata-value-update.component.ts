@@ -4,7 +4,7 @@ import { HttpResponse } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
 import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
 import { MetadataValueService } from './metadata-value.service';
@@ -22,6 +22,8 @@ export class MetadataValueUpdateComponent implements OnInit {
 
   editForm = this.fb.group({
     id: [],
+    identifier: [null, [Validators.maxLength(240)]],
+    position: [],
     value: [],
     objectType: [],
     objectId: [],
@@ -48,6 +50,8 @@ export class MetadataValueUpdateComponent implements OnInit {
   updateForm(metadataValue: IMetadataValue): void {
     this.editForm.patchValue({
       id: metadataValue.id,
+      identifier: metadataValue.identifier,
+      position: metadataValue.position,
       value: metadataValue.value,
       objectType: metadataValue.objectType,
       objectId: metadataValue.objectId,
@@ -89,6 +93,8 @@ export class MetadataValueUpdateComponent implements OnInit {
     return {
       ...new MetadataValue(),
       id: this.editForm.get(['id'])!.value,
+      identifier: this.editForm.get(['identifier'])!.value,
+      position: this.editForm.get(['position'])!.value,
       value: this.editForm.get(['value'])!.value,
       objectType: this.editForm.get(['objectType'])!.value,
       objectId: this.editForm.get(['objectId'])!.value,

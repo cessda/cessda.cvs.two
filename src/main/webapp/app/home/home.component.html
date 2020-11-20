@@ -2,9 +2,6 @@
     <form name="searchForm" class="w-100" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="searchForm">
         <jhi-alert-error></jhi-alert-error>
         <jhi-alert></jhi-alert>
-        <div class="alert alert-warning" *ngIf="vocabularies?.length === 0">
-            <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
-        </div>
         <div class="search-option-column">
             <div class="count-column">
                 <div class="level-row">
@@ -54,6 +51,7 @@
                                 <div>
                                     <tag-input [formControlName]="'aggAgency'"
                                                [onlyFromAutocomplete]="true"
+                                               [ripple]="false"
                                                [class] = "'sk-select-min'"
                                                (onAdd)="onAddAgency($event)"
                                                (onRemove)="onRemoveAgency($event)"
@@ -73,40 +71,7 @@
                         </div>
                     </div>
 
-
-                    <div class="filter-panel">
-                        <a class="acc-header option-label col-12" href="javascript:void(0);" (click)="isAggLanguageCollapsed = !isAggLanguageCollapsed"
-                           [attr.aria-expanded]="isAggLanguageCollapsed" aria-controls="language-filter">&nbsp;
-                            <fa-icon *ngIf="!isAggLanguageCollapsed" icon="caret-down"></fa-icon>
-                            <fa-icon *ngIf="isAggLanguageCollapsed" icon="caret-right"></fa-icon>
-                            <span>Language</span>
-                            <fa-icon icon="question-circle" style="float:right" ngbTooltip="Vocabulary languages"></fa-icon>
-                        </a>
-                        <div id="language-filter" class="acc-body" [ngbCollapse]="isAggLanguageCollapsed">
-                            <div class="form-group mb-0">
-                                <div>
-                                    <tag-input [formControlName]="'aggLanguage'"
-                                               [class] = "'sk-select-min'"
-                                               (onAdd)="onAddLanguage($event)"
-                                               (onRemove)="onRemoveLanguage($event)"
-                                               [animationDuration]="{ enter: '0ms', leave: '0ms' }"
-                                               [placeholder]="'Search languages'"
-                                               [secondaryPlaceholder]="'Search languages'"
-                                               [onlyFromAutocomplete]="true">
-                                        <tag-input-dropdown
-                                            [showDropdownIfEmpty]="true"
-                                            [keepOpen]="false"
-                                            [dynamicUpdate]="false"
-                                            [focusFirstElement]="true"
-                                            [autocompleteItems]="aggLanguageBucket">
-                                        </tag-input-dropdown>
-                                    </tag-input>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div *ngIf="activeAggAgency!.length !== 0 || activeAggLanguage!.length !== 0" class="filter-panel acc-header">
+                    <div *ngIf="activeAggAgency!.length !== 0" class="filter-panel acc-header">
                         <button (click)="clearFilterAndReload()" class="btn sk-select-min sk-input-f">
                             <span class="option-label">Clear filter </span>
                         </button>
@@ -162,10 +127,10 @@
 
                     </div>
                 </div>
+                <div class="alert alert-warning" *ngIf="vocabularies?.length === 0">
+                    <span jhiTranslate="cvsApp.vocabulary.home.notFound">No vocabularies found</span>
+                </div>
                 <div *ngIf="vocabularies?.length > 0">
-<!--                    <div class="row justify-content-center">-->
-<!--                        <jhi-item-count [page]="page" [total]="totalItems" [itemsPerPage]="itemsPerPage"></jhi-item-count>-->
-<!--                    </div>-->
                     <div class="row justify-content-center">
                         <ngb-pagination [collectionSize]="totalItems" [(page)]="ngbPaginationPage" [pageSize]="itemsPerPage" [maxSize]="3" [rotate]="true" [boundaryLinks]="true" (pageChange)="loadPageClicked($event)"></ngb-pagination>
                     </div>

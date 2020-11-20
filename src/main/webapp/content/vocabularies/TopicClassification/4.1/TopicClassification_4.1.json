@@ -1,7 +1,7 @@
 {
   "id": 56,
   "status": "PUBLISHED",
-  "uri": "https://vocabularies.cessda.eu/TopicClassification/en/4.1/4.1",
+  "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification",
   "notation": "TopicClassification",
   "versionNumber": "4.1",
   "withdrawn": false,
@@ -10,7 +10,7 @@
   "agencyName": "CESSDA",
   "agencyLogo": "cessda.png",
   "agencyLink": "https://www.cessda.eu/",
-  "publicationDate": "2020-10-08",
+  "publicationDate": "2020-10-06",
   "notes": "Top terms should only be used if no narrower terms are applicable. More than one term can be used for classifying a dataset.",
   "versions": [
     {
@@ -18,9 +18,9 @@
       "status": "PUBLISHED",
       "itemType": "SL",
       "language": "en",
-      "publicationDate": "2020-10-07",
+      "publicationDate": "2020-10-06",
       "number": "4.1",
-      "uri": "https://vocabularies.cessda.eu/TopicClassification/en/4.1/4.1",
+      "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification/4.1",
       "canonicalUri": "urn:ddi:int.cessda.cv:TopicClassification:4.1",
       "notation": "TopicClassification",
       "title": "CESSDA Topic Classification",
@@ -35,12 +35,12 @@
       "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
       "licenseLogo": "by.png",
       "citation": "CESSDA. (2020). CESSDA Topic Classification (Version 4.1) [Controlled vocabulary]. urn:ddi:int.cessda.cv:TopicClassification:4.1. ",
-      "ddiUsage": "<div> \n <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n <br />\n</div>\n<div>\n Module Name: reusable\n <br /> \n</div> \n<div>\n  Element Name:\n <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\"> Subject</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute Name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\">topcClas</a>\n <font size=\"3\"><font face=\"Verdana\"><br /></font></font> \n</div>",
-      "lastStatusChangeDate": "2020-10-07",
+      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: reusable</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\" rel=\"noopener noreferrer\" target=\"_blank\">Subject</a></p><p><br></p><p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: reusable </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/Subject.html\" rel=\"noopener noreferrer\" target=\"_blank\"> Subject</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/topcClas.html\" rel=\"noopener noreferrer\" target=\"_blank\">topcClas</a></p>",
+      "lastStatusChangeDate": "2020-10-06",
       "concepts": [
         {
           "id": 8980,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Demography/4.1",
           "notation": "Demography",
           "title": "DEMOGRAPHY (POPULATION, VITAL STATISTICS, AND CENSUSES)",
           "definition": "",
@@ -49,7 +49,7 @@
         },
         {
           "id": 8936,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Censuses/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Demography.Censuses/4.1",
           "notation": "Demography.Censuses",
           "title": "Censuses",
           "definition": "Surveys of an entire population, as opposed to a sample survey. Often used for official enumerations of a population, usually including the collection of related demographic information. Note that in some countries censuses are not used as demographic information can be obtained from official registers.",
@@ -59,7 +59,7 @@
         },
         {
           "id": 8918,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.Migration/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Demography.Migration/4.1",
           "notation": "Demography.Migration",
           "title": "Migration",
           "definition": "Includes immigration, emigration, internal migration as well as other types of geographical mobility. Immigration means coming to settle in another country than one's home country. Emigration means leaving one's home country to settle in another country. Migration is an umbrella term for both. Migration also includes internal migration, that is, movement of people within one country at different geographical levels.",
@@ -69,7 +69,7 @@
         },
         {
           "id": 8960,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Demography.MorbidityAndMortality/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Demography.MorbidityAndMortality/4.1",
           "notation": "Demography.MorbidityAndMortality",
           "title": "Morbidity and mortality",
           "definition": "Morbidity refers to incidence of ill health in a population. Data may cover the incidence or morbidity rate of a medical condition. For example, the number of people who suffer from lung cancer in a country or a geographic area during a single year. Mortality data indicate the numbers of deaths in a population by place, time, cause, or type of individual etc. For example, maternal mortality rate, child mortality rate. Use note: Self-reported survey data on illnesses and medical conditions are indexed with HEALTH hierarchy topics.",
@@ -79,7 +79,7 @@
         },
         {
           "id": 8904,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Economics/4.1",
           "notation": "Economics",
           "title": "ECONOMICS",
           "definition": "",
@@ -88,7 +88,7 @@
         },
         {
           "id": 8891,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.ConsumptionAndConsumerBehaviour/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Economics.ConsumptionAndConsumerBehaviour/4.1",
           "notation": "Economics.ConsumptionAndConsumerBehaviour",
           "title": "Consumption and consumer behaviour",
           "definition": "Refers to the act of acquiring and/or using something to meet the needs and wants of a person, community or society. Data in this category include patterns of consumer behaviour, changes in them, and data on consumer ethics. For example, survey data on how often people buy certain items; when and where they shop; whether ethical considerations affect their consumer choices.",
@@ -98,7 +98,7 @@
         },
         {
           "id": 8967,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicConditionsAndIndicators/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Economics.EconomicConditionsAndIndicators/4.1",
           "notation": "Economics.EconomicConditionsAndIndicators",
           "title": "Economic conditions and indicators",
           "definition": "Economic indicators indicate in which direction an economy is headed and include, for example, GDP growth rate, employment, inflation and interest rate, consumer and investor activity, household debt. Use note: This topic is also used for economic conditions of individuals and households which are surveyed or registered.",
@@ -108,7 +108,7 @@
         },
         {
           "id": 8917,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicPolicyPublicExpenditureAndRevenue/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Economics.EconomicPolicyPublicExpenditureAndRevenue/4.1",
           "notation": "Economics.EconomicPolicyPublicExpenditureAndRevenue",
           "title": "Economic policy,  public expenditure and revenue",
           "definition": "Data on economic policy, including budget and fiscal policy, public expenditure and public revenue.",
@@ -118,7 +118,7 @@
         },
         {
           "id": 8933,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.EconomicSystemsAndDevelopment/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Economics.EconomicSystemsAndDevelopment/4.1",
           "notation": "Economics.EconomicSystemsAndDevelopment",
           "title": "Economic systems and development",
           "definition": "Data covering capitalist, socialist and other economic systems and data on, for example, international development programs.",
@@ -128,7 +128,7 @@
         },
         {
           "id": 8906,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Economics.IncomePropertyAndInvestmentSaving/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Economics.IncomePropertyAndInvestmentSaving/4.1",
           "notation": "Economics.IncomePropertyAndInvestmentSaving",
           "title": "Income, property and investment/saving",
           "definition": "Data on the accumulation of personal assets, including income, property, investments and savings.",
@@ -138,7 +138,7 @@
         },
         {
           "id": 8954,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Education/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Education/4.1",
           "notation": "Education",
           "title": "EDUCATION",
           "definition": "",
@@ -147,7 +147,7 @@
         },
         {
           "id": 8927,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Education.CompulsoryAndPreschoolEducation/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Education.CompulsoryAndPreschoolEducation/4.1",
           "notation": "Education.CompulsoryAndPreschoolEducation",
           "title": "Compulsory and pre-school education",
           "definition": "Compulsory education refers to the period of education that is required of all persons living in a country and is imposed by law. Pre-school education refers to formal childcare and education given prior to compulsory education. This topic covers data relating to pre-school, primary and lower secondary stages of education, regardless of whether the data focuses on students, teachers, subjects or skills taught, facilities etc.",
@@ -157,7 +157,7 @@
         },
         {
           "id": 8911,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Education.EducationalPolicy/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Education.EducationalPolicy/4.1",
           "notation": "Education.EducationalPolicy",
           "title": "Educational policy",
           "definition": "Discussions of policy and principles, and decisions made and principles adopted at national, regional or local level concerning education and its provision. Use note: For laws and regulations already implemented, use the topic 'Laws and regulations' as well.",
@@ -167,7 +167,7 @@
         },
         {
           "id": 8920,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Education.HigherAndFurtherEducation/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Education.HigherAndFurtherEducation/4.1",
           "notation": "Education.HigherAndFurtherEducation",
           "title": "Higher and further education",
           "definition": "Covers general education at ISCED levels 3-4 plus tertiary education, that is, upper secondary general education, and college, university of applied sciences, and university education. Includes data on students, teachers, subjects or skills taught, facilities etc.",
@@ -177,7 +177,7 @@
         },
         {
           "id": 8895,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Education.LifelongContinuingEducation/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Education.LifelongContinuingEducation/4.1",
           "notation": "Education.LifelongContinuingEducation",
           "title": "Life-long/continuing education",
           "definition": "Refers to educational opportunities in varied forms provided for adults after they have left the formal education system. Adults may engage in such education to, for instance, improve their skills or qualifications, to retrain for a new line of work, or just to learn something new. Does not generally include education leading to a qualification, or employee training.",
@@ -187,7 +187,7 @@
         },
         {
           "id": 8907,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Education.VocationalEducationAndTraining/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Education.VocationalEducationAndTraining/4.1",
           "notation": "Education.VocationalEducationAndTraining",
           "title": "Vocational education and training",
           "definition": "Programmes that are designed for learners to acquire the knowledge, skills and competencies specific to a particular occupation, trade or class of occupations or trades. Vocational education may have work-based components. Covers vocational education at ISCED levels 3-4 and apprenticeships. Includes data on students, teachers, subjects or skills taught, facilities etc.",
@@ -197,7 +197,7 @@
         },
         {
           "id": 8894,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health/4.1",
           "notation": "Health",
           "title": "HEALTH",
           "definition": "",
@@ -206,7 +206,7 @@
         },
         {
           "id": 8896,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DietAndNutrition/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.DietAndNutrition/4.1",
           "notation": "Health.DietAndNutrition",
           "title": "Diet and nutrition",
           "definition": "Nutritional processes, eating patterns and practices, and measurable nutritional parameters such as body mass index (BMI), weight, vitamin levels.",
@@ -216,7 +216,7 @@
         },
         {
           "id": 8985,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.DrugAbuseAlcoholAndSmoking/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.DrugAbuseAlcoholAndSmoking/4.1",
           "notation": "Health.DrugAbuseAlcoholAndSmoking",
           "title": "Drug abuse, alcohol and smoking",
           "definition": "Data on drug and other substance abuse. Data on smoking and drinking habits. Use note: For data covering medicinal use of recreational drugs (such as medicinal use of cannabis), use 'Medication and treatment'.",
@@ -226,7 +226,7 @@
         },
         {
           "id": 8935,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.GeneralHealthAndWellbeing/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.GeneralHealthAndWellbeing/4.1",
           "notation": "Health.GeneralHealthAndWellbeing",
           "title": "General health and well-being",
           "definition": "Data on the general well-being or health status of an individual, group or population. May be objectively measured/observed or self-perceived. Well-being includes, for instance, physical and mental capacity or state, as well as social state.",
@@ -236,7 +236,7 @@
         },
         {
           "id": 8937,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.HealthCareServicesAndPolicies/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.HealthCareServicesAndPolicies/4.1",
           "notation": "Health.HealthCareServicesAndPolicies",
           "title": "Health care services and policies",
           "definition": "Quality and availability of services, associated facilities and personnel within health care. Health care economy and policy decisions and principles at national, regional or local level regarding health care. Use note: For laws and regulations already implemented, use the topic 'Laws and regulations' as well.",
@@ -246,7 +246,7 @@
         },
         {
           "id": 8932,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.MedicationAndTreatment/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.MedicationAndTreatment/4.1",
           "notation": "Health.MedicationAndTreatment",
           "title": "Medication and treatment",
           "definition": "Treatment of disease, or procedure/s of preventing it. Patient care at individual level. Research on medication and treatment of a disease. Data on, for instance, surgical procedures, rehabilitation, doctor consultation, physical therapy, musculoskeletal manipulations, care in hospital or home, psychotherapy, investigative techniques, medication.",
@@ -256,7 +256,7 @@
         },
         {
           "id": 8916,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.OccupationalHealth/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.OccupationalHealth/4.1",
           "notation": "Health.OccupationalHealth",
           "title": "Occupational health",
           "definition": "Data on occupational exposures and diseases, occupational safety, sick leave, work ability and disability, or work-related disability pension.",
@@ -266,7 +266,7 @@
         },
         {
           "id": 8909,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.PhysicalFitnessAndExercise/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.PhysicalFitnessAndExercise/4.1",
           "notation": "Health.PhysicalFitnessAndExercise",
           "title": "Physical fitness and exercise",
           "definition": "Data on people's general level of fitness, physical activity and exercise they take.",
@@ -276,7 +276,7 @@
         },
         {
           "id": 8926,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.PublicHealth/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.PublicHealth/4.1",
           "notation": "Health.PublicHealth",
           "title": "Public health",
           "definition": "Prevention and control of disease and disability, and the promotion of physical and mental health of the population on the international, national, state, or municipal level. For instance, health promotion, disease prevention, impact of public health programmes, managing local, national or global health issues, epidemiology of a disease, condition, or pathogen, or disease outbreak.",
@@ -286,7 +286,7 @@
         },
         {
           "id": 8897,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.ReproductiveHealth/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.ReproductiveHealth/4.1",
           "notation": "Health.ReproductiveHealth",
           "title": "Reproductive health",
           "definition": "Reproductive process, function or system at any stage of life. Includes data on pregnancy, birth, family planning, contraception, abortion and menopause.",
@@ -296,7 +296,7 @@
         },
         {
           "id": 8961,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.SignsAndSymptomsPathologicalConditions/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.SignsAndSymptomsPathologicalConditions/4.1",
           "notation": "Health.SignsAndSymptomsPathologicalConditions",
           "title": "Signs and symptoms; pathological conditions",
           "definition": "Data on abnormal anatomical or physiological conditions, and objective or subjective manifestations of disease/symptoms, not classified as disease or syndrome (in which case 'Specific diseases, disorders or medical conditions' would be used). Includes clinical manifestations that can be objective when observed by a medical professional or subjective when perceived by the patient. E.g. pain, diarrhoea, rash, leg length inequality, insomnia, teeth grinding, inflammation, arrhythmia.",
@@ -306,7 +306,7 @@
         },
         {
           "id": 8905,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.SpecificDiseasesDisordersAndMedicalConditions/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.SpecificDiseasesDisordersAndMedicalConditions/4.1",
           "notation": "Health.SpecificDiseasesDisordersAndMedicalConditions",
           "title": "Specific diseases, disorders and medical conditions",
           "definition": "Data on specific, diagnosed diseases, disorders or syndromes (often classified in ICD-10 or its earlier versions). For example, medical research on infectious diseases or the causes of diabetes, or data on the physical and mental recovery of people who have had heart surgery.",
@@ -316,7 +316,7 @@
         },
         {
           "id": 8952,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Health.WoundsAndInjuries/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Health.WoundsAndInjuries/4.1",
           "notation": "Health.WoundsAndInjuries",
           "title": "Wounds and injuries",
           "definition": "Wounds and injuries, both physical and psychological, caused either by accidents or violence (through individual or group aggressive behaviour). Use note: If work-related wounds or injuries, use 'Occupational health'.",
@@ -326,7 +326,7 @@
         },
         {
           "id": 8981,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#History/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_History/4.1",
           "notation": "History",
           "title": "HISTORY",
           "definition": "Use note: In addition to this broader topic, use another topic for historical data. Example: for data on the working environments of family doctors in the 1960s, use HISTORY and 'Working conditions' plus 'Health care services and policies'. Use the HISTORY topic on its own only if a more specific topic cannot be found in this vocabulary.",
@@ -335,7 +335,7 @@
         },
         {
           "id": 8910,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#HousingAndLandUse/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_HousingAndLandUse/4.1",
           "notation": "HousingAndLandUse",
           "title": "HOUSING AND LAND USE",
           "definition": "",
@@ -344,7 +344,7 @@
         },
         {
           "id": 8964,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#HousingAndLandUse.Housing/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_HousingAndLandUse.Housing/4.1",
           "notation": "HousingAndLandUse.Housing",
           "title": "Housing",
           "definition": "Includes data measuring the standard of housing in a community, including social housing, as well as the availability and pricing of housing. Housing includes homes, second homes and holiday homes.",
@@ -354,7 +354,7 @@
         },
         {
           "id": 8951,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#HousingAndLandUse.LandUseAndPlanning/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_HousingAndLandUse.LandUseAndPlanning/4.1",
           "notation": "HousingAndLandUse.LandUseAndPlanning",
           "title": "Land use and planning",
           "definition": "Includes both land use and land use planning. Land use planning refers to procedures carried out to ensure an optimal and sustainable use of land resources in rural and urban communities.",
@@ -364,7 +364,7 @@
         },
         {
           "id": 8946,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LabourAndEmployment/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LabourAndEmployment/4.1",
           "notation": "LabourAndEmployment",
           "title": "LABOUR AND EMPLOYMENT",
           "definition": "",
@@ -373,7 +373,7 @@
         },
         {
           "id": 8923,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LabourAndEmployment.EmployeeTraining/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LabourAndEmployment.EmployeeTraining/4.1",
           "notation": "LabourAndEmployment.EmployeeTraining",
           "title": "Employee training",
           "definition": "Internal corporate training and other employee training funded by the employer to increase employee skills and competence. Use note: Does not include apprenticeships, which are included in 'Vocational education and training'.",
@@ -383,7 +383,7 @@
         },
         {
           "id": 8940,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LabourAndEmployment.Employment/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LabourAndEmployment.Employment/4.1",
           "notation": "LabourAndEmployment.Employment",
           "title": "Employment",
           "definition": "Data on employment rate and statistics, labour market, job vacancies, job-seeking, job characteristics, employment of certain groups (e.g. youth or minority employment), employment services, career. Use note: For pay and remuneration use 'Working conditions'.",
@@ -393,7 +393,7 @@
         },
         {
           "id": 8975,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LabourAndEmployment.LabourAndEmploymentPolicy/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LabourAndEmployment.LabourAndEmploymentPolicy/4.1",
           "notation": "LabourAndEmployment.LabourAndEmploymentPolicy",
           "title": "Labour and employment policy",
           "definition": "Data on employment policies relating to employment relations, the labour market and equality and discrimination at work; at national level policies include influencing the demand and supply of labour and the functioning of labour markets. Use note: For laws and regulations already implemented, use the topic 'Laws and regulations' as well.",
@@ -403,7 +403,7 @@
         },
         {
           "id": 8957,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LabourAndEmployment.LabourRelationsConflict/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LabourAndEmployment.LabourRelationsConflict/4.1",
           "notation": "LabourAndEmployment.LabourRelationsConflict",
           "title": "Labour relations/conflict",
           "definition": "Relations between employers and employees.",
@@ -413,7 +413,7 @@
         },
         {
           "id": 8903,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LabourAndEmployment.Retirement/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LabourAndEmployment.Retirement/4.1",
           "notation": "LabourAndEmployment.Retirement",
           "title": "Retirement",
           "definition": "Includes all patterns of retirement such as phased or flexible retirement, data on retirement age and early retirement.",
@@ -423,7 +423,7 @@
         },
         {
           "id": 8924,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LabourAndEmployment.Unemployment/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LabourAndEmployment.Unemployment/4.1",
           "notation": "LabourAndEmployment.Unemployment",
           "title": "Unemployment",
           "definition": "Data on unemployment rates and statistics, employment programmes and schemes, duration and frequency of unemployment, social and psychological impact of unemployment etc.",
@@ -433,7 +433,7 @@
         },
         {
           "id": 8899,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LabourAndEmployment.WorkingConditions/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LabourAndEmployment.WorkingConditions/4.1",
           "notation": "LabourAndEmployment.WorkingConditions",
           "title": "Working conditions",
           "definition": "The conditions under which employees work. For example, types of contract, working time (hours of work, rest periods, work schedules, overtime), pay and remuneration, physical aspects and mental demands of work, employee rights and responsibilities, workload, employee involvement in decision-making, leave entitlements, physical environment. Use note: For workplace safety issues, use also 'Occupational health'.",
@@ -443,7 +443,7 @@
         },
         {
           "id": 8963,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LawCrimeAndLegalSystems/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LawCrimeAndLegalSystems/4.1",
           "notation": "LawCrimeAndLegalSystems",
           "title": "LAW, CRIME AND LEGAL SYSTEMS",
           "definition": "",
@@ -452,7 +452,7 @@
         },
         {
           "id": 8930,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LawCrimeAndLegalSystems.CrimeAndLawEnforcement/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LawCrimeAndLegalSystems.CrimeAndLawEnforcement/4.1",
           "notation": "LawCrimeAndLegalSystems.CrimeAndLawEnforcement",
           "title": "Crime and law enforcement",
           "definition": "Data on crime, crime prevention, victims of crime, criminals, as well the police, secret service, correctional institutions (e.g. prisons, young people's correctional institutions), border control and customs. Also includes data on the staff and facilities of these agencies.",
@@ -462,7 +462,7 @@
         },
         {
           "id": 8966,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#LawCrimeAndLegalSystems.LegislationAndLegalSystems/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_LawCrimeAndLegalSystems.LegislationAndLegalSystems/4.1",
           "notation": "LawCrimeAndLegalSystems.LegislationAndLegalSystems",
           "title": "Legislation and legal systems",
           "definition": "Data on international or national legislation, administrative regulations, judiciary system (powers and activities of courts), alternative dispute resolution and restorative justice, punishments.",
@@ -472,7 +472,7 @@
         },
         {
           "id": 8977,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#MediaCommunicationAndLanguage/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_MediaCommunicationAndLanguage/4.1",
           "notation": "MediaCommunicationAndLanguage",
           "title": "MEDIA, COMMUNICATION AND LANGUAGE",
           "definition": "",
@@ -481,7 +481,7 @@
         },
         {
           "id": 8968,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#MediaCommunicationAndLanguage.InformationSociety/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_MediaCommunicationAndLanguage.InformationSociety/4.1",
           "notation": "MediaCommunicationAndLanguage.InformationSociety",
           "title": "Information society",
           "definition": "The creation, distribution, use, integration and manipulation of information as a significant economic, political, and cultural activity. For instance, data relating to e-commerce, e-government, social media, mobile devices, access to and use of the Internet, e-privacy, information and library resources. Use note: For data on the actual technologies, use 'Information technology'.",
@@ -491,7 +491,7 @@
         },
         {
           "id": 8941,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#MediaCommunicationAndLanguage.LanguageAndLinguistics/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_MediaCommunicationAndLanguage.LanguageAndLinguistics/4.1",
           "notation": "MediaCommunicationAndLanguage.LanguageAndLinguistics",
           "title": "Language and linguistics",
           "definition": "Data from linguistic studies, linguistic analysis and sociolinguistics, as well as data on language policies, people's language skills, languages spoken at work and at home, attitudes towards minority languages etc.",
@@ -501,7 +501,7 @@
         },
         {
           "id": 8925,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#MediaCommunicationAndLanguage.Media/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_MediaCommunicationAndLanguage.Media/4.1",
           "notation": "MediaCommunicationAndLanguage.Media",
           "title": "Media",
           "definition": "Data referring to any type of mass media. For example, printed or online newspapers, magazines, television and the radio. Use note: Social media are indexed with 'Information society'.",
@@ -511,7 +511,7 @@
         },
         {
           "id": 8934,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#MediaCommunicationAndLanguage.PublicRelations/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_MediaCommunicationAndLanguage.PublicRelations/4.1",
           "notation": "MediaCommunicationAndLanguage.PublicRelations",
           "title": "Public relations",
           "definition": "Measures adopted to enhance or preserve the image of individuals, companies, organisations, and governments for example by means of advertising, lobbying etc.",
@@ -521,7 +521,7 @@
         },
         {
           "id": 8900,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#NaturalEnvironment/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_NaturalEnvironment/4.1",
           "notation": "NaturalEnvironment",
           "title": "NATURAL ENVIRONMENT",
           "definition": "",
@@ -530,7 +530,7 @@
         },
         {
           "id": 8922,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#NaturalEnvironment.EnergyAndNaturalResources/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_NaturalEnvironment.EnergyAndNaturalResources/4.1",
           "notation": "NaturalEnvironment.EnergyAndNaturalResources",
           "title": "Energy and natural resources",
           "definition": "Natural resources are assets such as land, forests, energy sources, water, minerals which exist naturally and can be used for economic production or consumption. Energy resources include fossil fuels such as oil, natural gas or coal, as well as nuclear, solar, tidal and wind or from living organisms that can be replaced.",
@@ -540,7 +540,7 @@
         },
         {
           "id": 8959,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#NaturalEnvironment.EnvironmentAndConservation/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_NaturalEnvironment.EnvironmentAndConservation/4.1",
           "notation": "NaturalEnvironment.EnvironmentAndConservation",
           "title": "Environment and conservation",
           "definition": "Covers issues of environmental degradation, pollution, environmental protection, climate change, flood prevention, soil erosion.",
@@ -550,7 +550,7 @@
         },
         {
           "id": 8956,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#NaturalEnvironment.NaturalLandscapes/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_NaturalEnvironment.NaturalLandscapes/4.1",
           "notation": "NaturalEnvironment.NaturalLandscapes",
           "title": "Natural landscapes",
           "definition": "Covers landscapes and elements of land that have not been directly changed by humans.",
@@ -560,7 +560,7 @@
         },
         {
           "id": 8955,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#NaturalEnvironment.PlantsAndAnimals/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_NaturalEnvironment.PlantsAndAnimals/4.1",
           "notation": "NaturalEnvironment.PlantsAndAnimals",
           "title": "Plants and animals",
           "definition": "Covers domesticated, production and wild animals, as well as all types of plants (e.g. flowers, trees, moss, vegetables).",
@@ -570,7 +570,7 @@
         },
         {
           "id": 8914,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Politics/4.1",
           "notation": "Politics",
           "title": "POLITICS",
           "definition": "",
@@ -579,7 +579,7 @@
         },
         {
           "id": 8983,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.ConflictSecurityAndPeace/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Politics.ConflictSecurityAndPeace/4.1",
           "notation": "Politics.ConflictSecurityAndPeace",
           "title": "Conflict, security and peace",
           "definition": "Internal and international security and safety; internal and international conflicts; war and peace; national defence and defence forces (the army). Use note: The police are covered by 'Crime and law enforcement'.",
@@ -589,7 +589,7 @@
         },
         {
           "id": 8898,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.Elections/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Politics.Elections/4.1",
           "notation": "Politics.Elections",
           "title": "Elections",
           "definition": "Data on elections, referendums, election campaigns, election results, candidates in elections, candidate selectors, election funding etc.",
@@ -599,7 +599,7 @@
         },
         {
           "id": 8971,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.GovernmentPoliticalSystemsAndOrganisations/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Politics.GovernmentPoliticalSystemsAndOrganisations/4.1",
           "notation": "Politics.GovernmentPoliticalSystemsAndOrganisations",
           "title": "Government, political systems and organisations",
           "definition": "Issues relating to national, regional and local government, governing bodies (e.g. the Government, Parliament, local government bodies), public administration, other political organisations such as political parties. For example, data on government policies, political parties and their policies, political party leaders, trust in government bodies.",
@@ -609,7 +609,7 @@
         },
         {
           "id": 8902,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.InternationalPoliticsAndOrganisations/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Politics.InternationalPoliticsAndOrganisations/4.1",
           "notation": "Politics.InternationalPoliticsAndOrganisations",
           "title": "International politics and organisations",
           "definition": "Global governance, diplomacy, foreign policy, relations between countries, international organisations (e.g. the EU, WHO, UN, WTO), and international agreements.",
@@ -619,7 +619,7 @@
         },
         {
           "id": 8915,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.PoliticalBehaviourAndAttitudes/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Politics.PoliticalBehaviourAndAttitudes/4.1",
           "notation": "Politics.PoliticalBehaviourAndAttitudes",
           "title": "Political behaviour and attitudes",
           "definition": "Data on party political attitudes, political engagement and participation in the political process, voting behaviour, satisfaction with government. Use note: For data on specific political doctrines, use 'Political ideology'.",
@@ -629,7 +629,7 @@
         },
         {
           "id": 8965,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Politics.PoliticalIdeology/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Politics.PoliticalIdeology/4.1",
           "notation": "Politics.PoliticalIdeology",
           "title": "Political ideology",
           "definition": "Ideas, ideals and theories on the ways governments and societies can be organised. Major political ideologies include anarchism, democracy, liberalism, conservatism etc.",
@@ -639,7 +639,7 @@
         },
         {
           "id": 8973,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Psychology/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Psychology/4.1",
           "notation": "Psychology",
           "title": "PSYCHOLOGY",
           "definition": "",
@@ -648,7 +648,7 @@
         },
         {
           "id": 8972,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_ScienceAndTechnology/4.1",
           "notation": "ScienceAndTechnology",
           "title": "SCIENCE AND TECHNOLOGY",
           "definition": "",
@@ -657,7 +657,7 @@
         },
         {
           "id": 8970,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.Biotechnology/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_ScienceAndTechnology.Biotechnology/4.1",
           "notation": "ScienceAndTechnology.Biotechnology",
           "title": "Biotechnology",
           "definition": "Data referring to the use of biomolecular and cellular processes to create new products and technological processes.",
@@ -667,7 +667,7 @@
         },
         {
           "id": 8969,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#ScienceAndTechnology.InformationTechnology/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_ScienceAndTechnology.InformationTechnology/4.1",
           "notation": "ScienceAndTechnology.InformationTechnology",
           "title": "Information technology",
           "definition": "Information and communication technologies that are used in the home, workplace and other community setting. Use note: The use and impact of these technologies are covered by 'Information society'.",
@@ -677,7 +677,7 @@
         },
         {
           "id": 8912,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings/4.1",
           "notation": "SocialStratificationAndGroupings",
           "title": "SOCIAL STRATIFICATION AND GROUPINGS",
           "definition": "",
@@ -686,7 +686,7 @@
         },
         {
           "id": 8892,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.Children/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings.Children/4.1",
           "notation": "SocialStratificationAndGroupings.Children",
           "title": "Children",
           "definition": "Use note: May need an additional topic, if children are studied from a particular aspect.",
@@ -696,7 +696,7 @@
         },
         {
           "id": 8979,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.Elderly/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings.Elderly/4.1",
           "notation": "SocialStratificationAndGroupings.Elderly",
           "title": "Elderly",
           "definition": "Use note: May need an additional topic, if the elderly are studied from a particular aspect.",
@@ -706,7 +706,7 @@
         },
         {
           "id": 8939,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.ElitesAndLeadership/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings.ElitesAndLeadership/4.1",
           "notation": "SocialStratificationAndGroupings.ElitesAndLeadership",
           "title": "Elites and leadership",
           "definition": "Issues related to the existence, roles and impact of elites in society, that is, individuals or groups who have a large amount of power or influence over society, politics, wealth etc, either through decisions they make or, for example, through ideas or feelings that they express or represent. Includes issues related to influential people in all spheres of society, for example, decision-makers in political life, political party leaders, influential artists, prominent mass or social media figures etc.",
@@ -716,17 +716,17 @@
         },
         {
           "id": 8949,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion/4.1",
           "notation": "SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion",
           "title": "Equality, inequality and social exclusion",
-          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differences between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.\n",
+          "definition": "Issues relating to whether all individuals or groups of individuals have the same status and opportunities in society.  Equality can be studied, for example, in terms of education, (financial) assets or income, occupational position, power, prestige, conditions of work and leisure time, access to services, and social relations. Marginalisation and social exclusion can be the result of systematic disadvantage in multiple areas of life, and people concerned may be deprived of rights, opportunities, resources and social integration. \nExamples of data: statistics on income equality; perceived group-focused discrimination (e.g. towards foreigners, the homeless, asylum seekers); perceived  differences between men and women regarding opportunities for leading roles in politics; impact of parental unemployment on children's education level and social networks.",
           "previousConcept": 5720,
           "parent": "SocialStratificationAndGroupings",
           "position": 69
         },
         {
           "id": 8943,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.FamilyLifeAndMarriage/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings.FamilyLifeAndMarriage/4.1",
           "notation": "SocialStratificationAndGroupings.FamilyLifeAndMarriage",
           "title": "Family life and marriage",
           "definition": "Covers issues related to families, relatives, generations and household composition. For instance, data on child rearing, division of labour within the family, support provided for family members.",
@@ -736,7 +736,7 @@
         },
         {
           "id": 8931,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.GenderAndGenderRoles/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings.GenderAndGenderRoles/4.1",
           "notation": "SocialStratificationAndGroupings.GenderAndGenderRoles",
           "title": "Gender and gender roles",
           "definition": "Gender identity; gendered representation (e.g. representation of genders in decision-making bodies, in media, in literature etc); social, cultural and psychological traits linked to males and females; women's studies; men's studies; expected behaviour and choices according to gender roles and the impact of such expectations.",
@@ -746,7 +746,7 @@
         },
         {
           "id": 8893,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.Minorities/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings.Minorities/4.1",
           "notation": "SocialStratificationAndGroupings.Minorities",
           "title": "Minorities",
           "definition": "Groups of individuals that differ from the majority of population in some way. Differentiating characteristics include, for instance, ethnicity, religion, health, sexual orientation, first language (mother tongue) and culture. Use note: For some minority issues, it may be useful to select additional topics such as 'Equality, inequality and social exclusion' or 'Language and linguistics'.",
@@ -756,7 +756,7 @@
         },
         {
           "id": 8982,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.SocialAndOccupationalMobility/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings.SocialAndOccupationalMobility/4.1",
           "notation": "SocialStratificationAndGroupings.SocialAndOccupationalMobility",
           "title": "Social and occupational mobility",
           "definition": "Movement of individuals, families or groups of individuals in social and occupational status over time. The movement may be horizontal, that is, change in position within the range of same status, or vertical where individuals may move upwards or downwards in the status hierarchy. For example, labourers in declining industries may become labourers in some other industry (horizontal occupational mobility), or children in poor families may reach a higher social class than their parents (vertical inter-generational social mobility).",
@@ -766,7 +766,7 @@
         },
         {
           "id": 8929,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialStratificationAndGroupings.Youth/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialStratificationAndGroupings.Youth/4.1",
           "notation": "SocialStratificationAndGroupings.Youth",
           "title": "Youth",
           "definition": "Use note: May need an additional topic, if young people are studied from a particular aspect.",
@@ -776,7 +776,7 @@
         },
         {
           "id": 8913,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialWelfarePolicyAndSystems/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialWelfarePolicyAndSystems/4.1",
           "notation": "SocialWelfarePolicyAndSystems",
           "title": "SOCIAL WELFARE POLICY AND SYSTEMS",
           "definition": "",
@@ -785,7 +785,7 @@
         },
         {
           "id": 8974,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialWelfarePolicyAndSystems.SocialWelfarePolicy/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialWelfarePolicyAndSystems.SocialWelfarePolicy/4.1",
           "notation": "SocialWelfarePolicyAndSystems.SocialWelfarePolicy",
           "title": "Social welfare policy",
           "definition": "Decisions made and principles adopted at national, regional or local level concerning social welfare, its funding and provision, for instance, who is entitled to what kind of social services and benefits and why, what is their level, and who can provide the services. For example, a policy that elderly people should remain in their homes for as long as possible, a policy relating to how long people can have an unemployment benefit. Use note: For laws and regulations already implemented, use the topic 'Laws and regulations' as well.",
@@ -795,7 +795,7 @@
         },
         {
           "id": 8978,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures/4.1",
           "notation": "SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures",
           "title": "Social welfare systems/structures",
           "definition": "Issues related to the actual provision of social welfare, who provides social welfare services in practice and to what extent, how the actual services are structured. For example,  questions on how a local government has organised services for the elderly.",
@@ -805,7 +805,7 @@
         },
         {
           "id": 8938,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability/4.1",
           "notation": "SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability",
           "title": "Specific social services: use and availability",
           "definition": "For example, data on the extent people use specific social services, opinions on the adequacy, accessibility and availability of specific services, and general satisfaction with them. For example, questions on what services elderly respondents have used, or use statistics on particular services.",
@@ -815,7 +815,7 @@
         },
         {
           "id": 8962,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture/4.1",
           "notation": "SocietyAndCulture",
           "title": "SOCIETY AND CULTURE",
           "definition": "",
@@ -824,7 +824,7 @@
         },
         {
           "id": 8928,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.CommunityUrbanAndRuralLife/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture.CommunityUrbanAndRuralLife/4.1",
           "notation": "SocietyAndCulture.CommunityUrbanAndRuralLife",
           "title": "Community, urban and rural life",
           "definition": "Data related to different aspects of life in the community, or in urban and rural areas. Opinions on and images of the neighbourhood, or of urban or rural areas. Services, facilities and business opportunities in the neighbourhood.",
@@ -834,7 +834,7 @@
         },
         {
           "id": 8984,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.CulturalActivitiesAndParticipation/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture.CulturalActivitiesAndParticipation/4.1",
           "notation": "SocietyAndCulture.CulturalActivitiesAndParticipation",
           "title": "Cultural activities and participation",
           "definition": "Active or passive participation in any kind of cultural activities, as well as opinions and perceptions of them.",
@@ -844,7 +844,7 @@
         },
         {
           "id": 8958,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.CulturalAndNationalIdentity/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture.CulturalAndNationalIdentity/4.1",
           "notation": "SocietyAndCulture.CulturalAndNationalIdentity",
           "title": "Cultural and national identity",
           "definition": "Data on identity formation, who people feel they are and where they feel they belong in terms of nationality, locality, social class, generation, ethnicity, religion or any other social/cultural grouping. Also covers exclusion of self or others from those groups.",
@@ -854,7 +854,7 @@
         },
         {
           "id": 8919,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.LeisureTourismAndSport/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture.LeisureTourismAndSport/4.1",
           "notation": "SocietyAndCulture.LeisureTourismAndSport",
           "title": "Leisure, tourism and sport",
           "definition": "Recreation patterns, leisure time activities and hobbies. Includes sports spectatorship, competition sports, and travel for leisure. Use note: For data on exercise for keeping fit, use 'Physical fitness and exercise'.",
@@ -864,7 +864,7 @@
         },
         {
           "id": 8944,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.ReligionAndValues/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture.ReligionAndValues/4.1",
           "notation": "SocietyAndCulture.ReligionAndValues",
           "title": "Religion and values",
           "definition": "Data which addresses questions of religious behaviour, religious movements, spirituality, morality and other values.",
@@ -874,7 +874,7 @@
         },
         {
           "id": 8947,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.SocialBehaviourAndAttitudes/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture.SocialBehaviourAndAttitudes/4.1",
           "notation": "SocietyAndCulture.SocialBehaviourAndAttitudes",
           "title": "Social behaviour and attitudes",
           "definition": "Data on social behaviour; social interaction and networks; social responsibilities; social norms and rules; and attitudes towards these issues.",
@@ -884,7 +884,7 @@
         },
         {
           "id": 8908,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.SocialChange/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture.SocialChange/4.1",
           "notation": "SocietyAndCulture.SocialChange",
           "title": "Social change",
           "definition": "Data on changes in the society, including attitudinal changes.",
@@ -894,7 +894,7 @@
         },
         {
           "id": 8942,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.SocialConditionsAndIndicators/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture.SocialConditionsAndIndicators/4.1",
           "notation": "SocietyAndCulture.SocialConditionsAndIndicators",
           "title": "Social conditions and indicators",
           "definition": "Covers all aspects of the quality of life and well-being of individuals and societies, as well as people's perceptions thereof. Use note: Depending on the aspect studied, 'General health and well-being', 'Equality, inequality and social exclusion' and 'Economic conditions and indicators', etc. may be relevant as well.",
@@ -904,7 +904,7 @@
         },
         {
           "id": 8950,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#SocietyAndCulture.TimeUse/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_SocietyAndCulture.TimeUse/4.1",
           "notation": "SocietyAndCulture.TimeUse",
           "title": "Time use",
           "definition": "Data on the amount of time spent by the population on various activities.",
@@ -914,7 +914,7 @@
         },
         {
           "id": 8901,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#TradeIndustryAndMarkets/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_TradeIndustryAndMarkets/4.1",
           "notation": "TradeIndustryAndMarkets",
           "title": "TRADE, INDUSTRY AND MARKETS",
           "definition": "",
@@ -923,7 +923,7 @@
         },
         {
           "id": 8948,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#TradeIndustryAndMarkets.AgricultureAndRuralIndustry/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_TradeIndustryAndMarkets.AgricultureAndRuralIndustry/4.1",
           "notation": "TradeIndustryAndMarkets.AgricultureAndRuralIndustry",
           "title": "Agriculture and rural industry",
           "definition": "Data on agricultural production and all rural industries which include, for example, fisheries and forestry.",
@@ -933,7 +933,7 @@
         },
         {
           "id": 8953,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#TradeIndustryAndMarkets.BusinessIndustrialManagementAndOrganisation/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_TradeIndustryAndMarkets.BusinessIndustrialManagementAndOrganisation/4.1",
           "notation": "TradeIndustryAndMarkets.BusinessIndustrialManagementAndOrganisation",
           "title": "Business/industrial management and organisation",
           "definition": "Data on industry and business such as management, productivity, growth and decline, organisation structure, administration, investment in R&D, markets and market share.",
@@ -943,7 +943,7 @@
         },
         {
           "id": 8976,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#TradeIndustryAndMarkets.ForeignTrade/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_TradeIndustryAndMarkets.ForeignTrade/4.1",
           "notation": "TradeIndustryAndMarkets.ForeignTrade",
           "title": "Foreign trade",
           "definition": "Exchange of capital, goods, or services across international borders.",
@@ -953,7 +953,7 @@
         },
         {
           "id": 8921,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#TransportAndTravel/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_TransportAndTravel/4.1",
           "notation": "TransportAndTravel",
           "title": "TRANSPORT AND TRAVEL",
           "definition": "Includes all types of goods transport as well as commuting, public transport (trains, buses, underground etc), and urban transport networks. Data on mobility habits, for example, cross-border shopping, routes and means used to access a location. Use note: For travel for leisure, use the topic 'Leisure, tourism and sport'.",
@@ -962,7 +962,7 @@
         },
         {
           "id": 8945,
-          "uri": "https://vocabularies.cessda.eu/TopicClassification#Other/en/4.1",
+          "uri": "https://vocabularies.cessda.eu/vocabulary/TopicClassification_Other/4.1",
           "notation": "Other",
           "title": "OTHER",
           "definition": "Use if the topic is known, but not found in the list.",
@@ -975,7 +975,7 @@
         {
           "id": 358,
           "version": "4.0",
-          "date": "2019-08-22",
+          "date": "2019-08-21",
           "note": "One code was deleted and three new codes added. Twelve code values were edited for consistency with other entries. Narrower terms were reordered alphabetically. A typo was corrected in one definition.",
           "changes": "Code deleted: Code Health.HealthBehaviour deleted\nCode added: Health.DrugAbuseAlcoholAndSmoking\nCode added: Health.PhysicalFitnessAndExercise\nCode added: Health.DietAndNutrition\nCode value changed: Economics.SystemsAndDevelopment changed into Economics.EconomicSystemsAndDevelopment\nCode value changed: SocietyAndCulture.LeisureTourismSport changed into SocietyAndCulture.LeisureTourismAndSport\nCode value changed: Economics.IncomePropertyAndInvestment changed into Economics.IncomePropertyAndInvestmentSaving\nCode value changed: Education.CompulsoryAndPreschool changed into Education.CompulsoryAndPreschoolEducation\nCode value changed: Education.HigherAndFurther changed into Education.HigherAndFurtherEducation\nCode value changed: Education.LifelongContinuing changed into Education.LifelongContinuingEducation\nCode value changed: Education.VocationalAndTraining changed into Education.VocationalEducationAndTraining\nCode value changed: Health.Occupational changed into Health.OccupationalHealth\nCode value changed: Health.Public changed into Health.PublicHealth\nCode value changed: Health.Reproductive changed into Health.ReproductiveHealth\nCode value changed: SocialStratificationAndGroupings.EqualityAndInequality changed into SocialStratificationAndGroupings.EqualityInequalityAndSocialExclusion\nCode value changed: SocialWelfarePolicyAndSystems.SpecificSocialServices changed into SocialWelfarePolicyAndSystems.SpecificSocialServicesUseAndAvailability",
           "prevVersion": 298
@@ -983,7 +983,7 @@
         {
           "id": 298,
           "version": "3.0",
-          "date": "2019-05-20",
+          "date": "2019-05-19",
           "note": "Ten code values were edited for consistency with other entries. Typos were corrected in nine definitions.",
           "changes": "Code value changed: SocialWelfarePolicyAndSystems.SpecificSocialservices changed to SocialWelfarePolicyAndSystems.SpecificSocialServices\nCode value changed: TradeIndustryAndMarkets.AgriculturalAndRuralIndustry changed to TradeIndustryAndMarkets.AgricultureAndRuralIndustry\nCode value changed: MediaCommunicationsAndLanguage changed to MediaCommunicationAndLanguage\nCode value changed: MediaCommunicationsAndLanguage.Media changed to MediaCommunicationAndLanguage.Media\nCode value changed: MediaCommunicationsAndLanguage.PublicRelations changed to MediaCommunicationAndLanguage.PublicRelations\nCode value changed: MediaCommunicationsAndLanguage.InformationSociety changed to MediaCommunicationAndLanguage.InformationSociety\nCode value changed: MediaCommunicationsAndLanguage.LanguageAndLinguistics changed to MediaCommunicationAndLanguage.LanguageAndLinguistics\nCode value changed: Education.CompulsoryAndPreSchool changed to Education.CompulsoryAndPreschool\nCode value changed: Health.GeneralHealthAndWellBeing changed to Health.GeneralHealthAndWellbeing\nCode value changed: SocialWelfarePolicyAndSystems.SocialWelfareSystemsAndStructures changed to SocialWelfarePolicyAndSystems.SocialWelfareSystemsStructures\nCode definition rephrased: Vocational education and training\nCode definition rephrased: Working conditions\nCode definition rephrased: Equality, inequality and social exclusion\nCode definition rephrased: Educational policy\nCode definition rephrased: Leisure, tourism and sport\nCode definition rephrased: Compulsory and pre-school education\nCode definition rephrased: Employee training\nCode definition rephrased: Media\nCode definition rephrased: Health behaviour",
           "prevVersion": 251
@@ -991,7 +991,7 @@
         {
           "id": 251,
           "version": "2.0",
-          "date": "2019-05-06",
+          "date": "2019-05-05",
           "note": "",
           "changes": "",
           "prevVersion": 0
