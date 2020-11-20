@@ -23,6 +23,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -49,6 +51,7 @@ public class VocabularyResourceV2 {
     public static final String ID = "@id";
     public static final String TYPE = "@type";
     public static final String JSONLD_TYPE = "application/ld+json";
+    public static final String DOCX_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
     private final Logger log = LoggerFactory.getLogger(VocabularyResourceV2.class);
 
     @Value("${jhipster.clientApp.name}")
@@ -266,17 +269,346 @@ public class VocabularyResourceV2 {
     }
 
     /**
-     * {@code GET  /v2/vocabularies/json/:notation/:versionNumber}
-     *  get a JSON vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
      *
-     * @param vocabulary controlled vocabulary
-     * @param versionNumberSl controlled vocabulary version
-     * @param languageVersion included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
+     * @param request
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary by redirecting to CVS Vocabulary detail
      * @throws IOException
      */
-    @GetMapping("/vocabularies/json/{vocabulary}/{versionNumberSl}")
+    @GetMapping(
+        value="/vocabularies/{vocabulary}/{versionNumberSl}",
+        produces = MediaType.TEXT_HTML_VALUE
+    )
+    @ApiOperation( value = "Get a Vocabulary based on Response content type" )
+    public ResponseEntity<Resource> getVocabularyRedirect(
+        HttpServletRequest request,
+        @ApiParam(
+            name = "vocabulary",
+            type = "String",
+            value = "The vocabulary",
+            example = "TopicClassification",
+            required = true
+        ) @PathVariable String vocabulary,
+        @ApiParam(
+            name = "versionNumberSl",
+            type = "String",
+            value = "The version number of Source language",
+            example = "4.0",
+            required = true
+        ) @PathVariable String versionNumberSl,
+        @ApiParam(
+            name = "languageVersion",
+            type = "String",
+            value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
+            example = "en-4.0",
+            required = false
+        ) @RequestParam String languageVersion
+    ) throws IOException {
+        log.debug("REST request to redirect of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create( ResourceUtils.getBasePath(request) + "/vocabulary/" + vocabulary + "?v=" + versionNumberSl));
+        return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);
+    }
+
+    /**
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
+     *
+     * @param request
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in HTML format
+     * @throws IOException
+     */
+    @GetMapping(
+        value="/vocabularies/{vocabulary}/{versionNumberSl}",
+        produces = MediaType.APPLICATION_XHTML_XML_VALUE
+    )
+    @ApiOperation( value = "Get a Vocabulary in HTML file" )
+    public ResponseEntity<Resource> getVocabularyHtml(
+        HttpServletRequest request,
+        @ApiParam(
+            name = "vocabulary",
+            type = "String",
+            value = "The vocabulary",
+            example = "TopicClassification",
+            required = true
+        ) @PathVariable String vocabulary,
+        @ApiParam(
+            name = "versionNumberSl",
+            type = "String",
+            value = "The version number of Source language",
+            example = "4.0",
+            required = true
+        ) @PathVariable String versionNumberSl,
+        @ApiParam(
+            name = "languageVersion",
+            type = "String",
+            value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
+            example = "en-4.0",
+            required = false
+        ) @RequestParam String languageVersion
+    ) throws IOException {
+        log.debug("REST request to get a HTML file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        return transformVocabularyToHtml(request, vocabulary, versionNumberSl, languageVersion);
+    }
+
+    /**
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
+     *
+     * @param request
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in JSON format
+     * @throws IOException
+     */
+    @GetMapping(
+        value="/vocabularies/{vocabulary}/{versionNumberSl}",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ApiOperation( value = "Get a Vocabulary in JSON format" )
+    public ResponseEntity<VocabularyDTO> getVocabularyJson(
+        HttpServletRequest request,
+        @ApiParam(
+            name = "vocabulary",
+            type = "String",
+            value = "The vocabulary",
+            example = "TopicClassification",
+            required = true
+        ) @PathVariable String vocabulary,
+        @ApiParam(
+            name = "versionNumberSl",
+            type = "String",
+            value = "The version number of Source language",
+            example = "4.0",
+            required = true
+        ) @PathVariable String versionNumberSl,
+        @ApiParam(
+            name = "languageVersion",
+            type = "String",
+            value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
+            example = "en-4.0",
+            required = false
+        ) @RequestParam String languageVersion
+    ) throws IOException {
+        log.debug("REST request to get a JSON file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
+    }
+
+    /**
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
+     *
+     * @param request
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in JSON-LD format
+     * @throws IOException
+     */
+    @GetMapping(
+        value="/vocabularies/{vocabulary}/{versionNumberSl}",
+        produces = JSONLD_TYPE
+    )
+    @ApiOperation( value = "Get a Vocabulary in JSON-LD format" )
+    public ResponseEntity<List<Object>> getVocabularyJsonLd(
+        HttpServletRequest request,
+        @ApiParam(
+            name = "vocabulary",
+            type = "String",
+            value = "The vocabulary",
+            example = "TopicClassification",
+            required = true
+        ) @PathVariable String vocabulary,
+        @ApiParam(
+            name = "versionNumberSl",
+            type = "String",
+            value = "The version number of Source language",
+            example = "4.0",
+            required = true
+        ) @PathVariable String versionNumberSl,
+        @ApiParam(
+            name = "languageVersion",
+            type = "String",
+            value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
+            example = "en-4.0",
+            required = false
+        ) @RequestParam String languageVersion
+    ) throws IOException {
+        log.debug("REST request to get a JSON file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        return transformVocabularyToJsonLd(vocabulary, versionNumberSl, languageVersion);
+    }
+
+    /**
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
+     *
+     * @param request
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in PDF format
+     * @throws IOException
+     */
+    @GetMapping(
+        value="/vocabularies/{vocabulary}/{versionNumberSl}",
+        produces = MediaType.APPLICATION_PDF_VALUE
+    )
+    @ApiOperation( value = "Get a Vocabulary in PDF file" )
+    public ResponseEntity<Resource> getVocabularyPdf(
+        HttpServletRequest request,
+        @ApiParam(
+            name = "vocabulary",
+            type = "String",
+            value = "The vocabulary",
+            example = "TopicClassification",
+            required = true
+        ) @PathVariable String vocabulary,
+        @ApiParam(
+            name = "versionNumberSl",
+            type = "String",
+            value = "The version number of Source language",
+            example = "4.0",
+            required = true
+        ) @PathVariable String versionNumberSl,
+        @ApiParam(
+            name = "languageVersion",
+            type = "String",
+            value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
+            example = "en-4.0",
+            required = false
+        ) @RequestParam String languageVersion
+    ) throws IOException {
+        log.debug("REST request to get a PDF file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        return transformVocabularyToPdf(request, vocabulary, versionNumberSl, languageVersion);
+    }
+
+    /**
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
+     *
+     * @param request
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in WORD-DOCX format
+     * @throws IOException
+     */
+    @GetMapping(
+        value="/vocabularies/{vocabulary}/{versionNumberSl}",
+        produces = DOCX_TYPE
+    )
+    @ApiOperation( value = "Get a Vocabulary in DOCX file" )
+    public ResponseEntity<Resource> getVocabularyDocx(
+        HttpServletRequest request,
+        @ApiParam(
+            name = "vocabulary",
+            type = "String",
+            value = "The vocabulary",
+            example = "TopicClassification",
+            required = true
+        ) @PathVariable String vocabulary,
+        @ApiParam(
+            name = "versionNumberSl",
+            type = "String",
+            value = "The version number of Source language",
+            example = "4.0",
+            required = true
+        ) @PathVariable String versionNumberSl,
+        @ApiParam(
+            name = "languageVersion",
+            type = "String",
+            value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
+            example = "en-4.0",
+            required = false
+        ) @RequestParam String languageVersion
+    ) throws IOException {
+        log.debug("REST request to get a WORD-DOCX  file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        return transformVocabularyToDocx(request, vocabulary, versionNumberSl, languageVersion);
+    }
+
+    /**
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
+     *
+     * @param request
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in Skos RDF file
+     * @throws IOException
+     */
+    @GetMapping(
+        value="/vocabularies/{vocabulary}/{versionNumberSl}",
+        produces = MediaType.APPLICATION_XML_VALUE
+    )
+    @ApiOperation( value = "Get a Vocabulary in Skos RDF file" )
+    public ResponseEntity<Resource> getVocabularySkosRdf(
+        HttpServletRequest request,
+        @ApiParam(
+            name = "vocabulary",
+            type = "String",
+            value = "The vocabulary",
+            example = "TopicClassification",
+            required = true
+        ) @PathVariable String vocabulary,
+        @ApiParam(
+            name = "versionNumberSl",
+            type = "String",
+            value = "The version number of Source language",
+            example = "4.0",
+            required = true
+        ) @PathVariable String versionNumberSl,
+        @ApiParam(
+            name = "languageVersion",
+            type = "String",
+            value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
+            example = "en-4.0",
+            required = false
+        ) @RequestParam String languageVersion
+    ) throws IOException {
+        log.debug("REST request to get a SKOS RDF file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        return transformVocabularyToRdf(request, vocabulary, versionNumberSl, languageVersion);
+    }
+
+
+    /**
+     * {@code GET  /vocabularies/html/:vocabulary/:versionNumberSl} : Get Vocabulary in
+     * a HTML file of vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}.
+     * Hidden from Swagger due to API for CVS front-end
+     *
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in HTML format
+     *
+     * @throws IOException
+     */
+    @GetMapping("/vocabularies/html/{vocabulary}/{versionNumberSl}")
+    @ApiOperation( value = "Get a Vocabulary in HTML format", hidden = true )
+    public ResponseEntity<Resource> getVocabularyInHtml(
+        HttpServletRequest request,
+        @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
+        @ApiParam( value = "the CV SL version, e.g. 1.0" ) @PathVariable String versionNumberSl,
+        @ApiParam( value = "included language version, e.g. en-1.0_de-1.0.1, separated by _" ) @RequestParam(name = "languageVersion", required = false) String languageVersion
+    ) throws IOException {
+        log.debug("REST request for CVS Front-End to get a HTML file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        return transformVocabularyToHtml(request, vocabulary, versionNumberSl, languageVersion);
+    }
+
+    /**
+     * {@code GET  /vocabularies/html/:vocabulary/:versionNumberSl} : Get Vocabulary in
+     * a HTML file of vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}.
+     * Hidden from Swagger due to API for CVS front-end
+     *
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in JSON format
+     *
+     */
+    @GetMapping("/vocabularies/json/{vocabulary}/{versionNumberSl}")
+    @ApiOperation( value = "Get a Vocabulary in JSON format", hidden = true )
     public ResponseEntity<VocabularyDTO> getVocabularyInJson(
         HttpServletRequest request,
         @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
@@ -284,25 +616,22 @@ public class VocabularyResourceV2 {
         @ApiParam( value = "included language version, e.g. en-1.0_de-1.0.1, separated by _" ) @RequestParam(name = "languageVersion", required = false) String languageVersion
     ) {
         log.debug("REST request to get a JSON file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
-        VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
-
-        return ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType("application/json"))
-            .body(vocabularyDTO);
+        return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
     }
 
     /**
      * {@code GET  /v2/vocabularies/jsonld/:notation/:versionNumber}
      *  get a vocabulary {vocabulary} in JSON-LD with version {versionNumberSl} with included versions {languageVersion}
+     * Hidden from Swagger due to API for CVS front-end
      *
-     * @param vocabulary controlled vocabulary
-     * @param versionNumberSl controlled vocabulary version
-     * @param languageVersion included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
-     * @throws IOException
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in JSON-LD format
+     *
      */
     @GetMapping("/vocabularies/jsonld/{vocabulary}/{versionNumberSl}")
-    @ApiOperation( value = "Get a Vocabulary in JSON-LD format" )
+    @ApiOperation( value = "Get a Vocabulary in JSON-LD format", hidden = true )
     public ResponseEntity<List<Object>> getVocabularyInJsonLd(
         HttpServletRequest request,
         @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
@@ -310,30 +639,23 @@ public class VocabularyResourceV2 {
         @ApiParam( value = "included language version, e.g. en-1.0_de-1.0.1, separated by _" ) @RequestParam(name = "languageVersion", required = false) String languageVersion
     ) {
         log.debug("REST request to get a JSONLD file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
-        VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
-
-        List<Object> vocabularyJsonLds = new ArrayList<>();
-        Set<CodeDTO> codeDtos = CodeDTO.generateCodesFromVersion(vocabularyDTO.getVersions(), false);
-        List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO, codeDtos, vocabularyDTO.getVersions().stream().map(VersionDTO::getLanguage).collect(Collectors.toSet()));
-        vocabularyJsonLds.addAll(vocabularyJsonLdMap);
-
-        return ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType("application/json"))
-            .body(vocabularyJsonLds);
+        return transformVocabularyToJsonLd(vocabulary, versionNumberSl, languageVersion);
     }
 
     /**
      * {@code GET  /v2/vocabularies/pdf/:notation/:versionNumber}
      *  get a PDF file of vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}
+     * Hidden from Swagger due to API for CVS front-end
      *
-     * @param vocabulary controlled vocabulary
-     * @param versionNumberSl controlled vocabulary version
-     * @param languageVersion included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in HTML format
+     *
      * @throws IOException
      */
     @GetMapping("/vocabularies/pdf/{vocabulary}/{versionNumberSl}")
-    @ApiOperation( value = "Get a Vocabulary in PDF format" )
+    @ApiOperation( value = "Get a Vocabulary in PDF format", hidden = true )
     public ResponseEntity<Resource> getVocabularyInPdf(
         HttpServletRequest request,
         @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
@@ -341,29 +663,23 @@ public class VocabularyResourceV2 {
         @ApiParam( value = "included language version, e.g. en-1.0_de-1.0.1, separated by _" ) @RequestParam(name = "languageVersion", required = false) String languageVersion
     ) throws IOException {
         log.debug("REST request to get a PDF file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
-        File pdfFile = vocabularyService.generateVocabularyPublishFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.PDF, request );
-
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(pdfFile.toPath()) );
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + pdfFile.getName() );
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("application/pdf"))
-            .body(resource);
+        return transformVocabularyToPdf(request, vocabulary, versionNumberSl, languageVersion);
     }
 
     /**
      * {@code GET  /v2/vocabularies/docx/:notation/:versionNumber}
      *  get a DOCX file of vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}
+     * Hidden from Swagger due to API for CVS front-end
      *
-     * @param vocabulary controlled vocabulary
-     * @param versionNumberSl controlled vocabulary version
-     * @param languageVersion included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
+     * @param vocabulary
+     * @param versionNumberSl
+     * @param languageVersion
+     * @return Vocabulary in HTML format
+     *
      * @throws IOException
      */
     @GetMapping("/vocabularies/docx/{vocabulary}/{versionNumberSl}")
-    @ApiOperation( value = "Get a Vocabulary in DOCX format" )
+    @ApiOperation( value = "Get a Vocabulary in DOCX format", hidden = true  )
     public ResponseEntity<Resource> getVocabularyInDocx(
         HttpServletRequest request,
         @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
@@ -371,45 +687,7 @@ public class VocabularyResourceV2 {
         @ApiParam( value = "included language version, e.g. en-1.0_de-1.0.1, separated by _" ) @RequestParam(name = "languageVersion", required = false) String languageVersion
     ) throws IOException {
         log.debug("REST request to get a WORD-DOCX file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
-        File wordFile = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.WORD, request );
-
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(wordFile.toPath()) );
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + wordFile.getName() );
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("application/vnd.openxmlformats-officedocument.wordprocessingml.document"))
-            .body(resource);
-    }
-
-    /**
-     * {@code GET  /v2/html/docx/:notation/:versionNumber}
-     *  get a HTML file of vocabulary {vocabulary} with version {versionNumberSl} with included versions {languageVersion}
-     *
-     * @param vocabulary controlled vocabulary
-     * @param versionNumberSl controlled vocabulary version
-     * @param languageVersion included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
-     * @throws IOException
-     */
-    @GetMapping("/vocabularies/html/{vocabulary}/{versionNumberSl}")
-    @ApiOperation( value = "Get a Vocabulary in HTML format" )
-    public ResponseEntity<Resource> getVocabularyInHtml(
-        HttpServletRequest request,
-        @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
-        @ApiParam( value = "the CV SL version, e.g. 1.0" ) @PathVariable String versionNumberSl,
-        @ApiParam( value = "included language version, e.g. en-1.0_de-1.0.1, separated by _" ) @RequestParam(name = "languageVersion", required = false) String languageVersion
-    ) throws IOException {
-        log.debug("REST request to get a HTML file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
-        File htmlFile = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.HTML, request );
-
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(htmlFile.toPath()) );
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + htmlFile.getName() );
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("text/html"))
-            .body(resource);
+        return transformVocabularyToDocx(request, vocabulary, versionNumberSl, languageVersion);
     }
 
     /**
@@ -423,7 +701,7 @@ public class VocabularyResourceV2 {
      * @throws IOException
      */
     @GetMapping("/vocabularies/rdf/{vocabulary}/{versionNumberSl}")
-    @ApiOperation( value = "Get a Vocabulary in SKOS format" )
+    @ApiOperation( value = "Get a Vocabulary in SKOS format", hidden = true  )
     public ResponseEntity<Resource> getVocabularyInSkos(
         HttpServletRequest request,
         @ApiParam( value = "the CV short definition/notation, e.g. AnalysisUnit" ) @PathVariable String vocabulary,
@@ -431,15 +709,57 @@ public class VocabularyResourceV2 {
         @ApiParam( value = "included language version, e.g. en-1.0_de-1.0.1, separated by _" ) @RequestParam(name = "languageVersion", required = false) String languageVersion
     ) throws IOException {
         log.debug("REST request to get a SKOS-RDF file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        return transformVocabularyToRdf(request, vocabulary, versionNumberSl, languageVersion);
+    }
+
+    private ResponseEntity<Resource> transformVocabularyToHtml(HttpServletRequest request, @PathVariable @ApiParam(name = "vocabulary", type = "String", value = "The vocabulary", example = "TopicClassification", required = true) String vocabulary, @PathVariable @ApiParam(name = "versionNumberSl", type = "String", value = "The version number of Source language", example = "4.0", required = true) String versionNumberSl, @RequestParam @ApiParam(name = "languageVersion", type = "String", value = "included language version, e.g. en-1.0_de-1.0.1, separated by _", example = "en-1.0", required = false) String languageVersion) throws IOException {
+        File htmlFile = vocabularyService.generateVocabularyPublishFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.HTML, request);
+
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(htmlFile.toPath()));
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + htmlFile.getName());
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(resource);
+    }
+
+    private ResponseEntity<List<Object>> transformVocabularyToJsonLd(String vocabulary, String versionNumberSl, String languageVersion) {
+        VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
+
+        List<Object> vocabularyJsonLds = new ArrayList<>();
+        Set<CodeDTO> codeDtos = CodeDTO.generateCodesFromVersion(vocabularyDTO.getVersions(), false);
+        List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO, codeDtos, vocabularyDTO.getVersions().stream().map(VersionDTO::getLanguage).collect(Collectors.toSet()));
+        vocabularyJsonLds.addAll(vocabularyJsonLdMap);
+
+        return ResponseEntity.ok().body(vocabularyJsonLds);
+    }
+
+    private ResponseEntity<Resource> transformVocabularyToPdf(HttpServletRequest request, @PathVariable @ApiParam("the CV short definition/notation, e.g. AnalysisUnit") String vocabulary, @PathVariable @ApiParam("the CV SL version, e.g. 1.0") String versionNumberSl, @RequestParam(name = "languageVersion", required = false) @ApiParam("included language version, e.g. en-1.0_de-1.0.1, separated by _") String languageVersion) throws IOException {
+        File pdfFile = vocabularyService.generateVocabularyPublishFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.PDF, request );
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(pdfFile.toPath()) );
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + pdfFile.getName() );
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(resource);
+    }
+
+    private ResponseEntity<Resource> transformVocabularyToDocx(HttpServletRequest request, @PathVariable @ApiParam("the CV short definition/notation, e.g. AnalysisUnit") String vocabulary, @PathVariable @ApiParam("the CV SL version, e.g. 1.0") String versionNumberSl, @RequestParam(name = "languageVersion", required = false) @ApiParam("included language version, e.g. en-1.0_de-1.0.1, separated by _") String languageVersion) throws IOException {
+        File wordFile = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.WORD, request );
+
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(wordFile.toPath()) );
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + wordFile.getName() );
+        return ResponseEntity.ok().headers(headers).body(resource);
+    }
+
+    private ResponseEntity<Resource> transformVocabularyToRdf(HttpServletRequest request, @PathVariable @ApiParam("the CV short definition/notation, e.g. AnalysisUnit") String vocabulary, @PathVariable @ApiParam("the CV SL version, e.g. 1.0") String versionNumberSl, @RequestParam(name = "languageVersion", required = false) @ApiParam("included language version, e.g. en-1.0_de-1.0.1, separated by _") String languageVersion) throws IOException {
         File rdfFile = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.SKOS, request );
 
         ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(rdfFile.toPath()) );
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + rdfFile.getName() );
-        return ResponseEntity.ok()
-            .headers(headers)
-            .contentType(MediaType.parseMediaType("text/xml"))
-            .body(resource);
+        return ResponseEntity.ok().headers(headers).body(resource);
     }
 
     /**

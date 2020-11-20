@@ -5,6 +5,7 @@ import eu.cessda.cvs.utils.VersionUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class ResourceUtils {
@@ -17,5 +18,11 @@ public class ResourceUtils {
         headers.add("X-Prev-Cv-Version", version2.getNotation() + " " +version2.getItemType() + " v." + version2.getNumber());
         headers.add("X-Current-Cv-Version", version1.getNotation() + " " +version1.getItemType() + " v." + version1.getNumber());
         return ResponseEntity.ok().headers(headers).body(compareVersions);
+    }
+
+    public static String getBasePath(HttpServletRequest request) {
+        String path = request.getContextPath();
+        String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+        return basePath;
     }
 }
