@@ -136,7 +136,6 @@ public class EditorResource {
      *
      * @param id the ID of version to be cloned/add new version
      * @return
-     * @throws URISyntaxException
      */
     @PostMapping("/editors/vocabularies/new-version/{id}")
     public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id){
@@ -155,16 +154,15 @@ public class EditorResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vocabularyDTO,
      * or with status {@code 400 (Bad Request)} if the vocabularyDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the vocabularyDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PutMapping("/editors/vocabularies")
-    public ResponseEntity<VocabularyDTO> updateVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException {
+    public ResponseEntity<VocabularyDTO> updateVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) {
         log.debug("REST request to update Vocabulary : {}", vocabularySnippet);
         if (vocabularySnippet.getVocabularyId() == null) {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_VOCABULARY_NAME, ID_NULL);
         }
-        VocabularyDTO result = vocabularyService.saveVocabulary( vocabularySnippet );
+        VocabularyDTO result = vocabularyService.saveVocabulary(vocabularySnippet);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))
             .body(result);
@@ -178,20 +176,19 @@ public class EditorResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated vocabularyDTO,
      * or with status {@code 400 (Bad Request)} if the vocabularyDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the vocabularyDTO couldn't be updated.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PutMapping("/editors/vocabularies/forward-status")
-    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws URISyntaxException, IOException {
+    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws IOException {
         log.debug("REST request to update Vocabulary : {}", vocabularySnippet);
         if (vocabularySnippet.getVersionId() == null) {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_VOCABULARY_NAME, ID_NULL);
         }
         if (vocabularySnippet.getActionType() == null) {
-            throw new IllegalArgumentException( "Missing action type" );
+            throw new IllegalArgumentException("Missing action type");
         }
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
-            .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId() ));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId()));
         // pick version from vocabularyDTO
         VersionDTO versionDTO = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals( vocabularySnippet.getVersionId())).findFirst()
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + vocabularySnippet.getVersionId()  ));
@@ -272,8 +269,8 @@ public class EditorResource {
                 if( prevVersion.getItemType().equals(ItemType.SL.toString())) {
                     return;
                 }
-                log.info( "Clone {0} TL {1} version {2} to version {3}_DRAFT", versionDTO.getNotation(),
-                    prevVersion.getLanguage(), prevVersion.getNumber() + "_" + prevVersion.getStatus(), versionDTO.getNumber() + ".1" );
+                log.info("Clone {} TL {} version {} to version {}_DRAFT", versionDTO.getNotation(),
+                    prevVersion.getLanguage(), prevVersion.getNumber() + "_" + prevVersion.getStatus(), versionDTO.getNumber() + ".1");
                 // cloning need currentSL (as main reference for notation and position), previousSl (as secondary reference if notation is changed in the current SL),
                 // and previous TL for the rest of properties
                 clonedTls.add(vocabularyService.cloneTl( versionDTO, prevVersionSl, prevVersion));
@@ -283,7 +280,7 @@ public class EditorResource {
                 vocabularyDTO.getVersions().addAll( clonedTls );
             }
         } else {
-            log.info( "Unable to check for available TLs to be cloned, unable to find prev SL version with ID {0}",  versionDTO.getPreviousVersion());
+            log.info("Unable to check for available TLs to be cloned, unable to find prev SL version with ID {}", versionDTO.getPreviousVersion());
         }
     }
 
@@ -430,16 +427,14 @@ public class EditorResource {
      * {@code POST  /editors/codes/batch} : Create batch of new codes/concepts via editor Rest API.
      *
      * @param codeSnippets the conceptDTOs helper to create.
-     *
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new ConceptDTO, or with status {@code 400 (Bad Request)} if the concept has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     * @throws CodeAlreadyExistException {@code 400 (Bad Request)} if the codes is already exist.
+     * @throws CodeAlreadyExistException                {@code 400 (Bad Request)} if the codes is already exist.
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PostMapping("/editors/codes/batch")
-    public ResponseEntity<List<ConceptDTO>> createBatchCode(@Valid @RequestBody CodeSnippet[] codeSnippets) throws URISyntaxException {
-        if( codeSnippets.length == 0 ) {
-            throw new IllegalArgumentException( "CodeSnippet[] can not be empty array" );
+    public ResponseEntity<List<ConceptDTO>> createBatchCode(@Valid @RequestBody CodeSnippet[] codeSnippets) {
+        if (codeSnippets.length == 0) {
+            throw new IllegalArgumentException("CodeSnippet[] can not be empty array");
         }
 
         // get version
@@ -447,7 +442,7 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + codeSnippets[0].getVersionId()));
 
         // reject if version status is published
-        if( versionDTO.getStatus().equals( Status.PUBLISHED.toString() )) {
+        if (versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
             throw new IllegalArgumentException( "Unable to add Code " + codeSnippets[0].getNotation() + ", Version is already PUBLISHED" );
         }
 
@@ -698,7 +693,6 @@ public class EditorResource {
      * @param commentDTO the commentDTO to update.
      *
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new CommentDTO, or with status {@code 400 (Bad Request)} if the comment has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated commentDTO,
      * or with status {@code 400 (Bad Request)} if the commentDTO is not valid,
@@ -807,7 +801,6 @@ public class EditorResource {
      * @param metadataValueDTO the metadataValueDTO to update.
      *
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new MetadataValueDTO, or with status {@code 400 (Bad Request)} if the metadataValueDTO has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
      *
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated metadataValueDTO,
      * or with status {@code 400 (Bad Request)} if the metadataValueDTO is not valid,
