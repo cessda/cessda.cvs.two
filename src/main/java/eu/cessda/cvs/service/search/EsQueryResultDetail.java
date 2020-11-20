@@ -24,6 +24,7 @@ public class EsQueryResultDetail implements Serializable {
 	private List<EsFilter> esFilters = new ArrayList<>();
 	private boolean isSearchAllLanguages = false;
 	private boolean withHighlight = false;
+	private int codeSize = 3;
 
 	// Results
 	private transient Page<VocabularyDTO> vocabularies;
@@ -161,5 +162,13 @@ public class EsQueryResultDetail implements Serializable {
 
     public void setWithHighlight(boolean withHighlight) {
         this.withHighlight = withHighlight;
+    }
+
+    public int getCodeSize() {
+        return codeSize;
+    }
+
+    public void setCodeSize(int codeSize) {
+        this.codeSize = codeSize;
     }
 }

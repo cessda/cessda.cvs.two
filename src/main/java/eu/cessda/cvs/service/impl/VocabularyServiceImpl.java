@@ -999,7 +999,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
             .withIndices( indiceType ).withTypes( indiceType )
             .withSearchType(SearchType.DEFAULT)
-            .withQuery(  generateMainAndNestedQuery ( searchTerm, languageFields ))
+            .withQuery(  generateMainAndNestedQuery ( searchTerm, languageFields, esQueryResultDetail.getCodeSize()))
             .withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
             .withPageable( esQueryResultDetail.getPage());
 
@@ -1065,7 +1065,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                 .should( QueryBuilders.wildcardQuery( CODE_PATH +"." + NOTATION, term.toLowerCase().replace(" ", "") + "*").boost( 2.0f ));
         }
         final NestedQueryBuilder nestedQueryBuilder = QueryBuilders.nestedQuery(CODE_PATH, boolQuery, ScoreMode.Total)
-            .innerHit(new InnerHitBuilder(CODE_PATH).setSize(100));
+            .innerHit(new InnerHitBuilder(CODE_PATH).setSize(esQueryResultDetail.getCodeSize()));
 
         // build query builder
         NativeSearchQueryBuilder searchQueryBuilder = new NativeSearchQueryBuilder()
@@ -1259,9 +1259,9 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
 
-    public static QueryBuilder generateMainAndNestedQuery(String term, List<String> languageFields ) {
+    public static QueryBuilder generateMainAndNestedQuery(String term, List<String> languageFields, int innerHitSize ) {
         if( term != null && !term.isEmpty() && term.length() > 1) {
-            return QueryBuilders.boolQuery().should(generateMainQuery(term, languageFields)).should(generateNestedQuery(term, languageFields));
+            return QueryBuilders.boolQuery().should(generateMainQuery(term, languageFields)).should(generateNestedQuery(term, languageFields, innerHitSize));
         }
         else
             return QueryBuilders.matchAllQuery();
@@ -1284,7 +1284,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         return boolQuery;
     }
 
-    public static QueryBuilder generateNestedQuery(String term, List<String> languageFields ) {
+    public static QueryBuilder generateNestedQuery(String term, List<String> languageFields, int innerHitSize) {
         // query for all languages
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
 
@@ -1306,9 +1306,10 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( term.length() > 2)
             return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total)
                 .innerHit( new InnerHitBuilder( CODE_PATH )
+                    .setSize(innerHitSize)
                     .setHighlightBuilder( nestedHighlightBuilder( languageFields ) ));
         return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total)
-            .innerHit( new InnerHitBuilder( CODE_PATH ) );
+            .innerHit( new InnerHitBuilder( CODE_PATH ).setSize(innerHitSize) );
     }
 
     public static HighlightBuilder.Field[] generateHighlightBuilderMain(List<String> languageFields ) {

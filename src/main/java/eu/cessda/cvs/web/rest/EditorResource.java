@@ -10,7 +10,6 @@ import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.*;
 import eu.cessda.cvs.service.dto.*;
-import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.slf4j.Logger;
@@ -307,13 +306,7 @@ public class EditorResource {
         VersionDTO prevVersionDTO = versionService.findOne(versionDTO.getPreviousVersion())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + versionDTO.getPreviousVersion()));
 
-        List<String> compareCurrentPrev = VersionUtils.buildComparisonCurrentAndPreviousCV(versionDTO, prevVersionDTO);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Prev-Cv-Version", prevVersionDTO.getNotation() + " " +prevVersionDTO.getItemType() + " v." + prevVersionDTO.getNumber());
-        headers.add("X-Current-Cv-Version", versionDTO.getNotation() + " " +versionDTO.getItemType() + " v." + versionDTO.getNumber());
-
-        return ResponseEntity.ok().headers(headers).body(compareCurrentPrev);
+        return ResourceUtils.getListResponseEntity(versionDTO, prevVersionDTO);
     }
 
     /**
