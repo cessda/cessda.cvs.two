@@ -77,6 +77,18 @@ public final class VocabularyUtils {
             .findFirst().orElse(null);
     }
 
+    public static EsQueryResultDetail prepareEsQuerySearching(String query, String agency, String lang, Pageable pageable, SearchScope searchScope) {
+        String filter = null;
+        if( agency != null ) {
+            filter = "agency:" + agency + ";";
+        }
+        if (lang != null) {
+            filter += "language:" + lang;
+        }
+
+        return VocabularyUtils.prepareEsQuerySearching( query, filter, pageable, searchScope );
+    }
+
     public static EsQueryResultDetail prepareEsQuerySearching(String q, String f, Pageable pageable, SearchScope searchScope) {
         if (q == null)
             q = "";
@@ -88,8 +100,10 @@ public final class VocabularyUtils {
         if ( f != null && !f.isEmpty())
             VocabularyUtils.prepareActiveFilters(f, esq, searchScope);
 
-        Pageable newPageable = VocabularyUtils.buildNewPageable(pageable, esq.getSortLanguage() );
-        esq.setPage(newPageable);
+        if( pageable != null ) {
+            Pageable newPageable = VocabularyUtils.buildNewPageable(pageable, esq.getSortLanguage());
+            esq.setPage(newPageable);
+        }
 
         return esq;
     }
