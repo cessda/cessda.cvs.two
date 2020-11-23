@@ -1129,3 +1129,35 @@ button.invisible-button:focus {
   -webkit-hyphens: auto;
   hyphens: auto;
 }
+.f-size-120{
+  font-size: 120%;
+}
+
+#overview{
+  ul{
+    margin: 0;
+    padding: 0;
+    li {
+      transition: background-color .2s;
+      padding: 2px 5px;
+      a{
+        text-decoration: none;
+        color: #212529;
+      }
+      a:hover{
+        text-decoration: none;
+        color: #1976d2;
+      }
+    }
+    li:hover {
+      background-color: #dbdbdb;
+      color: #1976d2;
+      text-shadow: 0 0 5px #fff;
+    }
+    li.ql-indent-1 {
+      font-size: 90%;
+      padding: 1px 5px;
+      margin-left:15px;
+    }
+  }
+}

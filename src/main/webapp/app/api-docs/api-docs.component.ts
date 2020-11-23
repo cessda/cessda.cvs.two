@@ -10,8 +10,7 @@ import {JhiEventManager} from 'ng-jhipster';
 
 @Component({
   selector: 'jhi-api-docs',
-  templateUrl: './api-docs.component.html',
-  styleUrls: ['./api-docs.component.scss']
+  templateUrl: './api-docs.component.html'
 })
 export class ApiDocsComponent implements OnInit, OnDestroy {
   metadataField?: IMetadataField | null;
