@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {ActivatedRouteSnapshot, Resolve, Router, Routes} from '@angular/router';
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 
-import {EMPTY, Observable, of} from 'rxjs';
-import {flatMap} from 'rxjs/operators';
+import { EMPTY, Observable, of } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 
-import {HomeComponent} from './home.component';
-import {IVocabulary, Vocabulary} from 'app/shared/model/vocabulary.model';
-import {JhiResolvePagingParams} from 'ng-jhipster';
-import {HomeService} from 'app/home/home.service';
-import {HomeDetailComponent} from 'app/home/home-detail.component';
+import { HomeComponent } from './home.component';
+import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { HomeService } from 'app/home/home.service';
+import { HomeDetailComponent } from 'app/home/home-detail.component';
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve implements Resolve<IVocabulary> {
@@ -17,18 +17,19 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
     let notation = route.params['notation'];
-    const codeIndex = (notation as string).indexOf("_");
+    const codeIndex = (notation as string).indexOf('_');
     let code = '';
-    if( codeIndex > 0 ) {
-      code = (notation as string).substring(codeIndex + 1).split('.').join('');
+    if (codeIndex > 0) {
+      code = (notation as string)
+        .substring(codeIndex + 1)
+        .split('.')
+        .join('');
       notation = (notation as string).substring(0, codeIndex);
     }
     let version = route.queryParams['version'];
     let lang = '';
-    if( route.params['version'] )
-      version = route.params['version'];
-    if( route.params['lang'] )
-      lang = route.params['lang'];
+    if (route.params['version']) version = route.params['version'];
+    if (route.params['lang']) lang = route.params['lang'];
     if (notation) {
       return this.service
         .getVocabularyFile(notation, {
@@ -38,7 +39,7 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
         .pipe(
           flatMap((vocabulary: HttpResponse<Vocabulary>) => {
             if (vocabulary.body) {
-              vocabulary.body.selectedLang = lang !== '' ? lang: vocabulary.body.sourceLanguage;
+              vocabulary.body.selectedLang = lang !== '' ? lang : vocabulary.body.sourceLanguage;
               if (code !== '') {
                 vocabulary.body.selectedCode = code;
               }

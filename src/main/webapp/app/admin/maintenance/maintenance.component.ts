@@ -1,14 +1,13 @@
-import {Component} from '@angular/core';
-import {MaintenanceService} from 'app/admin/maintenance/maintenance.service';
-import {HttpResponse} from '@angular/common/http';
-import {Maintenance} from 'app/admin/maintenance/maintenance.model';
+import { Component } from '@angular/core';
+import { MaintenanceService } from 'app/admin/maintenance/maintenance.service';
+import { HttpResponse } from '@angular/common/http';
+import { Maintenance } from 'app/admin/maintenance/maintenance.model';
 
 @Component({
   selector: 'jhi-maintenance',
   templateUrl: './maintenance.component.html'
 })
 export class MaintenanceComponent {
-
   isGeneratingJson: boolean;
   isIndexingAgency: boolean;
   isIndexingAgencyStat: boolean;
@@ -22,9 +21,7 @@ export class MaintenanceComponent {
   indexingVocabularyEditorOutput: string | null;
   checkingTlsOutput: string | null;
 
-  constructor(
-    protected maintenanceService: MaintenanceService
-  ) {
+  constructor(protected maintenanceService: MaintenanceService) {
     this.isGeneratingJson = false;
     this.isIndexingAgency = false;
     this.isIndexingAgencyStat = false;
@@ -94,44 +91,44 @@ export class MaintenanceComponent {
   }
 
   private onSuccess(data: Maintenance | null, type: string): void {
-    if ( type === 'GENERATE_JSON' ) {
+    if (type === 'GENERATE_JSON') {
       this.isGeneratingJson = false;
       this.generatingJsonOutput = data!.output;
-    } else if ( type === 'INDEX_AGENCY' ) {
+    } else if (type === 'INDEX_AGENCY') {
       this.isIndexingAgency = false;
       this.indexingAgencyOutput = data!.output;
-    } else if ( type === 'INDEX_AGENCY_STAT' ) {
+    } else if (type === 'INDEX_AGENCY_STAT') {
       this.isIndexingAgencyStat = false;
       this.indexingAgencyStatOutput = data!.output;
-    } else if ( type === 'INDEX_CV_PUBLISH' ) {
+    } else if (type === 'INDEX_CV_PUBLISH') {
       this.isIndexingVocabularyPublish = false;
       this.indexingVocabularyPublishOutput = data!.output;
-    } else if ( type === 'INDEX_CV_EDITOR' ) {
+    } else if (type === 'INDEX_CV_EDITOR') {
       this.isIndexingVocabularyEditor = false;
       this.indexingVocabularyEditorOutput = data!.output;
-    } else if ( type === 'TL_CHECKING' ) {
+    } else if (type === 'TL_CHECKING') {
       this.isCheckingTls = false;
       this.checkingTlsOutput = data!.output;
     }
   }
 
   private onError(type: string): void {
-    if ( type === 'GENERATE_JSON' ) {
+    if (type === 'GENERATE_JSON') {
       this.isGeneratingJson = false;
       this.generatingJsonOutput = 'Error...';
-    }else if ( type === 'INDEX_AGENCY' ) {
+    } else if (type === 'INDEX_AGENCY') {
       this.isIndexingAgency = false;
       this.indexingAgencyOutput = 'Error...';
-    } else if ( type === 'INDEX_AGENCY_STAT' ) {
+    } else if (type === 'INDEX_AGENCY_STAT') {
       this.isIndexingAgencyStat = false;
       this.indexingAgencyStatOutput = 'Error...';
-    } else if ( type === 'INDEX_CV_PUBLISH' ) {
+    } else if (type === 'INDEX_CV_PUBLISH') {
       this.isIndexingVocabularyPublish = false;
       this.indexingVocabularyPublishOutput = 'Error...';
-    } else if ( type === 'INDEX_CV_EDITOR' ) {
+    } else if (type === 'INDEX_CV_EDITOR') {
       this.isIndexingVocabularyEditor = false;
       this.indexingVocabularyEditorOutput = 'Error...';
-    } else if ( type === 'TL_CHECKING' ) {
+    } else if (type === 'TL_CHECKING') {
       this.isCheckingTls = false;
       this.checkingTlsOutput = 'Error...';
     }

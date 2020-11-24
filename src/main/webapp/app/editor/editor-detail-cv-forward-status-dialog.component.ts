@@ -1,25 +1,25 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
-import {HttpResponse} from '@angular/common/http';
-import {AccountService} from 'app/core/auth/account.service';
-import {VocabularyService} from 'app/entities/vocabulary/vocabulary.service';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable, Subject} from 'rxjs';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {Account} from 'app/core/user/account.model';
-import {EditorService} from 'app/editor/editor.service';
-import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
-import {IVersion} from 'app/shared/model/version.model';
-import {ILicence} from 'app/shared/model/licence.model';
-import {LicenceService} from 'app/admin/licence/licence.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
+import { HttpResponse } from '@angular/common/http';
+import { AccountService } from 'app/core/auth/account.service';
+import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Account } from 'app/core/user/account.model';
+import { EditorService } from 'app/editor/editor.service';
+import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { IVersion } from 'app/shared/model/version.model';
+import { ILicence } from 'app/shared/model/licence.model';
+import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {DiffContent, DiffResults} from 'ngx-text-diff/lib/ngx-text-diff.model';
-import {IComment} from 'app/shared/model/comment.model';
-import {VocabularyChangeService} from 'app/entities/vocabulary-change/vocabulary-change.service';
-import {IVocabularyChange} from 'app/shared/model/vocabulary-change.model';
+import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { IComment } from 'app/shared/model/comment.model';
+import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
+import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-forward-status-dialog',

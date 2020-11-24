@@ -1,6 +1,6 @@
-import {Moment} from 'moment';
-import {IVersion} from 'app/shared/model/version.model';
-import {ICode} from 'app/shared/model/code.model';
+import { Moment } from 'moment';
+import { IVersion } from 'app/shared/model/version.model';
+import { ICode } from 'app/shared/model/code.model';
 
 export interface IVocabulary {
   id?: number;

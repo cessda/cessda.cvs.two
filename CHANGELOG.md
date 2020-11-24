@@ -1,10 +1,24 @@
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.0] - 2020-11-02
+## [2.0.1-Beta] - 2020-11-23
 
-The first version of CESSDA Vocabulary Service (CVS) 2, which was re-developed from scratch based on the deprecated CVS 1 application.    
+### Added
+
+- Fix and finalize the /v2 REST APIs [#251](https://bitbucket.org/cessda/cessda.cvs.two/issues/251/api-requirements-read-only-mode-api)
+    - Add search CV Codes REST API that produces JSON-LD based on Skosmos [#178](https://bitbucket.org/cessda/cessda.cvs.two/issues/178/dataverse-having-problems-consuming-api)
+    - Add search Vocabularies & Codes that produces JSON & JSON-LD formats
+    - Add export Vocabulary that produces HTML, DOCX, PDF, JSON & JSON-LD formats
+- Add application maintenance page, which includes functions to generating JSON for published CVs, indexing for Agency, Vocabularies, Statistics and checking for incorrect CVs.[#272](https://bitbucket.org/cessda/cessda.cvs.two/issues/272/create-a-maintenance-page)
+- Provide configurable URI for Vocabulary versions and Codes. [#256](https://bitbucket.org/cessda/cessda.cvs.two/issues/256/cvs-urls-api-issue), [#271](https://bitbucket.org/cessda/cessda.cvs.two/issues/271/make-agency-uri-configurable-and-link)
+- Improve code quality and fix bugs and vulnerabilities based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs) 
+
+
+## [2.0.0-Beta] - 2020-11-02
+
+The first version of CESSDA Vocabulary Service (CVS) 2, which was re-developed from scratch based on the deprecated CVS 1 application.  
 The project uses new architecture Spring-Boot framework for the back-end and Angular for the front-end, instead of Vaadin like in CVS 1.
 
 ### Added
@@ -18,7 +32,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Support for 28 Controlled-Vocabularies (CVs) languages (Albanian (sq), Bosnian (bs), Bulgarian (bg), Croatian (hr), Czech (cs), Danish (da), Dutch (nl), English (en), Estonian (et), Finnish (fi), French (fr), German (de), Greek (el), Hungarian (hu), Italian (it), Japanese (ja), Lithuanian (lt), Macedonian (mk), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Serbian (sr), Slovak (sk), Slovenian (sl), Spanish (es), Swedish (sv))
 - Fixed corrupted CVs from the CVS 1
 - Fixed and improved Vocabulary workflow
-- Fixed vocabulary cloning and versioning 
+- Fixed vocabulary cloning and versioning
 - Store published-vocabulary in JSON format
 - New URLs for both Publication and Editor pages, for better readability
 - Bookmarkable URLs for searching and vocabulary
@@ -36,5 +50,3 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Application technical tools and matrices such as JVM-Metrics, App Health Checks, Configuration, Logs Audit.
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
-
-

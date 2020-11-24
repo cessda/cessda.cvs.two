@@ -1,30 +1,24 @@
-import {LOCALE_ID, NgModule} from '@angular/core';
-import {DatePipe, registerLocaleData} from '@angular/common';
-import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
-import {Title} from '@angular/platform-browser';
-import {FaIconLibrary} from '@fortawesome/angular-fontawesome';
-import {CookieService} from 'ngx-cookie-service';
-import {MissingTranslationHandler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {NgxWebstorageModule} from 'ngx-webstorage';
-import {
-  JhiConfigService,
-  JhiLanguageService,
-  missingTranslationHandler,
-  NgJhipsterModule,
-  translatePartialLoader
-} from 'ng-jhipster';
+import { LOCALE_ID, NgModule } from '@angular/core';
+import { DatePipe, registerLocaleData } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
+import { FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { CookieService } from 'ngx-cookie-service';
+import { MissingTranslationHandler, TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { NgxWebstorageModule } from 'ngx-webstorage';
+import { JhiConfigService, JhiLanguageService, missingTranslationHandler, NgJhipsterModule, translatePartialLoader } from 'ng-jhipster';
 import locale from '@angular/common/locales/en';
 
 import * as moment from 'moment';
-import {NgbDateAdapter, NgbDatepickerConfig} from '@ng-bootstrap/ng-bootstrap';
-import {NgbDateMomentAdapter} from 'app/shared/util/datepicker-adapter';
+import { NgbDateAdapter, NgbDatepickerConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDateMomentAdapter } from 'app/shared/util/datepicker-adapter';
 
-import {AuthInterceptor} from 'app/blocks/interceptor/auth.interceptor';
-import {AuthExpiredInterceptor} from 'app/blocks/interceptor/auth-expired.interceptor';
-import {ErrorHandlerInterceptor} from 'app/blocks/interceptor/errorhandler.interceptor';
-import {NotificationInterceptor} from 'app/blocks/interceptor/notification.interceptor';
+import { AuthInterceptor } from 'app/blocks/interceptor/auth.interceptor';
+import { AuthExpiredInterceptor } from 'app/blocks/interceptor/auth-expired.interceptor';
+import { ErrorHandlerInterceptor } from 'app/blocks/interceptor/errorhandler.interceptor';
+import { NotificationInterceptor } from 'app/blocks/interceptor/notification.interceptor';
 
-import {fontAwesomeIcons} from './icons/font-awesome-icons';
+import { fontAwesomeIcons } from './icons/font-awesome-icons';
 
 @NgModule({
   imports: [

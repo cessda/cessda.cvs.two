@@ -90,7 +90,7 @@ pipeline {
         }
         stage('Deploy CVS') {
             steps {
-                build job: 'cessda.cvs.deploy/v2', parameters: [string(name: 'frontend_image_tag', value: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}")], wait: false
+                build job: 'cessda.cvs.deploy/master', parameters: [string(name: 'frontend_image_tag', value: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}")], wait: false
             }
             when { branch 'master' }
         }

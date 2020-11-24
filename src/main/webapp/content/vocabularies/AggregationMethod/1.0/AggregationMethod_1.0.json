@@ -1,120 +1,134 @@
 {
-  "id" : 57,
-  "status" : "PUBLISHED",
-  "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod",
-  "notation" : "AggregationMethod",
-  "versionNumber" : "1.1",
-  "withdrawn" : false,
-  "sourceLanguage" : "en",
-  "agencyId" : 2,
-  "agencyName" : "DDI Alliance",
-  "agencyLogo" : "ddi.png",
-  "agencyLink" : "http://www.ddialliance.org/",
-  "publicationDate" : "2019-11-24",
-  "notes" : "",
-  "versions" : [ {
-    "id" : 268,
-    "status" : "PUBLISHED",
-    "itemType" : "SL",
-    "language" : "en",
-    "publicationDate" : "2019-11-24",
-    "number" : "1.0",
-    "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html",
-    "canonicalUri" : "urn:ddi:int.ddi.cv:AggregationMethod:1.0",
-    "notation" : "AggregationMethod",
-    "title" : "Aggregation Method",
-    "definition" : "Identifies the type of aggregation used to combine related categories, usually within a common branch of a hierarchy, to provide information at a broader level than the level at which detailed observations are taken. (From: The OECD Glossary of Statistical Terms)",
-    "previousVersion" : 0,
-    "initialVersion" : 268,
-    "notes" : "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
-    "versionNotes" : "",
-    "versionChanges" : "",
-    "license" : "CC BY",
-    "licenseName" : "Creative Commons Attribution 4.0 International",
-    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
-    "licenseLogo" : "by.png",
-    "citation" : "DDI Alliance. (2019). Aggregation Method (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AggregationMethod:1.0. ",
-    "ddiUsage" : "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" style=\"\">DDI 3.2</a> \n<div> \n <div>\n   Module name:&nbsp; &nbsp; &nbsp;reusable \n </div> \n <div>\n   Element name:&nbsp; &nbsp; \n  <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AggregationMethod.html\"> AggregationMethod </a> \n </div> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/var.html\">var@otherAggrMeth</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <div>\n   Element/Attribute name: \n  <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/measure.html\">measure@otherAggrMeth</a> \n </div> \n</div>",
-    "lastStatusChangeDate" : "2020-09-30",
-    "concepts" : [ {
-      "id" : 2631,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Sum",
-      "notation" : "Sum",
-      "title" : "Sum",
-      "definition" : "A value obtained as a result of adding two or more numbers (items/amounts).",
-      "position" : 0
-    }, {
-      "id" : 2632,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#ArithmeticMean",
-      "notation" : "ArithmeticMean",
-      "title" : "Arithmetic Mean",
-      "definition" : "Mathematical average of a set of values. The mean is calculated by adding up two or more values and dividing the total by their number. In social/political science, it is usually the sum of the measurements divided by the number of subjects, or cases.",
-      "position" : 1
-    }, {
-      "id" : 2633,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Count",
-      "notation" : "Count",
-      "title" : "Count",
-      "definition" : "Total number of units in a group of items",
-      "position" : 2
-    }, {
-      "id" : 2634,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Mode",
-      "notation" : "Mode",
-      "title" : "Mode",
-      "definition" : "The value that appears most often in a set of values",
-      "position" : 3
-    }, {
-      "id" : 2635,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Median",
-      "notation" : "Median",
-      "title" : "Median",
-      "definition" : "The middle value in a series of values arranged sequentially from smallest to largest.",
-      "position" : 4
-    }, {
-      "id" : 2636,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Maximum",
-      "notation" : "Maximum",
-      "title" : "Maximum",
-      "definition" : "The highest value attained or recorded.",
-      "position" : 5
-    }, {
-      "id" : 2637,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Minimum",
-      "notation" : "Minimum",
-      "title" : "Minimum",
-      "definition" : "The lowest value attained or recorded.",
-      "position" : 6
-    }, {
-      "id" : 2638,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Percent",
-      "notation" : "Percent",
-      "title" : "Percent",
-      "definition" : "The number of parts out of 100. In mathematics, a percentage is a number of ratio expressed as a fraction of 100. Percentages are used to express how large one quantity is relative to another quantity.",
-      "position" : 7
-    }, {
-      "id" : 2639,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#CumulativePercent",
-      "notation" : "CumulativePercent",
-      "title" : "Cumulative Percent",
-      "definition" : "The total of a frequency and all frequencies below it in a frequency distribution; the \"running total\" of frequencies [the maximum value is 100%].",
-      "position" : 8
-    }, {
-      "id" : 2640,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#PercentileRank",
-      "notation" : "PercentileRank",
-      "title" : "Percentile Rank",
-      "definition" : "The percentile rank of a item is the percentage of items in its frequency distribution which are lower [cannot reach 100%].",
-      "position" : 9
-    }, {
-      "id" : 2641,
-      "uri" : "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Other",
-      "notation" : "Other",
-      "title" : "Other",
-      "definition" : "Use when the aggregation method is known, but not found in the list.",
-      "position" : 10
-    } ],
-    "comments" : [ ],
-    "versionHistories" : [ ]
-  } ]
+  "id": 57,
+  "status": "PUBLISHED",
+  "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod",
+  "notation": "AggregationMethod",
+  "versionNumber": "1.1",
+  "withdrawn": false,
+  "sourceLanguage": "en",
+  "agencyId": 2,
+  "agencyName": "DDI Alliance",
+  "agencyLogo": "ddi.png",
+  "agencyLink": "http://www.ddialliance.org/",
+  "publicationDate": "2019-11-24",
+  "notes": "",
+  "versions": [
+    {
+      "id": 268,
+      "status": "PUBLISHED",
+      "itemType": "SL",
+      "language": "en",
+      "publicationDate": "2019-11-24",
+      "number": "1.0",
+      "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html",
+      "canonicalUri": "urn:ddi:int.ddi.cv:AggregationMethod:1.0",
+      "notation": "AggregationMethod",
+      "title": "Aggregation Method",
+      "definition": "Identifies the type of aggregation used to combine related categories, usually within a common branch of a hierarchy, to provide information at a broader level than the level at which detailed observations are taken. (From: The OECD Glossary of Statistical Terms)",
+      "previousVersion": 0,
+      "initialVersion": 268,
+      "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
+      "versionNotes": "",
+      "versionChanges": "",
+      "license": "CC BY",
+      "licenseName": "Creative Commons Attribution 4.0 International",
+      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
+      "licenseLogo": "by.png",
+      "citation": "DDI Alliance. (2019). Aggregation Method (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AggregationMethod:1.0. ",
+      "ddiUsage": "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" style=\"\">DDI 3.2</a> \n<div> \n <div>\n   Module name:&nbsp; &nbsp; &nbsp;reusable \n </div> \n <div>\n   Element name:&nbsp; &nbsp; \n  <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AggregationMethod.html\"> AggregationMethod </a> \n </div> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a> \n</div> \n<div>\n  Element/Attribute name: \n <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/var.html\">var@otherAggrMeth</a> \n</div> \n<div> \n <br /> \n</div> \n<div> \n <div>\n   Element/Attribute name: \n  <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/measure.html\">measure@otherAggrMeth</a> \n </div> \n</div>",
+      "lastStatusChangeDate": "2020-09-30",
+      "concepts": [
+        {
+          "id": 2631,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Sum",
+          "notation": "Sum",
+          "title": "Sum",
+          "definition": "A value obtained as a result of adding two or more numbers (items/amounts).",
+          "position": 0
+        },
+        {
+          "id": 2632,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#ArithmeticMean",
+          "notation": "ArithmeticMean",
+          "title": "Arithmetic Mean",
+          "definition": "Mathematical average of a set of values. The mean is calculated by adding up two or more values and dividing the total by their number. In social/political science, it is usually the sum of the measurements divided by the number of subjects, or cases.",
+          "position": 1
+        },
+        {
+          "id": 2633,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Count",
+          "notation": "Count",
+          "title": "Count",
+          "definition": "Total number of units in a group of items",
+          "position": 2
+        },
+        {
+          "id": 2634,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Mode",
+          "notation": "Mode",
+          "title": "Mode",
+          "definition": "The value that appears most often in a set of values",
+          "position": 3
+        },
+        {
+          "id": 2635,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Median",
+          "notation": "Median",
+          "title": "Median",
+          "definition": "The middle value in a series of values arranged sequentially from smallest to largest.",
+          "position": 4
+        },
+        {
+          "id": 2636,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Maximum",
+          "notation": "Maximum",
+          "title": "Maximum",
+          "definition": "The highest value attained or recorded.",
+          "position": 5
+        },
+        {
+          "id": 2637,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Minimum",
+          "notation": "Minimum",
+          "title": "Minimum",
+          "definition": "The lowest value attained or recorded.",
+          "position": 6
+        },
+        {
+          "id": 2638,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Percent",
+          "notation": "Percent",
+          "title": "Percent",
+          "definition": "The number of parts out of 100. In mathematics, a percentage is a number of ratio expressed as a fraction of 100. Percentages are used to express how large one quantity is relative to another quantity.",
+          "position": 7
+        },
+        {
+          "id": 2639,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#CumulativePercent",
+          "notation": "CumulativePercent",
+          "title": "Cumulative Percent",
+          "definition": "The total of a frequency and all frequencies below it in a frequency distribution; the \"running total\" of frequencies [the maximum value is 100%].",
+          "position": 8
+        },
+        {
+          "id": 2640,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#PercentileRank",
+          "notation": "PercentileRank",
+          "title": "Percentile Rank",
+          "definition": "The percentile rank of a item is the percentage of items in its frequency distribution which are lower [cannot reach 100%].",
+          "position": 9
+        },
+        {
+          "id": 2641,
+          "uri": "https://ddialliance.org/Specification/DDI-CV/AggregationMethod_1.0.html#Other",
+          "notation": "Other",
+          "title": "Other",
+          "definition": "Use when the aggregation method is known, but not found in the list.",
+          "position": 10
+        }
+      ],
+      "comments": [],
+      "versionHistories": []
+    }
+  ]
 }

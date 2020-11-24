@@ -1,12 +1,12 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IMetadataField, MetadataField} from 'app/shared/model/metadata-field.model';
-import {EditorService} from 'app/editor/editor.service';
-import {MetadataFieldService} from 'app/entities/metadata-field/metadata-field.service';
-import {METADATA_KEY_API} from 'app/shared/constants/metadata.constants';
-import {HttpResponse} from '@angular/common/http';
-import {IMetadataValue, MetadataValue} from 'app/shared/model/metadata-value.model';
-import {Subscription} from 'rxjs';
-import {JhiEventManager} from 'ng-jhipster';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { IMetadataField, MetadataField } from 'app/shared/model/metadata-field.model';
+import { EditorService } from 'app/editor/editor.service';
+import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
+import { METADATA_KEY_API } from 'app/shared/constants/metadata.constants';
+import { HttpResponse } from '@angular/common/http';
+import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
+import { Subscription } from 'rxjs';
+import { JhiEventManager } from 'ng-jhipster';
 
 @Component({
   selector: 'jhi-api-docs',
@@ -40,7 +40,7 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
       }
       if (this.metadataField && this.metadataField.metadataValues) {
         this.metadataValues = this.metadataField.metadataValues;
-        this.metadataValueMenu = this.metadataValues.filter( mv => mv.identifier === 'overview')[0];
+        this.metadataValueMenu = this.metadataValues.filter(mv => mv.identifier === 'overview')[0];
       }
     });
   }

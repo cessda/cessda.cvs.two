@@ -1,11 +1,11 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {createRequestOption} from 'app/shared';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {ICvResult} from 'app/shared/model/cv-result.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { createRequestOption } from 'app/shared';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { ICvResult } from 'app/shared/model/cv-result.model';
 
 type EntityResponseType = HttpResponse<IVocabulary>;
 

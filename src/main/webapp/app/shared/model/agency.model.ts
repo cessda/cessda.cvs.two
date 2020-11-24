@@ -1,4 +1,4 @@
-import {IUserAgency} from 'app/shared/model/user-agency.model';
+import { IUserAgency } from 'app/shared/model/user-agency.model';
 
 export interface IAgency {
   id?: number;
