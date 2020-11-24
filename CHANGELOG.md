@@ -3,7 +3,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.1] - 2020-11-23
+## [2.0.1-Beta] - 2020-11-23
 
 ### Added
 
@@ -11,11 +11,12 @@ All notable changes to this project will be documented in this file.
     - Add search CV Codes REST API that produces JSON-LD based on Skosmos [#178](https://bitbucket.org/cessda/cessda.cvs.two/issues/178/dataverse-having-problems-consuming-api)
     - Add search Vocabularies & Codes that produces JSON & JSON-LD formats
     - Add export Vocabulary that produces HTML, DOCX, PDF, JSON & JSON-LD formats
-- Add application maintenance page, which includes functions to generating JSON for published CVs, indexing for Agency, Vocabularies, Statistics and checking for incorrect CVs.
+- Add application maintenance page, which includes functions to generating JSON for published CVs, indexing for Agency, Vocabularies, Statistics and checking for incorrect CVs.[#272](https://bitbucket.org/cessda/cessda.cvs.two/issues/272/create-a-maintenance-page)
+- Provide configurable URI for Vocabulary versions and Codes. [#256](https://bitbucket.org/cessda/cessda.cvs.two/issues/256/cvs-urls-api-issue), [#271](https://bitbucket.org/cessda/cessda.cvs.two/issues/271/make-agency-uri-configurable-and-link)
 - Improve code quality and fix bugs and vulnerabilities based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs) 
 
 
-## [2.0.0] - 2020-11-02
+## [2.0.0-Beta] - 2020-11-02
 
 The first version of CESSDA Vocabulary Service (CVS) 2, which was re-developed from scratch based on the deprecated CVS 1 application.    
 The project uses new architecture Spring-Boot framework for the back-end and Angular for the front-end, instead of Vaadin like in CVS 1.
