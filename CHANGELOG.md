@@ -18,7 +18,7 @@ All notable changes to this project will be documented in this file.
 
 ## [2.0.0-Beta] - 2020-11-02
 
-The first version of CESSDA Vocabulary Service (CVS) 2, which was re-developed from scratch based on the deprecated CVS 1 application.    
+The first version of CESSDA Vocabulary Service (CVS) 2, which was re-developed from scratch based on the deprecated CVS 1 application.  
 The project uses new architecture Spring-Boot framework for the back-end and Angular for the front-end, instead of Vaadin like in CVS 1.
 
 ### Added
@@ -32,7 +32,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Support for 28 Controlled-Vocabularies (CVs) languages (Albanian (sq), Bosnian (bs), Bulgarian (bg), Croatian (hr), Czech (cs), Danish (da), Dutch (nl), English (en), Estonian (et), Finnish (fi), French (fr), German (de), Greek (el), Hungarian (hu), Italian (it), Japanese (ja), Lithuanian (lt), Macedonian (mk), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Serbian (sr), Slovak (sk), Slovenian (sl), Spanish (es), Swedish (sv))
 - Fixed corrupted CVs from the CVS 1
 - Fixed and improved Vocabulary workflow
-- Fixed vocabulary cloning and versioning 
+- Fixed vocabulary cloning and versioning
 - Store published-vocabulary in JSON format
 - New URLs for both Publication and Editor pages, for better readability
 - Bookmarkable URLs for searching and vocabulary
@@ -50,5 +50,3 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Application technical tools and matrices such as JVM-Metrics, App Health Checks, Configuration, Logs Audit.
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
-
-

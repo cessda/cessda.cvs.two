@@ -1,17 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {HttpEventType, HttpResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
-import {Observable} from 'rxjs';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
 
-import {Agency, IAgency} from 'app/shared/model/agency.model';
-import {AgencyService} from './agency.service';
-import {AlertError} from 'app/shared/alert/alert-error.model';
-import {FileUploadService} from 'app/shared/upload/file-upload.service';
-import {ILicence} from 'app/shared/model/licence.model';
-import {LicenceService} from 'app/admin/licence/licence.service';
+import { Agency, IAgency } from 'app/shared/model/agency.model';
+import { AgencyService } from './agency.service';
+import { AlertError } from 'app/shared/alert/alert-error.model';
+import { FileUploadService } from 'app/shared/upload/file-upload.service';
+import { ILicence } from 'app/shared/model/licence.model';
+import { LicenceService } from 'app/admin/licence/licence.service';
 
 @Component({
   selector: 'jhi-agency-update',

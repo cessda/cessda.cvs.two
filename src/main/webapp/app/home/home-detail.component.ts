@@ -1,16 +1,16 @@
-import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
+import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {IVersion} from 'app/shared/model/version.model';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { IVersion } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {FormBuilder} from '@angular/forms';
-import {HomeService} from 'app/home/home.service';
-import {RouteEventsService} from 'app/shared';
-import {DiffContent} from 'ngx-text-diff/lib/ngx-text-diff.model';
-import {Observable, Subject} from 'rxjs';
+import { FormBuilder } from '@angular/forms';
+import { HomeService } from 'app/home/home.service';
+import { RouteEventsService } from 'app/shared';
+import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
   selector: 'jhi-home-detail',
@@ -217,7 +217,7 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
       this.vocabulary = vocabulary;
-      if ( this.vocabulary!.selectedCode ) {
+      if (this.vocabulary!.selectedCode) {
         this.currentSelectedCode = this.vocabulary!.selectedCode;
       }
       if (this.initialLangSelect !== null) {

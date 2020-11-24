@@ -1,9 +1,9 @@
-import {getTestBed, TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import { getTestBed, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import * as moment from 'moment';
-import {DATE_FORMAT, DATE_TIME_FORMAT} from 'app/shared/constants/input.constants';
-import {VocabularyService} from 'app/entities/vocabulary/vocabulary.service';
-import {IVocabulary, Vocabulary} from 'app/shared/model/vocabulary.model';
+import { DATE_FORMAT, DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
+import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
+import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
 
 describe('Service Tests', () => {
   describe('Vocabulary Service', () => {

@@ -1,13 +1,13 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import {JhiEventManager} from 'ng-jhipster';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
-import {IMetadataValue} from 'app/shared/model/metadata-value.model';
-import {ObjectType} from 'app/shared/model/enumerations/object-type.model';
-import {EditorService} from 'app/editor/editor.service';
-import {IMetadataField} from 'app/shared/model/metadata-field.model';
+import { JhiEventManager } from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { IMetadataValue } from 'app/shared/model/metadata-value.model';
+import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
+import { EditorService } from 'app/editor/editor.service';
+import { IMetadataField } from 'app/shared/model/metadata-field.model';
 
 @Component({
   selector: 'jhi-metadata-item',
@@ -69,9 +69,9 @@ export class MetadataItemComponent implements OnInit {
   saveMetadata(): void {
     this.isSaving = true;
     const metadataValue = this.createFromForm();
-    if ( !this.newTabLink ) {
+    if (!this.newTabLink) {
       // remove any target="_blank"
-      metadataValue.value = (metadataValue.value as string).split(' rel="noopener noreferrer" target="_blank"').join ('');
+      metadataValue.value = (metadataValue.value as string).split(' rel="noopener noreferrer" target="_blank"').join('');
       this.metadataForm.patchValue({
         content: metadataValue.value
       });

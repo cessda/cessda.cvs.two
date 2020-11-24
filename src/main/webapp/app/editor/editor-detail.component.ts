@@ -1,30 +1,30 @@
-import {AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent} from 'ng-jhipster';
+import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {IVersion} from 'app/shared/model/version.model';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { IVersion } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {FormBuilder} from '@angular/forms';
-import {EditorService} from 'app/editor/editor.service';
-import {RouteEventsService} from 'app/shared';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {EditorDetailCvAddEditDialogComponent} from 'app/editor/editor-detail-cv-add-edit-dialog.component';
-import {EditorDetailCvDeleteDialogComponent} from 'app/editor/editor-detail-cv-delete-dialog.component';
-import {EditorDetailCodeAddEditDialogComponent} from 'app/editor/editor-detail-code-add-edit-dialog.component';
-import {Concept, IConcept} from 'app/shared/model/concept.model';
-import {Observable, Subscription} from 'rxjs';
-import {EditorDetailCodeDeleteDialogComponent} from 'app/editor/editor-detail-code-delete-dialog.component';
-import {EditorDetailCodeReorderDialogComponent} from 'app/editor/editor-detail-code-reorder-dialog.component';
-import {EditorDetailCvForwardStatusDialogComponent} from 'app/editor/editor-detail-cv-forward-status-dialog.component';
-import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
-import {HttpResponse} from '@angular/common/http';
-import {EditorDetailCvNewVersionDialogComponent} from 'app/editor/editor-detail-cv-new-version-dialog.component';
-import {EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent} from '.';
+import { FormBuilder } from '@angular/forms';
+import { EditorService } from 'app/editor/editor.service';
+import { RouteEventsService } from 'app/shared';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { EditorDetailCvAddEditDialogComponent } from 'app/editor/editor-detail-cv-add-edit-dialog.component';
+import { EditorDetailCvDeleteDialogComponent } from 'app/editor/editor-detail-cv-delete-dialog.component';
+import { EditorDetailCodeAddEditDialogComponent } from 'app/editor/editor-detail-code-add-edit-dialog.component';
+import { Concept, IConcept } from 'app/shared/model/concept.model';
+import { Observable, Subscription } from 'rxjs';
+import { EditorDetailCodeDeleteDialogComponent } from 'app/editor/editor-detail-code-delete-dialog.component';
+import { EditorDetailCodeReorderDialogComponent } from 'app/editor/editor-detail-code-reorder-dialog.component';
+import { EditorDetailCvForwardStatusDialogComponent } from 'app/editor/editor-detail-cv-forward-status-dialog.component';
+import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { HttpResponse } from '@angular/common/http';
+import { EditorDetailCvNewVersionDialogComponent } from 'app/editor/editor-detail-cv-new-version-dialog.component';
+import { EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent } from '.';
 import * as moment from 'moment';
-import {AccountService} from 'app/core/auth/account.service';
-import {Account} from 'app/core/user/account.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
 
 @Component({
   selector: 'jhi-editor-detail',
@@ -195,7 +195,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         const tlCodes = this.version.concepts!.filter(c => c.notation === slConcepts![i].notation);
         if (tlCodes.length) {
           tlCodes[0].position = slConcepts![i].position;
-          tlCodes[0].parent = slConcepts![i].parent ? slConcepts![i].parent: undefined;
+          tlCodes[0].parent = slConcepts![i].parent ? slConcepts![i].parent : undefined;
           tlCodes[0].titleSl = slConcepts![i].title;
           tlCodes[0].definitionSl = slConcepts![i].definition;
         } else {
