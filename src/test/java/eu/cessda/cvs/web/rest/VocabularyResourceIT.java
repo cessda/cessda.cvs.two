@@ -20,10 +20,12 @@ import eu.cessda.cvs.service.mapper.VocabularyMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -43,6 +45,8 @@ import java.util.Set;
 import static eu.cessda.cvs.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -397,9 +401,12 @@ public class VocabularyResourceIT {
     @Autowired
     private VocabularyService vocabularyService;
 
+    @Mock
+    private ElasticsearchTemplate elasticsearchTemplate;
+
     /**
      * Failed
-     * This repository is mocked in the eu.cessda.repository.search.VocabularyEditorSearchRepositoryMockConfiguration test package.
+     * This repository is mocked in the eu.cessda.cvs.repository.search.VocabularyEditorSearchRepositoryMockConfiguration test package.
      *
      */
     @Autowired
@@ -827,11 +834,14 @@ public class VocabularyResourceIT {
         assertThat(testVocabulary.getDefinitionSv()).isEqualTo(DEFAULT_DEFINITION_SV);
 
         // Validate the Vocabulary in Elasticsearch
-//        verify(mockVocabularySearchRepository, times(1)).save(testVocabulary);
+//        vocabularyDTO = vocabularyMapper.toDto(testVocabulary);
+//        VocabularyEditor vocabularyEditor = vocabularyEditorMapper.toEntity( vocabularyDTO );
+//
+//        verify(mockVocabularyEditorSearchRepository, times(1)).save(vocabularyEditor);
         // Validate the VocabularyEditor in Elasticsearch
         VocabularyEditor vocabularyEditor = vocabularyEditorMapper.toEntity(vocabularyMapper.toDto(testVocabulary));
         // Mocking ElasticRepository is still not successful
-//        verify(mockVocabularyEditorSearchRepository, times(1)).save(vocabularyEditor);
+        verify(mockVocabularyEditorSearchRepository, times(1)).save(vocabularyEditor);
 
         // remove after saving in elastic index after Mock ElasticRepository successfull
         mockVocabularyEditorSearchRepository.delete( vocabularyEditor );
