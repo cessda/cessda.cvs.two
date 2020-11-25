@@ -1,7 +1,6 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.domain.Vocabulary;
-import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.CodeDTO;
@@ -12,12 +11,12 @@ import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.domain.CvResult;
+import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
@@ -52,10 +51,8 @@ public class VocabularyResourceV2 {
     public static final String TYPE = "@type";
     public static final String JSONLD_TYPE = "application/ld+json";
     public static final String DOCX_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    public static final String VERSION_WITH_INCLUDED_VERSIONS = "REST request to get a JSON file of vocabulary {} with version {} with included versions {}";
     private final Logger log = LoggerFactory.getLogger(VocabularyResourceV2.class);
-
-    @Value("${jhipster.clientApp.name}")
-    private String applicationName;
 
     private final VocabularyService vocabularyService;
 
@@ -181,7 +178,7 @@ public class VocabularyResourceV2 {
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, agency, lang, pageable, SearchScope.PUBLICATIONSEARCH);
         vocabularyService.search(esq);
         Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
-        List<Object> vocabularyJsonLds = convertVocabulariesToJsonLd(esq, vocabulariesPage);
+        List<Object> vocabularyJsonLds = ResourceUtils.convertVocabulariesToJsonLd(esq, vocabulariesPage);
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), vocabulariesPage);
         return ResponseEntity.ok().headers(headers).body( vocabularyJsonLds );
@@ -260,7 +257,7 @@ public class VocabularyResourceV2 {
         List<Object> vocabularyJsonLds = new ArrayList<>();
         if ( !vocabulariesPage.getContent().isEmpty() ) {
             vocabulariesPage.getContent().forEach(vocabularyDTO -> {
-                List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLdSkosMos(vocabularyDTO, vocabularyDTO.getCodes(), langSet);
+                List<Map<String, Object>> vocabularyJsonLdMap = ResourceUtils.convertVocabularyDtoToJsonLdSkosMos(vocabularyDTO, vocabularyDTO.getCodes(), langSet);
                 vocabularyJsonLds.addAll(vocabularyJsonLdMap);
             });
         }
@@ -276,7 +273,6 @@ public class VocabularyResourceV2 {
      * @param versionNumberSl
      * @param languageVersion
      * @return Vocabulary by redirecting to CVS Vocabulary detail
-     * @throws IOException
      */
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
@@ -306,10 +302,10 @@ public class VocabularyResourceV2 {
             example = "en-4.0",
             required = false
         ) @RequestParam( required = false )  String languageVersion
-    ) throws IOException {
+    ) {
         log.debug("REST request to redirect of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
         HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(URI.create( ResourceUtils.getBasePath(request) + "/vocabulary/" + vocabulary + "?v=" + versionNumberSl));
+        headers.setLocation(URI.create( ResourceUtils.getBasePath(request) + "vocabulary/" + vocabulary + "?v=" + versionNumberSl));
         return new ResponseEntity<>(headers, HttpStatus.TEMPORARY_REDIRECT);
     }
 
@@ -364,7 +360,6 @@ public class VocabularyResourceV2 {
      * @param versionNumberSl
      * @param languageVersion
      * @return Vocabulary in JSON format
-     * @throws IOException
      */
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
@@ -394,8 +389,8 @@ public class VocabularyResourceV2 {
             example = "en-4.0",
             required = false
         ) @RequestParam( required = false )  String languageVersion
-    ) throws IOException {
-        log.debug("REST request to get a JSON file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+    ) {
+        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
         return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
     }
 
@@ -407,7 +402,6 @@ public class VocabularyResourceV2 {
      * @param versionNumberSl
      * @param languageVersion
      * @return Vocabulary in JSON-LD format
-     * @throws IOException
      */
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
@@ -437,8 +431,8 @@ public class VocabularyResourceV2 {
             example = "en-4.0",
             required = false
         ) @RequestParam( required = false )  String languageVersion
-    ) throws IOException {
-        log.debug("REST request to get a JSON file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+    ) {
+        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
         return transformVocabularyToJsonLd(vocabulary, versionNumberSl, languageVersion);
     }
 
@@ -615,7 +609,7 @@ public class VocabularyResourceV2 {
         @ApiParam( value = "the CV SL version, e.g. 1.0" ) @PathVariable String versionNumberSl,
         @ApiParam( value = "included language version, e.g. en-1.0_de-1.0.1, separated by _" ) @RequestParam(name = "languageVersion", required = false) String languageVersion
     ) {
-        log.debug("REST request to get a JSON file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
+        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
         return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
     }
 
@@ -728,7 +722,7 @@ public class VocabularyResourceV2 {
 
         List<Object> vocabularyJsonLds = new ArrayList<>();
         Set<CodeDTO> codeDtos = CodeDTO.generateCodesFromVersion(vocabularyDTO.getVersions(), false);
-        List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO, codeDtos, vocabularyDTO.getVersions().stream().map(VersionDTO::getLanguage).collect(Collectors.toSet()));
+        List<Map<String, Object>> vocabularyJsonLdMap = ResourceUtils.convertVocabularyDtoToJsonLd(vocabularyDTO, codeDtos, vocabularyDTO.getVersions().stream().map(VersionDTO::getLanguage).collect(Collectors.toSet()));
         vocabularyJsonLds.addAll(vocabularyJsonLdMap);
 
         return ResponseEntity.ok().body(vocabularyJsonLds);
@@ -787,220 +781,9 @@ public class VocabularyResourceV2 {
         return ResourceUtils.getListResponseEntity(version1, version2);
     }
 
-    private VocabularyDTO getVocabularyDTOAndFilterVersions(@PathVariable String vocabulary, @PathVariable String versionNumberSl, @RequestParam(name = "languageVersion", required = false) String languageVersion) {
+    private VocabularyDTO getVocabularyDTOAndFilterVersions(String vocabulary, String versionNumberSl, String languageVersion) {
         VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath(vocabularyService.getPublishedCvPath(vocabulary, versionNumberSl));
         vocabularyDTO.setVersions(vocabularyService.filterOutVocabularyVersions(languageVersion, vocabularyDTO));
         return vocabularyDTO;
     }
-
-    private List<Map<String, Object>> convertVocabularyDtoToJsonLdSkosMos( VocabularyDTO vocabularyDTO, Set<CodeDTO> codeDtos, Set<String> languages){
-        List<Map<String, Object>> vocabularyJsonLds = new ArrayList<>();
-        String lang = "en";
-
-        Map<String, Object> contextJsonLdMap = new LinkedHashMap<>();
-        vocabularyJsonLds.add( contextJsonLdMap);
-        Map<String, Object> contextContentMap = new LinkedHashMap<>();
-        contextJsonLdMap.put("@context", contextContentMap );
-
-        contextContentMap.put("skos", "http://www.w3.org/2004/02/skos/core#");
-        contextContentMap.put("owl", "http://www.w3.org/2002/07/owl#");
-        contextContentMap.put("uri", ID);
-        contextContentMap.put("type", TYPE);
-        contextContentMap.put("onki", "http://schema.onki.fi/onki#");
-        Map<String, Object> contextResultMap = new LinkedHashMap<>();
-        contextResultMap.put(ID, "onki:results");
-        contextResultMap.put("@container", "@list");
-        contextContentMap.put("results", contextResultMap);
-        contextContentMap.put("versionInfo", "skos:versionInfo");
-        contextContentMap.put("notation", "skos:notation");
-        contextContentMap.put("prefLabel", "skos:prefLabel");
-        contextContentMap.put("definition", "skos:definition");
-        if( languages != null && !languages.isEmpty()){
-            lang = languages.iterator().next();
-            contextContentMap.put(LANGUAGE, lang);
-        }
-
-        contextJsonLdMap.put("versionInfo", vocabularyDTO.getVersionNumber());
-
-        List<Object> results = new ArrayList<>();
-        Object[] resultObj = new Object[1];
-        resultObj[0] = results;
-        contextJsonLdMap.put("results", results );
-
-        // concepts
-        for (CodeDTO c : codeDtos) {
-            Map<String, Object> conceptJsonLdMap = new LinkedHashMap<>();
-            results.add( conceptJsonLdMap);
-            conceptJsonLdMap.put("uri", c.getUri());
-            conceptJsonLdMap.put("type", new String[]{"skos:Concept"});
-            conceptJsonLdMap.put("notation", c.getNotation());
-            conceptJsonLdMap.put("prefLabel", c.getTitleByLanguage(lang));
-            conceptJsonLdMap.put("definition", c.getDefinitionByLanguage(lang));
-            conceptJsonLdMap.put("lang", lang);
-            conceptJsonLdMap.put("vocab", vocabularyDTO.getNotation());
-        }
-        return vocabularyJsonLds;
-    }
-
-    private List<Object> convertVocabulariesToJsonLd(EsQueryResultDetail esq, Page<VocabularyDTO> vocabulariesPage) {
-        List<Object> vocabularyJsonLds = new ArrayList<>();
-        if ( !vocabulariesPage.getContent().isEmpty() ) {
-            vocabulariesPage.getContent().forEach(vocabularyDTO -> {
-                Set<String> languages = new LinkedHashSet<>();
-                if( esq.getSortLanguage() != null )
-                    languages.add( esq.getSortLanguage() );
-                else
-                    languages.addAll( vocabularyDTO.getLanguagesPublished());
-                List<Map<String, Object>> vocabularyJsonLdMap = convertVocabularyDtoToJsonLd(vocabularyDTO, vocabularyDTO.getCodes(), languages);
-                vocabularyJsonLds.addAll(vocabularyJsonLdMap);
-            });
-        }
-        return vocabularyJsonLds;
-    }
-
-    private List<Map<String, Object>> convertVocabularyDtoToJsonLd( VocabularyDTO vocabularyDTO, Set<CodeDTO> codeDtos, Set<String> languages){
-        List<Map<String, Object>> vocabularyJsonLds = new ArrayList<>();
-
-        Map<String, Object> vocabularyJsonLdMap = new LinkedHashMap<>();
-        vocabularyJsonLds.add( vocabularyJsonLdMap);
-        // scheme
-        String docId = getDocIdFromVersionOrCode(vocabularyDTO);
-
-        vocabularyJsonLdMap.put(ID, docId);
-        vocabularyJsonLdMap.put(TYPE, new String[]{"http://www.w3.org/2004/02/skos/core#ConceptScheme"});
-        // desc
-        List<Map<String,String>> descList = new ArrayList<>();
-        vocabularyJsonLdMap.put("http://purl.org/dc/terms/description", descList);
-        languages.forEach(v -> {
-            Map<String, String> langValue = new LinkedHashMap<>();
-            langValue.put(LANGUAGE, v);
-            langValue.put(VALUE, vocabularyDTO.getDefinitionByLanguage(v));
-            descList.add(langValue);
-        });
-        // isVersionOf
-        List<Map<String,String>> isVersionOfList = new ArrayList<>();
-        vocabularyJsonLdMap.put("http://purl.org/dc/terms/isVersionOf", isVersionOfList);
-        Map<String, String> isVersionOfMap = new LinkedHashMap<>();
-        isVersionOfMap.put(ID, vocabularyDTO.getUri());
-        isVersionOfList.add(isVersionOfMap);
-        // license
-        if( !vocabularyDTO.getVersions().isEmpty() ) {
-            final VersionDTO versionDTO = vocabularyDTO.getVersions().iterator().next();
-            List<Map<String, String>> licenseList = new ArrayList<>();
-            vocabularyJsonLdMap.put("http://purl.org/dc/terms/license", licenseList);
-            Map<String, String> licenseMap = new LinkedHashMap<>();
-            licenseMap.put(ID, versionDTO.getLicenseName());
-            licenseList.add(licenseMap);
-        }
-        // rights
-        List<Map<String,String>> rightsList = new ArrayList<>();
-        vocabularyJsonLdMap.put("http://purl.org/dc/terms/rights", rightsList);
-        Map<String, String> rightsMap = new LinkedHashMap<>();
-        rightsMap.put(VALUE, "Copyright ©" + vocabularyDTO.getAgencyName() + " " + vocabularyDTO.getPublicationDate().getYear());
-        rightsList.add(rightsMap);
-        // title
-        List<Map<String,String>> titleList = new ArrayList<>();
-        vocabularyJsonLdMap.put("http://purl.org/dc/terms/title", titleList);
-        languages.forEach(v -> {
-            Map<String, String> langValue = new LinkedHashMap<>();
-            langValue.put(LANGUAGE, v);
-            langValue.put(VALUE, vocabularyDTO.getTitleByLanguage(v));
-            titleList.add(langValue);
-        });
-        // versionInfo
-        List<Map<String,String>> versionInfoList = new ArrayList<>();
-        vocabularyJsonLdMap.put("http://www.w3.org/2002/07/owl#versionInfo", versionInfoList);
-        Map<String, String> versionInfoMap = new LinkedHashMap<>();
-        versionInfoMap.put(VALUE, vocabularyDTO.getVersionNumber());
-        versionInfoList.add(versionInfoMap);
-        // hasTopConcept
-        List<Map<String,String>> hasTopConceptList = new ArrayList<>();
-        vocabularyJsonLdMap.put("http://www.w3.org/2004/02/skos/core#hasTopConcept", hasTopConceptList);
-        codeDtos.forEach(c -> {
-            if( c.getParent() == null ) {
-                Map<String, String> docIdMap = new LinkedHashMap<>();
-                docIdMap.put(ID, c.getUri());
-                hasTopConceptList.add(docIdMap);
-            }
-        });
-        // notation
-        List<Map<String,String>> notationList = new ArrayList<>();
-        vocabularyJsonLdMap.put("http://www.w3.org/2004/02/skos/core#notation", notationList);
-        Map<String, String> notationMap = new LinkedHashMap<>();
-        notationMap.put(VALUE, vocabularyDTO.getNotation());
-        notationList.add(notationMap);
-
-        // concepts
-        codeDtos.forEach(c -> {
-            Map<String, Object> conceptJsonLdMap = new LinkedHashMap<>();
-            vocabularyJsonLds.add( conceptJsonLdMap);
-            // concept
-            conceptJsonLdMap.put(ID, c.getUri());
-            conceptJsonLdMap.put(TYPE, new String[]{"http://www.w3.org/2004/02/skos/core#Concept"});
-            //inScheme
-            List<Map<String,String>> inSchemeList = new ArrayList<>();
-            conceptJsonLdMap.put("http://www.w3.org/2004/02/skos/core#inScheme", inSchemeList);
-            Map<String, String> inSchemeMap = new LinkedHashMap<>();
-            inSchemeMap.put(ID, docId);
-            inSchemeList.add(inSchemeMap);
-
-            // prefLabel
-            List<Map<String,String>> cDefList = new ArrayList<>();
-            conceptJsonLdMap.put("http://www.w3.org/2004/02/skos/core#definition", cDefList);
-            // definition
-            List<Map<String,String>> cTitleList = new ArrayList<>();
-            conceptJsonLdMap.put("http://purl.org/dc/terms/title", cTitleList);
-
-            languages.forEach(v -> {
-                Map<String, String> cDefMap = new LinkedHashMap<>();
-                cDefMap.put(LANGUAGE, v);
-                cDefMap.put(VALUE, c.getDefinitionByLanguage(v));
-                cDefList.add(cDefMap);
-
-                Map<String, String> cTitleMap = new LinkedHashMap<>();
-                cTitleMap.put(LANGUAGE, v);
-                cTitleMap.put(VALUE, c.getTitleByLanguage(v));
-                cTitleList.add(cTitleMap);
-            });
-
-            // notation
-            List<Map<String,String>> cNotationList = new ArrayList<>();
-            conceptJsonLdMap.put("http://www.w3.org/2004/02/skos/core#notation", cNotationList);
-            Map<String, String> cNotationMap = new LinkedHashMap<>();
-            cNotationMap.put(VALUE, c.getNotation());
-            cNotationList.add(cNotationMap);
-
-            // narrower
-            List<Map<String,String>> cNarrowerList = new ArrayList<>();
-            codeDtos.forEach(c2 -> {
-                if( c2.getParent() != null && c2.getParent().equals(c.getNotation())) {
-                    Map<String, String> cNarrowerMap = new LinkedHashMap<>();
-                    cNarrowerMap.put(ID, c2.getUri());
-                    cNarrowerList.add(cNarrowerMap);
-                }
-            });
-            if( !cNarrowerList.isEmpty() )
-                conceptJsonLdMap.put("http://www.w3.org/2004/02/skos/core#narrower", cNarrowerList);
-        });
-
-        return vocabularyJsonLds;
-    }
-
-    private String getDocIdFromVersionOrCode(VocabularyDTO vocabularyDTO) {
-        String docId = vocabularyDTO.getUri();
-        if( !vocabularyDTO.getVersions().isEmpty() ) {
-            final VersionDTO versionDto = vocabularyDTO.getVersions().iterator().next();
-            if( versionDto.getItemType().equals(ItemType.TL.toString()) )
-                docId = versionDto.getUriSl();
-            else
-                docId = versionDto.getUri();
-        } else {
-            if( !vocabularyDTO.getCodes().isEmpty() ) {
-                final CodeDTO codeDTO = vocabularyDTO.getCodes().iterator().next();
-                docId = codeDTO.getUri();
-            }
-        }
-        return docId;
-    }
-
 }

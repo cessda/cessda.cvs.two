@@ -11,6 +11,7 @@ import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.*;
 import eu.cessda.cvs.service.dto.*;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
+import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
