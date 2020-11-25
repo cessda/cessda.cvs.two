@@ -1,6 +1,7 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.domain.Vocabulary;
+import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.CodeDTO;
@@ -11,7 +12,6 @@ import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.domain.CvResult;
-import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -107,23 +107,20 @@ public class VocabularyResourceV2 {
             name = "query",
             type = "String",
             value = "The search term",
-            example = "Economics",
-            required = false
-        ) @RequestParam String query,
+            example = "Economics"
+        ) @RequestParam (required = false) String query,
         @ApiParam(
             name = "agency",
             type = "String",
             value = "The agency",
-            example = "CESSDA",
-            required = false
-        ) @RequestParam String agency,
+            example = "CESSDA"
+        ) @RequestParam (required = false) String agency,
         @ApiParam(
             name = "lang",
             type = "String",
             value = "The language",
-            example = "en",
-            required = false
-        ) @RequestParam String lang,
+            example = "en"
+        ) @RequestParam (required = false) String lang,
          Pageable pageable
     ) {
         log.debug("REST request search vocabulary, produces JSON");
@@ -155,23 +152,20 @@ public class VocabularyResourceV2 {
             name = "query",
             type = "String",
             value = "The search term",
-            example = "Economics",
-            required = false
-        ) @RequestParam String query,
+            example = "Economics"
+        ) @RequestParam (required = false) String query,
         @ApiParam(
             name = "agency",
             type = "String",
             value = "The agency",
-            example = "CESSDA",
-            required = false
-        ) @RequestParam String agency,
+            example = "CESSDA"
+        ) @RequestParam (required = false) String agency,
         @ApiParam(
             name = "lang",
             type = "String",
             value = "The language",
-            example = "en",
-            required = false
-        ) @RequestParam String lang,
+            example = "en"
+        ) @RequestParam (required = false) String lang,
         Pageable pageable
     ) {
         log.debug("REST request search vocabulary, produces JSON LD");
@@ -211,9 +205,8 @@ public class VocabularyResourceV2 {
             name = "agency",
             type = "String",
             value = "The agency",
-            example = "CESSDA",
-            required = false
-        ) @RequestParam String agency,
+            example = "CESSDA"
+        ) @RequestParam (required = false) String agency,
         @ApiParam(
             name = "vocab",
             type = "String",
@@ -232,9 +225,8 @@ public class VocabularyResourceV2 {
             name = "size",
             type = "Integer",
             value = "The maximum size of codes returned, default 20",
-            example = "20",
-            required = false
-        ) @RequestParam Integer size
+            example = "20"
+        ) @RequestParam( required = false ) Integer size
     ) {
         log.debug("REST request to get a page of Vocabularies");
         if (query == null)
@@ -299,8 +291,7 @@ public class VocabularyResourceV2 {
             name = "languageVersion",
             type = "String",
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
-            example = "en-4.0",
-            required = false
+            example = "en-4.0"
         ) @RequestParam( required = false )  String languageVersion
     ) {
         log.debug("REST request to redirect of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
@@ -344,8 +335,7 @@ public class VocabularyResourceV2 {
             name = "languageVersion",
             type = "String",
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
-            example = "en-4.0",
-            required = false
+            example = "en-4.0"
         ) @RequestParam( required = false )  String languageVersion
     ) throws IOException {
         log.debug("REST request to get a HTML file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
@@ -386,8 +376,7 @@ public class VocabularyResourceV2 {
             name = "languageVersion",
             type = "String",
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
-            example = "en-4.0",
-            required = false
+            example = "en-4.0"
         ) @RequestParam( required = false )  String languageVersion
     ) {
         log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
@@ -428,8 +417,7 @@ public class VocabularyResourceV2 {
             name = "languageVersion",
             type = "String",
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
-            example = "en-4.0",
-            required = false
+            example = "en-4.0"
         ) @RequestParam( required = false )  String languageVersion
     ) {
         log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
@@ -471,8 +459,7 @@ public class VocabularyResourceV2 {
             name = "languageVersion",
             type = "String",
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
-            example = "en-4.0",
-            required = false
+            example = "en-4.0"
         ) @RequestParam( required = false )  String languageVersion
     ) throws IOException {
         log.debug("REST request to get a PDF file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
@@ -514,8 +501,7 @@ public class VocabularyResourceV2 {
             name = "languageVersion",
             type = "String",
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
-            example = "en-4.0",
-            required = false
+            example = "en-4.0"
         ) @RequestParam( required = false )  String languageVersion
     ) throws IOException {
         log.debug("REST request to get a WORD-DOCX  file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
@@ -557,8 +543,7 @@ public class VocabularyResourceV2 {
             name = "languageVersion",
             type = "String",
             value = "included language version, e.g. en-4.0_de-4.0.1, separated by _" ,
-            example = "en-4.0",
-            required = false
+            example = "en-4.0"
         ) @RequestParam( required = false ) String languageVersion
     ) throws IOException {
         log.debug("REST request to get a SKOS RDF file of vocabulary {} with version {} with included versions {}", vocabulary, versionNumberSl, languageVersion);
