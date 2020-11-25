@@ -21,7 +21,7 @@ public class ResourceUtils {
 
     private ResourceUtils(){}
 
-    static ResponseEntity<List<String>> getListResponseEntity(VersionDTO version1, VersionDTO version2) {
+    public static ResponseEntity<List<String>> getListResponseEntity(VersionDTO version1, VersionDTO version2) {
         List<String> compareVersions = VersionUtils.buildComparisonCurrentAndPreviousCV(version1, version2);
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Prev-Cv-Version", version2.getNotation() + " " +version2.getItemType() + " v." + version2.getNumber());
