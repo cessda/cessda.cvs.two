@@ -1,13 +1,13 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 
-import { JhiEventManager } from 'ng-jhipster';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
-import { IMetadataValue } from 'app/shared/model/metadata-value.model';
-import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
-import { EditorService } from 'app/editor/editor.service';
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
+import {JhiEventManager} from 'ng-jhipster';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {HttpResponse} from '@angular/common/http';
+import {IMetadataValue} from 'app/shared/model/metadata-value.model';
+import {ObjectType} from 'app/shared/model/enumerations/object-type.model';
+import {EditorService} from 'app/editor/editor.service';
+import {IMetadataField} from 'app/shared/model/metadata-field.model';
 
 @Component({
   selector: 'jhi-metadata-item',
