@@ -152,7 +152,7 @@ public class CodeSnippet implements Serializable {
     @Override
     public String toString() {
         return "VocabularyChange{" +
-            "actionType='" + getActionType().toString() + "'" +
+            "actionType='" + getActionType() + "'" +
             ", versionId=" + getVersionId() +
             ", conceptId='" + getConceptId() + "'" +
             ", conceptSlId='" + getConceptSlId() + "'" +

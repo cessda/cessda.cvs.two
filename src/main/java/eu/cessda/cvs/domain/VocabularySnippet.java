@@ -225,7 +225,7 @@ public class VocabularySnippet implements Serializable {
     @Override
     public String toString() {
         return "VocabularyChange{" +
-            "actionType='" + getActionType().toString() + "'" +
+            "actionType='" + getActionType() + "'" +
             ", vocabularyId=" + getVocabularyId() +
             ", versionId=" + getVersionId() +
             ", agencyId='" + getAgencyId() + "'" +

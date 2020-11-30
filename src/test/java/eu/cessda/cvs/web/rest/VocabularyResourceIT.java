@@ -35,7 +35,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import java.time.*;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -94,11 +95,11 @@ public class VocabularyResourceIT {
     private static final String DEFAULT_AGENCY_LOGO = "AAAAAAAAAA";
     private static final String UPDATED_AGENCY_LOGO = "BBBBBBBBBB";
 
-    private static final LocalDate DEFAULT_PUBLICATION_DATE = LocalDate.ofEpochDay(0L);
-    private static final LocalDate UPDATED_PUBLICATION_DATE = LocalDate.now(ZoneId.systemDefault());
+    private static final LocalDate DEFAULT_PUBLICATION_DATE = LocalDate.now().minusDays(1);
+    private static final LocalDate UPDATED_PUBLICATION_DATE = LocalDate.now();
 
-    private static final ZonedDateTime DEFAULT_LAST_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
-    private static final ZonedDateTime UPDATED_LAST_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+    private static final ZonedDateTime DEFAULT_LAST_MODIFIED = ZonedDateTime.now().minusDays(1);
+    private static final ZonedDateTime UPDATED_LAST_MODIFIED = ZonedDateTime.now();
 
     private static final String DEFAULT_NOTES = "AAAAAAAAAA";
     private static final String UPDATED_NOTES = "BBBBBBBBBB";
@@ -397,14 +398,8 @@ public class VocabularyResourceIT {
     @Autowired
     private VocabularyService vocabularyService;
 
-    /**
-     * Failed
-     * This repository is mocked in the eu.cessda.repository.search.VocabularyEditorSearchRepositoryMockConfiguration test package.
-     *
-     */
     @Autowired
     private VocabularyEditorSearchRepository mockVocabularyEditorSearchRepository;
-
 
     @Autowired
     private EntityManager em;
@@ -715,6 +710,7 @@ public class VocabularyResourceIT {
 
         // Create the Vocabulary
         VocabularyDTO vocabularyDTO = vocabularyMapper.toDto(vocabulary);
+        vocabularyDTO.setLastModified(null); // prevent mapper error in elasticsearch
         restVocabularyMockMvc.perform(post("/api/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
@@ -739,7 +735,7 @@ public class VocabularyResourceIT {
         assertThat(testVocabulary.getAgencyName()).isEqualTo(DEFAULT_AGENCY_NAME);
         assertThat(testVocabulary.getAgencyLogo()).isEqualTo(DEFAULT_AGENCY_LOGO);
         assertThat(testVocabulary.getPublicationDate()).isEqualTo(DEFAULT_PUBLICATION_DATE);
-        assertThat(testVocabulary.getLastModified()).isEqualTo(DEFAULT_LAST_MODIFIED);
+        assertThat(testVocabulary.getLastModified()).isNull();
         assertThat(testVocabulary.getNotes()).isEqualTo(DEFAULT_NOTES);
         assertThat(testVocabulary.getVersionSq()).isEqualTo(DEFAULT_VERSION_SQ);
         assertThat(testVocabulary.getTitleSq()).isEqualTo(DEFAULT_TITLE_SQ);
@@ -826,14 +822,12 @@ public class VocabularyResourceIT {
         assertThat(testVocabulary.getTitleSv()).isEqualTo(DEFAULT_TITLE_SV);
         assertThat(testVocabulary.getDefinitionSv()).isEqualTo(DEFAULT_DEFINITION_SV);
 
-        // Validate the Vocabulary in Elasticsearch
-//        verify(mockVocabularySearchRepository, times(1)).save(testVocabulary);
         // Validate the VocabularyEditor in Elasticsearch
+        // Mocking ElasticRepository is still not successful, thus need real running ES to test ES
         VocabularyEditor vocabularyEditor = vocabularyEditorMapper.toEntity(vocabularyMapper.toDto(testVocabulary));
-        // Mocking ElasticRepository is still not successful
-//        verify(mockVocabularyEditorSearchRepository, times(1)).save(vocabularyEditor);
+        assertThat( mockVocabularyEditorSearchRepository.findById(vocabularyEditor.getId())).isNotEmpty();
 
-        // remove after saving in elastic index after Mock ElasticRepository successfull
+        // remove instance, since
         mockVocabularyEditorSearchRepository.delete( vocabularyEditor );
     }
 

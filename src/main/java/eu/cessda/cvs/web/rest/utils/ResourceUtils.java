@@ -29,9 +29,13 @@ public class ResourceUtils {
         return ResponseEntity.ok().headers(headers).body(compareVersions);
     }
 
+    /**
+     * Get server base path from the Servlet request
+     * @param request
+     * @return
+     */
     public static String getBasePath(HttpServletRequest request) {
-        String path = request.getContextPath();
-        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
     }
 
     public static List<Map<String, Object>> convertVocabularyDtoToJsonLdSkosMos(VocabularyDTO vocabularyDTO, Set<CodeDTO> codeDtos, Set<String> languages){
