@@ -3,10 +3,8 @@ package eu.cessda.cvs.web.rest;
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.*;
 import eu.cessda.cvs.domain.enumeration.ItemType;
-import eu.cessda.cvs.repository.AgencyRepository;
-import eu.cessda.cvs.repository.AuthorityRepository;
-import eu.cessda.cvs.repository.UserRepository;
-import eu.cessda.cvs.repository.VocabularyRepository;
+import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.repository.*;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.jwt.TokenProvider;
@@ -48,8 +46,8 @@ class EditorResourceIT {
     private static final String INIT_STATUS = "DRAFT";
     private static final String EDIT_STATUS = "REVIEW";
 
-    private static final String INIT_URI = "AAAAAAAAAA";
-    private static final String EDIT_URI = "BBBBBBBBBB";
+    private static final String AGENCY_URI = "https://vocabularies-dev.cessda.eu/vocabulary/[VOCABULARY]?v=[VERSION]";
+    private static final String AGENCY_URI_CODE = "https://vocabularies-dev.cessda.eu/vocabulary/[VOCABULARY]_[CODE]?v=[VERSION]";
 
     private static final String NOTATION = "AAAAAAAAAA";
 
@@ -101,6 +99,9 @@ class EditorResourceIT {
     private AgencyRepository agencyRepository;
 
     @Autowired
+    private LicenceRepository licenceRepository;
+
+    @Autowired
     private VocabularyRepository vocabularyRepository;
 
     @Autowired
@@ -121,9 +122,11 @@ class EditorResourceIT {
     @Autowired
     private MockMvc restVocabularyMockMvc;
 
-    private VocabularySnippet vocabularySnippet;
+    private VocabularySnippet vocabularySnippetForEnSl;
 
     private Agency agency;
+
+    private Licence license;
 
     private String jwt;
 
@@ -133,7 +136,7 @@ class EditorResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static VocabularySnippet createVocabularySnippet() {
+    public static VocabularySnippet createVocabularySnippetForSlEn() {
         VocabularySnippet vocabularySnippet = new VocabularySnippet();
         vocabularySnippet.setLanguage(SOURCE_LANGUAGE);
         vocabularySnippet.setItemType(ITEM_TYPE_SL);
@@ -175,7 +178,8 @@ class EditorResourceIT {
             .logopath(INIT_LOGOPATH)
             .license(INIT_LICENSE)
             .licenseId(INIT_LICENSE_ID)
-            .uri(INIT_URI)
+            .uri(AGENCY_URI)
+            .uriCode(AGENCY_URI_CODE)
             .canonicalUri(INIT_CANONICAL_URI);
         return agency;
     }
@@ -186,8 +190,8 @@ class EditorResourceIT {
             agency = createAgencyEntity();
             agency = agencyRepository.saveAndFlush(agency);
         }
-        vocabularySnippet = createVocabularySnippet();
-        vocabularySnippet.setAgencyId(agency.getId());
+        vocabularySnippetForEnSl = createVocabularySnippetForSlEn();
+        vocabularySnippetForEnSl.setAgencyId(agency.getId());
 
         // need to mock user due to authorization
         if( jwt == null ) {
@@ -218,9 +222,112 @@ class EditorResourceIT {
         }
     }
 
+    /**
+     * Since the  CVS workflow is quite complex and some of the test needs existing object, e,g. (Creating TL needs Published SL)
+     * all of Integration Tests for a successful SL and TL workflow are defined here.
+     *
+     * Each part of the test will be indicated by its ActionType
+     *
+     * @throws Exception
+     */
     @Test
     @Transactional
-    void createVocabulary() throws Exception {
+    void testVocabularyWorkflow() throws Exception {
+        // ActionType.CREATE_CV
+        Version slVersion = createVocabularyTest();
+        // ActionType.EDIT_CV
+        updateVocabularySlTest( slVersion );
+        // ActionType.FORWARD_CV_SL_STATUS_REVIEW
+        forwardSlStatusReview(slVersion);
+        // ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
+        // prepare licence
+        if( license == null ) {
+            license = new Licence()
+                .name(INIT_LICENSE)
+                .link(INIT_LINK)
+                .logoLink(INIT_LOGOPATH)
+                .abbr(INIT_NAME);
+            license = licenceRepository.saveAndFlush(license);
+        }
+        int databaseSize = vocabularyRepository.findAll().size();
+        vocabularySnippetForEnSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED );
+        vocabularySnippetForEnSl.setVersionId( slVersion.getId());
+        vocabularySnippetForEnSl.setLicenseId( license.getId() );
+        vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
+        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isOk());
+
+        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
+        assertThat(vocabularyList).hasSize(databaseSize);
+        Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
+        assertThat(testVocabulary.getVersions().size()).isEqualTo(1);
+        slVersion = testVocabulary.getVersions().iterator().next();
+        assertThat( slVersion.getStatus()).isEqualTo(Status.PUBLISHED.toString());
+    }
+
+    private void forwardSlStatusReview(Version slVersion) throws Exception {
+        int databaseSize = vocabularyRepository.findAll().size();
+        vocabularySnippetForEnSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_REVIEW );
+        vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
+        vocabularySnippetForEnSl.setVersionId( slVersion.getId());
+        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isOk());
+
+        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
+        assertThat(vocabularyList).hasSize(databaseSize);
+        Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
+        assertThat(testVocabulary.getVersions().size()).isEqualTo(1);
+        slVersion = testVocabulary.getVersions().iterator().next();
+        assertThat( slVersion.getStatus()).isEqualTo(Status.REVIEW.toString());
+    }
+
+    private void updateVocabularySlTest(Version slVersion) throws Exception {
+        int databaseSize = vocabularyRepository.findAll().size();
+        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
+        Vocabulary vocabulary = vocabularyList.get(vocabularyList.size() - 1);
+        // prepare to update
+        final VocabularySnippet vocabularySnippet = updateVocabularySnippet();
+        vocabularySnippet.setActionType( ActionType.EDIT_CV );
+        vocabularySnippet.setVocabularyId( vocabulary.getId() );
+        vocabularySnippet.setVersionId( slVersion.getId());
+
+        // update
+        restVocabularyMockMvc.perform(put("/api/editors/vocabularies")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
+            .andExpect(status().isOk());
+
+        vocabularyList = vocabularyRepository.findAll();
+        assertThat(vocabularyList).hasSize(databaseSize);
+        Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
+        assertThat(testVocabulary.getTitleEn()).isEqualTo(EDIT_TITLE_EN);
+        assertThat(testVocabulary.getDefinitionEn()).isEqualTo(EDIT_DEFINITION_EN);
+
+        assertThat(testVocabulary.getVersions().size()).isEqualTo(1);
+        slVersion = testVocabulary.getVersions().iterator().next();
+        assertThat(slVersion.getNotes()).isEqualTo(EDIT_NOTES);
+        assertThat(slVersion.getTitle()).isEqualTo(EDIT_TITLE_EN);
+        assertThat(slVersion.getDefinition()).isEqualTo(EDIT_DEFINITION_EN);
+    }
+
+    private void createVocabularyAndSlInitialVersion() throws Exception {
+        vocabularySnippetForEnSl.setActionType( ActionType.CREATE_CV );
+        // Create the Vocabulary with code snippet
+        restVocabularyMockMvc.perform(post("/api/editors/vocabularies")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isCreated());
+    }
+
+    private Version createVocabularyTest() throws Exception {
         int databaseSizeBeforeCreate = vocabularyRepository.findAll().size();
         createVocabularyAndSlInitialVersion();
 
@@ -238,59 +345,19 @@ class EditorResourceIT {
         assertThat(testVocabulary.getDefinitionEn()).isEqualTo(INIT_DEFINITION_EN);
 
         assertThat(testVocabulary.getVersions().size()).isEqualTo(1);
-        final Version testVersion = testVocabulary.getVersions().iterator().next();
-        assertThat(testVersion.getStatus()).isEqualTo(INIT_STATUS);
-        assertThat(testVersion.getNotation()).isEqualTo(NOTATION);
-        assertThat(testVersion.getNumber()).isEqualTo(INIT_VERSION_NUMBER);
-        assertThat(testVersion.getLanguage()).isEqualTo(SOURCE_LANGUAGE);
-        assertThat(testVersion.getItemType()).isEqualTo(ITEM_TYPE_SL.toString());
-        assertThat(testVersion.getNotes()).isEqualTo(INIT_NOTES);
-        assertThat(testVersion.getTitle()).isEqualTo(INIT_TITLE_EN);
-        assertThat(testVersion.getDefinition()).isEqualTo(INIT_DEFINITION_EN);
+        final Version slVersion = testVocabulary.getVersions().iterator().next();
+        assertThat(slVersion.getStatus()).isEqualTo(INIT_STATUS);
+        assertThat(slVersion.getNotation()).isEqualTo(NOTATION);
+        assertThat(slVersion.getNumber()).isEqualTo(INIT_VERSION_NUMBER);
+        assertThat(slVersion.getLanguage()).isEqualTo(SOURCE_LANGUAGE);
+        assertThat(slVersion.getItemType()).isEqualTo(ITEM_TYPE_SL.toString());
+        assertThat(slVersion.getNotes()).isEqualTo(INIT_NOTES);
+        assertThat(slVersion.getTitle()).isEqualTo(INIT_TITLE_EN);
+        assertThat(slVersion.getDefinition()).isEqualTo(INIT_DEFINITION_EN);
+
+        return slVersion;
     }
 
-    private void createVocabularyAndSlInitialVersion() throws Exception {
-        vocabularySnippet.setActionType( ActionType.CREATE_CV );
-        // Create the Vocabulary with code snippet
-        restVocabularyMockMvc.perform(post("/api/editors/vocabularies")
-            .header("Authorization", jwt)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
-            .andExpect(status().isCreated());
-    }
-
-    @Test
-    @Transactional
-    void updateVocabulary() throws Exception {
-        createVocabularyAndSlInitialVersion();
-        int databaseSize = vocabularyRepository.findAll().size();
-        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
-        Vocabulary vocabulary = vocabularyList.get(vocabularyList.size() - 1);
-        // prepare to update
-        final VocabularySnippet vocabularySnippet = updateVocabularySnippet();
-        vocabularySnippet.setActionType( ActionType.EDIT_CV);
-        vocabularySnippet.setVocabularyId( vocabulary.getId() );
-        vocabularySnippet.setVersionId( vocabulary.getVersions().iterator().next().getId()); // there is only one version
-
-        // update
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies")
-            .header("Authorization", jwt)
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
-            .andExpect(status().isOk());
-
-        vocabularyList = vocabularyRepository.findAll();
-        assertThat(vocabularyList).hasSize(databaseSize);
-        Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
-        assertThat(testVocabulary.getTitleEn()).isEqualTo(EDIT_TITLE_EN);
-        assertThat(testVocabulary.getDefinitionEn()).isEqualTo(EDIT_DEFINITION_EN);
-
-        assertThat(testVocabulary.getVersions().size()).isEqualTo(1);
-        final Version testVersion = testVocabulary.getVersions().iterator().next();
-        assertThat(testVersion.getNotes()).isEqualTo(EDIT_NOTES);
-        assertThat(testVersion.getTitle()).isEqualTo(EDIT_TITLE_EN);
-        assertThat(testVersion.getDefinition()).isEqualTo(EDIT_DEFINITION_EN);
-    }
 
 //    @Test
 //    @Transactional
@@ -310,4 +377,62 @@ class EditorResourceIT {
 //        assertThat(vocabularyList).hasSize(databaseSizeBeforeCreate + 1);
 //        assertThat(testVocabulary.getVersions().size()).isEqualTo(2);
 //    }
+
+
+
+    @Test
+    @Transactional
+    public void createVocabularyWithGivenIdTest() throws Exception {
+        int databaseSizeBeforeUpdate = vocabularyRepository.findAll().size();
+
+        vocabularySnippetForEnSl.setActionType( ActionType.CREATE_CV );
+        // add random ID, so the post will fail
+        vocabularySnippetForEnSl.setVocabularyId(1L);
+        // Create the Vocabulary with code snippet
+        restVocabularyMockMvc.perform(post("/api/editors/vocabularies")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the Vocabulary in the database
+        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
+        assertThat(vocabularyList).hasSize(databaseSizeBeforeUpdate);
+    }
+
+    @Test
+    @Transactional
+    public void updateVocabularyWithVersionIdNull() throws Exception {
+        vocabularySnippetForEnSl.setActionType( ActionType.EDIT_CV );
+        // vocabularySnippet versionId is NULL
+        restVocabularyMockMvc.perform(put("/api/editors/vocabularies")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    public void forwardStatusWithVersionIdNull() throws Exception {
+        // vocabularySnippet versionId is NULL
+        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    @Transactional
+    public void forwardStatusWithActionNull() throws Exception {
+        // vocabularySnippet Action is NULL
+        vocabularySnippetForEnSl.setVersionId(1L);
+        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().is5xxServerError());
+    }
+
 }
