@@ -111,6 +111,9 @@
         <sonar.issue.ignore.multicriteria.S2637.resourceKey>src/main/java/eu/cessda/cvs/service/dto/**/*
         </sonar.issue.ignore.multicriteria.S2637.resourceKey>
         <sonar.issue.ignore.multicriteria.S2637.ruleKey>squid:S2637</sonar.issue.ignore.multicriteria.S2637.ruleKey>
+        <!-- Exclude Resources, especially Thymeleaf template files that have same structure, but different styling -->
+        <!-- Exclude Web app content, where static CVs in JSON files stored -->
+        <sonar.exclusions>src/main/resources/**/*,src/main/webapp/content/**/* </sonar.exclusions>
     </properties>
 
     <dependencyManagement>
