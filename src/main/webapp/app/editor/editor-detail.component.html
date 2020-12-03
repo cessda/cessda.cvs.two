@@ -286,7 +286,7 @@
                         <div class="detail-column">
                             <div *ngIf="!isNotesEdit" [innerHTML]="detailForm.get(['notes'])!.value ? detailForm.get(['notes'])!.value: ''"></div>
 
-                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_NOTE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}">
+                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_NOTE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL','ADMIN_TL','CONTRIBUTOR_TL'], language:version!.language}">
                                 <a *ngIf="!isNotesEdit" class="btn btn-sm btn-primary" ngbTooltip="edit notes" href="javascript:void(0);" (click)="isNotesEdit = !isNotesEdit">
                                     <fa-icon icon="edit"></fa-icon> <span> Edit</span>
                                 </a>
