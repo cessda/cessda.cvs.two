@@ -7,19 +7,12 @@ import javax.persistence.Lob;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 /**
  * A DTO for the {@link Code} entity.
  */
 public class CodeDTO implements Serializable {
-
-    public CodeDTO() {
-        archived = false;
-        withdrawn = false;
-        discoverable = false;
-    }
 
     private Long id;
 
@@ -29,16 +22,7 @@ public class CodeDTO implements Serializable {
     @Size(max = 240)
     private String notation;
 
-    private Boolean archived;
-
-    private Boolean withdrawn;
-
-    private Boolean discoverable;
-
     private Set<String> languages;
-
-    @Size(max = 20)
-    private String sourceLanguage;
 
     @Size(max = 240)
     private String parent;
@@ -46,8 +30,6 @@ public class CodeDTO implements Serializable {
     private Integer position;
 
     private LocalDate publicationDate;
-
-    private ZonedDateTime lastModified;
 
     private Long vocabularyId;
 
@@ -223,6 +205,13 @@ public class CodeDTO implements Serializable {
     @Lob
     private String definitionSv;
 
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
 
     public Long getId() {
         return id;
@@ -232,44 +221,12 @@ public class CodeDTO implements Serializable {
         this.id = id;
     }
 
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
     public String getNotation() {
         return notation;
     }
 
     public void setNotation(String notation) {
         this.notation = notation;
-    }
-
-    public Boolean isArchived() {
-        return archived;
-    }
-
-    public void setArchived(Boolean archived) {
-        this.archived = archived;
-    }
-
-    public Boolean isWithdrawn() {
-        return withdrawn;
-    }
-
-    public void setWithdrawn(Boolean withdrawn) {
-        this.withdrawn = withdrawn;
-    }
-
-    public Boolean isDiscoverable() {
-        return discoverable;
-    }
-
-    public void setDiscoverable(Boolean discoverable) {
-        this.discoverable = discoverable;
     }
 
     public Set<String> getLanguages() {
@@ -291,14 +248,6 @@ public class CodeDTO implements Serializable {
         if(languages == null)
             return;
         this.languages.remove(language);
-    }
-
-    public String getSourceLanguage() {
-        return sourceLanguage;
-    }
-
-    public void setSourceLanguage(String sourceLanguage) {
-        this.sourceLanguage = sourceLanguage;
     }
 
     public String getParent() {
@@ -323,14 +272,6 @@ public class CodeDTO implements Serializable {
 
     public void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
-    }
-
-    public ZonedDateTime getLastModified() {
-        return lastModified;
-    }
-
-    public void setLastModified(ZonedDateTime lastModified) {
-        this.lastModified = lastModified;
     }
 
     public Long getVocabularyId() {
@@ -832,14 +773,9 @@ public class CodeDTO implements Serializable {
             "id=" + getId() +
             ", uri='" + getUri() + "'" +
             ", notation='" + getNotation() + "'" +
-            ", archived='" + isArchived() + "'" +
-            ", withdrawn='" + isWithdrawn() + "'" +
-            ", discoverable='" + isDiscoverable() + "'" +
-            ", sourceLanguage='" + getSourceLanguage() + "'" +
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
             ", publicationDate='" + getPublicationDate() + "'" +
-            ", lastModified='" + getLastModified() + "'" +
             ", titleSq='" + getTitleSq() + "'" +
             ", definitionSq='" + getDefinitionSq() + "'" +
             ", titleBs='" + getTitleBs() + "'" +
@@ -900,128 +836,125 @@ public class CodeDTO implements Serializable {
     }
 
     public CodeDTO setTitleDefinition(String title, String definition, String language) {
-        return setTitleDefinition(title, definition, Language.getByIso(language), false);
+        return setTitleDefinition(title, definition, Language.getByIso(language));
     }
 
-    public CodeDTO setTitleDefinition(String title, String definition, Language language, boolean isRemoveLanguage) {
+    public CodeDTO setTitleDefinition(String title, String definition, Language language) {
         switch (language) {
             case CZECH:
-                setTitleCs(title);
                 setDefinitionCs(definition);
+                setTitleCs(title);
                 break;
             case DANISH:
-                setTitleDa(title);
                 setDefinitionDa(definition);
+                setTitleDa(title);
                 break;
             case DUTCH:
-                setTitleNl(title);
                 setDefinitionNl(definition);
+                setTitleNl(title);
                 break;
             case ENGLISH:
-                setTitleEn(title);
                 setDefinitionEn(definition);
+                setTitleEn(title);
                 break;
             case ESTONIAN:
-                setTitleEt(title);
                 setDefinitionEt(definition);
+                setTitleEt(title);
                 break;
             case FINNISH:
-                setTitleFi(title);
                 setDefinitionFi(definition);
+                setTitleFi(title);
                 break;
             case FRENCH:
-                setTitleFr(title);
                 setDefinitionFr(definition);
+                setTitleFr(title);
                 break;
             case GERMAN:
-                setTitleDe(title);
                 setDefinitionDe(definition);
+                setTitleDe(title);
                 break;
             case GREEK:
-                setTitleEl(title);
                 setDefinitionEl(definition);
+                setTitleEl(title);
                 break;
             case HUNGARIAN:
-                setTitleHu(title);
                 setDefinitionHu(definition);
+                setTitleHu(title);
                 break;
             case ITALIAN:
-                setTitleIt(title);
                 setDefinitionIt(definition);
+                setTitleIt(title);
                 break;
             case JAPANESE:
-                setTitleJa(title);
                 setDefinitionJa(definition);
+                setTitleJa(title);
                 break;
             case LITHUANIAN:
-                setTitleLt(title);
                 setDefinitionLt(definition);
+                setTitleLt(title);
                 break;
             case NORWEGIAN:
-                setTitleNo(title);
                 setDefinitionNo(definition);
+                setTitleNo(title);
                 break;
             case PORTUGUESE:
-                setTitlePt(title);
                 setDefinitionPt(definition);
+                setTitlePt(title);
                 break;
             case ROMANIAN:
-                setTitleRo(title);
                 setDefinitionRo(definition);
+                setTitleRo(title);
                 break;
             case SLOVAK:
-                setTitleSk(title);
                 setDefinitionSk(definition);
+                setTitleSk(title);
                 break;
             case SLOVENIAN:
-                setTitleSl(title);
                 setDefinitionSl(definition);
+                setTitleSl(title);
                 break;
             case SPANISH:
-                setTitleEs(title);
                 setDefinitionEs(definition);
+                setTitleEs(title);
                 break;
             case SWEDISH:
-                setTitleSv(title);
                 setDefinitionSv(definition);
+                setTitleSv(title);
                 break;
             case ALBANIAN:
-                setTitleSq(title);
                 setDefinitionSq(definition);
+                setTitleSq(title);
                 break;
             case BOSNIAN:
-                setTitleBs(title);
                 setDefinitionBs(definition);
+                setTitleBs(title);
                 break;
             case BULGARIAN:
-                setTitleBg(title);
                 setDefinitionBg(definition);
+                setTitleBg(title);
                 break;
             case CROATIAN:
-                setTitleHr(title);
                 setDefinitionHr(definition);
+                setTitleHr(title);
                 break;
             case MACEDONIAN:
-                setTitleMk(title);
                 setDefinitionMk(definition);
+                setTitleMk(title);
                 break;
             case POLISH:
-                setTitlePl(title);
                 setDefinitionPl(definition);
+                setTitlePl(title);
                 break;
             case RUSSIAN:
-                setTitleRu(title);
                 setDefinitionRu(definition);
+                setTitleRu(title);
                 break;
             case SERBIAN:
-                setTitleSr(title);
                 setDefinitionSr(definition);
+                setTitleSr(title);
                 break;
         }
-        if(isRemoveLanguage)
-            removeLanguage(language.getIso());
-        else
-            addLanguage(language.getIso());
+        addLanguage(language.getIso());
         return this;
     }
 
@@ -1050,6 +983,7 @@ public class CodeDTO implements Serializable {
                     codeDTO.setId( baseCodeId + codeIndex);
                     codeDTO.setNotation( concept.getNotation());
                     codeDTO.setUri( concept.getUri() );
+                    codeDTO.setPosition( concept.getPosition() );
                     if( concept.getParent() != null )
                         codeDTO.setParent( concept.getParent() );
                     codeDTOsMap.put(concept.getNotation(), codeDTO);
@@ -1073,62 +1007,34 @@ public class CodeDTO implements Serializable {
 
     public String getTitleByLanguage( Language language ) {
         switch (language) {
-            case CZECH:
-                return titleCs;
-            case DANISH:
-                return titleDa;
-            case DUTCH:
-                return titleNl;
-            case ENGLISH:
-                return titleEn;
-            case ESTONIAN:
-                return titleEt;
-            case FINNISH:
-                return titleFi;
-            case FRENCH:
-                return titleFr;
-            case GERMAN:
-                return titleDe;
-            case GREEK:
-                return titleEl;
-            case HUNGARIAN:
-                return titleHu;
-            case ITALIAN:
-                return titleIt;
-            case JAPANESE:
-                return titleJa;
-            case LITHUANIAN:
-                return titleLt;
-            case NORWEGIAN:
-                return titleNo;
-            case PORTUGUESE:
-                return titlePt;
-            case ROMANIAN:
-                return titleRo;
-            case SLOVAK:
-                return titleSk;
-            case SLOVENIAN:
-                return titleSl;
-            case SPANISH:
-                return titleEs;
-            case SWEDISH:
-                return titleSv;
-            case ALBANIAN:
-                return titleSq;
-            case BOSNIAN:
-                return titleBs;
-            case BULGARIAN:
-                return titleBg;
-            case CROATIAN:
-                return titleHr;
-            case MACEDONIAN:
-                return titleMk;
-            case POLISH:
-                return titlePl;
-            case RUSSIAN:
-                return titleRu;
-            case SERBIAN:
-                return titleSr;
+            case CZECH:         return titleCs;
+            case DANISH:        return titleDa;
+            case DUTCH:         return titleNl;
+            case ENGLISH:       return titleEn;
+            case ESTONIAN:      return titleEt;
+            case FINNISH:       return titleFi;
+            case FRENCH:        return titleFr;
+            case GERMAN:        return titleDe;
+            case GREEK:         return titleEl;
+            case HUNGARIAN:     return titleHu;
+            case ITALIAN:       return titleIt;
+            case JAPANESE:      return titleJa;
+            case LITHUANIAN:    return titleLt;
+            case NORWEGIAN:     return titleNo;
+            case PORTUGUESE:    return titlePt;
+            case ROMANIAN:      return titleRo;
+            case SLOVAK:        return titleSk;
+            case SLOVENIAN:     return titleSl;
+            case SPANISH:       return titleEs;
+            case SWEDISH:       return titleSv;
+            case ALBANIAN:      return titleSq;
+            case BOSNIAN:       return titleBs;
+            case BULGARIAN:     return titleBg;
+            case CROATIAN:      return titleHr;
+            case MACEDONIAN:    return titleMk;
+            case POLISH:        return titlePl;
+            case RUSSIAN:       return titleRu;
+            case SERBIAN:       return titleSr;
         }
         return null;
     }
@@ -1144,62 +1050,34 @@ public class CodeDTO implements Serializable {
 
     public String getDefinitionByLanguage( Language language ) {
         switch (language) {
-            case CZECH:
-                return definitionCs;
-            case DANISH:
-                return definitionDa;
-            case DUTCH:
-                return definitionNl;
-            case ENGLISH:
-                return definitionEn;
-            case ESTONIAN:
-                return  definitionEt;
-            case FINNISH:
-                return definitionFi;
-            case FRENCH:
-                return definitionFr;
-            case GERMAN:
-                return definitionDe;
-            case GREEK:
-                return definitionEl;
-            case HUNGARIAN:
-                return definitionHu;
-            case ITALIAN:
-                return definitionIt;
-            case JAPANESE:
-                return  definitionJa;
-            case LITHUANIAN:
-                return definitionLt;
-            case NORWEGIAN:
-                return definitionNo;
-            case PORTUGUESE:
-                return definitionPt;
-            case ROMANIAN:
-                return definitionRo;
-            case SLOVAK:
-                return definitionSk;
-            case SLOVENIAN:
-                return definitionSl;
-            case SPANISH:
-                return definitionEs;
-            case SWEDISH:
-                return definitionSv;
-            case ALBANIAN:
-                return definitionSq;
-            case BOSNIAN:
-                return definitionBs;
-            case BULGARIAN:
-                return definitionBg;
-            case CROATIAN:
-                return definitionHr;
-            case MACEDONIAN:
-                return definitionMk;
-            case POLISH:
-                return definitionPl;
-            case RUSSIAN:
-                return definitionRu;
-            case SERBIAN:
-                return definitionSr;
+            case CZECH:         return definitionCs;
+            case DANISH:        return definitionDa;
+            case DUTCH:         return definitionNl;
+            case ENGLISH:       return definitionEn;
+            case ESTONIAN:      return definitionEt;
+            case FINNISH:       return definitionFi;
+            case FRENCH:        return definitionFr;
+            case GERMAN:        return definitionDe;
+            case GREEK:         return definitionEl;
+            case HUNGARIAN:     return definitionHu;
+            case ITALIAN:       return definitionIt;
+            case JAPANESE:      return definitionJa;
+            case LITHUANIAN:    return definitionLt;
+            case NORWEGIAN:     return definitionNo;
+            case PORTUGUESE:    return definitionPt;
+            case ROMANIAN:      return definitionRo;
+            case SLOVAK:        return definitionSk;
+            case SLOVENIAN:     return definitionSl;
+            case SPANISH:       return definitionEs;
+            case SWEDISH:       return definitionSv;
+            case ALBANIAN:      return definitionSq;
+            case BOSNIAN:       return definitionBs;
+            case BULGARIAN:     return definitionBg;
+            case CROATIAN:      return definitionHr;
+            case MACEDONIAN:    return definitionMk;
+            case POLISH:        return definitionPl;
+            case RUSSIAN:       return definitionRu;
+            case SERBIAN:       return definitionSr;
         }
         return null;
     }

@@ -6,7 +6,6 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.Set;
 
 /**
@@ -22,17 +21,8 @@ public class Code implements Serializable {
 
     private String notation;
 
-    private Boolean archived;
-
-    private Boolean withdrawn;
-
-    private Boolean discoverable;
-
     @Field( type = FieldType.Keyword )
     private Set<String> languages;
-
-    @Field( type = FieldType.Keyword )
-    private String sourceLanguage;
 
     private String parent;
 
@@ -40,9 +30,6 @@ public class Code implements Serializable {
 
     @Field( type = FieldType.Date, format = DateFormat.date )
     private LocalDate publicationDate;
-
-    @Field( type = FieldType.Date, format = DateFormat.date_hour_minute_second )
-    private ZonedDateTime lastModified;
 
     private Long vocabularyId;
 
@@ -252,45 +239,6 @@ public class Code implements Serializable {
         this.notation = notation;
     }
 
-    public Boolean isArchived() {
-        return archived;
-    }
-
-    public Code archived(Boolean archived) {
-        this.archived = archived;
-        return this;
-    }
-
-    public void setArchived(Boolean archived) {
-        this.archived = archived;
-    }
-
-    public Boolean isWithdrawn() {
-        return withdrawn;
-    }
-
-    public Code withdrawn(Boolean withdrawn) {
-        this.withdrawn = withdrawn;
-        return this;
-    }
-
-    public void setWithdrawn(Boolean withdrawn) {
-        this.withdrawn = withdrawn;
-    }
-
-    public Boolean isDiscoverable() {
-        return discoverable;
-    }
-
-    public Code discoverable(Boolean discoverable) {
-        this.discoverable = discoverable;
-        return this;
-    }
-
-    public void setDiscoverable(Boolean discoverable) {
-        this.discoverable = discoverable;
-    }
-
     public Set<String> getLanguages()
     {
         return languages;
@@ -305,19 +253,6 @@ public class Code implements Serializable {
     {
         this.languages.add( language );
         return this;
-    }
-
-    public String getSourceLanguage() {
-        return sourceLanguage;
-    }
-
-    public Code sourceLanguage(String sourceLanguage) {
-        this.sourceLanguage = sourceLanguage;
-        return this;
-    }
-
-    public void setSourceLanguage(String sourceLanguage) {
-        this.sourceLanguage = sourceLanguage;
     }
 
     public String getParent() {
@@ -357,19 +292,6 @@ public class Code implements Serializable {
 
     public void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
-    }
-
-    public ZonedDateTime getLastModified() {
-        return lastModified;
-    }
-
-    public Code lastModified(ZonedDateTime lastModified) {
-        this.lastModified = lastModified;
-        return this;
-    }
-
-    public void setLastModified(ZonedDateTime lastModified) {
-        this.lastModified = lastModified;
     }
 
     public Long getVocabularyId()
@@ -1153,14 +1075,9 @@ public class Code implements Serializable {
             "id=" + getId() +
             ", uri='" + getUri() + "'" +
             ", notation='" + getNotation() + "'" +
-            ", archived='" + isArchived() + "'" +
-            ", withdrawn='" + isWithdrawn() + "'" +
-            ", discoverable='" + isDiscoverable() + "'" +
-            ", sourceLanguage='" + getSourceLanguage() + "'" +
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
             ", publicationDate='" + getPublicationDate() + "'" +
-            ", lastModified='" + getLastModified() + "'" +
             ", titleSq='" + getTitleSq() + "'" +
             ", definitionSq='" + getDefinitionSq() + "'" +
             ", titleBs='" + getTitleBs() + "'" +

@@ -51,6 +51,17 @@ class EditorResourceIT {
 
     private static final String NOTATION = "AAAAAAAAAA";
 
+    private static final String INIT_CODE_NOTATION = "AAAAA";
+    private static final String EDIT_CODE_NOTATION = "BBBBB";
+
+    private static final String INIT_CODE_TITLE = "TTTTT";
+    private static final String EDIT_CODE_TITLE = "SSSSS";
+
+    private static final String INIT_CODE_DEF = "DDDDD";
+    private static final String EDIT_CODE_DEF = "EEEEE";
+
+    private static final Integer CODE_POSITION = 0;
+
     private static final String INIT_VERSION_NUMBER = "1.0";
     private static final String EDIT_VERSION_NUMBER = "2.0";
 
@@ -105,6 +116,9 @@ class EditorResourceIT {
     private VocabularyRepository vocabularyRepository;
 
     @Autowired
+    private ConceptRepository conceptRepository;
+
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
@@ -124,19 +138,15 @@ class EditorResourceIT {
 
     private VocabularySnippet vocabularySnippetForEnSl;
 
+    private CodeSnippet codeSnippetForEnSl;
+
     private Agency agency;
 
     private Licence license;
 
     private String jwt;
 
-    /**
-     * Create an entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static VocabularySnippet createVocabularySnippetForSlEn() {
+    private static VocabularySnippet createVocabularySnippetForSlEn() {
         VocabularySnippet vocabularySnippet = new VocabularySnippet();
         vocabularySnippet.setLanguage(SOURCE_LANGUAGE);
         vocabularySnippet.setItemType(ITEM_TYPE_SL);
@@ -149,13 +159,7 @@ class EditorResourceIT {
         return vocabularySnippet;
     }
 
-    /**
-     * Create an update entity for this test.
-     *
-     * This is a static method, as tests for other entities might also need it,
-     * if they test an entity which requires the current entity.
-     */
-    public static VocabularySnippet updateVocabularySnippet() {
+    private static VocabularySnippet updateVocabularySnippet() {
         VocabularySnippet vocabularySnippet = new VocabularySnippet();
         vocabularySnippet.setLanguage( SOURCE_LANGUAGE) ;
         vocabularySnippet.setItemType( ITEM_TYPE_SL);
@@ -166,11 +170,25 @@ class EditorResourceIT {
         return vocabularySnippet;
     }
 
+    private static CodeSnippet createCodeSnippetForSlEn() {
+        CodeSnippet codeSnippet = new CodeSnippet();
+        codeSnippet.setNotation(INIT_CODE_NOTATION);
+        codeSnippet.setTitle( INIT_CODE_TITLE );
+        codeSnippet.setDefinition( INIT_CODE_DEF );
+        codeSnippet.setPosition( CODE_POSITION );
+        return codeSnippet;
+    }
 
-    /**
-     * Create agency entity for this test.
-     */
-    public static Agency createAgencyEntity() {
+    private static CodeSnippet updateCodeSnippetForSlEn() {
+        CodeSnippet codeSnippet = new CodeSnippet();
+        codeSnippet.setNotation(EDIT_CODE_NOTATION);
+        codeSnippet.setTitle( EDIT_CODE_TITLE );
+        codeSnippet.setDefinition( EDIT_CODE_DEF );
+        codeSnippet.setPosition( CODE_POSITION );
+        return codeSnippet;
+    }
+
+    private static Agency createAgencyEntity() {
         Agency agency = new Agency()
             .name(INIT_NAME)
             .link(INIT_LINK)
@@ -237,9 +255,68 @@ class EditorResourceIT {
         Version slVersion = createVocabularyTest();
         // ActionType.EDIT_CV
         updateVocabularySlTest( slVersion );
+        // ActionType.CREATE_CODE
+        Concept slConcept = createSlConceptTest(slVersion);
+        // ActionType.EDIT_CODE
+        updateSlConceptTest(slVersion, slConcept);
+
+
+        // ActionType.EDIT_CODE
+
         // ActionType.FORWARD_CV_SL_STATUS_REVIEW
-        forwardSlStatusReview(slVersion);
+        forwardSlStatusReviewTest(slVersion);
         // ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
+        forwardSlStatusPublishTest(slVersion);
+    }
+
+    private void updateSlConceptTest(Version slVersion, Concept slConcept) throws Exception {
+        int conceptDatabaseSize = conceptRepository.findAll().size();
+        codeSnippetForEnSl = updateCodeSnippetForSlEn();
+        codeSnippetForEnSl.setActionType( ActionType.EDIT_CODE );
+        codeSnippetForEnSl.setVersionId( slVersion.getId() );
+        codeSnippetForEnSl.setConceptId( slConcept.getId() );
+        // Create the code with code snippet
+        restVocabularyMockMvc.perform(put("/api/editors/codes")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(codeSnippetForEnSl)))
+            .andExpect(status().isOk());
+        final List<Concept> conceptList = conceptRepository.findAll();
+        assertThat(conceptList).hasSize(conceptDatabaseSize);
+        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
+        slVersion = getVersionSl(vocabularyList);
+        final Concept updatedSlConcept = slVersion.getConcepts().iterator().next();
+        assertThat(updatedSlConcept.getNotation()).isEqualTo(EDIT_CODE_NOTATION);
+        assertThat(updatedSlConcept.getTitle()).isEqualTo(EDIT_CODE_TITLE);
+        assertThat(updatedSlConcept.getDefinition()).isEqualTo(EDIT_CODE_DEF);
+    }
+
+    private Concept createSlConceptTest(Version slVersion) throws Exception {
+        int conceptDatabaseSize = conceptRepository.findAll().size();
+        codeSnippetForEnSl = createCodeSnippetForSlEn();
+        codeSnippetForEnSl.setActionType( ActionType.CREATE_CODE );
+        codeSnippetForEnSl.setVersionId( slVersion.getId() );
+        // Create the code with code snippet
+        restVocabularyMockMvc.perform(post("/api/editors/codes")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(codeSnippetForEnSl)))
+            .andExpect(status().isCreated());
+        final List<Concept> conceptList = conceptRepository.findAll();
+        assertThat(conceptList).hasSize(conceptDatabaseSize + 1);
+        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
+        slVersion = getVersionSl(vocabularyList);
+        final Concept slConcept = slVersion.getConcepts().iterator().next();
+        assertThat(slConcept.getParent()).isNull();
+        assertThat(slConcept.getPreviousConcept()).isNull();
+        assertThat(slConcept.getPosition()).isEqualTo(CODE_POSITION);
+        assertThat(slConcept.getNotation()).isEqualTo(INIT_CODE_NOTATION);
+        assertThat(slConcept.getTitle()).isEqualTo(INIT_CODE_TITLE);
+        assertThat(slConcept.getDefinition()).isEqualTo(INIT_CODE_DEF);
+        return slConcept;
+    }
+
+    private void forwardSlStatusPublishTest(Version slVersion) throws Exception {
         // prepare licence
         if( license == null ) {
             license = new Licence()
@@ -262,13 +339,11 @@ class EditorResourceIT {
 
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
-        Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
-        assertThat(testVocabulary.getVersions().size()).isEqualTo(1);
-        slVersion = testVocabulary.getVersions().iterator().next();
+        slVersion = getVersionSl(vocabularyList);
         assertThat( slVersion.getStatus()).isEqualTo(Status.PUBLISHED.toString());
     }
 
-    private void forwardSlStatusReview(Version slVersion) throws Exception {
+    private void forwardSlStatusReviewTest(Version slVersion) throws Exception {
         int databaseSize = vocabularyRepository.findAll().size();
         vocabularySnippetForEnSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_REVIEW );
         vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
@@ -281,10 +356,16 @@ class EditorResourceIT {
 
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
+        slVersion = getVersionSl(vocabularyList);
+        assertThat( slVersion.getStatus()).isEqualTo(Status.REVIEW.toString());
+    }
+
+    private Version getVersionSl(List<Vocabulary> vocabularyList) {
+        Version slVersion;
         Vocabulary testVocabulary = vocabularyList.get(vocabularyList.size() - 1);
         assertThat(testVocabulary.getVersions().size()).isEqualTo(1);
         slVersion = testVocabulary.getVersions().iterator().next();
-        assertThat( slVersion.getStatus()).isEqualTo(Status.REVIEW.toString());
+        return slVersion;
     }
 
     private void updateVocabularySlTest(Version slVersion) throws Exception {
