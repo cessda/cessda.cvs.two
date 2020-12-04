@@ -197,7 +197,7 @@ public class VocabularyResourceV2 {
         produces = JSONLD_TYPE
     )
     @ApiOperation( value = "Searching the vocabularies codes that produces JSON-LD based on Skosmos format" )
-    public ResponseEntity<List<Object>> getAllVocabulariesCode(
+    public ResponseEntity<Object> getAllVocabulariesCode(
         @ApiParam(
             name = "query",
             type = "String",
@@ -257,8 +257,7 @@ public class VocabularyResourceV2 {
                 vocabularyJsonLds.addAll(vocabularyJsonLdMap);
             });
         }
-
-        return ResponseEntity.ok().body( vocabularyJsonLds );
+        return ResponseEntity.ok().body( !vocabularyJsonLds.isEmpty() ? vocabularyJsonLds.get(0) : new Object());
     }
 
     /**
