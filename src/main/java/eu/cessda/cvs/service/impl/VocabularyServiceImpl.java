@@ -547,7 +547,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         versionDTO.addConceptAt(newConceptDTO, newConceptDTO.getPosition());
         versionDTO = versionService.save(versionDTO);
 
-        // check if codeSnippet contains changeType, dtore if exist
+        // check if codeSnippet contains changeType, store if exist
         storeChangeType(codeSnippet, versionDTO);
 
         // find the newly created code from version

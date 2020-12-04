@@ -1007,34 +1007,34 @@ public class CodeDTO implements Serializable {
 
     public String getTitleByLanguage( Language language ) {
         switch (language) {
-            case CZECH:         return titleCs;
-            case DANISH:        return titleDa;
-            case DUTCH:         return titleNl;
-            case ENGLISH:       return titleEn;
-            case ESTONIAN:      return titleEt;
-            case FINNISH:       return titleFi;
-            case FRENCH:        return titleFr;
-            case GERMAN:        return titleDe;
-            case GREEK:         return titleEl;
-            case HUNGARIAN:     return titleHu;
-            case ITALIAN:       return titleIt;
-            case JAPANESE:      return titleJa;
-            case LITHUANIAN:    return titleLt;
-            case NORWEGIAN:     return titleNo;
-            case PORTUGUESE:    return titlePt;
-            case ROMANIAN:      return titleRo;
-            case SLOVAK:        return titleSk;
-            case SLOVENIAN:     return titleSl;
-            case SPANISH:       return titleEs;
-            case SWEDISH:       return titleSv;
-            case ALBANIAN:      return titleSq;
-            case BOSNIAN:       return titleBs;
-            case BULGARIAN:     return titleBg;
-            case CROATIAN:      return titleHr;
-            case MACEDONIAN:    return titleMk;
-            case POLISH:        return titlePl;
-            case RUSSIAN:       return titleRu;
             case SERBIAN:       return titleSr;
+            case RUSSIAN:       return titleRu;
+            case POLISH:        return titlePl;
+            case MACEDONIAN:    return titleMk;
+            case CROATIAN:      return titleHr;
+            case BULGARIAN:     return titleBg;
+            case BOSNIAN:       return titleBs;
+            case ALBANIAN:      return titleSq;
+            case SWEDISH:       return titleSv;
+            case SPANISH:       return titleEs;
+            case SLOVENIAN:     return titleSl;
+            case SLOVAK:        return titleSk;
+            case ROMANIAN:      return titleRo;
+            case PORTUGUESE:    return titlePt;
+            case NORWEGIAN:     return titleNo;
+            case LITHUANIAN:    return titleLt;
+            case JAPANESE:      return titleJa;
+            case ITALIAN:       return titleIt;
+            case HUNGARIAN:     return titleHu;
+            case GREEK:         return titleEl;
+            case GERMAN:        return titleDe;
+            case FRENCH:        return titleFr;
+            case FINNISH:       return titleFi;
+            case ESTONIAN:      return titleEt;
+            case ENGLISH:       return titleEn;
+            case DUTCH:         return titleNl;
+            case DANISH:        return titleDa;
+            case CZECH:         return titleCs;
         }
         return null;
     }
@@ -1050,34 +1050,34 @@ public class CodeDTO implements Serializable {
 
     public String getDefinitionByLanguage( Language language ) {
         switch (language) {
-            case CZECH:         return definitionCs;
-            case DANISH:        return definitionDa;
-            case DUTCH:         return definitionNl;
-            case ENGLISH:       return definitionEn;
-            case ESTONIAN:      return definitionEt;
-            case FINNISH:       return definitionFi;
-            case FRENCH:        return definitionFr;
-            case GERMAN:        return definitionDe;
-            case GREEK:         return definitionEl;
-            case HUNGARIAN:     return definitionHu;
-            case ITALIAN:       return definitionIt;
-            case JAPANESE:      return definitionJa;
-            case LITHUANIAN:    return definitionLt;
-            case NORWEGIAN:     return definitionNo;
-            case PORTUGUESE:    return definitionPt;
-            case ROMANIAN:      return definitionRo;
-            case SLOVAK:        return definitionSk;
-            case SLOVENIAN:     return definitionSl;
-            case SPANISH:       return definitionEs;
-            case SWEDISH:       return definitionSv;
-            case ALBANIAN:      return definitionSq;
-            case BOSNIAN:       return definitionBs;
-            case BULGARIAN:     return definitionBg;
-            case CROATIAN:      return definitionHr;
-            case MACEDONIAN:    return definitionMk;
-            case POLISH:        return definitionPl;
-            case RUSSIAN:       return definitionRu;
             case SERBIAN:       return definitionSr;
+            case RUSSIAN:       return definitionRu;
+            case POLISH:        return definitionPl;
+            case MACEDONIAN:    return definitionMk;
+            case CROATIAN:      return definitionHr;
+            case BULGARIAN:     return definitionBg;
+            case BOSNIAN:       return definitionBs;
+            case ALBANIAN:      return definitionSq;
+            case SWEDISH:       return definitionSv;
+            case SPANISH:       return definitionEs;
+            case SLOVENIAN:     return definitionSl;
+            case SLOVAK:        return definitionSk;
+            case ROMANIAN:      return definitionRo;
+            case PORTUGUESE:    return definitionPt;
+            case NORWEGIAN:     return definitionNo;
+            case LITHUANIAN:    return definitionLt;
+            case JAPANESE:      return definitionJa;
+            case ITALIAN:       return definitionIt;
+            case HUNGARIAN:     return definitionHu;
+            case GREEK:         return definitionEl;
+            case GERMAN:        return definitionDe;
+            case FRENCH:        return definitionFr;
+            case FINNISH:       return definitionFi;
+            case ESTONIAN:      return definitionEt;
+            case ENGLISH:       return definitionEn;
+            case DUTCH:         return definitionNl;
+            case DANISH:        return definitionDa;
+            case CZECH:         return definitionCs;
         }
         return null;
     }

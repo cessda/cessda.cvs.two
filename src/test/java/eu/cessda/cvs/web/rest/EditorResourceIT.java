@@ -53,14 +53,18 @@ class EditorResourceIT {
 
     private static final String INIT_CODE_NOTATION = "AAAAA";
     private static final String EDIT_CODE_NOTATION = "BBBBB";
+    private static final String INIT_CODE2_NOTATION = "CCCCC";
 
     private static final String INIT_CODE_TITLE = "TTTTT";
     private static final String EDIT_CODE_TITLE = "SSSSS";
+    private static final String INIT_CODE2_TITLE = "UUUUU";
 
     private static final String INIT_CODE_DEF = "DDDDD";
     private static final String EDIT_CODE_DEF = "EEEEE";
+    private static final String INIT_CODE2_DEF = "FFFFF";
 
     private static final Integer CODE_POSITION = 0;
+    private static final Integer CODE2_POSITION = 1;
 
     private static final String INIT_VERSION_NUMBER = "1.0";
     private static final String EDIT_VERSION_NUMBER = "2.0";
@@ -117,6 +121,9 @@ class EditorResourceIT {
 
     @Autowired
     private ConceptRepository conceptRepository;
+
+    @Autowired
+    private VocabularyChangeRepository vocabularyChangeRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -176,6 +183,15 @@ class EditorResourceIT {
         codeSnippet.setTitle( INIT_CODE_TITLE );
         codeSnippet.setDefinition( INIT_CODE_DEF );
         codeSnippet.setPosition( CODE_POSITION );
+        return codeSnippet;
+    }
+
+    private static CodeSnippet createSecondCodeSnippetForSlEn() {
+        CodeSnippet codeSnippet = new CodeSnippet();
+        codeSnippet.setTitle( INIT_CODE2_TITLE );
+        codeSnippet.setDefinition( INIT_CODE2_DEF );
+        codeSnippet.setPosition( CODE2_POSITION );
+        codeSnippet.setChangeType( "Code added" );
         return codeSnippet;
     }
 
@@ -241,8 +257,8 @@ class EditorResourceIT {
     }
 
     /**
-     * Since the  CVS workflow is quite complex and some of the test needs existing object, e,g. (Creating TL needs Published SL)
-     * all of Integration Tests for a successful SL and TL workflow are defined here.
+     * Since the CVS workflow is quite complex and some of the test needs existing object, e,g. (Creating TL needs Published SL)
+     * all of Integration Tests for SL and TL workflow are defined here.
      *
      * Each part of the test will be indicated by its ActionType
      *
@@ -257,6 +273,13 @@ class EditorResourceIT {
         updateVocabularySlTest( slVersion );
         // ActionType.CREATE_CODE
         Concept slConcept = createSlConceptTest(slVersion);
+        // ActionType.CREATE_CODE ~ will be fail due to same Code-name
+        createFailedSlConceptTest(slVersion);
+        // Add second code as child
+        Concept slCOncept2 = createSlConceptChildTest(slVersion, slConcept);
+
+        // move the second code from child to root
+
         // ActionType.EDIT_CODE
         updateSlConceptTest(slVersion, slConcept);
 
@@ -267,6 +290,32 @@ class EditorResourceIT {
         forwardSlStatusReviewTest(slVersion);
         // ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
         forwardSlStatusPublishTest(slVersion);
+    }
+
+    private Concept createSlConceptChildTest(Version slVersion, Concept slConcept) throws Exception {
+        int vocabChangeDbSize = vocabularyChangeRepository.findAll().size();
+        int conceptDbSize = conceptRepository.findAll().size();
+        CodeSnippet codeSnippet2ForEnSl = createSecondCodeSnippetForSlEn();
+        codeSnippet2ForEnSl.setActionType( ActionType.CREATE_CODE );
+        codeSnippet2ForEnSl.setVersionId( slVersion.getId() );
+        codeSnippet2ForEnSl.setParent( slConcept.getNotation() );
+        codeSnippet2ForEnSl.setNotation( slConcept.getNotation() + "." + INIT_CODE2_NOTATION);
+        codeSnippet2ForEnSl.setChangeDesc( codeSnippet2ForEnSl.getNotation() );
+        restVocabularyMockMvc.perform(post("/api/editors/codes")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(codeSnippet2ForEnSl)))
+            .andExpect(status().isCreated());
+        final List<VocabularyChange> vocabularyChangeList = vocabularyChangeRepository.findAll();
+        assertThat(vocabularyChangeList).hasSize(vocabChangeDbSize); // no record size change due to initial version
+        final List<Concept> conceptList = conceptRepository.findAll();
+        assertThat(conceptList).hasSize(conceptDbSize + 1);
+        Concept childConcept = conceptList.stream()
+            .filter(c -> c.getNotation().equals(slConcept.getNotation() + "." + INIT_CODE2_NOTATION))
+            .findFirst().orElse(null);
+        assertThat( childConcept ).isNotNull();
+        assertThat( childConcept.getPosition() ).isEqualTo(CODE2_POSITION);
+        return childConcept;
     }
 
     private void updateSlConceptTest(Version slVersion, Concept slConcept) throws Exception {
@@ -314,6 +363,18 @@ class EditorResourceIT {
         assertThat(slConcept.getTitle()).isEqualTo(INIT_CODE_TITLE);
         assertThat(slConcept.getDefinition()).isEqualTo(INIT_CODE_DEF);
         return slConcept;
+    }
+
+    private void createFailedSlConceptTest(Version slVersion) throws Exception {
+        codeSnippetForEnSl = createCodeSnippetForSlEn();
+        codeSnippetForEnSl.setActionType( ActionType.CREATE_CODE );
+        codeSnippetForEnSl.setVersionId( slVersion.getId() );
+        // Create the code with code snippet
+        restVocabularyMockMvc.perform(post("/api/editors/codes")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(codeSnippetForEnSl)))
+            .andExpect(status().isBadRequest());
     }
 
     private void forwardSlStatusPublishTest(Version slVersion) throws Exception {
