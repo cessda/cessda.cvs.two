@@ -20,10 +20,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -62,6 +59,7 @@ public class VocabularyResourceV1
      *
      * @return map of Agencies and CVs code
      */
+    @CrossOrigin
     @GetMapping( "/vocabulary" )
     @ApiOperation( value = "Get list of the agencies and the controlled vocabularies with the details rest API link." )
     public Map<String, Map<String, Map<String, Map<String, String>>>> getAllVocabularies()
@@ -107,6 +105,7 @@ public class VocabularyResourceV1
      * @param cvCode the cv short definition/notation
      * @return set of published languages in a Cv
      */
+    @CrossOrigin
     @GetMapping( "/vocabulary-languages/{cvCode}" )
     @ApiOperation( value = "Get list of the languages in iso-format from a controlled vocabulary." )
     public ResponseEntity<List<String>> getVocabularyIsoLanguages(
@@ -128,6 +127,7 @@ public class VocabularyResourceV1
      * @param languageIso the Cv language (iso format)
      * @return set of available versions in a Cv
      */
+    @CrossOrigin
     @GetMapping( "/vocabulary-version/{cvCode}/{languageIso}" )
     @ApiOperation( value = "Get list of the version from a controlled vocabulary in a specific language" )
     public ResponseEntity<List<String>> getVocabularyVersions(
@@ -160,6 +160,7 @@ public class VocabularyResourceV1
      * @param version     the Cv version number
      * @return detail of CV in specific language and version
      */
+    @CrossOrigin
     @GetMapping( "/vocabulary-details/{cvCode}/{languageIso}/{version}" )
     @ApiOperation( value = "Get the CV details in JSON format." )
     public ResponseEntity<String> getVocabularyDetails(
@@ -189,6 +190,7 @@ public class VocabularyResourceV1
      * @param version     the Cv version number
      * @return detail of CV in specific language and version
      */
+    @CrossOrigin
     @GetMapping( "/vocabulary-details-skos/{cvCode}/{languageIso}/{version}" )
     @ApiOperation( value = "Get the CV details in SKOS-rdf format." )
     public ResponseEntity<Resource> getAllVocabulariesRaw(
