@@ -1,5 +1,6 @@
 package eu.cessda.cvs.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
 
@@ -12,6 +13,7 @@ import java.util.*;
 /**
  * A DTO for the {@link Code} entity.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CodeDTO implements Serializable {
 
     private Long id;

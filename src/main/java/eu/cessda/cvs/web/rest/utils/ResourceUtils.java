@@ -79,8 +79,12 @@ public class ResourceUtils {
             conceptJsonLdMap.put("uri", c.getUri());
             conceptJsonLdMap.put("type", new String[]{"skos:Concept"});
             conceptJsonLdMap.put("notation", c.getNotation());
-            conceptJsonLdMap.put("prefLabel", c.getTitleByLanguage(lang));
-            conceptJsonLdMap.put("definition", c.getDefinitionByLanguage(lang));
+            final String titleByLanguage = c.getTitleByLanguage(lang);
+            if( titleByLanguage != null && !titleByLanguage.isEmpty())
+                conceptJsonLdMap.put("prefLabel", titleByLanguage);
+            final String definitionByLanguage = c.getDefinitionByLanguage(lang);
+            if( definitionByLanguage != null && !definitionByLanguage.isEmpty())
+                conceptJsonLdMap.put("definition", definitionByLanguage);
             conceptJsonLdMap.put("lang", lang);
             conceptJsonLdMap.put("vocab", vocabularyDTO.getNotation());
         }
