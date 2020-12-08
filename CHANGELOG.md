@@ -1,9 +1,10 @@
 
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.1-Beta] - 2020-11-23
+## [2.0.1-Beta] - 2020-12-8
 
 ### Added
 
@@ -12,8 +13,11 @@ All notable changes to this project will be documented in this file.
     - Add search Vocabularies & Codes that produces JSON & JSON-LD formats
     - Add export Vocabulary that produces HTML, DOCX, PDF, JSON & JSON-LD formats
 - Add application maintenance page, which includes functions to generating JSON for published CVs, indexing for Agency, Vocabularies, Statistics and checking for incorrect CVs.[#272](https://bitbucket.org/cessda/cessda.cvs.two/issues/272/create-a-maintenance-page)
-- Provide configurable URI for Vocabulary versions and Codes. [#256](https://bitbucket.org/cessda/cessda.cvs.two/issues/256/cvs-urls-api-issue), [#271](https://bitbucket.org/cessda/cessda.cvs.two/issues/271/make-agency-uri-configurable-and-link)
-- Improve code quality and fix bugs and vulnerabilities based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs) 
+- Provide a configurable URI for Vocabulary versions and Codes. [#256](https://bitbucket.org/cessda/cessda.cvs.two/issues/256/cvs-urls-api-issue), [#271](https://bitbucket.org/cessda/cessda.cvs.two/issues/271/make-agency-uri-configurable-and-link)
+- Improve code quality and fix bugs and vulnerabilities [#254](https://bitbucket.org/cessda/cessda.cvs.two/issues/254/improve-cvs-2-code-quality) based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs) 
+- Fix user agency role issue [#269](https://bitbucket.org/cessda/cessda.cvs.two/issues/269/editing-cv-notes-not-working-for)
+- Add Matomo tracking [#266](https://bitbucket.org/cessda/cessda.cvs.two/issues/266/add-matomo-tracking-code)
+- Other issues fixing [#277](https://bitbucket.org/cessda/cessda.cvs.two/issues/277/inccorrect-missing-syling-between-ngx), and [#261](https://bitbucket.org/cessda/cessda.cvs.two/issues/261/incorrect-tool-name-in-tab)
 
 
 ## [2.0.0-Beta] - 2020-11-02
