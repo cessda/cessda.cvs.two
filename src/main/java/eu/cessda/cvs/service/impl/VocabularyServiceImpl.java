@@ -1272,9 +1272,11 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( languageFields.size() == 1 ) {
             boolQuery
                 .should( QueryBuilders.matchQuery( TITLE + languageFields.get(0), term).fuzziness(0.7).boost( 10.0f ))
-                .should( QueryBuilders.matchQuery( DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 4.0f ));
+                .should( QueryBuilders.matchQuery( DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 4.0f ))
+                .should( QueryBuilders.wildcardQuery( NOTATION, term.toLowerCase().replace(" ", "") + "*").boost( 2.0f ));
         } else {
             List<String> fields = new ArrayList<>();
+            fields.add(NOTATION);
             for(String langIso : languageFields) {
                 fields.add(TITLE + langIso);
                 fields.add(DEFINITION + langIso);
@@ -1290,11 +1292,13 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         if( languageFields.size() == 1 ) {
             boolQuery
-                .should( QueryBuilders.matchQuery( CODE_PATH +"." + TITLE + languageFields.get(0), term).fuzziness(0.7).boost( 2.0f ))
-                .should( QueryBuilders.matchQuery( CODE_PATH +"." + DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 1.0f ));
+                .should( QueryBuilders.matchQuery( CODE_PATH + "." + TITLE + languageFields.get(0), term).fuzziness(0.7).boost( 3.0f ))
+                .should( QueryBuilders.matchQuery( CODE_PATH + "." + DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 2.0f ))
+                .should( QueryBuilders.wildcardQuery( CODE_PATH + "." + NOTATION, term.toLowerCase().replace(" ", "") + "*").boost( 1.0f ));;
         }
         else {
             List<String> fields = new ArrayList<>();
+            fields.add(CODE_PATH +"." + NOTATION);
             for(String langIso : languageFields) {
                 fields.add(CODE_PATH +"." + TITLE + langIso);
                 fields.add(CODE_PATH +"." + DEFINITION + langIso);

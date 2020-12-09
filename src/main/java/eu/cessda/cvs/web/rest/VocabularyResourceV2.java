@@ -129,6 +129,27 @@ public class VocabularyResourceV2 {
         EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(query, agency, lang, pageable, SearchScope.PUBLICATIONSEARCH);
         vocabularyService.search(esq);
         Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
+        // remove unused property
+        vocabulariesPage.get().forEach(vocab -> {
+            VocabularyDTO.cleanUpContentForApi( vocab );
+            // remove other included languages
+            if( lang != null ) {
+                vocab.setLanguagesPublished( new HashSet<>(Arrays.asList( lang )));
+                String titleTemp = vocab.getTitleByLanguage(lang);
+                String defTemp = vocab.getDefinitionByLanguage(lang);
+                vocab.clearContent();
+                vocab.setTitleDefinition(titleTemp, defTemp, lang);
+
+                vocab.getCodes().forEach(code -> {
+                    String codeTitleTemp = code.getTitleByLanguage(lang);
+                    String codeDefTemp = code.getDefinitionByLanguage(lang);
+                    code.clearContents();
+                    code.setId( null );
+                    code.setPosition( null );
+                    code.setTitleDefinition(codeTitleTemp, codeDefTemp, lang);
+                });
+            }
+        });
 
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), vocabulariesPage);
         return ResponseEntity.ok().headers(headers).body( VocabularyUtils.mapResultToCvResult(esq, vocabulariesPage) );

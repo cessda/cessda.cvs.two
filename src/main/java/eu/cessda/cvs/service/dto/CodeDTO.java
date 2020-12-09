@@ -1083,4 +1083,64 @@ public class CodeDTO implements Serializable {
         }
         return null;
     }
+
+    public void clearContents(){
+        setDefinitionSr(null);
+        setDefinitionRu(null);
+        setDefinitionPl(null);
+        setDefinitionMk(null);
+        setDefinitionHr(null);
+        setDefinitionBg(null);
+        setDefinitionBs(null);
+        setDefinitionSq(null);
+        setTitleSr(null);
+        setTitleRu(null);
+        setTitlePl(null);
+        setTitleMk(null);
+        setTitleHr(null);
+        setTitleBg(null);
+        setTitleBs(null);
+        setTitleSq(null);
+        setDefinitionSv(null);
+        setTitleSv(null);
+        setDefinitionEs(null);
+        setTitleEs(null);
+        setDefinitionSl(null);
+        setTitleSl(null);
+        setDefinitionSk(null);
+        setTitleSk(null);
+        setDefinitionRo(null);
+        setTitleRo(null);
+        setDefinitionPt(null);
+        setTitlePt(null);
+        setDefinitionNo(null);
+        setTitleNo(null);
+        setDefinitionLt(null);
+        setTitleLt(null);
+        setDefinitionJa(null);
+        setTitleJa(null);
+        setDefinitionIt(null);
+        setTitleIt(null);
+        setDefinitionHu(null);
+        setTitleHu(null);
+        setDefinitionEl(null);
+        setTitleEl(null);
+        setDefinitionDe(null);
+        setTitleDe(null);
+        setDefinitionFr(null);
+        setTitleFr(null);
+        setDefinitionFi(null);
+        setTitleFi(null);
+        setDefinitionEt(null);
+        setTitleEt(null);
+        setDefinitionEn(null);
+        setTitleEn(null);
+        setDefinitionNl(null);
+        setTitleNl(null);
+        setDefinitionDa(null);
+        setTitleDa(null);
+        setDefinitionCs(null);
+        setTitleCs(null);
+        setLanguages( null );
+    }
 }

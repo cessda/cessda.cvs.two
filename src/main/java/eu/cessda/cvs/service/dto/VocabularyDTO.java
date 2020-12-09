@@ -50,6 +50,14 @@ public class VocabularyDTO implements Serializable {
         setContentByVocabularySnippet( vocabularySnippet );
     }
 
+    public static void cleanUpContentForApi(VocabularyDTO vocab) {
+        vocab.setArchived( null );
+        vocab.setWithdrawn( null );
+        vocab.setDiscoverable( null );
+        vocab.setAgencyLogo( null );
+        vocab.setSelectedLang( null );
+    }
+
     public void setStatusByVocabularySnippet(VocabularySnippet vocabularySnippet){
         this.status = vocabularySnippet.getStatus();
     }

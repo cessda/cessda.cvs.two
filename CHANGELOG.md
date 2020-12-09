@@ -4,7 +4,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.1-Beta] - 2020-12-8
+## [2.0.1-Beta] - 2020-12-9
 
 ### Added
 
