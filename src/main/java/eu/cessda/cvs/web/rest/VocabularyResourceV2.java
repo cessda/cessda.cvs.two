@@ -70,7 +70,6 @@ public class VocabularyResourceV2 {
 
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
      */
-    @CrossOrigin
     @GetMapping("/search")
     @ApiOperation( value = "Searching the vocabularies", hidden = true )
     public ResponseEntity<CvResult> searchVocabularies(
@@ -138,7 +137,7 @@ public class VocabularyResourceV2 {
                 String titleTemp = vocab.getTitleByLanguage(lang);
                 String defTemp = vocab.getDefinitionByLanguage(lang);
                 vocab.clearContent();
-                vocab.setTitleDefinition(titleTemp, defTemp, lang);
+                vocab.setTitleDefinition(titleTemp, defTemp, lang, false);
 
                 vocab.getCodes().forEach(code -> {
                     String codeTitleTemp = code.getTitleByLanguage(lang);
@@ -146,7 +145,7 @@ public class VocabularyResourceV2 {
                     code.clearContents();
                     code.setId( null );
                     code.setPosition( null );
-                    code.setTitleDefinition(codeTitleTemp, codeDefTemp, lang);
+                    code.setTitleDefinition(codeTitleTemp, codeDefTemp, lang, false);
                 });
             }
         });
@@ -290,7 +289,6 @@ public class VocabularyResourceV2 {
      * @param languageVersion
      * @return Vocabulary by redirecting to CVS Vocabulary detail
      */
-    @CrossOrigin
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
         produces = MediaType.TEXT_HTML_VALUE
@@ -335,7 +333,6 @@ public class VocabularyResourceV2 {
      * @return Vocabulary in HTML format
      * @throws IOException
      */
-    @CrossOrigin
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
         produces = MediaType.APPLICATION_XHTML_XML_VALUE
@@ -377,7 +374,6 @@ public class VocabularyResourceV2 {
      * @param languageVersion
      * @return Vocabulary in JSON format
      */
-    @CrossOrigin
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
         produces = MediaType.APPLICATION_JSON_VALUE
@@ -419,7 +415,6 @@ public class VocabularyResourceV2 {
      * @param languageVersion
      * @return Vocabulary in JSON-LD format
      */
-    @CrossOrigin
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
         produces = JSONLD_TYPE
@@ -462,7 +457,6 @@ public class VocabularyResourceV2 {
      * @return Vocabulary in PDF format
      * @throws IOException
      */
-    @CrossOrigin
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
         produces = MediaType.APPLICATION_PDF_VALUE
@@ -505,7 +499,6 @@ public class VocabularyResourceV2 {
      * @return Vocabulary in WORD-DOCX format
      * @throws IOException
      */
-    @CrossOrigin
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
         produces = DOCX_TYPE
@@ -548,7 +541,6 @@ public class VocabularyResourceV2 {
      * @return Vocabulary in Skos RDF file
      * @throws IOException
      */
-    @CrossOrigin
     @GetMapping(
         value="/vocabularies/{vocabulary}/{versionNumberSl}",
         produces = MediaType.APPLICATION_XML_VALUE
@@ -594,7 +586,6 @@ public class VocabularyResourceV2 {
      *
      * @throws IOException
      */
-    @CrossOrigin
     @GetMapping("/vocabularies/html/{vocabulary}/{versionNumberSl}")
     @ApiOperation( value = "Get a Vocabulary in HTML format", hidden = true )
     public ResponseEntity<Resource> getVocabularyInHtml(
@@ -618,7 +609,6 @@ public class VocabularyResourceV2 {
      * @return Vocabulary in JSON format
      *
      */
-    @CrossOrigin
     @GetMapping("/vocabularies/json/{vocabulary}/{versionNumberSl}")
     @ApiOperation( value = "Get a Vocabulary in JSON format", hidden = true )
     public ResponseEntity<VocabularyDTO> getVocabularyInJson(
@@ -642,7 +632,6 @@ public class VocabularyResourceV2 {
      * @return Vocabulary in JSON-LD format
      *
      */
-    @CrossOrigin
     @GetMapping("/vocabularies/jsonld/{vocabulary}/{versionNumberSl}")
     @ApiOperation( value = "Get a Vocabulary in JSON-LD format", hidden = true )
     public ResponseEntity<List<Object>> getVocabularyInJsonLd(
@@ -667,7 +656,6 @@ public class VocabularyResourceV2 {
      *
      * @throws IOException
      */
-    @CrossOrigin
     @GetMapping("/vocabularies/pdf/{vocabulary}/{versionNumberSl}")
     @ApiOperation( value = "Get a Vocabulary in PDF format", hidden = true )
     public ResponseEntity<Resource> getVocabularyInPdf(
@@ -692,7 +680,6 @@ public class VocabularyResourceV2 {
      *
      * @throws IOException
      */
-    @CrossOrigin
     @GetMapping("/vocabularies/docx/{vocabulary}/{versionNumberSl}")
     @ApiOperation( value = "Get a Vocabulary in DOCX format", hidden = true  )
     public ResponseEntity<Resource> getVocabularyInDocx(
@@ -715,7 +702,6 @@ public class VocabularyResourceV2 {
      * @return
      * @throws IOException
      */
-    @CrossOrigin
     @GetMapping("/vocabularies/rdf/{vocabulary}/{versionNumberSl}")
     @ApiOperation( value = "Get a Vocabulary in SKOS format", hidden = true  )
     public ResponseEntity<Resource> getVocabularyInSkos(
@@ -785,7 +771,6 @@ public class VocabularyResourceV2 {
      * @param cv the id of the vocabularyDTO to be compared with previous version.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the vocabularyDTO, or with status {@code 404 (Not Found)}.
      */
-    @CrossOrigin
     @GetMapping("/compare-vocabulary/{cv}/{lv1}/{lv2}")
     @ApiOperation( value = "Get the Vocabulary content of 2 different versions, in order to be compared with diff-app", hidden = true )
     public ResponseEntity<List<String>> getVocabularyComparePrev(

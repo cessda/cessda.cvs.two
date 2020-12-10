@@ -67,7 +67,7 @@ public class VocabularyDTO implements Serializable {
 
     public void setContentByVocabularySnippet(VocabularySnippet vocabularySnippet){
         setVersionByLanguage(vocabularySnippet.getLanguage(), vocabularySnippet.getVersionNumber());
-        setTitleDefinition(vocabularySnippet.getTitle(), vocabularySnippet.getDefinition(), vocabularySnippet.getLanguage());
+        setTitleDefinition(vocabularySnippet.getTitle(), vocabularySnippet.getDefinition(), vocabularySnippet.getLanguage(), false);
         this.notes = vocabularySnippet.getNotes();
     }
 
@@ -1502,7 +1502,7 @@ public class VocabularyDTO implements Serializable {
     }
 
     public String getTitleByLanguage( String languageIso ) {
-        return getTitleByLanguage(Language.getByIso(languageIso ));
+        return getTitleByLanguage(Language.getByIso(languageIso.toLowerCase() ));
     }
 
     public String getTitleByLanguage( Language language ) {
@@ -1569,7 +1569,7 @@ public class VocabularyDTO implements Serializable {
     }
 
     public String getDefinitionByLanguage( String languageIso ) {
-        return getDefinitionByLanguage( Language.getByIso(languageIso));
+        return getDefinitionByLanguage( Language.getByIso(languageIso.toLowerCase()));
     }
 
     public String getDefinitionByLanguage( Language language ) {
@@ -1635,11 +1635,18 @@ public class VocabularyDTO implements Serializable {
         }
     }
 
-    public VocabularyDTO setTitleDefinition( String title, String definition, String language) {
-        return setTitleDefinition(title, definition, Language.getByIso(language));
+    public VocabularyDTO setTitleDefinition( String title, String definition, String language, boolean ignoreNullValue) {
+        return setTitleDefinition(title, definition, Language.getByIso(language.toLowerCase()), ignoreNullValue);
     }
 
-    public VocabularyDTO setTitleDefinition( String title, String definition, Language language) {
+    public VocabularyDTO setTitleDefinition( String title, String definition, Language language, boolean ignoreNullValue) {
+        if( ignoreNullValue ) {
+            if( definition == null )
+                definition = getDefinitionByLanguage( language );
+            if( title == null )
+                title = getTitleByLanguage( language );
+        }
+
         switch (language) {
             case CZECH:
                 setTitleCs(title);
@@ -1760,7 +1767,7 @@ public class VocabularyDTO implements Serializable {
     }
 
     public VocabularyDTO setVersionByLanguage(String langIso, String versionNumber) {
-        return setVersionByLanguage(Language.getByIso( langIso ), versionNumber);
+        return setVersionByLanguage(Language.getByIso( langIso.toLowerCase() ), versionNumber);
     }
 
     public VocabularyDTO setVersionByLanguage(Language language, String versionNumber) {
@@ -1968,7 +1975,7 @@ public class VocabularyDTO implements Serializable {
                 continue;
             versionLangs.add( version.getLanguage());
             // fill vocabulary
-            vocab.setTitleDefinition(version.getTitle(), version.getDefinition(), version.getLanguage());
+            vocab.setTitleDefinition(version.getTitle(), version.getDefinition(), version.getLanguage(), false);
             if( version.getStatus().equals( Status.PUBLISHED.toString())) {
                 vocab.addLanguagePublished(version.getLanguage());
                 vocab.setVersionByLanguage(version.getLanguage(), version.getNumber());

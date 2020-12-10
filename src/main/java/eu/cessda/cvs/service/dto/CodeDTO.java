@@ -837,11 +837,17 @@ public class CodeDTO implements Serializable {
             "}";
     }
 
-    public CodeDTO setTitleDefinition(String title, String definition, String language) {
-        return setTitleDefinition(title, definition, Language.getByIso(language));
+    public CodeDTO setTitleDefinition(String title, String definition, String language, boolean ignoreNullValue) {
+        return setTitleDefinition(title, definition, Language.getByIso(language.toLowerCase()), ignoreNullValue);
     }
 
-    public CodeDTO setTitleDefinition(String title, String definition, Language language) {
+    public CodeDTO setTitleDefinition(String title, String definition, Language language, boolean ignoreNullValue) {
+        if( ignoreNullValue ) {
+            if( title == null )
+                title = getTitleByLanguage( language );
+            if( definition == null )
+                definition = getDefinitionByLanguage( language );
+        }
         switch (language) {
             case CZECH:
                 setDefinitionCs(definition);
@@ -991,7 +997,7 @@ public class CodeDTO implements Serializable {
                     codeDTOsMap.put(concept.getNotation(), codeDTO);
                     codeIndex+=2L;
                 }
-                codeDTO.setTitleDefinition(concept.getTitle(), concept.getDefinition(), version.getLanguage());
+                codeDTO.setTitleDefinition(concept.getTitle(), concept.getDefinition(), version.getLanguage(), false);
             }
         }
 
@@ -1004,7 +1010,7 @@ public class CodeDTO implements Serializable {
      * @return
      */
     public String getTitleByLanguage( String language ) {
-        return getTitleByLanguage( Language.getByIso(language) );
+        return getTitleByLanguage( Language.getByIso(language.toLowerCase()) );
     }
 
     public String getTitleByLanguage( Language language ) {
@@ -1047,7 +1053,7 @@ public class CodeDTO implements Serializable {
      * @return
      */
     public String getDefinitionByLanguage( String language ) {
-        return getDefinitionByLanguage( Language.getByIso(language));
+        return getDefinitionByLanguage( Language.getByIso(language.toLowerCase()));
     }
 
     public String getDefinitionByLanguage( Language language ) {

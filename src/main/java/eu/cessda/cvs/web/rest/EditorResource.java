@@ -369,7 +369,7 @@ public class EditorResource {
         if( isTlPublished ) {
             // if published update vocabulary
             if( versionDTO.isInitialVersion() ) {
-                vocabularyDTO.setTitleDefinition(null, null, versionDTO.getLanguage());
+                vocabularyDTO.setTitleDefinition(null, null, versionDTO.getLanguage(), false);
                 vocabularyDTO.setVersionByLanguage(versionDTO.getLanguage(), null );
             } else {
                 // check if there is previous version
@@ -377,7 +377,7 @@ public class EditorResource {
                 if ( versionDTO.getPreviousVersion() != null )
                     versionPrevDTO = versionService.findOne(versionDTO.getPreviousVersion()).orElse(null);
                 if( versionPrevDTO != null) {
-                    vocabularyDTO.setTitleDefinition(versionPrevDTO.getTitle(), versionPrevDTO.getDefinition(), versionPrevDTO.getLanguage());
+                    vocabularyDTO.setTitleDefinition(versionPrevDTO.getTitle(), versionPrevDTO.getDefinition(), versionPrevDTO.getLanguage(), false);
                     vocabularyDTO.setVersionByLanguage(versionPrevDTO.getLanguage(), versionPrevDTO.getNumber() );
                 }
             }

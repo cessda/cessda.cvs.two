@@ -1186,18 +1186,11 @@ public class VocabularyServiceImpl implements VocabularyService {
             for( Text text: highlighField.getFragments()) {
                 highLightText.append(text.string()).append(" ");
             }
-            java.lang.reflect.Field declaredField;
-            try {
-                declaredField = VocabularyDTO.class.getDeclaredField( fieldName );
-                declaredField.setAccessible( true );
-                declaredField.set(cvHit, highLightText.toString());
 
-                setSelectedLanguageByHighlight( cvHit, fieldName );
-            } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-                log.error(e.getMessage(), e);
-            }
-
-
+            if( fieldName.contains(TITLE) )
+                cvHit.setTitleDefinition(highLightText.toString(), null, fieldName.substring(TITLE.length()), true);
+            if( fieldName.contains(DEFINITION) )
+                cvHit.setTitleDefinition(null, highLightText.toString(), fieldName.substring(DEFINITION.length()), true);
         }
     }
 
@@ -1234,16 +1227,11 @@ public class VocabularyServiceImpl implements VocabularyService {
                 } else
                     highLightText.append( text.string() );
             }
-            java.lang.reflect.Field declaredField;
-            try {
-                declaredField = CodeDTO.class.getDeclaredField( fieldName.substring( CODE_PATH.length() + 1 ) );
-                declaredField.setAccessible( true );
-                declaredField.set(codeHit, highLightText.toString());
-
-                setSelectedLanguageByHighlight(cvHit, fieldName );
-            } catch (NoSuchFieldException | SecurityException | IllegalAccessException e) {
-                log.error(e.getMessage(), e);
-            }
+            if( fieldName.contains(TITLE) )
+                codeHit.setTitleDefinition(highLightText.toString(), null, fieldName.substring((CODE_PATH + "." +TITLE).length()), true);
+            if( fieldName.contains(DEFINITION) )
+                codeHit.setTitleDefinition(null, highLightText.toString(), fieldName.substring((CODE_PATH + "." +DEFINITION).length()), true);
+            setSelectedLanguageByHighlight( cvHit, fieldName );
         }
     }
 
@@ -1294,7 +1282,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             boolQuery
                 .should( QueryBuilders.matchQuery( CODE_PATH + "." + TITLE + languageFields.get(0), term).fuzziness(0.7).boost( 3.0f ))
                 .should( QueryBuilders.matchQuery( CODE_PATH + "." + DEFINITION + languageFields.get(0), term).fuzziness(0.7).boost( 2.0f ))
-                .should( QueryBuilders.wildcardQuery( CODE_PATH + "." + NOTATION, term.toLowerCase().replace(" ", "") + "*").boost( 1.0f ));;
+                .should( QueryBuilders.wildcardQuery( CODE_PATH + "." + NOTATION, term.toLowerCase().replace(" ", "") + "*").boost( 1.0f ));
         }
         else {
             List<String> fields = new ArrayList<>();
@@ -1305,7 +1293,6 @@ public class VocabularyServiceImpl implements VocabularyService {
             }
             boolQuery.should(QueryBuilders.multiMatchQuery(term, fields.toArray(new String[0])));
         }
-
 
         if( term.length() > 2)
             return QueryBuilders.nestedQuery( CODE_PATH, boolQuery, ScoreMode.Total)

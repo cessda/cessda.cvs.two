@@ -16,7 +16,10 @@ class CodeDTOTest {
             String uuid1 = UUID.randomUUID().toString();
             String uuid2 = UUID.randomUUID().toString();
 
-            codeDTO.setTitleDefinition(uuid1, uuid2, lang.getIso());
+            codeDTO.setTitleDefinition(uuid1, uuid2, lang.getIso(), false);
+            assertThat(codeDTO.getTitleByLanguage(lang.getIso())).isEqualTo(uuid1);
+            assertThat(codeDTO.getDefinitionByLanguage(lang.getIso())).isEqualTo(uuid2);
+            codeDTO.setTitleDefinition(uuid1, null, lang.getIso(), true);
             assertThat(codeDTO.getTitleByLanguage(lang.getIso())).isEqualTo(uuid1);
             assertThat(codeDTO.getDefinitionByLanguage(lang.getIso())).isEqualTo(uuid2);
         }
