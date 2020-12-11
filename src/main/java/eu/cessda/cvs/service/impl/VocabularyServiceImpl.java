@@ -1549,6 +1549,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             BufferedWriter bw = new BufferedWriter(new FileWriter(file))
         ){
             bw.write(content);
+            bw.flush();
             log.info("Written to Temp file : {} ", file.getAbsolutePath());
         } catch (IOException e)
         {
