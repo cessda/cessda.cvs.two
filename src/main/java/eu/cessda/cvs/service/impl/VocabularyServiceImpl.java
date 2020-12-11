@@ -1385,7 +1385,6 @@ public class VocabularyServiceImpl implements VocabularyService {
     public String generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) {
         StringBuilder output = new StringBuilder();
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);

@@ -1,0 +1,962 @@
+{
+  "id" : 72,
+  "status" : "PUBLISHED",
+  "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/en/3.0/4.0",
+  "notation" : "ModeOfCollection",
+  "versionNumber" : "4.0",
+  "withdrawn" : false,
+  "sourceLanguage" : "en",
+  "agencyId" : 2,
+  "agencyName" : "DDI Alliance",
+  "agencyLogo" : "ddi.png",
+  "agencyLink" : "http://www.ddialliance.org/",
+  "publicationDate" : "2020-11-05",
+  "notes" : "",
+  "versions" : [ {
+    "id" : 452,
+    "status" : "PUBLISHED",
+    "itemType" : "SL",
+    "language" : "en",
+    "publicationDate" : "2020-11-05",
+    "number" : "4.0",
+    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/en/4.0",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:ModeOfCollection:4.0",
+    "notation" : "ModeOfCollection",
+    "title" : "Mode Of Collection",
+    "definition" : "The procedure, technique, or mode of inquiry used to attain the data.",
+    "previousVersion" : 325,
+    "initialVersion" : 325,
+    "notes" : "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
+    "versionChanges" : "<p>Code added: Recording.RemoteSensing</p><p>Code added: AutomatedDataExtraction</p><p>Code added: AutomatedDataExtraction.ApiQuery</p><p>Code added: AutomatedDataExtraction.DatabaseQuery</p><p>Code added: AutomatedDataExtraction.WebScraping</p><p>Code definition rephrased: Compilation/Synthesis</p>",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). Mode Of Collection (Version 4.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:4.0. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfModeOfCollection</a></p><p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfPretestCollectionMode.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfPretestCollectionMode</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfModeOfCollection</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\" rel=\"noopener noreferrer\" target=\"_blank\">collMode</a></p>",
+    "lastStatusChangeDate" : "2020-11-05",
+    "concepts" : [ {
+      "id" : 10748,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview/en/4.0",
+      "notation" : "Interview",
+      "title" : "Interview",
+      "definition" : "A pre-planned communication between two (or more) people - the interviewer(s) and the interviewee(s) - in which information is obtained by the interviewer(s) from the interviewee(s). If group interaction is part of the method, use \"Focus group\".",
+      "previousConcept" : 4976,
+      "position" : 0
+    }, {
+      "id" : 10776,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.FaceToFace/en/4.0",
+      "notation" : "Interview.FaceToFace",
+      "title" : "Face-to-face interview",
+      "definition" : "Data collection method in which a live interviewer conducts a personal interview, presenting questions and entering the responses. Use this broader term if not CAPI or PAPI, or if not known whether CAPI/PAPI or not.",
+      "previousConcept" : 4977,
+      "parent" : "Interview",
+      "position" : 1
+    }, {
+      "id" : 10775,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.FaceToFace.CAPIorCAMI/en/4.0",
+      "notation" : "Interview.FaceToFace.CAPIorCAMI",
+      "title" : "Face-to-face interview: Computer-assisted (CAPI/CAMI)",
+      "definition" : "Computer-assisted personal interviewing (CAPI), or computer-assisted mobile interviewing (CAMI). Data collection method in which the interviewer reads questions to the respondents from the screen of a computer, laptop, or a mobile device like tablet or smartphone, and enters the answers in the same device. The administration of the interview is managed by a specifically designed program/application.",
+      "previousConcept" : 5023,
+      "parent" : "Interview.FaceToFace",
+      "position" : 2
+    }, {
+      "id" : 10760,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.FaceToFace.PAPI/en/4.0",
+      "notation" : "Interview.FaceToFace.PAPI",
+      "title" : "Face-to-face interview: Paper-and-pencil (PAPI)",
+      "definition" : "Paper-and-pencil interviewing (PAPI). The interviewer uses a traditional paper questionnaire to read the questions and enter the answers.",
+      "previousConcept" : 5022,
+      "parent" : "Interview.FaceToFace",
+      "position" : 3
+    }, {
+      "id" : 10771,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone/en/4.0",
+      "notation" : "Interview.Telephone",
+      "title" : "Telephone interview",
+      "definition" : "Interview administered on the telephone. Use this broader term if not CATI, or if not known whether CATI or not.",
+      "previousConcept" : 4980,
+      "parent" : "Interview",
+      "position" : 4
+    }, {
+      "id" : 10750,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone.CATI/en/4.0",
+      "notation" : "Interview.Telephone.CATI",
+      "title" : "Telephone interview: Computer-assisted (CATI)",
+      "definition" : "Computer-assisted telephone interviewing (CATI). The interviewer asks questions as directed by a computer, responses are keyed directly into the computer and the administration of the interview is managed by a specifically designed program.",
+      "previousConcept" : 4981,
+      "parent" : "Interview.Telephone",
+      "position" : 5
+    }, {
+      "id" : 10743,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Email/en/4.0",
+      "notation" : "Interview.Email",
+      "title" : "E-mail interview",
+      "definition" : "Interviews conducted via e-mail, usually consisting of several e-mail messages that allow the discussion to continue beyond the first set of questions and answers, or the first e-mail exchange.",
+      "previousConcept" : 4982,
+      "parent" : "Interview",
+      "position" : 6
+    }, {
+      "id" : 10753,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.WebBased/en/4.0",
+      "notation" : "Interview.WebBased",
+      "title" : "Web-based interview",
+      "definition" : "An interview conducted via the Internet. For example, interviews conducted within online forums or using web-based audio-visual technology that enables the interviewer(s) and interviewee(s) to communicate in real time.",
+      "previousConcept" : 4983,
+      "parent" : "Interview",
+      "position" : 7
+    }, {
+      "id" : 10751,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire/en/4.0",
+      "notation" : "SelfAdministeredQuestionnaire",
+      "title" : "Self-administered questionnaire",
+      "definition" : "Data collection method in which the respondent reads or listens to the questions, and enters the responses by him/herself; no live interviewer is present, or participates in the questionnaire administration. If possible, use a narrower term. Use this broader term if the method is not described by any of the narrower terms - for example, for PDF and diskette questionnaires.",
+      "previousConcept" : 4984,
+      "position" : 8
+    }, {
+      "id" : 10783,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.Email/en/4.0",
+      "notation" : "SelfAdministeredQuestionnaire.Email",
+      "title" : "Self-administered questionnaire: E-mail",
+      "definition" : "Self-administered survey in which questions are presented to the respondent in the text body of an e-mail or as an attachment to an e-mail, but not as a link to a web-based questionnaire. Responses are also sent back via e-mail, in the e-mail body or as an attachment.",
+      "previousConcept" : 4985,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 9
+    }, {
+      "id" : 10757,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.Paper/en/4.0",
+      "notation" : "SelfAdministeredQuestionnaire.Paper",
+      "title" : "Self-administered questionnaire: Paper",
+      "definition" : "Self-administered survey using a traditional paper questionnaire delivered and/or collected by mail (postal services), by fax, or in person by either interviewer, or respondent.",
+      "previousConcept" : 4986,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 10
+    }, {
+      "id" : 10768,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.SMSorMMS/en/4.0",
+      "notation" : "SelfAdministeredQuestionnaire.SMSorMMS",
+      "title" : "Self-administered questionnaire: Messaging (SMS/MMS)",
+      "definition" : "Self-administered survey in which the respondents receive the questions incorporated in SMS (text messages) or MMS (messages including multimedia content) and send their replies in the same format.",
+      "previousConcept" : 4987,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 11
+    }, {
+      "id" : 10786,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.CAWI/en/4.0",
+      "notation" : "SelfAdministeredQuestionnaire.CAWI",
+      "title" : "Self-administered questionnaire: Web-based (CAWI)",
+      "definition" : "Computer-assisted web interviewing (CAWI). Data are collected using a web questionnaire, produced with a program for creating web surveys. The program can customize the flow of the questionnaire based on the answers provided, and can allow for the questionnaire to contain pictures, audio and video clips, links to different web pages etc.",
+      "previousConcept" : 4988,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 12
+    }, {
+      "id" : 10744,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.CASI/en/4.0",
+      "notation" : "SelfAdministeredQuestionnaire.CASI",
+      "title" : "Self-administered questionnaire: Computer-assisted (CASI)",
+      "definition" : "Computer-assisted self-interview (CASI). Respondents enter the responses into a computer (desktop, laptop, Palm/PDA, tablet, etc.) by themselves. The administration of the questionnaire is managed by a specifically designed program/application but there is no real-time data transfer as in CAWI, the answers are stored on the device used for the interview. The questionnaire may be fixed form or interactive. Includes VCASI (Video computer-assisted self-interviewing), ACASI (Audio computer-assisted self-interviewing) and TACASI (Telephone audio computer-assisted self-interviewing).",
+      "previousConcept" : 4989,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 13
+    }, {
+      "id" : 10746,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup/en/4.0",
+      "notation" : "FocusGroup",
+      "title" : "Focus group",
+      "definition" : "A group discussion on a particular topic, organized for research purposes. The individuals are selected with relevance to the topic, and interaction among the participants is used as part of the method.",
+      "previousConcept" : 4990,
+      "position" : 14
+    }, {
+      "id" : 10777,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup.FaceToFace/en/4.0",
+      "notation" : "FocusGroup.FaceToFace",
+      "title" : "Face-to-face focus group",
+      "definition" : "The focus group participants meet in person to conduct the discussion.",
+      "previousConcept" : 4991,
+      "parent" : "FocusGroup",
+      "position" : 15
+    }, {
+      "id" : 10788,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup.Telephone/en/4.0",
+      "notation" : "FocusGroup.Telephone",
+      "title" : "Telephone focus group",
+      "definition" : "The focus group discussion is conducted over the telephone.",
+      "previousConcept" : 4992,
+      "parent" : "FocusGroup",
+      "position" : 16
+    }, {
+      "id" : 10784,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup.Online/en/4.0",
+      "notation" : "FocusGroup.Online",
+      "title" : "Online focus group",
+      "definition" : "The focus group discussion is conducted over the Internet in an interactive manner.",
+      "previousConcept" : 4993,
+      "parent" : "FocusGroup",
+      "position" : 17
+    }, {
+      "id" : 10767,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries/en/4.0",
+      "notation" : "SelfAdministeredWritingsAndDiaries",
+      "title" : "Self-administered writings and/or diaries",
+      "definition" : "Narratives, stories, diaries, and written texts created by the research subject.",
+      "previousConcept" : 4994,
+      "position" : 18
+    }, {
+      "id" : 10779,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries.Email/en/4.0",
+      "notation" : "SelfAdministeredWritingsAndDiaries.Email",
+      "title" : "Self-administered writings and/or diaries: E-mail",
+      "definition" : "Narratives, stories, diaries, and written texts submitted via e-mail messages.",
+      "previousConcept" : 4995,
+      "parent" : "SelfAdministeredWritingsAndDiaries",
+      "position" : 19
+    }, {
+      "id" : 10787,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries.Paper/en/4.0",
+      "notation" : "SelfAdministeredWritingsAndDiaries.Paper",
+      "title" : "Self-administered writings and/or diaries: Paper",
+      "definition" : "Narratives, stories, diaries, and written texts created and collected in paper form.",
+      "previousConcept" : 4996,
+      "parent" : "SelfAdministeredWritingsAndDiaries",
+      "position" : 20
+    }, {
+      "id" : 10756,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries.WebBased/en/4.0",
+      "notation" : "SelfAdministeredWritingsAndDiaries.WebBased",
+      "title" : "Self-administered writings and/or diaries: Web-based",
+      "definition" : "Narratives, stories, diaries, and written texts gathered from Internet sources, e.g. websites, blogs, discussion forums.",
+      "previousConcept" : 4997,
+      "parent" : "SelfAdministeredWritingsAndDiaries",
+      "position" : 21
+    }, {
+      "id" : 10773,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation/en/4.0",
+      "notation" : "Observation",
+      "title" : "Observation",
+      "definition" : "Research method that involves collecting data as they occur (for example, observing behaviors, events, development of condition or disease, etc.), without attempting to manipulate any of the independent variables.",
+      "previousConcept" : 4998,
+      "position" : 22
+    }, {
+      "id" : 10749,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field/en/4.0",
+      "notation" : "Observation.Field",
+      "title" : "Field observation",
+      "definition" : "Observation that is conducted in a natural environment.",
+      "previousConcept" : 4999,
+      "parent" : "Observation",
+      "position" : 23
+    }, {
+      "id" : 10770,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field.Participant/en/4.0",
+      "notation" : "Observation.Field.Participant",
+      "title" : "Participant field observation",
+      "definition" : "Type of field observation in which the researcher interacts with the subjects and often plays a role in the social situation under observation.",
+      "previousConcept" : 5024,
+      "parent" : "Observation.Field",
+      "position" : 24
+    }, {
+      "id" : 10754,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field.Nonparticipant/en/4.0",
+      "notation" : "Observation.Field.Nonparticipant",
+      "title" : "Non-participant field observation",
+      "definition" : "Observation that is conducted in a natural, non-controlled setting without any interaction between the researcher and his/her subjects.",
+      "previousConcept" : 5001,
+      "parent" : "Observation.Field",
+      "position" : 25
+    }, {
+      "id" : 10774,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Laboratory/en/4.0",
+      "notation" : "Observation.Laboratory",
+      "title" : "Laboratory observation",
+      "definition" : "Observation that is conducted in a controlled, artificially created setting. For example, observing children's play in a laboratory playroom.",
+      "previousConcept" : 5002,
+      "parent" : "Observation",
+      "position" : 26
+    }, {
+      "id" : 10761,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Laboratory.Participant/en/4.0",
+      "notation" : "Observation.Laboratory.Participant",
+      "title" : "Participant laboratory observation",
+      "definition" : "Type of laboratory observation in which the researcher interacts with the subjects and often plays a role in the social situation under observation. For example, observing children's play in a laboratory playroom with the researcher taking part in the play.",
+      "previousConcept" : 5025,
+      "parent" : "Observation.Laboratory",
+      "position" : 27
+    }, {
+      "id" : 10778,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Laboratory.Nonparticipant/en/4.0",
+      "notation" : "Observation.Laboratory.Nonparticipant",
+      "title" : "Non-participant laboratory observation",
+      "definition" : "Type of laboratory observation that is conducted without any interaction between the researcher and his/her subjects.",
+      "previousConcept" : 5004,
+      "parent" : "Observation.Laboratory",
+      "position" : 28
+    }, {
+      "id" : 10785,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.ComputerBased/en/4.0",
+      "notation" : "Observation.ComputerBased",
+      "title" : "Computer-based observation",
+      "definition" : "Type of observation in which data regarding computer usage are being collected by software that can be built into the computer program itself or can be a separate program. Information may be collected about the number of users, the ways in which users interact with the program(s), how much time they spend on a page, how they use specific sections of applications, how they navigate from page to page or from one application to another, etc.",
+      "previousConcept" : 5005,
+      "parent" : "Observation",
+      "position" : 29
+    }, {
+      "id" : 10763,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment/en/4.0",
+      "notation" : "Experiment",
+      "title" : "Experiment",
+      "definition" : "Research method involving the manipulation of some or all of the independent variables included in the hypotheses.",
+      "previousConcept" : 5006,
+      "position" : 30
+    }, {
+      "id" : 10772,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.Laboratory/en/4.0",
+      "notation" : "Experiment.Laboratory",
+      "title" : "Laboratory experiment",
+      "definition" : "An experiment conducted in a controlled, artificially created physical setting, in which a researcher manipulates one or several independent variables and measures its/their effect on the dependent variable.",
+      "previousConcept" : 5007,
+      "parent" : "Experiment",
+      "position" : 31
+    }, {
+      "id" : 10764,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.FieldIntervention/en/4.0",
+      "notation" : "Experiment.FieldIntervention",
+      "title" : "Field/Intervention experiment",
+      "definition" : "An experiment conducted in a natural, uncontrolled setting, in which the researcher manipulates one or several independent variables. Intervention/clinical studies are one example of field experiments.",
+      "previousConcept" : 5008,
+      "parent" : "Experiment",
+      "position" : 32
+    }, {
+      "id" : 10747,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.WebBased/en/4.0",
+      "notation" : "Experiment.WebBased",
+      "title" : "Web-based experiment",
+      "definition" : "An experiment conducted in the virtual setting of the World Wide Web, in which experimental materials are programmed to implement artificial situations or events to be investigated in a distributed environment. (Reips, U.-D. (2002). Theory and techniques of Web experimenting. In B. Batinic, U.-D. Reips, & M. Bosnjak (Eds.), Online Social Sciences. Seattle: Hogrefe & Huber. Available at: http://www.websm.org/uploadi/editor/Reips_2002_Theory_and_techniques.pdf [07 June 2013])",
+      "previousConcept" : 5009,
+      "parent" : "Experiment",
+      "position" : 33
+    }, {
+      "id" : 10766,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Recording/en/4.0",
+      "notation" : "Recording",
+      "title" : "Recording",
+      "definition" : "Registering by mechanical or electronic means, in a form that allows the information to be retrieved and/or reproduced. For example, images or sounds on disc or magnetic tape.",
+      "previousConcept" : 5010,
+      "position" : 34
+    }, {
+      "id" : 10789,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Recording.RemoteSensing/en/4.0",
+      "notation" : "Recording.RemoteSensing",
+      "title" : "Recording: Remote sensing",
+      "definition" : "Collecting information on objects or phenomena without physical contact with them, using remote sensors on satellites and aircraft (planes, drones, weather balloons). Often used to gather information on the Earth’s surface, atmosphere and oceans. For example, damage assessment after an earthquake or forest fires. The technique is also used for military, commercial, economic and other applications.",
+      "parent" : "Recording",
+      "position" : 35
+    }, {
+      "id" : 10828,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#AutomatedDataExtraction/en/4.0",
+      "notation" : "AutomatedDataExtraction",
+      "title" : "Automated data extraction",
+      "definition" : "Using automated means to retrieve information from data sources and save it to a local file or database for further processing or storage. Use this term if it is not known what kind of automated technique has been used or if the technique is known but not listed as a narrower term.",
+      "position" : 36
+    }, {
+      "id" : 10829,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#AutomatedDataExtraction.ApiQuery/en/4.0",
+      "notation" : "AutomatedDataExtraction.ApiQuery",
+      "title" : "Automated data extraction: API query",
+      "definition" : "Retrieving information from online data sources through an API (application programming interface) to save it to a local file or database for further processing or storage.",
+      "parent" : "AutomatedDataExtraction",
+      "position" : 37
+    }, {
+      "id" : 10830,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#AutomatedDataExtraction.DatabaseQuery/en/4.0",
+      "notation" : "AutomatedDataExtraction.DatabaseQuery",
+      "title" : "Automated data extraction: Database query",
+      "definition" : "Retrieving information from databases through a query to the database to extract only the information required, saving it to a local file or database for further processing or storage.",
+      "parent" : "AutomatedDataExtraction",
+      "position" : 38
+    }, {
+      "id" : 10831,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#AutomatedDataExtraction.WebScraping/en/4.0",
+      "notation" : "AutomatedDataExtraction.WebScraping",
+      "title" : "Automated data extraction: Web scraping",
+      "definition" : "A technique employed to extract large amounts of data from websites and save it to a local file or database for further processing or storage. Also called screen scraping, web data extraction, web harvesting, etc.",
+      "parent" : "AutomatedDataExtraction",
+      "position" : 39
+    }, {
+      "id" : 10762,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#ContentCoding/en/4.0",
+      "notation" : "ContentCoding",
+      "title" : "Content coding",
+      "definition" : "As a mode of secondary data collection, content coding applies coding techniques to transform qualitative data (textual, video, audio or still-image) originally produced for other purposes into quantitative data (expressed in unit-by-variable matrices) in accordance with pre-defined categorization schemes. For example, coded party manifesto data like the \"European Parliament Election Study 2009, Manifesto Study\" (doi:10.4232/1.10204).",
+      "previousConcept" : 5011,
+      "position" : 40
+    }, {
+      "id" : 10745,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Transcription/en/4.0",
+      "notation" : "Transcription",
+      "title" : "Transcription",
+      "definition" : "Capturing information in writing from a different source, or from a different medium, alphabet, or form of notation, like scientific formulae, or musical notes. For transcribed interviews or observations, it is recommended to document the primary mode of collection, using one of the interview or observation terms.",
+      "previousConcept" : 5012,
+      "position" : 41
+    }, {
+      "id" : 10781,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#CompilationSynthesis/en/4.0",
+      "notation" : "CompilationSynthesis",
+      "title" : "Compilation/Synthesis",
+      "definition" : "Collecting and assembling data from multiple, often heterogeneous sources that have one or more reference points in common, and at least one of the sources was originally produced for other purposes. The data are incorporated in a new entity. For example, providing data on the number of universities in the last 150 years using a variety of available sources (e.g. finance documents, official statistics, university registers), combining survey data with information about geographical areas from official statistics (e.g. population density, doctors per capita, etc.), or with social media data, etc.",
+      "previousConcept" : 5013,
+      "position" : 42
+    }, {
+      "id" : 10769,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Summary/en/4.0",
+      "notation" : "Summary",
+      "title" : "Summary",
+      "definition" : "Presentation of information in a condensed form, by reducing it to its main points. For example, abstracts of interviews or reports that are published and used as data rather than the full-length interviews or reports.",
+      "previousConcept" : 5014,
+      "position" : 43
+    }, {
+      "id" : 10755,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Aggregation/en/4.0",
+      "notation" : "Aggregation",
+      "title" : "Aggregation",
+      "definition" : "Statistics that relate to broad classes, groups, or categories. The data are averaged, totaled, or otherwise derived from individual-level data, and it is no longer possible to distinguish the characteristics of individuals within those classes, groups, or categories. For example, the number and age group of the unemployed in specific geographic regions, or national level statistics on the occurrence of specific offences, originally derived from the statistics of individual police districts.",
+      "previousConcept" : 5015,
+      "position" : 44
+    }, {
+      "id" : 10782,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Simulation/en/4.0",
+      "notation" : "Simulation",
+      "title" : "Simulation",
+      "definition" : "Modeling or imitative representation of real-world processes, events, or systems, often using computer programs. For example, a program modeling household consumption responses to indirect tax changes; or a dataset on hypothetical patients and their drug exposure, background conditions, and known adverse events.",
+      "previousConcept" : 5016,
+      "position" : 45
+    }, {
+      "id" : 10780,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests/en/4.0",
+      "notation" : "MeasurementsAndTests",
+      "title" : "Measurements and tests",
+      "definition" : "Assessing specific properties (or characteristics) of beings, things, phenomena, (and/ or processes) by applying pre-established standards and/or specialized instruments or techniques.",
+      "previousConcept" : 5017,
+      "position" : 46
+    }, {
+      "id" : 10758,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests.Educational/en/4.0",
+      "notation" : "MeasurementsAndTests.Educational",
+      "title" : "Educational measurements and tests",
+      "definition" : "Assessment of knowledge, skills, aptitude, or educational achievement by means of specialized measures or tests.",
+      "previousConcept" : 5018,
+      "parent" : "MeasurementsAndTests",
+      "position" : 47
+    }, {
+      "id" : 10752,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests.Physical/en/4.0",
+      "notation" : "MeasurementsAndTests.Physical",
+      "title" : "Physical measurements and tests",
+      "definition" : "Assessment of physical properties of living beings, objects, materials, or natural phenomena. For example, findings from hands-on medical examination (e.g., palpation or auscultation), clinical measurements and lab tests like blood analysis, blood pressure, heart rate, body weight and height, as well as general measurements like time, distance, mass, temperature, force, power, speed, GPS data on physical movement and other physical parameters or variables, like geospatial data.",
+      "previousConcept" : 5019,
+      "parent" : "MeasurementsAndTests",
+      "position" : 48
+    }, {
+      "id" : 10759,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests.Psychological/en/4.0",
+      "notation" : "MeasurementsAndTests.Psychological",
+      "title" : "Psychological measurements and tests",
+      "definition" : "Assessment of personality traits or psychological/behavioral responses by means of specialized measures or tests. For example, objective tests like self-report measures with a restricted response format, or projective methods allowing free responses, including word association, sentence or story completion, vignettes, cartoon test, thematic apperception tests, role play, drawing tests, inkblot tests, choice ordering exercises, etc.",
+      "previousConcept" : 5020,
+      "parent" : "MeasurementsAndTests",
+      "position" : 49
+    }, {
+      "id" : 10765,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Other/en/4.0",
+      "notation" : "Other",
+      "title" : "Other",
+      "definition" : "Use if the mode of data collection is known, but not found in the list.",
+      "previousConcept" : 5021,
+      "position" : 50
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ {
+      "id" : 325,
+      "version" : "3.0",
+      "date" : "2019-07-02",
+      "note" : "",
+      "changes" : "",
+      "prevVersion" : 0
+    } ]
+  }, {
+    "id" : 503,
+    "status" : "PUBLISHED",
+    "itemType" : "TL",
+    "language" : "sv",
+    "publicationDate" : "2020-11-12",
+    "number" : "4.0.1",
+    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/sv/4.0.1",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:ModeOfCollection:4.0",
+    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection/en/4.0",
+    "notation" : "ModeOfCollection",
+    "title" : "Insamlingsmetod",
+    "definition" : "Den process, metod eller teknik som användes för att samla in data.",
+    "previousVersion" : 331,
+    "initialVersion" : 331,
+    "notes" : "",
+    "versionNotes" : "<p>Minor changes of code descriptions.</p><p>New code translations added: Recording.RemoteSensing, AutomatedDataExtraction, AutomatedDataExtraction.ApiQuery, AutomatedDataExtraction.DatabaseQuery, AutomatedDataExtraction.WebScraping.</p>",
+    "versionChanges" : "<p>Code definition rephrased: Interview - Code defintion rephrased without meaning change, NSC.</p><p>Code definition rephrased: SelfAdministeredQuestionnaire Code definition rephrased to better correspond to source language. NSC.</p><p>Code definition rephrased: SelfAdministeredQuestionnaire.Email - Code definition rephrased for consistency in translation. NSC. </p><p>Code descriptive term rephrased: Observation.ComputerBased - Code descriptive term rephrased due to spelling error. NSC</p><p>Code descriptive term rephrased: Observation.ComputerBased - Corrected spelling in code descriptive term. NSC.</p><p>Code translation added: Recording.RemoteSensing</p><p>Code translation added: AutomatedDataExtraction</p><p>Code translation added: AutomatedDataExtraction</p><p>Code translation added: AutomatedDataExtraction.ApiQuery</p><p>Code translation added: AutomatedDataExtraction.DatabaseQuery</p><p>Code translation added: AutomatedDataExtraction.WebScraping</p><p>Code translation added: AutomatedDataExtraction</p><p>Code translation added: AutomatedDataExtraction.ApiQuery</p><p>Code translation added: AutomatedDataExtraction.ApiQuery</p><p>Code translation added: AutomatedDataExtraction.DatabaseQuery</p>",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). ModeOfCollection[Insamlingsmetod] (Version 4.0.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ModeOfCollection:4.0.1. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfModeOfCollection</a></p><p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfPretestCollectionMode.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfPretestCollectionMode</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a> </p><p>Module Name: datacollection</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfModeOfCollection.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfModeOfCollection</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 2.3.1.6</p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/collMode.html\" rel=\"noopener noreferrer\" target=\"_blank\">collMode</a> </p>",
+    "translateAgency" : "Swedish National Data Service (SND)",
+    "translateAgencyLink" : "https://snd.gu.se",
+    "lastStatusChangeDate" : "2020-11-12",
+    "concepts" : [ {
+      "id" : 12592,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview/sv/4.0.1",
+      "notation" : "Interview",
+      "title" : "Intervju",
+      "definition" : "Planerad kommunikation mellan två (eller flera) personer – intervjuare och intervjuobjekt – där intervjuaren/-na får information från intervjuobjektet/-en. Använd \"Fokusgrupp\" om gruppinteraktion är del av metoden.",
+      "previousConcept" : 7892,
+      "position" : 0
+    }, {
+      "id" : 12576,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.FaceToFace/sv/4.0.1",
+      "notation" : "Interview.FaceToFace",
+      "title" : "Personlig intervju",
+      "definition" : "En närvarande intervjuare genomför en personlig intervju genom att ställa frågor och notera svaren. Använd denna bredare term om det inte rör sig om CAPI eller PAPI, eller om det inte är känt huruvida det rör sig om CAPI/PAPI eller inte.",
+      "previousConcept" : 7893,
+      "parent" : "Interview",
+      "position" : 1
+    }, {
+      "id" : 12558,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.FaceToFace.CAPIorCAMI/sv/4.0.1",
+      "notation" : "Interview.FaceToFace.CAPIorCAMI",
+      "title" : "Personlig intervju: CAPI/CAMI",
+      "definition" : "Datorstödd personlig intervju. Intervjuaren läser frågor för respondenterna från en datorskärm eller mobil enhet (t.ex. surfplatta eller mobiltelefon) och skriver in svaren direkt i datorn. Intervjun hanteras med ett program som utvecklats för detta syfte.",
+      "previousConcept" : 7897,
+      "parent" : "Interview.FaceToFace",
+      "position" : 2
+    }, {
+      "id" : 12550,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.FaceToFace.PAPI/sv/4.0.1",
+      "notation" : "Interview.FaceToFace.PAPI",
+      "title" : "Personlig intervju: PAPI",
+      "definition" : "Papper-och-penna-intervju. Intervjuaren använder ett traditionellt frågeformulär på papper för att läsa frågorna och skriva ned svaren.",
+      "previousConcept" : 7898,
+      "parent" : "Interview.FaceToFace",
+      "position" : 3
+    }, {
+      "id" : 12593,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone/sv/4.0.1",
+      "notation" : "Interview.Telephone",
+      "title" : "Telefonintervju",
+      "definition" : "Intervju som genomförs över telefon. Använd denna bredare term om det inte rör sig om CATI, eller om det inte är känt huruvida det rör sig om CATI.",
+      "previousConcept" : 7894,
+      "parent" : "Interview",
+      "position" : 4
+    }, {
+      "id" : 12571,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Telephone.CATI/sv/4.0.1",
+      "notation" : "Interview.Telephone.CATI",
+      "title" : "Telefonintervju: CATI",
+      "definition" : "Datorstödd telefonintervju. Intervjuaren läser frågor för respondenterna från en datorskärm och skriver in svaren direkt i datorn. Intervjun hanteras genom ett program som utvecklats för detta syfte.",
+      "previousConcept" : 7899,
+      "parent" : "Interview.Telephone",
+      "position" : 5
+    }, {
+      "id" : 12570,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.Email/sv/4.0.1",
+      "notation" : "Interview.Email",
+      "title" : "E-postintervju",
+      "definition" : "Intervju som genomförs via e-post, vanligtvis över flera meddelanden som möjliggör att diskussionen fortsätter från den första uppsättningen av frågor och svar eller det första utbytet av e-brev.",
+      "previousConcept" : 7895,
+      "parent" : "Interview",
+      "position" : 6
+    }, {
+      "id" : 12599,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Interview.WebBased/sv/4.0.1",
+      "notation" : "Interview.WebBased",
+      "title" : "Webbaserad intervju",
+      "definition" : "Intervju som genomförs över Internet. Exempel inkluderar intervjuer genomförda på onlineforum eller med hjälp av webbaserad audiovisuell teknik som tillåter att intervjuare och intervjuobjekt kan kommunicera i realtid.",
+      "previousConcept" : 7896,
+      "parent" : "Interview",
+      "position" : 7
+    }, {
+      "id" : 12595,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire/sv/4.0.1",
+      "notation" : "SelfAdministeredQuestionnaire",
+      "title" : "Självadministrerat frågeformulär",
+      "definition" : "Respondenten läser eller lyssnar på frågorna och skriver själv in svaren; ingen intervjuare är närvarande eller deltar i administrerandet av frågeformuläret. Använd om möjligt en smalare term. Använd denna bredare term om metoden inte beskrivits av någon av de mer precisa termerna, till exempel för frågeformulär i PDF-format eller på diskett.",
+      "previousConcept" : 7900,
+      "position" : 8
+    }, {
+      "id" : 12587,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.Email/sv/4.0.1",
+      "notation" : "SelfAdministeredQuestionnaire.Email",
+      "title" : "Självadministrerat frågeformulär: e-post",
+      "definition" : "Självadministrerad surveyundersökning där frågor skickas till respondenten i brödtexten på, eller som en bilaga till, ett e-brev, inte som en länk till ett frågeformulär på webben. Svaren skickas tillbaka med e-post, i brödtexten eller som bilaga.",
+      "previousConcept" : 7901,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 9
+    }, {
+      "id" : 12583,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.Paper/sv/4.0.1",
+      "notation" : "SelfAdministeredQuestionnaire.Paper",
+      "title" : "Självadministrerat frågeformulär: papper",
+      "definition" : "Självadministrerad surveyundersökning som använder traditionella frågeformulär på papper, vilka skickas ut och/eller in via post eller fax, eller lämnas över personligen av antingen intervjuaren eller intervjuobjektet.",
+      "previousConcept" : 7902,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 10
+    }, {
+      "id" : 12565,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.SMSorMMS/sv/4.0.1",
+      "notation" : "SelfAdministeredQuestionnaire.SMSorMMS",
+      "title" : "Självadministrerat frågeformulär: SMS/MMS",
+      "definition" : "Självadministrerad surveyundersökning där frågor och svar inkluderas i SMS (textmeddelanden) eller MMS (meddelanden med multimedia-innehåll) som skickas mellan mobiltelefoner.",
+      "previousConcept" : 7903,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 11
+    }, {
+      "id" : 12556,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.CAWI/sv/4.0.1",
+      "notation" : "SelfAdministeredQuestionnaire.CAWI",
+      "title" : "Självadministrerat frågeformulär: webbaserat",
+      "definition" : "Computer-assisted web interviewing (CAWI). Data samlas in med ett webbformulär som producerats av ett program som skapar webbsurveyer. Programmet kan anpassa flödet i frågeformuläret utifrån svaren som ges och det går att inkludera bilder, ljud- och videoklipp, länkar till andra webbsidor m.m. (Anpassad från Wikipedia.)",
+      "previousConcept" : 7904,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 12
+    }, {
+      "id" : 12589,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredQuestionnaire.CASI/sv/4.0.1",
+      "notation" : "SelfAdministeredQuestionnaire.CASI",
+      "title" : "Självadministrerat frågeformulär: med datorstöd (CASI)",
+      "definition" : "Computer-assisted self-interview (CASI). Respondenterna noterar själva sina svar i en dator (stationär eller bärbar, Palm/PDA, surfplatta e. dyl.). Frågeformuläret administreras med ett datorprogram som utvecklats för detta syfte men data överförs inte i realtid som i fallet med CAWI: svaren lagras på datorn som används för intervjun. Frågeformuläret kan vara statiskt eller interaktivt. Omfattar VCASI (Video Computer-Assisted Self-Interview), ACASI (Audio computer-assisted self-interview) och TCASI (Telephone audio computer-assisted self-interview).",
+      "previousConcept" : 7905,
+      "parent" : "SelfAdministeredQuestionnaire",
+      "position" : 13
+    }, {
+      "id" : 12559,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup/sv/4.0.1",
+      "notation" : "FocusGroup",
+      "title" : "Fokusgrupp",
+      "definition" : "En gruppdiskussion om ett visst ämne som anordnats i forskningssyfte. Deltagarna har valts ut med hänsyn till ämnet och interaktionen mellan deltagarna utgör en del av forskningsmetoden.",
+      "previousConcept" : 5270,
+      "position" : 14
+    }, {
+      "id" : 12600,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup.FaceToFace/sv/4.0.1",
+      "notation" : "FocusGroup.FaceToFace",
+      "title" : "Fokusgrupp: traditionell",
+      "definition" : "Fokusgruppens medlemmar träffas på samma plats för att diskutera.",
+      "previousConcept" : 5271,
+      "parent" : "FocusGroup",
+      "position" : 15
+    }, {
+      "id" : 12596,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup.Telephone/sv/4.0.1",
+      "notation" : "FocusGroup.Telephone",
+      "title" : "Fokusgrupp: telefon",
+      "definition" : "Fokusgruppens diskussion förs över telefon.",
+      "previousConcept" : 5272,
+      "parent" : "FocusGroup",
+      "position" : 16
+    }, {
+      "id" : 12568,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#FocusGroup.Online/sv/4.0.1",
+      "notation" : "FocusGroup.Online",
+      "title" : "Fokusgrupp: virtuell",
+      "definition" : "Fokusgruppens diskussion förs interaktivt över Internet. Kallas även IT-stödd fokusgrupp.",
+      "previousConcept" : 5273,
+      "parent" : "FocusGroup",
+      "position" : 17
+    }, {
+      "id" : 12582,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries/sv/4.0.1",
+      "notation" : "SelfAdministeredWritingsAndDiaries",
+      "title" : "Självadministrerad text och/eller dagböcker",
+      "definition" : "Narrativ, berättelser, dagböcker och andra nedskrivna texter skapade av forskningspersonerna.",
+      "previousConcept" : 7906,
+      "position" : 18
+    }, {
+      "id" : 12569,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries.Email/sv/4.0.1",
+      "notation" : "SelfAdministeredWritingsAndDiaries.Email",
+      "title" : "Självadministrerad text och/eller dagböcker: e-post",
+      "definition" : "Narrativ, berättelser, dagböcker och andra nedskrivna texter som skickas in via e-post.",
+      "previousConcept" : 7907,
+      "parent" : "SelfAdministeredWritingsAndDiaries",
+      "position" : 19
+    }, {
+      "id" : 12560,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries.Paper/sv/4.0.1",
+      "notation" : "SelfAdministeredWritingsAndDiaries.Paper",
+      "title" : "Självadministrerad text och/eller dagböcker: papper",
+      "definition" : "Narrativ, berättelser, dagböcker och andra nedskrivna texter som skapats och samlats in på papper.",
+      "previousConcept" : 7908,
+      "parent" : "SelfAdministeredWritingsAndDiaries",
+      "position" : 20
+    }, {
+      "id" : 12563,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#SelfAdministeredWritingsAndDiaries.WebBased/sv/4.0.1",
+      "notation" : "SelfAdministeredWritingsAndDiaries.WebBased",
+      "title" : "Självadministrerad text och/eller dagböcker: webbaserat",
+      "definition" : "Narrativ, berättelser, dagböcker och andra nedskrivna texter som samlats in från Internet-källor, t.ex. webbplatser, bloggar, diskussionsforum.",
+      "previousConcept" : 7909,
+      "parent" : "SelfAdministeredWritingsAndDiaries",
+      "position" : 21
+    }, {
+      "id" : 12598,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation/sv/4.0.1",
+      "notation" : "Observation",
+      "title" : "Observation",
+      "definition" : "Forskningsmetod som omfattar att samla in data om företeelser när de uppträder (t.ex. observationer av beteenden, händelser m.m.) utan att försöka påverka några av de oberoende variablerna.",
+      "previousConcept" : 5278,
+      "position" : 22
+    }, {
+      "id" : 12594,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field/sv/4.0.1",
+      "notation" : "Observation.Field",
+      "title" : "Fältobservation",
+      "definition" : "Observation som utförs i en naturlig miljö.",
+      "previousConcept" : 5279,
+      "parent" : "Observation",
+      "position" : 23
+    }, {
+      "id" : 12584,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field.Participant/sv/4.0.1",
+      "notation" : "Observation.Field.Participant",
+      "title" : "Deltagande fältobservation",
+      "definition" : "Fältobservation där forskaren interagerar med forskningsobjekten och ofta har en funktion i den sociala situation som observeras.",
+      "previousConcept" : 5280,
+      "parent" : "Observation.Field",
+      "position" : 24
+    }, {
+      "id" : 12591,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Field.Nonparticipant/sv/4.0.1",
+      "notation" : "Observation.Field.Nonparticipant",
+      "title" : "Icke-deltagande fältobservation",
+      "definition" : "Observation som utförs i en naturlig, icke-kontrollerad miljö utan interaktion mellan forskaren och dennes forskningsobjekt.",
+      "previousConcept" : 5281,
+      "parent" : "Observation.Field",
+      "position" : 25
+    }, {
+      "id" : 12586,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Laboratory/sv/4.0.1",
+      "notation" : "Observation.Laboratory",
+      "title" : "Laboratorieobservation",
+      "definition" : "Observation som utförs i en kontrollerad, konstgjord miljö. Exempel: observation av barns lek i ett laboratorielekrum.",
+      "previousConcept" : 5282,
+      "parent" : "Observation",
+      "position" : 26
+    }, {
+      "id" : 12575,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Laboratory.Participant/sv/4.0.1",
+      "notation" : "Observation.Laboratory.Participant",
+      "title" : "Deltagande laboratorieobservation",
+      "definition" : "Laboratorieobservation där forskaren interagerar med forskningsobjekten och ofta har en funktion i den sociala situation som observeras. Exempel: observation av barns lek i ett laboratorielekrum där forskaren deltar i leken.",
+      "previousConcept" : 5283,
+      "parent" : "Observation.Laboratory",
+      "position" : 27
+    }, {
+      "id" : 12567,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.Laboratory.Nonparticipant/sv/4.0.1",
+      "notation" : "Observation.Laboratory.Nonparticipant",
+      "title" : "Icke-deltagande laboratorieobservation",
+      "definition" : "Laboratorieobservation som utförs utan interaktion mellan forskaren och dennes forskningsobjekt.",
+      "previousConcept" : 5284,
+      "parent" : "Observation.Laboratory",
+      "position" : 28
+    }, {
+      "id" : 12552,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Observation.ComputerBased/sv/4.0.1",
+      "notation" : "Observation.ComputerBased",
+      "title" : "Datorbaserad observation",
+      "definition" : "Observation där data om datoranvändning samlas in av programvara som inkluderats i ett datorprogram eller som kan vara ett separat program. Information kan samlas in om antal användare, hur användare interagerar med programmet, hur länge de stannar på en sida, hur de använder bestämda delar av program, hur de navigerar från en sida till en annan eller växlar mellan program m.m.",
+      "previousConcept" : 5285,
+      "parent" : "Observation",
+      "position" : 29
+    }, {
+      "id" : 12581,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment/sv/4.0.1",
+      "notation" : "Experiment",
+      "title" : "Experiment",
+      "definition" : "Forskningsmetod som omfattar att styra vissa eller alla oberoende variabler som ingår i hypotesen.",
+      "previousConcept" : 5286,
+      "position" : 30
+    }, {
+      "id" : 12578,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.Laboratory/sv/4.0.1",
+      "notation" : "Experiment.Laboratory",
+      "title" : "Laboratorieexperiment",
+      "definition" : "Ett experiment som utförs i en kontrollerad, konstgjord fysisk miljö där forskaren styr en eller flera oberoende variabler och mäter dess/deras effekt på den beroende variabeln.",
+      "previousConcept" : 5287,
+      "parent" : "Experiment",
+      "position" : 31
+    }, {
+      "id" : 12574,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.FieldIntervention/sv/4.0.1",
+      "notation" : "Experiment.FieldIntervention",
+      "title" : "Fältexperiment",
+      "definition" : "Ett experiment som utförs i en naturlig, okontrollerad miljö där forskaren styr en eller flera oberoende variabler. Interventionsstudier och kliniska studier är exempel på fältexperiment.",
+      "previousConcept" : 5288,
+      "parent" : "Experiment",
+      "position" : 32
+    }, {
+      "id" : 12554,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Experiment.WebBased/sv/4.0.1",
+      "notation" : "Experiment.WebBased",
+      "title" : "Webbaserat experiment",
+      "definition" : "Ett experiment som utförs i en virtuell miljö på webben, där experimentella material programmeras för att skapa artificiella situationer eller händelser som undersöks i en distribuerad miljö.  (Reips, U.-D. (2002). Theory and techniques of Web experimenting. In B. Batinic, U.-D. Reips, & M. Bosnjak (Eds.), Online Social Sciences. Seattle: Hogrefe & Huber. Tillgänglig: http://www.websm.org/uploadi/editor/Reips_2002_Theory_and_techniques.pdf [8 september, 2016])",
+      "previousConcept" : 5289,
+      "parent" : "Experiment",
+      "position" : 33
+    }, {
+      "id" : 12561,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Recording/sv/4.0.1",
+      "notation" : "Recording",
+      "title" : "Inspelning",
+      "definition" : "Upptagning, på mekanisk eller elektronisk väg, på sådant sätt att informationen kan återfås och/eller återskapas. Exempel: bilder eller ljud på en cd eller ett magnetband.",
+      "previousConcept" : 5290,
+      "position" : 34
+    }, {
+      "id" : 12597,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Recording.RemoteSensing/sv/4.0.1",
+      "notation" : "Recording.RemoteSensing",
+      "title" : "Inspelning: fjärranalys",
+      "definition" : "Insamling av information om objekt eller företeelser utan att ha fysisk kontakt med dem. Insamlingen görs med fjärrsensorer på satelliter och luftfartyg (t.ex. flygplan, drönare, väderballonger). Fjärranalys används ofta för att samla in information om jorden och dess atmosfär och hav, t.ex. skadebedömning efter jordbävningar eller skogsbränder. Tekniken används även för bland annat militära, affärsmässiga och ekonomiska syften.",
+      "parent" : "Recording",
+      "position" : 35
+    }, {
+      "id" : 12557,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#AutomatedDataExtraction/sv/4.0.1",
+      "notation" : "AutomatedDataExtraction",
+      "title" : "Automatiserad dataextrahering",
+      "definition" : "Användning av automatiserade metoder för att hämta information ur datakällor och spara informationen som en lokal fil eller databas för ytterligare behandling eller lagring. Använd den här termen om det inte är känt vilken automatiserad teknik som använts eller om tekniken är känd, men inte finns listad som en smalare term.",
+      "position" : 36
+    }, {
+      "id" : 12562,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#AutomatedDataExtraction.ApiQuery/sv/4.0.1",
+      "notation" : "AutomatedDataExtraction.ApiQuery",
+      "title" : "Automatiserad dataextrahering: API-förfrågan",
+      "definition" : "Inhämtning av information från datakällor online via ett API (Application Programming Interface) för att spara informationen som en lokal fil eller databas för ytterligare behandling eller lagring.",
+      "parent" : "AutomatedDataExtraction",
+      "position" : 37
+    }, {
+      "id" : 12572,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#AutomatedDataExtraction.DatabaseQuery/sv/4.0.1",
+      "notation" : "AutomatedDataExtraction.DatabaseQuery",
+      "title" : "Automatiserad dataextrahering: databasförfrågan",
+      "definition" : "Inhämtning av information från databaser via en förfrågan till databasen om att extrahera enbart den önskade informationen och sedan spara den som en lokal fil eller databas för ytterligare behandling eller lagring.",
+      "parent" : "AutomatedDataExtraction",
+      "position" : 38
+    }, {
+      "id" : 12553,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#AutomatedDataExtraction.WebScraping/sv/4.0.1",
+      "notation" : "AutomatedDataExtraction.WebScraping",
+      "title" : "Automatiserad dataextrahering: webbskrapning",
+      "definition" : "En teknik som används för att extrahera stora mängder data från webbplatser och spara dem som en lokal fil eller databas för ytterligare behandling eller lagring. Tekniken kallas även för web scraping, skärmskrapning (screen scraping), webbskördning m.m.",
+      "parent" : "AutomatedDataExtraction",
+      "position" : 39
+    }, {
+      "id" : 12588,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#ContentCoding/sv/4.0.1",
+      "notation" : "ContentCoding",
+      "title" : "Kodning av innehåll",
+      "definition" : "Som en metod för sekundär datainsamling tillämpar innehållskodning  kodningstekniker för att omvandla kvalitativa data (text-, ljud-, video-, eller stillbildsdata) som ursprungligen skapats för andra syften till kvantitativa data (uttryckta i en matris med enheter och variabler) enligt fördefinierade kategoriseringsscheman. Exempel: kodade partiprogramsdata som i \"European Parliament Election Study 2009, Manifesto Study\" (DOI: 10.4232/1.10204).",
+      "previousConcept" : 5291,
+      "position" : 40
+    }, {
+      "id" : 12577,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Transcription/sv/4.0.1",
+      "notation" : "Transcription",
+      "title" : "Transkription",
+      "definition" : "Att nedteckna information från en annan källa eller från ett annat medium, alfabet eller notationssystem, som till exempel vetenskapliga formler eller noter för musik. För transkriberade intervjuer och observationer rekommenderas det att man dokumenterar den primära insamlingsmetoden med någon av termerna för intervjuer eller observationer.",
+      "previousConcept" : 5292,
+      "position" : 41
+    }, {
+      "id" : 12555,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#CompilationSynthesis/sv/4.0.1",
+      "notation" : "CompilationSynthesis",
+      "title" : "Kompilering/Syntes",
+      "definition" : "Att samla in och sammanställa data från flera, ofta heterogena, källor som har en eller flera gemensamma referenspunkter, och där minst en av källorna ursprungligen producerades för andra syften. Datamaterialet har införlivats i ett nytt material. Exempel: data om antalet universitet under de senaste 150 åren som tas fram med hjälp av ett antal olika källor (t.ex. räkenskaper, offentlig statistik och universitetsrullor); en kombination av surveydata med information om geografiska områden från offentlig statistik (t.ex. befolkningstäthet, läkare per capita osv); eller bloggposter, tweetar, m.m. som samlats in med hjälp av RSS.",
+      "previousConcept" : 5293,
+      "position" : 42
+    }, {
+      "id" : 12566,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Summary/sv/4.0.1",
+      "notation" : "Summary",
+      "title" : "Sammanfattning",
+      "definition" : "Presentation av information i sammandrag, som reducerats till sitt viktigaste innehåll. Exempel: Abstrakt från intervjuer eller rapporter publiceras och används som data istället för de fullständiga intervjuerna eller rapporterna.",
+      "previousConcept" : 5294,
+      "position" : 43
+    }, {
+      "id" : 12585,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Aggregation/sv/4.0.1",
+      "notation" : "Aggregation",
+      "title" : "Aggregation",
+      "definition" : "Statistik som rör breda klasser, grupper eller kategorier. Datamaterialet består av genomsnitt, totalsummor eller andra värden som har härletts från data på individnivå, och det går inte längre att utläsa individernas egenskaper inom dessa klasser, grupper eller kategorier. Exempel: antal och ålderskategorier för arbetslösa inom särskilda geografiska områden, eller statistik på nationsnivå över förekomsten av särskilda brott som ursprungligen härletts från statistik från enskilda polisdistrikt.",
+      "previousConcept" : 5295,
+      "position" : 44
+    }, {
+      "id" : 12590,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Simulation/sv/4.0.1",
+      "notation" : "Simulation",
+      "title" : "Simulering",
+      "definition" : "Modellering eller imiterande representation av processer, händelser eller system i den verkliga världen, ofta skapade med datorprogram. Exempel: ett program som modellerar hur hushållens konsumtion svarar på förändringar i indirekta skatter; eller ett dataset över hypotetiska patienter och deras droganvändning, bakgrundsförhållanden och kända negativa händelser.",
+      "previousConcept" : 5296,
+      "position" : 45
+    }, {
+      "id" : 12579,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests/sv/4.0.1",
+      "notation" : "MeasurementsAndTests",
+      "title" : "Mätningar och tester",
+      "definition" : "Bedömning av varelsers, föremåls, fenomens (och/eller processers) särskilda egenskaper (eller karakteristiska) genom att tillämpa förutbestämda standarder och/eller specialiserade instrument eller tekniker.",
+      "previousConcept" : 5297,
+      "position" : 46
+    }, {
+      "id" : 12564,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests.Educational/sv/4.0.1",
+      "notation" : "MeasurementsAndTests.Educational",
+      "title" : "Pedagogiska mätningar och tester",
+      "definition" : "Bedömning av kunskap, förmågor, begåvning eller inlärningsförmåga med hjälp av specialiserade mätredskap och tester.",
+      "previousConcept" : 5298,
+      "parent" : "MeasurementsAndTests",
+      "position" : 47
+    }, {
+      "id" : 12551,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests.Physical/sv/4.0.1",
+      "notation" : "MeasurementsAndTests.Physical",
+      "title" : "Fysiska mätningar och tester",
+      "definition" : "Bedömning av levande varelsers, föremåls, materials eller naturliga fenomens fysiska egenskaper. Till exempel: blodtryck, puls, kroppsvikt och längd, men även tid, avstånd, massa, temperatur, kraft, effekt, hastighet, GPS-data för fysisk rörelse och andra fysiska parametrar eller variabler, som t.ex. geospatiala data.",
+      "previousConcept" : 5299,
+      "parent" : "MeasurementsAndTests",
+      "position" : 48
+    }, {
+      "id" : 12573,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#MeasurementsAndTests.Psychological/sv/4.0.1",
+      "notation" : "MeasurementsAndTests.Psychological",
+      "title" : "Psykologiska mätningar och tester",
+      "definition" : "Bedömning av personlighetsdrag eller psykologiska/beteendemässiga responser genom specialiserade mätredskap eller tester. Exempel: objektiva tester som självskattning med begränsade svarsformat, eller projektiva tester som tillåter öppna svar, inklusive ordassociation, menings- eller berättelsekomplettering, vinjetter, \"cartoon tests\", tematiska apperceptionstester (TAT), rollspel, teckningstester, Rorschachtester, \"choice ordering exercises\" m.m.",
+      "previousConcept" : 5300,
+      "parent" : "MeasurementsAndTests",
+      "position" : 49
+    }, {
+      "id" : 12580,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/ModeOfCollection#Other/sv/4.0.1",
+      "notation" : "Other",
+      "title" : "Övrigt",
+      "definition" : "Används när datainsamlingsmetoden är känd men saknas i listan.",
+      "previousConcept" : 5301,
+      "position" : 50
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ {
+      "id" : 331,
+      "version" : "3.0.1",
+      "date" : "2019-07-17",
+      "note" : "",
+      "changes" : "",
+      "prevVersion" : 0
+    } ]
+  } ]
+}

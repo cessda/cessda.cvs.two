@@ -1,0 +1,1790 @@
+{
+  "id" : 80,
+  "status" : "DRAFT",
+  "uri" : "null/1.0",
+  "notation" : "CountryNamesAndCodes",
+  "versionNumber" : "1.0",
+  "withdrawn" : false,
+  "sourceLanguage" : "en",
+  "agencyId" : 1,
+  "agencyName" : "CESSDA",
+  "agencyLogo" : "cessda.png",
+  "agencyLink" : "https://www.cessda.eu/",
+  "publicationDate" : "2020-11-05",
+  "notes" : "",
+  "versions" : [ {
+    "id" : 451,
+    "status" : "PUBLISHED",
+    "itemType" : "SL",
+    "language" : "en",
+    "publicationDate" : "2020-11-05",
+    "number" : "1.0",
+    "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes/en/1.0",
+    "canonicalUri" : "urn:ddi:int.cessda.cv:CountryNamesAndCodes:1.0",
+    "notation" : "CountryNamesAndCodes",
+    "title" : "Country Names and Codes",
+    "definition" : "ISO 3166-1 alpha-2 country codes and names.",
+    "previousVersion" : 0,
+    "initialVersion" : 451,
+    "notes" : "Note: This is not a complete list of ISO-3166-1 alpha codes. The purpose is to harmonise country names in CESSDA metadata in English. Do not translate into other languages.",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "CESSDA. (2020). Country Names and Codes (Version 1.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:CountryNamesAndCodes:1.0. ",
+    "lastStatusChangeDate" : "2020-11-05",
+    "concepts" : [ {
+      "id" : 10494,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AF/en/1.0",
+      "notation" : "AF",
+      "title" : "Afghanistan",
+      "definition" : "",
+      "position" : 0
+    }, {
+      "id" : 10495,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AL/en/1.0",
+      "notation" : "AL",
+      "title" : "Albania",
+      "definition" : "",
+      "position" : 1
+    }, {
+      "id" : 10496,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#DZ/en/1.0",
+      "notation" : "DZ",
+      "title" : "Algeria",
+      "definition" : "",
+      "position" : 2
+    }, {
+      "id" : 10497,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AS/en/1.0",
+      "notation" : "AS",
+      "title" : "American Samoa",
+      "definition" : "",
+      "position" : 3
+    }, {
+      "id" : 10498,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AD/en/1.0",
+      "notation" : "AD",
+      "title" : "Andorra",
+      "definition" : "",
+      "position" : 4
+    }, {
+      "id" : 10499,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AO/en/1.0",
+      "notation" : "AO",
+      "title" : "Angola",
+      "definition" : "",
+      "position" : 5
+    }, {
+      "id" : 10500,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AI/en/1.0",
+      "notation" : "AI",
+      "title" : "Anguilla",
+      "definition" : "",
+      "position" : 6
+    }, {
+      "id" : 10501,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AQ/en/1.0",
+      "notation" : "AQ",
+      "title" : "Antarctica",
+      "definition" : "",
+      "position" : 7
+    }, {
+      "id" : 10502,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AG/en/1.0",
+      "notation" : "AG",
+      "title" : "Antigua and Barbuda",
+      "definition" : "",
+      "position" : 8
+    }, {
+      "id" : 10503,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AR/en/1.0",
+      "notation" : "AR",
+      "title" : "Argentina",
+      "definition" : "",
+      "position" : 9
+    }, {
+      "id" : 10504,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AM/en/1.0",
+      "notation" : "AM",
+      "title" : "Armenia",
+      "definition" : "",
+      "position" : 10
+    }, {
+      "id" : 10505,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AW/en/1.0",
+      "notation" : "AW",
+      "title" : "Aruba",
+      "definition" : "",
+      "position" : 11
+    }, {
+      "id" : 10506,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AU/en/1.0",
+      "notation" : "AU",
+      "title" : "Australia",
+      "definition" : "",
+      "position" : 12
+    }, {
+      "id" : 10507,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AT/en/1.0",
+      "notation" : "AT",
+      "title" : "Austria",
+      "definition" : "",
+      "position" : 13
+    }, {
+      "id" : 10508,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AZ/en/1.0",
+      "notation" : "AZ",
+      "title" : "Azerbaijan",
+      "definition" : "",
+      "position" : 14
+    }, {
+      "id" : 10509,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BS/en/1.0",
+      "notation" : "BS",
+      "title" : "Bahamas",
+      "definition" : "",
+      "position" : 15
+    }, {
+      "id" : 10510,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BH/en/1.0",
+      "notation" : "BH",
+      "title" : "Bahrain",
+      "definition" : "",
+      "position" : 16
+    }, {
+      "id" : 10511,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BD/en/1.0",
+      "notation" : "BD",
+      "title" : "Bangladesh",
+      "definition" : "",
+      "position" : 17
+    }, {
+      "id" : 10512,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BB/en/1.0",
+      "notation" : "BB",
+      "title" : "Barbados",
+      "definition" : "",
+      "position" : 18
+    }, {
+      "id" : 10513,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BY/en/1.0",
+      "notation" : "BY",
+      "title" : "Belarus",
+      "definition" : "",
+      "position" : 19
+    }, {
+      "id" : 10514,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BE/en/1.0",
+      "notation" : "BE",
+      "title" : "Belgium",
+      "definition" : "",
+      "position" : 20
+    }, {
+      "id" : 10515,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BZ/en/1.0",
+      "notation" : "BZ",
+      "title" : "Belize",
+      "definition" : "",
+      "position" : 21
+    }, {
+      "id" : 10516,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BJ/en/1.0",
+      "notation" : "BJ",
+      "title" : "Benin",
+      "definition" : "",
+      "position" : 22
+    }, {
+      "id" : 10517,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BM/en/1.0",
+      "notation" : "BM",
+      "title" : "Bermuda",
+      "definition" : "",
+      "position" : 23
+    }, {
+      "id" : 10518,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BT/en/1.0",
+      "notation" : "BT",
+      "title" : "Bhutan",
+      "definition" : "",
+      "position" : 24
+    }, {
+      "id" : 10519,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BO/en/1.0",
+      "notation" : "BO",
+      "title" : "Bolivia",
+      "definition" : "",
+      "position" : 25
+    }, {
+      "id" : 10520,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BQ/en/1.0",
+      "notation" : "BQ",
+      "title" : "Bonaire, Sint Eustatius and Saba",
+      "definition" : "",
+      "position" : 26
+    }, {
+      "id" : 10521,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BA/en/1.0",
+      "notation" : "BA",
+      "title" : "Bosnia and Herzegovina",
+      "definition" : "",
+      "position" : 27
+    }, {
+      "id" : 10522,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BW/en/1.0",
+      "notation" : "BW",
+      "title" : "Botswana",
+      "definition" : "",
+      "position" : 28
+    }, {
+      "id" : 10523,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BV/en/1.0",
+      "notation" : "BV",
+      "title" : "Bouvet Island",
+      "definition" : "",
+      "position" : 29
+    }, {
+      "id" : 10524,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BR/en/1.0",
+      "notation" : "BR",
+      "title" : "Brazil",
+      "definition" : "",
+      "position" : 30
+    }, {
+      "id" : 10525,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#IO/en/1.0",
+      "notation" : "IO",
+      "title" : "British Indian Ocean Territory",
+      "definition" : "",
+      "position" : 31
+    }, {
+      "id" : 10526,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BN/en/1.0",
+      "notation" : "BN",
+      "title" : "Brunei",
+      "definition" : "",
+      "position" : 32
+    }, {
+      "id" : 10527,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BG/en/1.0",
+      "notation" : "BG",
+      "title" : "Bulgaria",
+      "definition" : "",
+      "position" : 33
+    }, {
+      "id" : 10528,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BF/en/1.0",
+      "notation" : "BF",
+      "title" : "Burkina Faso",
+      "definition" : "",
+      "position" : 34
+    }, {
+      "id" : 10529,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BI/en/1.0",
+      "notation" : "BI",
+      "title" : "Burundi",
+      "definition" : "",
+      "position" : 35
+    }, {
+      "id" : 10530,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CV/en/1.0",
+      "notation" : "CV",
+      "title" : "Cabo Verde",
+      "definition" : "",
+      "position" : 36
+    }, {
+      "id" : 10531,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KH/en/1.0",
+      "notation" : "KH",
+      "title" : "Cambodia",
+      "definition" : "",
+      "position" : 37
+    }, {
+      "id" : 10532,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CM/en/1.0",
+      "notation" : "CM",
+      "title" : "Cameroon",
+      "definition" : "",
+      "position" : 38
+    }, {
+      "id" : 10533,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CA/en/1.0",
+      "notation" : "CA",
+      "title" : "Canada",
+      "definition" : "",
+      "position" : 39
+    }, {
+      "id" : 10534,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KY/en/1.0",
+      "notation" : "KY",
+      "title" : "Cayman Islands",
+      "definition" : "",
+      "position" : 40
+    }, {
+      "id" : 10535,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CF/en/1.0",
+      "notation" : "CF",
+      "title" : "Central African Republic",
+      "definition" : "",
+      "position" : 41
+    }, {
+      "id" : 10536,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TD/en/1.0",
+      "notation" : "TD",
+      "title" : "Chad",
+      "definition" : "",
+      "position" : 42
+    }, {
+      "id" : 10537,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CL/en/1.0",
+      "notation" : "CL",
+      "title" : "Chile",
+      "definition" : "",
+      "position" : 43
+    }, {
+      "id" : 10538,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CN/en/1.0",
+      "notation" : "CN",
+      "title" : "China",
+      "definition" : "",
+      "position" : 44
+    }, {
+      "id" : 10539,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CX/en/1.0",
+      "notation" : "CX",
+      "title" : "Christmas Island",
+      "definition" : "",
+      "position" : 45
+    }, {
+      "id" : 10540,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CC/en/1.0",
+      "notation" : "CC",
+      "title" : "Cocos (Keeling) Islands",
+      "definition" : "",
+      "position" : 46
+    }, {
+      "id" : 10541,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CO/en/1.0",
+      "notation" : "CO",
+      "title" : "Colombia",
+      "definition" : "",
+      "position" : 47
+    }, {
+      "id" : 10542,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KM/en/1.0",
+      "notation" : "KM",
+      "title" : "Comoros",
+      "definition" : "",
+      "position" : 48
+    }, {
+      "id" : 10543,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CD/en/1.0",
+      "notation" : "CD",
+      "title" : "Congo (the Democratic Republic of the)",
+      "definition" : "",
+      "position" : 49
+    }, {
+      "id" : 10544,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CG/en/1.0",
+      "notation" : "CG",
+      "title" : "Congo",
+      "definition" : "",
+      "position" : 50
+    }, {
+      "id" : 10545,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CK/en/1.0",
+      "notation" : "CK",
+      "title" : "Cook Islands",
+      "definition" : "",
+      "position" : 51
+    }, {
+      "id" : 10546,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CR/en/1.0",
+      "notation" : "CR",
+      "title" : "Costa Rica",
+      "definition" : "",
+      "position" : 52
+    }, {
+      "id" : 10547,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#HR/en/1.0",
+      "notation" : "HR",
+      "title" : "Croatia",
+      "definition" : "",
+      "position" : 53
+    }, {
+      "id" : 10548,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CU/en/1.0",
+      "notation" : "CU",
+      "title" : "Cuba",
+      "definition" : "",
+      "position" : 54
+    }, {
+      "id" : 10549,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CW/en/1.0",
+      "notation" : "CW",
+      "title" : "Curaçao",
+      "definition" : "",
+      "position" : 55
+    }, {
+      "id" : 10550,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CY/en/1.0",
+      "notation" : "CY",
+      "title" : "Cyprus",
+      "definition" : "",
+      "position" : 56
+    }, {
+      "id" : 10551,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CZ/en/1.0",
+      "notation" : "CZ",
+      "title" : "Czechia",
+      "definition" : "",
+      "position" : 57
+    }, {
+      "id" : 10552,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CI/en/1.0",
+      "notation" : "CI",
+      "title" : "Côte d'Ivoire",
+      "definition" : "",
+      "position" : 58
+    }, {
+      "id" : 10553,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#DK/en/1.0",
+      "notation" : "DK",
+      "title" : "Denmark",
+      "definition" : "",
+      "position" : 59
+    }, {
+      "id" : 10554,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#DJ/en/1.0",
+      "notation" : "DJ",
+      "title" : "Djibouti",
+      "definition" : "",
+      "position" : 60
+    }, {
+      "id" : 10555,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#DM/en/1.0",
+      "notation" : "DM",
+      "title" : "Dominica",
+      "definition" : "",
+      "position" : 61
+    }, {
+      "id" : 10556,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#DO/en/1.0",
+      "notation" : "DO",
+      "title" : "Dominican Republic",
+      "definition" : "",
+      "position" : 62
+    }, {
+      "id" : 10557,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#EC/en/1.0",
+      "notation" : "EC",
+      "title" : "Ecuador",
+      "definition" : "",
+      "position" : 63
+    }, {
+      "id" : 10558,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#EG/en/1.0",
+      "notation" : "EG",
+      "title" : "Egypt",
+      "definition" : "",
+      "position" : 64
+    }, {
+      "id" : 10559,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SV/en/1.0",
+      "notation" : "SV",
+      "title" : "El Salvador",
+      "definition" : "",
+      "position" : 65
+    }, {
+      "id" : 10560,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GQ/en/1.0",
+      "notation" : "GQ",
+      "title" : "Equatorial Guinea",
+      "definition" : "",
+      "position" : 66
+    }, {
+      "id" : 10561,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ER/en/1.0",
+      "notation" : "ER",
+      "title" : "Eritrea",
+      "definition" : "",
+      "position" : 67
+    }, {
+      "id" : 10562,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#EE/en/1.0",
+      "notation" : "EE",
+      "title" : "Estonia",
+      "definition" : "",
+      "position" : 68
+    }, {
+      "id" : 10563,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SZ/en/1.0",
+      "notation" : "SZ",
+      "title" : "Eswatini",
+      "definition" : "",
+      "position" : 69
+    }, {
+      "id" : 10564,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ET/en/1.0",
+      "notation" : "ET",
+      "title" : "Ethiopia",
+      "definition" : "",
+      "position" : 70
+    }, {
+      "id" : 10565,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#FK/en/1.0",
+      "notation" : "FK",
+      "title" : "Falkland Islands (Malvinas)",
+      "definition" : "",
+      "position" : 71
+    }, {
+      "id" : 10566,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#FO/en/1.0",
+      "notation" : "FO",
+      "title" : "Faroe Islands",
+      "definition" : "",
+      "position" : 72
+    }, {
+      "id" : 10567,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#FJ/en/1.0",
+      "notation" : "FJ",
+      "title" : "Fiji",
+      "definition" : "",
+      "position" : 73
+    }, {
+      "id" : 10568,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#FI/en/1.0",
+      "notation" : "FI",
+      "title" : "Finland",
+      "definition" : "",
+      "position" : 74
+    }, {
+      "id" : 10569,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#FR/en/1.0",
+      "notation" : "FR",
+      "title" : "France",
+      "definition" : "",
+      "position" : 75
+    }, {
+      "id" : 10570,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GF/en/1.0",
+      "notation" : "GF",
+      "title" : "French Guiana",
+      "definition" : "",
+      "position" : 76
+    }, {
+      "id" : 10571,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PF/en/1.0",
+      "notation" : "PF",
+      "title" : "French Polynesia",
+      "definition" : "",
+      "position" : 77
+    }, {
+      "id" : 10572,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TF/en/1.0",
+      "notation" : "TF",
+      "title" : "French Southern Territories",
+      "definition" : "",
+      "position" : 78
+    }, {
+      "id" : 10573,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GA/en/1.0",
+      "notation" : "GA",
+      "title" : "Gabon",
+      "definition" : "",
+      "position" : 79
+    }, {
+      "id" : 10574,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GM/en/1.0",
+      "notation" : "GM",
+      "title" : "Gambia",
+      "definition" : "",
+      "position" : 80
+    }, {
+      "id" : 10575,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GE/en/1.0",
+      "notation" : "GE",
+      "title" : "Georgia",
+      "definition" : "",
+      "position" : 81
+    }, {
+      "id" : 10576,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#DE/en/1.0",
+      "notation" : "DE",
+      "title" : "Germany",
+      "definition" : "",
+      "position" : 82
+    }, {
+      "id" : 10577,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GH/en/1.0",
+      "notation" : "GH",
+      "title" : "Ghana",
+      "definition" : "",
+      "position" : 83
+    }, {
+      "id" : 10578,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GI/en/1.0",
+      "notation" : "GI",
+      "title" : "Gibraltar",
+      "definition" : "",
+      "position" : 84
+    }, {
+      "id" : 10579,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GR/en/1.0",
+      "notation" : "GR",
+      "title" : "Greece",
+      "definition" : "",
+      "position" : 85
+    }, {
+      "id" : 10580,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GL/en/1.0",
+      "notation" : "GL",
+      "title" : "Greenland",
+      "definition" : "",
+      "position" : 86
+    }, {
+      "id" : 10581,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GD/en/1.0",
+      "notation" : "GD",
+      "title" : "Grenada",
+      "definition" : "",
+      "position" : 87
+    }, {
+      "id" : 10582,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GP/en/1.0",
+      "notation" : "GP",
+      "title" : "Guadeloupe",
+      "definition" : "",
+      "position" : 88
+    }, {
+      "id" : 10583,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GU/en/1.0",
+      "notation" : "GU",
+      "title" : "Guam",
+      "definition" : "",
+      "position" : 89
+    }, {
+      "id" : 10584,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GT/en/1.0",
+      "notation" : "GT",
+      "title" : "Guatemala",
+      "definition" : "",
+      "position" : 90
+    }, {
+      "id" : 10585,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GG/en/1.0",
+      "notation" : "GG",
+      "title" : "Guernsey",
+      "definition" : "",
+      "position" : 91
+    }, {
+      "id" : 10586,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GN/en/1.0",
+      "notation" : "GN",
+      "title" : "Guinea",
+      "definition" : "",
+      "position" : 92
+    }, {
+      "id" : 10587,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GW/en/1.0",
+      "notation" : "GW",
+      "title" : "Guinea-Bissau",
+      "definition" : "",
+      "position" : 93
+    }, {
+      "id" : 10588,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GY/en/1.0",
+      "notation" : "GY",
+      "title" : "Guyana",
+      "definition" : "",
+      "position" : 94
+    }, {
+      "id" : 10589,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#HT/en/1.0",
+      "notation" : "HT",
+      "title" : "Haiti",
+      "definition" : "",
+      "position" : 95
+    }, {
+      "id" : 10590,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#HM/en/1.0",
+      "notation" : "HM",
+      "title" : "Heard Island and McDonald Islands",
+      "definition" : "",
+      "position" : 96
+    }, {
+      "id" : 10591,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#VA/en/1.0",
+      "notation" : "VA",
+      "title" : "Holy See",
+      "definition" : "",
+      "position" : 97
+    }, {
+      "id" : 10592,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#HN/en/1.0",
+      "notation" : "HN",
+      "title" : "Honduras",
+      "definition" : "",
+      "position" : 98
+    }, {
+      "id" : 10593,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#HK/en/1.0",
+      "notation" : "HK",
+      "title" : "Hong Kong",
+      "definition" : "",
+      "position" : 99
+    }, {
+      "id" : 10594,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#HU/en/1.0",
+      "notation" : "HU",
+      "title" : "Hungary",
+      "definition" : "",
+      "position" : 100
+    }, {
+      "id" : 10595,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#IS/en/1.0",
+      "notation" : "IS",
+      "title" : "Iceland",
+      "definition" : "",
+      "position" : 101
+    }, {
+      "id" : 10596,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#IN/en/1.0",
+      "notation" : "IN",
+      "title" : "India",
+      "definition" : "",
+      "position" : 102
+    }, {
+      "id" : 10597,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ID/en/1.0",
+      "notation" : "ID",
+      "title" : "Indonesia",
+      "definition" : "",
+      "position" : 103
+    }, {
+      "id" : 10598,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#IR/en/1.0",
+      "notation" : "IR",
+      "title" : "Iran",
+      "definition" : "",
+      "position" : 104
+    }, {
+      "id" : 10599,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#IQ/en/1.0",
+      "notation" : "IQ",
+      "title" : "Iraq",
+      "definition" : "",
+      "position" : 105
+    }, {
+      "id" : 10600,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#IE/en/1.0",
+      "notation" : "IE",
+      "title" : "Ireland",
+      "definition" : "",
+      "position" : 106
+    }, {
+      "id" : 10601,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#IM/en/1.0",
+      "notation" : "IM",
+      "title" : "Isle of Man",
+      "definition" : "",
+      "position" : 107
+    }, {
+      "id" : 10602,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#IL/en/1.0",
+      "notation" : "IL",
+      "title" : "Israel",
+      "definition" : "",
+      "position" : 108
+    }, {
+      "id" : 10603,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#IT/en/1.0",
+      "notation" : "IT",
+      "title" : "Italy",
+      "definition" : "",
+      "position" : 109
+    }, {
+      "id" : 10604,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#JM/en/1.0",
+      "notation" : "JM",
+      "title" : "Jamaica",
+      "definition" : "",
+      "position" : 110
+    }, {
+      "id" : 10605,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#JP/en/1.0",
+      "notation" : "JP",
+      "title" : "Japan",
+      "definition" : "",
+      "position" : 111
+    }, {
+      "id" : 10606,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#JE/en/1.0",
+      "notation" : "JE",
+      "title" : "Jersey",
+      "definition" : "",
+      "position" : 112
+    }, {
+      "id" : 10607,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#JO/en/1.0",
+      "notation" : "JO",
+      "title" : "Jordan",
+      "definition" : "",
+      "position" : 113
+    }, {
+      "id" : 10608,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KZ/en/1.0",
+      "notation" : "KZ",
+      "title" : "Kazakhstan",
+      "definition" : "",
+      "position" : 114
+    }, {
+      "id" : 10609,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KE/en/1.0",
+      "notation" : "KE",
+      "title" : "Kenya",
+      "definition" : "",
+      "position" : 115
+    }, {
+      "id" : 10610,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KI/en/1.0",
+      "notation" : "KI",
+      "title" : "Kiribati",
+      "definition" : "",
+      "position" : 116
+    }, {
+      "id" : 10613,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KW/en/1.0",
+      "notation" : "KW",
+      "title" : "Kuwait",
+      "definition" : "",
+      "position" : 117
+    }, {
+      "id" : 10614,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KG/en/1.0",
+      "notation" : "KG",
+      "title" : "Kyrgyzstan",
+      "definition" : "",
+      "position" : 118
+    }, {
+      "id" : 10615,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LA/en/1.0",
+      "notation" : "LA",
+      "title" : "Laos",
+      "definition" : "",
+      "position" : 119
+    }, {
+      "id" : 10616,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LV/en/1.0",
+      "notation" : "LV",
+      "title" : "Latvia",
+      "definition" : "",
+      "position" : 120
+    }, {
+      "id" : 10617,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LB/en/1.0",
+      "notation" : "LB",
+      "title" : "Lebanon",
+      "definition" : "",
+      "position" : 121
+    }, {
+      "id" : 10618,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LS/en/1.0",
+      "notation" : "LS",
+      "title" : "Lesotho",
+      "definition" : "",
+      "position" : 122
+    }, {
+      "id" : 10619,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LR/en/1.0",
+      "notation" : "LR",
+      "title" : "Liberia",
+      "definition" : "",
+      "position" : 123
+    }, {
+      "id" : 10620,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LY/en/1.0",
+      "notation" : "LY",
+      "title" : "Libya",
+      "definition" : "",
+      "position" : 124
+    }, {
+      "id" : 10621,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LI/en/1.0",
+      "notation" : "LI",
+      "title" : "Liechtenstein",
+      "definition" : "",
+      "position" : 125
+    }, {
+      "id" : 10622,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LT/en/1.0",
+      "notation" : "LT",
+      "title" : "Lithuania",
+      "definition" : "",
+      "position" : 126
+    }, {
+      "id" : 10623,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LU/en/1.0",
+      "notation" : "LU",
+      "title" : "Luxembourg",
+      "definition" : "",
+      "position" : 127
+    }, {
+      "id" : 10624,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MO/en/1.0",
+      "notation" : "MO",
+      "title" : "Macao",
+      "definition" : "",
+      "position" : 128
+    }, {
+      "id" : 10625,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MG/en/1.0",
+      "notation" : "MG",
+      "title" : "Madagascar",
+      "definition" : "",
+      "position" : 129
+    }, {
+      "id" : 10626,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MW/en/1.0",
+      "notation" : "MW",
+      "title" : "Malawi",
+      "definition" : "",
+      "position" : 130
+    }, {
+      "id" : 10627,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MY/en/1.0",
+      "notation" : "MY",
+      "title" : "Malaysia",
+      "definition" : "",
+      "position" : 131
+    }, {
+      "id" : 10628,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MV/en/1.0",
+      "notation" : "MV",
+      "title" : "Maldives",
+      "definition" : "",
+      "position" : 132
+    }, {
+      "id" : 10629,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ML/en/1.0",
+      "notation" : "ML",
+      "title" : "Mali",
+      "definition" : "",
+      "position" : 133
+    }, {
+      "id" : 10630,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MT/en/1.0",
+      "notation" : "MT",
+      "title" : "Malta",
+      "definition" : "",
+      "position" : 134
+    }, {
+      "id" : 10631,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MH/en/1.0",
+      "notation" : "MH",
+      "title" : "Marshall Islands",
+      "definition" : "",
+      "position" : 135
+    }, {
+      "id" : 10632,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MQ/en/1.0",
+      "notation" : "MQ",
+      "title" : "Martinique",
+      "definition" : "",
+      "position" : 136
+    }, {
+      "id" : 10633,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MR/en/1.0",
+      "notation" : "MR",
+      "title" : "Mauritania",
+      "definition" : "",
+      "position" : 137
+    }, {
+      "id" : 10634,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MU/en/1.0",
+      "notation" : "MU",
+      "title" : "Mauritius",
+      "definition" : "",
+      "position" : 138
+    }, {
+      "id" : 10635,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#YT/en/1.0",
+      "notation" : "YT",
+      "title" : "Mayotte",
+      "definition" : "",
+      "position" : 139
+    }, {
+      "id" : 10636,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MX/en/1.0",
+      "notation" : "MX",
+      "title" : "Mexico",
+      "definition" : "",
+      "position" : 140
+    }, {
+      "id" : 10637,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#FM/en/1.0",
+      "notation" : "FM",
+      "title" : "Micronesia",
+      "definition" : "",
+      "position" : 141
+    }, {
+      "id" : 10638,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MD/en/1.0",
+      "notation" : "MD",
+      "title" : "Moldova",
+      "definition" : "",
+      "position" : 142
+    }, {
+      "id" : 10639,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MC/en/1.0",
+      "notation" : "MC",
+      "title" : "Monaco",
+      "definition" : "",
+      "position" : 143
+    }, {
+      "id" : 10640,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MN/en/1.0",
+      "notation" : "MN",
+      "title" : "Mongolia",
+      "definition" : "",
+      "position" : 144
+    }, {
+      "id" : 10641,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ME/en/1.0",
+      "notation" : "ME",
+      "title" : "Montenegro",
+      "definition" : "",
+      "position" : 145
+    }, {
+      "id" : 10642,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MS/en/1.0",
+      "notation" : "MS",
+      "title" : "Montserrat",
+      "definition" : "",
+      "position" : 146
+    }, {
+      "id" : 10643,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MA/en/1.0",
+      "notation" : "MA",
+      "title" : "Morocco",
+      "definition" : "",
+      "position" : 147
+    }, {
+      "id" : 10644,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MZ/en/1.0",
+      "notation" : "MZ",
+      "title" : "Mozambique",
+      "definition" : "",
+      "position" : 148
+    }, {
+      "id" : 10645,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MM/en/1.0",
+      "notation" : "MM",
+      "title" : "Myanmar",
+      "definition" : "",
+      "position" : 149
+    }, {
+      "id" : 10646,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NA/en/1.0",
+      "notation" : "NA",
+      "title" : "Namibia",
+      "definition" : "",
+      "position" : 150
+    }, {
+      "id" : 10647,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NR/en/1.0",
+      "notation" : "NR",
+      "title" : "Nauru",
+      "definition" : "",
+      "position" : 151
+    }, {
+      "id" : 10648,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NP/en/1.0",
+      "notation" : "NP",
+      "title" : "Nepal",
+      "definition" : "",
+      "position" : 152
+    }, {
+      "id" : 10649,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NL/en/1.0",
+      "notation" : "NL",
+      "title" : "Netherlands",
+      "definition" : "",
+      "position" : 153
+    }, {
+      "id" : 10650,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NC/en/1.0",
+      "notation" : "NC",
+      "title" : "New Caledonia",
+      "definition" : "",
+      "position" : 154
+    }, {
+      "id" : 10651,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NZ/en/1.0",
+      "notation" : "NZ",
+      "title" : "New Zealand",
+      "definition" : "",
+      "position" : 155
+    }, {
+      "id" : 10652,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NI/en/1.0",
+      "notation" : "NI",
+      "title" : "Nicaragua",
+      "definition" : "",
+      "position" : 156
+    }, {
+      "id" : 10653,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NE/en/1.0",
+      "notation" : "NE",
+      "title" : "Niger",
+      "definition" : "",
+      "position" : 157
+    }, {
+      "id" : 10654,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NG/en/1.0",
+      "notation" : "NG",
+      "title" : "Nigeria",
+      "definition" : "",
+      "position" : 158
+    }, {
+      "id" : 10655,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NU/en/1.0",
+      "notation" : "NU",
+      "title" : "Niue",
+      "definition" : "",
+      "position" : 159
+    }, {
+      "id" : 10656,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NF/en/1.0",
+      "notation" : "NF",
+      "title" : "Norfolk Island",
+      "definition" : "",
+      "position" : 160
+    }, {
+      "id" : 10611,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KP/en/1.0",
+      "notation" : "KP",
+      "title" : "North Korea",
+      "definition" : "",
+      "position" : 161
+    }, {
+      "id" : 10673,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MK/en/1.0",
+      "notation" : "MK",
+      "title" : "North Macedonia",
+      "definition" : "",
+      "position" : 162
+    }, {
+      "id" : 10657,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MP/en/1.0",
+      "notation" : "MP",
+      "title" : "Northern Mariana Islands",
+      "definition" : "",
+      "position" : 163
+    }, {
+      "id" : 10658,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#NO/en/1.0",
+      "notation" : "NO",
+      "title" : "Norway",
+      "definition" : "",
+      "position" : 164
+    }, {
+      "id" : 10659,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#OM/en/1.0",
+      "notation" : "OM",
+      "title" : "Oman",
+      "definition" : "",
+      "position" : 165
+    }, {
+      "id" : 10660,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PK/en/1.0",
+      "notation" : "PK",
+      "title" : "Pakistan",
+      "definition" : "",
+      "position" : 166
+    }, {
+      "id" : 10661,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PW/en/1.0",
+      "notation" : "PW",
+      "title" : "Palau",
+      "definition" : "",
+      "position" : 167
+    }, {
+      "id" : 10662,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PS/en/1.0",
+      "notation" : "PS",
+      "title" : "Palestine",
+      "definition" : "",
+      "position" : 168
+    }, {
+      "id" : 10663,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PA/en/1.0",
+      "notation" : "PA",
+      "title" : "Panama",
+      "definition" : "",
+      "position" : 169
+    }, {
+      "id" : 10664,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PG/en/1.0",
+      "notation" : "PG",
+      "title" : "Papua New Guinea",
+      "definition" : "",
+      "position" : 170
+    }, {
+      "id" : 10665,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PY/en/1.0",
+      "notation" : "PY",
+      "title" : "Paraguay",
+      "definition" : "",
+      "position" : 171
+    }, {
+      "id" : 10666,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PE/en/1.0",
+      "notation" : "PE",
+      "title" : "Peru",
+      "definition" : "",
+      "position" : 172
+    }, {
+      "id" : 10667,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PH/en/1.0",
+      "notation" : "PH",
+      "title" : "Philippines",
+      "definition" : "",
+      "position" : 173
+    }, {
+      "id" : 10668,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PN/en/1.0",
+      "notation" : "PN",
+      "title" : "Pitcairn",
+      "definition" : "",
+      "position" : 174
+    }, {
+      "id" : 10669,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PL/en/1.0",
+      "notation" : "PL",
+      "title" : "Poland",
+      "definition" : "",
+      "position" : 175
+    }, {
+      "id" : 10670,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PT/en/1.0",
+      "notation" : "PT",
+      "title" : "Portugal",
+      "definition" : "",
+      "position" : 176
+    }, {
+      "id" : 10671,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PR/en/1.0",
+      "notation" : "PR",
+      "title" : "Puerto Rico",
+      "definition" : "",
+      "position" : 177
+    }, {
+      "id" : 10672,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#QA/en/1.0",
+      "notation" : "QA",
+      "title" : "Qatar",
+      "definition" : "",
+      "position" : 178
+    }, {
+      "id" : 10674,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#RO/en/1.0",
+      "notation" : "RO",
+      "title" : "Romania",
+      "definition" : "",
+      "position" : 179
+    }, {
+      "id" : 10675,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#RU/en/1.0",
+      "notation" : "RU",
+      "title" : "Russia",
+      "definition" : "",
+      "position" : 180
+    }, {
+      "id" : 10676,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#RW/en/1.0",
+      "notation" : "RW",
+      "title" : "Rwanda",
+      "definition" : "",
+      "position" : 181
+    }, {
+      "id" : 10677,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#RE/en/1.0",
+      "notation" : "RE",
+      "title" : "Réunion",
+      "definition" : "",
+      "position" : 182
+    }, {
+      "id" : 10678,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#BL/en/1.0",
+      "notation" : "BL",
+      "title" : "Saint Barthélemy",
+      "definition" : "",
+      "position" : 183
+    }, {
+      "id" : 10679,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SH/en/1.0",
+      "notation" : "SH",
+      "title" : "Saint Helena, Ascension and Tristan da Cunha",
+      "definition" : "",
+      "position" : 184
+    }, {
+      "id" : 10680,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KN/en/1.0",
+      "notation" : "KN",
+      "title" : "Saint Kitts and Nevis",
+      "definition" : "",
+      "position" : 185
+    }, {
+      "id" : 10681,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LC/en/1.0",
+      "notation" : "LC",
+      "title" : "Saint Lucia",
+      "definition" : "",
+      "position" : 186
+    }, {
+      "id" : 10682,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#MF/en/1.0",
+      "notation" : "MF",
+      "title" : "Saint Martin (French part)",
+      "definition" : "",
+      "position" : 187
+    }, {
+      "id" : 10683,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#PM/en/1.0",
+      "notation" : "PM",
+      "title" : "Saint Pierre and Miquelon",
+      "definition" : "",
+      "position" : 188
+    }, {
+      "id" : 10684,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#VC/en/1.0",
+      "notation" : "VC",
+      "title" : "Saint Vincent and the Grenadines",
+      "definition" : "",
+      "position" : 189
+    }, {
+      "id" : 10685,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#WS/en/1.0",
+      "notation" : "WS",
+      "title" : "Samoa",
+      "definition" : "",
+      "position" : 190
+    }, {
+      "id" : 10686,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SM/en/1.0",
+      "notation" : "SM",
+      "title" : "San Marino",
+      "definition" : "",
+      "position" : 191
+    }, {
+      "id" : 10687,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ST/en/1.0",
+      "notation" : "ST",
+      "title" : "Sao Tome and Principe",
+      "definition" : "",
+      "position" : 192
+    }, {
+      "id" : 10688,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SA/en/1.0",
+      "notation" : "SA",
+      "title" : "Saudi Arabia",
+      "definition" : "",
+      "position" : 193
+    }, {
+      "id" : 10689,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SN/en/1.0",
+      "notation" : "SN",
+      "title" : "Senegal",
+      "definition" : "",
+      "position" : 194
+    }, {
+      "id" : 10690,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#RS/en/1.0",
+      "notation" : "RS",
+      "title" : "Serbia",
+      "definition" : "",
+      "position" : 195
+    }, {
+      "id" : 10691,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SC/en/1.0",
+      "notation" : "SC",
+      "title" : "Seychelles",
+      "definition" : "",
+      "position" : 196
+    }, {
+      "id" : 10692,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SL/en/1.0",
+      "notation" : "SL",
+      "title" : "Sierra Leone",
+      "definition" : "",
+      "position" : 197
+    }, {
+      "id" : 10693,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SG/en/1.0",
+      "notation" : "SG",
+      "title" : "Singapore",
+      "definition" : "",
+      "position" : 198
+    }, {
+      "id" : 10694,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SX/en/1.0",
+      "notation" : "SX",
+      "title" : "Sint Maarten (Dutch part)",
+      "definition" : "",
+      "position" : 199
+    }, {
+      "id" : 10695,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SK/en/1.0",
+      "notation" : "SK",
+      "title" : "Slovakia",
+      "definition" : "",
+      "position" : 200
+    }, {
+      "id" : 10696,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SI/en/1.0",
+      "notation" : "SI",
+      "title" : "Slovenia",
+      "definition" : "",
+      "position" : 201
+    }, {
+      "id" : 10697,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SB/en/1.0",
+      "notation" : "SB",
+      "title" : "Solomon Islands",
+      "definition" : "",
+      "position" : 202
+    }, {
+      "id" : 10698,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SO/en/1.0",
+      "notation" : "SO",
+      "title" : "Somalia",
+      "definition" : "",
+      "position" : 203
+    }, {
+      "id" : 10699,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ZA/en/1.0",
+      "notation" : "ZA",
+      "title" : "South Africa",
+      "definition" : "",
+      "position" : 204
+    }, {
+      "id" : 10700,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GS/en/1.0",
+      "notation" : "GS",
+      "title" : "South Georgia and the South Sandwich Islands",
+      "definition" : "",
+      "position" : 205
+    }, {
+      "id" : 10612,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#KR/en/1.0",
+      "notation" : "KR",
+      "title" : "South Korea",
+      "definition" : "",
+      "position" : 206
+    }, {
+      "id" : 10701,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SS/en/1.0",
+      "notation" : "SS",
+      "title" : "South Sudan",
+      "definition" : "",
+      "position" : 207
+    }, {
+      "id" : 10702,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ES/en/1.0",
+      "notation" : "ES",
+      "title" : "Spain",
+      "definition" : "",
+      "position" : 208
+    }, {
+      "id" : 10703,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#LK/en/1.0",
+      "notation" : "LK",
+      "title" : "Sri Lanka",
+      "definition" : "",
+      "position" : 209
+    }, {
+      "id" : 10704,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SD/en/1.0",
+      "notation" : "SD",
+      "title" : "Sudan",
+      "definition" : "",
+      "position" : 210
+    }, {
+      "id" : 10705,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SR/en/1.0",
+      "notation" : "SR",
+      "title" : "Suriname",
+      "definition" : "",
+      "position" : 211
+    }, {
+      "id" : 10706,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SJ/en/1.0",
+      "notation" : "SJ",
+      "title" : "Svalbard and Jan Mayen",
+      "definition" : "",
+      "position" : 212
+    }, {
+      "id" : 10707,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SE/en/1.0",
+      "notation" : "SE",
+      "title" : "Sweden",
+      "definition" : "",
+      "position" : 213
+    }, {
+      "id" : 10708,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#CH/en/1.0",
+      "notation" : "CH",
+      "title" : "Switzerland",
+      "definition" : "",
+      "position" : 214
+    }, {
+      "id" : 10709,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#SY/en/1.0",
+      "notation" : "SY",
+      "title" : "Syria",
+      "definition" : "",
+      "position" : 215
+    }, {
+      "id" : 10710,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TW/en/1.0",
+      "notation" : "TW",
+      "title" : "Taiwan (Province of China)",
+      "definition" : "",
+      "position" : 216
+    }, {
+      "id" : 10711,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TJ/en/1.0",
+      "notation" : "TJ",
+      "title" : "Tajikistan",
+      "definition" : "",
+      "position" : 217
+    }, {
+      "id" : 10712,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TZ/en/1.0",
+      "notation" : "TZ",
+      "title" : "Tanzania",
+      "definition" : "",
+      "position" : 218
+    }, {
+      "id" : 10713,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TH/en/1.0",
+      "notation" : "TH",
+      "title" : "Thailand",
+      "definition" : "",
+      "position" : 219
+    }, {
+      "id" : 10714,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TL/en/1.0",
+      "notation" : "TL",
+      "title" : "Timor-Leste",
+      "definition" : "",
+      "position" : 220
+    }, {
+      "id" : 10715,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TG/en/1.0",
+      "notation" : "TG",
+      "title" : "Togo",
+      "definition" : "",
+      "position" : 221
+    }, {
+      "id" : 10716,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TK/en/1.0",
+      "notation" : "TK",
+      "title" : "Tokelau",
+      "definition" : "",
+      "position" : 222
+    }, {
+      "id" : 10717,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TO/en/1.0",
+      "notation" : "TO",
+      "title" : "Tonga",
+      "definition" : "",
+      "position" : 223
+    }, {
+      "id" : 10718,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TT/en/1.0",
+      "notation" : "TT",
+      "title" : "Trinidad and Tobago",
+      "definition" : "",
+      "position" : 224
+    }, {
+      "id" : 10719,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TN/en/1.0",
+      "notation" : "TN",
+      "title" : "Tunisia",
+      "definition" : "",
+      "position" : 225
+    }, {
+      "id" : 10720,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TR/en/1.0",
+      "notation" : "TR",
+      "title" : "Turkey",
+      "definition" : "",
+      "position" : 226
+    }, {
+      "id" : 10721,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TM/en/1.0",
+      "notation" : "TM",
+      "title" : "Turkmenistan",
+      "definition" : "",
+      "position" : 227
+    }, {
+      "id" : 10722,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TC/en/1.0",
+      "notation" : "TC",
+      "title" : "Turks and Caicos Islands",
+      "definition" : "",
+      "position" : 228
+    }, {
+      "id" : 10723,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#TV/en/1.0",
+      "notation" : "TV",
+      "title" : "Tuvalu",
+      "definition" : "",
+      "position" : 229
+    }, {
+      "id" : 10724,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#UG/en/1.0",
+      "notation" : "UG",
+      "title" : "Uganda",
+      "definition" : "",
+      "position" : 230
+    }, {
+      "id" : 10725,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#UA/en/1.0",
+      "notation" : "UA",
+      "title" : "Ukraine",
+      "definition" : "",
+      "position" : 231
+    }, {
+      "id" : 10726,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AE/en/1.0",
+      "notation" : "AE",
+      "title" : "United Arab Emirates",
+      "definition" : "",
+      "position" : 232
+    }, {
+      "id" : 10727,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#GB/en/1.0",
+      "notation" : "GB",
+      "title" : "United Kingdom",
+      "definition" : "",
+      "position" : 233
+    }, {
+      "id" : 10728,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#UM/en/1.0",
+      "notation" : "UM",
+      "title" : "United States Minor Outlying Islands",
+      "definition" : "",
+      "position" : 234
+    }, {
+      "id" : 10729,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#US/en/1.0",
+      "notation" : "US",
+      "title" : "United States",
+      "definition" : "",
+      "position" : 235
+    }, {
+      "id" : 10730,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#UY/en/1.0",
+      "notation" : "UY",
+      "title" : "Uruguay",
+      "definition" : "",
+      "position" : 236
+    }, {
+      "id" : 10731,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#UZ/en/1.0",
+      "notation" : "UZ",
+      "title" : "Uzbekistan",
+      "definition" : "",
+      "position" : 237
+    }, {
+      "id" : 10732,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#VU/en/1.0",
+      "notation" : "VU",
+      "title" : "Vanuatu",
+      "definition" : "",
+      "position" : 238
+    }, {
+      "id" : 10733,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#VE/en/1.0",
+      "notation" : "VE",
+      "title" : "Venezuela",
+      "definition" : "",
+      "position" : 239
+    }, {
+      "id" : 10734,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#VN/en/1.0",
+      "notation" : "VN",
+      "title" : "Vietnam",
+      "definition" : "",
+      "position" : 240
+    }, {
+      "id" : 10735,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#VG/en/1.0",
+      "notation" : "VG",
+      "title" : "Virgin Islands (British)",
+      "definition" : "",
+      "position" : 241
+    }, {
+      "id" : 10736,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#VI/en/1.0",
+      "notation" : "VI",
+      "title" : "Virgin Islands (U.S.)",
+      "definition" : "",
+      "position" : 242
+    }, {
+      "id" : 10737,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#WF/en/1.0",
+      "notation" : "WF",
+      "title" : "Wallis and Futuna",
+      "definition" : "",
+      "position" : 243
+    }, {
+      "id" : 10738,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#EH/en/1.0",
+      "notation" : "EH",
+      "title" : "Western Sahara",
+      "definition" : "",
+      "position" : 244
+    }, {
+      "id" : 10739,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#YE/en/1.0",
+      "notation" : "YE",
+      "title" : "Yemen",
+      "definition" : "",
+      "position" : 245
+    }, {
+      "id" : 10740,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ZM/en/1.0",
+      "notation" : "ZM",
+      "title" : "Zambia",
+      "definition" : "",
+      "position" : 246
+    }, {
+      "id" : 10741,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#ZW/en/1.0",
+      "notation" : "ZW",
+      "title" : "Zimbabwe",
+      "definition" : "",
+      "position" : 247
+    }, {
+      "id" : 10742,
+      "uri" : "https://vocabularies.cessda.eu/CountryNamesAndCodes#AX/en/1.0",
+      "notation" : "AX",
+      "title" : "Åland Islands",
+      "definition" : "",
+      "position" : 248
+    } ],
+    "comments" : [ {
+      "id" : 1,
+      "content" : "<p>Most official names have been shortened to generally used ones.</p>",
+      "info" : "Ala-Lahti, Henri",
+      "userId" : 72,
+      "dateTime" : "2020-11-05T12:47:09.442072+01:00",
+      "versionId" : 451
+    } ],
+    "versionHistories" : [ ]
+  } ]
+}

@@ -1,229 +1,788 @@
 {
-  "id": 47,
-  "status": "PUBLISHED",
-  "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit",
-  "notation": "AnalysisUnit",
-  "versionNumber": "2.1",
-  "withdrawn": false,
-  "sourceLanguage": "en",
-  "agencyId": 2,
-  "agencyName": "DDI Alliance",
-  "agencyLogo": "ddi.png",
-  "agencyLink": "http://www.ddialliance.org/",
-  "publicationDate": "2020-10-26",
-  "notes": "<span style=\"line-height: 107%;\">This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all</span>",
-  "versions": [
-    {
-      "id": 453,
-      "status": "PUBLISHED",
-      "itemType": "SL",
-      "language": "en",
-      "publicationDate": "2020-10-26",
-      "number": "2.1",
-      "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html",
-      "canonicalUri": "urn:ddi:int.ddi.cv:AnalysisUnit:2.1",
-      "notation": "AnalysisUnit",
-      "title": "Analysis Unit",
-      "definition": "Describes the entity being analyzed in the study or variable. This vocabulary can also be used to describe the unit of observation, which is the unit being observed, or from which data are collected. The unit of observation can be the same as, or different from the unit of analysis.",
-      "previousVersion": 359,
-      "initialVersion": 206,
-      "notes": "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all",
-      "versionChanges": "CV definition rephrased: CV definition rephrased without change in meaning",
-      "license": "CC BY",
-      "licenseName": "Creative Commons Attribution 4.0 International",
-      "licenseLink": "http://creativecommons.org/licenses/by/4.0/",
-      "licenseLogo": "by.png",
-      "citation": "DDI Alliance. (2020). Analysis Unit (Version 2.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AnalysisUnit:2.1. ",
-      "ddiUsage": "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/anlyUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlyUnit@unit</a></p><p>Element/Attribute Name: <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/anlysUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlysUnit</a></p>",
-      "lastStatusChangeDate": "2020-10-26",
-      "concepts": [
-        {
-          "id": 10803,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Individual",
-          "notation": "Individual",
-          "title": "Individual",
-          "definition": "Any individual person.",
-          "previousConcept": 5827,
-          "position": 0
-        },
-        {
-          "id": 10797,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#OrganizationOrInstitution",
-          "notation": "OrganizationOrInstitution",
-          "title": "Organization/Institution",
-          "definition": "Any kind of formal administrative and functional structure - includes associations, institutions, agencies, businesses, political parties, schools, etc. The data are collected about the organizations or institutions, even if the questions are answered by individuals. For example, data on the environmental policies of businesses, data on enrollment or graduation rates at national universities, etc.",
-          "previousConcept": 5821,
-          "position": 1
-        },
-        {
-          "id": 10806,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Family",
-          "notation": "Family",
-          "title": "Family",
-          "definition": "Two or more people related by blood, marriage (including step-relations), co-habitation or registered partnership, adoption or fostering, and who may or may not live together. For example, data on what kind of public services the family uses or would require; or how often family members are in contact with each other.",
-          "previousConcept": 5828,
-          "position": 2
-        },
-        {
-          "id": 10793,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Family.HouseholdFamily",
-          "notation": "Family.HouseholdFamily",
-          "title": "Family: Household family",
-          "definition": "A more specific term that refers only to people who are related through family ties (see definition for 'Family') and live in the same household at a point in time. If not known whether the analysis unit is 'Family' or 'Household family', use 'Family'.",
-          "previousConcept": 5829,
-          "parent": "Family",
-          "position": 3
-        },
-        {
-          "id": 10807,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Household",
-          "notation": "Household",
-          "title": "Household",
-          "definition": "A person or a group of persons who share the same dwelling unit and common living arrangements. These common living arrangements may include pooling some, or all, of their income and wealth, and consuming certain types of goods and services collectively, mainly housing and food (Eurostat).",
-          "previousConcept": 5822,
-          "position": 4
-        },
-        {
-          "id": 10800,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#HousingUnit",
-          "notation": "HousingUnit",
-          "title": "Housing unit",
-          "definition": "U.S. Census: A housing unit is a house, an apartment, a mobile home, a group of rooms, or a single room that is occupied (or if vacant, is intended for occupancy) as separate living quarters. Separate living quarters are those in which the occupants live and eat separately from any other persons in the building and which have direct access from the outside of the building or through a common hall.",
-          "previousConcept": 5830,
-          "position": 5
-        },
-        {
-          "id": 10791,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#EventOrProcessOrActivity",
-          "notation": "EventOrProcessOrActivity",
-          "title": "Event/Process/Activity",
-          "definition": "Any type of incident, occurrence, or activity. Events are usually one-time, individual occurrences, with a limited or short duration. Examples: criminal offenses, riots, meetings, elections, sports competitions, terrorist attacks, natural disasters like floods, etc. Processes typically take place over time, and may include multiple 'events' or gradual changes that ultimately lead, or are projected to lead, to a particular result. Examples: court trials, criminal investigations, political campaigns, medical treatments, education, athletes' training, etc. Use when the main focus is more on the event, process or activity itself. For example, a field observation study on slot machine gambling; or data collected on child abuse cases, such as the type and duration of abuse, the role of the persons involved, etc.",
-          "previousConcept": 5823,
-          "position": 6
-        },
-        {
-          "id": 10799,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#GeographicUnit",
-          "notation": "GeographicUnit",
-          "title": "Geographic unit",
-          "definition": "Any entity that can be spatially defined as a geographic area, with either natural (physical) or administrative boundaries. For example, data on home sales, landscaping changes, new constructions, or changes in the demographic composition of certain regions or districts.",
-          "previousConcept": 5831,
-          "position": 7
-        },
-        {
-          "id": 10804,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#PoliticalAdministrativeArea",
-          "notation": "PoliticalAdministrativeArea",
-          "title": "Political-administrative area",
-          "definition": "A geographical area governed by a sovereign authority that has the power to take administrative or policy decisions for that area. This includes areas at the supranational (e.g., unions of states like the European Union),  national (e.g., individual states or countries), sub-national (e.g., administrative subdivisions like federal states, provinces, etc.), and local (e.g., municipalities) levels.",
-          "previousConcept": 5832,
-          "position": 8
-        },
-        {
-          "id": 10795,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#TimeUnit",
-          "notation": "TimeUnit",
-          "title": "Time unit",
-          "definition": "Any period of time: year, week, month, day, or bimonthly or quarterly periods, etc.",
-          "previousConcept": 5826,
-          "position": 9
-        },
-        {
-          "id": 10794,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit",
-          "notation": "MediaUnit",
-          "title": "Media unit",
-          "definition": "Includes text, still image, video and sound.",
-          "previousConcept": 5833,
-          "position": 10
-        },
-        {
-          "id": 10801,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit.Sound",
-          "notation": "MediaUnit.Sound",
-          "title": "Media unit: Sound",
-          "definition": "Recorded sound, including voice, music, etc.",
-          "previousConcept": 5835,
-          "parent": "MediaUnit",
-          "position": 11
-        },
-        {
-          "id": 10808,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit.StillImage",
-          "notation": "MediaUnit.StillImage",
-          "title": "Media unit: Still image",
-          "definition": "Static images, such as graphs, drawings, photographs, diagnostic/medical images like X-rays and other types of imaging tests, etc.",
-          "previousConcept": 5836,
-          "parent": "MediaUnit",
-          "position": 12
-        },
-        {
-          "id": 10796,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit.Text",
-          "notation": "MediaUnit.Text",
-          "title": "Media unit: Text",
-          "definition": "Any written piece/entity, such as books, articles, tweets, blogs, etc. For example, a study on hate speech in tweets, or a study of the way newspapers present certain political/social issues over time, like women's or minorities' rights, etc.",
-          "previousConcept": 5834,
-          "parent": "MediaUnit",
-          "position": 13
-        },
-        {
-          "id": 10805,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#MediaUnit.Video",
-          "notation": "MediaUnit.Video",
-          "title": "Media unit: Video",
-          "definition": "Moving images. May include films, animation, digital recordings, visual output from simulations, recorded television programs, diagnostic/medical videos like ultrasound scans, etc. May be mute or may include synchronized sound.",
-          "previousConcept": 5837,
-          "parent": "MediaUnit",
-          "position": 14
-        },
-        {
-          "id": 10792,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Group",
-          "notation": "Group",
-          "title": "Group",
-          "definition": "Two or more individuals assembled together or having some unifying relationship or characteristic. In surveys, the questions are mainly focused on the group and the attitudes/experiences of the group, rather than on those of the individual respondents. If questions cover both the group and the individual, use  both as analysis units.",
-          "previousConcept": 5820,
-          "position": 15
-        },
-        {
-          "id": 10802,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Object",
-          "notation": "Object",
-          "title": "Object",
-          "definition": "Anything material, but inanimate, that has an independent existence and may be perceived by the senses. Examples: objects of art (paintings, sculptures, etc.) or weapons, or vehicles, etc.",
-          "previousConcept": 5824,
-          "position": 16
-        },
-        {
-          "id": 10798,
-          "uri": "https://ddialliance.org/Specification/DDI-CV/AnalysisUnit_2.1.html#Other",
-          "notation": "Other",
-          "title": "Other",
-          "definition": "Use if the unit of analysis is known, but not found in the list.",
-          "previousConcept": 5825,
-          "position": 17
-        }
-      ],
-      "comments": [],
-      "versionHistories": [
-        {
-          "id": 359,
-          "version": "2.0",
-          "date": "2019-10-12",
-          "note": "A number of amendments were made based on user feedback. New code PoliticalAdministrativeArea added. New code MediaUnit and its subterms added. TextUnit was made a narrower term in the MediaUnit hierarchy. Several code definitions and the vocabulary definition were amended for clarity. Usage information updated.",
-          "changes": "CV definition amended\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organization rephrased into Organization/Institution\nCode descriptive term rephrased: Housing Unit rephrased into Housing unit\nCode descriptive term rephrased: Event/Process rephrased into Event/Process/Activity\nCode descriptive term rephrased: Geographic Unit rephrased into Geographic unit\nCode descriptive term rephrased: Time Unit rephrased into Time unit\nCode descriptive term rephrased: Text Unit rephrased into Media unit: Text\nCode definition amended with meaning change: OrganizationOrInstitution\nCode definition amended with meaning change: EventOrProcessOrActivity\nCode definition rephrased: Individual\nCode definition rephrased: Family\nCode definition rephrased: Family.HouseholdFamily\nCode definition rephrased: Geographic unit\nCode definition rephrased: MediaUnit.Text\nCode definition rephrased: Group\n",
-          "prevVersion": 206
-        },
-        {
-          "id": 206,
-          "version": "1.0",
-          "date": "2019-04-01",
-          "note": "",
-          "changes": "",
-          "prevVersion": 0
-        }
-      ]
-    }
-  ]
+  "id" : 47,
+  "status" : "PUBLISHED",
+  "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.0/2.1/2.1",
+  "notation" : "AnalysisUnit",
+  "versionNumber" : "2.1",
+  "withdrawn" : false,
+  "sourceLanguage" : "en",
+  "agencyId" : 2,
+  "agencyName" : "DDI Alliance",
+  "agencyLogo" : "ddi.png",
+  "agencyLink" : "http://www.ddialliance.org/",
+  "publicationDate" : "2020-10-30",
+  "versions" : [ {
+    "id" : 483,
+    "status" : "PUBLISHED",
+    "itemType" : "SL",
+    "language" : "en",
+    "publicationDate" : "2020-10-30",
+    "number" : "2.1",
+    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.1",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:AnalysisUnit:2.1",
+    "notation" : "AnalysisUnit",
+    "title" : "Analysis Unit",
+    "definition" : "Describes the entity being analyzed in the study or variable. This vocabulary can also be used to describe the unit of observation, which is the unit being observed, or from which data are collected. The unit of observation can be the same as, or different from the unit of analysis. ",
+    "previousVersion" : 359,
+    "initialVersion" : 206,
+    "notes" : "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
+    "versionChanges" : "CV definition rephrased: AnalysisUnit",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). Analysis Unit (Version 2.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AnalysisUnit:2.1. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: reusable</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module name: reusable</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute name: <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/anlyUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlyUnit@unit</a></p><p>Element/Attribute name: <a href=\"https://ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/anlysUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlysUnit</a></p>",
+    "lastStatusChangeDate" : "2020-10-30",
+    "concepts" : [ {
+      "id" : 12255,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/en/2.1",
+      "notation" : "Individual",
+      "title" : "Individual",
+      "definition" : "Any individual person.",
+      "previousConcept" : 5827,
+      "position" : 0
+    }, {
+      "id" : 12266,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#OrganizationOrInstitution/en/2.1",
+      "notation" : "OrganizationOrInstitution",
+      "title" : "Organization/Institution",
+      "definition" : "Any kind of formal administrative and functional structure - includes associations, institutions, agencies, businesses, political parties, schools, etc. The data are collected about the organizations or institutions, even if the questions are answered by individuals. For example, data on the environmental policies of businesses, data on enrollment or graduation rates at national universities, etc.",
+      "previousConcept" : 5821,
+      "position" : 1
+    }, {
+      "id" : 12251,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/en/2.1",
+      "notation" : "Family",
+      "title" : "Family",
+      "definition" : "Two or more people related by blood, marriage (including step-relations), co-habitation or registered partnership, adoption or fostering, and who may or may not live together. For example, data on what kind of public services the family uses or would require; or how often family members are in contact with each other.",
+      "previousConcept" : 5828,
+      "position" : 2
+    }, {
+      "id" : 12264,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family.HouseholdFamily/en/2.1",
+      "notation" : "Family.HouseholdFamily",
+      "title" : "Family: Household family",
+      "definition" : "A more specific term that refers only to people who are related through family ties (see definition for 'Family') and live in the same household at a point in time. If not known whether the analysis unit is 'Family' or 'Household family', use 'Family'.",
+      "previousConcept" : 5829,
+      "parent" : "Family",
+      "position" : 3
+    }, {
+      "id" : 12259,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/en/2.1",
+      "notation" : "Household",
+      "title" : "Household",
+      "definition" : "A person or a group of persons who share the same dwelling unit and common living arrangements. These common living arrangements may include pooling some, or all, of their income and wealth, and consuming certain types of goods and services collectively, mainly housing and food (Eurostat).",
+      "previousConcept" : 5822,
+      "position" : 4
+    }, {
+      "id" : 12256,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/en/2.1",
+      "notation" : "HousingUnit",
+      "title" : "Housing unit",
+      "definition" : "U.S. Census: A housing unit is a house, an apartment, a mobile home, a group of rooms, or a single room that is occupied (or if vacant, is intended for occupancy) as separate living quarters. Separate living quarters are those in which the occupants live and eat separately from any other persons in the building and which have direct access from the outside of the building or through a common hall.",
+      "previousConcept" : 5830,
+      "position" : 5
+    }, {
+      "id" : 12265,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/en/2.1",
+      "notation" : "EventOrProcessOrActivity",
+      "title" : "Event/Process/Activity",
+      "definition" : "Any type of incident, occurrence, or activity. Events are usually one-time, individual occurrences, with a limited or short duration. Examples: criminal offenses, riots, meetings, elections, sports competitions, terrorist attacks, natural disasters like floods, etc. Processes typically take place over time, and may include multiple 'events' or gradual changes that ultimately lead, or are projected to lead, to a particular result. Examples: court trials, criminal investigations, political campaigns, medical treatments, education, athletes' training, etc. Use when the main focus is more on the event, process or activity itself. For example, a field observation study on slot machine gambling; or data collected on child abuse cases, such as the type and duration of abuse, the role of the persons involved, etc.",
+      "previousConcept" : 5823,
+      "position" : 6
+    }, {
+      "id" : 12261,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/en/2.1",
+      "notation" : "GeographicUnit",
+      "title" : "Geographic unit",
+      "definition" : "Any entity that can be spatially defined as a geographic area, with either natural (physical) or administrative boundaries. For example, data on home sales, landscaping changes, new constructions, or changes in the demographic composition of certain regions or districts.",
+      "previousConcept" : 5831,
+      "position" : 7
+    }, {
+      "id" : 12257,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/en/2.1",
+      "notation" : "PoliticalAdministrativeArea",
+      "title" : "Political-administrative area",
+      "definition" : "A geographical area governed by a sovereign authority that has the power to take administrative or policy decisions for that area. This includes areas at the supranational (e.g., unions of states like the European Union),  national (e.g., individual states or countries), sub-national (e.g., administrative subdivisions like federal states, provinces, etc.), and local (e.g., municipalities) levels.",
+      "previousConcept" : 5832,
+      "position" : 8
+    }, {
+      "id" : 12254,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/en/2.1",
+      "notation" : "TimeUnit",
+      "title" : "Time unit",
+      "definition" : "Any period of time: year, week, month, day, or bimonthly or quarterly periods, etc.",
+      "previousConcept" : 5826,
+      "position" : 9
+    }, {
+      "id" : 12258,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/en/2.1",
+      "notation" : "MediaUnit",
+      "title" : "Media unit",
+      "definition" : "Includes text, still image, video and sound.",
+      "previousConcept" : 5833,
+      "position" : 10
+    }, {
+      "id" : 12250,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Sound/en/2.1",
+      "notation" : "MediaUnit.Sound",
+      "title" : "Media unit: Sound",
+      "definition" : "Recorded sound, including voice, music, etc.",
+      "previousConcept" : 5835,
+      "parent" : "MediaUnit",
+      "position" : 11
+    }, {
+      "id" : 12263,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.StillImage/en/2.1",
+      "notation" : "MediaUnit.StillImage",
+      "title" : "Media unit: Still image",
+      "definition" : "Static images, such as graphs, drawings, photographs, diagnostic/medical images like X-rays and other types of imaging tests, etc.",
+      "previousConcept" : 5836,
+      "parent" : "MediaUnit",
+      "position" : 12
+    }, {
+      "id" : 12267,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/en/2.1",
+      "notation" : "MediaUnit.Text",
+      "title" : "Media unit: Text",
+      "definition" : "Any written piece/entity, such as books, articles, tweets, blogs, etc. For example, a study on hate speech in tweets, or a study of the way newspapers present certain political/social issues over time, like women's or minorities' rights, etc.",
+      "previousConcept" : 5834,
+      "parent" : "MediaUnit",
+      "position" : 13
+    }, {
+      "id" : 12260,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Video/en/2.1",
+      "notation" : "MediaUnit.Video",
+      "title" : "Media unit: Video",
+      "definition" : "Moving images. May include films, animation, digital recordings, visual output from simulations, recorded television programs, diagnostic/medical videos like ultrasound scans, etc. May be mute or may include synchronized sound.",
+      "previousConcept" : 5837,
+      "parent" : "MediaUnit",
+      "position" : 14
+    }, {
+      "id" : 12262,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Group/en/2.1",
+      "notation" : "Group",
+      "title" : "Group",
+      "definition" : "Two or more individuals assembled together or having some unifying relationship or characteristic. In surveys, the questions are mainly focused on the group and the attitudes/experiences of the group, rather than on those of the individual respondents. If questions cover both the group and the individual, use  both as analysis units.",
+      "previousConcept" : 5820,
+      "position" : 15
+    }, {
+      "id" : 12252,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/en/2.1",
+      "notation" : "Object",
+      "title" : "Object",
+      "definition" : "Anything material, but inanimate, that has an independent existence and may be perceived by the senses. Examples: objects of art (paintings, sculptures, etc.) or weapons, or vehicles, etc.",
+      "previousConcept" : 5824,
+      "position" : 16
+    }, {
+      "id" : 12253,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/en/2.1",
+      "notation" : "Other",
+      "title" : "Other",
+      "definition" : "Use if the unit of analysis is known, but not found in the list.",
+      "previousConcept" : 5825,
+      "position" : 17
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ {
+      "id" : 359,
+      "version" : "2.0",
+      "date" : "2019-10-13",
+      "note" : "A number of amendments were made based on user feedback. New code PoliticalAdministrativeArea added. New code MediaUnit and its subterms added. TextUnit was made a narrower term in the MediaUnit hierarchy. Several code definitions and the vocabulary definition were amended for clarity. Usage information updated.",
+      "changes" : "CV definition amended\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: TextUnit changed to MediaUnit.Text\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode descriptive term rephrased: Organization rephrased into Organization/Institution\nCode descriptive term rephrased: Housing Unit rephrased into Housing unit\nCode descriptive term rephrased: Event/Process rephrased into Event/Process/Activity\nCode descriptive term rephrased: Geographic Unit rephrased into Geographic unit\nCode descriptive term rephrased: Time Unit rephrased into Time unit\nCode descriptive term rephrased: Text Unit rephrased into Media unit: Text\nCode definition amended with meaning change: OrganizationOrInstitution\nCode definition amended with meaning change: EventOrProcessOrActivity\nCode definition rephrased: Individual\nCode definition rephrased: Family\nCode definition rephrased: Family.HouseholdFamily\nCode definition rephrased: Geographic unit\nCode definition rephrased: MediaUnit.Text\nCode definition rephrased: Group\n",
+      "prevVersion" : 206
+    }, {
+      "id" : 206,
+      "version" : "1.0",
+      "date" : "2019-04-02",
+      "note" : "",
+      "changes" : "",
+      "prevVersion" : 0
+    } ]
+  }, {
+    "id" : 486,
+    "status" : "PUBLISHED",
+    "itemType" : "TL",
+    "language" : "fi",
+    "publicationDate" : "2020-11-09",
+    "number" : "2.1.1",
+    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/fi/2.1.1",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:AnalysisUnit:2.1",
+    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.1",
+    "notation" : "AnalysisUnit",
+    "title" : "Havainto/aineistoyksikkötyyppi",
+    "definition" : "Määrittelee yksikön, jota tutkimuksessa/muuttujassa analysoidaan. Sanastoa voidaan käyttää myös määrittelemään havaintoyksikkö, jota tutkimuksessa havannoidaan tai josta aineistoa kerätään. Havaintoyksikkö voi olla sama tai eri kuin analyysiyksikkö.\n",
+    "previousVersion" : 427,
+    "initialVersion" : 208,
+    "notes" : "",
+    "versionChanges" : "CV definition rephrased: AnalysisUnit",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). AnalysisUnit[Havainto/aineistoyksikkötyyppi] (Version 2.1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AnalysisUnit:2.1.1. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.1/DTD/Documentation/anlyUnitType.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlyUnit@unit</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.1/DTD/Documentation/anlysUnitType.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlysUnit</a></p>",
+    "translateAgency" : "Finnish Social Science Data Archive (FSD)",
+    "translateAgencyLink" : "https://www.fsd.uta.fi/en/",
+    "lastStatusChangeDate" : "2020-11-09",
+    "concepts" : [ {
+      "id" : 12409,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/fi/2.1.1",
+      "notation" : "Individual",
+      "title" : "Henkilö",
+      "definition" : "Tutkimuksen tarkastelukohteena ovat yksittäiset henkilöt",
+      "previousConcept" : 8678,
+      "position" : 0
+    }, {
+      "id" : 12402,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#OrganizationOrInstitution/fi/2.1.1",
+      "notation" : "OrganizationOrInstitution",
+      "title" : "Organisaatio",
+      "definition" : "Mikä tahansa hallinnollinen tai toiminnallinen organisaatio, esimerkiksi järjestö, koulu, instituutti, toimisto, yritys, poliittinen puolue, jne. Kysymykset kohdistuvat itse organisaatioon vaikka vastaajina ovatkin yksittäiset henkilöt. Esimerkiksi tutkittaessa yritysten ympäristöpolitiikkaa tai korkeakouluista valmistuneiden määriä suhteessa opiskelijoihin jne.",
+      "previousConcept" : 8674,
+      "position" : 1
+    }, {
+      "id" : 12401,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/fi/2.1.1",
+      "notation" : "Family",
+      "title" : "Perhe",
+      "definition" : "Kaksi tai useampia henkilöitä, jotka liittyvät toisiinsa sukulaisuuden, avo- tai avioliiton (laskien mukaan esim. sisar- ja velipuolet), rekisteröidyn parisuhteen, adoption tai sijaisvanhemmuuden kautta, riippumatta siitä, asuvatko he yhdessä vai eivät. Esimerkiksi tutkittaessa mitä julkisia palveluja perhe käyttää; tai kuinka usein perheenjäsenet ovat yhteydessä toisiinsa.",
+      "previousConcept" : 8681,
+      "position" : 2
+    }, {
+      "id" : 12406,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family.HouseholdFamily/fi/2.1.1",
+      "notation" : "Family.HouseholdFamily",
+      "title" : "Perhe: perhekotitalous",
+      "definition" : "Spesifimpi termi, joka viittaa kotitalouteen, jossa tietyllä hetkellä yhdessä asuvat henkilöt myös kuuluvat perheeseen (katso määritelmä termille 'Perhe'). Jos ei tiedossa, onko kyseessä 'Perhe' vai 'Perhekotitalous', käytä 'Perhe'.",
+      "previousConcept" : 8672,
+      "parent" : "Family",
+      "position" : 3
+    }, {
+      "id" : 12404,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/fi/2.1.1",
+      "notation" : "Household",
+      "title" : "Kotitalous",
+      "definition" : "Kotitalouden muodostaa yksi henkilö tai ryhmä henkilöitä, jotka asuvat yhdessä ja joilla on kokonaan tai osittain yhteinen ruokatalous tai jotka muuten käyttävät tulojaan ja varallisuuttaan ainakin osittain yhdessä.",
+      "previousConcept" : 8679,
+      "position" : 4
+    }, {
+      "id" : 12396,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/fi/2.1.1",
+      "notation" : "HousingUnit",
+      "title" : "Asuntokunta",
+      "definition" : "Asuntokunta voi sijaita talossa, huoneistossa, asuntovaunussa, tai asunnon tietyssä huoneessa tai huoneissa. Asuntokunnnan asuintilassa elävillä henkilöillä on oma erillinen ruokataloutensa ja järjestelynsä. Yhdessä asunnossa voi olla useampia asuntokuntia. Esimerkiksi soluasunnoissa asuvilla opiskelijoilla voi kullakin olla oma ruoka- ja asuntokuntansa. Termi käytössä etenkin Yhdysvalloissa.",
+      "previousConcept" : 8668,
+      "position" : 5
+    }, {
+      "id" : 12411,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/fi/2.1.1",
+      "notation" : "EventOrProcessOrActivity",
+      "title" : "Tapahtuma/prosessi/toiminta",
+      "definition" : "Tapahtuma, tapahtumasarja, toiminta tai prosessi. Tapahtumat ovat usein lyhytaikaisia ja kertaluonteisia, esimerkiksi mellakat, kokoukset, urheilukilpailut, terroristihyökkäykset ja luonnonkatastrofit. Prosessit ovat tyypillisesti pidempikestoisia, voivat sisältää useampia tapahtumia tai vähittäisiä muutoksia, jotka lopuksi johtavat tiettyyn tulokseen. Esimerkiksi oikeusjutut, rikostutkimukset, poliittiset kampanjat, kuntoutushoidot, koulutus. Tapahtuma/prosessi/toiminta -termiä käytetään silloin, kun tutkimuksessa keskitytään kyseiseen tapahtumaan, prosessiin tai toimintaan, ei henkilöihin sinänsä. Esimerkiksi havainnointitutkimus peliautomaattipelaamisesta; tutkimus lasten pahoinpitelytapauksista, niiden tyypistä ja kestosta, osallistuvien henkilöiden roolista niissä.",
+      "previousConcept" : 8667,
+      "position" : 6
+    }, {
+      "id" : 12405,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/fi/2.1.1",
+      "notation" : "GeographicUnit",
+      "title" : "Maantieteellinen yksikkö",
+      "definition" : "Mikä tahansa maantieteellisesti määriteltävissä oleva alue, jolla on joko luontaiset fyysiset rajat tai hallinnolliset rajat. Esimerkiksi muutokset tiettyjen alueiden väestössä tai asuntojen myyntiluvut tai rakennusluvat tietyllä alueella.",
+      "previousConcept" : 8682,
+      "position" : 7
+    }, {
+      "id" : 12400,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/fi/2.1.1",
+      "notation" : "PoliticalAdministrativeArea",
+      "title" : "Poliittis-hallinnollinen alue",
+      "definition" : "Maantieteellinen alue, jota hallinnoivilla viranomaisilla tai päätäntäelimillä on oikeus tehdä aluetta koskevia hallinnollisia tai poliittisia päätöksiä. Sisältää ylikansalliset (esim. Euroopan unioni), kansalliset (esim. valtiot), maansisäiset (esim. maakunnat) ja paikalliset (esim. kunnat) alueet.",
+      "previousConcept" : 8680,
+      "position" : 8
+    }, {
+      "id" : 12399,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/fi/2.1.1",
+      "notation" : "TimeUnit",
+      "title" : "Aikajakso",
+      "definition" : "Minkä mittainen aikajakso tahansa: sekunti, tunti, vuorokausi, viikko, kuukausi, vuosi yms.",
+      "previousConcept" : 8666,
+      "position" : 9
+    }, {
+      "id" : 12403,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/fi/2.1.1",
+      "notation" : "MediaUnit",
+      "title" : "Mediatyyppi (teksti, ääni, still-kuva, liikkuva kuva)",
+      "definition" : "Sisältää teksti-, kuva- ja äänimuodossa olevan viestinnän.",
+      "previousConcept" : 8670,
+      "position" : 10
+    }, {
+      "id" : 12397,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Sound/fi/2.1.1",
+      "notation" : "MediaUnit.Sound",
+      "title" : "Mediatyyppi: ääni",
+      "definition" : "Taltioitu ääni, esimerkiksi puhe, musiikki jne.",
+      "previousConcept" : 8676,
+      "parent" : "MediaUnit",
+      "position" : 11
+    }, {
+      "id" : 12410,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.StillImage/fi/2.1.1",
+      "notation" : "MediaUnit.StillImage",
+      "title" : "Mediatyyppi: still-kuva",
+      "definition" : "Still-kuvat kuten esimerkiksi graafit, piirrokset, valokuvat, röntgenkuvat tai muut lääketieteelliset still-kuvat.",
+      "previousConcept" : 8677,
+      "parent" : "MediaUnit",
+      "position" : 12
+    }, {
+      "id" : 12407,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/fi/2.1.1",
+      "notation" : "MediaUnit.Text",
+      "title" : "Mediatyyppi: teksti",
+      "definition" : "Kirja, artikkeli, tweet, blogikirjoitus tai mikä tahansa muu tekstiyksikkö. Esimerkiksi tutkittaessa miten sanomalehdet ovat käsitelleet tiettyä aihetta ajan saatossa tai tutkittaessa vihapuhetta blogikirjoituksissa.",
+      "previousConcept" : 8675,
+      "parent" : "MediaUnit",
+      "position" : 13
+    }, {
+      "id" : 12395,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Video/fi/2.1.1",
+      "notation" : "MediaUnit.Video",
+      "title" : "Mediatyyppi: liikkuva kuva",
+      "definition" : "Liikkuva kuva äänellä tai ilman. Esimerkiksi elokuvat, animaatiot, digitaaliset taltiot, simulaatioiden liikkuvat kuvat, taltioidut televisio-ohjelmat ja ultraäänikuvat.",
+      "previousConcept" : 8673,
+      "parent" : "MediaUnit",
+      "position" : 14
+    }, {
+      "id" : 12408,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Group/fi/2.1.1",
+      "notation" : "Group",
+      "title" : "Ryhmä",
+      "definition" : "Kaksi tai useampia henkilöitä, jotka ovat joko kokoontuneet yhteen tai joita yhdistää jokin muu tekijä. Mikäli kyselytutkimus, kysymykset koskevat pääasiassa itse ryhmää, ryhmän kokemuksia ja asenteita ryhmää kohtaan, ei henkilöä itseään. Mikäli kysymykset koskevat sekä ryhmää että henkilöä, käytä havaintoyksikkönä molempia.",
+      "previousConcept" : 8683,
+      "position" : 15
+    }, {
+      "id" : 12398,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/fi/2.1.1",
+      "notation" : "Object",
+      "title" : "Eloton objekti/esine",
+      "definition" : "Mikä tahansa konkreettinen, eloton esine/kohde, joka voidaan aistein havaita. Esimerkiksi taideteokset (veistokset, maalaukset), aseet, ajoneuvot jne.",
+      "previousConcept" : 8669,
+      "position" : 16
+    }, {
+      "id" : 12394,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/fi/2.1.1",
+      "notation" : "Other",
+      "title" : "Muu havainto/aineistoyksikkötyyppi",
+      "definition" : "Käytä mikäli havaintoyksikkö on tiedossa, mutta ei löydy sanastosta.",
+      "previousConcept" : 8671,
+      "position" : 17
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ {
+      "id" : 427,
+      "version" : "2.0.2",
+      "date" : "2020-01-30",
+      "note" : " ",
+      "changes" : "Code descriptive term rephrased: Muu havaintoyksikkö/aineistoyksikkötyyppi rephrased into Muu havainto/aineistoyksikkötyyppi.\n",
+      "prevVersion" : 387
+    }, {
+      "id" : 387,
+      "version" : "2.0.1",
+      "date" : "2020-01-16",
+      "note" : "",
+      "changes" : "CV definition rephrased.\nCode added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Maantieteellinen alue rephrased into Maantieteellinen yksikkö\nCode descriptive term rephrased: Teksti rephrased into Mediatyyppi: teksti\nCode definition rephrased: Henkilö\nCode definition rephrased: Perhe\nCode definition rephrased: Perhe: perhekotitalous\nCode definition rephrased: Kotitalous\nCode definition rephrased: Asuntokunta\nCode definition rephrased: Tapahtuma/prosessi/toiminta\nCode definition rephrased: Maantieteellinen yksikkö\nCode definition rephrased: Mediayksikkö: teksti\nCode definition rephrased: Ryhmä",
+      "prevVersion" : 208
+    }, {
+      "id" : 208,
+      "version" : "1.0.1",
+      "date" : "2019-04-02",
+      "note" : "",
+      "changes" : "",
+      "prevVersion" : 0
+    } ]
+  }, {
+    "id" : 489,
+    "status" : "PUBLISHED",
+    "itemType" : "TL",
+    "language" : "no",
+    "publicationDate" : "2020-12-07",
+    "number" : "2.1.1",
+    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/no/2.1.1",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:AnalysisUnit:2.1",
+    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.1",
+    "notation" : "AnalysisUnit",
+    "title" : "Analyseenhet",
+    "definition" : "Beskrivelse av enhet som blir analysert i studien eller i variablene. Dette vokabularet kan også bli brukt for å beskrive observasjonsenheten, som er enheten som blir observert, eller enheten data er samlet inn fra. Observasjonsenhten kan være det samme eller forskjellig fra analyseenheten.",
+    "previousVersion" : 386,
+    "initialVersion" : 216,
+    "notes" : "",
+    "versionChanges" : "CV definition rephrased: AnalysisUnit",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). AnalysisUnit[Analyseenhet] (Version 2.1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AnalysisUnit:2.1.1. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.1/DTD/Documentation/anlyUnitType.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlyUnit@unit</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.1/DTD/Documentation/anlysUnitType.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlysUnit</a></p>",
+    "translateAgency" : "NSD - Norwegian Centre for Research Data",
+    "translateAgencyLink" : "https://nsd.no",
+    "lastStatusChangeDate" : "2020-12-07",
+    "concepts" : [ {
+      "id" : 12271,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/no/2.1.1",
+      "notation" : "Individual",
+      "title" : "Individ",
+      "definition" : "Enhver individuell person.",
+      "previousConcept" : 8262,
+      "position" : 0
+    }, {
+      "id" : 12279,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#OrganizationOrInstitution/no/2.1.1",
+      "notation" : "OrganizationOrInstitution",
+      "title" : "Organisasjon/Institusjon",
+      "definition" : "Former for formelle administrative og funksjonelle strukturerer - inkluderer foreninger, institusjoner, foretak, bedrifter, politiske partier, skoler etc. Data er samlet om organisasjoner eller institusjoner selv om spørsmålene er besvart av individer. For eksempel data om virksomheters miljøpolitikk, data om opptak eller avgangsgrader ved nasjonale universitet, etc.",
+      "previousConcept" : 7064,
+      "position" : 1
+    }, {
+      "id" : 12268,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/no/2.1.1",
+      "notation" : "Family",
+      "title" : "Familie",
+      "definition" : "To eller flere mennesker som er i slekt med blod, ekteskap (inkludert ste-relasjoner), samboerskap eller registrerte partnere, adopsjon eller fosterbarn som enten lever eller ikke lever sammen. For eksempel, data om hvilke typer offentlige tjenster familien bruker eller har behov for; eller hvor ofte familiemedlemmene er i kontakt med hverandre.",
+      "previousConcept" : 8263,
+      "position" : 2
+    }, {
+      "id" : 12280,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family.HouseholdFamily/no/2.1.1",
+      "notation" : "Family.HouseholdFamily",
+      "title" : "Familie: familiehusholdning",
+      "definition" : "Et mer spesifikt begrep som kun referer til personer som er beslektet gjennom familierelasjoner (se definisjonen for 'Familie') og som bor i den samme husholdningen på et gitt tidspunkt. Om det ikke er kjent om analyseenheten er 'Familie' eller 'Familiehusholdning' skal begrepet 'Familie' benyttes.",
+      "previousConcept" : 8264,
+      "parent" : "Family",
+      "position" : 3
+    }, {
+      "id" : 12276,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/no/2.1.1",
+      "notation" : "Household",
+      "title" : "Husholdning",
+      "definition" : "En person eller en gruppe av personer som har samme boligenhet og leveforhold. Disse felles leveforholdene kan inkludere at deler av, eller alt av inntekt og eiendom er felles, og at visse type varer og tjenester konsumeres i fellesskap, hovedsakelig bosted og mat (Eurostat).",
+      "previousConcept" : 7066,
+      "position" : 4
+    }, {
+      "id" : 12273,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/no/2.1.1",
+      "notation" : "HousingUnit",
+      "title" : "Boenhet",
+      "definition" : "USAs folketelling: En boenhet er et hus, en leilighet, et mobilt hjem (campingvogn), eller ett eller flere rom som er bebodd (eventuelt ledig, men som er ment å være bebodd), som adskilte enheter. Med adskilte enheter menes det at personer bor og spiser uavhengig av andre personer i samme boenhet, og som har direkte tilgang til enheten utenfra, eller gjennom en felles inngang.",
+      "previousConcept" : 7073,
+      "position" : 5
+    }, {
+      "id" : 12270,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/no/2.1.1",
+      "notation" : "EventOrProcessOrActivity",
+      "title" : "Hendelse/prosess/aktivitet",
+      "definition" : "Enhver form for hendelse, begivenhet eller aktivitet. Hendelser er som oftest enkeltstående med begrenset eller kort varighet. For eksempel: kriminell handling, opptøyer, møter, valg, idrettsbegivenheter, terroristangrep, naturkatastrofer osv. Prosesser finner som regel sted over tid, og kan inkludere flere 'hendelser' eller gradvise endringer som etterhvert fører til, eller er anslått å føre til, et bestemt resultat. For eksempel: rettsaker, kriminaletterforskning, politiske kampanjer, medisinsk behandling, utdanning, idrettsutøveres treninger etc. Bruk når selve fokuset er mer på hendelsen, prosessen eller aktiviteten. For eksempel: feltobservasjonsstudie på spillemaskiner; eller data samlet inn om barnemishandlingssaker, med hensyn til type og varigheten til mishandlingen og rollen personer involvert har etc.",
+      "previousConcept" : 7068,
+      "position" : 6
+    }, {
+      "id" : 12269,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/no/2.1.1",
+      "notation" : "GeographicUnit",
+      "title" : "Geografisk enhet",
+      "definition" : "Enhver enhet som romlig kan defineres som et geografisk område, med enten naturlige (fysiske) eller administrative grenser. For eksempel: data om boligsalg, landskapsforandringer, nye konstruksjoner eller endringer i den demografiske sammensetningen i bestemte regioner eller distrikter.",
+      "previousConcept" : 7070,
+      "position" : 7
+    }, {
+      "id" : 12274,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/no/2.1.1",
+      "notation" : "PoliticalAdministrativeArea",
+      "title" : "Politisk administrativt område",
+      "definition" : "Et geografisk område styrt av en suveren myndighet som har makten til beslutte administrative eller politiske avgjørelser for det området. Dette inkluderer områder på overstatlig (f.eks sammenslutninger av stater som Den Europeiske Union), nasjonalt (f.eks individuelle stater eller land), subnasjonalt (f.eks administrative oppdelinger som føderale stater, provinser etc.) og lokalt (f.eks kommuner) nivå.",
+      "previousConcept" : 8265,
+      "position" : 8
+    }, {
+      "id" : 12277,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/no/2.1.1",
+      "notation" : "TimeUnit",
+      "title" : "Tidsenhet",
+      "definition" : "Tidsperiode: år, uke, måned, dag, annenhver måned eller kvartal etc.",
+      "previousConcept" : 7067,
+      "position" : 9
+    }, {
+      "id" : 12275,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/no/2.1.1",
+      "notation" : "MediaUnit",
+      "title" : "Medieenhet",
+      "definition" : "Inkluderer tekst, stillbilder, video og lyd.",
+      "previousConcept" : 8266,
+      "position" : 10
+    }, {
+      "id" : 12285,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Sound/no/2.1.1",
+      "notation" : "MediaUnit.Sound",
+      "title" : "Medieenhet: Lyd",
+      "definition" : "Lydopptak, inkludert stemme, musikk, etc.",
+      "previousConcept" : 8267,
+      "parent" : "MediaUnit",
+      "position" : 11
+    }, {
+      "id" : 12278,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.StillImage/no/2.1.1",
+      "notation" : "MediaUnit.StillImage",
+      "title" : "Medieenhet: Stillbilde",
+      "definition" : "Statiske bilder som grafer, tegninger, fotografier, diagnostiske/medisinske bilder som røntgen og andre bildetester, etc.",
+      "previousConcept" : 8268,
+      "parent" : "MediaUnit",
+      "position" : 12
+    }, {
+      "id" : 12272,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/no/2.1.1",
+      "notation" : "MediaUnit.Text",
+      "title" : "Medieenhet: Tekst",
+      "definition" : "Alle skrevne tekster/enheter som bøker, artikler, tweets, blogger, etc. For eksempel: en studie om hatefulle ytringer i tweets, en studie om måten nyhetsaviser fremstiller enkelte politiske/sosiale problemer over tid, som kvinners eller minoriteters rettigheter.",
+      "previousConcept" : 8269,
+      "parent" : "MediaUnit",
+      "position" : 13
+    }, {
+      "id" : 12281,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Video/no/2.1.1",
+      "notation" : "MediaUnit.Video",
+      "title" : "Medieenhet: video",
+      "definition" : "Bevegelige bilder. Kan inkludere filmer, animasjoner, digitale opptak, visuell produksjon fra simuleringer, innspilte fjernsynsprogram, diagnostiske/medisinske videor som ultralyd skanninger, etc. Kan være uten lyd eller med synkronisert lyd.",
+      "previousConcept" : 8270,
+      "parent" : "MediaUnit",
+      "position" : 14
+    }, {
+      "id" : 12283,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Group/no/2.1.1",
+      "notation" : "Group",
+      "title" : "Gruppe",
+      "definition" : "To eller flere personer som samles eller som har et forhold som forener dem. I spørreundersøkelser er spørsmålene hovedsaklig rettet mot gruppen og holdningen/opplevelsene til gruppen i steden for de individuelle respondentene. Hvis spørsmål angår både gruppen og individene, bruk begge som analyseenhet.",
+      "previousConcept" : 8271,
+      "position" : 15
+    }, {
+      "id" : 12282,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/no/2.1.1",
+      "notation" : "Object",
+      "title" : "Objekt",
+      "definition" : "Noe fysisk, men ikke levende som eksisterer som en uavhengig enhet og som kan oppfattes av sansene. For eksempel: kunst (malerier, skulpturer osv.), våpen, kjøretøy etc.",
+      "previousConcept" : 7072,
+      "position" : 16
+    }, {
+      "id" : 12284,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/no/2.1.1",
+      "notation" : "Other",
+      "title" : "Annet",
+      "definition" : "Benytt hvis analyseenheten er kjent, men ikke finnes i listen.",
+      "previousConcept" : 7069,
+      "position" : 17
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ {
+      "id" : 386,
+      "version" : "2.0.1",
+      "date" : "2019-12-02",
+      "note" : "",
+      "changes" : "Code added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Organisasjon rephrased into Organisasjon/Institusjon\nCode descriptive term rephrased: Bruksenhet rephrased into Boenhet\nCode descriptive term rephrased: Hendelse/prosess rephrased into Hendelse/prosess/aktivitet\nCode descriptive term rephrased:  Tekst rephrased into Medieenhet: Tekst\nCode definition amended with meaning change: OrganizationOrInstitution\nCode definition rephrased: Individual\nCode definition rephrased: Family\nCode definition rephrased: Family.HouseholdFamily\nCode definition rephrased: EventOrProcessOrActivity\nCode definition rephrased: GeographicUnit\nCode definition rephrased: MediaUnit.Text\nCode definition rephrased: Group\n",
+      "prevVersion" : 313
+    }, {
+      "id" : 216,
+      "version" : "1.0.1",
+      "date" : "2019-04-02",
+      "note" : "",
+      "changes" : "",
+      "prevVersion" : 0
+    } ]
+  }, {
+    "id" : 493,
+    "status" : "PUBLISHED",
+    "itemType" : "TL",
+    "language" : "sv",
+    "publicationDate" : "2020-11-06",
+    "number" : "2.1.1",
+    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/sv/2.1.1",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:AnalysisUnit:2.1",
+    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit/en/2.1",
+    "notation" : "AnalysisUnit",
+    "title" : "Analysenhet",
+    "definition" : "Beskriver den enhet som analyseras i studien eller i variabeln. Den här vokabulären kan även användas för att beskriva undersökningsenhet, som är den enhet som undersöks eller observeras, eller som data samlas in från. Undersökningsenheten kan vara densamma som eller åtskild från analysenheten. ",
+    "previousVersion" : 388,
+    "initialVersion" : 214,
+    "notes" : "",
+    "versionNotes" : "<p>Updated CV description translation in line with the change in source language CV description. Minor revisions of code definitions.</p>",
+    "versionChanges" : "CV definition amended with meaning change: AnalysisUnit<br/>CV definition rephrased: Translation of changed CV definition.<br/>Code definition rephrased: Small changes to the code definition translation.<br/>Code definition rephrased: Small changes to the code definition translation.<br/>Code definition rephrased: Small correction to the translation.<br/>Code definition rephrased: Grammatical error corrected.<br/>Code definition rephrased: Minor grammatical corrections.<br/>Code definition rephrased: Corrected spelling error.<br/>Code definition rephrased: Small review<br/>Code definition rephrased: Review for verbal consistency.<br/>Code definition rephrased: <br/>Code definition rephrased: Rephrased for better consistency.<br/>Code definition rephrased: ",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). AnalysisUnit[Analysenhet] (Version 2.1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:AnalysisUnit:2.1.1. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: reusable</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/AnalysisUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">AnalysisUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.1/DTD/Documentation/anlyUnitType.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlyUnit@unit</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.1/DTD/Documentation/anlysUnitType.html\" rel=\"noopener noreferrer\" target=\"_blank\">anlysUnit</a></p>",
+    "translateAgency" : "Swedish National Data Service (SND)",
+    "translateAgencyLink" : "https://snd.gu.se",
+    "lastStatusChangeDate" : "2020-11-06",
+    "concepts" : [ {
+      "id" : 12336,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Individual/sv/2.1.1",
+      "notation" : "Individual",
+      "title" : "Individ",
+      "definition" : "En enskild person.",
+      "previousConcept" : 8281,
+      "position" : 0
+    }, {
+      "id" : 12339,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#OrganizationOrInstitution/sv/2.1.1",
+      "notation" : "OrganizationOrInstitution",
+      "title" : "Organisation/institution",
+      "definition" : "En formell administrativ och funktionell struktur. Detta inkluderar föreningar, institutioner, myndigheter, företag, politiska partier, skolor m.m. Data om organisationerna eller institutionerna samlas in även om frågorna besvaras av enskilda personer. Det gäller till exempel data om företags miljöpolicyer, data om antagningar eller examensfrekvens vid nationella universitet m.m.",
+      "previousConcept" : 7099,
+      "position" : 1
+    }, {
+      "id" : 12330,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family/sv/2.1.1",
+      "notation" : "Family",
+      "title" : "Familj",
+      "definition" : "Två eller fler personer som är släkt genom blodsband, äktenskap (inklusive styvsyskon, -föräldrar, -barn m.m.), samboskap eller registrerat partnerskap, adoption eller fosterfamiljeskap, men som inte nödvändigtvis bor tillsammans. Till exempel data om vilka offentliga tjänster familjen använder eller skulle vara i behov av, eller hur ofta familjemedlemmar har kontakt med varandra.",
+      "previousConcept" : 8282,
+      "position" : 2
+    }, {
+      "id" : 12323,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Family.HouseholdFamily/sv/2.1.1",
+      "notation" : "Family.HouseholdFamily",
+      "title" : "Familj: Familjehushåll",
+      "definition" : "En mer specifik term än \"Familj\". Betecknar endast människor som är släkt genom familjeband (se definitionen för \"Familj\") och som bor tillsammans i samma hushåll vid en given tidpunkt. Om det inte är känt huruvida analysenheten är \"Familj\" eller \"Familjehushåll\" ska \"Familj\" användas.",
+      "previousConcept" : 8283,
+      "parent" : "Family",
+      "position" : 3
+    }, {
+      "id" : 12332,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Household/sv/2.1.1",
+      "notation" : "Household",
+      "title" : "Hushåll",
+      "definition" : "En person eller grupp av personer som delar bostad och levnadsförhållanden. Dessa gemensamma levnadsförhållanden kan inkludera att viss eller all inkomst och egendom är gemensam och att vissa sorters varor och tjänster konsumeras gemensamt, företrädelsevis bostad och mat (Eurostat).",
+      "previousConcept" : 7097,
+      "position" : 4
+    }, {
+      "id" : 12326,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#HousingUnit/sv/2.1.1",
+      "notation" : "HousingUnit",
+      "title" : "Bostadsenhet",
+      "definition" : "En bostadsenhet är ett hus, en lägenhet, en husvagn, eller ett eller flera rum som bebos (eller, om den är tom, är avsedd att bebos) som avskild inkvartering. Med avskild inkvartering menas att de som är inkvarterade där bor och äter avskilda från andra personer i byggnaden och kan komma in direkt utifrån eller via en gemensam entré (U.S. Census).",
+      "previousConcept" : 7087,
+      "position" : 5
+    }, {
+      "id" : 12331,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#EventOrProcessOrActivity/sv/2.1.1",
+      "notation" : "EventOrProcessOrActivity",
+      "title" : "Händelse/process/aktivitet",
+      "definition" : "En företeelse, tilldragelse eller aktivitet. Händelser är vanligtvis enstaka företeelser med begränsad eller kort varaktighet. Exempel: brott, upplopp, möten, val, idrottstävlingar, terroristangrepp, naturkatastrofer som översvämningar o.dyl. Processer utspelar sig vanligtvis över tid och kan omfatta flera \"händelser\" eller gradvisa förändringar som slutligen resulterar i, eller kan tänkas resultera i, en viss utgång. Exempel: rättegångar, brottsutredningar, politiska kampanjer, medicinska behandlingar, utbildning, en idrottsutövares träning, m.m. Använd detta begrepp när fokus ligger på själva händelsen, processen eller aktiviteten. Till exempel en fältobservationsstudie om spel på spelautomater; eller data om fall av övergrepp på barn, som typ av och varaktighet för övergreppet, de inblandade personernas roller osv.",
+      "previousConcept" : 7095,
+      "position" : 6
+    }, {
+      "id" : 12334,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#GeographicUnit/sv/2.1.1",
+      "notation" : "GeographicUnit",
+      "title" : "Geografisk enhet",
+      "definition" : "En enhet som kan definieras spatialt som ett geografiskt område med antingen naturliga (fysiska) eller administrativa gränser. Till exempel data om husförsäljning, landskapsförändringar, nybyggen eller förändringar av den demografiska sammansättningen i vissa regioner eller distrikt.",
+      "previousConcept" : 7094,
+      "position" : 7
+    }, {
+      "id" : 12322,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#PoliticalAdministrativeArea/sv/2.1.1",
+      "notation" : "PoliticalAdministrativeArea",
+      "title" : "Politiskt förvaltningsområde",
+      "definition" : "Ett geografiskt område som styrs av en bestämmande myndighet med makt att fatta administrativa eller politiska beslut för området. Detta inkluderar områden på överstatlig (t.ex. unioner av stater som EU), statlig (t.ex. delstater eller länder), subnationell/regional (t.ex. förvaltningsområden som federala delstater, provinser osv.) och lokal (t.ex. kommuner) nivå.",
+      "previousConcept" : 8284,
+      "position" : 8
+    }, {
+      "id" : 12324,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#TimeUnit/sv/2.1.1",
+      "notation" : "TimeUnit",
+      "title" : "Tidsenhet",
+      "definition" : "En tidsperiod: år, månad, vecka, dag, kvartal, tvåmånadersperiod osv.",
+      "previousConcept" : 7091,
+      "position" : 9
+    }, {
+      "id" : 12327,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit/sv/2.1.1",
+      "notation" : "MediaUnit",
+      "title" : "Mediaenhet",
+      "definition" : "Inkluderar text, stillbilder, video och ljud.",
+      "previousConcept" : 8285,
+      "position" : 10
+    }, {
+      "id" : 12333,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Sound/sv/2.1.1",
+      "notation" : "MediaUnit.Sound",
+      "title" : "Mediaenhet: Ljud",
+      "definition" : "Inspelat ljud, som röst, musik m.m.",
+      "previousConcept" : 8286,
+      "parent" : "MediaUnit",
+      "position" : 11
+    }, {
+      "id" : 12338,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.StillImage/sv/2.1.1",
+      "notation" : "MediaUnit.StillImage",
+      "title" : "Mediaenhet: Stillbild",
+      "definition" : "Statiska bilder, som diagram, ritningar, fotografier, diagnostiska/medicinska bilder som röntgenbilder eller andra typer av bilddiagnostiska undersökningar&nbsp;osv.",
+      "previousConcept" : 8287,
+      "parent" : "MediaUnit",
+      "position" : 12
+    }, {
+      "id" : 12329,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Text/sv/2.1.1",
+      "notation" : "MediaUnit.Text",
+      "title" : "Mediaenhet: Text",
+      "definition" : "Skrivna texter, som böcker, artiklar, tweets, bloggar m.m. Till exempel en studie om hets mot folkgrupp i tweets, eller en studie om hur tidningar beskriver olika politiska/sociala ämnen över tid, som kvinnors eller minoriteters rättigheter osv.",
+      "previousConcept" : 8288,
+      "parent" : "MediaUnit",
+      "position" : 13
+    }, {
+      "id" : 12337,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#MediaUnit.Video/sv/2.1.1",
+      "notation" : "MediaUnit.Video",
+      "title" : "Mediaenhet: Video",
+      "definition" : "Rörliga bilder. Det kan inkludera filmer, animationer, digitala inspelningar, visuella utdata från simuleringar, inspelade tv-program, diagnostiska/medicinska videor som ultraljudsundersökningar osv. De kan vara utan ljud eller med synkroniserat ljud.",
+      "previousConcept" : 8289,
+      "parent" : "MediaUnit",
+      "position" : 14
+    }, {
+      "id" : 12325,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Group/sv/2.1.1",
+      "notation" : "Group",
+      "title" : "Grupp",
+      "definition" : "Två eller fler personer som samlats eller som har någon form av relation eller egenskap som förenar dem. I surveyundersökningar fokuserar frågorna framför allt på gruppen och gruppens attityder/erfarenheter, snarare än på de enskilda respondenterna. Om frågorna gäller både gruppen och individen, använd båda som analysenheter.",
+      "previousConcept" : 8290,
+      "position" : 15
+    }, {
+      "id" : 12335,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Object/sv/2.1.1",
+      "notation" : "Object",
+      "title" : "Föremål",
+      "definition" : "Något fysiskt men icke levande som existerar som en oberoende enhet och kan uppfattas av sinnena. Exempel: konstföremål (tavlor, skulpturer, o.dyl.), vapen, fordon m.m.",
+      "previousConcept" : 7093,
+      "position" : 16
+    }, {
+      "id" : 12328,
+      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/AnalysisUnit#Other/sv/2.1.1",
+      "notation" : "Other",
+      "title" : "Övrigt",
+      "definition" : "Använd om analysenheten är känd men saknas i listan.",
+      "previousConcept" : 7092,
+      "position" : 17
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ {
+      "id" : 388,
+      "version" : "2.0.1",
+      "date" : "2019-12-02",
+      "note" : "",
+      "changes" : "Code added: PoliticalAdministrativeArea\nCode added: MediaUnit\nCode added: MediaUnit.Sound\nCode added: MediaUnit.StillImage\nCode added: MediaUnit.Video\nCode value changed: Organization changed to OrganizationOrInstitution\nCode value changed: EventOrProcess changed to EventOrProcessOrActivity\nCode value changed: TextUnit changed to MediaUnit.Text\nCode descriptive term rephrased: Organisation rephrased into  Organisation/institution\nCode descriptive term rephrased: Händelse/process rephrased into Händelse/process/aktivitet\nCode descriptive term rephrased: Text rephrased into Mediaenhet: Text\nCode definition rephrased: Organisation/institution\nCode definition rephrased: Familj\nCode definition rephrased: Familj: familjehushåll\nCode definition rephrased: Händelse/process/aktivitet\nCode definition rephrased: Geografisk enhet\nCode definition rephrased: Mediaenhet: Text\nCode definition rephrased: Grupp\nCode definition rephrased: Föremål\n",
+      "prevVersion" : 214
+    }, {
+      "id" : 214,
+      "version" : "1.0.1",
+      "date" : "2019-04-02",
+      "note" : "",
+      "changes" : "",
+      "prevVersion" : 0
+    } ]
+  } ]
 }
