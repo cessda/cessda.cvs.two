@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { LocalStorageService, SessionStorageService } from 'ngx-webstorage';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 
-import { SERVER_API_URL } from 'app/app.constants';
-import { Login } from 'app/core/login/login.model';
+import {SERVER_API_URL} from 'app/app.constants';
+import {Login} from 'app/core/login/login.model';
 
 type JwtToken = {
   id_token: string;

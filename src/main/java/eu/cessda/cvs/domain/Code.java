@@ -294,16 +294,6 @@ public class Code implements Serializable {
         this.publicationDate = publicationDate;
     }
 
-    public Long getVocabularyId()
-    {
-        return vocabularyId;
-    }
-
-    public void setVocabularyId( Long vocabularyId )
-    {
-        this.vocabularyId = vocabularyId;
-    }
-
     public Long getVersionId()
     {
         return versionId;
@@ -322,6 +312,16 @@ public class Code implements Serializable {
     public void setVersionNumber( String versionNumber )
     {
         this.versionNumber = versionNumber;
+    }
+
+    public Long getVocabularyId()
+    {
+        return vocabularyId;
+    }
+
+    public void setVocabularyId( Long vocabularyId )
+    {
+        this.vocabularyId = vocabularyId;
     }
 
     public String getTitleSq() {

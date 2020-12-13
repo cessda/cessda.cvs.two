@@ -1,8 +1,7 @@
 package eu.cessda.cvs.domain;
 
-import eu.cessda.cvs.config.Constants;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.cessda.cvs.config.Constants;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
@@ -50,14 +49,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(name = "first_name", length = 50)
     private String firstName;
 
-    @Size(max = 50)
-    @Column(name = "last_name", length = 50)
-    private String lastName;
-
     @Email
     @Size(min = 5, max = 254)
     @Column(length = 254, unique = true)
     private String email;
+
+    @Size(max = 50)
+    @Column(name = "last_name", length = 50)
+    private String lastName;
 
     @NotNull
     @Column(nullable = false)
@@ -132,20 +131,20 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getImageUrl() {

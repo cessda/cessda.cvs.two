@@ -1,7 +1,6 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.service.AuditEventService;
-
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.springframework.boot.actuate.audit.AuditEvent;

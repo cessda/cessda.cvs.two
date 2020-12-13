@@ -434,7 +434,7 @@ public class VocabularyResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Vocabulary createEntity(EntityManager em) {
+    public static Vocabulary createEntity() {
         Vocabulary vocabulary = new Vocabulary();
         vocabulary.status(DEFAULT_STATUS);
         vocabulary.uri(DEFAULT_URI);
@@ -544,7 +544,7 @@ public class VocabularyResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Vocabulary createUpdatedEntity(EntityManager em) {
+    public static Vocabulary createUpdatedEntity() {
         Vocabulary vocabulary = new Vocabulary();
         vocabulary.status(UPDATED_STATUS);
         vocabulary.uri(UPDATED_URI);
@@ -655,7 +655,7 @@ public class VocabularyResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Agency createAgencyEntity(EntityManager em) {
+    public static Agency createAgencyEntity() {
         Agency agency = new Agency()
             .name(DEFAULT_NAME)
             .link(DEFAULT_LINK)
@@ -671,10 +671,10 @@ public class VocabularyResourceIT {
     @BeforeEach
     public void initTest() {
         if( agency == null ) {
-            agency = createAgencyEntity(em);
+            agency = createAgencyEntity();
             agency = agencyRepository.saveAndFlush(agency);
         }
-        vocabulary = createEntity(em);
+        vocabulary = createEntity();
         vocabulary.setAgencyId(agency.getId());
     }
 

@@ -1,13 +1,12 @@
 package eu.cessda.cvs.service.impl;
 
-import eu.cessda.cvs.service.CommentService;
 import eu.cessda.cvs.domain.Comment;
 import eu.cessda.cvs.repository.CommentRepository;
+import eu.cessda.cvs.service.CommentService;
 import eu.cessda.cvs.service.dto.CommentDTO;
 import eu.cessda.cvs.service.mapper.CommentMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing {@link Comment}.
@@ -48,8 +45,7 @@ public class CommentServiceImpl implements CommentService {
         log.debug("Request to save Comment : {}", commentDTO);
         Comment comment = commentMapper.toEntity(commentDTO);
         comment = commentRepository.save(comment);
-        CommentDTO result = commentMapper.toDto(comment);
-        return result;
+        return commentMapper.toDto(comment);
     }
 
     /**
@@ -113,7 +109,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public List<CommentDTO> findAllByVersion(Long versionId) {
-        log.debug("Request to get all Comments by Version ID", versionId);
+        log.debug("Request to get all Comments by Version ID {}", versionId);
         return commentRepository.findAllByVersion(versionId).stream()
             .map(commentMapper::toDto).collect(Collectors.toList());
     }

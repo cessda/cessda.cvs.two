@@ -1,16 +1,17 @@
 package eu.cessda.cvs.service.dto;
 
-import javax.validation.constraints.*;
+import eu.cessda.cvs.domain.enumeration.ResolverType;
+import eu.cessda.cvs.domain.enumeration.ResourceType;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
-import eu.cessda.cvs.domain.enumeration.ResourceType;
-import eu.cessda.cvs.domain.enumeration.ResolverType;
 
 /**
  * A DTO for the {@link eu.cessda.cvs.domain.Resolver} entity.
  */
 public class ResolverDTO implements Serializable {
-    
+
     private Long id;
 
     private String resourceId;
@@ -25,7 +26,7 @@ public class ResolverDTO implements Serializable {
     @NotNull
     private String resolverURI;
 
-    
+
     public Long getId() {
         return id;
     }

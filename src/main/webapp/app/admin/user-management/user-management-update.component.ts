@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
 
-import { LANGUAGES } from 'app/core/language/language.constants';
-import { User } from 'app/core/user/user.model';
-import { UserService } from 'app/core/user/user.service';
-import { IUserAgency, UserAgency } from 'app/shared/model/user-agency.model';
-import { HttpResponse } from '@angular/common/http';
-import { IAgency } from 'app/shared/model/agency.model';
-import { AgencyService } from 'app/agency/agency.service';
+import {LANGUAGES} from 'app/core/language/language.constants';
+import {User} from 'app/core/user/user.model';
+import {UserService} from 'app/core/user/user.service';
+import {IUserAgency, UserAgency} from 'app/shared/model/user-agency.model';
+import {HttpResponse} from '@angular/common/http';
+import {IAgency} from 'app/shared/model/agency.model';
+import {AgencyService} from 'app/agency/agency.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
 @Component({
@@ -91,7 +91,7 @@ export class UserManagementUpdateComponent implements OnInit {
     if (this.agencies === undefined) {
       return agencyId + '';
     }
-    return this.agencies.filter(a => a.id === agencyId)[0]!.name!;
+    return this.agencies.filter(a => a.id === agencyId)[0].name!;
   }
 
   previousState(): void {

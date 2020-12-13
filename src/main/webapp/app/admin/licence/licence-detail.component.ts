@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { ILicence } from 'app/shared/model/licence.model';
+import {ILicence} from 'app/shared/model/licence.model';
 
 @Component({
   selector: 'jhi-licence-detail',

@@ -1,16 +1,12 @@
 package eu.cessda.cvs.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import eu.cessda.cvs.domain.enumeration.AgencyRole;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-
 import java.io.Serializable;
-
-import eu.cessda.cvs.domain.enumeration.AgencyRole;
-
-import eu.cessda.cvs.domain.enumeration.Language;
 
 /**
  * A UserAgency.

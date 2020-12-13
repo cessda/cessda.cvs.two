@@ -1149,6 +1149,30 @@ public class VocabularyDTO implements Serializable {
         this.definitionSl = definitionSl;
     }
 
+    public String getTitleSv() {
+        return titleSv;
+    }
+
+    public void setTitleSv(String titleSv) {
+        this.titleSv = titleSv;
+    }
+
+    public String getVersionSv() {
+        return versionSv;
+    }
+
+    public void setVersionSv(String versionSv) {
+        this.versionSv = versionSv;
+    }
+
+    public String getDefinitionSv() {
+        return definitionSv;
+    }
+
+    public void setDefinitionSv(String definitionSv) {
+        this.definitionSv = definitionSv;
+    }
+
     public String getVersionEs() {
         return versionEs;
     }
@@ -1171,30 +1195,6 @@ public class VocabularyDTO implements Serializable {
 
     public void setDefinitionEs(String definitionEs) {
         this.definitionEs = definitionEs;
-    }
-
-    public String getVersionSv() {
-        return versionSv;
-    }
-
-    public void setVersionSv(String versionSv) {
-        this.versionSv = versionSv;
-    }
-
-    public String getTitleSv() {
-        return titleSv;
-    }
-
-    public void setTitleSv(String titleSv) {
-        this.titleSv = titleSv;
-    }
-
-    public String getDefinitionSv() {
-        return definitionSv;
-    }
-
-    public void setDefinitionSv(String definitionSv) {
-        this.definitionSv = definitionSv;
     }
 
     @Override
@@ -1497,7 +1497,7 @@ public class VocabularyDTO implements Serializable {
             case SERBIAN:
                 return versionSr;
             default:
-                return null;
+                throw new IllegalArgumentException("Undefined case in getVersionByLanguage for enum Language " + language);
         }
     }
 
@@ -1564,7 +1564,7 @@ public class VocabularyDTO implements Serializable {
             case SERBIAN:
                 return titleSr;
             default:
-                return null;
+                throw new IllegalArgumentException("Undefined case in getTitleByLanguage for enum Language " + language);
         }
     }
 
@@ -1631,7 +1631,7 @@ public class VocabularyDTO implements Serializable {
             case SERBIAN:
                 return definitionSr;
             default:
-                return null;
+                throw new IllegalArgumentException("Undefined case in getDefinitionByLanguage for enum Language " + language);
         }
     }
 
@@ -1761,13 +1761,13 @@ public class VocabularyDTO implements Serializable {
                 setDefinitionSr(definition);
                 break;
             default:
-                break;
+                throw new IllegalArgumentException("Undefined case in setTitleDefinition for enum Language " + language);
         }
         return this;
     }
 
     public VocabularyDTO setVersionByLanguage(String langIso, String versionNumber) {
-        return setVersionByLanguage(Language.getByIso( langIso.toLowerCase() ), versionNumber);
+        return setVersionByLanguage( Language.getByIso( langIso.toLowerCase() ), versionNumber);
     }
 
     public VocabularyDTO setVersionByLanguage(Language language, String versionNumber) {
@@ -1857,7 +1857,7 @@ public class VocabularyDTO implements Serializable {
                 setVersionSr(versionNumber);
                 break;
             default:
-                break;
+                throw new IllegalArgumentException("Undefined case in setVersionByLanguage for enum Language " + language);
         }
 
         return this;

@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { ILicence } from 'app/shared/model/licence.model';
-import { LicenceService } from './licence.service';
+import {ILicence} from 'app/shared/model/licence.model';
+import {LicenceService} from './licence.service';
 
 @Component({
   templateUrl: './licence-delete-dialog.component.html'

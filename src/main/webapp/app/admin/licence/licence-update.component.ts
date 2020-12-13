@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {HttpEventType, HttpResponse} from '@angular/common/http';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
 
-import { ILicence, Licence } from 'app/shared/model/licence.model';
-import { LicenceService } from './licence.service';
-import { FileUploadService } from 'app/shared/upload/file-upload.service';
+import {ILicence, Licence} from 'app/shared/model/licence.model';
+import {LicenceService} from './licence.service';
+import {FileUploadService} from 'app/shared/upload/file-upload.service';
 
 @Component({
   selector: 'jhi-licence-update',

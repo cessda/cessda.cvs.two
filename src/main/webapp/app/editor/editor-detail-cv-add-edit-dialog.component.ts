@@ -1,20 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { AccountService } from 'app/core/auth/account.service';
-import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { Account } from 'app/core/user/account.model';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {AccountService} from 'app/core/auth/account.service';
+import {VocabularyService} from 'app/entities/vocabulary/vocabulary.service';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {Account} from 'app/core/user/account.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
-import { EditorService } from 'app/editor/editor.service';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
-import { IVersion } from 'app/shared/model/version.model';
+import {VOCABULARY_ALREADY_EXIST_TYPE} from 'app/shared';
+import {EditorService} from 'app/editor/editor.service';
+import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
+import {IVersion} from 'app/shared/model/version.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-add-edit-dialog',
@@ -100,7 +100,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       this.cvAddEditForm.removeControl('notation');
     }
     if (this.isNew) {
-      this.cvAddEditForm.patchValue({ language: this.languages[0]! });
+      this.cvAddEditForm.patchValue({ language: this.languages[0] });
       this.cvAddEditForm.removeControl('changeType');
       this.cvAddEditForm.removeControl('changeDesc');
     } else {

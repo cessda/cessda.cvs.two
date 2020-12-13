@@ -7,13 +7,14 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
+@SuppressWarnings("squid:S110") // since AbstractThrowableProblem already has 5 parents
 public class BadRequestAlertException extends AbstractThrowableProblem {
 
     private static final long serialVersionUID = 1L;
 
-    private final String entityName;
-
     private final String errorKey;
+
+    private final String entityName;
 
     public BadRequestAlertException(String defaultMessage, String entityName, String errorKey) {
         this(ErrorConstants.DEFAULT_TYPE, defaultMessage, entityName, errorKey);
@@ -25,12 +26,12 @@ public class BadRequestAlertException extends AbstractThrowableProblem {
         this.errorKey = errorKey;
     }
 
-    public String getEntityName() {
-        return entityName;
-    }
-
     public String getErrorKey() {
         return errorKey;
+    }
+
+    public String getEntityName() {
+        return entityName;
     }
 
     private static Map<String, Object> getAlertParameters(String entityName, String errorKey) {

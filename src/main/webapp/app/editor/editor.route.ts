@@ -1,17 +1,17 @@
-import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { Resolve, ActivatedRouteSnapshot, Routes, Router } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {ActivatedRouteSnapshot, Resolve, Router, Routes} from '@angular/router';
 
-import { EMPTY, Observable, of } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import {EMPTY, Observable, of} from 'rxjs';
+import {flatMap} from 'rxjs/operators';
 
-import { EditorComponent } from './editor.component';
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
-import { JhiResolvePagingParams } from 'ng-jhipster';
-import { EditorService } from 'app/editor/editor.service';
-import { EditorDetailComponent } from 'app/editor/editor-detail.component';
-import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
-import { EditorCvAddPopupComponent } from 'app/editor/editor-cv-add-dialog.component';
+import {EditorComponent} from './editor.component';
+import {IVocabulary, Vocabulary} from 'app/shared/model/vocabulary.model';
+import {JhiResolvePagingParams} from 'ng-jhipster';
+import {EditorService} from 'app/editor/editor.service';
+import {EditorDetailComponent} from 'app/editor/editor-detail.component';
+import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
+import {EditorCvAddPopupComponent} from 'app/editor/editor-cv-add-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve implements Resolve<IVocabulary> {
@@ -19,7 +19,6 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
 
   resolve(route: ActivatedRouteSnapshot): Observable<IVocabulary> | Observable<never> {
     const notation = route.params['notation'];
-    const version = route.queryParams['v'];
     if (notation) {
       return this.service.getVocabulary(notation).pipe(
         flatMap((vocabulary: HttpResponse<Vocabulary>) => {

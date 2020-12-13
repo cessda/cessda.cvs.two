@@ -3,15 +3,17 @@ package eu.cessda.cvs.web.rest;
 import eu.cessda.cvs.config.ApplicationProperties;
 import eu.cessda.cvs.service.FileUploadHelper;
 import eu.cessda.cvs.service.FileUploadService;
-
 import eu.cessda.cvs.service.FileUploadType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * REST controller for managing Filu Upload
@@ -42,7 +44,7 @@ public class FileUploadResource {
     @PostMapping("/agency-image")
     public ResponseEntity<String> uploadAgenyImage(
         @RequestParam("file") MultipartFile file) {
-        log.info( "Uploading file " + file.getName() );
+        log.info( "Uploading file {}", file.getName() );
         try {
             FileUploadHelper fileUploadHelper = new FileUploadHelper()
                 .fileUploadType(FileUploadType.IMAGE_AGENCY)
@@ -64,7 +66,7 @@ public class FileUploadResource {
     @PostMapping("/license-image")
     public ResponseEntity<String> uploadLicenseImage(
         @RequestParam("file") MultipartFile file) {
-        log.info( "Uploading file " + file.getName() );
+        log.info( "Uploading file {}", file.getName() );
         try {
             FileUploadHelper fileUploadHelper = new FileUploadHelper()
                 .fileUploadType(FileUploadType.IMAGE_LICENSE)

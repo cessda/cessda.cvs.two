@@ -1,20 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpHeaders } from '@angular/common/http';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Subscription } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
-import { ActivatedRoute, Router } from '@angular/router';
-import { JhiEventManager } from 'ng-jhipster';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {Subscription} from 'rxjs';
+import {flatMap} from 'rxjs/operators';
+import {ActivatedRoute, Router} from '@angular/router';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/user/account.model';
-import { UserService } from 'app/core/user/user.service';
-import { User } from 'app/core/user/user.model';
-import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
-import { IAgency } from 'app/shared/model/agency.model';
-import { AgencyService } from 'app/agency/agency.service';
-import { IUserAgency } from 'app/shared/model/user-agency.model';
+import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/user/account.model';
+import {UserService} from 'app/core/user/user.service';
+import {User} from 'app/core/user/user.model';
+import {UserManagementDeleteDialogComponent} from './user-management-delete-dialog.component';
+import {IAgency} from 'app/shared/model/agency.model';
+import {AgencyService} from 'app/agency/agency.service';
+import {IUserAgency} from 'app/shared/model/user-agency.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
 @Component({
@@ -80,7 +80,7 @@ export class UserManagementComponent implements OnInit, OnDestroy {
   }
 
   getAgencyName(agencyId: number): string {
-    return this.agencies!.filter(a => a.id === agencyId)[0]!.name!;
+    return this.agencies!.filter(a => a.id === agencyId)[0].name!;
   }
 
   setActive(user: User, isActivated: boolean): void {

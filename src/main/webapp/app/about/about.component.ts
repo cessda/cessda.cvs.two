@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { EditorService } from 'app/editor/editor.service';
-import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
-import { FormBuilder } from '@angular/forms';
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
-import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
-import { HttpResponse } from '@angular/common/http';
-import { METADATA_KEY_ABOUT } from 'app/shared/constants/metadata.constants';
-import { Observable } from 'rxjs';
-import { ObjectType } from 'app/shared/model/enumerations/object-type.model';
+import {Component, OnInit} from '@angular/core';
+import {EditorService} from 'app/editor/editor.service';
+import {MetadataFieldService} from 'app/entities/metadata-field/metadata-field.service';
+import {FormBuilder} from '@angular/forms';
+import {IMetadataField} from 'app/shared/model/metadata-field.model';
+import {IMetadataValue, MetadataValue} from 'app/shared/model/metadata-value.model';
+import {HttpResponse} from '@angular/common/http';
+import {METADATA_KEY_ABOUT} from 'app/shared/constants/metadata.constants';
+import {Observable} from 'rxjs';
+import {ObjectType} from 'app/shared/model/enumerations/object-type.model';
 
 @Component({
   selector: 'jhi-about',

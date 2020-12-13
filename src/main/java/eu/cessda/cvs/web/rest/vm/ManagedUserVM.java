@@ -1,6 +1,7 @@
 package eu.cessda.cvs.web.rest.vm;
 
 import eu.cessda.cvs.service.dto.UserDTO;
+
 import javax.validation.constraints.Size;
 
 /**

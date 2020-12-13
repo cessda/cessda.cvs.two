@@ -1,7 +1,7 @@
-import { Route } from '@angular/router';
-import { JhiResolvePagingParams } from 'ng-jhipster';
+import {Route} from '@angular/router';
+import {JhiResolvePagingParams} from 'ng-jhipster';
 
-import { AuditsComponent } from './audits.component';
+import {AuditsComponent} from './audits.component';
 
 export const auditsRoute: Route = {
   path: '',

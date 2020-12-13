@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
+import {Injectable} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {ActivatedRouteSnapshot, Resolve, Router, Routes} from '@angular/router';
 
-import { EMPTY, Observable, of } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+import {EMPTY, Observable, of} from 'rxjs';
+import {flatMap} from 'rxjs/operators';
 
-import { HomeComponent } from './home.component';
-import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
-import { JhiResolvePagingParams } from 'ng-jhipster';
-import { HomeService } from 'app/home/home.service';
-import { HomeDetailComponent } from 'app/home/home-detail.component';
+import {HomeComponent} from './home.component';
+import {IVocabulary, Vocabulary} from 'app/shared/model/vocabulary.model';
+import {JhiResolvePagingParams} from 'ng-jhipster';
+import {HomeService} from 'app/home/home.service';
+import {HomeDetailComponent} from 'app/home/home-detail.component';
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve implements Resolve<IVocabulary> {

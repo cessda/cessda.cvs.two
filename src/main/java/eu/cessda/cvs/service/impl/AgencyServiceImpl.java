@@ -1,6 +1,5 @@
 package eu.cessda.cvs.service.impl;
 
-import eu.cessda.cvs.config.ApplicationProperties;
 import eu.cessda.cvs.domain.Agency;
 import eu.cessda.cvs.domain.search.AgencyStat;
 import eu.cessda.cvs.repository.AgencyRepository;
@@ -10,7 +9,6 @@ import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.AgencyService;
 import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.mapper.AgencyMapper;
-import io.github.jhipster.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -36,20 +34,13 @@ public class AgencyServiceImpl implements AgencyService {
 
     private final AgencyMapper agencyMapper;
 
-    private final ApplicationProperties applicationProperties;
-
-    private final JHipsterProperties jHipsterProperties;
-
     private final AgencyStatSearchRepository agencyStatSearchRepository;
 
     public AgencyServiceImpl(AgencyRepository agencyRepository, VocabularyRepository vocabularyRepository,
-                             AgencyMapper agencyMapper, ApplicationProperties applicationProperties,
-                             JHipsterProperties jHipsterProperties, AgencyStatSearchRepository agencyStatSearchRepository) {
+                             AgencyMapper agencyMapper, AgencyStatSearchRepository agencyStatSearchRepository) {
         this.agencyRepository = agencyRepository;
         this.vocabularyRepository = vocabularyRepository;
         this.agencyMapper = agencyMapper;
-        this.applicationProperties = applicationProperties;
-        this.jHipsterProperties = jHipsterProperties;
         this.agencyStatSearchRepository = agencyStatSearchRepository;
     }
 
@@ -138,6 +129,6 @@ public class AgencyServiceImpl implements AgencyService {
             findAll( PageRequest.of(page, size) ).get()
                 .forEach(this::index);
             page++;
-        } while ( agencyCount > page * size);
+        } while ( agencyCount > (long) page * size);
     }
 }

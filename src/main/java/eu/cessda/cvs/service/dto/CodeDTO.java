@@ -961,6 +961,8 @@ public class CodeDTO implements Serializable {
                 setDefinitionSr(definition);
                 setTitleSr(title);
                 break;
+            default:
+                throw new IllegalArgumentException("Undefined case in setTitleDefinition for enum Language " + language);
         }
         addLanguage(language.getIso());
         return this;
@@ -1043,8 +1045,8 @@ public class CodeDTO implements Serializable {
             case DUTCH:         return titleNl;
             case DANISH:        return titleDa;
             case CZECH:         return titleCs;
+            default:            throw new IllegalArgumentException("Undefined case for enum Language " + language);
         }
-        return null;
     }
 
     /**
@@ -1086,8 +1088,8 @@ public class CodeDTO implements Serializable {
             case DUTCH:         return definitionNl;
             case DANISH:        return definitionDa;
             case CZECH:         return definitionCs;
+            default:            throw new IllegalArgumentException("Undefined case for enum Language " + language);
         }
-        return null;
     }
 
     public void clearContents(){

@@ -128,6 +128,7 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     private final AgencyStatSearchRepository agencyStatSearchRepository;
 
+    @SuppressWarnings("squid:S107") // since constructor params are autowired
     public VocabularyServiceImpl(AgencyRepository agencyRepository, ConceptService conceptService, ExportService exportService,
                                  LicenceRepository licenceRepository, VersionService versionService,
                                  VocabularyChangeService vocabularyChangeService, VocabularyRepository vocabularyRepository,
@@ -275,7 +276,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_FIND_VERSION + prevVersionId));
 
         if( !prevVersionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
-            log.error( "Unable to create new version from version with ID " + prevVersionDTO.getId() + ", version is not yet PUBLISHED" );
+            log.error( "Unable to create new version from version with ID {}, version is not yet PUBLISHED", prevVersionDTO.getId() );
             throw new IllegalArgumentException( "Unable to create new version from version with ID " + prevVersionDTO.getId() + ", version is not yet PUBLISHED" );
         }
 
@@ -646,7 +647,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             try {
                 FileUtils.deleteDirectory(dirPath);
             } catch (IOException e) {
-                log.error("Unable to delete directory: {}", e.toString());
+                log.error("Unable to delete directory: {}", e);
             }
         }
     }
@@ -679,7 +680,6 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
-    // TODO: need to change to list and create a new method to get vocabulary by agency and notation
     public VocabularyDTO getByNotation(String notation) {
         if( notation == null || notation.isEmpty()) {
             log.error("Error notation could not be empty or null");
@@ -949,7 +949,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     public List<Path> getPublishedCvPaths() {
         List<Path> jsonPaths = new ArrayList<>();
         try ( Stream<Path> paths = Files.walk(Paths.get(applicationProperties.getVocabJsonPath()), 2) ){
-            jsonPaths = paths.filter(Files::isRegularFile).collect(Collectors.toList());
+            jsonPaths = paths.filter(p -> p.toFile().isFile()).collect(Collectors.toList());
         } catch (IOException e) {
             log.error( e.getMessage() );
         }
@@ -1567,7 +1567,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public File generateVocabularyEditorFileDownload(
         String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
-        log.info( "Editor generate file {0} for Vocabulary {1} versionSl {2}", downloadType, vocabularyNotation, versionSl );
+        log.info( "Editor generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
         VocabularyDTO vocabularyDTO = getWithVersionsByNotationAndVersion(vocabularyNotation, versionSl);
         return generateVocabularyFileDownload(vocabularyNotation, versionSl, versionList, downloadType, request, vocabularyDTO);
     }

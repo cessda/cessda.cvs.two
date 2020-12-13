@@ -13,14 +13,22 @@ import java.util.Set;
 @Document(indexName = "vocabularyeditor")
 public class VocabularyEditor extends VocabularyBase {
 
+    @Field( type = FieldType.Keyword )
+    private Set<String> statuses;
+
     @Field( type = FieldType.Nested, store = true )
     private Set<Code> codes = new HashSet<>();
 
     @Field( type = FieldType.Keyword )
-    private Set<String> statuses;
-
-    @Field( type = FieldType.Keyword )
     private Set<String> languages;
+
+    public Set<String> getStatuses() {
+        return statuses;
+    }
+
+    public void setStatuses(Set<String> statuses) {
+        this.statuses = statuses;
+    }
 
     public Set<Code> getCodes()
     {
@@ -33,29 +41,9 @@ public class VocabularyEditor extends VocabularyBase {
         return this;
     }
 
-    public VocabularyBase addCode( Code code )
-    {
-        this.codes.add( code );
-        return this;
-    }
-
-    public VocabularyBase removeCode( Code code )
-    {
-        this.codes.remove( code );
-        return this;
-    }
-
     public void setCodes( Set<Code> codes )
     {
         this.codes = codes;
-    }
-
-    public Set<String> getStatuses() {
-        return statuses;
-    }
-
-    public void setStatuses(Set<String> statuses) {
-        this.statuses = statuses;
     }
 
     public Set<String> getLanguages()

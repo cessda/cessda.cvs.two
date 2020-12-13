@@ -52,14 +52,14 @@ public class VersionDTO implements Serializable {
 
     private String uriSl;
 
-    @Size(max = 240)
-    private String notation;
-
     @Lob
     private String title;
 
     @Lob
     private String definition;
+
+    @Size(max = 240)
+    private String notation;
 
     private Long previousVersion;
 
@@ -73,10 +73,10 @@ public class VersionDTO implements Serializable {
     private String notes;
 
     @Lob
-    private String versionNotes;
+    private String versionChanges;
 
     @Lob
-    private String versionChanges;
+    private String versionNotes;
 
     @Lob
     private String discussionNotes;
@@ -99,9 +99,9 @@ public class VersionDTO implements Serializable {
     @Lob
     private String ddiUsage;
 
-    private String translateAgency;
-
     private String translateAgencyLink;
+
+    private String translateAgency;
 
     private LocalDate lastStatusChangeDate;
 
@@ -290,14 +290,6 @@ public class VersionDTO implements Serializable {
         this.uriSl = uriSl;
     }
 
-    public String getNotation() {
-        return notation;
-    }
-
-    public void setNotation(String notation) {
-        this.notation = notation;
-    }
-
     public String getTitle() {
         return title;
     }
@@ -312,6 +304,14 @@ public class VersionDTO implements Serializable {
 
     public void setDefinition(String definition) {
         this.definition = definition;
+    }
+
+    public String getNotation() {
+        return notation;
+    }
+
+    public void setNotation(String notation) {
+        this.notation = notation;
     }
 
     public Long getPreviousVersion() {
@@ -354,20 +354,20 @@ public class VersionDTO implements Serializable {
         this.notes = notes;
     }
 
-    public String getVersionNotes() {
-        return versionNotes;
-    }
-
-    public void setVersionNotes(String versionNotes) {
-        this.versionNotes = versionNotes;
-    }
-
     public String getVersionChanges() {
         return versionChanges;
     }
 
     public void setVersionChanges(String versionChanges) {
         this.versionChanges = versionChanges;
+    }
+
+    public String getVersionNotes() {
+        return versionNotes;
+    }
+
+    public void setVersionNotes(String versionNotes) {
+        this.versionNotes = versionNotes;
     }
 
     public String getDiscussionNotes() {
@@ -442,20 +442,20 @@ public class VersionDTO implements Serializable {
         this.ddiUsage = ddiUsage;
     }
 
-    public String getTranslateAgency() {
-        return translateAgency;
-    }
-
-    public void setTranslateAgency(String translateAgency) {
-        this.translateAgency = translateAgency;
-    }
-
     public String getTranslateAgencyLink() {
         return translateAgencyLink;
     }
 
     public void setTranslateAgencyLink(String translateAgencyLink) {
         this.translateAgencyLink = translateAgencyLink;
+    }
+
+    public String getTranslateAgency() {
+        return translateAgency;
+    }
+
+    public void setTranslateAgency(String translateAgency) {
+        this.translateAgency = translateAgency;
     }
 
     public LocalDate getLastStatusChangeDate() {
@@ -632,7 +632,6 @@ public class VersionDTO implements Serializable {
         if( !agencyDTO.getName().toLowerCase().contains("cessda")) {
             citationSb.append( "CESSDA. ");
         }
-        // TODO: update canonicalUri
         citationSb.append( this.canonicalUri+ ". ");
         this.citation = citationSb.toString();
     }
@@ -648,7 +647,6 @@ public class VersionDTO implements Serializable {
         if( !agencyDTO.getName().toLowerCase().contains("cessda")) {
             citationSb.append( "CESSDA. ");
         }
-        // TODO: update canonicalUri
         citationSb.append( this.canonicalUri+ ". ");
         this.citation = citationSb.toString();
     }

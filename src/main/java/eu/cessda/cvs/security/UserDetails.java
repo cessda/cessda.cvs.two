@@ -21,4 +21,20 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
     public void setUser(UserDTO user) {
         this.user = user;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserDetails)) {
+            return false;
+        }
+        return user != null && user.getId().equals(((UserDTO) o).getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return 31;
+    }
 }

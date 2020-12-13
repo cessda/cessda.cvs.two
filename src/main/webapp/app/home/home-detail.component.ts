@@ -1,16 +1,16 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
+import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
 
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { IVersion } from 'app/shared/model/version.model';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {IVersion} from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { FormBuilder } from '@angular/forms';
-import { HomeService } from 'app/home/home.service';
-import { RouteEventsService } from 'app/shared';
-import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
-import { Observable, Subject } from 'rxjs';
+import {FormBuilder} from '@angular/forms';
+import {HomeService} from 'app/home/home.service';
+import {RouteEventsService} from 'app/shared';
+import {DiffContent} from 'ngx-text-diff/lib/ngx-text-diff.model';
+import {Observable, Subject} from 'rxjs';
 
 @Component({
   selector: 'jhi-home-detail',
@@ -117,7 +117,7 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   getUniqueVersionLang(): string[] {
     let uniqueLang: string[] = [];
     this.vocabulary!.versions!.forEach(v => {
-      if (v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some(l => l === v.language)) {
+      if (v.number!.startsWith(this.vocabulary!.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
@@ -125,7 +125,7 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
     uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
 
     this.vocabulary!.versions!.forEach(v => {
-      if (!v.number!.startsWith(this.vocabulary!.versions![0]!.number!) && !uniqueLang.some(l => l === v.language)) {
+      if (!v.number!.startsWith(this.vocabulary!.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
@@ -315,7 +315,7 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
 
   private downloadVocabularyFile(fileFormat: string, checkedItems: string, mimeType: string): void {
     this.homeService
-      .downloadVocabularyFile(this.vocabulary!.notation!, this.getSlVersion()!.number!, fileFormat, {
+      .downloadVocabularyFile(this.vocabulary!.notation!, this.getSlVersion().number!, fileFormat, {
         languageVersion: checkedItems
       })
       .subscribe((res: Blob) => {
@@ -327,7 +327,7 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
         const data = window.URL.createObjectURL(newBlob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = this.vocabulary!.notation! + '-' + this.getSlVersion()!.number! + '_' + checkedItems + '.' + fileFormat;
+        link.download = this.vocabulary!.notation! + '-' + this.getSlVersion().number! + '_' + checkedItems + '.' + fileFormat;
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(function(): void {
           window.URL.revokeObjectURL(data);
@@ -382,17 +382,17 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   }
 
   getMissingTlVersion(version: string): string {
-    if (version.startsWith(this.getSlVersion()!.number!)) {
-      return this.getSlVersion()!.versionHistories![0]!.version + '.x';
+    if (version.startsWith(this.getSlVersion().number!)) {
+      return this.getSlVersion().versionHistories![0].version + '.x';
     }
     let i = 0;
-    this.getSlVersion()!.versionHistories!.forEach(function(vhSl, index): void {
+    this.getSlVersion().versionHistories!.forEach(function(vhSl, index): void {
       if (version.startsWith(vhSl.version!)) {
         i = index + 1;
       }
     });
     if (i > 0) {
-      return this.getSlVersion()!.versionHistories![i]!.version + '.x';
+      return this.getSlVersion().versionHistories![i].version + '.x';
     }
     return '';
   }

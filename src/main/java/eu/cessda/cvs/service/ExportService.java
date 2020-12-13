@@ -1,21 +1,26 @@
 package eu.cessda.cvs.service;
 
+import com.lowagie.text.DocumentException;
 import org.docx4j.convert.in.xhtml.FormattingOption;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
 import org.docx4j.model.structure.PageDimensions;
 import org.docx4j.model.structure.PageSizePaper;
 import org.docx4j.model.structure.SectionWrapper;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.NumberingDefinitionsPart;
 import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
+import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.math.BigInteger;
 import java.util.Iterator;
@@ -25,9 +30,13 @@ import java.util.Map;
 @Service
 public class ExportService
 {
-	public enum DownloadType
+    private final Logger log = LoggerFactory.getLogger(ExportService.class);
+
+    public static final String HTML = "html";
+
+    public enum DownloadType
 	{
-		SKOS("rdf"), PDF("pdf"), HTML("html"), WORD("docx");;
+		SKOS("rdf"), PDF("pdf"), HTML(ExportService.HTML), WORD("docx");
 
 		private final String type;
 
@@ -64,10 +73,9 @@ public class ExportService
 			String fileName,
 			String templateName,
 			Map<String, Object> map,
-			DownloadType type ) throws Exception
-	{
+			DownloadType type ) throws IOException, JAXBException, Docx4JException {
         String tDir = System.getProperty("java.io.tmpdir");
-		File outputFile = new File(tDir + "/" + fileName + "." + type.toString() );
+		File outputFile = new File(tDir + File.separator  + fileName + "." + type.toString() );
 		org.thymeleaf.context.Context ctx = new org.thymeleaf.context.Context();
 		if ( map != null )
 		{
@@ -84,17 +92,17 @@ public class ExportService
 		{
 		case PDF:
 			return createPdfFile( outputFile,
-					templateEngine.process( "html/" + templateName + "_" + type.toString(), ctx ) );
+					templateEngine.process( HTML + File.separator  + templateName + "_" + type.toString(), ctx ) );
 		case HTML:
 			return createTextFile( outputFile,
-					templateEngine.process( "html/" + templateName + "_" + type.toString(), ctx ) );
+					templateEngine.process( HTML + File.separator  + templateName + "_" + type.toString(), ctx ) );
 		case SKOS:
-			String content = templateEngine.process( "xml/" + templateName + "_" + type.toString(), ctx );
+			String content = templateEngine.process( "xml" + File.separator  + templateName + "_" + type.toString(), ctx );
 			return createTextFile( outputFile,
 					content.replaceAll( "(?m)^[ \t]*\r?\n", "" ) );
         case WORD:
             return createWordFile( outputFile,
-                templateEngine.process( "html/" + templateName + "_" + type.toString(), ctx ) );
+                templateEngine.process( HTML + File.separator  + templateName + "_" + type.toString(), ctx ) );
 		default:
 			break;
 		}
@@ -103,20 +111,19 @@ public class ExportService
 
 	private File createTextFile( File outputFile, String contents ) throws IOException
 	{
-		BufferedWriter bw = new BufferedWriter( new FileWriter( outputFile ) );
-		try
+		try( BufferedWriter bw = new BufferedWriter( new FileWriter( outputFile ) ) )
 		{
 			bw.write( contents );
+            bw.flush();
 		}
-		finally
-		{
-			bw.close();
-		}
+        catch (IOException e)
+        {
+            log.error(e.getMessage());
+        }
 		return outputFile;
 	}
 
-	public File createPdfFile( File outputFile, String contents ) throws Exception
-	{
+	public File createPdfFile( File outputFile, String contents ) {
 		try (FileOutputStream os = new FileOutputStream( outputFile ))
 		{
 			ITextRenderer renderer = new ITextRenderer();
@@ -124,12 +131,13 @@ public class ExportService
 			renderer.layout();
 			renderer.createPDF( os, false );
 			renderer.finishPDF();
-		}
-		return outputFile;
+		} catch (DocumentException | IOException e) {
+            log.error( e.getMessage() );
+        }
+        return outputFile;
 	}
 
-    public File createWordFile( File outputFile, String contents ) throws Exception
-    {
+    public File createWordFile( File outputFile, String contents ) throws Docx4JException, JAXBException {
         ObjectFactory factory = new ObjectFactory();
         // Setup font mapping
         RFonts rfonts = Context.getWmlObjectFactory().createRFonts();
@@ -168,14 +176,14 @@ public class ExportService
         ndp.unmarshalDefaultNumbering();
 
         // Convert the XHTML, and add it into the empty docx we made
-        XHTMLImporterImpl XHTMLImporter = new XHTMLImporterImpl( wordMLPackage );
-        XHTMLImporter.setHyperlinkStyle( "Hyperlink" );
-        XHTMLImporter.setParagraphFormatting(FormattingOption.CLASS_PLUS_OTHER);
-        XHTMLImporter.setRunFormatting(FormattingOption.CLASS_PLUS_OTHER);
-        XHTMLImporter.setTableFormatting(FormattingOption.CLASS_PLUS_OTHER);
+        XHTMLImporterImpl xHTMLImporter = new XHTMLImporterImpl( wordMLPackage );
+        xHTMLImporter.setHyperlinkStyle( "Hyperlink" );
+        xHTMLImporter.setParagraphFormatting(FormattingOption.CLASS_PLUS_OTHER);
+        xHTMLImporter.setRunFormatting(FormattingOption.CLASS_PLUS_OTHER);
+        xHTMLImporter.setTableFormatting(FormattingOption.CLASS_PLUS_OTHER);
 
         // convert and save file
-        wordMLPackage.getMainDocumentPart().getContent().addAll( XHTMLImporter.convert( contents, null ) );
+        wordMLPackage.getMainDocumentPart().getContent().addAll( xHTMLImporter.convert( contents, null ) );
         wordMLPackage.save( outputFile );
         return outputFile;
     }

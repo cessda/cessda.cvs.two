@@ -20,8 +20,8 @@ public class CodeSnippet implements Serializable {
     private String parent;
 
     @Size(max = 240)
-    private String notation;
     private String title;
+    private String notation;
     private String definition;
     private Integer position;
     private String changeType;
@@ -69,20 +69,20 @@ public class CodeSnippet implements Serializable {
         this.parent = parent;
     }
 
-    public String getNotation() {
-        return notation;
-    }
-
-    public void setNotation(String notation) {
-        this.notation = notation;
-    }
-
     public String getTitle() {
         return title;
     }
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getNotation() {
+        return notation;
+    }
+
+    public void setNotation(String notation) {
+        this.notation = notation;
     }
 
     public String getDefinition() {

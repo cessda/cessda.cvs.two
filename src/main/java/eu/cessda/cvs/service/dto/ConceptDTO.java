@@ -37,9 +37,9 @@ public class ConceptDTO implements Serializable {
     @Size(max = 240)
     private String parent;
 
-    private Integer position;
-
     private Long versionId;
+
+    private Integer position;
 
     public ConceptDTO(){
         this.notation = "NEW_NOTATION";
@@ -151,14 +151,6 @@ public class ConceptDTO implements Serializable {
         this.slConcept = slConcept;
     }
 
-    public String getParent() {
-        return parent;
-    }
-
-    public void setParent(String parent) {
-        this.parent = parent;
-    }
-
     public Integer getPosition() {
         return position;
     }
@@ -167,12 +159,36 @@ public class ConceptDTO implements Serializable {
         this.position = position;
     }
 
+    public String getParent() {
+        return parent;
+    }
+
+    public void setParent(String parent) {
+        this.parent = parent;
+    }
+
     public Long getVersionId() {
         return versionId;
     }
 
     public void setVersionId(Long versionId) {
         this.versionId = versionId;
+    }
+
+    @Override
+    public String toString() {
+        return "ConceptDTO{" +
+            "id=" + getId() +
+            ", uri='" + getUri() + "'" +
+            ", notation='" + getNotation() + "'" +
+            ", title='" + getTitle() + "'" +
+            ", definition='" + getDefinition() + "'" +
+            ", previousConcept=" + getPreviousConcept() +
+            ", slConcept=" + getSlConcept() +
+            ", parent='" + getParent() + "'" +
+            ", position=" + getPosition() +
+            ", versionId=" + getVersionId() +
+            "}";
     }
 
     @Override
@@ -194,21 +210,5 @@ public class ConceptDTO implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(getId());
-    }
-
-    @Override
-    public String toString() {
-        return "ConceptDTO{" +
-            "id=" + getId() +
-            ", uri='" + getUri() + "'" +
-            ", notation='" + getNotation() + "'" +
-            ", title='" + getTitle() + "'" +
-            ", definition='" + getDefinition() + "'" +
-            ", previousConcept=" + getPreviousConcept() +
-            ", slConcept=" + getSlConcept() +
-            ", parent='" + getParent() + "'" +
-            ", position=" + getPosition() +
-            ", versionId=" + getVersionId() +
-            "}";
     }
 }

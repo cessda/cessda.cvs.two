@@ -19,11 +19,11 @@ public class AgencyDTO implements Serializable {
     @Size(max = 240)
     private String name;
 
-    @Size(max = 255)
-    private String link;
-
     @Lob
     private String description;
+
+    @Size(max = 255)
+    private String link;
 
     @Size(max = 255)
     private String logopath;
@@ -66,20 +66,20 @@ public class AgencyDTO implements Serializable {
         this.name = name;
     }
 
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-
     public String getDescription() {
         return description;
     }
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 
     public String getLogopath() {

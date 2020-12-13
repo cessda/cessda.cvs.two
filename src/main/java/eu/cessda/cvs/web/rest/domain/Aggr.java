@@ -1,10 +1,11 @@
 package eu.cessda.cvs.web.rest.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class Aggr {
+public class Aggr implements Serializable {
     private String type;
     private String field;
     private List<String> values = new ArrayList<>();
@@ -12,6 +13,7 @@ public class Aggr {
     private List<Bucket> filteredBuckets = new ArrayList<>();
 
     public Aggr() {
+        // used for jackson serialization
     }
 
     public String getType() {

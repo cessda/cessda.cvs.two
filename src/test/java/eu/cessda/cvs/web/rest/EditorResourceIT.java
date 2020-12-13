@@ -25,13 +25,10 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -276,20 +273,62 @@ class EditorResourceIT {
         // ActionType.CREATE_CODE ~ will be fail due to same Code-name
         createFailedSlConceptTest(slVersion);
         // Add second code as child
-        Concept slCOncept2 = createSlConceptChildTest(slVersion, slConcept);
-
-        // move the second code from child to root
-
+        Concept slConcept2 = createSlConceptChildTest(slVersion, slConcept);
+        // ActionType.REORDER_CODE ~ move the second code from child to root
+        reorderConceptsTest(slVersion, slConcept, slConcept2);
         // ActionType.EDIT_CODE
         updateSlConceptTest(slVersion, slConcept);
-
-
-        // ActionType.EDIT_CODE
+        // ActionType.DELETE_CODE
+        int conceptDbSize = conceptRepository.findAll().size();
+        // Delete the agency
+        restVocabularyMockMvc.perform(delete("/api/editors/codes/{id}", slConcept2.getId())
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+        final List<Concept> conceptList = conceptRepository.findAll();
+        assertThat(conceptList).hasSize(conceptDbSize - 1);
+        Concept conceptDelete = conceptList.stream()
+            .filter(c -> c.getNotation().equals(INIT_CODE2_NOTATION))
+            .findFirst().orElse(null);
+        assertThat( conceptDelete ).isNull();
+        Concept concept = conceptList.stream()
+            .filter(c -> c.getNotation().equals(slConcept.getNotation()))
+            .findFirst().orElse(null);
+        assertThat( concept ).isNotNull();
+        assertThat( concept.getPosition() ).isEqualTo(CODE2_POSITION);
 
         // ActionType.FORWARD_CV_SL_STATUS_REVIEW
         forwardSlStatusReviewTest(slVersion);
         // ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
         forwardSlStatusPublishTest(slVersion);
+
+    }
+
+    private void reorderConceptsTest(Version slVersion, Concept slConcept, Concept slConcept2) throws Exception {
+        CodeSnippet codeSnippetCodeMove = new CodeSnippet();
+        codeSnippetCodeMove.setActionType( ActionType.REORDER_CODE);
+        codeSnippetCodeMove.setVersionId( slVersion.getId() );
+        codeSnippetCodeMove.setConceptStructureIds(new LinkedList<>(Arrays.asList(slConcept2.getId(), slConcept.getId())));
+        codeSnippetCodeMove.setConceptStructures(new LinkedList<>(Arrays.asList(INIT_CODE2_NOTATION, slConcept.getNotation())));
+
+        // reorder code
+        restVocabularyMockMvc.perform(post("/api/editors/codes/reorder")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(codeSnippetCodeMove)))
+            .andExpect(status().isOk());
+
+        final List<Concept> conceptList = conceptRepository.findAll();
+        Concept concept1 = conceptList.stream()
+            .filter(c -> c.getNotation().equals(INIT_CODE2_NOTATION))
+            .findFirst().orElse(null);
+        assertThat( concept1 ).isNotNull();
+        assertThat( concept1.getParent() ).isNull();
+        assertThat( concept1.getPosition() ).isEqualTo(CODE_POSITION);
+        Concept concept2 = conceptList.stream()
+            .filter(c -> c.getNotation().equals(slConcept.getNotation()))
+            .findFirst().orElse(null);
+        assertThat( concept2 ).isNotNull();
+        assertThat( concept2.getPosition() ).isEqualTo(CODE2_POSITION);
     }
 
     private Concept createSlConceptChildTest(Version slVersion, Concept slConcept) throws Exception {

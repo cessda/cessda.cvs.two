@@ -30,18 +30,6 @@ public class VocabularyPublish extends VocabularyBase {
         return this;
     }
 
-    public VocabularyBase addCode( Code code )
-    {
-        this.codes.add( code );
-        return this;
-    }
-
-    public VocabularyBase removeCode( Code code )
-    {
-        this.codes.remove( code );
-        return this;
-    }
-
     public void setCodes( Set<Code> codes )
     {
         this.codes = codes;

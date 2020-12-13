@@ -1,11 +1,11 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { CvsSharedModule } from 'app/shared/shared.module';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {CvsSharedModule} from 'app/shared/shared.module';
 
-import { HealthComponent } from './health.component';
-import { HealthModalComponent } from './health-modal.component';
+import {HealthComponent} from './health.component';
+import {HealthModalComponent} from './health-modal.component';
 
-import { healthRoute } from './health.route';
+import {healthRoute} from './health.route';
 
 @NgModule({
   imports: [CvsSharedModule, RouterModule.forChild([healthRoute])],

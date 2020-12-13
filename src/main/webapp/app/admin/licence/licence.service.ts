@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption, SearchWithPagination } from 'app/shared/util/request-util';
-import { ILicence } from 'app/shared/model/licence.model';
+import {SERVER_API_URL} from 'app/app.constants';
+import {createRequestOption, SearchWithPagination} from 'app/shared/util/request-util';
+import {ILicence} from 'app/shared/model/licence.model';
 
 type EntityResponseType = HttpResponse<ILicence>;
 type EntityArrayResponseType = HttpResponse<ILicence[]>;

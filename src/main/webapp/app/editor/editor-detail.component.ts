@@ -1,30 +1,30 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import {AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
+import {JhiDataUtils, JhiEventManager, JhiEventWithContent} from 'ng-jhipster';
 
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { IVersion } from 'app/shared/model/version.model';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {IVersion} from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { FormBuilder } from '@angular/forms';
-import { EditorService } from 'app/editor/editor.service';
-import { RouteEventsService } from 'app/shared';
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { EditorDetailCvAddEditDialogComponent } from 'app/editor/editor-detail-cv-add-edit-dialog.component';
-import { EditorDetailCvDeleteDialogComponent } from 'app/editor/editor-detail-cv-delete-dialog.component';
-import { EditorDetailCodeAddEditDialogComponent } from 'app/editor/editor-detail-code-add-edit-dialog.component';
-import { Concept, IConcept } from 'app/shared/model/concept.model';
-import { Observable, Subscription } from 'rxjs';
-import { EditorDetailCodeDeleteDialogComponent } from 'app/editor/editor-detail-code-delete-dialog.component';
-import { EditorDetailCodeReorderDialogComponent } from 'app/editor/editor-detail-code-reorder-dialog.component';
-import { EditorDetailCvForwardStatusDialogComponent } from 'app/editor/editor-detail-cv-forward-status-dialog.component';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
-import { HttpResponse } from '@angular/common/http';
-import { EditorDetailCvNewVersionDialogComponent } from 'app/editor/editor-detail-cv-new-version-dialog.component';
-import { EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent } from '.';
+import {FormBuilder} from '@angular/forms';
+import {EditorService} from 'app/editor/editor.service';
+import {RouteEventsService} from 'app/shared';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {EditorDetailCvAddEditDialogComponent} from 'app/editor/editor-detail-cv-add-edit-dialog.component';
+import {EditorDetailCvDeleteDialogComponent} from 'app/editor/editor-detail-cv-delete-dialog.component';
+import {EditorDetailCodeAddEditDialogComponent} from 'app/editor/editor-detail-code-add-edit-dialog.component';
+import {Concept, IConcept} from 'app/shared/model/concept.model';
+import {Observable, Subscription} from 'rxjs';
+import {EditorDetailCodeDeleteDialogComponent} from 'app/editor/editor-detail-code-delete-dialog.component';
+import {EditorDetailCodeReorderDialogComponent} from 'app/editor/editor-detail-code-reorder-dialog.component';
+import {EditorDetailCvForwardStatusDialogComponent} from 'app/editor/editor-detail-cv-forward-status-dialog.component';
+import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
+import {HttpResponse} from '@angular/common/http';
+import {EditorDetailCvNewVersionDialogComponent} from 'app/editor/editor-detail-cv-new-version-dialog.component';
+import {EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent} from '.';
 import * as moment from 'moment';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/user/account.model';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/user/account.model';
 
 @Component({
   selector: 'jhi-editor-detail',
@@ -465,7 +465,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private downloadEditorVocabularyFile(fileFormat: string, checkedItems: string, mimeType: string): void {
     this.editorService
-      .downloadVocabularyFile(this.vocabulary!.notation!, this.getSlVersion()!.number!, fileFormat, {
+      .downloadVocabularyFile(this.vocabulary!.notation!, this.getSlVersion().number!, fileFormat, {
         lv: checkedItems
       })
       .subscribe((res: Blob) => {
@@ -477,7 +477,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
         const data = window.URL.createObjectURL(newBlob);
         const link = document.createElement('a');
         link.href = data;
-        link.download = this.vocabulary!.notation! + '-' + this.getSlVersion()!.number! + '_' + checkedItems + '.' + fileFormat;
+        link.download = this.vocabulary!.notation! + '-' + this.getSlVersion().number! + '_' + checkedItems + '.' + fileFormat;
         link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
         setTimeout(function(): void {
           window.URL.revokeObjectURL(data);
@@ -760,17 +760,17 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   getMissingTlVersion(version: string): string {
-    if (version.startsWith(this.getSlVersion()!.number!)) {
-      return this.getSlVersion()!.versionHistories![0]!.version + '.x';
+    if (version.startsWith(this.getSlVersion().number!)) {
+      return this.getSlVersion().versionHistories![0].version + '.x';
     }
     let i = 0;
-    this.getSlVersion()!.versionHistories!.forEach(function(vhSl, index): void {
+    this.getSlVersion().versionHistories!.forEach(function(vhSl, index): void {
       if (version.startsWith(vhSl.version!)) {
         i = index + 1;
       }
     });
     if (i > 0) {
-      return this.getSlVersion()!.versionHistories![i]!.version + '.x';
+      return this.getSlVersion().versionHistories![i].version + '.x';
     }
     return '';
   }

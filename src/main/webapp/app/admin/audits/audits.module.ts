@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { CvsSharedModule } from 'app/shared/shared.module';
+import {NgModule} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {CvsSharedModule} from 'app/shared/shared.module';
 
-import { AuditsComponent } from './audits.component';
+import {AuditsComponent} from './audits.component';
 
-import { auditsRoute } from './audits.route';
+import {auditsRoute} from './audits.route';
 
 @NgModule({
   imports: [CvsSharedModule, RouterModule.forChild([auditsRoute])],

@@ -1,22 +1,29 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, of, Subscription } from 'rxjs';
-import { LoginModalService } from 'app/core/login/login-modal.service';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/user/account.model';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiLanguageService, JhiParseLinks } from 'ng-jhipster';
-import { HomeService } from 'app/home/home.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Observable, of, Subscription} from 'rxjs';
+import {LoginModalService} from 'app/core/login/login-modal.service';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/user/account.model';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {
+  JhiAlertService,
+  JhiDataUtils,
+  JhiEventManager,
+  JhiEventWithContent,
+  JhiLanguageService,
+  JhiParseLinks
+} from 'ng-jhipster';
+import {HomeService} from 'app/home/home.service';
+import {ActivatedRoute, NavigationEnd, Params, Router} from '@angular/router';
 
-import { AGGR_AGENCY, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
-import { ICvResult } from 'app/shared/model/cv-result.model';
+import {AGGR_AGENCY, ITEMS_PER_PAGE, PAGING_SIZE} from 'app/shared';
+import {ICvResult} from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { ICode } from 'app/shared/model/code.model';
-import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
-import { IAggr } from 'app/shared/model/aggr';
-import { FormBuilder } from '@angular/forms';
-import { IBucket } from 'app/shared/model/bucket';
+import {ICode} from 'app/shared/model/code.model';
+import {LanguageIso} from 'app/shared/model/enumerations/language-iso.model';
+import {IAggr} from 'app/shared/model/aggr';
+import {FormBuilder} from '@angular/forms';
+import {IBucket} from 'app/shared/model/bucket';
 
 @Component({
   selector: 'jhi-home',
@@ -72,39 +79,51 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.activeAggAgency = [];
     this.activeAggLanguage = [];
     this.activatedRoute.queryParams.subscribe(params => {
-      if (params['q']) {
-        this.currentSearch = params['q'];
-      }
-      if (params['size']) {
-        this.itemsPerPage = params['size'];
-      }
-      if (params['page']) {
-        this.page = params['page'];
-      }
-      if (params['sort']) {
-        const sortProp: string[] = params['sort'].split(',');
-        this.predicate = sortProp[0];
-        if (sortProp.length === 2) {
-          this.ascending = sortProp[0] === 'asc';
-        }
-      }
-      if (params['f']) {
-        this.activeAgg = params['f'];
-        const activeFilters: string[] = params['f'].split(';', 2);
-        activeFilters.forEach(af => {
-          const activeFilter: string[] = af.split(':', 2);
-          if (activeFilter.length === 2) {
-            if (activeFilter[0] === 'agency') {
-              this.activeAggAgency = activeFilter[1].split(',');
-            } else if (activeFilter[0] === 'language') {
-              this.activeAggLanguage = activeFilter[1].split(',');
-            }
-          }
-        });
-      }
+      this.assignQueryParamsToVariables(params);
     });
 
     this.isAggAgencyCollapsed = this.activeAggAgency.length === 0;
+  }
+
+  private assignQueryParamsToVariables(params: Params): void {
+    if (params['size']) {
+      this.itemsPerPage = params['size'];
+    }
+    if (params['q']) {
+      this.currentSearch = params['q'];
+    }
+    if (params['sort']) {
+      const sortProp: string[] = params['sort'].split(',');
+      this.predicate = sortProp[0];
+      if (sortProp.length === 2) {
+        this.ascending = sortProp[0] === 'asc';
+      }
+    }
+    if (params['f']) {
+      this.activeAgg = params['f'];
+      const activeFilters: string[] = params['f'].split(';', 2);
+      activeFilters.forEach(af => {
+        const activeFilter: string[] = af.split(':', 2);
+        if (activeFilter.length === 2) {
+          if (activeFilter[0] === 'language') {
+            this.activeAggLanguage = activeFilter[1].split(',');
+          } else if (activeFilter[0] === 'agency') {
+            this.activeAggAgency = activeFilter[1].split(',');
+          }
+        }
+      });
+      if (params['page']) {
+        this.page = params['page'];
+      }
+    }
+  }
+
+  getCurrentLanguage(): string {
+    return this.languageService.currentLang;
+  }
+
+  getVersionByLang(vocab: IVocabulary): string {
+    return VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, vocab.selectedLang!);
   }
 
   toggleFilterPanelHidden(): void {
@@ -117,12 +136,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
   }
 
-  getCurrentLanguage(): string {
-    return this.languageService.currentLang;
+  getCodeTitleByLang(code: ICode, selectedLang: string): string {
+    return VocabularyUtil.getCodeTitleBySelectedLang(code, selectedLang);
   }
 
-  getVersionByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, vocab.selectedLang!);
+  getCodeDefinitionByLang(code: ICode, selectedLang: string): string {
+    return VocabularyUtil.getCodeDefinitionBySelectedLang(code, selectedLang);
   }
 
   getTitleByLang(vocab: IVocabulary): string {
@@ -133,14 +152,6 @@ export class HomeComponent implements OnInit, OnDestroy {
     return VocabularyUtil.getVocabularyDefinitionBySelectedLang(vocab);
   }
 
-  getCodeTitleByLang(code: ICode, selectedLang: string): string {
-    return VocabularyUtil.getCodeTitleBySelectedLang(code, selectedLang);
-  }
-
-  getCodeDefinitionByLang(code: ICode, selectedLang: string): string {
-    return VocabularyUtil.getCodeDefinitionBySelectedLang(code, selectedLang);
-  }
-
   loadPage(page?: number): void {
     this.eventManager.broadcast({ name: 'onSearching', content: true });
     const pageToLoad: number = page ? page : this.page;
@@ -148,9 +159,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       .search({
         page: pageToLoad - 1,
         q: this.currentSearch,
-        size: this.itemsPerPage,
         sort: this.sort(),
-        f: this.activeAgg
+        f: this.activeAgg,
+        size: this.itemsPerPage
       })
       .subscribe(
         (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
@@ -181,10 +192,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.page = 0;
     this.currentSearch = query;
     this.predicate = 'relevance';
-    this.predicate = 'relevance';
     if (query === '') {
-      this.ascending = true;
       this.predicate = 'code';
+      this.ascending = true;
     }
     this.clearFilter();
     if (pred) {
@@ -343,8 +353,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   refreshSearchBySort(s: string): void {
     this.router.navigate([], {
-      relativeTo: this.activatedRoute,
       queryParams: { sort: s },
+      relativeTo: this.activatedRoute,
       queryParamsHandling: 'merge'
     });
     this.ascending = true;
@@ -372,9 +382,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   buildFilterAndRefreshSearch(): void {
     this.activeAgg = '';
-    if (this.activeAggAgency!.length > 0) {
-      this.activeAgg = 'agency:' + this.activeAggAgency!.join(',');
-    }
 
     if (this.activeAggLanguage!.length > 0) {
       if (this.activeAggAgency!.length > 0) {
@@ -382,13 +389,18 @@ export class HomeComponent implements OnInit, OnDestroy {
       }
       this.activeAgg += 'language:' + this.activeAggLanguage!.join(',');
     }
+
+    if (this.activeAggAgency!.length > 0) {
+      this.activeAgg = 'agency:' + this.activeAggAgency!.join(',');
+    }
+
     this.router.navigate([], {
-      relativeTo: this.activatedRoute,
       queryParams: {
         q: this.currentSearch === '' ? null : this.currentSearch,
         f: this.activeAgg === '' ? null : this.activeAgg,
         sort: this.sort()
       },
+      relativeTo: this.activatedRoute,
       queryParamsHandling: 'merge'
     });
     this.loadPage(1);

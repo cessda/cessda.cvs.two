@@ -67,7 +67,7 @@ public class VocabularyChangeDTO implements Serializable {
         this.vocabularyId = vocabularyId;
         this.versionId = versionId;
         this.changeType = changeType;
-        this.description = description != null ? description : "";;
+        this.description = description != null ? description : "";
         this.date = LocalDate.now();
         if( currentUser != null ) {
             this.userId = currentUser.getId();

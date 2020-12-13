@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { SERVER_API_URL } from 'app/app.constants';
-import { createRequestOption, DATE_FORMAT } from 'app/shared';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { ICvResult } from 'app/shared/model/cv-result.model';
-import { map } from 'rxjs/operators';
+import {SERVER_API_URL} from 'app/app.constants';
+import {createRequestOption, DATE_FORMAT} from 'app/shared';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {ICvResult} from 'app/shared/model/cv-result.model';
+import {map} from 'rxjs/operators';
 import * as moment from 'moment';
-import { IVocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
-import { ICodeSnippet } from 'app/shared/model/code-snippet.model';
-import { IConcept } from 'app/shared/model/concept.model';
-import { IVersion } from 'app/shared/model/version.model';
-import { IComment } from 'app/shared/model/comment.model';
-import { IMetadataValue } from 'app/shared/model/metadata-value.model';
+import {IVocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
+import {ICodeSnippet} from 'app/shared/model/code-snippet.model';
+import {IConcept} from 'app/shared/model/concept.model';
+import {IVersion} from 'app/shared/model/version.model';
+import {IComment} from 'app/shared/model/comment.model';
+import {IMetadataValue} from 'app/shared/model/metadata-value.model';
 
 type EntityResponseVocabularyType = HttpResponse<IVocabulary>;
 type EntityResponseVersionType = HttpResponse<IVersion>;
@@ -24,7 +24,7 @@ type EntityResponseMetadataValueType = HttpResponse<IMetadataValue>;
 @Injectable({ providedIn: 'root' })
 export class EditorService {
   public resourceVocabularyUrl = SERVER_API_URL + 'api/vocabularies';
-  public resourceEditorSearchUrl = SERVER_API_URL + 'api/editor/search';
+  public resourceEditorSearchUrl = SERVER_API_URL + 'api/editors/search';
   public resourceEditorVocabularyUrl = SERVER_API_URL + 'api/editors/vocabularies';
   public resourceEditorCodeUrl = SERVER_API_URL + 'api/editors/codes';
   public resourceEditorCommentUrl = SERVER_API_URL + 'api/editors/comments';

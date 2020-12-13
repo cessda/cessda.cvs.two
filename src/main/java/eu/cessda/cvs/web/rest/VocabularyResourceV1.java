@@ -46,7 +46,6 @@ public class VocabularyResourceV1
     private static final String CV_CODE = "cvCode";
     private static final String LANGUAGE_ISO = "languageIso";
     private static final String VERSION = "version";
-    public static final String JSON_FORMAT = ".json";
     private static final Logger log = LoggerFactory.getLogger( VocabularyResourceV1.class );
 
     private final VocabularyService vocabularyService;
@@ -91,9 +90,9 @@ public class VocabularyResourceV1
                         "/v1/VocabularyDetails/" + version.getNotation() + "/" + version.getLanguage() + "/" +
                                 version.getNumber() );
                 for (Map<String, Object> versionHistory : version.getVersionHistories()) {
-                    versionMap.put( versionHistory.get("version").toString(),
+                    versionMap.put( versionHistory.get(VERSION).toString(),
                         "/v1/VocabularyDetails/" + version.getNotation() + "/" + version.getLanguage() + "/" +
-                            versionHistory.get("version").toString() );
+                            versionHistory.get(VERSION).toString() );
                 }
             } );
         } );

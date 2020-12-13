@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 /**
  * REST controller for managing {@link eu.cessda.cvs.domain.Agency}.
@@ -42,7 +41,7 @@ public class VocabularyMaintenanceResource {
     }
 
     @GetMapping("/index/agency-stats")
-    public ResponseEntity<Maintenance> indexAgencyStats() throws IOException {
+    public ResponseEntity<Maintenance> indexAgencyStats() {
         log.debug("REST request to index Agencies Stats");
         vocabularyService.indexAllAgencyStats();
         Maintenance maintenanceOut = new Maintenance("Done indexing Agency Stats", "INDEX_AGENCY_STAT");
@@ -50,7 +49,7 @@ public class VocabularyMaintenanceResource {
     }
 
     @GetMapping("/index/vocabulary")
-    public ResponseEntity<Maintenance> indexVocabulary() throws IOException {
+    public ResponseEntity<Maintenance> indexVocabulary() {
         log.debug("REST request to index published Vocabularies");
         vocabularyService.indexAllPublished();
         Maintenance maintenanceOut = new Maintenance("Done indexing published Vocabularies", "INDEX_VOCABULARY_PUBLISH");
@@ -58,7 +57,7 @@ public class VocabularyMaintenanceResource {
     }
 
     @GetMapping("/index/vocabulary/editor")
-    public ResponseEntity<Maintenance> indexVocabularyEditor() throws IOException {
+    public ResponseEntity<Maintenance> indexVocabularyEditor() {
         log.debug("REST request to index Vocabularies in editor");
         vocabularyService.indexAllEditor();
         Maintenance maintenanceOut = new Maintenance("Done indexing Vocabulary Editor", "INDEX_VOCABULARY_EDITOR");
@@ -66,7 +65,7 @@ public class VocabularyMaintenanceResource {
     }
 
     @GetMapping("/index/agency")
-    public ResponseEntity<Maintenance> indexAgency() throws IOException {
+    public ResponseEntity<Maintenance> indexAgency() {
         log.debug("REST request to index Agencies");
         agencyService.indexAll();
         Maintenance maintenanceOut = new Maintenance("Done indexing Agency", "INDEX_AGENCY");
@@ -76,11 +75,10 @@ public class VocabularyMaintenanceResource {
     /**
      * {@code GET  check-all/tl-normalization} :
      *
-     * @return
-     * @throws IOException
+     * @return result of tl normalization checking
      */
     @GetMapping("/check-all/tl-normalization")
-    public ResponseEntity<Maintenance> checkAllTlNormalization() throws IOException {
+    public ResponseEntity<Maintenance> checkAllTlNormalization() {
         log.debug("REST request to check all Tl_normalization");
         Maintenance maintenanceOut = new Maintenance(vocabularyService.performTlMigrationNormalizationChecking(), "INDEX_AGENCY");
         return ResponseEntity.ok().body( maintenanceOut );
@@ -91,7 +89,7 @@ public class VocabularyMaintenanceResource {
      *
      */
     @PostMapping("/check/tl-normalization")
-    public ResponseEntity<String> checkTlNormalization( @RequestBody String notations) throws URISyntaxException {
+    public ResponseEntity<String> checkTlNormalization( @RequestBody String notations){
         log.debug("REST request to perform Tl_normalization with notation {}", notations );
         return ResponseEntity.ok().body(vocabularyService.performTlMigrationNormalization(true, notations) );
     }
@@ -101,7 +99,7 @@ public class VocabularyMaintenanceResource {
      *
      */
     @PostMapping("/perform/tl-normalization")
-    public ResponseEntity<String> performTlNormalization( @RequestBody String notations) throws URISyntaxException {
+    public ResponseEntity<String> performTlNormalization( @RequestBody String notations){
         log.debug("REST request to perform Tl_normalization with notation {}", notations );
         return ResponseEntity.ok().body(vocabularyService.performTlMigrationNormalization(false, notations) );
     }

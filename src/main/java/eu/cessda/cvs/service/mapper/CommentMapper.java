@@ -1,10 +1,10 @@
 package eu.cessda.cvs.service.mapper;
 
 
-import eu.cessda.cvs.domain.*;
+import eu.cessda.cvs.domain.Comment;
 import eu.cessda.cvs.service.dto.CommentDTO;
-
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * Mapper for the entity {@link Comment} and its DTO {@link CommentDTO}.

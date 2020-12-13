@@ -9,7 +9,14 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class VersionUtils {
-	private VersionUtils() {}
+    public static final String CODE_DEF = "Code Def:";
+    public static final String CODE_TERM = "Code Term:";
+    public static final String CODE = "Code:";
+    public static final String CV_NAME = "Cv Name:";
+    public static final String CV_DEF = "Cv Def:";
+    public static final String CV_NOTES = "Cv Notes:";
+
+    private VersionUtils() {}
 
 	public static int compareVersion(String v1, String v2) {
         String s1 = normalisedVersion(v1);
@@ -24,8 +31,9 @@ public class VersionUtils {
     public static String normalisedVersion(String version, String sep, int maxWidth) {
         String[] split = Pattern.compile(sep, Pattern.LITERAL).split(version);
         StringBuilder sb = new StringBuilder();
+        final String format = "%" + maxWidth + "s";
         for (String s : split) {
-            sb.append(String.format("%" + maxWidth + 's', s));
+            sb.append(String.format(format, s));
         }
         return sb.toString();
     }
@@ -47,7 +55,7 @@ public class VersionUtils {
 
     public static String getSlNumberFromTl( String tlNumber ) {
         if( StringUtils.countMatches( tlNumber, ".") == 2){
-            tlNumber = tlNumber.substring( 0, tlNumber.lastIndexOf("."));
+            tlNumber = tlNumber.substring( 0, tlNumber.lastIndexOf('.'));
         }
         return tlNumber;
     }
@@ -58,14 +66,14 @@ public class VersionUtils {
      * @return array with 4 properties e.g. from example above "2.0", "2.0.2", "de", "TL"
      */
     public static String[] splitLanguageVersion( String languageVersion ) {
-        final int lastIndexOfSpace = languageVersion.lastIndexOf("-");
+        final int lastIndexOfSpace = languageVersion.lastIndexOf('-');
         final String language = languageVersion.substring(0, lastIndexOfSpace);
         final String versionNumber = languageVersion.substring( lastIndexOfSpace + 1 );
         String itemType = "SL";
         String slNumber = versionNumber;
         if( StringUtils.countMatches( versionNumber, ".") == 2){
             itemType = "TL";
-            slNumber = versionNumber.substring( 0, versionNumber.lastIndexOf("."));
+            slNumber = versionNumber.substring( 0, versionNumber.lastIndexOf('.'));
         }
 	    return new String[]{slNumber, versionNumber, language, itemType};
     }
@@ -79,22 +87,22 @@ public class VersionUtils {
         StringBuilder currentVersionCvSb = new StringBuilder();
         StringBuilder prevVersionCvSb = new StringBuilder();
 
-        currentVersionCvSb.append( "Cv Name: " + versionDTO.getTitle() + "\n");
-        currentVersionCvSb.append( "Cv Def: " + versionDTO.getDefinition() + "\n");
-        currentVersionCvSb.append( "Cv Notes: " + (versionDTO.getNotes() == null ? "": versionDTO.getNotes()) + "\n\n\n");
+        currentVersionCvSb.append( CV_NAME + " " + versionDTO.getTitle() + "\n");
+        currentVersionCvSb.append( CV_DEF + " " + versionDTO.getDefinition() + "\n");
+        currentVersionCvSb.append( CV_NOTES + " " + (versionDTO.getNotes() == null ? "": versionDTO.getNotes()) + "\n\n\n");
 
-        prevVersionCvSb.append( "Cv Name: " + prevVersionDTO.getTitle() + "\n");
-        prevVersionCvSb.append( "Cv Def: " + prevVersionDTO.getDefinition() + "\n");
-        prevVersionCvSb.append( "Cv Notes: " + (prevVersionDTO.getNotes() == null ? "": prevVersionDTO.getNotes()) + "\n\n\n");
+        prevVersionCvSb.append( CV_NAME + " " + prevVersionDTO.getTitle() + "\n");
+        prevVersionCvSb.append( CV_DEF + " " + prevVersionDTO.getDefinition() + "\n");
+        prevVersionCvSb.append( CV_NOTES + " " + (prevVersionDTO.getNotes() == null ? "": prevVersionDTO.getNotes()) + "\n\n\n");
 
         // get concepts and sorted by position
         List<ConceptDTO> currentConcepts = versionDTO.getConcepts().stream()
             .sorted(Comparator.comparing(ConceptDTO::getPosition)).collect(Collectors.toList());
         Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         currentConcepts.forEach(currentConcept -> {
-            currentVersionCvSb.append( "Code: " + currentConcept.getNotation()+ "\n");
-            currentVersionCvSb.append( "Code Term: " + currentConcept.getTitle() + "\n");
-            currentVersionCvSb.append( "Code Def: " + currentConcept.getDefinition() + "\n\n");
+            currentVersionCvSb.append( CODE + " " + currentConcept.getNotation()+ "\n");
+            currentVersionCvSb.append( CODE_TERM + " " + currentConcept.getTitle() + "\n");
+            currentVersionCvSb.append( CODE_DEF + " " + currentConcept.getDefinition() + "\n\n");
 
             ConceptDTO prevConceptDTO = null;
 
@@ -110,14 +118,14 @@ public class VersionUtils {
             }
 
             if ( prevConceptDTO == null ) {
-                prevVersionCvSb.append( "Code: \n");
-                prevVersionCvSb.append( "Code Term: \n");
-                prevVersionCvSb.append( "Code Def: \n\n");
+                prevVersionCvSb.append(CODE + " \n");
+                prevVersionCvSb.append(CODE_TERM + " \n");
+                prevVersionCvSb.append(CODE_DEF + " \n\n");
             } else {
                 existingConceptsInPrevAndCurrent.add( prevConceptDTO );
-                prevVersionCvSb.append( "Code: " + prevConceptDTO.getNotation()+ "\n");
-                prevVersionCvSb.append( "Code Term: " + prevConceptDTO.getTitle() + "\n");
-                prevVersionCvSb.append( "Code Def: " + prevConceptDTO.getDefinition() + "\n\n");
+                prevVersionCvSb.append( CODE + " " + prevConceptDTO.getNotation()+ "\n");
+                prevVersionCvSb.append( CODE_TERM + " " + prevConceptDTO.getTitle() + "\n");
+                prevVersionCvSb.append( CODE_DEF + " " + prevConceptDTO.getDefinition() + "\n\n");
             }
         });
 
@@ -125,12 +133,12 @@ public class VersionUtils {
         prevVersionDTO.getConcepts().removeAll(existingConceptsInPrevAndCurrent);
 
         for (ConceptDTO prevConcept : prevVersionDTO.getConcepts()) {
-            currentVersionCvSb.append( "Code: \n");
-            currentVersionCvSb.append( "Code Term: \n");
-            currentVersionCvSb.append( "Code Def: \n\n");
-            prevVersionCvSb.append( "Code: " + prevConcept.getNotation()+ "\n");
-            prevVersionCvSb.append( "Code Term: " + prevConcept.getTitle() + "\n");
-            prevVersionCvSb.append( "Code Def: " + prevConcept.getDefinition() + "\n\n");
+            currentVersionCvSb.append(CODE + " \n");
+            currentVersionCvSb.append(CODE_TERM + " \n");
+            currentVersionCvSb.append(CODE_DEF + " \n\n");
+            prevVersionCvSb.append( CODE + " " + prevConcept.getNotation()+ "\n");
+            prevVersionCvSb.append( CODE_TERM + " " + prevConcept.getTitle() + "\n");
+            prevVersionCvSb.append( CODE_DEF + " " + prevConcept.getDefinition() + "\n\n");
         }
 
         List<String> compareCurrentPrev = new ArrayList<>();

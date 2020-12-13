@@ -1,7 +1,6 @@
 package eu.cessda.cvs.service;
 
 import eu.cessda.cvs.service.dto.ConceptDTO;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

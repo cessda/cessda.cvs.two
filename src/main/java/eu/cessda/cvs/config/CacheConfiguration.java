@@ -1,17 +1,18 @@
 package eu.cessda.cvs.config;
 
-import java.time.Duration;
-
-import org.ehcache.config.builders.*;
-import org.ehcache.jsr107.Eh107Configuration;
-
-import org.hibernate.cache.jcache.ConfigSettings;
 import io.github.jhipster.config.JHipsterProperties;
-
+import org.ehcache.config.builders.CacheConfigurationBuilder;
+import org.ehcache.config.builders.ExpiryPolicyBuilder;
+import org.ehcache.config.builders.ResourcePoolsBuilder;
+import org.ehcache.jsr107.Eh107Configuration;
+import org.hibernate.cache.jcache.ConfigSettings;
 import org.springframework.boot.autoconfigure.cache.JCacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernatePropertiesCustomizer;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import java.time.Duration;
 
 @Configuration
 @EnableCaching
@@ -37,8 +38,8 @@ public class CacheConfiguration {
     @Bean
     public JCacheManagerCustomizer cacheManagerCustomizer() {
         return cm -> {
-            createCache(cm, eu.cessda.cvs.repository.UserRepository.USERS_BY_LOGIN_CACHE);
-            createCache(cm, eu.cessda.cvs.repository.UserRepository.USERS_BY_EMAIL_CACHE);
+            createCache(cm, Constants.USERS_BY_LOGIN_CACHE);
+            createCache(cm, Constants.USERS_BY_EMAIL_CACHE);
             createCache(cm, eu.cessda.cvs.domain.User.class.getName());
             createCache(cm, eu.cessda.cvs.domain.Authority.class.getName());
             createCache(cm, eu.cessda.cvs.domain.User.class.getName() + ".authorities");

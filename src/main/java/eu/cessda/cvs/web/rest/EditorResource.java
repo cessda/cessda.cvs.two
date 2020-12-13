@@ -10,18 +10,26 @@ import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.*;
 import eu.cessda.cvs.service.dto.*;
+import eu.cessda.cvs.service.search.EsQueryResultDetail;
+import eu.cessda.cvs.service.search.SearchScope;
+import eu.cessda.cvs.utils.VocabularyUtils;
+import eu.cessda.cvs.web.rest.domain.CvResult;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.HeaderUtil;
+import io.github.jhipster.web.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
@@ -82,7 +90,7 @@ public class EditorResource {
 
     private final VocabularyChangeService vocabularyChangeService;
 
-
+    @SuppressWarnings("squid:S107") // since constructor params are autowired
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
                           LicenceService licenceService, AgencyService agencyService, CommentService commentService,
                           MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
@@ -927,6 +935,30 @@ public class EditorResource {
             .headers(headers)
             .contentType(MediaType.parseMediaType("text/html"))
             .body(resource);
+    }
+
+    /**
+     * {@code GET  /search} : get all the vocabularies from elasticsearch.
+     *
+
+     * @param q the query term.
+     * @param pageable the pagination information.
+
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
+     */
+    @GetMapping("/editors/search")
+    public ResponseEntity<CvResult> getAllVocabularies(@RequestParam(name = "q", required = false) String q,
+                                                       @RequestParam(name = "f", required = false) String f,
+                                                       Pageable pageable) {
+        log.debug("REST request to get a page of Vocabularies");
+        if (q == null)
+            q = "";
+        EsQueryResultDetail esq = VocabularyUtils.prepareEsQuerySearching(q, f, pageable, SearchScope.EDITORSEARCH);
+        vocabularyService.search(esq);
+        Page<VocabularyDTO> vocabulariesPage = esq.getVocabularies();
+
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), vocabulariesPage);
+        return ResponseEntity.ok().headers(headers).body( VocabularyUtils.mapResultToCvResult(esq, vocabulariesPage) );
     }
 
 }

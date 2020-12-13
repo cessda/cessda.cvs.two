@@ -1,9 +1,9 @@
 package eu.cessda.cvs.service.dto;
 
-import java.time.ZonedDateTime;
-import java.io.Serializable;
-import java.util.Objects;
 import javax.persistence.Lob;
+import java.io.Serializable;
+import java.time.ZonedDateTime;
+import java.util.Objects;
 
 /**
  * A DTO for the {@link eu.cessda.cvs.domain.Comment} entity.
@@ -19,10 +19,9 @@ public class CommentDTO implements Serializable {
 
     private Long userId;
 
-    private ZonedDateTime dateTime;
-
-
     private Long versionId;
+
+    private ZonedDateTime dateTime;
 
     public Long getId() {
         return id;
@@ -56,6 +55,14 @@ public class CommentDTO implements Serializable {
         this.userId = userId;
     }
 
+    public Long getVersionId() {
+        return versionId;
+    }
+
+    public void setVersionId(Long versionId) {
+        this.versionId = versionId;
+    }
+
     public ZonedDateTime getDateTime() {
         return dateTime;
     }
@@ -64,12 +71,9 @@ public class CommentDTO implements Serializable {
         this.dateTime = dateTime;
     }
 
-    public Long getVersionId() {
-        return versionId;
-    }
-
-    public void setVersionId(Long versionId) {
-        this.versionId = versionId;
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getId());
     }
 
     @Override
@@ -86,11 +90,6 @@ public class CommentDTO implements Serializable {
             return false;
         }
         return Objects.equals(getId(), commentDTO.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(getId());
     }
 
     @Override

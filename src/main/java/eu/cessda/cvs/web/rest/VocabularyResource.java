@@ -1,11 +1,11 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.domain.Vocabulary;
+import eu.cessda.cvs.service.InsufficientVocabularyAuthorityException;
+import eu.cessda.cvs.service.VocabularyAlreadyExistException;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
-import eu.cessda.cvs.service.InsufficientVocabularyAuthorityException;
-import eu.cessda.cvs.service.VocabularyAlreadyExistException;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;

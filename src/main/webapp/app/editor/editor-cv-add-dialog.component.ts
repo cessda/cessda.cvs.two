@@ -1,22 +1,22 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
-import { AgencyService } from 'app/agency/agency.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { IAgency } from 'app/shared/model/agency.model';
-import { AccountService } from 'app/core/auth/account.service';
-import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { Account } from 'app/core/user/account.model';
-import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
+import {NgbActiveModal, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
+import {AgencyService} from 'app/agency/agency.service';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {IAgency} from 'app/shared/model/agency.model';
+import {AccountService} from 'app/core/auth/account.service';
+import {VocabularyService} from 'app/entities/vocabulary/vocabulary.service';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {Account} from 'app/core/user/account.model';
+import {LanguageIso} from 'app/shared/model/enumerations/language-iso.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
-import { EditorService } from 'app/editor/editor.service';
-import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import {VOCABULARY_ALREADY_EXIST_TYPE} from 'app/shared';
+import {EditorService} from 'app/editor/editor.service';
+import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
 
 @Component({
   selector: 'jhi-editor-cv-add-dialog',
@@ -101,7 +101,7 @@ export class EditorCvAddDialogComponent implements OnInit {
         }
       });
     }
-    this.cvAddForm.patchValue({ sourceLanguage: this.languages[0]! });
+    this.cvAddForm.patchValue({ sourceLanguage: this.languages[0] });
   }
 
   clear(): void {

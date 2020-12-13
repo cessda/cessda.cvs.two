@@ -36,7 +36,8 @@ public enum Language {
     SLOVAK( "sk", "sk" , "Slovak (sk)", "Slovak"),
     SLOVENIAN( "sl", "sl" , "Slovenian (sl)", "Slovenian"),
     SPANISH( "es", "es" , "Spanish (es)", "Spanish"),
-    SWEDISH( "sv", "sv" , "Swedish (sv)", "Swedish");
+    SWEDISH( "sv", "sv" , "Swedish (sv)", "Swedish"),
+    UNKNOWN( "-", "-" , "Unknown (-)", "Unknown");
 
     private final String iso;
     private final String iso3;

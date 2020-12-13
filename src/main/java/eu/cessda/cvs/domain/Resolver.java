@@ -1,16 +1,13 @@
 package eu.cessda.cvs.domain;
 
+import eu.cessda.cvs.domain.enumeration.ResolverType;
+import eu.cessda.cvs.domain.enumeration.ResourceType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-
-import eu.cessda.cvs.domain.enumeration.ResourceType;
-
-import eu.cessda.cvs.domain.enumeration.ResolverType;
 
 /**
  * A Resolver.

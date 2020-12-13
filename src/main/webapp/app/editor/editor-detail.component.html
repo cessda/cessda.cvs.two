@@ -492,9 +492,6 @@
                                         </div>
                                     </div>
 
-<!--                                    <div class="editor-comparator" *ngIf="version!.previousVersion && version!.status !== 'PUBLISHED'">-->
-<!--                                        <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.id" [dataSource]="'DB'"></jhi-version-compare>-->
-<!--                                    </div>-->
                                     <div class="editor-comparator" *ngIf="version!.previousVersion && version!.status === 'PUBLISHED'">
                                         <jhi-version-compare [notation]="vocabulary!.notation" [langVersion1]="version!.language + '-' + version!.number"
                                                              [langVersion2]="version!.language + '-' + version!.versionHistories![0].version"

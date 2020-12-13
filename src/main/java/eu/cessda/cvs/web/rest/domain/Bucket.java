@@ -1,6 +1,8 @@
 package eu.cessda.cvs.web.rest.domain;
 
-public class Bucket {
+import java.io.Serializable;
+
+public class Bucket implements Serializable {
     private String k;
     private Long v;
 

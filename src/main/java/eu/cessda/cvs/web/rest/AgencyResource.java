@@ -85,11 +85,7 @@ public class AgencyResource {
         if (agencyDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        // get agency and examine if there is difference in URI, URI-Code and URN
-        final AgencyDTO storedAgencyDTO = agencyService.findOne(agencyDTO.getId()).orElse(null);
-//        if( !storedAgencyDTO.getUri().equals(agencyDTO.getUri()) || !storedAgencyDTO.getUriCode().equals(agencyDTO.getUriCode())) {
-            vocabularyService.updateVocabularyUri(agencyDTO.getId(), agencyDTO.getUri(), agencyDTO.getUriCode());
-//        }
+        vocabularyService.updateVocabularyUri(agencyDTO.getId(), agencyDTO.getUri(), agencyDTO.getUriCode());
 
         AgencyDTO result = agencyService.save(agencyDTO);
         return ResponseEntity.ok()
