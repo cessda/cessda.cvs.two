@@ -1,15 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
-import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
-import { JhiEventManager } from 'ng-jhipster';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Account } from 'app/core/user/account.model';
-import { Comment, IComment } from 'app/shared/model/comment.model';
-import { Moment } from 'moment';
+import {EditorService} from 'app/editor/editor.service';
+import {IVersion} from 'app/shared/model/version.model';
+import {JhiEventManager} from 'ng-jhipster';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Account} from 'app/core/user/account.model';
+import {IComment} from 'app/shared/model/comment.model';
 import * as moment from 'moment';
-import { Observable } from 'rxjs';
-import { HttpResponse } from '@angular/common/http';
+import {Moment} from 'moment';
+import {Observable} from 'rxjs';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
   selector: 'jhi-comment-item',

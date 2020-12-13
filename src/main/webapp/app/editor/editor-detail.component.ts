@@ -28,8 +28,7 @@ import {Account} from 'app/core/user/account.model';
 
 @Component({
   selector: 'jhi-editor-detail',
-  templateUrl: './editor-detail.component.html',
-  styleUrls: ['editor.scss']
+  templateUrl: './editor-detail.component.html'
 })
 export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;

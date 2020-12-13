@@ -79,12 +79,11 @@ public class ExportService
 		org.thymeleaf.context.Context ctx = new org.thymeleaf.context.Context();
 		if ( map != null )
 		{
-			Iterator<?> itMap = map.entrySet().iterator();
-			while (itMap.hasNext())
+            final Iterator<Map.Entry<String, Object>> itMap = map.entrySet().iterator();
+            while (itMap.hasNext())
 			{
-				@SuppressWarnings( "rawtypes" )
-				Map.Entry pair = (Map.Entry) itMap.next();
-				ctx.setVariable( pair.getKey().toString(), pair.getValue() );
+                Map.Entry<String, Object> pair = itMap.next();
+				ctx.setVariable( pair.getKey(), pair.getValue() );
 			}
 		}
 

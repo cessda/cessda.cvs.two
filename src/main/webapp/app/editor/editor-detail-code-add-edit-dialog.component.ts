@@ -1,24 +1,23 @@
-import { Component, NgZone, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, NgZone, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { AccountService } from 'app/core/auth/account.service';
-import { FormBuilder, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { Account } from 'app/core/user/account.model';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {AccountService} from 'app/core/auth/account.service';
+import {FormBuilder, Validators} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {Account} from 'app/core/user/account.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
-import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
-import { Concept, IConcept } from 'app/shared/model/concept.model';
-import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import {CODE_ALREADY_EXIST_TYPE} from 'app/shared';
+import {EditorService} from 'app/editor/editor.service';
+import {IVersion} from 'app/shared/model/version.model';
+import {Concept, IConcept} from 'app/shared/model/concept.model';
+import {CodeSnippet, ICodeSnippet} from 'app/shared/model/code-snippet.model';
 
 @Component({
   selector: 'jhi-editor-detail-code-add-edit-dialog',
-  templateUrl: './editor-detail-code-add-edit-dialog.component.html',
-  styleUrls: ['editor.scss']
+  templateUrl: './editor-detail-code-add-edit-dialog.component.html'
 })
 export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   isSaving: boolean;

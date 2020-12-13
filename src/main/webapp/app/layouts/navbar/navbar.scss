@@ -91,6 +91,9 @@ Navbar
         width: 275px;
         margin: 15px 0;
         z-index: 1;
+        img {
+          width: 100%;
+        }
       }
       .search-box {
         width: 90%;
@@ -203,8 +206,6 @@ Navbar
     background-color: #5680b3;
   }
   ul.navbar-nav {
-    .nav-item {
-    }
     .nav-item:hover,
     .nav-item.active {
       background-color: #5680b3;

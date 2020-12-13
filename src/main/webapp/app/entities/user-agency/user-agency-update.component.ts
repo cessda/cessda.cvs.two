@@ -1,14 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
+import {FormBuilder} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
 
-import { IUserAgency, UserAgency } from 'app/shared/model/user-agency.model';
-import { UserAgencyService } from './user-agency.service';
-import { IAgency } from 'app/shared/model/agency.model';
-import { AgencyService } from 'app/agency/agency.service';
+import {IUserAgency, UserAgency} from 'app/shared/model/user-agency.model';
+import {UserAgencyService} from './user-agency.service';
+import {IAgency} from 'app/shared/model/agency.model';
+import {AgencyService} from 'app/agency/agency.service';
 
 @Component({
   selector: 'jhi-user-agency-update',

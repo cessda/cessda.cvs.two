@@ -11,8 +11,7 @@ import {ObjectType} from 'app/shared/model/enumerations/object-type.model';
 
 @Component({
   selector: 'jhi-about',
-  templateUrl: './about.component.html',
-  styleUrls: ['./about.component.scss']
+  templateUrl: './about.component.html'
 })
 export class AboutComponent implements OnInit {
   metadataField?: IMetadataField | null;

@@ -20,8 +20,7 @@ import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary
 
 @Component({
   selector: 'jhi-editor-cv-add-dialog',
-  templateUrl: './editor-cv-add-dialog.component.html',
-  styleUrls: ['editor.scss']
+  templateUrl: './editor-cv-add-dialog.component.html'
 })
 export class EditorCvAddDialogComponent implements OnInit {
   isSaving: boolean;

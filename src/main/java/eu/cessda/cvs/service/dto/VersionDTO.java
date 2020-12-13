@@ -494,7 +494,7 @@ public class VersionDTO implements Serializable {
 
 
     public VersionDTO addConceptAt( ConceptDTO concept, Integer position ) {
-        List conceptLists = new ArrayList( this.concepts );
+        List<ConceptDTO> conceptLists = new ArrayList<>( this.concepts );
         if( position == null || position >= concepts.size()) {
             conceptLists.add(concept);
         }

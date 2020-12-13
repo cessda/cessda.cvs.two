@@ -18,8 +18,7 @@ import {IVersion} from 'app/shared/model/version.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-add-edit-dialog',
-  templateUrl: './editor-detail-cv-add-edit-dialog.component.html',
-  styleUrls: ['editor.scss']
+  templateUrl: './editor-detail-cv-add-edit-dialog.component.html'
 })
 export class EditorDetailCvAddEditDialogComponent implements OnInit {
   isSaving: boolean;

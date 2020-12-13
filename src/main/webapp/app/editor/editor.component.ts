@@ -1,26 +1,32 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Observable, of, Subscription } from 'rxjs';
-import { LoginModalService } from 'app/core/login/login-modal.service';
-import { AccountService } from 'app/core/auth/account.service';
-import { Account } from 'app/core/user/account.model';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiLanguageService, JhiParseLinks } from 'ng-jhipster';
-import { EditorService } from 'app/editor/editor.service';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Observable, of, Subscription} from 'rxjs';
+import {LoginModalService} from 'app/core/login/login-modal.service';
+import {AccountService} from 'app/core/auth/account.service';
+import {Account} from 'app/core/user/account.model';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {
+  JhiAlertService,
+  JhiDataUtils,
+  JhiEventManager,
+  JhiEventWithContent,
+  JhiLanguageService,
+  JhiParseLinks
+} from 'ng-jhipster';
+import {EditorService} from 'app/editor/editor.service';
+import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 
-import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
-import { ICvResult } from 'app/shared/model/cv-result.model';
+import {AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE} from 'app/shared';
+import {ICvResult} from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { ICode } from 'app/shared/model/code.model';
-import { IAggr } from 'app/shared/model/aggr';
-import { FormBuilder } from '@angular/forms';
-import { IBucket } from 'app/shared/model/bucket';
+import {ICode} from 'app/shared/model/code.model';
+import {IAggr} from 'app/shared/model/aggr';
+import {FormBuilder} from '@angular/forms';
+import {IBucket} from 'app/shared/model/bucket';
 
 @Component({
   selector: 'jhi-editor',
-  templateUrl: './editor.component.html',
-  styleUrls: ['editor.scss']
+  templateUrl: './editor.component.html'
 })
 export class EditorComponent implements OnInit, OnDestroy {
   @ViewChild('filterPanels', { static: true }) filterPanels!: ElementRef;
@@ -130,7 +136,7 @@ export class EditorComponent implements OnInit, OnDestroy {
   }
 
   isVersionContains(vocab: IVocabulary, lang: string, versionType: string): boolean {
-    return VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, lang).indexOf(versionType) > 0;
+    return VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, lang).includes(versionType);
   }
 
   getTitleByLang(vocab: IVocabulary): string {

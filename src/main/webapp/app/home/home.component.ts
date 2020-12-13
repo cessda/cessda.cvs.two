@@ -27,8 +27,7 @@ import {IBucket} from 'app/shared/model/bucket';
 
 @Component({
   selector: 'jhi-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['home.scss']
+  templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit, OnDestroy {
   @ViewChild('filterPanels', { static: true }) filterPanels!: ElementRef;

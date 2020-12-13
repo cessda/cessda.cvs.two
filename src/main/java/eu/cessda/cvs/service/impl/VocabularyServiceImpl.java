@@ -647,7 +647,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             try {
                 FileUtils.deleteDirectory(dirPath);
             } catch (IOException e) {
-                log.error("Unable to delete directory: {}", e);
+                log.error("Unable to delete directory: {}", e.getMessage());
             }
         }
     }
