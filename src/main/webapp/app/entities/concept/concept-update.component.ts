@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
 
-import { IConcept, Concept } from 'app/shared/model/concept.model';
-import { ConceptService } from './concept.service';
-import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IVersion } from 'app/shared/model/version.model';
-import { VersionService } from 'app/entities/version/version.service';
+import {Concept, IConcept} from 'app/shared/model/concept.model';
+import {ConceptService} from './concept.service';
+import {AlertError} from 'app/shared/alert/alert-error.model';
+import {IVersion} from 'app/shared/model/version.model';
+import {VersionService} from 'app/entities/version/version.service';
 
 @Component({
   selector: 'jhi-concept-update',
@@ -63,14 +63,6 @@ export class ConceptUpdateComponent implements OnInit {
       position: concept.position,
       versionId: concept.versionId
     });
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    this.dataUtils.openFile(contentType, base64String);
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {

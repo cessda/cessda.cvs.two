@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
 import * as moment from 'moment';
-import { DATE_TIME_FORMAT } from 'app/shared/constants/input.constants';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import {DATE_TIME_FORMAT} from 'app/shared/constants/input.constants';
+import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
 
-import { IComment, Comment } from 'app/shared/model/comment.model';
-import { CommentService } from './comment.service';
-import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IVersion } from 'app/shared/model/version.model';
-import { VersionService } from 'app/entities/version/version.service';
+import {Comment, IComment} from 'app/shared/model/comment.model';
+import {CommentService} from './comment.service';
+import {AlertError} from 'app/shared/alert/alert-error.model';
+import {IVersion} from 'app/shared/model/version.model';
+import {VersionService} from 'app/entities/version/version.service';
 
 @Component({
   selector: 'jhi-comment-update',
@@ -62,14 +62,6 @@ export class CommentUpdateComponent implements OnInit {
       dateTime: comment.dateTime ? comment.dateTime.format(DATE_TIME_FORMAT) : null,
       versionId: comment.versionId
     });
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    this.dataUtils.openFile(contentType, base64String);
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {

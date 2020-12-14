@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
+import {IMetadataField} from 'app/shared/model/metadata-field.model';
 
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { MetadataFieldService } from './metadata-field.service';
-import { MetadataFieldDeleteDialogComponent } from './metadata-field-delete-dialog.component';
+import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
+import {MetadataFieldService} from './metadata-field.service';
+import {MetadataFieldDeleteDialogComponent} from './metadata-field-delete-dialog.component';
 
 @Component({
   selector: 'jhi-metadata-field',
@@ -95,14 +95,6 @@ export class MetadataFieldComponent implements OnInit, OnDestroy {
   trackId(index: number, item: IMetadataField): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    return this.dataUtils.openFile(contentType, base64String);
   }
 
   registerChangeInMetadataFields(): void {

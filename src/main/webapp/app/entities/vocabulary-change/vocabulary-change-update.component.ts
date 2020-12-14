@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiFileLoadError, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
 
-import { IVocabularyChange, VocabularyChange } from 'app/shared/model/vocabulary-change.model';
-import { VocabularyChangeService } from './vocabulary-change.service';
-import { AlertError } from 'app/shared/alert/alert-error.model';
+import {IVocabularyChange, VocabularyChange} from 'app/shared/model/vocabulary-change.model';
+import {VocabularyChangeService} from './vocabulary-change.service';
+import {AlertError} from 'app/shared/alert/alert-error.model';
 
 @Component({
   selector: 'jhi-vocabulary-change-update',
@@ -54,14 +54,6 @@ export class VocabularyChangeUpdateComponent implements OnInit {
       userName: vocabularyChange.userName,
       date: vocabularyChange.date
     });
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    this.dataUtils.openFile(contentType, base64String);
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {

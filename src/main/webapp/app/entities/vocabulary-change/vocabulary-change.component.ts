@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {ActivatedRoute, Router} from '@angular/router';
+import {Subscription} from 'rxjs';
+import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
+import {IVocabularyChange} from 'app/shared/model/vocabulary-change.model';
 
-import { ITEMS_PER_PAGE } from 'app/shared/constants/pagination.constants';
-import { VocabularyChangeService } from './vocabulary-change.service';
-import { VocabularyChangeDeleteDialogComponent } from './vocabulary-change-delete-dialog.component';
+import {ITEMS_PER_PAGE} from 'app/shared/constants/pagination.constants';
+import {VocabularyChangeService} from './vocabulary-change.service';
+import {VocabularyChangeDeleteDialogComponent} from './vocabulary-change-delete-dialog.component';
 
 @Component({
   selector: 'jhi-vocabulary-change',
@@ -95,14 +95,6 @@ export class VocabularyChangeComponent implements OnInit, OnDestroy {
   trackId(index: number, item: IVocabularyChange): number {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     return item.id!;
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    return this.dataUtils.openFile(contentType, base64String);
   }
 
   registerChangeInVocabularyChanges(): void {

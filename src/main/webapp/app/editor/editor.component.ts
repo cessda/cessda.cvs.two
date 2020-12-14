@@ -225,14 +225,6 @@ export class EditorComponent implements OnInit, OnDestroy {
     return item.notation!;
   }
 
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    return this.dataUtils.openFile(contentType, base64String);
-  }
-
   sort(): string[] {
     if (this.predicate === 'relevance') return [this.predicate];
     return [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];

@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import {Component, OnInit} from '@angular/core';
+import {HttpResponse} from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError } from 'ng-jhipster';
+import {FormBuilder, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiFileLoadError} from 'ng-jhipster';
 
-import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
-import { MetadataValueService } from './metadata-value.service';
-import { AlertError } from 'app/shared/alert/alert-error.model';
-import { IMetadataField } from 'app/shared/model/metadata-field.model';
-import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
+import {IMetadataValue, MetadataValue} from 'app/shared/model/metadata-value.model';
+import {MetadataValueService} from './metadata-value.service';
+import {AlertError} from 'app/shared/alert/alert-error.model';
+import {IMetadataField} from 'app/shared/model/metadata-field.model';
+import {MetadataFieldService} from 'app/entities/metadata-field/metadata-field.service';
 
 @Component({
   selector: 'jhi-metadata-value-update',
@@ -57,14 +57,6 @@ export class MetadataValueUpdateComponent implements OnInit {
       objectId: metadataValue.objectId,
       metadataFieldId: metadataValue.metadataFieldId
     });
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    this.dataUtils.openFile(contentType, base64String);
   }
 
   setFileData(event: Event, field: string, isImage: boolean): void {
