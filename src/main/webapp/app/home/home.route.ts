@@ -26,10 +26,10 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
         .join('');
       notation = (notation as string).substring(0, codeIndex);
     }
-    let version = route.queryParams['version'];
+    let version = '';
     let lang = '';
-    if (route.params['version']) version = route.params['version'];
-    if (route.params['lang']) lang = route.params['lang'];
+    if (route.queryParams.v) version = route.queryParams.v;
+    if (route.queryParams.lang) lang = route.queryParams.lang;
     if (notation) {
       return this.service
         .getVocabularyFile(notation, {
