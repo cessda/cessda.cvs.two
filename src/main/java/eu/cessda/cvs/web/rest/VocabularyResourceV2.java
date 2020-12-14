@@ -248,7 +248,7 @@ public class VocabularyResourceV2 {
         @ApiParam(
             name = "size",
             type = "Integer",
-            value = "The maximum size of codes returned, default 20",
+            value = "The maximum size of codes returned, default 20 maximum 100",
             example = "20"
         ) @RequestParam( required = false ) Integer size
     ) {
