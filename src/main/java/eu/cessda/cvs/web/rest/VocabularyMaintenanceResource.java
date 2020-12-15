@@ -7,7 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 
@@ -71,37 +73,4 @@ public class VocabularyMaintenanceResource {
         Maintenance maintenanceOut = new Maintenance("Done indexing Agency", "INDEX_AGENCY");
         return ResponseEntity.ok().body(maintenanceOut);
     }
-
-    /**
-     * {@code GET  check-all/tl-normalization} :
-     *
-     * @return result of tl normalization checking
-     */
-    @GetMapping("/check-all/tl-normalization")
-    public ResponseEntity<Maintenance> checkAllTlNormalization() {
-        log.debug("REST request to check all Tl_normalization");
-        Maintenance maintenanceOut = new Maintenance(vocabularyService.performTlMigrationNormalizationChecking(), "INDEX_AGENCY");
-        return ResponseEntity.ok().body( maintenanceOut );
-    }
-
-    /**
-     * {@code POST  /check/tl-normalization} :
-     *
-     */
-    @PostMapping("/check/tl-normalization")
-    public ResponseEntity<String> checkTlNormalization( @RequestBody String notations){
-        log.debug("REST request to perform Tl_normalization with notation {}", notations );
-        return ResponseEntity.ok().body(vocabularyService.performTlMigrationNormalization(true, notations) );
-    }
-
-    /**
-     * {@code POST  /perform/tl-normalization} :
-     *
-     */
-    @PostMapping("/perform/tl-normalization")
-    public ResponseEntity<String> performTlNormalization( @RequestBody String notations){
-        log.debug("REST request to perform Tl_normalization with notation {}", notations );
-        return ResponseEntity.ok().body(vocabularyService.performTlMigrationNormalization(false, notations) );
-    }
-
 }

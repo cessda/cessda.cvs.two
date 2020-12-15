@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
-import { MaintenanceService } from 'app/admin/maintenance/maintenance.service';
-import { HttpResponse } from '@angular/common/http';
-import { Maintenance } from 'app/admin/maintenance/maintenance.model';
+import {Component} from '@angular/core';
+import {MaintenanceService} from 'app/admin/maintenance/maintenance.service';
+import {HttpResponse} from '@angular/common/http';
+import {Maintenance} from 'app/admin/maintenance/maintenance.model';
 
 @Component({
   selector: 'jhi-maintenance',
@@ -19,7 +19,6 @@ export class MaintenanceComponent {
   indexingAgencyStatOutput: string | null;
   indexingVocabularyPublishOutput: string | null;
   indexingVocabularyEditorOutput: string | null;
-  checkingTlsOutput: string | null;
 
   constructor(protected maintenanceService: MaintenanceService) {
     this.isGeneratingJson = false;
@@ -33,7 +32,6 @@ export class MaintenanceComponent {
     this.indexingAgencyStatOutput = '';
     this.indexingVocabularyPublishOutput = '';
     this.indexingVocabularyEditorOutput = '';
-    this.checkingTlsOutput = '';
   }
 
   performGeneratingJson(): void {
@@ -81,14 +79,6 @@ export class MaintenanceComponent {
     );
   }
 
-  performCheckingTls(): void {
-    this.isCheckingTls = true;
-    this.checkingTlsOutput = 'loading...';
-    this.maintenanceService.checkTlNormalization().subscribe(
-      (res: HttpResponse<Maintenance>) => this.onSuccess(res.body, 'TL_CHECKING'),
-      () => this.onError('TL_CHECKING')
-    );
-  }
 
   private onSuccess(data: Maintenance | null, type: string): void {
     if (type === 'GENERATE_JSON') {
@@ -106,9 +96,6 @@ export class MaintenanceComponent {
     } else if (type === 'INDEX_CV_EDITOR') {
       this.isIndexingVocabularyEditor = false;
       this.indexingVocabularyEditorOutput = data!.output;
-    } else if (type === 'TL_CHECKING') {
-      this.isCheckingTls = false;
-      this.checkingTlsOutput = data!.output;
     }
   }
 
@@ -128,9 +115,6 @@ export class MaintenanceComponent {
     } else if (type === 'INDEX_CV_EDITOR') {
       this.isIndexingVocabularyEditor = false;
       this.indexingVocabularyEditorOutput = 'Error...';
-    } else if (type === 'TL_CHECKING') {
-      this.isCheckingTls = false;
-      this.checkingTlsOutput = 'Error...';
     }
   }
 }

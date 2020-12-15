@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { SERVER_API_URL } from 'app/app.constants';
-import { Maintenance } from 'app/admin/maintenance/maintenance.model';
+import {SERVER_API_URL} from 'app/app.constants';
+import {Maintenance} from 'app/admin/maintenance/maintenance.model';
 
 type EntityResponseType = HttpResponse<Maintenance>;
 
@@ -31,9 +31,5 @@ export class MaintenanceService {
 
   indexVocabularyEditor(): Observable<EntityResponseType> {
     return this.http.get<Maintenance>(`${this.maintenanceUrl}/index/vocabulary/editor`, { observe: 'response' });
-  }
-
-  checkTlNormalization(): Observable<EntityResponseType> {
-    return this.http.get<Maintenance>(`${this.maintenanceUrl}/check-all/tl-normalization`, { observe: 'response' });
   }
 }

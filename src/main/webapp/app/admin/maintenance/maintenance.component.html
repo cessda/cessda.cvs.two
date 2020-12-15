@@ -127,36 +127,4 @@
             </div>
         </div>
     </div>
-    <br/>
-    <div class="card">
-        <div class="card-header font-weight-bold">
-            CVs content checking
-        </div>
-        <div class="card-body" class="card-acc-stat">
-            <div class="col-sm-12 p-0">
-                <ngb-accordion>
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
-                            <span>TLs Checking</span>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
-                            <div class="row-content">
-                                <div class="w-100">
-                                    <span>Checking if there is something wrong with the TLs, by comparing them with SL and the previous version</span>
-                                    <button type="button" [disabled]="isCheckingTls" class="btn btn-primary" (click)="performCheckingTls()">
-                                        <span>Check TLs versions</span>
-                                    </button>
-                                </div>
-                                <div class="w-100">
-                                    <span>Output:</span>
-                                    <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="checkingTlsOutput"></textarea>
-                                </div>
-                            </div>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-            </div>
-        </div>
-    </div>
-
 </div>

@@ -20,7 +20,6 @@ public enum ActionType {
     DELETE_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.ADMIN_TL))),
     ADD_USAGE_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.CONTRIBUTOR_SL, AgencyRole.ADMIN_TL, AgencyRole.CONTRIBUTOR_TL))),
     ADD_TL_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_TL))),
-    WITHDRAWN_CV( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL))),
     FORWARD_CV_SL_STATUS_REVIEW( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.CONTRIBUTOR_SL))),
     FORWARD_CV_SL_STATUS_PUBLISHED( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL))),
     FORWARD_CV_TL_STATUS_REVIEW( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_TL, AgencyRole.CONTRIBUTOR_TL))),

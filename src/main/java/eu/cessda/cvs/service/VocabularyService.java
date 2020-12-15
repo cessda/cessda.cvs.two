@@ -126,45 +126,6 @@ public interface VocabularyService {
     VocabularyDTO getWithVersionsByNotationAndVersion(String notation, String slVersionNumber);
 
     /**
-     * Withdraw specific vocabulary
-     *
-     * @param vocabulary
-     * @return
-     */
-    VocabularyDTO withdraw( VocabularyDTO vocabulary );
-
-    /**
-     * Restore vocabulary from withdraw state
-     *
-     * @param vocabulary
-     * @return
-     */
-    VocabularyDTO restore( VocabularyDTO vocabulary );
-
-    /**
-     * Get all the withdrawn vocabularies.
-     *
-     * @param pageable
-     * @return the list of withdrawn Vocabulary entities.
-     */
-    Page<VocabularyDTO> findAllWithdrawn(Pageable pageable);
-
-    /**
-     * Get all the withdrawn vocabularies in specific agency.
-     *
-     * @param agencyId the agencyId information.
-     * @param pageable the pagination information.
-     * @return the list of withdrawn Vocabulary entities.
-     */
-    Page<VocabularyDTO> findAllWithdrawn(Long agencyId, Pageable pageable);
-
-    /**
-     * Perform entire Vocabularies ElasticSearch indexing for both published and editor
-     *
-     */
-    void doIndexingEditorAndPublicationCvs( boolean force );
-
-    /**
      * Perform indexing in all vocabularies in the Editor
      */
     void indexAllEditor();
@@ -290,34 +251,6 @@ public interface VocabularyService {
      * @return
      */
     Set<VersionDTO> filterOutVocabularyVersions(String versionList, VocabularyDTO vocabularyDTO);
-
-    /**
-     * Perform TL concepts checking for all vocabulary (see performTlMigrationNormalization)
-     * @return the information about the concept TL normalization
-     */
-    String performTlMigrationNormalizationChecking();
-
-    /**
-     * Perform TL concepts normalization by checking the similarity of SL and TL position, and parent by matching notation,
-     * also check the missing concept notation in TLs
-     * For missing but published TL concepts. The concepts will be copied from SL if the prev concept not exist
-     * For missing but not-published TL concepts. The concept will be created without title and definition
-     * @param isChecking, when true, no changes will be made
-     * @param notations, notation List separated by comma"," e.g AnalysisUnit,TopicClassification, for all CV uses keyword "_all"
-     * @return the information about the concept TL normalization
-     */
-    String performTlMigrationNormalization( boolean isChecking, String notations);
-
-    /**
-     * Perform TL concepts normalization by checking the similarity of SL and TL position, and parent by matching notation,
-     * also check the missing concept notation in TLs
-     * For missing but published TL concepts. The concepts will be copied from SL if the prev concept not exist
-     * For missing but not-published TL concepts. The concept will be created without title and definition
-     * @param isChecking, when true, no changes will be made
-     * @param vocabularyDTOs
-     * @return the information about the concept TL normalization
-     */
-    String performTlMigrationNormalization(boolean isChecking, VocabularyDTO ...vocabularyDTOs);
 
 
     /**
