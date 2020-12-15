@@ -353,6 +353,8 @@ public class VocabularyServiceImpl implements VocabularyService {
             versionDTO.setInitialVersion( prevVersionTlDTO.getInitialVersion() == null ? prevVersionTlDTO.getId() : prevVersionTlDTO.getInitialVersion());
         }
         versionDTO.setCreator( SecurityUtils.getCurrentUserId() );
+        // copy DDI-Usage of SL to TL
+        versionDTO.setDdiUsage( versionSlDTO.getDdiUsage() );
         versionDTO = versionService.save( versionDTO );
         // generate concepts from currentSlconcept and previousVersion
         generateConceptFromSlAndPrevVersion( versionDTO, versionSlDTO, prevVersionTlDTO);
