@@ -4,7 +4,18 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.1-Beta] - 2020-12-9
+## [2.0.2-Alpha] - 2020-12-15
+
+### Added
+
+- Improve code quality by improving testing coverage, remove duplications and fix code smells [#254](https://bitbucket.org/cessda/cessda.cvs.two/issues/254/improve-cvs-2-code-quality) based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+- Fix [#280](https://bitbucket.org/cessda/cessda.cvs.two/issues/280/usage-information-to-be-copied-from-sl-to): Usage information to be copied from SL to TLs
+- Fix [#281](https://bitbucket.org/cessda/cessda.cvs.two/issues/281/unable-to-visit-previous-version): Unable to visit previous CV versions
+- FIx [#279](https://bitbucket.org/cessda/cessda.cvs.two/issues/279/usage-information-not-shown-in-home): Related to issue in the generation of JSON files for published CVs
+
+
+
+## [2.0.1-Alpha] - 2020-12-9
 
 ### Added
 
@@ -20,7 +31,7 @@ All notable changes to this project will be documented in this file.
 - Other issues fixing [#277](https://bitbucket.org/cessda/cessda.cvs.two/issues/277/inccorrect-missing-syling-between-ngx), and [#261](https://bitbucket.org/cessda/cessda.cvs.two/issues/261/incorrect-tool-name-in-tab)
 
 
-## [2.0.0-Beta] - 2020-11-02
+## [2.0.0-Alpha] - 2020-11-02
 
 The first version of CESSDA Vocabulary Service (CVS) 2, which was re-developed from scratch based on the deprecated CVS 1 application.  
 The project uses new architecture Spring-Boot framework for the back-end and Angular for the front-end, instead of Vaadin like in CVS 1.
