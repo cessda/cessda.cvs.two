@@ -1,7 +1,7 @@
 {
   "id" : 63,
   "status" : "PUBLISHED",
-  "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType/en/1.0",
+  "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType",
   "notation" : "LifecycleEventType",
   "versionNumber" : "1.0",
   "withdrawn" : false,
@@ -10,140 +10,140 @@
   "agencyName" : "DDI Alliance",
   "agencyLogo" : "ddi.png",
   "agencyLink" : "http://www.ddialliance.org/",
-  "publicationDate" : "2020-02-05",
+  "publicationDate" : "2020-02-04",
   "notes" : "",
   "versions" : [ {
     "id" : 281,
     "status" : "PUBLISHED",
     "itemType" : "SL",
     "language" : "en",
-    "publicationDate" : "2020-02-05",
+    "publicationDate" : "2020-02-04",
     "number" : "1.0",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType/en/1.0",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:LifecycleEventType:1.0",
-    "notation" : "LifecycleEventType",
     "title" : "Lifecycle Event Type",
     "definition" : "Specifies the event happening over the data life cycle that is considered significant enough to document.",
+    "notation" : "LifecycleEventType",
     "previousVersion" : 0,
     "initialVersion" : 281,
     "notes" : "This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
-    "versionNotes" : "",
     "versionChanges" : "",
+    "versionNotes" : "",
     "license" : "CC BY",
     "licenseName" : "Creative Commons Attribution 4.0 International",
     "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
     "licenseLogo" : "by.png",
     "citation" : "DDI Alliance. (2020). Lifecycle Event Type (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:LifecycleEventType:1.0. ",
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: reusable</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/EventType.html\" rel=\"noopener noreferrer\" target=\"_blank\">EventType</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module name: reusable</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/EventType.html\" rel=\"noopener noreferrer\" target=\"_blank\">EventType</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>DDI-Codebook (DDI 2.5 and all previous DDI versions) does not include an element or attribute that would support this controlled vocabulary.</p>",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 3199,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#StudyProposal/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#StudyProposal",
       "notation" : "StudyProposal",
       "title" : "Study proposal",
       "definition" : "Defining outlines for a new study/data collection, including needs for information and general  research  objectives, as well  as main concepts, study scope and methodology, usually to be presented for approval to funders, partners, or other relevant bodies.",
       "position" : 0
     }, {
       "id" : 3200,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Funding/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#Funding",
       "notation" : "Funding",
       "title" : "Funding",
       "definition" : "Decisions to extend financial support for the study/data collection.",
       "position" : 1
     }, {
       "id" : 3201,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#StudyDesign/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#StudyDesign",
       "notation" : "StudyDesign",
       "title" : "Study design",
       "definition" : "Detailed planning for carrying out the study/data collection: refining concepts and identifying ways to measure them, defining the target population, time dimension, sampling frame and sample selection, data collection methodology, production systems and workflows, etc.",
       "position" : 2
     }, {
       "id" : 3202,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#InstrumentDesign/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#InstrumentDesign",
       "notation" : "InstrumentDesign",
       "title" : "Instrument design",
       "definition" : "Building the data collection instrument, for example, the questionnaire or interview questions, focus group topics, observation forms for an observational design, standardized record review, independent and dependent variables for an experimental design, etc.",
       "position" : 3
     }, {
       "id" : 3203,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#QuestionnaireTranslation/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#QuestionnaireTranslation",
       "notation" : "QuestionnaireTranslation",
       "title" : "Questionnaire translation",
       "definition" : "Translating the source questionnaire into other languages, for example, in cross-national surveys or in national surveys conducted in multilingual countries.",
       "position" : 4
     }, {
       "id" : 3204,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#QuestionnaireAdaptation/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#QuestionnaireAdaptation",
       "notation" : "QuestionnaireAdaptation",
       "title" : "Questionnaire adaptation",
       "definition" : "Changing the wording of questions to reflect cultural or institutional differences if same-language questionnaires are administered in different regions or countries.",
       "position" : 5
     }, {
       "id" : 3205,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#InterviewerTraining/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#InterviewerTraining",
       "notation" : "InterviewerTraining",
       "title" : "Interviewer training",
       "definition" : "Training the interviewers that administer questionnaires in survey-type studies.",
       "position" : 6
     }, {
       "id" : 3206,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#EthicsReview/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#EthicsReview",
       "notation" : "EthicsReview",
       "title" : "Ethics review",
       "definition" : "Review of the study/data collection to ensure that it complies with statutory ethics requirements or regulations, including verification of the informed consent statement, performed by a qualified body, like a Research Ethics Committee, or Institutional Review Board.",
       "position" : 7
     }, {
       "id" : 3207,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#LegalReview/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#LegalReview",
       "notation" : "LegalReview",
       "title" : "Legal review",
       "definition" : "Review of the study/data collection in terms of compliance with the law  (legislation concerning confidentiality, the protection of children, etc.).",
       "position" : 8
     }, {
       "id" : 3208,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Sampling/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#Sampling",
       "notation" : "Sampling",
       "title" : "Sampling",
       "definition" : "Selecting the sample for the study/data collection.",
       "position" : 9
     }, {
       "id" : 3209,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#InstrumentPreTesting/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#InstrumentPreTesting",
       "notation" : "InstrumentPreTesting",
       "title" : "Instrument pre-testing",
       "definition" : "Small-scale application of the data collection instrument designed to identify potential problems before using it for the entire study.",
       "position" : 10
     }, {
       "id" : 3210,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#PilotStudy/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#PilotStudy",
       "notation" : "PilotStudy",
       "title" : "Pilot study",
       "definition" : "Dress rehearsal of the full project, for example, by administering the questionnaire to a small number of people, then coding and analyzing results, etc.",
       "position" : 11
     }, {
       "id" : 3211,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataCollection/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataCollection",
       "notation" : "DataCollection",
       "title" : "Data collection",
       "definition" : "Setting up, running and finalizing the data collection process, including follow-up procedures, etc.",
       "position" : 12
     }, {
       "id" : 3212,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataCollectionReports/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataCollectionReports",
       "notation" : "DataCollectionReports",
       "title" : "Data collection reports",
       "definition" : "Reports on designing and conducting the data collection process, including methodological decisions and problems encountered. These may take the form of conference posters or presentations, journal articles or online publications, book chapters, etc.",
       "position" : 13
     }, {
       "id" : 3213,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing",
       "notation" : "DataProcessing",
       "title" : "Data processing",
       "definition" : "Changes, additions or deletions brought to the data at any point in time after collection.",
       "position" : 14
     }, {
       "id" : 3214,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Coding/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.Coding",
       "notation" : "DataProcessing.Coding",
       "title" : "Data processing: Coding",
       "definition" : "Converting raw data into machine-readable codes.",
@@ -151,7 +151,7 @@
       "position" : 15
     }, {
       "id" : 3215,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Classification/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.Classification",
       "notation" : "DataProcessing.Classification",
       "title" : "Data processing: Classification",
       "definition" : "Documenting the meaning/substance of coded data.",
@@ -159,7 +159,7 @@
       "position" : 16
     }, {
       "id" : 3216,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.InterviewTranscriptions/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.InterviewTranscriptions",
       "notation" : "DataProcessing.InterviewTranscriptions",
       "title" : "Data processing: Transcriptions of interviews",
       "definition" : "Transferring video- or audio-taped data into written form.",
@@ -167,7 +167,7 @@
       "position" : 17
     }, {
       "id" : 3217,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Weighting/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.Weighting",
       "notation" : "DataProcessing.Weighting",
       "title" : "Data processing: Weighting",
       "definition" : "Calculating weight variables and adding them to the data.",
@@ -175,7 +175,7 @@
       "position" : 18
     }, {
       "id" : 3218,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Aggregation/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.Aggregation",
       "notation" : "DataProcessing.Aggregation",
       "title" : "Data processing: Aggregation",
       "definition" : "Calculating cumulative measures of individual-level data or microdata.",
@@ -183,7 +183,7 @@
       "position" : 19
     }, {
       "id" : 3219,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.CompositeMeasures/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.CompositeMeasures",
       "notation" : "DataProcessing.CompositeMeasures",
       "title" : "Data processing: Composite measures",
       "definition" : "Calculating scales, indexes, or typologies and adding them to the data.",
@@ -191,7 +191,7 @@
       "position" : 20
     }, {
       "id" : 3220,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Derivation/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.Derivation",
       "notation" : "DataProcessing.Derivation",
       "title" : "Data processing: Derivation",
       "definition" : "Calculating new variables from measured variables, usually by recodes.",
@@ -199,7 +199,7 @@
       "position" : 21
     }, {
       "id" : 3221,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.DataQualityChecks/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.DataQualityChecks",
       "notation" : "DataProcessing.DataQualityChecks",
       "title" : "Data processing: Quality checks",
       "definition" : "Checks for consistency, undocumented codes, missing data representation, etc.",
@@ -207,7 +207,7 @@
       "position" : 22
     }, {
       "id" : 3222,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.DataIntegration/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.DataIntegration",
       "notation" : "DataProcessing.DataIntegration",
       "title" : "Data processing: Data integration",
       "definition" : "Creating complex datasets by merging related data, for example, hierarchical datasets with multiple but related  analysis units, or multiple-wave datasets, or data collected in different countries for a cross-national study, etc.",
@@ -215,7 +215,7 @@
       "position" : 23
     }, {
       "id" : 3223,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.DisclosureLimitation/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.DisclosureLimitation",
       "notation" : "DataProcessing.DisclosureLimitation",
       "title" : "Data processing: Disclosure limitation",
       "definition" : "Editing the data to prevent identification of subjects, for example, performing anonymization measures like recoding or top-coding sensitive variables like income levels, suppressing some geographic indicators, or replacing personal names with pseudonyms and/or categorizing background or demographic information in qualitative data.",
@@ -223,7 +223,7 @@
       "position" : 24
     }, {
       "id" : 3224,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Imputation/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataProcessing.Imputation",
       "notation" : "DataProcessing.Imputation",
       "title" : "Data processing: Imputation",
       "definition" : "Replacing missing data points with values calculated according to an imputation technique.",
@@ -231,91 +231,91 @@
       "position" : 25
     }, {
       "id" : 3225,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#MetadataProduction/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#MetadataProduction",
       "notation" : "MetadataProduction",
       "title" : "Metadata production",
       "definition" : "Documenting the data, for example, by producing study-level and variable descriptions.",
       "position" : 26
     }, {
       "id" : 3226,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#MetadataEditing/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#MetadataEditing",
       "notation" : "MetadataEditing",
       "title" : "Metadata editing",
       "definition" : "Amending the metadata to reflect changes in the data or to improve or enhance documentation.",
       "position" : 27
     }, {
       "id" : 3227,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#MetadataTranslation/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#MetadataTranslation",
       "notation" : "MetadataTranslation",
       "title" : "Metadata translation",
       "definition" : "Translating the metadata into another language.",
       "position" : 28
     }, {
       "id" : 3228,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#FinalReport/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#FinalReport",
       "notation" : "FinalReport",
       "title" : "Final report",
       "definition" : "Complete account on how the study was conducted through all its stages, often required by funders or other administrative bodies.",
       "position" : 29
     }, {
       "id" : 3229,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Evaluation/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#Evaluation",
       "notation" : "Evaluation",
       "title" : "Evaluation",
       "definition" : "Analysis of how the study, in all its stages, was managed and/or conducted, including the outcome of methodological, technical, and business decisions. May serve as a basis for changes or improvements in planning future iterations of the data collection, or entirely new projects.",
       "position" : 30
     }, {
       "id" : 3230,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#OriginalRelease/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#OriginalRelease",
       "notation" : "OriginalRelease",
       "title" : "Original release",
       "definition" : "First release of data and/or metadata to other individuals and/or agencies than the study producers.",
       "position" : 31
     }, {
       "id" : 3231,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Deposit/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#Deposit",
       "notation" : "Deposit",
       "title" : "Deposit",
       "definition" : "Handing over the data and available metadata (Submission Information Package in OAIS terms) to a data archive or repository for preservation, possible further processing,  and dissemination.",
       "position" : 32
     }, {
       "id" : 3232,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#PreservationPackageProduction/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#PreservationPackageProduction",
       "notation" : "PreservationPackageProduction",
       "title" : "Preservation package production",
       "definition" : "Producing a preservation package of the data for archiving purposes (Archival Information Package in OAIS terms).",
       "position" : 33
     }, {
       "id" : 3233,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DisseminationPackageProduction/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DisseminationPackageProduction",
       "notation" : "DisseminationPackageProduction",
       "title" : "Dissemination package production",
       "definition" : "Producing a dissemination package for distribution of the data (Dissemination Information Package in OAIS terms).",
       "position" : 34
     }, {
       "id" : 3234,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DisseminationPackageRelease/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DisseminationPackageRelease",
       "notation" : "DisseminationPackageRelease",
       "title" : "Dissemination package release",
       "definition" : "Publishing or otherwise making the dissemination package available to users.",
       "position" : 35
     }, {
       "id" : 3235,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataAnalysisReports/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#DataAnalysisReports",
       "notation" : "DataAnalysisReports",
       "title" : "Data analysis reports",
       "definition" : "Reports describing how the data were analyzed,  as well as the resulting findings. These may take the form of conference posters or presentations, journal articles or online publications, books, book chapters, etc.",
       "position" : 36
     }, {
       "id" : 3236,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#NewVersionRelease/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#NewVersionRelease",
       "notation" : "NewVersionRelease",
       "title" : "New version release",
       "definition" : "Publishing or otherwise making a new version of the data and/or metadata available to users.",
       "position" : 37
     }, {
       "id" : 3237,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Other/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html#Other",
       "notation" : "Other",
       "title" : "Other",
       "definition" : "Use if the event type is known, but not found in the list.",
@@ -328,131 +328,131 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "no",
-    "publicationDate" : "2020-12-08",
+    "publicationDate" : "2020-12-07",
     "number" : "1.0.1",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType/no/1.0.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:LifecycleEventType:1.0",
-    "uriSl" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType/en/1.0",
-    "notation" : "LifecycleEventType",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.html",
     "title" : "Livssyklus hendelsestype",
     "definition" : "Spesifiserer hendelser som skjer i data livssyklusen som anses som signifikante nok til å bli dokumentert.",
+    "notation" : "LifecycleEventType",
     "notes" : "",
     "license" : "CC BY",
     "licenseName" : "Creative Commons Attribution 4.0 International",
     "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
     "licenseLogo" : "by.png",
     "citation" : "DDI Alliance. (2020). LifecycleEventType[Livssyklus hendelsestype] (Version 1.0.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:LifecycleEventType:1.0.1. ",
-    "translateAgency" : "NSD",
     "translateAgencyLink" : "https://nsd.no",
-    "lastStatusChangeDate" : "2020-12-08",
+    "translateAgency" : "NSD",
+    "lastStatusChangeDate" : "2020-12-07",
     "concepts" : [ {
       "id" : 13341,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#StudyProposal/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#StudyProposal",
       "notation" : "StudyProposal",
       "title" : "Studieforslag",
       "definition" : "Definere rammene for en ny studie/datainnsamling, inkluderer behovet for informasjon og de generelle forskningsmålene, samt hovedkonsepter, studieomfang og metodologi, som regel presenteres dette for godkjenning hos finansiere, partnere og andre relevante aktører.",
       "position" : 0
     }, {
       "id" : 13327,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Funding/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#Funding",
       "notation" : "Funding",
       "title" : "Finansiering",
       "definition" : "Avgjørelser om å forlenge finansiell støtte for en studie/datainnsamling.",
       "position" : 1
     }, {
       "id" : 13326,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#StudyDesign/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#StudyDesign",
       "notation" : "StudyDesign",
       "title" : "Studie design",
       "definition" : "Detaljert planlegging for å gjennomføre studien/datainnsamlingen: raffinere konsepter og identifisere måter å måle de, definere mål populasjonen, tidsdimensjonen, utvalgsrammeverket og utvalgstrekning, datainnsamlings metodologi, produksjonssystemer og arbeidsflyt, etc.",
       "position" : 2
     }, {
       "id" : 13328,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#InstrumentDesign/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#InstrumentDesign",
       "notation" : "InstrumentDesign",
       "title" : "Instrumentdesign",
       "definition" : "Utvikle datainnsamlingsinstrumentet, for eksempel, spørreskjemaet eller intervjuspørsmålene, fokusgruppe emner, observasjonsskjema for observasjonsdesign, standardisert journalgjennomgang, uavhengig og avhengig variabler for eksperimentelt design.",
       "position" : 3
     }, {
       "id" : 13334,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#QuestionnaireTranslation/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#QuestionnaireTranslation",
       "notation" : "QuestionnaireTranslation",
       "title" : "Spørreskjema oversettelse",
       "definition" : "Oversette kildespørreskjemaet til andre språk, for eksempel, i tverrnasjonale spørreskjema eller i nasjonale spørreskjema gjennomført i flerspråklige land.",
       "position" : 4
     }, {
       "id" : 13340,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#QuestionnaireAdaptation/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#QuestionnaireAdaptation",
       "notation" : "QuestionnaireAdaptation",
       "title" : "Spørreskjema tilpasning",
       "definition" : "Endring av språkformulering i spørsmål for å belyse kulturelle eller institusjonelle forskjeller, hvis spørreskjema i samme språk utføres i forskjellige regioner eller land.",
       "position" : 5
     }, {
       "id" : 13358,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#InterviewerTraining/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#InterviewerTraining",
       "notation" : "InterviewerTraining",
       "title" : "Intervjueropplæring",
       "definition" : "Opplæring av intervjuere som administrerer spørreskjemaet i spørreskjemaundersøkelser.",
       "position" : 6
     }, {
       "id" : 13349,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#EthicsReview/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#EthicsReview",
       "notation" : "EthicsReview",
       "title" : "Etisk godkjenning",
       "definition" : "Gjennomgang av studien/datainnsamlingen for å forsikre at den samsvarer med lovpålagte etiske krav eller forskrifter, inkludert verifisering av informert samtykke, gjennomført av et godkjent organ, som en forskningsetisk komité eller institusjonell vurderingsnemd.",
       "position" : 7
     }, {
       "id" : 13345,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#LegalReview/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#LegalReview",
       "notation" : "LegalReview",
       "title" : "Lovlig godkjenning",
       "definition" : "Gjennomgang av studien/datainnsamling i forhold til samsvar med loven (lovgivning som omhandler konfidensialitet, beskyttelse av barn, etc.).",
       "position" : 8
     }, {
       "id" : 13339,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Sampling/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#Sampling",
       "notation" : "Sampling",
       "title" : "Utvalgstrekking",
       "definition" : "Velge utvalget for studien/datainnsamlingen.",
       "position" : 9
     }, {
       "id" : 13332,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#InstrumentPreTesting/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#InstrumentPreTesting",
       "notation" : "InstrumentPreTesting",
       "title" : "Instrumenttest",
       "definition" : "Småskala anvendelse av datainnsamling instrumentet med hensikt å identifisere potensielle problemer før en tar det i bruk i fullskala for hele studien.",
       "position" : 10
     }, {
       "id" : 13338,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#PilotStudy/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#PilotStudy",
       "notation" : "PilotStudy",
       "title" : "Pilotstudie",
       "definition" : "Generalprøve for hele prosjektet, for eksempel ved å gjennomføre datainnsamling via spørreskjema til et lite antall mennesker, så kode og analysere resultatene, etc.",
       "position" : 11
     }, {
       "id" : 13342,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataCollection/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataCollection",
       "notation" : "DataCollection",
       "title" : "Datainnsamling",
       "definition" : "Klargjøre, gjennomføre og ferdigstille datainnsamling prosessen, inkludert oppfølging prosedyrer, etc.",
       "position" : 12
     }, {
       "id" : 13356,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataCollectionReports/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataCollectionReports",
       "notation" : "DataCollectionReports",
       "title" : "Datainnsamling rapporter",
       "definition" : "Rapporter på designet og gjennomførelsen av datainnsamling prosessen, inkludert metodologiske avgjørelser og utfordringer som har oppstått. Disse kan være konferansepresentasjoner, tidsskriftartikler eller online publikasjoner, bokkapitler, etc.",
       "position" : 13
     }, {
       "id" : 13350,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing",
       "notation" : "DataProcessing",
       "title" : "Databehandling",
       "definition" : "Endringer, tillegg eller sletting gjennomført på data på hvilket som helst tidspunkt etter innsamlingen.",
       "position" : 14
     }, {
       "id" : 13360,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Coding/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.Coding",
       "notation" : "DataProcessing.Coding",
       "title" : "Databehandling: Koding",
       "definition" : "Konvertering av rådata til maskinlesbare koder.",
@@ -460,7 +460,7 @@
       "position" : 15
     }, {
       "id" : 13357,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Classification/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.Classification",
       "notation" : "DataProcessing.Classification",
       "title" : "Databehandling: Klassifisering",
       "definition" : "Dokumentering av meningen/innholdet av kodede data.",
@@ -468,7 +468,7 @@
       "position" : 16
     }, {
       "id" : 13353,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.InterviewTranscriptions/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.InterviewTranscriptions",
       "notation" : "DataProcessing.InterviewTranscriptions",
       "title" : "Databehandling: Transkibering av intervjuer",
       "definition" : "Overføring av video- eller lydopptak data til skriftlig format.",
@@ -476,7 +476,7 @@
       "position" : 17
     }, {
       "id" : 13348,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Weighting/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.Weighting",
       "notation" : "DataProcessing.Weighting",
       "title" : "Databehandling: Vekting",
       "definition" : "Utregning av vektevariabler og legge de til datamaterialet.",
@@ -484,7 +484,7 @@
       "position" : 18
     }, {
       "id" : 13362,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Aggregation/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.Aggregation",
       "notation" : "DataProcessing.Aggregation",
       "title" : "Databehandling: Aggregering",
       "definition" : "Utregning av kumulative mål på individnivå data eller mikrodata.",
@@ -492,7 +492,7 @@
       "position" : 19
     }, {
       "id" : 13359,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.CompositeMeasures/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.CompositeMeasures",
       "notation" : "DataProcessing.CompositeMeasures",
       "title" : "Databehandling: Sammensatte mål",
       "definition" : "Utregning av skalaer, indekser eller typologier og legge de til datamaterialet.",
@@ -500,7 +500,7 @@
       "position" : 20
     }, {
       "id" : 13343,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Derivation/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.Derivation",
       "notation" : "DataProcessing.Derivation",
       "title" : "Databehandling: Avledning",
       "definition" : "Utregning av nye variabler fra målte variabler, som regel gjennom rekoding.",
@@ -508,7 +508,7 @@
       "position" : 21
     }, {
       "id" : 13333,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.DataQualityChecks/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.DataQualityChecks",
       "notation" : "DataProcessing.DataQualityChecks",
       "title" : "Databehandling: Kvalitetskontroll",
       "definition" : "Kontrollere overensstemmelser, udokumenterte koder, missing data representasjoner, etc.",
@@ -516,7 +516,7 @@
       "position" : 22
     }, {
       "id" : 13352,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.DataIntegration/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.DataIntegration",
       "notation" : "DataProcessing.DataIntegration",
       "title" : "Databehandling: Dataintegrering",
       "definition" : "Opprette komplekse datasett med å koble sammen relaterte data, for eksempel, hierarkiske datasett med flere, men sammenliknbare, analyseenheter, eller datasett fra flere runder av en undersøkelse, eller data samlet inn i forskjellige land for en tverrnasjonal studie, etc.",
@@ -524,7 +524,7 @@
       "position" : 23
     }, {
       "id" : 13351,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.DisclosureLimitation/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.DisclosureLimitation",
       "notation" : "DataProcessing.DisclosureLimitation",
       "title" : "Databehandling: Begrensning om avsløring",
       "definition" : "Å endre dataene for å forhindre identifisering av subjekter, for eksempel, å utføre anonymiseringstiltak som å rekode eller topp-kode sensitive variabler som inntektsnivå, aggregere eller holde tilbake geografiske indikatorer, eller erstatte personnavn med pseudonymer og/eller kategorisere bakgrunnsopplysninger eller demografisk informasjon i kvalitative data.",
@@ -532,7 +532,7 @@
       "position" : 24
     }, {
       "id" : 13363,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataProcessing.Imputation/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataProcessing.Imputation",
       "notation" : "DataProcessing.Imputation",
       "title" : "Databehandling: Imputasjon",
       "definition" : "Erstatte manglende data punkter med verdier utregnet ved bruk av imputasjonsteknikker.",
@@ -540,91 +540,91 @@
       "position" : 25
     }, {
       "id" : 13336,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#MetadataProduction/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#MetadataProduction",
       "notation" : "MetadataProduction",
       "title" : "Metadata produksjon",
       "definition" : "Dokumentere data, for eksempel ved å produsere studienivå og variabel beskrivelser.",
       "position" : 26
     }, {
       "id" : 13361,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#MetadataEditing/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#MetadataEditing",
       "notation" : "MetadataEditing",
       "title" : "Metadata redigering",
       "definition" : "Å endre metadataene for å gjenspeile endringer i dataene eller for å forbedre eller styrke dokumentasjonen.",
       "position" : 27
     }, {
       "id" : 13330,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#MetadataTranslation/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#MetadataTranslation",
       "notation" : "MetadataTranslation",
       "title" : "Metadata oversettelse",
       "definition" : "Å oversette metadata til et annet språk.",
       "position" : 28
     }, {
       "id" : 13354,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#FinalReport/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#FinalReport",
       "notation" : "FinalReport",
       "title" : "Sluttrapport",
       "definition" : "Fullstendig redegjørelse for hvordan studien ble gjennomført i alle stadier, ofte påkrevd av finansiør eller andre administrative instanser.",
       "position" : 29
     }, {
       "id" : 13329,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Evaluation/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#Evaluation",
       "notation" : "Evaluation",
       "title" : "Evaluering",
       "definition" : "Analyse av hvordan studien, i alle stadier, ble administrert og/eller gjennomført, inkludert utfallet av metodologiske-, tekniske- og forretningsbeslutninger. Kan tjene som et grunnlag for endringer eller forbedringer i planleggingen av fremtidige iterasjoner av datainnsamlingen eller helt nye prosjekter.",
       "position" : 30
     }, {
       "id" : 13331,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#OriginalRelease/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#OriginalRelease",
       "notation" : "OriginalRelease",
       "title" : "Original utgivelse",
       "definition" : "Første utgivelse av data og/eller metadata til andre individer og/eller byråer enn studiens produsenter.",
       "position" : 31
     }, {
       "id" : 13337,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Deposit/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#Deposit",
       "notation" : "Deposit",
       "title" : "Deponering",
       "definition" : "Overlevering av data og tilgjengelig metadata (Submission Information Package i OAIS terminologi) til ett dataarkiv eller oppbevaringssted for bevaring, mulig videre prosessering, og formidling.",
       "position" : 32
     }, {
       "id" : 13355,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#PreservationPackageProduction/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#PreservationPackageProduction",
       "notation" : "PreservationPackageProduction",
       "title" : "Produksjon av bevaringspakke",
       "definition" : "Produsere en bevaringspakke av datamaterialet for arkivformål (Archival Information Package i OAIS terminologi).",
       "position" : 33
     }, {
       "id" : 13325,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DisseminationPackageProduction/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DisseminationPackageProduction",
       "notation" : "DisseminationPackageProduction",
       "title" : "Produksjon av formidlingspakke",
       "definition" : "Produsere en formidlingspakke for distribusjon av data (Dissemination Information Package i OAIS terminologi).",
       "position" : 34
     }, {
       "id" : 13344,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DisseminationPackageRelease/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DisseminationPackageRelease",
       "notation" : "DisseminationPackageRelease",
       "title" : "Utgivelse av formidlingspakke",
       "definition" : "Publisering, eller annen tilgjengeliggjøring, av formidlingspakken for brukere.",
       "position" : 35
     }, {
       "id" : 13335,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#DataAnalysisReports/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#DataAnalysisReports",
       "notation" : "DataAnalysisReports",
       "title" : "Dataanalyse rapport",
       "definition" : "Rapport som beskriver hvordan data ble analyser, inklusiv funn. Dette kan være konferansepresentasjoner, tidsskriftartikler eller online publikasjoner, bøker eller bokkapitler, etc.",
       "position" : 36
     }, {
       "id" : 13347,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#NewVersionRelease/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#NewVersionRelease",
       "notation" : "NewVersionRelease",
       "title" : "Ny versjon utgivelse",
       "definition" : "Publisering, eller annen tilgjengeliggjøring, av en ny versjon av data og/eller metadata for brukere.",
       "position" : 37
     }, {
       "id" : 13346,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/LifecycleEventType#Other/no/1.0.1",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/LifecycleEventType_1.0.1.html#Other",
       "notation" : "Other",
       "title" : "Annet",
       "definition" : "Bruk hvis hendelsestypen er kjent, men ikke finnes på listen.",

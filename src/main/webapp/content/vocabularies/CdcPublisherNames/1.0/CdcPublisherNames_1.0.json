@@ -1,7 +1,7 @@
 {
   "id" : 79,
   "status" : "PUBLISHED",
-  "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames/en/3.0",
+  "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames",
   "notation" : "CdcPublisherNames",
   "versionNumber" : "3.0",
   "withdrawn" : false,
@@ -10,142 +10,142 @@
   "agencyName" : "CESSDA",
   "agencyLogo" : "cessda.png",
   "agencyLink" : "https://www.cessda.eu/",
-  "publicationDate" : "2020-07-24",
+  "publicationDate" : "2020-07-23",
   "notes" : "Used for the Publisher filter in CDC. No need for other language versions.",
   "versions" : [ {
     "id" : 450,
     "status" : "PUBLISHED",
     "itemType" : "SL",
     "language" : "en",
-    "publicationDate" : "2020-06-23",
+    "publicationDate" : "2020-06-22",
     "number" : "1.0",
-    "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames/en/1.0",
+    "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames?v=1.0",
     "canonicalUri" : "urn:ddi:int.cessda.cv:CdcPublisherNames:1.0",
-    "notation" : "CdcPublisherNames",
     "title" : "CDC Publisher Names",
     "definition" : "Names of organisations providing metadata for CESSDA Data Catalogue.",
+    "notation" : "CdcPublisherNames",
     "previousVersion" : 0,
     "initialVersion" : 450,
     "notes" : "Used for the Publisher filter in CDC. No need for other language versions.",
-    "versionNotes" : "",
     "versionChanges" : "",
+    "versionNotes" : "",
     "citation" : "CESSDA. (2020). CDC Publisher Names (Version 1.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:CdcPublisherNames:1.0. ",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 10477,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#AUSSDA/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_AUSSDA?v=1.0",
       "notation" : "AUSSDA",
       "title" : "Austrian Social Science Data Archive (AUSSDA)",
       "definition" : "",
       "position" : 0
     }, {
       "id" : 10478,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#CSDA/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_CSDA?v=1.0",
       "notation" : "CSDA",
       "title" : "Czech Social Science Data Archive (ČSDA)",
       "definition" : "",
       "position" : 1
     }, {
       "id" : 10479,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#DNA/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_DNA?v=1.0",
       "notation" : "DNA",
       "title" : "Danish National Archives (DNA)",
       "definition" : "",
       "position" : 2
     }, {
       "id" : 10480,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#DANS/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_DANS?v=1.0",
       "notation" : "DANS",
       "title" : "DANS-KNAW",
       "definition" : "Netherlands",
       "position" : 3
     }, {
       "id" : 10481,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#FSD/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_FSD?v=1.0",
       "notation" : "FSD",
       "title" : "Finnish Social Science Data Archive (FSD)",
       "definition" : "",
       "position" : 4
     }, {
       "id" : 10482,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#GESIS/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_GESIS?v=1.0",
       "notation" : "GESIS",
       "title" : "GESIS - Leibniz Institute for the Social Sciences",
       "definition" : "Germany",
       "position" : 5
     }, {
       "id" : 10487,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#NSD/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_NSD?v=1.0",
       "notation" : "NSD",
       "title" : "NSD - Norwegian Centre for Research Data",
       "definition" : "",
       "position" : 6
     }, {
       "id" : 10488,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#APIS/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_APIS?v=1.0",
       "notation" : "APIS",
       "title" : "Portuguese Archive of Social Information (APIS)",
       "definition" : "",
       "position" : 7
     }, {
       "id" : 10483,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#ProgedoCDSP/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_ProgedoCDSP?v=1.0",
       "notation" : "ProgedoCDSP",
       "title" : "PROGEDO: Center for Socio-Political Data (CDSP)",
       "definition" : "France",
       "position" : 8
     }, {
       "id" : 10484,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#ProgedoCNRS/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_ProgedoCNRS?v=1.0",
       "notation" : "ProgedoCNRS",
       "title" : "PROGEDO: CNRS",
       "definition" : "France",
       "position" : 9
     }, {
       "id" : 10485,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#ProgedoSciencesPo/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_ProgedoSciencesPo?v=1.0",
       "notation" : "ProgedoSciencesPo",
       "title" : "PROGEDO: Sciences Po",
       "definition" : "France",
       "position" : 10
     }, {
       "id" : 10489,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#SASD/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_SASD?v=1.0",
       "notation" : "SASD",
       "title" : "Slovak Archive of Social Data (SASD)",
       "definition" : "",
       "position" : 11
     }, {
       "id" : 10490,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#ADP/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_ADP?v=1.0",
       "notation" : "ADP",
       "title" : "Slovenian Social Science Data Archives (ADP)",
       "definition" : "",
       "position" : 12
     }, {
       "id" : 10486,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#SoDaNet/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_SoDaNet?v=1.0",
       "notation" : "SoDaNet",
       "title" : "SoDaNet - Greek Research Infrastructure for Social Science",
       "definition" : "",
       "position" : 13
     }, {
       "id" : 10491,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#SND/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_SND?v=1.0",
       "notation" : "SND",
       "title" : "Swedish National Data Service (SND)",
       "definition" : "",
       "position" : 14
     }, {
       "id" : 10492,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#UKDS/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_UKDS?v=1.0",
       "notation" : "UKDS",
       "title" : "UK Data Service",
       "definition" : "",
       "position" : 15
     }, {
       "id" : 10493,
-      "uri" : "https://vocabularies.cessda.eu/CdcPublisherNames#UniData/en/1.0",
+      "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_UniData?v=1.0",
       "notation" : "UniData",
       "title" : "UniData - Bicocca Data Archive",
       "definition" : "Italy",

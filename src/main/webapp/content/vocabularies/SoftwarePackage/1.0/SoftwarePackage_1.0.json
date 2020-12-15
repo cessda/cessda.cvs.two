@@ -1,7 +1,7 @@
 {
   "id" : 65,
   "status" : "PUBLISHED",
-  "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage/en/1.0",
+  "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage",
   "notation" : "SoftwarePackage",
   "versionNumber" : "1.0",
   "withdrawn" : false,
@@ -10,364 +10,364 @@
   "agencyName" : "DDI Alliance",
   "agencyLogo" : "ddi.png",
   "agencyLink" : "http://www.ddialliance.org/",
-  "publicationDate" : "2020-02-20",
+  "publicationDate" : "2020-02-19",
   "notes" : "Lists a number of commonly used statistical software packages but is not meant to be an exhaustive list.",
   "versions" : [ {
     "id" : 290,
     "status" : "PUBLISHED",
     "itemType" : "SL",
     "language" : "en",
-    "publicationDate" : "2020-02-20",
+    "publicationDate" : "2020-02-19",
     "number" : "1.0",
-    "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage/en/1.0",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SoftwarePackage:1.0",
-    "notation" : "SoftwarePackage",
     "title" : "Software Package",
     "definition" : "Indicates the statistical software package used in the production/processing/dissemination of the data. Data collection software is not covered in this list.",
+    "notation" : "SoftwarePackage",
     "previousVersion" : 0,
     "initialVersion" : 290,
     "notes" : "Lists a number of commonly used statistical software packages but is not meant to be an exhaustive list. This vocabulary was first published by the DDI Alliance. Please see: https://ddialliance.org/controlled-vocabularies/all.",
-    "versionNotes" : "",
     "versionChanges" : "",
+    "versionNotes" : "",
     "license" : "CC BY",
     "licenseName" : "Creative Commons Attribution 4.0 International",
     "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
     "licenseLogo" : "by.png",
     "citation" : "DDI Alliance. (2020). Software Package (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SoftwarePackage:1.0. ",
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: reusable</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/SoftwarePackage.html\" rel=\"noopener noreferrer\" target=\"_blank\">SoftwarePackage</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module name:&nbsp;reusable</p><p>Element name:&nbsp;&nbsp;<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/reusable_xsd/elements/SoftwarePackage.html\" rel=\"noopener noreferrer\" target=\"_blank\">SoftwarePackage</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/software.html\" rel=\"noopener noreferrer\" target=\"_blank\">software</a></p>",
-    "lastStatusChangeDate" : "2020-10-01",
+    "lastStatusChangeDate" : "2020-09-30",
     "concepts" : [ {
       "id" : 3487,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#AcaStat/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#AcaStat",
       "notation" : "AcaStat",
       "title" : "AcaStat",
       "definition" : "",
       "position" : 0
     }, {
       "id" : 3488,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#ADaMSoft/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#ADaMSoft",
       "notation" : "ADaMSoft",
       "title" : "ADaMSoft",
       "definition" : "",
       "position" : 1
     }, {
       "id" : 3489,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#AnalyseIt/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#AnalyseIt",
       "notation" : "AnalyseIt",
       "title" : "Analyse-it",
       "definition" : "",
       "position" : 2
     }, {
       "id" : 3490,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Auguri/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Auguri",
       "notation" : "Auguri",
       "title" : "Auguri",
       "definition" : "",
       "position" : 3
     }, {
       "id" : 3491,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#BioStat/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#BioStat",
       "notation" : "BioStat",
       "title" : "BioStat",
       "definition" : "",
       "position" : 4
     }, {
       "id" : 3492,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#BMDP/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#BMDP",
       "notation" : "BMDP",
       "title" : "BMDP",
       "definition" : "",
       "position" : 5
     }, {
       "id" : 3493,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#BrightStat/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#BrightStat",
       "notation" : "BrightStat",
       "title" : "BrightStat",
       "definition" : "",
       "position" : 6
     }, {
       "id" : 3494,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Dataplot/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Dataplot",
       "notation" : "Dataplot",
       "title" : "Dataplot",
       "definition" : "",
       "position" : 7
     }, {
       "id" : 3495,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#DBase/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#DBase",
       "notation" : "DBase",
       "title" : "DBase",
       "definition" : "",
       "position" : 8
     }, {
       "id" : 3496,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#DIF/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#DIF",
       "notation" : "DIF",
       "title" : "DIF",
       "definition" : "Data interchange format suitable for use in Excel.",
       "position" : 9
     }, {
       "id" : 3497,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#EasyReg/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#EasyReg",
       "notation" : "EasyReg",
       "title" : "EasyReg",
       "definition" : "",
       "position" : 10
     }, {
       "id" : 3498,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#EpiInfo/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#EpiInfo",
       "notation" : "EpiInfo",
       "title" : "Epi Info",
       "definition" : "",
       "position" : 11
     }, {
       "id" : 3499,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#EViews/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#EViews",
       "notation" : "EViews",
       "title" : "EViews",
       "definition" : "",
       "position" : 12
     }, {
       "id" : 3500,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#GAUSS/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#GAUSS",
       "notation" : "GAUSS",
       "title" : "GAUSS",
       "definition" : "",
       "position" : 13
     }, {
       "id" : 3501,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#GoldenHelix/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#GoldenHelix",
       "notation" : "GoldenHelix",
       "title" : "Golden Helix",
       "definition" : "",
       "position" : 14
     }, {
       "id" : 3502,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#GraphPadPrism/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#GraphPadPrism",
       "notation" : "GraphPadPrism",
       "title" : "GraphPad Prism",
       "definition" : "",
       "position" : 15
     }, {
       "id" : 3503,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Gretl/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Gretl",
       "notation" : "Gretl",
       "title" : "gretl",
       "definition" : "",
       "position" : 16
     }, {
       "id" : 3504,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#JMP/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#JMP",
       "notation" : "JMP",
       "title" : "JMP",
       "definition" : "",
       "position" : 17
     }, {
       "id" : 3505,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Limdep/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Limdep",
       "notation" : "Limdep",
       "title" : "Limdep",
       "definition" : "",
       "position" : 18
     }, {
       "id" : 3506,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#MacAnova/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#MacAnova",
       "notation" : "MacAnova",
       "title" : "MacAnova",
       "definition" : "",
       "position" : 19
     }, {
       "id" : 3507,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Maple/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Maple",
       "notation" : "Maple",
       "title" : "Maple",
       "definition" : "",
       "position" : 20
     }, {
       "id" : 3508,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Mathematica/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Mathematica",
       "notation" : "Mathematica",
       "title" : "Mathematica",
       "definition" : "",
       "position" : 21
     }, {
       "id" : 3509,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#MatLab/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#MatLab",
       "notation" : "MatLab",
       "title" : "MatLab",
       "definition" : "",
       "position" : 22
     }, {
       "id" : 3510,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#MedCalc/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#MedCalc",
       "notation" : "MedCalc",
       "title" : "MedCalc",
       "definition" : "",
       "position" : 23
     }, {
       "id" : 3511,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Minitab/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Minitab",
       "notation" : "Minitab",
       "title" : "Minitab",
       "definition" : "",
       "position" : 24
     }, {
       "id" : 3512,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#ModelQED/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#ModelQED",
       "notation" : "ModelQED",
       "title" : "modelQED",
       "definition" : "",
       "position" : 25
     }, {
       "id" : 3513,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#NCSS/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#NCSS",
       "notation" : "NCSS",
       "title" : "NCSS",
       "definition" : "",
       "position" : 26
     }, {
       "id" : 3514,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#NSDStat/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#NSDStat",
       "notation" : "NSDStat",
       "title" : "NSDStat",
       "definition" : "",
       "position" : 27
     }, {
       "id" : 3515,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#OpenEpi/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#OpenEpi",
       "notation" : "OpenEpi",
       "title" : "OpenEpi",
       "definition" : "",
       "position" : 28
     }, {
       "id" : 3516,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Origin/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Origin",
       "notation" : "Origin",
       "title" : "Origin",
       "definition" : "",
       "position" : 29
     }, {
       "id" : 3517,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Partek/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Partek",
       "notation" : "Partek",
       "title" : "Partek",
       "definition" : "",
       "position" : 30
     }, {
       "id" : 3518,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Primer/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Primer",
       "notation" : "Primer",
       "title" : "Primer",
       "definition" : "",
       "position" : 31
     }, {
       "id" : 3519,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#PSPP/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#PSPP",
       "notation" : "PSPP",
       "title" : "PSPP",
       "definition" : "",
       "position" : 32
     }, {
       "id" : 3520,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#RCommander/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#RCommander",
       "notation" : "RCommander",
       "title" : "R Commander",
       "definition" : "",
       "position" : 33
     }, {
       "id" : 3521,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#R/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#R",
       "notation" : "R",
       "title" : "R",
       "definition" : "",
       "position" : 34
     }, {
       "id" : 3522,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#RATS/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#RATS",
       "notation" : "RATS",
       "title" : "RATS",
       "definition" : "",
       "position" : 35
     }, {
       "id" : 3523,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#RKWard/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#RKWard",
       "notation" : "RKWard",
       "title" : "RKWard",
       "definition" : "",
       "position" : 36
     }, {
       "id" : 3524,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#SalStat/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#SalStat",
       "notation" : "SalStat",
       "title" : "SalStat",
       "definition" : "",
       "position" : 37
     }, {
       "id" : 3525,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#SAS/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#SAS",
       "notation" : "SAS",
       "title" : "SAS",
       "definition" : "",
       "position" : 38
     }, {
       "id" : 3526,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Shazam/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Shazam",
       "notation" : "Shazam",
       "title" : "Shazam",
       "definition" : "",
       "position" : 39
     }, {
       "id" : 3527,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#SOCR/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#SOCR",
       "notation" : "SOCR",
       "title" : "SOCR",
       "definition" : "",
       "position" : 40
     }, {
       "id" : 3528,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#SPlus/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#SPlus",
       "notation" : "SPlus",
       "title" : "SPlus",
       "definition" : "",
       "position" : 41
     }, {
       "id" : 3529,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#SPSS/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#SPSS",
       "notation" : "SPSS",
       "title" : "SPSS",
       "definition" : "",
       "position" : 42
     }, {
       "id" : 3530,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Stata/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Stata",
       "notation" : "Stata",
       "title" : "Stata",
       "definition" : "",
       "position" : 43
     }, {
       "id" : 3531,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Statistica/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Statistica",
       "notation" : "Statistica",
       "title" : "Statistica",
       "definition" : "",
       "position" : 44
     }, {
       "id" : 3532,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#SUDAAN/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#SUDAAN",
       "notation" : "SUDAAN",
       "title" : "SUDAAN",
       "definition" : "",
       "position" : 45
     }, {
       "id" : 3533,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#TSP/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#TSP",
       "notation" : "TSP",
       "title" : "TSP",
       "definition" : "",
       "position" : 46
     }, {
       "id" : 3534,
-      "uri" : "http://www.ddialliance.org/Specification/DDI-CV/SoftwarePackage#Other/en/1.0",
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SoftwarePackage_1.0.html#Other",
       "notation" : "Other",
       "title" : "Other",
       "definition" : "Use if the software package is known, but not found in the list.",
