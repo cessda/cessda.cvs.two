@@ -1,7 +1,7 @@
 {
   "home": {
-    "title": "CESSDA Vocabularies Service",
-    "subtitle": "CESSDA Vocabularies Service",
+    "title": "CESSDA Vocabulary Service",
+    "subtitle": "CESSDA Vocabulary Service",
     "logged": {
       "message": "You are logged in as user \"{{username}}\"."
     },
