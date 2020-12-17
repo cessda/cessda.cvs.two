@@ -39,7 +39,6 @@ import org.elasticsearch.common.text.Text;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.AbstractAggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.filter.Filters;
 import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBuilder;
@@ -955,8 +954,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain( languageFields ) );
 
         // add aggregation
-        for(AbstractAggregationBuilder aggregation : generateAggregations( esQueryResultDetail ) )
-            searchQueryBuilder.addAggregation(aggregation);
+        setUpAggregrations(searchQueryBuilder, esQueryResultDetail);
 
         // at the end build search query
         SearchQuery searchQuery = searchQueryBuilder.build();
@@ -1021,9 +1019,8 @@ public class VocabularyServiceImpl implements VocabularyService {
             .withFilter( generateFilterQuery( esQueryResultDetail.getEsFilters()) )
             .withPageable( esQueryResultDetail.getPage());
 
-        // add aggregation
-        for(AbstractAggregationBuilder aggregation : generateAggregations( esQueryResultDetail ) )
-            searchQueryBuilder.addAggregation(aggregation);
+        // add aggregations
+        setUpAggregrations(searchQueryBuilder, esQueryResultDetail);
 
         // at the end build search query
         SearchQuery searchQuery = searchQueryBuilder.build();
@@ -1289,14 +1286,10 @@ public class VocabularyServiceImpl implements VocabularyService {
         return boolQueryFilter;
     }
 
-    @SuppressWarnings("rawtypes")
-    public static List<AbstractAggregationBuilder> generateAggregations(EsQueryResultDetail esQueryResultDetail ){
-
-        List<AbstractAggregationBuilder> aggBuilders = new ArrayList<>();
-
+    private void setUpAggregrations(NativeSearchQueryBuilder searchQueryBuilder, EsQueryResultDetail esQueryResultDetail) {
         if( !esQueryResultDetail.isAnyFilterActive() ) {
             for(String aggField: esQueryResultDetail.getAggFields())
-                aggBuilders.add( AggregationBuilders.terms( aggField + COUNT).field( aggField).size(SIZE_OF_ITEMS_ON_AGGREGATION));
+                searchQueryBuilder.addAggregation( AggregationBuilders.terms( aggField + COUNT).field( aggField).size(SIZE_OF_ITEMS_ON_AGGREGATION));
         }
         else {
             FiltersAggregationBuilder filtersAggregation = AggregationBuilders.filters( "aggregration_filter", generateFilterQuery( esQueryResultDetail.getEsFilters() )) ;
@@ -1304,9 +1297,8 @@ public class VocabularyServiceImpl implements VocabularyService {
             for(String aggField: esQueryResultDetail.getAggFields() )
                 filtersAggregation.subAggregation( AggregationBuilders.terms( aggField + COUNT).field( aggField ).size(SIZE_OF_ITEMS_ON_AGGREGATION) );
 
-            aggBuilders.add(filtersAggregation);
+            searchQueryBuilder.addAggregation(filtersAggregation);
         }
-        return aggBuilders;
     }
 
     @Override
