@@ -57,6 +57,8 @@ class EditorResourceIT {
     private static final String INIT_CODE2_NOTATION = "CCCCC";
     private static final String INIT_CODE3_NOTATION = "DDDDD";
     private static final String INIT_CODE4_NOTATION = "EEEEE";
+    private static final String INIT_CODE5 = "FFFFF";
+    private static final String INIT_CODE6 = "GGGGG";
 
     private static final String INIT_CODE_TITLE = "TTTTT";
     private static final String EDIT_CODE_TITLE = "SSSSS";
@@ -352,6 +354,28 @@ class EditorResourceIT {
         forwardTlStatusPublishTest( newTlVersion );
         // create new SL version
         Version newSlVersion = createNewVocabularyVersionTest(slVersion, false);
+        // Import batch codes
+        int conceptDbSize = conceptRepository.findAll().size();
+        CodeSnippet codeSnippet5 = createCodeSnippet( INIT_CODE5, INIT_CODE5, INIT_CODE5, 3, "Code added" );
+        CodeSnippet codeSnippet6 = createCodeSnippet( INIT_CODE5 + "." + INIT_CODE6, INIT_CODE6, INIT_CODE6, 4, "Code added" );
+        codeSnippet5.setActionType(ActionType.CREATE_CODE);
+        codeSnippet5.setVersionId(newSlVersion.getId());
+        codeSnippet6.setActionType(ActionType.CREATE_CODE);
+        codeSnippet6.setVersionId(newSlVersion.getId());
+        codeSnippet6.setParent(INIT_CODE5);
+        restVocabularyMockMvc.perform(post("/api/editors/codes/batch")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(Arrays.asList( codeSnippet5, codeSnippet6))))
+            .andExpect(status().isOk());
+        final List<Concept> conceptList = conceptRepository.findAll();
+        assertThat(conceptList).hasSize(conceptDbSize + 2); // 2 new added concepts
+        Concept newConcept = conceptList.stream()
+            .filter(c -> c.getNotation().equals(INIT_CODE5))
+            .findFirst().orElse(null);
+        assertThat( newConcept ).isNotNull();
+
+
         // ActionType.FORWARD_CV_SL_STATUS_REVIEW
         forwardSlStatusReviewTest(newSlVersion);
         // Publish new SL version to trigger cloning TLs ~ ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
@@ -628,7 +652,6 @@ class EditorResourceIT {
                 ))
         );
 
-        // reorder code
         restVocabularyMockMvc.perform(post("/api/editors/codes/reorder")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
