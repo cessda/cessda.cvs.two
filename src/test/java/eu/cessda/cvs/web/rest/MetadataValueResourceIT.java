@@ -35,11 +35,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class MetadataValueResourceIT {
 
-    private static final String DEFAULT_IDENTIFIER = "AAAAAAAAAA";
-    private static final String UPDATED_IDENTIFIER = "BBBBBBBBBB";
+    public static final String DEFAULT_IDENTIFIER = "AAAAAAAAAA";
+    public static final String UPDATED_IDENTIFIER = "BBBBBBBBBB";
 
-    private static final String DEFAULT_VALUE = "AAAAAAAAAA";
-    private static final String UPDATED_VALUE = "BBBBBBBBBB";
+    public static final String DEFAULT_VALUE = "AAAAAAAAAA";
+    public static final String UPDATED_VALUE = "BBBBBBBBBB";
 
     private static final ObjectType DEFAULT_OBJECT_TYPE = ObjectType.AGENCY;
     private static final ObjectType UPDATED_OBJECT_TYPE = ObjectType.GROUP;
@@ -73,7 +73,7 @@ public class MetadataValueResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static MetadataValue createEntity(EntityManager em) {
+    public static MetadataValue createEntity() {
         MetadataValue metadataValue = new MetadataValue()
             .identifier(DEFAULT_IDENTIFIER)
             .position(DEFAULT_POSITION)
@@ -100,7 +100,7 @@ public class MetadataValueResourceIT {
 
     @BeforeEach
     public void initTest() {
-        metadataValue = createEntity(em);
+        metadataValue = createEntity();
     }
 
     @Test

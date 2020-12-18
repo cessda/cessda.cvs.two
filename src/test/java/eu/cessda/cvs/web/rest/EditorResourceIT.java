@@ -8,6 +8,10 @@ import eu.cessda.cvs.repository.*;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.jwt.TokenProvider;
+import eu.cessda.cvs.service.dto.CommentDTO;
+import eu.cessda.cvs.service.dto.MetadataValueDTO;
+import eu.cessda.cvs.service.mapper.CommentMapper;
+import eu.cessda.cvs.service.mapper.MetadataValueMapper;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,6 +29,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -85,6 +90,9 @@ class EditorResourceIT {
 
     private static final String INIT_VERSION_NUMBER_SL = "1.0";
     private static final String INIT_VERSION_NUMBER_TL = "1.0.1";
+
+    private static final String INIT_VERSION_INFO = "AAAAA";
+    private static final String INIT_VERSION_CHANGES = "BBBBB";
 
     private static final String SOURCE_LANGUAGE = "en";
     private static final String TARGET_LANGUAGE = "de";
@@ -149,10 +157,16 @@ class EditorResourceIT {
     private ConceptRepository conceptRepository;
 
     @Autowired
+    private CommentRepository commentRepository;
+
+    @Autowired
     private VocabularyChangeRepository vocabularyChangeRepository;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private CommentMapper commentMapper;
 
     @Autowired
     private AuthorityRepository authorityRepository;
@@ -167,7 +181,13 @@ class EditorResourceIT {
     private AuthenticationManagerBuilder authenticationManagerBuilder;
 
     @Autowired
-    private MockMvc restVocabularyMockMvc;
+    private MetadataValueRepository metadataValueRepository;
+
+    @Autowired
+    private MetadataValueMapper metadataValueMapper;
+
+    @Autowired
+    private MockMvc restMockMvc;
 
     private VocabularySnippet vocabularySnippetForEnSl;
 
@@ -300,7 +320,7 @@ class EditorResourceIT {
      */
     @Test
     @Transactional
-    void testVocabularyWorkflow() throws Exception {
+    void vocabularyWorkflowTest() throws Exception {
         // ActionType.CREATE_CV
         Version slVersion = createVocabularyTest();
         // Updated notes ActionType.EDIT_NOTE_CV & update DDI-Usage (unpublished CV) ~ ActionType.EDIT_DDI_CV
@@ -362,7 +382,10 @@ class EditorResourceIT {
         forwardSlStatusPublishTest(newSlVersion, true);
         // since there are already 2 versions they can be compared
         compareVersionTest(slVersion, newSlVersion);
-
+        // Updated version notes ~ ActionType.EDIT_VERSION_INFO_CV
+        updateSlVersionInfoTest(newSlVersion);
+        // try to download a vocabulary file
+        getVocabularyInJsonLdTest(newSlVersion);
         // Delete TL, SL and whole CV Test
         // Delete latest TL version
         deleteVocabularyOrVersion(newTlVersion,false);
@@ -372,12 +395,119 @@ class EditorResourceIT {
         deleteVocabularyOrVersion(slVersion,true);
     }
 
+    @Test
+    @Transactional
+    void editorCommentsTest() throws Exception {
+        // create initial vocabulary
+        Version slVersion = createVocabularyTest();
+        Comment comment = CommentResourceIT.createEntity();
+        CommentDTO commentDTO = commentMapper.toDto(comment);
+        commentDTO.setVersionId( slVersion.getId() );
+
+        restMockMvc.perform(post("/api/editors/comments")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(commentDTO)))
+            .andExpect(status().isCreated());
+        Comment savedComment = commentRepository.findAllByVersion(slVersion.getId()).stream().findFirst().orElse(null);
+        assertThat(savedComment).isNotNull();
+        assertThat(savedComment.getContent()).isEqualTo(CommentResourceIT.DEFAULT_CONTENT);
+        assertThat(savedComment.getInfo()).isEqualTo(CommentResourceIT.DEFAULT_INFO);
+
+        // update
+        commentDTO.setId( savedComment.getId() );
+        commentDTO.setContent(CommentResourceIT.UPDATED_CONTENT);
+        restMockMvc.perform(put("/api/editors/comments")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(commentDTO)))
+            .andExpect(status().isOk());
+        savedComment = commentRepository.findAllByVersion(slVersion.getId()).stream().findFirst().orElse(null);
+        assertThat(savedComment).isNotNull();
+        assertThat(savedComment.getContent()).isEqualTo(CommentResourceIT.UPDATED_CONTENT);
+
+        // delete
+        restMockMvc.perform(delete("/api/editors/comments/{id}", savedComment.getId())
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+        savedComment = commentRepository.findAllByVersion(slVersion.getId()).stream().findFirst().orElse(null);
+        assertThat(savedComment).isNull();
+    }
+
+    @Test
+    @Transactional
+    void editorMetadataValuesTest() throws Exception {
+        MetadataValue metadataValue = MetadataValueResourceIT.createEntity();
+        MetadataValueDTO metadataValueDTO = metadataValueMapper.toDto(metadataValue);
+        metadataValueDTO.setMetadataKey( "AAAAA" );
+
+        restMockMvc.perform(post("/api/editors/metadatas")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(metadataValueDTO)))
+            .andExpect(status().isCreated());
+        MetadataValue savedMetadataValue = metadataValueRepository.findAll().stream()
+            .filter( m -> m.getIdentifier().equals(MetadataValueResourceIT.DEFAULT_IDENTIFIER ))
+            .findFirst().orElse(null);
+        assertThat(savedMetadataValue).isNotNull();
+        assertThat(savedMetadataValue.getValue()).isEqualTo(MetadataValueResourceIT.DEFAULT_VALUE);
+
+        // update
+        metadataValueDTO.setId( savedMetadataValue.getId() );
+        metadataValueDTO.setMetadataFieldId( savedMetadataValue.getMetadataField().getId() );
+        metadataValueDTO.setIdentifier(MetadataValueResourceIT.UPDATED_IDENTIFIER);
+        metadataValueDTO.setValue(MetadataValueResourceIT.UPDATED_VALUE);
+        restMockMvc.perform(put("/api/editors/metadatas")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(metadataValueDTO)))
+            .andExpect(status().isOk());
+        savedMetadataValue = metadataValueRepository.findAll().stream()
+            .filter( m -> m.getIdentifier().equals(MetadataValueResourceIT.UPDATED_IDENTIFIER ))
+            .findFirst().orElse(null);
+        assertThat(savedMetadataValue).isNotNull();
+        assertThat(savedMetadataValue.getValue()).isEqualTo(MetadataValueResourceIT.UPDATED_VALUE);
+
+        // delete
+        restMockMvc.perform(delete("/api/editors/metadatas/{id}", savedMetadataValue.getId())
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNoContent());
+        savedMetadataValue = metadataValueRepository.findAll().stream()
+            .filter( m -> m.getIdentifier().equals(MetadataValueResourceIT.UPDATED_IDENTIFIER ))
+            .findFirst().orElse(null);
+        assertThat(savedMetadataValue).isNull();
+    }
+
+    private void getVocabularyInJsonLdTest(Version version) throws Exception {
+        // Code Search Test
+        final ResultActions resultActions = restMockMvc.perform(get("/v2/vocabularies/" + version.getNotation() + "/" + version.getNumber()
+            + "?languageVersion=" + version.getLanguage() + "-" + version.getNumber()));
+        resultActions.andExpect(status().isOk())
+            .andExpect(jsonPath("$.notation").value(version.getNotation()));
+    }
+
+    private void updateSlVersionInfoTest(Version version) throws Exception {
+        vocabularySnippetForEnSl.setActionType( ActionType.EDIT_VERSION_INFO_CV );
+        vocabularySnippetForEnSl.setVocabularyId( version.getVocabulary().getId() );
+        vocabularySnippetForEnSl.setVersionId( version.getId());
+        vocabularySnippetForEnSl.setVersionNotes( INIT_VERSION_INFO );
+        vocabularySnippetForEnSl.setVersionChanges(INIT_VERSION_CHANGES);
+        vocabularySnippetForEnSl.setLicenseId( license.getId() );
+        vocabularySnippetForEnSl.setVersionNumber(version.getNumber());
+        restMockMvc.perform(put("/api/editors/vocabularies")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isOk());
+        Vocabulary testVocabulary = vocabularyRepository.findAllByNotation( version.getNotation() ).stream().findFirst().orElse(null);
+        assertThat(testVocabulary).isNotNull();
+        final Version testVersion = testVocabulary.getVersions().iterator().next();
+        assertThat(testVersion.getNotes()).isEqualTo(EDIT_NOTES);
+        assertThat(testVersion.getDdiUsage()).isEqualTo(INIT_DDI_USAGE);
+    }
+
     private void compareVersionTest(Version slVersion, Version newSlVersion) throws Exception {
         // Compare SL version with previous version that not exist
-        restVocabularyMockMvc.perform(get("/api/editors/vocabularies/compare-prev/" + slVersion.getId()))
+        restMockMvc.perform(get("/api/editors/vocabularies/compare-prev/" + slVersion.getId()))
             .andExpect(status().is5xxServerError());
         // Compare SL version with previous version
-        restVocabularyMockMvc.perform(get("/api/editors/vocabularies/compare-prev/" + newSlVersion.getId()))
+        restMockMvc.perform(get("/api/editors/vocabularies/compare-prev/" + newSlVersion.getId()))
             .andExpect(status().isOk());
     }
 
@@ -390,7 +520,7 @@ class EditorResourceIT {
         codeSnippet6.setActionType(ActionType.CREATE_CODE);
         codeSnippet6.setVersionId(newSlVersion.getId());
         codeSnippet6.setParent(INIT_CODE5);
-        restVocabularyMockMvc.perform(post("/api/editors/codes/batch")
+        restMockMvc.perform(post("/api/editors/codes/batch")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(Arrays.asList( codeSnippet5, codeSnippet6))))
@@ -409,7 +539,7 @@ class EditorResourceIT {
         int versionSizeBeforeDelete = vocabularyRepository.findAllByNotation(versionToDelete.getNotation()).get(0).getVersions().size();
 
         // Delete version/vocab
-        restVocabularyMockMvc.perform(delete("/api/editors/vocabularies/{id}", versionToDelete.getId())
+        restMockMvc.perform(delete("/api/editors/vocabularies/{id}", versionToDelete.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
 
@@ -427,7 +557,7 @@ class EditorResourceIT {
 
     private Version createNewVocabularyVersionTest( Version version, boolean isTlVersioning) throws Exception {
         // create new version for added vocabulary
-        restVocabularyMockMvc.perform(post("/api/editors/vocabularies/new-version/" + version.getId())
+        restMockMvc.perform(post("/api/editors/vocabularies/new-version/" + version.getId())
             .header("Authorization", jwt))
             .andExpect(status().isOk());
         final Vocabulary vocabulary = vocabularyRepository.findAllByNotation(version.getNotation()).stream().findFirst().orElse(null);
@@ -468,7 +598,7 @@ class EditorResourceIT {
         vocabularySnippet.setAgencyId( agency.getId());
         vocabularySnippet.setVersionId( tlVersion.getId());
         vocabularySnippet.setLicenseId( license.getId() );
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
@@ -487,7 +617,7 @@ class EditorResourceIT {
         vocabularySnippet.setVocabularyId( tlVersion.getVocabulary().getId() );
         vocabularySnippet.setAgencyId( agency.getId());
         vocabularySnippet.setVersionId( tlVersion.getId());
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
@@ -506,7 +636,7 @@ class EditorResourceIT {
         codeSnippetForDeTl.setConceptId( tlConcept1.getId() );
         codeSnippetForDeTl.setTitle(null);
         codeSnippetForDeTl.setDefinition(null);
-        restVocabularyMockMvc.perform(put("/api/editors/codes")
+        restMockMvc.perform(put("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetForDeTl)))
@@ -523,7 +653,7 @@ class EditorResourceIT {
         codeSnippetForDeTl.setConceptId( tlConcept1.getId() );
         codeSnippetForDeTl.setTitle(EDIT_CODE_TL_TITLE);
         codeSnippetForDeTl.setDefinition(EDIT_CODE_TL_DEFINITION);
-        restVocabularyMockMvc.perform(put("/api/editors/codes")
+        restMockMvc.perform(put("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetForDeTl)))
@@ -543,7 +673,7 @@ class EditorResourceIT {
         codeSnippetForDeTl.setConceptId( tlConcept.getId() );
         codeSnippetForDeTl.setTitle(title);
         codeSnippetForDeTl.setDefinition(definition);
-        restVocabularyMockMvc.perform(put("/api/editors/codes")
+        restMockMvc.perform(put("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetForDeTl)))
@@ -573,7 +703,7 @@ class EditorResourceIT {
         vocabularySnippetForTlDe.setVocabularyId( slVersion.getVocabulary().getId());
         vocabularySnippetForTlDe.setVersionSlId( slVersion.getId() );
         // Create the Vocabulary with code snippet
-        restVocabularyMockMvc.perform(post("/api/editors/vocabularies")
+        restMockMvc.perform(post("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForTlDe)))
@@ -607,14 +737,14 @@ class EditorResourceIT {
         vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
         vocabularySnippetForEnSl.setVersionId( slVersion.getId());
         vocabularySnippetForEnSl.setNotes(EDIT_NOTES);
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies")
+        restMockMvc.perform(put("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
             .andExpect(status().isOk());
         vocabularySnippetForEnSl.setActionType( ActionType.EDIT_DDI_CV );
         vocabularySnippetForEnSl.setDdiUsage(INIT_DDI_USAGE);
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies")
+        restMockMvc.perform(put("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -628,7 +758,7 @@ class EditorResourceIT {
 
     private void deleteCodeTest(Concept slConcept, Concept slConcept2) throws Exception {
         int conceptDbSize = conceptRepository.findAll().size();
-        restVocabularyMockMvc.perform(delete("/api/editors/codes/{id}", slConcept2.getId())
+        restMockMvc.perform(delete("/api/editors/codes/{id}", slConcept2.getId())
             .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNoContent());
         final List<Concept> conceptList = conceptRepository.findAll();
@@ -666,7 +796,7 @@ class EditorResourceIT {
                 ))
         );
 
-        restVocabularyMockMvc.perform(post("/api/editors/codes/reorder")
+        restMockMvc.perform(post("/api/editors/codes/reorder")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetCodeMove)))
@@ -699,7 +829,7 @@ class EditorResourceIT {
         codeSnippet2ForEnSl.setParent( slConceptParent.getNotation() );
         codeSnippet2ForEnSl.setNotation( slConceptParent.getNotation() + "." + (isThirdCode ? INIT_CODE3_NOTATION: INIT_CODE2_NOTATION));
         codeSnippet2ForEnSl.setChangeDesc( codeSnippet2ForEnSl.getNotation() );
-        restVocabularyMockMvc.perform(post("/api/editors/codes")
+        restMockMvc.perform(post("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippet2ForEnSl)))
@@ -723,7 +853,7 @@ class EditorResourceIT {
         codeSnippetForEnSl.setVersionId( slVersion.getId() );
         codeSnippetForEnSl.setConceptId( slConcept.getId() );
         // Create the code with code snippet
-        restVocabularyMockMvc.perform(put("/api/editors/codes")
+        restMockMvc.perform(put("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetForEnSl)))
@@ -749,7 +879,7 @@ class EditorResourceIT {
         codeSnippetForEnSl.setActionType( ActionType.CREATE_CODE );
         codeSnippetForEnSl.setVersionId( slVersion.getId() );
         // Create the code with code snippet
-        restVocabularyMockMvc.perform(post("/api/editors/codes")
+        restMockMvc.perform(post("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetForEnSl)))
@@ -774,7 +904,7 @@ class EditorResourceIT {
         codeSnippetForEnSl.setActionType( ActionType.CREATE_CODE );
         codeSnippetForEnSl.setVersionId( slVersion.getId() );
         // Create the code with code snippet
-        restVocabularyMockMvc.perform(post("/api/editors/codes")
+        restMockMvc.perform(post("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetForEnSl)))
@@ -784,7 +914,7 @@ class EditorResourceIT {
 
     private void searchingCodeTest(Version slVersion, Concept slConceptRoot1) throws Exception {
         // Code Search Test
-        restVocabularyMockMvc.perform(get("/v2/search/codes?agency=" + INIT_AGENCY_NAME + "&lang=" +
+        restMockMvc.perform(get("/v2/search/codes?agency=" + INIT_AGENCY_NAME + "&lang=" +
             slVersion.getLanguage() + "&query=" + slConceptRoot1.getNotation()+ "&vocab=" +
             slVersion.getNotation()))
             .andExpect(status().isOk())
@@ -793,7 +923,7 @@ class EditorResourceIT {
             .andExpect(jsonPath("$.results.[*].prefLabel").value(hasItem(slConceptRoot1.getTitle())))
             .andExpect(jsonPath("$.results.[*].definition").value(hasItem(slConceptRoot1.getDefinition())));
         // Code Search Test  with wildcard
-        restVocabularyMockMvc.perform(get("/v2/search/codes?agency=" + INIT_AGENCY_NAME + "&lang=" +
+        restMockMvc.perform(get("/v2/search/codes?agency=" + INIT_AGENCY_NAME + "&lang=" +
             slVersion.getLanguage() + "&query=" + slConceptRoot1.getNotation().substring(3) + "*"+ "&vocab=" +
             slVersion.getNotation()))
             .andExpect(status().isOk())
@@ -805,7 +935,7 @@ class EditorResourceIT {
 
     private void searchingCvEditorAndPublication1Test(Version slVersion) throws Exception {
         // Elasticsearch Search Test ~ Editor search match all
-        restVocabularyMockMvc.perform(get("/api/editors/search?page=0&size=30&sort=code,asc"))
+        restMockMvc.perform(get("/api/editors/search?page=0&size=30&sort=code,asc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.vocabularies.[*].agencyName").value(hasItem(INIT_AGENCY_NAME)))
@@ -813,14 +943,14 @@ class EditorResourceIT {
             .andExpect(jsonPath("$.vocabularies.[*].titleEn").value(hasItem(slVersion.getTitle())))
             .andExpect(jsonPath("$.vocabularies.[*].definitionEn").value(hasItem(slVersion.getDefinition())));
         // Elasticsearch Search Test ~ Editor search with query and filters
-        restVocabularyMockMvc.perform(get("/api/editors/search?page=0&" +
+        restMockMvc.perform(get("/api/editors/search?page=0&" +
             "q=" + slVersion.getTitle() + "&f=agency:"+ INIT_AGENCY_NAME + ";language:" + slVersion.getLanguage() + ";status:PUBLISHED&" +
             "sort=relevance"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.vocabularies.[*].agencyName").value(hasItem(INIT_AGENCY_NAME)))
             .andExpect(jsonPath("$.vocabularies.[*].notation").value(hasItem(slVersion.getNotation())));
         // Elasticsearch Search Test ~ Publication search match all
-        restVocabularyMockMvc.perform(get("/v2/search?page=0&size=30&sort=code,asc"))
+        restMockMvc.perform(get("/v2/search?page=0&size=30&sort=code,asc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.vocabularies.[*].agencyName").value(hasItem(INIT_AGENCY_NAME)))
@@ -828,7 +958,7 @@ class EditorResourceIT {
             .andExpect(jsonPath("$.vocabularies.[*].titleEn").value(hasItem(slVersion.getTitle())))
             .andExpect(jsonPath("$.vocabularies.[*].definitionEn").value(hasItem(slVersion.getDefinition())));
         // Elasticsearch Search Test ~ Publication search with query and filters
-        restVocabularyMockMvc.perform(get("/v2/search?page=0&" +
+        restMockMvc.perform(get("/v2/search?page=0&" +
             "q=" + slVersion.getTitle() + "&f=agency:"+ INIT_AGENCY_NAME + ";language:" + slVersion.getLanguage() + ";status:PUBLISHED&" +
             "sort=relevance"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -853,7 +983,7 @@ class EditorResourceIT {
         vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
         if( secondPublish )
             vocabularySnippetForEnSl.setVersionNumber("1.1");
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -869,7 +999,7 @@ class EditorResourceIT {
         vocabularySnippetForEnSl.setActionType( ActionType.CREATE_CODE );
         vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
         vocabularySnippetForEnSl.setVersionId( slVersion.getId());
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -881,7 +1011,7 @@ class EditorResourceIT {
         vocabularySnippetForEnSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_REVIEW );
         vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
         vocabularySnippetForEnSl.setVersionId( slVersion.getId());
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -919,7 +1049,7 @@ class EditorResourceIT {
         vocabularySnippet.setVersionId( slVersion.getId());
 
         // update
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies")
+        restMockMvc.perform(put("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
@@ -941,7 +1071,7 @@ class EditorResourceIT {
     private void createVocabularyAndSlInitialVersion() throws Exception {
         vocabularySnippetForEnSl.setActionType( ActionType.CREATE_CV );
         // Create the Vocabulary with code snippet
-        restVocabularyMockMvc.perform(post("/api/editors/vocabularies")
+        restMockMvc.perform(post("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -988,7 +1118,7 @@ class EditorResourceIT {
         // add random ID, so the post will fail
         vocabularySnippetForEnSl.setVocabularyId(1L);
         // Create the Vocabulary with code snippet
-        restVocabularyMockMvc.perform(post("/api/editors/vocabularies")
+        restMockMvc.perform(post("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -1004,7 +1134,7 @@ class EditorResourceIT {
     public void updateVocabularyWithVersionIdNull() throws Exception {
         vocabularySnippetForEnSl.setActionType( ActionType.EDIT_CV );
         // vocabularySnippet versionId is NULL
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies")
+        restMockMvc.perform(put("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -1018,7 +1148,7 @@ class EditorResourceIT {
         codeSnippet.setActionType( ActionType.CREATE_CODE );
         codeSnippet.setConceptId( 1L );
         // vocabularySnippet versionId is NULL
-        restVocabularyMockMvc.perform(post("/api/editors/codes")
+        restMockMvc.perform(post("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippet)))
@@ -1029,7 +1159,7 @@ class EditorResourceIT {
     @Transactional
     public void forwardStatusWithVersionIdNull() throws Exception {
         // vocabularySnippet versionId is NULL
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -1041,7 +1171,7 @@ class EditorResourceIT {
     public void forwardStatusWithActionNull() throws Exception {
         // vocabularySnippet Action is NULL
         vocabularySnippetForEnSl.setVersionId(1L);
-        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -1052,7 +1182,7 @@ class EditorResourceIT {
     @Transactional
     public void createCodeWithInvalidAction() throws Exception {
         vocabularySnippetForEnSl.setActionType( ActionType.REORDER_CODE );
-        restVocabularyMockMvc.perform(post("/api/editors/vocabularies")
+        restMockMvc.perform(post("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
@@ -1064,7 +1194,7 @@ class EditorResourceIT {
     public void reorderCodeWithInvalidAction() throws Exception {
         CodeSnippet codeSnippetInvalidAction = new CodeSnippet();
         codeSnippetInvalidAction.setActionType( ActionType.CREATE_CODE );
-        restVocabularyMockMvc.perform(post("/api/editors/codes/reorder")
+        restMockMvc.perform(post("/api/editors/codes/reorder")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetInvalidAction)))
@@ -1076,7 +1206,7 @@ class EditorResourceIT {
     public void putCodeWithInvalidAction() throws Exception {
         CodeSnippet codeSnippetInvalidAction = new CodeSnippet();
         codeSnippetInvalidAction.setActionType( ActionType.CREATE_CODE );
-        restVocabularyMockMvc.perform(put("/api/editors/codes")
+        restMockMvc.perform(put("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetInvalidAction)))
@@ -1087,7 +1217,7 @@ class EditorResourceIT {
     @Transactional
     public void createVocabularyActionNull() throws Exception {
         // vocabularySnippet Action is NULL
-        restVocabularyMockMvc.perform(post("/api/editors/vocabularies")
+        restMockMvc.perform(post("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))

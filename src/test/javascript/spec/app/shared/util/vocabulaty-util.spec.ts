@@ -121,7 +121,7 @@ describe('Vocabulary Util Tests', () => {
   describe('Vocabulary Util methods', () => {
     it('should get the vocabulary version by selected lang', () => {
       for (const langIso in LanguageIso) {
-        if (parseInt(langIso, 10) >= 0) {
+        if ( isNaN(Number(langIso))) {
           const value = VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, langIso);
           expect( value ).toBe( 'AAA');
         }
@@ -129,7 +129,7 @@ describe('Vocabulary Util Tests', () => {
     });
     it('should get the vocabulary title by selected lang', () => {
       for (const langIso in LanguageIso) {
-        if (parseInt(langIso, 10) >= 0) {
+        if ( isNaN(Number(langIso))) {
           vocab.selectedLang = langIso;
           const value = VocabularyUtil.getVocabularyTitleBySelectedLang(vocab);
           expect( value ).toBe( 'AAA');
@@ -138,7 +138,7 @@ describe('Vocabulary Util Tests', () => {
     });
     it('should get the vocabulary definition by selected lang', () => {
       for (const langIso in LanguageIso) {
-        if (parseInt(langIso, 10) >= 0) {
+        if ( isNaN(Number(langIso))) {
           vocab.selectedLang = langIso;
           const value = VocabularyUtil.getVocabularyDefinitionBySelectedLang(vocab);
           expect( value ).toBe( 'AAA');
@@ -147,7 +147,7 @@ describe('Vocabulary Util Tests', () => {
     });
     it('should get the Code Title by selected lang', () => {
       for (const langIso in LanguageIso) {
-        if (parseInt(langIso, 10) >= 0) {
+        if ( isNaN(Number(langIso))) {
           const value = VocabularyUtil.getCodeTitleBySelectedLang(code, langIso);
           expect( value ).toBe( 'AAA');
         }
@@ -155,7 +155,7 @@ describe('Vocabulary Util Tests', () => {
     });
     it('should get the Code Definition by selected lang', () => {
       for (const langIso in LanguageIso) {
-        if (parseInt(langIso, 10) >= 0) {
+        if ( isNaN(Number(langIso))) {
           const value = VocabularyUtil.getCodeDefinitionBySelectedLang(code, langIso);
           expect( value ).toBe( 'AAA');
         }

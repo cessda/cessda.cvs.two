@@ -6,35 +6,28 @@ import eu.cessda.cvs.repository.CommentRepository;
 import eu.cessda.cvs.service.CommentService;
 import eu.cessda.cvs.service.dto.CommentDTO;
 import eu.cessda.cvs.service.mapper.CommentMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
 import java.time.Instant;
-import java.time.ZonedDateTime;
-import java.time.ZoneOffset;
 import java.time.ZoneId;
-import java.util.Collections;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import static eu.cessda.cvs.web.rest.TestUtil.sameInstant;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -47,11 +40,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WithMockUser
 public class CommentResourceIT {
 
-    private static final String DEFAULT_CONTENT = "AAAAAAAAAA";
-    private static final String UPDATED_CONTENT = "BBBBBBBBBB";
+    public static final String DEFAULT_CONTENT = "AAAAAAAAAA";
+    public static final String UPDATED_CONTENT = "BBBBBBBBBB";
 
-    private static final String DEFAULT_INFO = "AAAAAAAAAA";
-    private static final String UPDATED_INFO = "BBBBBBBBBB";
+    public static final String DEFAULT_INFO = "AAAAAAAAAA";
+    public static final String UPDATED_INFO = "BBBBBBBBBB";
 
     private static final Long DEFAULT_USER_ID = 1L;
     private static final Long UPDATED_USER_ID = 2L;
@@ -82,7 +75,7 @@ public class CommentResourceIT {
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
-    public static Comment createEntity(EntityManager em) {
+    public static Comment createEntity() {
         Comment comment = new Comment()
             .content(DEFAULT_CONTENT)
             .info(DEFAULT_INFO)
@@ -107,7 +100,7 @@ public class CommentResourceIT {
 
     @BeforeEach
     public void initTest() {
-        comment = createEntity(em);
+        comment = createEntity();
     }
 
     @Test
