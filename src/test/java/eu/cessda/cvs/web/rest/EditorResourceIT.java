@@ -355,6 +355,33 @@ class EditorResourceIT {
         // create new SL version
         Version newSlVersion = createNewVocabularyVersionTest(slVersion, false);
         // Import batch codes
+        batchCodesImportTest(newSlVersion);
+        // ActionType.FORWARD_CV_SL_STATUS_REVIEW
+        forwardSlStatusReviewTest(newSlVersion);
+        // Publish new SL version to trigger cloning TLs ~ ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
+        forwardSlStatusPublishTest(newSlVersion, true);
+        // since there are already 2 versions they can be compared
+        compareVersionTest(slVersion, newSlVersion);
+
+        // Delete TL, SL and whole CV Test
+        // Delete latest TL version
+        deleteVocabularyOrVersion(newTlVersion,false);
+        // Delete latest SL version
+        deleteVocabularyOrVersion(newSlVersion,false);
+        // Delete whole Vocabulary, by deleting the SL initial version
+        deleteVocabularyOrVersion(slVersion,true);
+    }
+
+    private void compareVersionTest(Version slVersion, Version newSlVersion) throws Exception {
+        // Compare SL version with previous version that not exist
+        restVocabularyMockMvc.perform(get("/api/editors/vocabularies/compare-prev/" + slVersion.getId()))
+            .andExpect(status().is5xxServerError());
+        // Compare SL version with previous version
+        restVocabularyMockMvc.perform(get("/api/editors/vocabularies/compare-prev/" + newSlVersion.getId()))
+            .andExpect(status().isOk());
+    }
+
+    private void batchCodesImportTest(Version newSlVersion) throws Exception {
         int conceptDbSize = conceptRepository.findAll().size();
         CodeSnippet codeSnippet5 = createCodeSnippet( INIT_CODE5, INIT_CODE5, INIT_CODE5, 3, "Code added" );
         CodeSnippet codeSnippet6 = createCodeSnippet( INIT_CODE5 + "." + INIT_CODE6, INIT_CODE6, INIT_CODE6, 4, "Code added" );
@@ -374,19 +401,6 @@ class EditorResourceIT {
             .filter(c -> c.getNotation().equals(INIT_CODE5))
             .findFirst().orElse(null);
         assertThat( newConcept ).isNotNull();
-
-
-        // ActionType.FORWARD_CV_SL_STATUS_REVIEW
-        forwardSlStatusReviewTest(newSlVersion);
-        // Publish new SL version to trigger cloning TLs ~ ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
-        forwardSlStatusPublishTest(newSlVersion, true);
-        // Delete TL, SL and whole CV Test
-        // Delete latest TL version
-        deleteVocabularyOrVersion(newTlVersion,false);
-        // Delete latest SL version
-        deleteVocabularyOrVersion(newSlVersion,false);
-        // Delete whole Vocabulary, by deleting the SL initial version
-        deleteVocabularyOrVersion(slVersion,true);
     }
 
     private void deleteVocabularyOrVersion(Version versionToDelete, boolean isDeleteVocabulary) throws Exception {
@@ -791,7 +805,7 @@ class EditorResourceIT {
 
     private void searchingCvEditorAndPublication1Test(Version slVersion) throws Exception {
         // Elasticsearch Search Test ~ Editor search match all
-        restVocabularyMockMvc.perform(get("/api/editors/search?page=0&q=&size=30&sort=code,asc"))
+        restVocabularyMockMvc.perform(get("/api/editors/search?page=0&size=30&sort=code,asc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.vocabularies.[*].agencyName").value(hasItem(INIT_AGENCY_NAME)))
@@ -806,7 +820,7 @@ class EditorResourceIT {
             .andExpect(jsonPath("$.vocabularies.[*].agencyName").value(hasItem(INIT_AGENCY_NAME)))
             .andExpect(jsonPath("$.vocabularies.[*].notation").value(hasItem(slVersion.getNotation())));
         // Elasticsearch Search Test ~ Publication search match all
-        restVocabularyMockMvc.perform(get("/v2/search?page=0&q=&size=30&sort=code,asc"))
+        restVocabularyMockMvc.perform(get("/v2/search?page=0&size=30&sort=code,asc"))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.vocabularies.[*].agencyName").value(hasItem(INIT_AGENCY_NAME)))
@@ -849,6 +863,17 @@ class EditorResourceIT {
         assertThat(vocabularyList).hasSize(databaseSize);
         slVersion = getLatestVersionByNotationAndLang(vocabularyList, slVersion.getNotation(), slVersion.getLanguage());
         assertThat( slVersion.getStatus()).isEqualTo(Status.PUBLISHED.toString());
+    }
+
+    public void forwardStatusWithIncorrectActionTypeTest(Version slVersion) throws Exception {
+        vocabularySnippetForEnSl.setActionType( ActionType.CREATE_CODE );
+        vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
+        vocabularySnippetForEnSl.setVersionId( slVersion.getId());
+        restVocabularyMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().is4xxClientError());
     }
 
     private void forwardSlStatusReviewTest(Version slVersion) throws Exception {
@@ -993,7 +1018,7 @@ class EditorResourceIT {
         codeSnippet.setActionType( ActionType.CREATE_CODE );
         codeSnippet.setConceptId( 1L );
         // vocabularySnippet versionId is NULL
-        restVocabularyMockMvc.perform(put("/api/editors/codes")
+        restVocabularyMockMvc.perform(post("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippet)))

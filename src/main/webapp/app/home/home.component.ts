@@ -20,7 +20,6 @@ import {AGGR_AGENCY, ITEMS_PER_PAGE, PAGING_SIZE} from 'app/shared';
 import {ICvResult} from 'app/shared/model/cv-result.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import {ICode} from 'app/shared/model/code.model';
-import {LanguageIso} from 'app/shared/model/enumerations/language-iso.model';
 import {IAggr} from 'app/shared/model/aggr';
 import {FormBuilder} from '@angular/forms';
 import {IBucket} from 'app/shared/model/bucket';
@@ -308,17 +307,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   sortLangByEnum(languages: string[], sourceLang: string): string[] {
-    const sortedLang: string[] = [sourceLang];
-    const sortedLangIsos: LanguageIso[] = [];
-    // convert languages to enum so it can be sorted
-    languages.forEach(l => {
-      if (l !== sourceLang) {
-        sortedLangIsos.push(LanguageIso[l]);
-      }
-    });
-    sortedLangIsos.sort((a, b) => a - b);
-    sortedLangIsos.forEach(lIso => sortedLang.push(VocabularyUtil.getLangIsoByEnum(lIso)));
-    return sortedLang;
+    return VocabularyUtil.sortLangByEnum(languages, sourceLang);
   }
 
   getFormattedLangIso(lang: string, sourceLang: string): string {

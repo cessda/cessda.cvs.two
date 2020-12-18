@@ -287,8 +287,6 @@ public class EditorResource {
             {
                 vocabularyDTO.getVersions().addAll( clonedTls );
             }
-        } else {
-            log.info("Unable to check for available TLs to be cloned, unable to find prev SL version with ID {}", versionDTO.getPreviousVersion());
         }
     }
 
