@@ -187,30 +187,15 @@ public class VocabularyServiceImpl implements VocabularyService {
             return save(new VocabularyDTO( vocabularySnippet ));
         } else if( vocabularySnippet.getActionType().equals( ActionType.ADD_TL_CV )){
             return saveTlVocabulary(vocabularySnippet);
-        } else if(
-            vocabularySnippet.getActionType().equals( ActionType.EDIT_CV ) ||
-            vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV) ||
-            vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV) ||
-            vocabularySnippet.getActionType().equals( ActionType.EDIT_NOTE_CV)
-        ){
+        } else {
             // get Vocabulary from database
             VocabularyDTO vocabularyDTO = findOne(vocabularySnippet.getVocabularyId())
                 .orElseThrow( () -> new EntityNotFoundException(UNABLE_FIND_VERSION + vocabularySnippet.getVocabularyId() ));
-
-            if( vocabularyDTO == null) {
-                throw new IllegalArgumentException( "Unable to save edited vocabulary, Vocabulary with ID "
-                    + vocabularySnippet.getVersionId() + " not found");
-            }
 
             // find version on vocabulary
             VersionDTO versionDTO = vocabularyDTO.getVersions().stream()
                 .filter(v -> v.getId().equals( vocabularySnippet.getVersionId())).findFirst()
                 .orElseThrow(() -> new EntityNotFoundException(UNABLE_FIND_VERSION + vocabularySnippet.getVersionId()) );
-
-            if( versionDTO == null ) {
-                throw new IllegalArgumentException( "Unable to save edited vocabulary, version with ID "
-                    + vocabularySnippet.getVersionId() + " not found");
-            }
 
             if( vocabularySnippet.getActionType().equals( ActionType.EDIT_CV ) ) {
                 // check if user authorized to edit VocabularyResource
@@ -223,26 +208,23 @@ public class VocabularyServiceImpl implements VocabularyService {
                 vocabularyDTO.setContentByVocabularySnippet( vocabularySnippet );
                 versionDTO.setContentByVocabularySnippet( vocabularySnippet );
 
-                // check if codeSnippet contains changetype
+                // check if codeSnippet contains changeType
                 storeChangeType(vocabularySnippet, versionDTO);
             } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV )) {
-                // check if user authorized to edit ddi-usage VocabularyResource
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_DDI_CV,
                     vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
 
                 versionDTO.setDdiUsage( vocabularySnippet.getDdiUsage() );
-            } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_NOTE_CV )) {
-                // check if user authorized to edit ddi-usage VocabularyResource
-                SecurityUtils.checkResourceAuthorization(ActionType.EDIT_NOTE_CV,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
-
-                versionDTO.setNotes( vocabularySnippet.getNotes() );
             } else if (vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV )) {
-                // check if user authorized to edit ddi-usage VocabularyResource
                 SecurityUtils.checkResourceAuthorization(ActionType.EDIT_VERSION_INFO_CV,
                     vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
 
                 updateCvVersionInfo(vocabularySnippet, versionDTO);
+            } else {
+                SecurityUtils.checkResourceAuthorization(ActionType.EDIT_NOTE_CV,
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
+
+                versionDTO.setNotes( vocabularySnippet.getNotes() );
             }
 
             vocabularyDTO = save( vocabularyDTO );
@@ -251,10 +233,8 @@ public class VocabularyServiceImpl implements VocabularyService {
             if( versionDTO.getStatus().equals(Status.PUBLISHED.toString())){
                 generateJsonVocabularyPublish( vocabularyDTO );
             }
-
             return vocabularyDTO;
         }
-        return null;// change with exception "Action not found"
     }
 
     private void updateCvVersionInfo(VocabularySnippet vocabularySnippet, VersionDTO versionDTO) {

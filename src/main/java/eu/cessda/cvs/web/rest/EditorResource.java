@@ -170,6 +170,14 @@ public class EditorResource {
         if (vocabularySnippet.getVocabularyId() == null) {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_VOCABULARY_NAME, ID_NULL);
         }
+        if(
+            !(vocabularySnippet.getActionType().equals( ActionType.EDIT_CV ) ||
+                vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV) ||
+                vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV) ||
+                vocabularySnippet.getActionType().equals( ActionType.EDIT_NOTE_CV))
+        ) {
+            throw new IllegalArgumentException( "Incorrect ActionType" + vocabularySnippet.getActionType() );
+        }
         VocabularyDTO result = vocabularyService.saveVocabulary(vocabularySnippet);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VOCABULARY_NAME, result.getNotation()))

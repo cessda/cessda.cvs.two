@@ -490,6 +490,19 @@ class EditorResourceIT {
         vocabularySnippetForEnSl.setVersionChanges(INIT_VERSION_CHANGES);
         vocabularySnippetForEnSl.setLicenseId( license.getId() );
         vocabularySnippetForEnSl.setVersionNumber(version.getNumber());
+        Version versionUpdated = updateVersionInfoTest(version);
+        assertThat(versionUpdated.getLicenseId()).isEqualTo(license.getId());
+        assertThat(versionUpdated.getVersionNotes()).isEqualTo(INIT_VERSION_INFO);
+        assertThat(versionUpdated.getVersionChanges()).isEqualTo(INIT_VERSION_CHANGES);
+        // test with null version number and license id, should not change the licence and version number
+        vocabularySnippetForEnSl.setLicenseId( null );
+        vocabularySnippetForEnSl.setVersionNumber(null);
+        versionUpdated = updateVersionInfoTest(version);
+        assertThat(versionUpdated.getLicenseId()).isEqualTo(license.getId());
+        assertThat(versionUpdated.getNumber()).isEqualTo(versionUpdated.getNumber());
+    }
+
+    private Version updateVersionInfoTest(Version version) throws Exception {
         restMockMvc.perform(put("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
@@ -497,9 +510,8 @@ class EditorResourceIT {
             .andExpect(status().isOk());
         Vocabulary testVocabulary = vocabularyRepository.findAllByNotation( version.getNotation() ).stream().findFirst().orElse(null);
         assertThat(testVocabulary).isNotNull();
-        final Version testVersion = testVocabulary.getVersions().iterator().next();
-        assertThat(testVersion.getNotes()).isEqualTo(EDIT_NOTES);
-        assertThat(testVersion.getDdiUsage()).isEqualTo(INIT_DDI_USAGE);
+        final Version versionUpdated = getLatestVersionByNotationAndLang(vocabularyRepository.findAll(), version.getNotation(), version.getLanguage());
+        return versionUpdated;
     }
 
     private void compareVersionTest(Version slVersion, Version newSlVersion) throws Exception {
@@ -1218,6 +1230,19 @@ class EditorResourceIT {
     public void createVocabularyActionNull() throws Exception {
         // vocabularySnippet Action is NULL
         restMockMvc.perform(post("/api/editors/vocabularies")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    @Transactional
+    public void updateVocabularyActionIncorrectTest() throws Exception {
+        // vocabularySnippet Action is NULL
+        vocabularySnippetForEnSl.setVocabularyId(1L);
+        vocabularySnippetForEnSl.setActionType(ActionType.CREATE_CV);
+        restMockMvc.perform(put("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
