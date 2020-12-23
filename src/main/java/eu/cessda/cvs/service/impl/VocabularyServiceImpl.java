@@ -328,7 +328,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         if( prevVersionTlDTOOptl.isPresent() ) {
             prevVersionTlDTO = prevVersionTlDTOOptl.get();
             versionDTO.setPreviousVersion( prevVersionTlDTO.getId() );
-            versionDTO.setDdiUsage( prevVersionTlDTO.getDdiUsage() );
             versionDTO.setInitialVersion( prevVersionTlDTO.getInitialVersion() == null ? prevVersionTlDTO.getId() : prevVersionTlDTO.getInitialVersion());
         }
         versionDTO.setCreator( SecurityUtils.getCurrentUserId() );

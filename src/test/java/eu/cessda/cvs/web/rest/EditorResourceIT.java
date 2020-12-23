@@ -372,6 +372,8 @@ class EditorResourceIT {
         forwardTlStatusReviewTest( newTlVersion );
         // new TL version ActionType.FORWARD_CV_TL_STATUS_PUBLISHED
         forwardTlStatusPublishTest( newTlVersion );
+        // create new TL version but not published
+        Version newTlVersion2 = createNewVocabularyVersionTest(tlVersion, true);
         // create new SL version
         Version newSlVersion = createNewVocabularyVersionTest(slVersion, false);
         // Import batch codes
@@ -384,11 +386,13 @@ class EditorResourceIT {
         compareVersionTest(slVersion, newSlVersion);
         // Updated version notes ~ ActionType.EDIT_VERSION_INFO_CV
         updateSlVersionInfoTest(newSlVersion);
+        // create TL version with lang DE again, the prev draft DE should influence new Cv DE
+        Version newTlVersion3 = addVocabularyTranslationInMiddleTest(newSlVersion);
         // try to download a vocabulary file
         getVocabularyInJsonLdTest(newSlVersion);
         // Delete TL, SL and whole CV Test
         // Delete latest TL version
-        deleteVocabularyOrVersion(newTlVersion,false);
+        deleteVocabularyOrVersion(newTlVersion3,false);
         // Delete latest SL version
         deleteVocabularyOrVersion(newSlVersion,false);
         // Delete whole Vocabulary, by deleting the SL initial version
@@ -707,6 +711,29 @@ class EditorResourceIT {
         tlConcept = tlVersion.getConcepts().stream().filter( c -> c.getNotation().equals(slConcept.getNotation()))
             .findFirst().orElse(null);
         return tlConcept;
+    }
+
+    private Version addVocabularyTranslationInMiddleTest(Version slVersion) throws Exception {
+        VocabularySnippet vocabularySnippetForTlDe = EditorResourceIT.createVocabularySnippetForTlDe();
+        vocabularySnippetForTlDe.setActionType( ActionType.ADD_TL_CV );
+        vocabularySnippetForTlDe.setVocabularyId( slVersion.getVocabulary().getId());
+        vocabularySnippetForTlDe.setVersionSlId( slVersion.getId() );
+        // Create the Vocabulary with code snippet
+        restMockMvc.perform(post("/api/editors/vocabularies")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForTlDe)))
+            .andExpect(status().isCreated());
+
+        final Version tlVersion = getLatestVersionByNotationAndLang(vocabularyRepository.findAll(), slVersion.getNotation(), vocabularySnippetForTlDe.getLanguage());
+
+        // must be generated equal TL concepts to SL concepts
+        assertThat(tlVersion.getConcepts().size()).isEqualTo(slVersion.getConcepts().size());
+        assertThat(tlVersion.getNumber()).contains( slVersion.getNumber());
+        // TL ddi-usage must be the same with SL
+        assertThat(tlVersion.getDdiUsage()).isEqualTo(slVersion.getDdiUsage());
+
+        return tlVersion;
     }
 
     private Version addVocabularyTranslationTest(Version slVersion) throws Exception {
@@ -1246,6 +1273,17 @@ class EditorResourceIT {
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().is5xxServerError());
+    }
+
+    @Test
+    @Transactional
+    void createNewCvVersionNonPublishedTest() throws Exception {
+        // create initial vocabulary
+        Version slVersion = createVocabularyTest();
+        // will be failed to create new version due to Cv still on DRAFT
+        restMockMvc.perform(post("/api/editors/vocabularies/new-version/" + slVersion.getId())
+            .header("Authorization", jwt))
             .andExpect(status().is5xxServerError());
     }
 

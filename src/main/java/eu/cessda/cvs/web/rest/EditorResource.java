@@ -400,7 +400,7 @@ public class EditorResource {
         vocabularyDTO = vocabularyService.save(vocabularyDTO);
         vocabularyService.indexEditor( vocabularyDTO );
         if( isTlPublished ) {
-            // remove published JSON file, re-create the JSON file and re-index for publishec vocabulary
+            // remove published JSON file, re-create the JSON file and re-index for published vocabulary
             vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
             vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
             vocabularyService.indexPublished(vocabularyDTO );
