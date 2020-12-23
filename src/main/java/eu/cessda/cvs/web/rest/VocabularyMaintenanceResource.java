@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,7 +34,7 @@ public class VocabularyMaintenanceResource {
         this.vocabularyService = vocabularyService;
     }
 
-    @GetMapping("/publication/generate-json")
+    @PostMapping("/publication/generate-json")
     public ResponseEntity<Maintenance> getGenerateJson() throws IOException {
         log.debug("REST request to get a page of Vocabularies");
         final String output = vocabularyService.generateJsonAllVocabularyPublish();
@@ -42,7 +42,7 @@ public class VocabularyMaintenanceResource {
         return ResponseEntity.ok().body(maintenanceOut);
     }
 
-    @GetMapping("/index/agency-stats")
+    @PostMapping("/index/agency-stats")
     public ResponseEntity<Maintenance> indexAgencyStats() {
         log.debug("REST request to index Agencies Stats");
         vocabularyService.indexAllAgencyStats();
@@ -50,7 +50,7 @@ public class VocabularyMaintenanceResource {
         return ResponseEntity.ok().body( maintenanceOut);
     }
 
-    @GetMapping("/index/vocabulary")
+    @PostMapping("/index/vocabulary")
     public ResponseEntity<Maintenance> indexVocabulary() {
         log.debug("REST request to index published Vocabularies");
         vocabularyService.indexAllPublished();
@@ -58,7 +58,7 @@ public class VocabularyMaintenanceResource {
         return ResponseEntity.ok().body( maintenanceOut);
     }
 
-    @GetMapping("/index/vocabulary/editor")
+    @PostMapping("/index/vocabulary/editor")
     public ResponseEntity<Maintenance> indexVocabularyEditor() {
         log.debug("REST request to index Vocabularies in editor");
         vocabularyService.indexAllEditor();
@@ -66,7 +66,7 @@ public class VocabularyMaintenanceResource {
         return ResponseEntity.ok().body(maintenanceOut);
     }
 
-    @GetMapping("/index/agency")
+    @PostMapping("/index/agency")
     public ResponseEntity<Maintenance> indexAgency() {
         log.debug("REST request to index Agencies");
         agencyService.indexAll();
