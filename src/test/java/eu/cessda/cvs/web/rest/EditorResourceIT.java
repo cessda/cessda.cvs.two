@@ -342,6 +342,8 @@ class EditorResourceIT {
         updateSlConceptTest(slVersion, slConceptRoot1);
         // ActionType.DELETE_CODE
         deleteCodeTest(slConceptRoot1, slConcept2);
+        // forward status with incorrect action type
+        forwardStatusWithIncorrectActionTypeTest(slVersion);
         // ActionType.FORWARD_CV_SL_STATUS_REVIEW
         forwardSlStatusReviewTest(slVersion);
         // ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
@@ -1042,7 +1044,7 @@ class EditorResourceIT {
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
-            .andExpect(status().is4xxClientError());
+            .andExpect(status().is5xxServerError());
     }
 
     private void forwardSlStatusReviewTest(Version slVersion) throws Exception {
