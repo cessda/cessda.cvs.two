@@ -14,22 +14,22 @@ export class MaintenanceService {
   constructor(private http: HttpClient) {}
 
   generateJson(): Observable<EntityResponseType> {
-    return this.http.get<Maintenance>(`${this.maintenanceUrl}/publication/generate-json`, { observe: 'response' });
+    return this.http.post<Maintenance>(`${this.maintenanceUrl}/publication/generate-json`, null, { observe: 'response' });
   }
 
   indexAgency(): Observable<EntityResponseType> {
-    return this.http.get<Maintenance>(`${this.maintenanceUrl}/index/agency`, { observe: 'response' });
+    return this.http.post<Maintenance>(`${this.maintenanceUrl}/index/agency`, null, { observe: 'response' });
   }
 
   indexAgencyStats(): Observable<EntityResponseType> {
-    return this.http.get<Maintenance>(`${this.maintenanceUrl}/index/agency-stats`, { observe: 'response' });
+    return this.http.post<Maintenance>(`${this.maintenanceUrl}/index/agency-stats`, null, { observe: 'response' });
   }
 
   indexVocabularyPublish(): Observable<EntityResponseType> {
-    return this.http.get<Maintenance>(`${this.maintenanceUrl}/index/vocabulary`, { observe: 'response' });
+    return this.http.post<Maintenance>(`${this.maintenanceUrl}/index/vocabulary`, null, { observe: 'response' });
   }
 
   indexVocabularyEditor(): Observable<EntityResponseType> {
-    return this.http.get<Maintenance>(`${this.maintenanceUrl}/index/vocabulary/editor`, { observe: 'response' });
+    return this.http.post<Maintenance>(`${this.maintenanceUrl}/index/vocabulary/editor`, null, { observe: 'response' });
   }
 }
