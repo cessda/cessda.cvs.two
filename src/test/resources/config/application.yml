@@ -118,4 +118,8 @@ jhipster:
 # https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
-# application:
+application:
+  static-file-path: target/classes/static
+  vocab-json-path: target/classes/static/content/vocabularies-test/
+  agency-image-path: target/classes/static/content/images/agency/
+  license-image-path: target/classes/static/content/images/license/

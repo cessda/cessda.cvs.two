@@ -20,7 +20,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,7 +34,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = CvsApp.class)
 @ExtendWith(MockitoExtension.class)
 @AutoConfigureMockMvc
-@WithMockUser
 class VocabularyMaintenanceResourceIT {
 
     private static final String SOURCE_LANGUAGE = "en";
@@ -177,10 +175,10 @@ class VocabularyMaintenanceResourceIT {
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
             .andExpect(status().isOk());
         // recreate json
-//        restMockMvc.perform(post("/api/maintenance/publication/generate-json")
-//            .header("Authorization", jwt)
-//            .contentType(MediaType.APPLICATION_JSON))
-//            .andExpect(status().isOk());
+        restMockMvc.perform(post("/api/maintenance/publication/generate-json")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
         // index agency
         restMockMvc.perform(post("/api/maintenance/index/agency")
             .header("Authorization", jwt)
@@ -192,10 +190,10 @@ class VocabularyMaintenanceResourceIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
         // index vocabulary publish
-//        restMockMvc.perform(post("/api/maintenance/index/vocabulary")
-//            .header("Authorization", jwt)
-//            .contentType(MediaType.APPLICATION_JSON))
-//            .andExpect(status().isOk());
+        restMockMvc.perform(post("/api/maintenance/index/vocabulary")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
         // index vocabulary editor
         restMockMvc.perform(post("/api/maintenance/index/vocabulary/editor")
             .header("Authorization", jwt)
