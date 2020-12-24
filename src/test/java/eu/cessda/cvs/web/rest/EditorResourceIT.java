@@ -321,6 +321,8 @@ class EditorResourceIT {
     void vocabularyWorkflowTest() throws Exception {
         // ActionType.CREATE_CV
         Version slVersion = createVocabularyTest();
+        // Test fail if try to add existed CV
+        createVocabularyWithSameNotationFailTest();
         // Updated notes ActionType.EDIT_NOTE_CV & update DDI-Usage (unpublished CV) ~ ActionType.EDIT_DDI_CV
         updateSlVersionNotesAndUsageTests(slVersion);
         // ActionType.EDIT_CV
@@ -346,6 +348,8 @@ class EditorResourceIT {
         forwardSlStatusReviewTest(slVersion);
         // ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
         forwardSlStatusPublishTest(slVersion, false);
+        // ActionType.CREATE_CODE ~ will be fail due to vocabulary already published
+        createSlConceptOnPublishedCvTest(slVersion);
         // Test searching for CVs in the Editor and Publication
         searchingCvEditorAndPublication1Test(slVersion);
         // Test searching for CVs code
@@ -390,6 +394,8 @@ class EditorResourceIT {
         Version newTlVersion3 = addVocabularyTranslationInMiddleTest(newSlVersion);
         // try to download a vocabulary file
         getVocabularyInJsonLdTest(newSlVersion);
+        // get vocabulary by notation and version
+        getVocabularyByNotationAndVersion(newSlVersion);
         // Delete TL, SL and whole CV Test
         // Delete latest TL version
         deleteVocabularyOrVersion(newTlVersion3,false);
@@ -397,6 +403,15 @@ class EditorResourceIT {
         deleteVocabularyOrVersion(newSlVersion,false);
         // Delete whole Vocabulary, by deleting the SL initial version
         deleteVocabularyOrVersion(slVersion,true);
+    }
+
+    private void getVocabularyByNotationAndVersion(Version version) throws Exception {
+        restMockMvc.perform(get("/api/vocabularies/" + version.getNotation()+ "/"+ version.getNumber()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.versions.[*].notation").value(hasItem(version.getNotation())))
+            .andExpect(jsonPath("$.versions.[*].title").value(hasItem(version.getTitle())))
+            .andExpect(jsonPath("$.versions.[*].definition").value(hasItem(version.getDefinition())));
     }
 
     @Test
@@ -913,7 +928,7 @@ class EditorResourceIT {
             isSecondRootConcept ? INIT_CODE4_NOTATION: INIT_CODE_NOTATION,
             isSecondRootConcept ? INIT_CODE4_TITLE : INIT_CODE_TITLE,
             isSecondRootConcept ? INIT_CODE4_DEF: INIT_CODE_DEF,
-            isSecondRootConcept ? CODE4_POSITION : CODE_POSITION,
+            null,
             null );
         codeSnippetForEnSl.setActionType( ActionType.CREATE_CODE );
         codeSnippetForEnSl.setVersionId( slVersion.getId() );
@@ -938,18 +953,27 @@ class EditorResourceIT {
         return slConcept;
     }
 
+    private void createSlConceptOnPublishedCvTest(Version slVersion) throws Exception {
+        CodeSnippet codeSnippetForEnSl = createCodeSnippet( EDIT_CODE_NOTATION, EDIT_CODE_TITLE, EDIT_CODE_DEF, CODE_POSITION, null );
+        codeSnippetForEnSl.setActionType( ActionType.CREATE_CODE );
+        codeSnippetForEnSl.setVersionId( slVersion.getId() );
+        restMockMvc.perform(post("/api/editors/codes")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(codeSnippetForEnSl)))
+            .andExpect(status().is5xxServerError());
+    }
+
     private void createFailedSlConceptTest(Version slVersion) throws Exception {
         CodeSnippet codeSnippetForEnSl = createCodeSnippet( INIT_CODE_NOTATION, INIT_CODE_TITLE, INIT_CODE_DEF, CODE_POSITION, null );
         codeSnippetForEnSl.setActionType( ActionType.CREATE_CODE );
         codeSnippetForEnSl.setVersionId( slVersion.getId() );
-        // Create the code with code snippet
         restMockMvc.perform(post("/api/editors/codes")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetForEnSl)))
             .andExpect(status().isBadRequest());
     }
-
 
     private void searchingCodeTest(Version slVersion, Concept slConceptRoot1) throws Exception {
         // Code Search Test
@@ -1115,6 +1139,15 @@ class EditorResourceIT {
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
             .andExpect(status().isCreated());
+    }
+
+    private void createVocabularyWithSameNotationFailTest() throws Exception {
+        // Create the Vocabulary with existing notation
+        restMockMvc.perform(post("/api/editors/vocabularies")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isBadRequest());
     }
 
     private Version createVocabularyTest() throws Exception {

@@ -521,7 +521,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
         // set position if not available
         if( codeSnippet.getPosition() == null )
-            codeSnippet.setPosition( versionDTO.getConcepts().size() - 1 );
+            codeSnippet.setPosition( versionDTO.getConcepts().size());
         // create concept by codeSnippet
         ConceptDTO newConceptDTO = new ConceptDTO( codeSnippet );
         // add concept to version and save version to save new concept
