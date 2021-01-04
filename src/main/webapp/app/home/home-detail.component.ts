@@ -271,10 +271,10 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   }
 
   resetExport(): void {
-    this.fillBolleanArray(this.skosSelected, false);
-    this.fillBolleanArray(this.pdfSelected, false);
-    this.fillBolleanArray(this.htmlSelected, false);
-    this.fillBolleanArray(this.docxSelected, false);
+    this.skosSelected.fill(false);
+    this.pdfSelected.fill(false);
+    this.htmlSelected.fill(false);
+    this.docxSelected.fill(false);
   }
 
   previousState(): void {
@@ -353,23 +353,17 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   toggleSelectAll(downloadType: string, checked: boolean): void {
     switch (downloadType) {
       case 'skos':
-        this.fillBolleanArray(this.skosSelected, checked);
+        this.skosSelected.fill(checked);
         break;
       case 'pdf':
-        this.fillBolleanArray(this.pdfSelected, checked);
+        this.pdfSelected.fill(checked);
         break;
       case 'html':
-        this.fillBolleanArray(this.htmlSelected, checked);
+        this.htmlSelected.fill(checked);
         break;
       case 'docx':
-        this.fillBolleanArray(this.docxSelected, checked);
+        this.docxSelected.fill(checked);
         break;
-    }
-  }
-
-  private fillBolleanArray(bollArray: boolean[], checked: boolean): void {
-    for (let i = 0; i < bollArray.length; i++) {
-      bollArray[i] = checked;
     }
   }
 

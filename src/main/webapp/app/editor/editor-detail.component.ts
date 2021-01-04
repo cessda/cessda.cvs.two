@@ -31,12 +31,12 @@ import {Account} from 'app/core/user/account.model';
   templateUrl: './editor-detail.component.html'
 })
 export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
-  @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
-  @ViewChild('versionPanel', { static: true }) versionPanel!: ElementRef;
-  @ViewChild('identityPanel', { static: true }) identityPanel!: ElementRef;
-  @ViewChild('usagePanel', { static: true }) usagePanel!: ElementRef;
-  @ViewChild('licensePanel', { static: true }) licensePanel!: ElementRef;
-  @ViewChild('exportPanel', { static: true }) exportPanel!: ElementRef;
+  @ViewChild('detailEPanel', { static: true }) detailEPanel!: ElementRef;
+  @ViewChild('versionEPanel', { static: true }) versionEPanel!: ElementRef;
+  @ViewChild('identityEPanel', { static: true }) identityEPanel!: ElementRef;
+  @ViewChild('usageEPanel', { static: true }) usageEPanel!: ElementRef;
+  @ViewChild('licenseEPanel', { static: true }) licenseEPanel!: ElementRef;
+  @ViewChild('exportEPanel', { static: true }) exportEPanel!: ElementRef;
 
   account!: Account;
 
@@ -98,7 +98,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     ]
   };
 
-  detailForm = this.fb.group({
+  editorDetailForm = this.fb.group({
     tabSelected: [],
     skosItems: [],
     pdfItems: [],
@@ -166,7 +166,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     this.closeNotes();
     this.closeCurrentVersionInfo();
     this.closeDdiUsage();
-    this.detailForm.patchValue({
+    this.editorDetailForm.patchValue({
       ddiUsage: this.version.ddiUsage,
       notes: this.version.notes,
       versionNotes: this.version.versionNotes,
@@ -256,63 +256,63 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     return version.status === versionType;
   }
 
-  toggleDetailPanel(): void {
-    if (this.detailPanel.nativeElement.style.display === 'none' || this.detailPanel.nativeElement.style.display === '') {
+  toggleDetailEPanel(): void {
+    if (this.detailEPanel.nativeElement.style.display === 'none' || this.detailEPanel.nativeElement.style.display === '') {
       this.isDetailCollapse = false;
-      this.detailPanel.nativeElement.style.display = 'block';
+      this.detailEPanel.nativeElement.style.display = 'block';
     } else {
       this.isDetailCollapse = true;
-      this.detailPanel.nativeElement.style.display = 'none';
+      this.detailEPanel.nativeElement.style.display = 'none';
     }
   }
 
-  toggleVersionPanel(): void {
-    if (this.versionPanel.nativeElement.style.display === 'none' || this.versionPanel.nativeElement.style.display === '') {
+  toggleVersionEPanel(): void {
+    if (this.versionEPanel.nativeElement.style.display === 'none' || this.versionEPanel.nativeElement.style.display === '') {
       this.isVersionCollapse = false;
-      this.versionPanel.nativeElement.style.display = 'block';
+      this.versionEPanel.nativeElement.style.display = 'block';
     } else {
       this.isVersionCollapse = true;
-      this.versionPanel.nativeElement.style.display = 'none';
+      this.versionEPanel.nativeElement.style.display = 'none';
     }
   }
 
-  toggleIdentityPanel(): void {
-    if (this.identityPanel.nativeElement.style.display === 'none' || this.identityPanel.nativeElement.style.display === '') {
+  toggleIdentityEPanel(): void {
+    if (this.identityEPanel.nativeElement.style.display === 'none' || this.identityEPanel.nativeElement.style.display === '') {
       this.isIdentityCollapse = false;
-      this.identityPanel.nativeElement.style.display = 'block';
+      this.identityEPanel.nativeElement.style.display = 'block';
     } else {
       this.isIdentityCollapse = true;
-      this.identityPanel.nativeElement.style.display = 'none';
+      this.identityEPanel.nativeElement.style.display = 'none';
     }
   }
 
-  toggleUsagePanel(): void {
-    if (this.usagePanel.nativeElement.style.display === 'none' || this.usagePanel.nativeElement.style.display === '') {
+  toggleUsageEPanel(): void {
+    if (this.usageEPanel.nativeElement.style.display === 'none' || this.usageEPanel.nativeElement.style.display === '') {
       this.isUsageCollapse = false;
-      this.usagePanel.nativeElement.style.display = 'block';
+      this.usageEPanel.nativeElement.style.display = 'block';
     } else {
       this.isUsageCollapse = true;
-      this.usagePanel.nativeElement.style.display = 'none';
+      this.usageEPanel.nativeElement.style.display = 'none';
     }
   }
 
-  toggleLicensePanel(): void {
-    if (this.licensePanel.nativeElement.style.display === 'none' || this.licensePanel.nativeElement.style.display === '') {
+  toggleLicenseEPanel(): void {
+    if (this.licenseEPanel.nativeElement.style.display === 'none' || this.licenseEPanel.nativeElement.style.display === '') {
       this.isLicenseCollapse = false;
-      this.licensePanel.nativeElement.style.display = 'block';
+      this.licenseEPanel.nativeElement.style.display = 'block';
     } else {
       this.isLicenseCollapse = true;
-      this.licensePanel.nativeElement.style.display = 'none';
+      this.licenseEPanel.nativeElement.style.display = 'none';
     }
   }
 
-  toggleExportPanel(): void {
-    if (this.exportPanel.nativeElement.style.display === 'none' || this.exportPanel.nativeElement.style.display === '') {
+  toggleExportEPanel(): void {
+    if (this.exportEPanel.nativeElement.style.display === 'none' || this.exportEPanel.nativeElement.style.display === '') {
       this.isExportCollapse = false;
-      this.exportPanel.nativeElement.style.display = 'block';
+      this.exportEPanel.nativeElement.style.display = 'block';
     } else {
       this.isExportCollapse = true;
-      this.exportPanel.nativeElement.style.display = 'none';
+      this.exportEPanel.nativeElement.style.display = 'none';
     }
   }
 
@@ -380,7 +380,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
 
-    this.detailForm.patchValue({
+    this.editorDetailForm.patchValue({
       tabSelected: this.initialTabSelected,
       skosItems: this.skosSelected,
       pdfItems: this.pdfSelected,
@@ -412,11 +412,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   resetExport(): void {
-    this.fillBolleanArray(this.skosSelected, false);
-    this.fillBolleanArray(this.pdfSelected, false);
-    this.fillBolleanArray(this.htmlSelected, false);
-    this.fillBolleanArray(this.docxSelected, false);
+    this.skosSelected.fill(false);
+    this.pdfSelected.fill(false);
+    this.htmlSelected.fill(false);
+    this.docxSelected.fill(false);
   }
+
   private subscribeSelectConceptEvent(): void {
     this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<IConcept>) => {
       this.concept = response.content;
@@ -502,23 +503,17 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   toggleSelectAll(downloadType: string, checked: boolean): void {
     switch (downloadType) {
       case 'skos':
-        this.fillBolleanArray(this.skosSelected, checked);
+        this.skosSelected.fill(checked);
         break;
       case 'pdf':
-        this.fillBolleanArray(this.pdfSelected, checked);
+        this.pdfSelected.fill(checked);
         break;
       case 'html':
-        this.fillBolleanArray(this.htmlSelected, checked);
+        this.htmlSelected.fill(checked);
         break;
       case 'docx':
-        this.fillBolleanArray(this.docxSelected, checked);
+        this.docxSelected.fill(checked);
         break;
-    }
-  }
-
-  private fillBolleanArray(bollArray: boolean[], checked: boolean): void {
-    for (let i = 0; i < bollArray.length; i++) {
-      bollArray[i] = checked;
     }
   }
 
@@ -640,7 +635,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      ddiUsage: this.detailForm.get(['ddiUsage'])!.value
+      ddiUsage: this.editorDetailForm.get(['ddiUsage'])!.value
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
@@ -654,7 +649,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      notes: this.detailForm.get(['notes'])!.value
+      notes: this.editorDetailForm.get(['notes'])!.value
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
@@ -668,8 +663,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      versionNotes: this.detailForm.get(['versionNotes'])!.value,
-      versionChanges: this.detailForm.get(['versionChanges'])!.value
+      versionNotes: this.editorDetailForm.get(['versionNotes'])!.value,
+      versionChanges: this.editorDetailForm.get(['versionChanges'])!.value
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
@@ -692,17 +687,17 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   closeDdiUsage(): void {
     this.isDdiUsageEdit = false;
-    this.detailForm.patchValue({ ddiUsage: this.version!.ddiUsage });
+    this.editorDetailForm.patchValue({ ddiUsage: this.version!.ddiUsage });
   }
 
   closeNotes(): void {
     this.isNotesEdit = false;
-    this.detailForm.patchValue({ notes: this.version!.notes });
+    this.editorDetailForm.patchValue({ notes: this.version!.notes });
   }
 
   closeCurrentVersionInfo(): void {
     this.isCurrentVersionInfoEdit = false;
-    this.detailForm.patchValue({ versionNotes: this.version!.versionNotes, versionChanges: this.version!.versionChanges });
+    this.editorDetailForm.patchValue({ versionNotes: this.version!.versionNotes, versionChanges: this.version!.versionChanges });
   }
 
   exportAsCsv(): void {
