@@ -13,12 +13,14 @@ import {TreeReorderComponent} from 'app/shared/tree-reorder/tree-reorder.compone
 import {LinkHttpPipe} from 'app/shared/pipe/link-http-pipe';
 import {SafeHtmlPipe} from 'app/shared/pipe/safe-html-pipe';
 import {VersionCompareComponent} from './version-compare/version-compare.component';
+import {VocabularyDownloadComponent} from './vocabulary-download/vocabulary-download.component';
 import {NgxTextDiffModule} from 'ngx-text-diff';
 import {MetadataItemComponent} from 'app/shared/metadata-item/metadata-item.component';
 import {QuillModule} from 'ngx-quill';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
-  imports: [CvsSharedLibsModule, NgxTextDiffModule, QuillModule],
+  imports: [CvsSharedLibsModule, NgxTextDiffModule, QuillModule, RouterModule],
   declarations: [
     FindLanguageFromKeyPipe,
     LinkHttpPipe,
@@ -32,7 +34,8 @@ import {QuillModule} from 'ngx-quill';
     TreeComponent,
     TreeEditorComponent,
     TreeReorderComponent,
-    VersionCompareComponent
+    VersionCompareComponent,
+    VocabularyDownloadComponent
   ],
   entryComponents: [LoginModalComponent],
   exports: [
@@ -49,7 +52,8 @@ import {QuillModule} from 'ngx-quill';
     TreeComponent,
     TreeEditorComponent,
     TreeReorderComponent,
-    VersionCompareComponent
+    VersionCompareComponent,
+    VocabularyDownloadComponent
   ],
   providers: [RouteEventsService]
 })

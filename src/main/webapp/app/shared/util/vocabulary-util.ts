@@ -1,8 +1,9 @@
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { ICode } from 'app/shared/model/code.model';
-import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
-import { IVersion } from 'app/shared/model/version.model';
-import { IConcept } from 'app/shared/model/concept.model';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {ICode} from 'app/shared/model/code.model';
+import {LanguageIso} from 'app/shared/model/enumerations/language-iso.model';
+import {IVersion} from 'app/shared/model/version.model';
+import {IConcept} from 'app/shared/model/concept.model';
+import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
 
 export default class VocabularyUtil {
   static getVocabularyVersionBySelectedLang(vocab: IVocabulary, lang: string): string {
@@ -528,5 +529,31 @@ export default class VocabularyUtil {
     sortedLangIsos.sort((a, b) => a - b);
     sortedLangIsos.forEach(lIso => sortedLang.push(VocabularyUtil.getLangIsoByEnum(lIso)));
     return sortedLang;
+  }
+
+  static getUniqueVersionLangs( versions: IVersion[], appScope:AppScope): string[] {
+    let uniqueLang: string[] = [];
+    versions.forEach(v => {
+      if (appScope === AppScope.EDITOR) {
+        if (!uniqueLang.some(l => l === v.language)) {
+          uniqueLang.push(v.language!);
+        }
+      } else {
+        if (v.number!.startsWith(versions[0].number!) && !uniqueLang.some(l => l === v.language)) {
+          uniqueLang.push(v.language!);
+        }
+      }
+    });
+    // sort only the SL & TLs in the current version
+    uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
+
+    if (appScope === AppScope.PUBLICATION) {
+      versions.forEach(v => {
+        if (!v.number!.startsWith(versions[0].number!) && !uniqueLang.some(l => l === v.language)) {
+          uniqueLang.push(v.language!);
+        }
+      });
+    }
+    return uniqueLang;
   }
 }

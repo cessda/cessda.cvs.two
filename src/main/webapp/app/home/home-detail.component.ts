@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
 
@@ -11,18 +11,21 @@ import {HomeService} from 'app/home/home.service';
 import {RouteEventsService} from 'app/shared';
 import {DiffContent} from 'ngx-text-diff/lib/ngx-text-diff.model';
 import {Observable, Subject} from 'rxjs';
+import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
 
 @Component({
   selector: 'jhi-home-detail',
   templateUrl: './home-detail.component.html'
 })
-export class HomeDetailComponent implements OnInit, AfterViewInit {
+export class HomeDetailComponent implements OnInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
   @ViewChild('versionPanel', { static: true }) versionPanel!: ElementRef;
   @ViewChild('identityPanel', { static: true }) identityPanel!: ElementRef;
   @ViewChild('usagePanel', { static: true }) usagePanel!: ElementRef;
   @ViewChild('licensePanel', { static: true }) licensePanel!: ElementRef;
   @ViewChild('exportPanel', { static: true }) exportPanel!: ElementRef;
+
+  appScope: AppScope = AppScope.PUBLICATION;
 
   vocabulary: IVocabulary | null = null;
 
@@ -38,12 +41,6 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
   initialTabSelected?: string;
   initialLangSelect = null;
 
-  dwnldCbVal: string[];
-  skosSelected: boolean[];
-  pdfSelected: boolean[];
-  htmlSelected: boolean[];
-  docxSelected: boolean[];
-
   currentSelectedCode?: string;
 
   enableDocxExport = false;
@@ -53,10 +50,12 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
 
   detailForm = this.fb.group({
     tabSelected: [],
-    skosItems: [],
-    pdfItems: [],
-    htmlItems: [],
-    docxItems: []
+    downloadFormGroup: this.fb.group({
+      skosItems: [],
+      pdfItems: [],
+      htmlItems: [],
+      docxItems: []
+    })
   });
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -69,11 +68,6 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
     protected eventManager: JhiEventManager
   ) {
     this.initialTabSelected = 'detail';
-    this.dwnldCbVal = [];
-    this.skosSelected = [];
-    this.pdfSelected = [];
-    this.htmlSelected = [];
-    this.docxSelected = [];
     this.currentSelectedCode = '';
     this.activatedRoute.queryParams.subscribe(params => {
       if (params['lang']) {
@@ -228,18 +222,6 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
         }
       }
 
-      const langs: string[] = this.getUniqueVersionLang();
-      for (let i = 0; i < langs.length; i++) {
-        const versions: IVersion[] = this.getVersionsByLanguage(langs[i]);
-        if (versions[0].number!.startsWith(this.getVersionsByLanguage(langs[0])[0].number!)) {
-          this.dwnldCbVal[i] = langs[i] + '-' + versions[0].number;
-          this.skosSelected[i] = true;
-          this.pdfSelected[i] = true;
-          this.htmlSelected[i] = true;
-          this.docxSelected[i] = true;
-        }
-      }
-
       if (this.currentSelectedCode !== '') {
         this._ngZone.runOutsideAngular(() => {
           setTimeout(() => {
@@ -257,88 +239,12 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
     });
 
     this.detailForm.patchValue({
-      tabSelected: this.initialTabSelected,
-      skosItems: this.skosSelected,
-      pdfItems: this.pdfSelected,
-      htmlItems: this.htmlSelected,
-      docxItems: this.docxSelected
+      tabSelected: this.initialTabSelected
     });
-  }
-  ngAfterViewInit(): void {
-    this._ngZone.run(() => {
-      this.resetExport();
-    });
-  }
-
-  resetExport(): void {
-    this.skosSelected.fill(false);
-    this.pdfSelected.fill(false);
-    this.htmlSelected.fill(false);
-    this.docxSelected.fill(false);
   }
 
   previousState(): void {
     window.history.back();
-  }
-
-  updateCheckboxValue(i: number, lang: string, versionNimber: string): void {
-    this.dwnldCbVal[i] = lang + '_' + versionNimber;
-  }
-
-  downloadSkos(): void {
-    this.downloadVocabularyFile('rdf', this.getCheckedItems(this.skosSelected), 'text/xml');
-  }
-
-  downloadPdf(): void {
-    this.downloadVocabularyFile('pdf', this.getCheckedItems(this.pdfSelected), 'application/pdf');
-  }
-
-  downloadHtml(): void {
-    this.downloadVocabularyFile('html', this.getCheckedItems(this.htmlSelected), 'text/html');
-  }
-
-  downloadDocx(): void {
-    this.downloadVocabularyFile(
-      'docx',
-      this.getCheckedItems(this.docxSelected),
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    );
-  }
-
-  private downloadVocabularyFile(fileFormat: string, checkedItems: string, mimeType: string): void {
-    this.homeService
-      .downloadVocabularyFile(this.vocabulary!.notation!, this.getSlVersion().number!, fileFormat, {
-        languageVersion: checkedItems
-      })
-      .subscribe((res: Blob) => {
-        const newBlob = new Blob([res], { type: mimeType });
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(newBlob);
-          return;
-        }
-        const data = window.URL.createObjectURL(newBlob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = this.vocabulary!.notation! + '-' + this.getSlVersion().number! + '_' + checkedItems + '.' + fileFormat;
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(function(): void {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-      });
-  }
-
-  getCheckedItems(checkedArray: boolean[]): string {
-    let selectedVersion = '';
-    for (let i = 0; i < checkedArray.length; i++) {
-      if (checkedArray[i] === true) {
-        selectedVersion += this.dwnldCbVal[i] + '_';
-      }
-    }
-    if (selectedVersion.length > 0) {
-      selectedVersion = selectedVersion.substr(0, selectedVersion.length - 1);
-    }
-    return selectedVersion;
   }
 
   goToCvSearch(): void {
@@ -347,23 +253,6 @@ export class HomeDetailComponent implements OnInit, AfterViewInit {
       this.router.navigateByUrl(prevHistory);
     } else {
       this.router.navigate(['']);
-    }
-  }
-
-  toggleSelectAll(downloadType: string, checked: boolean): void {
-    switch (downloadType) {
-      case 'skos':
-        this.skosSelected.fill(checked);
-        break;
-      case 'pdf':
-        this.pdfSelected.fill(checked);
-        break;
-      case 'html':
-        this.htmlSelected.fill(checked);
-        break;
-      case 'docx':
-        this.docxSelected.fill(checked);
-        break;
     }
   }
 

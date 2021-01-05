@@ -388,7 +388,7 @@
                                 <input ngbButton type="radio" value="license"> License and Citation
                             </label>
                             <label ngbButtonLabel class="btn-primary tab-label">
-                                <input ngbButton type="radio" value="export" (click)="resetExport()"> Export/Download
+                                <input ngbButton type="radio" value="export"> Export/Download
                             </label>
                         </div>
 
@@ -674,70 +674,17 @@
                             <span>Exports</span>
                         </a>
                         <div class="detail-panel" [ngClass]="{'select-by-tab': editorDetailForm.get('tabSelected')!.value === 'export', 'not-select-by-tab': editorDetailForm.get('tabSelected')!.value !== 'export'}" #exportEPanel id="exportEPanel">
-                            <table class="table table-striped" aria-describedby="page-heading">
-                                <thead>
-                                <tr>
-                                    <th scope="col"><label>Language</label></th>
-                                    <th scope="col" class="tac"><label>Version</label></th>
-                                    <th scope="col" class="tac"><input type="checkbox" [checked]="!(skosSelected.indexOf(false) > -1)" name="skosGrp" id="skosGrp" (change)="toggleSelectAll('skos', $event.target.checked)"/><label for="skosGrp">SKOS</label></th>
-                                    <th scope="col" class="tac"><input type="checkbox" [checked]="!(pdfSelected.indexOf(false) > -1)" name="pdfGrp" id="pdfGrp" (change)="toggleSelectAll('pdf', $event.target.checked)"/><label for="pdfGrp">PDF</label></th>
-                                    <th scope="col" class="tac"><input type="checkbox" [checked]="!(htmlSelected.indexOf(false) > -1)" name="htmlGrp" id="htmlGrp" (change)="toggleSelectAll('html', $event.target.checked)"/><label for="htmlGrp">HTML</label></th>
-                                    <th *ngIf="enableDocxExport" scope="col" class="tac"><input type="checkbox" [checked]="!(docxSelected.indexOf(false) > -1)" name="docxGrp" id="docxGrp" (change)="toggleSelectAll('docx', $event.target.checked)"/><label for="docxGrp">DOCX</label></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let lang of getUniqueVersionLang()!; let i = index">
-                                    <th scope="row">{{getFormattedLang(lang)}}</th>
-                                    <td class="tac">
-                                        <!-- determine multiple version with same lang -->
-                                        <span *ngIf="getVersionsByLanguage(lang)!.length === 1; else versionDropDown">
-                                            <span *ngFor="let version of getVersionsByLanguage(lang)!">
-                                                {{version!.number}}{{version!.status !== 'PUBLISHED' ? '_' + version!.status : ''}}
-                                            </span>
-                                        </span>
-                                        <ng-template #versionDropDown>
-                                            <select (change)="updateCheckboxValue(i, lang, $event.target.value)">
-                                                <option *ngFor="let version of getVersionsByLanguage(lang)!" value="{{version!.number}}">{{version!.number}}</option>
-                                            </select>
-                                        </ng-template>
-                                    </td>
-                                    <td class="tac"><input type="checkbox" [checked]="skosSelected[i]" name="skosItems" formControlName="skosItems" value="{{dwnldCbVal[i]}}" (change)="skosSelected[i] = $event.target.checked"/></td>
-                                    <td class="tac"><input type="checkbox" [checked]="pdfSelected[i]" name="pdfItems" formControlName="pdfItems" value="{{dwnldCbVal[i]}}" (change)="pdfSelected[i] = $event.target.checked"/></td>
-                                    <td class="tac"><input type="checkbox" [checked]="htmlSelected[i]" name="htmlItems" formControlName="htmlItems" value="{{dwnldCbVal[i]}}" (change)="htmlSelected[i] = $event.target.checked"/></td>
-                                    <td *ngIf="enableDocxExport" class="tac"><input type="checkbox" [checked]="docxSelected[i]" name="docxItems" formControlName="docxItems" value="{{dwnldCbVal[i]}}" (change)="docxSelected[i] = $event.target.checked"/></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Download</th>
-                                    <td>&nbsp;</td>
-                                    <td class="tac">
-                                        <button class="btn btn-primary" (click)="downloadSkos()" [disabled]="skosSelected.indexOf(true) === -1">
-                                            <fa-icon icon="download"></fa-icon>
-                                        </button>
-                                    </td>
-                                    <td class="tac">
-                                        <button class="btn btn-primary" (click)="downloadPdf()" [disabled]="pdfSelected.indexOf(true) === -1">
-                                            <fa-icon icon="download"></fa-icon>
-                                        </button>
-                                    </td>
-                                    <td class="tac">
-                                        <button class="btn btn-primary" (click)="downloadHtml()" [disabled]="htmlSelected.indexOf(true) === -1">
-                                            <fa-icon icon="download"></fa-icon>
-                                        </button>
-                                    </td>
-                                    <td *ngIf="enableDocxExport" class="tac">
-                                        <button class="btn btn-primary" (click)="downloadDocx()" [disabled]="docxSelected.indexOf(true) === -1">
-                                            <fa-icon icon="download"></fa-icon>
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                            <jhi-vocabulary-download
+                                [appScope]="appScope"
+                                [enableDocxExport]="enableDocxExport"
+                                [versions]="vocabulary!.versions"
+                                [slVersionNumber]="getSlVersion().number"
+                                [downloadFormGroup]="editorDetailForm.controls.downloadFormGroup"
+                                [notation]="vocabulary!.notation"
+                            ></jhi-vocabulary-download>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
         </div>
 

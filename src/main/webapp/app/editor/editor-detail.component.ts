@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {JhiDataUtils, JhiEventManager, JhiEventWithContent} from 'ng-jhipster';
 
@@ -25,12 +25,13 @@ import {EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogCom
 import * as moment from 'moment';
 import {AccountService} from 'app/core/auth/account.service';
 import {Account} from 'app/core/user/account.model';
+import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
 
 @Component({
   selector: 'jhi-editor-detail',
   templateUrl: './editor-detail.component.html'
 })
-export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
+export class EditorDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailEPanel', { static: true }) detailEPanel!: ElementRef;
   @ViewChild('versionEPanel', { static: true }) versionEPanel!: ElementRef;
   @ViewChild('identityEPanel', { static: true }) identityEPanel!: ElementRef;
@@ -38,6 +39,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('licenseEPanel', { static: true }) licenseEPanel!: ElementRef;
   @ViewChild('exportEPanel', { static: true }) exportEPanel!: ElementRef;
 
+  appScope: AppScope = AppScope.EDITOR;
   account!: Account;
 
   eventSubscriber?: Subscription;
@@ -60,12 +62,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   initialTabSelected?: string;
   initialLangSelect = null;
-
-  dwnldCbVal: string[];
-  skosSelected: boolean[];
-  pdfSelected: boolean[];
-  htmlSelected: boolean[];
-  docxSelected: boolean[];
 
   availableLanguages: string[] = [];
   availableTlLanguages: string[] = [];
@@ -100,10 +96,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
 
   editorDetailForm = this.fb.group({
     tabSelected: [],
-    skosItems: [],
-    pdfItems: [],
-    htmlItems: [],
-    docxItems: [],
+    downloadFormGroup: this.fb.group({
+      skosItems: [],
+      pdfItems: [],
+      htmlItems: [],
+      docxItems: []
+    }),
     ddiUsage: [],
     notes: [],
     versionNotes: [],
@@ -124,11 +122,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     protected eventManager: JhiEventManager
   ) {
     this.initialTabSelected = 'detail';
-    this.dwnldCbVal = [];
-    this.skosSelected = [];
-    this.pdfSelected = [];
-    this.htmlSelected = [];
-    this.docxSelected = [];
     this.currentSelectedCode = '';
     this.activePopup = '';
     this.activatedRoute.queryParams.subscribe(params => {
@@ -355,16 +348,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       } else {
         this.setActiveVersion(this.vocabulary!.selectedLang!);
       }
-      // build download checkbox
-      const languages: string[] = this.getUniqueVersionLang();
-      for (let i = 0; i < languages.length; i++) {
-        const versions: IVersion[] = this.getVersionsByLanguage(languages[i]);
-        this.dwnldCbVal[i] = languages[i] + '-' + versions[0].number;
-        this.skosSelected[i] = true;
-        this.pdfSelected[i] = true;
-        this.htmlSelected[i] = true;
-        this.docxSelected[i] = true;
-      }
 
       // open popup, based on query param
       if (this.activePopup !== '') {
@@ -381,11 +364,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     });
 
     this.editorDetailForm.patchValue({
-      tabSelected: this.initialTabSelected,
-      skosItems: this.skosSelected,
-      pdfItems: this.pdfSelected,
-      htmlItems: this.htmlSelected,
-      docxItems: this.docxSelected
+      tabSelected: this.initialTabSelected
     });
 
     this.subscribeSelectConceptEvent();
@@ -405,18 +384,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
       });
     }
   }
-  ngAfterViewInit(): void {
-    this._ngZone.run(() => {
-      this.resetExport();
-    });
-  }
-
-  resetExport(): void {
-    this.skosSelected.fill(false);
-    this.pdfSelected.fill(false);
-    this.htmlSelected.fill(false);
-    this.docxSelected.fill(false);
-  }
 
   private subscribeSelectConceptEvent(): void {
     this.eventSubscriber = this.eventManager.subscribe('selectConcept', (response: JhiEventWithContent<IConcept>) => {
@@ -431,89 +398,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy, AfterViewInit {
     window.history.back();
   }
 
-  updateCheckboxValue(i: number, lang: string, versionNimber: string): void {
-    this.dwnldCbVal[i] = lang + '_' + versionNimber;
-  }
-
-  downloadSkos(): void {
-    this.downloadEditorVocabularyFile('rdf', this.getCheckedItems(this.skosSelected), 'text/xml');
-  }
-
-  downloadPdf(): void {
-    this.downloadEditorVocabularyFile('pdf', this.getCheckedItems(this.pdfSelected), 'application/pdf');
-  }
-
-  downloadHtml(): void {
-    this.downloadEditorVocabularyFile('html', this.getCheckedItems(this.htmlSelected), 'text/html');
-  }
-
-  downloadDocx(): void {
-    this.downloadEditorVocabularyFile(
-      'docx',
-      this.getCheckedItems(this.docxSelected),
-      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    );
-  }
-
-  private downloadEditorVocabularyFile(fileFormat: string, checkedItems: string, mimeType: string): void {
-    this.editorService
-      .downloadVocabularyFile(this.vocabulary!.notation!, this.getSlVersion().number!, fileFormat, {
-        lv: checkedItems
-      })
-      .subscribe((res: Blob) => {
-        const newBlob = new Blob([res], { type: mimeType });
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(newBlob);
-          return;
-        }
-        const data = window.URL.createObjectURL(newBlob);
-        const link = document.createElement('a');
-        link.href = data;
-        link.download = this.vocabulary!.notation! + '-' + this.getSlVersion().number! + '_' + checkedItems + '.' + fileFormat;
-        link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-        setTimeout(function(): void {
-          window.URL.revokeObjectURL(data);
-          link.remove();
-        }, 100);
-      });
-  }
-
-  getCheckedItems(checkedArray: boolean[]): string {
-    let selectedVersion = '';
-    for (let i = 0; i < checkedArray.length; i++) {
-      if (checkedArray[i] === true) {
-        selectedVersion += this.dwnldCbVal[i] + '_';
-      }
-    }
-    if (selectedVersion.length > 0) {
-      selectedVersion = selectedVersion.substr(0, selectedVersion.length - 1);
-    }
-    return selectedVersion;
-  }
-
   goToCvSearch(): void {
     const prevHistory = this.routeEventsService.previousRoutePath.value;
     if (prevHistory === '/' || prevHistory.startsWith('/?')) {
       this.router.navigateByUrl(prevHistory);
     } else {
       this.router.navigate(['']);
-    }
-  }
-
-  toggleSelectAll(downloadType: string, checked: boolean): void {
-    switch (downloadType) {
-      case 'skos':
-        this.skosSelected.fill(checked);
-        break;
-      case 'pdf':
-        this.pdfSelected.fill(checked);
-        break;
-      case 'html':
-        this.htmlSelected.fill(checked);
-        break;
-      case 'docx':
-        this.docxSelected.fill(checked);
-        break;
     }
   }
 
