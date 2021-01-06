@@ -14,13 +14,15 @@ import {LinkHttpPipe} from 'app/shared/pipe/link-http-pipe';
 import {SafeHtmlPipe} from 'app/shared/pipe/safe-html-pipe';
 import {VersionCompareComponent} from './version-compare/version-compare.component';
 import {VocabularyDownloadComponent} from './vocabulary-download/vocabulary-download.component';
+import {VocabularySearchResultComponent} from './vocabulary-search-result/vocabulary-search-result.component';
 import {NgxTextDiffModule} from 'ngx-text-diff';
 import {MetadataItemComponent} from 'app/shared/metadata-item/metadata-item.component';
 import {QuillModule} from 'ngx-quill';
 import {RouterModule} from '@angular/router';
+import {TagInputModule} from 'ngx-chips';
 
 @NgModule({
-  imports: [CvsSharedLibsModule, NgxTextDiffModule, QuillModule, RouterModule],
+  imports: [CvsSharedLibsModule, NgxTextDiffModule, QuillModule, RouterModule, TagInputModule],
   declarations: [
     FindLanguageFromKeyPipe,
     LinkHttpPipe,
@@ -35,7 +37,8 @@ import {RouterModule} from '@angular/router';
     TreeEditorComponent,
     TreeReorderComponent,
     VersionCompareComponent,
-    VocabularyDownloadComponent
+    VocabularyDownloadComponent,
+    VocabularySearchResultComponent
   ],
   entryComponents: [LoginModalComponent],
   exports: [
@@ -53,7 +56,8 @@ import {RouterModule} from '@angular/router';
     TreeEditorComponent,
     TreeReorderComponent,
     VersionCompareComponent,
-    VocabularyDownloadComponent
+    VocabularyDownloadComponent,
+    VocabularySearchResultComponent
   ],
   providers: [RouteEventsService]
 })

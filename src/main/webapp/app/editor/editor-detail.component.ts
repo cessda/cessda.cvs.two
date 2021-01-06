@@ -105,8 +105,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     ddiUsage: [],
     notes: [],
     versionNotes: [],
-    versionChanges: [],
-    versionHistories: []
+    versionChanges: []
   });
 
   constructor(
@@ -163,8 +162,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       ddiUsage: this.version.ddiUsage,
       notes: this.version.notes,
       versionNotes: this.version.versionNotes,
-      versionChanges: this.version.versionChanges,
-      versionHistories: this.version.versionHistories
+      versionChanges: this.version.versionChanges
     });
 
     this.noOfComments = this.version.comments!.length;

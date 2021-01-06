@@ -51,12 +51,12 @@
                                 <div>
                                     <tag-input [formControlName]="'aggAgency'"
                                                [onlyFromAutocomplete]="true"
-                                               [ripple]="false"
                                                [class] = "'sk-select-min'"
                                                (onAdd)="onAddAgency($event)"
                                                (onRemove)="onRemoveAgency($event)"
                                                [animationDuration]="{ enter: '0ms', leave: '0ms' }"
                                                [placeholder]="'Search agencies'"
+                                               [ripple]="false"
                                                [secondaryPlaceholder]="'Search agencies'">
                                         <tag-input-dropdown
                                             [showDropdownIfEmpty]="true"
@@ -71,28 +71,79 @@
                         </div>
                     </div>
 
-                    <div *ngIf="activeAggAgency!.length !== 0" class="filter-panel acc-header">
+                    <div *ngIf="isEditorScope()" class="filter-panel">
+                        <a class="acc-header option-label col-12" href="javascript:void(0);" (click)="isAggStatusCollapsed = !isAggStatusCollapsed"
+                           [attr.aria-expanded]="isAggStatusCollapsed" aria-controls="status-filter">&nbsp;
+                            <fa-icon *ngIf="!isAggStatusCollapsed" icon="caret-down"></fa-icon>
+                            <fa-icon *ngIf="isAggStatusCollapsed" icon="caret-right"></fa-icon>
+                            <span>Status</span>
+                            <fa-icon icon="question-circle" style="float:right" ngbTooltip="The status of vocabularies version"></fa-icon>
+                        </a>
+                        <div id="status-filter" class="acc-body" [ngbCollapse]="isAggStatusCollapsed">
+                            <div class="form-group mb-0">
+                                <div>
+                                    <tag-input [formControlName]="'aggStatus'"
+                                               [onlyFromAutocomplete]="true"
+                                               [class] = "'sk-select-min'"
+                                               [ripple]="false"
+                                               (onAdd)="onAddStatus($event)"
+                                               (onRemove)="onRemoveStatus($event)"
+                                               [animationDuration]="{ enter: '0ms', leave: '0ms' }"
+                                               [placeholder]="'Search status'"
+                                               [secondaryPlaceholder]="'Search status'">
+                                        <tag-input-dropdown
+                                            [showDropdownIfEmpty]="true"
+                                            [keepOpen]="false"
+                                            [focusFirstElement]="true"
+                                            [dynamicUpdate]="false"
+                                            [autocompleteItems]="aggStatusBucket">
+                                        </tag-input-dropdown>
+                                    </tag-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="activeAggAgency!.length !== 0 || activeAggStatus!.length !== 0" class="filter-panel acc-header">
                         <button (click)="clearFilterAndReload()" class="btn sk-select-min sk-input-f">
                             <span class="option-label">Clear filter </span>
                         </button>
                     </div>
 
                 </div>
+
+                <ng-container *ngIf="isEditorScope()">
+                    <div *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:0, agencyRoles:['ADMIN','ADMIN_SL']}">
+                        <a class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isActionCollapse = !isActionCollapse"
+                           [attr.aria-expanded]="isActionCollapse" aria-controls="action-panel">
+                            &nbsp;
+                            <fa-icon *ngIf="!isActionCollapse" icon="caret-down"></fa-icon>
+                            <fa-icon *ngIf="isActionCollapse" icon="caret-right"></fa-icon>
+                            <span>Actions</span>
+                        </a>
+                        <div id="action-panel" class="acc-body" [ngbCollapse]="isActionCollapse">
+                            <button class="btn sk-select-min sk-input-f" [routerLink]="['/', 'editor', { outlets: { popup: 'cv-add' } }]">
+                                <fa-icon icon="plus"></fa-icon>
+                                <span>Add Cv</span>
+                            </button>
+                        </div>
+                    </div>
+                </ng-container>
             </div>
             <div class="result-column">
                 <div class="table-responsive" *ngIf="vocabularies?.length > 0">
-                    <div *ngFor="let vocabulary of vocabularies ;trackBy: trackNotation" class="vocab-item">
+                    <div *ngFor="let vocabulary of vocabularies; trackBy: trackNotation" class="vocab-item">
                         <div class="vocab-logo">
                             <img [src]="'/content/images/agency/' + vocabulary.agencyLogo" width="120px" alt="logo"/>
                         </div>
                         <div class="vocab-detail">
                             <div class="vocab-title">
                                 <h4>
-                                    <a [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
+                                    <a [routerLink]="[baseUrl, vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
                                         <span [innerHTML]="getTitleByLang(vocabulary)"></span>
                                     </a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a [routerLink]="[baseUrl, vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
                                         <span>{{vocabulary.notation}}</span>
                                     </a>
                                 </h4>
@@ -101,14 +152,14 @@
                                 <span [innerHTML]="getDefinitionByLang(vocabulary)"></span>
                             </div>
                             <div class="vocab-ver">
-                                <span>Version: {{getVersionByLang(vocabulary)}}</span>
-                                <a [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang, tab:'export'}">
+                                <span>Version: {{isEditorScope() ? vocabulary.versionNumber:getVersionByLang(vocabulary)}}</span>
+                                <a [routerLink]="[baseUrl, vocabulary.notation ]" [queryParams]="{tab:'export'}">
                                     <span>Download</span>
                                 </a>
                             </div>
                             <div class="vocab-code">
                                 <div *ngFor="let code of vocabulary.codes ;trackBy: trackNotation" class="vocab-code-item">
-                                    <a [routerLink]="['/vocabulary', vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang, code:code.notation.split('.').join('')}">
+                                    <a [routerLink]="[baseUrl, vocabulary.notation ]" [queryParams]="{code:code.notation.split('.').join('')}">
                                         <span [innerHTML]="getCodeTitleByLang(code, vocabulary.selectedLang)"></span>
                                     </a>
                                     :&nbsp;&nbsp;
@@ -116,10 +167,14 @@
                                 </div>
                             </div>
                             <div class="vocab-lang">
-                                <button *ngFor="let lang of sortLangByEnum(vocabulary.languagesPublished, vocabulary.sourceLanguage)"
+                                <button *ngFor="let lang of sortLangByEnum(isEditorScope() ? vocabulary.languages: vocabulary.languagesPublished, vocabulary.sourceLanguage)"
                                         (click)="vocabulary.selectedLang = lang" class="vocab-lang-button"
-                                        [ngClass]="{'active': lang === vocabulary.selectedLang, 'source-lang': lang === vocabulary.sourceLanguage}"
-                                        ngbTooltip="{{getFormattedLangIso(lang, vocabulary.sourceLanguage)}}">
+                                        [ngClass]="{
+                                        'active': lang === vocabulary.selectedLang,
+                                        'source-lang': lang === vocabulary.sourceLanguage,
+                                        'status-draft': isVersionContains( vocabulary, lang, 'DRAFT'),
+                                        'status-review': isVersionContains( vocabulary, lang, 'REVIEW')}"
+                                        ngbTooltip="{{getFormattedLangIso(vocabulary, lang, vocabulary.sourceLanguage)}}">
                                     {{lang}}
                                 </button>
                             </div>
