@@ -33,7 +33,6 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   @Input() appScope!: AppScope;
   @ViewChild('filterPanels', { static: true }) filterPanels!: ElementRef;
 
-  baseUrl!: string;
   account: Account | null = null;
 
   vocabularies?: IVocabulary[];
@@ -82,7 +81,6 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     protected eventManager: JhiEventManager,
     private fb: FormBuilder
   ) {
-    this.baseUrl = this.isEditorScope() ? '/editor/vocabulary': '/vocabulary';
     this.currentSearch = '';
     this.activeAggAgency = [];
     this.activeAggLanguage = [];
@@ -124,6 +122,10 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
 
     this.isAggAgencyCollapsed = this.activeAggAgency.length === 0;
     this.isAggStatusCollapsed = this.activeAggStatus.length === 0;
+  }
+
+  getBaseUrl(): string {
+    return this.isEditorScope() ? '/editor/vocabulary': '/vocabulary';
   }
 
   isEditorScope(): boolean {

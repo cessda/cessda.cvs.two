@@ -139,11 +139,11 @@
                         <div class="vocab-detail">
                             <div class="vocab-title">
                                 <h4>
-                                    <a [routerLink]="[baseUrl, vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
+                                    <a [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
                                         <span [innerHTML]="getTitleByLang(vocabulary)"></span>
                                     </a>
                                     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a [routerLink]="[baseUrl, vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
+                                    <a [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
                                         <span>{{vocabulary.notation}}</span>
                                     </a>
                                 </h4>
@@ -153,13 +153,13 @@
                             </div>
                             <div class="vocab-ver">
                                 <span>Version: {{isEditorScope() ? vocabulary.versionNumber:getVersionByLang(vocabulary)}}</span>
-                                <a [routerLink]="[baseUrl, vocabulary.notation ]" [queryParams]="{tab:'export'}">
+                                <a [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{tab:'export'}">
                                     <span>Download</span>
                                 </a>
                             </div>
                             <div class="vocab-code">
                                 <div *ngFor="let code of vocabulary.codes ;trackBy: trackNotation" class="vocab-code-item">
-                                    <a [routerLink]="[baseUrl, vocabulary.notation ]" [queryParams]="{code:code.notation.split('.').join('')}">
+                                    <a [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{code:code.notation.split('.').join('')}">
                                         <span [innerHTML]="getCodeTitleByLang(code, vocabulary.selectedLang)"></span>
                                     </a>
                                     :&nbsp;&nbsp;
