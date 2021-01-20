@@ -51,7 +51,7 @@ const quillConfig: QuillConfig = {
           }
         },
         color: {
-          colors: ['green', 'red', 'yellow', 'blue', '#636363', 'grey', 'white'],
+          colors: ['green', 'red', 'yellow', 'blue', '#ededed', 'grey', 'white'],
           text: 'Background Colors:'
         }
       }
