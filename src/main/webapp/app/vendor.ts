@@ -2,3 +2,4 @@
 import '../content/scss/vendor.scss';
 // Quill -rich-text
 import 'quill/dist/quill.js';
+import 'quill-better-table/dist/quill-better-table.js';

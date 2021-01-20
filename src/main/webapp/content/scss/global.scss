@@ -1188,7 +1188,7 @@ button.invisible-button:focus {
 }
 
 #overview{
-  ul{
+  ul,ol{
     margin: 0;
     padding: 0;
     li {
@@ -1215,6 +1215,24 @@ button.invisible-button:focus {
     }
   }
 }
-.ql-snow .ql-editor pre{
-  font-size: 0.8em;
+
+.ql-snow{
+  .ql-editor{
+    pre.ql-syntax {
+      background-color: #23241f;
+      color: #f8f8f2;
+      overflow: visible;
+      font-size: 0.7em;
+    }
+    table.quill-better-table {
+      td {
+        border-color: grey;
+        >p{
+          span,strong,em{
+            background-color:transparent !important;
+          }
+        }
+      }
+    }
+  }
 }
