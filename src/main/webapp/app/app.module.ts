@@ -28,6 +28,8 @@ import {QuillConfig, QuillModule} from 'ngx-quill';
 import * as Quill from 'quill';
 // @ts-ignore
 import QuillBetterTable from 'quill-better-table';
+// @ts-ignore
+import BlotFormatter from 'quill-blot-formatter';
 // ngx-text-diff
 import {ScrollingModule} from '@angular/cdk/scrolling';
 import {NgxTextDiffModule} from 'ngx-text-diff';
@@ -35,7 +37,8 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 Quill.register(
   {
-    "modules/better-table": QuillBetterTable
+    'modules/better-table': QuillBetterTable,
+    'modules/blotFormatter': BlotFormatter
   },
   true
 );
@@ -43,11 +46,11 @@ Quill.register(
 const quillConfig: QuillConfig = {
   modules: {
     table: false, // disable table module
-    "better-table": {
+    'better-table': {
       operationMenu: {
         items: {
           unmergeCells: {
-            text: "Another unmerge cells name"
+            text: 'Another unmerge cells name'
           }
         },
         color: {
@@ -58,7 +61,8 @@ const quillConfig: QuillConfig = {
     },
     keyboard: {
       bindings: QuillBetterTable.keyboardBindings
-    }
+    },
+    blotFormatter: {}
   }
 };
 
