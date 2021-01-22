@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <title>Controlled Vocabulary</title>
+       <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'/>
+    <style type="text/css">
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 2em;
+            font-size:0.8em;
+        }
+        table tr td{
+            margin: 0;
+            padding: 2px 5px;
+            border: none;
+        }
+        td p{
+            margin: 0;
+            padding: 0;
+        }
+        td p span,td p strong,td p em{
+            background-color:transparent !important;
+        }
+        @page {
+          @bottom-right {
+            color: #97acc2;
+            content: counter(page) " / " counter(pages);
+          }
+        }
+        @media print
+        {
+            div.page{
+                page-break-inside: avoid;
+            }
+            .pagebreak { page-break-before: always; }
+        }
+    </style>
+</head>
+<body>
+    <div th:remove="tag" th:each="section, iterStat: ${sections}">
+        <div th:if="${iterStat.index} > 0" class="pagebreak"></div>
+        <div th:remove="tag" th:utext="${section}"></div>
+    </div>
+</body>
+</html>

@@ -30,6 +30,7 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
+import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
@@ -45,8 +46,6 @@ import org.elasticsearch.search.aggregations.bucket.filter.FiltersAggregationBui
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -1523,9 +1522,9 @@ public class VocabularyServiceImpl implements VocabularyService {
         Map<String, Object> map = new HashMap<>();
         // escaping HTML to strict XHTML
         for (VersionDTO includedVersion : includedVersions) {
-            includedVersion.setVersionNotes( toStrictXhtml(includedVersion.getVersionNotes()));
-            includedVersion.setVersionChanges( toStrictXhtml(includedVersion.getVersionChanges()));
-            includedVersion.setDdiUsage( toStrictXhtml(includedVersion.getDdiUsage()));
+            includedVersion.setVersionNotes(ResourceUtils.toStrictXhtml(includedVersion.getVersionNotes()));
+            includedVersion.setVersionChanges( ResourceUtils.toStrictXhtml(includedVersion.getVersionChanges()));
+            includedVersion.setDdiUsage( ResourceUtils.toStrictXhtml(includedVersion.getDdiUsage()));
         }
 
         // sorted versions
@@ -1586,13 +1585,6 @@ public class VocabularyServiceImpl implements VocabularyService {
         return includedVersions;
     }
 
-    private String toStrictXhtml(String text) {
-        if( text == null )
-            return null;
-        final Document document = Jsoup.parse(text);
-        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-        return document.html();
-    }
 
     private void prepareAdditionalAttributesForNonSkos(VocabularyDTO vocabularyDTO, Map<String, Object> map, AgencyDTO agencyDTO) {
         if( vocabularyDTO.getAgencyLogo() != null ) {

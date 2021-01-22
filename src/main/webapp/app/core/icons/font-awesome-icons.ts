@@ -21,6 +21,8 @@ import {
   faExclamationTriangle,
   faExternalLinkAlt,
   faEye,
+  faFilePdf,
+  faFileWord,
   faFlag,
   faFolderPlus,
   faHdd,
@@ -112,5 +114,7 @@ export const fontAwesomeIcons = [
   faLevelUpAlt,
   faExclamationTriangle,
   faStickyNote,
-  faTimesCircle
+  faTimesCircle,
+  faFilePdf,
+  faFileWord
 ];

@@ -1,12 +1,13 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { IMetadataField, MetadataField } from 'app/shared/model/metadata-field.model';
-import { EditorService } from 'app/editor/editor.service';
-import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
-import { METADATA_KEY_API } from 'app/shared/constants/metadata.constants';
-import { HttpResponse } from '@angular/common/http';
-import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
-import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {IMetadataField, MetadataField} from 'app/shared/model/metadata-field.model';
+import {EditorService} from 'app/editor/editor.service';
+import {MetadataFieldService} from 'app/entities/metadata-field/metadata-field.service';
+import {METADATA_KEY_API} from 'app/shared/constants/metadata.constants';
+import {HttpResponse} from '@angular/common/http';
+import {IMetadataValue, MetadataValue} from 'app/shared/model/metadata-value.model';
+import {Subscription} from 'rxjs';
+import {JhiEventManager} from 'ng-jhipster';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'jhi-api-docs',
@@ -18,13 +19,23 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
   metadataValueMenu?: IMetadataValue;
   metadataKey = METADATA_KEY_API;
 
+  enableDocxExport = false;
+  generatingFile = false;
+
   eventSubscriber?: Subscription;
 
   constructor(
     protected editorService: EditorService,
     private metadataFieldService: MetadataFieldService,
-    protected eventManager: JhiEventManager
-  ) {}
+    protected eventManager: JhiEventManager,
+    protected activatedRoute: ActivatedRoute,
+  ) {
+    this.activatedRoute.queryParams.subscribe(params => {
+      if (params['docx-export'] && params['docx-export'] === 'true') {
+          this.enableDocxExport = true;
+      }
+    });
+  }
 
   ngOnInit(): void {
     this.refreshContent();
@@ -53,5 +64,38 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
     if (this.eventSubscriber) {
       this.eventSubscriber.unsubscribe();
     }
+  }
+
+  downloadAsFile(format: string): void {
+    if ( this.generatingFile ) {
+      return;
+    }
+    this.generatingFile = true;
+    this.metadataFieldService
+      .downloadMetadataFile(this.metadataKey, format)
+      .subscribe((res: Blob) => {
+        this.generateDownloadFile(
+          res,
+          format === 'pdf' ? 'application/pdf':'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          format === 'pdf' ? 'pdf':'docx');
+      });
+  }
+
+  private generateDownloadFile(res: Blob, mimeType: string, fileFormat: string): void {
+    const newBlob = new Blob([res], {type: mimeType});
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(newBlob);
+      return;
+    }
+    const data = window.URL.createObjectURL(newBlob);
+    const link = document.createElement('a');
+    link.href = data;
+    link.download = 'CESSDA_API-Docs.' + fileFormat;
+    link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
+    setTimeout(function (): void {
+      window.URL.revokeObjectURL(data);
+      link.remove();
+    }, 100);
+    this.generatingFile = false;
   }
 }

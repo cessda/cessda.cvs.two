@@ -1226,7 +1226,8 @@ button.invisible-button:focus {
     }
     table.quill-better-table {
       td {
-        border-color: grey;
+        border: none;
+        border-bottom: 1px solid #efefef;
         >p{
           span,strong,em{
             background-color:transparent !important;

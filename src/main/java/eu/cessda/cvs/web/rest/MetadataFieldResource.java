@@ -1,15 +1,20 @@
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataFieldDTO;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
+import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -18,12 +23,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Comparator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Optional;
+import java.nio.file.Files;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,6 +41,7 @@ public class MetadataFieldResource {
 
     private final Logger log = LoggerFactory.getLogger(MetadataFieldResource.class);
 
+    public static final String ATTACHMENT_FILENAME = "attachment; filename=";
     private static final String ENTITY_NAME = "metadataField";
 
     @Value("${jhipster.clientApp.name}")
@@ -42,8 +49,11 @@ public class MetadataFieldResource {
 
     private final MetadataFieldService metadataFieldService;
 
-    public MetadataFieldResource(MetadataFieldService metadataFieldService) {
+    private final ExportService exportService;
+
+    public MetadataFieldResource(MetadataFieldService metadataFieldService, ExportService exportService) {
         this.metadataFieldService = metadataFieldService;
+        this.exportService = exportService;
     }
 
     /**
@@ -130,6 +140,43 @@ public class MetadataFieldResource {
             metadataFieldDTO.get().setMetadataValues(metadataValueDTOS);
         }
         return ResponseUtil.wrapOrNotFound(metadataFieldDTO);
+    }
+
+    /**
+     * {@code GET  /metadata-fields/download/:metadataKey} : get the "metadataKey" metadataField.
+     *
+     * @param metadataKey the metadataKey of the metadataFieldDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the metadataFieldDTO, or with status {@code 404 (Not Found)}.
+     */
+    @GetMapping("/metadata-fields/download-pdf/{metadataKey}")
+    public ResponseEntity<Resource> getMetadataPdfFileByMetadataKey(@PathVariable String metadataKey) throws JAXBException, IOException, Docx4JException {
+        return exportMetadataAsFile(metadataKey, ExportService.DownloadType.PDF);
+    }
+
+    @GetMapping("/metadata-fields/download-word/{metadataKey}")
+    public ResponseEntity<Resource> getMetadataDocxFileByMetadataKey(@PathVariable String metadataKey) throws JAXBException, IOException, Docx4JException {
+        return exportMetadataAsFile(metadataKey, ExportService.DownloadType.WORD);
+    }
+
+    private ResponseEntity<Resource> exportMetadataAsFile(String metadataKey, ExportService.DownloadType downloadType) throws IOException, JAXBException, Docx4JException {
+        Optional<MetadataFieldDTO> metadataFieldDTO = metadataFieldService.findOneByMetadataKey(metadataKey);
+        Map<String, Object> map = new HashMap<>();
+        // sort by position
+        if( metadataFieldDTO.isPresent() ) {
+            final LinkedHashSet<MetadataValueDTO> metadataValueDTOS = metadataFieldDTO.get().getMetadataValues().stream().sorted(Comparator.comparing(MetadataValueDTO::getPosition))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+            metadataFieldDTO.get().setMetadataValues(metadataValueDTOS);
+            map.put("sections", metadataValueDTOS.stream().filter(mv -> !mv.getIdentifier().equals("overview"))
+                .map(mv -> ResourceUtils.toStrictXhtml(mv.getValue())).collect(Collectors.toList()));
+        }
+
+        File file = exportService.generateFileByThymeleafTemplate("document", "document", map, downloadType);
+        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()) );
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + file.getName() );
+        return ResponseEntity.ok()
+            .headers(headers)
+            .body(resource);
     }
 
     /**
