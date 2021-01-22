@@ -4,8 +4,8 @@ import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataFieldDTO;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
+import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
-import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -167,7 +167,7 @@ public class MetadataFieldResource {
                 .collect(Collectors.toCollection(LinkedHashSet::new));
             metadataFieldDTO.get().setMetadataValues(metadataValueDTOS);
             map.put("sections", metadataValueDTOS.stream().filter(mv -> !mv.getIdentifier().equals("overview"))
-                .map(mv -> ResourceUtils.toStrictXhtml(mv.getValue())).collect(Collectors.toList()));
+                .map(mv -> VocabularyUtils.toStrictXhtml(mv.getValue())).collect(Collectors.toList()));
         }
 
         File file = exportService.generateFileByThymeleafTemplate("document", "document", map, downloadType);

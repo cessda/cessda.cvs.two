@@ -6,8 +6,6 @@ import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.utils.VersionUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -254,11 +252,4 @@ public class ResourceUtils {
         return docId;
     }
 
-    public static String toStrictXhtml(String text) {
-        if( text == null )
-            return null;
-        final Document document = Jsoup.parse(text);
-        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-        return document.html();
-    }
 }

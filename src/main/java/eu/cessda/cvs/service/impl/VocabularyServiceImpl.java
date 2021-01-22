@@ -30,7 +30,6 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
-import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
@@ -1522,9 +1521,9 @@ public class VocabularyServiceImpl implements VocabularyService {
         Map<String, Object> map = new HashMap<>();
         // escaping HTML to strict XHTML
         for (VersionDTO includedVersion : includedVersions) {
-            includedVersion.setVersionNotes(ResourceUtils.toStrictXhtml(includedVersion.getVersionNotes()));
-            includedVersion.setVersionChanges( ResourceUtils.toStrictXhtml(includedVersion.getVersionChanges()));
-            includedVersion.setDdiUsage( ResourceUtils.toStrictXhtml(includedVersion.getDdiUsage()));
+            includedVersion.setVersionNotes(VocabularyUtils.toStrictXhtml(includedVersion.getVersionNotes()));
+            includedVersion.setVersionChanges( VocabularyUtils.toStrictXhtml(includedVersion.getVersionChanges()));
+            includedVersion.setDdiUsage( VocabularyUtils.toStrictXhtml(includedVersion.getDdiUsage()));
         }
 
         // sorted versions

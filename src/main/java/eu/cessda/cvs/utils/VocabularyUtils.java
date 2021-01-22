@@ -14,6 +14,8 @@ import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.web.rest.domain.Aggr;
 import eu.cessda.cvs.web.rest.domain.CvResult;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -246,4 +248,11 @@ public final class VocabularyUtils {
         return generatedUri;
     }
 
+    public static String toStrictXhtml(String text) {
+        if( text == null )
+            return null;
+        final Document document = Jsoup.parse(text);
+        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
+        return document.html();
+    }
 }
