@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpEvent, HttpRequest, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
-import { SERVER_API_URL } from 'app/app.constants';
+import {SERVER_API_URL} from 'app/app.constants';
+import {SimpleResponse} from 'app/shared/model/simple-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class FileUploadService {
@@ -39,5 +40,29 @@ export class FileUploadService {
     });
 
     return this.http.request(req);
+  }
+
+  /**
+   * return the  uploaded filename
+   * @param file
+   */
+  uploadFile(file: File): Observable<HttpEvent<{}>> {
+    const formdata: FormData = new FormData();
+    formdata.append('file', file);
+
+    const req = new HttpRequest('POST', `${this.resourceUrl}/file`, formdata, {
+      reportProgress: true,
+      responseType: 'text'
+    });
+
+    return this.http.request(req);
+  }
+
+  convertDocsToHtml(fileName: string): Observable<HttpResponse<SimpleResponse>> {
+    return this.http.post<SimpleResponse>(`${this.resourceUrl}/docx2html/${fileName}`, null, { observe: 'response' });
+  }
+
+  fillMetadataWithHtmlFile(fileName: string, metadataKey: string): Observable<HttpResponse<SimpleResponse>> {
+    return this.http.post<SimpleResponse>(`${this.resourceUrl}/html2section/${fileName}/${metadataKey}`, null, { observe: 'response' });
   }
 }

@@ -3,11 +3,13 @@ import {IMetadataField, MetadataField} from 'app/shared/model/metadata-field.mod
 import {EditorService} from 'app/editor/editor.service';
 import {MetadataFieldService} from 'app/entities/metadata-field/metadata-field.service';
 import {METADATA_KEY_API} from 'app/shared/constants/metadata.constants';
-import {HttpResponse} from '@angular/common/http';
+import {HttpEventType, HttpResponse} from '@angular/common/http';
 import {IMetadataValue, MetadataValue} from 'app/shared/model/metadata-value.model';
 import {Subscription} from 'rxjs';
 import {JhiEventManager} from 'ng-jhipster';
 import {ActivatedRoute} from '@angular/router';
+import {FileUploadService} from 'app/shared/upload/file-upload.service';
+import {SimpleResponse} from 'app/shared/model/simple-response.model';
 
 @Component({
   selector: 'jhi-api-docs',
@@ -24,11 +26,20 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
 
   eventSubscriber?: Subscription;
 
+  selectedFiles?: FileList;
+  progress: { percentage: number; } = { percentage: 0};
+  currentFileUpload?: File | null;
+
+  uploadFileStatus = '';
+  inDocxProgress = false;
+  uploadFileName = '';
+
   constructor(
     protected editorService: EditorService,
     private metadataFieldService: MetadataFieldService,
     protected eventManager: JhiEventManager,
     protected activatedRoute: ActivatedRoute,
+    protected fileUploadService: FileUploadService
   ) {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params['docx-export'] && params['docx-export'] === 'true') {
@@ -40,6 +51,32 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.refreshContent();
     this.eventSubscriber = this.eventManager.subscribe('metadataListModification', () => this.refreshContent());
+  }
+
+  selectFile(selectFileEvent: { target: { files: FileList | undefined } }): void {
+    this.inDocxProgress = true;
+    this.uploadFileStatus = 'uploading DOCX file...'
+    this.selectedFiles = selectFileEvent.target.files;
+    this.progress.percentage = 0;
+    this.currentFileUpload = this.selectedFiles!.item(0);
+    this.fileUploadService.uploadFile(this.currentFileUpload!).subscribe(event => {
+      if (event.type === HttpEventType.UploadProgress) {
+        this.progress.percentage = Math.round((100 * event.loaded) / event.total!);
+      } else if (event instanceof HttpResponse) {
+        this.uploadFileStatus = 'Uploading DOCX file complete, extracting DOCX to HTML ...'
+        const fileName = event.body!.toString();
+        this.fileUploadService.convertDocsToHtml( fileName ).subscribe(
+          (res: HttpResponse<SimpleResponse>) => {
+            this.uploadFileStatus = 'Docx contents is extracted. See the results:'
+            this.uploadFileName = fileName;
+          }, error => {
+            this.uploadFileStatus = 'There is a problem!. Please try again later'
+          }
+        );
+      }
+    });
+
+    this.selectedFiles = undefined;
   }
 
   private refreshContent(): void {
@@ -64,6 +101,16 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
     if (this.eventSubscriber) {
       this.eventSubscriber.unsubscribe();
     }
+  }
+
+  fillSections(): void {
+    this.fileUploadService.fillMetadataWithHtmlFile( this.uploadFileName, this.metadataKey ).subscribe(
+      (res: HttpResponse<SimpleResponse>) => {
+        this.refreshContent();
+      }, error => {
+        this.uploadFileStatus = 'There is a problem!. Please try again later'
+      }
+    );
   }
 
   downloadAsFile(format: string): void {

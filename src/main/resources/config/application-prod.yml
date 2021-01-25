@@ -147,3 +147,4 @@ application:
   vocab-json-path: /app/resources/static/content/vocabularies/
   agency-image-path: /app/resources/static/content/images/agency/
   license-image-path: /app/resources/static/content/images/license/
+  upload-file-path: /app/resources/static/content/file/

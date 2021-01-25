@@ -6,7 +6,7 @@
         </button>
     </div>
     <div *ngIf="!isWriting" id="{{metadataValue.identifier}}" class="detail-column ql-snow">
-        <div class="ql-editor" [innerHTML]="metadataForm.get('content')? (metadataForm.get('content')!.value | safeHtml) : ''"></div>
+        <div class="ql-editor ql-read" [innerHTML]="metadataForm.get('content')? (metadataForm.get('content')!.value | safeHtml) : ''"></div>
     </div>
     <form novalidate [formGroup]="metadataForm">
         <div *ngIf="isWriting" class="card w-100">
@@ -78,11 +78,11 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
                         <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Cancel</span>
                     </button>
-                    <button type="button" id="save-metadata" [disabled]="metadataForm.invalid || isSaving" (click)="saveMetadata()" class="btn btn-primary">
+                    <button type="button" id="save-metadata" [disabled]="isSaving" (click)="saveMetadata()" class="btn btn-primary">
                         <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
                     </button>
 
-                    <button *ngIf="metadataValue.id" [disabled]="isSaving" type="button" id="delete-metadata" [disabled]="metadataForm.invalid || isSaving" (click)="doDeleteMetadata()" class="btn btn-danger">
+                    <button *ngIf="metadataValue.id" [disabled]="isSaving" type="button" id="delete-metadata" [disabled]="isSaving" (click)="doDeleteMetadata()" class="btn btn-danger">
                         <fa-icon [icon]="'trash'"></fa-icon>&nbsp;<span>Delete</span>
                     </button>
                 </div>

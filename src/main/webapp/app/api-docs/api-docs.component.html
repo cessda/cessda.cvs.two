@@ -2,6 +2,38 @@
     <div class="row-content">
         <div class="content">
             <div class="content-left">
+                <div class="form-group" *jhiHasAnyAuthority="['ROLE_ADMIN']">
+                    <label class="form-control-label">Docx upload:</label>
+                    <div *ngIf="inDocxProgress" class="w-100">
+                        Status: {{uploadFileStatus}}
+                    </div>
+                    <div *ngIf="currentFileUpload" class="progress" [hidden]="progress.percentage === 100">
+                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"
+                             attr.aria-valuenow="{{progress.percentage}}"
+                             aria-valuemin="0" aria-valuemax="100" [ngStyle]="{width:progress.percentage+'%'}">
+                            {{progress.percentage}}%
+                        </div>
+                    </div>
+                    <div *ngIf="uploadFileName !== ''" class="w-100">
+                        <div class="w-100">
+                            See extracted DOCX as <a [href]="'/content/file/' + uploadFileName + '.html'" target="_blank">HTML here</a> or
+                            <a [href]="'/content/file/' + uploadFileName + '_2.html'" target="_blank">HTML with embedded graphics/images</a>
+                        </div>
+                        <div class="w-100">
+                            Replace current documentation with contents from DOCX
+                            <button type="button" (click)="fillSections()" class="btn btn-sm btn-primary-outline float-right">
+                                <fa-icon class="text-secondary"></fa-icon>
+                                <span> Replace</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div *ngIf="!inDocxProgress">
+                        <label class="btn btn-default">
+                            <input type="file" (change)="selectFile($event)" accept=".docx"/>
+                        </label>
+                        <small>(maximal DOCX size: 2 MB).</small>
+                    </div>
+                </div>
                 <div class="sticky-panel">
 
                     <div class="acc-header option-label col-12 mtop10" aria-controls="action-panel">

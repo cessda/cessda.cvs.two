@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
     private String vocabJsonPath;
     private String staticFilePath;
+    private String uploadFilePath;
     private String agencyImagePath;
     private String licenseImagePath;
 
@@ -45,5 +46,13 @@ public class ApplicationProperties {
 
     public void setLicenseImagePath(String licenseImagePath) {
         this.licenseImagePath = licenseImagePath;
+    }
+
+    public String getUploadFilePath() {
+        return uploadFilePath;
+    }
+
+    public void setUploadFilePath(String uploadFilePath) {
+        this.uploadFilePath = uploadFilePath;
     }
 }

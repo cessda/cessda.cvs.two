@@ -28,6 +28,16 @@ public class MetadataValueDTO implements Serializable {
 
     private Integer position = 0;
 
+    public MetadataValueDTO(){}
+
+    public MetadataValueDTO(String identifier, ObjectType objectType, Long metadataFieldId, String metadataKey, Integer position) {
+        this.identifier = identifier;
+        this.objectType = objectType;
+        this.metadataFieldId = metadataFieldId;
+        this.metadataKey = metadataKey;
+        this.position = position;
+    }
+
     public Long getId() {
         return id;
     }

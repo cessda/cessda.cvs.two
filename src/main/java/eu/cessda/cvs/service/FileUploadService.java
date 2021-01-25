@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,55 +25,68 @@ public class FileUploadService {
         switch ( fileUploadHelper.getFileUploadType()) {
             case IMAGE_AGENCY:
             case IMAGE_LICENSE:
-                uploadImage(fileUploadHelper );
+                uploadSpecificFile(fileUploadHelper, true);
                 break;
-            case CSV:
-                // STILL EMPTY, NO IMPLEMENTATION
+            case DOCX:
+                uploadSpecificFile(fileUploadHelper, false);
                 break;
             default:
         }
     }
 
-    private void uploadImage(FileUploadHelper fileUploadHelper) {
+    private void uploadSpecificFile(FileUploadHelper fileUploadHelper, boolean isImageFile) {
+        checkUploadDirectory(fileUploadHelper);
+        Path rootLocation = Paths.get( fileUploadHelper.getUploadBaseDirectory());
+        try {
+            String fileName = storeAndReplaceFileName(fileUploadHelper, rootLocation);
+            if( isImageFile)
+                storeImageFile(fileUploadHelper, rootLocation, fileName);
+            else{
+                fileUploadHelper.setUploadedFile(new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + fileName ));
+            }
+        } catch (Exception e) {
+            log.error( e.getMessage() );
+        }
+    }
+
+    private String storeAndReplaceFileName(FileUploadHelper fileUploadHelper, Path rootLocation) throws IOException {
+        UUID uuid = UUID.randomUUID();
+        String fileName = uuid.toString();
+        Files.copy(fileUploadHelper.getSourceFile().getInputStream(),
+            rootLocation.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+        return fileName;
+    }
+
+    private void checkUploadDirectory(FileUploadHelper fileUploadHelper) {
         File directory = new File(fileUploadHelper.getUploadBaseDirectory());
         if (! directory.exists()){
             directory.mkdirs();
         }
+    }
 
-        Path rootLocation = Paths.get( fileUploadHelper.getUploadBaseDirectory());
-        try {
-            // create UUID
-            UUID uuid = UUID.randomUUID();
-            String fileName = uuid.toString();
-            Files.copy(fileUploadHelper.getSourceFile().getInputStream(),
-                rootLocation.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
+    private void storeImageFile(FileUploadHelper fileUploadHelper, Path rootLocation, String fileName) throws IOException {
+        File imageFile = rootLocation.resolve(fileName).toFile();
 
-            File imageFile = rootLocation.resolve( fileName ).toFile();
+        BufferedImage img = ImageIO.read( imageFile );
 
-            BufferedImage img = ImageIO.read( imageFile );
+        BufferedImage scaledImg = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 300, 300);
+        File destFile = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + fileName + ".jpg");
+        ImageIO.write(fillTransparentPixels( scaledImg, Color.white ), "jpg", destFile);
 
-            BufferedImage scaledImg = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 300, 300);
-            File destFile = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + fileName  + ".jpg");
-            ImageIO.write(fillTransparentPixels( scaledImg, Color.white ), "jpg", destFile);
-
-            BufferedImage scaledImgThumb = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 180, 180);
-            File pathFileThumb = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + "thumbs");
-            if (! pathFileThumb.exists()){
-                pathFileThumb.mkdirs();
-            }
-            File destFileThumb = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + "thumbs" +
-                File.separator + fileName  + ".jpg");
-            ImageIO.write(fillTransparentPixels( scaledImgThumb, Color.white ), "jpg", destFileThumb);
-
-            fileUploadHelper.setUploadedFile( destFile );
-            fileUploadHelper.setUploadedThumbFile( destFileThumb );
-
-            // Delete file
-            FileUtils.deleteQuietly( imageFile );
-
-        } catch (Exception e) {
-            log.error( e.getMessage() );
+        BufferedImage scaledImgThumb = Scalr.resize(img, Scalr.Mode.AUTOMATIC, 180, 180);
+        File pathFileThumb = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + "thumbs");
+        if (! pathFileThumb.exists()){
+            pathFileThumb.mkdirs();
         }
+        File destFileThumb = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + "thumbs" +
+            File.separator + fileName + ".jpg");
+        ImageIO.write(fillTransparentPixels( scaledImgThumb, Color.white ), "jpg", destFileThumb);
+
+        fileUploadHelper.setUploadedFile( destFile );
+        fileUploadHelper.setUploadedThumbFile( destFileThumb );
+
+        // Delete file
+        FileUtils.deleteQuietly( imageFile );
     }
 
     BufferedImage fillTransparentPixels( BufferedImage image, Color fillColor ) {
