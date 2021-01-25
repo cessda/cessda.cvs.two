@@ -63,7 +63,7 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
       if (event.type === HttpEventType.UploadProgress) {
         this.progress.percentage = Math.round((100 * event.loaded) / event.total!);
       } else if (event instanceof HttpResponse) {
-        this.uploadFileStatus = 'Uploading DOCX file complete, extracting DOCX to HTML ...'
+        this.uploadFileStatus = 'Uploading complete, extracting DOCX to HTML... Please wait!'
         const fileName = event.body!.toString();
         this.fileUploadService.convertDocsToHtml( fileName ).subscribe(
           (res: HttpResponse<SimpleResponse>) => {
@@ -107,6 +107,7 @@ export class ApiDocsComponent implements OnInit, OnDestroy {
     this.fileUploadService.fillMetadataWithHtmlFile( this.uploadFileName, this.metadataKey ).subscribe(
       (res: HttpResponse<SimpleResponse>) => {
         this.refreshContent();
+        location.reload();
       }, error => {
         this.uploadFileStatus = 'There is a problem!. Please try again later'
       }
