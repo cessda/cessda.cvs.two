@@ -5,7 +5,7 @@
                 <div class="form-group" *jhiHasAnyAuthority="['ROLE_ADMIN']">
                     <label class="form-control-label">Docx upload:</label>
                     <div *ngIf="inDocxProgress" class="w-100">
-                        Status: {{uploadFileStatus}}
+                        Status: <fa-icon *ngIf="uploadFileName === ''" [icon]="'circle-notch'" [spin]="true"></fa-icon> {{uploadFileStatus}}
                     </div>
                     <div *ngIf="currentFileUpload" class="progress" [hidden]="progress.percentage === 100">
                         <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar"

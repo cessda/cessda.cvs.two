@@ -188,7 +188,7 @@ public class FileUploadResource {
         @PathVariable String metadataKey) {
         log.info( "Uploading file {}", fileName );
         try {
-            File initialFile = new File(applicationProperties.getUploadFilePath() + fileName + "_2" + HTML);
+            File initialFile = new File(applicationProperties.getUploadFilePath() + fileName + HTML);
             String result = FileUtils.readFileToString(initialFile, StandardCharsets.UTF_8);
 
             String[] htmlParts = result.split("(?=<p class=\"berschrift1)");
