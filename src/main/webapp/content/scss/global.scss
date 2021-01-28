@@ -1237,6 +1237,10 @@ button.invisible-button:focus {
         }
       }
     }
+    .ql-code-block-container {
+      white-space: pre-wrap;
+      font-size: 10px;
+    }
 
     div.header {display: none }div.footer {display: none } /*@media print { */div.header {display: block; position: running(header) }div.footer {display: block; position: running(footer) }@page { size: A4; margin: 10%; @top-center {content: element(header) } @bottom-center {content: element(footer) } }/*element styles*/ .del  {text-decoration:line-through;color:red;} .ins {text-decoration:none;background:#c0ffc0;padding:1px;}
     /* TABLE STYLES */

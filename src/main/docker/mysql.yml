@@ -4,6 +4,7 @@ services:
     image: mysql:8.0.19
     volumes:
       - cvs-dbs:/var/lib/mysql/
+      - ./init.sql:/data/application/init.sql
     environment:
       - MYSQL_USER=root
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
