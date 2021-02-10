@@ -6,6 +6,69 @@ import {IConcept} from 'app/shared/model/concept.model';
 import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
 
 export default class VocabularyUtil {
+  static getTitleDefByLangIso(item: IVocabulary | ICode, langIso: string): string[] {
+    switch (langIso) {
+      case 'sq':
+        return [item.titleSq, item.definitionSq];
+      case 'bs':
+        return [item.titleBs, item.definitionBs];
+      case 'bg':
+        return [item.titleBg, item.definitionBg];
+      case 'hr':
+        return [item.titleHr, item.definitionHr];
+      case 'cs':
+        return [item.titleCs, item.definitionCs];
+      case 'da':
+        return [item.titleDa, item.definitionDa];
+      case 'nl':
+        return [item.titleNl, item.definitionNl];
+      case 'en':
+        return [item.titleEn, item.definitionEn];
+      case 'et':
+        return [item.titleEt, item.definitionEt];
+      case 'fi':
+        return [item.titleFi, item.definitionFi];
+      case 'fr':
+        return [item.titleFr, item.definitionFr];
+      case 'de':
+        return [item.titleDe, item.definitionDe];
+      case 'el':
+        return [item.titleEl, item.definitionEl];
+      case 'hu':
+        return [item.titleHu, item.definitionHu];
+      case 'it':
+        return [item.titleIt, item.definitionIt];
+      case 'ja':
+        return [item.titleJa, item.definitionJa];
+      case 'lt':
+        return [item.titleLt, item.definitionLt];
+      case 'mk':
+        return [item.titleMk, item.definitionMk];
+      case 'no':
+        return [item.titleNo, item.definitionNo];
+      case 'pl':
+        return [item.titlePl, item.definitionPl];
+      case 'pt':
+        return [item.titlePt, item.definitionPt];
+      case 'ro':
+        return [item.titleRo, item.definitionRo];
+      case 'ru':
+        return [item.titleRu, item.definitionRu];
+      case 'sr':
+        return [item.titleSr, item.definitionSr];
+      case 'sk':
+        return [item.titleSk, item.definitionSk];
+      case 'sl':
+        return [item.titleSl, item.definitionSl];
+      case 'es':
+        return [item.titleEs, item.definitionEs];
+      case 'sv':
+        return [item.titleSv, item.definitionSv];
+      default:
+        return [item.titleEn, item.definitionEn];
+    }
+  }
+
   static getVocabularyVersionBySelectedLang(vocab: IVocabulary, lang: string): string {
     switch (lang) {
       case 'sq':
@@ -66,258 +129,6 @@ export default class VocabularyUtil {
         return vocab.versionSv;
       default:
         return vocab.versionEn;
-    }
-  }
-
-  static getVocabularyTitleBySelectedLang(vocab: IVocabulary): string {
-    switch (vocab.selectedLang) {
-      case 'sq':
-        return vocab.titleSq;
-      case 'bs':
-        return vocab.titleBs;
-      case 'bg':
-        return vocab.titleBg;
-      case 'hr':
-        return vocab.titleHr;
-      case 'cs':
-        return vocab.titleCs;
-      case 'da':
-        return vocab.titleDa;
-      case 'nl':
-        return vocab.titleNl;
-      case 'en':
-        return vocab.titleEn;
-      case 'et':
-        return vocab.titleEt;
-      case 'fi':
-        return vocab.titleFi;
-      case 'fr':
-        return vocab.titleFr;
-      case 'de':
-        return vocab.titleDe;
-      case 'el':
-        return vocab.titleEl;
-      case 'hu':
-        return vocab.titleHu;
-      case 'it':
-        return vocab.titleIt;
-      case 'ja':
-        return vocab.titleJa;
-      case 'lt':
-        return vocab.titleLt;
-      case 'mk':
-        return vocab.titleMk;
-      case 'no':
-        return vocab.titleNo;
-      case 'pl':
-        return vocab.titlePl;
-      case 'pt':
-        return vocab.titlePt;
-      case 'ro':
-        return vocab.titleRo;
-      case 'ru':
-        return vocab.titleRu;
-      case 'sr':
-        return vocab.titleSr;
-      case 'sk':
-        return vocab.titleSk;
-      case 'sl':
-        return vocab.titleSl;
-      case 'es':
-        return vocab.titleEs;
-      case 'sv':
-        return vocab.titleSv;
-      default:
-        return vocab.titleEn;
-    }
-  }
-
-  static getVocabularyDefinitionBySelectedLang(vocab: IVocabulary): string {
-    switch (vocab.selectedLang) {
-      case 'sq':
-        return vocab.definitionSq;
-      case 'bs':
-        return vocab.definitionBs;
-      case 'bg':
-        return vocab.definitionBg;
-      case 'hr':
-        return vocab.definitionHr;
-      case 'cs':
-        return vocab.definitionCs;
-      case 'da':
-        return vocab.definitionDa;
-      case 'nl':
-        return vocab.definitionNl;
-      case 'en':
-        return vocab.definitionEn;
-      case 'et':
-        return vocab.definitionEt;
-      case 'fi':
-        return vocab.definitionFi;
-      case 'fr':
-        return vocab.definitionFr;
-      case 'de':
-        return vocab.definitionDe;
-      case 'el':
-        return vocab.definitionEl;
-      case 'hu':
-        return vocab.definitionHu;
-      case 'it':
-        return vocab.definitionIt;
-      case 'ja':
-        return vocab.definitionJa;
-      case 'lt':
-        return vocab.definitionLt;
-      case 'mk':
-        return vocab.definitionMk;
-      case 'no':
-        return vocab.definitionNo;
-      case 'pl':
-        return vocab.definitionPl;
-      case 'pt':
-        return vocab.definitionPt;
-      case 'ro':
-        return vocab.definitionRo;
-      case 'ru':
-        return vocab.definitionRu;
-      case 'sr':
-        return vocab.definitionSr;
-      case 'sk':
-        return vocab.definitionSk;
-      case 'sl':
-        return vocab.definitionSl;
-      case 'es':
-        return vocab.definitionEs;
-      case 'sv':
-        return vocab.definitionSv;
-      default:
-        return vocab.definitionEn;
-    }
-  }
-
-  static getCodeTitleBySelectedLang(code: ICode, selectedLang: string): string {
-    switch (selectedLang) {
-      case 'sq':
-        return code.titleSq;
-      case 'bs':
-        return code.titleBs;
-      case 'bg':
-        return code.titleBg;
-      case 'hr':
-        return code.titleHr;
-      case 'cs':
-        return code.titleCs;
-      case 'da':
-        return code.titleDa;
-      case 'nl':
-        return code.titleNl;
-      case 'en':
-        return code.titleEn;
-      case 'et':
-        return code.titleEt;
-      case 'fi':
-        return code.titleFi;
-      case 'fr':
-        return code.titleFr;
-      case 'de':
-        return code.titleDe;
-      case 'el':
-        return code.titleEl;
-      case 'hu':
-        return code.titleHu;
-      case 'it':
-        return code.titleIt;
-      case 'ja':
-        return code.titleJa;
-      case 'lt':
-        return code.titleLt;
-      case 'mk':
-        return code.titleMk;
-      case 'no':
-        return code.titleNo;
-      case 'pl':
-        return code.titlePl;
-      case 'pt':
-        return code.titlePt;
-      case 'ro':
-        return code.titleRo;
-      case 'ru':
-        return code.titleRu;
-      case 'sr':
-        return code.titleSr;
-      case 'sk':
-        return code.titleSk;
-      case 'sl':
-        return code.titleSl;
-      case 'es':
-        return code.titleEs;
-      case 'sv':
-        return code.titleSv;
-      default:
-        return code.titleEn;
-    }
-  }
-
-  static getCodeDefinitionBySelectedLang(code: ICode, selectedLang: string): string {
-    switch (selectedLang) {
-      case 'sq':
-        return code.definitionSq;
-      case 'bs':
-        return code.definitionBs;
-      case 'bg':
-        return code.definitionBg;
-      case 'hr':
-        return code.definitionHr;
-      case 'cs':
-        return code.definitionCs;
-      case 'da':
-        return code.definitionDa;
-      case 'nl':
-        return code.definitionNl;
-      case 'en':
-        return code.definitionEn;
-      case 'et':
-        return code.definitionEt;
-      case 'fi':
-        return code.definitionFi;
-      case 'fr':
-        return code.definitionFr;
-      case 'de':
-        return code.definitionDe;
-      case 'el':
-        return code.definitionEl;
-      case 'hu':
-        return code.definitionHu;
-      case 'it':
-        return code.definitionIt;
-      case 'ja':
-        return code.definitionJa;
-      case 'lt':
-        return code.definitionLt;
-      case 'mk':
-        return code.definitionMk;
-      case 'no':
-        return code.definitionNo;
-      case 'pl':
-        return code.definitionPl;
-      case 'pt':
-        return code.definitionPt;
-      case 'ro':
-        return code.definitionRo;
-      case 'ru':
-        return code.definitionRu;
-      case 'sr':
-        return code.definitionSr;
-      case 'sk':
-        return code.definitionSk;
-      case 'sl':
-        return code.definitionSl;
-      case 'es':
-        return code.definitionEs;
-      case 'sv':
-        return code.definitionSv;
-      default:
-        return code.definitionEn;
     }
   }
 

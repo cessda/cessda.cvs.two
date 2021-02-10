@@ -127,37 +127,15 @@ describe('Vocabulary Util Tests', () => {
         }
       }
     });
-    it('should get the vocabulary title by selected lang', () => {
+    it('should get the item title and definition by selected lang', () => {
       for (const langIso in LanguageIso) {
         if ( isNaN(Number(langIso))) {
-          vocab.selectedLang = langIso;
-          const value = VocabularyUtil.getVocabularyTitleBySelectedLang(vocab);
-          expect( value ).toBe( 'AAA');
-        }
-      }
-    });
-    it('should get the vocabulary definition by selected lang', () => {
-      for (const langIso in LanguageIso) {
-        if ( isNaN(Number(langIso))) {
-          vocab.selectedLang = langIso;
-          const value = VocabularyUtil.getVocabularyDefinitionBySelectedLang(vocab);
-          expect( value ).toBe( 'AAA');
-        }
-      }
-    });
-    it('should get the Code Title by selected lang', () => {
-      for (const langIso in LanguageIso) {
-        if ( isNaN(Number(langIso))) {
-          const value = VocabularyUtil.getCodeTitleBySelectedLang(code, langIso);
-          expect( value ).toBe( 'AAA');
-        }
-      }
-    });
-    it('should get the Code Definition by selected lang', () => {
-      for (const langIso in LanguageIso) {
-        if ( isNaN(Number(langIso))) {
-          const value = VocabularyUtil.getCodeDefinitionBySelectedLang(code, langIso);
-          expect( value ).toBe( 'AAA');
+          const vocabTitleDef = VocabularyUtil.getTitleDefByLangIso(vocab, langIso);
+          const codeTitleDef = VocabularyUtil.getTitleDefByLangIso(code, langIso);
+          expect( vocabTitleDef[0] ).toBe( 'AAA');
+          expect( vocabTitleDef[1] ).toBe( 'AAA');
+          expect( codeTitleDef[0] ).toBe( 'AAA');
+          expect( codeTitleDef[1] ).toBe( 'AAA');
         }
       }
     });

@@ -151,19 +151,19 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   getTitleByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getVocabularyTitleBySelectedLang(vocab);
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[0];
   }
 
   getDefinitionByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getVocabularyDefinitionBySelectedLang(vocab);
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[1];
   }
 
   getCodeTitleByLang(code: ICode, selectedLang: string): string {
-    return VocabularyUtil.getCodeTitleBySelectedLang(code, selectedLang);
+    return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[0];
   }
 
   getCodeDefinitionByLang(code: ICode, selectedLang: string): string {
-    return VocabularyUtil.getCodeDefinitionBySelectedLang(code, selectedLang);
+    return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[1];
   }
 
   getVersionByLang(vocab: IVocabulary): string {
