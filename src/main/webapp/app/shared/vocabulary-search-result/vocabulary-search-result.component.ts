@@ -147,7 +147,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   isVersionContains(vocab: IVocabulary, lang: string, versionType: string): boolean {
-    return VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, lang).includes(versionType);
+    return VocabularyUtil.getTitleDefByLangIso(vocab, lang).includes(versionType)[2];
   }
 
   getTitleByLang(vocab: IVocabulary): string {
@@ -167,7 +167,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   getVersionByLang(vocab: IVocabulary): string {
-    return VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, vocab.selectedLang!);
+    return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[2];
   }
 
   loadPage(page?: number): void {
@@ -341,7 +341,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   getFormattedLangIso(vocab: IVocabulary, lang: string, sourceLang: string): string {
-    const statusInfo = VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, lang);
+    const statusInfo = VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2];
     const indexOf = statusInfo.indexOf('_');
     return (
       VocabularyUtil.getLangIsoFormatted(lang) +

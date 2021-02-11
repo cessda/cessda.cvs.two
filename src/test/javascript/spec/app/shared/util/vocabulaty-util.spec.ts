@@ -119,25 +119,36 @@ describe('Vocabulary Util Tests', () => {
     code = {...new Code(), ...vocab};
   });
   describe('Vocabulary Util methods', () => {
-    it('should get the vocabulary version by selected lang', () => {
-      for (const langIso in LanguageIso) {
-        if ( isNaN(Number(langIso))) {
-          const value = VocabularyUtil.getVocabularyVersionBySelectedLang(vocab, langIso);
-          expect( value ).toBe( 'AAA');
-        }
-      }
-    });
     it('should get the item title and definition by selected lang', () => {
       for (const langIso in LanguageIso) {
         if ( isNaN(Number(langIso))) {
           const vocabTitleDef = VocabularyUtil.getTitleDefByLangIso(vocab, langIso);
           const codeTitleDef = VocabularyUtil.getTitleDefByLangIso(code, langIso);
+          const langIsoFormatted = VocabularyUtil.getLangIsoFormatted( langIso );
           expect( vocabTitleDef[0] ).toBe( 'AAA');
           expect( vocabTitleDef[1] ).toBe( 'AAA');
+          expect( vocabTitleDef[2] ).toBe( 'AAA');
           expect( codeTitleDef[0] ).toBe( 'AAA');
           expect( codeTitleDef[1] ).toBe( 'AAA');
+          expect( vocabTitleDef[2] ).toBe( 'AAA');
+
+          expect( langIsoFormatted ).toContain( '(' + langIso + ')' );
         }
       }
+
+      // check the default if
+      const langIso = 'xx';
+      const vocabTitleDef = VocabularyUtil.getTitleDefByLangIso(vocab, langIso);
+      const codeTitleDef = VocabularyUtil.getTitleDefByLangIso(code, langIso);
+      const langIsoFormatted = VocabularyUtil.getLangIsoFormatted( langIso );
+      expect( vocabTitleDef[0] ).toBe( 'AAA');
+      expect( vocabTitleDef[1] ).toBe( 'AAA');
+      expect( vocabTitleDef[2] ).toBe( 'AAA');
+      expect( codeTitleDef[0] ).toBe( 'AAA');
+      expect( codeTitleDef[1] ).toBe( 'AAA');
+      expect( vocabTitleDef[2] ).toBe( 'AAA');
+
+      expect( langIsoFormatted ).toContain( 'Unknown' );
     });
     it('should get langIso By Enum', () => {
       for (const langIso in LanguageIso) {

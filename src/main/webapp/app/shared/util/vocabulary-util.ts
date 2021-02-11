@@ -9,126 +9,63 @@ export default class VocabularyUtil {
   static getTitleDefByLangIso(item: IVocabulary | ICode, langIso: string): string[] {
     switch (langIso) {
       case 'sq':
-        return [item.titleSq, item.definitionSq];
+        return [item.titleSq, item.definitionSq, item.versionSq];
       case 'bs':
-        return [item.titleBs, item.definitionBs];
+        return [item.titleBs, item.definitionBs, item.versionBs];
       case 'bg':
-        return [item.titleBg, item.definitionBg];
+        return [item.titleBg, item.definitionBg, item.versionBg];
       case 'hr':
-        return [item.titleHr, item.definitionHr];
+        return [item.titleHr, item.definitionHr, item.versionHr];
       case 'cs':
-        return [item.titleCs, item.definitionCs];
+        return [item.titleCs, item.definitionCs, item.versionCs];
       case 'da':
-        return [item.titleDa, item.definitionDa];
+        return [item.titleDa, item.definitionDa, item.versionDa];
       case 'nl':
-        return [item.titleNl, item.definitionNl];
+        return [item.titleNl, item.definitionNl, item.versionNl];
       case 'en':
-        return [item.titleEn, item.definitionEn];
+        return [item.titleEn, item.definitionEn, item.versionEn];
       case 'et':
-        return [item.titleEt, item.definitionEt];
+        return [item.titleEt, item.definitionEt, item.versionEt];
       case 'fi':
-        return [item.titleFi, item.definitionFi];
+        return [item.titleFi, item.definitionFi, item.versionFi];
       case 'fr':
-        return [item.titleFr, item.definitionFr];
+        return [item.titleFr, item.definitionFr, item.versionFr];
       case 'de':
-        return [item.titleDe, item.definitionDe];
+        return [item.titleDe, item.definitionDe, item.versionDe];
       case 'el':
-        return [item.titleEl, item.definitionEl];
+        return [item.titleEl, item.definitionEl, item.versionEl];
       case 'hu':
-        return [item.titleHu, item.definitionHu];
+        return [item.titleHu, item.definitionHu, item.versionHu];
       case 'it':
-        return [item.titleIt, item.definitionIt];
+        return [item.titleIt, item.definitionIt, item.versionLt];
       case 'ja':
-        return [item.titleJa, item.definitionJa];
+        return [item.titleJa, item.definitionJa, item.versionJa];
       case 'lt':
-        return [item.titleLt, item.definitionLt];
+        return [item.titleLt, item.definitionLt, item.versionLt];
       case 'mk':
-        return [item.titleMk, item.definitionMk];
+        return [item.titleMk, item.definitionMk, item.versionMk];
       case 'no':
-        return [item.titleNo, item.definitionNo];
+        return [item.titleNo, item.definitionNo, item.versionNo];
       case 'pl':
-        return [item.titlePl, item.definitionPl];
+        return [item.titlePl, item.definitionPl, item.versionPl];
       case 'pt':
-        return [item.titlePt, item.definitionPt];
+        return [item.titlePt, item.definitionPt, item.versionPt];
       case 'ro':
-        return [item.titleRo, item.definitionRo];
+        return [item.titleRo, item.definitionRo, item.versionRo];
       case 'ru':
-        return [item.titleRu, item.definitionRu];
+        return [item.titleRu, item.definitionRu, item.versionRu];
       case 'sr':
-        return [item.titleSr, item.definitionSr];
+        return [item.titleSr, item.definitionSr, item.versionSr];
       case 'sk':
-        return [item.titleSk, item.definitionSk];
+        return [item.titleSk, item.definitionSk, item.versionSk];
       case 'sl':
-        return [item.titleSl, item.definitionSl];
+        return [item.titleSl, item.definitionSl, item.versionSl];
       case 'es':
-        return [item.titleEs, item.definitionEs];
+        return [item.titleEs, item.definitionEs, item.versionEs];
       case 'sv':
-        return [item.titleSv, item.definitionSv];
+        return [item.titleSv, item.definitionSv, item.versionSv];
       default:
-        return [item.titleEn, item.definitionEn];
-    }
-  }
-
-  static getVocabularyVersionBySelectedLang(vocab: IVocabulary, lang: string): string {
-    switch (lang) {
-      case 'sq':
-        return vocab.versionSq;
-      case 'bs':
-        return vocab.versionBs;
-      case 'bg':
-        return vocab.versionBg;
-      case 'hr':
-        return vocab.versionHr;
-      case 'cs':
-        return vocab.versionCs;
-      case 'da':
-        return vocab.versionDa;
-      case 'nl':
-        return vocab.versionNl;
-      case 'en':
-        return vocab.versionEn;
-      case 'et':
-        return vocab.versionEt;
-      case 'fi':
-        return vocab.versionFi;
-      case 'fr':
-        return vocab.versionFr;
-      case 'de':
-        return vocab.versionDe;
-      case 'el':
-        return vocab.versionEl;
-      case 'hu':
-        return vocab.versionHu;
-      case 'it':
-        return vocab.versionIt;
-      case 'ja':
-        return vocab.versionJa;
-      case 'lt':
-        return vocab.versionLt;
-      case 'mk':
-        return vocab.versionMk;
-      case 'no':
-        return vocab.versionNo;
-      case 'pl':
-        return vocab.versionPl;
-      case 'pt':
-        return vocab.versionPt;
-      case 'ro':
-        return vocab.versionRo;
-      case 'ru':
-        return vocab.versionRu;
-      case 'sr':
-        return vocab.versionSr;
-      case 'sk':
-        return vocab.versionSk;
-      case 'sl':
-        return vocab.versionSl;
-      case 'es':
-        return vocab.versionEs;
-      case 'sv':
-        return vocab.versionSv;
-      default:
-        return vocab.versionEn;
+        return [item.titleEn, item.definitionEn, item.versionEn];
     }
   }
 

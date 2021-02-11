@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import {Moment} from 'moment';
 
 export interface ICode {
   id?: number;
@@ -68,6 +68,34 @@ export interface ICode {
   definitionEs?: any;
   titleSv?: any;
   definitionSv?: any;
+  versionSq?: any;
+  versionBs?: any;
+  versionBg?: any;
+  versionHr?: any;
+  versionCs?: any;
+  versionDa?: any;
+  versionNl?: any;
+  versionEn?: any;
+  versionEt?: any;
+  versionFi?: any;
+  versionFr?: any;
+  versionDe?: any;
+  versionEl?: any;
+  versionHu?: any;
+  versionIt?: any;
+  versionJa?: any;
+  versionLt?: any;
+  versionMk?: any;
+  versionNo?: any;
+  versionPl?: any;
+  versionPt?: any;
+  versionRo?: any;
+  versionRu?: any;
+  versionSr?: any;
+  versionSk?: any;
+  versionSl?: any;
+  versionEs?: any;
+  versionSv?: any;
 }
 
 export class Code implements ICode {
@@ -138,7 +166,35 @@ export class Code implements ICode {
     public titleEs?: any,
     public definitionEs?: any,
     public titleSv?: any,
-    public definitionSv?: any
+    public definitionSv?: any,
+    public versionSq?: any,
+    public versionBs?: any,
+    public versionBg?: any,
+    public versionHr?: any,
+    public versionCs?: any,
+    public versionDa?: any,
+    public versionNl?: any,
+    public versionEn?: any,
+    public versionEt?: any,
+    public versionFi?: any,
+    public versionFr?: any,
+    public versionDe?: any,
+    public versionEl?: any,
+    public versionHu?: any,
+    public versionIt?: any,
+    public versionJa?: any,
+    public versionLt?: any,
+    public versionMk?: any,
+    public versionNo?: any,
+    public versionPl?: any,
+    public versionPt?: any,
+    public versionRo?: any,
+    public versionRu?: any,
+    public versionSr?: any,
+    public versionSk?: any,
+    public versionSl?: any,
+    public versionEs?: any,
+    public versionSv?: any
   ) {
     this.archived = this.archived || false;
     this.withdrawn = this.withdrawn || false;
