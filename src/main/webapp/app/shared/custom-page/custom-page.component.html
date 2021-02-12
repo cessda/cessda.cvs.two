@@ -49,8 +49,8 @@
                 </div>
                 <div class="sticky-panel">
 
-                    <div class="acc-header option-label col-12 mtop10" aria-controls="action-panel">
-                        <h2 style="f-size-120">CVS API Docs</h2>
+                    <div *ngIf="pageType === 'api-docs'" class="acc-header option-label col-12 mtop10" aria-controls="action-panel">
+                        <h2 class="f-size-120">CVS API Docs</h2>
                         <a href="/swagger" target="_blank" class="btn btn-info btn-sm w-100">
                             <span>Try with </span>
                             <svg width="20px" height="20px" viewBox="0 0 256 256" version="1.1"
@@ -71,7 +71,7 @@
                     </div>
                 </div>
             </div>
-            <div class="content-right">
+            <div class="content-right p-t-0">
                 <jhi-alert-error></jhi-alert-error>
                 <jhi-alert></jhi-alert>
                 <button class="btn btn-sm float-right" (click)="downloadAsFile('pdf')" ngbTooltip="Download API documentation as PDF">
