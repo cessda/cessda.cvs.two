@@ -179,7 +179,7 @@ public class MetadataFieldResource {
             final LinkedHashSet<MetadataValueDTO> metadataValueDTOS = metadataFieldDTO.get().getMetadataValues().stream().sorted(Comparator.comparing(MetadataValueDTO::getPosition))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
             metadataFieldDTO.get().setMetadataValues(metadataValueDTOS);
-            map.put("sections", metadataValueDTOS.stream().filter(mv -> !mv.getIdentifier().equals("overview"))
+            map.put("sections", metadataValueDTOS.stream().filter(mv -> mv.getIdentifier() != null && !mv.getIdentifier().equals("overview"))
                 .map(mv -> VocabularyUtils.toStrictXhtml(mv.getValue())).collect(Collectors.toList()));
         }
 

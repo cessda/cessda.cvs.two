@@ -50,7 +50,7 @@ export default class VocabularyUtil {
       case 'hu':
         return [item.titleHu, item.definitionHu, item.versionHu];
       case 'it':
-        return [item.titleIt, item.definitionIt, item.versionLt];
+        return [item.titleIt, item.definitionIt, item.versionIt];
       case 'ja':
         return [item.titleJa, item.definitionJa, item.versionJa];
       case 'lt':

@@ -23,46 +23,8 @@ import {JhiEventManager} from 'ng-jhipster';
 
 @Component({
   selector: 'jhi-user-guide',
-  templateUrl: './user-guide.component.html'
+  template: '<jhi-custom-page [pageType]="\'user-guide\'"></jhi-custom-page>'
 })
-export class UserGuideComponent implements OnInit, OnDestroy {
-  metadataField?: IMetadataField | null;
-  metadataValues: IMetadataValue[] = [];
-  metadataKey = METADATA_KEY_USERGUIDE;
-
-  eventSubscriber?: Subscription;
-
-  constructor(
-    protected editorService: EditorService,
-    private metadataFieldService: MetadataFieldService,
-    protected eventManager: JhiEventManager
-  ) {}
-
-  ngOnInit(): void {
-    this.refreshContent();
-    this.eventSubscriber = this.eventManager.subscribe('metadataListModification', () => this.refreshContent());
-  }
-
-  private refreshContent(): void {
-    this.metadataFieldService.findByKey(this.metadataKey).subscribe((res: HttpResponse<IMetadataField>) => {
-      if (res.body !== null) {
-        this.metadataField = res.body;
-      } else {
-        this.metadataField = { ...new MetadataField(), metadataKey: this.metadataKey, metadataValues: [] };
-      }
-      if (this.metadataField && this.metadataField.metadataValues) {
-        this.metadataValues = this.metadataField.metadataValues;
-      }
-    });
-  }
-
-  addSection(): void {
-    this.metadataField!.metadataValues!.push(new MetadataValue());
-  }
-
-  ngOnDestroy(): void {
-    if (this.eventSubscriber) {
-      this.eventSubscriber.unsubscribe();
-    }
-  }
+export class UserGuideComponent {
+  constructor() {}
 }

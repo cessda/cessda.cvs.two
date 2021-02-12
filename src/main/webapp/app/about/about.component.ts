@@ -24,84 +24,8 @@ import {ObjectType} from 'app/shared/model/enumerations/object-type.model';
 
 @Component({
   selector: 'jhi-about',
-  templateUrl: './about.component.html'
+  template: '<jhi-custom-page [pageType]="\'about\'"></jhi-custom-page>'
 })
-export class AboutComponent implements OnInit {
-  metadataField?: IMetadataField | null;
-  isWriteAbout = false;
-  isSaving = false;
-
-  quillModules: any = {
-    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']]
-  };
-
-  aboutForm = this.fb.group({
-    content: ['', []]
-  });
-
-  constructor(protected editorService: EditorService, private metadataFieldService: MetadataFieldService, private fb: FormBuilder) {}
-
-  ngOnInit(): void {
-    this.loadAbout();
-  }
-
-  private loadAbout(): void {
-    this.metadataFieldService.findByKey(METADATA_KEY_ABOUT).subscribe((res: HttpResponse<IMetadataField>) => {
-      this.metadataField = res.body;
-
-      if (this.metadataField !== null) {
-        if (this.metadataField.metadataValues?.length) {
-          // add parent information to metadataValues
-          this.metadataField.metadataValues.forEach(mv => {
-            mv.metadataFieldId = this.metadataField!.id;
-            mv.metadataKey = this.metadataField!.metadataKey;
-          });
-          this.aboutForm.patchValue({ content: this.metadataField.metadataValues[0].value });
-        }
-      }
-    });
-  }
-
-  private createFromForm(): IMetadataValue {
-    if (this.metadataField?.metadataValues?.length) {
-      return {
-        ...this.metadataField?.metadataValues[0],
-        value: this.aboutForm.get(['content'])!.value
-      };
-    } else {
-      return {
-        ...new MetadataValue(),
-        value: this.aboutForm.get(['content'])!.value,
-        objectType: ObjectType.SYSTEM,
-        metadataKey: METADATA_KEY_ABOUT
-      };
-    }
-  }
-
-  saveAbout(): void {
-    this.isSaving = true;
-    const metadataValue = this.createFromForm();
-    if (this.metadataField?.metadataValues?.length) {
-      this.subscribeToSaveResponse(this.editorService.updateAppMetadata(metadataValue));
-    } else {
-      this.subscribeToSaveResponse(this.editorService.createAppMetadata(metadataValue));
-    }
-  }
-
-  protected subscribeToSaveResponse(result: Observable<HttpResponse<IMetadataValue>>): void {
-    result.subscribe(
-      () => this.onSaveSuccess(),
-      () => this.onSaveError()
-    );
-  }
-
-  protected onSaveSuccess(): void {
-    this.isSaving = false;
-    this.isWriteAbout = false;
-    this.loadAbout();
-  }
-
-  protected onSaveError(): void {
-    this.isSaving = false;
-  }
+export class AboutComponent {
+  constructor() {}
 }

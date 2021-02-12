@@ -1186,6 +1186,9 @@ button.invisible-button:focus {
 .f-size-120{
   font-size: 120%;
 }
+.p-t-0{
+  padding-top:0 !important;
+}
 
 #overview{
   ul,ol{
@@ -1241,31 +1244,6 @@ button.invisible-button:focus {
       white-space: pre-wrap;
       font-size: 10px;
     }
-
-    div.header {display: none }div.footer {display: none } /*@media print { */div.header {display: block; position: running(header) }div.footer {display: block; position: running(footer) }@page { size: A4; margin: 10%; @top-center {content: element(header) } @bottom-center {content: element(footer) } }/*element styles*/ .del  {text-decoration:line-through;color:red;} .ins {text-decoration:none;background:#c0ffc0;padding:1px;}
-    /* TABLE STYLES */
-    table.NormaleTabelle {display:table;position: relative; margin-left: 0;}
-    table.Tabellenraster1 {display:table;border-top-style: solid;border-top-width: 1px;border-top-color: #000000;border-bottom-style: solid;border-bottom-width: 1px;border-bottom-color: #000000;border-left-style: solid;border-left-width: 1px;border-left-color: #000000;border-right-style: solid;border-right-width: 1px;border-right-color: #000000;font-size: 11.0pt;}
-
-    /* PARAGRAPH STYLES */
-    .DocDefaults {display:block;margin-top: 0in;margin-bottom: 0in;line-height: 100%;font-size: 11.0pt;}
-    .Standard {display:block;vertical-align: baseline;}
-    .Kopfzeile {display:block;}
-    .NurText {display:block;vertical-align: baseline;font-size: 11.0pt;}
-    .Fuzeile {display:block;}
-    .Funotentext {display:block;}
-    .StandardWeb {display:block;margin-top: 0.07in;margin-bottom: 0.07in;vertical-align: baseline;font-size: 12.0pt;}
-    .berschrift3 {display:block;margin-top: 4mm;margin-bottom: 0.08in;vertical-align: baseline;font-weight: bold;color: #000000;}
-    .berschrift1 {display:block;line-height: 150%;vertical-align: baseline;font-weight: bold;}
-    .Standard-Tabellenraster1-BR {display:block;vertical-align: baseline;font-size: 11.0pt;}
-    .Default {display:block;color: #000000;font-size: 12.0pt;}
-
-    /* CHARACTER STYLES */ span.Absatz-Standardschriftart {display:inline;}
-    span.Hervorhebung {display:inline;font-style: italic;}
-    span.apple-converted-space {display:inline;}
-    span.Funotenzeichen {display:inline;vertical-align: super;font-size: smaller;}
-    span.Fett {display:inline;font-weight: bold;}
-    span.Hyperlink {display:inline;color: #0000FF;text-decoration: underline;}
   }
   .ql-read{
     white-space: normal;

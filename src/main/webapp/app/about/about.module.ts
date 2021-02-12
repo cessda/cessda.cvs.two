@@ -20,7 +20,7 @@ import {aboutRoute} from './about.route';
 import {QuillModule} from 'ngx-quill';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(aboutRoute), QuillModule],
+  imports: [CvsSharedModule, RouterModule.forChild(aboutRoute)],
   declarations: [AboutComponent]
 })
 export class CvsAboutModule {}

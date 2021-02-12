@@ -20,7 +20,7 @@ import { userGuideRoute } from './user-guide.route';
 import { QuillModule } from 'ngx-quill';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(userGuideRoute), QuillModule],
+  imports: [CvsSharedModule, RouterModule.forChild(userGuideRoute)],
   declarations: [UserGuideComponent]
 })
 export class CvsUserGuideModule {}

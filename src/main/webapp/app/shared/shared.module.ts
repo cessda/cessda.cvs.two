@@ -33,6 +33,7 @@ import {MetadataItemComponent} from 'app/shared/metadata-item/metadata-item.comp
 import {QuillModule} from 'ngx-quill';
 import {RouterModule} from '@angular/router';
 import {TagInputModule} from 'ngx-chips';
+import {CustomPageComponent} from 'app/shared/custom-page/custom-page.component';
 
 @NgModule({
   imports: [CvsSharedLibsModule, NgxTextDiffModule, QuillModule, RouterModule, TagInputModule],
@@ -45,6 +46,7 @@ import {TagInputModule} from 'ngx-chips';
     LoginModalComponent,
     HasAnyAuthorityDirective,
     HasAnyAgencyAuthorityDirective,
+    CustomPageComponent,
     MetadataItemComponent,
     TreeComponent,
     TreeEditorComponent,
@@ -64,6 +66,7 @@ import {TagInputModule} from 'ngx-chips';
     LoginModalComponent,
     HasAnyAuthorityDirective,
     HasAnyAgencyAuthorityDirective,
+    CustomPageComponent,
     MetadataItemComponent,
     TreeComponent,
     TreeEditorComponent,

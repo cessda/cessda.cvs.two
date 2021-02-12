@@ -11,16 +11,16 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { CvsSharedModule } from 'app/shared/shared.module';
 import { ApiDocsComponent } from './api-docs.component';
 import { apiDocsRoute } from './api-docs.route';
-import { QuillModule } from 'ngx-quill';
 
 @NgModule({
-  imports: [CvsSharedModule, RouterModule.forChild(apiDocsRoute), QuillModule],
-  declarations: [ApiDocsComponent]
+  imports: [CvsSharedModule, RouterModule.forChild(apiDocsRoute)],
+  declarations: [ApiDocsComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class CvsApiDocsModule {}
