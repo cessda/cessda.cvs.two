@@ -45,7 +45,7 @@
                     </div>
                     <div class="detail-column">
                         <select class="form-control w-auto sk-select" id="sourceLanguage" name="sourceLanguage" formControlName="sourceLanguage">
-                            <option *ngFor="let language of languages; let i = index" [value]="language">{{getLangIsoFormatted(language)}}</option>
+                            <option *ngFor="let language of languages; let i = index" [value]="language">{{language | vocabularyLanguageFromKey}}</option>
                         </select>
                     </div>
                 </div>

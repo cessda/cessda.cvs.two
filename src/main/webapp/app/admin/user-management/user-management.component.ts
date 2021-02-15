@@ -28,7 +28,6 @@ import {UserManagementDeleteDialogComponent} from './user-management-delete-dial
 import {IAgency} from 'app/shared/model/agency.model';
 import {AgencyService} from 'app/agency/agency.service';
 import {IUserAgency} from 'app/shared/model/user-agency.model';
-import VocabularyUtil from 'app/shared/util/vocabulary-util';
 
 @Component({
   selector: 'jhi-user-mgmt',
@@ -163,9 +162,5 @@ export class UserManagementComponent implements OnInit, OnDestroy {
 
   userAgencyToCompare(ua: IUserAgency): string {
     return ua.agencyId! + ua.agencyRole! + (ua.language ? ua.language : '');
-  }
-
-  getLangIsoFormatted(langIso: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
   }
 }

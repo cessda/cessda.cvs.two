@@ -39,6 +39,7 @@ import * as moment from 'moment';
 import {AccountService} from 'app/core/auth/account.service';
 import {Account} from 'app/core/user/account.model';
 import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
 
 @Component({
   selector: 'jhi-editor-detail',
@@ -131,7 +132,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     private routeEventsService: RouteEventsService,
     private _ngZone: NgZone,
     protected modalService: NgbModal,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
   ) {
     this.initialTabSelected = 'detail';
     this.currentSelectedCode = '';
@@ -225,10 +227,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.eventManager.broadcast('deselectConcept');
   }
 
-  getFormattedLang(langIso?: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
-  }
-
   getUniqueVersionLang(): string[] {
     const uniqueLang: string[] = [];
     this.vocabulary!.versions!.forEach(v => {
@@ -244,7 +242,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
   getFormattedVersionTooltip(version?: IVersion, sourceLang?: string): string {
     return (
-      VocabularyUtil.getLangIsoFormatted(version!.language) +
+      this.vocabLangPipeKey.transform(version!.language!) +
       ' v.' +
       (version!.status === 'PUBLISHED' ? '' : version!.status + '-') +
       version!.number +

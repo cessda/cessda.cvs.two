@@ -11,18 +11,17 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
-import { Router } from '@angular/router';
-import { Concept, IConcept } from 'app/shared/model/concept.model';
-import { Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
-import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import {Component, ElementRef, ViewChild} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {EditorService} from 'app/editor/editor.service';
+import {IVersion} from 'app/shared/model/version.model';
+import {Router} from '@angular/router';
+import {Concept, IConcept} from 'app/shared/model/concept.model';
+import {Subscription} from 'rxjs';
+import {JhiEventManager} from 'ng-jhipster';
+import {CodeSnippet, ICodeSnippet} from 'app/shared/model/code-snippet.model';
+import {HttpHeaders, HttpResponse} from '@angular/common/http';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
 
 @Component({
   templateUrl: './editor-detail-code-csv-import-dialog.component.html'
@@ -63,10 +62,6 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.isImportError = false;
     this.isSaving = false;
     this.ignoredRows = 0;
-  }
-
-  getLangIsoFormatted(langIso: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
   }
 
   clear(): void {

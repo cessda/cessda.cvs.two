@@ -21,7 +21,6 @@ import {AccountService} from 'app/core/auth/account.service';
 import {FormBuilder, Validators} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {Account} from 'app/core/user/account.model';
-import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import {CODE_ALREADY_EXIST_TYPE} from 'app/shared';
 import {EditorService} from 'app/editor/editor.service';
 import {IVersion} from 'app/shared/model/version.model';
@@ -250,10 +249,6 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
-  }
-
-  getLangIsoFormatted(langIso: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
   }
 
   private processError(response: HttpErrorResponse): void {

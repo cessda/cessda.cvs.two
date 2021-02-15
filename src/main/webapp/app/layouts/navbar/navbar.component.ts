@@ -11,21 +11,21 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
-import { SessionStorageService } from 'ngx-webstorage';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {JhiEventManager, JhiEventWithContent, JhiLanguageService} from 'ng-jhipster';
+import {SessionStorageService} from 'ngx-webstorage';
 
-import { VERSION } from 'app/app.constants';
-import { LANGUAGES } from 'app/core/language/language.constants';
-import { AccountService } from 'app/core/auth/account.service';
-import { LoginModalService } from 'app/core/login/login-modal.service';
-import { LoginService } from 'app/core/login/login.service';
-import { ProfileService } from 'app/layouts/profiles/profile.service';
-import { fromEvent, Subscription } from 'rxjs';
-import { debounceTime, map } from 'rxjs/operators';
-import { Location } from '@angular/common';
-import VocabularyUtil from 'app/shared/util/vocabulary-util';
+import {VERSION} from 'app/app.constants';
+import {LANGUAGES} from 'app/core/language/language.constants';
+import {AccountService} from 'app/core/auth/account.service';
+import {LoginModalService} from 'app/core/login/login-modal.service';
+import {LoginService} from 'app/core/login/login.service';
+import {ProfileService} from 'app/layouts/profiles/profile.service';
+import {fromEvent, Subscription} from 'rxjs';
+import {debounceTime, map} from 'rxjs/operators';
+import {Location} from '@angular/common';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
 
 @Component({
   selector: 'jhi-navbar',
@@ -58,7 +58,8 @@ export class NavbarComponent implements OnInit, OnDestroy {
     private profileService: ProfileService,
     protected eventManager: JhiEventManager,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
     this.isSearching = false;
@@ -215,6 +216,6 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   getLangFormatted(lang: string): string {
     if (lang === '_all') return 'All languages';
-    return VocabularyUtil.getLangIsoFormatted(lang);
+    return this.vocabLangPipeKey.transform(lang);
   }
 }

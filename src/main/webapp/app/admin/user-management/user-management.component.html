@@ -59,7 +59,7 @@
                     </td>
                     <td>
                         <div *ngFor="let userAgency of user.userAgencies">
-                            <span class="badge badge-info">{{ getAgencyName(userAgency.agencyId)  + ': ' + userAgency.agencyRole + '-' + getLangIsoFormatted(userAgency.language) }}</span>
+                            <span class="badge badge-info">{{ getAgencyName(userAgency.agencyId)  + ': ' + userAgency.agencyRole + '-' + (userAgency.language | vocabularyLanguageFromKey) }}</span>
                         </div>
                     </td>
                     <td>{{ user.createdDate | date:'dd/MM/yy HH:mm' }}</td>

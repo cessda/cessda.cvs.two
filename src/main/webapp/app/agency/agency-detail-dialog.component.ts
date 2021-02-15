@@ -11,16 +11,16 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { JhiDataUtils } from 'ng-jhipster';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
+import {JhiDataUtils} from 'ng-jhipster';
 
-import { IAgency } from 'app/shared/model/agency.model';
-import { AgencyService } from 'app/agency/agency.service';
-import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import VocabularyUtil from 'app/shared/util/vocabulary-util';
+import {IAgency} from 'app/shared/model/agency.model';
+import {AgencyService} from 'app/agency/agency.service';
+import {NgbActiveModal, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
-import { Moment } from 'moment';
+import {Moment} from 'moment';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
 
 @Component({
   selector: 'jhi-agency-detail-dialog',
@@ -42,7 +42,8 @@ export class AgencyDetailDialogComponent implements OnInit {
     protected dataUtils: JhiDataUtils,
     protected agencyService: AgencyService,
     public activeModal: NgbActiveModal,
-    private router: Router
+    private router: Router,
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
   ) {
     this.numberCvPublished = 0;
     this.numberCvVersionSlPublished = 0;
@@ -96,7 +97,7 @@ export class AgencyDetailDialogComponent implements OnInit {
         }
 
         Object.keys(langComposition).forEach(key => {
-          this.languageComposition.push({ name: VocabularyUtil.getLangIsoFormatted(key), value: langComposition[key] });
+          this.languageComposition.push({ name: this.vocabLangPipeKey.transform(key), value: langComposition[key] });
         });
       }
     });
@@ -123,10 +124,6 @@ export class AgencyDetailDialogComponent implements OnInit {
   }
   parseDateAgo(dateTime: Moment): string {
     return moment(dateTime).fromNow();
-  }
-
-  getFormattedLang(langIso?: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
   }
 
   getVersionStatus(vocab: any, versionNumber: any): any {

@@ -11,16 +11,16 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Component, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
-import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
-import { Router } from '@angular/router';
-import { JhiEventManager } from 'ng-jhipster';
-import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { FormBuilder, Validators } from '@angular/forms';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
+import {EditorService} from 'app/editor/editor.service';
+import {IVersion} from 'app/shared/model/version.model';
+import {Router} from '@angular/router';
+import {JhiEventManager} from 'ng-jhipster';
+import {FormBuilder, Validators} from '@angular/forms';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
 
 @Component({
   templateUrl: './editor-detail-cv-new-version-dialog.component.html'
@@ -41,7 +41,8 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private router: Router,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
   ) {
     this.isSaving = false;
     this.unPublishedTls = '';
@@ -51,9 +52,9 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
     if (this.versionParam.itemType === 'SL') {
       this.unPublishedTls = this.vocabularyParam
         .versions!.filter(v => v.itemType === 'TL' && v.status !== 'PUBLISHED')
-        .map(v => '- ' + this.getLangIsoFormatted(v.language!) + ' ' + v.number + '-' + v.status)
+        .map(v => '- ' + this.vocabLangPipeKey.transform(v.language!) + ' ' + v.number + '-' + v.status)
         .join('<br/>');
-      if (this.unPublishedTls === undefined || this.unPublishedTls === '') {
+      if (this.unPublishedTls === '') {
         this.newVersionForm.removeControl('agreeNewVersion');
       }
     } else {
@@ -63,10 +64,6 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
 
   clear(): void {
     this.activeModal.dismiss();
-  }
-
-  getLangIsoFormatted(langIso: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
   }
 
   confirmCreateNewVersion(id: number): void {

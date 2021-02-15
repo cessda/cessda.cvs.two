@@ -15,7 +15,7 @@
     <div class="modal-header">
         <h4 class="modal-title">
             <span *ngIf="isSlForm">Confirm delete code <strong>{{conceptParam.notation}}</strong></span>
-            <span *ngIf="!isSlForm">Confirm remove code translation {{getLangIsoFormatted(versionParam!.language!)}} from <strong>{{conceptParam.notation}}</strong></span>
+            <span *ngIf="!isSlForm">Confirm remove code translation {{versionParam!.language! | vocabularyLanguageFromKey}} from <strong>{{conceptParam.notation}}</strong></span>
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
@@ -27,7 +27,7 @@
             <p>If there are children codes and you want to keep them, move them first not to be children to <strong>{{conceptParam.notation}}</strong>.</p>
         </div>
         <div *ngIf="!isSlForm">
-            Are you sure you want to remove code translation {{getLangIsoFormatted(versionParam!.language!)}} from <strong>{{conceptParam.notation}}?</strong>
+            Are you sure you want to remove code translation {{versionParam!.language! | vocabularyLanguageFromKey}} from <strong>{{conceptParam.notation}}?</strong>
         </div>
     </div>
     <div class="modal-footer">

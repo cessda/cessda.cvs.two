@@ -90,7 +90,7 @@
                         <ng-container *ngFor="let vocab of sortVocabStat(vocabStats!); let i = index">
                             <ngb-panel *ngIf="vocab.versionCodeStats.length > 0">
                                 <ng-template ngbPanelTitle>
-                                    <span>{{vocab.notation}} <small>({{vocab.versionCodeStats.length}} {{vocab.versionCodeStats.length === 1 ? 'version': 'versions'}}) (SL: {{getFormattedLang(vocab.sourceLanguage)}})</small></span>
+                                    <span>{{vocab.notation}} <small>({{vocab.versionCodeStats.length}} {{vocab.versionCodeStats.length === 1 ? 'version': 'versions'}}) (SL: {{vocab.sourceLanguage | vocabularyLanguageFromKey}})</small></span>
                                 </ng-template>
                                 <ng-template ngbPanelContent>
                                     <ngb-accordion class="version-acc">
@@ -104,7 +104,7 @@
                                                         <span>Languages:</span>
                                                     </div>
                                                     <div>
-                                                        <ng-container *ngFor="let vStatus of getVersionStatus(vocab, vcode.versionNumber); let k = index">{{ k > 0 ? ', ' : ''}}<a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vStatus.language, vcode.versionNumber)"><span ngbTooltip="Published {{vStatus.date}}">{{getFormattedLang(vStatus.language)}}-{{vStatus.versionNumber}}</span></a></ng-container>
+                                                        <ng-container *ngFor="let vStatus of getVersionStatus(vocab, vcode.versionNumber); let k = index">{{ k > 0 ? ', ' : ''}}<a href="javascript:void(0)" (click)="closeAndNavigate( vocab.notation, vStatus.language, vcode.versionNumber)"><span ngbTooltip="Published {{vStatus.date}}">{{vStatus.language | vocabularyLanguageFromKey}}-{{vStatus.versionNumber}}</span></a></ng-container>
                                                     </div>
                                                     <div class="font-weight-bold small">
                                                         <span>Codes:</span>

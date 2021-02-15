@@ -11,18 +11,17 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import { Component } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { EditorService } from 'app/editor/editor.service';
-import { IVersion } from 'app/shared/model/version.model';
-import { Router } from '@angular/router';
-import { IConcept } from 'app/shared/model/concept.model';
-import { Observable, Subscription } from 'rxjs';
-import { JhiEventManager } from 'ng-jhipster';
-import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { CodeSnippet } from 'app/shared/model/code-snippet.model';
-import { HttpResponse } from '@angular/common/http';
-import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {EditorService} from 'app/editor/editor.service';
+import {IVersion} from 'app/shared/model/version.model';
+import {Router} from '@angular/router';
+import {IConcept} from 'app/shared/model/concept.model';
+import {Observable, Subscription} from 'rxjs';
+import {JhiEventManager} from 'ng-jhipster';
+import {CodeSnippet} from 'app/shared/model/code-snippet.model';
+import {HttpResponse} from '@angular/common/http';
+import {IVocabulary} from 'app/shared/model/vocabulary.model';
 
 @Component({
   templateUrl: './editor-detail-code-delete-dialog.component.html'
@@ -39,10 +38,6 @@ export class EditorDetailCodeDeleteDialogComponent {
     private router: Router,
     protected eventManager: JhiEventManager
   ) {}
-
-  getLangIsoFormatted(langIso: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
-  }
 
   clear(): void {
     this.activeModal.dismiss();
