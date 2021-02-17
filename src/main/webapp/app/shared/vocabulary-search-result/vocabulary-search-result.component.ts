@@ -162,7 +162,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   isVersionContains(vocab: IVocabulary, lang: string, versionType: string): boolean {
-    return VocabularyUtil.getTitleDefByLangIso(vocab, lang).includes(versionType)[2];
+    return VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2].includes(versionType);
   }
 
   getTitleByLang(vocab: IVocabulary): string {
