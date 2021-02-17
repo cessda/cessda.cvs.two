@@ -39,7 +39,7 @@ import * as moment from 'moment';
 import {AccountService} from 'app/core/auth/account.service';
 import {Account} from 'app/core/user/account.model';
 import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared';
 
 @Component({
   selector: 'jhi-editor-detail',
