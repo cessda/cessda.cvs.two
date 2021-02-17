@@ -137,41 +137,28 @@ describe('Vocabulary Util Tests', () => {
         if ( isNaN(Number(langIso))) {
           const vocabTitleDef = VocabularyUtil.getTitleDefByLangIso(vocab, langIso);
           const codeTitleDef = VocabularyUtil.getTitleDefByLangIso(code, langIso);
-          const langIsoFormatted = VocabularyUtil.getLangIsoFormatted( langIso );
           expect( vocabTitleDef[0] ).toBe( 'AAA');
           expect( vocabTitleDef[1] ).toBe( 'AAA');
           expect( vocabTitleDef[2] ).toBe( 'AAA');
           expect( codeTitleDef[0] ).toBe( 'AAA');
           expect( codeTitleDef[1] ).toBe( 'AAA');
-          expect( vocabTitleDef[2] ).toBe( 'AAA');
-
-          expect( langIsoFormatted ).toContain( '(' + langIso + ')' );
+          expect( codeTitleDef[2] ).toBe( 'AAA');
         }
       }
 
       // check the default if
       const langIso = 'xx';
-      const vocabTitleDef = VocabularyUtil.getTitleDefByLangIso(vocab, langIso);
-      const codeTitleDef = VocabularyUtil.getTitleDefByLangIso(code, langIso);
-      const langIsoFormatted = VocabularyUtil.getLangIsoFormatted( langIso );
-      expect( vocabTitleDef[0] ).toBe( 'AAA');
-      expect( vocabTitleDef[1] ).toBe( 'AAA');
-      expect( vocabTitleDef[2] ).toBe( 'AAA');
-      expect( codeTitleDef[0] ).toBe( 'AAA');
-      expect( codeTitleDef[1] ).toBe( 'AAA');
-      expect( vocabTitleDef[2] ).toBe( 'AAA');
+      const codeTitleDefDefault = VocabularyUtil.getTitleDefByLangIso(code, langIso);
+      const vocabTitleDefDefault = VocabularyUtil.getTitleDefByLangIso(vocab, langIso);
+      expect( codeTitleDefDefault[0] ).toBe( 'AAA');
+      expect( codeTitleDefDefault[1] ).toBe( 'AAA');
+      expect( codeTitleDefDefault[2] ).toBe( 'AAA');
+      expect( vocabTitleDefDefault[0] ).toBe( 'AAA');
+      expect( vocabTitleDefDefault[1] ).toBe( 'AAA');
+      expect( vocabTitleDefDefault[2] ).toBe( 'AAA');
 
-      expect( langIsoFormatted ).toContain( 'Unknown' );
     });
-    it('should get langIso By Enum', () => {
-      for (const langIso in LanguageIso) {
-        if ( isNaN(Number(langIso))) {
-          const lang: string = langIso;
-          const value = VocabularyUtil.getLangIsoByEnum(LanguageIso[lang]);
-          expect( value ).toBe( lang );
-        }
-      }
-    });
+
     it('should compare version number', () => {
       expect( VocabularyUtil.compareVersionNumber('1.0','1.1') ).toBe( -1 );
       expect( VocabularyUtil.compareVersionNumber('1.0','1.0') ).toBe( 0 );

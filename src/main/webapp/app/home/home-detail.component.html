@@ -122,7 +122,7 @@
                         <span>Language</span>
                     </div>
                     <div class="detail-column">
-                        <span>{{getFormattedLang(vocabulary!.selectedLang!)}}</span>
+                        <span>{{ vocabulary!.selectedLang! | vocabularyLanguageFromKey}}</span>
                     </div>
                 </div>
                 <div class="row-detail">
@@ -159,7 +159,7 @@
                         <div ngbDropdown class="d-inline-block">
                             <button class="vocab-lang-button" id="dropdownBasic{{lang}}" ngbDropdownToggle
                             [ngClass]="{'active': lang === vocabulary!.selectedLang}"
-                            ngbTooltip="{{getFormattedLang(lang)}}">
+                            ngbTooltip="{{lang | vocabularyLanguageFromKey}}">
                                 {{lang}}</button>
                             <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownBasic'+lang">
                                 <button ngbDropdownItem *ngFor="let version of getVersionsByLanguage(lang)!"

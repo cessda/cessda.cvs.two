@@ -14,6 +14,7 @@
 import {NgModule} from '@angular/core';
 import {CvsSharedLibsModule} from './shared-libs.module';
 import {FindLanguageFromKeyPipe} from './language/find-language-from-key.pipe';
+import {VocabularyLanguageFromKeyPipe} from './language/vocabulary-language-from-key.pipe';
 import {AlertComponent} from './alert/alert.component';
 import {AlertErrorComponent} from './alert/alert-error.component';
 import {LoginModalComponent} from './login/login.component';
@@ -39,6 +40,7 @@ import {CustomPageComponent} from 'app/shared/custom-page/custom-page.component'
   imports: [CvsSharedLibsModule, NgxTextDiffModule, QuillModule, RouterModule, TagInputModule],
   declarations: [
     FindLanguageFromKeyPipe,
+    VocabularyLanguageFromKeyPipe,
     LinkHttpPipe,
     SafeHtmlPipe,
     AlertComponent,
@@ -59,6 +61,7 @@ import {CustomPageComponent} from 'app/shared/custom-page/custom-page.component'
   exports: [
     CvsSharedLibsModule,
     FindLanguageFromKeyPipe,
+    VocabularyLanguageFromKeyPipe,
     LinkHttpPipe,
     SafeHtmlPipe,
     AlertComponent,
@@ -75,6 +78,6 @@ import {CustomPageComponent} from 'app/shared/custom-page/custom-page.component'
     VocabularyDownloadComponent,
     VocabularySearchResultComponent
   ],
-  providers: [RouteEventsService]
+  providers: [RouteEventsService, VocabularyLanguageFromKeyPipe]
 })
 export class CvsSharedModule {}

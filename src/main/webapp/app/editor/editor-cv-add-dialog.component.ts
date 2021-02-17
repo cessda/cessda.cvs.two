@@ -26,7 +26,6 @@ import {Observable} from 'rxjs';
 import {IVocabulary} from 'app/shared/model/vocabulary.model';
 import {Account} from 'app/core/user/account.model';
 import {LanguageIso} from 'app/shared/model/enumerations/language-iso.model';
-import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import {VOCABULARY_ALREADY_EXIST_TYPE} from 'app/shared';
 import {EditorService} from 'app/editor/editor.service';
 import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
@@ -171,9 +170,6 @@ export class EditorCvAddDialogComponent implements OnInit {
 
   protected onSaveError(): void {
     this.isSaving = false;
-  }
-  getLangIsoFormatted(langIso: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
   }
 
   private processError(response: HttpErrorResponse): void {

@@ -88,10 +88,6 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     return VocabularyUtil.getUniqueVersionLangs(this.versions, this.appScope);
   }
 
-  getFormattedLanguage(langIso?: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
-  }
-
   getVersionsByLang(lang?: string): IVersion[] {
     return this.versions.filter(v => v.language === lang);
   }

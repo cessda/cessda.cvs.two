@@ -94,10 +94,6 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     this.isVersionInvalid = false;
   }
 
-  getLangIsoFormatted(langIso: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
-  }
-
   clear(): void {
     this.activeModal.dismiss();
   }

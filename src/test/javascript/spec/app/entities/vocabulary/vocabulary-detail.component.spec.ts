@@ -49,34 +49,5 @@ describe('Component Tests', () => {
         expect(comp.vocabulary).toEqual(jasmine.objectContaining({ id: 123 }));
       });
     });
-
-    describe('byteSize', () => {
-      it('Should call byteSize from JhiDataUtils', () => {
-        // GIVEN
-        spyOn(dataUtils, 'byteSize');
-        const fakeBase64 = 'fake base64';
-
-        // WHEN
-        comp.byteSize(fakeBase64);
-
-        // THEN
-        expect(dataUtils.byteSize).toBeCalledWith(fakeBase64);
-      });
-    });
-
-    describe('openFile', () => {
-      it('Should call openFile from JhiDataUtils', () => {
-        // GIVEN
-        spyOn(dataUtils, 'openFile');
-        const fakeContentType = 'fake content type';
-        const fakeBase64 = 'fake base64';
-
-        // WHEN
-        comp.openFile(fakeContentType, fakeBase64);
-
-        // THEN
-        expect(dataUtils.openFile).toBeCalledWith(fakeContentType, fakeBase64);
-      });
-    });
   });
 });

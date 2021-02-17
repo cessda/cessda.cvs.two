@@ -244,10 +244,6 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     this.eventManager.broadcast('deselectConcept');
   }
 
-  getLangIsoFormatted(langIso: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
-  }
-
   private processError(response: HttpErrorResponse): void {
     if (response.status === 400 && response.error.type === VOCABULARY_ALREADY_EXIST_TYPE) {
       this.errorNotationExists = true;

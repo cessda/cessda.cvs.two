@@ -21,7 +21,7 @@ import {IVersion} from 'app/shared/model/version.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import {FormBuilder} from '@angular/forms';
 import {HomeService} from 'app/home/home.service';
-import {RouteEventsService} from 'app/shared';
+import {RouteEventsService, VocabularyLanguageFromKeyPipe} from 'app/shared';
 import {DiffContent} from 'ngx-text-diff/lib/ngx-text-diff.model';
 import {Observable, Subject} from 'rxjs';
 import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
@@ -78,7 +78,8 @@ export class HomeDetailComponent implements OnInit {
     private fb: FormBuilder,
     private routeEventsService: RouteEventsService,
     private _ngZone: NgZone,
-    protected eventManager: JhiEventManager
+    protected eventManager: JhiEventManager,
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
   ) {
     this.initialTabSelected = 'detail';
     this.currentSelectedCode = '';
@@ -117,10 +118,6 @@ export class HomeDetailComponent implements OnInit {
     return VocabularyUtil.getVersionByLangAndNumber(this.vocabulary!, versionNumber);
   }
 
-  getFormattedLang(langIso?: string): string {
-    return VocabularyUtil.getLangIsoFormatted(langIso);
-  }
-
   getUniqueVersionLang(): string[] {
     let uniqueLang: string[] = [];
     this.vocabulary!.versions!.forEach(v => {
@@ -144,7 +141,7 @@ export class HomeDetailComponent implements OnInit {
   }
   getFormattedVersionTooltip(version?: IVersion, sourceLang?: string): string {
     return (
-      VocabularyUtil.getLangIsoFormatted(version!.language) + ' v.' + version!.number + (version!.language === sourceLang ? ' SOURCE' : '')
+      this.vocabLangPipeKey.transform(version!.language!) + ' v.' + version!.number + (version!.language === sourceLang ? ' SOURCE' : '')
     );
   }
   getServerUrl(): string {

@@ -37,6 +37,7 @@ import {HttpHeaders, HttpResponse} from '@angular/common/http';
 import {ICvResult} from 'app/shared/model/cv-result.model';
 import {IAggr} from 'app/shared/model/aggr';
 import {HomeService} from 'app/home/home.service';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared';
 
 @Component({
   selector: 'jhi-vocabulary-search-result',
@@ -92,7 +93,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     protected dataUtils: JhiDataUtils,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
   ) {
     this.currentSearch = '';
     this.activeAggAgency = [];
@@ -333,7 +335,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     if (buckets !== undefined && buckets.length > 0) {
       buckets.forEach(bucket => {
         bucket.value = bucket.k;
-        bucket.display = VocabularyUtil.getLangIsoFormatted(bucket.k) + ' (' + bucket.v + ')';
+        bucket.display = this.vocabLangPipeKey.transform(bucket.k!) + ' (' + bucket.v + ')';
       });
     }
     return buckets;
@@ -357,7 +359,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     const statusInfo = VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2];
     const indexOf = statusInfo.indexOf('_');
     return (
-      VocabularyUtil.getLangIsoFormatted(lang) +
+      this.vocabLangPipeKey.transform(lang) +
       (lang === sourceLang ? ' SOURCE' : '') +
       (indexOf > 0 ? ' (' + statusInfo.substr(indexOf + 1) + ')' : '')
     );

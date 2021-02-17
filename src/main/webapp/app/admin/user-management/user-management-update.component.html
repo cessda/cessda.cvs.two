@@ -153,7 +153,7 @@
                             <tr *ngFor="let userAgency of user.userAgencies">
                                 <td>{{getAgencyName(userAgency.agencyId)}}</td>
                                 <td>{{userAgency.agencyRole}}</td>
-                                <td>{{getLangIsoFormatted(userAgency.language)}}</td>
+                                <td>{{userAgency.language | vocabularyLanguageFromKey}}</td>
                                 <td>
                                     <button type="button" ngbTooltip="Delete agency role" class="btn btn-sm btn-primary-outline" data-dismiss="modal" (click)="deleteAgencyRole( userAgency )">
                                         <fa-icon class="text-danger" [icon]="'trash'"></fa-icon>

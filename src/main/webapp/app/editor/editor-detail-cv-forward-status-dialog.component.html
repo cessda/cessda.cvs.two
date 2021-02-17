@@ -13,8 +13,8 @@
 
 <div class="modal-header">
         <div class="modal-title" style="display: flex;">
-            <span *ngIf="versionParam!.status !== 'REVIEW'">Confirm status change for Cv {{versionParam!.itemType}} {{getLangIsoFormatted(versionParam!.language!)}} <strong>{{versionParam!.notation}}</strong> </span>
-            <span *ngIf="versionParam!.status === 'REVIEW'">Confirm publishing Cv {{versionParam!.itemType}} {{getLangIsoFormatted(versionParam!.language!)}} <strong>{{versionParam!.notation}}</strong> </span>
+            <span *ngIf="versionParam!.status !== 'REVIEW'">Confirm status change for Cv {{versionParam!.itemType}} {{versionParam!.language! | vocabularyLanguageFromKey}} <strong>{{versionParam!.notation}}</strong> </span>
+            <span *ngIf="versionParam!.status === 'REVIEW'">Confirm publishing Cv {{versionParam!.itemType}} {{versionParam!.language! | vocabularyLanguageFromKey}} <strong>{{versionParam!.notation}}</strong> </span>
         </div>
 
         <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">

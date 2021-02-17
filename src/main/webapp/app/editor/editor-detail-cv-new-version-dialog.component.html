@@ -14,19 +14,19 @@
 <form name="newVersionForm" (ngSubmit)="confirmCreateNewVersion(versionParam.id!)" novalidate [formGroup]="newVersionForm">
     <div class="modal-header">
         <h4 class="modal-title">
-            <span>Confirm create new version from {{versionParam.itemType}} {{getLangIsoFormatted(versionParam.language!)}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}</span>
+            <span>Confirm create new version from {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}</span>
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <span>Are you sure to create new version from {{versionParam.itemType}} {{getLangIsoFormatted(versionParam.language!)}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}?</span>
+        <span>Are you sure to create new version from {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}?</span>
         <br/><br/>
         <div *ngIf="versionParam.itemType === 'SL' && vocabularyParam.versions && vocabularyParam.versions!.length > 1">
             The following TLs will also be cloned as DRAFT after this new SL version is published:
             <div *ngFor="let version of vocabularyParam.versions">
-                <span *ngIf="version.itemType === 'TL'">- TL {{getLangIsoFormatted(version.language!)}} {{version.number!}}-{{version.status!}}<br/></span>
+                <span *ngIf="version.itemType === 'TL'">- TL {{version.language! | vocabularyLanguageFromKey}} {{version.number!}}-{{version.status!}}<br/></span>
             </div>
         </div>
         <br/>

@@ -14,7 +14,7 @@
 <form name="importForm" (ngSubmit)="doCsvImport()">
     <div class="modal-header">
         <h4 class="modal-title" #modalhead>
-            <span>Import codes for <strong>{{versionParam.notation}} - {{getLangIsoFormatted(versionParam!.language!)}}</strong> from a CSV file.</span>
+            <span>Import codes for <strong>{{versionParam.notation}} - {{versionParam!.language! | vocabularyLanguageFromKey}}</strong> from a CSV file.</span>
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
