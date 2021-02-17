@@ -20,7 +20,7 @@ import {IVersion} from 'app/shared/model/version.model';
 import {Router} from '@angular/router';
 import {JhiEventManager} from 'ng-jhipster';
 import {FormBuilder, Validators} from '@angular/forms';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared';
 
 @Component({
   templateUrl: './editor-detail-cv-new-version-dialog.component.html'

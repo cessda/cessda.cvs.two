@@ -20,7 +20,7 @@ import {AgencyService} from 'app/agency/agency.service';
 import {NgbActiveModal, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import * as moment from 'moment';
 import {Moment} from 'moment';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared';
 
 @Component({
   selector: 'jhi-agency-detail-dialog',
@@ -101,14 +101,6 @@ export class AgencyDetailDialogComponent implements OnInit {
         });
       }
     });
-  }
-
-  byteSize(base64String: string): string {
-    return this.dataUtils.byteSize(base64String);
-  }
-
-  openFile(contentType: string, base64String: string): void {
-    this.dataUtils.openFile(contentType, base64String);
   }
 
   clear(): void {

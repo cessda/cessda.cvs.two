@@ -25,7 +25,7 @@ import {ProfileService} from 'app/layouts/profiles/profile.service';
 import {fromEvent, Subscription} from 'rxjs';
 import {debounceTime, map} from 'rxjs/operators';
 import {Location} from '@angular/common';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared';
 
 @Component({
   selector: 'jhi-navbar',

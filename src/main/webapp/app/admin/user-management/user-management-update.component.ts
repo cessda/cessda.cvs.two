@@ -22,7 +22,6 @@ import {IUserAgency, UserAgency} from 'app/shared/model/user-agency.model';
 import {HttpResponse} from '@angular/common/http';
 import {IAgency} from 'app/shared/model/agency.model';
 import {AgencyService} from 'app/agency/agency.service';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
 
 @Component({
   selector: 'jhi-user-mgmt-update',
@@ -55,8 +54,7 @@ export class UserManagementUpdateComponent implements OnInit {
     private userService: UserService,
     private route: ActivatedRoute,
     private agencyService: AgencyService,
-    private fb: FormBuilder,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
+    private fb: FormBuilder
   ) {
     this.selectedAgencyId = 1;
     this.selectedAgencyRole = 'CONTRIBUTOR_TL';
@@ -167,7 +165,7 @@ export class UserManagementUpdateComponent implements OnInit {
           this.getAgencyName(ua.agencyId!) +
           ': ' +
           ua.agencyRole +
-          (ua.language ? '-' + this.vocabLangPipeKey.transform(ua.language) : '') +
+          (ua.language ? '-' + ua.language : '') +
           '? The agency-role deletion will only be completed after the form is saved.'
       )
     ) {
@@ -185,7 +183,7 @@ export class UserManagementUpdateComponent implements OnInit {
           this.getAgencyName(this.selectedAgencyId!) +
           ': ' +
           this.selectedAgencyRole +
-          (this.selectedLanguage !== '' ? '-' + this.vocabLangPipeKey.transform(this.selectedLanguage!) : '') +
+          (this.selectedLanguage !== '' ? '-' + this.selectedLanguage! : '') +
           '? The agency-role addition will only be completed after the form is saved.'
       )
     ) {

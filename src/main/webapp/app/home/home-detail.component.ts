@@ -21,11 +21,10 @@ import {IVersion} from 'app/shared/model/version.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import {FormBuilder} from '@angular/forms';
 import {HomeService} from 'app/home/home.service';
-import {RouteEventsService} from 'app/shared';
+import {RouteEventsService, VocabularyLanguageFromKeyPipe} from 'app/shared';
 import {DiffContent} from 'ngx-text-diff/lib/ngx-text-diff.model';
 import {Observable, Subject} from 'rxjs';
 import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
 
 @Component({
   selector: 'jhi-home-detail',

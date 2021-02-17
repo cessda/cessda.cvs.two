@@ -37,7 +37,7 @@ import {HttpHeaders, HttpResponse} from '@angular/common/http';
 import {ICvResult} from 'app/shared/model/cv-result.model';
 import {IAggr} from 'app/shared/model/aggr';
 import {HomeService} from 'app/home/home.service';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared/language/vocabulary-language-from-key.pipe';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared';
 
 @Component({
   selector: 'jhi-vocabulary-search-result',
