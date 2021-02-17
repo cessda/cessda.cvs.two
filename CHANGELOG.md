@@ -4,6 +4,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.3-Alpha] - 2021-02-15
+
+### Added
+
+- Add standard CESSDA header to the source-code [#289](https://bitbucket.org/cessda/cessda.cvs.two/issues/289/ensure-source-code-files-contain-standard)
+- Improve Api-usage, About and User-guide pages editing functionality which derived from one component
+- Improve Quill Rich-TextArea by including table and image plug-ins and fixing missing style 
+- Further improving code quality by reuse components [#283](https://bitbucket.org/cessda/cessda.cvs.two/issues/283/improve-code-quality-phase-2-80-test)
+- Completely removed unused V1 API [#287](https://bitbucket.org/cessda/cessda.cvs.two/issues/287/upgrade-api-calls-from-v1-to-v2-within-the)
+
+
 ## [2.0.2-Alpha] - 2020-12-15
 
 ### Added

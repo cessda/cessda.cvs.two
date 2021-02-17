@@ -159,7 +159,13 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     const data = window.URL.createObjectURL(newBlob);
     const link = document.createElement('a');
     link.href = data;
-    link.download = 'CESSDA_API-Docs.' + fileFormat;
+    let fileTitle = 'CESSDA_API-Docs';
+    if (this.pageType === 'about') {
+      fileTitle = 'CESSDA_CVS_About';
+    } else if (this.pageType === 'user-guide') {
+      fileTitle = 'CESSDA_CVS_User-Guide';
+    }
+    link.download = fileTitle + '.' + fileFormat;
     link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
     setTimeout(function (): void {
       window.URL.revokeObjectURL(data);

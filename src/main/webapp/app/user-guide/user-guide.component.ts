@@ -11,15 +11,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {IMetadataField, MetadataField} from 'app/shared/model/metadata-field.model';
-import {EditorService} from 'app/editor/editor.service';
-import {MetadataFieldService} from 'app/entities/metadata-field/metadata-field.service';
-import {METADATA_KEY_USERGUIDE} from 'app/shared/constants/metadata.constants';
-import {HttpResponse} from '@angular/common/http';
-import {IMetadataValue, MetadataValue} from 'app/shared/model/metadata-value.model';
-import {Subscription} from 'rxjs';
-import {JhiEventManager} from 'ng-jhipster';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'jhi-user-guide',

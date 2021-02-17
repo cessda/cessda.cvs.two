@@ -14,7 +14,7 @@
 <div class="row">
     <div class="row-content">
         <div class="content">
-            <div class="content-left">
+            <div *ngIf="metadataValueMenu" class="content-left">
                 <div class="form-group" *jhiHasAnyAuthority="['ROLE_ADMIN']">
                     <label class="form-control-label">Docx upload:</label>
                     <div *ngIf="inDocxProgress" class="w-100">
@@ -71,13 +71,16 @@
                     </div>
                 </div>
             </div>
-            <div class="content-right p-t-0">
+            <div [ngClass]="{'content-right': metadataValueMenu,'container-inner': !metadataValueMenu}" class="p-t-0">
                 <jhi-alert-error></jhi-alert-error>
                 <jhi-alert></jhi-alert>
-                <button class="btn btn-sm float-right" (click)="downloadAsFile('pdf')" ngbTooltip="Download API documentation as PDF">
-                    <fa-icon *ngIf="!generatingFile" icon="file-pdf">PDF</fa-icon>
-                    <fa-icon *ngIf="generatingFile"[icon]="'circle-notch'" [spin]="true"></fa-icon>
-                </button>&nbsp;&nbsp;&nbsp;
+                <div class="w-100" *ngIf="pageType !== 'about'">
+                    <button class="btn btn-sm float-right" (click)="downloadAsFile('pdf')" ngbTooltip="Download API documentation as PDF">
+                        <fa-icon *ngIf="!generatingFile" icon="file-pdf">PDF</fa-icon>
+                        <fa-icon *ngIf="generatingFile"[icon]="'circle-notch'" [spin]="true"></fa-icon>
+                    </button>&nbsp;&nbsp;&nbsp;
+                </div>
+
                 <button *ngIf="enableDocxExport" class="btn btn-sm float-right" (click)="downloadAsFile('word')" ngbTooltip="Download API documentation as Word Docx">
                     <fa-icon *ngIf="!generatingFile" icon="file-word">Word</fa-icon>
                     <fa-icon *ngIf="generatingFile"[icon]="'circle-notch'" [spin]="true"></fa-icon>

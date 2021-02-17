@@ -30,6 +30,7 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -46,7 +47,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 /**
- * REST controller for managing Filu Upload
+ * REST controller for managing File Upload
  */
 @RestController
 @RequestMapping("/api/upload")
@@ -154,7 +155,6 @@ public class FileUploadResource {
             htmlSettings.setWmlPackage(wordMLPackage);
             OutputStream out = new FileOutputStream(applicationProperties.getUploadFilePath() + fileName + HTML);
             Docx4J.toHTML(htmlSettings, out, Docx4J.FLAG_EXPORT_PREFER_XSL);
-            // resave to replace image to base64
 
             Document doc = Jsoup.parse(new File(applicationProperties.getUploadFilePath() + fileName + HTML), "UTF-8");
             for (Element element : doc.select("img")) {
@@ -177,7 +177,6 @@ public class FileUploadResource {
             ){
                 htmlWriter.write(doc.toString());
             }
-
 
             return ResponseEntity.status(HttpStatus.OK).body(new SimpleResponse("OK", fileName));
         } catch (Exception e) {
@@ -203,42 +202,17 @@ public class FileUploadResource {
         try {
             File initialFile = new File(applicationProperties.getUploadFilePath() + fileName + HTML);
             String result = FileUtils.readFileToString(initialFile, StandardCharsets.UTF_8);
-
-            String[] htmlParts = result.split("(?=<p class=\"berschrift1)");
-            trimHtmlParts(htmlParts);
+            Document doc = Jsoup.parse(result, "UTF-8");
+            Elements elements = doc.select("body").first().children();
 
             MetadataFieldDTO metadataFieldDTO = metadataFieldService.findOneByMetadataKey(metadataKey).orElse(null);
             if( metadataFieldDTO != null ) {
                 Set<MetadataValueDTO> metadataValues = new LinkedHashSet<>();
-                MetadataValueDTO overviewSection = new MetadataValueDTO("overview", ObjectType.SYSTEM,
-                    metadataFieldDTO.getId(), metadataFieldDTO.getMetadataKey(), 0);
-                metadataValues.add( overviewSection );
+                MetadataValueDTO item = new MetadataValueDTO("section-1", ObjectType.SYSTEM,
+                    metadataFieldDTO.getId(), metadataFieldDTO.getMetadataKey(), 1);
+                item.setValue( elements.toString() );
 
-                StringBuilder overviewValue = new StringBuilder(  );
-
-                for (int i = 0; i < htmlParts.length; i++) {
-
-                    String sectionTitle;
-                    String sectionIdentifier = "title";
-
-                    Document doc = Jsoup.parse(htmlParts[i], "UTF-8");
-                    sectionTitle = doc.select("p:first-child").first().text();
-                    if( i == 0 ) {
-                        overviewValue.append("<h4><a href=\"/api-docs#title\">" +
-                            "<strong>" + sectionTitle + "</strong></a></h4><ol>");
-                    } else {
-                        sectionIdentifier = sectionTitle.replace(' ', '-');
-                        overviewValue.append("<li data-list=\"bullet\"><span class=\"ql-ui\" contenteditable=\"false\"></span><a href=\"/api-docs#" +
-                            sectionIdentifier +"\">" + sectionTitle + "</a></li>");
-                    }
-                    MetadataValueDTO item = new MetadataValueDTO(sectionIdentifier, ObjectType.SYSTEM,
-                        metadataFieldDTO.getId(), metadataFieldDTO.getMetadataKey(), (i + 1));
-                    item.setValue( htmlParts[i] );
-
-                    metadataValues.add( item );
-                }
-                overviewValue.append("</ol>");
-                overviewSection.setValue( overviewValue.toString() );
+                metadataValues.add( item );
 
                 final Set<MetadataValueDTO> toBeDeletedOldItems = metadataFieldDTO.getMetadataValues();
                 for (MetadataValueDTO toBeDeletedOldItem : toBeDeletedOldItems) {
@@ -255,25 +229,6 @@ public class FileUploadResource {
             return ResponseEntity.status(HttpStatus.OK).body(new SimpleResponse("OK", fileName));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new SimpleResponse("Not-OK", fileName));
-        }
-    }
-
-    private void trimHtmlParts(String[] htmlParts) {
-        if ( htmlParts.length > 0 ) {
-            // cut the beginning part
-            final String[] htmlBeginParts = htmlParts[0].split("<div class=\"document\">");
-            if( htmlBeginParts.length == 2 ) {
-                final int endIndex = htmlBeginParts[1].indexOf("<p class=\"Standard DocDefaults \" style=\"line-height: 100%;\">&nbsp;</p>");
-                htmlParts[0] = htmlBeginParts[1];
-                if( endIndex > 0 ) {
-                    htmlParts[0] = htmlBeginParts[1].substring(0, endIndex).trim();
-                }
-            }
-            // cut the end part
-            final String[] htmlEndParts = htmlParts[htmlParts.length - 1].split("</div>");
-            if( htmlEndParts.length > 0 ) {
-                htmlParts[htmlParts.length - 1] = htmlEndParts[0];
-            }
         }
     }
 }
