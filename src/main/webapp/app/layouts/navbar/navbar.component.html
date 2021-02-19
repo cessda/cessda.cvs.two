@@ -14,7 +14,7 @@
 <nav class="navbar navbar-light navbar-expand-md">
 
     <div class="navbar-top">
-        <div class="navbar-inner">
+        <div class="navbar-inner container-xl">
             <a class="cessda-abbr" href="https://www.cessda.eu/"><span>Consortium of European Social Science Data Archives</span></a>
             <div class="navbar-top-menu" [ngSwitch]="isAuthenticated()">
                 <ul class="navbar-nav-top ml-auto">
@@ -66,7 +66,7 @@
     </div>
 
     <div class="navbar-middle">
-        <div class="navbar-inner">
+        <div class="navbar-inner container-xl">
             <a class="navbar-brand logo" routerLink="/" (click)="collapseNavbar()">
                 <img src="/content/images/logo/cessda_logo_cvs.png" alt="CVS logo" />
             </a>
@@ -95,7 +95,7 @@
     </div>
 
     <div class="navbar-bottom">
-        <div class="navbar-inner">
+        <div class="navbar-inner container-xl">
             <a class="navbar-toggler d-lg-none" href="javascript:void(0);" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation" (click)="toggleNavbar()">
                 <fa-icon icon="bars"></fa-icon>
             </a>
@@ -200,7 +200,7 @@
                     <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link" routerLink="user-guide" (click)="collapseNavbar()">
                             <span>
-                                <span> USER GUIDE</span>
+                                <span>User Guide</span>
                             </span>
                         </a>
                     </li>
@@ -208,7 +208,7 @@
                     <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                         <a class="nav-link" routerLink="about" (click)="collapseNavbar()">
                             <span>
-                                <span> ABOUT</span>
+                                <span>About</span>
                             </span>
                         </a>
                     </li>

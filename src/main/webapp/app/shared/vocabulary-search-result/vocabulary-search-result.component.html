@@ -11,10 +11,11 @@
   ~ See the License for the specific language governing permissions and limitations under the License.
   -->
 
-<div class="row">
+
     <form name="searchForm" class="w-100" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="searchForm">
         <jhi-alert-error></jhi-alert-error>
         <jhi-alert></jhi-alert>
+    
         <div class="search-option-column">
             <div class="count-column">
                 <div class="level-row">
@@ -43,6 +44,7 @@
                 </div>
             </div>
         </div>
+
         <div class="search-column">
             <div class="filter-column">
                 <a class="acc-header option-label col-12 filter-panels-toggle" href="javascript:void(0);" (click)="toggleFilterPanelHidden()">&nbsp;
@@ -151,22 +153,17 @@
                         </div>
                         <div class="vocab-detail">
                             <div class="vocab-title">
-                                <h4>
                                     <a [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
                                         <span [innerHTML]="getTitleByLang(vocabulary)"></span>
+                                        <span class="notation"> ({{vocabulary.notation}})</span>
                                     </a>
-                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    <a [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{lang:vocabulary.selectedLang}">
-                                        <span>{{vocabulary.notation}}</span>
-                                    </a>
-                                </h4>
                             </div>
                             <div class="vocab-def">
                                 <span [innerHTML]="getDefinitionByLang(vocabulary)"></span>
                             </div>
                             <div class="vocab-ver">
-                                <span>Version: {{isEditorScope() ? vocabulary.versionNumber:getVersionByLang(vocabulary)}}</span>
-                                <a [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{tab:'export'}">
+                                <span class="version">Version: {{isEditorScope() ? vocabulary.versionNumber:getVersionByLang(vocabulary)}}</span>
+                                <a class="badge badge-pill badge-primary" [routerLink]="[getBaseUrl(), vocabulary.notation ]" [queryParams]="{tab:'export'}">
                                     <span>Download</span>
                                 </a>
                             </div>
@@ -206,4 +203,4 @@
             </div>
         </div>
     </form>
-</div>
+

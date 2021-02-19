@@ -49,8 +49,7 @@ Navbar
     background-color: #4e4d56;
     height: 36px;
     .navbar-inner {
-      max-width: 1280px;
-      min-width: 370px;
+    
       margin: 0 auto;
       width: 100%;
       display: flex;
@@ -91,8 +90,7 @@ Navbar
   .navbar-middle {
     width: 100%;
     .navbar-inner {
-      max-width: 1280px;
-      min-width: 370px;
+     
       margin: 0 auto;
       width: 100%;
       display: flex;
@@ -154,8 +152,7 @@ Navbar
     height: 50px;
 
     .navbar-inner {
-      max-width: 1280px;
-      min-width: 370px;
+
       margin: 0 auto;
       width: 100%;
       display: flex;
@@ -169,11 +166,10 @@ Navbar
       }
       .nav-item {
         .nav-link {
-          font-family: 'Source Sans Pro', sans-serif;
-          font-size: 110%;
-          font-weight: 600;
-          text-transform: uppercase;
-          display: inline-flex;
+          
+          
+          
+          
           padding: 0 13px;
           color: #fff;
           text-decoration: none;
@@ -185,9 +181,7 @@ Navbar
         .nav-link:hover {
           border: none;
         }
-        .dropdown-toggle:after {
-          content: none;
-        }
+     
       }
       .secondary-menu {
         display: block;
