@@ -13,10 +13,12 @@
 
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.domain.Concept;
 import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.CodeDTO;
+import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
@@ -417,6 +419,54 @@ public class VocabularyResourceV2 {
     ) {
         log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
         return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
+    }
+
+    /**
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
+     *
+     * @param request
+     * @param vocabulary
+     * @param versionNumber
+     * @param language
+     * @return Vocabulary in JSON format
+     */
+    @CrossOrigin
+    @GetMapping(
+        value="/codes/{vocabulary}/{versionNumber}/{language}",
+        produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation( value = "Get a Code in JSON format" )
+    public ResponseEntity<List<ConceptDTO>> getCodeJson(
+        HttpServletRequest request,
+        @ApiParam(
+            name = "vocabulary",
+            type = "String",
+            value = "The vocabulary",
+            example = "TopicClassification",
+            required = true
+        ) @PathVariable String vocabulary,
+        @ApiParam(
+            name = "versionNumber",
+            type = "String",
+            value = "The version number",
+            example = "4.0",
+            required = true
+        ) @PathVariable String versionNumber,
+        @ApiParam(
+            name = "language",
+            type = "String",
+            value = "The language" ,
+            example = "en",
+            required = true
+        ) @PathVariable( required = false )  String language
+    ) {
+        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, VersionUtils.getSlNumberFromTl(versionNumber), language + "-" + versionNumber );
+        List<ConceptDTO> concepts = new ArrayList<>();
+        final VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, VersionUtils.getSlNumberFromTl(versionNumber), language + "-" + versionNumber);
+        final Optional<VersionDTO> version = vocabularyDTO.getVersions().stream().findFirst();
+        if( version.isPresent() )
+            concepts.addAll( version.get().getConcepts());
+        return ResponseEntity.ok().body( concepts );
     }
 
     /**
