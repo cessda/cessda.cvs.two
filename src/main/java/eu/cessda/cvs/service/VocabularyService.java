@@ -273,4 +273,11 @@ public interface VocabularyService {
      * @param agencyUriCode
      */
     void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode );
+
+    /**
+     * Forward the status of certain Vocabulary version (DRAFT -> REVIEW -> PUBLISH)
+     * @param vocabularySnippet
+     * @return
+     */
+    VersionDTO forwardStatus(VocabularySnippet vocabularySnippet);
 }

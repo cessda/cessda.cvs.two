@@ -68,7 +68,7 @@ class EditorResourceIT {
 
     private static final String NOTATION = "AAAAAAAAAA";
 
-    private static final String INIT_CODE_NOTATION = "AAAAA";
+    public static final String INIT_CODE_NOTATION = "AAAAA";
     private static final String EDIT_CODE_NOTATION = "BBBBB";
     private static final String INIT_CODE2_NOTATION = "CCCCC";
     private static final String INIT_CODE3_NOTATION = "DDDDD";
@@ -76,13 +76,13 @@ class EditorResourceIT {
     private static final String INIT_CODE5 = "FFFFF";
     private static final String INIT_CODE6 = "GGGGG";
 
-    private static final String INIT_CODE_TITLE = "TTTTT";
+    public static final String INIT_CODE_TITLE = "TTTTT";
     private static final String EDIT_CODE_TITLE = "SSSSS";
     private static final String INIT_CODE2_TITLE = "UUUUU";
     private static final String INIT_CODE3_TITLE = "VVVVV";
     private static final String INIT_CODE4_TITLE = "WWWWW";
 
-    private static final String INIT_CODE_DEF = "KKKKK";
+    public static final String INIT_CODE_DEF = "KKKKK";
     private static final String EDIT_CODE_DEF = "LLLLL";
     private static final String INIT_CODE2_DEF = "MMMMM";
     private static final String INIT_CODE3_DEF = "NNNNN";
@@ -94,24 +94,24 @@ class EditorResourceIT {
     private static final String EDIT_CODE_TL_DEFINITION = "BBBBB";
 
 
-    private static final Integer CODE_POSITION = 0;
+    public static final Integer CODE_POSITION = 0;
     private static final Integer CODE4_POSITION = 1;
     private static final Integer CODE2_POSITION = 2;
     private static final Integer CODE3_POSITION = 3;
 
-    private static final String INIT_VERSION_NUMBER_SL = "1.0";
+    public static final String INIT_VERSION_NUMBER_SL = "1.0";
     private static final String INIT_VERSION_NUMBER_TL = "1.0.1";
 
     private static final String INIT_VERSION_INFO = "AAAAA";
     private static final String INIT_VERSION_CHANGES = "BBBBB";
 
-    private static final String SOURCE_LANGUAGE = "en";
+    public static final String SOURCE_LANGUAGE = "en";
     private static final String TARGET_LANGUAGE = "de";
 
     private static final ItemType ITEM_TYPE_SL = ItemType.SL;
     private static final ItemType ITEM_TYPE_TL = ItemType.TL;
 
-    private static final String INIT_AGENCY_NAME = "AAAAAAAAAA";
+    public static final String INIT_AGENCY_NAME = "AAAAAAAAAA";
     private static final String EDIT_AGENCY_NAME = "BBBBBBBBBB";
 
     private static final String INIT_AGENCY_LOGO = "AAAAAAAAAA";
@@ -123,7 +123,7 @@ class EditorResourceIT {
     private static final String INIT_DDI_USAGE = "AAAAAAAAAA";
     private static final String EDIT_DDI_USAGE = "BBBBBBBBBB";
 
-    private static final String INIT_TITLE_EN = "AAAAAAAAAA";
+    public static final String INIT_TITLE_EN = "AAAAAAAAAA";
     private static final String EDIT_TITLE_EN = "BBBBBBBBBB";
 
     private static final String INIT_DEFINITION_EN = "AAAAAAAAAA";
@@ -141,15 +141,15 @@ class EditorResourceIT {
     private static final String INIT_TRANS_AGENCY_LINK = "UUUUUDE";
     private static final String EDIT_TRANS_AGENCY_LINK = "UUUUUDE";
 
-    private static final String INIT_NAME = "AAAAAAAAAA";
+    public static final String INIT_NAME = "AAAAAAAAAA";
 
-    private static final String INIT_LINK = "AAAAAAAAAA";
+    public static final String INIT_LINK = "AAAAAAAAAA";
 
     private static final String INIT_DESCRIPTION = "AAAAAAAAAA";
 
-    private static final String INIT_LOGOPATH = "AAAAAAAAAA";
+    public static final String INIT_LOGOPATH = "AAAAAAAAAA";
 
-    private static final String INIT_LICENSE = "AAAAAAAAAA";
+    public static final String INIT_LICENSE = "AAAAAAAAAA";
 
     private static final Long INIT_LICENSE_ID = 1L;
 
@@ -208,7 +208,7 @@ class EditorResourceIT {
 
     private String jwt;
 
-    private static VocabularySnippet createVocabularySnippetForSlEn() {
+    public static VocabularySnippet createVocabularySnippetForSlEn() {
         VocabularySnippet vocabularySnippet = new VocabularySnippet();
         vocabularySnippet.setLanguage(SOURCE_LANGUAGE);
         vocabularySnippet.setItemType(ITEM_TYPE_SL);
@@ -247,7 +247,7 @@ class EditorResourceIT {
         return vocabularySnippet;
     }
 
-    private static CodeSnippet createCodeSnippet( String notation, String title, String definition, Integer position,
+    public static CodeSnippet createCodeSnippet( String notation, String title, String definition, Integer position,
                                                   String changeType) {
         CodeSnippet codeSnippet = new CodeSnippet();
         codeSnippet.setNotation( notation );
@@ -269,7 +269,7 @@ class EditorResourceIT {
         return codeSnippet;
     }
 
-    private static Agency createAgencyEntity() {
+    public static Agency createAgencyEntity() {
         Agency agency = new Agency()
             .name(INIT_AGENCY_NAME)
             .link(INIT_LINK)
@@ -1248,7 +1248,7 @@ class EditorResourceIT {
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
-            .andExpect(status().isBadRequest());
+            .andExpect(status().is5xxServerError());
     }
 
     @Test

@@ -13,7 +13,6 @@
 
 package eu.cessda.cvs.web.rest;
 
-import eu.cessda.cvs.domain.Concept;
 import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.VocabularyService;
@@ -292,7 +291,7 @@ public class VocabularyResourceV2 {
                 vocabularyJsonLds.addAll(vocabularyJsonLdMap);
             });
         }
-        return ResponseEntity.ok().body( !vocabularyJsonLds.isEmpty() ? vocabularyJsonLds.get(0) : new Object());
+        return ResponseEntity.ok().body( !vocabularyJsonLds.isEmpty() ? vocabularyJsonLds.get(0) : Collections.emptyList());
     }
 
     /**

@@ -78,6 +78,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -90,8 +91,12 @@ import java.util.stream.Stream;
 @Transactional
 public class VocabularyServiceImpl implements VocabularyService {
 
-    public static final String VOCABULARYPUBLISH = "vocabularypublish";
     private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
+
+    private static final String VOCABULARYPUBLISH = "vocabularypublish";
+
+    private static final String UNABLE_TO_FIND_VERSION = "Unable to find version with Id ";
+    private static final String UNABLE_TO_FIND_VOCABULARY = "Unable to find vocabulary with Id ";
 
     public static final String COUNT = "_count";
     public static final String TITLE = "title";
@@ -1511,6 +1516,108 @@ public class VocabularyServiceImpl implements VocabularyService {
                 }
             }
             vocabularyRepository.save(vocabulary);
+        }
+    }
+
+    @Override
+    @Transactional
+    public VersionDTO forwardStatus(VocabularySnippet vocabularySnippet){
+        if (vocabularySnippet.getVersionId() == null) {
+            throw new IllegalArgumentException("Missing version id");
+        }
+        if (vocabularySnippet.getActionType() == null) {
+            throw new IllegalArgumentException("Missing action type");
+        }
+        VocabularyDTO vocabularyDTO = findOne(vocabularySnippet.getVocabularyId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId()));
+        // pick version from vocabularyDTO
+        VersionDTO versionDTO = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals( vocabularySnippet.getVersionId())).findFirst()
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + vocabularySnippet.getVersionId()  ));
+
+        Licence licence = null;
+        Agency agency = null;
+        if( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED) ||
+            vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_PUBLISHED)) {
+            licence = licenceRepository.getOne(vocabularySnippet.getLicenseId());
+            agency = agencyRepository.getOne(vocabularySnippet.getAgencyId());
+        }
+        // check authorization
+        switch ( vocabularySnippet.getActionType() ){
+            case FORWARD_CV_SL_STATUS_REVIEW:
+                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_REVIEW,
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
+                versionDTO.setStatus(Status.REVIEW.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
+                vocabularyDTO.setStatus(Status.REVIEW.toString());
+                break;
+            case FORWARD_CV_SL_STATUS_PUBLISHED:
+                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_PUBLISHED,
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
+
+                versionDTO.setStatus(Status.PUBLISHED.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
+                versionDTO.prepareSlPublishing(vocabularySnippet, licence, agency);
+                vocabularyDTO.prepareSlPublishing(versionDTO);
+                break;
+            case FORWARD_CV_TL_STATUS_REVIEW:
+                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_REVIEW,
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
+                versionDTO.setStatus(Status.REVIEW.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
+                break;
+            case FORWARD_CV_TL_STATUS_PUBLISHED:
+                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_PUBLISHED,
+                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
+
+                versionDTO.setStatus(Status.PUBLISHED.toString());
+                versionDTO.setLastStatusChangeDate(LocalDate.now());
+                versionDTO.prepareTlPublishing(vocabularySnippet, licence, agency);
+
+                break;
+            default:
+                throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
+        }
+
+        // check if SL published and not initial version, is there any TL needs to be cloned as DRAFT?
+        if( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED) && !versionDTO.isInitialVersion()) {
+            cloneTLsIfAny(vocabularyDTO, versionDTO);
+        }
+        // save at the end
+        save( vocabularyDTO );
+        // indexing publication, delete existing one
+        if ( versionDTO.getStatus().equals( Status.PUBLISHED.toString()) ) {
+            // generate json files
+            generateJsonVocabularyPublish(vocabularyDTO);
+
+            // reindex published json
+            indexPublished( getPublishedCvPath(vocabularyDTO.getNotation()));
+        }
+        return versionDTO;
+    }
+
+
+    private void cloneTLsIfAny(VocabularyDTO vocabularyDTO, VersionDTO versionDTO) {
+        // find previous SL version, check if there is TLs
+        Optional<VersionDTO> prevVersionSlOpt = versionService.findOne(versionDTO.getPreviousVersion());
+        if ( prevVersionSlOpt.isPresent() ) {
+            VersionDTO prevVersionSl = prevVersionSlOpt.get();
+            List<VersionDTO> clonedTls = new ArrayList<>();
+            List<VersionDTO> prevVersions = vocabularyDTO.getVersionByGroup(prevVersionSl.getNumber(), true);
+
+            prevVersions.forEach(prevVersion -> {
+                if( prevVersion.getItemType().equals(ItemType.SL.toString())) {
+                    return;
+                }
+                log.info("Clone {} TL {} version {} to version {}_DRAFT", versionDTO.getNotation(),
+                    prevVersion.getLanguage(), prevVersion.getNumber() + "_" + prevVersion.getStatus(), versionDTO.getNumber() + ".1");
+                // cloning need currentSL (as main reference for notation and position), previousSl (as secondary reference if notation is changed in the current SL),
+                // and previous TL for the rest of properties
+                clonedTls.add(cloneTl( versionDTO, prevVersionSl, prevVersion));
+            });
+            if( !clonedTls.isEmpty() ) // save if any TLs is cloned
+            {
+                vocabularyDTO.getVersions().addAll( clonedTls );
+            }
         }
     }
 

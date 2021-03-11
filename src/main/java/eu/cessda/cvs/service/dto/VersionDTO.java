@@ -15,6 +15,8 @@ package eu.cessda.cvs.service.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import eu.cessda.cvs.domain.Agency;
+import eu.cessda.cvs.domain.Licence;
 import eu.cessda.cvs.domain.Version;
 import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
@@ -634,46 +636,46 @@ public class VersionDTO implements Serializable {
         this.translateAgencyLink = vocabularySnippet.getTranslateAgencyLink();
     }
 
-    public void prepareSlPublishing(VocabularySnippet vocabularySnippet, LicenceDTO licenceDTO, AgencyDTO agencyDTO) {
-        preparePublishing(vocabularySnippet, licenceDTO, agencyDTO);
+    public void prepareSlPublishing(VocabularySnippet vocabularySnippet, Licence licence, Agency agency) {
+        preparePublishing(vocabularySnippet, licence, agency);
 
         StringBuilder citationSb = new StringBuilder();
-        citationSb.append( agencyDTO.getName() + ". " );
+        citationSb.append( agency.getName() + ". " );
         citationSb
             .append( "(" + this.publicationDate.getYear() + "). ")
             .append( this.title + " (Version " + this.number + ") [Controlled vocabulary]. ");
-        if( !agencyDTO.getName().toLowerCase().contains("cessda")) {
+        if( !agency.getName().toLowerCase().contains("cessda")) {
             citationSb.append( "CESSDA. ");
         }
         citationSb.append( this.canonicalUri+ ". ");
         this.citation = citationSb.toString();
     }
 
-    public void prepareTlPublishing(VocabularySnippet vocabularySnippet, LicenceDTO licenceDTO, AgencyDTO agencyDTO) {
-        preparePublishing(vocabularySnippet, licenceDTO, agencyDTO);
+    public void prepareTlPublishing(VocabularySnippet vocabularySnippet, Licence licence, Agency agency) {
+        preparePublishing(vocabularySnippet, licence, agency);
 
         StringBuilder citationSb = new StringBuilder();
-        citationSb.append( agencyDTO.getName() + ". " );
+        citationSb.append( agency.getName() + ". " );
         citationSb
             .append( "(" + this.publicationDate.getYear() + "). ")
             .append( this.notation + "[" + this.title + "] (Version " + this.number + ") [Controlled vocabulary]. ");
-        if( !agencyDTO.getName().toLowerCase().contains("cessda")) {
+        if( !agency.getName().toLowerCase().contains("cessda")) {
             citationSb.append( "CESSDA. ");
         }
         citationSb.append( this.canonicalUri+ ". ");
         this.citation = citationSb.toString();
     }
 
-    private void preparePublishing(VocabularySnippet vocabularySnippet, LicenceDTO licenceDTO, AgencyDTO agencyDTO) {
+    private void preparePublishing(VocabularySnippet vocabularySnippet, Licence licence, Agency agency) {
         this.versionNotes = vocabularySnippet.getVersionNotes();
         this.versionChanges = vocabularySnippet.getVersionChanges();
         this.number = vocabularySnippet.getVersionNumber();
         this.publicationDate = LocalDate.now();
-        this.licenseId = licenceDTO.getId();
-        this.license = licenceDTO.getName();
-        this.uri = VocabularyUtils.generateUri(agencyDTO.getUri(), true, this.notation, this.number, this.language, null);
-        this.canonicalUri = agencyDTO.getCanonicalUri() + this.notation + ":" + this.number;
-        this.concepts.forEach(c -> c.setUri( VocabularyUtils.generateUri(agencyDTO.getUriCode(), false, this.notation, this.number, this.language, c.getNotation())));
+        this.licenseId = licence.getId();
+        this.license = licence.getName();
+        this.uri = VocabularyUtils.generateUri(agency.getUri(), true, this.notation, this.number, this.language, null);
+        this.canonicalUri = agency.getCanonicalUri() + this.notation + ":" + this.number;
+        this.concepts.forEach(c -> c.setUri( VocabularyUtils.generateUri(agency.getUriCode(), false, this.notation, this.number, this.language, c.getNotation())));
     }
 
     /**

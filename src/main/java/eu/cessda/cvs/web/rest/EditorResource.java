@@ -52,9 +52,11 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -89,10 +91,6 @@ public class EditorResource {
 
     private final ConceptService conceptService;
 
-    private final LicenceService licenceService;
-
-    private final AgencyService agencyService;
-
     private final CommentService commentService;
 
     private final MetadataFieldService metadataFieldService;
@@ -105,14 +103,11 @@ public class EditorResource {
 
     @SuppressWarnings("squid:S107") // since constructor params are autowired
     public EditorResource(VocabularyService vocabularyService, VersionService versionService, ConceptService conceptService,
-                          LicenceService licenceService, AgencyService agencyService, CommentService commentService,
-                          MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
+                          CommentService commentService, MetadataFieldService metadataFieldService, MetadataValueService metadataValueService,
                           ApplicationProperties applicationProperties, VocabularyChangeService vocabularyChangeService) {
         this.vocabularyService = vocabularyService;
         this.versionService = versionService;
         this.conceptService = conceptService;
-        this.licenceService = licenceService;
-        this.agencyService = agencyService;
         this.commentService = commentService;
         this.metadataFieldService = metadataFieldService;
         this.metadataValueService = metadataValueService;
@@ -208,107 +203,12 @@ public class EditorResource {
      * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
      */
     @PutMapping("/editors/vocabularies/forward-status")
-    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) throws IOException {
-        log.debug("REST request to update Vocabulary : {}", vocabularySnippet);
-        if (vocabularySnippet.getVersionId() == null) {
-            throw new BadRequestAlertException(INVALID_ID, ENTITY_VOCABULARY_NAME, ID_NULL);
-        }
-        if (vocabularySnippet.getActionType() == null) {
-            throw new IllegalArgumentException("Missing action type");
-        }
-        VocabularyDTO vocabularyDTO = vocabularyService.findOne(vocabularySnippet.getVocabularyId())
-            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + vocabularySnippet.getVocabularyId()));
-        // pick version from vocabularyDTO
-        VersionDTO versionDTO = vocabularyDTO.getVersions().stream().filter(v -> v.getId().equals( vocabularySnippet.getVersionId())).findFirst()
-            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + vocabularySnippet.getVersionId()  ));
-
-        LicenceDTO licenceDTO = null;
-        AgencyDTO agencyDTO = null;
-        if( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED) ||
-            vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_PUBLISHED)) {
-            licenceDTO = licenceService.findOne(vocabularySnippet.getLicenseId())
-                .orElseThrow(() -> new EntityNotFoundException("Unable to find license with Id " + vocabularySnippet.getLicenseId()));
-            agencyDTO = agencyService.findOne(vocabularySnippet.getAgencyId())
-                .orElseThrow(() -> new EntityNotFoundException("Unable to find agency with Id " + vocabularySnippet.getAgencyId()));
-        }
-        // check authorization
-        switch ( vocabularySnippet.getActionType() ){
-            case FORWARD_CV_SL_STATUS_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_REVIEW,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.REVIEW.toString());
-                versionDTO.setLastStatusChangeDate(LocalDate.now());
-                vocabularyDTO.setStatus(Status.REVIEW.toString());
-                break;
-            case FORWARD_CV_SL_STATUS_PUBLISHED:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_SL_STATUS_PUBLISHED,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
-
-                versionDTO.setStatus(Status.PUBLISHED.toString());
-                versionDTO.setLastStatusChangeDate(LocalDate.now());
-                versionDTO.prepareSlPublishing(vocabularySnippet, licenceDTO, agencyDTO);
-                vocabularyDTO.prepareSlPublishing(versionDTO);
-                break;
-            case FORWARD_CV_TL_STATUS_REVIEW:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_REVIEW,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
-                versionDTO.setStatus(Status.REVIEW.toString());
-                versionDTO.setLastStatusChangeDate(LocalDate.now());
-                break;
-            case FORWARD_CV_TL_STATUS_PUBLISHED:
-                SecurityUtils.checkResourceAuthorization(ActionType.FORWARD_CV_TL_STATUS_PUBLISHED,
-                    vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage());
-
-                versionDTO.setStatus(Status.PUBLISHED.toString());
-                versionDTO.setLastStatusChangeDate(LocalDate.now());
-                versionDTO.prepareTlPublishing(vocabularySnippet, licenceDTO, agencyDTO);
-
-                break;
-            default:
-                throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
-        }
-
-        // check if SL published and not initial version, is there any TL needs to be cloned as DRAFT?
-        if( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED) && !versionDTO.isInitialVersion()) {
-            cloneTLsIfAny(vocabularyDTO, versionDTO);
-        }
-        // save at the end
-        vocabularyService.save( vocabularyDTO );
-        // indexing publication, delete existing one
-        if ( versionDTO.getStatus().equals( Status.PUBLISHED.toString()) ) {
-            // generate json files
-            vocabularyService.generateJsonVocabularyPublish(vocabularyDTO);
-            // reindex published json
-            vocabularyService.indexPublished( vocabularyService.getPublishedCvPath(vocabularyDTO.getNotation()));
-        }
+    public ResponseEntity<VersionDTO> forwardStatusVocabulary(@Valid @RequestBody VocabularySnippet vocabularySnippet) {
+        log.debug("REST request to update forward status Vocabulary : {}", vocabularySnippet);
+        VersionDTO versionDTO = vocabularyService.forwardStatus(vocabularySnippet);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_VERSION_NAME, versionDTO.getNotation()))
             .body(versionDTO);
-    }
-
-    private void cloneTLsIfAny(VocabularyDTO vocabularyDTO, VersionDTO versionDTO) {
-        // find previous SL version, check if there is TLs
-        Optional<VersionDTO> prevVersionSlOpt = versionService.findOne(versionDTO.getPreviousVersion());
-        if ( prevVersionSlOpt.isPresent() ) {
-            VersionDTO prevVersionSl = prevVersionSlOpt.get();
-            List<VersionDTO> clonedTls = new ArrayList<>();
-            List<VersionDTO> prevVersions = vocabularyDTO.getVersionByGroup(prevVersionSl.getNumber(), true);
-
-            prevVersions.forEach(prevVersion -> {
-                if( prevVersion.getItemType().equals(ItemType.SL.toString())) {
-                    return;
-                }
-                log.info("Clone {} TL {} version {} to version {}_DRAFT", versionDTO.getNotation(),
-                    prevVersion.getLanguage(), prevVersion.getNumber() + "_" + prevVersion.getStatus(), versionDTO.getNumber() + ".1");
-                // cloning need currentSL (as main reference for notation and position), previousSl (as secondary reference if notation is changed in the current SL),
-                // and previous TL for the rest of properties
-                clonedTls.add(vocabularyService.cloneTl( versionDTO, prevVersionSl, prevVersion));
-            });
-            if( !clonedTls.isEmpty() ) // save if any TLs is cloned
-            {
-                vocabularyDTO.getVersions().addAll( clonedTls );
-            }
-        }
     }
 
     /**
