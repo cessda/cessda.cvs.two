@@ -20,7 +20,6 @@ import { UserManagementDetailComponent } from './user-management-detail.componen
 import { UserManagementUpdateComponent } from './user-management-update.component';
 import { UserManagementDeleteDialogComponent } from './user-management-delete-dialog.component';
 import { userManagementRoute } from './user-management.route';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared';
 
 @NgModule({
   imports: [CvsSharedModule, RouterModule.forChild(userManagementRoute)],

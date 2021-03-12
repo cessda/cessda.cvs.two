@@ -47,6 +47,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -65,6 +66,7 @@ public class VocabularyResourceV2 {
     public static final String TYPE = "@type";
     public static final String JSONLD_TYPE = "application/ld+json";
     public static final String DOCX_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+    private static final String VERSION = "version";
     public static final String VERSION_WITH_INCLUDED_VERSIONS = "REST request to get a JSON file of vocabulary {} with version {} with included versions {}";
     private final Logger log = LoggerFactory.getLogger(VocabularyResourceV2.class);
 
@@ -459,7 +461,8 @@ public class VocabularyResourceV2 {
             required = true
         ) @PathVariable( required = false )  String language
     ) {
-        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, VersionUtils.getSlNumberFromTl(versionNumber), language + "-" + versionNumber );
+        final String langVersion = language + "-" + versionNumber;
+        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, VersionUtils.getSlNumberFromTl(versionNumber), langVersion );
         List<ConceptDTO> concepts = new ArrayList<>();
         final VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, VersionUtils.getSlNumberFromTl(versionNumber), language + "-" + versionNumber);
         final Optional<VersionDTO> version = vocabularyDTO.getVersions().stream().findFirst();
@@ -855,5 +858,51 @@ public class VocabularyResourceV2 {
         VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath(vocabularyService.getPublishedCvPath(vocabulary, versionNumberSl));
         vocabularyDTO.setVersions(vocabularyService.filterOutVocabularyVersions(languageVersion, vocabularyDTO));
         return vocabularyDTO;
+    }
+
+    /**
+     * GET   : get all the vocabularies .
+     *
+     * @return map of Agencies and CVs code
+     */
+    @GetMapping
+    (
+    value="/vocabularies-published",
+    produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiOperation( value = "Get list of the agencies and the published controlled vocabularies with the details of the rest API link. The rest API links need a specific content type e.g. JSON, PDF" )
+    public Map<String, Map<String, Map<String, Map<String, String>>>> getAllVocabularies(
+        HttpServletRequest request
+    )
+    {
+        log.debug( "REST: Getting all Vocabularies" );
+        Map<String, Map<String, Map<String, Map<String, String>>>> agencyCvMap = new TreeMap<>();
+        List<VocabularyDTO> vocabularies = new ArrayList<>();
+        List<Path> jsonPaths = vocabularyService.getPublishedCvPaths();
+        vocabularies.addAll( jsonPaths.stream().map(VocabularyUtils::generateVocabularyByPath).collect(Collectors.toList()));
+        vocabularies = vocabularies.stream().sorted( Comparator.comparing( VocabularyDTO::getNotation ) ).collect( Collectors.toList() );
+        vocabularies.stream().filter( voc -> !Boolean.TRUE.equals( voc.isWithdrawn() ) ).forEach( voc ->
+        {
+            Map<String, Map<String, Map<String, String>>> vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
+            List<VersionDTO> versions = voc.getVersions().stream()
+                .sorted( ( c1, c2 ) -> VersionUtils.compareVersion( c1.getNumber(), c2.getNumber() ) )
+                .collect( Collectors.toList() );
+            versions.forEach( version ->
+            {
+                Map<String, Map<String, String>> langMap = vocabMap.computeIfAbsent( version.getNotation(), k -> new LinkedHashMap<>() );
+                Map<String, String> versionMap = langMap.computeIfAbsent(
+                    version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
+                versionMap.put( version.getNumber(),
+                    ResourceUtils.getBasePath(request) + "v2/vocabularies/" + version.getNotation() + "/" +
+                        VersionUtils.getSlNumberFromTl(version.getNumber()) + "?languageVersion=" + version.getLanguage() + "-" + version.getNumber());
+                for (Map<String, Object> versionHistory : version.getVersionHistories()) {
+                    versionMap.put( versionHistory.get(VERSION).toString(),
+                        ResourceUtils.getBasePath(request) + "v2/vocabularies/" + version.getNotation() + "/" +
+                            VersionUtils.getSlNumberFromTl(versionHistory.get(VERSION).toString())  +
+                            "?languageVersion=" + version.getLanguage() + "-" + versionHistory.get(VERSION).toString());
+                }
+            } );
+        } );
+        return agencyCvMap;
     }
 }

@@ -48,7 +48,9 @@ public class ResourceUtils {
      * @return
      */
     public static String getBasePath(HttpServletRequest request) {
-        return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        if( request.getScheme().equals( "http" ) && request.getServerPort() != 80)
+            return request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";
+        return request.getScheme() + "://" + request.getServerName() + request.getContextPath() + "/";
     }
 
     public static List<Map<String, Object>> convertVocabularyDtoToJsonLdSkosMos(VocabularyDTO vocabularyDTO, Set<CodeDTO> codeDtos, Set<String> languages){

@@ -273,7 +273,7 @@ class VocabularyResourceV2IT {
         vocabularySnippetSl.setLicenseId( license.getId() );
         vocabularySnippetSl.setVocabularyId( vocabularyDTO.getId() );
 
-        // publish
+        // publish second version
         newVersion = vocabularyService.forwardStatus(vocabularySnippetSl);
 
         restMockMvc.perform(get("/v2/compare-vocabulary/" + EditorResourceIT.INIT_TITLE_EN +
@@ -283,4 +283,15 @@ class VocabularyResourceV2IT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
     }
+
+    @Test
+    @Transactional
+    void getVocabulariesPublishedTest() throws Exception {
+        restMockMvc.perform(get("/v2/vocabularies-published")
+            .accept(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
+    }
+
+
 }
