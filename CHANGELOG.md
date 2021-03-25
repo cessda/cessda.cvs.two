@@ -4,6 +4,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.4-Alpha] - 2021-03-24
+- Upgraded new styling from Open Concept SA
+- Fix [#296](https://bitbucket.org/cessda/cessda.cvs.two/issues/296/new-agency-vocabulary-term-addition) New agency vocabulary term addition erratic
+- Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update) Export/download table does not update
+- Add more testing on the rest APIs  [#283](https://bitbucket.org/cessda/cessda.cvs.two/issues/283/improve-code-quality-phase-2-80-test)
+
 ## [2.0.3-Alpha] - 2021-02-17
 
 ### Added
@@ -22,7 +28,7 @@ All notable changes to this project will be documented in this file.
 - Improve code quality by improving testing coverage, remove duplications and fix code smells [#254](https://bitbucket.org/cessda/cessda.cvs.two/issues/254/improve-cvs-2-code-quality) based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
 - Fix [#280](https://bitbucket.org/cessda/cessda.cvs.two/issues/280/usage-information-to-be-copied-from-sl-to): Usage information to be copied from SL to TLs
 - Fix [#281](https://bitbucket.org/cessda/cessda.cvs.two/issues/281/unable-to-visit-previous-version): Unable to visit previous CV versions
-- FIx [#279](https://bitbucket.org/cessda/cessda.cvs.two/issues/279/usage-information-not-shown-in-home): Related to issue in the generation of JSON files for published CVs
+- Fix [#279](https://bitbucket.org/cessda/cessda.cvs.two/issues/279/usage-information-not-shown-in-home): Related to issue in the generation of JSON files for published CVs
 
 
 
