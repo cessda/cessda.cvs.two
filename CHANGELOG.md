@@ -4,7 +4,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [2.0.4-Alpha] - 2021-03-24
+## [2.0.4-Alpha] - 2021-03-25
 - Upgraded new styling from Open Concept SA
 - Fix [#296](https://bitbucket.org/cessda/cessda.cvs.two/issues/296/new-agency-vocabulary-term-addition) New agency vocabulary term addition erratic
 - Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update) Export/download table does not update
