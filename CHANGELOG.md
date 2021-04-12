@@ -1,19 +1,17 @@
-
-
 # Changelog
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.5-Alpha] - 2021-04-12
+- Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update) Export/download table does not update
+- Fix [#300](https://bitbucket.org/cessda/cessda.cvs.two/issues/300/fix-incorrect-http-headers-related-to) Fix incorrect HTTP headers related to cache-control and content-type for JSON files
+
 ## [2.0.4-Alpha] - 2021-03-25
 - Upgraded new styling from Open Concept SA
 - Fix [#296](https://bitbucket.org/cessda/cessda.cvs.two/issues/296/new-agency-vocabulary-term-addition) New agency vocabulary term addition erratic
-- Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update) Export/download table does not update
 - Add more testing on the rest APIs  [#283](https://bitbucket.org/cessda/cessda.cvs.two/issues/283/improve-code-quality-phase-2-80-test)
 
 ## [2.0.3-Alpha] - 2021-02-17
-
-### Added
-
 - Add standard CESSDA header to the source-code [#289](https://bitbucket.org/cessda/cessda.cvs.two/issues/289/ensure-source-code-files-contain-standard)
 - Improve Api-usage, About and User-guide pages editing functionality which derived from one component
 - Improve Quill Rich-TextArea by including table and image plug-ins and fixing missing style 
@@ -22,9 +20,6 @@ All notable changes to this project will be documented in this file.
 
 
 ## [2.0.2-Alpha] - 2020-12-15
-
-### Added
-
 - Improve code quality by improving testing coverage, remove duplications and fix code smells [#254](https://bitbucket.org/cessda/cessda.cvs.two/issues/254/improve-cvs-2-code-quality) based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
 - Fix [#280](https://bitbucket.org/cessda/cessda.cvs.two/issues/280/usage-information-to-be-copied-from-sl-to): Usage information to be copied from SL to TLs
 - Fix [#281](https://bitbucket.org/cessda/cessda.cvs.two/issues/281/unable-to-visit-previous-version): Unable to visit previous CV versions
@@ -33,9 +28,6 @@ All notable changes to this project will be documented in this file.
 
 
 ## [2.0.1-Alpha] - 2020-12-9
-
-### Added
-
 - Fix and finalize the /v2 REST APIs [#251](https://bitbucket.org/cessda/cessda.cvs.two/issues/251/api-requirements-read-only-mode-api)
     - Add search CV Codes REST API that produces JSON-LD based on Skosmos [#178](https://bitbucket.org/cessda/cessda.cvs.two/issues/178/dataverse-having-problems-consuming-api)
     - Add search Vocabularies & Codes that produces JSON & JSON-LD formats
@@ -52,8 +44,6 @@ All notable changes to this project will be documented in this file.
 
 The first version of CESSDA Vocabulary Service (CVS) 2, which was re-developed from scratch based on the deprecated CVS 1 application.  
 The project uses new architecture Spring-Boot framework for the back-end and Angular for the front-end, instead of Vaadin like in CVS 1.
-
-### Added
 
 - Back-end uses Spring-Boot v 2.2.5.RELEASE.
 - Front-end uses Angular v 10.1.5.
