@@ -126,7 +126,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
 
                     HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-                    httpResponse.setHeader("Cache-Control", "max-age=" + cacheTimeToLive + ", no-cache");
+                    httpResponse.setHeader("Cache-Control", "max-age=" + cacheTimeToLive + ", no-store");
 
                     // Setting Expires header, for proxy caching
                     httpResponse.setDateHeader("Expires", Instant.now().plusSeconds(cacheTimeToLive).toEpochMilli());
