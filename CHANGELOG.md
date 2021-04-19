@@ -2,8 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.6-Alpha] - 2021-04-19
+- Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update) Export/download table does not update, change cache control to no-store
+- Fix [#302](https://bitbucket.org/cessda/cessda.cvs.two/issues/302/bug-in-skos-export-script) Fix incorrect Thymeleaf template to generate RDF
+
 ## [2.0.5-Alpha] - 2021-04-12
-- Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update) Export/download table does not update
 - Fix [#300](https://bitbucket.org/cessda/cessda.cvs.two/issues/300/fix-incorrect-http-headers-related-to) Fix incorrect HTTP headers related to cache-control and content-type for JSON files
 
 ## [2.0.4-Alpha] - 2021-03-25
