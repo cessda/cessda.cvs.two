@@ -3,7 +3,7 @@
          xmlns:skos="http://www.w3.org/2004/02/skos/core#"
          xmlns:owl="http://www.w3.org/2002/07/owl#"
          xmlns:dcterms="http://purl.org/dc/terms/"
->jos
+>
    <rdf:Description th:attr="'rdf:about'=${docId}">
       <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
       <dcterms:isVersionOf th:attr="'rdf:resource'=${docVersionOf}"/>
