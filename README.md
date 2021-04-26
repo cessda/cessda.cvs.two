@@ -1,3 +1,17 @@
+[![Build Status](https://jenkins.cessda.eu/buildStatus/icon?job=cessda.cvs.two%2Fmaster)](https://jenkins.cessda.eu/job/cessda.cvs.two/job/master/)
+[![Bugs](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=bugs)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Code Smells](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=code_smells)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Coverage](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=coverage)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Duplicated Lines (%)](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=duplicated_lines_density)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Lines of Code](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=ncloc)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Maintainability Rating](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=sqale_rating)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Quality Gate Status](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=alert_status)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Reliability Rating](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=reliability_rating)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Security Rating](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=security_rating)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Technical Debt](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=sqale_index)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+[![Vulnerabilities](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=vulnerabilities)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+
+
 # CESSDA Vocabulary Service
 
 This repository contains all the source code and configuration needed to deploy the CESSDA Vocabulary Service application
