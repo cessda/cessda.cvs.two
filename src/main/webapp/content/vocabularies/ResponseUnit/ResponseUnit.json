@@ -10,14 +10,14 @@
   "agencyName" : "DDI Alliance",
   "agencyLogo" : "ddi.png",
   "agencyLink" : "http://www.ddialliance.org/",
-  "publicationDate" : "2020-02-04",
+  "publicationDate" : "2020-02-05",
   "notes" : "This controlled vocabulary is applicable only to survey-type data.",
   "versions" : [ {
     "id" : 282,
     "status" : "PUBLISHED",
     "itemType" : "SL",
     "language" : "en",
-    "publicationDate" : "2020-02-04",
+    "publicationDate" : "2020-02-05",
     "number" : "1.0",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:ResponseUnit:1.0",
@@ -35,7 +35,7 @@
     "licenseLogo" : "by.png",
     "citation" : "DDI Alliance. (2020). Response Unit (Version 1.0) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ResponseUnit:1.0. ",
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/ResponseUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">ResponseUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2&nbsp;</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/ResponseUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">ResponseUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/respUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\"> respUnit</a></p><p><br></p>",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 3238,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.html#Self",
@@ -70,6 +70,66 @@
       "notation" : "Other",
       "title" : "Other",
       "definition" : "Use if the response unit is known, but not found in the list.",
+      "position" : 4
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ ]
+  }, {
+    "id" : 512,
+    "status" : "PUBLISHED",
+    "itemType" : "TL",
+    "language" : "no",
+    "creationDate" : "2020-12-17",
+    "publicationDate" : "2020-12-17",
+    "number" : "1.0.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.1.html",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:ResponseUnit:1.0",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.html",
+    "title" : "Svarenhet",
+    "definition" : "Indikerer enheten som har gitt informasjonen som er i variabelen.",
+    "notation" : "ResponseUnit",
+    "notes" : "",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). ResponseUnit[Svarenhet] (Version 1.0.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:ResponseUnit:1.0.1. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/ResponseUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">ResponseUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2&nbsp;</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/ResponseUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\">ResponseUnit</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/respUnit.html\" rel=\"noopener noreferrer\" target=\"_blank\"> respUnit</a></p>",
+    "translateAgencyLink" : "https://nsd.no",
+    "translateAgency" : "NSD - Norwegian Centre for Research Data",
+    "lastStatusChangeDate" : "2020-12-17",
+    "concepts" : [ {
+      "id" : 13382,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.1.html#Self",
+      "notation" : "Self",
+      "title" : "Selv",
+      "definition" : "Svarenheten er den samme som observasjons-/analyseenheten.",
+      "position" : 0
+    }, {
+      "id" : 13383,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.1.html#Informant",
+      "notation" : "Informant",
+      "title" : "Informant",
+      "definition" : "Svarenheten er forskjellig fra observasjonsenheten i studiedesignet, og identiteten til svarenheten er også forhåndsbestemt av studiedesignet. Slike studer blir faktisk kalt \"informantundersøkelser\" og de involverer, for eksempel, innhenting av informasjon om et fellesskap fra visse utvalgte medlemmer som har spesifikk informasjon, som kirkeledere, bedriftseiere eller ledere, leger, lærere, samfunnsledere, etc. Eller, hvis en bedrift eller organisasjon er observasjonsenheten, kan informasjonen være ettertraktet på forskjellige administrative/faglige nivåer, etc.",
+      "position" : 1
+    }, {
+      "id" : 13384,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.1.html#Proxy",
+      "notation" : "Proxy",
+      "title" : "Fullmektig",
+      "definition" : "Svarenheten er forskjellig fra analyseenheten fordi utvalgsenheten er utilgjengelig/ikke har mulighet til å delta. Fullmektige kan være tillatt av studiedesignet, men deres identitet er ikke spesifikt utpekt (for eksempel, hvem som helst i husstanden kan gi informasjon om en annen husstandsmedlem, eller hvilken som helst tilgjengelig student kan gi informasjon om en annen student, etc.).",
+      "position" : 2
+    }, {
+      "id" : 13385,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.1.html#Interviewer",
+      "notation" : "Interviewer",
+      "title" : "Intervjuer",
+      "definition" : "Data er direkte registrert av intervjueren som et resultat av hans eller hennes egne observasjoner, og ikke ved å fremkalle svar til et spørsmål.",
+      "position" : 3
+    }, {
+      "id" : 13386,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/ResponseUnit_1.0.1.html#Other",
+      "notation" : "Other",
       "position" : 4
     } ],
     "comments" : [ ],

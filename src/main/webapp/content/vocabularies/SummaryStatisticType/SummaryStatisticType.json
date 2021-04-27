@@ -10,14 +10,13 @@
   "agencyName" : "DDI Alliance",
   "agencyLogo" : "ddi.png",
   "agencyLink" : "http://www.ddialliance.org/",
-  "publicationDate" : "2019-05-07",
-  "notes" : "",
+  "publicationDate" : "2019-05-08",
   "versions" : [ {
     "id" : 249,
     "status" : "PUBLISHED",
     "itemType" : "SL",
     "language" : "en",
-    "publicationDate" : "2019-05-07",
+    "publicationDate" : "2019-05-08",
     "number" : "2.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SummaryStatisticType:2.1",
@@ -35,7 +34,7 @@
     "licenseLogo" : "by.png",
     "citation" : "DDI Alliance. (2019). Summary Statistic Type (Version 2.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1. ",
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>This vocabulary cannot be used for the element Element sumStat (4.3.14) in DDI 2.1 because the element already comes with a hard-coded controlled vocabulary in the \"type\" attribute. For using in DDI 2.5, select value \"Other\" in the \"type\" attribute, and insert the appropriate value from this CV in the \"otherType\" attribute. Use the complex element controlledVocabUsed (in the docDscr section) to identify the controlled vocabulary to which the selected term belongs.</p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" rel=\"noopener noreferrer\" target=\"_blank\">sumStat</a></p>",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 1944,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.html#ArithmeticMean",
@@ -352,7 +351,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "da",
-    "publicationDate" : "2019-07-22",
+    "publicationDate" : "2019-07-23",
     "number" : "2.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SummaryStatisticType:2.1",
@@ -373,7 +372,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: physicalinstance</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" rel=\"noopener noreferrer\" target=\"_blank\">sumStat</a></p>",
     "translateAgencyLink" : "https://www.sa.dk/",
     "translateAgency" : "Danish National Archives (DNA)",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 3130,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ArithmeticMean",
@@ -690,7 +689,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "fi",
-    "publicationDate" : "2019-07-01",
+    "publicationDate" : "2019-07-02",
     "number" : "2.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SummaryStatisticType:2.1",
@@ -711,7 +710,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: physicalinstance</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 4.3.14</p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" rel=\"noopener noreferrer\" target=\"_blank\">sumStat</a></p>",
     "translateAgencyLink" : "https://www.fsd.uta.fi/en/",
     "translateAgency" : "Finnish Social Science Data Archive (FSD)",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 2688,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ArithmeticMean",
@@ -1028,7 +1027,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "it",
-    "publicationDate" : "2019-07-21",
+    "publicationDate" : "2019-07-22",
     "number" : "2.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SummaryStatisticType:2.1",
@@ -1049,7 +1048,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: physicalinstance</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 4.3.14</p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" rel=\"noopener noreferrer\" target=\"_blank\">sumStat</a></p>",
     "translateAgencyLink" : "https://www.unidata.unimib.it/",
     "translateAgency" : "UniData - Bicocca Data Archive",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 5509,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ArithmeticMean",
@@ -1362,11 +1361,347 @@
     "comments" : [ ],
     "versionHistories" : [ ]
   }, {
+    "id" : 278,
+    "status" : "PUBLISHED",
+    "itemType" : "TL",
+    "language" : "no",
+    "publicationDate" : "2020-12-17",
+    "number" : "2.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:SummaryStatisticType:2.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.html",
+    "title" : "Oppsummerende statistikk type",
+    "definition" : "Spesifiserer typen av oppsummerende statistikk. Oppsummerende statisitkk er en representasjon av et sett verdiers karakteristika representert ved et enkelt tall.",
+    "notation" : "SummaryStatisticType",
+    "previousVersion" : 0,
+    "initialVersion" : 278,
+    "notes" : "",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). SummaryStatisticType[Oppsummerende statistikk type] (Version 2.1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SummaryStatisticType:2.1.1. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: physicalinstance</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 4.3.14</p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" rel=\"noopener noreferrer\" target=\"_blank\">sumStat</a></p>",
+    "translateAgencyLink" : "https://nsd.no/",
+    "translateAgency" : "NSD - Norwegian Centre for Research Data",
+    "lastStatusChangeDate" : "2020-12-17",
+    "concepts" : [ {
+      "id" : 3086,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ArithmeticMean",
+      "notation" : "ArithmeticMean",
+      "title" : "Aritmetisk gjennomsnitt",
+      "definition" : "Matematisk gjennomsnitt av et sett av verdier. Gjennomsnittet beregnes ved å legge sammen to eller flere verdier, og dele summen på antallet verdier. I samfunns-/statsvitenskap er det vanligvis summen av målingene delt på antall enheter eller tilfeller.",
+      "position" : 0
+    }, {
+      "id" : 3087,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#GeometricMean",
+      "notation" : "GeometricMean",
+      "title" : "Geometrisk gjennomsnitt",
+      "definition" : "Gjennomsnittsverdi for alle data når en finner den n-te rot til alle (n) verdiene. Sjeldent brukt i samfunnsfag.",
+      "position" : 1
+    }, {
+      "id" : 3088,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#HarmonicMean",
+      "notation" : "HarmonicMean",
+      "title" : "Harmonisk gjennomsnitt",
+      "definition" : "Gjennomsnittsverdi av alle data hvis man beregener det tilsvarende av det aritmetiske gjennomsnittet av tilsvarende verdier. Sjelden brukt i samfunnsvitenskap.",
+      "position" : 2
+    }, {
+      "id" : 3089,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#TrimmedMean",
+      "notation" : "TrimmedMean",
+      "title" : "Trimmet gjennomsnitt",
+      "definition" : "Det (aritmetiske) gjennomsnittet beregnet etter å ha fjernet deler av observasjonene ved den høye og den lave enden (f.eks. interkvartilgjennomsnittet når de laveste 25% og de høyeste 25% fjernes, og gjennomsnittet av de gjenværende verdier beregnes).",
+      "position" : 3
+    }, {
+      "id" : 3090,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#StandardErrorOfMean",
+      "notation" : "StandardErrorOfMean",
+      "title" : "Standardfeil for gjennomsnittet",
+      "definition" : "Gir et estimat av hvor mye utvalgets gjennomsnitt varierer fra det faktiske populasjonsgjennomsnittet.",
+      "position" : 4
+    }, {
+      "id" : 3091,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Mode",
+      "notation" : "Mode",
+      "title" : "Modus",
+      "definition" : "Verdien som er observert flest ganger.",
+      "position" : 5
+    }, {
+      "id" : 3092,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Median",
+      "notation" : "Median",
+      "title" : "Median",
+      "definition" : "Midtverdien i et sett av verdier arrangert i stigende rekkefølge. Halvparten av verdiene er under medianen og halvparten over den. Hvis antallet verdier i settet er et partall vil medianen være gjennomsnittet av de to midterste verdiene.",
+      "position" : 6
+    }, {
+      "id" : 3093,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ValidCases",
+      "notation" : "ValidCases",
+      "title" : "Gyldige tilfeller",
+      "definition" : "Observerte tilfeller som er ansett for å være gyldige, dvs. gir vesentlig informasjon og skal inngå i beregninger.",
+      "position" : 7
+    }, {
+      "id" : 3094,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#InvalidCases",
+      "notation" : "InvalidCases",
+      "title" : "Ugyldige tilfeller",
+      "definition" : "Observerte tilfeller som er ansett/definert som 'missing' (f.eks. ikke konstantert, ikke aktuelle etc.), vanligvis fjernet fra beregningene.",
+      "position" : 8
+    }, {
+      "id" : 3095,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Minimum",
+      "notation" : "Minimum",
+      "title" : "Minimum",
+      "definition" : "Den laveste gyldige verdien i en variabel.",
+      "position" : 9
+    }, {
+      "id" : 3096,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Maximum",
+      "notation" : "Maximum",
+      "title" : "Maksimum",
+      "definition" : "Den høyeste gyldige verdien i en variabel.",
+      "position" : 10
+    }, {
+      "id" : 3097,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Range",
+      "notation" : "Range",
+      "title" : "Variasjonsbredde",
+      "definition" : "Variasjonsbredden av gyldige verdier, dvs. alle verdier som befinner seg mellom den høyeste og laveste gyldige verdien.",
+      "position" : 11
+    }, {
+      "id" : 3098,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Sum",
+      "notation" : "Sum",
+      "title" : "Sum",
+      "definition" : "Summen eller totalen av verdiene på tvers av alle gyldige tilfeller.",
+      "position" : 12
+    }, {
+      "id" : 3099,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Variance",
+      "notation" : "Variance",
+      "title" : "Varians",
+      "definition" : "Variansen er det gjennomsnittlige kvadratiske avvik av variabelen rundt gjennomsnittsverdien. Det gjenspeiler spredning rundt dets gjennomsnitt.",
+      "position" : 13
+    }, {
+      "id" : 3100,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#StandardDeviation",
+      "notation" : "StandardDeviation",
+      "title" : "Standardavvik",
+      "definition" : "Indikerer graden av hvorvidt individer i utvalget er forskjellige fra utvalgsgjennomsnittet.",
+      "position" : 14
+    }, {
+      "id" : 3101,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#CoefficientOfVariation",
+      "notation" : "CoefficientOfVariation",
+      "title" : "Variasjonskoeffisienten",
+      "definition" : "Standardavviket delt på gjennomsnittet.",
+      "position" : 15
+    }, {
+      "id" : 3102,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#AverageAbsoluteDeviation",
+      "notation" : "AverageAbsoluteDeviation",
+      "title" : "Gjennomsnittlig absoluttavvik",
+      "definition" : "Gjennomsnittet av de absolutte forskjellene mellom hver verdi og gjennomsnittet. Måling av statistisk spredning rundt gjennomsnittet, alternativ til standardavvik.",
+      "position" : 16
+    }, {
+      "id" : 3103,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#MedianAbsoluteDeviation",
+      "notation" : "MedianAbsoluteDeviation",
+      "title" : "Median absoluttavvik",
+      "definition" : "Median absoluttavvik fra medianen. Måling av statistisk spredning rundt medianen.",
+      "position" : 17
+    }, {
+      "id" : 3104,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#FirstQuartile",
+      "notation" : "FirstQuartile",
+      "title" : "Første kvartil",
+      "definition" : "Den første av tre verdier som separerer den totale frekvensen av en fordeling i fire like store deler.",
+      "position" : 18
+    }, {
+      "id" : 3105,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#SecondQuartile",
+      "notation" : "SecondQuartile",
+      "title" : "Andre kvartil",
+      "definition" : "Den andre av tre verdier som separerer den totale frekvensen av en fordeling i fire like store deler (=median).",
+      "position" : 19
+    }, {
+      "id" : 3106,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ThirdQuartile",
+      "notation" : "ThirdQuartile",
+      "title" : "Tredje kvartil",
+      "definition" : "Den tredje av tre verdier som separerer den totale frekvensen av en fordeling i fire like store deler.",
+      "position" : 20
+    }, {
+      "id" : 3107,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#InterquartileRange",
+      "notation" : "InterquartileRange",
+      "title" : "Kvartilbredde",
+      "definition" : "Differansen mellom den første og den tredje kvartilverdien.",
+      "position" : 21
+    }, {
+      "id" : 3108,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#FirstQuintile",
+      "notation" : "FirstQuintile",
+      "title" : "Første kvintil",
+      "definition" : "Den første av fire verdier som separerer den totale frekvensen av en fordeling i fem like deler.",
+      "position" : 22
+    }, {
+      "id" : 3109,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#SecondQuintile",
+      "notation" : "SecondQuintile",
+      "title" : "Andre kvintil",
+      "definition" : "Den andre av fire verdier som separerer den totale frekvensen av en fordeling i fem like deler.",
+      "position" : 23
+    }, {
+      "id" : 3110,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ThirdQuintile",
+      "notation" : "ThirdQuintile",
+      "title" : "Tredje kvintil",
+      "definition" : "Den tredje av fire verdier som separerer den totale frekvensen av en fordeling i fem like deler.",
+      "position" : 24
+    }, {
+      "id" : 3111,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#FourthQuintile",
+      "notation" : "FourthQuintile",
+      "title" : "Fjerde kvintil",
+      "definition" : "Den fjerde av fire verdier som separerer den totale frekvensen av en fordeling i fem like deler.",
+      "position" : 25
+    }, {
+      "id" : 3112,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#InterquintileRange",
+      "notation" : "InterquintileRange",
+      "title" : "Kvintilbredde",
+      "definition" : "Intervallet mellom første og fjerde kvintil.",
+      "position" : 26
+    }, {
+      "id" : 3113,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#FirstDecile",
+      "notation" : "FirstDecile",
+      "title" : "Første desil",
+      "definition" : "Den første av ni verdier som separerer den totale frekvensen av en fordeling i ti like deler.",
+      "position" : 27
+    }, {
+      "id" : 3114,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#SecondDecile",
+      "notation" : "SecondDecile",
+      "title" : "Andre desil",
+      "definition" : "Den andre av ni verdier som separerer den totale frekvensen av en fordeling i ti like deler.",
+      "position" : 28
+    }, {
+      "id" : 3115,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ThirdDecile",
+      "notation" : "ThirdDecile",
+      "title" : "Tredje desil",
+      "definition" : "Den tredje av ni verdier som separerer den totale frekvensen av en fordeling i ti like deler.",
+      "position" : 29
+    }, {
+      "id" : 3116,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#FourthDecile",
+      "notation" : "FourthDecile",
+      "title" : "Fjerde desil",
+      "definition" : "Den fjerde av ni verdier som separerer den totale frekvensen av en fordeling i ti like deler.",
+      "position" : 30
+    }, {
+      "id" : 3117,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#FifthDecile",
+      "notation" : "FifthDecile",
+      "title" : "Femte desil",
+      "definition" : "Den femte av ni verdier som separerer den totale frekvensen av en fordeling i ti like deler.",
+      "position" : 31
+    }, {
+      "id" : 3118,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#SixthDecile",
+      "notation" : "SixthDecile",
+      "title" : "Sjette desil",
+      "definition" : "Den sjette av ni verdier som separerer den totale frekvensen av en fordeling i ti like deler.",
+      "position" : 32
+    }, {
+      "id" : 3119,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#SeventhDecile",
+      "notation" : "SeventhDecile",
+      "title" : "Syvende desil",
+      "definition" : "Den syvende av ni verdier som separerer den totale frekvensen av en fordeling i ti like deler.",
+      "position" : 33
+    }, {
+      "id" : 3120,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#EighthDecile",
+      "notation" : "EighthDecile",
+      "title" : "Åttende desil",
+      "definition" : "Den åttende av ni verdier som separerer den totale frekvensen av en fordeling i ti like deler.",
+      "position" : 34
+    }, {
+      "id" : 3121,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#NinthDecile",
+      "notation" : "NinthDecile",
+      "title" : "Niende desil",
+      "definition" : "Den niende av ni verdier som separerer den totale frekvensen av en fordeling i ti like deler.",
+      "position" : 35
+    }, {
+      "id" : 3122,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#InterdecileRange",
+      "notation" : "InterdecileRange",
+      "title" : "Desilbredde",
+      "definition" : "Intervallet mellom første og niende desilverdi.",
+      "position" : 36
+    }, {
+      "id" : 3123,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#OtherPercentile",
+      "notation" : "OtherPercentile",
+      "title" : "Annen persentil",
+      "definition" : "En persentil som ikke inngår i noen av de andre persentilbegrepene.",
+      "position" : 37
+    }, {
+      "id" : 3124,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Beta1",
+      "notation" : "Beta1",
+      "title" : "Skjevhet",
+      "definition" : "Et mål for asymmetri av en sannsynlighetsfordeling til en variabel.",
+      "position" : 38
+    }, {
+      "id" : 3125,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Beta2",
+      "notation" : "Beta2",
+      "title" : "Kurtose",
+      "definition" : "Et mål for 'spissheten' av en sannsynlighetsfordeling til en variabel.",
+      "position" : 39
+    }, {
+      "id" : 3126,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ShapiroWilk",
+      "notation" : "ShapiroWilk",
+      "title" : "Shapiro-Wilk",
+      "definition" : "Statistisk normalitetstest.",
+      "position" : 40
+    }, {
+      "id" : 3127,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#PercentageOfValidCases",
+      "notation" : "PercentageOfValidCases",
+      "title" : "Prosentdel gyldige tilfeller",
+      "definition" : "Indikerer prosentdelen av gyldige tilfeller til det totale antallet tilfeller.",
+      "position" : 41
+    }, {
+      "id" : 3128,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#PercentageOfInvalidCases",
+      "notation" : "PercentageOfInvalidCases",
+      "title" : "Prosentdel ugyldige tilfeller",
+      "definition" : "Indikerer prosentdelen av ugyldige tilfeller til det totale antallet tilfeller.",
+      "position" : 42
+    }, {
+      "id" : 3129,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#Other",
+      "notation" : "Other",
+      "title" : "Annet",
+      "definition" : "Bruk dersom typen summeringsstatistikk er kjent, men mangler i listen.",
+      "position" : 43
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ ]
+  }, {
     "id" : 383,
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "pt",
-    "publicationDate" : "2019-11-18",
+    "publicationDate" : "2019-11-19",
     "number" : "2.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SummaryStatisticType:2.1",
@@ -1387,7 +1722,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: physicalinstance</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>This vocabulary cannot be used for the element Element sumStat (4.3.14) in DDI 2.1 because the element already comes with a hard-coded controlled vocabulary in the \"type\" attribute. For using in DDI 2.5, select value \"Other\" in the \"type\" attribute, and insert the appropriate value from this CV in the \"otherType\" attribute. Use the complex element controlledVocabUsed (in the docDscr section) to identify the controlled vocabulary to which the selected term belongs.</p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" rel=\"noopener noreferrer\" target=\"_blank\">sumStat</a></p>",
     "translateAgencyLink" : "http://www.apis.ics.ulisboa.pt/",
     "translateAgency" : "Arquivo Português de Informação Social",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 7005,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ArithmeticMean",
@@ -1704,7 +2039,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "sl",
-    "publicationDate" : "2019-07-18",
+    "publicationDate" : "2019-07-19",
     "number" : "2.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SummaryStatisticType:2.1",
@@ -1725,7 +2060,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: physicalinstance</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 4.3.14</p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" rel=\"noopener noreferrer\" target=\"_blank\">sumStat</a></p>",
     "translateAgencyLink" : "https://www.adp.fdv.uni-lj.si",
     "translateAgency" : "Social Science Data Archives (ADP), Slovenia",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 2820,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ArithmeticMean",
@@ -2042,7 +2377,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "sr",
-    "publicationDate" : "2020-01-12",
+    "publicationDate" : "2020-01-13",
     "number" : "2.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SummaryStatisticType:2.1",
@@ -2063,7 +2398,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: physicalinstance</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>This vocabulary cannot be used for the element Element sumStat (4.3.14) in DDI 2.1 because the element already comes with a hard-coded controlled vocabulary in the \"type\" attribute. For using in DDI 2.5, select value \"Other\" in the \"type\" attribute, and insert the appropriate value from this CV in the \"otherType\" attribute. Use the complex element controlledVocabUsed (in the docDscr section) to identify the controlled vocabulary to which the selected term belongs.</p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" rel=\"noopener noreferrer\" target=\"_blank\">sumStat</a></p>",
     "translateAgencyLink" : "http://datacentarserbia.com",
     "translateAgency" : "Data Centre Serbia for Social Sciences (DCS)",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 8026,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ArithmeticMean",
@@ -2380,7 +2715,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "sv",
-    "publicationDate" : "2019-07-16",
+    "publicationDate" : "2019-07-17",
     "number" : "2.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SummaryStatisticType:2.1",
@@ -2401,7 +2736,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: physicalinstance</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: physicalinstance</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/physicalinstance_xsd/elements/TypeOfSummaryStatistic.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSummaryStatistic</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 4.3.14</p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sumStat.html\" rel=\"noopener noreferrer\" target=\"_blank\">sumStat</a></p>",
     "translateAgencyLink" : "https://snd.gu.se",
     "translateAgency" : "Swedish National Data Service (SND)",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 2776,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SummaryStatisticType_2.1.1.html#ArithmeticMean",

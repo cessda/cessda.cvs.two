@@ -10,14 +10,14 @@
   "agencyName" : "CESSDA",
   "agencyLogo" : "cessda.png",
   "agencyLink" : "https://www.cessda.eu/",
-  "publicationDate" : "2020-07-23",
+  "publicationDate" : "2020-07-24",
   "notes" : "Used for the Publisher filter in CDC. No need for other language versions.",
   "versions" : [ {
     "id" : 454,
     "status" : "PUBLISHED",
     "itemType" : "SL",
     "language" : "en",
-    "publicationDate" : "2020-07-08",
+    "publicationDate" : "2020-07-09",
     "number" : "2.0",
     "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames?v=2.0",
     "canonicalUri" : "urn:ddi:int.cessda.cv:CdcPublisherNames:2.0",
@@ -30,7 +30,7 @@
     "versionChanges" : "Code added: SODA\nCode added: FORS\n",
     "versionNotes" : "",
     "citation" : "CESSDA. (2020). CDC Publisher Names (Version 2.0) [Controlled vocabulary]. urn:ddi:int.cessda.cv:CdcPublisherNames:2.0. ",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 10812,
       "uri" : "https://vocabularies.cessda.eu/vocabulary/CdcPublisherNames_AUSSDA?v=2.0",
@@ -186,7 +186,7 @@
     "versionHistories" : [ {
       "id" : 450,
       "version" : "1.0",
-      "date" : "2020-06-22",
+      "date" : "2020-06-23",
       "note" : "",
       "changes" : "",
       "prevVersion" : 0

@@ -10,14 +10,13 @@
   "agencyName" : "DDI Alliance",
   "agencyLogo" : "ddi.png",
   "agencyLink" : "http://www.ddialliance.org/",
-  "publicationDate" : "2019-05-05",
-  "notes" : "",
+  "publicationDate" : "2019-05-06",
   "versions" : [ {
     "id" : 250,
     "status" : "PUBLISHED",
     "itemType" : "SL",
     "language" : "en",
-    "publicationDate" : "2019-05-05",
+    "publicationDate" : "2019-05-06",
     "number" : "1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -35,7 +34,7 @@
     "licenseLogo" : "by.png",
     "citation" : "DDI Alliance. (2019). Sampling Procedure (Version 1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1. ",
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSample.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSample</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection</p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 1988,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.html#TotalUniverseCompleteEnumeration",
@@ -183,7 +182,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "da",
-    "publicationDate" : "2019-07-22",
+    "publicationDate" : "2019-07-23",
     "number" : "1.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -204,7 +203,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
     "translateAgencyLink" : "https://www.sa.dk/",
     "translateAgency" : "Danish National Archives (DNA)",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 7910,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
@@ -348,11 +347,178 @@
     "comments" : [ ],
     "versionHistories" : [ ]
   }, {
+    "id" : 253,
+    "status" : "PUBLISHED",
+    "itemType" : "TL",
+    "language" : "de",
+    "publicationDate" : "2021-03-04",
+    "number" : "1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.html",
+    "title" : "Auswahlverfahren",
+    "definition" : "Enthält eine Typologie von Stichprobenverfahren.",
+    "notation" : "SamplingProcedure",
+    "previousVersion" : 0,
+    "initialVersion" : 253,
+    "notes" : "",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2021). SamplingProcedure[Auswahlverfahren] (Version 1.1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1.1. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 2.3.1.4 </p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
+    "translateAgencyLink" : "https://www.gesis.org",
+    "translateAgency" : "GESIS - Leibniz Institute for the Social Sciences",
+    "lastStatusChangeDate" : "2021-03-04",
+    "concepts" : [ {
+      "id" : 11896,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
+      "notation" : "TotalUniverseCompleteEnumeration",
+      "title" : "Vollerhebung",
+      "definition" : "Alle Einheiten (Individuen, Haushalte, Organisationen, usw.) der Grundgesamtheit sind Teil der Erhebung. Wenn beispielsweise die Grundgesamtheit als Mitglieder einer Gewerkschaft definiert ist, werden alle Gewerkschaftsmitglieder eingeladen, an der Studie teilzunehmen. Wenn die gesamte Bevölkerung einer regionalen Einheit (z. B. eines Landes) Teil des Erhebungsverfahrens ist, wird dies auch als 'Zensus' bezeichnet.",
+      "position" : 0
+    }, {
+      "id" : 2126,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability",
+      "notation" : "Probability",
+      "title" : "Wahrscheinlichkeitsauswahl",
+      "definition" : "Alle Einheiten (Individuen, Haushalte, Organisationen, usw.) der Grundgesamtheit haben eine genau bestimmbare, von Null verschiedene Wahrscheinlichkeit, in die Stichprobe zu gelangen. Verwenden Sie diese Kategorie, wenn die genaue Art der Wahrscheinlichkeitsauswahl unbekannt oder schwierig zu bestimmen ist.",
+      "position" : 1
+    }, {
+      "id" : 2127,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.SimpleRandom",
+      "notation" : "Probability.SimpleRandom",
+      "title" : "Wahrscheinlichkeitsauswahl: Einfache Zufallsauswahl",
+      "definition" : "Alle Einheiten (Individuen, Haushalte, Organisationen, usw.) der Grundgesamtheit haben die gleiche Wahrscheinlichkeit, in die Stichprobe zu gelangen. In der Regel werden die Einheiten der Grundgesamtheit zufällig aus einer Auswahlgrundlage (z. B. eine Liste mit allen Einheiten der Grundgesamtheit) gezogen.",
+      "parent" : "Probability",
+      "position" : 2
+    }, {
+      "id" : 2128,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.SystematicRandom",
+      "notation" : "Probability.SystematicRandom",
+      "title" : "Wahrscheinlichkeitsauswahl: Systematische Zufallsauswahl",
+      "definition" : "Aus dem Verhältnis der Grundgesamtheit und der gewünschten Stichprobengröße ergibt sich ein Intervall für die Stichprobenziehung. In der Auswahlgrundlage (z. B. eine Liste mit allen Einheiten der Grundgesamtheit) wird ein Startpunkt zufällig ermittelt. Von diesem Startpunkt aus werden alle weiteren Einheiten nach dem festgelegten Intervall ausgewählt. Auch bekannt als Intervall-Stichprobe. Beispielsweise sollen 1.000 Angestellte von insgesamt 10.000 Angestellten eines Unternehmens befragt werden: Zufällig wird ein/e Angestellte/r aus einer Liste mit allen Angestellten ausgewählt. Ausgehend von dieser Person wird dann jede/r 10. eingeladen, an der Studie teilzunehmen.",
+      "parent" : "Probability",
+      "position" : 3
+    }, {
+      "id" : 2129,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Stratified",
+      "notation" : "Probability.Stratified",
+      "title" : "Wahrscheinlichkeitsauswahl: Geschichtete Zufallsauswahl",
+      "definition" : "Die Grundgesamtheit wird in sich gegenseitig ausschließende und insgesamt erschöpfende Schichten unterteilt. Aus jeder Schicht werden voneinander unabhängige, einfache Zufallsstichproben gezogen. Beispielsweise wird ein Land bei einer allgemeinen Bevölkerungsumfrage in zwei regionale Kategorien unterteilt: Ost und West. In beiden Regionen werden jeweils getrennte Stichproben gezogen. Wählen Sie diese Kategorie, wenn die genaue Art der geschichteten Wahrscheinlichkeitsauswahl unbekannt oder schwierig zu bestimmen ist.",
+      "parent" : "Probability",
+      "position" : 4
+    }, {
+      "id" : 2130,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Stratified.Proportional",
+      "notation" : "Probability.Stratified.Proportional",
+      "title" : "Wahrscheinlichkeitsauswahl: Proportional geschichtete Zufallsauswahl",
+      "definition" : "Die Grundgesamtheit wird in sich gegenseitig ausschließende und insgesamt erschöpfende Schichten unterteilt. Bei der proportional geschichteten Zufallsauswahl ist die Anzahl der gezogenen Einheiten proportional zur Anzahl der Einheiten der jeweiligen Schicht in der Grundgesamtheit. Beispielsweise wird ein Land in zwei regionale Schichten unterteilt, wobei erstere 80 Prozent (West) und letztere 20 Prozent (Ost) der gesamten Bevölkerung umfassen. Für eine Stichprobe von 1.000 Personen würden dann 800 Personen im Osten und 200 Personen im Westen befragt.",
+      "parent" : "Probability.Stratified",
+      "position" : 5
+    }, {
+      "id" : 2131,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Stratified.Disproportional",
+      "notation" : "Probability.Stratified.Disproportional",
+      "title" : "Wahrscheinlichkeitsauswahl: Disproportional geschichtete Zufallsauswahl",
+      "definition" : "Die Grundgesamtheit wird in sich gegenseitig ausschließende und insgesamt erschöpfende Schichten unterteilt, die die gesamte Bevölkerung abdecken. Bei der disproportionalen Zufallsauswahl ist die Anzahl der aus jeder Schicht gezogenen Einheiten nicht proportional zum Anteil der Schichten an der Grundgesamtheit. Sie können über die Schichten gleich verteilt sein oder sich an der Forschungsabsicht orientieren. Beispielsweise durch das so genannte Oversampling von in der Grundgesamtheit unterrepräsentierten Gruppen. Beispielsweise wird ein Land in zwei regionale Schichten unterteilt, wobei erstere 80 Prozent (West) und letztere 20 Prozent (Ost) der gesamten Bevölkerung umfassen. Sollen beide Regionen gleich repräsentiert werden, würden in beiden Teilen jeweils 50 Prozent der benötigten Stichprobe gezogen werden. Bei einem Oversampling der Region Ost würden beispielsweise 60 Prozent der Stichproben im Osten und 40 Prozent im Westen gezogen werden.",
+      "parent" : "Probability.Stratified",
+      "position" : 6
+    }, {
+      "id" : 2132,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Cluster",
+      "notation" : "Probability.Cluster",
+      "title" : "Wahrscheinlichkeitsauswahl: Klumpenauswahl",
+      "definition" : "Die Grundgesamtheit wird in natürlich auftretende Gruppen (Cluster) unterteilt. Aus diesen Gruppen wird eine Zufallsstichprobe gezogen. Innerhalb der gezogenen Gruppen werden dann Daten über alle Einheiten erhoben. Die Gruppierungen ergeben sich oft durch die geografische Lage oder Zeitabschnitte. Wählen Sie diese Kategorie, wenn die genaue Art der Klumpenauswahl unbekannt oder schwierig zu bestimmen ist.",
+      "parent" : "Probability",
+      "position" : 7
+    }, {
+      "id" : 2133,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Cluster.SimpleRandom",
+      "notation" : "Probability.Cluster.SimpleRandom",
+      "title" : "Wahrscheinlichkeitsauswahl: Einfache Klumpenauswahl",
+      "definition" : "Die Grundgesamtheit wird in natürlich auftretende Gruppen (Cluster) unterteilt. Aus diesen Gruppen wird eine Zufallsstichprobe gezogen. Innerhalb der gezogenen Gruppen werden dann Daten über alle Einheiten erhoben. Beispielsweise wird eine bestimmte Anzahl von Schulen in einer Stadt zufällig ausgewählt, um dann alle Schüler an den jeweiligen Schulen in die Stichprobe aufzunehmen.",
+      "parent" : "Probability.Cluster",
+      "position" : 8
+    }, {
+      "id" : 2134,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Cluster.StratifiedRandom",
+      "notation" : "Probability.Cluster.StratifiedRandom",
+      "title" : "Wahrscheinlichkeitsauswahl: Geschichtete Klumpenauswahl",
+      "definition" : "Die Grundgesamtheit wird in natürlich auftretende Gruppen (Cluster) unterteilt. Diese Gruppen werden in sich gegenseitig ausschließende und insgesamt erschöpfende Schichten unterteilt. Aus diesen wird dann eine bestimmte Anzahl an Gruppen zufällig ausgewählt. Beispielsweise werden Schulen nach privaten und öffentlichen unterschieden, um dann aus diesen beiden Gruppen per Zufall Schulen auszuwählen und alle Schüler der ausgewählten Schulen in die Stichprobe aufzunehmen.",
+      "parent" : "Probability.Cluster",
+      "position" : 9
+    }, {
+      "id" : 2135,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Multistage",
+      "notation" : "Probability.Multistage",
+      "title" : "Wahrscheinlichkeitsauswahl: Mehrstufige Zufallsauswahl",
+      "definition" : "Bei der mehrstufigen Zufallsauswahl wird eine Zufallsauswahl bestimmter Einheiten getroffen, aus denen dann jeweils zufällig die nächstkleinere Einheit gezogen wird. Die Art der Zufallsauswahl kann dabei zwischen den Stufen variieren. Für eine Stichprobe von Schülern werden beispielsweise zufällig Schulen in einer Stadt ausgewählt. Aus den Schulen werden im nächsten Schritt jeweils mehrere Klassen gezogen, um dann eine bestimmte Anzahl von Schülern aus diesen Klassen zufällig auszuwählen, die zur Teilnahme an der Studie eingeladen werden.",
+      "parent" : "Probability",
+      "position" : 10
+    }, {
+      "id" : 2136,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability",
+      "notation" : "Nonprobability",
+      "title" : "Nicht-Wahrscheinlichkeitsauswahl",
+      "definition" : "Die Auswahl von Einheiten (z. B. Individuen, Haushalte, Organisationen, usw.) aus der Grundgesamtheit erfolgt nicht nach dem Zufallsprinzip. Die Auswahlwahrscheinlichkeit der einzelnen Einheiten kann daher nicht ermittelt werden. Wählen Sie diese Kategorie, wenn die genaue Art der Nicht-Wahrscheinlichkeitsauswahl unbekannt, schwierig zu bestimmen ist oder mehrere Arten der Nicht-Wahrscheinlichkeitsauswahl angewendet werden.",
+      "position" : 11
+    }, {
+      "id" : 2137,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability.Availability",
+      "notation" : "Nonprobability.Availability",
+      "title" : "Nicht-Wahrscheinlichkeitsauswahl: Willkürliche Auswahl",
+      "definition" : "Die Auswahl der Einheiten hängt von deren relativer Verfügbarkeit ab. Das heißt, es werden Einheiten gewählt, die einfach erreichbar sind oder aufgrund bestimmter Merkmale oder Verhaltensweisen eher auf die Studie aufmerksam werden (Selbstselektion). Der Forscher kann eine bestimmte Zielgruppe anstreben, die Auswahlmechanismen einer Stichprobe aber nicht kontrollieren. Beispielsweise werden Studierende, die ein bestimmtes Gebäude der Universität verlassen, angesprochen und eingeladen, an der Studie teilzunehmen. Oder es werden allgemeine Einladungen, die sich an größere Gruppen richten, ausgesprochen und jede Person, die sich daraufhin meldet, ist Teil der Auswahl. Man nennt diese willkürliche Auswahl auch Convenience Sample oder Gelegenheitsstichprobe.",
+      "parent" : "Nonprobability",
+      "position" : 12
+    }, {
+      "id" : 2138,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability.Purposive",
+      "notation" : "Nonprobability.Purposive",
+      "title" : "Nicht-Wahrscheinlichkeitsauswahl: Bewusste Auswahl",
+      "definition" : "Alle Einheiten der Stichprobe sind bewusst, wegen ihres potenziellen Beitrags zum Untersuchungsgegenstand, ausgewählt. Die Grundgesamtheit und die Auswahlkriterien richten sich dabei nach den Ausprägungen der unabhängigen und/oder abhängigen Variablen der Untersuchung und werden von dem/der Forscher*in festgelegt. Er/Sie oder die für die Stichprobenziehung autorisierte Person kontrolliert die Auswahl. Beispielsweise werden für eine medizinische Studie bewusst Personen ausgewählt, die eine bestimmte Krankheit aufweisen, um diese mit einer Kontrollgruppe zu vergleichen. Verschiedene Varianten sind die Auswahl typischer/abweichender Fälle, homogener/heterogener Fälle oder kritischer Fälle.",
+      "parent" : "Nonprobability",
+      "position" : 13
+    }, {
+      "id" : 11897,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability.Quota",
+      "notation" : "Nonprobability.Quota",
+      "title" : "Nicht-Wahrscheinlichkeitsauswahl: Quotenstichprobe",
+      "definition" : "Die Grundgesamtheit wird nach bestimmten Kriterien in sich gegenseitig ausschließende und insgesamt erschöpfende Segmente unterteilt. Die Verteilung der Quotenmerkmale (z. B. Geschlecht, Alter, Ethnizität, Religion, Bildungsstand, etc.) soll die diesbezügliche Verteilung der Grundgesamtheit widerspiegeln. Aus jedem Segment werden dann Einheiten durch Nicht-Wahrscheinlichkeitsauswahl ausgewählt, bis die gewünschte Anzahl der Einheiten pro Quotenmerkmal erreicht ist. Wenn die Grundgesamtheit beispielsweise einen Frauenanteil von 45 Prozent und einen Männeranteil von 55 Prozent aufweist, ist der Anteil der Frauen und Männer in der Stichprobe ebenso hoch, wenn es sich um eine proportionale Quotenstichprobe handelt. In einer nicht proportionalen Quotenstichprobe können die Geschlechterverhältnisse abweichen, beispielsweise durch ein bewusstes Oversampling von Frauen.",
+      "parent" : "Nonprobability",
+      "position" : 14
+    }, {
+      "id" : 2140,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability.RespondentAssisted",
+      "notation" : "Nonprobability.RespondentAssisted",
+      "title" : "Nicht-Zufallsstichprobe: Respondenten gesteuerte Auswahl",
+      "definition" : "Die Einheiten werden aus der Grundgesamtheit mit Hilfe von Einheiten ausgewählt, die bereits in der Stichprobe sind. Ein typisches Beispiel dafür ist das Schneeballverfahren. Hier wählt der Forscher nach festgelegten Kriterien eine Gruppe von Einheiten aus. Diese werden dann gebeten, ihnen ähnliche, für die Studie geeignete Personen zu rekrutieren (z. B. Stichproben bestimmter Gruppen, wie Migranten o.ä.).",
+      "parent" : "Nonprobability",
+      "position" : 15
+    }, {
+      "id" : 2141,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#MixedProbabilityNonprobability",
+      "notation" : "MixedProbabilityNonprobability",
+      "title" : "Kombination aus Zufallsstichprobe und Nicht-Zufallsstichprobe",
+      "definition" : "Ein Verfahren, das für dieselbe Grundgesamtheit Wahrscheinlichkeits- und Nicht-Wahrscheinlichkeitsauswahl miteinander kombiniert. Die verwendeten Methoden können innerhalb oder zwischen den Stufen der Stichprobenziehung kombiniert werden. Beispielsweise kann zur Untersuchung einer religiösen Minderheit eine proportional geschichtete Zufallsauswahl mit einer Respondenten-gesteuerten Auswahl kombiniert werden. Alternativ wäre für dieses Beispiel auch eine Kombination von mehrstufiger Zufallsauswahl und einer Quotenstichprobe bei der letzten Ziehung möglich.",
+      "position" : 16
+    }, {
+      "id" : 2142,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Other",
+      "notation" : "Other",
+      "title" : "Andere",
+      "definition" : "Verwenden Sie diese Kategorie, wenn das Auswahlverfahren bekannt ist, aber nicht in der Liste vertreten ist.",
+      "position" : 17
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ ]
+  }, {
     "id" : 252,
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "fi",
-    "publicationDate" : "2019-06-10",
+    "publicationDate" : "2019-06-11",
     "number" : "1.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -373,7 +539,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 2.3.1.4 </p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
     "translateAgencyLink" : "https://www.fsd.uta.fi/en/",
     "translateAgency" : "Finnish Social Science Data Archive (FSD)",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 7912,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
@@ -521,7 +687,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "fr",
-    "publicationDate" : "2019-12-16",
+    "publicationDate" : "2019-12-17",
     "number" : "1.1.3",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.3.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -542,7 +708,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
     "translateAgencyLink" : "https://cdsp.sciences-po.fr/fr/",
     "translateAgency" : " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 8329,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.3.html#TotalUniverseCompleteEnumeration",
@@ -705,14 +871,14 @@
     "versionHistories" : [ {
       "id" : 404,
       "version" : "1.1.2",
-      "date" : "2019-11-05",
+      "date" : "2019-11-06",
       "note" : "",
       "changes" : "Probabiliste : stratifié => [séparées et mutuellement exclusives] => [séparées et mutuellement exclusifs]",
       "prevVersion" : 398
     }, {
       "id" : 398,
       "version" : "1.1.1",
-      "date" : "2019-10-21",
+      "date" : "2019-10-22",
       "note" : "",
       "changes" : "",
       "prevVersion" : 0
@@ -722,7 +888,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "fr",
-    "publicationDate" : "2019-11-05",
+    "publicationDate" : "2019-11-06",
     "number" : "1.1.2",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.2.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -743,7 +909,7 @@
     "ddiUsage" : "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
     "translateAgencyLink" : "https://cdsp.sciences-po.fr/fr/",
     "translateAgency" : " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 7573,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.2.html#TotalUniverseCompleteEnumeration",
@@ -906,7 +1072,7 @@
     "versionHistories" : [ {
       "id" : 398,
       "version" : "1.1.1",
-      "date" : "2019-10-21",
+      "date" : "2019-10-22",
       "note" : "",
       "changes" : "",
       "prevVersion" : 0
@@ -916,7 +1082,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "fr",
-    "publicationDate" : "2019-10-21",
+    "publicationDate" : "2019-10-22",
     "number" : "1.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -937,7 +1103,7 @@
     "ddiUsage" : "<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\">DDI 3.2</a>\n<br />Module Name: datacollection\n<br />Element Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\">TypeOfSamplingProcedure</a>\n<br />\n<br />\n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\">DDI 2.5</a>\n<br />Element/Attribute Name: \n<a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\">sampProc</a>",
     "translateAgencyLink" : "https://cdsp.sciences-po.fr/fr/",
     "translateAgency" : " Sciences Po, Centre de données socio-politiques (CDSP), PROGEDO, CNRS, Paris, France",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 7309,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
@@ -1085,7 +1251,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "it",
-    "publicationDate" : "2019-07-21",
+    "publicationDate" : "2019-07-22",
     "number" : "1.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -1106,7 +1272,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
     "translateAgencyLink" : "https://www.unidata.unimib.it/",
     "translateAgency" : "UniData - Bicocca Data Archive",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 7914,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
@@ -1250,11 +1416,178 @@
     "comments" : [ ],
     "versionHistories" : [ ]
   }, {
+    "id" : 256,
+    "status" : "PUBLISHED",
+    "itemType" : "TL",
+    "language" : "no",
+    "publicationDate" : "2020-12-17",
+    "number" : "1.1.1",
+    "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
+    "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
+    "uriSl" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.html",
+    "title" : "Utvalgsmetode",
+    "definition" : "Inneholder en typologi av ulike utvalgsmetoder.",
+    "notation" : "SamplingProcedure",
+    "previousVersion" : 0,
+    "initialVersion" : 256,
+    "notes" : "",
+    "license" : "CC BY",
+    "licenseName" : "Creative Commons Attribution 4.0 International",
+    "licenseLink" : "http://creativecommons.org/licenses/by/4.0/",
+    "licenseLogo" : "by.png",
+    "citation" : "DDI Alliance. (2020). SamplingProcedure[Utvalgsmetode] (Version 1.1.1) [Controlled vocabulary]. CESSDA. urn:ddi:int.ddi.cv:SamplingProcedure:1.1.1. ",
+    "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 2.3.1.4 </p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
+    "translateAgencyLink" : "https://nsd.no/",
+    "translateAgency" : "NSD - Norwegian Centre for Research Data",
+    "lastStatusChangeDate" : "2020-12-17",
+    "concepts" : [ {
+      "id" : 11898,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
+      "notation" : "TotalUniverseCompleteEnumeration",
+      "title" : "Hele populasjonen/total oppregning",
+      "definition" : "Alle enheter (individer, husholdninger, organisasjoner etc.) i målpopulasjonen er inkludert i datainnsamlingen. For eksempel: dersom målpopulasjonen er definert som medlemmer av en fagforening blir alle medlemmene invitert til å delta i studien. Også kalt 'sensus' dersom hele populasjonen av en regional enhet (f.eks et land) er valgt.",
+      "position" : 0
+    }, {
+      "id" : 2180,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability",
+      "notation" : "Probability",
+      "title" : "Sannsynlighetsutvalg",
+      "definition" : "Alle enheter (individer, husholdninger, organisasjoner etc.) i målpopulasjonen har en sannsynlighet større enn null for å bli inkludert i utvalget og denne sannsynligheten kan utregnes. Bruksmerknad: Bruk dette bredere begrepet dersom en mer spesifikk type sannsynlighetsutvalg ikke er kjent eller dersom det er vanskelig å definere.",
+      "position" : 1
+    }, {
+      "id" : 2181,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.SimpleRandom",
+      "notation" : "Probability.SimpleRandom",
+      "title" : "Sannsynlighetsutvalg: Enkelt tilfeldig",
+      "definition" : "Alle enheter i målpopulasjonen har en lik sjanse for å bli inkludert i utvalget. Vanligvis listes hele populasjonen i en 'utvalgsramme' og enhetene blir valgt ut fra denne ved en tilfeldig utvalgsmetode.",
+      "parent" : "Probability",
+      "position" : 2
+    }, {
+      "id" : 2182,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.SystematicRandom",
+      "notation" : "Probability.SystematicRandom",
+      "title" : "Sannsynlighetsutvalg: Systematisk tilfeldig",
+      "definition" : "Et fast seleksjonsintervall er bestemt ved å dele populasjonsstørrelsen på den ønskede utvalgsstørrelsen. Et startpunkt er deretter trukket tilfeldig fra utvalgsrammen, som normalt dekker hele målpopulasjonen. Fra startpunktet blir enheter for utvalget trukket basert på seleksjonsintervallet. Også kjent som utvalgsintervall. For eksempel, en bedriftsundersøkelse ønsker et utvalg på 1000 ansatte av 10.000 totalt. Ut fra et tilfeldig startnummer blir hvert tiende navn fra ansattlisten til bedriften invitert til å delta i studien.",
+      "parent" : "Probability",
+      "position" : 3
+    }, {
+      "id" : 2183,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Stratified",
+      "notation" : "Probability.Stratified",
+      "title" : "Sannsynlighetsutvalg: Stratifisert",
+      "definition" : "Målpopulasjonen er delt i ulike og gjensidig utelukkende strata som dekker hele populasjonen. Uavhengige tilfeldige utvalg blir deretter trukket innenfor hvert stratum. For eksempel i nasjonale befolkningsundersøkelser blir hele populasjonen delt i to regionale strata: øst og vest. Deretter blir utvalgsenheter trukket fra hver region ved bruk av tilfeldig eller systematisk utvalg. Bruk dette bredere begrepet dersom den spesifikke typen stratifisert utvalg ikke er kjent eller er vanskelig å identifisere.",
+      "parent" : "Probability",
+      "position" : 4
+    }, {
+      "id" : 2184,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Stratified.Proportional",
+      "notation" : "Probability.Stratified.Proportional",
+      "title" : "Sannsynlighetsutvalg: Stratifisert: Proporsjonalt",
+      "definition" : "Målpopulasjonen er delt i flere strata som er gjensidig utelukkende og dekker hele populasjonen. I proporsjonalt stratifisert utvalg er antallet elementer som velges fra hvert strata proporsjonalt til populasjonsstørrelsen til stratumet sett i forhold til hele populasjonen. For eksempel: Et land er delt i to regionale strata som tilsier 80 prosent (vest) og 20 prosent (øst) av hele populasjonen. For et utvalg på 1000 personer ville 800 (dvs 80%) bli trukket fra vest og 200 (dvs 20%) fra øst for å gi en riktig representasjon av deres andel av den totale populasjonen.",
+      "parent" : "Probability.Stratified",
+      "position" : 5
+    }, {
+      "id" : 2185,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Stratified.Disproportional",
+      "notation" : "Probability.Stratified.Disproportional",
+      "title" : "Sannsynlighetsutvalg: Stratifisert: Disproporsjonalt",
+      "definition" : "Målpopulasjonen er delt i flere strata som er gjensidig utelukkende og dekker hele populasjonen. For et uproporsjonalt utvalg står antallet elementer som velges fra hvert strata ikke proporsjonalt til størrelsen på stratumet i forhold til hele populasjonen. Utvalgsstørrelsen fra hvert stratum kan være lik, optimal, eller kan avspeile hensikten med studien, som er å oversample enkelte undergrupper av populasjonen. For eksempel: Et land er delt i to regionale strata som tilsier 80 prosent (vest) og 20 prosent (øst) av hele populasjonen. Dersom det er behov for lik representasjon av begge regionene i studien kan halve utvalget bli trukket fra øst og andre halvdelen fra vest slik at hver region representerer 50% av utvalget. Om det er behov for en mer detaljert analyse av populasjonen i øst kan 40% av enhetene bli trukket fra vest og 60% fra øst, slik at øst er overrepresentert.",
+      "parent" : "Probability.Stratified",
+      "position" : 6
+    }, {
+      "id" : 2186,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Cluster",
+      "notation" : "Probability.Cluster",
+      "title" : "Sannsynlighetsutvalg: Klynge",
+      "definition" : "Målpopulasjonen er delt i naturlige grupper (klustere) og et sannsynlighetsutvalg av klusterne blir valgt. Data blir deretter samlet inn fra alle enhetene innen hver utvalgte kluster. Utvelgelsen er ofte gruppert ut fra geografi eller tidsperiode. Bruksmerknad: Bruk dette bredere begrepet dersom den mer spesifikke typen klusterutvalg er ukjent eller dersom typen er vanskelig å identifisere.",
+      "parent" : "Probability",
+      "position" : 7
+    }, {
+      "id" : 2187,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Cluster.SimpleRandom",
+      "notation" : "Probability.Cluster.SimpleRandom",
+      "title" : "Sannsynlighetsutvalg: Klynge: Enkelt tilfeldig",
+      "definition" : "Målpopulasjonen er delt i naturlige grupper (kluster) og et enkelt tilfeldig utvalg av klusterne blir valgt. Data blir deretter samlet inn fra alle enhetene innen hvert utvalgte kluster. For eksempel, for et utvalg av studenter i en by ville først et antall skoler bli valgt tilfeldig, og deretter ville alle studentene fra hver utvalgte skole bli inkludert.",
+      "parent" : "Probability.Cluster",
+      "position" : 8
+    }, {
+      "id" : 2188,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Cluster.StratifiedRandom",
+      "notation" : "Probability.Cluster.StratifiedRandom",
+      "title" : "Sannsynlighetsutvalg: Klynge: Stratifisert tilfeldig",
+      "definition" : "Målpopulasjonen er delt i naturlige grupper (kluster). Disse blir igjen delt i gjensidig utelukkende i strata og et tilfeldig utvalg av klustre blir valgt fra hvert stratum. Data blir deretter samlet inn fra alle enhetene i hvert utvalgte kluster. For eksempel for et utvalg av studenter i en by ville skolene bli delt i to strata ut fra type skole (privat vs.offentlig). Skoler blir deretter tilfeldig trukket fra hver stratum og alle studentene fra hver utvalgte skole ville bli inkluidert i utvalget.",
+      "parent" : "Probability.Cluster",
+      "position" : 9
+    }, {
+      "id" : 2189,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Probability.Multistage",
+      "notation" : "Probability.Multistage",
+      "title" : "Sannsynlighetsutvalg: Flertrinns",
+      "definition" : "Utvelgelsen skjer trinnvis ved bruk av mindre og mindre enheter for hvert trinn, og hvert trinn omfatter et sannsynlighetsutvalg. Typen sannsynlighetsutvalg kan variere på hvert trinn. For eksempel for å få et utvalg studenter i en by blir skolene trukket tilfeldig i første steg. Et tilfeldig utvalg av klasser innen hver utvalgte skole blir trukket i neste steg. Studentene blir deretter tilfeldig trukket fra hver av disse klassene på tredje trinn.",
+      "parent" : "Probability",
+      "position" : 10
+    }, {
+      "id" : 2190,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability",
+      "notation" : "Nonprobability",
+      "title" : "Ikke-sannsynlighet",
+      "definition" : "Valget av enheter (individer, husholdninger, organisasjoner etc.) fra målpopulasjonen blir ikke trukket basert på tilfeldig utvalg. Det er ikke mulig å bestemme sannsynligheten for at hver enhet blir inkludert i utvalget. Bruksmerknad: Dette bredere begrepet benyttes dersom det er ukjent hvilken mer spesifikk type ikke-sannsynlighetsutvalg det omhandler, dersom typen er vanskelig å identifisere, eller om flere metoder for ikke-sannsynlighetsutvalg benyttes.",
+      "position" : 11
+    }, {
+      "id" : 2191,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability.Availability",
+      "notation" : "Nonprobability.Availability",
+      "title" : "Ikke-sannsynlighet: Tilgjengelighetsutvalg",
+      "definition" : "Utvalget blir trukket basert på enhetenes tilgjengelighet. Enhetene kan være lette å få tak i, eller kan ha meldt seg selv til å delta i studien (selvutvelgelse). Forskere kan ha tanker om å inkludere visse målgrupper, men de kan ikke kontrollere utvalgsmekanismene. For eksempel studenter som går ut fra en viss bygning på universitetsområdet kan bli kontaktet, eller individer kan frivillig melde seg til å delta som svar på en invitasjon som ikke spesifikt var rettet mot dem, men en større gruppe som de tilhører. Blir også kalt 'bekvemmelighetsutvalg' eller 'mulighetsutvalg'.",
+      "parent" : "Nonprobability",
+      "position" : 12
+    }, {
+      "id" : 2192,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability.Purposive",
+      "notation" : "Nonprobability.Purposive",
+      "title" : "Ikke-sannsynlighet: Målrettet utvalg",
+      "definition" : "Enhetene i utvalget identifiseres spesifikt, velges ut og kontaktes på grunn av informasjonen de kan gi om forskningsemnet som studeres. Utvelgelsen er basert på ulike karakteristikker ved de uavhengige og/eller avhengige variablene som skal studeres, og avhenger av forskerens vurdering. Studiens forfattere, eller andre personer som er gitt tillatelse, kontrollerer utvalgsmekanismene og det definerte universet med hensyn til utvalgskriteriene. Blir også kalt 'bedømmelsesutvalg'. For eksempel kan en forsker innen medisin med hensikt velge individer som ligner hverandre, med unntak av visse utfall, som en spesifikk sykdom. Noen typer målrettet utvalg er typiske/avvikende tilfeller, homogene/maksimal variasjon, eksperter, og utvalg av kritiske tilfeller.",
+      "parent" : "Nonprobability",
+      "position" : 13
+    }, {
+      "id" : 11899,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability.Quota",
+      "notation" : "Nonprobability.Quota",
+      "title" : "Ikke-sannsynlighet: Kvote",
+      "definition" : "Målpopulasjonen er delt i flere ulike og gjensidig utelukkende segment i henhold til noen forhåndsdefinerte kvoteringskriterier. Fordelingen av kvoteringskriteriene (kjønn/alder/etnisitet, eller andre karakteristikker, som religion, utdanning etc.) skal reflektere den virkelige strukturen i målpopulasjonen eller strukturen i den ønskede studiepopulasjonen. Ikke-sannsynlighetsutvalg blir da trukket fra hvert segment inntil et spesifikt antall enheter er nådd. For eksempel dersom målpopulasjonen består av 45% kvinner og 55% menn, vil et proporsjonalt kvoteutvalg ha samme kjønnsfordeling, mens fordelingen vil være annerledes i et ikke-proporsjonalt kvoteutvalg, basert på en studierelatert faktor (f. eks behovet for å overinkludere visse underrepresenterte deler av populasjonen).",
+      "parent" : "Nonprobability",
+      "position" : 14
+    }, {
+      "id" : 2194,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Nonprobability.RespondentAssisted",
+      "notation" : "Nonprobability.RespondentAssisted",
+      "title" : "Ikke-sannsynlighet: Respondent-assistert",
+      "definition" : "Enhetene i utvalget identifiseres i målpopulasjonen ved hjelp av enheter som allerede er valgt (fra 'Public Health Research Methods', red. Greg Guest, Emily E. Namey, 2014). En typisk variant er snøballutvelgelse, der forskeren identifiserer en gruppe enheter som stemmer overens med spesifikke utvalgskriterier. Disse blir spurt om å rekruttere andre deltakere i samme populasjon som oppfyller samme utvalgskriterier (utvelgelse av særskilte populasjoner som migranter, etc.).",
+      "parent" : "Nonprobability",
+      "position" : 15
+    }, {
+      "id" : 2195,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#MixedProbabilityNonprobability",
+      "notation" : "MixedProbabilityNonprobability",
+      "title" : "Blandet sannsynlighets- og ikke-sannsynlighetsutvalg",
+      "definition" : "Utvalgsdesign som kombinerer sannsynlighets- og ikke-sannsynlighetsutvalg i samme utvalgsprosess. Forskjellige utvalgsmetoder kan bli brukt på ulike steg i utvalgsprosessen. For eksempel for en studie av minoritetsstudenter i en by blir skoler trukket tilfeldig i første stadie. Deretter trekkes et kvoteutvalg av studenter fra hver skole i andre steg. Dersom separate utvalg er trukket fra samme målpopulasjon ved bruk av ulike utvalgsmetoder, bør typen utvalgsprosedyre som blir brukt for hvert utvalg klassifiseres separat.",
+      "position" : 16
+    }, {
+      "id" : 2196,
+      "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#Other",
+      "notation" : "Other",
+      "title" : "Annet",
+      "definition" : "Bruk dersom utvalgsmetoden er kjent, men ikke funnet i listen.",
+      "position" : 17
+    } ],
+    "comments" : [ ],
+    "versionHistories" : [ ]
+  }, {
     "id" : 374,
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "pt",
-    "publicationDate" : "2019-11-18",
+    "publicationDate" : "2019-11-19",
     "number" : "1.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -1275,7 +1608,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
     "translateAgencyLink" : "http://www.apis.ics.ulisboa.pt/",
     "translateAgency" : "Arquivo Português de Informação Social (APIS)",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 6811,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
@@ -1423,7 +1756,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "sl",
-    "publicationDate" : "2019-07-18",
+    "publicationDate" : "2019-07-19",
     "number" : "1.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -1444,7 +1777,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element Number in DDI 2.1: 2.3.1.4 </p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
     "translateAgencyLink" : "https://www.adp.fdv.uni-lj.si/",
     "translateAgency" : "Social Science Data Archives (ADP), Slovenia",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 7918,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
@@ -1592,7 +1925,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "sr",
-    "publicationDate" : "2020-01-12",
+    "publicationDate" : "2020-01-13",
     "number" : "1.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -1613,7 +1946,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
     "translateAgencyLink" : "http://datacentarserbia.com",
     "translateAgency" : "Data Centre Serbia for Social Sciences (DCS)",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 8008,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
@@ -1761,7 +2094,7 @@
     "status" : "PUBLISHED",
     "itemType" : "TL",
     "language" : "sv",
-    "publicationDate" : "2019-07-16",
+    "publicationDate" : "2019-07-17",
     "number" : "1.1.1",
     "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html",
     "canonicalUri" : "urn:ddi:int.ddi.cv:SamplingProcedure:1.1",
@@ -1782,7 +2115,7 @@
     "ddiUsage" : "<p><a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI3.3</a></p><p>Module name: datacollection</p><p>Element name: <a href=\"https://ddialliance.org/Specification/DDI-Lifecycle/3.3/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 3.2</a></p><p>Module Name: datacollection </p><p>Element Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Lifecycle/3.2/XMLSchema/FieldLevelDocumentation/schemas/datacollection_xsd/elements/TypeOfSamplingProcedure.html\" rel=\"noopener noreferrer\" target=\"_blank\">TypeOfSamplingProcedure</a></p><p><br></p><p><a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/\" rel=\"noopener noreferrer\" target=\"_blank\">DDI 2.5</a></p><p>Element/Attribute Name: <a href=\"http://www.ddialliance.org/Specification/DDI-Codebook/2.5/XMLSchema/field_level_documentation_files/schemas/codebook_xsd/elements/sampProc.html\" rel=\"noopener noreferrer\" target=\"_blank\">sampProc</a></p>",
     "translateAgencyLink" : "https://snd.gu.se/",
     "translateAgency" : "Swedish National Data Service (SND)",
-    "lastStatusChangeDate" : "2020-09-30",
+    "lastStatusChangeDate" : "2020-10-01",
     "concepts" : [ {
       "id" : 7916,
       "uri" : "https://ddialliance.org/Specification/DDI-CV/SamplingProcedure_1.1.1.html#TotalUniverseCompleteEnumeration",
