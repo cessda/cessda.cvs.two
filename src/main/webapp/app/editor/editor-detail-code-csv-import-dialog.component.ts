@@ -135,7 +135,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
       ), "gi"
     );
 
-    const rows = [[]];  // array to hold our data. First row is column headers.
+    const rows: string[][] = [[]];  // array to hold our data. First row is column headers.
     // array to hold our individual pattern matching groups:
     let matches; // false if we don't find any matches
     // Loop until we no longer find a regular expression match
