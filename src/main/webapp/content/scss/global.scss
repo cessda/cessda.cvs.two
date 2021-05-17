@@ -620,7 +620,7 @@ Main page styles
   button:focus {
     outline:none;
   }
-  
+
   .vocab-lang-button {
     background-color: transparent;
     color: #333;
@@ -954,13 +954,13 @@ button.invisible-button:focus {
         .vocab-title {
           font-weight: 600;
           font-size: 1em;
-          
+
             .notation {
               font-style: italic;
               font-weight: 400;
             }
-          
-      
+
+
         }
         .vocab-def {
         }
@@ -1019,9 +1019,9 @@ button.invisible-button:focus {
 
     .result-column {
       .vocab-item {
-        
+
         .vocab-logo {
-         
+
         }
         .vocab-detail {
           .vocab-title {
@@ -1042,6 +1042,10 @@ button.invisible-button:focus {
   color: #fff;
   background-color: #e74c3c;
   border-color: #e74c3c;
+}
+.e-note{
+  color: lightgray;
+  font-size: 0.5rem;
 }
 .tree-box {
   width: 100%;
@@ -1197,6 +1201,7 @@ button.invisible-button:focus {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
+  white-space: pre-line
 }
 .f-size-120{
   font-size: 120%;

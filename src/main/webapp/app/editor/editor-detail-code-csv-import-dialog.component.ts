@@ -83,7 +83,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.isImportError = false;
     fileReader.onload = () => {
       const csvData = fileReader.result;
-      const csvRecordsArray = (csvData as string).split(/\r\n|\n/);
+      const csvRecordsArray = this.parseCSVToArray(csvData as string);
       this.csvHeaders = this.getHeaderArray(csvRecordsArray);
       this.csvContents = this.getDataRecordsArrayFromCSVFile(csvRecordsArray);
       this.markedRows = new Array(this.csvContents.length);
@@ -121,6 +121,49 @@ export class EditorDetailCodeCsvImportDialogComponent {
     this.markedRows.fill(this.importAll);
   }
 
+  // see https://www.bennadel.com/blog/1504-ask-ben-parsing-csv-strings-with-javascript-exec-regular-expression-command.htm
+  parseCSVToArray (csvString: string, delimiter?: string): any[] {
+    delimiter = (delimiter || ','); // user-supplied delimiter or default comma
+
+    const pattern = new RegExp( // regular expression to parse the CSV values.
+      ( // Delimiters:
+        "(\\" + delimiter + "|\\r?\\n|\\r|^)" +
+        // Quoted fields.
+        "(?:\"([^\"]*(?:\"\"[^\"]*)*)\"|" +
+        // Standard fields.
+        "([^\"\\" + delimiter + "\\r\\n]*))"
+      ), "gi"
+    );
+
+    const rows = [[]];  // array to hold our data. First row is column headers.
+    // array to hold our individual pattern matching groups:
+    let matches; // false if we don't find any matches
+    // Loop until we no longer find a regular expression match
+    while ((matches = pattern.exec( csvString )) !== null) {
+      const matchedDelimiter = matches[1]; // Get the matched delimiter
+      // Check if the delimiter has a length (and is not the start of string)
+      // and if it matches field delimiter. If not, it is a row delimiter.
+      if (matchedDelimiter.length && matchedDelimiter !== delimiter) {
+        // Since this is a new row of data, add an empty row to the array.
+        rows.push( [] );
+      }
+      let matchedValue;
+      // Once we have eliminated the delimiter, check to see
+      // what kind of value was captured (quoted or unquoted):
+      if (matches[2]) { // found quoted value. unescape any double quotes.
+        matchedValue = matches[2].replace(
+          new RegExp( "\"\"", "g" ), "\""
+        );
+      } else { // found a non-quoted value
+        matchedValue = matches[3];
+      }
+      // Now that we have our value string, let's add
+      // it to the data array.
+      rows[rows.length - 1].push(matchedValue);
+    }
+    return rows; // Return the parsed data Array
+  }
+
   getDataRecordsArrayFromCSVFile(csvRecordsArray: any): any {
     // TL only allow existing code notations
     const existingCode: string[] = [];
@@ -134,7 +177,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
 
     const csvArr = [];
     for (let i = 1; i < csvRecordsArray.length; i++) {
-      const splittedContent = this.parseCSVToArray(csvRecordsArray[i] as string);
+      const splittedContent = csvRecordsArray[i];
       if (splittedContent && splittedContent.length > 2 && splittedContent[0].trim() !== '' && splittedContent[1].trim() !== '') {
         if (!this.isSlForm && !existingCode.some(notation => notation === splittedContent[0])) {
           this.ignoredRows++;
@@ -147,7 +190,7 @@ export class EditorDetailCodeCsvImportDialogComponent {
   }
 
   getHeaderArray(csvRecordsArr: any): any {
-    const headers = (csvRecordsArr[0] as string).split(',', 3);
+    const headers = csvRecordsArr[0];
     const headerArray = new Array(3).fill('');
     for (let j = 0; j < headers.length; j++) {
       headerArray[j] = headers[j];
@@ -162,9 +205,6 @@ export class EditorDetailCodeCsvImportDialogComponent {
       if (this.markedRows[i] === false) {
         continue;
       }
-
-      //TODO: add checkbox for confirm overwriting
-
       // check for existing concepts, overwrite if exist
       if (this.concepts.some(c => c.notation === this.csvContents[i][0])) {
         const concept = this.concepts.filter(c => c.notation === this.csvContents[i][0])[0];
@@ -275,64 +315,5 @@ export class EditorDetailCodeCsvImportDialogComponent {
       changeType: 'Code added',
       changeDesc: concept.notation
     };
-  }
-
-  parseCSVToArray(strData: string, strDelimiter?: string): any[] {
-    // Check to see if the delimiter is defined. If not,
-    // then default to comma.
-    strDelimiter = strDelimiter || ',';
-
-    // Create a regular expression to parse the CSV values.
-    const objPattern = new RegExp(
-      // Delimiters.
-      '(\\' +
-        strDelimiter +
-        '|\\r?\\n|\\r|^)' +
-        // Quoted fields.
-        '(?:"([^"]*(?:""[^"]*)*)"|' +
-        // Standard fields.
-        '([^"\\' +
-        strDelimiter +
-        '\\r\\n]*))',
-      'gi'
-    );
-
-    const a = [];
-
-    // Create an array to hold our individual pattern
-    // matching groups.
-    let arrMatches = null;
-
-    // Keep looping over the regular expression matches
-    // until we can no longer find a match.
-    while ((arrMatches = objPattern.exec(strData))) {
-      // Get the delimiter that was found.
-      const strMatchedDelimiter = arrMatches[1];
-
-      // Check to see if the given delimiter has a length
-      // (is not the start of string) and if it matches
-      // field delimiter. If id does not, then we know
-      // that this delimiter is a row delimiter.
-      if (strMatchedDelimiter.length && strMatchedDelimiter !== strDelimiter) {
-        return [];
-      }
-      let strMatchedValue;
-      // Now that we have our delimiter out of the way,
-      // let's check to see which kind of value we
-      // captured (quoted or unquoted).
-      if (arrMatches[2]) {
-        // We found a quoted value. When we capture
-        // this value, unescape any double quotes.
-        strMatchedValue = arrMatches[2].replace(new RegExp('""', 'g'), '"');
-      } else {
-        // We found a non-quoted value.
-        strMatchedValue = arrMatches[3];
-      }
-      // Now that we have our value string, let's add
-      // it to the data array.
-      a.push(strMatchedValue);
-    }
-    // Return the parsed data.
-    return a;
   }
 }
