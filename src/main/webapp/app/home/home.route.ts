@@ -51,7 +51,7 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
         queryString.v = version;
       }
       return this.service
-        .getVocabularyFile(notation, queryString)
+        .getVocabulary(notation, queryString)
         .pipe(
           flatMap((vocabulary: HttpResponse<Vocabulary>) => {
             if (vocabulary.body) {

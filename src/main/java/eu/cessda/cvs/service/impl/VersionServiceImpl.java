@@ -25,9 +25,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -127,11 +125,19 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public List<VersionDTO> findAllByVocabularyAnyVersionSl(Long vocabularyId, String versionNumberSl) {
+    public List<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, String versionNumberSl) {
         log.debug("Request to get versions by vocabularyId {}, versionNumberSl {}", vocabularyId, versionNumberSl);
         return versionRepository.findAllByVocabularyIdAndVersionNumberSl( vocabularyId, versionNumberSl ).stream()
             .map(versionMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
+    }
+
+    @Override
+    public Set<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, String versionNumberSl) {
+        log.debug("Request to get published versions by vocabularyId {}, versionNumberSl {}", vocabularyId, versionNumberSl);
+        return versionRepository.findAllPublishedByVocabularyIdAndVersionNumberSl( vocabularyId, versionNumberSl ).stream()
+            .map(versionMapper::toDto)
+            .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
     @Override

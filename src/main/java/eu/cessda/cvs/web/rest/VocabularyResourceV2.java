@@ -855,7 +855,8 @@ public class VocabularyResourceV2 {
     }
 
     private VocabularyDTO getVocabularyDTOAndFilterVersions(String vocabulary, String versionNumberSl, String languageVersion) {
-        VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath(vocabularyService.getPublishedCvPath(vocabulary, versionNumberSl));
+//        VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath(vocabularyService.getPublishedCvPath(vocabulary, versionNumberSl));
+        VocabularyDTO vocabularyDTO = vocabularyService.getWithVersionsByNotationAndVersion(vocabulary, versionNumberSl, true);
         vocabularyDTO.setVersions(vocabularyService.filterOutVocabularyVersions(languageVersion, vocabularyDTO));
         return vocabularyDTO;
     }

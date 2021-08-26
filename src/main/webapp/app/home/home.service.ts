@@ -55,6 +55,20 @@ export class HomeService {
     return this.http.get<IVocabulary>(`${this.vocabularyStaticUrl}/${notation}/${notation}.json`, { params: options, observe: 'response' });
   }
 
+  getVocabulary(notation: string, req?: any): Observable<HttpResponse<IVocabulary>> {
+    const options = createRequestOption(req);
+    if (req.v) {
+      if (req.v.match(/\./g).length === 2) {
+        req.v = req.v.substring(0, req.v.lastIndexOf('.'));
+      }
+      return this.http.get<IVocabulary>(`${this.resourceDownloadUrl}/${notation}/${req.v}`, {
+        params: options,
+        observe: 'response'
+      });
+    }
+    return this.http.get<IVocabulary>(`${this.resourceDownloadUrl}/${notation}/latest`, { params: options, observe: 'response' });
+  }
+
   downloadVocabularyFile(notation: string, slNumber: string, downloadType: string, req?: any): Observable<Blob> {
     const options = createRequestOption(req);
     return this.http.get(`${this.resourceDownloadUrl}/${downloadType}/${notation}/${slNumber}`, {
