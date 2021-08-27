@@ -44,9 +44,7 @@ export class VocabularyResolve implements Resolve<IVocabulary> {
     if (route.queryParams.v) version = route.queryParams.v;
     if (route.queryParams.lang) lang = route.queryParams.lang;
     if (notation) {
-      const queryString: any = {
-        timeStamp: new Date().getTime()
-      }
+      const queryString: any = {}
       if (version !== '') {
         queryString.v = version;
       }

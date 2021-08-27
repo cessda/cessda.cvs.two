@@ -752,7 +752,9 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     private void preparePublishedVocabulary(String slVersionNumber, VocabularyDTO vocabulary) {
+        boolean findAllLatestVersion = false;
         if( slVersionNumber.equals(LATEST)) {
+            findAllLatestVersion = true;
             final VersionDTO latestSlVersion = vocabulary.getVersions().stream()
                 .filter(v -> v.getStatus().equals(Status.PUBLISHED.toString()))
                 .sorted(VocabularyUtils.versionDtoComparator())
@@ -760,23 +762,25 @@ public class VocabularyServiceImpl implements VocabularyService {
             if (latestSlVersion != null)
                 slVersionNumber = latestSlVersion.getNumber();
         }
-        vocabulary.setVersions( versionService.findAllPublishedByVocabularyAndVersionSl(vocabulary.getId(), slVersionNumber));
+        Set<VersionDTO> includedVersions = versionService.findAllPublishedByVocabularyAndVersionSl(vocabulary.getId(), slVersionNumber);
 
-        // getAgencyAndLicense
-        Map<Long, Agency> agencyMap = agencyRepository.findAll().stream().collect( Collectors.toMap( Agency::getId, Function.identity() ));
+        if( findAllLatestVersion ) {
+            Set<String> includedLangs = includedVersions.stream().map(VersionDTO::getLanguage).collect(Collectors.toSet());
+            for (VersionDTO version : versionService.findAllPublishedByVocabulary(vocabulary.getId())) {
+                if( !includedLangs.contains( version.getLanguage()) ) {
+                    includedLangs.add( version.getLanguage() );
+                    includedVersions.add( version );
+                }
+            }
+        }
+        // set included version
+        vocabulary.setVersions(includedVersions);
+
         Map<Long, Licence> licenceMap = licenceRepository.findAll().stream().collect( Collectors.toMap( Licence::getId, Function.identity() ));
 
-        // remove unused attributes, and add the required attribute for vocabulary
-        updateVocabularyContentForJsonfy(agencyMap, vocabulary);
-        // put into map based on versionSL, the SL need to be listed in beginning (sorted first)
-        Map<String, List<VersionDTO>> slNumberVersionsMap = new LinkedHashMap<>();
-        // add special Map for all latest version across SL version
-        // just remember that the versions are always already sorted from latest to oldest
-        List<VersionDTO> latestVersionsAcrossSl = new ArrayList<>();
-        Set<String> latestVersionsLangs = new HashSet<>();
-        slNumberVersionsMap.put( LATEST, latestVersionsAcrossSl);
         for (VersionDTO version : vocabulary.getVersions()) {
-            prepareVersionAndConceptForJsonfy(licenceMap, vocabulary, slNumberVersionsMap, version, latestVersionsAcrossSl, latestVersionsLangs);
+            prepareVersionAndConcept(licenceMap, version);
+            addVersionHistories(vocabulary, version);
         }
     }
 
@@ -946,6 +950,9 @@ public class VocabularyServiceImpl implements VocabularyService {
         if(vocabulary.getVersions().stream().noneMatch(v -> v.getStatus().equals(Status.PUBLISHED.toString()))) {
             return;
         }
+
+        setVocabularyWithLatestPublishedVersions(vocabulary);
+
         // fill vocabulary with versions
         VocabularyDTO.fillVocabularyByVersions(vocabulary, vocabulary.getVersions());
         // fill CodeDTO object from versions
@@ -953,6 +960,23 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         VocabularyPublish vocab = vocabularyPublishMapper.toEntity( vocabulary);
         vocabularyPublishSearchRepository.save( vocab );
+    }
+
+    private void setVocabularyWithLatestPublishedVersions(VocabularyDTO vocabulary) {
+        final List<VersionDTO> allPublishedVersion = versionService.findAllPublishedByVocabulary(vocabulary.getId());
+
+        // collect all latest published version
+        Set<VersionDTO> latestVersionsEachLangs = new LinkedHashSet<>();
+        Set<String> publishedLangs = new HashSet<>();
+        for (VersionDTO version : allPublishedVersion) {
+            // collect latest version across SL
+            if( !publishedLangs.contains( version.getLanguage())) {
+                latestVersionsEachLangs.add( version );
+                publishedLangs.add( version.getLanguage() );
+            }
+        }
+        vocabulary.setVersions(latestVersionsEachLangs);
+        vocabulary.setLanguagesPublished( publishedLangs );
     }
 
     @Override
@@ -1390,14 +1414,8 @@ public class VocabularyServiceImpl implements VocabularyService {
     private void prepareVersionAndConceptForJsonfy(Map<Long, Licence> licenceMap, VocabularyDTO vocabulary,
                                                    Map<String, List<VersionDTO>> slNumberVersionsMap, VersionDTO version,
                                                    List<VersionDTO> latestVersionsAcrossSl, Set<String> latestVersionsLangs) {
-        // get concepts and sorted by position
-        List<ConceptDTO> concepts = conceptService.findByVersion(version.getId());
-        // remove unused attributes, and add the required attribute for version
-        updateVersionContentForJsonfy(licenceMap, version);
-        // remove unused attributes, and add the required attribute for concept
-        updateConceptContentForJsonfy(concepts);
+        prepareVersionAndConcept(licenceMap, version);
 
-        version.setConcepts( new LinkedHashSet<>(concepts));
         if( version.getItemType().equals(ItemType.SL.toString()) ) {
             List<VersionDTO> versionDTOs = slNumberVersionsMap.computeIfAbsent(version.getNumber(), k -> new ArrayList<>());
             // check for version history
@@ -1422,11 +1440,22 @@ public class VocabularyServiceImpl implements VocabularyService {
 
             versionDTOs.add( version );
         }
-        // collect latest version accross SL
+        // collect latest version across SL
         if( !latestVersionsLangs.contains( version.getLanguage()) || version.getNumber().startsWith( vocabulary.getVersionNumber() )) {
             latestVersionsAcrossSl.add( version );
             latestVersionsLangs.add( version.getLanguage() );
         }
+    }
+
+    private void prepareVersionAndConcept(Map<Long, Licence> licenceMap, VersionDTO version) {
+        // get concepts and sorted by position
+        List<ConceptDTO> concepts = conceptService.findByVersion(version.getId());
+        // remove unused attributes, and add the required attribute for version
+        updateVersionContentForJsonfy(licenceMap, version);
+        // remove unused attributes, and add the required attribute for concept
+        updateConceptContentForJsonfy(concepts);
+
+        version.setConcepts( new LinkedHashSet<>(concepts));
     }
 
     private void updateConceptContentForJsonfy(List<ConceptDTO> concepts) {
