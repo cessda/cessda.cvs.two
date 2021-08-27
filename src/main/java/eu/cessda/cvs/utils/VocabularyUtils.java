@@ -92,6 +92,11 @@ public final class VocabularyUtils {
             .findFirst().orElse(null);
     }
 
+    public static VersionDTO getVersionByLangVersion(VocabularyDTO vocabularyDTO, String language, String versionNumber) {
+        return vocabularyDTO.getVersions().stream().filter(v -> v.getLanguage().equals(language) && v.getNumber().equals(versionNumber))
+            .findFirst().orElse(null);
+    }
+
     public static EsQueryResultDetail prepareEsQuerySearching(String query, String agency, String lang, Pageable pageable, SearchScope searchScope) {
         String filter = null;
         if( agency != null ) {

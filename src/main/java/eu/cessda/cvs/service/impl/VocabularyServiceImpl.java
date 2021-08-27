@@ -720,7 +720,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     @Override
-    public VocabularyDTO getWithVersionsByNotationAndVersion(String notation, String slVersionNumber, boolean onlyPublished) {
+    public VocabularyDTO getVocabularyByNotationAndVersion(String notation, String slVersionNumber, boolean onlyPublished) {
         // get all available licenses
         final List<Licence> licenceList = licenceRepository.findAll();
 
@@ -746,34 +746,38 @@ public class VocabularyServiceImpl implements VocabularyService {
                 getOneLatestVersionEachLanguage(slVersionNumber, licenceList, vocabulary, true);
             }
         } else {
-            if( slVersionNumber.equals(LATEST)) {
-                final VersionDTO latestSlVersion = vocabulary.getVersions().stream()
-                    .filter(v -> v.getStatus().equals(Status.PUBLISHED.toString()))
-                    .sorted(VocabularyUtils.versionDtoComparator())
-                    .findFirst().orElse(null);
-                if (latestSlVersion != null)
-                    slVersionNumber = latestSlVersion.getNumber();
-            }
-            vocabulary.setVersions( versionService.findAllPublishedByVocabularyAndVersionSl(vocabulary.getId(), slVersionNumber));
-
-            // getAgencyAndLicense
-            Map<Long, Agency> agencyMap = agencyRepository.findAll().stream().collect( Collectors.toMap( Agency::getId, Function.identity() ));
-            Map<Long, Licence> licenceMap = licenceRepository.findAll().stream().collect( Collectors.toMap( Licence::getId, Function.identity() ));
-
-            // remove unused attributes, and add the required attribute for vocabulary
-            updateVocabularyContentForJsonfy(agencyMap, vocabulary);
-            // put into map based on versionSL, the SL need to be listed in beginning (sorted first)
-            Map<String, List<VersionDTO>> slNumberVersionsMap = new LinkedHashMap<>();
-            // add special Map for all latest version across SL version
-            // just remember that the versions are always already sorted from latest to oldest
-            List<VersionDTO> latestVersionsAcrossSl = new ArrayList<>();
-            Set<String> latestVersionsLangs = new HashSet<>();
-            slNumberVersionsMap.put( LATEST, latestVersionsAcrossSl);
-            for (VersionDTO version : vocabulary.getVersions()) {
-                prepareVersionAndConceptForJsonfy(licenceMap, vocabulary, slNumberVersionsMap, version, latestVersionsAcrossSl, latestVersionsLangs);
-            }
+            preparePublishedVocabulary(slVersionNumber, vocabulary);
         }
         return vocabulary;
+    }
+
+    private void preparePublishedVocabulary(String slVersionNumber, VocabularyDTO vocabulary) {
+        if( slVersionNumber.equals(LATEST)) {
+            final VersionDTO latestSlVersion = vocabulary.getVersions().stream()
+                .filter(v -> v.getStatus().equals(Status.PUBLISHED.toString()))
+                .sorted(VocabularyUtils.versionDtoComparator())
+                .findFirst().orElse(null);
+            if (latestSlVersion != null)
+                slVersionNumber = latestSlVersion.getNumber();
+        }
+        vocabulary.setVersions( versionService.findAllPublishedByVocabularyAndVersionSl(vocabulary.getId(), slVersionNumber));
+
+        // getAgencyAndLicense
+        Map<Long, Agency> agencyMap = agencyRepository.findAll().stream().collect( Collectors.toMap( Agency::getId, Function.identity() ));
+        Map<Long, Licence> licenceMap = licenceRepository.findAll().stream().collect( Collectors.toMap( Licence::getId, Function.identity() ));
+
+        // remove unused attributes, and add the required attribute for vocabulary
+        updateVocabularyContentForJsonfy(agencyMap, vocabulary);
+        // put into map based on versionSL, the SL need to be listed in beginning (sorted first)
+        Map<String, List<VersionDTO>> slNumberVersionsMap = new LinkedHashMap<>();
+        // add special Map for all latest version across SL version
+        // just remember that the versions are always already sorted from latest to oldest
+        List<VersionDTO> latestVersionsAcrossSl = new ArrayList<>();
+        Set<String> latestVersionsLangs = new HashSet<>();
+        slNumberVersionsMap.put( LATEST, latestVersionsAcrossSl);
+        for (VersionDTO version : vocabulary.getVersions()) {
+            prepareVersionAndConceptForJsonfy(licenceMap, vocabulary, slNumberVersionsMap, version, latestVersionsAcrossSl, latestVersionsLangs);
+        }
     }
 
     private void getOneLatestVersionEachLanguage(String slVersionNumber, List<Licence> licenceList,
@@ -906,9 +910,13 @@ public class VocabularyServiceImpl implements VocabularyService {
         log.info("INDEXING ALL PUBLISHED VOCABULARIES START");
         // remove any indexed vocabularies
         vocabularyPublishSearchRepository.deleteAll();
-        // indexing
-        List<Path> jsonPaths = getPublishedCvPaths();
-        jsonPaths.forEach( this::indexPublished );
+        // index all vocabularies
+        findAll().forEach(v -> {
+            // skip for withdrawn vocabulary
+            if( Boolean.TRUE.equals( v.isWithdrawn()) )
+                return;
+            indexPublished(v);
+        });
         log.info("INDEXING ALL PUBLISHED VOCABULARIES FINISHED");
     }
 
@@ -934,6 +942,10 @@ public class VocabularyServiceImpl implements VocabularyService {
         log.info("Indexing published vocabulary with id {} and notation {}", vocabulary.getId(), vocabulary.getNotation());
         if( Boolean.TRUE.equals( vocabulary.isWithdrawn()) )
             return;
+        // check if there is published version
+        if(vocabulary.getVersions().stream().noneMatch(v -> v.getStatus().equals(Status.PUBLISHED.toString()))) {
+            return;
+        }
         // fill vocabulary with versions
         VocabularyDTO.fillVocabularyByVersions(vocabulary, vocabulary.getVersions());
         // fill CodeDTO object from versions
@@ -1517,8 +1529,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     public File generateVocabularyPublishFileDownload(
         String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
         log.info( "Publication generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
-//        VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath( getPublishedCvPath( vocabularyNotation,versionSl ) );
-        VocabularyDTO vocabularyDTO = getWithVersionsByNotationAndVersion(vocabularyNotation, versionSl, true);
+        VocabularyDTO vocabularyDTO = getVocabularyByNotationAndVersion(vocabularyNotation, versionSl, true);
         return generateVocabularyFileDownload(vocabularyNotation, versionSl, versionList, downloadType, request, vocabularyDTO);
     }
 
@@ -1526,7 +1537,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     public File generateVocabularyEditorFileDownload(
         String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request) {
         log.info( "Editor generate file {} for Vocabulary {} versionSl {}", downloadType, vocabularyNotation, versionSl );
-        VocabularyDTO vocabularyDTO = getWithVersionsByNotationAndVersion(vocabularyNotation, versionSl, false);
+        VocabularyDTO vocabularyDTO = getVocabularyByNotationAndVersion(vocabularyNotation, versionSl, false);
         return generateVocabularyFileDownload(vocabularyNotation, versionSl, versionList, downloadType, request, vocabularyDTO);
     }
 
@@ -1618,7 +1629,7 @@ public class VocabularyServiceImpl implements VocabularyService {
             generateJsonVocabularyPublish(vocabularyDTO);
 
             // reindex published json
-            indexPublished( getPublishedCvPath(vocabularyDTO.getNotation()));
+            indexPublished( vocabularyDTO );
         }
         return versionDTO;
     }

@@ -138,7 +138,7 @@ public class VocabularyResource {
     @GetMapping("/vocabularies/{notation}/{versionNumber}")
     public ResponseEntity<VocabularyDTO> getVocabularyByNotationAndVersion(@PathVariable String notation, @PathVariable String versionNumber) {
         log.debug("REST request to get Vocabulary by notation {} and by version {}", notation, versionNumber);
-        VocabularyDTO vocabularyDTO = vocabularyService.getWithVersionsByNotationAndVersion(notation, versionNumber, false);
+        VocabularyDTO vocabularyDTO = vocabularyService.getVocabularyByNotationAndVersion(notation, versionNumber, false);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable( vocabularyDTO ));
     }
 

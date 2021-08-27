@@ -14,6 +14,7 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.domain.Vocabulary;
+import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.service.ExportService;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.CodeDTO;
@@ -47,7 +48,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -848,15 +848,14 @@ public class VocabularyResourceV2 {
         final String[] splitLanguageVersion1 = VersionUtils.splitLanguageVersion(lv1);
         final String[] splitLanguageVersion2 = VersionUtils.splitLanguageVersion(lv2);
 
-        VersionDTO version1 = VocabularyUtils.generateVersionByPath(vocabularyService.getPublishedCvPath(cv, splitLanguageVersion1[0]), splitLanguageVersion1[2], splitLanguageVersion1[1]);
-        VersionDTO version2 = VocabularyUtils.generateVersionByPath(vocabularyService.getPublishedCvPath(cv, splitLanguageVersion2[0]), splitLanguageVersion2[2], splitLanguageVersion2[1]);
+        VersionDTO version1 = VocabularyUtils.getVersionByLangVersion(vocabularyService.getVocabularyByNotationAndVersion(cv, splitLanguageVersion1[0], false), splitLanguageVersion1[2], splitLanguageVersion1[1]);
+        VersionDTO version2 = VocabularyUtils.getVersionByLangVersion(vocabularyService.getVocabularyByNotationAndVersion(cv, splitLanguageVersion2[0], false), splitLanguageVersion2[2], splitLanguageVersion2[1]);
 
         return ResourceUtils.getListResponseEntity(version1, version2);
     }
 
     private VocabularyDTO getVocabularyDTOAndFilterVersions(String vocabulary, String versionNumberSl, String languageVersion) {
-//        VocabularyDTO vocabularyDTO = VocabularyUtils.generateVocabularyByPath(vocabularyService.getPublishedCvPath(vocabulary, versionNumberSl));
-        VocabularyDTO vocabularyDTO = vocabularyService.getWithVersionsByNotationAndVersion(vocabulary, versionNumberSl, true);
+        VocabularyDTO vocabularyDTO = vocabularyService.getVocabularyByNotationAndVersion(vocabulary, versionNumberSl, true);
         vocabularyDTO.setVersions(vocabularyService.filterOutVocabularyVersions(languageVersion, vocabularyDTO));
         return vocabularyDTO;
     }
@@ -878,12 +877,16 @@ public class VocabularyResourceV2 {
     {
         log.debug( "REST: Getting all Vocabularies" );
         Map<String, Map<String, Map<String, Map<String, String>>>> agencyCvMap = new TreeMap<>();
-        List<VocabularyDTO> vocabularies = new ArrayList<>();
-        List<Path> jsonPaths = vocabularyService.getPublishedCvPaths();
-        vocabularies.addAll( jsonPaths.stream().map(VocabularyUtils::generateVocabularyByPath).collect(Collectors.toList()));
+        List<VocabularyDTO> vocabularies = vocabularyService.findAll();
         vocabularies = vocabularies.stream().sorted( Comparator.comparing( VocabularyDTO::getNotation ) ).collect( Collectors.toList() );
         vocabularies.stream().filter( voc -> !Boolean.TRUE.equals( voc.isWithdrawn() ) ).forEach( voc ->
         {
+            if( Boolean.TRUE.equals( voc.isWithdrawn()) )
+                return;
+            // check if there is published version
+            if(voc.getVersions().stream().noneMatch(v -> v.getStatus().equals(Status.PUBLISHED.toString()))) {
+                return;
+            }
             Map<String, Map<String, Map<String, String>>> vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
             List<VersionDTO> versions = voc.getVersions().stream()
                 .sorted( ( c1, c2 ) -> VersionUtils.compareVersion( c1.getNumber(), c2.getNumber() ) )

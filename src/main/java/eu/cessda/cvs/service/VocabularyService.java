@@ -136,7 +136,7 @@ public interface VocabularyService {
      * @param slVersionNumber the version number of available SL version
      * @return the vocabulary with versions based on slVersionNumber
      */
-    VocabularyDTO getWithVersionsByNotationAndVersion(String notation, String slVersionNumber, boolean onlyPublished);
+    VocabularyDTO getVocabularyByNotationAndVersion(String notation, String slVersionNumber, boolean onlyPublished);
 
     /**
      * Perform indexing in all vocabularies in the Editor
