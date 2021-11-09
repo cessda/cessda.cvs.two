@@ -1619,7 +1619,7 @@
     ejs "^2.6.1"
     magic-string "^0.25.0"
 
-"@swimlane/ngx-charts@^16.0.0":
+"@swimlane/ngx-charts@16.0.0":
   version "16.0.0"
   resolved "https://registry.yarnpkg.com/@swimlane/ngx-charts/-/ngx-charts-16.0.0.tgz#6b442c0aa33b8bdd30b499d0d7641b39f11d61c0"
   integrity sha512-ltbyA7qhnbdNcjWD0NerObHrDzWgDDja8M8R1RVgBZnkaoJFpB/KZ1W3+Ch9F1y9pCy/zdpWSzwd/RzCEhsQhA==
@@ -3039,7 +3039,7 @@ browser-sync-webpack-plugin@2.2.2:
   dependencies:
     lodash "^4"
 
-browser-sync@^2.26.13:
+browser-sync@2.26.13:
   version "2.26.13"
   resolved "https://registry.yarnpkg.com/browser-sync/-/browser-sync-2.26.13.tgz#a74541c104aec7eda318a5d8abdb3317ae9eda3d"
   integrity sha512-JPYLTngIzI+Dzx+StSSlMtF+Q9yjdh58HW6bMFqkFXuzQkJL8FCvp4lozlS6BbECZcsM2Gmlgp0uhEjvl18X4w==
@@ -9440,7 +9440,7 @@ mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@^0.5.5, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-mocha@^8.2.0:
+mocha@8.2.1:
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/mocha/-/mocha-8.2.1.tgz#f2fa68817ed0e53343d989df65ccd358bc3a4b39"
   integrity sha512-cuLBVfyFfFqbNR0uUKbDGXKGk+UDFe6aR4os78XIrMQpZl/nv7JYHcvP5MFIAb374b2zFXsdgEGwmzMtP0Xg8w==
@@ -9631,14 +9631,14 @@ ngx-infinite-scroll@9.0.0:
     "@scarf/scarf" "0.1.5"
     opencollective-postinstall "^2.0.2"
 
-ngx-quill@^12.0.1:
+ngx-quill@12.0.1:
   version "12.0.1"
   resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-12.0.1.tgz#a35cc65519d3626f593f4f94888fdb1f697cd940"
   integrity sha512-XSyj1ABpfdoIsRguV4vCemOUU0VnDeISBtF6O6XU11AUYSSP1Eh58x0ct2SEJuNIW/qruEGexQvLAYHkuA6+Xw==
   dependencies:
     tslib "^2.0.0"
 
-ngx-text-diff@^0.6.0:
+ngx-text-diff@0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/ngx-text-diff/-/ngx-text-diff-0.6.0.tgz#f369966fc7943bc515191acf518ee478e4e000ba"
   integrity sha512-61njY/kRmbNLJr/a9FxhfouJ8LpUtejEGqcethZemqlE9lWqu0mxIuoqZYFB2gHkMzhvvBqfgWV190uRIxAClA==
@@ -11346,12 +11346,12 @@ quick-lru@^4.0.1:
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
   integrity sha512-ARhCpm70fzdcvNQfPoy49IaanKkTlRWF2JMzqhcJbhSFRZv7nPTvZJdcY7301IPmvW+/p0RgIWnQDLJxifsQ7g==
 
-quill-better-table@^1.2.10:
+quill-better-table@1.2.10:
   version "1.2.10"
   resolved "https://registry.yarnpkg.com/quill-better-table/-/quill-better-table-1.2.10.tgz#ed0e21cdbaff672189b902187720fde08ae2a96a"
   integrity sha512-CFwxAQzt4EPCQuynQ65R/FU7Yu//kcDBb/rmBBOsFfO758+q50zvG/PDt4Lenv9DcrSgwnyNkfo4yeA5fzzVYQ==
 
-quill-blot-formatter@^1.0.5:
+quill-blot-formatter@1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/quill-blot-formatter/-/quill-blot-formatter-1.0.5.tgz#934cadd10ed9cf68b54b22b99d1e0a6a06f4479d"
   integrity sha1-k0yt0Q7Zz2i1SyK5nR4Kagb0R50=
@@ -11367,7 +11367,7 @@ quill-delta@4.2.1:
     extend "^3.0.2"
     fast-diff "1.2.0"
 
-quill@^2.0.0-dev.4:
+quill@2.0.0-dev.4:
   version "2.0.0-dev.4"
   resolved "https://registry.yarnpkg.com/quill/-/quill-2.0.0-dev.4.tgz#130e38efe7a16b3766d767d750c8aacc038945e7"
   integrity sha512-9WmMVCEIhf3lDdhzl+i+GBDeDl0BFi65waC4Im8Y4HudEJ9kEEb1lciAz9A8pcDmLMjiMbvz84lNt/U5OBS8Vg==
@@ -11997,6 +11997,13 @@ rxjs@6.6.2:
   dependencies:
     tslib "^1.9.0"
 
+rxjs@6.6.3, rxjs@^6.6.0:
+  version "6.6.3"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
+  integrity sha512-trsQc+xYYXZ3urjOiJOuCOa5N3jAZ3eiSpQB5hIT8zGlL2QfnHLJ2r7GMkBGuIausdJN1OneaI6gQlsqNHHmZQ==
+  dependencies:
+    tslib "^1.9.0"
+
 rxjs@^5.5.6:
   version "5.5.12"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.12.tgz#6fa61b8a77c3d793dbaf270bee2f43f652d741cc"
@@ -12008,13 +12015,6 @@ rxjs@^6.3.3, rxjs@^6.4.0, rxjs@^6.5.3:
   version "6.5.5"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.5.tgz#c5c884e3094c8cfee31bf27eb87e54ccfc87f9ec"
   integrity sha512-WfQI+1gohdf0Dai/Bbmk5L5ItH5tYqm3ki2c5GdWhKjalzjg93N3avFjVStyZZz+A2Em+ZxKH5bNghw9UeylGQ==
-  dependencies:
-    tslib "^1.9.0"
-
-rxjs@^6.5.5, rxjs@^6.6.0:
-  version "6.6.3"
-  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.3.tgz#8ca84635c4daa900c0d3967a6ee7ac60271ee552"
-  integrity sha512-trsQc+xYYXZ3urjOiJOuCOa5N3jAZ3eiSpQB5hIT8zGlL2QfnHLJ2r7GMkBGuIausdJN1OneaI6gQlsqNHHmZQ==
   dependencies:
     tslib "^1.9.0"
 
@@ -13601,15 +13601,15 @@ ts-node@8.10.2:
     source-map-support "^0.5.17"
     yn "3.1.1"
 
+tslib@2.0.1, tslib@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
+  integrity sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
+
 tslib@^1.10.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.11.2"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.11.2.tgz#9c79d83272c9a7aaf166f73915c9667ecdde3cc9"
   integrity sha512-tTSkux6IGPnUGUd1XAZHcpu85MOkIl5zX49pO+jfsie3eP0B6pyhOlLXm3cAC6T7s+euSDDUUV+Acop5WmtkVg==
-
-tslib@^2.0.0:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
-  integrity sha512-SgIkNheinmEBgx1IUNirK0TUD4X9yjjBRTqqjggWCU3pUEqIk3/Uwl3yRixYKT6WjQuGiwDv4NomL3wqRCj+CQ==
 
 tslint@6.1.2:
   version "6.1.2"
