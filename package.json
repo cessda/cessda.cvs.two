@@ -26,7 +26,7 @@
     "@ngx-translate/http-loader": "5.0.0",
     "@swimlane/ngx-charts": "16.0.0",
     "bootstrap": "4.6.1",
-    "moment": "2.27.0",
+    "moment": "2.29.1",
     "ng-jhipster": "0.16.0",
     "ngx-chips": "2.2.2",
     "ngx-cookie-service": "3.0.4",
