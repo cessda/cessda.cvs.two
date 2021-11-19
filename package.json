@@ -69,7 +69,7 @@
     "eslint-config-jhipster": "0.0.1",
     "eslint-config-prettier": "6.15.0",
     "eslint-loader": "4.0.2",
-    "file-loader": "6.0.0",
+    "file-loader": "6.2.0",
     "friendly-errors-webpack-plugin": "1.7.0",
     "generator-jhipster": "6.10.5",
     "html-loader": "1.1.0",
