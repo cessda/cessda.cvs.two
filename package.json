@@ -72,7 +72,7 @@
     "file-loader": "6.2.0",
     "friendly-errors-webpack-plugin": "1.7.0",
     "generator-jhipster": "6.10.5",
-    "html-loader": "1.1.0",
+    "html-loader": "1.3.2",
     "html-webpack-plugin": "4.3.0",
     "husky": "4.2.5",
     "jest": "26.1.0",
