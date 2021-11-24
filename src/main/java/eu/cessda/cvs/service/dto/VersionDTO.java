@@ -658,7 +658,7 @@ public class VersionDTO implements Serializable {
         citationSb.append( agency.getName() + ". " );
         citationSb
             .append( "(" + this.publicationDate.getYear() + "). ")
-            .append( this.notation + "[" + this.title + "] (Version " + this.number + ") [Controlled vocabulary]. ");
+            .append( this.notation + " [" + this.title + "] (Version " + this.number + ") [Controlled vocabulary]. ");
         if( !agency.getName().toLowerCase().contains("cessda")) {
             citationSb.append( "CESSDA. ");
         }
