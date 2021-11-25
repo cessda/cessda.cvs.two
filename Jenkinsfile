@@ -1,6 +1,7 @@
 pipeline {
     options {
-        buildDiscarder logRotator(artifactNumToKeepStr: '5', numToKeepStr: '20')
+        buildDiscarder logRotator(artifactNumToKeepStr: '1', numToKeepStr: '20')
+        quietPeriod 300
     }
 
     environment {
