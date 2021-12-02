@@ -33,7 +33,6 @@ import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model'
 import { IComment } from 'app/shared/model/comment.model';
 import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
 import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
-import { Quill } from 'ngx-quill';
 
 @Component({
   selector: 'jhi-editor-detail-cv-forward-status-dialog',
@@ -53,8 +52,11 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   missingTranslations: string[] = [];
   comments: IComment[] | undefined = [];
   vocabularyChanges: IVocabularyChange[] | null = [];
-  versionNotesEditor: Quill;
-  versionChangesEditor: Quill;
+
+  // @ts-ignore
+  public versionNotesEditor: Quill;
+  // @ts-ignore
+  public versionChangesEditor: Quill;
 
   isCommentCollapse = true;
   isTextDiffCollapse = true;
@@ -291,17 +293,17 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     this.compareNoOfDifference = diffResults.diffsCount;
   }
 
-  onVersionNotesEditorCreated(editor: Quill): void {
-    this.versionNotesEditor = editor;
-    if (this.versionParam!.versionNotes) {
-      editor.root.innerHTML = this.versionParam!.versionNotes;
-    }
+  // @ts-ignore
+  onVersionNotesEditorCreated(event: Quill): void {
+    this.versionNotesEditor = event;
+    // @ts-ignore
+    this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionNotes'])!.value);
   }
 
-  onVersionChangesEditorCreated(editor: Quill): void {
-    this.versionChangesEditor = editor;
-    if (this.versionParam!.versionChanges) {
-      editor.root.innerHTML = this.versionParam!.versionChanges;
-    }
+  // @ts-ignore
+  onVersionChangesEditorCreated(event: Quill): void {
+    this.versionChangesEditor = event;
+    // @ts-ignore
+    this.versionChangesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionChanges'])!.value);
   }
 }
