@@ -11,39 +11,39 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {JhiDataUtils, JhiEventManager, JhiEventWithContent} from 'ng-jhipster';
+import { Component, ElementRef, NgZone, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { JhiDataUtils, JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {IVersion} from 'app/shared/model/version.model';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { IVersion } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {FormBuilder} from '@angular/forms';
-import {EditorService} from 'app/editor/editor.service';
-import {RouteEventsService} from 'app/shared';
-import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {EditorDetailCvAddEditDialogComponent} from 'app/editor/editor-detail-cv-add-edit-dialog.component';
-import {EditorDetailCvDeleteDialogComponent} from 'app/editor/editor-detail-cv-delete-dialog.component';
-import {EditorDetailCodeAddEditDialogComponent} from 'app/editor/editor-detail-code-add-edit-dialog.component';
-import {Concept, IConcept} from 'app/shared/model/concept.model';
-import {Observable, Subscription} from 'rxjs';
-import {EditorDetailCodeDeleteDialogComponent} from 'app/editor/editor-detail-code-delete-dialog.component';
-import {EditorDetailCodeReorderDialogComponent} from 'app/editor/editor-detail-code-reorder-dialog.component';
-import {EditorDetailCvForwardStatusDialogComponent} from 'app/editor/editor-detail-cv-forward-status-dialog.component';
-import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
-import {HttpResponse} from '@angular/common/http';
-import {EditorDetailCvNewVersionDialogComponent} from 'app/editor/editor-detail-cv-new-version-dialog.component';
-import {EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent} from '.';
+import { FormBuilder } from '@angular/forms';
+import { EditorService } from 'app/editor/editor.service';
+import { RouteEventsService } from 'app/shared';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { EditorDetailCvAddEditDialogComponent } from 'app/editor/editor-detail-cv-add-edit-dialog.component';
+import { EditorDetailCvDeleteDialogComponent } from 'app/editor/editor-detail-cv-delete-dialog.component';
+import { EditorDetailCodeAddEditDialogComponent } from 'app/editor/editor-detail-code-add-edit-dialog.component';
+import { Concept, IConcept } from 'app/shared/model/concept.model';
+import { Observable, Subscription } from 'rxjs';
+import { EditorDetailCodeDeleteDialogComponent } from 'app/editor/editor-detail-code-delete-dialog.component';
+import { EditorDetailCodeReorderDialogComponent } from 'app/editor/editor-detail-code-reorder-dialog.component';
+import { EditorDetailCvForwardStatusDialogComponent } from 'app/editor/editor-detail-cv-forward-status-dialog.component';
+import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { HttpResponse } from '@angular/common/http';
+import { EditorDetailCvNewVersionDialogComponent } from 'app/editor/editor-detail-cv-new-version-dialog.component';
+import { EditorDetailCodeCsvImportDialogComponent, EditorDetailCvCommentDialogComponent } from '.';
 import * as moment from 'moment';
-import {AccountService} from 'app/core/auth/account.service';
-import {Account} from 'app/core/user/account.model';
-import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared';
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
+import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
   selector: 'jhi-editor-detail',
-  templateUrl: './editor-detail.component.html'
+  templateUrl: './editor-detail.component.html',
 })
 export class EditorDetailComponent implements OnInit, OnDestroy {
   @ViewChild('detailEPanel', { static: true }) detailEPanel!: ElementRef;
@@ -104,8 +104,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
       [{ color: [] }, { background: [] }],
       ['link'],
-      ['clean']
-    ]
+      ['clean'],
+    ],
   };
 
   editorDetailForm = this.fb.group({
@@ -114,13 +114,16 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       skosItems: [],
       pdfItems: [],
       htmlItems: [],
-      docxItems: []
+      docxItems: [],
     }),
     ddiUsage: [],
     notes: [],
     versionNotes: [],
-    versionChanges: []
+    versionChanges: [],
   });
+
+  // @ts-ignore
+  public ddiUsageEditor: Quill;
 
   constructor(
     private accountService: AccountService,
@@ -177,7 +180,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       ddiUsage: this.version.ddiUsage,
       notes: this.version.notes,
       versionNotes: this.version.versionNotes,
-      versionChanges: this.version.versionChanges
+      versionChanges: this.version.versionChanges,
     });
 
     this.noOfComments = this.version.comments!.length;
@@ -212,7 +215,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
             notation: slConcepts![i].notation,
             titleSl: slConcepts![i].title,
             definitionSl: slConcepts![i].definition,
-            slConcept: slConcepts![i].id
+            slConcept: slConcepts![i].id,
           };
           // insert
           this.version.concepts!.splice(i, 0, nonExistTlCode);
@@ -373,7 +376,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     });
 
     this.editorDetailForm.patchValue({
-      tabSelected: this.initialTabSelected
+      tabSelected: this.initialTabSelected,
     });
 
     this.subscribeSelectConceptEvent();
@@ -435,7 +438,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   openForwardStatusCvPopup(): void {
     this.ngbModalRef = this.modalService.open(EditorDetailCvForwardStatusDialogComponent as Component, {
       size: 'xl',
-      backdrop: 'static'
+      backdrop: 'static',
     });
     this.ngbModalRef.componentInstance.vocabularyParam = this.vocabulary;
     this.ngbModalRef.componentInstance.versionParam = this.version;
@@ -534,7 +537,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      ddiUsage: this.editorDetailForm.get(['ddiUsage'])!.value
+      ddiUsage: this.editorDetailForm.get(['ddiUsage'])!.value,
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
@@ -548,7 +551,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       versionId: this.version!.id,
       language: this.version!.language,
       itemType: this.version!.itemType,
-      notes: this.editorDetailForm.get(['notes'])!.value
+      notes: this.editorDetailForm.get(['notes'])!.value,
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
@@ -563,7 +566,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       language: this.version!.language,
       itemType: this.version!.itemType,
       versionNotes: this.editorDetailForm.get(['versionNotes'])!.value,
-      versionChanges: this.editorDetailForm.get(['versionChanges'])!.value
+      versionChanges: this.editorDetailForm.get(['versionChanges'])!.value,
     };
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
@@ -649,7 +652,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       return this.getSlVersion().versionHistories![0].version + '.x';
     }
     let i = 0;
-    this.getSlVersion().versionHistories!.forEach(function(vhSl, index): void {
+    this.getSlVersion().versionHistories!.forEach(function (vhSl, index): void {
       if (version.startsWith(vhSl.version!)) {
         i = index + 1;
       }
@@ -658,5 +661,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       return this.getSlVersion().versionHistories![i].version + '.x';
     }
     return '';
+  }
+
+  // @ts-ignore
+  onDdiUsageEditorCreated(event: Quill): void {
+    this.ddiUsageEditor = event;
+    // @ts-ignore
+    this.ddiUsageEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['ddiUsage'])!.value);
   }
 }
