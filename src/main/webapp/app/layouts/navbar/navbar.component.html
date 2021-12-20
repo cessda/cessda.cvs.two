@@ -197,8 +197,16 @@
                         </ul>
                     </li>
 
-                    <li *ngSwitchCase="true" class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
-                        <a class="nav-link" routerLink="user-guide" (click)="collapseNavbar()">
+                    <li *ngSwitchCase="true" class="nav-item">
+                        <a class="nav-link" href="/contentguide/">
+                            <span>
+                                <span>Editor User Guide</span>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="/documentation/">
                             <span>
                                 <span>User Guide</span>
                             </span>

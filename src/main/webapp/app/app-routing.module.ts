@@ -27,7 +27,7 @@ const routerOptions: ExtraOptions = {
   anchorScrolling: 'enabled',
   // scrollPositionRestoration: 'enabled',
   enableTracing: DEBUG_INFO_ENABLED,
-  onSameUrlNavigation: 'reload'
+  onSameUrlNavigation: 'reload',
 };
 
 @NgModule({
@@ -37,48 +37,44 @@ const routerOptions: ExtraOptions = {
         {
           path: 'admin',
           data: {
-            authorities: [Authority.ADMIN]
+            authorities: [Authority.ADMIN],
           },
           canActivate: [UserRouteAccessService],
-          loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule)
+          loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
         },
         {
           path: 'editor',
           data: {
-            authorities: [Authority.ADMIN, Authority.USER]
+            authorities: [Authority.ADMIN, Authority.USER],
           },
           canActivate: [UserRouteAccessService],
-          loadChildren: () => import('./editor/editor.module').then(m => m.CvsEditorModule)
+          loadChildren: () => import('./editor/editor.module').then(m => m.CvsEditorModule),
         },
         {
           path: 'agency',
-          loadChildren: () => import('./agency/agency.module').then(m => m.CvsAgencyModule)
+          loadChildren: () => import('./agency/agency.module').then(m => m.CvsAgencyModule),
         },
         {
           path: 'about',
-          loadChildren: () => import('./about/about.module').then(m => m.CvsAboutModule)
-        },
-        {
-          path: 'user-guide',
-          loadChildren: () => import('./user-guide/user-guide.module').then(m => m.CvsUserGuideModule)
+          loadChildren: () => import('./about/about.module').then(m => m.CvsAboutModule),
         },
         {
           path: 'api-docs',
-          loadChildren: () => import('./api-docs/api-docs.module').then(m => m.CvsApiDocsModule)
+          loadChildren: () => import('./api-docs/api-docs.module').then(m => m.CvsApiDocsModule),
         },
         {
           path: 'swagger',
-          loadChildren: () => import('./docs/docs.module').then(m => m.DocsModule)
+          loadChildren: () => import('./docs/docs.module').then(m => m.DocsModule),
         },
         {
           path: 'account',
-          loadChildren: () => import('./account/account.module').then(m => m.AccountModule)
+          loadChildren: () => import('./account/account.module').then(m => m.AccountModule),
         },
-        ...LAYOUT_ROUTES
+        ...LAYOUT_ROUTES,
       ],
       routerOptions
-    )
+    ),
   ],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class CvsAppRoutingModule {}

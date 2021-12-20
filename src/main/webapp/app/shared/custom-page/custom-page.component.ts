@@ -11,22 +11,22 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {IMetadataField, MetadataField} from 'app/shared/model/metadata-field.model';
-import {EditorService} from 'app/editor/editor.service';
-import {MetadataFieldService} from 'app/entities/metadata-field/metadata-field.service';
-import {METADATA_KEY_ABOUT, METADATA_KEY_API, METADATA_KEY_USERGUIDE} from 'app/shared/constants/metadata.constants';
-import {HttpEventType, HttpResponse} from '@angular/common/http';
-import {IMetadataValue, MetadataValue} from 'app/shared/model/metadata-value.model';
-import {Subscription} from 'rxjs';
-import {JhiEventManager} from 'ng-jhipster';
-import {ActivatedRoute} from '@angular/router';
-import {FileUploadService} from 'app/shared/upload/file-upload.service';
-import {SimpleResponse} from 'app/shared/model/simple-response.model';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { IMetadataField, MetadataField } from 'app/shared/model/metadata-field.model';
+import { EditorService } from 'app/editor/editor.service';
+import { MetadataFieldService } from 'app/entities/metadata-field/metadata-field.service';
+import { METADATA_KEY_ABOUT, METADATA_KEY_API } from 'app/shared/constants/metadata.constants';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { IMetadataValue, MetadataValue } from 'app/shared/model/metadata-value.model';
+import { Subscription } from 'rxjs';
+import { JhiEventManager } from 'ng-jhipster';
+import { ActivatedRoute } from '@angular/router';
+import { FileUploadService } from 'app/shared/upload/file-upload.service';
+import { SimpleResponse } from 'app/shared/model/simple-response.model';
 
 @Component({
   selector: 'jhi-custom-page',
-  templateUrl: './custom-page.component.html'
+  templateUrl: './custom-page.component.html',
 })
 export class CustomPageComponent implements OnInit, OnDestroy {
   @Input() pageType!: string;
@@ -43,7 +43,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   eventSubscriber?: Subscription;
 
   selectedFiles?: FileList;
-  progress: { percentage: number; } = { percentage: 0};
+  progress: { percentage: number } = { percentage: 0 };
   currentFileUpload?: File | null;
 
   uploadFileStatus = '';
@@ -59,7 +59,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   ) {
     this.activatedRoute.queryParams.subscribe(params => {
       if (params['docx-export'] && params['docx-export'] === 'true') {
-          this.enableDocxExport = true;
+        this.enableDocxExport = true;
       }
     });
   }
@@ -67,8 +67,6 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.pageType === 'about') {
       this.metadataKey = METADATA_KEY_ABOUT;
-    } else if (this.pageType === 'user-guide') {
-      this.metadataKey = METADATA_KEY_USERGUIDE;
     }
     this.refreshContent();
     this.eventSubscriber = this.eventManager.subscribe('metadataListModification', () => this.refreshContent());
@@ -76,7 +74,7 @@ export class CustomPageComponent implements OnInit, OnDestroy {
 
   selectFile(selectFileEvent: { target: { files: FileList | undefined } }): void {
     this.inDocxProgress = true;
-    this.uploadFileStatus = 'uploading DOCX file...'
+    this.uploadFileStatus = 'uploading DOCX file...';
     this.selectedFiles = selectFileEvent.target.files;
     this.progress.percentage = 0;
     this.currentFileUpload = this.selectedFiles!.item(0);
@@ -84,14 +82,15 @@ export class CustomPageComponent implements OnInit, OnDestroy {
       if (event.type === HttpEventType.UploadProgress) {
         this.progress.percentage = Math.round((100 * event.loaded) / event.total!);
       } else if (event instanceof HttpResponse) {
-        this.uploadFileStatus = 'Uploading complete, extracting DOCX to HTML... Please wait!'
+        this.uploadFileStatus = 'Uploading complete, extracting DOCX to HTML... Please wait!';
         const fileName = event.body!.toString();
-        this.fileUploadService.convertDocsToHtml( fileName ).subscribe(
+        this.fileUploadService.convertDocsToHtml(fileName).subscribe(
           (res: HttpResponse<SimpleResponse>) => {
-            this.uploadFileStatus = 'Docx contents is extracted. See the results:'
+            this.uploadFileStatus = 'Docx contents is extracted. See the results:';
             this.uploadFileName = fileName;
-          }, error => {
-            this.uploadFileStatus = 'There is a problem!. Please try again later'
+          },
+          error => {
+            this.uploadFileStatus = 'There is a problem!. Please try again later';
           }
         );
       }
@@ -125,33 +124,33 @@ export class CustomPageComponent implements OnInit, OnDestroy {
   }
 
   fillSections(): void {
-    this.fileUploadService.fillMetadataWithHtmlFile( this.uploadFileName, this.metadataKey ).subscribe(
+    this.fileUploadService.fillMetadataWithHtmlFile(this.uploadFileName, this.metadataKey).subscribe(
       (res: HttpResponse<SimpleResponse>) => {
         this.refreshContent();
         location.reload();
-      }, error => {
-        this.uploadFileStatus = 'There is a problem!. Please try again later'
+      },
+      error => {
+        this.uploadFileStatus = 'There is a problem!. Please try again later';
       }
     );
   }
 
   downloadAsFile(format: string): void {
-    if ( this.generatingFile ) {
+    if (this.generatingFile) {
       return;
     }
     this.generatingFile = true;
-    this.metadataFieldService
-      .downloadMetadataFile(this.metadataKey, format)
-      .subscribe((res: Blob) => {
-        this.generateDownloadFile(
-          res,
-          format === 'pdf' ? 'application/pdf':'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-          format === 'pdf' ? 'pdf':'docx');
-      });
+    this.metadataFieldService.downloadMetadataFile(this.metadataKey, format).subscribe((res: Blob) => {
+      this.generateDownloadFile(
+        res,
+        format === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        format === 'pdf' ? 'pdf' : 'docx'
+      );
+    });
   }
 
   private generateDownloadFile(res: Blob, mimeType: string, fileFormat: string): void {
-    const newBlob = new Blob([res], {type: mimeType});
+    const newBlob = new Blob([res], { type: mimeType });
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(newBlob);
       return;
@@ -162,11 +161,9 @@ export class CustomPageComponent implements OnInit, OnDestroy {
     let fileTitle = 'CESSDA_API-Docs';
     if (this.pageType === 'about') {
       fileTitle = 'CESSDA_CVS_About';
-    } else if (this.pageType === 'user-guide') {
-      fileTitle = 'CESSDA_CVS_User-Guide';
     }
     link.download = fileTitle + '.' + fileFormat;
-    link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
     setTimeout(function (): void {
       window.URL.revokeObjectURL(data);
       link.remove();
