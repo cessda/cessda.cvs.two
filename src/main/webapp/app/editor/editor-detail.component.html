@@ -623,7 +623,7 @@
                             </div>
 
                             <div *ngIf="isDdiUsageEdit" id="quill-ddi">
-                                <quill-editor class="medium-quill" [modules]="quillModules" name="ddiUsage" formControlName="ddiUsage"></quill-editor>
+                                <quill-editor class="medium-quill" [modules]="quillModules" name="ddiUsage" formControlName="ddiUsage" (onEditorCreated)="onDdiUsageEditorCreated($event)"></quill-editor>
                             </div>
                             <div *ngIf="isDdiUsageEdit" class="ql-editor-buttons">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeDdiUsage()">
