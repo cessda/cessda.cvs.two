@@ -11,32 +11,32 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
-import {HttpResponse} from '@angular/common/http';
-import {AccountService} from 'app/core/auth/account.service';
-import {VocabularyService} from 'app/entities/vocabulary/vocabulary.service';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable, Subject} from 'rxjs';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {Account} from 'app/core/user/account.model';
-import {EditorService} from 'app/editor/editor.service';
-import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
-import {IVersion} from 'app/shared/model/version.model';
-import {ILicence} from 'app/shared/model/licence.model';
-import {LicenceService} from 'app/admin/licence/licence.service';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
+import { HttpResponse } from '@angular/common/http';
+import { AccountService } from 'app/core/auth/account.service';
+import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable, Subject } from 'rxjs';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Account } from 'app/core/user/account.model';
+import { EditorService } from 'app/editor/editor.service';
+import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { IVersion } from 'app/shared/model/version.model';
+import { ILicence } from 'app/shared/model/licence.model';
+import { LicenceService } from 'app/admin/licence/licence.service';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {DiffContent, DiffResults} from 'ngx-text-diff/lib/ngx-text-diff.model';
-import {IComment} from 'app/shared/model/comment.model';
-import {VocabularyChangeService} from 'app/entities/vocabulary-change/vocabulary-change.service';
-import {IVocabularyChange} from 'app/shared/model/vocabulary-change.model';
+import { DiffContent, DiffResults } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { IComment } from 'app/shared/model/comment.model';
+import { VocabularyChangeService } from 'app/entities/vocabulary-change/vocabulary-change.service';
+import { IVocabularyChange } from 'app/shared/model/vocabulary-change.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-forward-status-dialog',
-  templateUrl: './editor-detail-cv-forward-status-dialog.component.html'
+  templateUrl: './editor-detail-cv-forward-status-dialog.component.html',
 })
 export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   licences?: ILicence[];
@@ -53,6 +53,11 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   comments: IComment[] | undefined = [];
   vocabularyChanges: IVocabularyChange[] | null = [];
 
+  // @ts-ignore
+  public versionNotesEditor: Quill;
+  // @ts-ignore
+  public versionChangesEditor: Quill;
+
   isCommentCollapse = true;
   isTextDiffCollapse = true;
   isVocabularyChangeCollapse = true;
@@ -68,15 +73,15 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   contentObservable$: Observable<DiffContent> = this.contentObservable.asObservable();
 
   quillSimpleModule: any = {
-    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']]
+    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']],
   };
 
   cvForwardStatusForm = this.fb.group({
-    versionNotes: [],
-    versionChanges: [],
+    versionNotes: [''],
+    versionChanges: [''],
     versionNumberSl: ['', [Validators.required, Validators.pattern('^\\d{1,2}\\.\\d{1,2}$')]],
     versionNumberTl: ['', [Validators.required, Validators.pattern('^\\d{1,2}$')]],
-    licenseId: ['', Validators.required]
+    licenseId: ['', Validators.required],
   });
 
   constructor(
@@ -131,7 +136,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
             .query({
               page: 0,
               size: 50,
-              sort: ['id,asc']
+              sort: ['id,asc'],
             })
             .subscribe((res: HttpResponse<ILicence[]>) => {
               this.licences = res.body!;
@@ -146,7 +151,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       this.editorService.getVocabularyCompare(this.versionParam!.id!).subscribe((res: HttpResponse<string[]>) => {
         const newContent: DiffContent = {
           leftContent: res.body![0],
-          rightContent: res.body![1]
+          rightContent: res.body![1],
         };
         this.contentObservable.next(newContent);
         this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
@@ -162,7 +167,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
           this.vocabularyChanges = res.body;
           this.cvForwardStatusForm.patchValue({
-            versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('<br/>')
+            versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('<br/>'),
           });
         });
       }
@@ -172,20 +177,20 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   private fillForm(): void {
     if (this.isSlForm) {
       this.cvForwardStatusForm.patchValue({
-        versionNumberSl: this.versionParam!.number
+        versionNumberSl: this.versionParam!.number,
       });
     } else {
       this.cvForwardStatusForm.patchValue({
-        versionNumberTl: this.tlProposedVersionNumber
+        versionNumberTl: this.tlProposedVersionNumber,
       });
     }
     if (this.versionParam!.licenseId) {
       this.cvForwardStatusForm.patchValue({
-        licenseId: this.versionParam!.licenseId
+        licenseId: this.versionParam!.licenseId,
       });
     } else {
       this.cvForwardStatusForm.patchValue({
-        licenseId: this.licences?.length ? this.licences[0].id : null
+        licenseId: this.licences?.length ? this.licences[0].id : null,
       });
     }
   }
@@ -198,7 +203,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       agencyId: this.vocabularyParam!.agencyId,
       language: this.versionParam!.language,
       itemType: this.versionParam!.itemType,
-      status: this.versionParam!.status
+      status: this.versionParam!.status,
     };
 
     if (this.versionParam!.status === 'DRAFT') {
@@ -249,7 +254,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       versionChanges: this.cvForwardStatusForm.get(['versionChanges'])
         ? this.cvForwardStatusForm.get(['versionChanges'])!.value
         : undefined,
-      licenseId: this.cvForwardStatusForm.get(['licenseId'])!.value
+      licenseId: this.cvForwardStatusForm.get(['licenseId'])!.value,
     };
     if (this.isSlForm) {
       vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value;
@@ -286,5 +291,19 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
 
   onCompareResults(diffResults: DiffResults): void {
     this.compareNoOfDifference = diffResults.diffsCount;
+  }
+
+  // @ts-ignore
+  onVersionNotesEditorCreated(event: Quill): void {
+    this.versionNotesEditor = event;
+    // @ts-ignore
+    this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionNotes'])!.value);
+  }
+
+  // @ts-ignore
+  onVersionChangesEditorCreated(event: Quill): void {
+    this.versionChangesEditor = event;
+    // @ts-ignore
+    this.versionChangesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionChanges'])!.value);
   }
 }

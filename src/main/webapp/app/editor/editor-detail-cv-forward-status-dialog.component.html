@@ -104,7 +104,7 @@
                             <span>Version notes</span>
                         </div>
                         <div class="detail-column">
-                            <quill-editor class="small-quill" [placeholder]="''" [modules]="quillSimpleModule" name="versionNotes" formControlName="versionNotes"></quill-editor>
+                            <quill-editor class="small-quill" [placeholder]="''" [modules]="quillSimpleModule" name="versionNotes" formControlName="versionNotes" (onEditorCreated)="onVersionNotesEditorCreated($event)"></quill-editor>
                         </div>
                     </div>
                     <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
@@ -115,7 +115,7 @@
                             <span>Version changes</span>
                         </div>
                         <div class="detail-column">
-                            <quill-editor class="medium-quill" [placeholder]="''" [modules]="quillSimpleModule" name="versionChanges" formControlName="versionChanges"></quill-editor>
+                            <quill-editor class="medium-quill" [placeholder]="''" [modules]="quillSimpleModule" name="versionChanges" formControlName="versionChanges" (onEditorCreated)="onVersionChangesEditorCreated($event)"></quill-editor>
                         </div>
                     </div>
                     <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group">
