@@ -31,6 +31,11 @@
                     <strong>Code already exist!</strong>.
                 </div>
             </div>
+            <div class="col-md-12 justify-content-center" *ngIf="isSubmitting">
+                <div class="alert alert-danger" *ngIf="codeAddEditForm.get('changeType')?.errors?.required">
+                    <strong>You need to select 'Change type' before saving.</strong> Make only one change at a time.
+                </div>
+            </div>
             <div class="row-details">
                 <div *ngIf="isSlForm" class="row-detail form-group">
                     <div class="label-column-input">
@@ -44,7 +49,7 @@
                         </div>
                         <span *ngIf="!isNew && conceptParam!.parent">{{conceptParam!.parent}}.</span>
                         <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation" (input)="updateTreePreview()"/>
-                        <div *ngIf="codeAddEditForm.get('notation')!.invalid && (codeAddEditForm.get('notation')!.dirty || codeAddEditForm.get('notation')!.touched)">
+                        <div *ngIf="codeAddEditForm.get('notation')!.invalid && (codeAddEditForm.get('notation')!.dirty || codeAddEditForm.get('notation')!.touched) || isSubmitting">
                             <small class="form-text text-danger"
                                    *ngIf="codeAddEditForm.get('notation')?.errors?.required" jhiTranslate="entity.validation.required">
                                 This field is required.
@@ -102,7 +107,7 @@
                 </div>
                 <div class="detail-column">
                     <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
-                    <div *ngIf="codeAddEditForm.get('title')!.invalid && (codeAddEditForm.get('title')!.dirty || codeAddEditForm.get('title')!.touched)">
+                    <div *ngIf="codeAddEditForm.get('title')!.invalid && (codeAddEditForm.get('title')!.dirty || codeAddEditForm.get('title')!.touched) || isSubmitting">
                         <small class="form-text text-danger"
                                *ngIf="codeAddEditForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
@@ -177,7 +182,7 @@
                                 <option value="Code definition amended with meaning change">Code definition amended with meaning change</option>
                                 <option value="Code definition rephrased">Code definition rephrased</option>
                             </select>
-                            <div *ngIf="codeAddEditForm.get('changeType')!.invalid && (codeAddEditForm.get('changeType')!.dirty || codeAddEditForm.get('changeType')!.touched)">
+                            <div *ngIf="codeAddEditForm.get('changeType')!.invalid && (codeAddEditForm.get('changeType')!.dirty || codeAddEditForm.get('changeType')!.touched) || isSubmitting">
                                 <small class="form-text text-danger"
                                        *ngIf="codeAddEditForm.get('changeType')?.errors?.required" jhiTranslate="entity.validation.required">
                                     This field is required.
@@ -202,7 +207,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
         </button>
-        <button type="submit" id="save-new-cv" [disabled]="codeAddEditForm.invalid || isSaving" class="btn btn-primary">
+        <button type="submit" id="save-new-cv" [disabled]="isSaving" class="btn btn-primary">
             <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
     </div>

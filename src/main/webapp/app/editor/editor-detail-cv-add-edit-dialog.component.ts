@@ -11,30 +11,31 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {AccountService} from 'app/core/auth/account.service';
-import {VocabularyService} from 'app/entities/vocabulary/vocabulary.service';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {Account} from 'app/core/user/account.model';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { AccountService } from 'app/core/auth/account.service';
+import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Account } from 'app/core/user/account.model';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {VOCABULARY_ALREADY_EXIST_TYPE} from 'app/shared';
-import {EditorService} from 'app/editor/editor.service';
-import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
-import {IVersion} from 'app/shared/model/version.model';
+import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
+import { EditorService } from 'app/editor/editor.service';
+import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
+import { IVersion } from 'app/shared/model/version.model';
 
 @Component({
   selector: 'jhi-editor-detail-cv-add-edit-dialog',
-  templateUrl: './editor-detail-cv-add-edit-dialog.component.html'
+  templateUrl: './editor-detail-cv-add-edit-dialog.component.html',
 })
 export class EditorDetailCvAddEditDialogComponent implements OnInit {
   isSaving: boolean;
+  isSubmitting: boolean;
   account!: Account;
   languages: string[] = [];
   errorNotationExists = false;
@@ -59,11 +60,11 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       [
         Validators.pattern(
           '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
-        )
-      ]
+        ),
+      ],
     ],
     changeType: ['', [Validators.required]],
-    changeDesc: []
+    changeDesc: [],
   });
 
   constructor(
@@ -76,6 +77,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     private router: Router
   ) {
     this.isSaving = false;
+    this.isSubmitting = false;
   }
 
   updateLanguageCheckbox(agencyId: number): void {
@@ -122,12 +124,12 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       this.cvAddEditForm.patchValue({
         title: this.versionParam!.title,
         definition: this.versionParam!.definition,
-        notes: this.versionParam!.notes
+        notes: this.versionParam!.notes,
       });
       if (!this.isSlForm) {
         this.cvAddEditForm.patchValue({
           translateAgency: this.versionParam!.translateAgency,
-          translateAgencyLink: this.versionParam!.translateAgencyLink
+          translateAgencyLink: this.versionParam!.translateAgencyLink,
         });
       }
       if (
@@ -148,6 +150,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSaving = false;
+    this.isSubmitting = false;
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.account = account;
@@ -170,7 +173,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
           status: 'DRAFT',
           title: this.cvAddEditForm.get(['title'])!.value,
           definition: this.cvAddEditForm.get(['definition'])!.value,
-          notes: this.cvAddEditForm.get(['notes'])!.value
+          notes: this.cvAddEditForm.get(['notes'])!.value,
         };
       } else {
         return {
@@ -188,7 +191,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
           definition: this.cvAddEditForm.get(['definition'])!.value,
           notes: this.cvAddEditForm.get(['notes'])!.value,
           translateAgency: this.cvAddEditForm.get(['translateAgency'])!.value,
-          translateAgencyLink: this.cvAddEditForm.get(['translateAgencyLink'])!.value
+          translateAgencyLink: this.cvAddEditForm.get(['translateAgencyLink'])!.value,
         };
       }
     } else {
@@ -206,20 +209,23 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
         translateAgency: this.isSlForm ? null : this.cvAddEditForm.get(['translateAgency'])!.value,
         translateAgencyLink: this.isSlForm ? null : this.cvAddEditForm.get(['translateAgencyLink'])!.value,
         changeType: this.cvAddEditForm.get('changeType') ? this.cvAddEditForm.get('changeType')!.value : undefined,
-        changeDesc: this.cvAddEditForm.get('changeDesc') ? this.cvAddEditForm.get('changeDesc')!.value : undefined
+        changeDesc: this.cvAddEditForm.get('changeDesc') ? this.cvAddEditForm.get('changeDesc')!.value : undefined,
       };
     }
   }
 
   save(): void {
-    this.isSaving = true;
-    this.errorNotationExists = false;
-    this.vocabularySnippet = this.createFromForm();
-    this.notation = this.vocabularySnippet.notation;
-    if (this.isNew) {
-      this.subscribeToSaveResponse(this.editorService.createVocabulary(this.vocabularySnippet));
-    } else {
-      this.subscribeToSaveResponse(this.editorService.updateVocabulary(this.vocabularySnippet));
+    this.isSubmitting = true;
+    if (this.cvAddEditForm.valid) {
+      this.isSaving = true;
+      this.errorNotationExists = false;
+      this.vocabularySnippet = this.createFromForm();
+      this.notation = this.vocabularySnippet.notation;
+      if (this.isNew) {
+        this.subscribeToSaveResponse(this.editorService.createVocabulary(this.vocabularySnippet));
+      } else {
+        this.subscribeToSaveResponse(this.editorService.updateVocabulary(this.vocabularySnippet));
+      }
     }
   }
 
