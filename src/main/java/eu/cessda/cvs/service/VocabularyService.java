@@ -275,6 +275,13 @@ public interface VocabularyService {
     void updateVocabularyUri( Long agencyId, String agencyUri, String agencyUriCode );
 
     /**
+     *
+     * @param agencyId
+     * @param agencyLogoPath
+     */
+    void updateVocabularyLogo( Long agencyId, String agencyLogoPath );
+
+    /**
      * Forward the status of certain Vocabulary version (DRAFT -> REVIEW -> PUBLISH)
      * @param vocabularySnippet
      * @return

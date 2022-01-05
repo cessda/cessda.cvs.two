@@ -99,6 +99,7 @@ public class AgencyResource {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
         vocabularyService.updateVocabularyUri(agencyDTO.getId(), agencyDTO.getUri(), agencyDTO.getUriCode());
+        vocabularyService.updateVocabularyLogo(agencyDTO.getId(), agencyDTO.getLogopath());
 
         AgencyDTO result = agencyService.save(agencyDTO);
         return ResponseEntity.ok()
