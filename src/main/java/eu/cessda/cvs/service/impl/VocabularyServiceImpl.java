@@ -1589,6 +1589,42 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     @Override
     @Transactional
+    public void updateVocabularyLogo(Long agencyId, String agencyLogoPath){
+        final List<Vocabulary> vocabularies = vocabularyRepository.findAllByAgencyId( agencyId );
+        final List<Long> changedVocabularies = new ArrayList<>();
+        for (Vocabulary vocabulary : vocabularies) {
+            // exit if no logo update
+            if( vocabulary.getAgencyLogo().equals(agencyLogoPath) ){
+                return;
+            }
+
+            // update db
+            vocabulary.setAgencyLogo(agencyLogoPath);
+            vocabularyRepository.save(vocabulary);
+
+            // mark the vocabulary as changed
+            changedVocabularies.add(vocabulary.getId());
+        }
+
+        // update elasticsearch indexes
+        findAll().forEach(v -> {
+            // skip for withdrawn vocabulary
+            if( Boolean.TRUE.equals( v.isWithdrawn()) )
+                return;
+            if( changedVocabularies.contains(v.getId()) ){
+                // delete changed vocabularies from indexes
+                vocabularyEditorSearchRepository.deleteById(v.getId());
+                vocabularyPublishSearchRepository.deleteById(v.getId());
+
+                // insert changed vocabulary to indexes
+                indexPublished(v);
+                indexEditor(v);
+            }
+        });
+    }
+
+    @Override
+    @Transactional
     public VersionDTO forwardStatus(VocabularySnippet vocabularySnippet){
         if (vocabularySnippet.getVersionId() == null) {
             throw new IllegalArgumentException("Missing version id");
