@@ -11,28 +11,29 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, NgZone, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
+import { Component, NgZone, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {AccountService} from 'app/core/auth/account.service';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {Account} from 'app/core/user/account.model';
-import {CODE_ALREADY_EXIST_TYPE} from 'app/shared';
-import {EditorService} from 'app/editor/editor.service';
-import {IVersion} from 'app/shared/model/version.model';
-import {Concept, IConcept} from 'app/shared/model/concept.model';
-import {CodeSnippet, ICodeSnippet} from 'app/shared/model/code-snippet.model';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { AccountService } from 'app/core/auth/account.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { Account } from 'app/core/user/account.model';
+import { CODE_ALREADY_EXIST_TYPE } from 'app/shared';
+import { EditorService } from 'app/editor/editor.service';
+import { IVersion } from 'app/shared/model/version.model';
+import { Concept, IConcept } from 'app/shared/model/concept.model';
+import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
 
 @Component({
   selector: 'jhi-editor-detail-code-add-edit-dialog',
-  templateUrl: './editor-detail-code-add-edit-dialog.component.html'
+  templateUrl: './editor-detail-code-add-edit-dialog.component.html',
 })
 export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   isSaving: boolean;
+  isSubmitting: boolean;
   account!: Account;
   languages: string[] = [];
   errorCodeExists = false;
@@ -53,7 +54,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     definition: ['', []],
     codeInsertMode: [],
     changeType: ['', [Validators.required]],
-    changeDesc: []
+    changeDesc: [],
   });
 
   constructor(
@@ -66,6 +67,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     private _ngZone: NgZone
   ) {
     this.isSaving = false;
+    this.isSubmitting = false;
     this.isEnablePreview = false;
     this.codeInsertMode = 'INSERT_AS_ROOT';
   }
@@ -75,18 +77,18 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       this.codeAddEditForm.removeControl('notation');
       this.codeAddEditForm.patchValue({
         title: this.conceptParam!.title,
-        definition: this.conceptParam!.definition
+        definition: this.conceptParam!.definition,
       });
     }
     if (!this.isNew && this.isSlForm) {
       this.codeAddEditForm.patchValue({
         notation: this.conceptParam!.notation,
         title: this.conceptParam!.title,
-        definition: this.conceptParam!.definition
+        definition: this.conceptParam!.definition,
       });
       if (this.conceptParam!.parent) {
         this.codeAddEditForm.patchValue({
-          notation: this.conceptParam!.notation!.substring(this.conceptParam!.parent.length + 1)
+          notation: this.conceptParam!.notation!.substring(this.conceptParam!.parent.length + 1),
         });
       }
     }
@@ -110,6 +112,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.isSaving = false;
+    this.isSubmitting = false;
     this.accountService.identity().subscribe(account => {
       if (account) {
         this.account = account;
@@ -155,7 +158,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
         versionId: this.versionParam.id,
         title: this.codeAddEditForm.get(['title'])!.value,
         definition: this.codeAddEditForm.get(['definition'])!.value,
-        position: pos
+        position: pos,
       };
       if (this.codeInsertMode === 'INSERT_AS_ROOT') {
         codeSnippet.notation = this.codeAddEditForm.get(['notation'])!.value;
@@ -181,7 +184,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           title: this.codeAddEditForm.get(['title'])!.value,
           definition: this.codeAddEditForm.get(['definition'])!.value,
           changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : undefined,
-          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : undefined
+          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : undefined,
         };
         if (this.conceptParam!.parent) {
           cdSnippet.notation = this.conceptParam!.parent + '.' + this.codeAddEditForm.get(['notation'])!.value;
@@ -196,7 +199,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
           title: this.codeAddEditForm.get(['title'])!.value,
           definition: this.codeAddEditForm.get(['definition'])!.value,
           changeType: this.codeAddEditForm.get('changeType') ? this.codeAddEditForm.get('changeType')!.value : 'Code translation added',
-          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : this.conceptParam!.notation
+          changeDesc: this.codeAddEditForm.get('changeDesc') ? this.codeAddEditForm.get('changeDesc')!.value : this.conceptParam!.notation,
         };
         if (this.conceptParam!.title) {
           cdSnippet.actionType = 'EDIT_TL_CODE';
@@ -219,13 +222,16 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   }
 
   save(): void {
-    this.isSaving = true;
-    this.errorCodeExists = false;
-    this.codeSnippet = this.createFromForm();
-    if (this.isNew) {
-      this.subscribeToSaveResponse(this.editorService.createCode(this.codeSnippet));
-    } else {
-      this.subscribeToSaveResponse(this.editorService.updateCode(this.codeSnippet));
+    this.isSubmitting = true;
+    if (this.codeAddEditForm.valid) {
+      this.isSaving = true;
+      this.errorCodeExists = false;
+      this.codeSnippet = this.createFromForm();
+      if (this.isNew) {
+        this.subscribeToSaveResponse(this.editorService.createCode(this.codeSnippet));
+      } else {
+        this.subscribeToSaveResponse(this.editorService.updateCode(this.codeSnippet));
+      }
     }
   }
 
@@ -272,7 +278,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     const newConcept = {
       ...new Concept(),
       status: 'TO_BE_INSERTED',
-      position: pos
+      position: pos,
     };
 
     if (this.codeInsertMode === 'INSERT_AS_ROOT') {

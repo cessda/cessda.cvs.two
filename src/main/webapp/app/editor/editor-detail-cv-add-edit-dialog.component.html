@@ -31,6 +31,12 @@
                     <strong>Vocabulary already exist!</strong> Please use different CV Short Name.
                 </div>
             </div>
+            
+            <div class="col-md-12 justify-content-center" *ngIf="isSubmitting">
+                <div class="alert alert-danger" *ngIf="cvAddEditForm.get('changeType')?.errors?.required">
+                    <strong>You need to select 'Change type' before saving.</strong> Make only one change at a time.
+                </div>
+            </div>
 
             <div class="row-details">
                 <!-- Agency name -->
@@ -68,7 +74,7 @@
                 </div>
                 <div *ngIf="isNew && isSlForm" class="detail-column">
                     <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation"/>
-                    <div *ngIf="cvAddEditForm.get('notation')!.invalid && (cvAddEditForm.get('notation')!.dirty || cvAddEditForm.get('notation')!.touched)">
+                    <div *ngIf="cvAddEditForm.get('notation')!.invalid && (cvAddEditForm.get('notation')!.dirty || cvAddEditForm.get('notation')!.touched) || isSubmitting">
                         <small class="form-text text-danger"
                                *ngIf="cvAddEditForm.get('notation')?.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
@@ -109,7 +115,7 @@
                 </div>
                 <div class="detail-column">
                     <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
-                    <div *ngIf="cvAddEditForm.get('title')!.invalid && (cvAddEditForm.get('title')!.dirty || cvAddEditForm.get('title')!.touched)">
+                    <div *ngIf="cvAddEditForm.get('title')!.invalid && (cvAddEditForm.get('title')!.dirty || cvAddEditForm.get('title')!.touched) || isSubmitting">
                         <small class="form-text text-danger"
                                *ngIf="cvAddEditForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
@@ -133,7 +139,7 @@
                 </div>
                 <div class="detail-column">
                     <textarea class="form-control" id="field_definition" name="definition" formControlName="definition" rows="10"></textarea>
-                    <div *ngIf="cvAddEditForm.get('definition')!.invalid && (cvAddEditForm.get('definition')!.dirty || cvAddEditForm.get('definition')!.touched)">
+                    <div *ngIf="cvAddEditForm.get('definition')!.invalid && (cvAddEditForm.get('definition')!.dirty || cvAddEditForm.get('definition')!.touched) || isSubmitting">
                         <small class="form-text text-danger"
                                *ngIf="cvAddEditForm.get('definition')?.errors?.required" jhiTranslate="entity.validation.required">
                             This field is required.
@@ -174,7 +180,7 @@
                 </div>
                 <div class="detail-column">
                     <input type="text" class="form-control" id="field_translateAgencyLink" name="translateAgencyLink" formControlName="translateAgencyLink"/>
-                    <div *ngIf="cvAddEditForm.get('translateAgencyLink')!.invalid && (cvAddEditForm.get('translateAgencyLink')!.dirty || cvAddEditForm.get('translateAgencyLink')!.touched)">
+                    <div *ngIf="cvAddEditForm.get('translateAgencyLink')!.invalid && (cvAddEditForm.get('translateAgencyLink')!.dirty || cvAddEditForm.get('translateAgencyLink')!.touched)  || isSubmitting">
                         <small class="form-text text-danger"
                                *ngIf="cvAddEditForm.get('translateAgencyLink')?.errors?.pattern">
                             Not a valid URL.
@@ -200,7 +206,7 @@
                                 <option value="CV definition rephrased">CV definition rephrased</option>
                                 <option *ngIf="!isSlForm" value="Translator agency and/or link edited">Translator agency and/or link edited</option>
                             </select>
-                            <div *ngIf="cvAddEditForm.get('changeType')!.invalid && (cvAddEditForm.get('changeType')!.dirty || cvAddEditForm.get('changeType')!.touched)">
+                            <div *ngIf="cvAddEditForm.get('changeType')!.invalid && (cvAddEditForm.get('changeType')!.dirty || cvAddEditForm.get('changeType')!.touched) || isSubmitting">
                                 <small class="form-text text-danger"
                                        *ngIf="cvAddEditForm.get('changeType')?.errors?.required" jhiTranslate="entity.validation.required">
                                     This field is required.
@@ -224,7 +230,7 @@
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
         </button>
-        <button type="submit" id="save-new-cv" [disabled]="cvAddEditForm.invalid || isSaving" class="btn btn-primary">
+        <button type="submit" id="save-new-cv" [disabled]="isSaving" class="btn btn-primary">
             <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
         </button>
     </div>
