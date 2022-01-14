@@ -1742,7 +1742,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     private File generateVocabularyFileDownload(String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request, VocabularyDTO vocabularyDTO) {
         Set<VersionDTO> includedVersions = filterOutVocabularyVersions(versionList, vocabularyDTO);
         vocabularyDTO.setVersions( includedVersions );
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new LinkedHashMap<>();
         // escaping HTML to strict XHTML
         for (VersionDTO includedVersion : includedVersions) {
             includedVersion.setVersionNotes(VocabularyUtils.toStrictXhtml(includedVersion.getVersionNotes()));
