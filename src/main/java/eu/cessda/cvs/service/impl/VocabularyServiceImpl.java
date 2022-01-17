@@ -1743,15 +1743,28 @@ public class VocabularyServiceImpl implements VocabularyService {
         Set<VersionDTO> includedVersions = filterOutVocabularyVersions(versionList, vocabularyDTO);
         vocabularyDTO.setVersions( includedVersions );
         Map<String, Object> map = new LinkedHashMap<>();
-        // escaping HTML to strict XHTML
         for (VersionDTO includedVersion : includedVersions) {
+            // escaping HTML to strict XHTML
             includedVersion.setVersionNotes(VocabularyUtils.toStrictXhtml(includedVersion.getVersionNotes()));
             includedVersion.setVersionChanges( VocabularyUtils.toStrictXhtml(includedVersion.getVersionChanges()));
             includedVersion.setDdiUsage( VocabularyUtils.toStrictXhtml(includedVersion.getDdiUsage()));
+            // sort concepts by position (see #330)
+            includedVersion.setConcepts(
+                includedVersion.getConcepts().stream().sorted(Comparator.comparing(ConceptDTO::getPosition))
+                    .collect(Collectors.toCollection(LinkedHashSet::new))
+            );
         }
 
         // sorted versions
         map.put("versions", includedVersions);
+
+	// #330 debugging
+        for (VersionDTO version : (Set<VersionDTO>) map.get("versions")) {
+            log.debug("#330 VERSION: " + version.toString());
+            for (ConceptDTO concept : version.getConcepts()) {
+                log.debug("#330 CONCEPT: " + concept.getPosition() + "\t" + concept.getNotation());
+            }
+        }
 
         // agency object
         AgencyDTO agencyDTO = new AgencyDTO();
