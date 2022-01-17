@@ -1742,7 +1742,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     private File generateVocabularyFileDownload(String vocabularyNotation, String versionSl, String versionList, ExportService.DownloadType downloadType, HttpServletRequest request, VocabularyDTO vocabularyDTO) {
         Set<VersionDTO> includedVersions = filterOutVocabularyVersions(versionList, vocabularyDTO);
         vocabularyDTO.setVersions( includedVersions );
-        Map<String, Object> map = new LinkedHashMap<>();
+        Map<String, Object> map = new HashMap<>();
         for (VersionDTO includedVersion : includedVersions) {
             // escaping HTML to strict XHTML
             includedVersion.setVersionNotes(VocabularyUtils.toStrictXhtml(includedVersion.getVersionNotes()));
@@ -1757,14 +1757,6 @@ public class VocabularyServiceImpl implements VocabularyService {
 
         // sorted versions
         map.put("versions", includedVersions);
-
-	// #330 debugging
-        for (VersionDTO version : (Set<VersionDTO>) map.get("versions")) {
-            log.debug("#330 VERSION: " + version.toString());
-            for (ConceptDTO concept : version.getConcepts()) {
-                log.debug("#330 CONCEPT: " + concept.getPosition() + "\t" + concept.getNotation());
-            }
-        }
 
         // agency object
         AgencyDTO agencyDTO = new AgencyDTO();

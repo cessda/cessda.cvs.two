@@ -167,7 +167,6 @@ div.CodeList {
 			        <caption>Code List</caption>
 			        <thead>
 			          <tr>
-                          <th scope="col">debug: position</th>
                           <th scope="col" style="width: 25%">Code value</th>
                           <th scope="col" style="width: 25%">Code descriptive term</th>
                           <th scope="col" style="width: 50%">Code definition</th>
@@ -175,8 +174,7 @@ div.CodeList {
 			        </thead>
 			        <tbody>
 			           <tr th:each="concept : ${version.concepts}" >
-                                    <td th:text="${concept.position}"></td>
-                                    <td style="width: 25%;white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.notation}"></td>
+                        <td style="width: 25%;white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.notation}"></td>
 			            <td style="width: 25%" th:text="${concept.title}"></td>
 			            <td style="width: 50%" th:text="${concept.definition}"></td>
 			          </tr>
