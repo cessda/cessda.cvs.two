@@ -1594,7 +1594,7 @@ public class VocabularyServiceImpl implements VocabularyService {
         final List<Long> changedVocabularies = new ArrayList<>();
         for (Vocabulary vocabulary : vocabularies) {
             // exit if no logo update
-            if( vocabulary.getAgencyLogo().equals(agencyLogoPath) ){
+            if( (vocabulary.getAgencyLogo() != null) && (vocabulary.getAgencyLogo().equals(agencyLogoPath)) ){
                 return;
             }
 
