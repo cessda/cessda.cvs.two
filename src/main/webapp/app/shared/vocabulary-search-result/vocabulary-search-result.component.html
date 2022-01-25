@@ -15,7 +15,7 @@
     <form name="searchForm" class="w-100" role="form" (keydown.enter)="$event.preventDefault()" novalidate [formGroup]="searchForm">
         <jhi-alert-error></jhi-alert-error>
         <jhi-alert></jhi-alert>
-    
+
         <div class="search-option-column">
             <div class="count-column">
                 <div class="level-row">
@@ -148,7 +148,7 @@
             <div class="result-column">
                 <div class="table-responsive" *ngIf="vocabularies?.length > 0">
                     <div *ngFor="let vocabulary of vocabularies; trackBy: trackNotation" class="vocab-item">
-                        <div class="vocab-logo">
+                        <div class="vocab-logo" *ngIf="vocabulary.agencyLogo != null">
                             <img [src]="'/content/images/agency/' + vocabulary.agencyLogo" width="120px" alt="logo"/>
                         </div>
                         <div class="vocab-detail">
