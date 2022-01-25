@@ -1743,11 +1743,16 @@ public class VocabularyServiceImpl implements VocabularyService {
         Set<VersionDTO> includedVersions = filterOutVocabularyVersions(versionList, vocabularyDTO);
         vocabularyDTO.setVersions( includedVersions );
         Map<String, Object> map = new HashMap<>();
-        // escaping HTML to strict XHTML
         for (VersionDTO includedVersion : includedVersions) {
+            // escaping HTML to strict XHTML
             includedVersion.setVersionNotes(VocabularyUtils.toStrictXhtml(includedVersion.getVersionNotes()));
             includedVersion.setVersionChanges( VocabularyUtils.toStrictXhtml(includedVersion.getVersionChanges()));
             includedVersion.setDdiUsage( VocabularyUtils.toStrictXhtml(includedVersion.getDdiUsage()));
+            // sort concepts by position (see #330)
+            includedVersion.setConcepts(
+                includedVersion.getConcepts().stream().sorted(Comparator.comparing(ConceptDTO::getPosition))
+                    .collect(Collectors.toCollection(LinkedHashSet::new))
+            );
         }
 
         // sorted versions
