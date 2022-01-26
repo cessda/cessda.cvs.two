@@ -228,7 +228,7 @@
                     <jhi-alert></jhi-alert>
                     <div class="row-detail">
                         <div class="label-column">
-                            <div class="vocab-logo">
+                            <div class="vocab-logo" *ngIf="vocabulary!.agencyLogo != null">
                                 <img [src]="'/content/images/agency/' + vocabulary!.agencyLogo" width="120px" alt="logo {{vocabulary!.agencyName}}"/>
                             </div>
                         </div>
