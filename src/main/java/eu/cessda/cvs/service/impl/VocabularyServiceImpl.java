@@ -526,6 +526,9 @@ public class VocabularyServiceImpl implements VocabularyService {
     }
 
     private Integer getConceptPositionById(Long conceptId, Set<ConceptDTO> concepts) {
+        if (conceptId == null) {
+            return null;
+        }
         ConceptDTO conceptDTO = concepts.stream()
             .filter(c -> c.getId().compareTo(conceptId) == 0).findFirst().orElse(null);
         return conceptDTO != null ? conceptDTO.getPosition() : null;
