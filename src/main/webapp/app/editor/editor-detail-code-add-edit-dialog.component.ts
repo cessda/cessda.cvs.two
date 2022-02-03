@@ -151,6 +151,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       }
 
       const pos = this.calculatePosition();
+      const [insertionRefConceptId, relPosToRefConcept] = this.getConceptInsertionAddress();
 
       const codeSnippet = {
         ...new CodeSnippet(),
@@ -159,6 +160,8 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
         title: this.codeAddEditForm.get(['title'])!.value,
         definition: this.codeAddEditForm.get(['definition'])!.value,
         position: pos,
+        insertionRefConceptId,
+        relPosToRefConcept,
       };
       if (this.codeInsertMode === 'INSERT_AS_ROOT') {
         codeSnippet.notation = this.codeAddEditForm.get(['notation'])!.value;
@@ -219,6 +222,18 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       index--;
     }
     return index;
+  }
+
+  private getConceptInsertionAddress(): [any, number] {
+    let refConceptId = null;
+    let relativePos = 1;
+    if (this.conceptParam !== null) {
+      refConceptId = this.conceptParam!.id;
+    }
+    if (this.codeInsertMode === 'INSERT_BEFORE') {
+      relativePos = 0;
+    }
+    return [refConceptId, relativePos];
   }
 
   save(): void {

@@ -75,6 +75,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.Math;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -524,6 +525,12 @@ public class VocabularyServiceImpl implements VocabularyService {
                 vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
     }
 
+    private Integer getConceptPositionById(Long conceptId, Set<ConceptDTO> concepts) {
+        ConceptDTO conceptDTO = concepts.stream()
+            .filter(c -> c.getId().compareTo(conceptId) == 0).findFirst().orElse(null);
+        return conceptDTO != null ? conceptDTO.getPosition() : null;
+    }
+
     private ConceptDTO createCode(CodeSnippet codeSnippet, VersionDTO versionDTO, VocabularyDTO vocabularyDTO) {
         ConceptDTO conceptDTO;
         // check for authorization
@@ -535,9 +542,17 @@ public class VocabularyServiceImpl implements VocabularyService {
             .anyMatch(c -> c.getNotation().equals( codeSnippet.getNotation()))) {
             throw new CodeAlreadyExistException();
         }
-        // set position if not available
-        if( codeSnippet.getPosition() == null )
-            codeSnippet.setPosition( versionDTO.getConcepts().size());
+        // ==> #349: calculate code position at the server side instead of the client side
+        Integer refConceptPos = getConceptPositionById(codeSnippet.getInsertionRefConceptId(), versionDTO.getConcepts());
+        if (refConceptPos == null) {
+            refConceptPos = versionDTO.getConcepts().size();
+        } else {
+            Integer relPosToRefConcept = codeSnippet.getRelPosToRefConcept();
+            relPosToRefConcept = Math.min(1, relPosToRefConcept == null ? 0 : Math.max(0, relPosToRefConcept));
+            refConceptPos += relPosToRefConcept;
+        }
+        codeSnippet.setPosition(refConceptPos);
+        // <== #349
         // create concept by codeSnippet
         ConceptDTO newConceptDTO = new ConceptDTO( codeSnippet );
         // add concept to version and save version to save new concept

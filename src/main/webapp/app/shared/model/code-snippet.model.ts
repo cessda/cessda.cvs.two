@@ -21,6 +21,8 @@ export interface ICodeSnippet {
   title?: any;
   definition?: any;
   position?: number;
+  insertionRefConceptId?: any;
+  relPosToRefConcept?: number;
   changeType?: any;
   changeDesc?: any;
   conceptStructures?: string[];
@@ -38,6 +40,8 @@ export class CodeSnippet implements ICodeSnippet {
     public title?: any,
     public definition?: any,
     public position?: number,
+    public insertionRefConceptId?: any,
+    public relPosToRefConcept?: number,
     public changeType?: any,
     public changeDesc?: any,
     public conceptStructures?: string[],
