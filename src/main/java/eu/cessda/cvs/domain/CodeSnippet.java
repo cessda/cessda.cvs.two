@@ -37,6 +37,8 @@ public class CodeSnippet implements Serializable {
     private String notation;
     private String definition;
     private Integer position;
+    private Long insertionRefConceptId;
+    private Integer relPosToRefConcept;
     private String changeType;
     private String changeDesc;
     private List<String> conceptStructures = new ArrayList<>();
@@ -114,6 +116,22 @@ public class CodeSnippet implements Serializable {
         this.position = position;
     }
 
+    public Long getInsertionRefConceptId() {
+        return insertionRefConceptId;
+    }
+
+    public void setInsertionRefConceptId(Long insertionRefConceptId) {
+        this.insertionRefConceptId = insertionRefConceptId;
+    }
+
+    public Integer getRelPosToRefConcept() {
+        return relPosToRefConcept;
+    }
+
+    public void setRelPosToRefConcept(Integer relPosToRefConcept) {
+        this.relPosToRefConcept = relPosToRefConcept;
+    }
+
     public String getChangeType() {
         return changeType;
     }
@@ -170,8 +188,16 @@ public class CodeSnippet implements Serializable {
             ", conceptId='" + getConceptId() + "'" +
             ", conceptSlId='" + getConceptSlId() + "'" +
             ", parent=" + getParent() +
-            ", notation='" + getNotation() + "'" +
             ", title='" + getTitle() + "'" +
+            ", notation='" + getNotation() + "'" +
+            ", definition='" + getDefinition() + "'" +
+            ", position='" + getPosition() + "'" +
+            ", insertionRefConceptId='" + getInsertionRefConceptId() + "'" +
+            ", relPosToRefConcept='" + getRelPosToRefConcept() + "'" +
+            ", changeType='" + getChangeType() + "'" +
+            ", changeDesc='" + getChangeDesc() + "'" +
+            ", conceptStructures='" + getConceptStructures() + "'" +
+            ", conceptStructureIds='" + getConceptStructureIds() + "'" +
             "}";
     }
 }
