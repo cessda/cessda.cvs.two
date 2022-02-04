@@ -176,39 +176,39 @@
                                         <option value="VIEW">{{ 'cvsApp.AgencyRole.VIEW' | translate }}</option>
                                     </select>
                                 </td>
-<!--                                <td>-->
-<!--                                    <select class="form-control" (change)="selectedLanguage = $event.target.value">-->
-<!--                                        <option value=""></option>-->
-<!--                                        <option value="en">{{ 'cvsApp.Language.ENGLISH' | translate }}</option>-->
-<!--                                        <option value="sq">{{ 'cvsApp.Language.ALBANIAN' | translate }}</option>-->
-<!--                                        <option value="bs">{{ 'cvsApp.Language.BOSNIAN' | translate }}</option>-->
-<!--                                        <option value="bg">{{ 'cvsApp.Language.BULGARIAN' | translate }}</option>-->
-<!--                                        <option value="hr">{{ 'cvsApp.Language.CROATIAN' | translate }}</option>-->
-<!--                                        <option value="cs">{{ 'cvsApp.Language.CZECH' | translate }}</option>-->
-<!--                                        <option value="da">{{ 'cvsApp.Language.DANISH' | translate }}</option>-->
-<!--                                        <option value="nl">{{ 'cvsApp.Language.DUTCH' | translate }}</option>-->
-<!--                                        <option value="et">{{ 'cvsApp.Language.ESTONIAN' | translate }}</option>-->
-<!--                                        <option value="fi">{{ 'cvsApp.Language.FINNISH' | translate }}</option>-->
-<!--                                        <option value="fr">{{ 'cvsApp.Language.FRENCH' | translate }}</option>-->
-<!--                                        <option value="de">{{ 'cvsApp.Language.GERMAN' | translate }}</option>-->
-<!--                                        <option value="el">{{ 'cvsApp.Language.GREEK' | translate }}</option>-->
-<!--                                        <option value="hu">{{ 'cvsApp.Language.HUNGARIAN' | translate }}</option>-->
-<!--                                        <option value="it">{{ 'cvsApp.Language.ITALIAN' | translate }}</option>-->
-<!--                                        <option value="ja">{{ 'cvsApp.Language.JAPANESE' | translate }}</option>-->
-<!--                                        <option value="lt">{{ 'cvsApp.Language.LITHUANIAN' | translate }}</option>-->
-<!--                                        <option value="mk">{{ 'cvsApp.Language.MACEDONIAN' | translate }}</option>-->
-<!--                                        <option value="no">{{ 'cvsApp.Language.NORWEGIAN' | translate }}</option>-->
-<!--                                        <option value="pl">{{ 'cvsApp.Language.POLISH' | translate }}</option>-->
-<!--                                        <option value="pt">{{ 'cvsApp.Language.PORTUGUESE' | translate }}</option>-->
-<!--                                        <option value="ro">{{ 'cvsApp.Language.ROMANIAN' | translate }}</option>-->
-<!--                                        <option value="ru">{{ 'cvsApp.Language.RUSSIAN' | translate }}</option>-->
-<!--                                        <option value="sr">{{ 'cvsApp.Language.SERBIAN' | translate }}</option>-->
-<!--                                        <option value="sk">{{ 'cvsApp.Language.SLOVAK' | translate }}</option>-->
-<!--                                        <option value="sl">{{ 'cvsApp.Language.SLOVENIAN' | translate }}</option>-->
-<!--                                        <option value="es">{{ 'cvsApp.Language.SPANISH' | translate }}</option>-->
-<!--                                        <option value="sv">{{ 'cvsApp.Language.SWEDISH' | translate }}</option>-->
-<!--                                    </select>-->
-<!--                                </td>-->
+                                <td>
+                                    <select class="form-control" (change)="selectedLanguage = $event.target.value">
+                                        <option value=""></option>
+                                        <option value="en">{{ 'cvsApp.Language.ENGLISH' | translate }}</option>
+                                        <option value="sq">{{ 'cvsApp.Language.ALBANIAN' | translate }}</option>
+                                        <option value="bs">{{ 'cvsApp.Language.BOSNIAN' | translate }}</option>
+                                        <option value="bg">{{ 'cvsApp.Language.BULGARIAN' | translate }}</option>
+                                        <option value="hr">{{ 'cvsApp.Language.CROATIAN' | translate }}</option>
+                                        <option value="cs">{{ 'cvsApp.Language.CZECH' | translate }}</option>
+                                        <option value="da">{{ 'cvsApp.Language.DANISH' | translate }}</option>
+                                        <option value="nl">{{ 'cvsApp.Language.DUTCH' | translate }}</option>
+                                        <option value="et">{{ 'cvsApp.Language.ESTONIAN' | translate }}</option>
+                                        <option value="fi">{{ 'cvsApp.Language.FINNISH' | translate }}</option>
+                                        <option value="fr">{{ 'cvsApp.Language.FRENCH' | translate }}</option>
+                                        <option value="de">{{ 'cvsApp.Language.GERMAN' | translate }}</option>
+                                        <option value="el">{{ 'cvsApp.Language.GREEK' | translate }}</option>
+                                        <option value="hu">{{ 'cvsApp.Language.HUNGARIAN' | translate }}</option>
+                                        <option value="it">{{ 'cvsApp.Language.ITALIAN' | translate }}</option>
+                                        <option value="ja">{{ 'cvsApp.Language.JAPANESE' | translate }}</option>
+                                        <option value="lt">{{ 'cvsApp.Language.LITHUANIAN' | translate }}</option>
+                                        <option value="mk">{{ 'cvsApp.Language.MACEDONIAN' | translate }}</option>
+                                        <option value="no">{{ 'cvsApp.Language.NORWEGIAN' | translate }}</option>
+                                        <option value="pl">{{ 'cvsApp.Language.POLISH' | translate }}</option>
+                                        <option value="pt">{{ 'cvsApp.Language.PORTUGUESE' | translate }}</option>
+                                        <option value="ro">{{ 'cvsApp.Language.ROMANIAN' | translate }}</option>
+                                        <option value="ru">{{ 'cvsApp.Language.RUSSIAN' | translate }}</option>
+                                        <option value="sr">{{ 'cvsApp.Language.SERBIAN' | translate }}</option>
+                                        <option value="sk">{{ 'cvsApp.Language.SLOVAK' | translate }}</option>
+                                        <option value="sl">{{ 'cvsApp.Language.SLOVENIAN' | translate }}</option>
+                                        <option value="es">{{ 'cvsApp.Language.SPANISH' | translate }}</option>
+                                        <option value="sv">{{ 'cvsApp.Language.SWEDISH' | translate }}</option>
+                                    </select>
+                                </td>
                                 <td>
                                     <button type="button" ngbTooltip="Add agency role" class="btn btn-sm btn-primary" (click)="saveAgencyRole()"
                                         [disabled]="selectedAgencyRole !== 'ADMIN' && selectedAgencyRole !== 'VIEW' && ( selectedLanguage === undefined || selectedLanguage === '')">
