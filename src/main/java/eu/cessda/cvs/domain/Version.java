@@ -140,7 +140,8 @@ public class Version implements Serializable {
     private LocalDate lastStatusChangeDate;
 
     @OneToMany(mappedBy = "version", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true )
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+// #349 - temporarily disabling second level cache for concepts
+//    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Concept> concepts = new HashSet<>();
 
     @OneToMany(mappedBy = "version", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true )
