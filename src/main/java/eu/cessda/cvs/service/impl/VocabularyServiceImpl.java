@@ -1801,7 +1801,12 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
 
         map.put("agency", agencyDTO);
-        map.put("year", vocabularyDTO.getPublicationDate().getYear());
+        int year = vocabularyDTO.getPublicationDate() == null ? (
+                vocabularyDTO.getLastModified() == null ? (
+                    LocalDate.now().getYear()
+                ) : vocabularyDTO.getLastModified().getYear()
+            ) : vocabularyDTO.getPublicationDate().getYear();
+        map.put("year", year);
         map.put("baseUrl", getURLWithContextPath( request ));
 
         try {
