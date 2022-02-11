@@ -74,7 +74,7 @@ Generic styles
 /* other generic styles */
 
 .jh-card {
-  padding-top:10px;
+  padding-top: 10px;
   border: none;
   margin-bottom: 500px;
   margin-left: auto;
@@ -245,7 +245,7 @@ Main page styles
 @media screen and (min-width: 768px) {
   .search-option-column {
     .count-column {
-      flex: 0 0 280px;
+      flex: 0 0 30%;
       display: block;
       padding: 0.75rem;
     }
@@ -619,7 +619,7 @@ Main page styles
 }
 .vocab-lang {
   button:focus {
-    outline:none;
+    outline: none;
   }
 
   .vocab-lang-button {
@@ -946,9 +946,9 @@ button.invisible-button:focus {
         width: 100%;
         display: block;
         img {
-          width:80px;
-          height:auto;
-          margin-bottom:4px;
+          width: 80px;
+          height: auto;
+          margin-bottom: 4px;
         }
       }
       .vocab-detail {
@@ -956,17 +956,15 @@ button.invisible-button:focus {
           font-weight: 600;
           font-size: 1em;
 
-            .notation {
-              font-style: italic;
-              font-weight: 400;
-            }
-
-
+          .notation {
+            font-style: italic;
+            font-weight: 400;
+          }
         }
         .vocab-def {
         }
         .vocab-ver {
-          text-align:right;
+          text-align: right;
           .version {
             font-size: 75%;
             font-weight: 700;
@@ -986,7 +984,7 @@ button.invisible-button:focus {
   .content {
     flex-direction: row;
     .content-left {
-      flex: 0 0 280px;
+      flex: 0 0 30%;
       .sticky-panel {
         position: sticky;
         top: 10px;
@@ -1007,7 +1005,7 @@ button.invisible-button:focus {
   .search-column {
     flex-direction: row;
     .filter-column {
-      flex: 0 0 280px;
+      flex: 0 0 30%;
       .filter-panels-toggle {
         display: none;
       }
@@ -1020,9 +1018,7 @@ button.invisible-button:focus {
 
     .result-column {
       .vocab-item {
-
         .vocab-logo {
-
         }
         .vocab-detail {
           .vocab-title {
@@ -1044,7 +1040,7 @@ button.invisible-button:focus {
   background-color: #e74c3c;
   border-color: #e74c3c;
 }
-.e-note{
+.e-note {
   color: lightgray;
   font-size: 0.5rem;
 }
@@ -1202,27 +1198,28 @@ button.invisible-button:focus {
   -moz-hyphens: auto;
   -webkit-hyphens: auto;
   hyphens: auto;
-  white-space: pre-line
+  white-space: pre-line;
 }
-.f-size-120{
+.f-size-120 {
   font-size: 120%;
 }
-.p-t-0{
-  padding-top:0 !important;
+.p-t-0 {
+  padding-top: 0 !important;
 }
 
-#overview{
-  ul,ol{
+#overview {
+  ul,
+  ol {
     margin: 0;
     padding: 0;
     li {
-      transition: background-color .2s;
+      transition: background-color 0.2s;
       padding: 2px 5px;
-      a{
+      a {
         text-decoration: none;
         color: #212529;
       }
-      a:hover{
+      a:hover {
         text-decoration: none;
         color: #1976d2;
       }
@@ -1235,14 +1232,14 @@ button.invisible-button:focus {
     li.ql-indent-1 {
       font-size: 90%;
       padding: 1px 5px;
-      margin-left:15px;
+      margin-left: 15px;
     }
   }
 }
 
-.ql-snow{
-  .ql-editor{
-    font-size: 11.0pt;
+.ql-snow {
+  .ql-editor {
+    font-size: 11pt;
     pre.ql-syntax {
       background-color: #23241f;
       color: #f8f8f2;
@@ -1250,13 +1247,15 @@ button.invisible-button:focus {
       font-size: 0.7em;
     }
     table.quill-better-table {
-      font-size: 10.0pt;
+      font-size: 10pt;
       td {
         border: none;
         border-bottom: 1px solid #efefef;
-        >p{
-          span,strong,em{
-            background-color:transparent !important;
+        > p {
+          span,
+          strong,
+          em {
+            background-color: transparent !important;
           }
         }
       }
@@ -1266,7 +1265,7 @@ button.invisible-button:focus {
       font-size: 10px;
     }
   }
-  .ql-read{
+  .ql-read {
     white-space: normal;
   }
 }
