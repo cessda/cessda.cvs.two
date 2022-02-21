@@ -37,8 +37,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -64,9 +66,9 @@ public final class VocabularyUtils {
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 
-        VocabularyDTO vocabularyDTO = null;
-        try {
-            vocabularyDTO = mapper.readValue(jsonPath.toFile(), VocabularyDTO.class);
+        VocabularyDTO vocabularyDTO;
+        try (InputStream jsonStream = Files.newInputStream(jsonPath)) {
+            vocabularyDTO = mapper.readValue(jsonStream, VocabularyDTO.class);
             // reorder concepts
             for (VersionDTO version : vocabularyDTO.getVersions()) {
                 version.setConcepts(
@@ -76,7 +78,7 @@ public final class VocabularyUtils {
             }
 
         } catch (IOException e) {
-            log.error(e.getMessage());
+            log.error("Couldn't generate vocabulary from JSON: {}", e.toString());
             throw new VocabularyNotFoundException( "Published vocabulary not found, please check Vocabulary notation and SL version number!" );
         }
         // reorder version
@@ -84,12 +86,6 @@ public final class VocabularyUtils {
             .collect(Collectors.toCollection(LinkedHashSet::new)));
 
         return vocabularyDTO;
-    }
-
-    public static VersionDTO generateVersionByPath(Path jsonPath, String language, String versionNumber) {
-        VocabularyDTO vocabularyDTO = generateVocabularyByPath(jsonPath);
-        return vocabularyDTO.getVersions().stream().filter(v -> v.getLanguage().equals(language) && v.getNumber().equals(versionNumber))
-            .findFirst().orElse(null);
     }
 
     public static VersionDTO getVersionByLangVersion(VocabularyDTO vocabularyDTO, String language, String versionNumber) {

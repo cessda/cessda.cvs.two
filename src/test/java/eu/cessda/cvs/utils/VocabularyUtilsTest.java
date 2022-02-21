@@ -13,9 +13,15 @@
 
 package eu.cessda.cvs.utils;
 
+import eu.cessda.cvs.service.VocabularyNotFoundException;
+import eu.cessda.cvs.service.dto.VocabularyDTO;
 import org.junit.jupiter.api.Test;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class VocabularyUtilsTest {
 
@@ -44,5 +50,24 @@ class VocabularyUtilsTest {
         assertThat( uri5).isEqualTo("https://vocabularies.cessda.eu/vocabulary/%s_%s/%s/%s", notation, code, version, language);
         final String uri6 = VocabularyUtils.generateUri(codeUri2, false, notation, version, null, code);
         assertThat( uri6).isEqualTo("https://vocabularies.cessda.eu/vocabulary/%s_%s/%s", notation, code, version);
+    }
+
+    @Test
+    void shouldLoadVocabularyFromPath() {
+        Path vocabularyToLoad = Paths.get("src/main/webapp/content/vocabularies/DataSourceType/DataSourceType.json");
+
+        VocabularyDTO loadedVocabulary = VocabularyUtils.generateVocabularyByPath(vocabularyToLoad);
+
+        // Assert that the correct vocabulary is loaded
+        assertThat(loadedVocabulary.getNotation()).isEqualTo("DataSourceType");
+        assertThat(loadedVocabulary.getVersions()).isNotEmpty();
+    }
+
+    @Test
+    void shouldThrowIfIOExceptionOccurs() {
+        Path invalidPath = Paths.get("invalidPath.json");
+
+        assertThatThrownBy(() -> VocabularyUtils.generateVocabularyByPath(invalidPath))
+            .isInstanceOf(VocabularyNotFoundException.class);
     }
 }
