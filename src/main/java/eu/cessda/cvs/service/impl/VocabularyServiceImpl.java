@@ -91,7 +91,7 @@ import java.util.stream.Stream;
 @Transactional
 public class VocabularyServiceImpl implements VocabularyService {
 
-    private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
 
     private static final String VOCABULARYPUBLISH = "vocabularypublish";
 
@@ -890,11 +890,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public void indexAllAgencyStats() {
         log.info("INDEXING ALL AGENCY VOCABULARIES STATISTIC START");
-        findAll().forEach(v -> {
-            if( Boolean.TRUE.equals( v.isWithdrawn()) )
-                return;
-            indexAgencyStats(v);
-        });
+        findAll().stream().filter( v -> !Boolean.TRUE.equals( v.isWithdrawn() ) ).forEach( this::indexAgencyStats );
         log.info("INDEXING ALL AGENCY VOCABULARIES STATISTIC FINISHED");
     }
 
