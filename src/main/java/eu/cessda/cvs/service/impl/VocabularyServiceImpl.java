@@ -75,7 +75,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.lang.Math;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -92,7 +91,7 @@ import java.util.stream.Stream;
 @Transactional
 public class VocabularyServiceImpl implements VocabularyService {
 
-    private final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(VocabularyServiceImpl.class);
 
     private static final String VOCABULARYPUBLISH = "vocabularypublish";
 
@@ -739,13 +738,15 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     @Override
     public VocabularyDTO getVocabularyByNotationAndVersion(String notation, String slVersionNumber, boolean onlyPublished) {
+        // Parameter validation
+        Objects.requireNonNull( slVersionNumber, "slVersionNumber number cannot be null" );
+        if( slVersionNumber.isEmpty() ) {
+            throw new IllegalArgumentException("slVersionNumber cannot be empty");
+        }
+
         // get all available licenses
         final List<Licence> licenceList = licenceRepository.findAll();
 
-        if( slVersionNumber == null || slVersionNumber.isEmpty()) {
-            log.error("Error version number could not be empty or null");
-            throw new IllegalArgumentException("Error version number  could not be empty or null");
-        }
         VocabularyDTO vocabulary = getByNotation(notation);
         final Agency agency = agencyRepository.getOne(vocabulary.getAgencyId());
         vocabulary.setAgencyLink(agency.getLink());
@@ -891,11 +892,7 @@ public class VocabularyServiceImpl implements VocabularyService {
     @Override
     public void indexAllAgencyStats() {
         log.info("INDEXING ALL AGENCY VOCABULARIES STATISTIC START");
-        findAll().forEach(v -> {
-            if( Boolean.TRUE.equals( v.isWithdrawn()) )
-                return;
-            indexAgencyStats(v);
-        });
+        findAll().stream().filter( v -> !Boolean.TRUE.equals( v.isWithdrawn() ) ).forEach( this::indexAgencyStats );
         log.info("INDEXING ALL AGENCY VOCABULARIES STATISTIC FINISHED");
     }
 
@@ -944,13 +941,12 @@ public class VocabularyServiceImpl implements VocabularyService {
 
     @Override
     public List<Path> getPublishedCvPaths() {
-        List<Path> jsonPaths = new ArrayList<>();
         try ( Stream<Path> paths = Files.walk(Paths.get(applicationProperties.getVocabJsonPath()), 2) ){
-            jsonPaths = paths.filter(p -> p.toFile().isFile()).collect(Collectors.toList());
+            return paths.filter( Files::isRegularFile ).collect(Collectors.toList());
         } catch (IOException e) {
             log.error( e.getMessage() );
+            return Collections.emptyList();
         }
-        return jsonPaths;
     }
 
     @Override

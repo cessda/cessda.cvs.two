@@ -43,7 +43,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -155,9 +154,7 @@ class VocabularyResourceV2IT {
 
             // publish
             versionDTO = vocabularyService.forwardStatus(vocabularySnippetSl);
-            final Optional<VocabularyDTO> vocabularyDTOOpt = vocabularyService.findOne(versionDTO.getVocabularyId());
-            if( vocabularyDTOOpt.isPresent())
-                this.vocabularyDTO = vocabularyDTOOpt.get();
+            vocabularyService.findOne(versionDTO.getVocabularyId()).ifPresent( dto -> this.vocabularyDTO = dto );
         }
     }
 
