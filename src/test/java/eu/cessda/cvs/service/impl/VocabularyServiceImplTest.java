@@ -1,5 +1,6 @@
 package eu.cessda.cvs.service.impl;
 
+import eu.cessda.cvs.config.ApplicationProperties;
 import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.repository.VocabularyRepository;
@@ -17,12 +18,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.nio.file.Files;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.Random;
 
 import static java.lang.Math.abs;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -151,5 +155,61 @@ class VocabularyServiceImplTest
             // Reset the security context
             SecurityContextHolder.clearContext();
         }
+    }
+
+    @Test
+    void shouldThrowIfSlVersionNumberIsEmpty() {
+
+        // Setup
+        VocabularyServiceImpl vocabularyService = new VocabularyServiceImpl( null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
+        );
+
+
+        // Run
+        assertThatThrownBy(() ->
+            vocabularyService.getVocabularyByNotationAndVersion( null, "", false )
+        ).isInstanceOf( IllegalArgumentException.class );
+    }
+
+    @Test
+    void shouldGetPublishedCVPaths() {
+        // Setup
+        ApplicationProperties applicationProperties = new ApplicationProperties();
+        applicationProperties.setVocabJsonPath( "src/main/webapp/content/vocabularies" );
+        VocabularyServiceImpl vocabularyService = new VocabularyServiceImpl( null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            applicationProperties,
+            null
+        );
+
+        // Run
+        assertThat(vocabularyService.getPublishedCvPaths()).isNotEmpty()
+            // All results should be files
+            .allMatch( Files::isRegularFile );
     }
 }
