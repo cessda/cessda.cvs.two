@@ -11,37 +11,30 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {EditorService} from 'app/editor/editor.service';
-import {
-  JhiAlertService,
-  JhiDataUtils,
-  JhiEventManager,
-  JhiEventWithContent,
-  JhiLanguageService,
-  JhiParseLinks
-} from 'ng-jhipster';
-import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
-import {FormBuilder} from '@angular/forms';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { EditorService } from 'app/editor/editor.service';
+import { JhiAlertService, JhiDataUtils, JhiEventManager, JhiEventWithContent, JhiLanguageService, JhiParseLinks } from 'ng-jhipster';
+import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
+import { FormBuilder } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {Account} from 'app/core/user/account.model';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {Observable, of, Subscription} from 'rxjs';
-import {AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE} from 'app/shared';
-import {IBucket} from 'app/shared/model/bucket';
-import {AccountService} from 'app/core/auth/account.service';
-import {LoginModalService} from 'app/core/login/login-modal.service';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {ICode} from 'app/shared/model/code.model';
-import {HttpHeaders, HttpResponse} from '@angular/common/http';
-import {ICvResult} from 'app/shared/model/cv-result.model';
-import {IAggr} from 'app/shared/model/aggr';
-import {HomeService} from 'app/home/home.service';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared';
+import { Account } from 'app/core/user/account.model';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Observable, of, Subscription } from 'rxjs';
+import { AGGR_AGENCY, AGGR_STATUS, ITEMS_PER_PAGE, PAGING_SIZE } from 'app/shared';
+import { IBucket } from 'app/shared/model/bucket';
+import { AccountService } from 'app/core/auth/account.service';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ICode } from 'app/shared/model/code.model';
+import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { ICvResult } from 'app/shared/model/cv-result.model';
+import { IAggr } from 'app/shared/model/aggr';
+import { HomeService } from 'app/home/home.service';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
   selector: 'jhi-vocabulary-search-result',
-  templateUrl: './vocabulary-search-result.component.html'
+  templateUrl: './vocabulary-search-result.component.html',
 })
 export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   @Input() appScope!: AppScope;
@@ -69,8 +62,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   activeAggStatus?: string[];
   activeAgg = '';
 
-  isAggAgencyCollapsed = true;
-  isAggStatusCollapsed = true;
+  isAggAgencyCollapsed = false;
+  isAggStatusCollapsed = false;
   isFilterCollapse = false;
   isActionCollapse = false;
 
@@ -78,7 +71,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     aggAgency: [],
     aggStatus: [],
     size: [this.itemsPerPage],
-    sortBy: ['code,asc']
+    sortBy: ['code,asc'],
   });
 
   constructor(
@@ -135,12 +128,13 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       }
     });
 
-    this.isAggAgencyCollapsed = this.activeAggAgency.length === 0;
-    this.isAggStatusCollapsed = this.activeAggStatus.length === 0;
+    // #352:
+    // this.isAggAgencyCollapsed = this.activeAggAgency.length === 0;
+    // this.isAggStatusCollapsed = this.activeAggStatus.length === 0;
   }
 
   getBaseUrl(): string {
-    return this.isEditorScope() ? '/editor/vocabulary': '/vocabulary';
+    return this.isEditorScope() ? '/editor/vocabulary' : '/vocabulary';
   }
 
   isEditorScope(): boolean {
@@ -189,22 +183,17 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.eventManager.broadcast({ name: 'onSearching', content: true });
 
     const pageToLoad: number = page ? page : this.page;
-    if (this.appScope === AppScope.EDITOR ) {
-      this.editorService
-        .search(this.getSearchRequest(page ? page : this.page))
-        .subscribe(
-          (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
-        );
+    if (this.appScope === AppScope.EDITOR) {
+      this.editorService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
+        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        () => this.onError()
+      );
     } else {
-      this.homeService
-        .search(this.getSearchRequest(page ? page : this.page))
-        .subscribe(
-          (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
-          () => this.onError()
-        );
+      this.homeService.search(this.getSearchRequest(page ? page : this.page)).subscribe(
+        (res: HttpResponse<ICvResult>) => this.onSuccess(res.body, res.headers, pageToLoad),
+        () => this.onError()
+      );
     }
-
   }
 
   private getSearchRequest(pageToLoad: number): any {
@@ -213,8 +202,8 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       f: this.activeAgg,
       page: pageToLoad - 1,
       size: this.itemsPerPage,
-      sort: this.sort()
-    }
+      sort: this.sort(),
+    };
   }
 
   protected onSuccess(data: ICvResult | null, headers: HttpHeaders, page: number): void {
@@ -309,7 +298,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     // patch value for sort and size
     this.searchForm.patchValue({
       size: this.itemsPerPage,
-      sortBy: this.sort()
+      sortBy: this.sort(),
     });
     // patch value for filter
     aggrs.forEach(aggr => {
@@ -374,7 +363,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { page: pageNo },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.page = pageNo;
     this.loadPage();
@@ -384,7 +373,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { size: s },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.itemsPerPage = +s; // convert string to number
     this.loadPage();
@@ -394,7 +383,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { sort: s },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.ascending = true;
     this.predicate = 'relevance';
@@ -454,9 +443,9 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       queryParams: {
         q: this.currentSearch === '' ? null : this.currentSearch,
         f: this.activeAgg === '' ? null : this.activeAgg,
-        sort: this.sort()
+        sort: this.sort(),
       },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
     this.loadPage(1);
   }
