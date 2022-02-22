@@ -245,7 +245,7 @@ Main page styles
 @media screen and (min-width: 768px) {
   .search-option-column {
     .count-column {
-      flex: 0 0 30%;
+      flex: 0 0 20%;
       display: block;
       padding: 0.75rem;
     }
@@ -376,6 +376,10 @@ Main page styles
 .ng2-menu-item {
   line-height: 30px !important;
   height: 38px !important;
+}
+
+.ng2-tag-input tag-input-form {
+  width: 100%;
 }
 
 @media screen and (min-width: 768px) {
@@ -984,7 +988,7 @@ button.invisible-button:focus {
   .content {
     flex-direction: row;
     .content-left {
-      flex: 0 0 30%;
+      flex: 0 0 20%;
       .sticky-panel {
         position: sticky;
         top: 10px;
@@ -1005,7 +1009,7 @@ button.invisible-button:focus {
   .search-column {
     flex-direction: row;
     .filter-column {
-      flex: 0 0 30%;
+      flex: 0 0 20%;
       .filter-panels-toggle {
         display: none;
       }
@@ -1267,5 +1271,11 @@ button.invisible-button:focus {
   }
   .ql-read {
     white-space: normal;
+  }
+}
+
+@media (min-width: 768px) {
+  #navbarResponsive {
+    padding-left: 27px;
   }
 }
