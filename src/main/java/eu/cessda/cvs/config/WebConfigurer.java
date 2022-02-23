@@ -137,6 +137,7 @@ public class WebConfigurer implements ServletContextInitializer, WebServerFactor
         cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/i18n/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/content/*");
         cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/app/*");
+        cachingHttpHeadersFilter.addMappingForUrlPatterns(disps, true, "/v2/*");
         cachingHttpHeadersFilter.setAsyncSupported(true);
     }
 

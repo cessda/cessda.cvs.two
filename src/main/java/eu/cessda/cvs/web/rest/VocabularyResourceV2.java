@@ -112,7 +112,6 @@ public class VocabularyResourceV2 {
      * @param pageable
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
      */
-    @CrossOrigin
     @GetMapping(
         value="/search/vocabularies",
         produces = MediaType.APPLICATION_JSON_VALUE)
@@ -179,7 +178,6 @@ public class VocabularyResourceV2 {
      * @param pageable
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of vocabularies in body.
      */
-    @CrossOrigin
     @GetMapping(
         value="/search/vocabularies",
         produces = JSONLD_TYPE)
@@ -227,7 +225,6 @@ public class VocabularyResourceV2 {
      * @param size The maximum size of codes returned, default 20
      * @return list of Codes in JSON-LD based on Skosmos format
      */
-    @CrossOrigin
     @GetMapping(
         value="/search/codes",
         produces = JSONLD_TYPE
@@ -431,7 +428,6 @@ public class VocabularyResourceV2 {
      * @param language
      * @return Vocabulary in JSON format
      */
-    @CrossOrigin
     @GetMapping(
         value="/codes/{vocabulary}/{versionNumber}/{language}",
         produces = MediaType.APPLICATION_JSON_VALUE
