@@ -11,26 +11,26 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
-import {JhiEventManager, JhiEventWithContent, JhiLanguageService} from 'ng-jhipster';
-import {SessionStorageService} from 'ngx-webstorage';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { JhiEventManager, JhiEventWithContent, JhiLanguageService } from 'ng-jhipster';
+import { SessionStorageService } from 'ngx-webstorage';
 
-import {VERSION} from 'app/app.constants';
-import {LANGUAGES} from 'app/core/language/language.constants';
-import {AccountService} from 'app/core/auth/account.service';
-import {LoginModalService} from 'app/core/login/login-modal.service';
-import {LoginService} from 'app/core/login/login.service';
-import {ProfileService} from 'app/layouts/profiles/profile.service';
-import {fromEvent, Subscription} from 'rxjs';
-import {debounceTime, map} from 'rxjs/operators';
-import {Location} from '@angular/common';
-import {VocabularyLanguageFromKeyPipe} from 'app/shared';
+import { VERSION } from 'app/app.constants';
+import { LANGUAGES } from 'app/core/language/language.constants';
+import { AccountService } from 'app/core/auth/account.service';
+import { LoginModalService } from 'app/core/login/login-modal.service';
+import { LoginService } from 'app/core/login/login.service';
+import { ProfileService } from 'app/layouts/profiles/profile.service';
+import { fromEvent, Subscription } from 'rxjs';
+import { debounceTime, map } from 'rxjs/operators';
+import { Location } from '@angular/common';
+import { VocabularyLanguageFromKeyPipe } from 'app/shared';
 
 @Component({
   selector: 'jhi-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['navbar.scss']
+  styleUrls: ['navbar.scss'],
 })
 export class NavbarComponent implements OnInit, OnDestroy {
   @ViewChild('searchInput', { static: true }) searchInput!: ElementRef;
@@ -46,7 +46,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isSearching: boolean;
 
   isEditorSearch = false;
-  searchLangs: string[] = ['en', 'da', 'fi', 'fr', 'de', 'it', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
+  searchLangs: string[] = ['en', 'da', 'fi', 'fr', 'de', 'it', 'nl', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
 
   constructor(
     private loginService: LoginService,
