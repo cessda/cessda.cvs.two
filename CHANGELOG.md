@@ -1,6 +1,42 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to the CESSDA Vocabulary Service source code are documented in this file.
+
+The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
+and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
+
+*For each release, use the following sub-sections:*
+
+- *Added (for new features)*
+- *Changed (for changes in existing functionality)*
+- *Deprecated (for soon-to-be removed features)*
+- *Removed (for now removed features)*
+- *Fixed (for any bug fixes)*
+- *Security (in case of vulnerabilities)*
+
+## [2.1.0] - 2022-02-XX
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6092399.svg)](https://doi.org/10.5281/zenodo.6092399)
+
+### Additions
+
+- TBC
+
+### Changes
+
+- TBC
+
+### Removals
+
+- TBC
+
+### Fixes
+
+- TBC
+
+### Security
+
+- TBC
 
 ## [2.0.6-Alpha] - 2021-04-19
 - Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update) Export/download table does not update, change cache control to no-store
