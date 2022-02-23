@@ -1621,11 +1621,12 @@ public class VocabularyServiceImpl implements VocabularyService {
         }
 
         // update elasticsearch indexes
-        findAll().forEach(v -> {
+        findAll().stream()
             // skip for withdrawn vocabulary
-            if( Boolean.TRUE.equals( v.isWithdrawn()) )
-                return;
-            if( changedVocabularies.contains(v.getId()) ){
+            .filter( v -> !Boolean.TRUE.equals( v.isWithdrawn() ) )
+            .filter( v -> changedVocabularies.contains( v.getId() ) )
+            .forEach( v ->
+            {
                 // delete changed vocabularies from indexes
                 vocabularyEditorSearchRepository.deleteById(v.getId());
                 vocabularyPublishSearchRepository.deleteById(v.getId());
@@ -1633,8 +1634,7 @@ public class VocabularyServiceImpl implements VocabularyService {
                 // insert changed vocabulary to indexes
                 indexPublished(v);
                 indexEditor(v);
-            }
-        });
+            } );
     }
 
     @Override
