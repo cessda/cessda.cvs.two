@@ -20,23 +20,42 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Additions
 
-- TBC
+- [#369](https://bitbucket.org/cessda/cessda.cvs.two/issues/369) UI: Add Dutch to the drop-down list in search
+- [#335](https://bitbucket.org/cessda/cessda.cvs.two/issues/369) Notification for 'no change type' entered
+- [#312](https://bitbucket.org/cessda/cessda.cvs.two/issues/369) Reinstate 'Send feedback' tab
 
 ### Changes
 
-- TBC
+- [#352](https://bitbucket.org/cessda/cessda.cvs.two/issues/352) UI look and feel
+- [#328](https://bitbucket.org/cessda/cessda.cvs.two/issues/328) Remove default change type from Edit TL pop-up
+- [#327](https://bitbucket.org/cessda/cessda.cvs.two/issues/327) UI mixes two languages for TL admins
+- [#326](https://bitbucket.org/cessda/cessda.cvs.two/issues/326) User Guide tabs
+- [#305](https://bitbucket.org/cessda/cessda.cvs.two/issues/305) CESSDA MO address change in footer
+- [#298](https://bitbucket.org/cessda/cessda.cvs.two/issues/298) Improve documentation and service description
 
 ### Removals
 
-- TBC
+- None
 
 ### Fixes
 
-- TBC
+- [#362](https://bitbucket.org/cessda/cessda.cvs.two/issues/362) Export/download in draft status inactive again
+- [#350](https://bitbucket.org/cessda/cessda.cvs.two/issues/350) CESSDA Persistent Identifier Types FI button
+- [#349](https://bitbucket.org/cessda/cessda.cvs.two/issues/249) Adding new codes does not keep order
+- [#348](https://bitbucket.org/cessda/cessda.cvs.two/issues/348) Problems with saving in Agency
+- [#344](https://bitbucket.org/cessda/cessda.cvs.two/issues/344) Password reset issue
+- [#342](https://bitbucket.org/cessda/cessda.cvs.two/issues/342) Account activation
+- [#330](https://bitbucket.org/cessda/cessda.cvs.two/issues/330) Export/download of CVs in draft status not functioning
+- [#322](https://bitbucket.org/cessda/cessda.cvs.two/issues/322) Saving not working in publishing pop-up
+- [#319](https://bitbucket.org/cessda/cessda.cvs.two/issues/319) Current text disappears when editing Usage
+- [#310](https://bitbucket.org/cessda/cessda.cvs.two/issues/310) Editing the usage field of vocabularies no longer works as intended
+- [#309](https://bitbucket.org/cessda/cessda.cvs.two/issues/309) Agency logo not updating for existing vocabularies bug
+- [#308](https://bitbucket.org/cessda/cessda.cvs.two/issues/308) Do not store data on local filesystem
+- [#290](https://bitbucket.org/cessda/cessda.cvs.two/issues/290) No license information for some CESSDA vocabularies
 
 ### Security
 
-- TBC
+- None
 
 ## [2.0.6-Alpha] - 2021-04-19
 - Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update) Export/download table does not update, change cache control to no-store
@@ -53,7 +72,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [2.0.3-Alpha] - 2021-02-17
 - Add standard CESSDA header to the source-code [#289](https://bitbucket.org/cessda/cessda.cvs.two/issues/289/ensure-source-code-files-contain-standard)
 - Improve Api-usage, About and User-guide pages editing functionality which derived from one component
-- Improve Quill Rich-TextArea by including table and image plug-ins and fixing missing style 
+- Improve Quill Rich-TextArea by including table and image plug-ins and fixing missing style
 - Further improving code quality by reuse components [#283](https://bitbucket.org/cessda/cessda.cvs.two/issues/283/improve-code-quality-phase-2-80-test)
 - Completely removed unused V1 API [#287](https://bitbucket.org/cessda/cessda.cvs.two/issues/287/upgrade-api-calls-from-v1-to-v2-within-the)
 
