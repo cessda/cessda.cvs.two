@@ -131,6 +131,19 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
           if (this.versionParam!.previousVersion === undefined || this.versionParam!.previousVersion === null) {
             this.cvForwardStatusForm.removeControl('versionNotes');
             this.cvForwardStatusForm.removeControl('versionChanges');
+          } else {
+            this.editorService.getVocabularyCompare(this.versionParam!.id!).subscribe((res: HttpResponse<string[]>) => {
+              const newContent: DiffContent = {
+                leftContent: res.body![0],
+                rightContent: res.body![1],
+              };
+              this.contentObservable.next(newContent);
+              this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
+            });
+            this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
+              this.vocabularyChanges = res.body;
+              this.fillVersionNotesAndChanges();
+            });
           }
           this.licenceService
             .query({
@@ -145,33 +158,6 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         }
       }
     });
-
-    // compare version and version changes
-    if (this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== 0) {
-      this.editorService.getVocabularyCompare(this.versionParam!.id!).subscribe((res: HttpResponse<string[]>) => {
-        const newContent: DiffContent = {
-          leftContent: res.body![0],
-          rightContent: res.body![1],
-        };
-        this.contentObservable.next(newContent);
-        this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
-      });
-
-      if (this.versionParam!.versionNotes) {
-        this.cvForwardStatusForm.patchValue({ versionNotes: this.versionParam!.versionNotes });
-      }
-
-      if (this.versionParam!.versionChanges) {
-        this.cvForwardStatusForm.patchValue({ versionChanges: this.versionParam!.versionChanges });
-      } else {
-        this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
-          this.vocabularyChanges = res.body;
-          this.cvForwardStatusForm.patchValue({
-            versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('<br/>'),
-          });
-        });
-      }
-    }
   }
 
   private fillForm(): void {
@@ -192,6 +178,29 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       this.cvForwardStatusForm.patchValue({
         licenseId: this.licences?.length ? this.licences[0].id : null,
       });
+    }
+  }
+
+  private fillVersionNotesAndChanges(): void {
+    if (this.versionParam!.versionNotes) {
+      this.cvForwardStatusForm.patchValue({
+        versionNotes: this.versionParam!.versionNotes,
+      });
+      // @ts-ignore
+      this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionNotes'])!.value);
+    }
+    if (this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== 0) {
+      if (this.versionParam!.versionChanges) {
+        this.cvForwardStatusForm.patchValue({
+          versionChanges: this.versionParam!.versionChanges,
+        });
+      } else {
+        this.cvForwardStatusForm.patchValue({
+          versionChanges: this.vocabularyChanges!.map(vc => vc.changeType + ': ' + vc.description).join('<br/>'),
+        });
+      }
+      // @ts-ignore
+      this.versionChangesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionChanges'])!.value);
     }
   }
 
@@ -296,14 +305,10 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   // @ts-ignore
   onVersionNotesEditorCreated(event: Quill): void {
     this.versionNotesEditor = event;
-    // @ts-ignore
-    this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionNotes'])!.value);
   }
 
   // @ts-ignore
   onVersionChangesEditorCreated(event: Quill): void {
     this.versionChangesEditor = event;
-    // @ts-ignore
-    this.versionChangesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionChanges'])!.value);
   }
 }
