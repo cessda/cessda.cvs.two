@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - *Fixed (for any bug fixes)*
 - *Security (in case of vulnerabilities)*
 
-## [2.1.0] - 2022-02-XX
+## [2.1.0] - 2022-03-03
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6092399.svg)](https://doi.org/10.5281/zenodo.6092399)
 
@@ -39,6 +39,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixes
 
+- [#373](https://bitbucket.org/cessda/cessda.cvs.two/issues/373) Change log is emptied in publication pop-up
 - [#362](https://bitbucket.org/cessda/cessda.cvs.two/issues/362) Export/download in draft status inactive again
 - [#350](https://bitbucket.org/cessda/cessda.cvs.two/issues/350) CESSDA Persistent Identifier Types FI button
 - [#349](https://bitbucket.org/cessda/cessda.cvs.two/issues/249) Adding new codes does not keep order
@@ -100,17 +101,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [2.0.0-Alpha] - 2020-11-02
 
-The first version of CESSDA Vocabulary Service (CVS) 2, which was re-developed from scratch based on the deprecated CVS 1 application.  
-The project uses new architecture Spring-Boot framework for the back-end and Angular for the front-end, instead of Vaadin like in CVS 1.
+The first version of CESSDA Vocabulary Service 2, which was re-developed from scratch based on the deprecated version 1 application.  
+The project uses new architecture Spring-Boot framework for the back-end and Angular for the front-end, instead of Vaadin like in version 1.
 
 - Back-end uses Spring-Boot v 2.2.5.RELEASE.
 - Front-end uses Angular v 10.1.5.
-- Improve Docker support, compare to CVS 1.
+- Improve Docker support, compare to version 1.
 - Responsive web design
 - Improved styling and looks-and-feels
 - JSON Web Token (JWT) authentication, a stateless security mechanism. In order to improve scalability.
 - Support for 28 Controlled-Vocabularies (CVs) languages (Albanian (sq), Bosnian (bs), Bulgarian (bg), Croatian (hr), Czech (cs), Danish (da), Dutch (nl), English (en), Estonian (et), Finnish (fi), French (fr), German (de), Greek (el), Hungarian (hu), Italian (it), Japanese (ja), Lithuanian (lt), Macedonian (mk), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Serbian (sr), Slovak (sk), Slovenian (sl), Spanish (es), Swedish (sv))
-- Fixed corrupted CVs from the CVS 1
+- Fixed corrupted CVs from the version 1
 - Fixed and improved Vocabulary workflow
 - Fixed vocabulary cloning and versioning
 - Store published-vocabulary in JSON format
@@ -119,7 +120,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Vocabulary and Codes searching with Elastic-Search
 - New redesign Search UI, search Vocabulary based on specific language
 - Search filters (e.g based on Agency) with [ngx-chips](https://www.npmjs.com/package/ngx-chips) component.
-- Optimized and fixed searching functionality from CVS1
+- Optimized and fixed searching functionality from version 1
 - Compare vocabulary versions with [ngx-text-diff](https://www.npmjs.com/package/ngx-text-diff) component, which based on `google diff match patch` library.
 - Responsive Tree component adapts screen-size, to show the Vocabulary codes hierarchical structure.
 - Vocabulary version comments functionality.
