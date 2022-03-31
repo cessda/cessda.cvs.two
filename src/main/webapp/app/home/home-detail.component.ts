@@ -126,13 +126,18 @@ export class HomeDetailComponent implements OnInit {
       }
     });
     // sort only the SL & TLs in the current version
-    uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
+    // commented by #375 -->
+    // uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
+    // <-- commented by #375
 
     this.vocabulary!.versions!.forEach(v => {
       if (!v.number!.startsWith(this.vocabulary!.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
       }
     });
+    // added by #375 -->
+    uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
+    // <-- added by #375
     return uniqueLang;
   }
 
