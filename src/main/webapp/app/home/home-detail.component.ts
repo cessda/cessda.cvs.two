@@ -129,7 +129,6 @@ export class HomeDetailComponent implements OnInit {
     // commented by #375 -->
     // uniqueLang = VocabularyUtil.sortLangByEnum(uniqueLang, uniqueLang[0]);
     // <-- commented by #375
-
     this.vocabulary!.versions!.forEach(v => {
       if (!v.number!.startsWith(this.vocabulary!.versions![0].number!) && !uniqueLang.some(l => l === v.language)) {
         uniqueLang.push(v.language!);
