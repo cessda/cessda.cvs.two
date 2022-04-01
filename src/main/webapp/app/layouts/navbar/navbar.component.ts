@@ -46,7 +46,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   isSearching: boolean;
 
   isEditorSearch = false;
-  searchLangs: string[] = ['en', 'da', 'nl', 'fi', 'fr', 'de', 'it', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
+  searchLangs: string[] = ['en', 'da', 'nl', 'fi', 'fr', 'de', 'it', 'ja', 'no', 'pt', 'sr', 'sl', 'sv', '_all'];
 
   constructor(
     private loginService: LoginService,
