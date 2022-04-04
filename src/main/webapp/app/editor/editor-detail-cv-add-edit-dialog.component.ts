@@ -102,6 +102,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
         });
       }
     }
+    this.languages = VocabularyUtil.sortLangByName(this.languages, null);
     this.fillForm();
   }
 
