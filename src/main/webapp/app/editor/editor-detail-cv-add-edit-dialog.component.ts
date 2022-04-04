@@ -85,6 +85,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     const availableLanguages = VocabularyUtil.getAvailableCvLanguage(this.isNew && this.isSlForm ? [] : this.vocabularyParam!.versions);
     this.languages = [];
 
+
     if (this.isNew) {
       if (this.accountService.isAdmin() || this.account.userAgencies.some(ua => ua.agencyRole === 'ADMIN' && ua.agencyId === agencyId)) {
         this.languages = availableLanguages;
@@ -107,7 +108,12 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
   }
 
   private fillForm(): void {
-    this.selectedLanguage = this.languages && this.languages.length > 0 ? this.languages[0] : '';
+    if (this.languages && this.languages.length > 0) {
+      const pos = this.languages.indexOf(this.vocabularyParam!.sourceLanguage!);
+      this.selectedLanguage = this.languages[pos < 0? 0 : pos];
+    } else {
+      this.selectedLanguage = '';
+    }
     if (this.isSlForm) {
       this.cvAddEditForm.removeControl('translateAgency');
       this.cvAddEditForm.removeControl('translateAgencyLink');
@@ -115,7 +121,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
       this.cvAddEditForm.removeControl('notation');
     }
     if (this.isNew) {
-      this.cvAddEditForm.patchValue({ language: this.languages[0] });
+      this.cvAddEditForm.patchValue({ language: this.selectedLanguage });
       this.cvAddEditForm.removeControl('changeType');
       this.cvAddEditForm.removeControl('changeDesc');
     } else {
