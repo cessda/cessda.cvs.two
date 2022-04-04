@@ -17,6 +17,7 @@ import {LanguageIso} from 'app/shared/model/enumerations/language-iso.model';
 import {IVersion} from 'app/shared/model/version.model';
 import {IConcept} from 'app/shared/model/concept.model';
 import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
+import {VocabularyLanguageFromKeyPipe} from 'app/shared';
 
 export default class VocabularyUtil {
   static getTitleDefByLangIso(item: IVocabulary | ICode, langIso: string): string[] {
@@ -163,6 +164,21 @@ export default class VocabularyUtil {
     });
     sortedLangIsos.sort((a, b) => a - b);
     sortedLangIsos.forEach(lIso => sortedLang.push(LanguageIso[lIso]));
+    return sortedLang;
+  }
+
+  static sortLangByName(languages: string[], sourceLang: string | null): string[] {
+    const sortedLang: string[] = sourceLang ? [sourceLang] : [];
+    const sortedLangName: string[] = [];
+    const vocabLangPipeKey: VocabularyLanguageFromKeyPipe = new VocabularyLanguageFromKeyPipe();
+    // add languages for sorting
+    languages.forEach(l => {
+      if (l !== sourceLang) {
+        sortedLangName.push(l);
+      }
+    });
+    sortedLangName.sort((a,b) => vocabLangPipeKey.transform(a).localeCompare(vocabLangPipeKey.transform(b)));
+    sortedLangName.forEach(l => sortedLang.push(l));
     return sortedLang;
   }
 
