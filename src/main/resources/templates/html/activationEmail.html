@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
     <head>
-        <title th:text="#{email.activation.title}">CESSDA CVS account activation</title>
+        <title th:text="#{email.activation.title}">CESSDA Vocabulary Service account activation</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}" />
     </head>
     <body>
-        <p th:text="#{email.activation.greeting(${user.login})}">
+        <p th:text="#{email.activation.greeting(${user.firstName})}">
             Dear
         </p>
         <p th:text="#{email.activation.text1}">
-            Your CESSDA CVS account has been created, please click on the URL below to activate it:
+            Your CESSDA Vocabulary Service account has been created, please click on the URL below to activate it:
         </p>
         <p>
             <a th:with="url=(@{|${baseUrl}/account/activate?key=${user.activationKey}|})" th:href="${url}"
