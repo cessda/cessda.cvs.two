@@ -14,6 +14,8 @@
 package eu.cessda.cvs.service;
 
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.BaseFont;
+
 import org.docx4j.convert.in.xhtml.FormattingOption;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
@@ -139,6 +141,7 @@ public class ExportService
 		try (FileOutputStream os = new FileOutputStream( outputFile ))
 		{
 			ITextRenderer renderer = new ITextRenderer();
+			renderer.getFontResolver().addFont("/fonts/Arialuni.ttf", BaseFont.IDENTITY_H, true);
 			renderer.setDocumentFromString( contents );
 			renderer.layout();
 			renderer.createPDF( os, false );
