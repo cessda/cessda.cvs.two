@@ -347,9 +347,9 @@
         </dependency>
         <!-- pdf creator -->
         <dependency>
-            <groupId>org.xhtmlrenderer</groupId>
-            <artifactId>flying-saucer-pdf</artifactId>
-            <version>9.1.22</version>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>html2pdf</artifactId>
+            <version>4.0.2</version>
         </dependency>
         <!-- word creator -->
         <dependency>
