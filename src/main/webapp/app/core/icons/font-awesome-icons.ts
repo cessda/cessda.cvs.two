@@ -57,6 +57,7 @@ import {
   faSortDown,
   faSortUp,
   faStickyNote,
+  faStream,
   faSync,
   faTachometerAlt,
   faTasks,
@@ -68,6 +69,7 @@ import {
   faUpload,
   faUser,
   faUserPlus,
+  faWind,
   faWrench
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -129,5 +131,7 @@ export const fontAwesomeIcons = [
   faStickyNote,
   faTimesCircle,
   faFilePdf,
-  faFileWord
+  faFileWord,
+  faStream,
+  faWind
 ];
