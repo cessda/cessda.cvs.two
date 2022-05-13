@@ -28,6 +28,7 @@ export const LANGUAGES: string[] = [
   'hu',
   'it',
   'ja',
+  'lt',
   'pl',
   'pt-pt',
   'ro',
