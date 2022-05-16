@@ -13,7 +13,11 @@
 
 package eu.cessda.cvs.service;
 
-import com.lowagie.text.DocumentException;
+import com.itextpdf.html2pdf.ConverterProperties;
+import com.itextpdf.html2pdf.HtmlConverter;
+import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
+import com.itextpdf.layout.font.FontProvider;
+
 import org.docx4j.convert.in.xhtml.FormattingOption;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
@@ -31,7 +35,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
@@ -138,12 +141,12 @@ public class ExportService
 	public File createPdfFile( File outputFile, String contents ) {
 		try (FileOutputStream os = new FileOutputStream( outputFile ))
 		{
-			ITextRenderer renderer = new ITextRenderer();
-			renderer.setDocumentFromString( contents );
-			renderer.layout();
-			renderer.createPDF( os, false );
-			renderer.finishPDF();
-		} catch (DocumentException | IOException e) {
+			ConverterProperties properties = new ConverterProperties();
+			FontProvider fontProvider = new DefaultFontProvider(false, false, false);
+			fontProvider.addDirectory(this.getClass().getResource("/fonts").getPath());
+			properties.setFontProvider(fontProvider);
+			HtmlConverter.convertToPdf(contents, os, properties);
+		} catch (IOException e) {
             log.error( e.getMessage() );
         }
         return outputFile;
