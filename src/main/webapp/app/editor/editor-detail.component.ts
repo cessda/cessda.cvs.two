@@ -28,6 +28,7 @@ import { EditorDetailCvDeleteDialogComponent } from 'app/editor/editor-detail-cv
 import { EditorDetailCodeAddEditDialogComponent } from 'app/editor/editor-detail-code-add-edit-dialog.component';
 import { Concept, IConcept } from 'app/shared/model/concept.model';
 import { Observable, Subscription } from 'rxjs';
+import { EditorDetailCodeDeprecateDialogComponent } from 'app/editor/editor-detail-code-deprecate-dialog.component';
 import { EditorDetailCodeDeleteDialogComponent } from 'app/editor/editor-detail-code-delete-dialog.component';
 import { EditorDetailCodeReorderDialogComponent } from 'app/editor/editor-detail-code-reorder-dialog.component';
 import { EditorDetailCvForwardStatusDialogComponent } from 'app/editor/editor-detail-cv-forward-status-dialog.component';
@@ -321,6 +322,9 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     }
   }
 
+  toggleDeprecatedCodesDisplay(): void {
+  }
+
   getSlVersionByVersion(vnumber: string): string {
     return VocabularyUtil.getSlVersionByVersionNumber(vnumber);
   }
@@ -496,6 +500,17 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   openRemoveTlCode(): void {
     this.openDeleteCodeWindow();
+  }
+
+  openDeprecateCodePopup(): void {
+    this.openDeprecateCodeWindow();
+  }
+
+  openDeprecateCodeWindow(): void {
+    this.ngbModalRef = this.modalService.open(EditorDetailCodeDeprecateDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef.componentInstance.versionParam = this.version;
+    this.ngbModalRef.componentInstance.conceptParam = this.concept;
+    this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
   }
 
   openDeleteCodePopup(): void {

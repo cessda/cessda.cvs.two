@@ -22,6 +22,7 @@ import {
   EditorCvAddPopupComponent,
   EditorDetailCodeAddEditDialogComponent,
   EditorDetailCodeCsvImportDialogComponent,
+  EditorDetailCodeDeprecateDialogComponent,
   EditorDetailCodeDeleteDialogComponent,
   EditorDetailCodeReorderDialogComponent,
   EditorDetailComponent,
@@ -52,6 +53,7 @@ import { NgxTextDiffModule } from 'ngx-text-diff';
     EditorDetailCodeAddEditDialogComponent,
     EditorDetailCodeCsvImportDialogComponent,
     EditorDetailCodeReorderDialogComponent,
+    EditorDetailCodeDeprecateDialogComponent,
     EditorDetailCodeDeleteDialogComponent
   ],
   entryComponents: [
@@ -65,6 +67,7 @@ import { NgxTextDiffModule } from 'ngx-text-diff';
     EditorDetailCodeAddEditDialogComponent,
     EditorDetailCodeCsvImportDialogComponent,
     EditorDetailCodeReorderDialogComponent,
+    EditorDetailCodeDeprecateDialogComponent,
     EditorDetailCodeDeleteDialogComponent
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License").
+  ~ You may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and limitations under the License.
+  -->
+
+<form name="deprecateForm" (ngSubmit)="confirmDeprecate(conceptParam.id!)">
+    <div class="modal-header">
+        <h4 class="modal-title">
+            <span *ngIf="isSlForm">Confirm deprecation of the code <strong>{{conceptParam.notation}}</strong></span>
+        </h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div *ngIf="isSlForm">
+            <p>Are you sure you want to deprecate code <strong>{{conceptParam.notation}}</strong>? Any children codes under <strong>{{conceptParam.notation}}</strong> will also be deprecated!</p>
+            <p>If there are children codes and you want to keep them, move them first not to be children to <strong>{{conceptParam.notation}}</strong>.</p>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button id="jhi-confirm-deprecate-vocabulary" type="submit" class="btn btn-warning">
+            <fa-icon *ngIf="isSlForm" [icon]="'wind'"></fa-icon>&nbsp;<span *ngIf="isSlForm" jhiTranslate="entity.action.deprecate">Deprecate</span>
+        </button>
+    </div>
+</form>

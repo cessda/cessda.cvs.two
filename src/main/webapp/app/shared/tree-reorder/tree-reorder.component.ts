@@ -26,6 +26,7 @@ export class TreeReorderComponent implements OnInit, OnDestroy {
   @Input() parentNotation?: string;
   @Input() conceptList?: IConcept[];
   @Input() level?: number;
+  @Input() deprecated?: boolean;
 
   eventSubscriber?: Subscription;
   activeConceptNotation?: string;

@@ -65,6 +65,10 @@ public class Concept implements Serializable {
     @Column(name = "position")
     private Integer position;
 
+    @NotNull
+    @Column(nullable = false)
+    private boolean deprecated = false;
+
     @ManyToOne
     @JsonIgnoreProperties("concepts")
     private Version version;
@@ -182,6 +186,14 @@ public class Concept implements Serializable {
         this.position = position;
     }
 
+    public boolean getDeprecated() {
+        return this.deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
     public Version getVersion() {
         return version;
     }
@@ -224,6 +236,7 @@ public class Concept implements Serializable {
             ", slConcept=" + getSlConcept() +
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
+            ", deprecated=" + getDeprecated() +
             "}";
     }
 }

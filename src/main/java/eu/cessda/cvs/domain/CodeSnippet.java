@@ -37,6 +37,7 @@ public class CodeSnippet implements Serializable {
     private String notation;
     private String definition;
     private Integer position;
+    private boolean deprecated;
     private Long insertionRefConceptId;
     private Integer relPosToRefConcept;
     private String changeType;
@@ -116,6 +117,14 @@ public class CodeSnippet implements Serializable {
         this.position = position;
     }
 
+    public boolean getDeprecated() {
+        return this.deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
     public Long getInsertionRefConceptId() {
         return insertionRefConceptId;
     }
@@ -192,6 +201,7 @@ public class CodeSnippet implements Serializable {
             ", notation='" + getNotation() + "'" +
             ", definition='" + getDefinition() + "'" +
             ", position='" + getPosition() + "'" +
+            ", deprecated='" + getDeprecated() + "'" +
             ", insertionRefConceptId='" + getInsertionRefConceptId() + "'" +
             ", relPosToRefConcept='" + getRelPosToRefConcept() + "'" +
             ", changeType='" + getChangeType() + "'" +

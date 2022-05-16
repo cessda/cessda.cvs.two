@@ -26,6 +26,7 @@ export class TreeEditorComponent implements OnInit, OnDestroy {
   @Input() parentNotation?: string;
   @Input() conceptList?: IConcept[];
   @Input() level?: number;
+  @Input() deprecated?: boolean;
 
   eventSubscriber?: Subscription;
   eventSubscriber2?: Subscription;

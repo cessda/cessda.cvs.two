@@ -54,6 +54,8 @@ public class ConceptDTO implements Serializable {
 
     private Integer position;
 
+    private boolean deprecated;
+
     public ConceptDTO(){
         this.notation = "NEW_NOTATION";
     }
@@ -68,6 +70,7 @@ public class ConceptDTO implements Serializable {
         this.title = codeSnippet.getTitle();
         this.definition = codeSnippet.getDefinition();
         this.position = codeSnippet.getPosition();
+        this.deprecated = codeSnippet.getDeprecated();
         this.versionId = codeSnippet.getVersionId();
     }
 
@@ -79,6 +82,7 @@ public class ConceptDTO implements Serializable {
         this.notation = conceptSlDTO.getNotation();
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
+        this.deprecated = conceptSlDTO.getDeprecated();
         this.slConcept = conceptSlDTO.getId();
     }
 
@@ -92,6 +96,7 @@ public class ConceptDTO implements Serializable {
         this.notation = conceptSlDTO.getNotation();
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
+        this.deprecated = conceptSlDTO.getDeprecated();
         this.slConcept = conceptSlDTO.getId();
         // prevConceptDTO is null "only happened in cloning TL concept". it means that new concept is added in SL concept,
         // or the concepts are reordered in SL version, which makes it is not possible to link the TL concept
@@ -172,6 +177,14 @@ public class ConceptDTO implements Serializable {
         this.position = position;
     }
 
+    public boolean getDeprecated() {
+        return this.deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
     public String getParent() {
         return parent;
     }
@@ -200,6 +213,7 @@ public class ConceptDTO implements Serializable {
             ", slConcept=" + getSlConcept() +
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
+            ", deprecated=" + getDeprecated() +
             ", versionId=" + getVersionId() +
             "}";
     }

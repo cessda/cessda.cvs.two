@@ -43,6 +43,10 @@
         {
             "fieldName": "position",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deprecated",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [
