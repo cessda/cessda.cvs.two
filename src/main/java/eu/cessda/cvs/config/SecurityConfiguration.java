@@ -76,7 +76,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .accessDeniedHandler(problemSupport)
         .and()
             .headers()
-            .contentSecurityPolicy("default-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net; frame-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu data:; font-src 'self' https://fonts.gstatic.com data:")
+            .contentSecurityPolicy("default-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://analytics.cessda.eu; frame-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu https://storage.googleapis.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; img-src 'self' https://cdn.matomo.cloud https://cessda.matomo.cloud https://cessda.atlassian.net https://analytics.cessda.eu data:; font-src 'self' https://fonts.gstatic.com data:")
         .and()
             .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
