@@ -11,27 +11,70 @@
   ~ See the License for the specific language governing permissions and limitations under the License.
   -->
 
-<form name="deprecateForm" (ngSubmit)="confirmDeprecate(conceptParam.id!)">
+<form name="deprecateCodeForm" role="form" (ngSubmit)="save(conceptParam.id!)" novalidate [formGroup]="deprecateCodeForm">
     <div class="modal-header">
         <h4 class="modal-title">
-            <span *ngIf="isSlForm">Confirm deprecation of the code <strong>{{conceptParam.notation}}</strong></span>
+            <span>Deprecation of the code <strong>{{conceptParam.notation}}</strong></span>
         </h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 (click)="clear()">&times;</button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div *ngIf="isSlForm">
-            <p>Are you sure you want to deprecate code <strong>{{conceptParam.notation}}</strong>? Any children codes under <strong>{{conceptParam.notation}}</strong> will also be deprecated!</p>
-            <p>If there are children codes and you want to keep them, move them first not to be children to <strong>{{conceptParam.notation}}</strong>.</p>
+        <div *ngIf="isConfirmedDeprecation; else toConfirmDeprecationBody">
+            <div *ngIf="isConfirmedReplacement; else toConfirmReplacementBody" class="form-group">
+                <div class="row-content">
+                    <div class="row-details">
+                        <div class="row-detail form-group">
+                            <div class="label-column-input">
+                                <span ngbTooltip="Choose a code, which replaces the code being deprecated" [ngClass]="{'label-required':true}">Replacing code</span>
+                            </div>
+                            <div class="detail-column">
+                                <select class="form-control w-auto sk-select" id="replacingCode" name="replacingCode" formControlName="replacingCode">
+                                    <ng-container *ngFor="let concept of conceptList">
+                                        <option *ngIf="!concept.deprecated && concept.id !== conceptParam.id" [value]="concept.id">{{concept.notation}}</option>
+                                    </ng-container>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #toConfirmReplacementBody>
+                <div>
+                    <p>Is the deprecated code <strong>{{conceptParam.notation}}</strong> replaced by some other code in the vocabulary?</p>
+                </div>
+            </ng-template>
         </div>
+        <ng-template #toConfirmDeprecationBody>
+            <div>
+                <p>Are you sure you want to deprecate code <strong>{{conceptParam.notation}}</strong>? Any children codes under <strong>{{conceptParam.notation}}</strong> will also be deprecated!</p>
+                <p>If there are children codes and you want to keep them, move them first not to be children to <strong>{{conceptParam.notation}}</strong>.</p>
+            </div>
+        </ng-template>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
-        <button id="jhi-confirm-deprecate-vocabulary" type="submit" class="btn btn-warning">
-            <fa-icon *ngIf="isSlForm" [icon]="'wind'"></fa-icon>&nbsp;<span *ngIf="isSlForm" jhiTranslate="entity.action.deprecate">Deprecate</span>
-        </button>
+        <div *ngIf="isConfirmedDeprecation; else toConfirmDeprecationFooter">
+            <div *ngIf="isConfirmedReplacement; else toConfirmReplacementFooter">
+                <button id="jhi-confirm-deprecate-vocabulary" type="submit" class="btn btn-warning">
+                    <fa-icon [icon]="'wind'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.deprecate">Deprecate</span>
+                </button>
+            </div>
+            <ng-template #toConfirmReplacementFooter>
+                <div>
+                    <button id="jhi-confirm-replace-concept" class="btn btn-warning" (click)="confirmReplacement()">
+                        <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.yes">Yes</span>
+                    </button>
+                </div>
+            </ng-template>
+        </div>
+        <ng-template #toConfirmDeprecationFooter>
+            <button id="jhi-confirm-deprecate-concept" class="btn btn-warning" (click)="confirmDeprecation()">
+                <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.yes">Yes</span>
+            </button>
+        </ng-template>
     </div>
 </form>

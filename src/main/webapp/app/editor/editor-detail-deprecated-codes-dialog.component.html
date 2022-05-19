@@ -1,0 +1,237 @@
+<!--
+  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License").
+  ~ You may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and limitations under the License.
+  -->
+
+<form name="cvAddForm" role="form" (ngSubmit)="save()" novalidate [formGroup]="cvAddEditForm">
+    <div class="modal-header">
+        <div class="modal-title" style="display: flex;">
+            <span *ngIf="isNew && isSlForm">Add vocabulary for {{vocabularyParam!.agencyName}} agency</span>
+            <span *ngIf="isNew && !isSlForm">Add vocabulary translation for {{vocabularyParam!.notation}}</span>
+            <span *ngIf="!isNew">Edit {{versionParam!.itemType}} <strong>{{vocabularyParam!.notation}}</strong> from {{vocabularyParam!.agencyName}} agency</span>
+        </div>
+
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
+            <span aria-hidden="true">×</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row-content">
+            <!-- Error alert -->
+            <div class="col-md-12 justify-content-center">
+                <div class="alert alert-danger" *ngIf="errorNotationExists">
+                    <strong>Vocabulary already exist!</strong> Please use different CV Short Name.
+                </div>
+            </div>
+            
+            <div class="col-md-12 justify-content-center" *ngIf="isSubmitting">
+                <div class="alert alert-danger" *ngIf="cvAddEditForm.get('changeType')?.errors?.required">
+                    <strong>You need to select 'Change type' before saving.</strong> Make only one change at a time.
+                </div>
+            </div>
+
+            <div class="row-details">
+                <!-- Agency name -->
+                <div class="row-detail form-group">
+                    <div class="label-column-input">
+                        <span>Agency</span>
+                    </div>
+                    <div class="label-column-value">
+                        <span>{{vocabularyParam!.agencyName}}</span>
+                    </div>
+                </div>
+                <!-- Language -->
+                <div class="row-detail form-group">
+                    <div class="label-column-input label-right">
+                        <span ngbTooltip="required field" [ngClass]="{'label-required':isNew}">Language</span>
+                    </div>
+                    <div *ngIf="isNew" class="detail-column">
+                        <select class="form-control w-auto sk-select" id="language" name="language" formControlName="language" (change)="selectedLanguage = $event.target.value">
+                            <option *ngFor="let language of languages; let i = index" [value]="language">{{language | vocabularyLanguageFromKey}}</option>
+                        </select>
+                    </div>
+                    <div *ngIf="!isNew" class="detail-column label-column-value">
+                        <span>{{vocabularyParam!.sourceLanguage! | vocabularyLanguageFromKey}}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CV short name -->
+            <div class="row-detail form-group">
+                <div class="label-column-input">
+                    <span ngbTooltip="required field" [ngClass]="{'label-required':isNew && isSlForm}">CV short name</span>
+                </div>
+                <div *ngIf="!isNew || !isSlForm" class="detail-column label-column-value">
+                    {{vocabularyParam!.notation}}
+                </div>
+                <div *ngIf="isNew && isSlForm" class="detail-column">
+                    <input type="text" class="form-control" id="field_notation" name="notation" formControlName="notation"/>
+                    <div *ngIf="cvAddEditForm.get('notation')!.invalid && (cvAddEditForm.get('notation')!.dirty || cvAddEditForm.get('notation')!.touched) || isSubmitting">
+                        <small class="form-text text-danger"
+                               *ngIf="cvAddEditForm.get('notation')?.errors?.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="cvAddEditForm.get('notation')?.errors?.maxlength" jhiTranslate="entity.validation.maxlength"
+                               [translateValues]="{max: 240}">
+                            This field cannot be longer than 240 characters.
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="cvAddEditForm.get('notation')?.errors?.minlength" jhiTranslate="entity.validation.minlength"
+                               [translateValues]="{min: 2}">
+                            This field is required to be at least 2 characters.
+                        </small>
+
+                        <small class="form-text text-danger"
+                               *ngIf="cvAddEditForm.get('notation')?.errors?.pattern">
+                            CV Short Name can only contain letters (a-z A-Z), digits (0-9) and limited symbols ( +-_).
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CV name -->
+            <div *ngIf="versionParam!.titleSl" class="row-detail form-group">
+                <div class="label-column-input">
+                    <span>CV name ({{vocabularyParam!.sourceLanguage}})</span>
+                </div>
+                <div class="detail-column label-column-value">
+                    <span>{{versionParam!.titleSl}}</span>
+                </div>
+            </div>
+            <div class="row-detail form-group">
+                <div class="label-column-input">
+                    <span ngbTooltip="required field" class="label-required">CV name {{selectedLanguage !== '' ? '(' + selectedLanguage + ')':''}}</span>
+                </div>
+                <div class="detail-column">
+                    <input type="text" class="form-control" id="field_title" name="title" formControlName="title"/>
+                    <div *ngIf="cvAddEditForm.get('title')!.invalid && (cvAddEditForm.get('title')!.dirty || cvAddEditForm.get('title')!.touched) || isSubmitting">
+                        <small class="form-text text-danger"
+                               *ngIf="cvAddEditForm.get('title')?.errors?.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CV definition -->
+            <div *ngIf="versionParam!.definitionSl" class="row-detail form-group">
+                <div class="label-column-input">
+                    <span>CV definition ({{vocabularyParam!.sourceLanguage}})</span>
+                </div>
+                <div class="detail-column label-column-value">
+                    <span>{{versionParam!.definitionSl}}</span>
+                </div>
+            </div>
+            <div class="row-detail form-group">
+                <div class="label-column-input">
+                    <span ngbTooltip="required field" class="label-required">CV definition {{selectedLanguage !== '' ? '(' + selectedLanguage + ')':''}}</span>
+                </div>
+                <div class="detail-column">
+                    <textarea class="form-control" id="field_definition" name="definition" formControlName="definition" rows="10"></textarea>
+                    <div *ngIf="cvAddEditForm.get('definition')!.invalid && (cvAddEditForm.get('definition')!.dirty || cvAddEditForm.get('definition')!.touched) || isSubmitting">
+                        <small class="form-text text-danger"
+                               *ngIf="cvAddEditForm.get('definition')?.errors?.required" jhiTranslate="entity.validation.required">
+                            This field is required.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="versionParam!.notesSl" class="row-detail form-group">
+                <div class="label-column-input">
+                    <span>CV Notes ({{vocabularyParam!.sourceLanguage}})</span>
+                </div>
+                <div class="detail-column label-column-value">
+                    <span>{{versionParam!.notesSl}}</span>
+                </div>
+            </div>
+            <div *ngIf="!isSlForm && versionParam!.notes" class="row-detail form-group">
+                <div class="label-column-input">
+                    <span>CV Notes {{selectedLanguage !== '' ? '(' + selectedLanguage + ')':''}}</span>
+                </div>
+                <div class="detail-column">
+                    <textarea class="form-control" name="notes" id="field_notes" formControlName="notes" rows="5"></textarea>
+                </div>
+            </div>
+
+            <div *ngIf="!isSlForm" class="row-detail form-group">
+                <div class="label-column-input">
+                    <span>Translator agency</span>
+                </div>
+                <div class="detail-column">
+                    <input type="text" class="form-control" id="field_translateAgency" name="translateAgency" formControlName="translateAgency"/>
+                </div>
+            </div>
+
+            <div *ngIf="!isSlForm" class="row-detail form-group">
+                <div class="label-column-input">
+                    <span>Translator agency link</span>
+                </div>
+                <div class="detail-column">
+                    <input type="text" class="form-control" id="field_translateAgencyLink" name="translateAgencyLink" formControlName="translateAgencyLink"/>
+                    <div *ngIf="cvAddEditForm.get('translateAgencyLink')!.invalid && (cvAddEditForm.get('translateAgencyLink')!.dirty || cvAddEditForm.get('translateAgencyLink')!.touched)  || isSubmitting">
+                        <small class="form-text text-danger"
+                               *ngIf="cvAddEditForm.get('translateAgencyLink')?.errors?.pattern">
+                            Not a valid URL.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div *ngIf="cvAddEditForm.get('changeType')" class="card bg-light w-100">
+                <div class="card-header">
+                    Change notes
+                </div>
+                <div class="card-body">
+                    <div class="row-detail form-group">
+                        <div class="label-column-input">
+                            <span class="label-required">Type</span>
+                        </div>
+                        <div class="detail-column">
+                            <select class="form-control w-auto sk-select" id="field_changeType" name="changeType" formControlName="changeType">
+                                <option></option>
+                                <option value="CV name changed">CV name changed</option>
+                                <option value="CV definition amended with meaning change">CV definition amended with meaning change</option>
+                                <option value="CV definition rephrased">CV definition rephrased</option>
+                                <option *ngIf="!isSlForm" value="Translator agency and/or link edited">Translator agency and/or link edited</option>
+                            </select>
+                            <div *ngIf="cvAddEditForm.get('changeType')!.invalid && (cvAddEditForm.get('changeType')!.dirty || cvAddEditForm.get('changeType')!.touched) || isSubmitting">
+                                <small class="form-text text-danger"
+                                       *ngIf="cvAddEditForm.get('changeType')?.errors?.required" jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row-detail form-group">
+                        <div class="label-column-input">
+                            <span>Description</span>
+                        </div>
+                        <div class="detail-column">
+                            <input type="text" class="form-control" id="field_changeDesc" name="changeDesc" formControlName="changeDesc"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+        </button>
+        <button type="submit" id="save-new-cv" [disabled]="isSaving" class="btn btn-primary">
+            <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

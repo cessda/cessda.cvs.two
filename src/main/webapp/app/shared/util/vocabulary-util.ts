@@ -87,6 +87,28 @@ export default class VocabularyUtil {
     return vocab.versions!.filter(v => v.itemType === 'SL')[0];
   }
 
+  static getMajorVersionNumber(version: IVersion): number {
+    if (version.number) {
+      const regex = /^([0-9]+)\./g;
+      const matches = regex.exec(version.number);
+      if (matches) {
+          return Number(matches[1]);
+      }
+    }
+    return -1;
+  }
+
+  static getMinorVersionNumber(version: IVersion): number {
+    if (version.number) {
+      const regex = /^([0-9]+)\.([0-9]+)/g;
+      const matches = regex.exec(version.number);
+      if (matches) {
+          return Number(matches[2]);
+      }
+    }
+    return -1;
+  }
+
   static getVersionByLang(vocab: IVocabulary): IVersion {
     return vocab.versions!.filter(v => v.language === vocab.selectedLang)[0];
   }

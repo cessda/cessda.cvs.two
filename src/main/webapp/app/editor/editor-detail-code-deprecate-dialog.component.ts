@@ -11,12 +11,13 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {EditorService} from 'app/editor/editor.service';
 import {IVersion} from 'app/shared/model/version.model';
 import {Router} from '@angular/router';
 import {IConcept} from 'app/shared/model/concept.model';
+import {FormBuilder, Validators} from '@angular/forms';
 import {Observable, Subscription} from 'rxjs';
 import {JhiEventManager} from 'ng-jhipster';
 import {CodeSnippet} from 'app/shared/model/code-snippet.model';
@@ -24,26 +25,49 @@ import {HttpResponse} from '@angular/common/http';
 import {IVocabulary} from 'app/shared/model/vocabulary.model';
 
 @Component({
+  selector: 'jhi-editor-detail-code-deprecate-dialog',
   templateUrl: './editor-detail-code-deprecate-dialog.component.html'
 })
-export class EditorDetailCodeDeprecateDialogComponent {
+export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
   versionParam!: IVersion;
   conceptParam!: IConcept;
   eventSubscriber?: Subscription;
   isSlForm?: boolean;
+  isConfirmedDeprecation?: boolean;
+  isConfirmedReplacement?: boolean;
+  conceptList!: IConcept[];
+
+  deprecateCodeForm = this.fb.group({
+    replacingCode: []
+  });
 
   constructor(
     protected editorService: EditorService,
     public activeModal: NgbActiveModal,
     private router: Router,
-    protected eventManager: JhiEventManager
-  ) {}
+    protected eventManager: JhiEventManager,
+    private fb: FormBuilder,
+  ) {
+    this.isConfirmedDeprecation = false;
+    this.isConfirmedReplacement = false;
+  }
+
+  ngOnInit(): void {
+  }
 
   clear(): void {
     this.activeModal.dismiss();
   }
 
-  confirmDeprecate(id: number): void {
+  confirmDeprecation(): void {
+    this.isConfirmedDeprecation = true;
+  }
+
+  confirmReplacement(): void {
+    this.isConfirmedReplacement = true;
+  }
+
+  save(id: number): void {
     if (this.isSlForm) {
       this.editorService.deprecateCode(id).subscribe(() => {
         this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation]);

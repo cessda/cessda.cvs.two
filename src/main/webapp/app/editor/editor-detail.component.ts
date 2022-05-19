@@ -170,6 +170,14 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return VocabularyUtil.getSlVersion(this.vocabulary!);
   }
 
+  getMajorVersionNumber(): number {
+    return VocabularyUtil.getMajorVersionNumber(this.version!);
+  }
+
+  getMinorVersionNumber(): number {
+    return VocabularyUtil.getMinorVersionNumber(this.version!);
+  }
+
   setActiveVersion(language: string, versionNumber?: string): void {
     this.vocabulary!.selectedLang = language;
     this.vocabulary!.selectedVersion = versionNumber;
@@ -511,6 +519,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.ngbModalRef.componentInstance.versionParam = this.version;
     this.ngbModalRef.componentInstance.conceptParam = this.concept;
     this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
+    this.ngbModalRef.componentInstance.conceptList = this.version!.concepts;
   }
 
   openDeleteCodePopup(): void {
