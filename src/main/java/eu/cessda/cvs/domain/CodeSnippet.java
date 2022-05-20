@@ -18,6 +18,7 @@ import eu.cessda.cvs.security.ActionType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +39,8 @@ public class CodeSnippet implements Serializable {
     private String definition;
     private Integer position;
     private boolean deprecated;
+    private Long replacedBy;
+    private ZonedDateTime deprecatedAt;
     private Long insertionRefConceptId;
     private Integer relPosToRefConcept;
     private String changeType;
@@ -125,6 +128,22 @@ public class CodeSnippet implements Serializable {
         this.deprecated = deprecated;
     }
 
+    public Long getReplacedBy() {
+        return this.replacedBy;
+    }
+
+    public void setReplacedBy(Long replacedBy) {
+        this.replacedBy = replacedBy;
+    }
+
+    public ZonedDateTime getDeprecatedAt() {
+        return this.deprecatedAt;
+    }
+
+    public void setDeprecatedAt(ZonedDateTime deprecatedAt) {
+        this.deprecatedAt = deprecatedAt;
+    }
+
     public Long getInsertionRefConceptId() {
         return insertionRefConceptId;
     }
@@ -202,6 +221,8 @@ public class CodeSnippet implements Serializable {
             ", definition='" + getDefinition() + "'" +
             ", position='" + getPosition() + "'" +
             ", deprecated='" + getDeprecated() + "'" +
+            ", replacedBy='" + getReplacedBy() + "'" +
+            ", deprecatedAt='" + getDeprecatedAt() + "'" +
             ", insertionRefConceptId='" + getInsertionRefConceptId() + "'" +
             ", relPosToRefConcept='" + getRelPosToRefConcept() + "'" +
             ", changeType='" + getChangeType() + "'" +

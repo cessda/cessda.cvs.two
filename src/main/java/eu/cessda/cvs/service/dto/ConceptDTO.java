@@ -20,6 +20,7 @@ import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
 /**
@@ -56,6 +57,10 @@ public class ConceptDTO implements Serializable {
 
     private boolean deprecated;
 
+    private Long replacedBy;
+
+    private ZonedDateTime deprecatedAt;
+
     public ConceptDTO(){
         this.notation = "NEW_NOTATION";
     }
@@ -71,6 +76,8 @@ public class ConceptDTO implements Serializable {
         this.definition = codeSnippet.getDefinition();
         this.position = codeSnippet.getPosition();
         this.deprecated = codeSnippet.getDeprecated();
+        this.replacedBy = codeSnippet.getReplacedBy();
+        this.deprecatedAt = codeSnippet.getDeprecatedAt();
         this.versionId = codeSnippet.getVersionId();
     }
 
@@ -83,6 +90,8 @@ public class ConceptDTO implements Serializable {
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
         this.deprecated = conceptSlDTO.getDeprecated();
+        this.replacedBy = conceptSlDTO.getReplacedBy();
+        this.deprecatedAt = conceptSlDTO.getDeprecatedAt();
         this.slConcept = conceptSlDTO.getId();
     }
 
@@ -97,6 +106,8 @@ public class ConceptDTO implements Serializable {
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
         this.deprecated = conceptSlDTO.getDeprecated();
+        this.replacedBy = conceptSlDTO.getReplacedBy();
+        this.deprecatedAt = conceptSlDTO.getDeprecatedAt();
         this.slConcept = conceptSlDTO.getId();
         // prevConceptDTO is null "only happened in cloning TL concept". it means that new concept is added in SL concept,
         // or the concepts are reordered in SL version, which makes it is not possible to link the TL concept
@@ -185,6 +196,22 @@ public class ConceptDTO implements Serializable {
         this.deprecated = deprecated;
     }
 
+    public Long getReplacedBy() {
+        return this.replacedBy;
+    }
+
+    public void setReplacedBy(Long replacedBy) {
+        this.replacedBy = replacedBy;
+    }
+
+    public ZonedDateTime getDeprecatedAt() {
+        return this.deprecatedAt;
+    }
+
+    public void setDeprecatedAt(ZonedDateTime deprecatedAt) {
+        this.deprecatedAt = deprecatedAt;
+    }
+
     public String getParent() {
         return parent;
     }
@@ -214,6 +241,8 @@ public class ConceptDTO implements Serializable {
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
             ", deprecated=" + getDeprecated() +
+            ", replacedBy=" + getReplacedBy() +
+            ", deprecatedAt=" + getDeprecatedAt() +
             ", versionId=" + getVersionId() +
             "}";
     }

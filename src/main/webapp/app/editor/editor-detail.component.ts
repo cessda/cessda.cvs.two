@@ -93,6 +93,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   isDdiUsageEdit = false;
   isNotesEdit = false;
 
+  isShowingDeprecatedCodes = false;
+
   codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'CONTRIBUTOR_TL'];
 
   noOfComments = 0;
@@ -335,6 +337,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   toggleDeprecatedCodesDisplay(): void {
+    this.isShowingDeprecatedCodes = !this.isShowingDeprecatedCodes;
   }
 
   getSlVersionByVersion(vnumber: string): string {

@@ -21,6 +21,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 
 /**
  * A Concept.
@@ -68,6 +69,12 @@ public class Concept implements Serializable {
     @NotNull
     @Column(nullable = false)
     private boolean deprecated = false;
+
+    @Column(name = "replacedBy")
+    private Long replacedBy;
+
+    @Column(name = "deprecatedAt")
+    private ZonedDateTime deprecatedAt;
 
     @ManyToOne
     @JsonIgnoreProperties("concepts")
@@ -190,8 +197,39 @@ public class Concept implements Serializable {
         return this.deprecated;
     }
 
+    public Concept deprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+        return this;
+    }
+
     public void setDeprecated(boolean deprecated) {
         this.deprecated = deprecated;
+    }
+
+    public Long getReplacedBy() {
+        return this.replacedBy;
+    }
+
+    public Concept replacedBy(Long replacedBy) {
+        this.replacedBy = replacedBy;
+        return this;
+    }
+
+    public void setReplacedBy(Long replacedBy) {
+        this.replacedBy = replacedBy;
+    }
+
+    public ZonedDateTime getDeprecatedAt() {
+        return this.deprecatedAt;
+    }
+
+    public Concept deprecatedAt(ZonedDateTime deprecatedAt) {
+        this.deprecatedAt = deprecatedAt;
+        return this;
+    }
+
+    public void setDeprecatedAt(ZonedDateTime deprecatedAt) {
+        this.deprecatedAt = deprecatedAt;
     }
 
     public Version getVersion() {
@@ -237,6 +275,8 @@ public class Concept implements Serializable {
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
             ", deprecated=" + getDeprecated() +
+            ", replacedBy=" + getReplacedBy() +
+            ", deprecatedAt=" + getDeprecatedAt() +
             "}";
     }
 }

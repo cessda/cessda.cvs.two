@@ -444,30 +444,19 @@
                                 </a>
                             </span><br>
                             <br>
-                            <div *ngIf="hasDeprecatedConcepts(version!.concepts!)">
-                                deprecated concepts
+                            <div *ngIf="hasDeprecatedConcepts(version!.concepts!) && isShowingDeprecatedCodes">
+                                <div class="concept-row row-header">
+                                    <span class="">Deprecated codes</span>
+                                </div>
+                                <div class="concept-row row-header">
+                                    <span class="column1">Code URI</span>
+                                    <span class="column2">Code value</span>
+                                    <span class="column3">Code descriptive term ({{version!.language}})</span>
+                                    <span class="column4">Valid from</span>
+                                    <span class="column5">Valid to</span>
+                                </div>
+                                <jhi-tree-editor [parentNotation]="" [conceptList]="version!.concepts" [level]="0" [deprecated]="true"></jhi-tree-editor>
                             </div>
-                            <!-- #385 TODO
-                            <div class="concept-row row-header">
-                                <span class="">Deprecated codes</span>
-                            </div>
-                            <div class="concept-row row-header">
-                                <span class="column1">Code value</span>
-                                <span *ngIf="version!.languageSl" class="columnSl2">
-                                    Code descriptive term ({{version!.languageSl}})
-                                </span>
-                                <span class="column2">
-                                    Code descriptive term ({{version!.language}})
-                                </span>
-                                <span *ngIf="version!.languageSl" class="columnSl3">
-                                    Code definition({{version!.languageSl}})
-                                </span>
-                                <span class="column3">
-                                    Code definition({{version!.language}})
-                                </span>
-                            </div>
-                            <jhi-tree-editor [parentNotation]="" [conceptList]="version!.concepts" [level]="0" [deprecated]="true"></jhi-tree-editor>
-                            -->
                         </div>
 
                         <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleVersionEPanel()">&nbsp;

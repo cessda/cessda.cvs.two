@@ -467,6 +467,62 @@ public class EditorResource {
     }
 
     /**
+     * {@code PUT  /editors/codes/deprecate} : Deprecates an existing code/concept via editor Rest API.
+     *
+     * @param codeSnippet the conceptDTO helper to create.
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated conceptDTO,
+     * or with status {@code 400 (Bad Request)} if the conceptDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the conceptDTO couldn't be updated.
+     * @throws CodeAlreadyExistException {@code 400 (Bad Request)} if the codes is already exist.
+     * @throws InsufficientVocabularyAuthorityException {@code 403 (Forbidden)} if the user does not have sufficient rights to access the resource.
+     */
+    @PutMapping("/editors/codes/deprecate")
+    public ResponseEntity<Void> deprecateCode2(@Valid @RequestBody CodeSnippet codeSnippet) {
+        log.debug("REST request to deprecate Code/Concept : {}", codeSnippet);
+        if( !(codeSnippet.getActionType().equals( ActionType.DEPRECATE_CODE )) )
+            throw new IllegalArgumentException( "Action type " + codeSnippet.getActionType() + "not supported" );
+        if (codeSnippet.getConceptId() == null) {
+            throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
+        }
+        ConceptDTO conceptDTO = conceptService.findOne(codeSnippet.getConceptId())
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getConceptId() + TO_BE_DEPRECATED));
+        VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + conceptDTO.getVersionId() ));
+        VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
+            .orElseThrow( () -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
+
+        // check if user authorized to delete VocabularyResource
+        SecurityUtils.checkResourceAuthorization(ActionType.DEPRECATE_CODE,
+            vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
+
+        conceptDTO.setDeprecated(true);
+
+        Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
+        while ( conceptIterator.hasNext() ) {
+            ConceptDTO conceptNext = conceptIterator.next();
+            if( conceptNext.equals( conceptDTO )) {
+                conceptNext.setDeprecated(true);
+
+                // store changes if not initial version
+                recordCodeDeprecatedAction(conceptDTO, versionDTO);
+            }
+            // deprecate any child if exist
+            if( conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation()) ){
+                conceptNext.setDeprecated(true);
+
+                // store changes if not initial version
+                recordCodeDeprecatedAction(conceptNext, versionDTO);
+            }
+        }
+        versionService.save(versionDTO);
+
+        // index editor after deprecation
+        vocabularyService.indexEditor( vocabularyDTO );
+        return ResponseEntity.noContent().headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_CODE_NAME, conceptDTO.getNotation())).build();
+    }
+
+    /**
      * {@code PUT  /editors/codes/deprecate/:id} : deprecate the "id" code/concept.
      *
      * @param id the id of the conceptDTO to deprecate.
