@@ -11,7 +11,7 @@
   ~ See the License for the specific language governing permissions and limitations under the License.
   -->
 
-<form name="deprecateCodeForm" role="form" (ngSubmit)="save(conceptParam.id!)" novalidate [formGroup]="deprecateCodeForm">
+<form name="deprecateCodeForm" role="form" (ngSubmit)="save()" novalidate [formGroup]="deprecateCodeForm">
     <div class="modal-header">
         <h4 class="modal-title">
             <span>Deprecation of the code <strong>{{conceptParam.notation}}</strong></span>
@@ -21,60 +21,70 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div *ngIf="isConfirmedDeprecation; else toConfirmDeprecationBody">
-            <div *ngIf="isConfirmedReplacement; else toConfirmReplacementBody" class="form-group">
-                <div class="row-content">
-                    <div class="row-details">
-                        <div class="row-detail form-group">
-                            <div class="label-column-input">
-                                <span ngbTooltip="Choose a code, which replaces the code being deprecated" [ngClass]="{'label-required':true}">Replacing code</span>
-                            </div>
-                            <div class="detail-column">
-                                <select class="form-control w-auto sk-select" id="replacingCode" name="replacingCode" formControlName="replacingCode">
-                                    <ng-container *ngFor="let concept of conceptList">
-                                        <option *ngIf="!concept.deprecated && concept.id !== conceptParam.id" [value]="concept.id">{{concept.notation}}</option>
-                                    </ng-container>
-                                </select>
+        <!-- #1 Ask if the code being deprecated is replaced by another code -->
+        <div *ngIf="!(isConfirmedReplacementYes || isConfirmedReplacementNo)">
+            <p>Is the deprecated code <strong>{{conceptParam.notation}}</strong> replaced by some other code in the vocabulary?</p>
+        </div>
+        <!-- #1.1 confirmed that the code being deprecated is replaced by another code; set the replacing code here -->
+        <div *ngIf="isConfirmedReplacementYes && !isSetReplacingCodeId()">
+            <div class="row-content">
+                <div class="row-details">
+                    <div class="row-detail form-group">
+                        <div class="label-column-input">
+                            <span ngbTooltip="Choose a code, which replaces the code being deprecated" class="label-required">Replacing code</span>
+                        </div>
+                        <div class="detail-column">
+                            <select class="form-control w-auto sk-select" id="replacingCodeId" name="replacingCodeId" formControlName="replacingCodeId">
+                                <ng-container *ngFor="let concept of conceptList">
+                                    <option *ngIf="!concept.deprecated && concept.id !== conceptParam.id" [value]="concept.id">{{concept.notation}}</option>
+                                </ng-container>
+                            </select>
+                            <div *ngIf="deprecateCodeForm.get('replacingCodeId')!.invalid && (deprecateCodeForm.get('replacingCodeId')!.dirty || deprecateCodeForm.get('replacingCodeId')!.touched)">
+                                <small class="form-text text-danger"
+                                       *ngIf="deprecateCodeForm.get('replacingCodeId')?.errors?.required" jhiTranslate="entity.validation.required">
+                                    This field is required.
+                                </small>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <ng-template #toConfirmReplacementBody>
-                <div>
-                    <p>Is the deprecated code <strong>{{conceptParam.notation}}</strong> replaced by some other code in the vocabulary?</p>
-                </div>
-            </ng-template>
         </div>
-        <ng-template #toConfirmDeprecationBody>
+        <!-- #2 to confirm code deprecation -->
+        <div *ngIf="(isConfirmedReplacementYes && isSetReplacingCodeId()) || isConfirmedReplacementNo">
             <div>
                 <p>Are you sure you want to deprecate code <strong>{{conceptParam.notation}}</strong>? Any children codes under <strong>{{conceptParam.notation}}</strong> will also be deprecated!</p>
-                <p>If there are children codes and you want to keep them, move them first not to be children to <strong>{{conceptParam.notation}}</strong>.</p>
+                <p>If there are children codes and you want to keep them, move them first not to be children of <strong>{{conceptParam.notation}}</strong>.</p>
             </div>
-        </ng-template>
+            <div *ngIf="replacingCode!">
+                The code will be replaced by code <strong>{{replacingCode!.notation}}</strong>.
+            </div>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
             <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
         </button>
-        <div *ngIf="isConfirmedDeprecation; else toConfirmDeprecationFooter">
-            <div *ngIf="isConfirmedReplacement; else toConfirmReplacementFooter">
-                <button id="jhi-confirm-deprecate-vocabulary" type="submit" class="btn btn-warning">
-                    <fa-icon [icon]="'wind'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.deprecate">Deprecate</span>
-                </button>
-            </div>
-            <ng-template #toConfirmReplacementFooter>
-                <div>
-                    <button id="jhi-confirm-replace-concept" class="btn btn-warning" (click)="confirmReplacement()">
-                        <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.yes">Yes</span>
-                    </button>
-                </div>
-            </ng-template>
-        </div>
-        <ng-template #toConfirmDeprecationFooter>
-            <button id="jhi-confirm-deprecate-concept" class="btn btn-warning" (click)="confirmDeprecation()">
-                <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.yes">Yes</span>
+        <!-- #1 Ask if the code being deprecated is replaced by another code -->
+        <div *ngIf="!(isConfirmedReplacementYes || isConfirmedReplacementNo)">
+            <button id="jhi-confirm-replace-concept-no" class="btn btn-primary" (click)="confirmReplacementNo()">
+                <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.no">No</span>
             </button>
-        </ng-template>
+            <button id="jhi-confirm-replace-concept-yes" class="btn btn-primary" (click)="confirmReplacementYes()">
+                <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.yes">Yes</span>
+            </button>            
+        </div>
+        <!-- #1.1 confirmed that the code being deprecated is replaced by another code -->
+        <div *ngIf="isConfirmedReplacementYes && !isSetReplacingCodeId()">
+            <button id="jhi-confirm-replace-concept-yes" class="btn btn-primary" [disabled]="deprecateCodeForm.get('replacingCodeId')!.invalid" (click)="setReplacingCode()">
+                <fa-icon></fa-icon>&nbsp;<span jhiTranslate="entity.action.ok">OK</span>
+            </button>                        
+        </div>
+        <!-- #2 to confirm code deprecation -->
+        <div *ngIf="(isConfirmedReplacementYes && isSetReplacingCodeId()) || isConfirmedReplacementNo">
+            <button id="jhi-confirm-deprecate-vocabulary" type="submit" class="btn btn-danger">
+                <fa-icon [icon]="'wind'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.deprecate">Deprecate</span>
+            </button>
+        </div>
     </div>
 </form>

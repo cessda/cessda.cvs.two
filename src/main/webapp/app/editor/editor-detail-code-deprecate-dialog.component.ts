@@ -34,11 +34,14 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
   eventSubscriber?: Subscription;
   isSlForm?: boolean;
   isConfirmedDeprecation?: boolean;
-  isConfirmedReplacement?: boolean;
+  isConfirmedReplacementYes?: boolean;
+  isConfirmedReplacementNo?: boolean;
   conceptList!: IConcept[];
+  replacingCodeId!: number;
+  replacingCode?: IConcept;
 
   deprecateCodeForm = this.fb.group({
-    replacingCode: []
+    replacingCodeId: ['', [Validators.required]]
   });
 
   constructor(
@@ -49,7 +52,9 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
     private fb: FormBuilder,
   ) {
     this.isConfirmedDeprecation = false;
-    this.isConfirmedReplacement = false;
+    this.isConfirmedReplacementYes = false;
+    this.isConfirmedReplacementNo = false;
+    this.replacingCodeId = -1;
   }
 
   ngOnInit(): void {
@@ -63,18 +68,42 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
     this.isConfirmedDeprecation = true;
   }
 
-  confirmReplacement(): void {
-    this.isConfirmedReplacement = true;
+  confirmReplacementYes(): void {
+    this.isConfirmedReplacementYes = true;
   }
 
-  save(id: number): void {
+  confirmReplacementNo(): void {
+    this.isConfirmedReplacementNo = true;
+  }
+
+  isSetReplacingCodeId(): boolean {
+    return this.replacingCodeId >= 0;
+  }
+
+  isSetReplacingCode(): boolean {
+    return this.replacingCode !== undefined;
+  }
+
+  setReplacingCode(): void {
+    this.replacingCodeId = Number(this.deprecateCodeForm.get(['replacingCodeId'])!.value);
+    for (let i=0; i<this.conceptList.length; i++) {
+        if (this.conceptList[i].id === this.replacingCodeId) {
+          this.replacingCode = this.conceptList[i];
+          break;
+        }
+    }
+  }
+
+  save(): void {
     if (this.isSlForm) {
-      this.editorService.deprecateCode(id).subscribe(() => {
-        this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation]);
-        // sent broadcast the no concept is selected now
-        this.eventManager.broadcast('deselectConcept');
-        this.activeModal.dismiss();
-      });
+      if (this.confirmReplacementNo || (this.confirmReplacementYes && this.deprecateCodeForm.valid)) {
+        this.editorService.deprecateCode(this.conceptParam.id!).subscribe(() => {
+          this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation]);
+          // sent broadcast the no concept is selected now
+          this.eventManager.broadcast('deselectConcept');
+          this.activeModal.dismiss();
+        });
+      }
     }
   }
 

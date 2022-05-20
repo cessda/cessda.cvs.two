@@ -111,13 +111,15 @@
       "addimage": "Add image",
       "back": "Back",
       "cancel": "Cancel",
-      "yes": "Yes",
-      "deprecate": "Deprecate",
       "delete": "Delete",
+      "deprecate": "Deprecate",
       "edit": "Edit",
+      "no": "No",
+      "ok": "OK",
       "open": "Open",
       "save": "Save",
-      "view": "View"
+      "view": "View",
+      "yes": "Yes"
     },
     "detail": {
       "field": "Field",

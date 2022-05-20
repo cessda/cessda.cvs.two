@@ -270,6 +270,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return version.status === versionType;
   }
 
+  hasDeprecatedConcepts(concepts: IConcept[]): boolean {
+    return VocabularyUtil.isHasDeprecatedConcepts(concepts);
+  }
+
   toggleDetailEPanel(): void {
     if (this.detailEPanel.nativeElement.style.display === 'none' || this.detailEPanel.nativeElement.style.display === '') {
       this.isDetailCollapse = false;

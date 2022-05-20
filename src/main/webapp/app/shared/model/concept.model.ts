@@ -22,6 +22,7 @@ export interface IConcept {
   parent?: string;
   position?: number;
   deprecated?: boolean;
+  replacedBy?: number;
   versionId?: number;
   visible?: boolean;
   titleSl?: any;
@@ -41,6 +42,7 @@ export class Concept implements IConcept {
     public parent?: string,
     public position?: number,
     public deprecated?: boolean,
+    public replacedBy?: number,
     public versionId?: number,
     public visible?: boolean,
     public titleSl?: any,

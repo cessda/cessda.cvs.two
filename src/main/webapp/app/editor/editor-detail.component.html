@@ -172,7 +172,7 @@
                                         </div>
                                         <div *ngIf="!concept.deprecated && getMajorVersionNumber() >= 1 && getMinorVersionNumber() > 0">
                                             <button *jhiHasAnyAgencyAuthority="{actionType:'DEPRECATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
-                                                    class="btn sk-select-min sk-input-f btn-warning mtop20" (click)="openDeprecateCodePopup()">
+                                                    class="btn sk-select-min sk-input-f mtop10" (click)="openDeprecateCodePopup()">
                                                 <fa-icon [icon]="'wind'"></fa-icon>
                                                 <span>Deprecate code</span>
                                             </button>
@@ -436,7 +436,7 @@
                             <jhi-tree-editor [parentNotation]="" [conceptList]="version!.concepts" [level]="0" [deprecated]="false"></jhi-tree-editor>
 
 
-                            <br><br>
+                            <br>
                             <span class="cmt-scn" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT','ROLE_USER']">
                                 <a type="button" class="btn btn-primary btn-sm" ngbTooltip="See deprecated codes" (click)="toggleDeprecatedCodesDisplay()">
                                     <fa-icon icon="eye"></fa-icon>
@@ -444,6 +444,9 @@
                                 </a>
                             </span><br>
                             <br>
+                            <div *ngIf="hasDeprecatedConcepts(version!.concepts!)">
+                                deprecated concepts
+                            </div>
                             <!-- #385 TODO
                             <div class="concept-row row-header">
                                 <span class="">Deprecated codes</span>

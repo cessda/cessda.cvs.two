@@ -126,6 +126,10 @@ export default class VocabularyUtil {
     return concepts.filter(c => c.parent === notation).length > 0;
   }
 
+  static isHasDeprecatedConcepts(concepts: IConcept[]): boolean {
+    return concepts.filter(c => c.deprecated === true).length > 0;
+  }
+
   static getSlVersionByVersionNumber(vnumber: string): string {
     if (vnumber.match(/\./g)!.length === 2) {
       const index = vnumber.lastIndexOf('.');
