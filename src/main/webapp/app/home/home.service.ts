@@ -80,4 +80,9 @@ export class HomeService {
   getVocabularyCompare(notation: string, lv1: string, lv2: string): Observable<HttpResponse<string[]>> {
     return this.http.get<string[]>(`${this.resourceCvCompareUrl}/${notation}/${lv1}/${lv2}`, { observe: 'response' });
   }
+
+  getAvailableLanguagesIsos(req?: any): Observable<HttpResponse<string[]>> {
+    const options = createRequestOption(req);
+    return this.http.get<string[]>(`${SERVER_API_URL}/api/search/languages`, { params: options, observe: 'response' });
+  }
 }

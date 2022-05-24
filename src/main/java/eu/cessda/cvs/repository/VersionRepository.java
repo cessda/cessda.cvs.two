@@ -49,4 +49,7 @@ public interface VersionRepository extends JpaRepository<Version, Long> {
     List<Version> findByCanonicalUri(String canonicalUri);
 
     List<Version> findByCanonicalUriStartingWith(String canonicalUri);
+
+    @Query("select distinct(language) from Version v where v.status in (:status) order by v.language ASC")
+    List<String> findAllLanguagesByStatus(@Param("status") List<String> status);
 }
