@@ -164,7 +164,6 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public List<String> findAllLanguagesByStatus(List<String> status) {
         log.debug("Request to get languages used in vocabularies by version status {}", status);
-        return versionRepository.findAllLanguagesByStatus(status).stream()
-            .collect(Collectors);
+        return versionRepository.findAllLanguagesByStatus(status);
     }
 }
