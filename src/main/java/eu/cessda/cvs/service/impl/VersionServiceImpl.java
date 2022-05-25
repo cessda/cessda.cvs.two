@@ -160,4 +160,10 @@ public class VersionServiceImpl implements VersionService {
             .map(versionMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
+
+    @Override
+    public List<String> findAllLanguagesByStatus(List<String> status) {
+        log.debug("Request to get languages used in vocabularies by version status {}", status);
+        return versionRepository.findAllLanguagesByStatus(status);
+    }
 }
