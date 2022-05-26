@@ -180,7 +180,7 @@ class VocabularyMaintenanceResourceIT {
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
             .andExpect(status().isOk());
-        vocabularySnippet.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED );
+        vocabularySnippet.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISH );
         vocabularySnippet.setLicenseId( license.getId() );
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)

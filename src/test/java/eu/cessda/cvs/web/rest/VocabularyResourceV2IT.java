@@ -147,7 +147,7 @@ class VocabularyResourceV2IT {
             codeSnippetForSl.setVersionId( versionDTO.getId() );
             vocabularyService.saveCode( codeSnippetForSl );
 
-            vocabularySnippetSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED );
+            vocabularySnippetSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISH );
             vocabularySnippetSl.setVersionId( versionDTO.getId());
             vocabularySnippetSl.setLicenseId( license.getId() );
             vocabularySnippetSl.setVocabularyId( vocabularyDTO.getId() );
@@ -265,7 +265,7 @@ class VocabularyResourceV2IT {
         // create new version
         VersionDTO newVersion = vocabularyService.createNewVersion(vocabularyDTO.getVersions().iterator().next().getId());
 
-        vocabularySnippetSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED );
+        vocabularySnippetSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISH );
         vocabularySnippetSl.setVersionId( newVersion.getId());
         vocabularySnippetSl.setLicenseId( license.getId() );
         vocabularySnippetSl.setVocabularyId( vocabularyDTO.getId() );
