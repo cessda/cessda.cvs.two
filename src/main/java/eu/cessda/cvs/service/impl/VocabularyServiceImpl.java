@@ -1983,8 +1983,8 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		Licence licence = null;
 		Agency agency = null;
-		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED ) ||
-				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_PUBLISHED ) )
+		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) ||
+				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_PUBLISH ) )
 		{
 			licence = licenceRepository.getOne( vocabularySnippet.getLicenseId() );
 			agency = agencyRepository.getOne( vocabularySnippet.getAgencyId() );
@@ -1999,8 +1999,8 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			vocabularyDTO.setStatus( Status.REVIEW.toString() );
 			break;
-		case FORWARD_CV_SL_STATUS_PUBLISHED:
-			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED,
+		case FORWARD_CV_SL_STATUS_PUBLISH:
+			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_PUBLISH,
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 
 			versionDTO.setStatus( Status.PUBLISHED.toString() );
@@ -2014,8 +2014,8 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.REVIEW.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			break;
-		case FORWARD_CV_TL_STATUS_PUBLISHED:
-			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_PUBLISHED,
+		case FORWARD_CV_TL_STATUS_PUBLISH:
+			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_PUBLISH,
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 
 			versionDTO.setStatus( Status.PUBLISHED.toString() );
@@ -2029,7 +2029,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		// check if SL published and not initial version, is there any TL needs to be cloned as
 		// DRAFT?
-		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED ) && !versionDTO.isInitialVersion() )
+		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) && !versionDTO.isInitialVersion() )
 		{
 			cloneTLsIfAny( vocabularyDTO, versionDTO );
 		}

@@ -218,7 +218,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     if (this.versionParam!.status === 'DRAFT') {
       vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_REVIEW' : 'FORWARD_CV_TL_STATUS_REVIEW';
     } else if (this.versionParam!.status === 'REVIEW') {
-      vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_PUBLISHED' : 'FORWARD_CV_TL_STATUS_PUBLISHED';
+      vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_PUBLISH' : 'FORWARD_CV_TL_STATUS_PUBLISH';
       vocabularySnippet.licenseId = this.cvForwardStatusForm.get(['licenseId'])!.value;
 
       if (this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== null) {

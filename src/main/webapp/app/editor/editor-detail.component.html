@@ -72,7 +72,7 @@
                             </div>
                             <div *ngIf="version!.itemType === 'SL'">
                                 <div *ngIf="version!.status === 'DRAFT'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS__REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'level-up-alt'"></fa-icon>
                                         <span>Review {{version!.itemType}} {{version!.language}}</span>

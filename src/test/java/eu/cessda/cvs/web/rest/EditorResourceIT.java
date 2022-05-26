@@ -359,7 +359,7 @@ class EditorResourceIT {
         forwardStatusWithIncorrectActionTypeTest(slVersion);
         // ActionType.FORWARD_CV_SL_STATUS_REVIEW
         forwardSlStatusReviewTest(slVersion);
-        // ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
+        // ActionType.FORWARD_CV_SL_STATUS_PUBLISH
         forwardSlStatusPublishTest(slVersion, false);
         // ActionType.CREATE_CODE ~ will be fail due to vocabulary already published
         createSlConceptOnPublishedCvTest(slVersion);
@@ -381,13 +381,13 @@ class EditorResourceIT {
         addTlConceptTest(tlVersion, slConceptRoot1, INIT_CODE_TL_TITLE, INIT_CODE_TL_DEFINITION);
         // ActionType.FORWARD_CV_TL_STATUS_REVIEW
         forwardTlStatusReviewTest( tlVersion );
-        // ActionType.FORWARD_CV_TL_STATUS_PUBLISHED
+        // ActionType.FORWARD_CV_TL_STATUS_PUBLISH
         forwardTlStatusPublishTest( tlVersion );
         // create new TL version
         Version newTlVersion = createNewVocabularyVersionTest(tlVersion, true);
         // new TL version ActionType.FORWARD_CV_TL_STATUS_REVIEW
         forwardTlStatusReviewTest( newTlVersion );
-        // new TL version ActionType.FORWARD_CV_TL_STATUS_PUBLISHED
+        // new TL version ActionType.FORWARD_CV_TL_STATUS_PUBLISH
         forwardTlStatusPublishTest( newTlVersion );
         // create new TL version but not published
         Version newTlVersion2 = createNewVocabularyVersionTest(tlVersion, true);
@@ -397,7 +397,7 @@ class EditorResourceIT {
         batchCodesImportTest(newSlVersion);
         // ActionType.FORWARD_CV_SL_STATUS_REVIEW
         forwardSlStatusReviewTest(newSlVersion);
-        // Publish new SL version to trigger cloning TLs ~ ActionType.FORWARD_CV_SL_STATUS_PUBLISHED
+        // Publish new SL version to trigger cloning TLs ~ ActionType.FORWARD_CV_SL_STATUS_PUBLISH
         forwardSlStatusPublishTest(newSlVersion, true);
         // since there are already 2 versions they can be compared
         compareVersionTest(slVersion, newSlVersion);
@@ -637,7 +637,7 @@ class EditorResourceIT {
         }
         int databaseSize = vocabularyRepository.findAll().size();
         VocabularySnippet vocabularySnippet = EditorResourceIT.createVocabularySnippetForTlDe();
-        vocabularySnippet.setActionType( ActionType.FORWARD_CV_TL_STATUS_PUBLISHED );
+        vocabularySnippet.setActionType( ActionType.FORWARD_CV_TL_STATUS_PUBLISH );
         vocabularySnippet.setVocabularyId( tlVersion.getVocabulary().getId() );
         vocabularySnippet.setAgencyId( agency.getId());
         vocabularySnippet.setVersionId( tlVersion.getId());
@@ -1053,7 +1053,7 @@ class EditorResourceIT {
             license = licenceRepository.saveAndFlush(license);
         }
         int databaseSize = vocabularyRepository.findAll().size();
-        vocabularySnippetForEnSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED );
+        vocabularySnippetForEnSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISH );
         vocabularySnippetForEnSl.setVersionId( slVersion.getId());
         vocabularySnippetForEnSl.setLicenseId( license.getId() );
         vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
