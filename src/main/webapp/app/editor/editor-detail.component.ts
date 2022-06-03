@@ -123,6 +123,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   });
 
   // @ts-ignore
+  public versionNotesEditor: Quill;
+  // @ts-ignore
+  public versionChangesEditor: Quill;
+  // @ts-ignore
   public ddiUsageEditor: Quill;
 
   constructor(
@@ -664,9 +668,29 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   // @ts-ignore
+  onVersionNotesEditorCreated(event: Quill): void {
+    this.versionNotesEditor = event;
+    if (this.editorDetailForm.get(['versionNotes'])!.value) {
+      // @ts-ignore
+      this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionNotes']).value);
+    }
+  }
+
+  // @ts-ignore
+  onVersionChangesEditorCreated(event: Quill): void {
+    this.versionChangesEditor = event;
+    if (this.editorDetailForm.get(['versionChanges'])!.value) {
+      // @ts-ignore
+      this.versionChangesEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['versionChanges']).value);
+    }
+  }
+
+  // @ts-ignore
   onDdiUsageEditorCreated(event: Quill): void {
     this.ddiUsageEditor = event;
-    // @ts-ignore
-    this.ddiUsageEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['ddiUsage'])!.value);
+    if (this.editorDetailForm.get(['ddiUsage'])!.value) {
+      // @ts-ignore
+      this.ddiUsageEditor.clipboard.dangerouslyPasteHTML(this.editorDetailForm.get(['ddiUsage']).value);
+    }
   }
 }
