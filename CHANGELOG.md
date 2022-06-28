@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - *Fixed (for any bug fixes)*
 - *Security (in case of vulnerabilities)*
 
-## [2.2.0] - 2022-06-22
+## [2.2.0] - 2022-06-30
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6598225.svg)](https://doi.org/10.5281/zenodo.6598225)
 
@@ -23,9 +23,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#381](https://bitbucket.org/cessda/cessda.cvs.two/issues/381)	Add Japanese to PDF and SKOS exports
 [#380](https://bitbucket.org/cessda/cessda.cvs.two/issues/380)	Add Japanese to target languages
 [#306](https://bitbucket.org/cessda/cessda.cvs.two/issues/306)	Add Matomo Cloud tracking code
+[#274](https://bitbucket.org/cessda/cessda.cvs.two/issues/274)  Structured logs are ingested into EFK system
 [#263](https://bitbucket.org/cessda/cessda.cvs.two/issues/263)	Add Swagger validator badge to API documentation page
 
 ### Changes
+[#406](https://bitbucket.org/cessda/cessda.cvs.two/issues/406)  Updated versions of images referenced in Docker Compose files
 [#392](https://bitbucket.org/cessda/cessda.cvs.two/issues/392)	Documentation updates for current release
 [#389](https://bitbucket.org/cessda/cessda.cvs.two/issues/389)	Update usage text for Rest APIs
 [#388](https://bitbucket.org/cessda/cessda.cvs.two/issues/388)	Change label and target of REST API link
