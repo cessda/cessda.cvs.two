@@ -42,6 +42,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 [#329](https://bitbucket.org/cessda/cessda.cvs.two/issues/329)	Add missing space to citation text
 [#316](https://bitbucket.org/cessda/cessda.cvs.two/issues/316)	Unable to read CVS file with multiline content inside quotes for import
 
+### Security
+
+- None
+
 ## [2.1.0] - 2022-03-03
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6092399.svg)](https://doi.org/10.5281/zenodo.6092399)
