@@ -30,7 +30,8 @@ import {
   EditorDetailCvCommentItemComponent,
   EditorDetailCvDeleteDialogComponent,
   EditorDetailCvForwardStatusDialogComponent,
-  EditorDetailCvNewVersionDialogComponent
+  EditorDetailCvAddEditConfirmModalComponent,
+  EditorDetailCvNewVersionDialogComponent,
 } from './';
 import { TagInputModule } from 'ngx-chips';
 import { QuillModule } from 'ngx-quill';
@@ -52,7 +53,8 @@ import { NgxTextDiffModule } from 'ngx-text-diff';
     EditorDetailCodeAddEditDialogComponent,
     EditorDetailCodeCsvImportDialogComponent,
     EditorDetailCodeReorderDialogComponent,
-    EditorDetailCodeDeleteDialogComponent
+    EditorDetailCodeDeleteDialogComponent,
+    EditorDetailCvAddEditConfirmModalComponent,
   ],
   entryComponents: [
     EditorCvAddDialogComponent,
@@ -65,8 +67,9 @@ import { NgxTextDiffModule } from 'ngx-text-diff';
     EditorDetailCodeAddEditDialogComponent,
     EditorDetailCodeCsvImportDialogComponent,
     EditorDetailCodeReorderDialogComponent,
-    EditorDetailCodeDeleteDialogComponent
+    EditorDetailCodeDeleteDialogComponent,
+    EditorDetailCvAddEditConfirmModalComponent,
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class CvsEditorModule {}

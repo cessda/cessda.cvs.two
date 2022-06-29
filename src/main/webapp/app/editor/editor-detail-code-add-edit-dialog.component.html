@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+  ~ Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License").
   ~ You may not use this file except in compliance with the License.
@@ -11,7 +11,7 @@
   ~ See the License for the specific language governing permissions and limitations under the License.
   -->
 
-<form name="cvAddForm" role="form" (ngSubmit)="save()" novalidate [formGroup]="codeAddEditForm">
+<form name="cvAddForm" role="form" (ngSubmit)="confirmChange()" novalidate [formGroup]="codeAddEditForm">
     <div class="modal-header">
         <div class="modal-title" style="display: flex;">
             <span *ngIf="isNew">Add code for {{versionParam.notation}}</span>
@@ -212,3 +212,4 @@
         </button>
     </div>
 </form>
+

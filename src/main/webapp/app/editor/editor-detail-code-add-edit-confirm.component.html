@@ -1,0 +1,39 @@
+<!--
+  ~ Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License").
+  ~ You may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and limitations under the License.
+  -->
+
+<div class="modal-header">
+    <h4 class="modal-title">Warning - Code value changed</h4>
+    <button aria-label="Close" data-dismiss="modal" class="close" type="button" (click)="activeModal.dismiss('closed')">
+        <span aria-hidden="true">x</span>
+    </button>
+</div>
+
+<div class="modal-body">
+    <div class="row justify-content-center">
+        <div class="alert alert-danger">
+            <strong>
+                <p>Are you sure you want to change the code value?</p>
+                <p>This changes the identifier of the code and prevents technical systems from detecting this is the same code as before.</p>
+            </strong>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="activeModal.dismiss('closed')">
+        <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+    </button>
+    <button type="button" class="btn btn-primary" (click)="sure()">
+        <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span>Yes, I’m sure</span>
+    </button>
+</div>
