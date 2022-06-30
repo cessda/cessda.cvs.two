@@ -21,12 +21,8 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 export class EditorDetailCvAddEditConfirmModalComponent {
   constructor(public activeModal: NgbActiveModal) {}
 
-  cancel(): void {
-    this.activeModal.dismiss('cancel');
-  }
-
-  close(): void {
-    this.activeModal.close('cancel');
+  clear(): void {
+    this.activeModal.dismiss();
   }
 
   sure(): void {
