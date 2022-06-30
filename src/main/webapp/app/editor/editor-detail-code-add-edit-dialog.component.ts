@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { AccountService } from 'app/core/auth/account.service';
@@ -26,6 +26,7 @@ import { EditorService } from 'app/editor/editor.service';
 import { IVersion } from 'app/shared/model/version.model';
 import { Concept, IConcept } from 'app/shared/model/concept.model';
 import { CodeSnippet, ICodeSnippet } from 'app/shared/model/code-snippet.model';
+import { EditorDetailCvAddEditConfirmModalComponent } from 'app/editor/editor-detail-code-add-edit-confirm.component';
 
 @Component({
   selector: 'jhi-editor-detail-code-add-edit-dialog',
@@ -64,6 +65,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
     private router: Router,
+    private modalService: NgbModal,
     private _ngZone: NgZone
   ) {
     this.isSaving = false;
@@ -234,6 +236,21 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
       relativePos = 0;
     }
     return [refConceptId, relativePos];
+  }
+
+  confirmChange(): void {
+    if (this.codeAddEditForm.valid && this.codeAddEditForm.get('changeType')!.value === 'Code value changed') {
+      const ngbModalRef: NgbModalRef = this.modalService.open(EditorDetailCvAddEditConfirmModalComponent);
+      ngbModalRef.result
+        .then(result => {
+          if (result === 'sure') {
+            this.save();
+          }
+        })
+        .catch(err => {});
+    } else {
+      this.save();
+    }
   }
 
   save(): void {
