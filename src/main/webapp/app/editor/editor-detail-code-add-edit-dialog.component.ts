@@ -65,8 +65,6 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     protected eventManager: JhiEventManager,
     private fb: FormBuilder,
     private router: Router,
-    // private confirmModalService: ConfirmModalService,
-    //test
     private modalService: NgbModal,
     private _ngZone: NgZone
   ) {
