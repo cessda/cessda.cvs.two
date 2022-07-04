@@ -34,7 +34,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -160,12 +161,11 @@ public class VersionResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of languages in body.
      */
     @GetMapping("/search/languages")
-    public ResponseEntity<List<String>> searchLanguages(
-        @RequestParam(name = "s", required = true) String s) {
+    public ResponseEntity<List<String>> searchLanguages( @RequestParam(name = "s" ) String s) {
         log.debug("REST request search vocabulary languages");
         if (s == null)
             s = "";
-        List<String> status = new ArrayList<String>();
+        List<String> status = Collections.emptyList();
         try
         {
             s = URLDecoder.decode( s, "UTF-8" );
@@ -176,10 +176,7 @@ public class VersionResource {
         }
         if ( s != null && !s.isEmpty() )
         {
-            for ( String statusChunk : s.split( ";" ) )
-            {
-                status.add(statusChunk);
-            }
+            status = Arrays.asList( s.split( ";" ) );
         }
         List<String> languagesIsos = versionService.findAllLanguagesByStatus(status);
 

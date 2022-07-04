@@ -17,7 +17,6 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.layout.font.FontProvider;
-
 import org.docx4j.convert.in.xhtml.FormattingOption;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
@@ -39,7 +38,6 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.math.BigInteger;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -95,12 +93,10 @@ public class ExportService
 		org.thymeleaf.context.Context ctx = new org.thymeleaf.context.Context();
 		if ( map != null )
 		{
-            final Iterator<Map.Entry<String, Object>> itMap = map.entrySet().iterator();
-            while (itMap.hasNext())
-			{
-                Map.Entry<String, Object> pair = itMap.next();
-				ctx.setVariable( pair.getKey(), pair.getValue() );
-			}
+            for ( Map.Entry<String, Object> pair : map.entrySet() )
+            {
+                ctx.setVariable( pair.getKey(), pair.getValue() );
+            }
 		}
 
 		switch (type)

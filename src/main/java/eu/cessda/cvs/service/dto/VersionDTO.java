@@ -13,25 +13,8 @@
 
 package eu.cessda.cvs.service.dto;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import eu.cessda.cvs.domain.Agency;
 import eu.cessda.cvs.domain.Licence;
 import eu.cessda.cvs.domain.Version;
@@ -41,6 +24,14 @@ import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 /**
  * A DTO for the {@link Version} entity.
@@ -183,7 +174,7 @@ public class VersionDTO implements Serializable
 
 	/**
 	 * create new version from previous version
-	 * 
+	 *
 	 * @param prevVersion
 	 *            the previous version to be cloned
 	 * @param currentSlVersion
@@ -614,15 +605,13 @@ public class VersionDTO implements Serializable
 		{
 			conceptLists.add( position, concept );
 			// update concept position information after this index
-			Iterator<ConceptDTO> conceptsIterator = conceptLists.iterator();
-			while (conceptsIterator.hasNext())
-			{
-				ConceptDTO c = conceptsIterator.next();
-				if ( c.getPosition() >= position && !c.equals( concept ) )
-				{
-					c.setPosition( c.getPosition() + 1 );
-				}
-			}
+            for ( ConceptDTO c : conceptLists )
+            {
+                if ( c.getPosition() >= position && !c.equals( concept ) )
+                {
+                    c.setPosition( c.getPosition() + 1 );
+                }
+            }
 		}
 		setConcepts( new LinkedHashSet<>( conceptLists ) );
 		return this;
@@ -803,7 +792,7 @@ public class VersionDTO implements Serializable
 	/**
 	 * Get formated Language enum. DO not remove this method, since it is used inside Thymeleaf
 	 * template
-	 * 
+	 *
 	 * @return formated language lise English (en)
 	 */
 	@JsonIgnore

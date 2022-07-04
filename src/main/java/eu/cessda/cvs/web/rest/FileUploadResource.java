@@ -26,6 +26,7 @@ import org.apache.commons.io.FileUtils;
 import org.docx4j.Docx4J;
 import org.docx4j.Docx4jProperties;
 import org.docx4j.convert.out.HTMLSettings;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -43,6 +44,8 @@ import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -143,55 +146,57 @@ public class FileUploadResource {
     public ResponseEntity<SimpleResponse> docx2html(
         @PathVariable String fileName) {
         log.info( "Converting DOCX to HTML {}", fileName );
-        try {
-            Docx4jProperties.getProperties().setProperty( "docx4j.Log4j.Configurator.disabled", "true");
+        try
+        {
+            Docx4jProperties.getProperties().setProperty( "docx4j.Log4j.Configurator.disabled", "true" );
 
-            File initialFile = new File(applicationProperties.getUploadFilePath() + fileName);
-            InputStream is = new FileInputStream(initialFile);
-            WordprocessingMLPackage wordMLPackage = Docx4J.load(is);
+            FileInputStream is = new FileInputStream( applicationProperties.getUploadFilePath() + fileName );
+            WordprocessingMLPackage wordMLPackage = Docx4J.load( is );
             HTMLSettings htmlSettings = Docx4J.createHTMLSettings();
-            htmlSettings.setImageDirPath(applicationProperties.getUploadFilePath() );
+            htmlSettings.setImageDirPath( applicationProperties.getUploadFilePath() );
             htmlSettings.setImageTargetUri( "/content/file/" );
-            htmlSettings.setWmlPackage(wordMLPackage);
-            OutputStream out = new FileOutputStream(applicationProperties.getUploadFilePath() + fileName + HTML);
-            Docx4J.toHTML(htmlSettings, out, Docx4J.FLAG_EXPORT_PREFER_XSL);
+            htmlSettings.setOpcPackage( wordMLPackage );
+            FileOutputStream out = new FileOutputStream( applicationProperties.getUploadFilePath() + fileName + HTML );
+            Docx4J.toHTML( htmlSettings, out, Docx4J.FLAG_EXPORT_PREFER_XSL );
 
-            Document doc = Jsoup.parse(new File(applicationProperties.getUploadFilePath() + fileName + HTML), "UTF-8");
-            for (Element element : doc.select("img")) {
-                String src = element.attr("src");
+            Document doc = Jsoup.parse( new File(
+                applicationProperties.getUploadFilePath() + fileName + HTML ), "UTF-8" );
+            for ( Element element : doc.select( "img" ) )
+            {
+                String src = element.attr( "src" );
 
-                if (src != null && !src.startsWith("data:")) {
+                if ( !src.startsWith( "data:" ) )
+                {
 
-                    File imageFile = new File( applicationProperties.getStaticFilePath() + src );
-                    String imageBase64LogoData = getImageBase64(imageFile);
-                    element.attr("src", "data:image/png;base64," + imageBase64LogoData );
+                    Path imageFile = Paths.get( applicationProperties.getStaticFilePath() + src );
+                    String imageBase64LogoData = getImageBase64( imageFile );
+                    element.attr( "src", "data:image/png;base64," + imageBase64LogoData );
 
                 }
             }
 
-            try ( BufferedWriter htmlWriter = new BufferedWriter(
-                new OutputStreamWriter(
-                    new FileOutputStream(applicationProperties.getUploadFilePath() + fileName + "_2" + HTML),
-                    StandardCharsets.UTF_8)
-                )
-            ){
-                htmlWriter.write(doc.toString());
+            try ( BufferedWriter htmlWriter = Files.newBufferedWriter(
+                Paths.get( applicationProperties.getUploadFilePath() + fileName + "_2" + HTML ), StandardCharsets.UTF_8 )
+            )
+            {
+                htmlWriter.write( doc.toString() );
             }
 
-            return ResponseEntity.status(HttpStatus.OK).body(new SimpleResponse("OK", fileName));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new SimpleResponse("Not OK", fileName));
+            return ResponseEntity.status( HttpStatus.OK ).body( new SimpleResponse( "OK", fileName ) );
+        }
+        catch ( IOException | Docx4JException e )
+        {
+            return ResponseEntity.status( HttpStatus.INTERNAL_SERVER_ERROR ).body( new SimpleResponse( "Not OK", fileName ) );
         }
     }
 
-    private String getImageBase64(File imageFile) {
-        String imageBase64LogoData = null;
+    private String getImageBase64( Path imageFile ) {
         try {
-            imageBase64LogoData = DatatypeConverter.printBase64Binary(Files.readAllBytes(imageFile.toPath()));
+            return DatatypeConverter.printBase64Binary(Files.readAllBytes(imageFile));
         } catch (IOException e) {
             log.error( e.getMessage() );
+            return null;
         }
-        return imageBase64LogoData;
     }
 
     @PostMapping("/html2section/{fileName}/{metadataKey}")

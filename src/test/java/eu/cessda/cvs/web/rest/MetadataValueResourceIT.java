@@ -172,7 +172,7 @@ public class MetadataValueResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(metadataValue.getId().intValue())))
             .andExpect(jsonPath("$.[*].identifier").value(hasItem(DEFAULT_IDENTIFIER.toString())))
-            .andExpect(jsonPath("$.[*].position").value(hasItem(DEFAULT_POSITION.intValue())))
+            .andExpect(jsonPath("$.[*].position").value(hasItem( DEFAULT_POSITION )))
             .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.toString())))
             .andExpect(jsonPath("$.[*].objectType").value(hasItem(DEFAULT_OBJECT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].objectId").value(hasItem(DEFAULT_OBJECT_ID.intValue())));
@@ -190,7 +190,7 @@ public class MetadataValueResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(metadataValue.getId().intValue()))
             .andExpect(jsonPath("$.identifier").value(DEFAULT_IDENTIFIER.toString()))
-            .andExpect(jsonPath("$.position").value(DEFAULT_POSITION.intValue()))
+            .andExpect(jsonPath("$.position").value( DEFAULT_POSITION ))
             .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.toString()))
             .andExpect(jsonPath("$.objectType").value(DEFAULT_OBJECT_TYPE.toString()))
             .andExpect(jsonPath("$.objectId").value(DEFAULT_OBJECT_ID.intValue()));
