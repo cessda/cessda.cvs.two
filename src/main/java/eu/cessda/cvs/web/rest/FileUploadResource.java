@@ -42,6 +42,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.bind.DatatypeConverter;
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -62,14 +64,11 @@ public class FileUploadResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final FileUploadService fileUploadService;
-
     private final ApplicationProperties applicationProperties;
 
     private final MetadataFieldService metadataFieldService;
 
-    public FileUploadResource(FileUploadService fileUploadService, ApplicationProperties applicationProperties, MetadataFieldService metadataFieldService) {
-        this.fileUploadService = fileUploadService;
+    public FileUploadResource( ApplicationProperties applicationProperties, MetadataFieldService metadataFieldService) {
         this.applicationProperties = applicationProperties;
         this.metadataFieldService = metadataFieldService;
     }
@@ -80,21 +79,20 @@ public class FileUploadResource {
      * @return the UUID of uploaded file name
      */
     @PostMapping("/agency-image")
-    public ResponseEntity<String> uploadAgenyImage(
-        @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadAgencyImage(
+        @RequestParam("file") MultipartFile file) throws IOException, URISyntaxException
+    {
         log.info( "Uploading agency-image file {}", file.getName() );
-        try {
-            FileUploadHelper fileUploadHelper = new FileUploadHelper()
-                .fileUploadType(FileUploadType.IMAGE_AGENCY)
-                .sourceFile(file)
-                .uploadBaseDirectory(applicationProperties.getAgencyImagePath());
+        FileUploadHelper fileUploadHelper = new FileUploadHelper()
+            .fileUploadType(FileUploadType.IMAGE_AGENCY)
+            .sourceFile(file)
+            .uploadBaseDirectory(applicationProperties.getAgencyImagePath());
 
-           fileUploadService.uploadFile( fileUploadHelper );
+       FileUploadService.uploadFile( fileUploadHelper );
 
-           return ResponseEntity.status(HttpStatus.OK).body(fileUploadHelper.getUploadedFile().getName());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("");
-        }
+       return ResponseEntity.status(HttpStatus.CREATED)
+           .location( new URI("/content/images/agency/" + fileUploadHelper.getUploadedFile().getName() ) )
+           .body(fileUploadHelper.getUploadedFile().getName());
     }
     /**
      * {@code POST  /license-image} : Upload License Image.
@@ -103,20 +101,19 @@ public class FileUploadResource {
      */
     @PostMapping("/license-image")
     public ResponseEntity<String> uploadLicenseImage(
-        @RequestParam("file") MultipartFile file) {
+        @RequestParam("file") MultipartFile file) throws URISyntaxException, IOException
+    {
         log.info( "Uploading license-image file {}", file.getName() );
-        try {
-            FileUploadHelper fileUploadHelper = new FileUploadHelper()
-                .fileUploadType(FileUploadType.IMAGE_LICENSE)
-                .sourceFile(file)
-                .uploadBaseDirectory(applicationProperties.getLicenseImagePath());
+        FileUploadHelper fileUploadHelper = new FileUploadHelper()
+            .fileUploadType(FileUploadType.IMAGE_LICENSE)
+            .sourceFile(file)
+            .uploadBaseDirectory(applicationProperties.getLicenseImagePath());
 
-            fileUploadService.uploadFile( fileUploadHelper );
+        FileUploadService.uploadFile( fileUploadHelper );
 
-            return ResponseEntity.status(HttpStatus.OK).body(fileUploadHelper.getUploadedFile().getName());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("");
-        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .location( new URI("/content/images/license/" + fileUploadHelper.getUploadedFile().getName() ) )
+            .body(fileUploadHelper.getUploadedFile().getName());
     }
 
     /**
@@ -126,20 +123,19 @@ public class FileUploadResource {
      */
     @PostMapping("/file")
     public ResponseEntity<String> uploadFile(
-        @RequestParam("file") MultipartFile file) {
+        @RequestParam("file") MultipartFile file) throws URISyntaxException, IOException
+    {
         log.info( "Uploading file {}", file.getName() );
-        try {
-            FileUploadHelper fileUploadHelper = new FileUploadHelper()
-                .fileUploadType(FileUploadType.DOCX)
-                .sourceFile(file)
-                .uploadBaseDirectory(applicationProperties.getUploadFilePath());
+        FileUploadHelper fileUploadHelper = new FileUploadHelper()
+            .fileUploadType(FileUploadType.DOCX)
+            .sourceFile(file)
+            .uploadBaseDirectory(applicationProperties.getUploadFilePath());
 
-            fileUploadService.uploadFile( fileUploadHelper );
+        FileUploadService.uploadFile( fileUploadHelper );
 
-            return ResponseEntity.status(HttpStatus.OK).body(fileUploadHelper.getUploadedFile().getName());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body("");
-        }
+        return ResponseEntity.status(HttpStatus.CREATED)
+            .location( new URI( "content/file/" + fileUploadHelper.getUploadedFile().getName() ) )
+            .body(fileUploadHelper.getUploadedFile().getName());
     }
 
     @PostMapping("/docx2html/{fileName}")
