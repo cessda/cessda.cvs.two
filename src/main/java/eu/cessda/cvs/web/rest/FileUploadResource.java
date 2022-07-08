@@ -19,7 +19,6 @@ import eu.cessda.cvs.service.FileUploadHelper;
 import eu.cessda.cvs.service.FileUploadService;
 import eu.cessda.cvs.service.FileUploadType;
 import eu.cessda.cvs.service.MetadataFieldService;
-import eu.cessda.cvs.service.dto.MetadataFieldDTO;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.web.rest.domain.SimpleResponse;
 import org.apache.commons.io.FileUtils;
@@ -34,7 +33,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,9 +58,6 @@ public class FileUploadResource {
 
     public static final String HTML = ".html";
     private final Logger log = LoggerFactory.getLogger(FileUploadResource.class);
-
-    @Value("${jhipster.clientApp.name}")
-    private String applicationName;
 
     private final ApplicationProperties applicationProperties;
 
@@ -134,7 +129,7 @@ public class FileUploadResource {
         FileUploadService.uploadFile( fileUploadHelper );
 
         return ResponseEntity.status(HttpStatus.CREATED)
-            .location( new URI( "content/file/" + fileUploadHelper.getUploadedFile().getName() ) )
+            .location( new URI( "/content/file/" + fileUploadHelper.getUploadedFile().getName() ) )
             .body(fileUploadHelper.getUploadedFile().getName());
     }
 
@@ -206,26 +201,28 @@ public class FileUploadResource {
             Document doc = Jsoup.parse(result, "UTF-8");
             Elements elements = doc.select("body").first().children();
 
-            MetadataFieldDTO metadataFieldDTO = metadataFieldService.findOneByMetadataKey(metadataKey).orElse(null);
-            if( metadataFieldDTO != null ) {
+            metadataFieldService.findOneByMetadataKey(metadataKey).ifPresent( metadataFieldDTO ->
+            {
+
                 Set<MetadataValueDTO> metadataValues = new LinkedHashSet<>();
-                MetadataValueDTO item = new MetadataValueDTO("section-1", ObjectType.SYSTEM,
-                    metadataFieldDTO.getId(), metadataFieldDTO.getMetadataKey(), 1);
+                MetadataValueDTO item = new MetadataValueDTO( "section-1", ObjectType.SYSTEM,
+                    metadataFieldDTO.getId(), metadataFieldDTO.getMetadataKey(), 1 );
                 item.setValue( elements.toString() );
 
                 metadataValues.add( item );
 
                 final Set<MetadataValueDTO> toBeDeletedOldItems = metadataFieldDTO.getMetadataValues();
-                for (MetadataValueDTO toBeDeletedOldItem : toBeDeletedOldItems) {
-                    toBeDeletedOldItem.setMetadataFieldId(null);
-                    toBeDeletedOldItem.setMetadataKey(null);
+                for ( MetadataValueDTO toBeDeletedOldItem : toBeDeletedOldItems )
+                {
+                    toBeDeletedOldItem.setMetadataFieldId( null );
+                    toBeDeletedOldItem.setMetadataKey( null );
                 }
                 metadataFieldDTO.getMetadataValues().clear();
-                metadataFieldService.save(metadataFieldDTO);
+                metadataFieldService.save( metadataFieldDTO );
 
-                metadataFieldDTO.setMetadataValues(metadataValues);
-                metadataFieldService.save(metadataFieldDTO);
-            }
+                metadataFieldDTO.setMetadataValues( metadataValues );
+                metadataFieldService.save( metadataFieldDTO );
+            });
 
             return ResponseEntity.status(HttpStatus.OK).body(new SimpleResponse("OK", fileName));
         } catch (Exception e) {

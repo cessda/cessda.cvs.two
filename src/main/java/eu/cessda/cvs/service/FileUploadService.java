@@ -49,7 +49,7 @@ public class FileUploadService {
         createUploadDirectory( Paths.get( fileUploadHelper.getUploadBaseDirectory() ) );
         File uploadedFile = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + UUID.randomUUID() );
 
-        // Transfer the file to the destination. To work around a MVC bug, uploadedFile is converted to an absolute file.
+        // Transfer the file to the destination. To work around an MVC bug, uploadedFile is converted to an absolute location.
         fileUploadHelper.getSourceFile().transferTo( uploadedFile.getAbsoluteFile() );
         fileUploadHelper.setUploadedFile( uploadedFile );
     }
