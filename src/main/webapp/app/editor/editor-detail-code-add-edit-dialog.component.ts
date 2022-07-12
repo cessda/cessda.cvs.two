@@ -239,15 +239,19 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
   }
 
   confirmChange(): void {
-    if (this.codeAddEditForm.valid && this.codeAddEditForm.get('changeType')!.value === 'Code value changed') {
-      const ngbModalRef: NgbModalRef = this.modalService.open(EditorDetailCvAddEditConfirmModalComponent);
-      ngbModalRef.result
-        .then(result => {
-          if (result === 'sure') {
-            this.save();
-          }
-        })
-        .catch(err => {});
+    if (this.codeAddEditForm.valid && this.codeAddEditForm.get('changeType') != null) {
+      if (this.codeAddEditForm.get('changeType')!.value === 'Code value changed') {
+        const ngbModalRef: NgbModalRef = this.modalService.open(EditorDetailCvAddEditConfirmModalComponent);
+        ngbModalRef.result
+          .then(result => {
+            if (result === 'sure') {
+              this.save();
+            }
+          })
+          .catch(err => {});
+      } else {
+        this.save();
+      }
     } else {
       this.save();
     }
