@@ -118,9 +118,9 @@
             </dependency>
             <!-- jhipster-needle-maven-add-dependency-management -->
             <dependency>
-                <groupId>com.google.cloud</groupId>
-                <artifactId>libraries-bom</artifactId>
-                <version>25.4.0</version>
+                <groupId>org.jboss.xnio</groupId>
+                <artifactId>xnio-all</artifactId>
+                <version>3.8.7.Final</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -390,11 +390,14 @@
             <artifactId>jsoup</artifactId>
             <version>1.14.3</version>
         </dependency>
-
-        <!-- Google Cloud Storage -->
+        <!-- XNIO API for Undertow -->
         <dependency>
-            <groupId>com.google.cloud</groupId>
-            <artifactId>google-cloud-storage</artifactId>
+            <groupId>org.jboss.xnio</groupId>
+            <artifactId>xnio-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jboss.xnio</groupId>
+            <artifactId>xnio-nio</artifactId>
         </dependency>
     </dependencies>
 
