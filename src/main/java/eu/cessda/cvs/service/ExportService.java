@@ -17,7 +17,6 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.layout.font.FontProvider;
-
 import org.docx4j.convert.in.xhtml.FormattingOption;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
@@ -31,22 +30,18 @@ import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.NumberingDefinitionsPart;
 import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.xml.bind.JAXBException;
 import java.io.*;
 import java.math.BigInteger;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 @Service
 public class ExportService
 {
-    private final Logger log = LoggerFactory.getLogger(ExportService.class);
 
     public static final String HTML = "html";
 
@@ -56,7 +51,7 @@ public class ExportService
 
 		private final String type;
 
-		private DownloadType( String s )
+		DownloadType( String s )
 		{
 			type = s;
 		}
@@ -85,74 +80,65 @@ public class ExportService
 		return null;
 	}
 
-	public File generateFileByThymeleafTemplate(
-			String fileName,
+	public void generateFileByThymeleafTemplate(
 			String templateName,
 			Map<String, Object> map,
-			DownloadType type ) throws IOException, JAXBException, Docx4JException {
-        String tDir = System.getProperty("java.io.tmpdir");
-		File outputFile = new File(tDir + File.separator  + fileName + "." + type.toString() );
-		org.thymeleaf.context.Context ctx = new org.thymeleaf.context.Context();
+			DownloadType type,
+            OutputStream outputStream) throws IOException, JAXBException, Docx4JException {
+        org.thymeleaf.context.Context ctx = new org.thymeleaf.context.Context();
 		if ( map != null )
 		{
-            final Iterator<Map.Entry<String, Object>> itMap = map.entrySet().iterator();
-            while (itMap.hasNext())
-			{
-                Map.Entry<String, Object> pair = itMap.next();
-				ctx.setVariable( pair.getKey(), pair.getValue() );
-			}
+            map.forEach( ctx::setVariable );
 		}
 
-		switch (type)
-		{
-		case PDF:
-			return createPdfFile( outputFile,
-					templateEngine.process( HTML + File.separator  + templateName + "_" + type.toString(), ctx ) );
-		case HTML:
-			return createTextFile( outputFile,
-					templateEngine.process( HTML + File.separator  + templateName + "_" + type.toString(), ctx ) );
-		case SKOS:
-			String content = templateEngine.process( "xml" + File.separator  + templateName + "_" + type.toString(), ctx );
-			return createTextFile( outputFile,
-					content.replaceAll( "(?m)^[ \t]*\r?\n", "" ) );
-        case WORD:
-            return createWordFile( outputFile,
-                templateEngine.process( HTML + File.separator  + templateName + "_" + type.toString(), ctx ) );
-		default:
-			break;
-		}
-		return null;
-	}
+        String content;
 
-	private File createTextFile( File outputFile, String contents ) throws IOException
-	{
-		try( BufferedWriter bw = new BufferedWriter( new FileWriter( outputFile ) ) )
-		{
-			bw.write( contents );
-            bw.flush();
-		}
-        catch (IOException e)
-        {
-            log.error(e.getMessage());
+        switch ( type ) {
+            case PDF:
+            case HTML:
+            case WORD:
+                content = templateEngine.process( HTML + "/" + templateName + "_" + type, ctx );
+                break;
+            case SKOS:
+                content = templateEngine.process( "xml" + "/"  + templateName + "_" + type, ctx )
+                    .replaceAll( "(?m)^[ \t]*\r?\n", "" );
+                break;
+            default:
+                throw new IllegalArgumentException( "Unexpected value: " + type );
         }
-		return outputFile;
-	}
 
-	public File createPdfFile( File outputFile, String contents ) {
-		try (FileOutputStream os = new FileOutputStream( outputFile ))
+        switch (type)
 		{
-			ConverterProperties properties = new ConverterProperties();
-			FontProvider fontProvider = new DefaultFontProvider(false, false, false);
-			fontProvider.addDirectory(this.getClass().getResource("/fonts").getPath());
-			properties.setFontProvider(fontProvider);
-			HtmlConverter.convertToPdf(contents, os, properties);
-		} catch (IOException e) {
-            log.error( e.getMessage() );
-        }
-        return outputFile;
+            case PDF:
+                createPdfFile( content, outputStream );
+                break;
+            case HTML:
+            case SKOS:
+                createTextFile( content, outputStream );
+                break;
+            case WORD:
+                createWordFile( content, outputStream );
+                break;
+		}
 	}
 
-    public File createWordFile( File outputFile, String contents ) throws Docx4JException, JAXBException {
+	private void createTextFile( String contents, OutputStream outputStream ) throws IOException
+    {
+        BufferedWriter bw = new BufferedWriter( new OutputStreamWriter( outputStream ) );
+        bw.write( contents );
+        bw.flush();
+	}
+
+	public void createPdfFile( String contents, OutputStream outputStream )
+    {
+        ConverterProperties properties = new ConverterProperties();
+        FontProvider fontProvider = new DefaultFontProvider(false, false, false);
+        fontProvider.addDirectory(this.getClass().getResource("/fonts").getPath());
+        properties.setFontProvider(fontProvider);
+        HtmlConverter.convertToPdf(contents, outputStream, properties);
+	}
+
+    public void createWordFile(  String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {
         ObjectFactory factory = new ObjectFactory();
         // Setup font mapping
         RFonts rfonts = Context.getWmlObjectFactory().createRFonts();
@@ -160,8 +146,7 @@ public class ExportService
         XHTMLImporterImpl.addFontMapping( "Century Gothic", rfonts );
 
         // Create an empty docx package
-        WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage(
-            PageSizePaper.A4, false);
+        WordprocessingMLPackage wordMLPackage = WordprocessingMLPackage.createPackage( PageSizePaper.A4, false);
         Body body = wordMLPackage.getMainDocumentPart().getJaxbElement().getBody();
 
         SectPr.PgSz sectprpgsz = Context.getWmlObjectFactory().createSectPrPgSz();
@@ -199,8 +184,7 @@ public class ExportService
 
         // convert and save file
         wordMLPackage.getMainDocumentPart().getContent().addAll( xHTMLImporter.convert( contents, null ) );
-        wordMLPackage.save( outputFile );
-        return outputFile;
+        wordMLPackage.save( outputStream );
     }
 
     private Relationship createFooterPart(WordprocessingMLPackage wordMLPackage, ObjectFactory factory) throws InvalidFormatException {

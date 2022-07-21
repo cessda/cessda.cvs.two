@@ -37,11 +37,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.xml.bind.JAXBException;
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -183,10 +182,11 @@ public class MetadataFieldResource {
                 .map(mv -> VocabularyUtils.toStrictXhtml(mv.getValue())).collect(Collectors.toList()));
         }
 
-        File file = exportService.generateFileByThymeleafTemplate("document", "document", map, downloadType);
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()) );
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        exportService.generateFileByThymeleafTemplate("document",  map, downloadType, outputStream);
+        ByteArrayResource resource = new ByteArrayResource( outputStream.toByteArray() );
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + file.getName() );
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + "document." + downloadType );
         return ResponseEntity.ok()
             .headers(headers)
             .body(resource);

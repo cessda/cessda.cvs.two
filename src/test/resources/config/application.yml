@@ -83,12 +83,18 @@ server:
 # Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
+logging:
+  level:
+    ROOT: WARN
+    io.github.jhipster: WARN
+    eu.cessda.cvs: INFO
+
 jhipster:
   clientApp:
     name: 'cvsApp'
   logging:
     # To test json console appender
-    use-json-format: true # By default, logs are in Json format
+    use-json-format: false # Disable JSON logging in tests
     logstash:
       enabled: false
       host: localhost
@@ -106,7 +112,7 @@ jhipster:
         token-validity-in-seconds: 86400
   metrics:
     logs: # Reports metrics in the logs
-      enabled: true
+      enabled: false
       report-frequency: 60 # in seconds
 
 # ===================================================================
@@ -123,3 +129,4 @@ application:
   vocab-json-path: target/classes/static/content/vocabularies-test/
   agency-image-path: target/classes/static/content/images/agency/
   license-image-path: target/classes/static/content/images/license/
+  upload-file-path: target/classes/static/content/file/
