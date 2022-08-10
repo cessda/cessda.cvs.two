@@ -273,7 +273,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   hasDeprecatedConcepts(concepts: IConcept[]): boolean {
-    return VocabularyUtil.isHasDeprecatedConcepts(concepts);
+    return VocabularyUtil.hasDeprecatedConcepts(concepts);
   }
 
   toggleDetailEPanel(): void {

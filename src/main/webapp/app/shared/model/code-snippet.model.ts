@@ -27,6 +27,7 @@ export interface ICodeSnippet {
   changeDesc?: any;
   conceptStructures?: string[];
   conceptStructureIds?: number[];
+  replacedBy?: number | null;
 }
 
 export class CodeSnippet implements ICodeSnippet {
@@ -45,6 +46,7 @@ export class CodeSnippet implements ICodeSnippet {
     public changeType?: any,
     public changeDesc?: any,
     public conceptStructures?: string[],
-    public conceptStructureIds?: number[]
+    public conceptStructureIds?: number[],
+    public replacedBy?: number | null
   ) {}
 }

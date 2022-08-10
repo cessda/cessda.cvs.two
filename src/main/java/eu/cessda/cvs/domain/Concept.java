@@ -70,10 +70,10 @@ public class Concept implements Serializable {
     @Column(nullable = false)
     private boolean deprecated = false;
 
-    @Column(name = "replacedBy")
+    @Column(name = "replaced_by")
     private Long replacedBy;
 
-    @Column(name = "deprecatedAt")
+    @Column(name = "deprecated_at")
     private ZonedDateTime deprecatedAt;
 
     @ManyToOne

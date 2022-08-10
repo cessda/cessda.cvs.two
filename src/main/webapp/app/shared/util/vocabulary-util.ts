@@ -126,7 +126,7 @@ export default class VocabularyUtil {
     return concepts.filter(c => c.parent === notation).length > 0;
   }
 
-  static isHasDeprecatedConcepts(concepts: IConcept[]): boolean {
+  static hasDeprecatedConcepts(concepts: IConcept[]): boolean {
     return concepts.filter(c => c.deprecated === true).length > 0;
   }
 
