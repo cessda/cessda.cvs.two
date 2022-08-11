@@ -77,7 +77,7 @@ public class ConceptDTO implements Serializable {
         this.position = codeSnippet.getPosition();
         this.deprecated = codeSnippet.getDeprecated();
         this.replacedBy = codeSnippet.getReplacedBy();
-        this.deprecatedAt = codeSnippet.getDeprecatedAt();
+        this.deprecatedAt = ZonedDateTime.now();
         this.versionId = codeSnippet.getVersionId();
     }
 
@@ -91,7 +91,7 @@ public class ConceptDTO implements Serializable {
         this.position = conceptSlDTO.getPosition();
         this.deprecated = conceptSlDTO.getDeprecated();
         this.replacedBy = conceptSlDTO.getReplacedBy();
-        this.deprecatedAt = conceptSlDTO.getDeprecatedAt();
+        this.deprecatedAt = ZonedDateTime.now();
         this.slConcept = conceptSlDTO.getId();
     }
 
@@ -107,7 +107,7 @@ public class ConceptDTO implements Serializable {
         this.position = conceptSlDTO.getPosition();
         this.deprecated = conceptSlDTO.getDeprecated();
         this.replacedBy = conceptSlDTO.getReplacedBy();
-        this.deprecatedAt = conceptSlDTO.getDeprecatedAt();
+        this.deprecatedAt = ZonedDateTime.now();
         this.slConcept = conceptSlDTO.getId();
         // prevConceptDTO is null "only happened in cloning TL concept". it means that new concept is added in SL concept,
         // or the concepts are reordered in SL version, which makes it is not possible to link the TL concept

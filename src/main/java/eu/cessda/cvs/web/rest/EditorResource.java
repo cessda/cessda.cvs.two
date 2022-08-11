@@ -519,10 +519,9 @@ public class EditorResource {
             // deprecate any child if exist
             if( conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation()) ){
                 conceptNext.setDeprecated(true);
-                conceptNext.setReplacedBy(codeSnippet.getReplacedBy());
 
                 // store changes if not initial version
-                recordCodeDeprecatedAction(conceptNext, versionDTO, replacingConceptDTO);
+                recordCodeDeprecatedAction(conceptNext, versionDTO, null);
             }
         }
         versionService.save(versionDTO);
