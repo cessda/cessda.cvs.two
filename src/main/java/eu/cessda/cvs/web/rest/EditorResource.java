@@ -69,6 +69,7 @@ public class EditorResource {
     public static final String UNABLE_TO_FIND_VERSION = "Unable to find version with Id ";
     public static final String TO_BE_DELETED = " to be deleted";
     public static final String TO_BE_DEPRECATED = " to be deprecated";
+    public static final String AS_A_REPLACING_CONCEPT = " as a replacing concept";
     public static final String UNABLE_TO_FIND_VOCABULARY = "Unable to find vocabulary with Id ";
     public static final String INVALID_ID = "Invalid id";
     public static final String ID_EXIST = "idexists";
@@ -499,6 +500,12 @@ public class EditorResource {
         conceptDTO.setDeprecated(true);
         conceptDTO.setReplacedBy(codeSnippet.getReplacedBy());
 
+        ConceptDTO replacingConceptDTO = null;
+        if (codeSnippet.getReplacedBy() != null && codeSnippet.getReplacedBy() >= 0) {
+            replacingConceptDTO = conceptService.findOne(codeSnippet.getReplacedBy())
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getReplacedBy() + AS_A_REPLACING_CONCEPT));
+        }
+
         Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
         while ( conceptIterator.hasNext() ) {
             ConceptDTO conceptNext = conceptIterator.next();
@@ -507,7 +514,7 @@ public class EditorResource {
                 conceptNext.setReplacedBy(codeSnippet.getReplacedBy());
 
                 // store changes if not initial version
-                recordCodeDeprecatedAction(conceptDTO, versionDTO);
+                recordCodeDeprecatedAction(conceptNext, versionDTO, replacingConceptDTO);
             }
             // deprecate any child if exist
             if( conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation()) ){
@@ -515,7 +522,7 @@ public class EditorResource {
                 conceptNext.setReplacedBy(codeSnippet.getReplacedBy());
 
                 // store changes if not initial version
-                recordCodeDeprecatedAction(conceptNext, versionDTO);
+                recordCodeDeprecatedAction(conceptNext, versionDTO, replacingConceptDTO);
             }
         }
         versionService.save(versionDTO);
@@ -525,10 +532,10 @@ public class EditorResource {
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "alert.code.deprecated", conceptDTO.getNotation())).build();
     }
 
-    private void recordCodeDeprecatedAction(ConceptDTO conceptDTO, VersionDTO versionDTO) {
+    private void recordCodeDeprecatedAction(ConceptDTO conceptDTO, VersionDTO versionDTO, ConceptDTO replacingConceptDTO) {
         if( !versionDTO.isInitialVersion() ) {
             VocabularyChangeDTO vocabularyChangeDTO = new VocabularyChangeDTO(SecurityUtils.getCurrentUser(),
-                versionDTO.getVocabularyId(), versionDTO.getId(), "Code deprecated", conceptDTO.getNotation());
+                versionDTO.getVocabularyId(), versionDTO.getId(), "Code deprecated", conceptDTO.getNotation() + (replacingConceptDTO != null ? (", replaced by " + replacingConceptDTO.getNotation()) : ""));
             vocabularyChangeService.save(vocabularyChangeDTO);
         }
     }
