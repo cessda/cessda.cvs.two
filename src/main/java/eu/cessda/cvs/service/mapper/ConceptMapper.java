@@ -25,9 +25,11 @@ import org.mapstruct.Mapping;
 public interface ConceptMapper extends EntityMapper<ConceptDTO, Concept> {
 
     @Mapping(source = "version.id", target = "versionId")
+    @Mapping(source = "introducedInVersion.id", target = "introducedInVersionId")
     ConceptDTO toDto(Concept concept);
 
     @Mapping(source = "versionId", target = "version")
+    @Mapping(source = "introducedInVersionId", target = "introducedInVersion")
     Concept toEntity(ConceptDTO conceptDTO);
 
     default Concept fromId(Long id) {

@@ -53,6 +53,8 @@ public class ConceptDTO implements Serializable {
 
     private Long versionId;
 
+    private Long introducedInVersionId;
+
     private Integer position;
 
     private boolean deprecated;
@@ -79,6 +81,7 @@ public class ConceptDTO implements Serializable {
         this.replacedBy = codeSnippet.getReplacedBy();
         this.deprecatedAt = ZonedDateTime.now();
         this.versionId = codeSnippet.getVersionId();
+        this.introducedInVersionId = codeSnippet.getIntroducedInVersionId();
     }
 
     /**
@@ -102,6 +105,7 @@ public class ConceptDTO implements Serializable {
      */
     public ConceptDTO( ConceptDTO conceptSlDTO, ConceptDTO prevConceptDTO, Long newVersionId ) {
         this.versionId = newVersionId;
+        this.introducedInVersionId = conceptSlDTO.getIntroducedInVersionId();
         this.notation = conceptSlDTO.getNotation();
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
@@ -228,6 +232,14 @@ public class ConceptDTO implements Serializable {
         this.versionId = versionId;
     }
 
+    public Long getIntroducedInVersionId() {
+        return introducedInVersionId;
+    }
+
+    public void setIntroducedInVersionId(Long introducedInVersionId) {
+        this.introducedInVersionId = introducedInVersionId;
+    }
+
     @Override
     public String toString() {
         return "ConceptDTO{" +
@@ -244,6 +256,7 @@ public class ConceptDTO implements Serializable {
             ", replacedBy=" + getReplacedBy() +
             ", deprecatedAt=" + getDeprecatedAt() +
             ", versionId=" + getVersionId() +
+            ", introducedInVersionId=" + getIntroducedInVersionId() +
             "}";
     }
 

@@ -27,6 +27,7 @@ public class CodeSnippet implements Serializable {
     private ActionType actionType;
     @NotNull
     private Long versionId;
+    private Long introducedInVersionId;
     private Long conceptId;
     private Long conceptSlId;
 
@@ -62,6 +63,14 @@ public class CodeSnippet implements Serializable {
 
     public void setVersionId(Long versionId) {
         this.versionId = versionId;
+    }
+
+    public Long getIntroducedInVersionId() {
+        return introducedInVersionId;
+    }
+
+    public void setIntroducedInVersionId(Long introducedInVersionId) {
+        this.introducedInVersionId = introducedInVersionId;
     }
 
     public Long getConceptId() {
@@ -213,6 +222,7 @@ public class CodeSnippet implements Serializable {
         return "VocabularyChange{" +
             "actionType='" + getActionType() + "'" +
             ", versionId=" + getVersionId() +
+            ", introducedInVersionId=" + getIntroducedInVersionId() +
             ", conceptId='" + getConceptId() + "'" +
             ", conceptSlId='" + getConceptSlId() + "'" +
             ", parent=" + getParent() +

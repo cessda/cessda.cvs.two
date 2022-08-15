@@ -80,6 +80,10 @@ public class Concept implements Serializable {
     @JsonIgnoreProperties("concepts")
     private Version version;
 
+    @ManyToOne
+    @JsonIgnoreProperties("concepts")
+    private Version introducedInVersion;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -243,6 +247,19 @@ public class Concept implements Serializable {
 
     public void setVersion(Version version) {
         this.version = version;
+    }
+
+    public Version getIntroducedInVersion() {
+        return introducedInVersion;
+    }
+
+    public Concept introducedInVersion(Version introducedInVersion) {
+        this.introducedInVersion = introducedInVersion;
+        return this;
+    }
+
+    public void setIntroducedInVersion(Version introducedInVersion) {
+        this.introducedInVersion = introducedInVersion;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

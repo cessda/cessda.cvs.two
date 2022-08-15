@@ -157,6 +157,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
         ...new CodeSnippet(),
         actionType: 'CREATE_CODE',
         versionId: this.versionParam.id,
+        introducedInVersionId: this.versionParam.id,
         title: this.codeAddEditForm.get(['title'])!.value,
         definition: this.codeAddEditForm.get(['definition'])!.value,
         position: pos,
