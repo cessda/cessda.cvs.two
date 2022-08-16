@@ -113,9 +113,9 @@ public class VersionUtils {
             .sorted(Comparator.comparing(ConceptDTO::getPosition)).collect(Collectors.toList());
         Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         currentConcepts.forEach(currentConcept -> {
-            currentVersionCvSb.append( CODE + " " + currentConcept.getNotation()+ "\n");
-            currentVersionCvSb.append( CODE_TERM + " " + currentConcept.getTitle() + "\n");
-            currentVersionCvSb.append( CODE_DEF + " " + currentConcept.getDefinition() + "\n\n");
+            currentVersionCvSb.append( CODE + " " + currentConcept.getNotation() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
+            currentVersionCvSb.append( CODE_TERM + " " + currentConcept.getTitle() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
+            currentVersionCvSb.append( CODE_DEF + " " + currentConcept.getDefinition() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
 
             ConceptDTO prevConceptDTO = null;
 
@@ -136,9 +136,9 @@ public class VersionUtils {
                 prevVersionCvSb.append(CODE_DEF + " \n\n");
             } else {
                 existingConceptsInPrevAndCurrent.add( prevConceptDTO );
-                prevVersionCvSb.append( CODE + " " + prevConceptDTO.getNotation()+ "\n");
-                prevVersionCvSb.append( CODE_TERM + " " + prevConceptDTO.getTitle() + "\n");
-                prevVersionCvSb.append( CODE_DEF + " " + prevConceptDTO.getDefinition() + "\n\n");
+                prevVersionCvSb.append( CODE + " " + prevConceptDTO.getNotation() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
+                prevVersionCvSb.append( CODE_TERM + " " + prevConceptDTO.getTitle() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
+                prevVersionCvSb.append( CODE_DEF + " " + prevConceptDTO.getDefinition() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
             }
         });
 
@@ -149,9 +149,9 @@ public class VersionUtils {
             currentVersionCvSb.append(CODE + " \n");
             currentVersionCvSb.append(CODE_TERM + " \n");
             currentVersionCvSb.append(CODE_DEF + " \n\n");
-            prevVersionCvSb.append( CODE + " " + prevConcept.getNotation()+ "\n");
-            prevVersionCvSb.append( CODE_TERM + " " + prevConcept.getTitle() + "\n");
-            prevVersionCvSb.append( CODE_DEF + " " + prevConcept.getDefinition() + "\n\n");
+            prevVersionCvSb.append( CODE + " " + prevConcept.getNotation() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
+            prevVersionCvSb.append( CODE_TERM + " " + prevConcept.getTitle() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
+            prevVersionCvSb.append( CODE_DEF + " " + prevConcept.getDefinition() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
         }
 
         List<String> compareCurrentPrev = new ArrayList<>();
