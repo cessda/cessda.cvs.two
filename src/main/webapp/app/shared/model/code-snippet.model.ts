@@ -14,7 +14,7 @@
 export interface ICodeSnippet {
   actionType?: string;
   versionId?: number;
-  introducedInVersionId?: number;
+  introducedInVersionId?: number | null;
   conceptId?: number;
   conceptSlId?: number;
   parent?: string;
@@ -35,7 +35,7 @@ export class CodeSnippet implements ICodeSnippet {
   constructor(
     public actionType?: string,
     public versionId?: number,
-    public introducedInVersionId?: number,
+    public introducedInVersionId?: number | null,
     public conceptId?: number,
     public conceptSlId?: number,
     public parent?: string,

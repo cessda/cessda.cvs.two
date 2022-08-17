@@ -15,11 +15,26 @@
     <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
         <li id="code_{{concept.notation.split('.').join('')}}" [ngClass]="{'y-bgr': !concept.title}">
             <div *ngIf="concept.deprecated === deprecated" class="concept-row" (click)="!deprecated && selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation}">
-                <span class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
-                <span *ngIf="concept.titleSl" class="columnSl2">{{concept.titleSl}}</span>
-                <span class="column2">{{concept.title ? concept.title : ''}}</span>
-                <span *ngIf="concept.titleSl" class="columnSl3 break-long-word">{{concept.definitionSl}}</span>
-                <span class="column3 break-long-word">{{concept.definition ? concept.definition : ''}}</span>
+                <!-- Column 1 -->
+                <span *ngIf="!concept.deprecated" class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
+                <!-- Column 1 - DEPRECATED -->
+                <span *ngIf="concept.deprecated" class="column1"><a href="{{concept.uri}}" target="_blank">{{concept.uri}}</a></span>
+                <!-- Column 2 -->
+                <span *ngIf="!concept.deprecated && concept.titleSl" class="columnSl2">{{concept.titleSl}}</span>
+                <!-- Column 2 - DEPRECATED -->
+                <span *ngIf="concept.deprecated" class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
+                <!-- Column 3 -->
+                <span *ngIf="!concept.deprecated" class="column2">{{concept.title ? concept.title : ''}}</span>
+                <!-- Column 3 DEPRECATED -->
+                <span *ngIf="concept.deprecated" class="column2">{{concept.title ? concept.title : ''}}</span>
+                <!-- Column 4 -->
+                <span *ngIf="!concept.deprecated && concept.titleSl" class="columnSl3 break-long-word">{{concept.definitionSl}}</span>
+                <!-- Column 4 DEPRECATED -->
+                <span *ngIf="concept.deprecated" class="column2">TODO: concept.validFrom</span>
+                <!-- Column 5 -->
+                <span *ngIf="!concept.deprecated" class="column3 break-long-word">{{concept.definition ? concept.definition : ''}}</span>
+                <!-- Column 5 DEPRECATED -->
+                <span *ngIf="concept.deprecated" class="column2">TODO: concept.validTo</span>
             </div>
             <jhi-tree-editor *ngIf="isConceptHasChildren(concept.notation,conceptList)"
                       [ngClass]="{'display-none': concept.visible}"
