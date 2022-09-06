@@ -17,6 +17,7 @@ import com.itextpdf.html2pdf.ConverterProperties;
 import com.itextpdf.html2pdf.HtmlConverter;
 import com.itextpdf.html2pdf.resolver.font.DefaultFontProvider;
 import com.itextpdf.layout.font.FontProvider;
+import org.apache.commons.io.IOUtils;
 import org.docx4j.convert.in.xhtml.FormattingOption;
 import org.docx4j.convert.in.xhtml.XHTMLImporterImpl;
 import org.docx4j.jaxb.Context;
@@ -34,7 +35,10 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import javax.xml.bind.JAXBException;
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
@@ -68,6 +72,7 @@ public class ExportService
 		}
 	}
 
+    private final ObjectFactory factory = new ObjectFactory();
 	private final SpringTemplateEngine templateEngine;
 
 	public ExportService(SpringTemplateEngine templateEngine )
@@ -75,12 +80,7 @@ public class ExportService
 		this.templateEngine = templateEngine;
 	}
 
-	public File exportQuestion()
-	{
-		return null;
-	}
-
-	public void generateFileByThymeleafTemplate(
+    public void generateFileByThymeleafTemplate(
 			String templateName,
 			Map<String, Object> map,
 			DownloadType type,
@@ -129,17 +129,24 @@ public class ExportService
         bw.flush();
 	}
 
-	public void createPdfFile( String contents, OutputStream outputStream )
+	public void createPdfFile( String contents, OutputStream outputStream ) throws IOException
     {
-        ConverterProperties properties = new ConverterProperties();
         FontProvider fontProvider = new DefaultFontProvider(false, false, false);
-        fontProvider.addDirectory(this.getClass().getResource("/fonts").getPath());
-        properties.setFontProvider(fontProvider);
-        HtmlConverter.convertToPdf(contents, outputStream, properties);
+
+        // Add all fonts
+        fontProvider.addFont( IOUtils.resourceToByteArray("/fonts/NotoSansCJKjp-Black.otf") );
+        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Bold.otf" ) );
+        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-DemiLight.otf" ) );
+        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Light.otf" ) );
+        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Medium.otf" ) );
+        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Regular.otf" ) );
+        fontProvider.addFont( IOUtils.resourceToByteArray( "/fonts/NotoSansCJKjp-Thin.otf" ) );
+
+        // Generate the PDF
+        HtmlConverter.convertToPdf(contents, outputStream, new ConverterProperties().setFontProvider(fontProvider));
 	}
 
-    public void createWordFile(  String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {
-        ObjectFactory factory = new ObjectFactory();
+    public void createWordFile( String contents, OutputStream outputStream ) throws Docx4JException, JAXBException {
         // Setup font mapping
         RFonts rfonts = Context.getWmlObjectFactory().createRFonts();
         rfonts.setAscii( "Century Gothic" );
@@ -169,7 +176,7 @@ public class ExportService
         body.setSectPr(sectPr);
 
         Relationship relationship = createFooterPart( wordMLPackage, factory );
-        createFooterReference(wordMLPackage, relationship, factory);
+        createFooterReference(wordMLPackage, relationship );
 
         NumberingDefinitionsPart ndp = new NumberingDefinitionsPart();
         wordMLPackage.getMainDocumentPart().addTargetPart( ndp );
@@ -237,7 +244,7 @@ public class ExportService
 
     }
 
-    public static void createFooterReference(WordprocessingMLPackage wordMLPackage, Relationship relationship, ObjectFactory factory){
+    public void createFooterReference(WordprocessingMLPackage wordMLPackage, Relationship relationship){
 
         List<SectionWrapper> sections =
             wordMLPackage.getDocumentModel().getSections();
