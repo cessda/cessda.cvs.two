@@ -185,10 +185,9 @@ public class MetadataFieldResource {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         exportService.generateFileByThymeleafTemplate("document",  map, downloadType, outputStream);
         ByteArrayResource resource = new ByteArrayResource( outputStream.toByteArray() );
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + "document." + downloadType );
         return ResponseEntity.ok()
-            .headers(headers)
+            .contentType( downloadType.getMediaType() )
+            .header( HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + "document." + downloadType )
             .body(resource);
     }
 

@@ -30,6 +30,7 @@ import org.docx4j.openpackaging.parts.WordprocessingML.FooterPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.NumberingDefinitionsPart;
 import org.docx4j.relationships.Relationship;
 import org.docx4j.wml.*;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -47,14 +48,24 @@ public class ExportService
 
     public enum DownloadType
 	{
-		SKOS("rdf"), PDF("pdf"), HTML(ExportService.HTML), WORD("docx");
+		SKOS("rdf", MediaType.APPLICATION_XML),
+        PDF("pdf", MediaType.APPLICATION_PDF),
+        HTML(ExportService.HTML, MediaType.TEXT_HTML),
+        WORD("docx", new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document" ));
 
 		private final String type;
+        private final MediaType mediaType;
 
-		DownloadType( String s )
+		DownloadType( String type, MediaType mediaType )
 		{
-			type = s;
-		}
+			this.type = type;
+            this.mediaType = mediaType;
+        }
+
+        public MediaType getMediaType()
+        {
+            return mediaType;
+        }
 
 		public boolean equalsType( String otherType )
 		{
@@ -66,7 +77,7 @@ public class ExportService
 		{
 			return this.type;
 		}
-	}
+    }
 
 	private final SpringTemplateEngine templateEngine;
 
