@@ -14,10 +14,12 @@
 package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.config.Constants;
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.domain.User;
 import eu.cessda.cvs.repository.UserAgencyRepository;
 import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.security.AuthoritiesConstants;
+import eu.cessda.cvs.security.SecurityUtils;
 import eu.cessda.cvs.service.MailService;
 import eu.cessda.cvs.service.UserAgencyService;
 import eu.cessda.cvs.service.UserService;
@@ -31,7 +33,9 @@ import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -75,6 +79,9 @@ import java.util.stream.Collectors;
 @RequestMapping("/api")
 public class UserResource {
 
+    @Autowired
+    private AuditEventPublisher auditPublisher;
+    
     private final Logger log = LoggerFactory.getLogger(UserResource.class);
 
     @Value("${jhipster.clientApp.name}")
@@ -124,6 +131,24 @@ public class UserResource {
             throw new EmailAlreadyUsedException();
         } else {
             User newUser = userService.createUser(userDTO);
+            //notify the auditing mechanism
+            HashMap<String, Object> map = new HashMap<String, Object>();
+            map.put("id", userDTO.getLogin());
+            map.put("name", userDTO.getFirstName() + " " + userDTO.getLastName());
+            map.put("email", userDTO.getEmail());
+            String authorities = "";
+            if (userDTO.getAuthorities() != null) {
+                for (String authority : userDTO.getAuthorities()) {
+                    if (authorities.length() != 0) {
+                        authorities = authorities + " | ";
+                    }
+                    authorities = authorities + authority;
+                }
+                if (!authorities.equalsIgnoreCase("")) {
+                    map.put("roles", authorities);
+                }
+            }
+            auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_CREATED", map));
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert(applicationName,  "userManagement.created", newUser.getLogin()))
@@ -158,8 +183,8 @@ public class UserResource {
             Iterator<UserAgencyDTO> userAgenciesIterator = userAgencies.iterator();
             while( userAgenciesIterator.hasNext() ) {
                 UserAgencyDTO ua = userAgenciesIterator.next();
-                if( ua.getId() == null ) {
-                    newUserAgencies.add( userAgencyService.save( ua));
+                if (ua.getId() == null) {
+                    newUserAgencies.add(userAgencyService.save(ua));
                     userAgenciesIterator.remove();
                 }
             }
@@ -169,6 +194,40 @@ public class UserResource {
         }
 
         Optional<UserDTO> updatedUser = userService.updateUser(userDTO);
+
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("id", userDTO.getLogin());
+        map.put("name", userDTO.getFirstName() + " " + userDTO.getLastName());
+        map.put("email", userDTO.getEmail());
+        String agencies = "";
+        for (UserAgencyDTO agency : userDTO.getUserAgencies()) {
+            agencies = agencies + agency.getAgencyRole() + ", ";
+            agencies = agencies + agency.getLanguage() + ", ";
+            if (agency.getAgencyName() == null) {
+                agencies = agencies + agency.getAgencyName();
+            } else {
+                agencies = agencies + agency.getAgencyName();
+            }
+            agencies = agencies + " | ";
+        }
+        if (!agencies.equalsIgnoreCase("")) {
+            agencies = agencies.substring(0, agencies.length() - 3);
+            map.put("agency", agencies);
+        }
+        String authorities = "";
+        if (userDTO.getAuthorities() != null) {
+            for (String authority : userDTO.getAuthorities()) {
+                if (authorities.length() != 0) {
+                    authorities = authorities + " | ";
+                }
+                authorities = authorities + authority;
+            }
+            if (!authorities.equalsIgnoreCase("")) {
+                map.put("roles", authorities);
+            }
+        }
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_UPDATED", map));
 
         return ResponseUtil.wrapOrNotFound(updatedUser,
             HeaderUtil.createAlert(applicationName, "userManagement.updated", userDTO.getLogin()));
@@ -226,6 +285,13 @@ public class UserResource {
     @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        Optional<User> userDTO = userRepository.findOneByLogin(login.toLowerCase());
+        map.put("id", userDTO.get().getLogin());
+        map.put("name", userDTO.get().getFirstName() + " " + userDTO.get().getLastName());
+        map.put("email", userDTO.get().getEmail());
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_DELETED", map));
         userService.deleteUser(login);
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName,  "userManagement.deleted", login)).build();
     }

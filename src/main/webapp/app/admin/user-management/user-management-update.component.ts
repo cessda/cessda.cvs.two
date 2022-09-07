@@ -192,6 +192,7 @@ export class UserManagementUpdateComponent implements OnInit {
         userId: this.user.id,
         agencyRole: this.selectedAgencyRole,
         agencyId: this.selectedAgencyId,
+        agencyName: this.getAgencyName(this.selectedAgencyId!),
         language: this.selectedLanguage !== '' ? this.selectedLanguage : undefined
       };
       this.user.userAgencies!.push(userAgency);

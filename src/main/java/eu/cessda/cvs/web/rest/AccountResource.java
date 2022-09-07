@@ -13,6 +13,7 @@
 
 package eu.cessda.cvs.web.rest;
 
+import eu.cessda.cvs.config.audit.AuditEventPublisher;
 import eu.cessda.cvs.domain.User;
 import eu.cessda.cvs.repository.UserRepository;
 import eu.cessda.cvs.security.SecurityUtils;
@@ -28,11 +29,15 @@ import eu.cessda.cvs.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.audit.AuditEvent;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
+import java.util.HashMap;
 import java.util.Optional;
 
 /**
@@ -42,6 +47,9 @@ import java.util.Optional;
 @RequestMapping("/api")
 public class AccountResource {
 
+    @Autowired
+    private AuditEventPublisher auditPublisher;
+    
     private static class AccountResourceException extends RuntimeException {
         private AccountResourceException(String message) {
             super(message);
@@ -140,6 +148,13 @@ public class AccountResource {
         }
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
             userDTO.getLangKey(), userDTO.getImageUrl());
+        
+        //notify the auditing mechanism
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        map.put("name", userDTO.getFirstName() + " " + userDTO.getLastName());
+        map.put("email", userDTO.getEmail());
+        map.put("language", userDTO.getLangKey());
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_SETTINGS_UPDATED", map));
     }
 
     /**
@@ -154,6 +169,8 @@ public class AccountResource {
             throw new InvalidPasswordException();
         }
         userService.changePassword(passwordChangeDto.getCurrentPassword(), passwordChangeDto.getNewPassword());
+        //notify the auditing mechanism
+        auditPublisher.publish(new AuditEvent(SecurityUtils.getCurrentUserLogin().get(), "USER_PASSWORD_UPDATED", new HashMap<String, Object>()));
     }
 
     /**

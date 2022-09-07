@@ -124,6 +124,7 @@ public class UserAgencyDTO implements Serializable {
             ", agencyRole='" + getAgencyRole() + "'" +
             ", language='" + getLanguage() + "'" +
             ", agencyId=" + getAgencyId() +
+            ", agencyName=" + getAgencyName() +
             "}";
     }
 }
