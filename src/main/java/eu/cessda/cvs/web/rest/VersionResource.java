@@ -34,7 +34,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -162,22 +163,20 @@ public class VersionResource {
     @GetMapping("/search/languages")
     public ResponseEntity<List<String>> searchLanguages( @RequestParam(name = "s" ) String s) {
         log.debug("REST request search vocabulary languages");
+        if (s == null)
+            s = "";
+        List<String> status = Collections.emptyList();
         try
         {
             s = URLDecoder.decode( s, "UTF-8" );
         }
         catch (UnsupportedEncodingException e)
         {
-            throw new IllegalStateException(e);
+            log.error( e.getMessage() );
         }
-        final List<String> status = new ArrayList<>();
-        if ( !s.trim().isEmpty() )
+        if ( s != null && !s.isEmpty() )
         {
-            // Split the string using ; as the split character, and trim the resultant strings
-            for ( String split : s.split( ";" ) )
-            {
-                status.add( split.trim() );
-            }
+            status = Arrays.asList( s.split( ";" ) );
         }
         List<String> languagesIsos = versionService.findAllLanguagesByStatus(status);
 
