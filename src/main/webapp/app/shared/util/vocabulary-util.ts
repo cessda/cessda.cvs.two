@@ -126,8 +126,8 @@ export default class VocabularyUtil {
     return concepts.filter(c => c.parent === notation).length > 0;
   }
 
-  static hasDeprecatedConcepts(concepts: IConcept[]): boolean {
-    return concepts.filter(c => c.deprecated === true).length > 0;
+  static hasDeprecatedConcepts(concepts: IConcept[] | undefined): boolean {
+    return concepts !== undefined ? concepts.filter(c => c.deprecated === true).length > 0 : false;
   }
 
   static getSlVersionByVersionNumber(vnumber: string): string {

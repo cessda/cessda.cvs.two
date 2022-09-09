@@ -18,7 +18,7 @@ import eu.cessda.cvs.security.ActionType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +28,7 @@ public class CodeSnippet implements Serializable {
     @NotNull
     private Long versionId;
     private Long introducedInVersionId;
+    private Long validUntilVersionId;
     private Long conceptId;
     private Long conceptSlId;
 
@@ -41,13 +42,14 @@ public class CodeSnippet implements Serializable {
     private Integer position;
     private boolean deprecated;
     private Long replacedBy;
-    private ZonedDateTime deprecatedAt;
     private Long insertionRefConceptId;
     private Integer relPosToRefConcept;
     private String changeType;
     private String changeDesc;
     private List<String> conceptStructures = new ArrayList<>();
     private List<Long> conceptStructureIds = new ArrayList<>();
+    private LocalDate validFrom;
+    private LocalDate validUntil;
 
     public ActionType getActionType() {
         return actionType;
@@ -71,6 +73,14 @@ public class CodeSnippet implements Serializable {
 
     public void setIntroducedInVersionId(Long introducedInVersionId) {
         this.introducedInVersionId = introducedInVersionId;
+    }
+
+    public Long getValidUntilVersionId() {
+        return validUntilVersionId;
+    }
+
+    public void setValidUntilVersionId(Long validUntilVersionId) {
+        this.validUntilVersionId = validUntilVersionId;
     }
 
     public Long getConceptId() {
@@ -145,14 +155,6 @@ public class CodeSnippet implements Serializable {
         this.replacedBy = replacedBy;
     }
 
-    public ZonedDateTime getDeprecatedAt() {
-        return this.deprecatedAt;
-    }
-
-    public void setDeprecatedAt(ZonedDateTime deprecatedAt) {
-        this.deprecatedAt = deprecatedAt;
-    }
-
     public Long getInsertionRefConceptId() {
         return insertionRefConceptId;
     }
@@ -201,6 +203,22 @@ public class CodeSnippet implements Serializable {
         this.conceptStructureIds = conceptStructureIds;
     }
 
+    public LocalDate getValidFrom() {
+        return this.validFrom;
+    }
+
+    public void setValidFrom(LocalDate validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public LocalDate getValidUntil() {
+        return this.validUntil;
+    }
+
+    public void setValidUntil(LocalDate validUntil) {
+        this.validUntil = validUntil;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -223,6 +241,7 @@ public class CodeSnippet implements Serializable {
             "actionType='" + getActionType() + "'" +
             ", versionId=" + getVersionId() +
             ", introducedInVersionId=" + getIntroducedInVersionId() +
+            ", validUntilVersionId=" + getValidUntilVersionId() +
             ", conceptId='" + getConceptId() + "'" +
             ", conceptSlId='" + getConceptSlId() + "'" +
             ", parent=" + getParent() +
@@ -232,13 +251,14 @@ public class CodeSnippet implements Serializable {
             ", position='" + getPosition() + "'" +
             ", deprecated='" + getDeprecated() + "'" +
             ", replacedBy='" + getReplacedBy() + "'" +
-            ", deprecatedAt='" + getDeprecatedAt() + "'" +
             ", insertionRefConceptId='" + getInsertionRefConceptId() + "'" +
             ", relPosToRefConcept='" + getRelPosToRefConcept() + "'" +
             ", changeType='" + getChangeType() + "'" +
             ", changeDesc='" + getChangeDesc() + "'" +
             ", conceptStructures='" + getConceptStructures() + "'" +
             ", conceptStructureIds='" + getConceptStructureIds() + "'" +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validUntil='" + getValidUntil() + "'" +
             "}";
     }
 }

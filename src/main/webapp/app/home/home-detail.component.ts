@@ -15,6 +15,7 @@ import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
 
+import {IConcept } from 'app/shared/model/concept.model';
 import {IVocabulary} from 'app/shared/model/vocabulary.model';
 import {IVersion} from 'app/shared/model/version.model';
 
@@ -57,6 +58,8 @@ export class HomeDetailComponent implements OnInit {
   currentSelectedCode?: string;
 
   enableDocxExport = false;
+
+  isShowingDeprecatedCodes = false;
 
   contentObservable: Subject<DiffContent> = new Subject<DiffContent>();
   contentObservable$: Observable<DiffContent> = this.contentObservable.asObservable();
@@ -152,6 +155,10 @@ export class HomeDetailComponent implements OnInit {
     return window.location.origin;
   }
 
+  hasDeprecatedConcepts(concepts: IConcept[]): boolean {
+    return VocabularyUtil.hasDeprecatedConcepts(concepts);
+  }
+
   toggleDetailPanel(): void {
     if (this.detailPanel.nativeElement.style.display === 'none' || this.detailPanel.nativeElement.style.display === '') {
       this.isDetailCollapse = false;
@@ -210,6 +217,10 @@ export class HomeDetailComponent implements OnInit {
       this.isExportCollapse = true;
       this.exportPanel.nativeElement.style.display = 'none';
     }
+  }
+
+  toggleDeprecatedCodesDisplay(): void {
+    this.isShowingDeprecatedCodes = !this.isShowingDeprecatedCodes;
   }
 
   getSlVersionByVersion(vnumber: string): string {

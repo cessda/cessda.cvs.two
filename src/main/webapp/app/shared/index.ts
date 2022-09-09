@@ -25,6 +25,8 @@ export * from './shared-libs.module';
 export * from './shared.module';
 export * from './util/datepicker-adapter';
 export * from './tree/tree.component';
+export * from './tree/tree-deprecated.component';
 export * from './tree-editor/tree-editor.component';
+export * from './tree-editor/tree-editor-deprecated.component';
 export * from './tree-reorder/tree-reorder.component';
 export * from './service/route-events.service';

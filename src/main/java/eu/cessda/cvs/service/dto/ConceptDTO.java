@@ -20,7 +20,7 @@ import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -54,6 +54,7 @@ public class ConceptDTO implements Serializable {
     private Long versionId;
 
     private Long introducedInVersionId;
+    private Long validUntilVersionId;
 
     private Integer position;
 
@@ -61,7 +62,8 @@ public class ConceptDTO implements Serializable {
 
     private Long replacedBy;
 
-    private ZonedDateTime deprecatedAt;
+    private LocalDate validFrom;
+    private LocalDate validUntil;
 
     public ConceptDTO(){
         this.notation = "NEW_NOTATION";
@@ -79,9 +81,11 @@ public class ConceptDTO implements Serializable {
         this.position = codeSnippet.getPosition();
         this.deprecated = codeSnippet.getDeprecated();
         this.replacedBy = codeSnippet.getReplacedBy();
-        this.deprecatedAt = ZonedDateTime.now();
         this.versionId = codeSnippet.getVersionId();
         this.introducedInVersionId = codeSnippet.getIntroducedInVersionId();
+        this.validUntilVersionId = codeSnippet.getValidUntilVersionId();
+        this.validFrom = codeSnippet.getValidFrom();
+        this.validUntil = codeSnippet.getValidUntil();
     }
 
     /**
@@ -94,8 +98,15 @@ public class ConceptDTO implements Serializable {
         this.position = conceptSlDTO.getPosition();
         this.deprecated = conceptSlDTO.getDeprecated();
         this.replacedBy = conceptSlDTO.getReplacedBy();
-        this.deprecatedAt = ZonedDateTime.now();
         this.slConcept = conceptSlDTO.getId();
+        this.introducedInVersionId = conceptSlDTO.getIntroducedInVersionId();
+        this.validUntilVersionId = conceptSlDTO.getValidUntilVersionId();
+        this.validFrom = conceptSlDTO.getValidFrom();
+        this.validUntil = conceptSlDTO.getValidUntil();
+
+        if (this.deprecated) {
+            this.uri = conceptSlDTO.getUri();
+        }
     }
 
     /**
@@ -106,12 +117,12 @@ public class ConceptDTO implements Serializable {
     public ConceptDTO( ConceptDTO conceptSlDTO, ConceptDTO prevConceptDTO, Long newVersionId ) {
         this.versionId = newVersionId;
         this.introducedInVersionId = conceptSlDTO.getIntroducedInVersionId();
+        this.validUntilVersionId = conceptSlDTO.getValidUntilVersionId();
         this.notation = conceptSlDTO.getNotation();
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
         this.deprecated = conceptSlDTO.getDeprecated();
         this.replacedBy = conceptSlDTO.getReplacedBy();
-        this.deprecatedAt = ZonedDateTime.now();
         this.slConcept = conceptSlDTO.getId();
         // prevConceptDTO is null "only happened in cloning TL concept". it means that new concept is added in SL concept,
         // or the concepts are reordered in SL version, which makes it is not possible to link the TL concept
@@ -125,7 +136,12 @@ public class ConceptDTO implements Serializable {
         if( !conceptSlDTO.equals( prevConceptDTO )) {
             this.slConcept = conceptSlDTO.getId();
         }
-        // the this.uri is skipped, since it is assigned during publication
+        // the this.uri is skipped, since it is assigned during publication except for the deprecated codes
+        if (this.deprecated) {
+            this.uri = conceptSlDTO.getUri();
+        }
+        this.validFrom = conceptSlDTO.getValidFrom();
+        this.validUntil = conceptSlDTO.getValidUntil();
     }
 
     public Long getId() {
@@ -208,14 +224,6 @@ public class ConceptDTO implements Serializable {
         this.replacedBy = replacedBy;
     }
 
-    public ZonedDateTime getDeprecatedAt() {
-        return this.deprecatedAt;
-    }
-
-    public void setDeprecatedAt(ZonedDateTime deprecatedAt) {
-        this.deprecatedAt = deprecatedAt;
-    }
-
     public String getParent() {
         return parent;
     }
@@ -240,6 +248,30 @@ public class ConceptDTO implements Serializable {
         this.introducedInVersionId = introducedInVersionId;
     }
 
+    public Long getValidUntilVersionId() {
+        return validUntilVersionId;
+    }
+
+    public void setValidUntilVersionId(Long validUntilVersionId) {
+        this.validUntilVersionId = validUntilVersionId;
+    }
+
+    public LocalDate getValidFrom() {
+        return this.validFrom;
+    }
+
+    public void setValidFrom(LocalDate validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public LocalDate getValidUntil() {
+        return this.validUntil;
+    }
+
+    public void setValidUntil(LocalDate validUntil) {
+        this.validUntil = validUntil;
+    }
+
     @Override
     public String toString() {
         return "ConceptDTO{" +
@@ -254,9 +286,11 @@ public class ConceptDTO implements Serializable {
             ", position=" + getPosition() +
             ", deprecated=" + getDeprecated() +
             ", replacedBy=" + getReplacedBy() +
-            ", deprecatedAt=" + getDeprecatedAt() +
             ", versionId=" + getVersionId() +
             ", introducedInVersionId=" + getIntroducedInVersionId() +
+            ", validUntilVersionId=" + getValidUntilVersionId() +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validUntil='" + getValidUntil() + "'" +
             "}";
     }
 

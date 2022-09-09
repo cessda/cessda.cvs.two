@@ -15,6 +15,7 @@ export interface ICodeSnippet {
   actionType?: string;
   versionId?: number;
   introducedInVersionId?: number | null;
+  validUntilVersionId?: number | null;
   conceptId?: number;
   conceptSlId?: number;
   parent?: string;
@@ -36,6 +37,7 @@ export class CodeSnippet implements ICodeSnippet {
     public actionType?: string,
     public versionId?: number,
     public introducedInVersionId?: number | null,
+    public validUntilVersionId?: number | null,
     public conceptId?: number,
     public conceptSlId?: number,
     public parent?: string,

@@ -21,7 +21,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.ZonedDateTime;
 
 /**
  * A Concept.
@@ -73,9 +72,6 @@ public class Concept implements Serializable {
     @Column(name = "replaced_by")
     private Long replacedBy;
 
-    @Column(name = "deprecated_at")
-    private ZonedDateTime deprecatedAt;
-
     @ManyToOne
     @JsonIgnoreProperties("concepts")
     private Version version;
@@ -83,6 +79,10 @@ public class Concept implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties("concepts")
     private Version introducedInVersion;
+
+    @ManyToOne
+    @JsonIgnoreProperties("concepts")
+    private Version validUntilVersion;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -223,19 +223,6 @@ public class Concept implements Serializable {
         this.replacedBy = replacedBy;
     }
 
-    public ZonedDateTime getDeprecatedAt() {
-        return this.deprecatedAt;
-    }
-
-    public Concept deprecatedAt(ZonedDateTime deprecatedAt) {
-        this.deprecatedAt = deprecatedAt;
-        return this;
-    }
-
-    public void setDeprecatedAt(ZonedDateTime deprecatedAt) {
-        this.deprecatedAt = deprecatedAt;
-    }
-
     public Version getVersion() {
         return version;
     }
@@ -261,6 +248,20 @@ public class Concept implements Serializable {
     public void setIntroducedInVersion(Version introducedInVersion) {
         this.introducedInVersion = introducedInVersion;
     }
+
+    public Version getValidUntilVersion() {
+        return validUntilVersion;
+    }
+
+    public Concept validUntilVersion(Version validUntilVersion) {
+        this.validUntilVersion = validUntilVersion;
+        return this;
+    }
+
+    public void setValidUntilVersion(Version validUntilVersion) {
+        this.validUntilVersion = validUntilVersion;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -293,7 +294,6 @@ public class Concept implements Serializable {
             ", position=" + getPosition() +
             ", deprecated=" + getDeprecated() +
             ", replacedBy=" + getReplacedBy() +
-            ", deprecatedAt=" + getDeprecatedAt() +
             "}";
     }
 }
