@@ -15,7 +15,7 @@ import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
 import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
 
-import {IConcept } from 'app/shared/model/concept.model';
+import {IConcept} from 'app/shared/model/concept.model';
 import {IVocabulary} from 'app/shared/model/vocabulary.model';
 import {IVersion} from 'app/shared/model/version.model';
 
@@ -155,7 +155,7 @@ export class HomeDetailComponent implements OnInit {
     return window.location.origin;
   }
 
-  hasDeprecatedConcepts(concepts: IConcept[]): boolean {
+  hasDeprecatedConcepts(concepts: IConcept[] | undefined): boolean {
     return VocabularyUtil.hasDeprecatedConcepts(concepts);
   }
 
