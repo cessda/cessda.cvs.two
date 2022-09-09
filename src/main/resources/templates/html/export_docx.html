@@ -184,6 +184,31 @@ div.CodeList {
 			    </div>
 			    <hr />
 
+          <div>
+			      <table aria-describedby="page-heading" style="max-width: 1024px">
+			        <caption>Deprecated Codes List</caption>
+			        <thead>
+              <tr>
+                <th scope="col">Code URI</th>
+                <th scope="col">Code value</th>
+                <th scope="col">Code descriptive term</th>
+                <th scope="col">Valid from</th>
+                <th scope="col">Valid to</th>
+              </tr>
+			        </thead>
+			        <tbody>
+              <tr th:each="concept : ${version.concepts}" th:if="${concept.deprecated}" >
+                <td style="white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.uri}"></td>
+                <td style="white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.notation}"></td>
+                <td th:text="${concept.title}"></td>
+                <td th:text="${concept.validFrom}"></td>
+                <td th:text="${concept.validUntil}"></td>
+              </tr>
+			        </tbody>
+			      </table>
+			    </div>
+			    <hr />
+
 		    </div>
 
 
