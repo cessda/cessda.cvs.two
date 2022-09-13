@@ -41,7 +41,7 @@ public class CodeSnippet implements Serializable {
     private String definition;
     private Integer position;
     private boolean deprecated;
-    private Long replacedBy;
+    private Long replacedById;
     private Long insertionRefConceptId;
     private Integer relPosToRefConcept;
     private String changeType;
@@ -147,12 +147,12 @@ public class CodeSnippet implements Serializable {
         this.deprecated = deprecated;
     }
 
-    public Long getReplacedBy() {
-        return this.replacedBy;
+    public Long getReplacedById() {
+        return this.replacedById;
     }
 
-    public void setReplacedBy(Long replacedBy) {
-        this.replacedBy = replacedBy;
+    public void setReplacedById(Long replacedById) {
+        this.replacedById = replacedById;
     }
 
     public Long getInsertionRefConceptId() {
@@ -250,7 +250,7 @@ public class CodeSnippet implements Serializable {
             ", definition='" + getDefinition() + "'" +
             ", position='" + getPosition() + "'" +
             ", deprecated='" + getDeprecated() + "'" +
-            ", replacedBy='" + getReplacedBy() + "'" +
+            ", replacedById='" + getReplacedById() + "'" +
             ", insertionRefConceptId='" + getInsertionRefConceptId() + "'" +
             ", relPosToRefConcept='" + getRelPosToRefConcept() + "'" +
             ", changeType='" + getChangeType() + "'" +

@@ -69,8 +69,9 @@ public class Concept implements Serializable {
     @Column(nullable = false)
     private boolean deprecated = false;
 
-    @Column(name = "replaced_by")
-    private Long replacedBy;
+    @ManyToOne
+    @JsonIgnoreProperties("concepts")
+    private Concept replacedBy;
 
     @ManyToOne
     @JsonIgnoreProperties("concepts")
@@ -210,16 +211,16 @@ public class Concept implements Serializable {
         this.deprecated = deprecated;
     }
 
-    public Long getReplacedBy() {
+    public Concept getReplacedBy() {
         return this.replacedBy;
     }
 
-    public Concept replacedBy(Long replacedBy) {
+    public Concept replacedBy(Concept replacedBy) {
         this.replacedBy = replacedBy;
         return this;
     }
 
-    public void setReplacedBy(Long replacedBy) {
+    public void setReplacedBy(Concept replacedBy) {
         this.replacedBy = replacedBy;
     }
 

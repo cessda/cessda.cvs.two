@@ -60,7 +60,9 @@ public class ConceptDTO implements Serializable {
 
     private boolean deprecated;
 
-    private Long replacedBy;
+    private Long replacedById;
+    private String replacedByUri;
+    private String replacedByNotation;
 
     private LocalDate validFrom;
     private LocalDate validUntil;
@@ -80,7 +82,9 @@ public class ConceptDTO implements Serializable {
         this.definition = codeSnippet.getDefinition();
         this.position = codeSnippet.getPosition();
         this.deprecated = codeSnippet.getDeprecated();
-        this.replacedBy = codeSnippet.getReplacedBy();
+        this.replacedById = codeSnippet.getReplacedById();
+        this.replacedByUri = codeSnippet.getReplacedByUri();
+        this.replacedByNotation = codeSnippet.getReplacedByNotation();
         this.versionId = codeSnippet.getVersionId();
         this.introducedInVersionId = codeSnippet.getIntroducedInVersionId();
         this.validUntilVersionId = codeSnippet.getValidUntilVersionId();
@@ -97,7 +101,9 @@ public class ConceptDTO implements Serializable {
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
         this.deprecated = conceptSlDTO.getDeprecated();
-        this.replacedBy = conceptSlDTO.getReplacedBy();
+        this.replacedById = conceptSlDTO.getReplacedById();
+        this.replacedByUri = conceptSlDTO.getReplacedByUri();
+        this.replacedByNotation = conceptSlDTO.getReplacedByNotation();
         this.slConcept = conceptSlDTO.getId();
         this.introducedInVersionId = conceptSlDTO.getIntroducedInVersionId();
         this.validUntilVersionId = conceptSlDTO.getValidUntilVersionId();
@@ -122,7 +128,9 @@ public class ConceptDTO implements Serializable {
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
         this.deprecated = conceptSlDTO.getDeprecated();
-        this.replacedBy = conceptSlDTO.getReplacedBy();
+        this.replacedById = conceptSlDTO.getReplacedById();
+        this.replacedByUri = conceptSlDTO.getReplacedByUri();
+        this.replacedByNotation = conceptSlDTO.getReplacedByNotation();
         this.slConcept = conceptSlDTO.getId();
         // prevConceptDTO is null "only happened in cloning TL concept". it means that new concept is added in SL concept,
         // or the concepts are reordered in SL version, which makes it is not possible to link the TL concept
@@ -216,12 +224,28 @@ public class ConceptDTO implements Serializable {
         this.deprecated = deprecated;
     }
 
-    public Long getReplacedBy() {
-        return this.replacedBy;
+    public Long getReplacedById() {
+        return this.replacedById;
     }
 
-    public void setReplacedBy(Long replacedBy) {
-        this.replacedBy = replacedBy;
+    public void setReplacedById(Long replacedById) {
+        this.replacedById = replacedById;
+    }
+
+    public String getReplacedByUri() {
+        return this.replacedByUri;
+    }
+
+    public void setReplacedByUri(String replacedByURI) {
+        this.replacedByUri = replacedByURI;
+    }
+
+    public String getReplacedByNotation() {
+        return this.replacedByNotation;
+    }
+
+    public void setReplacedByNotation(String replacedByNotation) {
+        this.replacedByNotation = replacedByNotation;
     }
 
     public String getParent() {
@@ -285,7 +309,9 @@ public class ConceptDTO implements Serializable {
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
             ", deprecated=" + getDeprecated() +
-            ", replacedBy=" + getReplacedBy() +
+            ", replacedById=" + getReplacedById() +
+            ", replacedByUri=" + getReplacedByUri() +
+            ", replacedByNotation=" + getReplacedByNotation() +
             ", versionId=" + getVersionId() +
             ", introducedInVersionId=" + getIntroducedInVersionId() +
             ", validUntilVersionId=" + getValidUntilVersionId() +

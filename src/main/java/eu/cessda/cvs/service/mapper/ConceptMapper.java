@@ -29,11 +29,15 @@ public interface ConceptMapper extends EntityMapper<ConceptDTO, Concept> {
     @Mapping(source = "introducedInVersion.publicationDate", target = "validFrom")
     @Mapping(source = "validUntilVersion.id", target = "validUntilVersionId")
     @Mapping(source = "validUntilVersion.publicationDate", target = "validUntil")
+    @Mapping(source = "replacedBy.id", target = "replacedById")
+    @Mapping(source = "replacedBy.notation", target = "replacedByNotation")
+    @Mapping(source = "replacedBy.uri", target = "replacedByUri")
     ConceptDTO toDto(Concept concept);
 
     @Mapping(source = "versionId", target = "version")
     @Mapping(source = "introducedInVersionId", target = "introducedInVersion")
     @Mapping(source = "validUntilVersionId", target = "validUntilVersion")
+    @Mapping(source = "replacedById", target = "replacedBy")
     Concept toEntity(ConceptDTO conceptDTO);
 
     default Concept fromId(Long id) {

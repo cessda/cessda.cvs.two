@@ -63,6 +63,13 @@
             "otherEntityRelationshipName": "concept",
             "relationshipName": "introducedInVersion",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "concept",
+            "otherEntityRelationshipName": "concept",
+            "relationshipName": "replacedBy",
+            "otherEntityField": "id"
         }
     ],
     "changelogDate": "20200506163200",

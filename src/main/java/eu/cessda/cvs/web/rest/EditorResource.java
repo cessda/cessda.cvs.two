@@ -498,12 +498,12 @@ public class EditorResource {
             vocabularyDTO.getAgencyId(), versionDTO.getLanguage());
 
         conceptDTO.setDeprecated(true);
-        conceptDTO.setReplacedBy(codeSnippet.getReplacedBy());
+        conceptDTO.setReplacedById(codeSnippet.getReplacedById());
 
         ConceptDTO replacingConceptDTO = null;
-        if (codeSnippet.getReplacedBy() != null && codeSnippet.getReplacedBy() >= 0) {
-            replacingConceptDTO = conceptService.findOne(codeSnippet.getReplacedBy())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getReplacedBy() + AS_A_REPLACING_CONCEPT));
+        if (codeSnippet.getReplacedById() != null && codeSnippet.getReplacedById() >= 0) {
+            replacingConceptDTO = conceptService.findOne(codeSnippet.getReplacedById())
+            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getReplacedById() + AS_A_REPLACING_CONCEPT));
         }
 
         Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
@@ -511,7 +511,7 @@ public class EditorResource {
             ConceptDTO conceptNext = conceptIterator.next();
             if( conceptNext.equals( conceptDTO )) {
                 conceptNext.setDeprecated(true);
-                conceptNext.setReplacedBy(codeSnippet.getReplacedBy());
+                conceptNext.setReplacedById(codeSnippet.getReplacedById());
 
                 // store changes if not initial version
                 recordCodeDeprecatedAction(conceptNext, versionDTO, replacingConceptDTO);

@@ -188,19 +188,28 @@ div.CodeList {
 			      <table aria-describedby="page-heading" style="max-width: 1024px">
 			        <caption>Deprecated Codes List</caption>
 			        <thead>
-              <tr>
-                <th scope="col">Code URI</th>
-                <th scope="col">Code value</th>
-                <th scope="col">Code descriptive term</th>
-                <th scope="col">Valid from</th>
-                <th scope="col">Valid to</th>
-              </tr>
+                <tr>
+                  <th colspan="3">Code</th>
+                  <th colspan="2">Replaced by</th>
+                  <th colspan="2">Validity</th>
+                </tr>
+                <tr>
+                  <th scope="col">URI</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">Descriptive term</th>
+                  <th scope="col">URI</th>
+                  <th scope="col">Value</th>
+                  <th scope="col">From</th>
+                  <th scope="col">To</th>
+                </tr>
 			        </thead>
 			        <tbody>
               <tr th:each="concept : ${version.concepts}" th:if="${concept.deprecated}" >
                 <td style="white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.uri}"></td>
                 <td style="white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.notation}"></td>
                 <td th:text="${concept.title}"></td>
+                <td th:text="${concept.replacedByUri}"></td>
+                <td th:text="${concept.replacedByNotation}"></td>
                 <td th:text="${concept.validFrom}"></td>
                 <td th:text="${concept.validUntil}"></td>
               </tr>
