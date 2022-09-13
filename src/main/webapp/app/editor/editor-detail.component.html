@@ -72,7 +72,7 @@
                             </div>
                             <div *ngIf="version!.itemType === 'SL'">
                                 <div *ngIf="version!.status === 'DRAFT'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS__REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'level-up-alt'"></fa-icon>
                                         <span>Review {{version!.itemType}} {{version!.language}}</span>
@@ -524,7 +524,7 @@
                                                 <span>Version notes</span>
                                             </div>
                                             <div class="detail-column">
-                                                <quill-editor class="medium-quill" [modules]="quillModules" name="ddiUsage" formControlName="versionNotes"></quill-editor>
+                                                <quill-editor class="medium-quill" [modules]="quillModules" name="versionNotes" formControlName="versionNotes" (onEditorCreated)="onVersionNotesEditorCreated($event)"></quill-editor>
                                             </div>
                                         </div>
                                         <br/><br/>
@@ -533,7 +533,7 @@
                                                 <span>Version changes</span>
                                             </div>
                                             <div class="detail-column">
-                                                <quill-editor class="medium-quill" [modules]="quillModules" name="ddiUsage" formControlName="versionChanges"></quill-editor>
+                                                <quill-editor class="medium-quill" [modules]="quillModules" name="versionChanges" formControlName="versionChanges" (onEditorCreated)="onVersionChangesEditorCreated($event)"></quill-editor>
                                             </div>
                                         </div>
                                         <div>

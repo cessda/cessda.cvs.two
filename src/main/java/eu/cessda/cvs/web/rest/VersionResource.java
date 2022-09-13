@@ -30,8 +30,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -149,5 +152,35 @@ public class VersionResource {
         Page<VersionDTO> page = versionService.search(query, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
+    /**
+     * {@code GET  /search/languages}
+     *
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of languages in body.
+     */
+    @GetMapping("/search/languages")
+    public ResponseEntity<List<String>> searchLanguages( @RequestParam(name = "s" ) String s) {
+        log.debug("REST request search vocabulary languages");
+        try
+        {
+            s = URLDecoder.decode( s, "UTF-8" );
+        }
+        catch (UnsupportedEncodingException e)
+        {
+            throw new IllegalStateException(e);
+        }
+        final List<String> status = new ArrayList<>();
+        if ( !s.trim().isEmpty() )
+        {
+            // Split the string using ; as the split character, and trim the resultant strings
+            for ( String split : s.split( ";" ) )
+            {
+                status.add( split.trim() );
+            }
+        }
+        List<String> languagesIsos = versionService.findAllLanguagesByStatus(status);
+
+        return ResponseEntity.ok().body( languagesIsos );
     }
 }

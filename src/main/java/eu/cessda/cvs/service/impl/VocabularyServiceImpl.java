@@ -13,47 +13,44 @@
 
 package eu.cessda.cvs.service.impl;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import javax.persistence.EntityNotFoundException;
-import javax.servlet.http.HttpServletRequest;
-import javax.xml.bind.DatatypeConverter;
-
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import eu.cessda.cvs.config.ApplicationProperties;
+import eu.cessda.cvs.domain.*;
+import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.domain.enumeration.Language;
+import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.domain.search.VocabularyEditor;
+import eu.cessda.cvs.domain.search.VocabularyPublish;
+import eu.cessda.cvs.repository.AgencyRepository;
+import eu.cessda.cvs.repository.LicenceRepository;
+import eu.cessda.cvs.repository.VocabularyRepository;
+import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
+import eu.cessda.cvs.repository.search.VocabularyEditorSearchRepository;
+import eu.cessda.cvs.repository.search.VocabularyPublishSearchRepository;
+import eu.cessda.cvs.security.ActionType;
+import eu.cessda.cvs.security.SecurityUtils;
+import eu.cessda.cvs.service.*;
+import eu.cessda.cvs.service.dto.*;
+import eu.cessda.cvs.service.mapper.VocabularyEditorMapper;
+import eu.cessda.cvs.service.mapper.VocabularyMapper;
+import eu.cessda.cvs.service.mapper.VocabularyPublishMapper;
+import eu.cessda.cvs.service.search.EsFilter;
+import eu.cessda.cvs.service.search.EsQueryResultDetail;
+import eu.cessda.cvs.service.search.SearchScope;
+import eu.cessda.cvs.utils.VersionUtils;
+import eu.cessda.cvs.utils.VocabularyUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
+import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.text.Text;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.InnerHitBuilder;
-import org.elasticsearch.index.query.NestedQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
@@ -72,55 +69,19 @@ import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import eu.cessda.cvs.config.ApplicationProperties;
-import eu.cessda.cvs.domain.Agency;
-import eu.cessda.cvs.domain.CodeSnippet;
-import eu.cessda.cvs.domain.Concept;
-import eu.cessda.cvs.domain.Licence;
-import eu.cessda.cvs.domain.Version;
-import eu.cessda.cvs.domain.Vocabulary;
-import eu.cessda.cvs.domain.VocabularySnippet;
-import eu.cessda.cvs.domain.enumeration.ItemType;
-import eu.cessda.cvs.domain.enumeration.Language;
-import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.domain.search.VocabularyEditor;
-import eu.cessda.cvs.domain.search.VocabularyPublish;
-import eu.cessda.cvs.repository.AgencyRepository;
-import eu.cessda.cvs.repository.LicenceRepository;
-import eu.cessda.cvs.repository.VocabularyRepository;
-import eu.cessda.cvs.repository.search.AgencyStatSearchRepository;
-import eu.cessda.cvs.repository.search.VocabularyEditorSearchRepository;
-import eu.cessda.cvs.repository.search.VocabularyPublishSearchRepository;
-import eu.cessda.cvs.security.ActionType;
-import eu.cessda.cvs.security.SecurityUtils;
-import eu.cessda.cvs.service.CodeAlreadyExistException;
-import eu.cessda.cvs.service.ConceptService;
-import eu.cessda.cvs.service.ExportService;
-import eu.cessda.cvs.service.VersionService;
-import eu.cessda.cvs.service.VocabularyAlreadyExistException;
-import eu.cessda.cvs.service.VocabularyChangeService;
-import eu.cessda.cvs.service.VocabularyNotFoundException;
-import eu.cessda.cvs.service.VocabularyService;
-import eu.cessda.cvs.service.dto.AgencyDTO;
-import eu.cessda.cvs.service.dto.CodeDTO;
-import eu.cessda.cvs.service.dto.ConceptDTO;
-import eu.cessda.cvs.service.dto.VersionDTO;
-import eu.cessda.cvs.service.dto.VocabularyChangeDTO;
-import eu.cessda.cvs.service.dto.VocabularyDTO;
-import eu.cessda.cvs.service.mapper.VocabularyEditorMapper;
-import eu.cessda.cvs.service.mapper.VocabularyMapper;
-import eu.cessda.cvs.service.mapper.VocabularyPublishMapper;
-import eu.cessda.cvs.service.search.EsFilter;
-import eu.cessda.cvs.service.search.EsQueryResultDetail;
-import eu.cessda.cvs.service.search.SearchScope;
-import eu.cessda.cvs.utils.VersionUtils;
-import eu.cessda.cvs.utils.VocabularyUtils;
+import javax.persistence.EntityNotFoundException;
+import javax.servlet.http.HttpServletRequest;
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.bind.JAXBException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Service Implementation for managing {@link Vocabulary}.
@@ -1983,8 +1944,8 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		Licence licence = null;
 		Agency agency = null;
-		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED ) ||
-				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_PUBLISHED ) )
+		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) ||
+				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_PUBLISH ) )
 		{
 			licence = licenceRepository.getOne( vocabularySnippet.getLicenseId() );
 			agency = agencyRepository.getOne( vocabularySnippet.getAgencyId() );
@@ -1999,8 +1960,8 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			vocabularyDTO.setStatus( Status.REVIEW.toString() );
 			break;
-		case FORWARD_CV_SL_STATUS_PUBLISHED:
-			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED,
+		case FORWARD_CV_SL_STATUS_PUBLISH:
+			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_PUBLISH,
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 
 			versionDTO.setStatus( Status.PUBLISHED.toString() );
@@ -2021,8 +1982,8 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.REVIEW.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			break;
-		case FORWARD_CV_TL_STATUS_PUBLISHED:
-			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_PUBLISHED,
+		case FORWARD_CV_TL_STATUS_PUBLISH:
+			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_PUBLISH,
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 
 			versionDTO.setStatus( Status.PUBLISHED.toString() );
@@ -2041,7 +2002,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		// check if SL published and not initial version, is there any TL needs to be cloned as
 		// DRAFT?
-		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISHED ) && !versionDTO.isInitialVersion() )
+		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) && !versionDTO.isInitialVersion() )
 		{
 			cloneTLsIfAny( vocabularyDTO, versionDTO );
 		}
@@ -2167,16 +2128,18 @@ public class VocabularyServiceImpl implements VocabularyService
 		map.put( "year", year );
 		map.put( "baseUrl", getURLWithContextPath( request ) );
 
-		try
-		{
-			return exportService.generateFileByThymeleafTemplate( vocabularyNotation + "-" + versionSl + "_" + versionList, "export", map,
-					downloadType );
-		}
-		catch (Exception e)
-		{
-			log.error( e.getMessage() );
-		}
-		return null;
+        File outputFile = new File( System.getProperty("java.io.tmpdir") + File.separator
+            + vocabularyNotation + "-" + versionSl + "_" + versionList + "." + downloadType + "." + downloadType );
+
+        try (FileOutputStream outputStream = new FileOutputStream( outputFile ))
+        {
+            exportService.generateFileByThymeleafTemplate( "export", map, downloadType, outputStream );
+            return outputFile;
+        }
+        catch ( IOException | JAXBException | Docx4JException e )
+        {
+            throw new VocabularyFileGenerationFailedException( e );
+        }
 	}
 
 	@Override

@@ -125,4 +125,10 @@ public interface VersionService {
      */
     List<VersionDTO> findByUrnStartingWith(String urn);
 
+    /**
+     * Get list of used languages by version status
+     * @param status
+     * @return
+     */
+    List<String> findAllLanguagesByStatus(List<String> status);
 }

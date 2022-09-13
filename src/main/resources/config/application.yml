@@ -133,14 +133,14 @@ info:
 jhipster:
   clientApp:
     name: 'cvsApp'
-  # By default CORS is disabled. Uncomment to enable.
-  # cors:
-  #     allowed-origins: "*"
-  #     allowed-methods: "*"
-  #     allowed-headers: "*"
-  #     exposed-headers: "Authorization,Link,X-Total-Count"
-  #     allow-credentials: true
-  #     max-age: 1800
+  cors:
+    allowed-origins: '*'
+    # Only allow resources to be read
+    allowed-methods: 'GET'
+    allowed-headers: '*'
+    exposed-headers: 'Authorization,Link,X-Total-Count'
+    allow-credentials: true
+    max-age: 1800
   mail:
     from: no-reply@cessda.eu
   swagger:

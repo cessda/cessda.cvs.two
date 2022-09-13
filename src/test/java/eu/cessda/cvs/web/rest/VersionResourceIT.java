@@ -497,4 +497,18 @@ public class VersionResourceIT {
         List<Version> versionList = versionRepository.findAll();
         assertThat(versionList).hasSize(databaseSizeBeforeDelete - 1);
     }
+
+    @Test
+    @Transactional
+    void searchLanguagesByStatus() throws Exception
+    {
+        // Initialize the database
+        versionRepository.saveAndFlush(version);
+
+        // Search by status
+        restVersionMockMvc.perform( get("/api/search/languages?s={status}", version.getStatus() + "; " + UPDATED_STATUS) )
+            .andExpect( status().isOk() )
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$[0]").value(version.getLanguage()));
+    }
 }

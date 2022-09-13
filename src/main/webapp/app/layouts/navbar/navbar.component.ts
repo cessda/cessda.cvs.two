@@ -21,11 +21,15 @@ import { LANGUAGES } from 'app/core/language/language.constants';
 import { AccountService } from 'app/core/auth/account.service';
 import { LoginModalService } from 'app/core/login/login-modal.service';
 import { LoginService } from 'app/core/login/login.service';
+import { HomeService } from 'app/home/home.service';
 import { ProfileService } from 'app/layouts/profiles/profile.service';
 import { fromEvent, Subscription } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import { HttpResponse } from '@angular/common/http';
 import { VocabularyLanguageFromKeyPipe } from 'app/shared';
+import VocabularyUtil from 'app/shared/util/vocabulary-util';
+
 
 @Component({
   selector: 'jhi-navbar',
@@ -59,11 +63,14 @@ export class NavbarComponent implements OnInit, OnDestroy {
     protected eventManager: JhiEventManager,
     private router: Router,
     private location: Location,
-    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe
+    private vocabLangPipeKey: VocabularyLanguageFromKeyPipe,
+    private homeService: HomeService
   ) {
     this.version = VERSION ? (VERSION.toLowerCase().startsWith('v') ? VERSION : 'v' + VERSION) : '';
     this.isSearching = false;
     this.currentLang = 'en';
+
+    this.loadLanguages();
 
     this.activatedRoute.queryParams.subscribe(params => {
       this.currentSearch = params['q'];
@@ -86,8 +93,22 @@ export class NavbarComponent implements OnInit, OnDestroy {
     });
 
     this.router.events.subscribe(() => {
-      this.isEditorSearch = this.location.path().startsWith('/editor');
+      const newValue = this.location.path().startsWith('/editor');
+      if (newValue !== this.isEditorSearch) {
+        this.isEditorSearch = newValue;
+        this.loadLanguages();
+      }
     });
+  }
+
+  loadLanguages(): void {
+    this.homeService
+      .getAvailableLanguagesIsos(this.isEditorSearch ? {'s':'DRAFT;REVIEW;PUBLISHED;'} : {'s':'PUBLISHED'})
+      .subscribe((res: HttpResponse<string[]>) => {
+          this.searchLangs = res.body!;
+          this.searchLangs = VocabularyUtil.sortLangByName(this.searchLangs, 'en');
+          this.searchLangs.push('_all');
+      });
   }
 
   ngOnInit(): void {

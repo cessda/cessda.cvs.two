@@ -15,38 +15,32 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.domain.MetadataField;
+import eu.cessda.cvs.domain.enumeration.ObjectType;
 import eu.cessda.cvs.repository.MetadataFieldRepository;
 import eu.cessda.cvs.service.MetadataFieldService;
 import eu.cessda.cvs.service.dto.MetadataFieldDTO;
 import eu.cessda.cvs.service.mapper.MetadataFieldMapper;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
+
 import javax.persistence.EntityManager;
-import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItem;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import eu.cessda.cvs.domain.enumeration.ObjectType;
 /**
  * Integration tests for the {@link MetadataFieldResource} REST controller.
  */
@@ -187,7 +181,7 @@ public class MetadataFieldResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(metadataField.getId().intValue())))
             .andExpect(jsonPath("$.[*].metadataKey").value(hasItem(DEFAULT_METADATA_KEY)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem( DEFAULT_DESCRIPTION )))
             .andExpect(jsonPath("$.[*].objectType").value(hasItem(DEFAULT_OBJECT_TYPE.toString())));
     }
 
@@ -203,8 +197,61 @@ public class MetadataFieldResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(metadataField.getId().intValue()))
             .andExpect(jsonPath("$.metadataKey").value(DEFAULT_METADATA_KEY))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.description").value( DEFAULT_DESCRIPTION ))
             .andExpect(jsonPath("$.objectType").value(DEFAULT_OBJECT_TYPE.toString()));
+    }
+
+    @Test
+    @Transactional
+    void getMetadataFieldByMetadataKey() throws Exception
+    {
+        // Initialize the database
+        metadataFieldRepository.saveAndFlush(metadataField);
+
+        // Get the metadataField
+        restMetadataFieldMockMvc.perform( get("/api/metadata-fields/metadata-key/{metadataKey}", metadataField.getMetadataKey()) )
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+            .andExpect(jsonPath("$.id").value(metadataField.getId().intValue()))
+            .andExpect(jsonPath("$.metadataKey").value(DEFAULT_METADATA_KEY))
+            .andExpect(jsonPath("$.description").value( DEFAULT_DESCRIPTION ))
+            .andExpect(jsonPath("$.objectType").value(DEFAULT_OBJECT_TYPE.toString()));
+    }
+
+    @Test
+    @Transactional
+    void getMetadataFieldAsPDF() throws Exception
+    {
+        // Initialize the database
+        metadataFieldRepository.saveAndFlush(metadataField);
+
+        // Get the metadataField
+        restMetadataFieldMockMvc.perform( get("/api/metadata-fields/download-pdf/{metadataKey}", metadataField.getMetadataKey()) )
+            .andExpect(status().isOk())
+            .andExpect( content().contentType( MediaType.APPLICATION_PDF ) )
+            .andExpect( header().string( HttpHeaders.CONTENT_DISPOSITION, equalTo( "attachment; filename=document.pdf" ) ) );
+    }
+
+    @Test
+    @Transactional
+    void getMetadataFieldAsDOCX() throws Exception
+    {
+        // Initialize the database
+        metadataFieldRepository.saveAndFlush(metadataField);
+
+        // Get the metadataField
+        restMetadataFieldMockMvc.perform( get("/api/metadata-fields/download-word/{metadataKey}", metadataField.getMetadataKey()) )
+            .andExpect(status().isOk())
+            .andExpect( content().contentType( new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document" ) ) )
+            .andExpect( header().string( HttpHeaders.CONTENT_DISPOSITION, equalTo( "attachment; filename=document.docx" ) ) );
+    }
+
+    @Test
+    @Transactional
+    public void getNonExistingMetadataKey() throws Exception {
+        // Get the metadataField
+        restMetadataFieldMockMvc.perform(get("/api/metadata-fields/metadata-key/{metadataKey}", Long.MAX_VALUE))
+            .andExpect(status().isNotFound());
     }
 
     @Test
