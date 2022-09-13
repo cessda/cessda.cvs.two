@@ -83,8 +83,6 @@ public class ConceptDTO implements Serializable {
         this.position = codeSnippet.getPosition();
         this.deprecated = codeSnippet.getDeprecated();
         this.replacedById = codeSnippet.getReplacedById();
-        this.replacedByUri = codeSnippet.getReplacedByUri();
-        this.replacedByNotation = codeSnippet.getReplacedByNotation();
         this.versionId = codeSnippet.getVersionId();
         this.introducedInVersionId = codeSnippet.getIntroducedInVersionId();
         this.validUntilVersionId = codeSnippet.getValidUntilVersionId();
