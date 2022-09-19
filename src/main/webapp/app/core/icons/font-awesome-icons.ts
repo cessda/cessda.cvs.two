@@ -34,6 +34,7 @@ import {
   faExclamationTriangle,
   faExternalLinkAlt,
   faEye,
+  faEyeSlash,
   faFilePdf,
   faFileWord,
   faFlag,
@@ -57,6 +58,7 @@ import {
   faSortDown,
   faSortUp,
   faStickyNote,
+  faStream,
   faSync,
   faTachometerAlt,
   faTasks,
@@ -68,6 +70,7 @@ import {
   faUpload,
   faUser,
   faUserPlus,
+  faWind,
   faWrench
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -78,6 +81,7 @@ export const fontAwesomeIcons = [
   faSortDown,
   faSync,
   faEye,
+  faEyeSlash,
   faBan,
   faTimes,
   faArrowLeft,
@@ -129,5 +133,7 @@ export const fontAwesomeIcons = [
   faStickyNote,
   faTimesCircle,
   faFilePdf,
-  faFileWord
+  faFileWord,
+  faStream,
+  faWind
 ];

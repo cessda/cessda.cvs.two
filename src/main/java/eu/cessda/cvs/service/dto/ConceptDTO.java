@@ -20,6 +20,7 @@ import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -52,7 +53,19 @@ public class ConceptDTO implements Serializable {
 
     private Long versionId;
 
+    private Long introducedInVersionId;
+    private Long validUntilVersionId;
+
     private Integer position;
+
+    private boolean deprecated;
+
+    private Long replacedById;
+    private String replacedByUri;
+    private String replacedByNotation;
+
+    private LocalDate validFrom;
+    private LocalDate validUntil;
 
     public ConceptDTO(){
         this.notation = "NEW_NOTATION";
@@ -68,7 +81,13 @@ public class ConceptDTO implements Serializable {
         this.title = codeSnippet.getTitle();
         this.definition = codeSnippet.getDefinition();
         this.position = codeSnippet.getPosition();
+        this.deprecated = codeSnippet.getDeprecated();
+        this.replacedById = codeSnippet.getReplacedById();
         this.versionId = codeSnippet.getVersionId();
+        this.introducedInVersionId = codeSnippet.getIntroducedInVersionId();
+        this.validUntilVersionId = codeSnippet.getValidUntilVersionId();
+        this.validFrom = codeSnippet.getValidFrom();
+        this.validUntil = codeSnippet.getValidUntil();
     }
 
     /**
@@ -79,7 +98,19 @@ public class ConceptDTO implements Serializable {
         this.notation = conceptSlDTO.getNotation();
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
+        this.deprecated = conceptSlDTO.getDeprecated();
+        this.replacedById = conceptSlDTO.getReplacedById();
+        this.replacedByUri = conceptSlDTO.getReplacedByUri();
+        this.replacedByNotation = conceptSlDTO.getReplacedByNotation();
         this.slConcept = conceptSlDTO.getId();
+        this.introducedInVersionId = conceptSlDTO.getIntroducedInVersionId();
+        this.validUntilVersionId = conceptSlDTO.getValidUntilVersionId();
+        this.validFrom = conceptSlDTO.getValidFrom();
+        this.validUntil = conceptSlDTO.getValidUntil();
+
+        if (this.deprecated) {
+            this.uri = conceptSlDTO.getUri();
+        }
     }
 
     /**
@@ -89,9 +120,15 @@ public class ConceptDTO implements Serializable {
      */
     public ConceptDTO( ConceptDTO conceptSlDTO, ConceptDTO prevConceptDTO, Long newVersionId ) {
         this.versionId = newVersionId;
+        this.introducedInVersionId = conceptSlDTO.getIntroducedInVersionId();
+        this.validUntilVersionId = conceptSlDTO.getValidUntilVersionId();
         this.notation = conceptSlDTO.getNotation();
         this.parent = conceptSlDTO.getParent();
         this.position = conceptSlDTO.getPosition();
+        this.deprecated = conceptSlDTO.getDeprecated();
+        this.replacedById = conceptSlDTO.getReplacedById();
+        this.replacedByUri = conceptSlDTO.getReplacedByUri();
+        this.replacedByNotation = conceptSlDTO.getReplacedByNotation();
         this.slConcept = conceptSlDTO.getId();
         // prevConceptDTO is null "only happened in cloning TL concept". it means that new concept is added in SL concept,
         // or the concepts are reordered in SL version, which makes it is not possible to link the TL concept
@@ -105,7 +142,12 @@ public class ConceptDTO implements Serializable {
         if( !conceptSlDTO.equals( prevConceptDTO )) {
             this.slConcept = conceptSlDTO.getId();
         }
-        // the this.uri is skipped, since it is assigned during publication
+        // the this.uri is skipped, since it is assigned during publication except for the deprecated codes
+        if (this.deprecated) {
+            this.uri = conceptSlDTO.getUri();
+        }
+        this.validFrom = conceptSlDTO.getValidFrom();
+        this.validUntil = conceptSlDTO.getValidUntil();
     }
 
     public Long getId() {
@@ -172,6 +214,38 @@ public class ConceptDTO implements Serializable {
         this.position = position;
     }
 
+    public boolean getDeprecated() {
+        return this.deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
+    public Long getReplacedById() {
+        return this.replacedById;
+    }
+
+    public void setReplacedById(Long replacedById) {
+        this.replacedById = replacedById;
+    }
+
+    public String getReplacedByUri() {
+        return this.replacedByUri;
+    }
+
+    public void setReplacedByUri(String replacedByURI) {
+        this.replacedByUri = replacedByURI;
+    }
+
+    public String getReplacedByNotation() {
+        return this.replacedByNotation;
+    }
+
+    public void setReplacedByNotation(String replacedByNotation) {
+        this.replacedByNotation = replacedByNotation;
+    }
+
     public String getParent() {
         return parent;
     }
@@ -188,6 +262,38 @@ public class ConceptDTO implements Serializable {
         this.versionId = versionId;
     }
 
+    public Long getIntroducedInVersionId() {
+        return introducedInVersionId;
+    }
+
+    public void setIntroducedInVersionId(Long introducedInVersionId) {
+        this.introducedInVersionId = introducedInVersionId;
+    }
+
+    public Long getValidUntilVersionId() {
+        return validUntilVersionId;
+    }
+
+    public void setValidUntilVersionId(Long validUntilVersionId) {
+        this.validUntilVersionId = validUntilVersionId;
+    }
+
+    public LocalDate getValidFrom() {
+        return this.validFrom;
+    }
+
+    public void setValidFrom(LocalDate validFrom) {
+        this.validFrom = validFrom;
+    }
+
+    public LocalDate getValidUntil() {
+        return this.validUntil;
+    }
+
+    public void setValidUntil(LocalDate validUntil) {
+        this.validUntil = validUntil;
+    }
+
     @Override
     public String toString() {
         return "ConceptDTO{" +
@@ -200,7 +306,15 @@ public class ConceptDTO implements Serializable {
             ", slConcept=" + getSlConcept() +
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
+            ", deprecated=" + getDeprecated() +
+            ", replacedById=" + getReplacedById() +
+            ", replacedByUri=" + getReplacedByUri() +
+            ", replacedByNotation=" + getReplacedByNotation() +
             ", versionId=" + getVersionId() +
+            ", introducedInVersionId=" + getIntroducedInVersionId() +
+            ", validUntilVersionId=" + getValidUntilVersionId() +
+            ", validFrom='" + getValidFrom() + "'" +
+            ", validUntil='" + getValidUntil() + "'" +
             "}";
     }
 

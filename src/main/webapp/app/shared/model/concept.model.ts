@@ -11,6 +11,8 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
+import { Moment } from 'moment';
+
 export interface IConcept {
   id?: number;
   uri?: string;
@@ -21,11 +23,16 @@ export interface IConcept {
   slConcept?: number;
   parent?: string;
   position?: number;
+  deprecated?: boolean;
+  replacedBy?: number;
   versionId?: number;
+  introducedInVersionId?: number;
   visible?: boolean;
   titleSl?: any;
   definitionSl?: any;
-  status?: string;
+  status?: string,
+  validFrom?: Moment | null,
+  validUntil?: Moment | null;
 }
 
 export class Concept implements IConcept {
@@ -39,11 +46,16 @@ export class Concept implements IConcept {
     public slConcept?: number,
     public parent?: string,
     public position?: number,
+    public deprecated?: boolean,
+    public replacedBy?: number,
     public versionId?: number,
+    public introducedInVersionId?: number,
     public visible?: boolean,
     public titleSl?: any,
     public definitionSl?: any,
-    public status?: string
+    public status?: string,
+    public validFrom?: Moment | null,
+    public validUntil?: Moment | null
   ) {
     this.parent = '';
     // used as flag for tree open collapse

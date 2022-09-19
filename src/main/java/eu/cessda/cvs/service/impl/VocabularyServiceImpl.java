@@ -1968,6 +1968,13 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
 			vocabularyDTO.prepareSlPublishing( versionDTO );
+			// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
+			log.debug("#385: FORWARD_CV_SL_STATUS_PUBLISHED, \n" + 
+				"vocabularyDTO=" + vocabularyDTO.toString() + ",\n" +
+				"versionDTO=" + versionDTO.toString()
+				);
+			setDeprecatedConceptsValidUntilVersionId(versionDTO, versionDTO.getId());
+			// <-- #385
 			break;
 		case FORWARD_CV_TL_STATUS_REVIEW:
 			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_REVIEW,
@@ -1982,7 +1989,12 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.PUBLISHED.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
-
+			// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
+			log.debug("#385: FORWARD_CV_TL_STATUS_PUBLISHED, \n" + 
+				"versionDTO=" + versionDTO.toString()
+				);
+			setDeprecatedConceptsValidUntilVersionId(versionDTO, versionDTO.getId());
+			// <-- #385
 			break;
 		default:
 			throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
@@ -2235,6 +2247,26 @@ public class VocabularyServiceImpl implements VocabularyService
 		{
 			if ( vocab.getSelectedLang() == null )
 				vocab.setSelectedLang( vocab.getSourceLanguage() );
+		}
+	}
+
+	private void setDeprecatedConceptsValidUntilVersionId(VersionDTO versionDTO, Long validUntilVersionId)
+	{
+		log.debug("#385: setDeprecatedConceptsValidity for versionDTO=" + versionDTO.toString());
+		boolean modified = false;
+		for (ConceptDTO concept : versionDTO.getConcepts()) {
+			if (concept.getDeprecated() && concept.getValidUntilVersionId() == null)
+			{
+				log.debug("#385: concept=" + concept.toString());
+				concept.setValidUntilVersionId(validUntilVersionId);
+				modified = true;
+				log.debug("#385: concept=" + concept.toString());
+			}
+		}
+		if (modified)
+		{
+			log.debug("#385: saving versionDTO=" + versionDTO);
+			versionService.save(versionDTO);
 		}
 	}
 }

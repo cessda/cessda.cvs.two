@@ -217,6 +217,35 @@
                         </span>
                     </div>
                     <jhi-tree [parentNotation]="" [conceptList]="getVersionByLangNumber()!.concepts" [level]="0"></jhi-tree>
+
+                    <br>
+                    <div *ngIf="hasDeprecatedConcepts(getVersionByLangNumber()!.concepts)">
+                        <span class="cmt-scn" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT','ROLE_USER']">
+                            <a type="button" class="btn btn-primary btn-sm" ngbTooltip="See deprecated codes" (click)="toggleDeprecatedCodesDisplay()">
+                                <fa-icon *ngIf="!isShowingDeprecatedCodes" icon="eye"></fa-icon>
+                                <fa-icon *ngIf="isShowingDeprecatedCodes" icon="eye-slash"></fa-icon>
+                                <span class="d-none d-sm-inline-block">{{ isShowingDeprecatedCodes ? 'Hide' : 'See' }} deprecated codes</span>
+                            </a>
+                        </span><br>
+                        <br>
+                        <div *ngIf="isShowingDeprecatedCodes">
+                            <div class="concept-row row-header">
+                                <span>
+                                    Deprecated codes
+                                    <br>
+                                    <i>These codes have been deprecated and should no longer be used in the metadata:</i>
+                                </span>
+                            </div>
+                            <div class="concept-row row-header">
+                                <span class="column1">Code URI</span>
+                                <span class="column1">Code value</span>
+                                <span class="column2">Code descriptive term ({{getVersionByLangNumber()!.language}})</span>
+                                <span class="column2">Valid from</span>
+                                <span class="column2">Valid to</span>
+                            </div>
+                            <jhi-tree-deprecated [parentNotation]="" [conceptList]="getVersionByLangNumber()!.concepts" [level]="0"></jhi-tree-deprecated>
+                        </div>
+                    </div>
                 </div>
 
                 <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleVersionPanel()">&nbsp;
