@@ -103,7 +103,7 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
           actionType: 'DEPRECATE_CODE',
           versionId: this.versionParam.id,
           conceptId: this.conceptParam.id,
-          replacedBy: this.replacingCodeId
+          replacedById: this.replacingCodeId
         };
         this.editorService.deprecateCode(this.codeSnippet).subscribe(() => {
           this.router.navigate(['/editor/vocabulary/' + this.versionParam.notation]);
