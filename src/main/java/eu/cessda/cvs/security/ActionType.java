@@ -42,6 +42,7 @@ public enum ActionType {
     CREATE_CODE( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.CONTRIBUTOR_SL))),
     EDIT_CODE( new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL, AgencyRole.CONTRIBUTOR_SL))),
     REORDER_CODE(new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL))),
+    DEPRECATE_CODE(new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL))),
     DELETE_CODE(new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_SL))),
     ADD_TL_CODE(new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_TL, AgencyRole.CONTRIBUTOR_TL))),
     EDIT_TL_CODE(new HashSet<>(Arrays.asList(AgencyRole.ADMIN, AgencyRole.ADMIN_TL, AgencyRole.CONTRIBUTOR_TL))),

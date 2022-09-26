@@ -243,8 +243,10 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.isVersionInvalid = +this.cvForwardStatusForm.get(['versionNumberTl'])!.value < this.tlProposedVersionNumber;
         vocabularySnippet.versionNumber = this.slVersionNumber + '.' + this.cvForwardStatusForm.get(['versionNumberTl'])!.value;
         this.versionParam!.concepts!.forEach(c => {
-          if (!c.title || c.title === null || c.title === '') {
-            this.missingTranslations.push(c.notation!);
+          if (!c.deprecated) {
+            if (!c.title || c.title === null || c.title === '') {
+              this.missingTranslations.push(c.notation!);
+            }
           }
         });
       }

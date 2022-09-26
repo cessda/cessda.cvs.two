@@ -28,6 +28,7 @@ import { EditorDetailCvDeleteDialogComponent } from 'app/editor/editor-detail-cv
 import { EditorDetailCodeAddEditDialogComponent } from 'app/editor/editor-detail-code-add-edit-dialog.component';
 import { Concept, IConcept } from 'app/shared/model/concept.model';
 import { Observable, Subscription } from 'rxjs';
+import { EditorDetailCodeDeprecateDialogComponent } from 'app/editor/editor-detail-code-deprecate-dialog.component';
 import { EditorDetailCodeDeleteDialogComponent } from 'app/editor/editor-detail-code-delete-dialog.component';
 import { EditorDetailCodeReorderDialogComponent } from 'app/editor/editor-detail-code-reorder-dialog.component';
 import { EditorDetailCvForwardStatusDialogComponent } from 'app/editor/editor-detail-cv-forward-status-dialog.component';
@@ -92,6 +93,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   isCurrentVersionInfoEdit = false;
   isDdiUsageEdit = false;
   isNotesEdit = false;
+
+  isShowingDeprecatedCodes = false;
 
   codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'CONTRIBUTOR_TL'];
 
@@ -172,6 +175,14 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   getSlVersion(): IVersion {
     return VocabularyUtil.getSlVersion(this.vocabulary!);
+  }
+
+  getMajorVersionNumber(): number {
+    return VocabularyUtil.getMajorVersionNumber(this.version!);
+  }
+
+  getMinorVersionNumber(): number {
+    return VocabularyUtil.getMinorVersionNumber(this.version!);
   }
 
   setActiveVersion(language: string, versionNumber?: string): void {
@@ -273,6 +284,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return version.status === versionType;
   }
 
+  hasDeprecatedConcepts(concepts: IConcept[]): boolean {
+    return VocabularyUtil.hasDeprecatedConcepts(concepts);
+  }
+
   toggleDetailEPanel(): void {
     if (this.detailEPanel.nativeElement.style.display === 'none' || this.detailEPanel.nativeElement.style.display === '') {
       this.isDetailCollapse = false;
@@ -331,6 +346,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       this.isExportCollapse = true;
       this.exportEPanel.nativeElement.style.display = 'none';
     }
+  }
+
+  toggleDeprecatedCodesDisplay(): void {
+    this.isShowingDeprecatedCodes = !this.isShowingDeprecatedCodes;
   }
 
   getSlVersionByVersion(vnumber: string): string {
@@ -508,6 +527,18 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   openRemoveTlCode(): void {
     this.openDeleteCodeWindow();
+  }
+
+  openDeprecateCodePopup(): void {
+    this.openDeprecateCodeWindow();
+  }
+
+  openDeprecateCodeWindow(): void {
+    this.ngbModalRef = this.modalService.open(EditorDetailCodeDeprecateDialogComponent as Component, { size: 'xl', backdrop: 'static' });
+    this.ngbModalRef.componentInstance.versionParam = this.version;
+    this.ngbModalRef.componentInstance.conceptParam = this.concept;
+    this.ngbModalRef.componentInstance.isSlForm = this.version!.itemType === 'SL';
+    this.ngbModalRef.componentInstance.conceptList = this.version!.concepts;
   }
 
   openDeleteCodePopup(): void {

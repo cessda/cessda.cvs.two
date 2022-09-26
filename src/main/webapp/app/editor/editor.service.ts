@@ -88,6 +88,10 @@ export class EditorService {
     return this.http.post<IVersion>(this.resourceEditorCodeUrl + '/reorder', codeSnippet, { observe: 'response' });
   }
 
+  deprecateCode(codeSnippet: ICodeSnippet): Observable<HttpResponse<{}>> {
+    return this.http.post<IConcept>(this.resourceEditorCodeUrl + '/deprecate', codeSnippet, { observe: 'response' });
+  }
+
   deleteCode(conceptId: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceEditorCodeUrl}/${conceptId}`, { observe: 'response' });
   }

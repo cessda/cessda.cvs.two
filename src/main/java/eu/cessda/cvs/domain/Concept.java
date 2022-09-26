@@ -65,9 +65,25 @@ public class Concept implements Serializable {
     @Column(name = "position")
     private Integer position;
 
+    @NotNull
+    @Column(nullable = false)
+    private boolean deprecated = false;
+
+    @ManyToOne
+    @JsonIgnoreProperties("concepts")
+    private Concept replacedBy;
+
     @ManyToOne
     @JsonIgnoreProperties("concepts")
     private Version version;
+
+    @ManyToOne
+    @JsonIgnoreProperties("concepts")
+    private Version introducedInVersion;
+
+    @ManyToOne
+    @JsonIgnoreProperties("concepts")
+    private Version validUntilVersion;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -182,6 +198,32 @@ public class Concept implements Serializable {
         this.position = position;
     }
 
+    public boolean getDeprecated() {
+        return this.deprecated;
+    }
+
+    public Concept deprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+        return this;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
+    public Concept getReplacedBy() {
+        return this.replacedBy;
+    }
+
+    public Concept replacedBy(Concept replacedBy) {
+        this.replacedBy = replacedBy;
+        return this;
+    }
+
+    public void setReplacedBy(Concept replacedBy) {
+        this.replacedBy = replacedBy;
+    }
+
     public Version getVersion() {
         return version;
     }
@@ -194,6 +236,33 @@ public class Concept implements Serializable {
     public void setVersion(Version version) {
         this.version = version;
     }
+
+    public Version getIntroducedInVersion() {
+        return introducedInVersion;
+    }
+
+    public Concept introducedInVersion(Version introducedInVersion) {
+        this.introducedInVersion = introducedInVersion;
+        return this;
+    }
+
+    public void setIntroducedInVersion(Version introducedInVersion) {
+        this.introducedInVersion = introducedInVersion;
+    }
+
+    public Version getValidUntilVersion() {
+        return validUntilVersion;
+    }
+
+    public Concept validUntilVersion(Version validUntilVersion) {
+        this.validUntilVersion = validUntilVersion;
+        return this;
+    }
+
+    public void setValidUntilVersion(Version validUntilVersion) {
+        this.validUntilVersion = validUntilVersion;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -224,6 +293,8 @@ public class Concept implements Serializable {
             ", slConcept=" + getSlConcept() +
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
+            ", deprecated=" + getDeprecated() +
+            ", replacedBy=" + getReplacedBy() +
             "}";
     }
 }

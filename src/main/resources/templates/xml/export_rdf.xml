@@ -22,7 +22,8 @@
     </loop>
    </rdf:Description>
  <loop th:remove="tag" th:each="code, iterStat: ${codes}">
-   <rdf:Description th:attr="'rdf:about'=${docId + '#' + code.notation}">
+   <rdf:Description th:attr="'rdf:about'=${docId + '#' + code.notation},'owl:deprecated'=${code.deprecated ? 'true' : null}">
+      <dcterms:isReplacedBy th:if="${code.replacedByUri != null}" th:attr="'rdf:resource'=${code.replacedByUri}"/>
       <rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
       <skos:inScheme th:attr="'rdf:resource'=${docId}"/>
       <skos:notation th:text="${code.notation}"></skos:notation>

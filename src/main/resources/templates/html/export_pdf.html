@@ -173,14 +173,50 @@ div.CodeList {
 			          </tr>
 			        </thead>
 			        <tbody>
-			           <tr th:each="concept : ${version.concepts}" >
+			           <tr th:each="concept : ${version.concepts}" th:if="${!concept.deprecated}" >
                         <td style="width: 25%;white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.notation}"></td>
 			            <td style="width: 25%" th:text="${concept.title}"></td>
 			            <td style="width: 50%" th:text="${concept.definition}"></td>
 			          </tr>
 			        </tbody>
 			      </table>
+				</div>
+
+				<hr />
+
+				<div>
+			      <table aria-describedby="page-heading">
+			        <caption>Deprecated Codes List</caption>
+			        <thead>
+						<tr>
+							<th colspan="3">Code</th>
+							<th colspan="2">Replaced by</th>
+							<th colspan="2">Validity</th>
+						</tr>
+						<tr>
+							<th scope="col">URI</th>
+							<th scope="col">Value</th>
+							<th scope="col">Descriptive term</th>
+							<th scope="col">URI</th>
+							<th scope="col">Value</th>
+							<th scope="col">From</th>
+							<th scope="col">To</th>
+						</tr>
+			        </thead>
+			        <tbody>
+			           <tr th:each="concept : ${version.concepts}" th:if="${concept.deprecated}" >
+						<td style="white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.uri}"></td>
+                        <td style="white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.notation}"></td>
+			            <td th:text="${concept.title}"></td>
+						<td th:text="${concept.replacedByUri}"></td>
+						<td th:text="${concept.replacedByNotation}"></td>
+			            <td th:text="${concept.validFrom}"></td>
+						<td th:text="${concept.validUntil}"></td>
+			          </tr>
+			        </tbody>
+			      </table>
 			    </div>
+
 			    <hr />
 
 		    </div>

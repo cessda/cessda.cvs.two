@@ -112,10 +112,14 @@
       "back": "Back",
       "cancel": "Cancel",
       "delete": "Delete",
+      "deprecate": "Deprecate",
       "edit": "Edit",
+      "no": "No",
+      "ok": "OK",
       "open": "Open",
       "save": "Save",
-      "view": "View"
+      "view": "View",
+      "yes": "Yes"
     },
     "detail": {
       "field": "Field",
@@ -151,6 +155,11 @@
     "file": {
       "could.not.extract": "Could not extract file",
       "not.image": "File was expected to be an image but was found to be \"{{ fileType }}\""
+    }
+  },
+  "alert": {
+    "code": {
+      "deprecated": "Code deprecated."
     }
   },
   "footer": "This is your footer"

@@ -13,6 +13,7 @@
 
 package eu.cessda.cvs.service;
 
+import org.apache.commons.io.FilenameUtils;
 import org.imgscalr.Scalr;
 
 import javax.imageio.ImageIO;
@@ -47,7 +48,17 @@ public class FileUploadService {
     {
         // Create destination directory if it does not exist.
         createUploadDirectory( Paths.get( fileUploadHelper.getUploadBaseDirectory() ) );
-        File uploadedFile = new File( fileUploadHelper.getUploadBaseDirectory() + File.separator + UUID.randomUUID() );
+
+        // Generate destination file name and try to retrieve the file extension from the upload
+        String destinationFileName = fileUploadHelper.getUploadBaseDirectory() + File.separator + UUID.randomUUID();
+        String fileExtension = FilenameUtils.getExtension( fileUploadHelper.getSourceFile().getOriginalFilename() );
+
+        final File uploadedFile;
+        if (fileExtension != null && !fileExtension.isEmpty()) {
+            uploadedFile = new File( destinationFileName + "." + fileExtension );
+        } else {
+            uploadedFile = new File( destinationFileName );
+        }
 
         // Transfer the file to the destination. To work around an MVC bug, uploadedFile is converted to an absolute location.
         fileUploadHelper.getSourceFile().transferTo( uploadedFile.getAbsoluteFile() );

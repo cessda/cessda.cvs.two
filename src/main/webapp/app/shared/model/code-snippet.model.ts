@@ -14,6 +14,8 @@
 export interface ICodeSnippet {
   actionType?: string;
   versionId?: number;
+  introducedInVersionId?: number | null;
+  validUntilVersionId?: number | null;
   conceptId?: number;
   conceptSlId?: number;
   parent?: string;
@@ -27,12 +29,15 @@ export interface ICodeSnippet {
   changeDesc?: any;
   conceptStructures?: string[];
   conceptStructureIds?: number[];
+  replacedById?: number | null;
 }
 
 export class CodeSnippet implements ICodeSnippet {
   constructor(
     public actionType?: string,
     public versionId?: number,
+    public introducedInVersionId?: number | null,
+    public validUntilVersionId?: number | null,
     public conceptId?: number,
     public conceptSlId?: number,
     public parent?: string,
@@ -45,6 +50,7 @@ export class CodeSnippet implements ICodeSnippet {
     public changeType?: any,
     public changeDesc?: any,
     public conceptStructures?: string[],
-    public conceptStructureIds?: number[]
+    public conceptStructureIds?: number[],
+    public replacedById?: number | null
   ) {}
 }

@@ -18,15 +18,14 @@ import { JhiEventManager, JhiEventWithContent } from 'ng-jhipster';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'jhi-tree-editor',
-  templateUrl: './tree-editor.component.html',
+  selector: 'jhi-tree-editor-deprecated',
+  templateUrl: './tree-editor-deprecated.component.html',
   styleUrls: ['./tree-editor.component.scss']
 })
-export class TreeEditorComponent implements OnInit, OnDestroy {
+export class TreeEditorDeprecatedComponent implements OnInit, OnDestroy {
   @Input() parentNotation?: string;
   @Input() conceptList?: IConcept[];
   @Input() level?: number;
-  @Input() deprecated?: boolean;
 
   eventSubscriber?: Subscription;
   eventSubscriber2?: Subscription;

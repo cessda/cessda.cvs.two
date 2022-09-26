@@ -25,6 +25,7 @@ export * from './editor-detail-cv-comment-dialog.component';
 export * from './editor-detail-cv-comment-item.component';
 
 export * from './editor-detail-code-add-edit-dialog.component';
+export * from './editor-detail-code-deprecate-dialog.component';
 export * from './editor-detail-code-delete-dialog.component';
 export * from './editor-detail-code-reorder-dialog.component';
 export * from './editor-detail-code-csv-import-dialog.component';

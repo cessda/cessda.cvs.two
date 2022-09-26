@@ -87,6 +87,28 @@ export default class VocabularyUtil {
     return vocab.versions!.filter(v => v.itemType === 'SL')[0];
   }
 
+  static getMajorVersionNumber(version: IVersion): number {
+    if (version.number) {
+      const regex = /^([0-9]+)\./g;
+      const matches = regex.exec(version.number);
+      if (matches) {
+          return Number(matches[1]);
+      }
+    }
+    return -1;
+  }
+
+  static getMinorVersionNumber(version: IVersion): number {
+    if (version.number) {
+      const regex = /^([0-9]+)\.([0-9]+)/g;
+      const matches = regex.exec(version.number);
+      if (matches) {
+          return Number(matches[2]);
+      }
+    }
+    return -1;
+  }
+
   static getVersionByLang(vocab: IVocabulary): IVersion {
     return vocab.versions!.filter(v => v.language === vocab.selectedLang)[0];
   }
@@ -102,6 +124,10 @@ export default class VocabularyUtil {
 
   static isConceptHasChildren(notation: string, concepts: IConcept[]): boolean {
     return concepts.filter(c => c.parent === notation).length > 0;
+  }
+
+  static hasDeprecatedConcepts(concepts: IConcept[] | undefined): boolean {
+    return concepts !== undefined ? concepts.filter(c => c.deprecated === true).length > 0 : false;
   }
 
   static getSlVersionByVersionNumber(vnumber: string): string {

@@ -21,7 +21,9 @@ import {LoginModalComponent} from './login/login.component';
 import {HasAnyAuthorityDirective} from './auth/has-any-authority.directive';
 import {HasAnyAgencyAuthorityDirective} from './auth/has-any-agency-authority.directive';
 import {TreeComponent} from './tree/tree.component';
+import {TreeDeprecatedComponent} from './tree/tree-deprecated.component';
 import {TreeEditorComponent} from './tree-editor/tree-editor.component';
+import {TreeEditorDeprecatedComponent} from './tree-editor/tree-editor-deprecated.component';
 import {RouteEventsService} from 'app/shared/service/route-events.service';
 import {TreeReorderComponent} from 'app/shared/tree-reorder/tree-reorder.component';
 import {LinkHttpPipe} from 'app/shared/pipe/link-http-pipe';
@@ -51,7 +53,9 @@ import {CustomPageComponent} from 'app/shared/custom-page/custom-page.component'
     CustomPageComponent,
     MetadataItemComponent,
     TreeComponent,
+    TreeDeprecatedComponent,
     TreeEditorComponent,
+    TreeEditorDeprecatedComponent,
     TreeReorderComponent,
     VersionCompareComponent,
     VocabularyDownloadComponent,
@@ -72,7 +76,9 @@ import {CustomPageComponent} from 'app/shared/custom-page/custom-page.component'
     CustomPageComponent,
     MetadataItemComponent,
     TreeComponent,
+    TreeDeprecatedComponent,
     TreeEditorComponent,
+    TreeEditorDeprecatedComponent,
     TreeReorderComponent,
     VersionCompareComponent,
     VocabularyDownloadComponent,

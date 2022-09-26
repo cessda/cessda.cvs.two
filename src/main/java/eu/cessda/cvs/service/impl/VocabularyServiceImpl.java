@@ -1995,6 +1995,13 @@ public class VocabularyServiceImpl implements VocabularyService
 				// versionDTO.prepareSlPublishing( vocabularySnippet, licenceRepository.getOne( versionDTO.getLicenseId() ), agencyRepository.getOne(vocabularyDTO.getAgencyId()) );
 				vocabularyDTO.prepareSlPublishing( versionDTO );
 				vocabularyDTO.setStatus( Status.PUBLISHED.toString() );
+				// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
+				log.debug("#385: FORWARD_CV_SL_STATUS_PUBLISHED, \n" + 
+					"vocabularyDTO=" + vocabularyDTO.toString() + ",\n" +
+					"versionDTO=" + versionDTO.toString()
+				);
+				setDeprecatedConceptsValidUntilVersionId(versionDTO, versionDTO.getId());
+				// <-- #385
 			}
 			// now we need to go through all the versions which are TLs and ready to publish
 			// also we need to update the date of the publication
@@ -2004,6 +2011,12 @@ public class VocabularyServiceImpl implements VocabularyService
 				if (versionDTO_.getItemType().equals("TL") && versionDTO_.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
 					versionDTO_.setStatus( Status.PUBLISHED.toString() );
 					versionDTO_.setLastStatusChangeDate( LocalDate.now() );
+					// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
+					log.debug("#385: FORWARD_CV_TL_STATUS_PUBLISHED, \n" + 
+						"versionDTO=" + versionDTO.toString()
+					);
+					setDeprecatedConceptsValidUntilVersionId(versionDTO_, versionDTO_.getId());
+					// <-- #385
 				}
 			}
 			break;
@@ -2281,6 +2294,26 @@ public class VocabularyServiceImpl implements VocabularyService
 		{
 			if ( vocab.getSelectedLang() == null )
 				vocab.setSelectedLang( vocab.getSourceLanguage() );
+		}
+	}
+
+	private void setDeprecatedConceptsValidUntilVersionId(VersionDTO versionDTO, Long validUntilVersionId)
+	{
+		log.debug("#385: setDeprecatedConceptsValidity for versionDTO=" + versionDTO.toString());
+		boolean modified = false;
+		for (ConceptDTO concept : versionDTO.getConcepts()) {
+			if (concept.getDeprecated() && concept.getValidUntilVersionId() == null)
+			{
+				log.debug("#385: concept=" + concept.toString());
+				concept.setValidUntilVersionId(validUntilVersionId);
+				modified = true;
+				log.debug("#385: concept=" + concept.toString());
+			}
+		}
+		if (modified)
+		{
+			log.debug("#385: saving versionDTO=" + versionDTO);
+			versionService.save(versionDTO);
 		}
 	}
 }

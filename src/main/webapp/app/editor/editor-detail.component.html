@@ -135,101 +135,113 @@
                             </button>
                         </div>
 
-                        <a *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE') || (version!.status === 'PUBLISHED' && version!.concepts && version!.concepts!.length > 0) " class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isCodeActionCollapse = !isCodeActionCollapse"
-                           [attr.aria-expanded]="isCodeActionCollapse" aria-controls="action-code-panel">
-                            &nbsp;
-                            <fa-icon *ngIf="!isCodeActionCollapse" icon="caret-down"></fa-icon>
-                            <fa-icon *ngIf="isCodeActionCollapse" icon="caret-right"></fa-icon>
-                            <span>Code Actions</span>
-                        </a>
-                        <div id="action-code-panel" class="acc-body" [ngbCollapse]="isCodeActionCollapse">
-                            <div *ngIf="version!.itemType === 'SL'">
-                                <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE')">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
-                                            class="btn sk-select-min sk-input-f mtop10" (click)="openAddCodePopup()">
-                                        <fa-icon [icon]="'plus'"></fa-icon>
-                                        <span>Add code</span>
-                                    </button>
+                        <div *ngIf="!(concept !== null && concept.deprecated)">
+                            <a *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE') || (version!.status === 'PUBLISHED' && version!.concepts && version!.concepts!.length > 0) " class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isCodeActionCollapse = !isCodeActionCollapse"
+                            [attr.aria-expanded]="isCodeActionCollapse" aria-controls="action-code-panel">
+                                &nbsp;
+                                <fa-icon *ngIf="!isCodeActionCollapse" icon="caret-down"></fa-icon>
+                                <fa-icon *ngIf="isCodeActionCollapse" icon="caret-right"></fa-icon>
+                                <span>Code Actions</span>
+                            </a>
+                            <div id="action-code-panel" class="acc-body" [ngbCollapse]="isCodeActionCollapse">
+                                <div *ngIf="version!.itemType === 'SL'">
+                                    <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE')">
+                                        <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
+                                                class="btn sk-select-min sk-input-f mtop10" (click)="openAddCodePopup()">
+                                            <fa-icon [icon]="'plus'"></fa-icon>
+                                            <span>Add code</span>
+                                        </button>
 
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
-                                            class="btn sk-select-min sk-input-f mtop10" (click)="openCsvImportCodeWindow()">
-                                        <fa-icon [icon]="'upload'"></fa-icon>
-                                        <span>Import from CSV</span>
-                                    </button>
+                                        <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
+                                                class="btn sk-select-min sk-input-f mtop10" (click)="openCsvImportCodeWindow()">
+                                            <fa-icon [icon]="'upload'"></fa-icon>
+                                            <span>Import from CSV</span>
+                                        </button>
 
-                                    <div *ngIf="concept">
-                                        <div *ngIf="version!.status !== 'REVIEW'">
-                                            <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
-                                                    class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
-                                                <fa-icon [icon]="'edit'"></fa-icon>
-                                                <span>Edit code</span>
-                                            </button>
-                                        </div>
-                                        <div *ngIf="version!.status === 'REVIEW'">
-                                            <div *jhiHasAnyAgencyAuthority="{actionType:'PERFORM_ACTION_IN_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}">
-                                                <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
+                                        <div *ngIf="concept">
+                                            <div *ngIf="version!.status !== 'REVIEW'">
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
                                                     <fa-icon [icon]="'edit'"></fa-icon>
                                                     <span>Edit code</span>
                                                 </button>
                                             </div>
-                                        </div>
-                                        <div *ngIf="version!.concepts!.length > 1">
-                                            <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
-                                                    class="btn sk-select-min sk-input-f mtop10" (click)="openReorderCode()">
-                                                <fa-icon [icon]="'stream'"></fa-icon>
-                                                <span>Move code</span>
-                                            </button>
-                                        </div>
-                                        <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
-                                                class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openDeleteCodePopup()">
-                                            <fa-icon [icon]="'trash'"></fa-icon>
-                                            <span>Delete code</span>
-                                        </button>
-                                    </div>
-                                </div>
-                                <button *ngIf="version!.concepts && version!.concepts!.length > 0"
-                                        class="btn sk-select-min sk-input-f mtop10" (click)="exportAsCsv()">
-                                    <fa-icon [icon]="'download'"></fa-icon>
-                                    <span>Export to CSV</span>
-                                </button>
-                            </div>
 
-                            <div *ngIf="version!.itemType === 'TL'">
-                                <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_PUBLISH')">
-                                    <div *ngIf="concept">
-                                        <div *ngIf="!concept.title || concept.title === ''">
-                                            <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
-                                                    class="btn sk-select-min sk-input-f mtop10" (click)="openAddTlCode()">
-                                                <fa-icon [icon]="'plus'"></fa-icon>
-                                                <span>Add code translation</span>
-                                            </button>
-                                        </div>
-                                        <div *ngIf="concept.title">
-                                            <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
-                                                    class="btn sk-select-min sk-input-f mtop10" (click)="openEditTlCode()">
-                                                <fa-icon [icon]="'edit'"></fa-icon>
-                                                <span>Edit code translation</span>
-                                            </button>
-
-                                            <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
-                                                    class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openRemoveTlCode()">
-                                                <fa-icon [icon]="'trash'"></fa-icon>
-                                                <span>Remove code translation</span>
-                                            </button>
+                                            <div *ngIf="version!.status === 'REVIEW'">
+                                                <div *jhiHasAnyAgencyAuthority="{actionType:'PERFORM_ACTION_IN_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}">
+                                                    <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
+                                                            class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
+                                                        <fa-icon [icon]="'edit'"></fa-icon>
+                                                        <span>Edit code</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="version!.concepts!.length > 1">
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
+                                                        class="btn sk-select-min sk-input-f mtop10" (click)="openReorderCode()">
+                                                    <fa-icon [icon]="'stream'"></fa-icon>
+                                                    <span>Move code</span>
+                                                </button>
+                                            </div>
+                                            <div *ngIf="getMajorVersionNumber() >= 1 && getMinorVersionNumber() > 0">
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'DEPRECATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
+                                                        class="btn sk-select-min-btn btn-warning sk-input-f mtop20" (click)="openDeprecateCodePopup()">
+                                                    <fa-icon [icon]="'wind'"></fa-icon>
+                                                    <span>Deprecate code</span>
+                                                </button>
+                                            </div>
+                                            <div *ngIf="concept!.introducedInVersionId != null && concept!.introducedInVersionId == version!.id">
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
+                                                        class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openDeleteCodePopup()">
+                                                    <fa-icon [icon]="'trash'"></fa-icon>
+                                                    <span>Delete code</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
-                                            class="btn sk-select-min sk-input-f mtop10" (click)="openCsvImportCodeWindow()">
-                                        <fa-icon [icon]="'upload'"></fa-icon>
-                                        <span>Import from CSV</span>
+                                    <button *ngIf="version!.concepts && version!.concepts!.length > 0"
+                                            class="btn sk-select-min sk-input-f mtop10" (click)="exportAsCsv()">
+                                        <fa-icon [icon]="'download'"></fa-icon>
+                                        <span>Export to CSV</span>
                                     </button>
                                 </div>
-                                <button *ngIf="version!.concepts && version!.concepts!.length > 0"
-                                        class="btn sk-select-min sk-input-f mtop10" (click)="exportAsCsv()">
-                                    <fa-icon [icon]="'download'"></fa-icon>
-                                    <span>Export to CSV</span>
-                                </button>
+
+                                <div *ngIf="version!.itemType === 'TL'">
+                                    <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_PUBLISH')">
+                                        <div *ngIf="concept">
+                                            <div *ngIf="!concept.title || concept.title === ''">
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
+                                                        class="btn sk-select-min sk-input-f mtop10" (click)="openAddTlCode()">
+                                                    <fa-icon [icon]="'plus'"></fa-icon>
+                                                    <span>Add code translation</span>
+                                                </button>
+                                            </div>
+                                            <div *ngIf="concept.title">
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
+                                                        class="btn sk-select-min sk-input-f mtop10" (click)="openEditTlCode()">
+                                                    <fa-icon [icon]="'edit'"></fa-icon>
+                                                    <span>Edit code translation</span>
+                                                </button>
+
+                                                <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
+                                                        class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openRemoveTlCode()">
+                                                    <fa-icon [icon]="'trash'"></fa-icon>
+                                                    <span>Remove code translation</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
+                                                class="btn sk-select-min sk-input-f mtop10" (click)="openCsvImportCodeWindow()">
+                                            <fa-icon [icon]="'upload'"></fa-icon>
+                                            <span>Import from CSV</span>
+                                        </button>
+                                    </div>
+                                    <button *ngIf="version!.concepts && version!.concepts!.length > 0"
+                                            class="btn sk-select-min sk-input-f mtop10" (click)="exportAsCsv()">
+                                        <fa-icon [icon]="'download'"></fa-icon>
+                                        <span>Export to CSV</span>
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -438,7 +450,39 @@
                                     Code definition({{version!.language}})
                                 </span>
                             </div>
-                            <jhi-tree-editor [parentNotation]="" [conceptList]="version!.concepts" [level]="0"></jhi-tree-editor>
+                            <jhi-tree-editor [parentNotation]="" [conceptList]="version!.concepts" [level]="0" [deprecated]="false"></jhi-tree-editor>
+
+
+                            <br>
+                            <div *ngIf="hasDeprecatedConcepts(version!.concepts!)">
+                                <span class="cmt-scn" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT','ROLE_USER']">
+                                    <a type="button" class="btn btn-primary btn-sm" ngbTooltip="See deprecated codes" (click)="toggleDeprecatedCodesDisplay()">
+                                        <fa-icon *ngIf="!isShowingDeprecatedCodes" icon="eye"></fa-icon>
+                                        <fa-icon *ngIf="isShowingDeprecatedCodes" icon="eye-slash"></fa-icon>
+                                        <span class="d-none d-sm-inline-block">{{ isShowingDeprecatedCodes ? 'Hide' : 'See' }} deprecated codes</span>
+                                    </a>
+                                </span><br>
+                                <br>
+                                <div *ngIf="isShowingDeprecatedCodes">
+                                    <div class="concept-row row-header">
+                                        <span>
+                                            Deprecated codes
+                                            <br>
+                                            <i>These codes have been deprecated and should no longer be used in the metadata:</i>
+                                        </span>
+                                    </div>
+                                    <div class="concept-row row-header">
+                                        <span class="column1">Code URI</span>
+                                        <span class="column1">Code value</span>
+                                        <span class="column2">Code descriptive term ({{version!.language}})</span>
+                                        <span class="column1">Replaced by URI</span>
+                                        <span class="column1">Replaced by value</span>
+                                        <span class="column2">Valid from</span>
+                                        <span class="column2">Valid to</span>
+                                    </div>
+                                    <jhi-tree-editor-deprecated [parentNotation]="" [conceptList]="version!.concepts" [level]="0"></jhi-tree-editor-deprecated>
+                                </div>
+                            </div>
                         </div>
 
                         <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleVersionEPanel()">&nbsp;

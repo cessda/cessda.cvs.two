@@ -52,6 +52,14 @@ public class CodeDTO implements Serializable {
 
     private String versionNumber;
 
+    private boolean deprecated;
+    
+    private Long replacedById;
+
+    private String replacedByUri;
+    
+    private String replacedByNotation;
+
     @Lob
     private String titleSq;
 
@@ -761,6 +769,38 @@ public class CodeDTO implements Serializable {
         this.definitionSv = definitionSv;
     }
 
+    public boolean getDeprecated() {
+        return this.deprecated;
+    }
+
+    public void setDeprecated(boolean deprecated) {
+        this.deprecated = deprecated;
+    }
+
+    public Long getReplacedById() {
+        return this.replacedById;
+    }
+
+    public void setReplacedById(Long replacedById) {
+        this.replacedById = replacedById;
+    }
+
+    public String getReplacedByUri() {
+        return this.replacedByUri;
+    }
+
+    public void setReplacedByUri(String replacedByUri) {
+        this.replacedByUri = replacedByUri;
+    }
+
+    public String getReplacedByNotation() {
+        return this.replacedByNotation;
+    }
+
+    public void setReplacedByNotation(String replacedByNotation) {
+        this.replacedByNotation = replacedByNotation;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -791,6 +831,10 @@ public class CodeDTO implements Serializable {
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
             ", publicationDate='" + getPublicationDate() + "'" +
+            ", deprecated='" + getDeprecated() + "'" +
+            ", replacedById='" + getReplacedById() + "'" +
+            ", replacedByUri='" + getReplacedByUri() + "'" +
+            ", replacedByNotation='" + getReplacedByNotation() + "'" +
             ", titleSq='" + getTitleSq() + "'" +
             ", definitionSq='" + getDefinitionSq() + "'" +
             ", titleBs='" + getTitleBs() + "'" +
@@ -1009,6 +1053,10 @@ public class CodeDTO implements Serializable {
                     codeDTO.setPosition( concept.getPosition() );
                     if( concept.getParent() != null )
                         codeDTO.setParent( concept.getParent() );
+                    codeDTO.setDeprecated( concept.getDeprecated() );
+                    codeDTO.setReplacedById( concept.getReplacedById() );
+                    codeDTO.setReplacedByUri( concept.getReplacedByUri() );
+                    codeDTO.setReplacedByNotation( concept.getReplacedByNotation() );
                     codeDTOsMap.put(concept.getNotation(), codeDTO);
                     codeIndex+=2L;
                 }

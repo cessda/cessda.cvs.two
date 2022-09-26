@@ -43,6 +43,10 @@
         {
             "fieldName": "position",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "deprecated",
+            "fieldType": "Boolean"
         }
     ],
     "relationships": [
@@ -51,6 +55,20 @@
             "otherEntityName": "version",
             "otherEntityRelationshipName": "concept",
             "relationshipName": "version",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "version",
+            "otherEntityRelationshipName": "concept",
+            "relationshipName": "introducedInVersion",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "concept",
+            "otherEntityRelationshipName": "concept",
+            "relationshipName": "replacedBy",
             "otherEntityField": "id"
         }
     ],
