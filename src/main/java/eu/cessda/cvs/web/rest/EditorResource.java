@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -279,6 +279,7 @@ public class EditorResource {
                 // indexing editor
                 vocabularyService.indexEditor(vocabularyDTO);
 
+                //also should be done for ready to translate state?
                 if( versionDTO.getStatus().equals( Status.PUBLISHED.toString())) {
                     // remove published JSON file, re-create the JSON file and re-index for published vocabulary
                     vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
@@ -291,6 +292,7 @@ public class EditorResource {
     }
 
     private void deleteTlVocabulary(VersionDTO versionDTO, VocabularyDTO vocabularyDTO) throws IOException {
+        //again check the state for SL????
         boolean isTlPublished = versionDTO.getStatus().equals( Status.PUBLISHED.toString());
         vocabularyDTO.removeVersion( versionDTO);
         if( isTlPublished ) {

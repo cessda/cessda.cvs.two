@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -73,6 +73,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   isCodeActionCollapse = false;
   isCurrentVersionHistoryOpen = true;
   enableAddTl = false;
+  enablePublishTl = false;
 
   initialTabSelected?: string;
   initialLangSelect = null;
@@ -197,6 +198,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     // make sure that version TL concepts follows the version SL concept in structure and some properties
     if (this.version.itemType === 'TL') {
       this.enableAddTl = false;
+      this.enablePublishTl = false;
       // find SL version
       const slVersion = this.getSlVersion();
       this.version.languageSl = slVersion.language;
@@ -226,8 +228,14 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         }
       }
     } else {
-      if (this.version.status === 'PUBLISHED') {
+      if (this.version.status === 'READY_TO_TRANSLATE' || this.version.status === 'PUBLISHED') {
         this.enableAddTl = true;
+      }
+      // check all versions if there is any READY_TO_PUBLISH state for TL
+      for (const vocab of this.vocabulary!.versions!) {
+        if (vocab.status! === 'READY_TO_PUBLISH') {
+          this.enablePublishTl = true;
+        }
       }
     }
     // remove selection on version change

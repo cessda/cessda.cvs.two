@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -85,8 +85,10 @@ export class AccountService {
       case 'ADD_TL_CV':
       case 'WITHDRAWN_CV':
       case 'FORWARD_CV_SL_STATUS_REVIEW':
+      case 'FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE':
       case 'FORWARD_CV_SL_STATUS_PUBLISH':
       case 'FORWARD_CV_TL_STATUS_REVIEW':
+      case 'FORWARD_CV_TL_STATUS_READY_TO_PUBLISH':
       case 'FORWARD_CV_TL_STATUS_PUBLISH':
       case 'CREATE_CODE':
       case 'EDIT_CODE':

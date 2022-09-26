@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -637,7 +637,7 @@ class EditorResourceIT {
         }
         int databaseSize = vocabularyRepository.findAll().size();
         VocabularySnippet vocabularySnippet = EditorResourceIT.createVocabularySnippetForTlDe();
-        vocabularySnippet.setActionType( ActionType.FORWARD_CV_TL_STATUS_PUBLISH );
+        vocabularySnippet.setActionType( ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH );
         vocabularySnippet.setVocabularyId( tlVersion.getVocabulary().getId() );
         vocabularySnippet.setAgencyId( agency.getId());
         vocabularySnippet.setVersionId( tlVersion.getId());

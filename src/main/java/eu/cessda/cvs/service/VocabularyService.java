@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -282,7 +282,8 @@ public interface VocabularyService {
     void updateVocabularyLogo( Long agencyId, String agencyLogoPath );
 
     /**
-     * Forward the status of certain Vocabulary version (DRAFT -> REVIEW -> PUBLISH)
+     * Forward the status of certain Vocabulary version (DRAFT -> REVIEW -> READY_TO_TRANSLATE -> PUBLISH) for SL
+     * Forward the status of certain Vocabulary version (DRAFT -> REVIEW -> READY_TO_PUBLISH) for TL
      * @param vocabularySnippet
      * @return
      */

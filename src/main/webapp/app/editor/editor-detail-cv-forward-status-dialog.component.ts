@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -110,6 +110,8 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       if (account) {
         this.account = account;
 
+        // need to check other states, because this should be probably at the end when we goe from READY_TO_TRANSLATE to PUBLISH state
+        // or maybe not as we need to have version numbers for translations as well!!!
         if (this.versionParam!.status !== 'REVIEW') {
           this.cvForwardStatusForm.removeControl('versionNotes');
           this.cvForwardStatusForm.removeControl('versionChanges');
@@ -216,9 +218,12 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     };
 
     if (this.versionParam!.status === 'DRAFT') {
+      // there will be no TLs publish anymore, they will be published together with SL
       vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_REVIEW' : 'FORWARD_CV_TL_STATUS_REVIEW';
     } else if (this.versionParam!.status === 'REVIEW') {
-      vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_PUBLISH' : 'FORWARD_CV_TL_STATUS_PUBLISH';
+      // recode it, probably we need to add it to the last status!!!
+      // or maybe not as we need to specify version right here, because the target languages need some numbers!!!
+      vocabularySnippet.actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE' : 'FORWARD_CV_TL_STATUS_READY_TO_PUBLISH';
       vocabularySnippet.licenseId = this.cvForwardStatusForm.get(['licenseId'])!.value;
 
       if (this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== null) {
@@ -243,6 +248,28 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
           }
         });
       }
+    } else if (this.versionParam!.status === 'READY_TO_TRANSLATE' || this.versionParam!.status === 'PUBLISHED') {
+      // this part must be recoded for sure
+      // we need to create an array of all target languages, which are already in READY_TO_PUBLISH 
+      // this question doesn't make sense anymore as the publish is only for SL not TL!!!
+      // vocabularySnippet[0].actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_PUBLISH' : 'FORWARD_CV_TL_STATUS_PUBLISH';
+      // we will not use the array, only inform the method about publishing and it will be done in the backend
+      vocabularySnippet.actionType = 'FORWARD_CV_SL_STATUS_PUBLISH';
+      // for (const version of this.vocabularyParam!.versions!) {
+      //   if (version.itemType! === 'TL' && version.status! === 'READY_TO_PUBLISH') {
+      //     const vocabularySnippetTemp = {
+      //       ...new VocabularySnippet(),
+      //       actionType: 'FORWARD_CV_TL_STATUS_PUBLISH',
+      //       versionId: version.id,
+      //       vocabularyId: version.vocabularyId,
+      //       agencyId: vocabularySnippet[0].agencyId,
+      //       language: version.language,
+      //       itemType: version.itemType,
+      //       status: version.status,
+      //     };
+      //     vocabularySnippet.push(vocabularySnippetTemp);
+      //   }
+      // }
     }
 
     return vocabularySnippet;
@@ -277,6 +304,9 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     this.isSaving = true;
     const vocabularySnippet = this.createFromForm();
     if (!this.isVersionInvalid && this.missingTranslations.length === 0) {
+      // for (const vocabularySnippetTemp of vocabularySnippet) {
+      //   this.subscribeToSaveResponse(this.editorService.forwardStatusVocabulary(vocabularySnippetTemp));
+      // }
       this.subscribeToSaveResponse(this.editorService.forwardStatusVocabulary(vocabularySnippet));
     } else {
       this.isSaving = false;

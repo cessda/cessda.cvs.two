@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -347,6 +347,11 @@ public class VocabularyServiceImpl implements VocabularyService
 		} );
 		// save and reindex
 		addVersionAndSaveIndexVocabulary( vocabularyDTO, finalNewVersion );
+		// clone every TL as a DRAFT version with new VersionNumber
+		// only if it is new version of SL
+		if ( prevVersionDTO.getItemType().equals( ItemType.SL.toString() ) ) {
+			cloneTLsIfAny( vocabularyDTO, finalNewVersion );
+		}
 		return finalNewVersion;
 	}
 
@@ -1944,8 +1949,12 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		Licence licence = null;
 		Agency agency = null;
-		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) ||
-				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_PUBLISH ) )
+		// probably we don't need to do it for publish, but only for ready to translate and ready to publish!!!
+		// no we need it for both, for READY_TO_PUBLISH we need to save it to the DB and for PUBLISH we need to retrieve it
+		if ( /*vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) ||
+				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_PUBLISH )*/
+				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE ) ||
+				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH ) )
 		{
 			licence = licenceRepository.getOne( vocabularySnippet.getLicenseId() );
 			agency = agencyRepository.getOne( vocabularySnippet.getAgencyId() );
@@ -1960,14 +1969,43 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			vocabularyDTO.setStatus( Status.REVIEW.toString() );
 			break;
+		case FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE:
+			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE,
+					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
+			versionDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
+			versionDTO.setLastStatusChangeDate( LocalDate.now() );
+			vocabularyDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
+			// probably we need to stop the publishing of the whole SL vocabulary and move it to the next status: FORWARD_CV_SL_STATUS_PUBLISH
+			// we will only publish the version info!!!
+			versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
+			// vocabularyDTO.prepareSlPublishing( versionDTO );
+			break;
 		case FORWARD_CV_SL_STATUS_PUBLISH:
+			// here we should publish also TLs!!!
+			// we need to iterate through the ready to publish TLs and publish them!!!
+			// also we need to check if the SL is already published and publish only new TL(s)
 			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_PUBLISH,
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
-
-			versionDTO.setStatus( Status.PUBLISHED.toString() );
-			versionDTO.setLastStatusChangeDate( LocalDate.now() );
-			versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
-			vocabularyDTO.prepareSlPublishing( versionDTO );
+			//check if the Sl is already published, if yes then only new Tl(s) woll be published
+			if (!versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
+				// also we need to update the date of the publication
+				versionDTO.setStatus( Status.PUBLISHED.toString() );
+				versionDTO.setLastStatusChangeDate( LocalDate.now() );
+				// here we will publish the whole vocabulary, which will make the vocabulary and version as published
+				// versionDTO.prepareSlPublishing( vocabularySnippet, licenceRepository.getOne( versionDTO.getLicenseId() ), agencyRepository.getOne(vocabularyDTO.getAgencyId()) );
+				vocabularyDTO.prepareSlPublishing( versionDTO );
+				vocabularyDTO.setStatus( Status.PUBLISHED.toString() );
+			}
+			// now we need to go through all the versions which are TLs and ready to publish
+			// also we need to update the date of the publication
+			Iterator<VersionDTO> versions = vocabularyDTO.getVersions().iterator();
+			while ( versions.hasNext()  ) {
+				VersionDTO versionDTO_ = versions.next();
+				if (versionDTO_.getItemType().equals("TL") && versionDTO_.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
+					versionDTO_.setStatus( Status.PUBLISHED.toString() );
+					versionDTO_.setLastStatusChangeDate( LocalDate.now() );
+				}
+			}
 			break;
 		case FORWARD_CV_TL_STATUS_REVIEW:
 			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_REVIEW,
@@ -1975,25 +2013,33 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.REVIEW.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			break;
-		case FORWARD_CV_TL_STATUS_PUBLISH:
-			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_PUBLISH,
+		case FORWARD_CV_TL_STATUS_READY_TO_PUBLISH:
+			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH,
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
-
-			versionDTO.setStatus( Status.PUBLISHED.toString() );
+			versionDTO.setStatus( Status.READY_TO_PUBLISH.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
-
 			break;
+		// this should be probably only ready_to_publish!!!
+		// we need to rethink the ready to publish state, we don't publish it yet, we only prepare it for further publishing
+		// case FORWARD_CV_TL_STATUS_PUBLISH:
+		// 	SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_PUBLISH,
+		// 			vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
+		// 	versionDTO.setStatus( Status.PUBLISHED.toString() );
+		// 	versionDTO.setLastStatusChangeDate( LocalDate.now() );
+		// 	versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
+		// 	break;
 		default:
 			throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
 		}
-
 		// check if SL published and not initial version, is there any TL needs to be cloned as
 		// DRAFT?
-		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) && !versionDTO.isInitialVersion() )
-		{
-			cloneTLsIfAny( vocabularyDTO, versionDTO );
-		}
+		// doesn't make sense to check if it's InitialVersion - because of changed workflow
+		// also why we need this???
+		// if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) /*&& !versionDTO.isInitialVersion()*/ )
+		// {
+		// 	cloneTLsIfAny( vocabularyDTO, versionDTO );
+		// }
 		// save at the end
 		save( vocabularyDTO );
 		// indexing publication, delete existing one
