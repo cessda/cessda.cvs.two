@@ -97,7 +97,7 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
 
   save(): void {
     if (this.isSlForm) {
-      if (this.confirmReplacementNo || (this.confirmReplacementYes && this.deprecateCodeForm.valid)) {
+      if (this.isConfirmedReplacementNo || (this.isConfirmedReplacementYes && this.deprecateCodeForm.valid)) {
         this.codeSnippet = {
           ...new CodeSnippet(),
           actionType: 'DEPRECATE_CODE',
