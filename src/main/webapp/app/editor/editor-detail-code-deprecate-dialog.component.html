@@ -54,7 +54,7 @@
         <div *ngIf="(isConfirmedReplacementYes && isSetReplacingCodeId()) || isConfirmedReplacementNo">
             <div>
                 <p>Are you sure you want to deprecate code <strong>{{conceptParam.notation}}</strong>? Any children codes under <strong>{{conceptParam.notation}}</strong> will also be deprecated!</p>
-                <p>If there are children codes and you want to keep them, move them first not to be children of <strong>{{conceptParam.notation}}</strong>.</p>
+                <p>If there are children codes and you want to keep them, change first their place in the hierarchy, moving them not to be the children of <strong>{{conceptParam.notation}}</strong>. Do the deprecation only after this.</p>
             </div>
             <div *ngIf="replacingCode!">
                 The code will be replaced by code <strong>{{replacingCode!.notation}}</strong>.
