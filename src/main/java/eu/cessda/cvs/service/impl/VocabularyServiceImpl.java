@@ -347,10 +347,13 @@ public class VocabularyServiceImpl implements VocabularyService
 		} );
 		// save and reindex
 		addVersionAndSaveIndexVocabulary( vocabularyDTO, finalNewVersion );
+		// we need to iterate through every TL and create new version for them as well???
 		// clone every TL as a DRAFT version with new VersionNumber
 		// only if it is new version of SL
 		if ( prevVersionDTO.getItemType().equals( ItemType.SL.toString() ) ) {
 			cloneTLsIfAny( vocabularyDTO, finalNewVersion );
+			// probably we need to save vocabulary???
+			save( vocabularyDTO );
 		}
 		return finalNewVersion;
 	}
