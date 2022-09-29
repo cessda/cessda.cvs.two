@@ -2015,7 +2015,7 @@ public class VocabularyServiceImpl implements VocabularyService
 					versionDTO_.setStatus( Status.PUBLISHED.toString() );
 					versionDTO_.setLastStatusChangeDate( LocalDate.now() );
 					// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
-					log.debug("#385: FORWARD_CV_TL_STATUS_PUBLISHED, \n" + 
+					log.debug("#385: OLD FORWARD_CV_TL_STATUS_PUBLISHED, \n" + 
 						"versionDTO=" + versionDTO.toString()
 					);
 					setDeprecatedConceptsValidUntilVersionId(versionDTO_, versionDTO_.getId());
