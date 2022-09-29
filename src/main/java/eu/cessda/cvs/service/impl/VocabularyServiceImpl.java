@@ -822,6 +822,10 @@ public class VocabularyServiceImpl implements VocabularyService
 			finalNewTlVersion.addConcept( newConceptTl );
 		} );
 
+		// #423 -->
+		finalNewTlVersion.setVersionChanges(currentVersionSl.getVersionChanges());
+		// <-- #423
+
 		return newTlVersion;
 	}
 
