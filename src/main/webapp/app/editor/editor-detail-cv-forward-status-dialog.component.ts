@@ -129,24 +129,6 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
               this.versionParam!.number!.length
             );
           }
-          // no need version changes on initial version
-          if (this.versionParam!.previousVersion === undefined || this.versionParam!.previousVersion === null) {
-            this.cvForwardStatusForm.removeControl('versionNotes');
-            this.cvForwardStatusForm.removeControl('versionChanges');
-          } else {
-            this.editorService.getVocabularyCompare(this.versionParam!.id!).subscribe((res: HttpResponse<string[]>) => {
-              const newContent: DiffContent = {
-                leftContent: res.body![0],
-                rightContent: res.body![1],
-              };
-              this.contentObservable.next(newContent);
-              this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
-            });
-            this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
-              this.vocabularyChanges = res.body;
-              this.fillVersionNotesAndChanges();
-            });
-          }
           this.licenceService
             .query({
               page: 0,
@@ -157,6 +139,24 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
               this.licences = res.body!;
               this.fillForm();
             });
+        }
+        // no need version changes on initial version
+        if (this.versionParam!.previousVersion === undefined || this.versionParam!.previousVersion === null) {
+          this.cvForwardStatusForm.removeControl('versionNotes');
+          this.cvForwardStatusForm.removeControl('versionChanges');
+        } else {
+          this.editorService.getVocabularyCompare(this.versionParam!.id!).subscribe((res: HttpResponse<string[]>) => {
+            const newContent: DiffContent = {
+              leftContent: res.body![0],
+              rightContent: res.body![1],
+            };
+            this.contentObservable.next(newContent);
+            this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
+          });
+          this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
+            this.vocabularyChanges = res.body;
+            this.fillVersionNotesAndChanges();
+          });
         }
       }
     });
@@ -184,14 +184,14 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   }
 
   private fillVersionNotesAndChanges(): void {
-    if (this.versionParam!.versionNotes) {
+    if (this.cvForwardStatusForm.contains('versionNotes') && this.versionParam!.versionNotes) {
       this.cvForwardStatusForm.patchValue({
         versionNotes: this.versionParam!.versionNotes,
       });
       // @ts-ignore
       this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionNotes'])!.value);
     }
-    if (this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== 0) {
+    if (this.cvForwardStatusForm.contains('versionChanges') && this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== 0) {
       if (this.versionParam!.versionChanges) {
         this.cvForwardStatusForm.patchValue({
           versionChanges: this.versionParam!.versionChanges,
