@@ -470,6 +470,7 @@ public class VocabularyServiceImpl implements VocabularyService
 	@Override
 	public ConceptDTO saveCode( CodeSnippet codeSnippet )
 	{
+		// if we add code we nedd to ensure that it will be clonned to every TL probably as the workflow had been changed!!!
 		log.debug( "Request to save Concept and Version from CodeSnippet : {}", codeSnippet.getConceptId() );
 		ConceptDTO conceptDTO = null;
 		// get version

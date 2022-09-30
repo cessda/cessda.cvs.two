@@ -85,7 +85,7 @@
                                         <span>Ready to Translate {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
-                                <div *ngIf="version!.status === 'READY_TO_TRANSLATE' || enablePublishTl">
+                                <div *ngIf="(version!.status === 'READY_TO_TRANSLATE' || enablePublishTl) && !(version!.status === 'DRAFT' || version!.status === 'REVIEW')">
                                     <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_PUBLISH', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'archive'"></fa-icon>
