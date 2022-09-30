@@ -97,7 +97,7 @@ div.CodeList {
   }
 }
 
-@media print
+@media all
 {
     div.page{
         page-break-inside: avoid;
@@ -114,7 +114,7 @@ div.CodeList {
 
   			<div th:if="${iterStat.index} > 0" class="pagebreak"></div>
 
-		    <div class="">
+		    <div class="page">
 		      <div style="width: 100%;">
 		      	<div style="width:60px;float:left;padding-right:15px">
 		      		<img style="width:60px" alt="agency-logo" th:src="@{${agency.logo}}"/>
