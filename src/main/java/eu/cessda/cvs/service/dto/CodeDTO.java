@@ -52,7 +52,7 @@ public class CodeDTO implements Serializable {
 
     private String versionNumber;
 
-    private boolean deprecated;
+    private Boolean deprecated;
     
     private Long replacedById;
 
@@ -769,11 +769,11 @@ public class CodeDTO implements Serializable {
         this.definitionSv = definitionSv;
     }
 
-    public boolean getDeprecated() {
+    public Boolean getDeprecated() {
         return this.deprecated;
     }
 
-    public void setDeprecated(boolean deprecated) {
+    public void setDeprecated(Boolean deprecated) {
         this.deprecated = deprecated;
     }
 
