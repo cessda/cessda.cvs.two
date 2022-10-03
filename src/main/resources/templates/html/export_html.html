@@ -94,7 +94,7 @@
 			}
 		}
 
-		@media print
+		@media all
 		{
 			div.page{
 				page-break-inside: avoid;
@@ -241,7 +241,7 @@
 				</tr>
 				</thead>
 				<tbody>
-				<tr th:each="concept : ${version.concepts}" >
+				<tr th:each="concept : ${version.concepts}" th:if="${!concept.deprecated}">
                     <td style="width: 25%;white-space:pre-line;word-break:break-all;word-wrap:break-word;" th:text="${concept.notation}"></td>
                     <td style="width: 25%" th:text="${concept.title}"></td>
                     <td style="width: 50%" th:text="${concept.definition}"></td>
