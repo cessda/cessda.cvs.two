@@ -470,7 +470,7 @@ public class VocabularyServiceImpl implements VocabularyService
 	@Override
 	public ConceptDTO saveCode( CodeSnippet codeSnippet )
 	{
-		// if we add code we nedd to ensure that it will be clonned to every TL probably as the workflow had been changed!!!
+		// if we add code we need to ensure that it will be clonned to every TL probably as the workflow had been changed!!!
 		log.debug( "Request to save Concept and Version from CodeSnippet : {}", codeSnippet.getConceptId() );
 		ConceptDTO conceptDTO = null;
 		// get version
@@ -2009,9 +2009,9 @@ public class VocabularyServiceImpl implements VocabularyService
 			}
 			// now we need to go through all the versions which are TLs and ready to publish
 			// also we need to update the date of the publication
-			Iterator<VersionDTO> versions = vocabularyDTO.getVersions().iterator();
-			while ( versions.hasNext()  ) {
-				VersionDTO versionDTO_ = versions.next();
+			List<VersionDTO> versions = vocabularyDTO.getVersionByGroup(versionDTO.getNumber(), true);
+			// Iterator<VersionDTO> versions = vocabularyDTO.getVersions().iterator();
+			for ( VersionDTO versionDTO_: versions ) {
 				if (versionDTO_.getItemType().equals("TL") && versionDTO_.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
 					versionDTO_.setStatus( Status.PUBLISHED.toString() );
 					versionDTO_.setLastStatusChangeDate( LocalDate.now() );

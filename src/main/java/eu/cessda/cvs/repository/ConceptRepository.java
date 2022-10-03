@@ -31,4 +31,7 @@ public interface ConceptRepository extends JpaRepository<Concept, Long> {
 
     @Query( "select c from Concept c where c.version.id = :versionId order by c.position asc")
     List<Concept> findByVersion(@Param( "versionId" ) Long versionId );
+
+    @Query( "select c from Concept c where c.notation = :notation order by c.position asc")
+    List<Concept> getByNotation(@Param( "notation" ) String notation );
 }

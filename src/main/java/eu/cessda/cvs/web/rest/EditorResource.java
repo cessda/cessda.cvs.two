@@ -482,6 +482,7 @@ public class EditorResource {
      */
     @PostMapping("/editors/codes/deprecate")
     public ResponseEntity<Void> deprecateCode(@Valid @RequestBody CodeSnippet codeSnippet) {
+        // to deprecate also in every TL in DRAFT and REVIEW state
         log.debug("REST request to deprecate Code/Concept : {}", codeSnippet);
         if( !(codeSnippet.getActionType().equals( ActionType.DEPRECATE_CODE )) )
             throw new IllegalArgumentException( "Action type " + codeSnippet.getActionType() + "not supported" );
@@ -528,6 +529,41 @@ public class EditorResource {
         }
         versionService.save(versionDTO);
 
+        // index editor after deprecation
+        vocabularyService.indexEditor( vocabularyDTO );
+
+        // vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
+        //     .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VOCABULARY + versionDTO.getVocabularyId() ));
+        // deprecate it also in every
+        List<VersionDTO> versions = vocabularyDTO.getVersionByGroup(versionDTO.getNumber(), true);
+        List<ConceptDTO> notations = conceptService.getByNotation(conceptDTO.getNotation());
+        for (VersionDTO versionDTO_: versions) {
+            if (versionDTO_.getItemType().equals(ItemType.TL.toString())) {
+                Iterator<ConceptDTO> notations_it = notations.iterator();
+                ConceptDTO notation;
+                while (notations_it.hasNext()) {
+                    notation = notations_it.next();
+                    if (notation.getVersionId().equals(versionDTO_.getId())) {
+                        Set<ConceptDTO> concepts = versionDTO_.getConcepts();
+                        for (ConceptDTO concept : concepts) {
+                            if (concept.equals(notation)) {
+                                concept.setDeprecated(true);
+                                concept.setReplacedById(codeSnippet.getReplacedById());
+
+                                // store changes if not initial version
+                                recordCodeDeprecatedAction(concept, versionDTO_, replacingConceptDTO);
+                                if( notation.getParent() != null && notation.getParent().startsWith( conceptDTO.getNotation()) ){
+                                    concept.setDeprecated(true);
+                                    // store changes if not initial version
+                                    recordCodeDeprecatedAction(concept, versionDTO_, null);
+                                }
+                            }
+                        }
+                    }
+                }
+                versionService.save(versionDTO_);
+            }
+        }
         // index editor after deprecation
         vocabularyService.indexEditor( vocabularyDTO );
         return ResponseEntity.noContent().headers(HeaderUtil.createAlert(applicationName, "alert.code.deprecated", conceptDTO.getNotation())).build();
