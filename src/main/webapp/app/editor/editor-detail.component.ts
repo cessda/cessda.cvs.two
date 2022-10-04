@@ -241,11 +241,15 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     } else {
       if (this.version.status === 'READY_TO_TRANSLATE' || this.version.status === 'PUBLISHED') {
         this.enableAddTl = true;
+      } else {
+        this.enableAddTl = false;
       }
       // check all versions if there is any READY_TO_PUBLISH state for TL
       for (const vocab of this.vocabulary!.versions!) {
         if (vocab.status! === 'READY_TO_PUBLISH') {
           this.enablePublishTl = true;
+        } else {
+          this.enablePublishTl = false;
         }
       }
     }
