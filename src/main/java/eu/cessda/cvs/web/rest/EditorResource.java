@@ -281,7 +281,6 @@ public class EditorResource {
                 // indexing editor
                 vocabularyService.indexEditor(vocabularyDTO);
 
-                //also should be done for ready to translate state?
                 if( versionDTO.getStatus().equals( Status.PUBLISHED.toString())) {
                     // remove published JSON file, re-create the JSON file and re-index for published vocabulary
                     vocabularyService.deleteCvJsonDirectoryAndContent(applicationProperties.getVocabJsonPath() + vocabularyDTO.getNotation());
@@ -294,7 +293,6 @@ public class EditorResource {
     }
 
     private void deleteTlVocabulary(VersionDTO versionDTO, VocabularyDTO vocabularyDTO) throws IOException {
-        //again check the state for SL????
         boolean isTlPublished = versionDTO.getStatus().equals( Status.PUBLISHED.toString());
         vocabularyDTO.removeVersion( versionDTO);
         if( isTlPublished ) {
@@ -482,7 +480,6 @@ public class EditorResource {
      */
     @PostMapping("/editors/codes/deprecate")
     public ResponseEntity<Void> deprecateCode(@Valid @RequestBody CodeSnippet codeSnippet) {
-        // to deprecate also in every TL in DRAFT and REVIEW state
         log.debug("REST request to deprecate Code/Concept : {}", codeSnippet);
         if( !(codeSnippet.getActionType().equals( ActionType.DEPRECATE_CODE )) )
             throw new IllegalArgumentException( "Action type " + codeSnippet.getActionType() + "not supported" );
