@@ -111,14 +111,6 @@ public class ConceptServiceImpl implements ConceptService {
     }
 
     @Override
-    public List<ConceptDTO> getByNotation(String notation) {
-        log.debug("Request to get all Concepts with notation {}", notation);
-        return conceptRepository.getByNotation( notation ).stream()
-            .map(conceptMapper::toDto)
-            .collect(Collectors.toCollection(LinkedList::new));
-    }
-
-    @Override
     public Page<ConceptDTO> search(String query, Pageable pageable) {
         return null;
     }

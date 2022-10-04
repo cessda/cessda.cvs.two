@@ -66,14 +66,6 @@ public interface ConceptService {
     List<ConceptDTO> findByVersion(Long versionId);
 
     /**
-     *  Get all the concepts for given notation
-     * 
-     * @param notation the concept notation
-     * @return tjhe list of entities
-     */
-    List<ConceptDTO> getByNotation(String notation);
-
-    /**
      * Search for the concept corresponding to the query.
      *
      * @param query the query of the search.
