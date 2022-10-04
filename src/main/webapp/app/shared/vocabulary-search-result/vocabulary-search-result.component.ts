@@ -168,7 +168,7 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   }
 
   getCodeTitleByLang(code: ICode, selectedLang: string): string {
-    return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[0] + (code.deprecated ? ' (DEPRECATED)' : '');
+    return VocabularyUtil.getTitleDefByLangIso(code, selectedLang)[0] + (code.deprecated ? ' (DEPRECATED TERM)' : '');
   }
 
   getCodeDefinitionByLang(code: ICode, selectedLang: string): string {

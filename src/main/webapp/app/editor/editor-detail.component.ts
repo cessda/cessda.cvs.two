@@ -405,14 +405,9 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.subscribeSelectConceptEvent();
 
     if (this.currentSelectedCode !== '') {
-      if (this.version?.concepts !== null && this.version?.concepts !== undefined) {
-        this.version.concepts.forEach(code => {
-          if (code.deprecated && code.notation === this.currentSelectedCode) {
-            this.isShowingDeprecatedCodes = true;
-            return;
-          }
-        });
-      }
+      this.isShowingDeprecatedCodes = this.version!.concepts!.some(concept => {
+        return concept.deprecated;
+      });
       this._ngZone.runOutsideAngular(() => {
         setTimeout(() => {
           const element = document.querySelector('#code_' + this.currentSelectedCode);
