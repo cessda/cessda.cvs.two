@@ -2029,22 +2029,11 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
 			break;
-		// this should be probably only ready_to_publish!!!
-		// we need to rethink the ready to publish state, we don't publish it yet, we only prepare it for further publishing
-		// case FORWARD_CV_TL_STATUS_PUBLISH:
-		// 	SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_PUBLISH,
-		// 			vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
-		// 	versionDTO.setStatus( Status.PUBLISHED.toString() );
-		// 	versionDTO.setLastStatusChangeDate( LocalDate.now() );
-		// 	versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
-		// 	break;
 		default:
 			throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
 		}
 		// check if SL published and not initial version, is there any TL needs to be cloned as
 		// DRAFT?
-		// doesn't make sense to check if it's InitialVersion - because of changed workflow
-		// also why we need this???
 		if (vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE ) && !versionDTO.isInitialVersion() ) {
 			cloneTLsIfAny( vocabularyDTO, versionDTO );
 		}
