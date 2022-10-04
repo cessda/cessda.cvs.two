@@ -89,7 +89,7 @@ export class AccountService {
       case 'FORWARD_CV_SL_STATUS_PUBLISH':
       case 'FORWARD_CV_TL_STATUS_REVIEW':
       case 'FORWARD_CV_TL_STATUS_READY_TO_PUBLISH':
-      case 'FORWARD_CV_TL_STATUS_PUBLISH':
+      // case 'FORWARD_CV_TL_STATUS_PUBLISH':
       case 'CREATE_CODE':
       case 'EDIT_CODE':
       case 'REORDER_CODE':

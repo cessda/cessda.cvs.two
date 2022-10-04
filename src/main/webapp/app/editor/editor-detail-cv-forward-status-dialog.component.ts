@@ -251,27 +251,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         });
       }
     } else if (this.versionParam!.status === 'READY_TO_TRANSLATE' || this.versionParam!.status === 'PUBLISHED') {
-      // this part must be recoded for sure
-      // we need to create an array of all target languages, which are already in READY_TO_PUBLISH 
-      // this question doesn't make sense anymore as the publish is only for SL not TL!!!
-      // vocabularySnippet[0].actionType = this.isSlForm ? 'FORWARD_CV_SL_STATUS_PUBLISH' : 'FORWARD_CV_TL_STATUS_PUBLISH';
-      // we will not use the array, only inform the method about publishing and it will be done in the backend
       vocabularySnippet.actionType = 'FORWARD_CV_SL_STATUS_PUBLISH';
-      // for (const version of this.vocabularyParam!.versions!) {
-      //   if (version.itemType! === 'TL' && version.status! === 'READY_TO_PUBLISH') {
-      //     const vocabularySnippetTemp = {
-      //       ...new VocabularySnippet(),
-      //       actionType: 'FORWARD_CV_TL_STATUS_PUBLISH',
-      //       versionId: version.id,
-      //       vocabularyId: version.vocabularyId,
-      //       agencyId: vocabularySnippet[0].agencyId,
-      //       language: version.language,
-      //       itemType: version.itemType,
-      //       status: version.status,
-      //     };
-      //     vocabularySnippet.push(vocabularySnippetTemp);
-      //   }
-      // }
     }
 
     return vocabularySnippet;

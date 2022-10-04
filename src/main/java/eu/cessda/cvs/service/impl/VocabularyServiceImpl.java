@@ -1975,10 +1975,8 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			vocabularyDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
-			// probably we need to stop the publishing of the whole SL vocabulary and move it to the next status: FORWARD_CV_SL_STATUS_PUBLISH
 			// we will only publish the version info!!!
 			versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
-			// vocabularyDTO.prepareSlPublishing( versionDTO );
 			break;
 		case FORWARD_CV_SL_STATUS_PUBLISH:
 			// here we should publish also TLs!!!
@@ -1992,7 +1990,10 @@ public class VocabularyServiceImpl implements VocabularyService
 				versionDTO.setStatus( Status.PUBLISHED.toString() );
 				versionDTO.setLastStatusChangeDate( LocalDate.now() );
 				// here we will publish the whole vocabulary, which will make the vocabulary and version as published
+				// we will not overide the version info, only publication date!!!
+				// when it is in READY_TO_TRANSLATE state, it can't be edited anymore
 				// versionDTO.prepareSlPublishing( vocabularySnippet, licenceRepository.getOne( versionDTO.getLicenseId() ), agencyRepository.getOne(vocabularyDTO.getAgencyId()) );
+				versionDTO.setPublicationDate(LocalDate.now());
 				vocabularyDTO.prepareSlPublishing( versionDTO );
 				vocabularyDTO.setStatus( Status.PUBLISHED.toString() );
 				// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
