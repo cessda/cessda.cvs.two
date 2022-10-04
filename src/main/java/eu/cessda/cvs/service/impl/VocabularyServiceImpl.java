@@ -347,14 +347,6 @@ public class VocabularyServiceImpl implements VocabularyService
 		} );
 		// save and reindex
 		addVersionAndSaveIndexVocabulary( vocabularyDTO, finalNewVersion );
-		// we need to iterate through every TL and create new version for them as well???
-		// clone every TL as a DRAFT version with new VersionNumber
-		// only if it is new version of SL
-		if ( prevVersionDTO.getItemType().equals( ItemType.SL.toString() ) ) {
-			cloneTLsIfAny( vocabularyDTO, finalNewVersion );
-			// probably we need to save vocabulary???
-			save( vocabularyDTO );
-		}
 		return finalNewVersion;
 	}
 
@@ -2053,10 +2045,9 @@ public class VocabularyServiceImpl implements VocabularyService
 		// DRAFT?
 		// doesn't make sense to check if it's InitialVersion - because of changed workflow
 		// also why we need this???
-		// if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) /*&& !versionDTO.isInitialVersion()*/ )
-		// {
-		// 	cloneTLsIfAny( vocabularyDTO, versionDTO );
-		// }
+		if (vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE ) && !versionDTO.isInitialVersion() ) {
+			cloneTLsIfAny( vocabularyDTO, versionDTO );
+		}
 		// save at the end
 		save( vocabularyDTO );
 		// indexing publication, delete existing one
