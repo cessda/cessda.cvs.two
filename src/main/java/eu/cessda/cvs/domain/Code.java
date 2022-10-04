@@ -50,6 +50,9 @@ public class Code implements Serializable {
     @Field( type = FieldType.Date, format = DateFormat.date )
     private LocalDate publicationDate;
 
+    @Field( type = FieldType.Boolean )
+    private Boolean deprecated;
+
     @Field( type = FieldType.Text, store = true )
     private String titleSq;
 
@@ -304,6 +307,14 @@ public class Code implements Serializable {
 
     public void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
+    }
+
+    public Boolean getDeprecated() {
+        return deprecated;
+    }
+
+    public void setDeprecated(Boolean deprecated) {
+        this.deprecated = deprecated;
     }
 
     public String getTitleBs() {
@@ -780,6 +791,7 @@ public class Code implements Serializable {
             ", parent='" + getParent() + "'" +
             ", position=" + getPosition() +
             ", publicationDate='" + getPublicationDate() + "'" +
+            ", deprecated='" + getDeprecated() + "'" +
             ", titleSq='" + getTitleSq() + "'" +
             ", definitionSq='" + getDefinitionSq() + "'" +
             ", titleBs='" + getTitleBs() + "'" +
