@@ -25,9 +25,11 @@ import org.mapstruct.Mapping;
 public interface CodeMapper extends EntityMapper<CodeDTO, Code> {
 
     @Mapping(source = "languages", target = "languages")
+    @Mapping(source = "deprecated", target = "deprecated")
     CodeDTO toDto(Code code);
 
     @Mapping(source = "languages", target = "languages")
+    @Mapping(source = "deprecated", target = "deprecated")
     Code toEntity(CodeDTO codeDTO);
 
     default Code fromId(Long id) {

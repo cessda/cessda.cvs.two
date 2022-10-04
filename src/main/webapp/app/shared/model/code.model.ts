@@ -25,6 +25,7 @@ export interface ICode {
   position?: number;
   publicationDate?: Moment;
   lastModified?: Moment;
+  deprecated?: boolean;
   titleSq?: any;
   definitionSq?: any;
   titleBs?: any;
@@ -124,6 +125,7 @@ export class Code implements ICode {
     public position?: number,
     public publicationDate?: Moment,
     public lastModified?: Moment,
+    public deprecated?: boolean,
     public titleSq?: any,
     public definitionSq?: any,
     public titleBs?: any,
