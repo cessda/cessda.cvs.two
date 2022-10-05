@@ -333,6 +333,7 @@ class EditorResourceIT {
     @Transactional
     void vocabularyWorkflowTest() throws Exception {
         // ActionType.CREATE_CV
+        
         Version slVersion = createVocabularyTest();
         // Test fail if try to add existed CV
         createVocabularyWithSameNotationFailTest();
