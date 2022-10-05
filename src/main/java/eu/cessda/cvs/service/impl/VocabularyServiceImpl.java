@@ -1969,7 +1969,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
 			vocabularyDTO.prepareSlPublishing( versionDTO );
 			// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
-			log.debug("#385: FORWARD_CV_SL_STATUS_PUBLISHED, \n" + 
+			log.debug("#385: FORWARD_CV_SL_STATUS_PUBLISHED, \n" +
 				"vocabularyDTO=" + vocabularyDTO.toString() + ",\n" +
 				"versionDTO=" + versionDTO.toString()
 				);
@@ -1990,7 +1990,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
 			// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
-			log.debug("#385: FORWARD_CV_TL_STATUS_PUBLISHED, \n" + 
+			log.debug("#385: FORWARD_CV_TL_STATUS_PUBLISHED, \n" +
 				"versionDTO=" + versionDTO.toString()
 				);
 			setDeprecatedConceptsValidUntilVersionId(versionDTO, versionDTO.getId());
@@ -2128,8 +2128,17 @@ public class VocabularyServiceImpl implements VocabularyService
 		map.put( "year", year );
 		map.put( "baseUrl", getURLWithContextPath( request ) );
 
-        File outputFile = new File( System.getProperty("java.io.tmpdir") + File.separator
-            + vocabularyNotation + "-" + versionSl + "_" + versionList + "." + downloadType + "." + downloadType );
+        StringBuilder stringBuilder = new StringBuilder().append( System.getProperty( "java.io.tmpdir" ) )
+            .append( File.separator ).append( vocabularyNotation ).append( "-" ).append( versionSl );
+
+        // Only append versionList if it's not set to null
+        if (versionList != null)
+        {
+            stringBuilder.append( "_" ).append( versionList );
+        }
+
+        stringBuilder.append( "." ).append( downloadType );
+        File outputFile = new File( stringBuilder.toString() );
 
         try (FileOutputStream outputStream = new FileOutputStream( outputFile ))
         {
