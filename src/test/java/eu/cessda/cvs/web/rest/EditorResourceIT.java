@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -359,9 +359,11 @@ class EditorResourceIT {
         forwardStatusWithIncorrectActionTypeTest(slVersion);
         // ActionType.FORWARD_CV_SL_STATUS_REVIEW
         forwardSlStatusReviewTest(slVersion);
+        // ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE
+        forwardSlStatusReadyToTranslateTest(slVersion, false);
         // ActionType.FORWARD_CV_SL_STATUS_PUBLISH
         forwardSlStatusPublishTest(slVersion, false);
-        // ActionType.CREATE_CODE ~ will be fail due to vocabulary already published
+        // ActionType.CREATE_CODE ~ will be fail due to vocabulary already in ready to publish
         createSlConceptOnPublishedCvTest(slVersion);
         // Test searching for CVs in the Editor and Publication
         searchingCvEditorAndPublication1Test(slVersion);
@@ -381,22 +383,28 @@ class EditorResourceIT {
         addTlConceptTest(tlVersion, slConceptRoot1, INIT_CODE_TL_TITLE, INIT_CODE_TL_DEFINITION);
         // ActionType.FORWARD_CV_TL_STATUS_REVIEW
         forwardTlStatusReviewTest( tlVersion );
-        // ActionType.FORWARD_CV_TL_STATUS_PUBLISH
-        forwardTlStatusPublishTest( tlVersion );
+        // ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH
+        forwardTlStatusReadyToPublishTest( tlVersion );
+        // ActionType.FORWARD_CV_TL_STATUS_PUBLISH by using ActionType.FORWARD_CV_SL_STATUS_PUBLISH
+        forwardTlStatusPublishTest( slVersion, tlVersion );
         // create new TL version
         Version newTlVersion = createNewVocabularyVersionTest(tlVersion, true);
         // new TL version ActionType.FORWARD_CV_TL_STATUS_REVIEW
         forwardTlStatusReviewTest( newTlVersion );
-        // new TL version ActionType.FORWARD_CV_TL_STATUS_PUBLISH
-        forwardTlStatusPublishTest( newTlVersion );
+        // ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH
+        forwardTlStatusReadyToPublishTest( newTlVersion );
+        // new TL version ActionType.FORWARD_CV_TL_STATUS_PUBLISH by using ActionType.FORWARD_CV_SL_STATUS_PUBLISH
+        forwardTlStatusPublishTest( slVersion, tlVersion );
         // create new TL version but not published
-        Version newTlVersion2 = createNewVocabularyVersionTest(tlVersion, true);
+        Version newTlVersion2 = createNewVocabularyVersionTest(newTlVersion, true);
         // create new SL version
         Version newSlVersion = createNewVocabularyVersionTest(slVersion, false);
         // Import batch codes
         batchCodesImportTest(newSlVersion);
         // ActionType.FORWARD_CV_SL_STATUS_REVIEW
         forwardSlStatusReviewTest(newSlVersion);
+        // ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE
+        forwardSlStatusReadyToTranslateTest(newSlVersion, true);
         // Publish new SL version to trigger cloning TLs ~ ActionType.FORWARD_CV_SL_STATUS_PUBLISH
         forwardSlStatusPublishTest(newSlVersion, true);
         // since there are already 2 versions they can be compared
@@ -625,7 +633,7 @@ class EditorResourceIT {
         return newVersion;
     }
 
-    private void forwardTlStatusPublishTest(Version tlVersion) throws Exception {
+    private void forwardTlStatusReadyToPublishTest(Version tlVersion) throws Exception {
         // prepare licence
         if( license == null ) {
             license = new Licence()
@@ -637,11 +645,12 @@ class EditorResourceIT {
         }
         int databaseSize = vocabularyRepository.findAll().size();
         VocabularySnippet vocabularySnippet = EditorResourceIT.createVocabularySnippetForTlDe();
-        vocabularySnippet.setActionType( ActionType.FORWARD_CV_TL_STATUS_PUBLISH );
+        vocabularySnippet.setActionType( ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH );
         vocabularySnippet.setVocabularyId( tlVersion.getVocabulary().getId() );
         vocabularySnippet.setAgencyId( agency.getId());
         vocabularySnippet.setVersionId( tlVersion.getId());
         vocabularySnippet.setLicenseId( license.getId() );
+        vocabularySnippet.setVersionNumber( tlVersion.getNumber() );
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
@@ -651,8 +660,56 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         assertThat(vocabularyList).hasSize(databaseSize);
         tlVersion = getLatestVersionByNotationAndLang(vocabularyList, tlVersion.getNotation(), tlVersion.getLanguage());
+        assertThat( tlVersion.getStatus()).isEqualTo(Status.READY_TO_PUBLISH.toString());
+    }
+
+    private void forwardTlStatusPublishTest(Version slVersion, Version tlVersion) throws Exception {
+        int databaseSize = vocabularyRepository.findAll().size();
+        vocabularySnippetForEnSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISH );
+        vocabularySnippetForEnSl.setVersionId( slVersion.getId());
+        vocabularySnippetForEnSl.setLicenseId( license.getId() );
+        vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
+
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isOk());
+
+        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
+        assertThat(vocabularyList).hasSize(databaseSize);
+        tlVersion = getLatestVersionByNotationAndLang(vocabularyList, tlVersion.getNotation(), tlVersion.getLanguage());
         assertThat( tlVersion.getStatus()).isEqualTo(Status.PUBLISHED.toString());
     }
+
+    // private void forwardTlStatusPublishTest(Version tlVersion) throws Exception {
+    //     // prepare licence
+    //     if( license == null ) {
+    //         license = new Licence()
+    //             .name(INIT_LICENSE)
+    //             .link(INIT_LINK)
+    //             .logoLink(INIT_LOGOPATH)
+    //             .abbr(INIT_NAME);
+    //         license = licenceRepository.saveAndFlush(license);
+    //     }
+    //     int databaseSize = vocabularyRepository.findAll().size();
+    //     VocabularySnippet vocabularySnippet = EditorResourceIT.createVocabularySnippetForTlDe();
+    //     vocabularySnippet.setActionType( ActionType.FORWARD_CV_TL_STATUS_PUBLISH );
+    //     vocabularySnippet.setVocabularyId( tlVersion.getVocabulary().getId() );
+    //     vocabularySnippet.setAgencyId( agency.getId());
+    //     vocabularySnippet.setVersionId( tlVersion.getId());
+    //     vocabularySnippet.setLicenseId( license.getId() );
+    //     restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+    //         .header("Authorization", jwt)
+    //         .contentType(MediaType.APPLICATION_JSON)
+    //         .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
+    //         .andExpect(status().isOk());
+
+    //     List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
+    //     assertThat(vocabularyList).hasSize(databaseSize);
+    //     tlVersion = getLatestVersionByNotationAndLang(vocabularyList, tlVersion.getNotation(), tlVersion.getLanguage());
+    //     assertThat( tlVersion.getStatus()).isEqualTo(Status.PUBLISHED.toString());
+    // }
 
     private void forwardTlStatusReviewTest(Version tlVersion) throws Exception {
         int databaseSize = vocabularyRepository.findAll().size();
@@ -661,6 +718,7 @@ class EditorResourceIT {
         vocabularySnippet.setVocabularyId( tlVersion.getVocabulary().getId() );
         vocabularySnippet.setAgencyId( agency.getId());
         vocabularySnippet.setVersionId( tlVersion.getId());
+        vocabularySnippet.setVersionNumber( tlVersion.getNumber() );
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
@@ -1040,6 +1098,35 @@ class EditorResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.vocabularies.[*].agencyName").value(hasItem(INIT_AGENCY_NAME)))
             .andExpect(jsonPath("$.vocabularies.[*].notation").value(hasItem(slVersion.getNotation())));
+    }
+
+    private void forwardSlStatusReadyToTranslateTest(Version slVersion, boolean secondPublish) throws Exception {
+        // prepare licence
+        if( license == null ) {
+            license = new Licence()
+                .name(INIT_LICENSE)
+                .link(INIT_LINK)
+                .logoLink(INIT_LOGOPATH)
+                .abbr(INIT_NAME);
+            license = licenceRepository.saveAndFlush(license);
+        }
+        int databaseSize = vocabularyRepository.findAll().size();
+        vocabularySnippetForEnSl.setActionType( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE );
+        vocabularySnippetForEnSl.setVersionId( slVersion.getId());
+        vocabularySnippetForEnSl.setLicenseId( license.getId() );
+        vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
+        if( secondPublish )
+            vocabularySnippetForEnSl.setVersionNumber("1.1");
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippetForEnSl)))
+            .andExpect(status().isOk());
+
+        List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
+        assertThat(vocabularyList).hasSize(databaseSize);
+        slVersion = getLatestVersionByNotationAndLang(vocabularyList, slVersion.getNotation(), slVersion.getLanguage());
+        assertThat( slVersion.getStatus()).isEqualTo(Status.READY_TO_TRANSLATE.toString());
     }
 
     private void forwardSlStatusPublishTest(Version slVersion, boolean secondPublish) throws Exception {

@@ -1,5 +1,5 @@
     <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+  ~ Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License").
   ~ You may not use this file except in compliance with the License.
@@ -13,8 +13,24 @@
 
 <div class="modal-header">
         <div class="modal-title" style="display: flex;">
-            <span *ngIf="versionParam!.status !== 'REVIEW'">Confirm status change for Cv {{versionParam!.itemType}} {{versionParam!.language! | vocabularyLanguageFromKey}} <strong>{{versionParam!.notation}}</strong> </span>
-            <span *ngIf="versionParam!.status === 'REVIEW'">Confirm publishing Cv {{versionParam!.itemType}} {{versionParam!.language! | vocabularyLanguageFromKey}} <strong>{{versionParam!.notation}}</strong> </span>
+            <span *ngIf="versionParam!.status === 'DRAFT'">Confirm status change for Cv {{versionParam!.itemType}} {{versionParam!.language! | vocabularyLanguageFromKey}} <strong>{{versionParam!.notation}}</strong> </span>
+            <span *ngIf="versionParam!.status === 'REVIEW'">Confirm status change for Cv {{versionParam!.itemType}} {{versionParam!.language! | vocabularyLanguageFromKey}} <strong>{{versionParam!.notation}}</strong> </span>
+            <span *ngIf="versionParam!.status === 'READY_TO_TRANSLATE'">Confirm publishing Cv {{versionParam!.itemType}} {{versionParam!.language! | vocabularyLanguageFromKey}} <strong>{{versionParam!.notation}}&nbsp;</strong> </span>
+            <span *ngIf="versionParam!.status === 'READY_TO_TRANSLATE' && vocabularyParam!.versions!.length > 1">
+                <span *ngFor="let version of vocabularyParam!.versions!">
+                    <span *ngIf="version.status === 'READY_TO_PUBLISH' && version.itemType ==='TL'">
+                        TL {{version.language! | vocabularyLanguageFromKey}}
+                    </span>
+                </span>
+            </span>
+            <span *ngIf="versionParam!.status === 'PUBLISHED' && vocabularyParam!.versions!.length > 1">
+                <span>Confirm publishing additional TL(s) for CV <strong>{{versionParam!.notation}}</strong></span>
+                <span *ngFor="let version of vocabularyParam!.versions!">
+                    <span *ngIf="version.status === 'READY_TO_PUBLISH' && version.itemType ==='TL'">
+                        TL {{version.language! | vocabularyLanguageFromKey}}
+                    </span>
+                </span>
+            </span>
         </div>
 
         <button aria-label="Close" class="close" data-dismiss="modal" type="button" (click)="clear()">
@@ -44,16 +60,17 @@
                 </div>
             </div>
 
-            <a *ngIf="versionParam!.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isTextDiffCollapse = !isTextDiffCollapse"
+
+            <a *ngIf="versionParam!.status !== 'DRAFT' && versionParam!.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isTextDiffCollapse = !isTextDiffCollapse"
                [attr.aria-expanded]="isTextDiffCollapse" aria-controls="text-diff-panel">
                 &nbsp;
                 <fa-icon *ngIf="!isTextDiffCollapse" icon="caret-down"></fa-icon>
                 <fa-icon *ngIf="isTextDiffCollapse" icon="caret-right"></fa-icon>
                 <span>&nbsp;<fa-icon icon="compress"></fa-icon> Compare prev version {{comparePrevVersion}} with Current version
-                    <span class="badge badge-info">({{compareNoOfDifference > 1 ? compareNoOfDifference +  ' differences' : 'identical'}})</span>
+                    <span class="badge badge-info">({{compareNoOfDifference > 0 ? compareNoOfDifference +  ' differences' : 'identical'}})</span>
                 </span>
             </a>
-            <div *ngIf="versionParam!.previousVersion" id="text-diff-panel" class="acc-body" [ngbCollapse]="isTextDiffCollapse">
+            <div *ngIf="versionParam!.status !== 'DRAFT' && versionParam!.previousVersion" id="text-diff-panel" class="acc-body" [ngbCollapse]="isTextDiffCollapse">
                 <div>
                     <td-ngx-text-diff
                         [left]="left"
@@ -67,7 +84,7 @@
                 </div>
             </div>
 
-            <a *ngIf="versionParam!.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isVocabularyChangeCollapse = !isVocabularyChangeCollapse"
+            <a *ngIf="versionParam!.status !== 'DRAFT' && versionParam!.previousVersion" class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isVocabularyChangeCollapse = !isVocabularyChangeCollapse"
                [attr.aria-expanded]="isVocabularyChangeCollapse" aria-controls="vocabularyChange-panel">
                 &nbsp;
                 <fa-icon *ngIf="!isVocabularyChangeCollapse" icon="caret-down"></fa-icon>
@@ -99,6 +116,7 @@
                 </a>
                 <div class="acc-body">
                     <span *ngIf="versionParam!.status === 'DRAFT'">Are you sure to change Cv {{versionParam!.itemType}} <strong>{{versionParam!.notation}}</strong> status from DRAFT to REVIEW?</span>
+                    <span *ngIf="versionParam!.status === 'PUBLISHED'">Are you sure to publish additional TL(s) for CV <strong>{{versionParam!.notation}}</strong>?</span>
                     <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group mb-4">
                         <div class="label-column-input label-right">
                             <span>Version notes</span>
@@ -199,7 +217,9 @@
                 <button type="submit" id="save-new-cv" [disabled]="cvForwardStatusForm.invalid || isSaving" class="btn btn-primary">
                     <fa-icon [icon]="'save'"></fa-icon>&nbsp;
                     <span *ngIf="versionParam!.status === 'DRAFT'">REVIEW</span>
-                    <span *ngIf="versionParam!.status === 'REVIEW'">PUBLISH</span>
+                    <span *ngIf="versionParam!.itemType === 'SL' && versionParam!.status === 'REVIEW'">READY TO TRANSLATE</span>
+                    <span *ngIf="versionParam!.itemType === 'TL' && versionParam!.status === 'REVIEW'">READY TO PUBLISH</span>
+                    <span *ngIf="versionParam!.status === 'READY_TO_TRANSLATE' || versionParam!.status === 'PUBLISHED'">PUBLISH</span>
                 </button>
             </div>
         </form>
