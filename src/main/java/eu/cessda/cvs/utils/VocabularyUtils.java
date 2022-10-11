@@ -145,8 +145,10 @@ public final class VocabularyUtils
 		esq.setSearchTerm( q );
 
 		// prepare filter
-		if ( f != null && !f.isEmpty() )
-			VocabularyUtils.prepareActiveFilters( f, esq, searchScope );
+		if ( f == null || f.isEmpty() ) {
+			f = "language:en";
+		}
+		VocabularyUtils.prepareActiveFilters( f, esq, searchScope );
 
 		if ( pageable != null )
 		{
