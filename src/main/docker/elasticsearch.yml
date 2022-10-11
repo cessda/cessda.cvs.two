@@ -10,3 +10,8 @@ services:
     environment:
       - 'ES_JAVA_OPTS=-Xms1024m -Xmx1024m'
       - 'discovery.type=single-node'
+    command:
+      - sh
+      - -c
+      - "./bin/elasticsearch-plugin list | grep -q analysis-icu || ./bin/elasticsearch-plugin install analysis-icu;
+        /usr/local/bin/docker-entrypoint.sh elasticsearch"

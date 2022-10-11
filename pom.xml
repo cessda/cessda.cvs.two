@@ -465,9 +465,14 @@
                 <version>6.19</version>
                 <configuration>
                     <!-- THE ELASTICSEARCH VERSION; REPLACE WITH THE VERSION YOU NEED -->
-                    <version>6.8.10</version>
+                    <version>6.8.23</version>
                     <clusterName>docker-cluster</clusterName>
                     <timeout>300</timeout>
+                    <plugins>
+                        <plugin>
+                            <uri>analysis-icu</uri>
+                        </plugin>
+                    </plugins>
                 </configuration>
                 <executions>
                     <execution>

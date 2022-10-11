@@ -109,6 +109,7 @@ public class Vocabulary extends VocabularyBase
             ", publicationDate='" + getPublicationDate() + "'" +
             ", lastModified='" + getLastModified() + "'" +
             ", notes='" + getNotes() + "'" +
+            ", titleAll='" + getTitleAll() + "'" +
             ", versionSq='" + getVersionSq() + "'" +
             ", titleSq='" + getTitleSq() + "'" +
             ", definitionSq='" + getDefinitionSq() + "'" +
