@@ -111,6 +111,11 @@ public class VocabularyBase implements Serializable {
     @Field( type = FieldType.Text )
     private String notes;
 
+    @Lob
+    @Column(name = "title_all")
+    @Mapping(mappingPath = "/mappings/titleAll.json")
+	private String titleAll;
+
     @Size(max = 20)
     @Column(name = "version_sq", length = 20)
     @Field( type = FieldType.Keyword )
@@ -756,6 +761,14 @@ public class VocabularyBase implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getTitleAll() {
+        return titleAll;
+    }
+
+    public void setTitleAll(String titleAll) {
+        this.titleAll = titleAll;
     }
 
     public String getVersionSq() {
@@ -1894,6 +1907,7 @@ public class VocabularyBase implements Serializable {
             ", publicationDate='" + getPublicationDate() + "'" +
             ", lastModified='" + getLastModified() + "'" +
             ", notes='" + getNotes() + "'" +
+            ", titleAll='" + getTitleAll() + "'" +
             ", versionSq='" + getVersionSq() + "'" +
             ", titleSq='" + getTitleSq() + "'" +
             ", definitionSq='" + getDefinitionSq() + "'" +

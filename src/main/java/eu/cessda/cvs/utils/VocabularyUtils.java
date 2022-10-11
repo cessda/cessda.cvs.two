@@ -192,6 +192,7 @@ public final class VocabularyUtils
 			if ( filterSplit[1].contains( "_all" ) )
 			{
 				esq.setSearchAllLanguages( true );
+				esq.setSortLanguage("All");
 				return;
 			}
 			else if ( filterSplit[1].contains( "," ) )
