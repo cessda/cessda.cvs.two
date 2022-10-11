@@ -145,5 +145,3 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
-src/main/docker/elasticsearch.yml.oc
-src/main/resources/config/application-dev.yml.oc

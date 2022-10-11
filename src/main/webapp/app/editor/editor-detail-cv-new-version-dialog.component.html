@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+  ~ Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License").
   ~ You may not use this file except in compliance with the License.
@@ -21,24 +21,31 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <span>Are you sure to create new version from {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}?</span>
-        <br/><br/>
+        <span>Are you sure you want to create a new version of SL {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}?</span>
+        <!--br/><br/>
         <div *ngIf="versionParam.itemType === 'SL' && vocabularyParam.versions && vocabularyParam.versions!.length > 1">
             The following TLs will also be cloned as DRAFT after this new SL version is published:
             <div *ngFor="let version of vocabularyParam.versions">
                 <span *ngIf="version.itemType === 'TL'">- TL {{version.language! | vocabularyLanguageFromKey}} {{version.number!}}-{{version.status!}}<br/></span>
             </div>
-        </div>
+        </div-->
         <br/>
         <div *ngIf="unPublishedTls && unPublishedTls !== ''" class="alert alert-danger" role="alert">
             <fa-icon style="font-size:200%" [icon]="'exclamation-triangle'"></fa-icon>
-            <span>Warning: The following translations (TLs) have not yet been published:</span><br/>
-            <span [innerHTML]="unPublishedTls"></span><br/><br/>
-            <span>When you create a new SL version, these unpublished TLs will be:</span><br/>
+            <span><strong>NOTE:</strong> Before creating the new SL version, it is recommended to first:
+                <ol>
+                    <li>Advise the translating agencies that have TL content in DRAFT or REVIEW status to finalise the translation and move it to READY TO BE PUBLISHED status.</li>
+                    <li>Then publish the current SL again to include all TL content in the status READY TO BE PUBLISHED. First publish that, then create a new SL version. This allows the system to maintain proper version history for the TLs that have finalised their translation.</li>
+                    <li>If the translating agencies cannot finalise their translation before you publish the new SL, their TL content in the Editor for the vocabulary will still be cloned as DRAFT for the new SL version. The system does not produce any version history for them.</li>
+                </ol>
+            </span>
+            <span>Current TL content for the SL:</span><br/>
+            <span [innerHTML]="allTls"></span><br/><br/>
+            <!--span>When you create a new SL version, these unpublished TLs will be:</span><br/>
             <span>- Cloned as TL drafts to the new SL version.</span><br/>
             <span>- They will be treated by the system as the first ever version of the TL. There will no change log or comparison table to previous version.</span><br/>
-            <span>- TL version history and comparison tables of any previous versions are retained.</span><br/><br/>
-            <span>If you are unsure how to proceed, please contact the CESSDA Vocabulary Service Content Contact.</span>
+            <span>- TL version history and comparison tables of any previous versions are retained.</span><br/><br/-->
+            <span>If you are unsure how to proceed, please contact the CESSDA Vocabulary Service Content Contact.</span><br/><br/>
             <div class="form-check">
                 <label class="form-check-label" for="agreeNewVersion">
                     <input class="form-check-input checkbox-2x" type="checkbox" name="agreeNewVersion" id="agreeNewVersion" formControlName="agreeNewVersion" required />
@@ -51,7 +58,6 @@
                     </small>
                 </div>
             </div>
-
         </div>
     </div>
     <div class="modal-footer">

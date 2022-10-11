@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
   isSaving: boolean;
 
   unPublishedTls: string;
+  allTls: string;
 
   newVersionForm = this.fb.group({
     agreeNewVersion: ['', [Validators.required]]
@@ -46,10 +47,15 @@ export class EditorDetailCvNewVersionDialogComponent implements OnInit {
   ) {
     this.isSaving = false;
     this.unPublishedTls = '';
+    this.allTls = '';
   }
 
   ngOnInit(): void {
     if (this.versionParam.itemType === 'SL') {
+      this.allTls = this.vocabularyParam
+        .versions!.filter(v => v.itemType === 'TL')
+        .map(v => '- ' + this.vocabLangPipeKey.transform(v.language!) + ' ' + v.number + '-' + v.status)
+        .join('<br/>');
       this.unPublishedTls = this.vocabularyParam
         .versions!.filter(v => v.itemType === 'TL' && v.status !== 'PUBLISHED')
         .map(v => '- ' + this.vocabLangPipeKey.transform(v.language!) + ' ' + v.number + '-' + v.status)
