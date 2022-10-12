@@ -116,7 +116,7 @@
                 </a>
                 <div class="acc-body">
                     <span *ngIf="versionParam!.status === 'DRAFT'">Are you sure to change Cv {{versionParam!.itemType}} <strong>{{versionParam!.notation}}</strong> status from DRAFT to REVIEW?</span>
-                    <span *ngIf="versionParam!.status === 'PUBLISHED'">Are you sure to publish additional TL(s) for CV <strong>{{versionParam!.notation}}</strong>?</span>
+                    <span *ngIf="versionParam!.status === 'PUBLISHED'">Are you sure you want to publish additional TL(s) for CV <strong>{{versionParam!.notation}}</strong>?</span>
                     <div *ngIf="versionParam!.status === 'REVIEW' && versionParam!.previousVersion" class="row-detail form-group mb-4">
                         <div class="label-column-input label-right">
                             <span>Version notes</span>
