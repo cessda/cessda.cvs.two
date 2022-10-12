@@ -89,7 +89,7 @@
                                     <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_PUBLISH', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'archive'"></fa-icon>
-                                        <span>Publish {{version!.itemType}} {{version!.language}}</span>
+                                        <span>Publish CV</span>
                                     </button>
                                 </div>
                                 <div *ngIf="version!.status === 'PUBLISHED'">
