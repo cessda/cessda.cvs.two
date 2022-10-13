@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+  ~ Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License").
   ~ You may not use this file except in compliance with the License.
@@ -183,7 +183,8 @@
                                         'active': lang === vocabulary.selectedLang,
                                         'source-lang': lang === vocabulary.sourceLanguage,
                                         'status-draft': isVersionContains( vocabulary, lang, 'DRAFT'),
-                                        'status-review': isVersionContains( vocabulary, lang, 'REVIEW')}"
+                                        'status-review': isVersionContains( vocabulary, lang, 'REVIEW'),
+                                        'status-ready': isVersionContains( vocabulary, lang, 'READY_TO_TRANSLATE') || isVersionContains( vocabulary, lang, 'READY_TO_PUBLISH')}"
                                         ngbTooltip="{{getFormattedLangIso(vocabulary, lang, vocabulary.sourceLanguage)}}">
                                     {{lang}}
                                 </button>

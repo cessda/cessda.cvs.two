@@ -1,0 +1,12 @@
+{
+    "type" : "text",
+    "store" : true,
+    "fields" : {
+        "Key" : {
+            "type" : "icu_collation_keyword",
+            "variant": "@collation=dictionary",
+            "country": "EE",
+            "language": "et"
+        }
+    }
+}

@@ -248,6 +248,11 @@ export class HomeDetailComponent implements OnInit {
       }
 
       if (this.currentSelectedCode !== '') {
+        this.isShowingDeprecatedCodes = this.getVersionsByLanguage(this.vocabulary!.selectedLang).some(version => {
+          return version.concepts?.some(concept => {
+            return concept.deprecated;
+          });
+        });
         this._ngZone.runOutsideAngular(() => {
           setTimeout(() => {
             const element = document.querySelector('#code_' + this.currentSelectedCode);

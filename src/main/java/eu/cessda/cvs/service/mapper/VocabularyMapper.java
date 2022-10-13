@@ -15,7 +15,10 @@ package eu.cessda.cvs.service.mapper;
 
 import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
+
+import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
 
 /**
  * Mapper for the entity {@link Vocabulary} and its DTO {@link VocabularyDTO}.
@@ -26,6 +29,11 @@ public interface VocabularyMapper extends EntityMapper<VocabularyDTO, Vocabulary
     VocabularyDTO toDto(Vocabulary vocabulary);
 
     Vocabulary toEntity(VocabularyDTO vocabularyDTO);
+
+    @AfterMapping
+    default void setTitleAll(@MappingTarget VocabularyDTO vocabularyDTO) {
+        vocabularyDTO.setTitleAll();
+    }
 
     default Vocabulary fromId(Long id) {
         if (id == null) {

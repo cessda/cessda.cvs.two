@@ -61,6 +61,7 @@ public class VocabularyDTO implements Serializable {
         setStatusByVocabularySnippet(vocabularySnippet);
         setVersionNumberByVocabularySnippet(vocabularySnippet);
         setContentByVocabularySnippet( vocabularySnippet );
+        setTitleAll();
     }
 
     public static void cleanUpContentForApi(VocabularyDTO vocab) {
@@ -141,6 +142,9 @@ public class VocabularyDTO implements Serializable {
     private Set<CodeDTO> codes = new LinkedHashSet<>();
 
     private Set<VersionDTO> versions = new LinkedHashSet<>();
+
+    @Lob
+    private String titleAll;
 
     @Size(max = 20)
     private String versionSq;
@@ -536,6 +540,14 @@ public class VocabularyDTO implements Serializable {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public String getTitleAll() {
+        return titleAll;
+    }
+
+    public void setTitleAll(String titleAll) {
+        this.titleAll = titleAll;
     }
 
     public String getVersionSq() {
@@ -1648,6 +1660,98 @@ public class VocabularyDTO implements Serializable {
         }
     }
 
+    public void setTitleAll() {
+        Language language = Language.getByIso(sourceLanguage);
+        switch (language) {
+            case ALBANIAN:
+                setTitleAll(getTitleSq());
+                break;
+            case BOSNIAN:
+                setTitleAll(getTitleBs());
+                break;
+            case BULGARIAN:
+                setTitleAll(getTitleBg());
+                break;
+            case CROATIAN:
+                setTitleAll(getTitleHr());
+                break;
+            case CZECH:
+                setTitleAll(getTitleCs());
+                break;
+            case DANISH:
+                setTitleAll(getTitleDa());
+                break;
+            case DUTCH:
+                setTitleAll(getTitleNl());
+                break;
+            case ENGLISH:
+                setTitleAll(getTitleEn());
+                break;
+            case ESTONIAN:
+                setTitleAll(getTitleEt());
+                break;
+            case FINNISH:
+                setTitleAll(getTitleFi());
+                break;
+            case FRENCH:
+                setTitleAll(getTitleFr());
+                break;
+            case GERMAN:
+                setTitleAll(getTitleDe());
+                break;
+            case GREEK:
+                setTitleAll(getTitleEl());
+                break;
+            case HUNGARIAN:
+                setTitleAll(getTitleHu());
+                break;
+            case ITALIAN:
+                setTitleAll(getTitleIt());
+                break;
+            case JAPANESE:
+                setTitleAll(getTitleJa());
+                break;
+            case LITHUANIAN:
+                setTitleAll(getTitleLt());
+                break;
+            case MACEDONIAN:
+                setTitleAll(getTitleMk());
+                break;
+            case NORWEGIAN:
+                setTitleAll(getTitleNo());
+                break;
+            case POLISH:
+                setTitleAll(getTitlePl());
+                break;
+            case PORTUGUESE:
+                setTitleAll(getTitlePt());
+                break;
+            case ROMANIAN:
+                setTitleAll(getTitleRo());
+                break;
+            case RUSSIAN:
+                setTitleAll(getTitleRu());
+                break;
+            case SERBIAN:
+                setTitleAll(getTitleSr());
+                break;
+            case SLOVAK:
+                setTitleAll(getTitleSk());
+                break;
+            case SLOVENIAN:
+                setTitleAll(getTitleSl());
+                break;
+            case SPANISH:
+                setTitleAll(getTitleEs());
+                break;
+            case SWEDISH:
+                setTitleAll(getTitleSv());
+                break;
+            default:
+                throw new IllegalArgumentException("Undefined case in setTitleAll for enum Language " + language);
+        }
+    }
+
     public VocabularyDTO setTitleDefinition( String title, String definition, String language, boolean ignoreNullValue) {
         return setTitleDefinition(title, definition, Language.getByIso(language.toLowerCase()), ignoreNullValue);
     }
@@ -1908,6 +2012,7 @@ public class VocabularyDTO implements Serializable {
         setLanguages( null );
         setLanguagesPublished( null );
         setStatuses( null );
+        setTitleAll(null);
         setTitleCs(null);
         setDefinitionCs(null);
         setTitleDa(null);

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+  ~ Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License").
   ~ You may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@
                                     <span>Add translation</span>
                                 </button>
                             </div>
-                            <div *ngIf="version!.status !== 'PUBLISHED'">
+                            <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH')">
                                 <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:version!.language}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( false, version!.itemType === 'SL' )">
                                     <fa-icon [icon]="'edit'"></fa-icon>
@@ -79,10 +79,17 @@
                                     </button>
                                 </div>
                                 <div *ngIf="version!.status === 'REVIEW'">
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
+                                            class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
+                                        <fa-icon [icon]="'archive'"></fa-icon>
+                                        <span>Ready to Translate {{version!.itemType}} {{version!.language}}</span>
+                                    </button>
+                                </div>
+                                <div *ngIf="(version!.status === 'READY_TO_TRANSLATE' || enablePublishTl) && !(version!.status === 'DRAFT' || version!.status === 'REVIEW')">
                                     <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_SL_STATUS_PUBLISH', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'archive'"></fa-icon>
-                                        <span>Publish {{version!.itemType}} {{version!.language}}</span>
+                                        <span>Publish CV</span>
                                     </button>
                                 </div>
                                 <div *ngIf="version!.status === 'PUBLISHED'">
@@ -102,12 +109,16 @@
                                     </button>
                                 </div>
                                 <div *ngIf="version!.status === 'REVIEW'">
-                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_PUBLISH', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL'], language:version!.language}"
+                                    <button *jhiHasAnyAgencyAuthority="{actionType:'FORWARD_CV_TL_STATUS_READY_TO_PUBLISH', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openForwardStatusCvPopup()">
                                         <fa-icon [icon]="'archive'"></fa-icon>
-                                        <span>Publish {{version!.itemType}} {{version!.language}}</span>
+                                        <span>Ready to Publish {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
+                                <!--probably we don't need create new TL version functionality in the frontend as the workflow will be that 
+                                    only through SL publication the TLs will be published too
+                                    Question: If there is already published SL and some TLs and we want to publish new TL, how-to do it???
+                                -->
                                 <div *ngIf="version!.status === 'PUBLISHED'">
                                     <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_NEW_CV_TL_VERSION', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openCreateNewCvVersionPopup()">
@@ -125,8 +136,8 @@
                         </div>
 
                         <div *ngIf="!(concept !== null && concept.deprecated)">
-                            <a *ngIf="version!.status !== 'PUBLISHED' || (version!.status === 'PUBLISHED' && version!.concepts && version!.concepts!.length > 0)" class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isCodeActionCollapse = !isCodeActionCollapse"
-                               [attr.aria-expanded]="isCodeActionCollapse" aria-controls="action-code-panel">
+                            <a *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE') || (version!.status === 'PUBLISHED' && version!.concepts && version!.concepts!.length > 0) " class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isCodeActionCollapse = !isCodeActionCollapse"
+                            [attr.aria-expanded]="isCodeActionCollapse" aria-controls="action-code-panel">
                                 &nbsp;
                                 <fa-icon *ngIf="!isCodeActionCollapse" icon="caret-down"></fa-icon>
                                 <fa-icon *ngIf="isCodeActionCollapse" icon="caret-right"></fa-icon>
@@ -134,7 +145,7 @@
                             </a>
                             <div id="action-code-panel" class="acc-body" [ngbCollapse]="isCodeActionCollapse">
                                 <div *ngIf="version!.itemType === 'SL'">
-                                    <div *ngIf="version!.status !== 'PUBLISHED'">
+                                    <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE')">
                                         <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
                                                 class="btn sk-select-min sk-input-f mtop10" (click)="openAddCodePopup()">
                                             <fa-icon [icon]="'plus'"></fa-icon>
@@ -155,6 +166,7 @@
                                                     <span>Edit code</span>
                                                 </button>
                                             </div>
+
                                             <div *ngIf="version!.status === 'REVIEW'">
                                                 <div *jhiHasAnyAgencyAuthority="{actionType:'PERFORM_ACTION_IN_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}">
                                                     <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','CONTRIBUTOR_SL'], language:version!.language}"
@@ -195,7 +207,7 @@
                                 </div>
 
                                 <div *ngIf="version!.itemType === 'TL'">
-                                    <div *ngIf="version!.status !== 'PUBLISHED'">
+                                    <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_PUBLISH')">
                                         <div *ngIf="concept">
                                             <div *ngIf="!concept.title || concept.title === ''">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CODE', agencyId:vocabulary!.agencyId, agencyRoles:codeTlActionRoles, language:version!.language}"
@@ -347,7 +359,7 @@
                                 <span>{{version!.status !== 'PUBLISHED' ? version!.status + '-' + version!.number: version!.number}}</span>
                             </div>
                         </div>
-                        <div *ngIf="version!.publicationDate" class="row-detail">
+                        <div *ngIf="(version!.publicationDate && version!.status !== 'READY_TO_TRANSLATE' && version!.status !== 'READY_TO_PUBLISH')" class="row-detail">
                             <div class="label-column label-right">
                                 <span>Date of publication&nbsp; </span>
                             </div>
@@ -368,7 +380,8 @@
                                         'active': lang === vocabulary!.selectedLang,
                                         'source-lang': lang === vocabulary!.sourceLanguage,
                                         'status-draft': isVersionStatus( lang, 'DRAFT'),
-                                        'status-review': isVersionStatus( lang, 'REVIEW')}"
+                                        'status-review': isVersionStatus( lang, 'REVIEW'),
+                                        'status-ready': isVersionStatus( lang, 'READY_TO_TRANSLATE') || isVersionStatus( lang, 'READY_TO_PUBLISH')}"
                                         ngbTooltip="{{getFormattedVersionTooltip(v, vocabulary!.sourceLanguage)}}">
                                     {{lang}}
                                 </button>
@@ -437,7 +450,7 @@
                                     Code definition({{version!.language}})
                                 </span>
                             </div>
-                            <jhi-tree-editor [parentNotation]="" [conceptList]="version!.concepts" [level]="0" [deprecated]="false"></jhi-tree-editor>
+                            <jhi-tree-editor [parentNotation]="" [conceptList]="version!.concepts" [level]="0"></jhi-tree-editor>
 
 
                             <br>

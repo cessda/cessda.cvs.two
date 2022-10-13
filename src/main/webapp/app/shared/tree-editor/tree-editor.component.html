@@ -13,14 +13,18 @@
 
 <div *ngFor="let concept of conceptList">
     <ul *ngIf="concept.parent === parentNotation" class="concept-tree ul-level-{{level!}}">
-        <li id="code_{{concept.notation.split('.').join('')}}" [ngClass]="{'y-bgr': !concept.title}">
-            <div *ngIf="!concept.deprecated" class="concept-row" (click)="!deprecated && selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation}">
+        <li [attr.id]="!concept.deprecated ? 'code_' + concept.notation.split('.').join('') : null" [ngClass]="{'y-bgr': !concept.title}">
+            <div *ngIf="!concept.deprecated" class="concept-row" (click)="selectConcept(concept)" [ngClass]="{ 'active': concept.notation === activeConceptNotation}">
                 <!-- Column 1 -->
                 <span class="column1 coll-mar-{{level!}}"><button *ngIf="isConceptHasChildren(concept.notation,conceptList)" (click)="concept.visible = !concept.visible" class="invisible-button"><fa-icon *ngIf="!concept.visible" icon="caret-down"></fa-icon><fa-icon *ngIf="concept.visible" icon="caret-right"></fa-icon></button><span class="e-note">{{concept.position}}</span> {{concept.notation}}</span>
                 <!-- Column 2 -->
                 <span *ngIf="concept.titleSl" class="columnSl2">{{concept.titleSl}}</span>
                 <!-- Column 3 -->
                 <span class="column2">{{concept.title ? concept.title : ''}}</span>
+                <!-- Column 4 -->
+                <span *ngIf="concept.definitionSl" class="columnSl3">{{concept.definitionSl ? concept.definitionSl : ''}}</span>
+                <!-- Column 5 -->
+                <span class="column3">{{concept.definition ? concept.definition : ''}}</span>
             </div>
             <jhi-tree-editor *ngIf="isConceptHasChildren(concept.notation,conceptList)"
                       [ngClass]="{'display-none': concept.visible}"

@@ -1,5 +1,5 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2022 CESSDA ERIC (support@cessda.eu)
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -17,5 +17,5 @@ package eu.cessda.cvs.domain.enumeration;
  * The Status enumeration.
  */
 public enum Status {
-    DRAFT, REVIEW, PUBLISHED, PUBLISHED_RESTRICT, WITHDRAWN
+    DRAFT, REVIEW, READY_TO_TRANSLATE, PUBLISHED, READY_TO_PUBLISH, PUBLISHED_RESTRICT, WITHDRAWN
 }
