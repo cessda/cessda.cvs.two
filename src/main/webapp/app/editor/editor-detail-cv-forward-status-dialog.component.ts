@@ -154,8 +154,9 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
             this.comparePrevVersion = res.headers.get('X-Prev-Cv-Version')!;
           });
           this.vocabularyChangeService.getByVersionId(this.versionParam!.id!).subscribe((res: HttpResponse<IVocabularyChange[]>) => {
-            this.vocabularyChanges = res.body;
-            this.fillVersionNotesAndChanges();
+            this.vocabularyChanges = res.body!;
+            this.fillVersionNotes();
+            this.fillVersionChanges();
           });
         }
       }
@@ -183,14 +184,17 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     }
   }
 
-  private fillVersionNotesAndChanges(): void {
+  private fillVersionNotes(): void {
     if (this.cvForwardStatusForm.contains('versionNotes') && this.versionParam!.versionNotes) {
       this.cvForwardStatusForm.patchValue({
         versionNotes: this.versionParam!.versionNotes,
       });
       // @ts-ignore
-      this.versionNotesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionNotes'])!.value);
+      this.versionNotesEditor?.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionNotes'])!.value);
     }
+  }
+
+  private fillVersionChanges(): void {
     if (this.cvForwardStatusForm.contains('versionChanges') && this.versionParam!.previousVersion !== undefined && this.versionParam!.previousVersion !== 0) {
       if (this.versionParam!.versionChanges) {
         this.cvForwardStatusForm.patchValue({
@@ -202,7 +206,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         });
       }
       // @ts-ignore
-      this.versionChangesEditor.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionChanges'])!.value);
+      this.versionChangesEditor?.clipboard.dangerouslyPasteHTML(this.cvForwardStatusForm.get(['versionChanges'])!.value);
     }
   }
 
@@ -317,10 +321,12 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   // @ts-ignore
   onVersionNotesEditorCreated(event: Quill): void {
     this.versionNotesEditor = event;
+    this.fillVersionNotes();
   }
 
   // @ts-ignore
   onVersionChangesEditorCreated(event: Quill): void {
     this.versionChangesEditor = event;
+    this.fillVersionChanges();
   }
 }
