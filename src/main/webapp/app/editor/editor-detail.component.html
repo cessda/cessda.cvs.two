@@ -183,7 +183,7 @@
                                                     <span>Move code</span>
                                                 </button>
                                             </div>
-                                            <div *ngIf="getMajorVersionNumber() >= 1 && getMinorVersionNumber() > 0">
+                                            <div *ngIf="(getMajorVersionNumber() == 1 && getMinorVersionNumber() > 0) || getMajorVersionNumber() > 1">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'DEPRECATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                                         class="btn sk-select-min-btn btn-warning sk-input-f mtop20" (click)="openDeprecateCodePopup()">
                                                     <fa-icon [icon]="'wind'"></fa-icon>
