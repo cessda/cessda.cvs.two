@@ -824,6 +824,11 @@ public class VocabularyServiceImpl implements VocabularyService
 		} );
 
 		// #423 -->
+		List<VocabularyChangeDTO> currentChangeLog = vocabularyChangeService.findByVersionId(currentVersionSl.getId());
+		currentChangeLog.forEach(change -> {
+			change.setVersionId(finalNewTlVersion.getId());
+			vocabularyChangeService.save(change);
+		});
 		finalNewTlVersion.setVersionChanges(currentVersionSl.getVersionChanges());
 		// <-- #423
 		
