@@ -168,12 +168,9 @@
                                 </td>
                                 <td>
                                     <select class="form-control" (change)="selectedAgencyRole = $event.target.value" [value]="selectedAgencyRole">
-                                        <option value="ADMIN">{{ 'cvsApp.AgencyRole.ADMIN' | translate }}</option>
+<!--                                        <option value="ADMIN">{{ 'cvsApp.AgencyRole.ADMIN' | translate }}</option>-->
                                         <option value="ADMIN_SL">{{ 'cvsApp.AgencyRole.ADMIN_SL' | translate }}</option>
-                                        <option value="ADMIN_TL">{{ 'cvsApp.AgencyRole.ADMIN_TL' | translate }}</option>
-                                        <option value="CONTRIBUTOR_SL">{{ 'cvsApp.AgencyRole.CONTRIBUTOR_SL' | translate }}</option>
-                                        <option value="CONTRIBUTOR_TL" selected>{{ 'cvsApp.AgencyRole.CONTRIBUTOR_TL' | translate }}</option>
-                                        <option value="VIEW">{{ 'cvsApp.AgencyRole.VIEW' | translate }}</option>
+                                        <option value="ADMIN_TL" selected>{{ 'cvsApp.AgencyRole.ADMIN_TL' | translate }}</option>
                                     </select>
                                 </td>
                                 <td>
