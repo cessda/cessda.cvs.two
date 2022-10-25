@@ -48,14 +48,17 @@ public class VersionUtils {
         for (String s : split) {
             sb.append(String.format(format, s));
         }
+        for (int i=split.length; i < 3; i++) {
+            sb.append(String.format(format, "0"));
+        }
         return sb.toString();
     }
 
     public static String increaseSlVersionByOne( String prevVersionNumber ) {
-        int indexAfter1stDot = prevVersionNumber.indexOf('.') + 1;
-        int indexBefore2ndDot = prevVersionNumber.lastIndexOf('.');
-        return prevVersionNumber.substring(0, indexAfter1stDot) +
-            ( Integer.parseInt( prevVersionNumber.substring(indexAfter1stDot, indexBefore2ndDot) ) + 1 ) + ".0";
+        prevVersionNumber = VersionUtils.getSlNumberFromTl(prevVersionNumber);
+        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
+        return prevVersionNumber.substring(0, indexAfterLastDot) +
+            ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 ) + ".0";
     }
 
     public static String increaseTlVersionByOne( String prevVersionNumber, String currentSlNumber ) {

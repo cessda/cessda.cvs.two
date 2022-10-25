@@ -25,6 +25,16 @@ public class VersionUtilsTest {
         assertThat( VersionUtils.compareVersion("1.0","1.0") ).isEqualTo(0);
         assertThat( VersionUtils.compareVersion("2.0","1.0") ).isEqualTo(1);
         assertThat( VersionUtils.compareVersion("2.0.1","1.2") ).isEqualTo(1);
+        assertThat( VersionUtils.compareVersion("1.0.0","2.0") ).isEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("1.0.0","1.0") ).isEqualTo(0);
+        assertThat( VersionUtils.compareVersion("2.0.0","1.0") ).isEqualTo(1);
+        assertThat( VersionUtils.compareVersion("1.0","2.0.0") ).isEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("1.0","1.0.0") ).isEqualTo(0);
+        assertThat( VersionUtils.compareVersion("2.0","1.0.0") ).isEqualTo(1);
+        assertThat( VersionUtils.compareVersion("1.0.0","2.0.0") ).isEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("1.0.0","1.0.0") ).isEqualTo(0);
+        assertThat( VersionUtils.compareVersion("2.0.0","1.0.0") ).isEqualTo(1);
+        assertThat( VersionUtils.compareVersion("2.0.1","1.2.0") ).isEqualTo(1);
     }
 
     @Test
@@ -35,14 +45,18 @@ public class VersionUtilsTest {
 
     @Test
     public void increaseSlVersionByOneTest(){
-        assertThat( VersionUtils.increaseSlVersionByOne("1.0" ) ).isEqualTo("1.1");
-        assertThat( VersionUtils.increaseSlVersionByOne("1.10" ) ).isEqualTo("1.11");
+        assertThat( VersionUtils.increaseSlVersionByOne("1.0" ) ).isEqualTo("1.1.0");
+        assertThat( VersionUtils.increaseSlVersionByOne("1.10" ) ).isEqualTo("1.11.0");
+        assertThat( VersionUtils.increaseSlVersionByOne("1.0.0" ) ).isEqualTo("1.1.0");
+        assertThat( VersionUtils.increaseSlVersionByOne("1.10.0" ) ).isEqualTo("1.11.0");
     }
 
     @Test
     public void increaseTlVersionByOneTest(){
         assertThat( VersionUtils.increaseTlVersionByOne("1.0.2", "2.0") ).isEqualTo("2.0.1");
         assertThat( VersionUtils.increaseTlVersionByOne("2.0.1", "2.0" ) ).isEqualTo("2.0.2");
+        assertThat( VersionUtils.increaseTlVersionByOne("1.0.2", "2.0.0") ).isEqualTo("2.0.1");
+        assertThat( VersionUtils.increaseTlVersionByOne("2.0.1", "2.0.0" ) ).isEqualTo("2.0.2");
     }
 
     @Test
