@@ -20,6 +20,7 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
 
 import javax.persistence.Lob;
@@ -1384,10 +1385,11 @@ public class VocabularyDTO implements Serializable {
         return this;
     }
 
-    public List<VersionDTO> getVersionByGroup( String slVersionNumber, boolean noSameLanguage){
+    public List<VersionDTO> getVersionsByVersionSl( String versionNumberSl, boolean noSameLanguage){
+        String versionNumberSlSearch = VersionUtils.getSlNumberFromTl(versionNumberSl);
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
-            .filter(v -> v.getNumber().startsWith(slVersionNumber))
+            .filter(v -> v.getNumber().startsWith(versionNumberSlSearch))
             .sorted(VocabularyUtils.versionDtoComparator())
             .collect(Collectors.toList());
 

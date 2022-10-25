@@ -109,6 +109,29 @@ export default class VocabularyUtil {
     return -1;
   }
 
+  static parseVersionNumber(versionNumber: string): any {
+    const regex = /^([0-9]+)\.([0-9]+)(?:\.([0-9]+))?/g;
+    const matches = regex.exec(versionNumber);
+    if (matches) {
+        return {
+          'sl': {
+            'string': Number(matches[1]) + '.' + Number(matches[2]),
+            'array': [
+              Number(matches[1]),
+              Number(matches[2])
+            ]
+          },
+          'tl': {
+            'string': Number(matches[3]),
+            'array': [
+              Number(matches[3])
+            ]
+          }
+        };
+    }
+    throw new Error('Invalid version number format');
+  }
+
   static getVersionByLang(vocab: IVocabulary): IVersion {
     return vocab.versions!.filter(v => v.language === vocab.selectedLang)[0];
   }

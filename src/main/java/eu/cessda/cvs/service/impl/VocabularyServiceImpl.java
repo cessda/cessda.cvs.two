@@ -1696,7 +1696,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			if ( lasIndexDot == -1 )
 				throw new IllegalArgumentException( "Incorrect TL version number of " + version.getNotation() +
 						" " + version.getNumber() );
-			String slNumber = version.getNumber().substring( 0, lasIndexDot );
+			String slNumber = version.getNumber().substring( 0, lasIndexDot ) + ".0";
 
 			List<VersionDTO> versionDTOs = slNumberVersionsMap.get( slNumber );
 			if ( versionDTOs == null )
@@ -2011,7 +2011,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			}
 			// now we need to go through all the versions which are TLs and ready to publish
 			// also we need to update the date of the publication
-			List<VersionDTO> versions = vocabularyDTO.getVersionByGroup(versionDTO.getNumber(), true);
+			List<VersionDTO> versions = vocabularyDTO.getVersionsByVersionSl(versionDTO.getNumber(), true);
 			// Iterator<VersionDTO> versions = vocabularyDTO.getVersions().iterator();
 			for ( VersionDTO versionDTO_: versions ) {
 				if (versionDTO_.getItemType().equals("TL") && versionDTO_.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
@@ -2069,7 +2069,7 @@ public class VocabularyServiceImpl implements VocabularyService
 		{
 			VersionDTO prevVersionSl = prevVersionSlOpt.get();
 			List<VersionDTO> clonedTls = new ArrayList<>();
-			List<VersionDTO> prevVersions = vocabularyDTO.getVersionByGroup( prevVersionSl.getNumber(), true );
+			List<VersionDTO> prevVersions = vocabularyDTO.getVersionsByVersionSl( prevVersionSl.getNumber(), true );
 
 			prevVersions.forEach( prevVersion ->
 			{

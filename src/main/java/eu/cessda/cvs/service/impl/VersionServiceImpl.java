@@ -18,6 +18,8 @@ import eu.cessda.cvs.repository.VersionRepository;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.mapper.VersionMapper;
+import eu.cessda.cvs.utils.VersionUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -127,6 +129,7 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public List<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, String versionNumberSl) {
         log.debug("Request to get versions by vocabularyId {}, versionNumberSl {}", vocabularyId, versionNumberSl);
+        versionNumberSl = VersionUtils.getSlNumberFromTl(versionNumberSl);
         return versionRepository.findAllByVocabularyIdAndVersionNumberSl( vocabularyId, versionNumberSl ).stream()
             .map(versionMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
@@ -135,6 +138,7 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public Set<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, String versionNumberSl) {
         log.debug("Request to get published versions by vocabularyId {}, versionNumberSl {}", vocabularyId, versionNumberSl);
+        versionNumberSl = VersionUtils.getSlNumberFromTl(versionNumberSl);
         return versionRepository.findAllPublishedByVocabularyIdAndVersionNumberSl( vocabularyId, versionNumberSl ).stream()
             .map(versionMapper::toDto)
             .collect(Collectors.toCollection(LinkedHashSet::new));

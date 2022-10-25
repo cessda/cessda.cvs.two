@@ -52,18 +52,21 @@ public class VersionUtils {
     }
 
     public static String increaseSlVersionByOne( String prevVersionNumber ) {
-        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
-        return prevVersionNumber.substring(0, indexAfterLastDot) +
-            ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
+        int indexAfter1stDot = prevVersionNumber.indexOf('.') + 1;
+        int indexBefore2ndDot = prevVersionNumber.lastIndexOf('.');
+        return prevVersionNumber.substring(0, indexAfter1stDot) +
+            ( Integer.parseInt( prevVersionNumber.substring(indexAfter1stDot, indexBefore2ndDot) ) + 1 ) + ".0";
     }
 
     public static String increaseTlVersionByOne( String prevVersionNumber, String currentSlNumber ) {
-        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
-        if ( VersionUtils.compareVersion( prevVersionNumber, currentSlNumber ) == -1)
+        String prevVersionSlNumber = VersionUtils.getSlNumberFromTl(prevVersionNumber);
+        currentSlNumber = VersionUtils.getSlNumberFromTl(currentSlNumber);
+        if (!prevVersionSlNumber.equals(currentSlNumber)) {
             return currentSlNumber + ".1";
-        else
-            return prevVersionNumber.substring(0, indexAfterLastDot) +
-                ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
+        }
+        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
+        return prevVersionNumber.substring(0, indexAfterLastDot) +
+            ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
     }
 
     public static String getSlNumberFromTl( String tlNumber ) {
