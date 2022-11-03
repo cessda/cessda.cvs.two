@@ -11,21 +11,21 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, Validators} from '@angular/forms';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
-import {LANGUAGES} from 'app/core/language/language.constants';
-import {User} from 'app/core/user/user.model';
-import {UserService} from 'app/core/user/user.service';
-import {IUserAgency, UserAgency} from 'app/shared/model/user-agency.model';
-import {HttpResponse} from '@angular/common/http';
-import {IAgency} from 'app/shared/model/agency.model';
-import {AgencyService} from 'app/agency/agency.service';
+import { LANGUAGES } from 'app/core/language/language.constants';
+import { User } from 'app/core/user/user.model';
+import { UserService } from 'app/core/user/user.service';
+import { IUserAgency, UserAgency } from 'app/shared/model/user-agency.model';
+import { HttpResponse } from '@angular/common/http';
+import { IAgency } from 'app/shared/model/agency.model';
+import { AgencyService } from 'app/agency/agency.service';
 
 @Component({
   selector: 'jhi-user-mgmt-update',
-  templateUrl: './user-management-update.component.html'
+  templateUrl: './user-management-update.component.html',
 })
 export class UserManagementUpdateComponent implements OnInit {
   user!: User;
@@ -47,7 +47,7 @@ export class UserManagementUpdateComponent implements OnInit {
     email: ['', [Validators.minLength(5), Validators.maxLength(254), Validators.email]],
     activated: [],
     langKey: [],
-    authorities: []
+    authorities: [],
   });
 
   constructor(
@@ -57,7 +57,7 @@ export class UserManagementUpdateComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.selectedAgencyId = 1;
-    this.selectedAgencyRole = 'CONTRIBUTOR_TL';
+    this.selectedAgencyRole = 'ADMIN_TL';
     this.selectedLanguage = '';
   }
 
@@ -87,7 +87,7 @@ export class UserManagementUpdateComponent implements OnInit {
       .query({
         page: 0,
         size: 1000,
-        sort: ['name,asc']
+        sort: ['name,asc'],
       })
       .subscribe((res: HttpResponse<IAgency[]>) => {
         this.agencies = res.body!;
@@ -135,7 +135,7 @@ export class UserManagementUpdateComponent implements OnInit {
       email: user.email,
       activated: user.activated,
       langKey: user.langKey,
-      authorities: user.authorities
+      authorities: user.authorities,
     });
   }
 
@@ -192,7 +192,7 @@ export class UserManagementUpdateComponent implements OnInit {
         userId: this.user.id,
         agencyRole: this.selectedAgencyRole,
         agencyId: this.selectedAgencyId,
-        language: this.selectedLanguage !== '' ? this.selectedLanguage : undefined
+        language: this.selectedLanguage !== '' ? this.selectedLanguage : undefined,
       };
       this.user.userAgencies!.push(userAgency);
     }
