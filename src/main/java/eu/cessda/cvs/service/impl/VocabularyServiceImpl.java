@@ -2296,15 +2296,15 @@ public class VocabularyServiceImpl implements VocabularyService
 
 	private void setDeprecatedConceptsValidUntilVersionId(VersionDTO versionDTO, Long validUntilVersionId)
 	{
-		log.debug("#385: setDeprecatedConceptsValidity for versionDTO={}", versionDTO.toString());
+		log.debug("#385: setDeprecatedConceptsValidity for versionDTO={}", versionDTO);
 		boolean modified = false;
 		for (ConceptDTO concept : versionDTO.getConcepts()) {
 			if (concept.getDeprecated() && concept.getValidUntilVersionId() == null)
 			{
-				log.debug("#385: concept={}", concept.toString());
+				log.debug("#385: concept={}", concept);
 				concept.setValidUntilVersionId(validUntilVersionId);
 				modified = true;
-				log.debug("#385: concept={}", concept.toString());
+				log.debug("#385: concept={}", concept);
 			}
 		}
 		if (modified)
