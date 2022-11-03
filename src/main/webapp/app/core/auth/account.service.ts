@@ -11,18 +11,18 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
-import {HttpClient} from '@angular/common/http';
-import {JhiLanguageService} from 'ng-jhipster';
-import {SessionStorageService} from 'ngx-webstorage';
-import {Observable, of, ReplaySubject} from 'rxjs';
-import {catchError, shareReplay, tap} from 'rxjs/operators';
-import {StateStorageService} from 'app/core/auth/state-storage.service';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { JhiLanguageService } from 'ng-jhipster';
+import { SessionStorageService } from 'ngx-webstorage';
+import { Observable, of, ReplaySubject } from 'rxjs';
+import { catchError, shareReplay, tap } from 'rxjs/operators';
+import { StateStorageService } from 'app/core/auth/state-storage.service';
 
-import {SERVER_API_URL} from 'app/app.constants';
-import {Account} from 'app/core/user/account.model';
-import {IUserAgency} from 'app/shared/model/user-agency.model';
+import { SERVER_API_URL } from 'app/app.constants';
+import { Account } from 'app/core/user/account.model';
+import { IUserAgency } from 'app/shared/model/user-agency.model';
 
 @Injectable({ providedIn: 'root' })
 export class AccountService {
@@ -92,6 +92,7 @@ export class AccountService {
       case 'CREATE_CODE':
       case 'EDIT_CODE':
       case 'REORDER_CODE':
+      case 'DEPRECATE_CODE':
       case 'DELETE_CODE':
       case 'ADD_TL_CODE':
       case 'EDIT_TL_CODE':
