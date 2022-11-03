@@ -59,6 +59,7 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // This is intentional
   }
 
   clear(): void {
