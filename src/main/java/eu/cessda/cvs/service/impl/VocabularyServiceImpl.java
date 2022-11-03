@@ -2005,8 +2005,8 @@ public class VocabularyServiceImpl implements VocabularyService
 				log.debug("#385: FORWARD_CV_SL_STATUS_PUBLISHED, \n" + 
 					"vocabularyDTO={},\n" +
 					"versionDTO={}",
-					vocabularyDTO.toString(),
-					versionDTO.toString()
+					vocabularyDTO,
+					versionDTO
 				);
 				setDeprecatedConceptsValidUntilVersionId(versionDTO, versionDTO.getId());
 				// <-- #385
@@ -2022,7 +2022,7 @@ public class VocabularyServiceImpl implements VocabularyService
 					// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
 					log.debug("#385: OLD FORWARD_CV_TL_STATUS_PUBLISHED, \n" + 
 						"versionDTO={}",
-						versionDTO.toString()
+						versionDTO
 					);
 					setDeprecatedConceptsValidUntilVersionId(versionDTO_, versionDTO_.getId());
 					// <-- #385
