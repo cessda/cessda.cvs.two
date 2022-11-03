@@ -138,9 +138,11 @@ export default class VocabularyUtil {
 
   static getVersionByLangAndNumber(vocab: IVocabulary, versionNumber?: string): IVersion {
     if (versionNumber) {
-      return vocab.versions!.filter(v => v.language === vocab.selectedLang && v.number === versionNumber)[0];
+      versionNumber = this.threeDigitVersionNumber(versionNumber);
+      return vocab.versions!.filter(v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number) === versionNumber)[0];
     } else if (vocab.selectedVersion) {
-      return vocab.versions!.filter(v => v.language === vocab.selectedLang && v.number === vocab.selectedVersion)[0];
+      vocab.selectedVersion = this.threeDigitVersionNumber(vocab.selectedVersion);
+      return vocab.versions!.filter(v => v.language === vocab.selectedLang && this.threeDigitVersionNumber(v.number) === vocab.selectedVersion)[0];
     }
     return VocabularyUtil.getVersionByLang(vocab);
   }
@@ -255,5 +257,25 @@ export default class VocabularyUtil {
       });
     }
     return uniqueLang;
+  }
+
+  static countMatches(str: string | undefined, sub: string | undefined): number {
+    if (!(str && sub)) {
+      return 0;
+    }
+    let count = 0;
+    let idx = 0;
+    while ((idx = str.indexOf(sub, idx)) >= 0) {
+      count++;
+      idx += sub.length;
+    }
+    return count;
+  }
+
+  static threeDigitVersionNumber(number: string | undefined): string | undefined {
+    if (this.countMatches(number, '.') === 1) {
+      number += '.0';
+    }
+    return number;
   }
 }
