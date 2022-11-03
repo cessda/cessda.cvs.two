@@ -67,6 +67,7 @@ import java.util.stream.Collectors;
 public class EditorResource {
 
     public static final String UNABLE_TO_FIND_VERSION = "Unable to find version with Id ";
+    public static final String UNABLE_TO_FIND_CONCEPT = "Unable to find concept with Id ";
     public static final String TO_BE_DELETED = " to be deleted";
     public static final String TO_BE_DEPRECATED = " to be deprecated";
     public static final String AS_A_REPLACING_CONCEPT = " as a replacing concept";
@@ -487,7 +488,7 @@ public class EditorResource {
             throw new BadRequestAlertException(INVALID_ID, ENTITY_CODE_NAME, ID_NULL);
         }
         ConceptDTO conceptDTO = conceptService.findOne(codeSnippet.getConceptId())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getConceptId() + TO_BE_DEPRECATED));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getConceptId() + TO_BE_DEPRECATED));
         VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + conceptDTO.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
@@ -503,7 +504,7 @@ public class EditorResource {
         ConceptDTO replacingConceptDTO = null;
         if (codeSnippet.getReplacedById() != null && codeSnippet.getReplacedById() >= 0) {
             replacingConceptDTO = conceptService.findOne(codeSnippet.getReplacedById())
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + codeSnippet.getReplacedById() + AS_A_REPLACING_CONCEPT));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getReplacedById() + AS_A_REPLACING_CONCEPT));
         }
 
         Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
@@ -551,7 +552,7 @@ public class EditorResource {
         log.debug("REST request to delete Code/Concept : {}", id);
         // first check version and determine delete strategy
         ConceptDTO conceptDTO = conceptService.findOne(id)
-            .orElseThrow(() -> new EntityNotFoundException("Unable to find concept with Id " + id + TO_BE_DELETED));
+            .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + id + TO_BE_DELETED));
         VersionDTO versionDTO = versionService.findOne(conceptDTO.getVersionId())
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + conceptDTO.getVersionId() ));
         VocabularyDTO vocabularyDTO = vocabularyService.findOne(versionDTO.getVocabularyId())
