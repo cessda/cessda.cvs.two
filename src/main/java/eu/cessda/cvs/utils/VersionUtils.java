@@ -28,6 +28,7 @@ public class VersionUtils {
     public static final String CV_NAME = "Cv Name:";
     public static final String CV_DEF = "Cv Def:";
     public static final String CV_NOTES = "Cv Notes:";
+    public static final String DEPRECATED_SUFFIX = " (DEPRECATED)";
 
     private VersionUtils() {}
 
@@ -113,9 +114,9 @@ public class VersionUtils {
             .sorted(Comparator.comparing(ConceptDTO::getPosition)).collect(Collectors.toList());
         Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         currentConcepts.forEach(currentConcept -> {
-            currentVersionCvSb.append( CODE + " " + currentConcept.getNotation() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            currentVersionCvSb.append( CODE_TERM + " " + currentConcept.getTitle() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            currentVersionCvSb.append( CODE_DEF + " " + currentConcept.getDefinition() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
+            currentVersionCvSb.append( CODE + " " + currentConcept.getNotation() + (currentConcept.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
+            currentVersionCvSb.append( CODE_TERM + " " + currentConcept.getTitle() + (currentConcept.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
+            currentVersionCvSb.append( CODE_DEF + " " + currentConcept.getDefinition() + (currentConcept.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n\n");
 
             ConceptDTO prevConceptDTO = null;
 
@@ -136,9 +137,9 @@ public class VersionUtils {
                 prevVersionCvSb.append(CODE_DEF + " \n\n");
             } else {
                 existingConceptsInPrevAndCurrent.add( prevConceptDTO );
-                prevVersionCvSb.append( CODE + " " + prevConceptDTO.getNotation() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-                prevVersionCvSb.append( CODE_TERM + " " + prevConceptDTO.getTitle() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-                prevVersionCvSb.append( CODE_DEF + " " + prevConceptDTO.getDefinition() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
+                prevVersionCvSb.append( CODE + " " + prevConceptDTO.getNotation() + (prevConceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
+                prevVersionCvSb.append( CODE_TERM + " " + prevConceptDTO.getTitle() + (prevConceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
+                prevVersionCvSb.append( CODE_DEF + " " + prevConceptDTO.getDefinition() + (prevConceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n\n");
             }
         });
 
@@ -149,9 +150,9 @@ public class VersionUtils {
             currentVersionCvSb.append(CODE + " \n");
             currentVersionCvSb.append(CODE_TERM + " \n");
             currentVersionCvSb.append(CODE_DEF + " \n\n");
-            prevVersionCvSb.append( CODE + " " + prevConcept.getNotation() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            prevVersionCvSb.append( CODE_TERM + " " + prevConcept.getTitle() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            prevVersionCvSb.append( CODE_DEF + " " + prevConcept.getDefinition() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
+            prevVersionCvSb.append( CODE + " " + prevConcept.getNotation() + (prevConcept.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
+            prevVersionCvSb.append( CODE_TERM + " " + prevConcept.getTitle() + (prevConcept.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
+            prevVersionCvSb.append( CODE_DEF + " " + prevConcept.getDefinition() + (prevConcept.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n\n");
         }
 
         List<String> compareCurrentPrev = new ArrayList<>();
