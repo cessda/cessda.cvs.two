@@ -95,7 +95,7 @@ public class VersionUtils {
         return availableVersionUri.substring(0, availableVersionUri.indexOf( "/" + notation ));
     }
 
-    public static List<String> buildComparisonCurrentAndPreviousCV(VersionDTO versionDTO, VersionDTO prevVersionDTO) {
+    public static List<String> compareCurPrevCV(VersionDTO versionDTO, VersionDTO prevVersionDTO) {
         // create comparison based on current version
         StringBuilder currentVersionCvSb = new StringBuilder();
         StringBuilder prevVersionCvSb = new StringBuilder();
