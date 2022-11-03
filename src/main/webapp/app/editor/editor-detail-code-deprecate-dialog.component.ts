@@ -88,7 +88,7 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
 
   setReplacingCode(): void {
     this.replacingCodeId = Number(this.deprecateCodeForm.get(['replacingCodeId'])!.value);
-    for (let concept of this.conceptList) {
+    for (const concept of this.conceptList) {
       if (concept.id === this.replacingCodeId) {
         this.replacingCode = concept;
         break;
