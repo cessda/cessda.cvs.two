@@ -103,7 +103,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 
   loadLanguages(): void {
     this.homeService
-      .getAvailableLanguagesIsos(this.isEditorSearch ? {'s':'DRAFT;REVIEW;PUBLISHED;'} : {'s':'PUBLISHED'})
+      .getAvailableLanguagesIsos(this.isEditorSearch ? {'s':'DRAFT;REVIEW;READY_TO_TRANSLATE;READY_TO_PUBLISH;PUBLISHED;'} : {'s':'PUBLISHED'})
       .subscribe((res: HttpResponse<string[]>) => {
           this.searchLangs = res.body!;
           this.searchLangs = VocabularyUtil.sortLangByName(this.searchLangs, 'en');
