@@ -2003,8 +2003,10 @@ public class VocabularyServiceImpl implements VocabularyService
 				vocabularyDTO.setStatus( Status.PUBLISHED.toString() );
 				// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
 				log.debug("#385: FORWARD_CV_SL_STATUS_PUBLISHED, \n" + 
-					"vocabularyDTO=" + vocabularyDTO.toString() + ",\n" +
-					"versionDTO=" + versionDTO.toString()
+					"vocabularyDTO={},\n" +
+					"versionDTO={}",
+					vocabularyDTO,
+					versionDTO
 				);
 				setDeprecatedConceptsValidUntilVersionId(versionDTO, versionDTO.getId());
 				// <-- #385
@@ -2019,7 +2021,8 @@ public class VocabularyServiceImpl implements VocabularyService
 					versionDTO_.setLastStatusChangeDate( LocalDate.now() );
 					// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
 					log.debug("#385: OLD FORWARD_CV_TL_STATUS_PUBLISHED, \n" + 
-						"versionDTO=" + versionDTO.toString()
+						"versionDTO={}",
+						versionDTO
 					);
 					setDeprecatedConceptsValidUntilVersionId(versionDTO_, versionDTO_.getId());
 					// <-- #385
@@ -2293,20 +2296,20 @@ public class VocabularyServiceImpl implements VocabularyService
 
 	private void setDeprecatedConceptsValidUntilVersionId(VersionDTO versionDTO, Long validUntilVersionId)
 	{
-		log.debug("#385: setDeprecatedConceptsValidity for versionDTO=" + versionDTO.toString());
+		log.debug("#385: setDeprecatedConceptsValidity for versionDTO={}", versionDTO);
 		boolean modified = false;
 		for (ConceptDTO concept : versionDTO.getConcepts()) {
 			if (concept.getDeprecated() && concept.getValidUntilVersionId() == null)
 			{
-				log.debug("#385: concept=" + concept.toString());
+				log.debug("#385: concept={}", concept);
 				concept.setValidUntilVersionId(validUntilVersionId);
 				modified = true;
-				log.debug("#385: concept=" + concept.toString());
+				log.debug("#385: concept={}", concept);
 			}
 		}
 		if (modified)
 		{
-			log.debug("#385: saving versionDTO=" + versionDTO);
+			log.debug("#385: saving versionDTO={}", versionDTO);
 			versionService.save(versionDTO);
 		}
 	}

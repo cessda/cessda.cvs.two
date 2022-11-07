@@ -28,6 +28,7 @@ public class VersionUtils {
     public static final String CV_NAME = "Cv Name:";
     public static final String CV_DEF = "Cv Def:";
     public static final String CV_NOTES = "Cv Notes:";
+    public static final String DEPRECATED_SUFFIX = " (DEPRECATED)";
 
     private VersionUtils() {}
 
@@ -101,63 +102,58 @@ public class VersionUtils {
         return availableVersionUri.substring(0, availableVersionUri.indexOf( "/" + notation ));
     }
 
-    public static List<String> buildComparisonCurrentAndPreviousCV(VersionDTO versionDTO, VersionDTO prevVersionDTO) {
+    public static void appendVersionToSb(StringBuilder sb, VersionDTO versionDTO) {
+        sb.append(CV_NAME + " " + versionDTO.getTitle() + "\n");
+        sb.append(CV_DEF + " " + versionDTO.getDefinition() + "\n");
+        sb.append(CV_NOTES + " " + (versionDTO.getNotes() == null ? "": versionDTO.getNotes()) + "\n\n\n");
+    }
+
+    public static void appendConceptToSb(StringBuilder sb, ConceptDTO conceptDTO) {
+        if (conceptDTO == null) {
+            sb.append(CODE + " \n");
+            sb.append(CODE_TERM + " \n");
+            sb.append(CODE_DEF + " \n\n");
+        } else {
+            sb.append(CODE + " " + conceptDTO.getNotation() + (conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
+            sb.append(CODE_TERM + " " + conceptDTO.getTitle() + (conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
+            sb.append(CODE_DEF + " " + conceptDTO.getDefinition() + (conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n\n");
+        }
+    }
+
+    public static List<String> compareCurPrevCV(VersionDTO versionDTO, VersionDTO prevVersionDTO) {
         // create comparison based on current version
         StringBuilder currentVersionCvSb = new StringBuilder();
         StringBuilder prevVersionCvSb = new StringBuilder();
 
-        currentVersionCvSb.append( CV_NAME + " " + versionDTO.getTitle() + "\n");
-        currentVersionCvSb.append( CV_DEF + " " + versionDTO.getDefinition() + "\n");
-        currentVersionCvSb.append( CV_NOTES + " " + (versionDTO.getNotes() == null ? "": versionDTO.getNotes()) + "\n\n\n");
-
-        prevVersionCvSb.append( CV_NAME + " " + prevVersionDTO.getTitle() + "\n");
-        prevVersionCvSb.append( CV_DEF + " " + prevVersionDTO.getDefinition() + "\n");
-        prevVersionCvSb.append( CV_NOTES + " " + (prevVersionDTO.getNotes() == null ? "": prevVersionDTO.getNotes()) + "\n\n\n");
+        appendVersionToSb(currentVersionCvSb, versionDTO);
+        appendVersionToSb(prevVersionCvSb, prevVersionDTO);
 
         // get concepts and sorted by position
         List<ConceptDTO> currentConcepts = versionDTO.getConcepts().stream()
             .sorted(Comparator.comparing(ConceptDTO::getPosition)).collect(Collectors.toList());
-        Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         currentConcepts.forEach(currentConcept -> {
-            currentVersionCvSb.append( CODE + " " + currentConcept.getNotation() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            currentVersionCvSb.append( CODE_TERM + " " + currentConcept.getTitle() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            currentVersionCvSb.append( CODE_DEF + " " + currentConcept.getDefinition() + (currentConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
-
+            appendConceptToSb(currentVersionCvSb, currentConcept);
             ConceptDTO prevConceptDTO = null;
-
-            if( currentConcept.getPreviousConcept() != null )
+            if( currentConcept.getPreviousConcept() != null ) {
                 prevConceptDTO = prevVersionDTO.getConcepts().stream()
                     .filter(prevConcept -> currentConcept.getPreviousConcept().equals( prevConcept.getId())).findFirst()
                     .orElse(null);
-
+            }
             if( prevConceptDTO == null ) {
                 prevConceptDTO = prevVersionDTO.getConcepts().stream()
                     .filter(prevConcept -> currentConcept.getNotation().equals( prevConcept.getNotation())).findFirst()
                     .orElse(null);
             }
-
-            if ( prevConceptDTO == null ) {
-                prevVersionCvSb.append(CODE + " \n");
-                prevVersionCvSb.append(CODE_TERM + " \n");
-                prevVersionCvSb.append(CODE_DEF + " \n\n");
-            } else {
-                existingConceptsInPrevAndCurrent.add( prevConceptDTO );
-                prevVersionCvSb.append( CODE + " " + prevConceptDTO.getNotation() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-                prevVersionCvSb.append( CODE_TERM + " " + prevConceptDTO.getTitle() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-                prevVersionCvSb.append( CODE_DEF + " " + prevConceptDTO.getDefinition() + (prevConceptDTO.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
-            }
+            appendConceptToSb(prevVersionCvSb, prevConceptDTO);
         });
 
         // put deleted concept at the end
+        Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         prevVersionDTO.getConcepts().removeAll(existingConceptsInPrevAndCurrent);
 
         for (ConceptDTO prevConcept : prevVersionDTO.getConcepts()) {
-            currentVersionCvSb.append(CODE + " \n");
-            currentVersionCvSb.append(CODE_TERM + " \n");
-            currentVersionCvSb.append(CODE_DEF + " \n\n");
-            prevVersionCvSb.append( CODE + " " + prevConcept.getNotation() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            prevVersionCvSb.append( CODE_TERM + " " + prevConcept.getTitle() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n");
-            prevVersionCvSb.append( CODE_DEF + " " + prevConcept.getDefinition() + (prevConcept.getDeprecated() ? " (DEPRECATED)" : "") + "\n\n");
+            appendConceptToSb(currentVersionCvSb, null);
+            appendConceptToSb(prevVersionCvSb, prevConcept);
         }
 
         List<String> compareCurrentPrev = new ArrayList<>();

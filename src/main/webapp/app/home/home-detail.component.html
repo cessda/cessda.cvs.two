@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="row-content">
-            <ngb-alert class="text-center" [dismissible]="false" *ngIf="threeDigitVersionNumber(vocabulary!.versionNumber) !== threeDigitVersionNumber(getSlVersion()!.number)">
+            <ngb-alert class="text-center" [dismissible]="false" *ngIf="(threeDigitVersionNumber(vocabulary!.versionNumber) !== threeDigitVersionNumber(getSlVersion()!.number)) && (getStatus() === 'PUBLISHED')">
                 <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
                     {{vocabulary!.notation}} v.{{vocabulary!.versionNumber}}
                 </a></strong>

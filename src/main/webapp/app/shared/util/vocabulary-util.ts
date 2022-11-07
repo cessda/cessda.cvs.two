@@ -83,6 +83,10 @@ export default class VocabularyUtil {
     }
   }
 
+  static getStatus(vocab: IVocabulary): String {
+    return vocab.status!;
+  }
+
   static getSlVersion(vocab: IVocabulary): IVersion {
     return vocab.versions!.filter(v => v.itemType === 'SL')[0];
   }
