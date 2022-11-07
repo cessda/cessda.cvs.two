@@ -117,6 +117,10 @@ export class HomeDetailComponent implements OnInit {
     return VocabularyUtil.getSlVersion(this.vocabulary!);
   }
 
+  getStatus(): String {
+    return VocabularyUtil.getStatus(this.vocabulary!);
+  }
+
   getVersionByLangNumber(versionNumber?: string): IVersion {
     return VocabularyUtil.getVersionByLangAndNumber(this.vocabulary!, versionNumber);
   }
