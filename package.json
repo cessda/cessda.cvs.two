@@ -56,7 +56,7 @@
     "@typescript-eslint/eslint-plugin": "2.34.0",
     "@typescript-eslint/eslint-plugin-tslint": "2.34.0",
     "@typescript-eslint/parser": "2.34.0",
-    "autoprefixer": "10.4.7",
+    "autoprefixer": "10.4.13",
     "browser-sync": "2.27.10",
     "browser-sync-webpack-plugin": "2.3.0",
     "chai": "4.3.7",
