@@ -125,6 +125,7 @@ public class VersionUtils {
         // get concepts and sorted by position
         List<ConceptDTO> currentConcepts = versionDTO.getConcepts().stream()
             .sorted(Comparator.comparing(ConceptDTO::getPosition)).collect(Collectors.toList());
+        Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         currentConcepts.forEach(currentConcept -> {
             appendConceptToSb(currentVersionCvSb, currentConcept);
             ConceptDTO prevConceptDTO = null;
@@ -137,12 +138,13 @@ public class VersionUtils {
                 prevConceptDTO = prevVersionDTO.getConcepts().stream()
                     .filter(prevConcept -> currentConcept.getNotation().equals( prevConcept.getNotation())).findFirst()
                     .orElse(null);
+            } else {
+                existingConceptsInPrevAndCurrent.add( prevConceptDTO );
             }
             appendConceptToSb(prevVersionCvSb, prevConceptDTO);
         });
 
         // put deleted concept at the end
-        Set<ConceptDTO> existingConceptsInPrevAndCurrent = new HashSet<>();
         prevVersionDTO.getConcepts().removeAll(existingConceptsInPrevAndCurrent);
 
         for (ConceptDTO prevConcept : prevVersionDTO.getConcepts()) {
