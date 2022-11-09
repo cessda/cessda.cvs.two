@@ -1980,11 +1980,6 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			vocabularyDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
-			// vocabularyDTO.setVersionNumber( vocabularySnippet.getVersionNumber() );
-			// vocabularyDTO.setVersionByLanguage( vocabularySnippet.getLanguage(), vocabularySnippet.getVersionNumber() );
-
-        	// vocabularyDTO.setTitleDefinition(vocabularySnippet.getTitle(), vocabularySnippet.getDefinition(), vocabularySnippet.getLanguage(), false);
-			// vocabularyDTO.setContentByVocabularySnippet(vocabularySnippet);
 			// we will only publish the version info!!!
 			versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
 			break;
@@ -2041,7 +2036,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
 			vocabularyDTO.setVersionByLanguage( versionDTO.getLanguage(), versionDTO.getNumber() );
-        	vocabularyDTO.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
+			vocabularyDTO.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
 			break;
 		default:
 			throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
