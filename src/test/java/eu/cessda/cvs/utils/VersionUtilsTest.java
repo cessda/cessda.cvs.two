@@ -35,6 +35,14 @@ public class VersionUtilsTest {
         assertThat( VersionUtils.compareVersion("1.0.0","1.0.0") ).isEqualTo(0);
         assertThat( VersionUtils.compareVersion("2.0.0","1.0.0") ).isEqualTo(1);
         assertThat( VersionUtils.compareVersion("2.0.1","1.2.0") ).isEqualTo(1);
+        assertThat( VersionUtils.compareVersion("2.0","10.0") ).isEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("2.0","10.0.0") ).isEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("2.0.0","10.0") ).isEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("2.0.0","10.0.0") ).isEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("10.0","2.0") ).isEqualTo(1);
+        assertThat( VersionUtils.compareVersion("10.0","2.0.0") ).isEqualTo(1);
+        assertThat( VersionUtils.compareVersion("10.0.0","2.0") ).isEqualTo(1);
+        assertThat( VersionUtils.compareVersion("10.0.0","2.0.0") ).isEqualTo(1);
     }
 
     @Test

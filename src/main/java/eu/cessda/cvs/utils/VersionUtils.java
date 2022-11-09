@@ -35,7 +35,8 @@ public class VersionUtils {
 	public static int compareVersion(String v1, String v2) {
         String s1 = normalisedVersion(v1);
         String s2 = normalisedVersion(v2);
-        return s1.compareTo(s2);
+        int cmp = s1.compareTo(s2);
+        return cmp < 0 ? -1 : cmp == 0 ? 0 : 1;
     }
 
     public static String normalisedVersion(String version) {
