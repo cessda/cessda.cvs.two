@@ -36,9 +36,14 @@
             </div>
         </div>
         <div class="row-content">
-            <ngb-alert class="text-center" [dismissible]="false" *ngIf="(vocabulary!.versionNumber !== getSlVersion()!.number) && (getStatus() === 'PUBLISHED')">
+            <ngb-alert class="text-center" [dismissible]="false" *ngIf="isNewerVersion() && vocabulary!.status! === 'PUBLISHED'">
                 <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
                     {{vocabulary!.notation}} v.{{vocabulary!.versionNumber}}
+                </a></strong>
+            </ngb-alert>
+            <ngb-alert class="text-center" [dismissible]="false" *ngIf="isNewerVersion() && vocabulary!.status! !== 'PUBLISHED'">
+                <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
+                    {{vocabulary!.notation}} v.{{getLatestVersionNumber()}}
                 </a></strong>
             </ngb-alert>
 

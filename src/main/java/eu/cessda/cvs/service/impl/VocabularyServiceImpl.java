@@ -1980,50 +1980,49 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			vocabularyDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
+			// vocabularyDTO.setVersionNumber( vocabularySnippet.getVersionNumber() );
+			// vocabularyDTO.setVersionByLanguage( vocabularySnippet.getLanguage(), vocabularySnippet.getVersionNumber() );
+
+        	// vocabularyDTO.setTitleDefinition(vocabularySnippet.getTitle(), vocabularySnippet.getDefinition(), vocabularySnippet.getLanguage(), false);
+			// vocabularyDTO.setContentByVocabularySnippet(vocabularySnippet);
 			// we will only publish the version info!!!
 			versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
 			break;
 		case FORWARD_CV_SL_STATUS_PUBLISH:
-			// here we should publish also TLs!!!
-			// we need to iterate through the ready to publish TLs and publish them!!!
-			// also we need to check if the SL is already published and publish only new TL(s)
 			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_PUBLISH,
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
-			//check if the Sl is already published, if yes then only new Tl(s) woll be published
+			//check if the Sl is already published, if yes then only new Tl(s) will be published
 			if (!versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
-				// also we need to update the date of the publication
 				versionDTO.setStatus( Status.PUBLISHED.toString() );
 				versionDTO.setLastStatusChangeDate( LocalDate.now() );
 				// here we will publish the whole vocabulary, which will make the vocabulary and version as published
 				// we will not overide the version info, only publication date!!!
 				// when it is in READY_TO_TRANSLATE state, it can't be edited anymore
-				// versionDTO.prepareSlPublishing( vocabularySnippet, licenceRepository.getOne( versionDTO.getLicenseId() ), agencyRepository.getOne(vocabularyDTO.getAgencyId()) );
 				versionDTO.setPublicationDate(LocalDate.now());
 				vocabularyDTO.prepareSlPublishing( versionDTO );
 				vocabularyDTO.setStatus( Status.PUBLISHED.toString() );
 				// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
-				log.debug("#385: FORWARD_CV_SL_STATUS_PUBLISHED, \n" + 
-					"vocabularyDTO={},\n" +
-					"versionDTO={}",
-					vocabularyDTO,
-					versionDTO
-				);
+				// log.debug("#385: FORWARD_CV_SL_STATUS_PUBLISHED, \n" + 
+				// 	"vocabularyDTO={},\n" +
+				// 	"versionDTO={}",
+				// 	vocabularyDTO,
+				// 	versionDTO
+				// );
 				setDeprecatedConceptsValidUntilVersionId(versionDTO, versionDTO.getId());
 				// <-- #385
 			}
-			// now we need to go through all the versions which are TLs and ready to publish
+			// now we need to go through all the versions which are TL(s) and ready to publish
 			// also we need to update the date of the publication
 			List<VersionDTO> versions = vocabularyDTO.getVersionByGroup(versionDTO.getNumber(), true);
-			// Iterator<VersionDTO> versions = vocabularyDTO.getVersions().iterator();
 			for ( VersionDTO versionDTO_: versions ) {
 				if (versionDTO_.getItemType().equals("TL") && versionDTO_.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
 					versionDTO_.setStatus( Status.PUBLISHED.toString() );
 					versionDTO_.setLastStatusChangeDate( LocalDate.now() );
 					// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
-					log.debug("#385: OLD FORWARD_CV_TL_STATUS_PUBLISHED, \n" + 
-						"versionDTO={}",
-						versionDTO
-					);
+					// log.debug("#385: OLD FORWARD_CV_TL_STATUS_PUBLISHED, \n" + 
+					// 	"versionDTO={}",
+					// 	versionDTO
+					// );
 					setDeprecatedConceptsValidUntilVersionId(versionDTO_, versionDTO_.getId());
 					// <-- #385
 				}
@@ -2041,6 +2040,8 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.READY_TO_PUBLISH.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
+			vocabularyDTO.setVersionByLanguage( versionDTO.getLanguage(), versionDTO.getNumber() );
+        	vocabularyDTO.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
 			break;
 		default:
 			throw new IllegalArgumentException( "Action type not supported" + vocabularySnippet.getActionType() );
@@ -2051,7 +2052,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			cloneTLsIfAny( vocabularyDTO, versionDTO );
 		}
 		// save at the end
-		save( vocabularyDTO );
+		vocabularyDTO = save( vocabularyDTO );
 		// indexing publication, delete existing one
 		if ( versionDTO.getStatus().equals( Status.PUBLISHED.toString() ) )
 		{
