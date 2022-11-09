@@ -177,6 +177,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return VocabularyUtil.getSlVersion(this.vocabulary!);
   }
 
+  getSlVersionNumber(): number {
+    return VocabularyUtil.getSlVersionNumber(this.vocabulary!);
+  }
+
   getSlMajorVersionNumber(): number {
     return VocabularyUtil.getSlMajorVersionNumber(this.version!);
   }

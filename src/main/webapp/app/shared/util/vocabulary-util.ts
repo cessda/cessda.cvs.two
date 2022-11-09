@@ -91,6 +91,10 @@ export default class VocabularyUtil {
     return vocab.versions!.filter(v => v.itemType === 'SL')[0];
   }
 
+  static getSlVersionNumber(vocab: IVocabulary): number {
+    return this.parseVersionNumber(this.getSlVersion(vocab).number!)['sl']['string'];
+  }
+
   static getSlMajorVersionNumber(version: IVersion): number {
     if (version.number) {
       const regex = /^([0-9]+)\./g;
