@@ -2078,8 +2078,7 @@ public class VocabularyDTO implements Serializable {
         this.uri = this.uri + "/" + this.versionNumber;
         this.publicationDate = versionDTO.getPublicationDate();
         this.archived = true;
-        this.setVersionNumber( versionDTO.getNumber() );
-        this.setVersionByLanguage( versionDTO.getLanguage(), versionDTO.getNumber() );
+        this.setVersionByLanguage(versionDTO.getLanguage(), versionDTO.getNumber());
         this.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
     }
 
