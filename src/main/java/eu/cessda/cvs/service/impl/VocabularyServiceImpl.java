@@ -1979,6 +1979,7 @@ public class VocabularyServiceImpl implements VocabularyService
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 			versionDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
+			vocabularyDTO.setVersionNumberByVocabularySnippet(vocabularySnippet);
 			vocabularyDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
 			// we will only publish the version info!!!
 			versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );

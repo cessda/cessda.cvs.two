@@ -167,32 +167,39 @@ export default class VocabularyUtil {
     return vnumber;
   }
 
-  static compareVersionNumber(v1: string, v2: string): number {
-    const v1parts = v1.split('.'),
-      v2parts = v2.split('.');
-
-    while (v1parts.length < v2parts.length) v1parts.push('0');
-    while (v2parts.length < v1parts.length) v2parts.push('0');
-
-    for (let i = 0; i < v1parts.length; ++i) {
-      if (v2parts.length === i) {
-        return 1;
-      }
-
-      if (v1parts[i] === v2parts[i]) {
-        continue;
-      } else if (v1parts[i] > v2parts[i]) {
-        return 1;
-      } else {
-        return -1;
-      }
-    }
-
-    if (v1parts.length !== v2parts.length) {
+  static compareNumbers(n1: Number, n2: Number): number {
+    if (n1 < n2) {
       return -1;
+    } else {
+      if (n1 === n2) {
+        return 0;
+      } else {
+        return 1;
+      }
     }
+  }
 
-    return 0;
+  static compareArrays(a1:any, a2:any): number {
+    while (a1.length < a2.length) a1.push(0);
+    while (a2.length < a1.length) a2.push(0);
+    let cmpResult = 0;
+    for (let i = 0; i < a1.length; i++) {
+      cmpResult = this.compareNumbers(a1[i], a2[i]);
+      if (cmpResult !== 0) {
+        return cmpResult;
+      }
+    }
+    return cmpResult;
+  }
+
+  static compareVersionNumber(v1: string, v2: string): number {
+    v1 = this.parseVersionNumber(this.threeDigitVersionNumber(v1)!);
+    v2 = this.parseVersionNumber(this.threeDigitVersionNumber(v2)!);
+    const cmpResult = this.compareArrays(v1['sl']['array'], v2['sl']['array']);
+    if (cmpResult !== 0) {
+      return cmpResult;
+    }
+    return this.compareArrays(v1['tl']['array'], v1['tl']['array']);
   }
 
   static getAvailableCvLanguage(versions: IVersion[] | undefined): string[] {
