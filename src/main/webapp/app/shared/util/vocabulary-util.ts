@@ -91,7 +91,7 @@ export default class VocabularyUtil {
     return vocab.versions!.filter(v => v.itemType === 'SL')[0];
   }
 
-  static getMajorVersionNumber(version: IVersion): number {
+  static getSlMajorVersionNumber(version: IVersion): number {
     if (version.number) {
       const regex = /^([0-9]+)\./g;
       const matches = regex.exec(version.number);
@@ -102,7 +102,7 @@ export default class VocabularyUtil {
     return -1;
   }
 
-  static getMinorVersionNumber(version: IVersion): number {
+  static getSlMinorVersionNumber(version: IVersion): number {
     if (version.number) {
       const regex = /^([0-9]+)\.([0-9]+)/g;
       const matches = regex.exec(version.number);
@@ -284,9 +284,18 @@ export default class VocabularyUtil {
   }
 
   static threeDigitVersionNumber(number: string | undefined): string | undefined {
-    if (this.countMatches(number, '.') === 1) {
+    if (number && this.countMatches(number, '.') === 1) {
       number += '.0';
     }
     return number;
+  }
+
+  static convertVocabularyToThreeDigitVersionNumer(vocabulary: IVocabulary | undefined): void {
+    if (vocabulary) {
+      vocabulary.versionNumber = this.threeDigitVersionNumber(vocabulary.versionNumber);
+      vocabulary.versions!.forEach(v => {
+        v.number = this.threeDigitVersionNumber(v.number);
+      });
+    }
   }
 }

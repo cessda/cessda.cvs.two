@@ -177,12 +177,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return VocabularyUtil.getSlVersion(this.vocabulary!);
   }
 
-  getMajorVersionNumber(): number {
-    return VocabularyUtil.getMajorVersionNumber(this.version!);
+  getSlMajorVersionNumber(): number {
+    return VocabularyUtil.getSlMajorVersionNumber(this.version!);
   }
 
-  getMinorVersionNumber(): number {
-    return VocabularyUtil.getMinorVersionNumber(this.version!);
+  getSlMinorVersionNumber(): number {
+    return VocabularyUtil.getSlMinorVersionNumber(this.version!);
   }
 
   setActiveVersion(language: string, versionNumber?: string): void {
@@ -369,6 +369,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       window.scrollTo(0, 0);
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
+      VocabularyUtil.convertVocabularyToThreeDigitVersionNumer(vocabulary);
       this.vocabulary = vocabulary;
       this.availableLanguages = VocabularyUtil.getAvailableCvLanguage(vocabulary.versions);
       this.accountService.identity().subscribe(account => {
