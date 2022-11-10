@@ -114,7 +114,15 @@ export class HomeDetailComponent implements OnInit {
   }
 
   getSlVersion(): IVersion {
-    return VocabularyUtil.getSlVersion(this.vocabulary!);
+    return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary!);
+  }
+
+  getSlVersionNumber(vnumber?: string): string {
+    if (vnumber) {
+      return VocabularyUtil.getSlVersionNumber(vnumber);
+    } else {
+      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);  
+    }
   }
 
   getStatus(): String {
@@ -227,10 +235,6 @@ export class HomeDetailComponent implements OnInit {
     this.isShowingDeprecatedCodes = !this.isShowingDeprecatedCodes;
   }
 
-  getSlVersionByVersion(vnumber: string): string {
-    return VocabularyUtil.getSlVersionByVersionNumber(vnumber);
-  }
-
   ngOnInit(): void {
     this.router.events.subscribe(evt => {
       if (!(evt instanceof NavigationEnd)) {
@@ -239,6 +243,7 @@ export class HomeDetailComponent implements OnInit {
       window.scrollTo(0, 0);
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
+      VocabularyUtil.convertVocabularyToThreeDigitVersionNumer(vocabulary);
       this.vocabulary = vocabulary;
       if (this.vocabulary!.selectedCode) {
         this.currentSelectedCode = this.vocabulary!.selectedCode;

@@ -174,19 +174,27 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   getSlVersion(): IVersion {
-    return VocabularyUtil.getSlVersion(this.vocabulary!);
+    return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary!);
   }
 
-  getSlVersionNumber(): number {
-    return VocabularyUtil.getSlVersionNumber(this.vocabulary!);
+  getSlVersionNumber(vnumber?: string): string {
+    if (vnumber) {
+      return VocabularyUtil.getSlVersionNumber(vnumber);
+    } else {
+      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);  
+    }
+  }
+  
+  getSlMajorMinorVersionNumber(): string {
+    return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().number!);
   }
 
   getSlMajorVersionNumber(): number {
-    return VocabularyUtil.getSlMajorVersionNumber(this.version!);
+    return VocabularyUtil.getSlMajorVersionNumberOfVersion(this.version!);
   }
 
   getSlMinorVersionNumber(): number {
-    return VocabularyUtil.getSlMinorVersionNumber(this.version!);
+    return VocabularyUtil.getSlMinorVersionNumberOfVersion(this.version!);
   }
 
   setActiveVersion(language: string, versionNumber?: string): void {
@@ -359,10 +367,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   toggleDeprecatedCodesDisplay(): void {
     this.isShowingDeprecatedCodes = !this.isShowingDeprecatedCodes;
-  }
-
-  getSlVersionByVersion(vnumber: string): string {
-    return VocabularyUtil.getSlVersionByVersionNumber(vnumber);
   }
 
   ngOnInit(): void {

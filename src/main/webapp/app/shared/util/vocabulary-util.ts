@@ -87,57 +87,62 @@ export default class VocabularyUtil {
     return vocab.status!;
   }
 
-  static getSlVersion(vocab: IVocabulary): IVersion {
+  static getSlVersionOfVocabulary(vocab: IVocabulary): IVersion {
     return vocab.versions!.filter(v => v.itemType === 'SL')[0];
   }
 
-  static getSlVersionNumber(vocab: IVocabulary): number {
-    return this.parseVersionNumber(this.getSlVersion(vocab).number!)['sl']['string'];
-  }
-
-  static getSlMajorVersionNumber(version: IVersion): number {
-    if (version.number) {
-      const regex = /^([0-9]+)\./g;
-      const matches = regex.exec(version.number);
-      if (matches) {
-          return Number(matches[1]);
-      }
-    }
-    return -1;
-  }
-
-  static getSlMinorVersionNumber(version: IVersion): number {
-    if (version.number) {
-      const regex = /^([0-9]+)\.([0-9]+)/g;
-      const matches = regex.exec(version.number);
-      if (matches) {
-          return Number(matches[2]);
-      }
-    }
-    return -1;
-  }
-
-  static parseVersionNumber(versionNumber: string): any {
+  static parseVersionNumber(vnumber: string): any {
     const regex = /^([0-9]+)\.([0-9]+)(?:\.([0-9]+))?/g;
-    const matches = regex.exec(versionNumber);
+    const matches = regex.exec(vnumber);
     if (matches) {
         return {
-          'sl': {
-            'string': Number(matches[1]) + '.' + Number(matches[2]),
-            'array': [
-              Number(matches[1]),
-              Number(matches[2])
-            ]
-          },
-          'tl': {
-            'string': Number(matches[3]),
-            'array': [
-              Number(matches[3])
-            ]
-          }
+          'sl': matches[1] + '.' + matches[2] + '.' + '0',
+          'sl-major': Number(matches[1]),
+          'sl-minor': Number(matches[2]),
+          'tl': Number(matches[3])
         };
     }
     throw new Error('Invalid version number format');
+  }
+
+  static getSlVersionNumber(vnumber: string): string {
+    return this.parseVersionNumber(vnumber)['sl'];
+  }
+
+  static getSlMajorMinorVersionNumber(vnumber: string): string {
+    const vnumberParsed = this.parseVersionNumber(vnumber);
+    return vnumberParsed['sl-major'] + '.' + vnumberParsed['sl-minor'];
+  }
+
+  static getSlMajorVersionNumber(vnumber: string): number {
+    return this.parseVersionNumber(vnumber)['sl-major'];
+  }
+
+  static getSlMinorVersionNumber(vnumber: string): number {
+    return this.parseVersionNumber(vnumber)['sl-minor'];
+  }
+
+  static getTlVersionNumber(vnumber: string): number {
+    return this.parseVersionNumber(vnumber)['tl'];
+  }
+
+  static getSlVersionNumberOfVocabulary(vocab: IVocabulary): string {
+    const slVersion = this.getSlVersionOfVocabulary(vocab);
+    return this.getSlVersionNumber(slVersion.number!);
+  }
+
+  static getSlMajorVersionNumberOfVersion(version: IVersion): number {
+    if (version.number) {
+      return this.parseVersionNumber(version.number)['sl-major'];
+    }
+    return -1;
+  }
+
+  static getSlMinorVersionNumberOfVersion(version: IVersion): number {
+    if (version.number) {
+      return this.parseVersionNumber(version.number)['sl-minor'];
+    }
+    return -1;
   }
 
   static getVersionByLang(vocab: IVocabulary): IVersion {
@@ -161,14 +166,6 @@ export default class VocabularyUtil {
 
   static hasDeprecatedConcepts(concepts: IConcept[] | undefined): boolean {
     return concepts !== undefined ? concepts.filter(c => c.deprecated === true).length > 0 : false;
-  }
-
-  static getSlVersionByVersionNumber(vnumber: string): string {
-    if (vnumber.match(/\./g)!.length === 2) {
-      const index = vnumber.lastIndexOf('.');
-      return vnumber.substring(0, index);
-    }
-    return vnumber;
   }
 
   static compareNumbers(n1: Number, n2: Number): number {
@@ -199,11 +196,23 @@ export default class VocabularyUtil {
   static compareVersionNumber(v1: string, v2: string): number {
     v1 = this.parseVersionNumber(this.threeDigitVersionNumber(v1)!);
     v2 = this.parseVersionNumber(this.threeDigitVersionNumber(v2)!);
-    const cmpResult = this.compareArrays(v1['sl']['array'], v2['sl']['array']);
+    const cmpResult = this.compareArrays(
+      [
+        v1['sl-major'],
+        v1['sl-minor']
+      ],
+      [
+        v2['sl-major'],
+        v2['sl-minor']
+      ]
+    );
     if (cmpResult !== 0) {
       return cmpResult;
     }
-    return this.compareArrays(v1['tl']['array'], v1['tl']['array']);
+    return this.compareArrays(
+      [v1['tl']],
+      [v2['tl']]
+    );
   }
 
   static getAvailableCvLanguage(versions: IVersion[] | undefined): string[] {

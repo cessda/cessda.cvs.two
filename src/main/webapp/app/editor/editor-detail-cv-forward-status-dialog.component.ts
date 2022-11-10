@@ -120,7 +120,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
           if (!this.isSlForm) {
             this.cvForwardStatusForm.removeControl('versionNumberSl');
             // get TL proposed number
-            this.tlProposedVersionNumber = VocabularyUtil.parseVersionNumber(this.versionParam!.number!)['tl']['string'];
+            this.tlProposedVersionNumber = VocabularyUtil.getTlVersionNumber(this.versionParam!.number!);
           }
           this.licenceService
             .query({
@@ -159,7 +159,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   private fillForm(): void {
     if (this.isSlForm) {
       this.cvForwardStatusForm.patchValue({
-        versionNumberSl: VocabularyUtil.parseVersionNumber(this.versionParam!.number!)['sl']['string'],
+        versionNumberSl: VocabularyUtil.parseVersionNumber(this.versionParam!.number!)['sl'],
       });
     }
     if (this.versionParam!.licenseId) {
@@ -233,7 +233,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.isVersionInvalid = VocabularyUtil.compareVersionNumber(vocabularySnippet.versionNumber, this.versionParam!.number!) === -1;
       } else {
         this.missingTranslations = [];
-        vocabularySnippet.versionNumber = VocabularyUtil.parseVersionNumber(this.slVersionNumber)['sl']['string'] + '.' + this.tlProposedVersionNumber;
+        vocabularySnippet.versionNumber = VocabularyUtil.parseVersionNumber(this.slVersionNumber)['sl'] + '.' + this.tlProposedVersionNumber;
         this.versionParam!.concepts!.forEach(c => {
           if (!c.deprecated) {
             if (!c.title || c.title === null || c.title === '') {
@@ -269,7 +269,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     if (this.isSlForm) {
       vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value;
     } else {
-      vocabularySnippet.versionNumber = VocabularyUtil.parseVersionNumber(this.slVersionNumber)['sl']['string'] + '.' + this.tlProposedVersionNumber;
+      vocabularySnippet.versionNumber = VocabularyUtil.parseVersionNumber(this.slVersionNumber)['sl'] + '.' + this.tlProposedVersionNumber;
     }
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabularySnippet));
   }

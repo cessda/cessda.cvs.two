@@ -24,7 +24,7 @@
                     ›
                 </span>
                 <span class="">
-                    {{vocabulary!.notation}} v.{{threeDigitVersionNumber(getSlVersion()!.number)}}
+                    {{vocabulary!.notation}} v.{{getSlVersionNumber()}}
                 </span>
 
                 <span class="cmt-scn" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT','ROLE_USER']">
@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="row-content">
-            <ngb-alert class="text-center" [dismissible]="false" *ngIf="(threeDigitVersionNumber(vocabulary!.versionNumber) !== threeDigitVersionNumber(getSlVersion()!.number)) && (getStatus() === 'PUBLISHED')">
+            <ngb-alert class="text-center" [dismissible]="false" *ngIf="(getSlVersionNumber(vocabulary!.versionNumber) !== getSlVersionNumber()) && (getStatus() === 'PUBLISHED')">
                 <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
                     {{vocabulary!.notation}} v.{{vocabulary!.versionNumber}}
                 </a></strong>
@@ -260,7 +260,7 @@
                            [attr.aria-expanded]="isCurrentVersionHistoryOpen" aria-controls="self-history">&nbsp;
                             <fa-icon *ngIf="isCurrentVersionHistoryOpen" icon="caret-down"></fa-icon>
                             <fa-icon *ngIf="!isCurrentVersionHistoryOpen" icon="caret-right"></fa-icon>
-                            <span>{{getVersionByLangNumber()!.language}}: {{threeDigitVersionNumber(getVersionByLangNumber()!.number)}}</span>
+                            <span>{{getVersionByLangNumber()!.language}}: {{getVersionByLangNumber()!.number}}</span>
                             <span>&nbsp;&nbsp;&nbsp; Published: {{getVersionByLangNumber()!.publicationDate}}</span>
                         </a>
                         <div id="self-history" [ngbCollapse]="!isCurrentVersionHistoryOpen">
@@ -306,7 +306,7 @@
                             <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
                             <span>{{getVersionByLangNumber()!.language}}: {{threeDigitVersionNumber(vh.version)}} </span>
                             <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                            <a *ngIf="!vh.version.startsWith(getSlVersion()!.number)" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
+                            <a *ngIf="!vh.version.startsWith(getSlVersionNumber())" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary!.selectedLang}">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
                         </a>
@@ -454,7 +454,7 @@
                         [appScope]="appScope"
                         [enableDocxExport]="enableDocxExport"
                         [versions]="vocabulary!.versions"
-                        [slVersionNumber]="threeDigitVersionNumber(getSlVersion()!.number!)"
+                        [slVersionNumber]="getSlVersionNumber()"
                         [downloadFormGroup]="detailForm.controls.downloadFormGroup"
                         [notation]="vocabulary!.notation"
                     ></jhi-vocabulary-download>

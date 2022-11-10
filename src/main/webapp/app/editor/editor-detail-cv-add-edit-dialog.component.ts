@@ -190,7 +190,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
           language: this.cvAddEditForm.get(['language'])!.value,
           itemType: 'TL',
           notation: this.vocabularyParam!.notation,
-          versionNumber: VocabularyUtil.parseVersionNumber(this.versionSlParam!.number!)['sl']['string'] + '.1',
+          versionNumber: VocabularyUtil.getSlMajorMinorVersionNumber(this.versionSlParam!.number!) + '.1',
           status: 'DRAFT',
           vocabularyId: this.vocabularyParam!.id,
           versionSlId: this.versionSlParam!.id,
