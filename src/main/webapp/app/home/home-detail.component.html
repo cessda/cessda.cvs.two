@@ -130,7 +130,7 @@
                         <span>Version&nbsp; </span>
                     </div>
                     <div class="detail-column">
-                        <span>{{threeDigitVersionNumber(getVersionByLangNumber()!.number)}}</span>
+                        <span>{{getVersionByLangNumber()!.number}}</span>
                     </div>
                 </div>
                 <div class="row-detail">
@@ -148,7 +148,7 @@
                     <!-- determine multiple version with same lang -->
                     <span *ngIf="getVersionsByLanguage(lang)!.length === 1; else buttonDropDown">
                         <button *ngFor="let version of getVersionsByLanguage(lang)!"
-                                (click)="setVocabularyLangVersion( version!.language, threeDigitVersionNumber(version!.number));"
+                                (click)="setVocabularyLangVersion( version!.language, version!.number);"
                                 class="vocab-lang-button"
                                 [ngClass]="{'active': lang === vocabulary!.selectedLang, 'source-lang': lang === vocabulary!.sourceLanguage}"
                                 ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
@@ -163,10 +163,10 @@
                                 {{lang}}</button>
                             <div ngbDropdownMenu [attr.aria-labelledby]="'dropdownBasic'+lang">
                                 <button ngbDropdownItem *ngFor="let version of getVersionsByLanguage(lang)!"
-                                        (click)="setVocabularyLangVersion( version!.language, threeDigitVersionNumber(version!.number));"
-                                        [ngClass]="{'active': lang === vocabulary!.selectedLang && threeDigitVersionNumber(version.number) === threeDigitVersionNumber(vocabulary!.selectedVersion)}"
+                                        (click)="setVocabularyLangVersion( version!.language, version!.number);"
+                                        [ngClass]="{'active': lang === vocabulary!.selectedLang && version.number === vocabulary!.selectedVersion}"
                                         ngbTooltip="{{getFormattedVersionTooltip(version, vocabulary!.sourceLanguage)}}">
-                                    v.{{threeDigitVersionNumber(version.number)}}
+                                    v.{{version.number}}
                                 </button>
                             </div>
                         </div>
@@ -292,7 +292,7 @@
                                 </jhi-version-compare>
                             </div>
                             <div *ngIf="!getVersionByLangNumber()!.previousVersion && getVersionByLangNumber()!.versionHistories!.length > 0" class="acc-header option-label col-12 mtop10">
-                                Prev-next comparison not available, due to {{getVersionByLangNumber()!.language}}-{{getMissingTlVersion(threeDigitVersionNumber(getVersionByLangNumber()!.number!))}} missing!
+                                Prev-next comparison not available, due to {{getVersionByLangNumber()!.language}}-{{getMissingTlVersion(getVersionByLangNumber()!.number!)}} missing!
                             </div>
 
                         </div>
@@ -304,7 +304,7 @@
                            [attr.aria-expanded]="vh.visible" [attr.aria-controls]="'history_' + vh.version">&nbsp;
                             <fa-icon *ngIf="vh.visible" icon="caret-down"></fa-icon>
                             <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
-                            <span>{{getVersionByLangNumber()!.language}}: {{threeDigitVersionNumber(vh.version)}} </span>
+                            <span>{{getVersionByLangNumber()!.language}}: {{vh.version}} </span>
                             <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
                             <a *ngIf="!vh.version.startsWith(getSlVersionNumber())" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary!.selectedLang}">
                                 <fa-icon icon="external-link-alt"></fa-icon>

@@ -47,8 +47,8 @@ public class VersionUtilsTest {
 
     @Test
     public void getSlNumberFromTlTest() {
-        assertThat( VersionUtils.getSlNumberFromTl("1.0.1" ) ).isEqualTo("1.0");
-        assertThat( VersionUtils.getSlNumberFromTl("1.0" ) ).isEqualTo("1.0");
+        assertThat( VersionUtils.getSlMajorMinorNumber("1.0.1" ) ).isEqualTo("1.0");
+        assertThat( VersionUtils.getSlMajorMinorNumber("1.0" ) ).isEqualTo("1.0");
     }
 
     @Test

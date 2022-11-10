@@ -305,10 +305,10 @@ public final class VocabularyUtils
 	public static String generateUri( String uri, Boolean isVersionUri, Vocabulary vocabulary, Version version, Concept concept )
 	{
 		if ( concept == null )
-			return generateUri( uri, true, vocabulary.getNotation(), VersionUtils.getSlNumberFromTl( version.getNumber() ),
+			return generateUri( uri, true, vocabulary.getNotation(), VersionUtils.getSlMajorMinorNumber( version.getNumber() ),
 					vocabulary.getSourceLanguage(), null, null );
 		else
-			return generateUri( uri, true, vocabulary.getNotation(), VersionUtils.getSlNumberFromTl( version.getNumber() ),
+			return generateUri( uri, true, vocabulary.getNotation(), VersionUtils.getSlMajorMinorNumber( version.getNumber() ),
 					vocabulary.getSourceLanguage(), concept.getNotation(), concept.getId() );
 	}
 

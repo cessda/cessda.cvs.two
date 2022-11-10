@@ -310,12 +310,4 @@ export class HomeDetailComponent implements OnInit {
     }
     return '';
   }
-
-  threeDigitVersionNumber(versionNumber: string | undefined): string {
-    versionNumber = VocabularyUtil.threeDigitVersionNumber(versionNumber);
-    if (versionNumber) {
-      return versionNumber;
-    }
-    return '';
-  }
 }

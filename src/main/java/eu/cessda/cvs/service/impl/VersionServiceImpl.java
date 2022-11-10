@@ -129,7 +129,7 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public List<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, String versionNumberSl) {
         log.debug("Request to get versions by vocabularyId {}, versionNumberSl {}", vocabularyId, versionNumberSl);
-        versionNumberSl = VersionUtils.getSlNumberFromTl(versionNumberSl);
+        versionNumberSl = VersionUtils.getSlMajorMinorNumber(versionNumberSl);
         return versionRepository.findAllByVocabularyIdAndVersionNumberSl( vocabularyId, versionNumberSl ).stream()
             .map(versionMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
@@ -138,7 +138,7 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public Set<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, String versionNumberSl) {
         log.debug("Request to get published versions by vocabularyId {}, versionNumberSl {}", vocabularyId, versionNumberSl);
-        versionNumberSl = VersionUtils.getSlNumberFromTl(versionNumberSl);
+        versionNumberSl = VersionUtils.getSlMajorMinorNumber(versionNumberSl);
         return versionRepository.findAllPublishedByVocabularyIdAndVersionNumberSl( vocabularyId, versionNumberSl ).stream()
             .map(versionMapper::toDto)
             .collect(Collectors.toCollection(LinkedHashSet::new));

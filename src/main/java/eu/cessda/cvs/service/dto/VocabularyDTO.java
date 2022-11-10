@@ -1386,7 +1386,7 @@ public class VocabularyDTO implements Serializable {
     }
 
     public List<VersionDTO> getVersionsByVersionSl( String versionNumberSl, boolean noSameLanguage){
-        String versionNumberSlSearch = VersionUtils.getSlNumberFromTl(versionNumberSl);
+        String versionNumberSlSearch = VersionUtils.getSlMajorMinorNumber(versionNumberSl);
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
             .filter(v -> v.getNumber().startsWith(versionNumberSlSearch))

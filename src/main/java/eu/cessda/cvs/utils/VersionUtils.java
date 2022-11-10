@@ -55,16 +55,21 @@ public class VersionUtils {
         return sb.toString();
     }
 
+    public static boolean isSlVersionNumber(String versionNumber) {
+        int dots = StringUtils.countMatches(versionNumber, ".");
+        return dots == 1 || (dots == 2 && versionNumber.endsWith(".0"));
+    }
+
     public static String increaseSlVersionByOne( String prevVersionNumber ) {
-        prevVersionNumber = VersionUtils.getSlNumberFromTl(prevVersionNumber);
+        prevVersionNumber = VersionUtils.getSlMajorMinorNumber(prevVersionNumber);
         int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
         return prevVersionNumber.substring(0, indexAfterLastDot) +
             ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 ) + ".0";
     }
 
     public static String increaseTlVersionByOne( String prevVersionNumber, String currentSlNumber ) {
-        String prevVersionSlNumber = VersionUtils.getSlNumberFromTl(prevVersionNumber);
-        currentSlNumber = VersionUtils.getSlNumberFromTl(currentSlNumber);
+        String prevVersionSlNumber = VersionUtils.getSlMajorMinorNumber(prevVersionNumber);
+        currentSlNumber = VersionUtils.getSlMajorMinorNumber(currentSlNumber);
         if (!prevVersionSlNumber.equals(currentSlNumber)) {
             return currentSlNumber + ".1";
         }
@@ -73,7 +78,7 @@ public class VersionUtils {
             ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
     }
 
-    public static String getSlNumberFromTl( String tlNumber ) {
+    public static String getSlMajorMinorNumber( String tlNumber ) {
         if( StringUtils.countMatches( tlNumber, ".") == 2){
             tlNumber = tlNumber.substring( 0, tlNumber.lastIndexOf('.'));
         }

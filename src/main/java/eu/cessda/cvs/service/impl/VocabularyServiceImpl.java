@@ -2155,7 +2155,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			map.put( "docId", uriSl );
 			map.put( "docVersionOf", vocabularyDTO.getUri() );
 			map.put( "docNotation", vocabularyDTO.getNotation() );
-			map.put( "docVersion", VersionUtils.getSlNumberFromTl( versionIncluded.getNumber() ) );
+			map.put( "docVersion", VersionUtils.getSlMajorMinorNumber( versionIncluded.getNumber() ) );
 			map.put( "docLicense", versionIncluded.getLicenseName() );
 			map.put( "docRight", versionIncluded.getLicenseName() );
 			map.put( CODE_PATH, CodeDTO.generateCodesFromVersion( includedVersions, false ) );
@@ -2200,8 +2200,13 @@ public class VocabularyServiceImpl implements VocabularyService
 				String[] s = vs.split( "-" );
 				if ( s.length != 2 )
 					continue;
-				Optional<VersionDTO> versionDTOOpt = vocabularyDTO.getVersions().stream()
-						.filter( v -> v.getLanguage().equals( s[0] ) && v.getNumber().equals( s[1] ) ).findFirst();
+				Optional<VersionDTO> versionDTOOpt = vocabularyDTO
+					.getVersions()
+					.stream()
+					.filter(
+						v -> v.getLanguage().equals(s[0])
+						&& VersionUtils.compareVersion(v.getNumber(), s[1]) == 0
+					).findFirst();
 				versionDTOOpt.ifPresent( includedVersions::add );
 			}
 		}
