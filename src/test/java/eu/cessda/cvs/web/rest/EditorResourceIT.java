@@ -25,6 +25,7 @@ import eu.cessda.cvs.service.dto.CommentDTO;
 import eu.cessda.cvs.service.dto.MetadataValueDTO;
 import eu.cessda.cvs.service.mapper.CommentMapper;
 import eu.cessda.cvs.service.mapper.MetadataValueMapper;
+import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import org.junit.jupiter.api.BeforeEach;
@@ -99,8 +100,8 @@ class EditorResourceIT {
     private static final Integer CODE2_POSITION = 2;
     private static final Integer CODE3_POSITION = 3;
 
-    public static final String INIT_VERSION_NUMBER_SL = "1.0";
-    private static final String INIT_VERSION_NUMBER_TL = "1.0.1";
+    public static final VersionNumber INIT_VERSION_NUMBER_SL = VersionNumber.fromString("1.0");
+    private static final VersionNumber INIT_VERSION_NUMBER_TL = VersionNumber.fromString("1.0.1");
 
     private static final String INIT_VERSION_INFO = "AAAAA";
     private static final String INIT_VERSION_CHANGES = "BBBBB";
@@ -624,11 +625,10 @@ class EditorResourceIT {
             final Version versionTl = versions.stream().filter(v -> v.getItemType().equals(ITEM_TYPE_TL.toString()) &&
                 v.getLanguage().equals(version.getLanguage())).findFirst().orElse(null);
             assertThat(versionTl).isNotNull();
-            assertThat(versionTl.getNumber()).isEqualTo(VersionUtils.increaseTlVersionByOne( version.getNumber(),
-                versionSl.getNumber()));
+            assertThat(versionTl.getNumber()).isEqualTo(version.getNumber().increaseTl(versionSl.getNumber()));
             newVersion = versionTl;
         } else {
-            assertThat(versionSl.getNumber()).isEqualTo(VersionUtils.increaseSlVersionByOne( version.getNumber()));
+            assertThat(versionSl.getNumber()).isEqualTo(version.getNumber().increaseSlNumber());
         }
         return newVersion;
     }
@@ -815,7 +815,7 @@ class EditorResourceIT {
 
         // must be generated equal TL concepts to SL concepts
         assertThat(tlVersion.getConcepts().size()).isEqualTo(slVersion.getConcepts().size());
-        assertThat(tlVersion.getNumber()).contains( slVersion.getNumber());
+        assertThat(tlVersion.getNumber().toString()).contains( slVersion.getNumber().toString());
         // TL ddi-usage must be the same with SL
         assertThat(tlVersion.getDdiUsage()).isEqualTo(slVersion.getDdiUsage());
 
@@ -1116,7 +1116,7 @@ class EditorResourceIT {
         vocabularySnippetForEnSl.setLicenseId( license.getId() );
         vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
         if( secondPublish )
-            vocabularySnippetForEnSl.setVersionNumber("1.1");
+            vocabularySnippetForEnSl.setVersionNumber(VersionNumber.fromString("1.1"));
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
@@ -1145,7 +1145,7 @@ class EditorResourceIT {
         vocabularySnippetForEnSl.setLicenseId( license.getId() );
         vocabularySnippetForEnSl.setVocabularyId( slVersion.getVocabulary().getId() );
         if( secondPublish )
-            vocabularySnippetForEnSl.setVersionNumber("1.1");
+            vocabularySnippetForEnSl.setVersionNumber(VersionNumber.fromString("1.1"));
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)

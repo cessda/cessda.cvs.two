@@ -15,7 +15,6 @@ package eu.cessda.cvs.web.rest;
 
 import eu.cessda.cvs.CvsApp;
 import eu.cessda.cvs.config.Constants;
-import eu.cessda.cvs.domain.Authority;
 import eu.cessda.cvs.domain.User;
 import eu.cessda.cvs.repository.AuthorityRepository;
 import eu.cessda.cvs.repository.UserRepository;
@@ -27,13 +26,11 @@ import eu.cessda.cvs.web.rest.vm.KeyAndPasswordVM;
 import eu.cessda.cvs.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.RandomStringUtils;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;

@@ -14,8 +14,12 @@
 package eu.cessda.cvs.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import eu.cessda.cvs.utils.VersionNumber;
+
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -63,9 +67,9 @@ public class Version implements Serializable {
     @Column(name = "last_modified")
     private ZonedDateTime lastModified;
 
-    @Size(max = 20)
     @Column(name = "number", length = 20)
-    private String number;
+    @Type(type = "eu.cessda.cvs.utils.VersionNumberType")
+    private VersionNumber number;
 
     @Column(name = "uri")
     private String uri;
@@ -239,16 +243,16 @@ public class Version implements Serializable {
         this.lastModified = lastModified;
     }
 
-    public String getNumber() {
+    public VersionNumber getNumber() {
         return number;
     }
 
-    public Version number(String number) {
+    public Version number(VersionNumber number) {
         this.number = number;
         return this;
     }
 
-    public void setNumber(String number) {
+    public void setNumber(VersionNumber number) {
         this.number = number;
     }
 

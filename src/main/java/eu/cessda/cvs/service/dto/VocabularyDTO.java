@@ -20,12 +20,15 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.utils.VersionUtils;
+import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -46,7 +49,7 @@ public class VocabularyDTO implements Serializable {
         this.discoverable = true;
         this.status = Status.DRAFT.toString();
         this.notation = "NEW_VOCABULARY";
-        this.versionNumber = "1.0";
+        this.versionNumber = new VersionNumber(1,0,0);
         this.sourceLanguage = "en";
         this.agencyId = 0L;
         this.agencyName = "DEFAULT_AGENCY";
@@ -81,7 +84,7 @@ public class VocabularyDTO implements Serializable {
     }
 
     public void setContentByVocabularySnippet(VocabularySnippet vocabularySnippet){
-        setVersionByLanguage(vocabularySnippet.getLanguage(), vocabularySnippet.getVersionNumber());
+        setVersionByLanguage(vocabularySnippet.getLanguage(), vocabularySnippet.getVersionNumber() != null ? vocabularySnippet.getVersionNumber().toString() : null);
         setTitleDefinition(vocabularySnippet.getTitle(), vocabularySnippet.getDefinition(), vocabularySnippet.getLanguage(), false);
         this.notes = vocabularySnippet.getNotes();
     }
@@ -98,8 +101,8 @@ public class VocabularyDTO implements Serializable {
     private String notation;
 
     @NotNull
-    @Size(max = 20)
-    private String versionNumber;
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+    private VersionNumber versionNumber;
 
     private Long initialPublication;
 
@@ -431,11 +434,11 @@ public class VocabularyDTO implements Serializable {
         this.notation = notation;
     }
 
-    public String getVersionNumber() {
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
 
@@ -1385,11 +1388,10 @@ public class VocabularyDTO implements Serializable {
         return this;
     }
 
-    public List<VersionDTO> getVersionsByVersionSl( String versionNumberSl, boolean noSameLanguage){
-        String versionNumberSlSearch = VersionUtils.getSlMajorMinorNumber(versionNumberSl);
+    public List<VersionDTO> getVersionsByVersionSl(VersionNumber versionNumberSl, boolean noSameLanguage){
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
-            .filter(v -> v.getNumber().startsWith(versionNumberSlSearch))
+            .filter(v -> v.getNumber().isSameSlNumberAs(versionNumberSl))
             .sorted(VocabularyUtils.versionDtoComparator())
             .collect(Collectors.toList());
 
@@ -2098,7 +2100,7 @@ public class VocabularyDTO implements Serializable {
             vocab.setTitleDefinition(version.getTitle(), version.getDefinition(), version.getLanguage(), false);
             if( version.getStatus().equals( Status.PUBLISHED.toString())) {
                 vocab.addLanguagePublished(version.getLanguage());
-                vocab.setVersionByLanguage(version.getLanguage(), version.getNumber());
+                vocab.setVersionByLanguage(version.getLanguage(), version.getNumber().toString());
             } else {
                 vocab.setVersionByLanguage(version.getLanguage(), version.getNumber() + "_" + version.getStatus());
             }

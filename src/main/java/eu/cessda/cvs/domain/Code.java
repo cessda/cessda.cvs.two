@@ -13,9 +13,12 @@
 
 package eu.cessda.cvs.domain;
 
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import eu.cessda.cvs.utils.VersionNumber;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -45,7 +48,8 @@ public class Code implements Serializable {
 
     private Long versionId;
 
-    private String versionNumber;
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+    private VersionNumber versionNumber;
 
     @Field( type = FieldType.Date, format = DateFormat.date )
     private LocalDate publicationDate;
@@ -273,12 +277,12 @@ public class Code implements Serializable {
         this.parent = parent;
     }
 
-    public String getVersionNumber()
+    public VersionNumber getVersionNumber()
     {
         return versionNumber;
     }
 
-    public void setVersionNumber( String versionNumber )
+    public void setVersionNumber( VersionNumber versionNumber )
     {
         this.versionNumber = versionNumber;
     }

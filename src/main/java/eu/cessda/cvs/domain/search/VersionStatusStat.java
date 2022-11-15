@@ -13,8 +13,11 @@
 
 package eu.cessda.cvs.domain.search;
 
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import eu.cessda.cvs.utils.VersionNumber;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -28,8 +31,9 @@ public class VersionStatusStat implements Serializable {
     @Field( type = FieldType.Keyword, store = true  )
     private String type;
 
-    @Field( type = FieldType.Keyword, store = true  )
-    private String versionNumber;
+    @Field( type = FieldType.Object, store = true  )
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+    private VersionNumber versionNumber;
 
     @Field( type = FieldType.Keyword, store = true  )
     private String status;
@@ -42,7 +46,7 @@ public class VersionStatusStat implements Serializable {
 
     public VersionStatusStat(){}
 
-    public VersionStatusStat(String language, String type, String versionNumber, String status, LocalDate creationDate, LocalDate date) {
+    public VersionStatusStat(String language, String type, VersionNumber versionNumber, String status, LocalDate creationDate, LocalDate date) {
         this.language = language;
         this.type = type;
         this.versionNumber = versionNumber;
@@ -67,11 +71,11 @@ public class VersionStatusStat implements Serializable {
         this.type = type;
     }
 
-    public String getVersionNumber() {
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
 

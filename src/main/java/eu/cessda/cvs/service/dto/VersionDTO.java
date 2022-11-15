@@ -22,12 +22,15 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.utils.VersionUtils;
+import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -59,8 +62,8 @@ public class VersionDTO implements Serializable
 
 	private ZonedDateTime lastModified;
 
-	@Size( max = 20 )
-	private String number;
+	@Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+	private VersionNumber number;
 
 	private String uri;
 
@@ -203,11 +206,11 @@ public class VersionDTO implements Serializable
 		// differentiate VersionNumber, uriSl between SL and TL version cloning
 		if ( this.itemType.equals( ItemType.SL.toString() ) )
 		{
-			this.number = VersionUtils.increaseSlVersionByOne( prevVersion.getNumber() );
+			this.number = prevVersion.getNumber().increaseSlNumber();
 		}
 		else
 		{
-			this.number = VersionUtils.increaseTlVersionByOne( prevVersion.getNumber(), currentSlVersion.getNumber() );
+			this.number = prevVersion.getNumber().increaseTl(currentSlVersion.getNumber());
 			this.translateAgency = prevVersion.getTranslateAgency();
 			this.translateAgencyLink = prevVersion.getTranslateAgencyLink();
 			this.uriSl = currentSlVersion.getUri();
@@ -290,12 +293,12 @@ public class VersionDTO implements Serializable
 		this.lastModified = lastModified;
 	}
 
-	public String getNumber()
+	public VersionNumber getNumber()
 	{
 		return number;
 	}
 
-	public void setNumber( String number )
+	public void setNumber( VersionNumber number )
 	{
 		this.number = number;
 	}

@@ -32,6 +32,8 @@ import eu.cessda.cvs.service.dto.VocabularyDTO;
 import eu.cessda.cvs.service.mapper.AgencyMapper;
 import eu.cessda.cvs.service.mapper.VocabularyEditorMapper;
 import eu.cessda.cvs.service.mapper.VocabularyMapper;
+import eu.cessda.cvs.utils.VersionNumber;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -80,8 +82,8 @@ public class VocabularyResourceIT {
     private static final String DEFAULT_NOTATION = "AAAAAAAAAA";
     private static final String UPDATED_NOTATION = "BBBBBBBBBB";
 
-    private static final String DEFAULT_VERSION_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_VERSION_NUMBER = "BBBBBBBBBB";
+    private static final VersionNumber DEFAULT_VERSION_NUMBER = VersionNumber.fromString("1.0.0");
+    private static final VersionNumber UPDATED_VERSION_NUMBER = VersionNumber.fromString("2.0.0");
 
     private static final Long DEFAULT_INITIAL_PUBLICATION = 1L;
     private static final Long UPDATED_INITIAL_PUBLICATION = 2L;

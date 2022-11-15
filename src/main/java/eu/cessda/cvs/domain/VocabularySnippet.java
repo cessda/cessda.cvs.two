@@ -15,6 +15,7 @@ package eu.cessda.cvs.domain;
 
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.security.ActionType;
+import eu.cessda.cvs.utils.VersionNumber;
 
 import java.io.Serializable;
 
@@ -29,7 +30,7 @@ public class VocabularySnippet implements Serializable {
     private Long licenseId;
     private ItemType itemType;
     private String notation;
-    private String versionNumber;
+    private VersionNumber versionNumber;
     private String status;
     private String title;
     private String definition;
@@ -115,11 +116,11 @@ public class VocabularySnippet implements Serializable {
         this.notation = notation;
     }
 
-    public String getVersionNumber() {
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
 

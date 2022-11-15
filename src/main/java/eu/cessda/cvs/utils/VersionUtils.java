@@ -18,7 +18,6 @@ import eu.cessda.cvs.service.dto.VersionDTO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class VersionUtils {
@@ -33,56 +32,32 @@ public class VersionUtils {
     private VersionUtils() {}
 
 	public static int compareVersion(String v1, String v2) {
-        String s1 = normalisedVersion(v1);
-        String s2 = normalisedVersion(v2);
-        return s1.compareTo(s2);
-    }
-
-    public static String normalisedVersion(String version) {
-        return normalisedVersion(version, ".", 4);
-    }
-
-    public static String normalisedVersion(String version, String sep, int maxWidth) {
-        String[] split = Pattern.compile(sep, Pattern.LITERAL).split(version);
-        StringBuilder sb = new StringBuilder();
-        final String format = "%" + maxWidth + "s";
-        for (String s : split) {
-            sb.append(String.format(format, s));
-        }
-        for (int i=split.length; i < 3; i++) {
-            sb.append(String.format(format, "0"));
-        }
-        return sb.toString();
+        return VersionNumber.fromString(v1).compareTo(VersionNumber.fromString(v2));
     }
 
     public static boolean isSlVersionNumber(String versionNumber) {
-        int dots = StringUtils.countMatches(versionNumber, ".");
-        return dots == 1 || (dots == 2 && versionNumber.endsWith(".0"));
+        return VersionNumber.fromString(versionNumber).isSlNumber();
     }
 
-    public static String increaseSlVersionByOne( String prevVersionNumber ) {
-        prevVersionNumber = VersionUtils.getSlMajorMinorNumber(prevVersionNumber);
-        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
-        return prevVersionNumber.substring(0, indexAfterLastDot) +
-            ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 ) + ".0";
+    public static String increaseSlVersionNumber(String versionNumber) {
+        return VersionNumber.fromString(versionNumber).increaseSlNumber().toString();
     }
 
-    public static String increaseTlVersionByOne( String prevVersionNumber, String currentSlNumber ) {
-        String prevVersionSlNumber = VersionUtils.getSlMajorMinorNumber(prevVersionNumber);
-        currentSlNumber = VersionUtils.getSlMajorMinorNumber(currentSlNumber);
-        if (!prevVersionSlNumber.equals(currentSlNumber)) {
-            return currentSlNumber + ".1";
-        }
-        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
-        return prevVersionNumber.substring(0, indexAfterLastDot) +
-            ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
+    public static String increaseTlVersionByOne(String prevVersionNumber, String currentSlVersionNumber) {
+        VersionNumber prev = VersionNumber.fromString(prevVersionNumber);
+        VersionNumber curr = VersionNumber.fromString(currentSlVersionNumber);
+        if (prev.compareTo(curr) == -1)
+            return new VersionNumber(curr.getSlNumber(), 1).toString();
+        else
+            return prev.increaseTlNumber().toString();
     }
 
-    public static String getSlMajorMinorNumber( String tlNumber ) {
-        if( StringUtils.countMatches( tlNumber, ".") == 2){
-            tlNumber = tlNumber.substring( 0, tlNumber.lastIndexOf('.'));
-        }
-        return tlNumber;
+    public static String getSlMajorMinorVersionNumber( String tlNumber ) {
+        return VersionNumber.fromString(tlNumber).getSlMajorMinorNumbers();
+    }
+
+    public static boolean equalSlVersionNumber(String versionNumber1, String versionNumber2) {
+        return VersionNumber.fromString(versionNumber1).isSameSlNumberAs(VersionNumber.fromString(versionNumber2));
     }
 
     /**

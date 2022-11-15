@@ -16,9 +16,13 @@ package eu.cessda.cvs.service.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
+import eu.cessda.cvs.utils.VersionNumber;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
@@ -50,7 +54,8 @@ public class CodeDTO implements Serializable {
 
     private Long versionId;
 
-    private String versionNumber;
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+    private VersionNumber versionNumber;
 
     private Boolean deprecated;
     
@@ -313,11 +318,11 @@ public class CodeDTO implements Serializable {
         this.versionId = versionId;
     }
 
-    public String getVersionNumber() {
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
 

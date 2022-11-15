@@ -19,6 +19,8 @@ import eu.cessda.cvs.repository.VersionRepository;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.mapper.VersionMapper;
+import eu.cessda.cvs.utils.VersionNumber;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,8 +70,8 @@ public class VersionResourceIT {
     private static final ZonedDateTime DEFAULT_LAST_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_LAST_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final String DEFAULT_NUMBER = "AAAAAAAAAA";
-    private static final String UPDATED_NUMBER = "BBBBBBBBBB";
+    private static final VersionNumber DEFAULT_NUMBER = VersionNumber.fromString("33.33.33");
+    private static final VersionNumber UPDATED_NUMBER = VersionNumber.fromString("66.66.66");
 
     private static final String DEFAULT_URI = "AAAAAAAAAA";
     private static final String UPDATED_URI = "BBBBBBBBBB";

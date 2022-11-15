@@ -14,6 +14,10 @@
 package eu.cessda.cvs.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
+import eu.cessda.cvs.utils.VersionNumber;
+
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.*;
 
 import javax.persistence.*;
@@ -54,10 +58,10 @@ public class VocabularyBase implements Serializable {
     private String notation;
 
     @NotNull
-    @Size(max = 20)
-    @Column(name = "version_number", length = 20, nullable = false)
-    @Field( type = FieldType.Keyword )
-    private String versionNumber;
+    @Column(name = "version_number", nullable = false)
+    @Field( type = FieldType.Object )
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType")
+    private VersionNumber versionNumber;
 
     @Column(name = "initial_publication")
     private Long initialPublication;
@@ -584,16 +588,16 @@ public class VocabularyBase implements Serializable {
         this.notation = notation;
     }
 
-    public String getVersionNumber() {
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    public VocabularyBase versionNumber(String versionNumber) {
+    public VocabularyBase versionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
         return this;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
 

@@ -40,10 +40,10 @@ public interface VersionRepository extends JpaRepository<Version, Long> {
     @Query("select v from Version v where v.vocabulary.id =:vocabularyId and v.status = 'PUBLISHED' and v.language =:languageIso and v.id <:versionId order by v.itemType ASC, v.number DESC")
     List<Version> findOlderPublishedByVocabularyLanguageId(@Param("vocabularyId") Long vocabularyId, @Param("languageIso") String languageIso, @Param("versionId") Long versionId);
 
-    @Query("select v from Version v where v.vocabulary.id =:vocabularyId and v.number like :versionNumberSl% order by v.itemType ASC, v.language ASC, v.number DESC")
+    @Query("select v from Version v where v.vocabulary.id =:vocabularyId and v.number like CONCAT(:versionNumberSl, '%') order by v.itemType ASC, v.language ASC, v.number DESC")
     List<Version> findAllByVocabularyIdAndVersionNumberSl(@Param("vocabularyId") Long vocabularyId, @Param("versionNumberSl") String versionNumberSl);
 
-    @Query("select v from Version v where v.vocabulary.id =:vocabularyId and v.status = 'PUBLISHED' and v.number like :versionNumberSl% order by v.itemType ASC, v.language ASC, v.number DESC")
+    @Query("select v from Version v where v.vocabulary.id =:vocabularyId and v.status = 'PUBLISHED' and v.number like CONCAT(:versionNumberSl, '%') order by v.itemType ASC, v.language ASC, v.number DESC")
     List<Version> findAllPublishedByVocabularyIdAndVersionNumberSl(@Param("vocabularyId") Long vocabularyId, @Param("versionNumberSl") String versionNumberSl);
 
     List<Version> findByCanonicalUri(String canonicalUri);

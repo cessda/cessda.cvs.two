@@ -20,6 +20,8 @@ import eu.cessda.cvs.repository.*;
 import eu.cessda.cvs.security.ActionType;
 import eu.cessda.cvs.security.AuthoritiesConstants;
 import eu.cessda.cvs.security.jwt.TokenProvider;
+import eu.cessda.cvs.utils.VersionNumber;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -52,7 +54,7 @@ class VocabularyMaintenanceResourceIT {
     private static final String SOURCE_LANGUAGE = "en";
     private static final ItemType ITEM_TYPE_SL = ItemType.SL;
     private static final String NOTATION = "AAAAAAAAAA";
-    private static final String INIT_VERSION_NUMBER_SL = "1.0";
+    private static final VersionNumber INIT_VERSION_NUMBER_SL = VersionNumber.fromString("1.0");
     private static final String INIT_STATUS = "DRAFT";
     private static final String INIT_TITLE_EN = "AAAAAAAAAA";
     private static final String INIT_DEFINITION_EN = "AAAAAAAAAA";
