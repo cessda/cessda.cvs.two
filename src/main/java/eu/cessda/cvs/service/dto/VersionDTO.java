@@ -13,8 +13,28 @@
 
 package eu.cessda.cvs.service.dto;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import eu.cessda.cvs.domain.Agency;
 import eu.cessda.cvs.domain.Licence;
 import eu.cessda.cvs.domain.Version;
@@ -24,17 +44,6 @@ import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
-
-import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.Type;
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.*;
 
 /**
  * A DTO for the {@link Version} entity.
@@ -293,15 +302,30 @@ public class VersionDTO implements Serializable
 		this.lastModified = lastModified;
 	}
 
+	@JsonIgnore
 	public VersionNumber getNumber()
 	{
 		return number;
 	}
+    
+	@JsonGetter("number")
+    public String getNumberAsString() {
+        if (number != null) {
+            return number.toString();
+        }
+        return null;
+    }
 
+	@JsonIgnore
 	public void setNumber( VersionNumber number )
 	{
 		this.number = number;
 	}
+
+	@JsonSetter("number")
+    public void setNumber(String str) {
+        setNumber(str != null ? new VersionNumber(str) : null);
+    }
 
 	public String getUri()
 	{

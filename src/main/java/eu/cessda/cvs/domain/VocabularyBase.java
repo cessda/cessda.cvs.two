@@ -14,6 +14,9 @@
 package eu.cessda.cvs.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import eu.cessda.cvs.utils.VersionNumber;
 
@@ -59,7 +62,7 @@ public class VocabularyBase implements Serializable {
 
     @NotNull
     @Column(name = "version_number", nullable = false)
-    @Field( type = FieldType.Object )
+    @Field( type = FieldType.Keyword )
     @Type( type = "eu.cessda.cvs.utils.VersionNumberType")
     private VersionNumber versionNumber;
 
@@ -588,17 +591,32 @@ public class VocabularyBase implements Serializable {
         this.notation = notation;
     }
 
+    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        if (versionNumber != null) {
+            return versionNumber.toString();
+        }
+        return null;
+    }
+    
     public VocabularyBase versionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
         return this;
     }
 
+    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
+    }
+
+    @JsonSetter("versionNumber")
+    public void setVersionNumber(String str) {
+        setVersionNumber(str != null ? new VersionNumber(str) : null);
     }
 
     public Long getInitialPublication() {

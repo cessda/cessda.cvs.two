@@ -18,6 +18,10 @@ import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import eu.cessda.cvs.utils.VersionNumber;
 
 import java.io.Serializable;
@@ -277,16 +281,31 @@ public class Code implements Serializable {
         this.parent = parent;
     }
 
+    @JsonIgnore
     public VersionNumber getVersionNumber()
     {
         return versionNumber;
     }
 
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        if (versionNumber != null) {
+            return versionNumber.toString();
+        }
+        return null;
+    }
+
+    @JsonIgnore
     public void setVersionNumber( VersionNumber versionNumber )
     {
         this.versionNumber = versionNumber;
     }
 
+    @JsonSetter("versionNumber")
+    public void setVersionNumber(String str) {
+        setVersionNumber(str != null ? new VersionNumber(str) : null);
+    }
+    
     public Integer getPosition() {
         return position;
     }

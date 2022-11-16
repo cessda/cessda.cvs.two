@@ -13,19 +13,29 @@
 
 package eu.cessda.cvs.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import eu.cessda.cvs.domain.Code;
-import eu.cessda.cvs.domain.enumeration.Language;
-import eu.cessda.cvs.utils.VersionNumber;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.*;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import eu.cessda.cvs.domain.Code;
+import eu.cessda.cvs.domain.enumeration.Language;
+import eu.cessda.cvs.utils.VersionNumber;
 
 /**
  * A DTO for the {@link Code} entity.
@@ -318,14 +328,29 @@ public class CodeDTO implements Serializable {
         this.versionId = versionId;
     }
 
+    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
+    
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        if (versionNumber != null) {
+            return versionNumber.toString();
+        }
+        return null;
+    }
 
+    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
 
+    @JsonSetter("versionNumber")
+    public void setVersionNumber(String str) {
+        setVersionNumber(str != null ? new VersionNumber(str) : null);
+    }
+    
     public String getTitleSq() {
         return titleSq;
     }

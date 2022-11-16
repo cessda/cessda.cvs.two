@@ -13,15 +13,17 @@
 
 package eu.cessda.cvs.service.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import eu.cessda.cvs.domain.Vocabulary;
-import eu.cessda.cvs.domain.VocabularySnippet;
-import eu.cessda.cvs.domain.enumeration.ItemType;
-import eu.cessda.cvs.domain.enumeration.Language;
-import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.utils.VersionNumber;
-import eu.cessda.cvs.utils.VocabularyUtils;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
@@ -29,11 +31,18 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Type;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import eu.cessda.cvs.domain.Vocabulary;
+import eu.cessda.cvs.domain.VocabularySnippet;
+import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.domain.enumeration.Language;
+import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.utils.VersionNumber;
+import eu.cessda.cvs.utils.VocabularyUtils;
 
 /**
  * A DTO for the {@link Vocabulary} entity.
@@ -434,14 +443,27 @@ public class VocabularyDTO implements Serializable {
         this.notation = notation;
     }
 
+    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
+    
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        if (versionNumber != null) {
+            return versionNumber.toString();
+        }
+        return null;
+    }
 
+    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
     }
-
+    @JsonSetter("versionNumber")
+    public void setVersionNumber(String str) {
+        setVersionNumber(str != null ? new VersionNumber(str) : null);
+    }
     public Long getInitialPublication() {
         return initialPublication;
     }

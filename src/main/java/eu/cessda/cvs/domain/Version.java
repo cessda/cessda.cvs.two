@@ -13,7 +13,10 @@
 
 package eu.cessda.cvs.domain;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import eu.cessda.cvs.utils.VersionNumber;
 
@@ -243,8 +246,17 @@ public class Version implements Serializable {
         this.lastModified = lastModified;
     }
 
+    @JsonIgnore
     public VersionNumber getNumber() {
         return number;
+    }
+
+    @JsonGetter("number")
+    public String getNumberAsString() {
+        if (number != null) {
+            return number.toString();
+        }
+        return null;
     }
 
     public Version number(VersionNumber number) {
@@ -252,8 +264,14 @@ public class Version implements Serializable {
         return this;
     }
 
+    @JsonIgnore
     public void setNumber(VersionNumber number) {
         this.number = number;
+    }
+
+    @JsonSetter("number")
+    public void setNumber(String str) {
+        setNumber(str != null ? new VersionNumber(str) : null);
     }
 
     public String getUri() {

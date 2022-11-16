@@ -13,15 +13,19 @@
 
 package eu.cessda.cvs.domain.search;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import eu.cessda.cvs.utils.VersionNumber;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import eu.cessda.cvs.utils.VersionNumber;
 
 public class VersionCodeStat implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -32,19 +36,34 @@ public class VersionCodeStat implements Serializable {
         this.versionNumber = versionNumber;
     }
 
-    @Field( type = FieldType.Object, store = true )
+    @Field( type = FieldType.Keyword, store = true )
     @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
     private VersionNumber versionNumber;
 
     @Field( type = FieldType.Keyword, store = true )
     private List<String> codes = new ArrayList<>();
 
+    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
+    
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        if (versionNumber != null) {
+            return versionNumber.toString();
+        }
+        return null;
+    }
 
+    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
+    }
+
+    @JsonSetter("versionNumber")
+    public void setVersionNumber(String str) {
+        setVersionNumber(str != null ? new VersionNumber(str) : null);
     }
 
     public List<String> getCodes() {

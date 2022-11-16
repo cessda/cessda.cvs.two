@@ -19,6 +19,10 @@ import eu.cessda.cvs.utils.VersionNumber;
 
 import java.io.Serializable;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 public class VocabularySnippet implements Serializable {
 
     private ActionType actionType;
@@ -116,12 +120,27 @@ public class VocabularySnippet implements Serializable {
         this.notation = notation;
     }
 
+    @JsonIgnore
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        if (versionNumber != null) {
+            return versionNumber.toString();
+        }
+        return null;
+    }
+
+    @JsonIgnore
     public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
+    }
+
+    @JsonSetter("versionNumber")
+    public void setVersionNumberFromString(String str) {
+        setVersionNumber(str != null ? new VersionNumber(str) : null);
     }
 
     public String getStatus() {

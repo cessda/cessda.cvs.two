@@ -13,21 +13,24 @@
 
 package eu.cessda.cvs.web.rest;
 
-import eu.cessda.cvs.CvsApp;
-import eu.cessda.cvs.domain.*;
-import eu.cessda.cvs.domain.enumeration.ItemType;
-import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.repository.*;
-import eu.cessda.cvs.security.ActionType;
-import eu.cessda.cvs.security.AuthoritiesConstants;
-import eu.cessda.cvs.security.jwt.TokenProvider;
-import eu.cessda.cvs.service.dto.CommentDTO;
-import eu.cessda.cvs.service.dto.MetadataValueDTO;
-import eu.cessda.cvs.service.mapper.CommentMapper;
-import eu.cessda.cvs.service.mapper.MetadataValueMapper;
-import eu.cessda.cvs.utils.VersionNumber;
-import eu.cessda.cvs.utils.VersionUtils;
-import eu.cessda.cvs.utils.VocabularyUtils;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -45,13 +48,39 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.stream.Collectors;
-
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import eu.cessda.cvs.CvsApp;
+import eu.cessda.cvs.domain.Agency;
+import eu.cessda.cvs.domain.Authority;
+import eu.cessda.cvs.domain.CodeSnippet;
+import eu.cessda.cvs.domain.Comment;
+import eu.cessda.cvs.domain.Concept;
+import eu.cessda.cvs.domain.Licence;
+import eu.cessda.cvs.domain.MetadataValue;
+import eu.cessda.cvs.domain.User;
+import eu.cessda.cvs.domain.Version;
+import eu.cessda.cvs.domain.Vocabulary;
+import eu.cessda.cvs.domain.VocabularyChange;
+import eu.cessda.cvs.domain.VocabularySnippet;
+import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.domain.enumeration.Status;
+import eu.cessda.cvs.repository.AgencyRepository;
+import eu.cessda.cvs.repository.AuthorityRepository;
+import eu.cessda.cvs.repository.CommentRepository;
+import eu.cessda.cvs.repository.ConceptRepository;
+import eu.cessda.cvs.repository.LicenceRepository;
+import eu.cessda.cvs.repository.MetadataValueRepository;
+import eu.cessda.cvs.repository.UserRepository;
+import eu.cessda.cvs.repository.VocabularyChangeRepository;
+import eu.cessda.cvs.repository.VocabularyRepository;
+import eu.cessda.cvs.security.ActionType;
+import eu.cessda.cvs.security.AuthoritiesConstants;
+import eu.cessda.cvs.security.jwt.TokenProvider;
+import eu.cessda.cvs.service.dto.CommentDTO;
+import eu.cessda.cvs.service.dto.MetadataValueDTO;
+import eu.cessda.cvs.service.mapper.CommentMapper;
+import eu.cessda.cvs.service.mapper.MetadataValueMapper;
+import eu.cessda.cvs.utils.VersionNumber;
+import eu.cessda.cvs.utils.VocabularyUtils;
 
 /**
  * Integration tests for the {@link EditorResource} REST controller.
@@ -537,7 +566,7 @@ class EditorResourceIT {
         assertThat(versionUpdated.getVersionChanges()).isEqualTo(INIT_VERSION_CHANGES);
         // test with null version number and license id, should not change the licence and version number
         vocabularySnippetForEnSl.setLicenseId( null );
-        vocabularySnippetForEnSl.setVersionNumber(null);
+        vocabularySnippetForEnSl.setVersionNumberFromString(null);
         versionUpdated = updateVersionInfoTest(version);
         assertThat(versionUpdated.getLicenseId()).isEqualTo(license.getId());
         assertThat(versionUpdated.getNumber()).isEqualTo(versionUpdated.getNumber());
@@ -815,7 +844,7 @@ class EditorResourceIT {
 
         // must be generated equal TL concepts to SL concepts
         assertThat(tlVersion.getConcepts().size()).isEqualTo(slVersion.getConcepts().size());
-        assertThat(tlVersion.getNumber().toString()).contains( slVersion.getNumber().toString());
+        assertTrue(tlVersion.getNumber().isSameSlNumberAs(slVersion.getNumber()));
         // TL ddi-usage must be the same with SL
         assertThat(tlVersion.getDdiUsage()).isEqualTo(slVersion.getDdiUsage());
 

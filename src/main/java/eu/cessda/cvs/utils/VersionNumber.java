@@ -1,13 +1,65 @@
 package eu.cessda.cvs.utils;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
+@JsonSerialize(using = VersionNumber.Serializer.class)
+@JsonDeserialize(using = VersionNumber.Deserializer.class)
 public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
+    public static class Deserializer extends StdDeserializer<VersionNumber> {
+
+        public Deserializer() {
+            this(null);
+        }
+
+        public Deserializer(Class<VersionNumber> t) {
+            super(t);
+        }
+
+        @Override
+        public VersionNumber deserialize(JsonParser p, DeserializationContext ctxt)
+                throws IOException, JsonProcessingException {
+            try { 
+                return VersionNumber.fromString(p.getText()); 
+            } 
+            catch (Exception e) { 
+                e.printStackTrace(); 
+            }    
+            return null;
+        }
+    }
+
+    public static class Serializer extends StdSerializer<VersionNumber> {
+
+        public Serializer() {
+            this(null);
+        }
+
+        public Serializer(Class<VersionNumber> t) {
+            super(t);
+        }
+
+        @Override
+        public void serialize(VersionNumber value, JsonGenerator gen, SerializerProvider provider) throws IOException {
+            gen.writeString(value.toString());
+        }
+
+    }
+    
     private static final long serialVersionUID = 1L;
     
     public static Pattern PARSE_PATTERN = Pattern.compile("^[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+))?.*$");
@@ -79,6 +131,19 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     public VersionNumber getSlNumber() {
         return new VersionNumber(slMajorNumber, slMinorNumber, 0);
     }
+
+    // @JsonSetter
+    // public void set(String str) {
+    //     VersionNumber tmp = new VersionNumber(str);
+    //     slMajorNumber = tmp.slMajorNumber;
+    //     slMinorNumber = tmp.slMinorNumber;
+    //     tlNumber = tmp.tlNumber;
+    // }
+
+    // @JsonGetter
+    // public String get() {
+    //     return toString();
+    // }
 
     public String toString() {
         return slMajorNumber + "." + slMinorNumber + "." + tlNumber;
@@ -161,10 +226,5 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         } else if (!tlNumber.equals(other.tlNumber))
             return false;
         return true;
-    }
-
-    @JsonIgnore
-    public boolean isValid() {
-        return (slMajorNumber != null || slMinorNumber != null || tlNumber != null) && slMajorNumber >= 1;
     }
 }
