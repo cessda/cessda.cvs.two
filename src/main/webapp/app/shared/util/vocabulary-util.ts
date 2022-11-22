@@ -83,6 +83,69 @@ export default class VocabularyUtil {
     }
   }
 
+  static getVersionNumberByLangIso(item: IVocabulary | ICode, langIso: string): String {
+    switch (langIso) {
+      case 'sq':
+        return item.versionSq;
+      case 'bs':
+        return item.versionBs;
+      case 'bg':
+        return item.versionBg;
+      case 'hr':
+        return item.versionHr;
+      case 'cs':
+        return item.versionCs;
+      case 'da':
+        return item.versionDa;
+      case 'nl':
+        return item.versionNl;
+      case 'en':
+        return item.versionEn;
+      case 'et':
+        return item.versionEt;
+      case 'fi':
+        return item.versionFi;
+      case 'fr':
+        return item.versionFr;
+      case 'de':
+        return item.versionDe;
+      case 'el':
+        return item.versionEl;
+      case 'hu':
+        return item.versionHu;
+      case 'it':
+        return item.versionIt;
+      case 'ja':
+        return item.versionJa;
+      case 'lt':
+        return item.versionLt;
+      case 'mk':
+        return item.versionMk;
+      case 'no':
+        return item.versionNo;
+      case 'pl':
+        return item.versionPl;
+      case 'pt':
+        return item.versionPt;
+      case 'ro':
+        return item.versionRo;
+      case 'ru':
+        return item.versionRu;
+      case 'sr':
+        return item.versionSr;
+      case 'sk':
+        return item.versionSk;
+      case 'sl':
+        return item.versionSl;
+      case 'es':
+        return item.versionEs;
+      case 'sv':
+        return item.versionSv;
+      default:
+        return item.versionEn;
+    }
+  }
+
   static getStatus(vocab: IVocabulary): String {
     return vocab.status!;
   }

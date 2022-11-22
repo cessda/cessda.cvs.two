@@ -88,6 +88,7 @@ public class VocabularyDTO implements Serializable {
     public void setStatusByVocabularySnippet(VocabularySnippet vocabularySnippet){
         this.status = vocabularySnippet.getStatus();
     }
+    
     public void setVersionNumberByVocabularySnippet(VocabularySnippet vocabularySnippet){
         this.versionNumber = vocabularySnippet.getVersionNumber();
     }
@@ -2103,6 +2104,8 @@ public class VocabularyDTO implements Serializable {
         this.uri = this.uri + "/" + this.versionNumber;
         this.publicationDate = versionDTO.getPublicationDate();
         this.archived = true;
+        this.setVersionByLanguage(versionDTO.getLanguage(), versionDTO.getNumber());
+        this.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
     }
 
     public static Optional<VocabularyDTO> findByIdFromList(List<VocabularyDTO> vocabs, String docId) {

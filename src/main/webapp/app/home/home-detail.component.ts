@@ -113,6 +113,29 @@ export class HomeDetailComponent implements OnInit {
     this.eventManager.broadcast({ name: 'closeComparison', content: true });
   }
 
+  isNewerVersion(): boolean {
+    let ret = false;
+    const number = parseFloat(this.vocabulary!.versionNumber!);
+    const version = parseFloat(this.vocabulary!.versions![0].number!);
+    const status = this.vocabulary!.status!;
+    const dif = (number - version).toFixed(2);
+
+    //check if the versions are major step aside
+    //if not check if the status is draft
+    //after 3 digit system introduction, we need to rework it!!!
+    if (parseFloat(dif) > 0.1) {
+      ret = true;
+    } else if (parseFloat(dif) === 0.1 && status === 'PUBLISHED') {
+      ret = true;
+    }
+    return ret;
+  }
+
+  getLatestVersionNumber(): String {
+    const lang = this.vocabulary!.sourceLanguage!;
+    return String(VocabularyUtil.getVersionNumberByLangIso(this.vocabulary!, lang));
+  }
+
   getSlVersion(): IVersion {
     return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary!);
   }
@@ -123,10 +146,6 @@ export class HomeDetailComponent implements OnInit {
     } else {
       return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);  
     }
-  }
-
-  getStatus(): String {
-    return VocabularyUtil.getStatus(this.vocabulary!);
   }
 
   getVersionByLangNumber(versionNumber?: string): IVersion {
