@@ -13,15 +13,15 @@
 
 package eu.cessda.cvs.domain;
 
-import eu.cessda.cvs.domain.enumeration.ItemType;
-import eu.cessda.cvs.security.ActionType;
-import eu.cessda.cvs.utils.VersionNumber;
-
 import java.io.Serializable;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
+
+import eu.cessda.cvs.domain.enumeration.ItemType;
+import eu.cessda.cvs.security.ActionType;
+import eu.cessda.cvs.utils.VersionNumber;
 
 public class VocabularySnippet implements Serializable {
 

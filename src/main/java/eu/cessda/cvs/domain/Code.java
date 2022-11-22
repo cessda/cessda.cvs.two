@@ -13,6 +13,10 @@
 
 package eu.cessda.cvs.domain;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Set;
+
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
@@ -23,10 +27,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import eu.cessda.cvs.utils.VersionNumber;
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Set;
 
 /**
  * A Code.

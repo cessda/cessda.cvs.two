@@ -207,6 +207,8 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
             return true;
         if (obj == null)
             return false;
+        if (obj.getClass() == String.class)
+            return this.equals(VersionNumber.fromString((String) obj));
         if (getClass() != obj.getClass())
             return false;
         VersionNumber other = (VersionNumber) obj;
