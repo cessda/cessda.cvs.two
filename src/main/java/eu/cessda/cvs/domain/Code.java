@@ -13,13 +13,20 @@
 
 package eu.cessda.cvs.domain;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Set;
+
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import eu.cessda.cvs.utils.VersionNumber;
 
 /**
  * A Code.
@@ -45,7 +52,8 @@ public class Code implements Serializable {
 
     private Long versionId;
 
-    private String versionNumber;
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+    private VersionNumber versionNumber;
 
     @Field( type = FieldType.Date, format = DateFormat.date )
     private LocalDate publicationDate;
@@ -273,16 +281,31 @@ public class Code implements Serializable {
         this.parent = parent;
     }
 
-    public String getVersionNumber()
+    @JsonIgnore
+    public VersionNumber getVersionNumber()
     {
         return versionNumber;
     }
 
-    public void setVersionNumber( String versionNumber )
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        if (versionNumber != null) {
+            return versionNumber.toString();
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public void setVersionNumber( VersionNumber versionNumber )
     {
         this.versionNumber = versionNumber;
     }
 
+    @JsonSetter("versionNumber")
+    public void setVersionNumber(String str) {
+        setVersionNumber(str != null ? new VersionNumber(str) : null);
+    }
+    
     public Integer getPosition() {
         return position;
     }

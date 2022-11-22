@@ -175,7 +175,7 @@ public class ResourceUtils {
         List<Map<String,String>> versionInfoList = new ArrayList<>();
         vocabularyJsonLdMap.put("http://www.w3.org/2002/07/owl#versionInfo", versionInfoList);
         Map<String, String> versionInfoMap = new LinkedHashMap<>();
-        versionInfoMap.put(VALUE, vocabularyDTO.getVersionNumber());
+        versionInfoMap.put(VALUE, vocabularyDTO.getVersionNumber().toString());
         versionInfoList.add(versionInfoMap);
         // hasTopConcept
         List<Map<String,String>> hasTopConceptList = new ArrayList<>();

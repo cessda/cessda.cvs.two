@@ -305,10 +305,10 @@ public final class VocabularyUtils
 	public static String generateUri( String uri, Boolean isVersionUri, Vocabulary vocabulary, Version version, Concept concept )
 	{
 		if ( concept == null )
-			return generateUri( uri, true, vocabulary.getNotation(), VersionUtils.getSlMajorMinorNumber( version.getNumber() ),
+			return generateUri( uri, true, vocabulary.getNotation(), version.getNumber(),
 					vocabulary.getSourceLanguage(), null, null );
 		else
-			return generateUri( uri, true, vocabulary.getNotation(), VersionUtils.getSlMajorMinorNumber( version.getNumber() ),
+			return generateUri( uri, true, vocabulary.getNotation(), version.getNumber(),
 					vocabulary.getSourceLanguage(), concept.getNotation(), concept.getId() );
 	}
 
@@ -332,7 +332,7 @@ public final class VocabularyUtils
 			String uri,
 			Boolean isVersionUri,
 			String notation,
-			String version,
+			VersionNumber version,
 			String language,
 			String code,
 			Long conceptID )
@@ -347,7 +347,7 @@ public final class VocabularyUtils
 		if ( isVersionUri != null )
 		{
 			// generate version or code URI
-			generatedUri = generatedUri.replace( "[VERSION]", version );
+			generatedUri = generatedUri.replace( "[VERSION]", version.toString() );
 			if ( !Boolean.TRUE.equals( isVersionUri ) )
 			{
 				// generate code uri
