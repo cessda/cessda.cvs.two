@@ -2029,7 +2029,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.READY_TO_PUBLISH.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
-			vocabularyDTO.setVersionByLanguage( versionDTO.getLanguage(), versionDTO.getNumber() );
+			vocabularyDTO.setVersionByLanguage( versionDTO.getLanguage(), versionDTO.getNumber().toString() );
 			vocabularyDTO.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
 			break;
 		default:

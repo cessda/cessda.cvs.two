@@ -158,8 +158,9 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
 
   private fillForm(): void {
     if (this.isSlForm) {
+      const parsedNumber = VocabularyUtil.parseVersionNumber(this.versionParam!.number!);
       this.cvForwardStatusForm.patchValue({
-        versionNumberSl: VocabularyUtil.parseVersionNumber(this.versionParam!.number!)['sl'],
+        versionNumberSl: parsedNumber['sl-major'] + '.' + parsedNumber['sl-minor']
       });
     }
     if (this.versionParam!.licenseId) {

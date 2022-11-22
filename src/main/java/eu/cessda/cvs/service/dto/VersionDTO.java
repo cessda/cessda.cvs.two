@@ -23,11 +23,15 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
@@ -349,7 +353,7 @@ public class VersionDTO implements Serializable
 		{
 			// remove last dot
 			index = canonicalUri.lastIndexOf( '.' );
-			formattedUrn = formattedUrn.substring( 0, index );
+			formattedUrn = formattedUrn.substring( 0, index ) + ".0";
 		}
 		return formattedUrn;
 	}
@@ -834,16 +838,19 @@ public class VersionDTO implements Serializable
 		return id != null;
 	}
 
+	private static Pattern PATTERN_LANGUAGE_INFORMATION = Pattern.compile("(?::((?:" + Language.getIsos().stream().map(StringUtils::lowerCase).collect(Collectors.joining("|")) + ")-))([0-9]+\\.[0-9]+(\\.[0-9]+)?)$");
+
 	private static String removeLanguageInformation( String canonicalUrlInput )
 	{
 		if ( canonicalUrlInput == null )
 			return null;
-		// find last dash from canonicalURI
-		int lastDashPosition = canonicalUrlInput.lastIndexOf( '-' );
-		// if found and
-		if ( lastDashPosition < 20 )
-			return canonicalUrlInput;
-		return canonicalUrlInput.substring( 0, lastDashPosition );
+		Matcher m = PATTERN_LANGUAGE_INFORMATION.matcher(canonicalUrlInput);
+		if (m.find()) {
+			if (m.group(1) != null) {
+				canonicalUrlInput = canonicalUrlInput.substring(0, m.start(1)) + canonicalUrlInput.substring(m.end(1));
+			}
+		}
+		return canonicalUrlInput;	
 	}
 
 	public ConceptDTO findConceptByNotation( String notation )
