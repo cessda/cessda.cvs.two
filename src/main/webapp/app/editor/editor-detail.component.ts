@@ -248,6 +248,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       for (const vocab of this.vocabulary!.versions!) {
         if (vocab.status! === 'READY_TO_PUBLISH') {
           this.enablePublishTl = true;
+          break;
         } else {
           this.enablePublishTl = false;
         }
