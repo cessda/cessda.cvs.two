@@ -158,9 +158,8 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
 
   private fillForm(): void {
     if (this.isSlForm) {
-      const parsedNumber = VocabularyUtil.parseVersionNumber(this.versionParam!.number!);
       this.cvForwardStatusForm.patchValue({
-        versionNumberSl: parsedNumber['sl-major'] + '.' + parsedNumber['sl-minor']
+        versionNumberSl: VocabularyUtil.getSlMajorMinorVersionNumber(this.versionParam!.number!)
       });
     }
     if (this.versionParam!.licenseId) {
@@ -234,7 +233,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
         this.isVersionInvalid = VocabularyUtil.compareVersionNumber(vocabularySnippet.versionNumber, this.versionParam!.number!) === -1;
       } else {
         this.missingTranslations = [];
-        vocabularySnippet.versionNumber = VocabularyUtil.parseVersionNumber(this.slVersionNumber)['sl'] + '.' + this.tlProposedVersionNumber;
+        vocabularySnippet.versionNumber = VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.tlProposedVersionNumber;
         this.versionParam!.concepts!.forEach(c => {
           if (!c.deprecated) {
             if (!c.title || c.title === null || c.title === '') {
@@ -270,7 +269,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     if (this.isSlForm) {
       vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value;
     } else {
-      vocabularySnippet.versionNumber = VocabularyUtil.parseVersionNumber(this.slVersionNumber)['sl'] + '.' + this.tlProposedVersionNumber;
+      vocabularySnippet.versionNumber = VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.tlProposedVersionNumber;
     }
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabularySnippet));
   }
