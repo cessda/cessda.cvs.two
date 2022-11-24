@@ -230,7 +230,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       // check validity
       if (this.isSlForm) {
         vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value + '.' + this.tlProposedVersionNumber;
-        this.isVersionInvalid = VocabularyUtil.compareVersionNumber(vocabularySnippet.versionNumber, this.versionParam!.number!) === -1;
+        this.isVersionInvalid = VocabularyUtil.compareVersionNumbers(vocabularySnippet.versionNumber, this.versionParam!.number!) === -1;
       } else {
         this.missingTranslations = [];
         vocabularySnippet.versionNumber = VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.tlProposedVersionNumber;

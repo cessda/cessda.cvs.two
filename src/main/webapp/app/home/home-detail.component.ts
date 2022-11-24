@@ -115,7 +115,7 @@ export class HomeDetailComponent implements OnInit {
 
   isNewerVersion(): boolean {
     if (this.vocabulary!.versionNumber && this.vocabulary!.versions![0].number)
-      return VocabularyUtil.compareVersionNumber(
+      return VocabularyUtil.compareVersionNumbers(
         this.vocabulary!.versionNumber,
         this.vocabulary!.versions![0].number
       ) > 0;
@@ -306,17 +306,21 @@ export class HomeDetailComponent implements OnInit {
   }
 
   getMissingTlVersion(version: string): string {
-    if (version.startsWith(this.getSlVersion().number!)) {
-      return this.getSlVersion().versionHistories![0].version + '.x';
+    if (VocabularyUtil.compareVersionNumbers(version, this.getSlVersion().number!) === 0) {
+      return VocabularyUtil.getSlMajorMinorVersionNumber(
+        this.getSlVersion().versionHistories![0].version!
+       ) + '.x';
     }
     let i = 0;
     this.getSlVersion().versionHistories!.forEach(function(vhSl, index): void {
-      if (version.startsWith(vhSl.version!)) {
+      if (VocabularyUtil.compareVersionNumbers(version, vhSl.version!) === 0) {
         i = index + 1;
       }
     });
     if (i > 0) {
-      return this.getSlVersion().versionHistories![i].version + '.x';
+      return VocabularyUtil.getSlMajorMinorVersionNumber(
+        this.getSlVersion().versionHistories![i].version!
+       ) + '.x';
     }
     return '';
   }

@@ -132,19 +132,6 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return new VersionNumber(slMajorNumber, slMinorNumber, 0);
     }
 
-    // @JsonSetter
-    // public void set(String str) {
-    //     VersionNumber tmp = new VersionNumber(str);
-    //     slMajorNumber = tmp.slMajorNumber;
-    //     slMinorNumber = tmp.slMinorNumber;
-    //     tlNumber = tmp.tlNumber;
-    // }
-
-    // @JsonGetter
-    // public String get() {
-    //     return toString();
-    // }
-
     public String toString() {
         return slMajorNumber + "." + slMinorNumber + "." + tlNumber;
     }
@@ -161,6 +148,9 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         cmp = slMinorNumber.compareTo(other.slMinorNumber);
         if (cmp != 0)
             return cmp;
+        if (tlNumber == 0 || other.tlNumber == 0) {
+            return 0;
+        }
         return tlNumber.compareTo(other.tlNumber);
     }
 

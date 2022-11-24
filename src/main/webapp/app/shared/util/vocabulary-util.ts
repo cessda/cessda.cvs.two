@@ -256,7 +256,7 @@ export default class VocabularyUtil {
     return cmpResult;
   }
 
-  static compareVersionNumber(v1: string, v2: string): number {
+  static compareVersionNumbers(v1: string, v2: string): number {
     v1 = this.parseVersionNumber(this.threeDigitVersionNumber(v1)!);
     v2 = this.parseVersionNumber(this.threeDigitVersionNumber(v2)!);
     const cmpResult = this.compareArrays(
@@ -272,9 +272,19 @@ export default class VocabularyUtil {
     if (cmpResult !== 0) {
       return cmpResult;
     }
+    if (v1['tl'] === 0 || v2['tl'] === 0) {
+      return 0;
+    }
     return this.compareArrays(
       [v1['tl']],
       [v2['tl']]
+    );
+  }
+
+  static compareSlVersionNumbers(v1: string, v2: string): number {
+    return this.compareVersionNumbers(
+      this.getSlVersionNumber(v1),
+      this.getSlVersionNumber(v2)
     );
   }
 
