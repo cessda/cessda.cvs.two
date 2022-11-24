@@ -54,6 +54,7 @@ export class HomeDetailComponent implements OnInit {
 
   initialTabSelected?: string;
   initialLangSelect = null;
+  newerVersionNumber: string | null = null;
 
   currentSelectedCode?: string;
 
@@ -111,15 +112,6 @@ export class HomeDetailComponent implements OnInit {
     this.vocabulary!.selectedLang = language;
     this.vocabulary!.selectedVersion = number;
     this.eventManager.broadcast({ name: 'closeComparison', content: true });
-  }
-
-  isNewerVersion(): boolean {
-    if (this.vocabulary!.versionNumber && this.vocabulary!.versions![0].number)
-      return VocabularyUtil.compareVersionNumbers(
-        this.vocabulary!.versionNumber,
-        this.vocabulary!.versions![0].number
-      ) > 0;
-    return false;
   }
 
   getLatestVersionNumber(): String {
@@ -284,6 +276,15 @@ export class HomeDetailComponent implements OnInit {
             });
           }, 1500);
         });
+      }
+
+      this.newerVersionNumber = (this.vocabulary!.status === 'PUBLISHED') ?
+      this.vocabulary!.versionNumber! : this.getLatestVersionNumber().toString();
+      if (VocabularyUtil.compareVersionNumbers(
+        this.newerVersionNumber,
+        this.vocabulary!.versions![0].number!
+      ) <= 0) {
+        this.newerVersionNumber = null;
       }
     });
 
