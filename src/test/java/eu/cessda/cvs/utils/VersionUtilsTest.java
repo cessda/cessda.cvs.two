@@ -20,11 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class VersionUtilsTest {
 
     @Test
-    public void compareVersionTest(){
-        assertThat( VersionUtils.compareVersion("1.0","2.0") ).isEqualTo(-1);
-        assertThat( VersionUtils.compareVersion("1.0","1.0") ).isEqualTo(0);
-        assertThat( VersionUtils.compareVersion("2.0","1.0") ).isEqualTo(1);
-        assertThat( VersionUtils.compareVersion("2.0.1","1.2") ).isEqualTo(1);
+    public void compareVersionsTest(){
+        assertThat( VersionUtils.compareVersions("1.0","2.0") ).isEqualTo(-1);
+        assertThat( VersionUtils.compareVersions("1.0","1.0") ).isEqualTo(0);
+        assertThat( VersionUtils.compareVersions("2.0","1.0") ).isEqualTo(1);
+        assertThat( VersionUtils.compareVersions("2.0.1","1.2") ).isEqualTo(1);
     }
 
     @Test
