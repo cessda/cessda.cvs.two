@@ -5,8 +5,8 @@ services:
     volumes:
       - cvs-es:/usr/share/elasticsearch/data/
     ports:
-      - 9200:9200
-      - 9300:9300
+      - 9203:9200
+      - 9303:9300
     environment:
       - 'ES_JAVA_OPTS=-Xms1024m -Xmx1024m'
       - 'discovery.type=single-node'
