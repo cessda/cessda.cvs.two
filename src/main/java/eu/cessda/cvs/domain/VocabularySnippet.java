@@ -13,10 +13,15 @@
 
 package eu.cessda.cvs.domain;
 
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.security.ActionType;
-
-import java.io.Serializable;
+import eu.cessda.cvs.utils.VersionNumber;
 
 public class VocabularySnippet implements Serializable {
 
@@ -29,7 +34,7 @@ public class VocabularySnippet implements Serializable {
     private Long licenseId;
     private ItemType itemType;
     private String notation;
-    private String versionNumber;
+    private VersionNumber versionNumber;
     private String status;
     private String title;
     private String definition;
@@ -115,12 +120,27 @@ public class VocabularySnippet implements Serializable {
         this.notation = notation;
     }
 
-    public String getVersionNumber() {
+    @JsonIgnore
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        if (versionNumber != null) {
+            return versionNumber.toString();
+        }
+        return null;
+    }
+
+    @JsonIgnore
+    public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
+    }
+
+    @JsonSetter("versionNumber")
+    public void setVersionNumberFromString(String str) {
+        setVersionNumber(str != null ? new VersionNumber(str) : null);
     }
 
     public String getStatus() {

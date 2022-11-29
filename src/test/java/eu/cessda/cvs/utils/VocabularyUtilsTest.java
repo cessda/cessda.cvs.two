@@ -37,7 +37,7 @@ class VocabularyUtilsTest
 		final String codeUri3 = "https://vocabularies.cessda.eu/vocabulary/[VOCABULARY]_[CONCEPTID]/[VERSION]";
 		final String notation = "TopicClassification";
 		final String language = "en";
-		final String version = "1.0";
+		final VersionNumber version = new VersionNumber(1, 0);
 		final String code = "Demography";
 		final Long conceptId = (long) 250;
 		// vocabulary

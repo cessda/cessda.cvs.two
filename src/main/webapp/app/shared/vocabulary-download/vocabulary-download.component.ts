@@ -92,6 +92,14 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     return this.versions.filter(v => v.language === lang);
   }
 
+  getSlMajorMinorVersionNumber(vnumber?: string): string {
+    if (vnumber) {
+      return VocabularyUtil.getSlMajorMinorVersionNumber(vnumber);
+    } else {
+      return VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber);
+    }
+  }
+
   downloadSkos(): void {
     this.downloadEditorVocabularyFile('rdf', this.getCheckedItems(this.skosSelected), 'text/xml');
   }

@@ -24,7 +24,7 @@
                     ›
                 </span>
                 <span class="">
-                    {{vocabulary!.notation}} v.{{getSlVersion()!.number}}
+                    {{vocabulary!.notation}} v.{{getSlVersionNumber()}}
                 </span>
 
                 <span class="cmt-scn" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT','ROLE_USER']">
@@ -36,14 +36,9 @@
             </div>
         </div>
         <div class="row-content">
-            <ngb-alert class="text-center" [dismissible]="false" *ngIf="isNewerVersion() && vocabulary!.status! === 'PUBLISHED'">
+            <ngb-alert class="text-center" [dismissible]="false" *ngIf="newerVersionNumber !== null">
                 <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
-                    {{vocabulary!.notation}} v.{{vocabulary!.versionNumber}}
-                </a></strong>
-            </ngb-alert>
-            <ngb-alert class="text-center" [dismissible]="false" *ngIf="isNewerVersion() && vocabulary!.status! !== 'PUBLISHED'">
-                <strong>Newer version is available <a [routerLink]="['/vocabulary', vocabulary!.notation ]">
-                    {{vocabulary!.notation}} v.{{getLatestVersionNumber()}}
+                    {{vocabulary!.notation}} v.{{newerVersionNumber}}
                 </a></strong>
             </ngb-alert>
 
@@ -311,7 +306,7 @@
                             <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
                             <span>{{getVersionByLangNumber()!.language}}: {{vh.version}} </span>
                             <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                            <a *ngIf="!vh.version.startsWith(getSlVersion()!.number)" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
+                            <a *ngIf="!vh.version.startsWith(getSlVersionNumber())" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary!.selectedLang}">
                                 <fa-icon icon="external-link-alt"></fa-icon>
                             </a>
                         </a>
@@ -459,7 +454,7 @@
                         [appScope]="appScope"
                         [enableDocxExport]="enableDocxExport"
                         [versions]="vocabulary!.versions"
-                        [slVersionNumber]="getSlVersion()!.number!"
+                        [slVersionNumber]="getSlVersionNumber()"
                         [downloadFormGroup]="detailForm.controls.downloadFormGroup"
                         [notation]="vocabulary!.notation"
                     ></jhi-vocabulary-download>

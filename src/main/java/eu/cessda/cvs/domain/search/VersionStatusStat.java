@@ -13,11 +13,18 @@
 
 package eu.cessda.cvs.domain.search;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-import java.io.Serializable;
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import eu.cessda.cvs.utils.VersionNumber;
 
 public class VersionStatusStat implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -29,7 +36,8 @@ public class VersionStatusStat implements Serializable {
     private String type;
 
     @Field( type = FieldType.Keyword, store = true  )
-    private String versionNumber;
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+    private VersionNumber versionNumber;
 
     @Field( type = FieldType.Keyword, store = true  )
     private String status;
@@ -42,7 +50,7 @@ public class VersionStatusStat implements Serializable {
 
     public VersionStatusStat(){}
 
-    public VersionStatusStat(String language, String type, String versionNumber, String status, LocalDate creationDate, LocalDate date) {
+    public VersionStatusStat(String language, String type, VersionNumber versionNumber, String status, LocalDate creationDate, LocalDate date) {
         this.language = language;
         this.type = type;
         this.versionNumber = versionNumber;
@@ -67,14 +75,29 @@ public class VersionStatusStat implements Serializable {
         this.type = type;
     }
 
-    public String getVersionNumber() {
+    @JsonIgnore
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
-
-    public void setVersionNumber(String versionNumber) {
-        this.versionNumber = versionNumber;
+    
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        if (versionNumber != null) {
+            return versionNumber.toString();
+        }
+        return null;
     }
 
+    @JsonIgnore
+    public void setVersionNumber(VersionNumber versionNumber) {
+        this.versionNumber = versionNumber;
+    }
+    
+    @JsonSetter("versionNumber")
+    public void setVersionNumber(String str) {
+        setVersionNumber(str != null ? new VersionNumber(str) : null);
+    }
+    
     public String getStatus() {
         return status;
     }

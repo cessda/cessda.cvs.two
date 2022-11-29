@@ -18,6 +18,8 @@ import eu.cessda.cvs.repository.VersionRepository;
 import eu.cessda.cvs.service.VersionService;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.mapper.VersionMapper;
+import eu.cessda.cvs.utils.VersionNumber;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -125,17 +127,21 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
-    public List<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, String versionNumberSl) {
-        log.debug("Request to get versions by vocabularyId {}, versionNumberSl {}", vocabularyId, versionNumberSl);
-        return versionRepository.findAllByVocabularyIdAndVersionNumberSl( vocabularyId, versionNumberSl ).stream()
+    public List<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl) {
+        // #398 must be a 2-number string (##.##) in order to perform string prefix search in versionRepository.findAllByVocabularyIdAndVersionNumberSl
+        String slNumberPrefix = versionNumberSl.getSlNumber().getSlMajorMinorNumbers();
+        log.debug("Request to get versions by vocabularyId {}, versionNumberSl prefix {}", vocabularyId, slNumberPrefix);
+        return versionRepository.findAllByVocabularyIdAndVersionNumberSl( vocabularyId, slNumberPrefix ).stream()
             .map(versionMapper::toDto)
             .collect(Collectors.toCollection(LinkedList::new));
     }
 
     @Override
-    public Set<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, String versionNumberSl) {
-        log.debug("Request to get published versions by vocabularyId {}, versionNumberSl {}", vocabularyId, versionNumberSl);
-        return versionRepository.findAllPublishedByVocabularyIdAndVersionNumberSl( vocabularyId, versionNumberSl ).stream()
+    public Set<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl) {
+        // #398 must be a 2-number string (##.##) in order to perform string prefix search in versionRepository.findAllPublishedByVocabularyIdAndVersionNumberSl
+        String slNumberPrefix = versionNumberSl.getSlNumber().getSlMajorMinorNumbers();
+        log.debug("Request to get published versions by vocabularyId {}, versionNumberSl prefix {}", vocabularyId, slNumberPrefix);
+        return versionRepository.findAllPublishedByVocabularyIdAndVersionNumberSl( vocabularyId, slNumberPrefix ).stream()
             .map(versionMapper::toDto)
             .collect(Collectors.toCollection(LinkedHashSet::new));
     }
