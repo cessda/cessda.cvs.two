@@ -55,10 +55,10 @@ public class VersionUtilsTest {
 
     @Test
     public void getSlNumberFromTlTest() {
-        assertThat( VersionUtils.getSlMajorMinorVersionNumber("1.0.1" ) ).isEqualTo("1.0");
-        assertThat( VersionUtils.getSlMajorMinorVersionNumber("1.0" ) ).isEqualTo("1.0");
-        assertThat( VersionUtils.getSlMajorMinorVersionNumber("10.0.1" ) ).isEqualTo("10.0");
-        assertThat( VersionUtils.getSlMajorMinorVersionNumber("10.0" ) ).isEqualTo("10.0");
+        assertThat( VersionUtils.getSlVersionNumber("1.0.1" ).toString() ).isEqualTo("1.0.0");
+        assertThat( VersionUtils.getSlVersionNumber("1.0" ).toString() ).isEqualTo("1.0.0");
+        assertThat( VersionUtils.getSlVersionNumber("10.0.1" ).toString() ).isEqualTo("10.0.0");
+        assertThat( VersionUtils.getSlVersionNumber("10.0" ).toString() ).isEqualTo("10.0.0");
     }
 
     @Test
