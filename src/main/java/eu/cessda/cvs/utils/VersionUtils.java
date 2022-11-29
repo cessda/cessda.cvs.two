@@ -52,8 +52,8 @@ public class VersionUtils {
             return prev.increaseTlNumber().toString();
     }
 
-    public static String getSlMajorMinorVersionNumber( String tlNumber ) {
-        return VersionNumber.fromString(tlNumber).getSlMajorMinorNumbers();
+    public static VersionNumber getSlVersionNumber( String tlNumber ) {
+        return VersionNumber.fromString(tlNumber).getSlNumber();
     }
 
     public static boolean equalSlVersionNumber(String versionNumber1, String versionNumber2) {

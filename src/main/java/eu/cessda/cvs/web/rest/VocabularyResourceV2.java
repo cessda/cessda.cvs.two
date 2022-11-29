@@ -458,9 +458,9 @@ public class VocabularyResourceV2 {
         ) @PathVariable( required = false )  String language
     ) {
         final String langVersion = language + "-" + versionNumber;
-        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, VersionUtils.getSlMajorMinorVersionNumber(versionNumber), langVersion );
+        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, VersionUtils.getSlVersionNumber(versionNumber), langVersion );
         List<ConceptDTO> concepts = new ArrayList<>();
-        final VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, VersionUtils.getSlMajorMinorVersionNumber(versionNumber), language + "-" + versionNumber);
+        final VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, VersionUtils.getSlVersionNumber(versionNumber).toString(), language + "-" + versionNumber);
         final Optional<VersionDTO> version = vocabularyDTO.getVersions().stream().findFirst();
         if( version.isPresent() )
             concepts.addAll( version.get().getConcepts());
@@ -894,11 +894,11 @@ public class VocabularyResourceV2 {
                     version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
                 versionMap.put( version.getNumber().toString(),
                     ResourceUtils.getBasePath(request) + "v2/vocabularies/" + version.getNotation() + "/" +
-                        version.getNumber().getSlNumber().getSlMajorMinorNumbers() + "?languageVersion=" + version.getLanguage() + "-" + version.getNumber());
+                        version.getNumber().getSlNumber() + "?languageVersion=" + version.getLanguage() + "-" + version.getNumber());
                 for (Map<String, Object> versionHistory : version.getVersionHistories()) {
                     versionMap.put( versionHistory.get(VERSION).toString(),
                         ResourceUtils.getBasePath(request) + "v2/vocabularies/" + version.getNotation() + "/" +
-                            VersionUtils.getSlMajorMinorVersionNumber(versionHistory.get(VERSION).toString())  +
+                            VersionUtils.getSlVersionNumber(versionHistory.get(VERSION).toString())  +
                             "?languageVersion=" + version.getLanguage() + "-" + versionHistory.get(VERSION).toString());
                 }
             } );
