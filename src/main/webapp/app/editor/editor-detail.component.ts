@@ -174,15 +174,27 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   }
 
   getSlVersion(): IVersion {
-    return VocabularyUtil.getSlVersion(this.vocabulary!);
+    return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary!);
   }
 
-  getMajorVersionNumber(): number {
-    return VocabularyUtil.getMajorVersionNumber(this.version!);
+  getSlVersionNumber(vnumber?: string): string {
+    if (vnumber) {
+      return VocabularyUtil.getSlVersionNumber(vnumber);
+    } else {
+      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);  
+    }
+  }
+  
+  getSlMajorMinorVersionNumber(): string {
+    return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().number!);
   }
 
-  getMinorVersionNumber(): number {
-    return VocabularyUtil.getMinorVersionNumber(this.version!);
+  getSlMajorVersionNumber(): number {
+    return VocabularyUtil.getSlMajorVersionNumberOfVersion(this.version!);
+  }
+
+  getSlMinorVersionNumber(): number {
+    return VocabularyUtil.getSlMinorVersionNumberOfVersion(this.version!);
   }
 
   setActiveVersion(language: string, versionNumber?: string): void {
@@ -248,6 +260,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       for (const vocab of this.vocabulary!.versions!) {
         if (vocab.status! === 'READY_TO_PUBLISH') {
           this.enablePublishTl = true;
+          break;
         } else {
           this.enablePublishTl = false;
         }
@@ -356,10 +369,6 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.isShowingDeprecatedCodes = !this.isShowingDeprecatedCodes;
   }
 
-  getSlVersionByVersion(vnumber: string): string {
-    return VocabularyUtil.getSlVersionByVersionNumber(vnumber);
-  }
-
   ngOnInit(): void {
     this.router.events.subscribe(evt => {
       if (!(evt instanceof NavigationEnd)) {
@@ -368,6 +377,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       window.scrollTo(0, 0);
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
+      VocabularyUtil.convertVocabularyToThreeDigitVersionNumer(vocabulary);
       this.vocabulary = vocabulary;
       this.availableLanguages = VocabularyUtil.getAvailableCvLanguage(vocabulary.versions);
       this.accountService.identity().subscribe(account => {

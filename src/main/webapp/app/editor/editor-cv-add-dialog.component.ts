@@ -139,7 +139,7 @@ export class EditorCvAddDialogComponent implements OnInit {
       language: this.cvAddForm.get(['sourceLanguage'])!.value,
       itemType: 'SL',
       notation: this.cvAddForm.get(['notation'])!.value,
-      versionNumber: '1.0',
+      versionNumber: '1.0.0',
       status: 'DRAFT',
       title: this.cvAddForm.get(['title'])!.value,
       definition: this.cvAddForm.get(['definition'])!.value,

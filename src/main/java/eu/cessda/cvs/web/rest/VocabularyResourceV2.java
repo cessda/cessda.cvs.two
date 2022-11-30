@@ -458,9 +458,9 @@ public class VocabularyResourceV2 {
         ) @PathVariable( required = false )  String language
     ) {
         final String langVersion = language + "-" + versionNumber;
-        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, VersionUtils.getSlNumberFromTl(versionNumber), langVersion );
+        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, VersionUtils.getSlVersionNumber(versionNumber), langVersion );
         List<ConceptDTO> concepts = new ArrayList<>();
-        final VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, VersionUtils.getSlNumberFromTl(versionNumber), language + "-" + versionNumber);
+        final VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, VersionUtils.getSlVersionNumber(versionNumber).toString(), language + "-" + versionNumber);
         final Optional<VersionDTO> version = vocabularyDTO.getVersions().stream().findFirst();
         if( version.isPresent() )
             concepts.addAll( version.get().getConcepts());
@@ -885,20 +885,20 @@ public class VocabularyResourceV2 {
             }
             Map<String, Map<String, Map<String, String>>> vocabMap = agencyCvMap.computeIfAbsent( voc.getAgencyName(), k -> new LinkedHashMap<>() );
             List<VersionDTO> versions = voc.getVersions().stream()
-                .sorted( ( c1, c2 ) -> VersionUtils.compareVersion( c1.getNumber(), c2.getNumber() ) )
+                .sorted( ( c1, c2 ) -> c1.getNumber().compareTo(c2.getNumber() ) )
                 .collect( Collectors.toList() );
             versions.forEach( version ->
             {
                 Map<String, Map<String, String>> langMap = vocabMap.computeIfAbsent( version.getNotation(), k -> new LinkedHashMap<>() );
                 Map<String, String> versionMap = langMap.computeIfAbsent(
                     version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
-                versionMap.put( version.getNumber(),
+                versionMap.put( version.getNumber().toString(),
                     ResourceUtils.getBasePath(request) + "v2/vocabularies/" + version.getNotation() + "/" +
-                        VersionUtils.getSlNumberFromTl(version.getNumber()) + "?languageVersion=" + version.getLanguage() + "-" + version.getNumber());
+                        version.getNumber().getSlNumber() + "?languageVersion=" + version.getLanguage() + "-" + version.getNumber());
                 for (Map<String, Object> versionHistory : version.getVersionHistories()) {
                     versionMap.put( versionHistory.get(VERSION).toString(),
                         ResourceUtils.getBasePath(request) + "v2/vocabularies/" + version.getNotation() + "/" +
-                            VersionUtils.getSlNumberFromTl(versionHistory.get(VERSION).toString())  +
+                            VersionUtils.getSlVersionNumber(versionHistory.get(VERSION).toString())  +
                             "?languageVersion=" + version.getLanguage() + "-" + versionHistory.get(VERSION).toString());
                 }
             } );

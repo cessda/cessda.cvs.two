@@ -54,6 +54,7 @@ export class HomeDetailComponent implements OnInit {
 
   initialTabSelected?: string;
   initialLangSelect = null;
+  newerVersionNumber: string | null = null;
 
   currentSelectedCode?: string;
 
@@ -113,31 +114,21 @@ export class HomeDetailComponent implements OnInit {
     this.eventManager.broadcast({ name: 'closeComparison', content: true });
   }
 
-  isNewerVersion(): boolean {
-    let ret = false;
-    const number = parseFloat(this.vocabulary!.versionNumber!);
-    const version = parseFloat(this.vocabulary!.versions![0].number!);
-    const status = this.vocabulary!.status!;
-    const dif = (number - version).toFixed(2);
-
-    //check if the versions are major step aside
-    //if not check if the status is draft
-    //after 3 digit system introduction, we need to rework it!!!
-    if (parseFloat(dif) > 0.1) {
-      ret = true;
-    } else if (parseFloat(dif) === 0.1 && status === 'PUBLISHED') {
-      ret = true;
-    }
-    return ret;
-  }
-
   getLatestVersionNumber(): String {
     const lang = this.vocabulary!.sourceLanguage!;
     return String(VocabularyUtil.getVersionNumberByLangIso(this.vocabulary!, lang));
   }
 
   getSlVersion(): IVersion {
-    return VocabularyUtil.getSlVersion(this.vocabulary!);
+    return VocabularyUtil.getSlVersionOfVocabulary(this.vocabulary!);
+  }
+
+  getSlVersionNumber(vnumber?: string): string {
+    if (vnumber) {
+      return VocabularyUtil.getSlVersionNumber(vnumber);
+    } else {
+      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);  
+    }
   }
 
   getVersionByLangNumber(versionNumber?: string): IVersion {
@@ -246,10 +237,6 @@ export class HomeDetailComponent implements OnInit {
     this.isShowingDeprecatedCodes = !this.isShowingDeprecatedCodes;
   }
 
-  getSlVersionByVersion(vnumber: string): string {
-    return VocabularyUtil.getSlVersionByVersionNumber(vnumber);
-  }
-
   ngOnInit(): void {
     this.router.events.subscribe(evt => {
       if (!(evt instanceof NavigationEnd)) {
@@ -258,6 +245,7 @@ export class HomeDetailComponent implements OnInit {
       window.scrollTo(0, 0);
     });
     this.activatedRoute.data.subscribe(({ vocabulary }) => {
+      VocabularyUtil.convertVocabularyToThreeDigitVersionNumer(vocabulary);
       this.vocabulary = vocabulary;
       if (this.vocabulary!.selectedCode) {
         this.currentSelectedCode = this.vocabulary!.selectedCode;
@@ -289,6 +277,15 @@ export class HomeDetailComponent implements OnInit {
           }, 1500);
         });
       }
+
+      this.newerVersionNumber = (this.vocabulary!.status === 'PUBLISHED') ?
+      this.vocabulary!.versionNumber! : this.getLatestVersionNumber().toString();
+      if (VocabularyUtil.compareVersionNumbers(
+        this.newerVersionNumber,
+        this.vocabulary!.versions![0].number!
+      ) <= 0) {
+        this.newerVersionNumber = null;
+      }
     });
 
     this.detailForm.patchValue({
@@ -310,17 +307,21 @@ export class HomeDetailComponent implements OnInit {
   }
 
   getMissingTlVersion(version: string): string {
-    if (version.startsWith(this.getSlVersion().number!)) {
-      return this.getSlVersion().versionHistories![0].version + '.x';
+    if (VocabularyUtil.compareVersionNumbers(version, this.getSlVersion().number!) === 0) {
+      return VocabularyUtil.getSlMajorMinorVersionNumber(
+        this.getSlVersion().versionHistories![0].version!
+       ) + '.x';
     }
     let i = 0;
     this.getSlVersion().versionHistories!.forEach(function(vhSl, index): void {
-      if (version.startsWith(vhSl.version!)) {
+      if (VocabularyUtil.compareVersionNumbers(version, vhSl.version!) === 0) {
         i = index + 1;
       }
     });
     if (i > 0) {
-      return this.getSlVersion().versionHistories![i].version + '.x';
+      return VocabularyUtil.getSlMajorMinorVersionNumber(
+        this.getSlVersion().versionHistories![i].version!
+       ) + '.x';
     }
     return '';
   }

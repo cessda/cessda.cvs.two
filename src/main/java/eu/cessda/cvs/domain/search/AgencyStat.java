@@ -20,6 +20,8 @@ import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
+import eu.cessda.cvs.utils.VersionNumber;
+
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -134,8 +136,8 @@ public class AgencyStat implements Serializable {
 
     public AgencyStat updateVocabStat(VocabularyDTO vocabularyDTO) {
         VocabStat vocabStat = getVocabStat(vocabularyDTO);
-        String latestSlVersionNumber = null;
-        String latestPublishedSlVersionNumber = null;
+        VersionNumber latestSlVersionNumber = null;
+        VersionNumber latestPublishedSlVersionNumber = null;
 
         Set<String> languages = new LinkedHashSet<>();
         List<VersionStatusStat> versionStatusStats = new ArrayList<>();
@@ -150,7 +152,7 @@ public class AgencyStat implements Serializable {
                     latestSlVersionNumber = v.getNumber();
                 }
             }
-            if( v.getStatus().equals( Status.PUBLISHED.toString() ) || v.getNumber().startsWith(latestSlVersionNumber)) {
+            if( v.getStatus().equals( Status.PUBLISHED.toString() ) || v.getNumber().isSameSlNumberAs(latestSlVersionNumber)) {
                 languages.add(v.getLanguage());
 
                 VersionStatusStat versionStatusStat = new VersionStatusStat(v.getLanguage(), v.getItemType(),
@@ -159,8 +161,8 @@ public class AgencyStat implements Serializable {
                 versionStatusStats.add( versionStatusStat );
             }
         }
-        vocabStat.setCurrentVersion( latestSlVersionNumber );
-        vocabStat.setLatestPublishedVersion( latestPublishedSlVersionNumber );
+        vocabStat.setCurrentVersion( latestSlVersionNumber != null ? latestSlVersionNumber.toString() : null);
+        vocabStat.setLatestPublishedVersion( latestPublishedSlVersionNumber != null ? latestPublishedSlVersionNumber.toString() : null);
         vocabStat.setLanguages( new ArrayList<>(languages) );
         vocabStat.setVersionCodeStats( versionCodeStats );
         vocabStat.setVersionStatusStats( versionStatusStats );
@@ -168,7 +170,7 @@ public class AgencyStat implements Serializable {
         return this;
     }
 
-    private String generatePublishedSlVersionCodeStats(String latestPublishedSlVersionNumber, List<VersionCodeStat> versionCodeStats, VersionDTO v) {
+    private VersionNumber generatePublishedSlVersionCodeStats(VersionNumber latestPublishedSlVersionNumber, List<VersionCodeStat> versionCodeStats, VersionDTO v) {
         if( latestPublishedSlVersionNumber == null )
             latestPublishedSlVersionNumber = v.getNumber();
 

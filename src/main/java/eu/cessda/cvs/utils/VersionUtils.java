@@ -18,7 +18,6 @@ import eu.cessda.cvs.service.dto.VersionDTO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class VersionUtils {
@@ -33,45 +32,32 @@ public class VersionUtils {
     private VersionUtils() {}
 
 	public static int compareVersion(String v1, String v2) {
-        String s1 = normalisedVersion(v1);
-        String s2 = normalisedVersion(v2);
-        return s1.compareTo(s2);
+        return VersionNumber.fromString(v1).compareTo(VersionNumber.fromString(v2));
     }
 
-    public static String normalisedVersion(String version) {
-        return normalisedVersion(version, ".", 4);
+    public static boolean isSlVersionNumber(String versionNumber) {
+        return VersionNumber.fromString(versionNumber).isSlNumber();
     }
 
-    public static String normalisedVersion(String version, String sep, int maxWidth) {
-        String[] split = Pattern.compile(sep, Pattern.LITERAL).split(version);
-        StringBuilder sb = new StringBuilder();
-        final String format = "%" + maxWidth + "s";
-        for (String s : split) {
-            sb.append(String.format(format, s));
-        }
-        return sb.toString();
+    public static String increaseSlVersionNumber(String versionNumber) {
+        return VersionNumber.fromString(versionNumber).increaseSlNumber().toString();
     }
 
-    public static String increaseSlVersionByOne( String prevVersionNumber ) {
-        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
-        return prevVersionNumber.substring(0, indexAfterLastDot) +
-            ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
-    }
-
-    public static String increaseTlVersionByOne( String prevVersionNumber, String currentSlNumber ) {
-        int indexAfterLastDot = prevVersionNumber.lastIndexOf('.') + 1;
-        if ( VersionUtils.compareVersion( prevVersionNumber, currentSlNumber ) == -1)
-            return currentSlNumber + ".1";
+    public static String increaseTlVersionByOne(String prevVersionNumber, String currentSlVersionNumber) {
+        VersionNumber prev = VersionNumber.fromString(prevVersionNumber);
+        VersionNumber curr = VersionNumber.fromString(currentSlVersionNumber);
+        if (prev.compareTo(curr) == -1)
+            return new VersionNumber(curr.getSlNumber(), 1).toString();
         else
-            return prevVersionNumber.substring(0, indexAfterLastDot) +
-                ( Integer.parseInt( prevVersionNumber.substring(indexAfterLastDot) ) + 1 );
+            return prev.increaseTlNumber().toString();
     }
 
-    public static String getSlNumberFromTl( String tlNumber ) {
-        if( StringUtils.countMatches( tlNumber, ".") == 2){
-            tlNumber = tlNumber.substring( 0, tlNumber.lastIndexOf('.'));
-        }
-        return tlNumber;
+    public static VersionNumber getSlVersionNumber( String tlNumber ) {
+        return VersionNumber.fromString(tlNumber).getSlNumber();
+    }
+
+    public static boolean equalSlVersionNumber(String versionNumber1, String versionNumber2) {
+        return VersionNumber.fromString(versionNumber1).isSameSlNumberAs(VersionNumber.fromString(versionNumber2));
     }
 
     /**

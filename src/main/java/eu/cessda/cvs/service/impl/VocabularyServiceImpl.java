@@ -41,7 +41,7 @@ import eu.cessda.cvs.service.mapper.VocabularyPublishMapper;
 import eu.cessda.cvs.service.search.EsFilter;
 import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
-import eu.cessda.cvs.utils.VersionUtils;
+import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -880,9 +880,9 @@ public class VocabularyServiceImpl implements VocabularyService
 				final VersionDTO latestSlVersion = vocabulary.getVersions().stream().sorted( VocabularyUtils.versionDtoComparator() )
 						.findFirst().orElse( null );
 				if ( latestSlVersion != null )
-					slVersionNumber = latestSlVersion.getNumber();
+					slVersionNumber = latestSlVersion.getNumber().toString();
 
-				getOneLatestVersionEachLanguage( slVersionNumber, licenceList, vocabulary, true );
+				getOneLatestVersionEachLanguage( VersionNumber.fromString(slVersionNumber), licenceList, vocabulary, true );
 			}
 		}
 		else
@@ -903,9 +903,9 @@ public class VocabularyServiceImpl implements VocabularyService
 					.sorted( VocabularyUtils.versionDtoComparator() )
 					.findFirst().orElse( null );
 			if ( latestSlVersion != null )
-				slVersionNumber = latestSlVersion.getNumber();
+				slVersionNumber = latestSlVersion.getNumber().toString();
 		}
-		Set<VersionDTO> includedVersions = versionService.findAllPublishedByVocabularyAndVersionSl( vocabulary.getId(), slVersionNumber );
+		Set<VersionDTO> includedVersions = versionService.findAllPublishedByVocabularyAndVersionSl( vocabulary.getId(), VersionNumber.fromString(slVersionNumber) );
 
 		if ( findAllLatestVersion )
 		{
@@ -933,7 +933,7 @@ public class VocabularyServiceImpl implements VocabularyService
 	}
 
 	private void getOneLatestVersionEachLanguage(
-			String slVersionNumber,
+			VersionNumber slVersionNumber,
 			List<Licence> licenceList,
 			VocabularyDTO vocabulary,
 			boolean isAddHistory )
@@ -1000,7 +1000,7 @@ public class VocabularyServiceImpl implements VocabularyService
 		// get latest version
 		final VersionDTO maxSlVersion = vocabulary.getVersions().stream()
 				.filter( v -> v.getItemType().equals( ItemType.SL.toString() ) )
-				.max( ( v1, v2 ) -> VersionUtils.compareVersion( v1.getNumber(), v2.getNumber() ) )
+				.max( ( v1, v2 ) -> v1.getNumber().compareTo(v2.getNumber()) )
 				.orElse( null );
 
 		if ( maxSlVersion == null )
@@ -1155,7 +1155,6 @@ public class VocabularyServiceImpl implements VocabularyService
 	}
 
 	@Override
-	@SuppressWarnings( "rawtypes" )
 	public EsQueryResultDetail search( EsQueryResultDetail esQueryResultDetail )
 	{
 		// get user keyword
@@ -1683,7 +1682,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		if ( version.getItemType().equals( ItemType.SL.toString() ) )
 		{
-			List<VersionDTO> versionDTOs = slNumberVersionsMap.computeIfAbsent( version.getNumber(), k -> new ArrayList<>() );
+			List<VersionDTO> versionDTOs = slNumberVersionsMap.computeIfAbsent( version.getNumber().toString(), k -> new ArrayList<>() );
 			// check for version history
 			addVersionHistories( vocabulary, version );
 
@@ -1691,14 +1690,7 @@ public class VocabularyServiceImpl implements VocabularyService
 		}
 		else
 		{
-			// find SL number
-			int lasIndexDot = version.getNumber().lastIndexOf( '.' );
-			if ( lasIndexDot == -1 )
-				throw new IllegalArgumentException( "Incorrect TL version number of " + version.getNotation() +
-						" " + version.getNumber() );
-			String slNumber = version.getNumber().substring( 0, lasIndexDot );
-
-			List<VersionDTO> versionDTOs = slNumberVersionsMap.get( slNumber );
+			List<VersionDTO> versionDTOs = slNumberVersionsMap.get( version.getNumber().getSlNumber().toString() );
 			if ( versionDTOs == null )
 				throw new IllegalArgumentException( "SL version missing from version number of " + version.getNotation() +
 						" " + version.getNumber() );
@@ -1709,7 +1701,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTOs.add( version );
 		}
 		// collect latest version across SL
-		if ( !latestVersionsLangs.contains( version.getLanguage() ) || version.getNumber().startsWith( vocabulary.getVersionNumber() ) )
+		if ( !latestVersionsLangs.contains( version.getLanguage() ) || version.getNumber().isSameSlNumberAs(vocabulary.getVersionNumber()) )
 		{
 			latestVersionsAcrossSl.add( version );
 			latestVersionsLangs.add( version.getLanguage() );
@@ -1979,6 +1971,7 @@ public class VocabularyServiceImpl implements VocabularyService
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
 			versionDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
+			vocabularyDTO.setVersionNumberByVocabularySnippet(vocabularySnippet);
 			vocabularyDTO.setStatus( Status.READY_TO_TRANSLATE.toString() );
 			// we will only publish the version info!!!
 			versionDTO.prepareSlPublishing( vocabularySnippet, licence, agency );
@@ -2008,7 +2001,8 @@ public class VocabularyServiceImpl implements VocabularyService
 			}
 			// now we need to go through all the versions which are TL(s) and ready to publish
 			// also we need to update the date of the publication
-			List<VersionDTO> versions = vocabularyDTO.getVersionByGroup(versionDTO.getNumber(), true);
+			List<VersionDTO> versions = vocabularyDTO.getVersionsByVersionSl(versionDTO.getNumber(), true);
+			// Iterator<VersionDTO> versions = vocabularyDTO.getVersions().iterator();
 			for ( VersionDTO versionDTO_: versions ) {
 				if (versionDTO_.getItemType().equals("TL") && versionDTO_.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
 					versionDTO_.setStatus( Status.PUBLISHED.toString() );
@@ -2035,7 +2029,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTO.setStatus( Status.READY_TO_PUBLISH.toString() );
 			versionDTO.setLastStatusChangeDate( LocalDate.now() );
 			versionDTO.prepareTlPublishing( vocabularySnippet, licence, agency );
-			vocabularyDTO.setVersionByLanguage( versionDTO.getLanguage(), versionDTO.getNumber() );
+			vocabularyDTO.setVersionByLanguage( versionDTO.getLanguage(), versionDTO.getNumber().toString() );
 			vocabularyDTO.setTitleDefinition(versionDTO.getTitle(), versionDTO.getDefinition(), versionDTO.getLanguage(), false);
 			break;
 		default:
@@ -2068,7 +2062,7 @@ public class VocabularyServiceImpl implements VocabularyService
 		{
 			VersionDTO prevVersionSl = prevVersionSlOpt.get();
 			List<VersionDTO> clonedTls = new ArrayList<>();
-			List<VersionDTO> prevVersions = vocabularyDTO.getVersionByGroup( prevVersionSl.getNumber(), true );
+			List<VersionDTO> prevVersions = vocabularyDTO.getVersionsByVersionSl(prevVersionSl.getNumber(), true );
 
 			prevVersions.forEach( prevVersion ->
 			{
@@ -2077,7 +2071,7 @@ public class VocabularyServiceImpl implements VocabularyService
 					return;
 				}
 				log.info( "Clone {} TL {} version {} to version {}_DRAFT", versionDTO.getNotation(),
-						prevVersion.getLanguage(), prevVersion.getNumber() + "_" + prevVersion.getStatus(), versionDTO.getNumber() + ".1" );
+						prevVersion.getLanguage(), prevVersion.getNumber() + "_" + prevVersion.getStatus(), new VersionNumber(versionDTO.getNumber(), 1) );
 				// cloning need currentSL (as main reference for notation and position), previousSl
 				// (as secondary reference if notation is changed in the current SL),
 				// and previous TL for the rest of properties
@@ -2150,7 +2144,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			map.put( "docId", uriSl );
 			map.put( "docVersionOf", vocabularyDTO.getUri() );
 			map.put( "docNotation", vocabularyDTO.getNotation() );
-			map.put( "docVersion", VersionUtils.getSlNumberFromTl( versionIncluded.getNumber() ) );
+			map.put( "docVersion", versionIncluded.getNumber().getSlNumber().toString() );
 			map.put( "docLicense", versionIncluded.getLicenseName() );
 			map.put( "docRight", versionIncluded.getLicenseName() );
 			map.put( CODE_PATH, CodeDTO.generateCodesFromVersion( includedVersions, false ) );
@@ -2195,8 +2189,14 @@ public class VocabularyServiceImpl implements VocabularyService
 				String[] s = vs.split( "-" );
 				if ( s.length != 2 )
 					continue;
-				Optional<VersionDTO> versionDTOOpt = vocabularyDTO.getVersions().stream()
-						.filter( v -> v.getLanguage().equals( s[0] ) && v.getNumber().equals( s[1] ) ).findFirst();
+				VersionNumber versionNumberInList = VersionNumber.fromString(s[1]);
+				Optional<VersionDTO> versionDTOOpt = vocabularyDTO
+					.getVersions()
+					.stream()
+					.filter(
+						v -> v.getLanguage().equals(s[0])
+						&& v.getNumber().compareTo(versionNumberInList) == 0
+					).findFirst();
 				versionDTOOpt.ifPresent( includedVersions::add );
 			}
 		}

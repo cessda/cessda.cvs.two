@@ -13,8 +13,32 @@
 
 package eu.cessda.cvs.service.dto;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 import eu.cessda.cvs.domain.Agency;
 import eu.cessda.cvs.domain.Licence;
 import eu.cessda.cvs.domain.Version;
@@ -22,16 +46,8 @@ import eu.cessda.cvs.domain.VocabularySnippet;
 import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.domain.enumeration.Status;
-import eu.cessda.cvs.utils.VersionUtils;
+import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
-
-import javax.persistence.Lob;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
-import java.util.*;
 
 /**
  * A DTO for the {@link Version} entity.
@@ -59,8 +75,8 @@ public class VersionDTO implements Serializable
 
 	private ZonedDateTime lastModified;
 
-	@Size( max = 20 )
-	private String number;
+	@Type( type = "eu.cessda.cvs.utils.VersionNumberType" )
+	private VersionNumber number;
 
 	private String uri;
 
@@ -203,11 +219,11 @@ public class VersionDTO implements Serializable
 		// differentiate VersionNumber, uriSl between SL and TL version cloning
 		if ( this.itemType.equals( ItemType.SL.toString() ) )
 		{
-			this.number = VersionUtils.increaseSlVersionByOne( prevVersion.getNumber() );
+			this.number = prevVersion.getNumber().increaseSlNumber();
 		}
 		else
 		{
-			this.number = VersionUtils.increaseTlVersionByOne( prevVersion.getNumber(), currentSlVersion.getNumber() );
+			this.number = prevVersion.getNumber().increaseTl(currentSlVersion.getNumber());
 			this.translateAgency = prevVersion.getTranslateAgency();
 			this.translateAgencyLink = prevVersion.getTranslateAgencyLink();
 			this.uriSl = currentSlVersion.getUri();
@@ -290,15 +306,30 @@ public class VersionDTO implements Serializable
 		this.lastModified = lastModified;
 	}
 
-	public String getNumber()
+	@JsonIgnore
+	public VersionNumber getNumber()
 	{
 		return number;
 	}
+    
+	@JsonGetter("number")
+    public String getNumberAsString() {
+        if (number != null) {
+            return number.toString();
+        }
+        return null;
+    }
 
-	public void setNumber( String number )
+	@JsonIgnore
+	public void setNumber( VersionNumber number )
 	{
 		this.number = number;
 	}
+
+	@JsonSetter("number")
+    public void setNumber(String str) {
+        setNumber(str != null ? new VersionNumber(str) : null);
+    }
 
 	public String getUri()
 	{
@@ -322,7 +353,7 @@ public class VersionDTO implements Serializable
 		{
 			// remove last dot
 			index = canonicalUri.lastIndexOf( '.' );
-			formattedUrn = formattedUrn.substring( 0, index );
+			formattedUrn = formattedUrn.substring( 0, index ) + ".0";
 		}
 		return formattedUrn;
 	}
@@ -807,16 +838,19 @@ public class VersionDTO implements Serializable
 		return id != null;
 	}
 
+	private static Pattern PATTERN_LANGUAGE_INFORMATION = Pattern.compile("(?::((?:" + Language.getIsos().stream().map(StringUtils::lowerCase).collect(Collectors.joining("|")) + ")-))([0-9]+\\.[0-9]+(\\.[0-9]+)?)$");
+
 	private static String removeLanguageInformation( String canonicalUrlInput )
 	{
 		if ( canonicalUrlInput == null )
 			return null;
-		// find last dash from canonicalURI
-		int lastDashPosition = canonicalUrlInput.lastIndexOf( '-' );
-		// if found and
-		if ( lastDashPosition < 20 )
-			return canonicalUrlInput;
-		return canonicalUrlInput.substring( 0, lastDashPosition );
+		Matcher m = PATTERN_LANGUAGE_INFORMATION.matcher(canonicalUrlInput);
+		if (m.find()) {
+			if (m.group(1) != null) {
+				canonicalUrlInput = canonicalUrlInput.substring(0, m.start(1)) + canonicalUrlInput.substring(m.end(1));
+			}
+		}
+		return canonicalUrlInput;	
 	}
 
 	public ConceptDTO findConceptByNotation( String notation )
