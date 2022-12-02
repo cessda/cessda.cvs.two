@@ -129,7 +129,7 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public List<VersionDTO> findAllByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl) {
         // #398 must be a 2-number string (##.##) in order to perform string prefix search in versionRepository.findAllByVocabularyIdAndVersionNumberSl
-        String slNumberPrefix = versionNumberSl.getSlNumber().getSlMajorMinorNumbers();
+        String slNumberPrefix = versionNumberSl.getSlNumber().getMajorMinorNumbers();
         log.debug("Request to get versions by vocabularyId {}, versionNumberSl prefix {}", vocabularyId, slNumberPrefix);
         return versionRepository.findAllByVocabularyIdAndVersionNumberSl( vocabularyId, slNumberPrefix ).stream()
             .map(versionMapper::toDto)
@@ -139,7 +139,7 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public Set<VersionDTO> findAllPublishedByVocabularyAndVersionSl(Long vocabularyId, VersionNumber versionNumberSl) {
         // #398 must be a 2-number string (##.##) in order to perform string prefix search in versionRepository.findAllPublishedByVocabularyIdAndVersionNumberSl
-        String slNumberPrefix = versionNumberSl.getSlNumber().getSlMajorMinorNumbers();
+        String slNumberPrefix = versionNumberSl.getSlNumber().getMajorMinorNumbers();
         log.debug("Request to get published versions by vocabularyId {}, versionNumberSl prefix {}", vocabularyId, slNumberPrefix);
         return versionRepository.findAllPublishedByVocabularyIdAndVersionNumberSl( vocabularyId, slNumberPrefix ).stream()
             .map(versionMapper::toDto)

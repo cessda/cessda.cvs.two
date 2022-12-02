@@ -2309,4 +2309,193 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionService.save(versionDTO);
 		}
 	}
+
+	/**
+	 * Migration workflow:
+	 * 
+	 * 	For each vocabulary:
+	 *		1. Find the latest SL version
+	 *		2. Find the latest version number among all the vocabulary versions
+	 * 		3. Clone SL and assign them the pivot version number
+	 */
+	@Override
+	public void task398() {
+		log.info( "MIGRATING VERSIONING SYSTEM START" );
+		// migrate all vocabularies
+		findAll().forEach( v -> {
+			VocabularyDTO v_migrated = task398MigrateVocabulary(v);
+			if (v_migrated == null)
+				return;
+			// save migrated vocabulary
+			Vocabulary v_entity = vocabularyMapper.toEntity(v_migrated);
+			v_entity = vocabularyRepository.save(v_entity);
+		});
+		log.info( "MIGRATING VERSIONING SYSTEM FINISHED" );
+		// generateJsonAllVocabularyPublish();
+		// indexAllAgencyStats();
+		// indexAllPublished();
+		// indexAllEditor();
+	}
+
+	private VersionDTO Task398CloneVersionDTO(VersionDTO src) {
+		VersionDTO dst = new VersionDTO();
+		dst.setCanonicalUri(src.getCanonicalUri());
+		dst.setCitation(src.getCitation());
+		dst.setCreationDate(src.getCreationDate());
+		dst.setCreator(src.getCreator());
+		dst.setDdiUsage(src.getDdiUsage());
+		dst.setDefinition(src.getDefinition());
+		dst.setDiscussionNotes(src.getDiscussionNotes());
+		dst.setId(src.getId());
+		dst.setInitialVersion(src.getInitialVersion());
+		dst.setItemType(src.getItemType());
+		dst.setLanguage(src.getLanguage());
+		dst.setLastModified(src.getLastModified());
+		dst.setLastStatusChangeDate(src.getLastStatusChangeDate());
+		dst.setLicense(src.getLicense());
+		dst.setLicenseId(src.getLicenseId());
+		dst.setNotation(src.getNotation());
+		dst.setNotes(src.getNotes());
+		dst.setNumber(src.getNumber());
+		dst.setPreviousVersion(src.getId());
+		dst.setPublicationDate(src.getPublicationDate());
+		dst.setPublisher(src.getPublisher());
+		dst.setStatus(src.getStatus());
+		dst.setTitle(src.getTitle());
+		dst.setTranslateAgency(src.getTranslateAgency());
+		dst.setTranslateAgencyLink(src.getTranslateAgencyLink());
+		dst.setUriSl(src.getUriSl());
+		dst.setUri(src.getUri());
+		dst.setVersionChanges(src.getVersionChanges());
+		dst.setVersionNotes(src.getVersionNotes());
+		dst.setVocabularyId(src.getVocabularyId());
+		return dst;
+	}
+
+	private ConceptDTO Task398CloneConceptDTO(ConceptDTO src) {
+		ConceptDTO dst = new ConceptDTO();
+		dst.setDefinition(src.getDefinition());
+		dst.setDeprecated(src.getDeprecated());
+		dst.setId(src.getId());
+		dst.setIntroducedInVersionId(src.getIntroducedInVersionId());
+		dst.setNotation(src.getNotation());
+		dst.setParent(src.getParent());
+		dst.setPosition(src.getPosition());
+		dst.setPreviousConcept(src.getPreviousConcept());
+		dst.setReplacedById(src.getReplacedById());
+		dst.setSlConcept(src.getSlConcept());
+		dst.setTitle(src.getTitle());
+		dst.setUri(src.getUri());
+		dst.setValidFrom(src.getValidFrom());
+		dst.setValidUntilVersionId(src.getValidUntilVersionId());
+		dst.setVersionId(src.getVersionId());
+		return dst;
+	}
+
+	private ConceptDTO task398MigrateConcept(ConceptDTO c, Long newVersionId) {
+		ConceptDTO c_migrated = Task398CloneConceptDTO(c);
+		// override cloned attributes
+		c_migrated.setId(null);
+		c_migrated.setVersionId(newVersionId);
+		// if (c.getIntroducedInVersionId() != null && c.getIntroducedInVersionId().equals(c.getVersionId())) {
+		// 	c_migrated.setIntroducedInVersionId(newVersionId);
+		// }
+		if (c.getValidUntilVersionId() != null && c.getValidUntilVersionId().equals(c.getId())) {
+			c_migrated.setValidUntilVersionId(newVersionId);
+		}
+		c_migrated.setPreviousConcept(c.getId());
+		// TODO: update URIs
+		c_migrated.setUri(null);
+		return c_migrated;
+	}
+
+	private VersionDTO task398MigrateVersion(final VersionDTO v, VersionNumber newVersionNumber) {
+		
+		VersionDTO v_migrated = Task398CloneVersionDTO(v);
+		
+		// override cloned attributes
+		v_migrated.setId(null);
+		v_migrated.setPreviousVersion(v.getId());
+		v_migrated.setNumber(newVersionNumber);
+		v_migrated.setVersionChanges(null);
+		v_migrated.setVersionNotes(
+			(v.getVersionNotes() != null && v.getVersionNotes().length() > 0 ? v.getVersionNotes() + "\n\n---\n" : "")
+			+ "To align with a new versioning system, this version has been automaticaly created by copying the previous version " + v.getStatus() + "-" + v.getNumber() + "."
+		);
+		// TODO: update URIs
+		v_migrated.setCanonicalUri(null);
+		v_migrated.setUri(null);
+		v_migrated.setUriSl(null);
+
+		// save cloned version
+		final VersionDTO final_v_migrated = versionService.save(v_migrated);
+
+		// migrate concepts
+		v.getConcepts().forEach(c -> {
+			ConceptDTO c_migrated = task398MigrateConcept(c, final_v_migrated.getId());
+			final_v_migrated.addConcept(c_migrated);
+		});
+
+		v.getComments().forEach(c -> {
+			CommentDTO c_migrated = new CommentDTO();
+			c_migrated.setContent(c.getContent());
+			c_migrated.setDateTime(c.getDateTime());
+			c_migrated.setId(null);
+			c_migrated.setInfo(c.getInfo());
+			c_migrated.setUserId(c.getUserId());
+			c_migrated.setVersionId(final_v_migrated.getId());
+			final_v_migrated.addComment(c_migrated);
+		});
+
+		// TODO: version histories?
+		//List<Map<Object, Object> vhs_migrated = new ArrayList;
+		v.getVersionHistories().forEach(vh -> {
+			vh.forEach((key, vocabulary_change) -> {
+				System.out.println(key + "; " + vocabulary_change.toString());
+			});
+		});
+		
+		return final_v_migrated;
+	}
+
+	private VocabularyDTO task398MigrateVocabulary(final VocabularyDTO vocabularyDTO) {
+
+		if (vocabularyDTO.getId() != 72) {
+			return null;
+		}
+
+		log.info( "Migrating versioning system for vocabulary with id {} and notation {}", vocabularyDTO.getId(), vocabularyDTO.getNotation() );
+
+		// get the current Sl version
+		final VersionDTO currentSlVersion = vocabularyDTO
+			.getVersions()
+			.stream()
+			.filter(v -> v.getItemType().equals(ItemType.SL.toString()))
+			.max((v1, v2) -> v1.getNumber().compareTo(v2.getNumber()))
+			.orElse(null);
+
+		// get a version with the highest version number
+		final VersionDTO latestVersion = vocabularyDTO
+			.getVersions()
+			.stream()
+			.max((v1, v2) -> v1.getNumber().compareTo(v2.getNumber()))
+			.orElse(null);
+
+		VersionNumber newVersionNumber = latestVersion.getNumber();
+		
+		// clone SL and save it with the latest version number
+		final VersionDTO final_sl_v_clone = task398MigrateVersion(currentSlVersion, newVersionNumber);
+		vocabularyDTO.addVersion(final_sl_v_clone);
+
+		List<VersionDTO> tlVersions = versionService.findAllByVocabularyAndVersionSl(vocabularyDTO.getId(), currentSlVersion.getNumber());
+		tlVersions
+			.stream()
+			.filter(v -> v.getItemType().equals(ItemType.TL.toString()))
+			.forEach(tl_v -> {
+				final VersionDTO final_tl_v_clone = task398MigrateVersion(tl_v, newVersionNumber);
+				vocabularyDTO.addVersion(final_tl_v_clone);
+			});
+		
+		return vocabularyDTO;				
+	}
 }

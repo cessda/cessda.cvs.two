@@ -219,11 +219,11 @@ public class VersionDTO implements Serializable
 		// differentiate VersionNumber, uriSl between SL and TL version cloning
 		if ( this.itemType.equals( ItemType.SL.toString() ) )
 		{
-			this.number = prevVersion.getNumber().increaseSlNumber();
+			this.number = prevVersion.getNumber().increaseMinorNumber();
 		}
 		else
 		{
-			this.number = prevVersion.getNumber().increaseTl(currentSlVersion.getNumber());
+			this.number = prevVersion.getNumber().increasePatch(currentSlVersion.getNumber());
 			this.translateAgency = prevVersion.getTranslateAgency();
 			this.translateAgencyLink = prevVersion.getTranslateAgencyLink();
 			this.uriSl = currentSlVersion.getUri();

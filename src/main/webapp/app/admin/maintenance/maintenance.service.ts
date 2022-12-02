@@ -45,4 +45,8 @@ export class MaintenanceService {
   indexVocabularyEditor(): Observable<EntityResponseType> {
     return this.http.post<Maintenance>(`${this.maintenanceUrl}/index/vocabulary/editor`, null, { observe: 'response' });
   }
+
+  task398(): Observable<EntityResponseType> {
+    return this.http.post<Maintenance>(`${this.maintenanceUrl}/task/398`, null, { observe: 'response' });
+  }
 }
