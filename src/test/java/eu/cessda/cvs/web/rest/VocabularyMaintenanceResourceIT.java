@@ -173,7 +173,7 @@ class VocabularyMaintenanceResourceIT {
         Version version = vocab.getVersions().stream().filter( v -> v.getLanguage().equals( vocabularySnippet.getLanguage()))
             .findFirst().orElse(null);
         assertThat(version).isNotNull();
-        // publish
+        // review
         vocabularySnippet.setActionType( ActionType.FORWARD_CV_SL_STATUS_REVIEW );
         vocabularySnippet.setVocabularyId( version.getVocabulary().getId() );
         vocabularySnippet.setVersionId( version.getId());
@@ -182,6 +182,17 @@ class VocabularyMaintenanceResourceIT {
             .contentType(MediaType.APPLICATION_JSON)
             .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
             .andExpect(status().isOk());
+        // ready to translate
+        vocabularySnippet.setActionType( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE );
+        vocabularySnippet.setVocabularyId( version.getVocabulary().getId() );
+        vocabularySnippet.setVersionId(version.getId());
+        vocabularySnippet.setLicenseId(license.getId());
+        restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
+            .header("Authorization", jwt)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(TestUtil.convertObjectToJsonBytes(vocabularySnippet)))
+            .andExpect(status().isOk());
+        // publish
         vocabularySnippet.setActionType( ActionType.FORWARD_CV_SL_STATUS_PUBLISH );
         vocabularySnippet.setLicenseId( license.getId() );
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")

@@ -47,17 +47,17 @@ public class VersionUtils {
         VersionNumber prev = VersionNumber.fromString(prevVersionNumber);
         VersionNumber curr = VersionNumber.fromString(currentSlVersionNumber);
         if (prev.compareTo(curr) == -1)
-            return new VersionNumber(curr.getSlNumber(), 1).toString();
+            return new VersionNumber(curr.getBasePatchVersion(), 1).toString();
         else
             return prev.increasePatchNumber().toString();
     }
 
     public static VersionNumber getSlVersionNumber( String tlNumber ) {
-        return VersionNumber.fromString(tlNumber).getSlNumber();
+        return VersionNumber.fromString(tlNumber).getBasePatchVersion();
     }
 
     public static boolean equalSlVersionNumber(String versionNumber1, String versionNumber2) {
-        return VersionNumber.fromString(versionNumber1).isSameSlNumberAs(VersionNumber.fromString(versionNumber2));
+        return VersionNumber.fromString(versionNumber1).equalMinorVersion(VersionNumber.fromString(versionNumber2));
     }
 
     /**

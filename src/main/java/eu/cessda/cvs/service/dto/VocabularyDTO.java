@@ -1411,10 +1411,33 @@ public class VocabularyDTO implements Serializable {
         return this;
     }
 
+    public List<VersionDTO> getVersionsByVersionNumber(VersionNumber versionNumber, boolean noSameLanguage){
+        List<VersionDTO> versionGroups = new ArrayList<>();
+        List<VersionDTO> vGroups = this.versions.stream()
+            .filter(v -> v.getNumber().equals(versionNumber))
+            .sorted(VocabularyUtils.versionDtoComparator())
+            .collect(Collectors.toList());
+
+        if( noSameLanguage ) {
+            Set<String> langs = new HashSet<>();
+            for (VersionDTO vg : vGroups) {
+                if ( langs.contains( vg.getLanguage()))
+                    continue;
+                langs.add(vg.getLanguage());
+                versionGroups.add(vg);
+            }
+        } else {
+            versionGroups = vGroups;
+        }
+
+        return versionGroups;
+    }
+
+    @Deprecated
     public List<VersionDTO> getVersionsByVersionSl(VersionNumber versionNumberSl, boolean noSameLanguage){
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
-            .filter(v -> v.getNumber().isSameSlNumberAs(versionNumberSl))
+            .filter(v -> v.getNumber().equalMinorVersion(versionNumberSl))
             .sorted(VocabularyUtils.versionDtoComparator())
             .collect(Collectors.toList());
 

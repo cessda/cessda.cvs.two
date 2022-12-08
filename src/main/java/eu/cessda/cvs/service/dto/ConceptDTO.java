@@ -338,4 +338,24 @@ public class ConceptDTO implements Serializable {
     public int hashCode() {
         return Objects.hashCode(getId());
     }
+
+    public ConceptDTO clone() {
+        ConceptDTO clone = new ConceptDTO();
+        clone.setDefinition(this.getDefinition());
+        clone.setDeprecated(this.getDeprecated());
+        clone.setId(this.getId());
+        clone.setIntroducedInVersionId(this.getIntroducedInVersionId());
+        clone.setNotation(this.getNotation());
+        clone.setParent(this.getParent());
+        clone.setPosition(this.getPosition());
+        clone.setPreviousConcept(this.getPreviousConcept());
+        clone.setReplacedById(this.getReplacedById());
+        clone.setSlConcept(this.getSlConcept());
+        clone.setTitle(this.getTitle());
+        clone.setUri(this.getUri());
+        clone.setValidFrom(this.getValidFrom());
+        clone.setValidUntilVersionId(this.getValidUntilVersionId());
+        clone.setVersionId(this.getVersionId());
+        return clone;
+    }
 }

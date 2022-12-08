@@ -93,7 +93,7 @@ public class UrnResolver {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(URI.create( baseUrl + "/vocabulary/" + versionDTO.getNotation()+ "?v=" +
                 (versionDTO.getItemType().equals(ItemType.SL.toString()) ? versionDTO.getNumber():
-                    versionDTO.getNumber().getSlNumber().getMajorMinorNumbers()) + additionalQuery));
+                    versionDTO.getNumber().getMinorVersion()) + additionalQuery));
             return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
         }
         return null;

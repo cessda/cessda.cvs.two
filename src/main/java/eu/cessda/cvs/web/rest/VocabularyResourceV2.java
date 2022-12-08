@@ -894,7 +894,7 @@ public class VocabularyResourceV2 {
                     version.getLanguage() + "(" + version.getItemType() + ")", k -> new LinkedHashMap<>() );
                 versionMap.put( version.getNumber().toString(),
                     ResourceUtils.getBasePath(request) + "v2/vocabularies/" + version.getNotation() + "/" +
-                        version.getNumber().getSlNumber() + "?languageVersion=" + version.getLanguage() + "-" + version.getNumber());
+                        version.getNumber().getBasePatchVersion() + "?languageVersion=" + version.getLanguage() + "-" + version.getNumber());
                 for (Map<String, Object> versionHistory : version.getVersionHistories()) {
                     versionMap.put( versionHistory.get(VERSION).toString(),
                         ResourceUtils.getBasePath(request) + "v2/vocabularies/" + version.getNotation() + "/" +

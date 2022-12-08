@@ -286,66 +286,80 @@ public class VocabularyServiceImpl implements VocabularyService
 	}
 
 	@Override
-	public VersionDTO createNewVersion( Long prevVersionId )
+	public VersionDTO createNewVersion(Long prevVersionId)
 	{
 		log.debug( "Request to create new Vocabulary version from existing version with ID : {}", prevVersionId );
+		
 		// get version
-		VersionDTO prevVersionDTO = versionService.findOne( prevVersionId )
-				.orElseThrow( () -> new EntityNotFoundException( UNABLE_FIND_VERSION + prevVersionId ) );
+		VersionDTO prevVersionDTO = versionService
+			.findOne( prevVersionId )
+			.orElseThrow(() -> new EntityNotFoundException(UNABLE_FIND_VERSION + prevVersionId));
 
-		if ( !prevVersionDTO.getStatus().equals( Status.PUBLISHED.toString() ) )
-		{
-			log.error( "Unable to create new version from version with ID {}, version is not yet PUBLISHED", prevVersionDTO.getId() );
+		if (!prevVersionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
+			log.error("Unable to create new version from version with ID {}, version is not yet PUBLISHED", prevVersionDTO.getId());
 			throw new IllegalArgumentException(
-					"Unable to create new version from version with ID " + prevVersionDTO.getId() + ", version is not yet PUBLISHED" );
+				"Unable to create new version from version with ID "
+				+ prevVersionDTO.getId()
+				+ ", version is not yet PUBLISHED"
+			);
 		}
 
-		VocabularyDTO vocabularyDTO = findOne( prevVersionDTO.getVocabularyId() )
-				.orElseThrow( () -> new EntityNotFoundException( UNABLE_FIND_VOCABULARY + prevVersionDTO.getVocabularyId() ) );
+		VocabularyDTO vocabularyDTO = findOne(prevVersionDTO.getVocabularyId())
+			.orElseThrow(() -> new EntityNotFoundException(UNABLE_FIND_VOCABULARY + prevVersionDTO.getVocabularyId()));
 
-		VersionDTO currentSlVersion = vocabularyDTO.getVersions().stream()
-				.filter( v -> v.getItemType().equals( ItemType.SL.toString() ) && v.getNumber().equals( vocabularyDTO.getVersionNumber() ) )
-				.findFirst().orElseThrow( () -> new EntityNotFoundException(
-						UNABLE_FIND_VERSION + "SL version number " + vocabularyDTO.getVersionNumber() ) );
+		VersionDTO currentSlVersion = vocabularyDTO
+			.getVersions()
+			.stream()
+			.filter(v -> v.getItemType().equals(ItemType.SL.toString()))
+			.filter(v -> v.getNumber().equals(vocabularyDTO.getVersionNumber()))
+			.findFirst()
+			.orElseThrow(() -> new EntityNotFoundException(
+				UNABLE_FIND_VERSION + "SL version number " + vocabularyDTO.getVersionNumber()
+			));
 
-		VersionDTO newVersion;
-		if ( prevVersionDTO.getItemType().equals( ItemType.SL.toString() ) )
-		{
+		VersionDTO newVersion = null;
+		if (prevVersionDTO.getItemType().equals(ItemType.SL.toString())){
 			// check if user authorized to create new SL version
-			SecurityUtils.checkResourceAuthorization( ActionType.CREATE_NEW_CV_SL_VERSION,
-					vocabularyDTO.getAgencyId(), prevVersionDTO.getLanguage() );
-			newVersion = new VersionDTO( prevVersionDTO, null );
+			SecurityUtils.checkResourceAuthorization(
+				ActionType.CREATE_NEW_CV_SL_VERSION,
+				vocabularyDTO.getAgencyId(),
+				prevVersionDTO.getLanguage()
+			);
+			newVersion = new VersionDTO(prevVersionDTO, null);
 			// update vocabularyDTO
-			vocabularyDTO.setVersionNumber( newVersion.getNumber() );
-			vocabularyDTO.setStatus( Status.DRAFT.toString() );
-		}
-		else
-		{
+			vocabularyDTO.setVersionNumber(newVersion.getNumber());
+			vocabularyDTO.setStatus(Status.DRAFT.toString());
+		} else {
 			// check if user authorized to create new TL version
-			SecurityUtils.checkResourceAuthorization( ActionType.CREATE_NEW_CV_TL_VERSION,
-					vocabularyDTO.getAgencyId(), prevVersionDTO.getLanguage() );
-			vocabularyDTO.addVersion(currentSlVersion);
-			newVersion = new VersionDTO( prevVersionDTO, currentSlVersion );
+			SecurityUtils.checkResourceAuthorization(
+				ActionType.CREATE_NEW_CV_TL_VERSION,
+				vocabularyDTO.getAgencyId(),
+				prevVersionDTO.getLanguage()
+			);
+			newVersion = new VersionDTO(prevVersionDTO, currentSlVersion);
 		}
-		newVersion.setCreator( SecurityUtils.getCurrentUserId() );
+
+		newVersion.setCreator(SecurityUtils.getCurrentUserId());
 		newVersion = versionService.save( newVersion );
 
-		VersionDTO finalNewVersion = newVersion;
-		currentSlVersion.getConcepts().forEach( conceptSlDTO ->
-		{
-			ConceptDTO conceptDTO;
-			if ( finalNewVersion.getItemType().equals( ItemType.SL.toString() ) )
-			{
-				conceptDTO = new ConceptDTO( conceptSlDTO, conceptSlDTO, finalNewVersion.getId() );
-			}
-			else
-			{
-				ConceptDTO prevConcept = prevVersionDTO.getConcepts().stream()
-						.filter( c -> c.getNotation().equals( conceptSlDTO.getNotation() ) ).findFirst().orElse( null );
-				conceptDTO = new ConceptDTO( conceptSlDTO, prevConcept, finalNewVersion.getId() );
-			}
-			finalNewVersion.addConcept( conceptDTO );
-		} );
+		final VersionDTO finalNewVersion = newVersion;
+		currentSlVersion
+			.getConcepts()
+			.forEach(conceptSlDTO -> {
+				ConceptDTO conceptDTO;
+				if (finalNewVersion.getItemType().equals( ItemType.SL.toString())) {
+					conceptDTO = new ConceptDTO( conceptSlDTO, conceptSlDTO, finalNewVersion.getId() );
+				} else {
+					ConceptDTO prevConcept = prevVersionDTO
+						.getConcepts()
+						.stream()
+						.filter(c -> c.getNotation().equals(conceptSlDTO.getNotation()))
+						.findFirst()
+						.orElse(null);
+					conceptDTO = new ConceptDTO(conceptSlDTO, prevConcept, finalNewVersion.getId());
+				}
+				finalNewVersion.addConcept(conceptDTO);
+			});
 		// save and reindex
 		addVersionAndSaveIndexVocabulary( vocabularyDTO, finalNewVersion );
 		return finalNewVersion;
@@ -1683,7 +1697,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		if ( version.getItemType().equals( ItemType.SL.toString() ) )
 		{
-			List<VersionDTO> versionDTOs = slNumberVersionsMap.computeIfAbsent( version.getNumber().toString(), k -> new ArrayList<>() );
+			List<VersionDTO> versionDTOs = slNumberVersionsMap.computeIfAbsent( version.getNumber().getMinorVersion(), k -> new ArrayList<>() );
 			// check for version history
 			addVersionHistories( vocabulary, version );
 
@@ -1691,10 +1705,10 @@ public class VocabularyServiceImpl implements VocabularyService
 		}
 		else
 		{
-			List<VersionDTO> versionDTOs = slNumberVersionsMap.get( version.getNumber().getSlNumber().toString() );
+			List<VersionDTO> versionDTOs = slNumberVersionsMap.get( version.getNumber().getMinorVersion() );
 			if ( versionDTOs == null )
 				throw new IllegalArgumentException( "SL version missing from version number of " + version.getNotation() +
-						" " + version.getNumber() );
+						" " + version.getNumber().getMinorVersion() );
 
 			// check for version history
 			addVersionHistories( vocabulary, version );
@@ -1702,7 +1716,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			versionDTOs.add( version );
 		}
 		// collect latest version across SL
-		if ( !latestVersionsLangs.contains( version.getLanguage() ) || version.getNumber().isSameSlNumberAs(vocabulary.getVersionNumber()) )
+		if ( !latestVersionsLangs.contains( version.getLanguage() ) || version.getNumber().equals(vocabulary.getVersionNumber()) )
 		{
 			latestVersionsAcrossSl.add( version );
 			latestVersionsLangs.add( version.getLanguage() );
@@ -1980,33 +1994,87 @@ public class VocabularyServiceImpl implements VocabularyService
 		case FORWARD_CV_SL_STATUS_PUBLISH:
 			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_SL_STATUS_PUBLISH,
 					vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
-			//check if the Sl is already published, if yes then only new Tl(s) will be published
-			if (!versionDTO.getStatus().equals(Status.PUBLISHED.toString())) {
-				versionDTO.setStatus( Status.PUBLISHED.toString() );
-				versionDTO.setLastStatusChangeDate( LocalDate.now() );
-				// here we will publish the whole vocabulary, which will make the vocabulary and version as published
-				// we will not overide the version info, only publication date!!!
-				// when it is in READY_TO_TRANSLATE state, it can't be edited anymore
-				versionDTO.setPublicationDate(LocalDate.now());
-				vocabularyDTO.prepareSlPublishing( versionDTO );
-				vocabularyDTO.setStatus( Status.PUBLISHED.toString() );
-				// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
-				setDeprecatedConceptsValidUntilVersionId(versionDTO, versionDTO.getId());
-				// <-- #385
+					
+			// #398 - checking routines
+			// if (!versionDTO.getItemType().equals(ItemType.SL.toString())) {
+			// 	throw new IllegalArgumentException("SL version expected, but got: " + versionDTO);
+			// }
+			// final long numReadyToPublishTLs = vocabularyDTO
+			// 	.getVersions()
+			// 	.stream()
+			// 	.filter(v -> v.getItemType().equals(ItemType.TL.toString()))
+			// 	.filter(v -> v.getStatus().equals(Status.READY_TO_PUBLISH.toString()))
+			// 	.count();			
+			// final boolean isPublishing = numReadyToPublishTLs > 0
+			// 	|| versionDTO.getStatus().equals(Status.READY_TO_TRANSLATE.toString());
+			// if (!isPublishing) {
+			// 	throw new IllegalStateException("There are no items to be published");
+			// }
+
+			// If SL is published, increase patch number of the bundle.
+			// Otherwise use existing version number, either already set
+			// by user or generated by the system.
+			final VersionNumber finalPublishingVersionNumber = (
+				versionDTO.getStatus().equals(Status.PUBLISHED.toString())
+			) ? versionDTO.getNumber().increasePatchNumber() : versionDTO.getNumber();
+		
+			final VocabularyDTO finalVocabularyDTO = vocabularyDTO;
+
+			// walk through the latest TL versions of the current major.minor bundle
+			finalVocabularyDTO
+				.getVersions()
+				.stream()
+				.filter(v -> v.getItemType().equals(ItemType.TL.toString()))
+				.filter(v -> v.getNumber().equalMinorVersion(versionDTO.getNumber()))
+				.collect(
+					Collectors.groupingBy(
+						VersionDTO::getLanguage,
+						LinkedHashMap::new,
+						Collectors.maxBy(Comparator.comparing(VersionDTO::getNumber)))
+				)
+				.values()
+				.stream()
+				.map(Optional::get)
+				.forEach(v -> {
+					// publish TL, if it's ready
+					if (v.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
+						// update the TL's version number
+						v.setNumber(finalPublishingVersionNumber);
+						v.setStatus(Status.PUBLISHED.toString());
+						v.setLastStatusChangeDate(LocalDate.now());
+						finalVocabularyDTO.setVersionByLanguage(
+							v.getLanguage(),
+							v.getNumber().toString()
+						);
+					} else if (v.getStatus().equals(Status.PUBLISHED.toString())) {
+						// update the TL's version number
+						v.setNumber(finalPublishingVersionNumber);
+						// in the vocabulary, update the published TL's version number
+						finalVocabularyDTO.setVersionByLanguage(
+							v.getLanguage(),
+							v.getNumber().toString()
+						);
+					} else {
+						if (v.getNumber().compareTo(finalPublishingVersionNumber) <= 0) {
+							// if this version is not yet published or ready to be published,
+							// it will be put into the next bundle
+							v.setNumber(finalPublishingVersionNumber.increasePatchNumber());
+						}
+					}
+				});
+
+			// update SL version number
+			if (!versionDTO.getNumber().equals(finalPublishingVersionNumber)) {
+				versionDTO.setNumber(finalPublishingVersionNumber);
 			}
-			// now we need to go through all the versions which are TL(s) and ready to publish
-			// also we need to update the date of the publication
-			List<VersionDTO> versions = vocabularyDTO.getVersionsByVersionSl(versionDTO.getNumber(), true);
-			// Iterator<VersionDTO> versions = vocabularyDTO.getVersions().iterator();
-			for ( VersionDTO versionDTO_: versions ) {
-				if (versionDTO_.getItemType().equals("TL") && versionDTO_.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
-					versionDTO_.setStatus( Status.PUBLISHED.toString() );
-					versionDTO_.setLastStatusChangeDate( LocalDate.now() );
-					// #385 --> record validUntilVersionId for deprecated concepts in the version prior to this published version
-					setDeprecatedConceptsValidUntilVersionId(versionDTO_, versionDTO_.getId());
-					// <-- #385
-				}
-			}
+			
+			// publish SL - review
+			versionDTO.setStatus(Status.PUBLISHED.toString());
+			versionDTO.setLastStatusChangeDate(LocalDate.now());
+			versionDTO.setPublicationDate(LocalDate.now());
+			versionDTO.setDeprecatedConceptsValidUntilVersionId(versionDTO.getId());
+			vocabularyDTO.prepareSlPublishing(versionDTO);
+			vocabularyDTO.setStatus(Status.PUBLISHED.toString());
 			break;
 		case FORWARD_CV_TL_STATUS_REVIEW:
 			SecurityUtils.checkResourceAuthorization( ActionType.FORWARD_CV_TL_STATUS_REVIEW,
@@ -2135,7 +2203,7 @@ public class VocabularyServiceImpl implements VocabularyService
 			map.put( "docId", uriSl );
 			map.put( "docVersionOf", vocabularyDTO.getUri() );
 			map.put( "docNotation", vocabularyDTO.getNotation() );
-			map.put( "docVersion", versionIncluded.getNumber().getSlNumber().toString() );
+			map.put( "docVersion", versionIncluded.getNumber().getBasePatchVersion().toString() );
 			map.put( "docLicense", versionIncluded.getLicenseName() );
 			map.put( "docRight", versionIncluded.getLicenseName() );
 			map.put( CODE_PATH, CodeDTO.generateCodesFromVersion( includedVersions, false ) );
@@ -2281,26 +2349,6 @@ public class VocabularyServiceImpl implements VocabularyService
 		}
 	}
 
-	private void setDeprecatedConceptsValidUntilVersionId(VersionDTO versionDTO, Long validUntilVersionId)
-	{
-		log.debug("#385: setDeprecatedConceptsValidity for versionDTO={}", versionDTO);
-		boolean modified = false;
-		for (ConceptDTO concept : versionDTO.getConcepts()) {
-			if (concept.getDeprecated() && concept.getValidUntilVersionId() == null)
-			{
-				log.debug("#385: concept={}", concept);
-				concept.setValidUntilVersionId(validUntilVersionId);
-				modified = true;
-				log.debug("#385: concept={}", concept);
-			}
-		}
-		if (modified)
-		{
-			log.debug("#385: saving versionDTO={}", versionDTO);
-			versionService.save(versionDTO);
-		}
-	}
-
 	/**
 	 * Migration workflow:
 	 * 
@@ -2328,63 +2376,8 @@ public class VocabularyServiceImpl implements VocabularyService
 		// indexAllEditor();
 	}
 
-	private VersionDTO Task398CloneVersionDTO(VersionDTO src) {
-		VersionDTO dst = new VersionDTO();
-		dst.setCanonicalUri(src.getCanonicalUri());
-		dst.setCitation(src.getCitation());
-		dst.setCreationDate(src.getCreationDate());
-		dst.setCreator(src.getCreator());
-		dst.setDdiUsage(src.getDdiUsage());
-		dst.setDefinition(src.getDefinition());
-		dst.setDiscussionNotes(src.getDiscussionNotes());
-		dst.setId(src.getId());
-		dst.setInitialVersion(src.getInitialVersion());
-		dst.setItemType(src.getItemType());
-		dst.setLanguage(src.getLanguage());
-		dst.setLastModified(src.getLastModified());
-		dst.setLastStatusChangeDate(src.getLastStatusChangeDate());
-		dst.setLicense(src.getLicense());
-		dst.setLicenseId(src.getLicenseId());
-		dst.setNotation(src.getNotation());
-		dst.setNotes(src.getNotes());
-		dst.setNumber(src.getNumber());
-		dst.setPreviousVersion(src.getPreviousVersion());
-		dst.setPublicationDate(src.getPublicationDate());
-		dst.setPublisher(src.getPublisher());
-		dst.setStatus(src.getStatus());
-		dst.setTitle(src.getTitle());
-		dst.setTranslateAgency(src.getTranslateAgency());
-		dst.setTranslateAgencyLink(src.getTranslateAgencyLink());
-		dst.setUriSl(src.getUriSl());
-		dst.setUri(src.getUri());
-		dst.setVersionChanges(src.getVersionChanges());
-		dst.setVersionNotes(src.getVersionNotes());
-		dst.setVocabularyId(src.getVocabularyId());
-		return dst;
-	}
-
-	private ConceptDTO Task398CloneConceptDTO(ConceptDTO src) {
-		ConceptDTO dst = new ConceptDTO();
-		dst.setDefinition(src.getDefinition());
-		dst.setDeprecated(src.getDeprecated());
-		dst.setId(src.getId());
-		dst.setIntroducedInVersionId(src.getIntroducedInVersionId());
-		dst.setNotation(src.getNotation());
-		dst.setParent(src.getParent());
-		dst.setPosition(src.getPosition());
-		dst.setPreviousConcept(src.getPreviousConcept());
-		dst.setReplacedById(src.getReplacedById());
-		dst.setSlConcept(src.getSlConcept());
-		dst.setTitle(src.getTitle());
-		dst.setUri(src.getUri());
-		dst.setValidFrom(src.getValidFrom());
-		dst.setValidUntilVersionId(src.getValidUntilVersionId());
-		dst.setVersionId(src.getVersionId());
-		return dst;
-	}
-
 	private ConceptDTO task398MigrateConcept(ConceptDTO c, Long newVersionId) {
-		ConceptDTO c_migrated = Task398CloneConceptDTO(c);
+		ConceptDTO c_migrated = c.clone();
 		// override cloned attributes
 		c_migrated.setId(null);
 		c_migrated.setVersionId(newVersionId);
@@ -2402,7 +2395,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
 	private VersionDTO task398MigrateVersion(final VersionDTO v, VersionNumber newVersionNumber) {
 		
-		VersionDTO v_migrated = Task398CloneVersionDTO(v);
+		VersionDTO v_migrated = v.clone();
 		
 		// override cloned attributes
 		v_migrated.setId(null);
@@ -2440,11 +2433,11 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		// TODO: version histories?
 		//List<Map<Object, Object> vhs_migrated = new ArrayList;
-		v.getVersionHistories().forEach(vh -> {
-			vh.forEach((key, vocabulary_change) -> {
-				System.out.println(key + "; " + vocabulary_change.toString());
-			});
-		});
+		// v.getVersionHistories().forEach(vh -> {
+		// 	vh.forEach((key, vocabulary_change) -> {
+		// 		System.out.println(key + "; " + vocabulary_change.toString());
+		// 	});
+		// });
 		
 		return final_v_migrated;
 	}

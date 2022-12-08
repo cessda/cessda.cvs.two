@@ -123,13 +123,12 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     }
 
     @JsonIgnore
-    public String getMajorMinorNumbers() {
+    public String getMinorVersion() {
         return majorNumber + "." + minorNumber;
     }
 
     @JsonIgnore
-    @Deprecated
-    public VersionNumber getSlNumber() {
+    public VersionNumber getBasePatchVersion() {
         return new VersionNumber(majorNumber, minorNumber, 0);
     }
 
@@ -152,8 +151,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return patchNumber.compareTo(other.patchNumber);
     }
 
-    @Deprecated
-    public boolean isSameSlNumberAs(VersionNumber other) {
+    public boolean equalMinorVersion(VersionNumber other) {
         if (other != null) {
             return majorNumber == other.majorNumber && minorNumber == other.minorNumber;
         }
@@ -175,7 +173,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     public VersionNumber increasePatch(VersionNumber currentSlNumber) {
         if (compareTo(currentSlNumber) == -1) {
-            return new VersionNumber(currentSlNumber.getSlNumber(), 1);
+            return new VersionNumber(currentSlNumber.getBasePatchVersion(), 1);
         } else {
             return this.increasePatchNumber();
         }
