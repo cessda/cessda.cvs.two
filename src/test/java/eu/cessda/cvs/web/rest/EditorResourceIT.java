@@ -844,7 +844,7 @@ class EditorResourceIT {
 
         // must be generated equal TL concepts to SL concepts
         assertThat(tlVersion.getConcepts().size()).isEqualTo(slVersion.getConcepts().size());
-        assertTrue(tlVersion.getNumber().equalMinorVersion(slVersion.getNumber()));
+        assertTrue(tlVersion.getNumber().equalMinorVersionNumber(slVersion.getNumber()));
         // TL ddi-usage must be the same with SL
         assertThat(tlVersion.getDdiUsage()).isEqualTo(slVersion.getDdiUsage());
 

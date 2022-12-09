@@ -151,7 +151,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return patchNumber.compareTo(other.patchNumber);
     }
 
-    public boolean equalMinorVersion(VersionNumber other) {
+    public boolean equalMinorVersionNumber(VersionNumber other) {
         if (other != null) {
             return majorNumber == other.majorNumber && minorNumber == other.minorNumber;
         }

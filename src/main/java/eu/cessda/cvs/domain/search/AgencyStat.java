@@ -152,7 +152,7 @@ public class AgencyStat implements Serializable {
                     latestSlVersionNumber = v.getNumber();
                 }
             }
-            if( v.getStatus().equals( Status.PUBLISHED.toString() ) || v.getNumber().equalMinorVersion(latestSlVersionNumber)) {
+            if( v.getStatus().equals( Status.PUBLISHED.toString() ) || v.getNumber().equalMinorVersionNumber(latestSlVersionNumber)) {
                 languages.add(v.getLanguage());
 
                 VersionStatusStat versionStatusStat = new VersionStatusStat(v.getLanguage(), v.getItemType(),

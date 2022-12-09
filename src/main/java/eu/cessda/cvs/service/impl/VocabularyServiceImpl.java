@@ -2025,7 +2025,7 @@ public class VocabularyServiceImpl implements VocabularyService
 				.getVersions()
 				.stream()
 				.filter(v -> v.getItemType().equals(ItemType.TL.toString()))
-				.filter(v -> v.getNumber().equalMinorVersion(versionDTO.getNumber()))
+				.filter(v -> v.getNumber().equalMinorVersionNumber(versionDTO.getNumber()))
 				.collect(
 					Collectors.groupingBy(
 						VersionDTO::getLanguage,
@@ -2068,7 +2068,7 @@ public class VocabularyServiceImpl implements VocabularyService
 				versionDTO.setNumber(finalPublishingVersionNumber);
 			}
 			
-			// publish SL - review
+			// publish SL
 			versionDTO.setStatus(Status.PUBLISHED.toString());
 			versionDTO.setLastStatusChangeDate(LocalDate.now());
 			versionDTO.setPublicationDate(LocalDate.now());
@@ -2121,7 +2121,7 @@ public class VocabularyServiceImpl implements VocabularyService
 		{
 			VersionDTO prevVersionSl = prevVersionSlOpt.get();
 			List<VersionDTO> clonedTls = new ArrayList<>();
-			List<VersionDTO> prevVersions = vocabularyDTO.getVersionsByVersionSl(prevVersionSl.getNumber(), true );
+			List<VersionDTO> prevVersions = vocabularyDTO.getVersionsByMinorVersionNumber(prevVersionSl.getNumber(), true );
 
 			prevVersions.forEach( prevVersion ->
 			{
@@ -2349,25 +2349,12 @@ public class VocabularyServiceImpl implements VocabularyService
 		}
 	}
 
-	/**
-	 * Migration workflow:
-	 * 
-	 * 	For each vocabulary:
-	 *		1. Find the latest SL version
-	 *		2. Find the latest version number among all the vocabulary versions
-	 * 		3. Clone SL and assign them the pivot version number
-	 */
 	@Override
 	public void task398() {
 		log.info( "MIGRATING VERSIONING SYSTEM START" );
 		// migrate all vocabularies
 		findAll().forEach( v -> {
-			VocabularyDTO v_migrated = task398MigrateVocabulary(v);
-			if (v_migrated == null)
-				return;
-			// save migrated vocabulary
-			Vocabulary v_entity = vocabularyMapper.toEntity(v_migrated);
-			v_entity = vocabularyRepository.save(v_entity);
+			task398MigrateVocabulary(v);
 		});
 		log.info( "MIGRATING VERSIONING SYSTEM FINISHED" );
 		// generateJsonAllVocabularyPublish();
@@ -2457,10 +2444,6 @@ public class VocabularyServiceImpl implements VocabularyService
 
 	private VocabularyDTO task398MigrateVocabulary(final VocabularyDTO vocabularyDTO) {
 
-		if (vocabularyDTO.getId() != 72) {
-			return null;
-		}
-
 		log.info( "Migrating versioning system for vocabulary with id {} and notation {}", vocabularyDTO.getId(), vocabularyDTO.getNotation() );
 
 		// get the current Sl version
@@ -2500,18 +2483,21 @@ public class VocabularyServiceImpl implements VocabularyService
 			.stream()
 			.map(Optional::get)
 			.forEach(v -> {
-				if (v.getStatus().equals(Status.PUBLISHED.toString())) {
+				if (v.getStatus().equals(Status.PUBLISHED.toString()) || v.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
 					v = task398MigrateVersion(v, newVersionNumber);
 					clonedTls.add(v);
 				} else {
-					v.setNumber(newVersionNumber);
+					v.setNumber(newVersionNumber.increasePatchNumber());
 				}
 			});
 
 		if (!clonedTls.isEmpty()) {
 			vocabularyDTO.getVersions().addAll(clonedTls);
 		}
-		
-		return vocabularyDTO;				
+
+		// save migrated vocabulary
+		Vocabulary v_entity = vocabularyMapper.toEntity(vocabularyDTO);
+		v_entity = vocabularyRepository.save(v_entity);
+		return vocabularyMapper.toDto(v_entity);
 	}
 }

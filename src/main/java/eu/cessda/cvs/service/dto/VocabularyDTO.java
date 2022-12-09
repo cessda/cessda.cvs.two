@@ -1433,11 +1433,10 @@ public class VocabularyDTO implements Serializable {
         return versionGroups;
     }
 
-    @Deprecated
-    public List<VersionDTO> getVersionsByVersionSl(VersionNumber versionNumberSl, boolean noSameLanguage){
+    public List<VersionDTO> getVersionsByMinorVersionNumber(VersionNumber minorVersionNumber, boolean noSameLanguage){
         List<VersionDTO> versionGroups = new ArrayList<>();
         List<VersionDTO> vGroups = this.versions.stream()
-            .filter(v -> v.getNumber().equalMinorVersion(versionNumberSl))
+            .filter(v -> v.getNumber().equalMinorVersionNumber(minorVersionNumber))
             .sorted(VocabularyUtils.versionDtoComparator())
             .collect(Collectors.toList());
 

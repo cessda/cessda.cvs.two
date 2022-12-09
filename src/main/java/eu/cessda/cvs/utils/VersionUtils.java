@@ -57,7 +57,7 @@ public class VersionUtils {
     }
 
     public static boolean equalSlVersionNumber(String versionNumber1, String versionNumber2) {
-        return VersionNumber.fromString(versionNumber1).equalMinorVersion(VersionNumber.fromString(versionNumber2));
+        return VersionNumber.fromString(versionNumber1).equalMinorVersionNumber(VersionNumber.fromString(versionNumber2));
     }
 
     /**
