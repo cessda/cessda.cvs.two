@@ -71,113 +71,111 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         Matcher m = PARSE_PATTERN.matcher(str);
         if (m.find()) {
             VersionNumber v = new VersionNumber();
-            v.slMajorNumber = Integer.parseInt(m.group(1));
-            v.slMinorNumber = Integer.parseInt(m.group(2));
-            v.tlNumber = m.group(3) != null ? Integer.parseInt(m.group(3)) : 0;
+            v.majorNumber = Integer.parseInt(m.group(1));
+            v.minorNumber = Integer.parseInt(m.group(2));
+            v.patchNumber = m.group(3) != null ? Integer.parseInt(m.group(3)) : 0;
             return v;
         } else {
             throw new IllegalArgumentException("Illegal version number provided '" + str + "'");
         }
     }
 
-    private Integer slMajorNumber;
-    private Integer slMinorNumber;
-    private Integer tlNumber;
+    private Integer majorNumber;
+    private Integer minorNumber;
+    private Integer patchNumber;
     
     public VersionNumber() {
-        slMajorNumber = slMinorNumber = tlNumber = null;
+        majorNumber = minorNumber = patchNumber = null;
     }
 
     public VersionNumber(String str) {
         this(VersionNumber.fromString(str));
     }
 
-    public VersionNumber(Integer slMajorNumber, Integer slMinorNumber, Integer tlNumber) {
-        this.slMajorNumber = slMajorNumber;
-        this.slMinorNumber = slMinorNumber;
-        this.tlNumber = tlNumber;
+    public VersionNumber(Integer majorNumber, Integer minorNumber, Integer patchNumber) {
+        this.majorNumber = majorNumber;
+        this.minorNumber = minorNumber;
+        this.patchNumber = patchNumber;
     }
 
-    public VersionNumber(Integer slMajorNumber, Integer slMinorNumber) {
-        this(slMajorNumber, slMinorNumber, 0);
+    public VersionNumber(Integer majorNumber, Integer minorNumber) {
+        this(majorNumber, minorNumber, 0);
     }
 
     public VersionNumber(VersionNumber other) {
-        this(other.slMajorNumber, other.slMinorNumber, other.tlNumber);
+        this(other.majorNumber, other.minorNumber, other.patchNumber);
     }
 
-    public VersionNumber(VersionNumber slVersionNumber, Integer tlVersionNumber) {
-        this(slVersionNumber.slMajorNumber, slVersionNumber.slMinorNumber, tlVersionNumber);
+    public VersionNumber(VersionNumber versionNumber, Integer patchNumber) {
+        this(versionNumber.majorNumber, versionNumber.minorNumber, patchNumber);
     }
 
-    public Integer getSlMajorNumber() {
-        return slMajorNumber;
+    public Integer getMajorNumber() {
+        return majorNumber;
     }
 
-    public Integer getSlMinorNumber() {
-        return slMinorNumber;
+    public Integer getMinorNumber() {
+        return minorNumber;
     }
 
-    public Integer getTlNumber() {
-        return tlNumber;
-    }
-
-    @JsonIgnore
-    public String getSlMajorMinorNumbers() {
-        return slMajorNumber + "." + slMinorNumber;
+    public Integer getPatchNumber() {
+        return patchNumber;
     }
 
     @JsonIgnore
-    public VersionNumber getSlNumber() {
-        return new VersionNumber(slMajorNumber, slMinorNumber, 0);
+    public String getMinorVersion() {
+        return majorNumber + "." + minorNumber;
+    }
+
+    @JsonIgnore
+    public VersionNumber getBasePatchVersion() {
+        return new VersionNumber(majorNumber, minorNumber, 0);
     }
 
     public String toString() {
-        return slMajorNumber + "." + slMinorNumber + "." + tlNumber;
+        return majorNumber + "." + minorNumber + "." + patchNumber;
     }
 
     @Override
     public int compareTo(VersionNumber other) {
-        if (this ==  other)
+        if (this == other)
             return 0;
         if (other == null)
             return 1;
-        int cmp = slMajorNumber.compareTo(other.slMajorNumber);
+        int cmp = majorNumber.compareTo(other.majorNumber);
         if (cmp != 0)
             return cmp;
-        cmp = slMinorNumber.compareTo(other.slMinorNumber);
+        cmp = minorNumber.compareTo(other.minorNumber);
         if (cmp != 0)
             return cmp;
-        if (tlNumber == 0 || other.tlNumber == 0) {
-            return 0;
-        }
-        return tlNumber.compareTo(other.tlNumber);
+        return patchNumber.compareTo(other.patchNumber);
     }
 
-    public boolean isSameSlNumberAs(VersionNumber other) {
+    public boolean equalMinorVersionNumber(VersionNumber other) {
         if (other != null) {
-            return slMajorNumber == other.slMajorNumber && slMinorNumber == other.slMinorNumber;
+            return majorNumber == other.majorNumber && minorNumber == other.minorNumber;
         }
         return false;
     }
 
+    @Deprecated
     public boolean isSlNumber() {
-        return tlNumber == 0;
+        return patchNumber == 0;
     }
 
-    public VersionNumber increaseSlNumber() {
-        return new VersionNumber(slMajorNumber, slMinorNumber + 1, 0);
+    public VersionNumber increaseMinorNumber() {
+        return new VersionNumber(majorNumber, minorNumber + 1, 0);
     }    
 
-    public VersionNumber increaseTlNumber() {
-        return new VersionNumber(slMajorNumber, slMinorNumber, tlNumber + 1);
+    public VersionNumber increasePatchNumber() {
+        return new VersionNumber(majorNumber, minorNumber, patchNumber + 1);
     }    
 
-    public VersionNumber increaseTl(VersionNumber currentSlNumber) {
+    public VersionNumber increasePatch(VersionNumber currentSlNumber) {
         if (compareTo(currentSlNumber) == -1) {
-            return new VersionNumber(currentSlNumber.getSlNumber(), 1);
+            return new VersionNumber(currentSlNumber.getBasePatchVersion(), 1);
         } else {
-            return this.increaseTlNumber();
+            return this.increasePatchNumber();
         }
     }
 
@@ -185,9 +183,9 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((slMajorNumber == null) ? 0 : slMajorNumber.hashCode());
-        result = prime * result + ((slMinorNumber == null) ? 0 : slMinorNumber.hashCode());
-        result = prime * result + ((tlNumber == null) ? 0 : tlNumber.hashCode());
+        result = prime * result + ((majorNumber == null) ? 0 : majorNumber.hashCode());
+        result = prime * result + ((minorNumber == null) ? 0 : minorNumber.hashCode());
+        result = prime * result + ((patchNumber == null) ? 0 : patchNumber.hashCode());
         return result;
     }
 
@@ -202,20 +200,20 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         if (getClass() != obj.getClass())
             return false;
         VersionNumber other = (VersionNumber) obj;
-        if (slMajorNumber == null) {
-            if (other.slMajorNumber != null)
+        if (majorNumber == null) {
+            if (other.majorNumber != null)
                 return false;
-        } else if (!slMajorNumber.equals(other.slMajorNumber))
+        } else if (!majorNumber.equals(other.majorNumber))
             return false;
-        if (slMinorNumber == null) {
-            if (other.slMinorNumber != null)
+        if (minorNumber == null) {
+            if (other.minorNumber != null)
                 return false;
-        } else if (!slMinorNumber.equals(other.slMinorNumber))
+        } else if (!minorNumber.equals(other.minorNumber))
             return false;
-        if (tlNumber == null) {
-            if (other.tlNumber != null)
+        if (patchNumber == null) {
+            if (other.patchNumber != null)
                 return false;
-        } else if (!tlNumber.equals(other.tlNumber))
+        } else if (!patchNumber.equals(other.patchNumber))
             return false;
         return true;
     }

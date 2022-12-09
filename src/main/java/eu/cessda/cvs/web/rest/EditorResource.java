@@ -267,7 +267,7 @@ public class EditorResource {
             } else {
                 // delete version SL and related TLs
                 VersionDTO finalVersionDTO = versionDTO;
-                List<VersionDTO> versionDTOs = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().isSameSlNumberAs(finalVersionDTO.getNumber())).collect(Collectors.toList());
+                List<VersionDTO> versionDTOs = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().equalMinorVersionNumber(finalVersionDTO.getNumber())).collect(Collectors.toList());
                 vocabularyDTO.getVersions().removeAll(versionDTOs);
                 // change vocabulary version id to the previous version number
                 vocabularyDTO.clearContent();
@@ -276,7 +276,7 @@ public class EditorResource {
                     .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_VERSION + finalVersionDTO.getId()  ));
 
                 vocabularyDTO.setVersionNumber( prevSlVersionDto.getNumber());
-                Set<VersionDTO> prevVersions = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().isSameSlNumberAs(prevSlVersionDto.getNumber())).collect(Collectors.toSet());
+                Set<VersionDTO> prevVersions = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().equalMinorVersionNumber(prevSlVersionDto.getNumber())).collect(Collectors.toSet());
                 VocabularyDTO.fillVocabularyByVersions(vocabularyDTO, prevVersions);
                 vocabularyDTO = vocabularyService.save(vocabularyDTO);
                 // indexing editor

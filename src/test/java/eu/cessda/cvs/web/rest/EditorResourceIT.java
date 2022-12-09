@@ -654,10 +654,10 @@ class EditorResourceIT {
             final Version versionTl = versions.stream().filter(v -> v.getItemType().equals(ITEM_TYPE_TL.toString()) &&
                 v.getLanguage().equals(version.getLanguage())).findFirst().orElse(null);
             assertThat(versionTl).isNotNull();
-            assertThat(versionTl.getNumber()).isEqualTo(version.getNumber().increaseTl(versionSl.getNumber()));
+            assertThat(versionTl.getNumber()).isEqualTo(version.getNumber().increasePatch(versionSl.getNumber()));
             newVersion = versionTl;
         } else {
-            assertThat(versionSl.getNumber()).isEqualTo(version.getNumber().increaseSlNumber());
+            assertThat(versionSl.getNumber()).isEqualTo(version.getNumber().increaseMinorNumber());
         }
         return newVersion;
     }
@@ -844,7 +844,7 @@ class EditorResourceIT {
 
         // must be generated equal TL concepts to SL concepts
         assertThat(tlVersion.getConcepts().size()).isEqualTo(slVersion.getConcepts().size());
-        assertTrue(tlVersion.getNumber().isSameSlNumberAs(slVersion.getNumber()));
+        assertTrue(tlVersion.getNumber().equalMinorVersionNumber(slVersion.getNumber()));
         // TL ddi-usage must be the same with SL
         assertThat(tlVersion.getDdiUsage()).isEqualTo(slVersion.getDdiUsage());
 
