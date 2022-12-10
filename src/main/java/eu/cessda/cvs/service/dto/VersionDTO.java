@@ -219,11 +219,13 @@ public class VersionDTO implements Serializable
 		// differentiate VersionNumber, uriSl between SL and TL version cloning
 		if ( this.itemType.equals( ItemType.SL.toString() ) )
 		{
-			this.number = prevVersion.getNumber().increaseSlNumber();
+			this.number = prevVersion.getNumber().increaseMinorNumber();
 		}
 		else
 		{
-			this.number = prevVersion.getNumber().increaseTl(currentSlVersion.getNumber());
+			this.number = currentSlVersion.getStatus().equals(Status.PUBLISHED.toString()) ? 
+				currentSlVersion.getNumber().increasePatchNumber()
+				: currentSlVersion.getNumber();
 			this.translateAgency = prevVersion.getTranslateAgency();
 			this.translateAgencyLink = prevVersion.getTranslateAgencyLink();
 			this.uriSl = currentSlVersion.getUri();
@@ -857,5 +859,48 @@ public class VersionDTO implements Serializable
 	{
 		Optional<ConceptDTO> conceptDTOOptional = concepts.stream().filter( c -> c.getNotation().equals( notation ) ).findFirst();
 		return conceptDTOOptional.isPresent() ? conceptDTOOptional.get() : null;
+	}
+
+	public void setDeprecatedConceptsValidUntilVersionId(Long validUntilVersionId) {
+		getConcepts()
+			.stream()
+			.filter(c -> c.getDeprecated())
+			.filter(c -> c.getValidUntilVersionId() == null)
+			.forEach(c -> c.setValidUntilVersionId(validUntilVersionId));
+	}
+
+	public VersionDTO clone() {
+		VersionDTO clone = new VersionDTO();
+		clone.setCanonicalUri(this.getCanonicalUri());
+		clone.setCitation(this.getCitation());
+		clone.setCreationDate(this.getCreationDate());
+		clone.setCreator(this.getCreator());
+		clone.setDdiUsage(this.getDdiUsage());
+		clone.setDefinition(this.getDefinition());
+		clone.setDiscussionNotes(this.getDiscussionNotes());
+		clone.setId(this.getId());
+		clone.setInitialVersion(this.getInitialVersion());
+		clone.setItemType(this.getItemType());
+		clone.setLanguage(this.getLanguage());
+		clone.setLastModified(this.getLastModified());
+		clone.setLastStatusChangeDate(this.getLastStatusChangeDate());
+		clone.setLicense(this.getLicense());
+		clone.setLicenseId(this.getLicenseId());
+		clone.setNotation(this.getNotation());
+		clone.setNotes(this.getNotes());
+		clone.setNumber(this.getNumber());
+		clone.setPreviousVersion(this.getPreviousVersion());
+		clone.setPublicationDate(this.getPublicationDate());
+		clone.setPublisher(this.getPublisher());
+		clone.setStatus(this.getStatus());
+		clone.setTitle(this.getTitle());
+		clone.setTranslateAgency(this.getTranslateAgency());
+		clone.setTranslateAgencyLink(this.getTranslateAgencyLink());
+		clone.setUriSl(this.getUriSl());
+		clone.setUri(this.getUri());
+		clone.setVersionChanges(this.getVersionChanges());
+		clone.setVersionNotes(this.getVersionNotes());
+		clone.setVocabularyId(this.getVocabularyId());
+		return clone;
 	}
 }

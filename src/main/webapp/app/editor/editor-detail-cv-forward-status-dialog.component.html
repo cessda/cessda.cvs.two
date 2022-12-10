@@ -156,7 +156,7 @@
                         <div class="detail-column">
                             <span>
                                 <input type="text" style="width:100px;display:inline-block;text-align:right;" class="form-control" id="field_versionNumberSl" name="versionNumberSl" formControlName="versionNumberSl"/>
-                                <span>.{{tlProposedVersionNumber}}</span>
+                                <span>.{{proposedPatchNumber}}</span>
                             </span>
                             <div *ngIf="cvForwardStatusForm.get('versionNumberSl')!.invalid && (cvForwardStatusForm.get('versionNumberSl')!.dirty || cvForwardStatusForm.get('versionNumberSl')!.touched)">
                                 <small class="form-text text-danger"

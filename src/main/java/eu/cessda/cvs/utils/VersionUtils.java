@@ -40,24 +40,24 @@ public class VersionUtils {
     }
 
     public static String increaseSlVersionNumber(String versionNumber) {
-        return VersionNumber.fromString(versionNumber).increaseSlNumber().toString();
+        return VersionNumber.fromString(versionNumber).increaseMinorNumber().toString();
     }
 
     public static String increaseTlVersionByOne(String prevVersionNumber, String currentSlVersionNumber) {
         VersionNumber prev = VersionNumber.fromString(prevVersionNumber);
         VersionNumber curr = VersionNumber.fromString(currentSlVersionNumber);
         if (prev.compareTo(curr) == -1)
-            return new VersionNumber(curr.getSlNumber(), 1).toString();
+            return new VersionNumber(curr.getBasePatchVersion(), 1).toString();
         else
-            return prev.increaseTlNumber().toString();
+            return prev.increasePatchNumber().toString();
     }
 
     public static VersionNumber getSlVersionNumber( String tlNumber ) {
-        return VersionNumber.fromString(tlNumber).getSlNumber();
+        return VersionNumber.fromString(tlNumber).getBasePatchVersion();
     }
 
     public static boolean equalSlVersionNumber(String versionNumber1, String versionNumber2) {
-        return VersionNumber.fromString(versionNumber1).isSameSlNumberAs(VersionNumber.fromString(versionNumber2));
+        return VersionNumber.fromString(versionNumber1).equalMinorVersionNumber(VersionNumber.fromString(versionNumber2));
     }
 
     /**

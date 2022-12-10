@@ -288,4 +288,6 @@ public interface VocabularyService {
      * @return
      */
     VersionDTO forwardStatus(VocabularySnippet vocabularySnippet);
+
+    void task398();
 }
