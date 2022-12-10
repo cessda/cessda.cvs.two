@@ -15,7 +15,5 @@ export const enum AgencyRole {
   ADMIN = 'ADMIN',
   ADMIN_SL = 'ADMIN_SL',
   ADMIN_TL = 'ADMIN_TL',
-  CONTRIBUTOR_SL = 'CONTRIBUTOR_SL',
-  CONTRIBUTOR_TL = 'CONTRIBUTOR_TL',
-  VIEW = 'VIEW'
+  VIEW = 'VIEW',
 }
