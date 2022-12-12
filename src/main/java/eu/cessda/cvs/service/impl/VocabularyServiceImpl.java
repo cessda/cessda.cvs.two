@@ -2358,9 +2358,9 @@ public class VocabularyServiceImpl implements VocabularyService
 		});
 		log.info( "MIGRATING VERSIONING SYSTEM FINISHED" );
 		// generateJsonAllVocabularyPublish();
-		// indexAllAgencyStats();
-		// indexAllPublished();
-		// indexAllEditor();
+		indexAllAgencyStats();
+		indexAllPublished();
+		indexAllEditor();
 	}
 
 	private ConceptDTO task398MigrateConcept(ConceptDTO c, Long newVersionId) {
@@ -2472,7 +2472,7 @@ public class VocabularyServiceImpl implements VocabularyService
 		vocabularyDTO.getVersions()
 			.stream()
 			.filter(v -> v.getItemType().equals(ItemType.TL.toString()))
-			.filter(v -> v.getNumber().compareTo(newVersionNumber) < 0)
+			.filter(v -> v.getNumber().equalMinorVersionNumber(newVersionNumber))
 			.collect(
 				Collectors.groupingBy(
 					VersionDTO::getLanguage,
@@ -2484,8 +2484,10 @@ public class VocabularyServiceImpl implements VocabularyService
 			.map(Optional::get)
 			.forEach(v -> {
 				if (v.getStatus().equals(Status.PUBLISHED.toString()) || v.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
-					v = task398MigrateVersion(v, newVersionNumber);
-					clonedTls.add(v);
+					if (v.getNumber().compareTo(newVersionNumber) < 0) {
+						v = task398MigrateVersion(v, newVersionNumber);
+						clonedTls.add(v);	
+					}
 				} else {
 					v.setNumber(newVersionNumber.increasePatchNumber());
 				}
