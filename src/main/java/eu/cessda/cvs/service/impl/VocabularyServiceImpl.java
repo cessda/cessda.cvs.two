@@ -2456,15 +2456,21 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		VersionNumber newVersionNumber = getLatestPublishedVersionNumber(vocabularyDTO);
 		
-		if (currentSlVersion.getNumber().compareTo(newVersionNumber) < 0) {
+		if (newVersionNumber == null) {
+			return vocabularyDTO;
+		}
+		
+		final VersionNumber finalNewVersionNumber = newVersionNumber.increasePatchNumber();
+		
+		if (currentSlVersion.getNumber().compareTo(finalNewVersionNumber) < 0) {
 			// version number of the SL has to be updated
 			if (currentSlVersion.getStatus().equals(Status.PUBLISHED.toString())) {
 				// clone SL and assign a new version number to it
-				currentSlVersion = task398MigrateVersion(currentSlVersion, newVersionNumber);
+				currentSlVersion = task398MigrateVersion(currentSlVersion, finalNewVersionNumber);
 				vocabularyDTO.addVersion(currentSlVersion);
 			} else {
 				// just update the version number
-				currentSlVersion.setNumber(newVersionNumber);
+				currentSlVersion.setNumber(finalNewVersionNumber);
 			}
 		}
 
@@ -2472,7 +2478,7 @@ public class VocabularyServiceImpl implements VocabularyService
 		vocabularyDTO.getVersions()
 			.stream()
 			.filter(v -> v.getItemType().equals(ItemType.TL.toString()))
-			.filter(v -> v.getNumber().equalMinorVersionNumber(newVersionNumber))
+			.filter(v -> v.getNumber().equalMinorVersionNumber(finalNewVersionNumber))
 			.collect(
 				Collectors.groupingBy(
 					VersionDTO::getLanguage,
@@ -2484,12 +2490,12 @@ public class VocabularyServiceImpl implements VocabularyService
 			.map(Optional::get)
 			.forEach(v -> {
 				if (v.getStatus().equals(Status.PUBLISHED.toString()) || v.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
-					if (v.getNumber().compareTo(newVersionNumber) < 0) {
-						v = task398MigrateVersion(v, newVersionNumber);
+					if (v.getNumber().compareTo(finalNewVersionNumber) < 0) {
+						v = task398MigrateVersion(v, finalNewVersionNumber);
 						clonedTls.add(v);	
 					}
 				} else {
-					v.setNumber(newVersionNumber.increasePatchNumber());
+					v.setNumber(finalNewVersionNumber.increasePatchNumber());
 				}
 			});
 
