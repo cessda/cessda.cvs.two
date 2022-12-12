@@ -847,10 +847,8 @@ public class VersionDTO implements Serializable
 		if ( canonicalUrlInput == null )
 			return null;
 		Matcher m = PATTERN_LANGUAGE_INFORMATION.matcher(canonicalUrlInput);
-		if (m.find()) {
-			if (m.group(1) != null) {
-				canonicalUrlInput = canonicalUrlInput.substring(0, m.start(1)) + canonicalUrlInput.substring(m.end(1));
-			}
+		if (m.find() && m.group(1) != null) {
+			canonicalUrlInput = canonicalUrlInput.substring(0, m.start(1)) + canonicalUrlInput.substring(m.end(1));
 		}
 		return canonicalUrlInput;	
 	}
@@ -869,38 +867,38 @@ public class VersionDTO implements Serializable
 			.forEach(c -> c.setValidUntilVersionId(validUntilVersionId));
 	}
 
-	public VersionDTO clone() {
-		VersionDTO clone = new VersionDTO();
-		clone.setCanonicalUri(this.getCanonicalUri());
-		clone.setCitation(this.getCitation());
-		clone.setCreationDate(this.getCreationDate());
-		clone.setCreator(this.getCreator());
-		clone.setDdiUsage(this.getDdiUsage());
-		clone.setDefinition(this.getDefinition());
-		clone.setDiscussionNotes(this.getDiscussionNotes());
-		clone.setId(this.getId());
-		clone.setInitialVersion(this.getInitialVersion());
-		clone.setItemType(this.getItemType());
-		clone.setLanguage(this.getLanguage());
-		clone.setLastModified(this.getLastModified());
-		clone.setLastStatusChangeDate(this.getLastStatusChangeDate());
-		clone.setLicense(this.getLicense());
-		clone.setLicenseId(this.getLicenseId());
-		clone.setNotation(this.getNotation());
-		clone.setNotes(this.getNotes());
-		clone.setNumber(this.getNumber());
-		clone.setPreviousVersion(this.getPreviousVersion());
-		clone.setPublicationDate(this.getPublicationDate());
-		clone.setPublisher(this.getPublisher());
-		clone.setStatus(this.getStatus());
-		clone.setTitle(this.getTitle());
-		clone.setTranslateAgency(this.getTranslateAgency());
-		clone.setTranslateAgencyLink(this.getTranslateAgencyLink());
-		clone.setUriSl(this.getUriSl());
-		clone.setUri(this.getUri());
-		clone.setVersionChanges(this.getVersionChanges());
-		clone.setVersionNotes(this.getVersionNotes());
-		clone.setVocabularyId(this.getVocabularyId());
-		return clone;
+	public VersionDTO copy() {
+		VersionDTO copy = new VersionDTO();
+		copy.setCanonicalUri(this.getCanonicalUri());
+		copy.setCitation(this.getCitation());
+		copy.setCreationDate(this.getCreationDate());
+		copy.setCreator(this.getCreator());
+		copy.setDdiUsage(this.getDdiUsage());
+		copy.setDefinition(this.getDefinition());
+		copy.setDiscussionNotes(this.getDiscussionNotes());
+		copy.setId(this.getId());
+		copy.setInitialVersion(this.getInitialVersion());
+		copy.setItemType(this.getItemType());
+		copy.setLanguage(this.getLanguage());
+		copy.setLastModified(this.getLastModified());
+		copy.setLastStatusChangeDate(this.getLastStatusChangeDate());
+		copy.setLicense(this.getLicense());
+		copy.setLicenseId(this.getLicenseId());
+		copy.setNotation(this.getNotation());
+		copy.setNotes(this.getNotes());
+		copy.setNumber(this.getNumber());
+		copy.setPreviousVersion(this.getPreviousVersion());
+		copy.setPublicationDate(this.getPublicationDate());
+		copy.setPublisher(this.getPublisher());
+		copy.setStatus(this.getStatus());
+		copy.setTitle(this.getTitle());
+		copy.setTranslateAgency(this.getTranslateAgency());
+		copy.setTranslateAgencyLink(this.getTranslateAgencyLink());
+		copy.setUriSl(this.getUriSl());
+		copy.setUri(this.getUri());
+		copy.setVersionChanges(this.getVersionChanges());
+		copy.setVersionNotes(this.getVersionNotes());
+		copy.setVocabularyId(this.getVocabularyId());
+		return copy;
 	}
 }

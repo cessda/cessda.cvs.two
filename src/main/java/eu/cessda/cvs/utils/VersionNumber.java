@@ -153,14 +153,9 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     public boolean equalMinorVersionNumber(VersionNumber other) {
         if (other != null) {
-            return majorNumber == other.majorNumber && minorNumber == other.minorNumber;
+            return majorNumber.equals(other.majorNumber) && minorNumber.equals(other.minorNumber);
         }
         return false;
-    }
-
-    @Deprecated
-    public boolean isSlNumber() {
-        return patchNumber == 0;
     }
 
     public VersionNumber increaseMinorNumber() {
