@@ -335,10 +335,7 @@ public class CodeDTO implements Serializable {
     
     @JsonGetter("versionNumber")
     public String getVersionNumberAsString() {
-        if (versionNumber != null) {
-            return versionNumber.toString();
-        }
-        return null;
+        return VersionNumber.toString(versionNumber);
     }
 
     @JsonIgnore
@@ -348,7 +345,7 @@ public class CodeDTO implements Serializable {
 
     @JsonSetter("versionNumber")
     public void setVersionNumber(String str) {
-        setVersionNumber(str != null ? new VersionNumber(str) : null);
+        setVersionNumber(VersionNumber.fromString(str));
     }
     
     public String getTitleSq() {

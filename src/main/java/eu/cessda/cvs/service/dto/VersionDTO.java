@@ -316,10 +316,7 @@ public class VersionDTO implements Serializable
     
 	@JsonGetter("number")
     public String getNumberAsString() {
-        if (number != null) {
-            return number.toString();
-        }
-        return null;
+		return VersionNumber.toString(number);
     }
 
 	@JsonIgnore
@@ -330,7 +327,7 @@ public class VersionDTO implements Serializable
 
 	@JsonSetter("number")
     public void setNumber(String str) {
-        setNumber(str != null ? new VersionNumber(str) : null);
+        setNumber(VersionNumber.fromString(str));
     }
 
 	public String getUri()
@@ -867,6 +864,7 @@ public class VersionDTO implements Serializable
 			.forEach(c -> c.setValidUntilVersionId(validUntilVersionId));
 	}
 
+	@JsonIgnore
 	public VersionDTO copy() {
 		VersionDTO copy = new VersionDTO();
 		copy.setCanonicalUri(this.getCanonicalUri());
@@ -900,5 +898,10 @@ public class VersionDTO implements Serializable
 		copy.setVersionNotes(this.getVersionNotes());
 		copy.setVocabularyId(this.getVocabularyId());
 		return copy;
+	}
+
+	@JsonIgnore
+	public LocalDate getLastChangeDate() {
+		return this.getStatus().equals(Status.PUBLISHED.toString()) ? this.getPublicationDate() : this.getLastStatusChangeDate();
 	}
 }

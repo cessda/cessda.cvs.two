@@ -29,6 +29,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -135,6 +136,7 @@ public class AgencyStat implements Serializable {
     }
 
     public AgencyStat updateVocabStat(VocabularyDTO vocabularyDTO) {
+        
         VocabStat vocabStat = getVocabStat(vocabularyDTO);
         VersionNumber latestSlVersionNumber = null;
         VersionNumber latestPublishedSlVersionNumber = null;
@@ -144,28 +146,33 @@ public class AgencyStat implements Serializable {
         List<VersionCodeStat> versionCodeStats = new ArrayList<>();
 
         for (VersionDTO v : vocabularyDTO.getVersions()) {
-            if( v.getItemType().equals(ItemType.SL.toString())){
-                if( v.getStatus().equals( Status.PUBLISHED.toString() )) {
+            if(v.getItemType().equals(ItemType.SL.toString())){
+                if(v.getStatus().equals(Status.PUBLISHED.toString())) {
                     latestPublishedSlVersionNumber = generatePublishedSlVersionCodeStats(latestPublishedSlVersionNumber, versionCodeStats, v);
                 }
-                if( latestSlVersionNumber == null ) {
+                if(latestSlVersionNumber == null) {
                     latestSlVersionNumber = v.getNumber();
                 }
             }
-            if( v.getStatus().equals( Status.PUBLISHED.toString() ) || v.getNumber().equalMinorVersionNumber(latestSlVersionNumber)) {
+            if(v.getStatus().equals(Status.PUBLISHED.toString()) || v.getNumber().equalMinorVersionNumber(latestSlVersionNumber)) {
                 languages.add(v.getLanguage());
-
-                VersionStatusStat versionStatusStat = new VersionStatusStat(v.getLanguage(), v.getItemType(),
-                    v.getNumber(), v.getStatus(), v.getCreationDate(),
-                    v.getStatus().equals(Status.PUBLISHED.toString()) ? v.getPublicationDate() : v.getLastStatusChangeDate());
-                versionStatusStats.add( versionStatusStat );
+                VersionStatusStat versionStatusStat = new VersionStatusStat(
+                    v.getLanguage(),
+                    v.getItemType(),
+                    v.getNumber(),
+                    v.getStatus(),
+                    v.getCreationDate(),
+                    v.getLastChangeDate()
+                );
+                versionStatusStats.add(versionStatusStat);
             }
         }
-        vocabStat.setCurrentVersion( latestSlVersionNumber != null ? latestSlVersionNumber.toString() : null);
-        vocabStat.setLatestPublishedVersion( latestPublishedSlVersionNumber != null ? latestPublishedSlVersionNumber.toString() : null);
-        vocabStat.setLanguages( new ArrayList<>(languages) );
-        vocabStat.setVersionCodeStats( versionCodeStats );
-        vocabStat.setVersionStatusStats( versionStatusStats );
+
+        vocabStat.setCurrentVersion(VersionNumber.toString(latestSlVersionNumber));
+        vocabStat.setLatestPublishedVersion(VersionNumber.toString(latestPublishedSlVersionNumber));
+        vocabStat.setLanguages(new ArrayList<>(languages));
+        vocabStat.setVersionCodeStats(versionCodeStats);
+        vocabStat.setVersionStatusStats(versionStatusStats);
 
         return this;
     }

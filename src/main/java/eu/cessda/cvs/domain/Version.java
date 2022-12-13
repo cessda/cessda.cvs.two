@@ -264,10 +264,7 @@ public class Version implements Serializable {
 
     @JsonGetter("number")
     public String getNumberAsString() {
-        if (number != null) {
-            return number.toString();
-        }
-        return null;
+        return VersionNumber.toString(number);
     }
 
     public Version number(VersionNumber number) {
@@ -282,7 +279,7 @@ public class Version implements Serializable {
 
     @JsonSetter("number")
     public void setNumber(String str) {
-        setNumber(str != null ? new VersionNumber(str) : null);
+        setNumber(VersionNumber.fromString(str));
     }
 
     public String getUri() {
