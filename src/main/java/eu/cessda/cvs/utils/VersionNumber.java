@@ -5,6 +5,9 @@ import java.io.Serializable;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
@@ -20,6 +23,8 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 @JsonDeserialize(using = VersionNumber.Deserializer.class)
 public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
+    private static final Logger log = LoggerFactory.getLogger(VersionNumber.class);
+    
     public static class Deserializer extends StdDeserializer<VersionNumber> {
 
         public Deserializer() {
@@ -37,7 +42,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
                 return VersionNumber.fromString(p.getText()); 
             } 
             catch (Exception e) { 
-                e.printStackTrace(); 
+                log.error("Error deserializing version number", e);
             }    
             return null;
         }
@@ -136,6 +141,10 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return majorNumber + "." + minorNumber + "." + patchNumber;
     }
 
+    public static String toString(VersionNumber versionNumber) {
+        return versionNumber != null ? versionNumber.toString() : null;
+    }
+
     @Override
     public int compareTo(VersionNumber other) {
         if (this == other)
@@ -186,30 +195,42 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }       
+        if (obj == null) {
             return false;
-        if (obj.getClass() == String.class)
+        }        
+        if (obj.getClass() == String.class) {
             return this.equals(VersionNumber.fromString((String) obj));
-        if (getClass() != obj.getClass())
+        }        
+        if (getClass() != obj.getClass()) {
             return false;
+        }
+        
         VersionNumber other = (VersionNumber) obj;
-        if (majorNumber == null) {
-            if (other.majorNumber != null)
-                return false;
-        } else if (!majorNumber.equals(other.majorNumber))
+
+        if ((majorNumber == null || other.majorNumber == null) && majorNumber != other.majorNumber) {
             return false;
-        if (minorNumber == null) {
-            if (other.minorNumber != null)
-                return false;
-        } else if (!minorNumber.equals(other.minorNumber))
+        }
+        if ((minorNumber == null || other.minorNumber == null) && minorNumber != other.minorNumber) {
             return false;
-        if (patchNumber == null) {
-            if (other.patchNumber != null)
-                return false;
-        } else if (!patchNumber.equals(other.patchNumber))
+        }
+        if ((patchNumber == null || other.patchNumber == null) && patchNumber != other.patchNumber) {
             return false;
+        }
+
+        if (!majorNumber.equals(other.majorNumber)) {
+            return false;
+        }
+        if (!minorNumber.equals(other.minorNumber)) {
+            return false;
+        }
+        if (!patchNumber.equals(other.patchNumber)) {
+            return false;
+        }
+
         return true;
     }
 }

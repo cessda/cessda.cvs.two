@@ -2424,10 +2424,16 @@ public class VocabularyServiceImpl implements VocabularyService
 			.filter(v -> v.getItemType().equals(ItemType.SL.toString()))
 			.max((v1, v2) -> v1.getNumber().compareTo(v2.getNumber()))
 			.orElse(null);
+		
+		if (currentSlVersion == null) {
+			log.warn("current SL version is null");
+			return vocabularyDTO;
+		}
 
 		VersionNumber newVersionNumber = getLatestPublishedVersionNumber(vocabularyDTO);
 		
 		if (newVersionNumber == null) {
+			log.warn("latest published version number is null");
 			return vocabularyDTO;
 		}
 		
