@@ -26,6 +26,8 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     private static final Logger log = LoggerFactory.getLogger(VersionNumber.class);
     
     public static class Deserializer extends StdDeserializer<VersionNumber> {
+    
+        private static final long serialVersionUID = 1L;
 
         public Deserializer() {
             this(null);
@@ -49,6 +51,8 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     }
 
     public static class Serializer extends StdSerializer<VersionNumber> {
+    
+        private static final long serialVersionUID = 1L;
 
         public Serializer() {
             this(null);
