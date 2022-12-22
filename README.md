@@ -1,3 +1,5 @@
+[![SQA badge](https://api.eu.badgr.io/public/assertions/SyOB9h-fSeq04OYVOQaNPw/image)](https://api.eu.badgr.io/public/badges/IDUsZJpNQPuiJpPwmJ8iJw)
+
 [![Build Status](https://jenkins.cessda.eu/buildStatus/icon?job=cessda.cvs.two%2Fmaster)](https://jenkins.cessda.eu/job/cessda.cvs.two/job/master/)
 [![Bugs](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=bugs)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
 [![Code Smells](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=code_smells)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
@@ -19,13 +21,13 @@ This repository contains all the source code and configuration needed to deploy 
 
 ```bash
 <ROOT>
-├── infrastructure/		# Deployment scripts and configuration for gcp
-├── src/				# Java application source code and configuration
-├── target/				# Target build location - this is not committed to Git
-├── CONTRIBUTORS.md		# List of contributors to the project
-├── Jenkinsfile			# Script used by Jenkins to deploy the application to gcp
-├── pom.xml				# Maven build configuration file
-├── README.md			# Instructions to build and deploy the application (this file)
+├── infrastructure/ # Deployment scripts and configuration for gcp
+├── src/            # Java application source code and configuration
+├── target/         # Target build location - this is not committed to Git
+├── CONTRIBUTORS.md # List of contributors to the project
+├── Jenkinsfile     # Script used by Jenkins to deploy the application to gcp
+├── pom.xml         # Maven build configuration file
+├── README.md       # Instructions to build and deploy the application (this file)
 
 ```
 
@@ -46,21 +48,25 @@ Several frameworks and languages are used in this application.
 
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
-1. [Node.js][]: We use Node to run a development web server and build the project.
+1. `[Node.js][]`: We use Node to run a development web server and build the project.
    Depending on your system, you can install Node either from source or as a pre-packaged bundle.
 
 After installing Node, you should be able to run the following command to install development tools.
 You will only need to run this command when dependencies change in [package.json](package.json).
 
+```Javascript
     npm install
+```
 
-We use npm scripts and [Webpack][] as our build system.
+We use npm scripts and `[Webpack][]` as our build system.
 
 Run the following commands in two separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
+```Javascript
     ./mvnw
     npm start
+```
 
 Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
 specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
@@ -70,44 +76,52 @@ The `npm run` command will list all of the scripts available to run for this pro
 
 ### Managing dependencies
 
-For example, to add [Leaflet][] library as a runtime dependency of your application, you would run following command:
+For example, to add `[Leaflet][]` library as a runtime dependency of your application, you would run following command:
 
+```Javascript
     npm install --save --save-exact leaflet
+```
 
-To benefit from TypeScript type definitions from [DefinitelyTyped][] repository in development, you would run following command:
+To benefit from TypeScript type definitions from `[DefinitelyTyped][]` repository in development, you would run following command:
 
+```Javascript
     npm install --save-dev --save-exact @types/leaflet
+```
 
-Then you would import the JS and CSS files specified in library's installation instructions so that [Webpack][] knows about them:
+Then you would import the JS and CSS files specified in library's installation instructions so that `[Webpack][]` knows about them:
 Edit [src/main/webapp/app/vendor.ts](src/main/webapp/app/vendor.ts) file:
 
-```
+```Javascript
 import 'leaflet/dist/leaflet.js';
 ```
 
 Edit [src/main/webapp/content/scss/vendor.scss](src/main/webapp/content/scss/vendor.scss) file:
 
-```
+```Javascript
 @import '~leaflet/dist/leaflet.css';
 ```
 
 Note: There are still a few other things remaining to do for Leaflet that we won't detail here.
 
-For further instructions on how to develop with JHipster, have a look at [Using JHipster in development][].
+For further instructions on how to develop with JHipster, have a look at `[Using JHipster in development][]`.
 
 ### Using Angular CLI
 
-You can also use [Angular CLI][] to generate some custom client code.
+You can also use `[Angular CLI][]` to generate some custom client code.
 
 For example, the following command:
 
+```Javascript
     ng generate component my-component
+```
 
-will generate few files:
+will generate the files:
 
+```Javascript
     create src/main/webapp/app/my-component/my-component.component.html
     create src/main/webapp/app/my-component/my-component.component.ts
     update src/main/webapp/app/app.module.ts
+```
 
 ## Building for production
 
@@ -115,96 +129,125 @@ will generate few files:
 
 To build the final jar and optimize the cvs application for production, run:
 
+```Java
     ./mvnw -Pprod clean verify
+```
 
 This will concatenate and minify the client CSS and JavaScript files. It will also modify `index.html` so it references these new files.
 To ensure everything worked, run:
 
+```Java
     java -jar target/*.jar
+```
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
-Refer to [Using JHipster in production][] for more details.
+Refer to `[Using JHipster in production][]` for more details.
 
 ### Packaging as war
 
 To package your application as a war in order to deploy it to an application server, run:
 
+```Java
     ./mvnw -Pprod,war clean verify
+```
 
 ## Testing
 
 To launch your application's tests, run:
 
+```Java
     ./mvnw verify
+```
 
 ### Client tests
 
-Unit tests are run by [Jest][] and written with [Jasmine][]. They're located in [src/test/javascript/](src/test/javascript/) and can be run with:
+Unit tests are run by `[Jest][]` and written with `[Jasmine][]`. They're located in `[src/test/javascript/](src/test/javascript/)` and can be run with:
 
+```Javascript
     npm test
+```
 
-For more information, refer to the [Running tests page][].
+For more information, refer to the `[Running tests page][]`.
 
 ### Code quality
 
-Sonar is used to analyse code quality. You can start a local Sonar server (accessible on http://localhost:9001) with:
+Sonar is used to analyse code quality. You can start a local Sonar server (accessible on [localhost:9001](http://localhost:9001)) with:
 
-```
+```Java
 docker-compose -f src/main/docker/sonar.yml up -d
 ```
 
-You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner) or by using the maven plugin.
+You can run a Sonar analysis with using the [sonar-scanner](https://docs.sonarqube.org/display/SCAN/Analyzing+with+SonarQube+Scanner)
+or by using the maven plugin.
 
 Then, run a Sonar analysis:
 
-```
+```Java
 ./mvnw -Pprod clean verify sonar:sonar
 ```
 
-If you need to re-run the Sonar phase, please be sure to specify at least the `initialize` phase since Sonar properties are loaded from the sonar-project.properties file.
+If you need to re-run the Sonar phase, please be sure to specify at least the `initialize`
+phase since Sonar properties are loaded from the sonar-project.properties file.
 
-```
+```Java
 ./mvnw initialize sonar:sonar
 ```
 
-or
-
-For more information, refer to the [Code quality page][].
+For more information, refer to the `[Code quality page][]`.
 
 ## Using Docker to simplify development
 
-You can use Docker to improve your JHipster development experience. A number of docker-compose configuration are available in the [src/main/docker](src/main/docker) folder to launch required third party services.
+You can use Docker to improve your JHipster development experience.
+A number of docker-compose configuration are available in the [src/main/docker](src/main/docker)
+folder to launch required third party services.
 
 For example, to start a mysql database in a docker container, run:
 
+```Java
     docker-compose -f src/main/docker/mysql.yml up -d
+```
 
 To stop it and remove the container, run:
 
+```Java
     docker-compose -f src/main/docker/mysql.yml down
+```
 
 You can also fully dockerize your application and all the services that it depends on.
 To achieve this, first build a docker image of your app by running:
 
+```Java
     ./mvnw -Pprod verify jib:dockerBuild
+```
 
 Then run:
 
+```Java
     docker-compose -f src/main/docker/app.yml up -d
+```
 
-For more information refer to [Using Docker and Docker-Compose][], this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`), which is able to generate docker configurations for one or several JHipster applications.
+For more information refer to `[Using Docker and Docker-Compose][]`,
+this page also contains information on the docker-compose sub-generator (`jhipster docker-compose`),
+which is able to generate docker configurations for one or several JHipster applications.
 
 ## Contributing
 
-Please read [CESSDA Technical Guidelines](https://bitbucket.org/cessda/cessda.guidelines.public/) for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING](CONTRIBUTING.md) for details on our code of conduct,
+and the process for submitting pull requests to us.
+
+## Versioning
+
+See [Semantic Versioning](https://semver.org/) for guidance.
 
 ## Contributors
 
-* **Anindita Sigit Nugraha** - *Developer*
-* **Julien Le Hericy** - *Initial automation and infrastructure*
-* **Matthew Morris** - *Conversion to the new GCP infrastructure*
-* **Joshua Tetteh Ocansey** - *DevOps Engineer*
+You can find the list of contributors in the [CONTRIBUTORS](CONTRIBUTORS.md) file.
 
+## License
 
-You can find the list of all contributors [here](CONTRIBUTORS.md).
+See the [LICENSE](LICENSE.txt) file.
+
+## CITING
+
+See the [CITATION](CITATION.cff) file.
