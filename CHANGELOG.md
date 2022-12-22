@@ -14,33 +14,53 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - *Fixed (for any bug fixes)*
 - *Security (in case of vulnerabilities)*
 
+## [3.0.0] - UNRELEASED
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.xxxx.svg)](https://doi.org/10.5281/zenodo.xxxx)
+
+### Additions
+
+[#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+
+### Changes
+
+[#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+
+### Fixes
+
+[#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+
+### Security
+
+- None
+
 ## [2.2.0] - 2022-06-30
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6598225.svg)](https://doi.org/10.5281/zenodo.6598225)
 
 ### Additions
-[#390](https://bitbucket.org/cessda/cessda.cvs.two/issues/390)	Add Lithuanian and Estonian to target languages
-[#381](https://bitbucket.org/cessda/cessda.cvs.two/issues/381)	Add Japanese to PDF and SKOS exports
-[#380](https://bitbucket.org/cessda/cessda.cvs.two/issues/380)	Add Japanese to target languages
-[#306](https://bitbucket.org/cessda/cessda.cvs.two/issues/306)	Add Matomo Cloud tracking code
-[#274](https://bitbucket.org/cessda/cessda.cvs.two/issues/274)  Structured logs are ingested into EFK system
-[#263](https://bitbucket.org/cessda/cessda.cvs.two/issues/263)	Add Swagger validator badge to API documentation page
+[#390](https://bitbucket.org/cessda/cessda.cvs.two/issues/390) Add Lithuanian and Estonian to target languages
+[#381](https://bitbucket.org/cessda/cessda.cvs.two/issues/381) Add Japanese to PDF and SKOS exports
+[#380](https://bitbucket.org/cessda/cessda.cvs.two/issues/380) Add Japanese to target languages
+[#306](https://bitbucket.org/cessda/cessda.cvs.two/issues/306) Add Matomo Cloud tracking code
+[#274](https://bitbucket.org/cessda/cessda.cvs.two/issues/274) Structured logs are ingested into EFK system
+[#263](https://bitbucket.org/cessda/cessda.cvs.two/issues/263) Add Swagger validator badge to API documentation page
 
 ### Changes
-[#406](https://bitbucket.org/cessda/cessda.cvs.two/issues/406)  Updated versions of images referenced in Docker Compose files
-[#392](https://bitbucket.org/cessda/cessda.cvs.two/issues/392)	Documentation updates for current release
-[#389](https://bitbucket.org/cessda/cessda.cvs.two/issues/389)	Update usage text for Rest APIs
-[#388](https://bitbucket.org/cessda/cessda.cvs.two/issues/388)	Change label and target of REST API link
-[#360](https://bitbucket.org/cessda/cessda.cvs.two/issues/360)	Remove term ‘CVS’ from User-facing materials
+[#406](https://bitbucket.org/cessda/cessda.cvs.two/issues/406) Updated versions of images referenced in Docker Compose files
+[#392](https://bitbucket.org/cessda/cessda.cvs.two/issues/392) Documentation updates for current release
+[#389](https://bitbucket.org/cessda/cessda.cvs.two/issues/389) Update usage text for Rest APIs
+[#388](https://bitbucket.org/cessda/cessda.cvs.two/issues/388) Change label and target of REST API link
+[#360](https://bitbucket.org/cessda/cessda.cvs.two/issues/360) Remove term ‘CVS’ from User-facing materials
 
 ### Fixes
-[#396](https://bitbucket.org/cessda/cessda.cvs.two/issues/396)	Usage information was not saved
-[#391](https://bitbucket.org/cessda/cessda.cvs.two/issues/391)	SL_Admin was not able to publish CVs
-[#375](https://bitbucket.org/cessda/cessda.cvs.two/issues/375)	Language tags were not in alphabetical order
-[#374](https://bitbucket.org/cessda/cessda.cvs.two/issues/374)	Password reset email used wrong field to salute user
-[#363](https://bitbucket.org/cessda/cessda.cvs.two/issues/363)	CESSDA Topic Classification CV opened slowly in Editor
-[#329](https://bitbucket.org/cessda/cessda.cvs.two/issues/329)	Add missing space to citation text
-[#316](https://bitbucket.org/cessda/cessda.cvs.two/issues/316)	Unable to read CVS file with multiline content inside quotes for import
+[#396](https://bitbucket.org/cessda/cessda.cvs.two/issues/396) Usage information was not saved
+[#391](https://bitbucket.org/cessda/cessda.cvs.two/issues/391) SL_Admin was not able to publish CVs
+[#375](https://bitbucket.org/cessda/cessda.cvs.two/issues/375) Language tags were not in alphabetical order
+[#374](https://bitbucket.org/cessda/cessda.cvs.two/issues/374) Password reset email used wrong field to salute user
+[#363](https://bitbucket.org/cessda/cessda.cvs.two/issues/363) CESSDA Topic Classification CV opened slowly in Editor
+[#329](https://bitbucket.org/cessda/cessda.cvs.two/issues/329) Add missing space to citation text
+[#316](https://bitbucket.org/cessda/cessda.cvs.two/issues/316) Unable to read CVS file with multiline content inside quotes for import
 
 ### Security
 
