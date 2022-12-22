@@ -11,7 +11,6 @@
 [![Technical Debt](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=sqale_index)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
 [![Vulnerabilities](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=vulnerabilities)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
 
-
 # CESSDA Vocabulary Service
 
 This repository contains all the source code and configuration needed to deploy the CESSDA Vocabulary Service application
