@@ -35,10 +35,6 @@ public class VersionUtils {
         return VersionNumber.fromString(v1).compareTo(VersionNumber.fromString(v2));
     }
 
-    public static boolean isSlVersionNumber(String versionNumber) {
-        return VersionNumber.fromString(versionNumber).isSlNumber();
-    }
-
     public static String increaseSlVersionNumber(String versionNumber) {
         return VersionNumber.fromString(versionNumber).increaseMinorNumber().toString();
     }

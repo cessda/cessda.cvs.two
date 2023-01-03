@@ -31,7 +31,7 @@ public class VersionNumberJavaDescriptor extends AbstractTypeDescriptor<VersionN
         if (value == null)
             return null;
         
-        if (String.class.isInstance(value))
+        if (value instanceof String)
             return VersionNumber.fromString(value.toString());
         
         throw unknownWrap(value.getClass());

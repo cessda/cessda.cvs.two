@@ -339,23 +339,23 @@ public class ConceptDTO implements Serializable {
         return Objects.hashCode(getId());
     }
 
-    public ConceptDTO clone() {
-        ConceptDTO clone = new ConceptDTO();
-        clone.setDefinition(this.getDefinition());
-        clone.setDeprecated(this.getDeprecated());
-        clone.setId(this.getId());
-        clone.setIntroducedInVersionId(this.getIntroducedInVersionId());
-        clone.setNotation(this.getNotation());
-        clone.setParent(this.getParent());
-        clone.setPosition(this.getPosition());
-        clone.setPreviousConcept(this.getPreviousConcept());
-        clone.setReplacedById(this.getReplacedById());
-        clone.setSlConcept(this.getSlConcept());
-        clone.setTitle(this.getTitle());
-        clone.setUri(this.getUri());
-        clone.setValidFrom(this.getValidFrom());
-        clone.setValidUntilVersionId(this.getValidUntilVersionId());
-        clone.setVersionId(this.getVersionId());
-        return clone;
+    public ConceptDTO copy() {
+        ConceptDTO copy = new ConceptDTO();
+        copy.setDefinition(this.getDefinition());
+        copy.setDeprecated(this.getDeprecated());
+        copy.setId(this.getId());
+        copy.setIntroducedInVersionId(this.getIntroducedInVersionId());
+        copy.setNotation(this.getNotation());
+        copy.setParent(this.getParent());
+        copy.setPosition(this.getPosition());
+        copy.setPreviousConcept(this.getPreviousConcept());
+        copy.setReplacedById(this.getReplacedById());
+        copy.setSlConcept(this.getSlConcept());
+        copy.setTitle(this.getTitle());
+        copy.setUri(this.getUri());
+        copy.setValidFrom(this.getValidFrom());
+        copy.setValidUntilVersionId(this.getValidUntilVersionId());
+        copy.setVersionId(this.getVersionId());
+        return copy;
     }
 }

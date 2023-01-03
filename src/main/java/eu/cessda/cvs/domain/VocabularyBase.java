@@ -608,10 +608,7 @@ public class VocabularyBase implements Serializable {
 
     @JsonGetter("versionNumber")
     public String getVersionNumberAsString() {
-        if (versionNumber != null) {
-            return versionNumber.toString();
-        }
-        return null;
+        return VersionNumber.toString(versionNumber);
     }
     
     public VocabularyBase versionNumber(VersionNumber versionNumber) {
@@ -626,7 +623,7 @@ public class VocabularyBase implements Serializable {
 
     @JsonSetter("versionNumber")
     public void setVersionNumber(String str) {
-        setVersionNumber(str != null ? new VersionNumber(str) : null);
+        setVersionNumber(VersionNumber.fromString(str));
     }
 
     public Long getInitialPublication() {
