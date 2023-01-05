@@ -492,7 +492,7 @@
                                         <span *ngIf="version!.status === 'PUBLISHED'">&nbsp;&nbsp;&nbsp; Published: {{version!.publicationDate}}</span>
                                         <span *ngIf="version!.status !== 'PUBLISHED'">&nbsp;&nbsp;&nbsp; {{version!.status}}</span>
                                 </a>
-                                <span *ngIf="isCurrentVersionHistoryOpen && version!.status === 'PUBLISHED'">
+                                <span *ngIf="isCurrentVersionHistoryOpen && (version!.status === 'READY_TO_TRANSLATE' || version!.status === 'PUBLISHED')">
                                     &nbsp;<span *jhiHasAnyAgencyAuthority="{actionType:'EDIT_VERSION_INFO_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:version!.language}">
                                         <a *ngIf="!isCurrentVersionInfoEdit" class="btn btn-primary btn-sm" ngbTooltip="edit current version info" href="javascript:void(0);" (click)="isCurrentVersionInfoEdit = !isCurrentVersionInfoEdit">
                                             <fa-icon icon="edit"></fa-icon> <span> Edit</span>
