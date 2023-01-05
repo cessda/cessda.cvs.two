@@ -127,12 +127,13 @@
                                     </button>
                                 </div>
                             </div>
-
-                            <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:vocabulary!.selectedLang}"
-                                    class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openDeleteCvPopup()">
-                                <fa-icon [icon]="'trash'"></fa-icon>
-                                <span>Delete {{version!.itemType}} {{version!.language}}</span>
-                            </button>
+                            <div *ngIf="version!.status === 'DRAFT' || version!.status === 'REVIEW' || version!.status === 'PUBLISHED'">
+                                <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_TL'], language:vocabulary!.selectedLang}"
+                                        class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openDeleteCvPopup()">
+                                    <fa-icon [icon]="'trash'"></fa-icon>
+                                    <span>Delete {{version!.itemType}} {{version!.language}}</span>
+                                </button>
+                            </div>  
                         </div>
 
                         <div *ngIf="!(concept !== null && concept.deprecated)">
