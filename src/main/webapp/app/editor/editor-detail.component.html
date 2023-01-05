@@ -159,22 +159,12 @@
                                         </button>
 
                                         <div *ngIf="concept">
-                                            <div *ngIf="version!.status !== 'REVIEW'">
+                                            <div *ngIf="version!.concepts!.length > 0">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
                                                     <fa-icon [icon]="'edit'"></fa-icon>
                                                     <span>Edit code</span>
                                                 </button>
-                                            </div>
-
-                                            <div *ngIf="version!.status === 'REVIEW'">
-                                                <div *jhiHasAnyAgencyAuthority="{actionType:'PERFORM_ACTION_IN_REVIEW', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}">
-                                                    <button *jhiHasAnyAgencyAuthority="{actionType:'EDIT_CODE', agency:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
-                                                            class="btn sk-select-min sk-input-f mtop10" (click)="openEditCodePopup()">
-                                                        <fa-icon [icon]="'edit'"></fa-icon>
-                                                        <span>Edit code</span>
-                                                    </button>
-                                                </div>
                                             </div>
                                             <div *ngIf="version!.concepts!.length > 1">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'REORDER_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
