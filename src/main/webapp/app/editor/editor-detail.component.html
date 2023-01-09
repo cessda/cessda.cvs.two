@@ -51,12 +51,14 @@
                             <span>Cv Actions</span>
                         </a>
                         <div id="action-panel" class="acc-body" [ngbCollapse]="isCvActionCollapse">
-                            <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL']}"
-                                    class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true , true)">
-                                <fa-icon [icon]="'plus'"></fa-icon>
-                                <span>Add Cv</span>
-                            </button>
-                            <div *ngIf="enableAddTl">
+                            <div *ngIf="!(version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH')">
+                                <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL']}"
+                                        class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true , true)">
+                                    <fa-icon [icon]="'plus'"></fa-icon>
+                                    <span>Add Cv</span>
+                                </button>
+                            </div>   
+                            <div *ngIf="(enableAddTl && !(version!.status === 'READY_TO_PUBLISH' || version!.status === 'PUBLISHED'))">
                                 <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL'], language:tlLanguageStatus}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true, false )">
                                     <fa-icon style="font-size:110%" [icon]="'language'"></fa-icon>
@@ -146,7 +148,7 @@
                             </a>
                             <div id="action-code-panel" class="acc-body" [ngbCollapse]="isCodeActionCollapse">
                                 <div *ngIf="version!.itemType === 'SL'">
-                                    <div *ngIf="!(version!.status === 'PUBLISHED' || version!.status === 'READY_TO_TRANSLATE')">
+                                    <div *ngIf="!(version!.status === 'READY_TO_PUBLISH' || version!.status === 'READY_TO_TRANSLATE')">
                                         <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                                 class="btn sk-select-min sk-input-f mtop10" (click)="openAddCodePopup()">
                                             <fa-icon [icon]="'plus'"></fa-icon>
@@ -181,7 +183,7 @@
                                                     <span>Deprecate code</span>
                                                 </button>
                                             </div>
-                                            <div *ngIf="concept!.introducedInVersionId != null && concept!.introducedInVersionId == version!.id">
+                                            <div *ngIf="concept!.introducedInVersionId != null && concept!.introducedInVersionId == version!.id && version!.status !== 'PUBLISHED'">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'DELETE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                                         class="btn sk-select-min sk-input-f btn-danger mtop20" (click)="openDeleteCodePopup()">
                                                     <fa-icon [icon]="'trash'"></fa-icon>
