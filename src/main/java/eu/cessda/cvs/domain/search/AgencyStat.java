@@ -20,6 +20,8 @@ import eu.cessda.cvs.service.dto.AgencyDTO;
 import eu.cessda.cvs.service.dto.ConceptDTO;
 import eu.cessda.cvs.service.dto.VersionDTO;
 import eu.cessda.cvs.service.dto.VocabularyDTO;
+import eu.cessda.cvs.utils.VersionNumber;
+
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
@@ -27,6 +29,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Id;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -133,42 +136,48 @@ public class AgencyStat implements Serializable {
     }
 
     public AgencyStat updateVocabStat(VocabularyDTO vocabularyDTO) {
+        
         VocabStat vocabStat = getVocabStat(vocabularyDTO);
-        String latestSlVersionNumber = null;
-        String latestPublishedSlVersionNumber = null;
+        VersionNumber latestSlVersionNumber = null;
+        VersionNumber latestPublishedSlVersionNumber = null;
 
         Set<String> languages = new LinkedHashSet<>();
         List<VersionStatusStat> versionStatusStats = new ArrayList<>();
         List<VersionCodeStat> versionCodeStats = new ArrayList<>();
 
         for (VersionDTO v : vocabularyDTO.getVersions()) {
-            if( v.getItemType().equals(ItemType.SL.toString())){
-                if( v.getStatus().equals( Status.PUBLISHED.toString() )) {
+            if(v.getItemType().equals(ItemType.SL.toString())){
+                if(v.getStatus().equals(Status.PUBLISHED.toString())) {
                     latestPublishedSlVersionNumber = generatePublishedSlVersionCodeStats(latestPublishedSlVersionNumber, versionCodeStats, v);
                 }
-                if( latestSlVersionNumber == null ) {
+                if(latestSlVersionNumber == null) {
                     latestSlVersionNumber = v.getNumber();
                 }
             }
-            if( v.getStatus().equals( Status.PUBLISHED.toString() ) || v.getNumber().startsWith(latestSlVersionNumber)) {
+            if(v.getStatus().equals(Status.PUBLISHED.toString()) || v.getNumber().equalMinorVersionNumber(latestSlVersionNumber)) {
                 languages.add(v.getLanguage());
-
-                VersionStatusStat versionStatusStat = new VersionStatusStat(v.getLanguage(), v.getItemType(),
-                    v.getNumber(), v.getStatus(), v.getCreationDate(),
-                    v.getStatus().equals(Status.PUBLISHED.toString()) ? v.getPublicationDate() : v.getLastStatusChangeDate());
-                versionStatusStats.add( versionStatusStat );
+                VersionStatusStat versionStatusStat = new VersionStatusStat(
+                    v.getLanguage(),
+                    v.getItemType(),
+                    v.getNumber(),
+                    v.getStatus(),
+                    v.getCreationDate(),
+                    v.getLastChangeDate()
+                );
+                versionStatusStats.add(versionStatusStat);
             }
         }
-        vocabStat.setCurrentVersion( latestSlVersionNumber );
-        vocabStat.setLatestPublishedVersion( latestPublishedSlVersionNumber );
-        vocabStat.setLanguages( new ArrayList<>(languages) );
-        vocabStat.setVersionCodeStats( versionCodeStats );
-        vocabStat.setVersionStatusStats( versionStatusStats );
+
+        vocabStat.setCurrentVersion(VersionNumber.toString(latestSlVersionNumber));
+        vocabStat.setLatestPublishedVersion(VersionNumber.toString(latestPublishedSlVersionNumber));
+        vocabStat.setLanguages(new ArrayList<>(languages));
+        vocabStat.setVersionCodeStats(versionCodeStats);
+        vocabStat.setVersionStatusStats(versionStatusStats);
 
         return this;
     }
 
-    private String generatePublishedSlVersionCodeStats(String latestPublishedSlVersionNumber, List<VersionCodeStat> versionCodeStats, VersionDTO v) {
+    private VersionNumber generatePublishedSlVersionCodeStats(VersionNumber latestPublishedSlVersionNumber, List<VersionCodeStat> versionCodeStats, VersionDTO v) {
         if( latestPublishedSlVersionNumber == null )
             latestPublishedSlVersionNumber = v.getNumber();
 

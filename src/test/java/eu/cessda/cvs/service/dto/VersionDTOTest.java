@@ -15,6 +15,9 @@ package eu.cessda.cvs.service.dto;
 
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+
+import java.lang.reflect.Method;
+
 import eu.cessda.cvs.web.rest.TestUtil;
 
 public class VersionDTOTest {
@@ -32,5 +35,19 @@ public class VersionDTOTest {
         assertThat(versionDTO1).isNotEqualTo(versionDTO2);
         versionDTO1.setId(null);
         assertThat(versionDTO1).isNotEqualTo(versionDTO2);
+    }
+
+    private Method getRemoveLanguageInformationMethod() throws NoSuchMethodException {
+        Method method = VersionDTO.class.getDeclaredMethod("removeLanguageInformation", String.class);
+        method.setAccessible(true);
+        return method;
+    }
+
+    @Test
+    public void removeLanguageInformationTest() throws Exception {
+        assertThat(getRemoveLanguageInformationMethod().invoke(null, "urn:ddi:int.ddi.cv:398-TEST-03:1.0")).isEqualTo("urn:ddi:int.ddi.cv:398-TEST-03:1.0");
+        assertThat(getRemoveLanguageInformationMethod().invoke(null, "urn:ddi:int.ddi.cv:398-TEST-03:1.0.0")).isEqualTo("urn:ddi:int.ddi.cv:398-TEST-03:1.0.0");
+        assertThat(getRemoveLanguageInformationMethod().invoke(null, "urn:ddi:int.ddi.cv:398-TEST-03:en-1.0")).isEqualTo("urn:ddi:int.ddi.cv:398-TEST-03:1.0");
+        assertThat(getRemoveLanguageInformationMethod().invoke(null, "urn:ddi:int.ddi.cv:398-TEST-03:en-1.0.0")).isEqualTo("urn:ddi:int.ddi.cv:398-TEST-03:1.0.0");
     }
 }

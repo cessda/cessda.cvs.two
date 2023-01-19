@@ -154,7 +154,10 @@
                             <span class="label-required">Version number</span>
                         </div>
                         <div class="detail-column">
-                            <input type="text" style="width:100px" class="form-control" id="field_versionNumberSl" name="versionNumberSl" formControlName="versionNumberSl"/>
+                            <span>
+                                <input type="text" style="width:100px;display:inline-block;text-align:right;" class="form-control" id="field_versionNumberSl" name="versionNumberSl" formControlName="versionNumberSl"/>
+                                <span>.{{proposedPatchNumber}}</span>
+                            </span>
                             <div *ngIf="cvForwardStatusForm.get('versionNumberSl')!.invalid && (cvForwardStatusForm.get('versionNumberSl')!.dirty || cvForwardStatusForm.get('versionNumberSl')!.touched)">
                                 <small class="form-text text-danger"
                                        *ngIf="cvForwardStatusForm.get('versionNumberSl')?.errors?.required" jhiTranslate="entity.validation.required">
@@ -163,33 +166,7 @@
 
                                 <small class="form-text text-danger"
                                        *ngIf="cvForwardStatusForm.get('versionNumberSl')?.errors?.pattern">
-                                    Version number format is [number1].[number2], with [number1] is larger than 0. Both of them must be no longer than 2 digits.
-                                </small>
-                            </div>
-                            <small class="form-text text-danger"
-                                   *ngIf="isVersionInvalid">
-                                Version number is lower than {{versionParam!.number}}. Please set version number {{versionParam!.number}} or higher.
-                            </small>
-                        </div>
-                    </div>
-                    <div *ngIf="versionParam!.status === 'REVIEW' && !isSlForm" class="row-detail form-group">
-                        <div class="label-column-input label-right">
-                            <span class="label-required">Version number</span>
-                        </div>
-                        <div class="detail-column label-column-value">
-                            <span>
-                                <span>{{slVersionNumber}}.</span>
-                                <input type="text" style="width:60px;display:inline-block" class="form-control" id="field_versionNumberTl" name="versionNumberTl" formControlName="versionNumberTl"/>
-                            </span>
-                            <div *ngIf="cvForwardStatusForm.get('versionNumberTl')!.invalid && (cvForwardStatusForm.get('versionNumberTl')!.dirty || cvForwardStatusForm.get('versionNumberTl')!.touched)">
-                                <small class="form-text text-danger"
-                                       *ngIf="cvForwardStatusForm.get('versionNumberTl')?.errors?.required" jhiTranslate="entity.validation.required">
-                                    This field is required.
-                                </small>
-
-                                <small class="form-text text-danger"
-                                       *ngIf="cvForwardStatusForm.get('versionNumberTl')?.errors?.pattern">
-                                    Please fill with a positive number no longer that 2 digits.
+                                    Version number format is [number1].[number2].[number3], with [number1] is larger than 0. Both [number1] and [number2] must be no longer than 2 digits.
                                 </small>
                             </div>
                             <small class="form-text text-danger"

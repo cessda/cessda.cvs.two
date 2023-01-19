@@ -38,11 +38,11 @@
                 </select>
             </ng-template>
         </td>
-        <td *ngIf="!getVersionsByLang(lang)![0].number!.startsWith(slVersionNumber)" class="tac" colspan="3">
-            The {{lang | vocabularyLanguageFromKey}} {{slVersionNumber}}.x has not been released yet. You can export the previous version
+        <td *ngIf="!getVersionsByLang(lang)![0].number!.startsWith(getSlMajorMinorVersionNumber(slVersionNumber))" class="tac" colspan="3">
+            The {{lang | vocabularyLanguageFromKey}} {{getSlMajorMinorVersionNumber(slVersionNumber)}}.x has not been released yet. You can export the previous version
             <a [routerLink]="['/vocabulary', notation ]" [queryParams]="{v:getVersionsByLang(lang)![0].number, lang:lang, tab:'export'}" target="_blank">here</a>.
         </td>
-        <ng-container *ngIf="getVersionsByLang(lang)![0].number!.startsWith(slVersionNumber)">
+        <ng-container *ngIf="getVersionsByLang(lang)![0].number!.startsWith(getSlMajorMinorVersionNumber(slVersionNumber))">
             <td class="tac"><input type="checkbox" [checked]="skosSelected[i]" name="skosItems" formControlName="skosItems" value="{{downloadCheckboxes[i]}}" (change)="skosSelected[i] = $event.target.checked"/></td>
             <td class="tac"><input type="checkbox" [checked]="pdfSelected[i]" name="pdfItems" formControlName="pdfItems" value="{{downloadCheckboxes[i]}}" (change)="pdfSelected[i] = $event.target.checked"/></td>
             <td class="tac"><input type="checkbox" [checked]="htmlSelected[i]" name="htmlItems" formControlName="htmlItems" value="{{downloadCheckboxes[i]}}" (change)="htmlSelected[i] = $event.target.checked"/></td>

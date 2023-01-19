@@ -13,18 +13,36 @@
 
 package eu.cessda.cvs.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import eu.cessda.cvs.utils.VersionNumber;
 
 /**
  * A Version.
@@ -63,9 +81,9 @@ public class Version implements Serializable {
     @Column(name = "last_modified")
     private ZonedDateTime lastModified;
 
-    @Size(max = 20)
     @Column(name = "number", length = 20)
-    private String number;
+    @Type(type = "eu.cessda.cvs.utils.VersionNumberType")
+    private VersionNumber number;
 
     @Column(name = "uri")
     private String uri;
@@ -239,17 +257,29 @@ public class Version implements Serializable {
         this.lastModified = lastModified;
     }
 
-    public String getNumber() {
+    @JsonIgnore
+    public VersionNumber getNumber() {
         return number;
     }
 
-    public Version number(String number) {
+    @JsonGetter("number")
+    public String getNumberAsString() {
+        return VersionNumber.toString(number);
+    }
+
+    public Version number(VersionNumber number) {
         this.number = number;
         return this;
     }
 
-    public void setNumber(String number) {
+    @JsonIgnore
+    public void setNumber(VersionNumber number) {
         this.number = number;
+    }
+
+    @JsonSetter("number")
+    public void setNumber(String str) {
+        setNumber(VersionNumber.fromString(str));
     }
 
     public String getUri() {

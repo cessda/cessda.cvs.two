@@ -48,7 +48,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   versionParam?: IVersion;
   isSlForm?: boolean;
   slVersionNumber!: string;
-  tlProposedVersionNumber = 1;
+  proposedPatchNumber = 0;
   missingTranslations: string[] = [];
   comments: IComment[] | undefined = [];
   vocabularyChanges: IVocabularyChange[] | null = [];
@@ -80,7 +80,6 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     versionNotes: [''],
     versionChanges: [''],
     versionNumberSl: ['', [Validators.required, Validators.pattern('^\\d{1,2}\\.\\d{1,2}$')]],
-    versionNumberTl: ['', [Validators.required, Validators.pattern('^\\d{1,2}$')]],
     licenseId: ['', Validators.required],
   });
 
@@ -116,18 +115,12 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
           this.cvForwardStatusForm.removeControl('versionNotes');
           this.cvForwardStatusForm.removeControl('versionChanges');
           this.cvForwardStatusForm.removeControl('versionNumberSl');
-          this.cvForwardStatusForm.removeControl('versionNumberTl');
           this.cvForwardStatusForm.removeControl('licenseId');
         } else {
-          if (this.isSlForm) {
-            this.cvForwardStatusForm.removeControl('versionNumberTl');
-          } else {
+          if (!this.isSlForm) {
             this.cvForwardStatusForm.removeControl('versionNumberSl');
             // get TL proposed number
-            this.tlProposedVersionNumber = +this.versionParam!.number!.substring(
-              this.slVersionNumber.length + 1,
-              this.versionParam!.number!.length
-            );
+            this.proposedPatchNumber = VocabularyUtil.getTlVersionNumber(this.versionParam!.number!);
           }
           this.licenceService
             .query({
@@ -166,11 +159,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   private fillForm(): void {
     if (this.isSlForm) {
       this.cvForwardStatusForm.patchValue({
-        versionNumberSl: this.versionParam!.number,
-      });
-    } else {
-      this.cvForwardStatusForm.patchValue({
-        versionNumberTl: this.tlProposedVersionNumber,
+        versionNumberSl: VocabularyUtil.getSlMajorMinorVersionNumber(this.versionParam!.number!)
       });
     }
     if (this.versionParam!.licenseId) {
@@ -240,12 +229,11 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
       }
       // check validity
       if (this.isSlForm) {
-        vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value;
-        this.isVersionInvalid = VocabularyUtil.compareVersionNumber(vocabularySnippet.versionNumber!, this.versionParam!.number!) === -1;
+        vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value + '.' + this.proposedPatchNumber;
+        this.isVersionInvalid = VocabularyUtil.compareVersionNumbers(vocabularySnippet.versionNumber, this.versionParam!.number!) === -1;
       } else {
         this.missingTranslations = [];
-        this.isVersionInvalid = +this.cvForwardStatusForm.get(['versionNumberTl'])!.value < this.tlProposedVersionNumber;
-        vocabularySnippet.versionNumber = this.slVersionNumber + '.' + this.cvForwardStatusForm.get(['versionNumberTl'])!.value;
+        vocabularySnippet.versionNumber = VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
         this.versionParam!.concepts!.forEach(c => {
           if (!c.deprecated) {
             if (!c.title || c.title === null || c.title === '') {
@@ -281,7 +269,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     if (this.isSlForm) {
       vocabularySnippet.versionNumber = this.cvForwardStatusForm.get(['versionNumberSl'])!.value;
     } else {
-      vocabularySnippet.versionNumber = this.slVersionNumber + '.' + this.cvForwardStatusForm.get(['versionNumberTl'])!.value;
+      vocabularySnippet.versionNumber = VocabularyUtil.getSlMajorMinorVersionNumber(this.slVersionNumber) + '.' + this.proposedPatchNumber;
     }
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabularySnippet));
   }
@@ -289,7 +277,7 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
   forwardStatus(): void {
     this.isSaving = true;
     const vocabularySnippet = this.createFromForm();
-    if (!this.isVersionInvalid && this.missingTranslations.length === 0) {
+    if (!this.  isVersionInvalid && this.missingTranslations.length === 0) {
       // for (const vocabularySnippetTemp of vocabularySnippet) {
       //   this.subscribeToSaveResponse(this.editorService.forwardStatusVocabulary(vocabularySnippetTemp));
       // }

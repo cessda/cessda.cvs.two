@@ -13,16 +13,33 @@
 
 package eu.cessda.cvs.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.springframework.data.elasticsearch.annotations.*;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Objects;
+
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Type;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.data.elasticsearch.annotations.Mapping;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import eu.cessda.cvs.utils.VersionNumber;
 
 /**
  * A VocabularyBase.
@@ -54,10 +71,10 @@ public class VocabularyBase implements Serializable {
     private String notation;
 
     @NotNull
-    @Size(max = 20)
-    @Column(name = "version_number", length = 20, nullable = false)
+    @Column(name = "version_number", nullable = false)
     @Field( type = FieldType.Keyword )
-    private String versionNumber;
+    @Type( type = "eu.cessda.cvs.utils.VersionNumberType")
+    private VersionNumber versionNumber;
 
     @Column(name = "initial_publication")
     private Long initialPublication;
@@ -584,17 +601,29 @@ public class VocabularyBase implements Serializable {
         this.notation = notation;
     }
 
-    public String getVersionNumber() {
+    @JsonIgnore
+    public VersionNumber getVersionNumber() {
         return versionNumber;
     }
 
-    public VocabularyBase versionNumber(String versionNumber) {
+    @JsonGetter("versionNumber")
+    public String getVersionNumberAsString() {
+        return VersionNumber.toString(versionNumber);
+    }
+    
+    public VocabularyBase versionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
         return this;
     }
 
-    public void setVersionNumber(String versionNumber) {
+    @JsonIgnore
+    public void setVersionNumber(VersionNumber versionNumber) {
         this.versionNumber = versionNumber;
+    }
+
+    @JsonSetter("versionNumber")
+    public void setVersionNumber(String str) {
+        setVersionNumber(VersionNumber.fromString(str));
     }
 
     public Long getInitialPublication() {

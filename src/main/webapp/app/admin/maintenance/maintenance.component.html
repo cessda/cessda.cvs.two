@@ -140,4 +140,35 @@
             </div>
         </div>
     </div>
+    <br/>
+    <div class="card">
+        <div class="card-header font-weight-bold">
+            Utilities
+        </div>
+        <div class="card-body" class="card-acc-stat">
+            <div class="col-sm-12 p-0">
+                <ngb-accordion>
+                    <ngb-panel>
+                        <ng-template ngbPanelTitle>
+                            <span>Versioning system migration (#398)</span>
+                        </ng-template>
+                        <ng-template ngbPanelContent>
+                            <div class="row-content">
+                                <div class="w-100">
+                                    <span>Perform migration of all CVs:</span>
+                                    <button type="button" [disabled]="isTask398" class="btn btn-primary" (click)="performTask398()">
+                                        <span>Migrate</span>
+                                    </button>
+                                </div>
+                                <div class="w-100">
+                                    <span>Output:</span>
+                                    <textarea class="form-control" rows="10" class="w-100" [(ngModel)]="task398Output"></textarea>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </ngb-panel>
+                </ngb-accordion>
+            </div>
+        </div>
+    </div>
 </div>

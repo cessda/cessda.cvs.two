@@ -22,7 +22,7 @@
                     ›
                 </span>
                 <span class="">
-                    {{vocabulary!.notation}} v.{{getSlVersion()!.number}}
+                    {{vocabulary!.notation}} v.{{getSlVersionNumber()}}
                 </span>
 
                 <span class="cmt-scn">
@@ -183,7 +183,7 @@
                                                     <span>Move code</span>
                                                 </button>
                                             </div>
-                                            <div *ngIf="(getMajorVersionNumber() == 1 && getMinorVersionNumber() > 0) || getMajorVersionNumber() > 1">
+                                            <div *ngIf="(getSlMajorVersionNumber() == 1 && getSlMinorVersionNumber() > 0) || getSlMajorVersionNumber() > 1">
                                                 <button *jhiHasAnyAgencyAuthority="{actionType:'DEPRECATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL'], language:version!.language}"
                                                         class="btn sk-select-min-btn btn-warning sk-input-f mtop20" (click)="openDeprecateCodePopup()">
                                                     <fa-icon [icon]="'wind'"></fa-icon>
@@ -580,7 +580,7 @@
                                     <fa-icon *ngIf="!vh.visible" icon="caret-right"></fa-icon>
                                     <span>{{version!.language}}: {{vh.version}} </span>
                                     <span>&nbsp;&nbsp;&nbsp; Published: {{vh.date}}</span>
-                                    <a *ngIf="!vh.version.startsWith(getSlVersion()!.number)" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionByVersion(vh.version), lang:vocabulary!.selectedLang}">
+                                    <a *ngIf="!vh.version.startsWith(getSlMajorMinorVersionNumber())" [routerLink]="['/vocabulary', vocabulary!.notation ]" [queryParams]="{v:getSlVersionNumber(vh.version), lang:vocabulary!.selectedLang}">
                                         <fa-icon icon="external-link-alt"></fa-icon>
                                     </a>
                                 </a>
@@ -747,7 +747,7 @@
                                 [appScope]="appScope"
                                 [enableDocxExport]="enableDocxExport"
                                 [versions]="vocabulary!.versions"
-                                [slVersionNumber]="getSlVersion().number"
+                                [slVersionNumber]="getSlVersionNumber()"
                                 [downloadFormGroup]="editorDetailForm.controls.downloadFormGroup"
                                 [notation]="vocabulary!.notation"
                             ></jhi-vocabulary-download>

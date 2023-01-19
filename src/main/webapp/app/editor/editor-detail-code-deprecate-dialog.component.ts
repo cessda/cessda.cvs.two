@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {EditorService} from 'app/editor/editor.service';
 import {IVersion} from 'app/shared/model/version.model';
@@ -59,6 +59,7 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // This is intentional
   }
 
   clear(): void {
@@ -87,11 +88,11 @@ export class EditorDetailCodeDeprecateDialogComponent implements OnInit {
 
   setReplacingCode(): void {
     this.replacingCodeId = Number(this.deprecateCodeForm.get(['replacingCodeId'])!.value);
-    for (let i=0; i<this.conceptList.length; i++) {
-        if (this.conceptList[i].id === this.replacingCodeId) {
-          this.replacingCode = this.conceptList[i];
-          break;
-        }
+    for (const concept of this.conceptList) {
+      if (concept.id === this.replacingCodeId) {
+        this.replacingCode = concept;
+        break;
+      }
     }
   }
 
