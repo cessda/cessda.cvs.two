@@ -8,6 +8,26 @@
     <version>2.0.6</version>
     <packaging>jar</packaging>
     <name>CESSDA Vocabulary Service Version 2</name>
+    <inceptionYear>2017</inceptionYear>
+
+    <organization>
+        <name>CESSDA ERIC</name>
+        <url>https://www.cessda.eu/</url>
+    </organization>
+
+    <scm>
+        <url>https://bitbucket.org/cessda/cessda.cvs.two</url>
+    </scm>
+
+    <issueManagement>
+        <system>Bitbucket</system>
+        <url>https://bitbucket.org/cessda/cessda.cvs.two/issues?status=new&amp;status=open</url>
+    </issueManagement>
+
+    <ciManagement>
+        <url>https://jenkins.cessda.eu/job/cessda.cvs.two/</url>
+        <system>Jenkins</system>
+    </ciManagement>
 
     <repositories>
     </repositories>
@@ -877,6 +897,41 @@
 
                 </plugin>
                 <!-- jhipster-needle-maven-add-plugin-management -->
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>4.1</version>
+                    <configuration>
+                        <header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
+                        <properties>
+                            <owner>CESSDA ERIC</owner>
+                            <email>support@cessda.eu</email>
+                            <year>2017-2021</year>
+                        </properties>
+                        <excludes>
+                            <exclude>mvnw*</exclude>
+                            <exclude>.mvn/**</exclude>
+                            <exclude>.*</exclude>
+                            <exclude>Jenkinsfile</exclude>
+                            <exclude>LICENSE.txt</exclude>
+                            <exclude>**/README</exclude>
+                            <exclude>**/.m2/**</exclude>
+                            <exclude>lombok.config</exclude>
+                            <exclude>src/test/resources/**</exclude>
+                            <exclude>src/main/resources/**</exclude>
+                        </excludes>
+                        <mapping>
+                            <java>PHP</java>
+                        </mapping>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
