@@ -28,7 +28,6 @@ This repository contains all the source code and configuration needed to deploy 
 ├── Jenkinsfile     # Script used by Jenkins to deploy the application to gcp
 ├── pom.xml         # Maven build configuration file
 ├── README.md       # Instructions to build and deploy the application (this file)
-
 ```
 
 ## Technology Stack
@@ -41,8 +40,8 @@ Several frameworks and languages are used in this application.
 | Kubernetes                                           | Container orchestrator                                   |
 | Maven                                                | Build tool                                               |
 | Java                                                 | Programming language and API                             |
-| Spring Boot                                          | Web application framework (Back-End)                               |
-| Angular 10                                           | Web application framework (Front-End)                               |
+| Spring Boot                                          | Web application framework (Back-End)                     |
+| Angular 10                                           | Web application framework (Front-End)                    |
 
 ## Development
 
@@ -60,16 +59,17 @@ You will only need to run this command when dependencies change in [package.json
 
 We use npm scripts and `[Webpack][]` as our build system.
 
-Run the following commands in two separate terminals to create a blissful development experience where your browser
-auto-refreshes when files change on your hard drive.
+Run the following commands in two separate terminals to create a blissful development
+experience where your browser auto-refreshes when files change on your hard drive.
 
 ```Javascript
     ./mvnw
     npm start
 ```
 
-Npm is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
-specifying a newer version in [package.json](package.json). You can also run `npm update` and `npm install` to manage dependencies.
+Npm is also used to manage CSS and JavaScript dependencies used in this application.
+You can upgrade dependencies by specifying a newer version in [package.json](package.json).
+You can also run `npm update` and `npm install` to manage dependencies.
 Add the `help` flag on any command to see how you can use it. For example, `npm help update`.
 
 The `npm run` command will list all of the scripts available to run for this project.
@@ -162,7 +162,8 @@ To launch your application's tests, run:
 
 ### Client tests
 
-Unit tests are run by `[Jest][]` and written with `[Jasmine][]`. They're located in `[src/test/javascript/](src/test/javascript/)` and can be run with:
+Unit tests are run by `[Jest][]` and written with `[Jasmine][]`.
+They're located in `[src/test/javascript/](src/test/javascript/)` and can be run with:
 
 ```Javascript
     npm test
@@ -240,14 +241,15 @@ and the process for submitting pull requests to us.
 
 See [Semantic Versioning](https://semver.org/) for guidance.
 
-## Contributors
+## Changes
 
-You can find the list of contributors in the [CONTRIBUTORS](CONTRIBUTORS.md) file.
+You can find the list of changes made in each release in the
+[CHANGELOG](CHANGELOG.md) file.
 
 ## License
 
 See the [LICENSE](LICENSE.txt) file.
 
-## CITING
+## Citing
 
 See the [CITATION](CITATION.cff) file.
