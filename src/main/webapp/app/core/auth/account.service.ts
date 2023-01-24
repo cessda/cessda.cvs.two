@@ -185,6 +185,14 @@ export class AccountService {
     return userName;
   }
 
+  getUserAgencies(): string[] {
+    const agencies: string[] = [];
+    this.userIdentity!.userAgencies.forEach(agency => {
+      agencies.push(agency['agencyName']);
+    });
+    return agencies;
+  }
+
   private fetch(): Observable<Account> {
     return this.http.get<Account>(SERVER_API_URL + 'api/account');
   }

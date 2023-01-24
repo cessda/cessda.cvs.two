@@ -239,6 +239,32 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     this.buildFilterAndRefreshSearch();
   }
 
+  isLanguageAdmin(): boolean {
+    return this.appScope === AppScope.EDITOR && !this.accountService.isAdmin();
+  }
+
+  private filterAdminAgencies(): void {
+    this.activeAggAgency = [];
+
+    let adminAgencies: string[] = [];
+    adminAgencies = this.accountService.getUserAgencies();
+    adminAgencies.forEach(agency => {
+      this.activeAggAgency?.push(agency);
+    });
+
+    if (adminAgencies.length < 1) {
+      this.aggAgencyBucket!.forEach(agency => {
+        this.activeAggAgency?.push(agency.value!);
+      });
+    }
+
+    this.activeAgg = '';
+    if (this.activeAggAgency?.length > 0) {
+      this.activeAgg = 'agency:' + this.activeAggAgency?.join(',');
+      this.activeAgg += ';';
+    }
+  }
+
   clearFilter(): void {
     this.activeAggAgency = [];
     this.activeAggLanguage = [];
@@ -273,6 +299,11 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
       this.page = data.pagingParams.page;
       this.ascending = data.pagingParams.ascending;
       this.ngbPaginationPage = data.pagingParams.page;
+
+      if (this.isLanguageAdmin()) {
+        this.filterAdminAgencies();
+      }
+
       this.loadPage();
     });
     this.registerCvSearchEvent();
@@ -422,17 +453,21 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
 
   buildFilterAndRefreshSearch(): void {
     this.activeAgg = '';
-    if (this.activeAggAgency!.length > 0) {
+    if (this.isLanguageAdmin()) {
+      this.filterAdminAgencies();
+    }
+
+    if (this.activeAggAgency!.length > 0 && !this.isLanguageAdmin()) {
       this.activeAgg = 'agency:' + this.activeAggAgency!.join(',');
     }
     if (this.activeAggLanguage!.length > 0) {
-      if (this.activeAggAgency!.length > 0) {
+      if (this.activeAggAgency!.length > 0 && !this.isLanguageAdmin()) {
         this.activeAgg += ';';
       }
       this.activeAgg += 'language:' + this.activeAggLanguage!.join(',');
     }
     if (this.activeAggStatus!.length > 0) {
-      if (this.activeAggAgency!.length > 0 || this.activeAggLanguage!.length > 0) {
+      if ((this.activeAggAgency!.length > 0 && !this.isLanguageAdmin()) || this.activeAggLanguage!.length > 0) {
         this.activeAgg += ';';
       }
       this.activeAgg += 'status:' + this.activeAggStatus!.join(',');
