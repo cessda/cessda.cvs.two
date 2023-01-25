@@ -5,7 +5,8 @@
       "ADMIN": "ADMIN",
       "VIEW": "VIEW",
       "ADMIN_SL": "ADMIN_SL",
-      "ADMIN_TL": "ADMIN_TL"
+      "ADMIN_TL": "ADMIN_TL",
+      "ADMIN_CONTENT": "ADMIN_CONTENT"
     }
   }
 }
