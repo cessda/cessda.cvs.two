@@ -17,5 +17,5 @@ package eu.cessda.cvs.domain.enumeration;
  * The AgencyRole enumeration.
  */
 public enum AgencyRole {
-    ADMIN, VIEW, ADMIN_SL, ADMIN_TL
+    ADMIN, VIEW, ADMIN_SL, ADMIN_TL, ADMIN_CONTENT
 }

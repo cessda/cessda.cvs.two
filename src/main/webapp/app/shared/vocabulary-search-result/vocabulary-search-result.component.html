@@ -128,7 +128,7 @@
                 </div>
 
                 <ng-container *ngIf="isEditorScope()">
-                    <div *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:0, agencyRoles:['ADMIN','ADMIN_SL']}">
+                    <div *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:0, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}">
                         <a class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isActionCollapse = !isActionCollapse"
                            [attr.aria-expanded]="isActionCollapse" aria-controls="action-panel">
                             &nbsp;

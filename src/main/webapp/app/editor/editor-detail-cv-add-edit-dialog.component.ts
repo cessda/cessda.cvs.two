@@ -85,9 +85,11 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     const availableLanguages = VocabularyUtil.getAvailableCvLanguage(this.isNew && this.isSlForm ? [] : this.vocabularyParam!.versions);
     this.languages = [];
 
-
     if (this.isNew) {
-      if (this.accountService.isAdmin() || this.account.userAgencies.some(ua => ua.agencyRole === 'ADMIN' && ua.agencyId === agencyId)) {
+      if (
+        this.accountService.isAdmin() ||
+        this.account.userAgencies.some(ua => (ua.agencyRole === 'ADMIN' || ua.agencyRole === 'ADMIN_CONTENT') && ua.agencyId === agencyId)
+      ) {
         this.languages = availableLanguages;
       } else {
         this.account.userAgencies.forEach(ua => {
@@ -110,7 +112,7 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
   private fillForm(): void {
     if (this.languages && this.languages.length > 0) {
       const pos = this.languages.indexOf(this.vocabularyParam!.sourceLanguage!);
-      this.selectedLanguage = this.languages[pos < 0? 0 : pos];
+      this.selectedLanguage = this.languages[pos < 0 ? 0 : pos];
     } else {
       this.selectedLanguage = '';
     }
