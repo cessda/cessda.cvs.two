@@ -154,18 +154,19 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
             return 0;
         if (other == null)
             return 1;
-        int cmp = majorNumber.compareTo(other.majorNumber);
+        int cmp = ((majorNumber == null || other.majorNumber == null)) ? 0 : majorNumber.compareTo(other.majorNumber);
         if (cmp != 0)
             return cmp;
-        cmp = minorNumber.compareTo(other.minorNumber);
+        cmp = (minorNumber == null || other.minorNumber == null) ? 0 : minorNumber.compareTo(other.minorNumber);
         if (cmp != 0)
             return cmp;
-        return patchNumber.compareTo(other.patchNumber);
+        return (patchNumber == null || other.patchNumber == null) ? 0 : patchNumber.compareTo(other.patchNumber);
     }
 
     public boolean equalMinorVersionNumber(VersionNumber other) {
         if (other != null) {
-            return majorNumber.equals(other.majorNumber) && minorNumber.equals(other.minorNumber);
+            return (majorNumber == null || other.majorNumber == null || majorNumber.equals(other.majorNumber))
+                && (minorNumber == null || other.minorNumber == null || minorNumber.equals(other.minorNumber));
         }
         return false;
     }
