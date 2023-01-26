@@ -2344,17 +2344,17 @@ public class VocabularyServiceImpl implements VocabularyService
 	}
 
 	private ConceptDTO task398MigrateConcept(ConceptDTO c, Long newVersionId) {
-		ConceptDTO c_migrated = c.copy();
+		ConceptDTO cMigrated = c.copy();
 		// override cloned attributes
-		c_migrated.setId(null);
-		c_migrated.setVersionId(newVersionId);
+		cMigrated.setId(null);
+		cMigrated.setVersionId(newVersionId);
 		if (c.getValidUntilVersionId() != null && c.getValidUntilVersionId().equals(c.getId())) {
-			c_migrated.setValidUntilVersionId(newVersionId);
+			cMigrated.setValidUntilVersionId(newVersionId);
 		}
-		c_migrated.setPreviousConcept(c.getId());
+		cMigrated.setPreviousConcept(c.getId());
 		// TODO: update URIs
-		c_migrated.setUri(null);
-		return c_migrated;
+		cMigrated.setUri(null);
+		return cMigrated;
 	}
 
 	private VersionDTO task398MigrateVersion(final VersionDTO v, VersionNumber newVersionNumber) {
