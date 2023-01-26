@@ -1,41 +1,34 @@
 /*
- * Copyright © 2017-2021 CESSDA ERIC (support@cessda.eu)
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *  http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
-
 package eu.cessda.cvs.service.dto;
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-
-import javax.persistence.Lob;
-import javax.validation.constraints.Size;
-
-import org.hibernate.annotations.Type;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
-
 import eu.cessda.cvs.domain.Code;
 import eu.cessda.cvs.domain.enumeration.Language;
 import eu.cessda.cvs.utils.VersionNumber;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.Lob;
+import javax.validation.constraints.Size;
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * A DTO for the {@link Code} entity.
@@ -68,11 +61,11 @@ public class CodeDTO implements Serializable {
     private VersionNumber versionNumber;
 
     private Boolean deprecated;
-    
+
     private Long replacedById;
 
     private String replacedByUri;
-    
+
     private String replacedByNotation;
 
     @Lob
@@ -332,7 +325,7 @@ public class CodeDTO implements Serializable {
     public VersionNumber getVersionNumber() {
         return versionNumber;
     }
-    
+
     @JsonGetter("versionNumber")
     public String getVersionNumberAsString() {
         return VersionNumber.toString(versionNumber);
@@ -347,7 +340,7 @@ public class CodeDTO implements Serializable {
     public void setVersionNumber(String str) {
         setVersionNumber(VersionNumber.fromString(str));
     }
-    
+
     public String getTitleSq() {
         return titleSq;
     }

@@ -35,5 +35,5 @@ CESSDA ERIC reserves the right to accept or reject any contribution.
 
 For CESSDA to consider your contribution, the following criteria must be met.
 
-* You must sign the [CESSDA Contributor License Agreement](https://docs.google.com/forms/d/e/1FAIpQLSfS2sOjZ2Ax5nIhvONY5E1yVsDgMkNzl0yw2TbMTA-5MYdCXQ/viewform?usp=sf_link)
-* You must adhere to [CESSDA's quality requirements](https://docs.tech.cessda.eu/software/requirements.html)
+- You must sign the [CESSDA Contributor License Agreement](https://docs.google.com/forms/d/e/1FAIpQLSfS2sOjZ2Ax5nIhvONY5E1yVsDgMkNzl0yw2TbMTA-5MYdCXQ/viewform?usp=sf_link)
+- You must adhere to [CESSDA's quality requirements](https://docs.tech.cessda.eu/software/requirements.html)

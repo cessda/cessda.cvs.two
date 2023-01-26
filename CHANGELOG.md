@@ -5,14 +5,14 @@ All notable changes to the CESSDA Vocabulary Service source code are documented 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-*For each release, use the following sub-sections:*
+_For each release, use the following sub-sections:_
 
-- *Added (for new features)*
-- *Changed (for changes in existing functionality)*
-- *Deprecated (for soon-to-be removed features)*
-- *Removed (for now removed features)*
-- *Fixed (for any bug fixes)*
-- *Security (in case of vulnerabilities)*
+- _Added (for new features)_
+- _Changed (for changes in existing functionality)_
+- _Deprecated (for soon-to-be removed features)_
+- _Removed (for now removed features)_
+- _Fixed (for any bug fixes)_
+- _Security (in case of vulnerabilities)_
 
 ## [3.0.0] - UNRELEASED
 

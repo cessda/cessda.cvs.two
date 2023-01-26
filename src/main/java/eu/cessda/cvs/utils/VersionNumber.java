@@ -1,12 +1,19 @@
+/*
+ * Copyright © 2017-2023 CESSDA ERIC (support@cessda.eu)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package eu.cessda.cvs.utils;
-
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -17,15 +24,22 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @JsonSerialize(using = VersionNumber.Serializer.class)
 @JsonDeserialize(using = VersionNumber.Deserializer.class)
 public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(VersionNumber.class);
-    
+
     public static class Deserializer extends StdDeserializer<VersionNumber> {
-    
+
         private static final long serialVersionUID = 1L;
 
         public Deserializer() {
@@ -44,13 +58,13 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
             } 
             catch (Exception e) { 
                 log.error("Error deserializing version number", e);
-            }    
+            }
             return null;
         }
     }
 
     public static class Serializer extends StdSerializer<VersionNumber> {
-    
+
         private static final long serialVersionUID = 1L;
 
         public Serializer() {
@@ -67,7 +81,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         }
 
     }
-    
+
     private static final long serialVersionUID = 1L;
     
     public static final Pattern parsePattern = Pattern.compile("^[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+))?.*$");
@@ -91,7 +105,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     private Integer majorNumber;
     private Integer minorNumber;
     private Integer patchNumber;
-    
+
     public VersionNumber() {
         majorNumber = minorNumber = patchNumber = null;
     }
@@ -173,11 +187,11 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     public VersionNumber increaseMinorNumber() {
         return new VersionNumber(majorNumber, minorNumber + 1, 0);
-    }    
+    }
 
     public VersionNumber increasePatchNumber() {
         return new VersionNumber(majorNumber, minorNumber, patchNumber + 1);
-    }    
+    }
 
     public VersionNumber increasePatch(VersionNumber currentSlNumber) {
         if (compareTo(currentSlNumber) < 0) {
@@ -199,20 +213,20 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        
+
         if (this == obj) {
             return true;
-        }       
+        }
         if (obj == null) {
             return false;
-        }        
+        }
         if (obj.getClass() == String.class) {
             return this.equals(VersionNumber.fromString((String) obj));
-        }        
+        }
         if (getClass() != obj.getClass()) {
             return false;
         }
-        
+
         VersionNumber other = (VersionNumber) obj;
 
         if ((majorNumber == null || other.majorNumber == null) && majorNumber != other.majorNumber) {
