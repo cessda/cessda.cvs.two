@@ -830,13 +830,13 @@ public class VersionDTO implements Serializable
 		return id != null;
 	}
 
-	private static Pattern PATTERN_LANGUAGE_INFORMATION = Pattern.compile("(?::((?:" + Language.getIsos().stream().map(StringUtils::lowerCase).collect(Collectors.joining("|")) + ")-))([0-9]+\\.[0-9]+(\\.[0-9]+)?)$");
+	private static Pattern patternLanguageInformation = Pattern.compile("(?::((?:" + Language.getIsos().stream().map(StringUtils::lowerCase).collect(Collectors.joining("|")) + ")-))([0-9]+\\.[0-9]+(\\.[0-9]+)?)$");
 
 	private static String removeLanguageInformation( String canonicalUrlInput )
 	{
 		if ( canonicalUrlInput == null )
 			return null;
-		Matcher m = PATTERN_LANGUAGE_INFORMATION.matcher(canonicalUrlInput);
+		Matcher m = patternLanguageInformation.matcher(canonicalUrlInput);
 		if (m.find() && m.group(1) != null) {
 			canonicalUrlInput = canonicalUrlInput.substring(0, m.start(1)) + canonicalUrlInput.substring(m.end(1));
 		}
@@ -852,7 +852,7 @@ public class VersionDTO implements Serializable
 	public void setDeprecatedConceptsValidUntilVersionId(Long validUntilVersionId) {
 		getConcepts()
 			.stream()
-			.filter(c -> c.getDeprecated())
+			.filter(ConceptDTO::getDeprecated)
 			.filter(c -> c.getValidUntilVersionId() == null)
 			.forEach(c -> c.setValidUntilVersionId(validUntilVersionId));
 	}

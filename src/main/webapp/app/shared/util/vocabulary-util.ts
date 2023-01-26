@@ -233,7 +233,7 @@ export default class VocabularyUtil {
     return concepts !== undefined ? concepts.filter(c => c.deprecated === true).length > 0 : false;
   }
 
-  static compareNumbers(n1: Number, n2: Number): number {
+  static compareNumbers(n1: number, n2: number): number {
     if (n1 < n2) {
       return -1;
     } else {

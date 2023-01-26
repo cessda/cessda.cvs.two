@@ -46,7 +46,7 @@ public class VersionDTOTest {
     }
 
     @Test
-    public void removeLanguageInformationTest() throws Exception {
+    void removeLanguageInformationTest() throws Exception {
         assertThat(getRemoveLanguageInformationMethod().invoke(null, "urn:ddi:int.ddi.cv:398-TEST-03:1.0")).isEqualTo("urn:ddi:int.ddi.cv:398-TEST-03:1.0");
         assertThat(getRemoveLanguageInformationMethod().invoke(null, "urn:ddi:int.ddi.cv:398-TEST-03:1.0.0")).isEqualTo("urn:ddi:int.ddi.cv:398-TEST-03:1.0.0");
         assertThat(getRemoveLanguageInformationMethod().invoke(null, "urn:ddi:int.ddi.cv:398-TEST-03:en-1.0")).isEqualTo("urn:ddi:int.ddi.cv:398-TEST-03:1.0");

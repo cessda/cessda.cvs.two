@@ -2338,9 +2338,7 @@ public class VocabularyServiceImpl implements VocabularyService
 	public void task398() {
 		log.info( "MIGRATING VERSIONING SYSTEM START" );
 		// migrate all vocabularies
-		findAll().forEach( v -> {
-			task398MigrateVocabulary(v);
-		});
+		findAll().forEach(this::task398MigrateVocabulary);
 		log.info( "MIGRATING VERSIONING SYSTEM FINISHED" );
 		indexAllAgencyStats();
 		indexAllPublished();
@@ -2348,58 +2346,58 @@ public class VocabularyServiceImpl implements VocabularyService
 	}
 
 	private ConceptDTO task398MigrateConcept(ConceptDTO c, Long newVersionId) {
-		ConceptDTO c_migrated = c.copy();
+		ConceptDTO conceptMigrated = c.copy();
 		// override cloned attributes
-		c_migrated.setId(null);
-		c_migrated.setVersionId(newVersionId);
+		conceptMigrated.setId(null);
+		conceptMigrated.setVersionId(newVersionId);
 		if (c.getValidUntilVersionId() != null && c.getValidUntilVersionId().equals(c.getId())) {
-			c_migrated.setValidUntilVersionId(newVersionId);
+			conceptMigrated.setValidUntilVersionId(newVersionId);
 		}
-		c_migrated.setPreviousConcept(c.getId());
+		conceptMigrated.setPreviousConcept(c.getId());
 		// TODO: update URIs
-		c_migrated.setUri(null);
-		return c_migrated;
+		conceptMigrated.setUri(null);
+		return conceptMigrated;
 	}
 
 	private VersionDTO task398MigrateVersion(final VersionDTO v, VersionNumber newVersionNumber) {
 		
-		VersionDTO v_migrated = v.copy();
+		VersionDTO versionMigrated = v.copy();
 		
 		// override cloned attributes
-		v_migrated.setId(null);
-		v_migrated.setPreviousVersion(v.getId());
-		v_migrated.setNumber(newVersionNumber);
-		v_migrated.setVersionChanges(null);
-		v_migrated.setVersionNotes(
+		versionMigrated.setId(null);
+		versionMigrated.setPreviousVersion(v.getId());
+		versionMigrated.setNumber(newVersionNumber);
+		versionMigrated.setVersionChanges(null);
+		versionMigrated.setVersionNotes(
 			(v.getVersionNotes() != null && v.getVersionNotes().length() > 0 ? v.getVersionNotes() + "\n\n---\n" : "")
 			+ "To align with a new versioning system, this version has been automaticaly created by copying the previous version " + v.getStatus() + "-" + v.getNumber() + "."
 		);
 		// TODO: update URIs
-		v_migrated.setCanonicalUri(null);
-		v_migrated.setUri(null);
-		v_migrated.setUriSl(null);
+		versionMigrated.setCanonicalUri(null);
+		versionMigrated.setUri(null);
+		versionMigrated.setUriSl(null);
 
 		// save cloned version
-		final VersionDTO final_v_migrated = versionService.save(v_migrated);
+		final VersionDTO finalVersionMigrated = versionService.save(versionMigrated);
 
 		// migrate concepts
 		v.getConcepts().forEach(c -> {
-			ConceptDTO c_migrated = task398MigrateConcept(c, final_v_migrated.getId());
-			final_v_migrated.addConcept(c_migrated);
+			ConceptDTO conceptMigrated = task398MigrateConcept(c, finalVersionMigrated.getId());
+			finalVersionMigrated.addConcept(conceptMigrated);
 		});
 
 		v.getComments().forEach(c -> {
-			CommentDTO c_migrated = new CommentDTO();
-			c_migrated.setContent(c.getContent());
-			c_migrated.setDateTime(c.getDateTime());
-			c_migrated.setId(null);
-			c_migrated.setInfo(c.getInfo());
-			c_migrated.setUserId(c.getUserId());
-			c_migrated.setVersionId(final_v_migrated.getId());
-			final_v_migrated.addComment(c_migrated);
+			CommentDTO conceptMigrated = new CommentDTO();
+			conceptMigrated.setContent(c.getContent());
+			conceptMigrated.setDateTime(c.getDateTime());
+			conceptMigrated.setId(null);
+			conceptMigrated.setInfo(c.getInfo());
+			conceptMigrated.setUserId(c.getUserId());
+			conceptMigrated.setVersionId(finalVersionMigrated.getId());
+			finalVersionMigrated.addComment(conceptMigrated);
 		});
 		
-		return final_v_migrated;
+		return finalVersionMigrated;
 	}
 
 	private VersionNumber getLatestPublishedVersionNumber(VocabularyDTO vocabularyDTO) {
@@ -2483,8 +2481,8 @@ public class VocabularyServiceImpl implements VocabularyService
 		}
 
 		// save migrated vocabulary
-		Vocabulary v_entity = vocabularyMapper.toEntity(vocabularyDTO);
-		v_entity = vocabularyRepository.save(v_entity);
-		return vocabularyMapper.toDto(v_entity);
+		Vocabulary vocabularyEntity = vocabularyMapper.toEntity(vocabularyDTO);
+		vocabularyEntity = vocabularyRepository.save(vocabularyEntity);
+		return vocabularyMapper.toDto(vocabularyEntity);
 	}
 }

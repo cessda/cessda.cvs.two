@@ -18,7 +18,6 @@ package eu.cessda.cvs.utils;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -53,11 +52,11 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
         @Override
         public VersionNumber deserialize(JsonParser p, DeserializationContext ctxt)
-                throws IOException, JsonProcessingException {
-            try {
-                return VersionNumber.fromString(p.getText());
-            }
-            catch (Exception e) {
+                throws IOException {
+            try { 
+                return VersionNumber.fromString(p.getText()); 
+            } 
+            catch (Exception e) { 
                 log.error("Error deserializing version number", e);
             }
             return null;
@@ -84,14 +83,14 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     }
 
     private static final long serialVersionUID = 1L;
-
-    public static Pattern PARSE_PATTERN = Pattern.compile("^[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+))?.*$");
-
+    
+    public static final Pattern parsePattern = Pattern.compile("^[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+))?.*$");
+    
     public static VersionNumber fromString(String str) {
         if (str == null) {
             return null;
         }
-        Matcher m = PARSE_PATTERN.matcher(str);
+        Matcher m = parsePattern.matcher(str);
         if (m.find()) {
             VersionNumber v = new VersionNumber();
             v.majorNumber = Integer.parseInt(m.group(1));
@@ -169,18 +168,19 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
             return 0;
         if (other == null)
             return 1;
-        int cmp = majorNumber.compareTo(other.majorNumber);
+        int cmp = ((majorNumber == null || other.majorNumber == null)) ? 0 : majorNumber.compareTo(other.majorNumber);
         if (cmp != 0)
             return cmp;
-        cmp = minorNumber.compareTo(other.minorNumber);
+        cmp = (minorNumber == null || other.minorNumber == null) ? 0 : minorNumber.compareTo(other.minorNumber);
         if (cmp != 0)
             return cmp;
-        return patchNumber.compareTo(other.patchNumber);
+        return (patchNumber == null || other.patchNumber == null) ? 0 : patchNumber.compareTo(other.patchNumber);
     }
 
     public boolean equalMinorVersionNumber(VersionNumber other) {
         if (other != null) {
-            return majorNumber.equals(other.majorNumber) && minorNumber.equals(other.minorNumber);
+            return (majorNumber == null || other.majorNumber == null || majorNumber.equals(other.majorNumber))
+                && (minorNumber == null || other.minorNumber == null || minorNumber.equals(other.minorNumber));
         }
         return false;
     }
@@ -194,7 +194,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     }
 
     public VersionNumber increasePatch(VersionNumber currentSlNumber) {
-        if (compareTo(currentSlNumber) == -1) {
+        if (compareTo(currentSlNumber) < 0) {
             return new VersionNumber(currentSlNumber.getBasePatchVersion(), 1);
         } else {
             return this.increasePatchNumber();
