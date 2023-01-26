@@ -2336,9 +2336,7 @@ public class VocabularyServiceImpl implements VocabularyService
 	public void task398() {
 		log.info( "MIGRATING VERSIONING SYSTEM START" );
 		// migrate all vocabularies
-		findAll().forEach( v -> {
-			task398MigrateVocabulary(v);
-		});
+		findAll().forEach(this::task398MigrateVocabulary);
 		log.info( "MIGRATING VERSIONING SYSTEM FINISHED" );
 		indexAllAgencyStats();
 		indexAllPublished();
