@@ -29,7 +29,6 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Id;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
