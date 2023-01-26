@@ -42,7 +42,7 @@ public class VersionUtils {
     public static String increaseTlVersionByOne(String prevVersionNumber, String currentSlVersionNumber) {
         VersionNumber prev = VersionNumber.fromString(prevVersionNumber);
         VersionNumber curr = VersionNumber.fromString(currentSlVersionNumber);
-        if (prev.compareTo(curr) == -1)
+        if (prev.compareTo(curr) < 0)
             return new VersionNumber(curr.getBasePatchVersion(), 1).toString();
         else
             return prev.increasePatchNumber().toString();
