@@ -2479,8 +2479,8 @@ public class VocabularyServiceImpl implements VocabularyService
 		}
 
 		// save migrated vocabulary
-		Vocabulary v_entity = vocabularyMapper.toEntity(vocabularyDTO);
-		v_entity = vocabularyRepository.save(v_entity);
-		return vocabularyMapper.toDto(v_entity);
+		Vocabulary vocabularyEntity = vocabularyMapper.toEntity(vocabularyDTO);
+		vocabularyEntity = vocabularyRepository.save(vocabularyEntity);
+		return vocabularyMapper.toDto(vocabularyEntity);
 	}
 }
