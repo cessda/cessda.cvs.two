@@ -17,7 +17,7 @@
 -->
 <div class="container-inner">
     <h2 id="page-heading">
-        <button *jhiHasAnyAuthority="['ROLE_ADMIN']" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-agency" [routerLink]="['/agency/new']">
+        <button *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT']" id="jh-create-entity" class="btn btn-primary float-right jh-create-entity create-agency" [routerLink]="['/agency/new']">
             <fa-icon icon="plus"></fa-icon>
             <span class="hidden-sm-down"  jhiTranslate="cvsApp.agency.home.createLabel">
             Create a new Agency
@@ -64,7 +64,7 @@
                     </a>
                 </div>
             </div>
-            <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="card-footer">
+            <div *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT']" class="card-footer">
                 <div class="text-right">
                     <div class="btn-group">
                         <button type="submit"

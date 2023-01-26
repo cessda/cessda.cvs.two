@@ -19,7 +19,7 @@
     <div class="row-content">
         <div class="content">
             <div *ngIf="metadataValueMenu" class="content-left">
-                <div class="form-group" *jhiHasAnyAuthority="['ROLE_ADMIN']">
+                <div class="form-group" *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT']">
                     <label class="form-control-label">Docx upload:</label>
                     <div *ngIf="inDocxProgress" class="w-100">
                         Status: <fa-icon *ngIf="uploadFileName === ''" [icon]="'circle-notch'" [spin]="true"></fa-icon> {{uploadFileStatus}}
@@ -94,7 +94,7 @@
                      [isWriting]="metadataValue.id === undefined" [position]="(i + 1)" [newTabLink]="true" class="w-100"></jhi-metadata-item>
                 </div>
 
-                <div *jhiHasAnyAuthority="['ROLE_ADMIN']" class="w-100">
+                <div *jhiHasAnyAuthority="['ROLE_ADMIN','ROLE_ADMIN_CONTENT']" class="w-100">
                     <button type="button" ngbTooltip="Add Section" (click)="addSection()" class="btn btn-sm btn-primary-outline float-right">
                         <fa-icon class="text-secondary" [icon]="'plus'"></fa-icon>
                         <span> Add Section</span>

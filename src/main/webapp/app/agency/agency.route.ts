@@ -55,48 +55,48 @@ export const agencyRoute: Routes = [
     path: '',
     component: AgencyComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       defaultSort: 'id,asc',
-      pageTitle: 'cvsApp.agency.home.title'
-    }
+      pageTitle: 'cvsApp.agency.home.title',
+    },
   },
   {
     path: ':id/view',
     component: AgencyDetailPopupComponent,
     resolve: {
-      agency: AgencyResolve
+      agency: AgencyResolve,
     },
     data: {
-      authorities: [Authority.ADMIN],
-      pageTitle: 'cvsApp.agency.home.title'
+      authorities: [Authority.ADMIN, Authority.ADMIN_CONTENT],
+      pageTitle: 'cvsApp.agency.home.title',
     },
     canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    outlet: 'popup',
   },
   {
     path: 'new',
     component: AgencyUpdateComponent,
     resolve: {
-      agency: AgencyResolve
+      agency: AgencyResolve,
     },
     data: {
-      authorities: [Authority.ADMIN],
-      pageTitle: 'cvsApp.agency.home.title'
+      authorities: [Authority.ADMIN, Authority.ADMIN_CONTENT],
+      pageTitle: 'cvsApp.agency.home.title',
     },
-    canActivate: [UserRouteAccessService]
+    canActivate: [UserRouteAccessService],
   },
   {
     path: ':id/edit',
     component: AgencyUpdateComponent,
     resolve: {
-      agency: AgencyResolve
+      agency: AgencyResolve,
     },
     data: {
-      authorities: [Authority.ADMIN],
-      pageTitle: 'cvsApp.agency.home.title'
+      authorities: [Authority.ADMIN, Authority.ADMIN_CONTENT],
+      pageTitle: 'cvsApp.agency.home.title',
     },
-    canActivate: [UserRouteAccessService]
-  }
+    canActivate: [UserRouteAccessService],
+  },
 ];

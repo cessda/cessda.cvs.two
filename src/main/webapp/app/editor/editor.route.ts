@@ -13,20 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Injectable} from '@angular/core';
-import {HttpResponse} from '@angular/common/http';
-import {ActivatedRouteSnapshot, Resolve, Router, Routes} from '@angular/router';
 
-import {EMPTY, Observable, of} from 'rxjs';
-import {flatMap} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { ActivatedRouteSnapshot, Resolve, Router, Routes } from '@angular/router';
 
-import {EditorComponent} from './editor.component';
-import {IVocabulary, Vocabulary} from 'app/shared/model/vocabulary.model';
-import {JhiResolvePagingParams} from 'ng-jhipster';
-import {EditorService} from 'app/editor/editor.service';
-import {EditorDetailComponent} from 'app/editor/editor-detail.component';
-import {UserRouteAccessService} from 'app/core/auth/user-route-access-service';
-import {EditorCvAddPopupComponent} from 'app/editor/editor-cv-add-dialog.component';
+import { EMPTY, Observable, of } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
+
+import { EditorComponent } from './editor.component';
+import { IVocabulary, Vocabulary } from 'app/shared/model/vocabulary.model';
+import { JhiResolvePagingParams } from 'ng-jhipster';
+import { EditorService } from 'app/editor/editor.service';
+import { EditorDetailComponent } from 'app/editor/editor-detail.component';
+import { UserRouteAccessService } from 'app/core/auth/user-route-access-service';
+import { EditorCvAddPopupComponent } from 'app/editor/editor-cv-add-dialog.component';
 
 @Injectable({ providedIn: 'root' })
 export class VocabularyResolve implements Resolve<IVocabulary> {
@@ -56,33 +57,33 @@ export const EDITOR_ROUTE: Routes = [
     path: '',
     component: EditorComponent,
     resolve: {
-      pagingParams: JhiResolvePagingParams
+      pagingParams: JhiResolvePagingParams,
     },
     data: {
       authorities: [],
-      pageTitle: 'home.title'
-    }
+      pageTitle: 'home.title',
+    },
   },
   {
     path: 'cv-add',
     component: EditorCvAddPopupComponent,
     data: {
-      authorities: ['ROLE_USER'],
-      pageTitle: 'global.title'
+      authorities: ['ROLE_USER', 'ROLE_ADMIN', 'ROLE_ADMIN_CONTENT'],
+      pageTitle: 'global.title',
     },
     canActivate: [UserRouteAccessService],
-    outlet: 'popup'
+    outlet: 'popup',
   },
   {
     path: 'vocabulary/:notation',
     component: EditorDetailComponent,
     resolve: {
-      vocabulary: VocabularyResolve
+      vocabulary: VocabularyResolve,
     },
     data: {
-      pageTitle: 'home.title'
+      pageTitle: 'home.title',
     },
-    runGuardsAndResolvers: 'always'
+    runGuardsAndResolvers: 'always',
     // children: [
     //   {
     //     path: 'detail-cv-add',
@@ -98,5 +99,5 @@ export const EDITOR_ROUTE: Routes = [
     //     outlet: 'popup'
     //   }
     // ]
-  }
+  },
 ];

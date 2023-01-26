@@ -56,7 +56,7 @@
                     <span>Filters</span>
                 </a>
                 <div class="filter-panels" #filterPanels id="filterPanels">
-                    <div class="filter-panel">
+                    <div *ngIf="!isLanguageAdmin()" class="filter-panel">
                         <a class="acc-header option-label col-12" href="javascript:void(0);" (click)="isAggAgencyCollapsed = !isAggAgencyCollapsed"
                            [attr.aria-expanded]="isAggAgencyCollapsed" aria-controls="agency-filter">&nbsp;
                             <fa-icon *ngIf="!isAggAgencyCollapsed" icon="caret-down"></fa-icon>
@@ -131,7 +131,7 @@
                 </div>
 
                 <ng-container *ngIf="isEditorScope()">
-                    <div *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:0, agencyRoles:['ADMIN','ADMIN_SL']}">
+                    <div *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:0, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}">
                         <a class="acc-header option-label col-12 mtop10" href="javascript:void(0);" (click)="isActionCollapse = !isActionCollapse"
                            [attr.aria-expanded]="isActionCollapse" aria-controls="action-panel">
                             &nbsp;

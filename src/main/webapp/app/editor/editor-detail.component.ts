@@ -98,7 +98,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   isShowingDeprecatedCodes = false;
 
-  codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'CONTRIBUTOR_TL'];
+  codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'ADMIN_CONTENT'];
 
   noOfComments = 0;
 
@@ -183,10 +183,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     if (vnumber) {
       return VocabularyUtil.getSlVersionNumber(vnumber);
     } else {
-      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);  
+      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);
     }
   }
-  
+
   getSlMajorMinorVersionNumber(): string {
     return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().number!);
   }
@@ -216,9 +216,9 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.noOfComments = this.version.comments!.length;
 
     if (this.version.status === 'REVIEW') {
-      this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL'];
+      this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'ADMIN_CONTENT'];
     } else {
-      this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'CONTRIBUTOR_TL'];
+      this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'ADMIN_CONTENT'];
     }
     // make sure that version TL concepts follows the version SL concept in structure and some properties
     if (this.version.itemType === 'TL') {

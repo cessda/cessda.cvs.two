@@ -83,7 +83,6 @@ export class AccountService {
       case 'EDIT_NOTE_CV':
       case 'EDIT_VERSION_INFO_CV':
       case 'DELETE_CV':
-      case 'ADD_USAGE_CV':
       case 'ADD_TL_CV':
       case 'WITHDRAWN_CV':
       case 'FORWARD_CV_SL_STATUS_REVIEW':
@@ -185,6 +184,14 @@ export class AccountService {
       userName = this.userIdentity.firstName ? this.userIdentity.firstName : this.userIdentity.lastName;
     }
     return userName;
+  }
+
+  getUserAgencies(): string[] {
+    const agencies: string[] = [];
+    this.userIdentity!.userAgencies.forEach(agency => {
+      agencies.push(agency['agencyName']);
+    });
+    return agencies;
   }
 
   private fetch(): Observable<Account> {

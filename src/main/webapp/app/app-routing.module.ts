@@ -39,7 +39,7 @@ const routerOptions: ExtraOptions = {
         {
           path: 'admin',
           data: {
-            authorities: [Authority.ADMIN],
+            authorities: [Authority.ADMIN, Authority.ADMIN_CONTENT],
           },
           canActivate: [UserRouteAccessService],
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
@@ -47,7 +47,7 @@ const routerOptions: ExtraOptions = {
         {
           path: 'editor',
           data: {
-            authorities: [Authority.ADMIN, Authority.USER],
+            authorities: [Authority.ADMIN, Authority.USER, Authority.ADMIN_CONTENT],
           },
           canActivate: [UserRouteAccessService],
           loadChildren: () => import('./editor/editor.module').then(m => m.CvsEditorModule),
