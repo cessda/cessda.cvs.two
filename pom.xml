@@ -550,6 +550,8 @@
                         <exclude>**/.m2/**</exclude>
                         <exclude>src/test/resources/**</exclude>
                         <exclude>src/main/resources/**</exclude>
+                        <exclude>node/**</exclude>
+                        <exclude>node_modules/**</exclude>
                     </excludes>
                     <mapping>
                         <java>PHP</java>
