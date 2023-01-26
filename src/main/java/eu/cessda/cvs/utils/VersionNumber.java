@@ -179,7 +179,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     }    
 
     public VersionNumber increasePatch(VersionNumber currentSlNumber) {
-        if (compareTo(currentSlNumber) == -1) {
+        if (compareTo(currentSlNumber) < 0) {
             return new VersionNumber(currentSlNumber.getBasePatchVersion(), 1);
         } else {
             return this.increasePatchNumber();
