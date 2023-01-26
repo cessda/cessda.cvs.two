@@ -859,7 +859,7 @@ public class VersionDTO implements Serializable
 	public void setDeprecatedConceptsValidUntilVersionId(Long validUntilVersionId) {
 		getConcepts()
 			.stream()
-			.filter(c -> c.getDeprecated())
+			.filter(ConceptDTO::getDeprecated)
 			.filter(c -> c.getValidUntilVersionId() == null)
 			.forEach(c -> c.setValidUntilVersionId(validUntilVersionId));
 	}
