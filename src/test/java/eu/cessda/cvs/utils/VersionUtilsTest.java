@@ -24,6 +24,26 @@ public class VersionUtilsTest {
         assertThat( VersionUtils.compareVersion("1.0","2.0") ).isLessThanOrEqualTo(-1);
         assertThat( VersionUtils.compareVersion("1.0","1.0") ).isEqualTo(0);
         assertThat( VersionUtils.compareVersion("2.0","1.0") ).isGreaterThanOrEqualTo(1);
+        assertThat( VersionUtils.compareVersion("2.0","10.0") ).isLessThanOrEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("10.0","2.10") ).isGreaterThanOrEqualTo(1);
+        assertThat( VersionUtils.compareVersion("2.10","10.10") ).isLessThanOrEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("10.10","2.10") ).isGreaterThanOrEqualTo(1);
+    }
+
+    @Test
+    public void compareVersionTest3Digits(){
+        assertThat( VersionUtils.compareVersion("1.0.0","2.0.0") ).isLessThanOrEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("1.0.0","1.0.0") ).isEqualTo(0);
+        assertThat( VersionUtils.compareVersion("2.0.0","1.0.0") ).isGreaterThanOrEqualTo(1);
+        assertThat( VersionUtils.compareVersion("2.0.1","1.2.0") ).isGreaterThanOrEqualTo(1);
+        assertThat( VersionUtils.compareVersion("2.0.0","10.0.0") ).isLessThanOrEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("10.0.0","2.10.0") ).isGreaterThanOrEqualTo(1);
+        assertThat( VersionUtils.compareVersion("2.10.0","10.10.0") ).isLessThanOrEqualTo(-1);
+        assertThat( VersionUtils.compareVersion("10.10.0","2.10.0") ).isGreaterThanOrEqualTo(1);
+    }
+    
+    @Test
+    public void compareVersionTestMixedDigits(){
         assertThat( VersionUtils.compareVersion("2.0.1","1.2") ).isGreaterThanOrEqualTo(1);
         assertThat( VersionUtils.compareVersion("1.0.0","2.0") ).isLessThanOrEqualTo(-1);
         assertThat( VersionUtils.compareVersion("1.0.0","1.0") ).isEqualTo(0);
@@ -31,26 +51,14 @@ public class VersionUtilsTest {
         assertThat( VersionUtils.compareVersion("1.0","2.0.0") ).isLessThanOrEqualTo(-1);
         assertThat( VersionUtils.compareVersion("1.0","1.0.0") ).isEqualTo(0);
         assertThat( VersionUtils.compareVersion("2.0","1.0.0") ).isGreaterThanOrEqualTo(1);
-        assertThat( VersionUtils.compareVersion("1.0.0","2.0.0") ).isLessThanOrEqualTo(-1);
-        assertThat( VersionUtils.compareVersion("1.0.0","1.0.0") ).isEqualTo(0);
-        assertThat( VersionUtils.compareVersion("2.0.0","1.0.0") ).isGreaterThanOrEqualTo(1);
-        assertThat( VersionUtils.compareVersion("2.0.1","1.2.0") ).isGreaterThanOrEqualTo(1);
-        assertThat( VersionUtils.compareVersion("2.0","10.0") ).isLessThanOrEqualTo(-1);
         assertThat( VersionUtils.compareVersion("2.0","10.0.0") ).isLessThanOrEqualTo(-1);
         assertThat( VersionUtils.compareVersion("2.0.0","10.0") ).isLessThanOrEqualTo(-1);
-        assertThat( VersionUtils.compareVersion("2.0.0","10.0.0") ).isLessThanOrEqualTo(-1);
-        assertThat( VersionUtils.compareVersion("10.0","2.10") ).isGreaterThanOrEqualTo(1);
         assertThat( VersionUtils.compareVersion("10.0","2.10.0") ).isGreaterThanOrEqualTo(1);
         assertThat( VersionUtils.compareVersion("10.0.0","2.10") ).isGreaterThanOrEqualTo(1);
-        assertThat( VersionUtils.compareVersion("10.0.0","2.10.0") ).isGreaterThanOrEqualTo(1);
-        assertThat( VersionUtils.compareVersion("2.10","10.10") ).isLessThanOrEqualTo(-1);
         assertThat( VersionUtils.compareVersion("2.10","10.10.0") ).isLessThanOrEqualTo(-1);
         assertThat( VersionUtils.compareVersion("2.10.0","10.10") ).isLessThanOrEqualTo(-1);
-        assertThat( VersionUtils.compareVersion("2.10.0","10.10.0") ).isLessThanOrEqualTo(-1);
-        assertThat( VersionUtils.compareVersion("10.10","2.10") ).isGreaterThanOrEqualTo(1);
         assertThat( VersionUtils.compareVersion("10.10","2.10.0") ).isGreaterThanOrEqualTo(1);
         assertThat( VersionUtils.compareVersion("10.10.0","2.10") ).isGreaterThanOrEqualTo(1);
-        assertThat( VersionUtils.compareVersion("10.10.0","2.10.0") ).isGreaterThanOrEqualTo(1);
     }
 
     @Test
