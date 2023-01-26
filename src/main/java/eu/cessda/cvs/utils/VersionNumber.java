@@ -70,13 +70,13 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     
     private static final long serialVersionUID = 1L;
     
-    public static Pattern PARSE_PATTERN = Pattern.compile("^[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+))?.*$");
+    public static final Pattern parsePattern = Pattern.compile("^[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+))?.*$");
     
     public static VersionNumber fromString(String str) {
         if (str == null) {
             return null;
         }
-        Matcher m = PARSE_PATTERN.matcher(str);
+        Matcher m = parsePattern.matcher(str);
         if (m.find()) {
             VersionNumber v = new VersionNumber();
             v.majorNumber = Integer.parseInt(m.group(1));
