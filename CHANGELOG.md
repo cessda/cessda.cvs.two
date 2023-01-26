@@ -14,33 +14,56 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - *Fixed (for any bug fixes)*
 - *Security (in case of vulnerabilities)*
 
+## [3.0.0] - UNRELEASED
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.xxxx.svg)](https://doi.org/10.5281/zenodo.xxxx)
+
+### Additions
+
+[#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+
+### Changes
+
+[#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+
+### Fixes
+
+[#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+
+### Security
+
+- None
+
 ## [2.2.0] - 2022-06-30
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6598225.svg)](https://doi.org/10.5281/zenodo.6598225)
 
 ### Additions
-[#390](https://bitbucket.org/cessda/cessda.cvs.two/issues/390)	Add Lithuanian and Estonian to target languages
-[#381](https://bitbucket.org/cessda/cessda.cvs.two/issues/381)	Add Japanese to PDF and SKOS exports
-[#380](https://bitbucket.org/cessda/cessda.cvs.two/issues/380)	Add Japanese to target languages
-[#306](https://bitbucket.org/cessda/cessda.cvs.two/issues/306)	Add Matomo Cloud tracking code
-[#274](https://bitbucket.org/cessda/cessda.cvs.two/issues/274)  Structured logs are ingested into EFK system
-[#263](https://bitbucket.org/cessda/cessda.cvs.two/issues/263)	Add Swagger validator badge to API documentation page
+
+[#390](https://bitbucket.org/cessda/cessda.cvs.two/issues/390) Add Lithuanian and Estonian to target languages
+[#381](https://bitbucket.org/cessda/cessda.cvs.two/issues/381) Add Japanese to PDF and SKOS exports
+[#380](https://bitbucket.org/cessda/cessda.cvs.two/issues/380) Add Japanese to target languages
+[#306](https://bitbucket.org/cessda/cessda.cvs.two/issues/306) Add Matomo Cloud tracking code
+[#274](https://bitbucket.org/cessda/cessda.cvs.two/issues/274) Structured logs are ingested into EFK system
+[#263](https://bitbucket.org/cessda/cessda.cvs.two/issues/263) Add Swagger validator badge to API documentation page
 
 ### Changes
-[#406](https://bitbucket.org/cessda/cessda.cvs.two/issues/406)  Updated versions of images referenced in Docker Compose files
-[#392](https://bitbucket.org/cessda/cessda.cvs.two/issues/392)	Documentation updates for current release
-[#389](https://bitbucket.org/cessda/cessda.cvs.two/issues/389)	Update usage text for Rest APIs
-[#388](https://bitbucket.org/cessda/cessda.cvs.two/issues/388)	Change label and target of REST API link
-[#360](https://bitbucket.org/cessda/cessda.cvs.two/issues/360)	Remove term ‘CVS’ from User-facing materials
+
+[#406](https://bitbucket.org/cessda/cessda.cvs.two/issues/406) Updated versions of images referenced in Docker Compose files
+[#392](https://bitbucket.org/cessda/cessda.cvs.two/issues/392) Documentation updates for current release
+[#389](https://bitbucket.org/cessda/cessda.cvs.two/issues/389) Update usage text for Rest APIs
+[#388](https://bitbucket.org/cessda/cessda.cvs.two/issues/388) Change label and target of REST API link
+[#360](https://bitbucket.org/cessda/cessda.cvs.two/issues/360) Remove term ‘CVS’ from User-facing materials
 
 ### Fixes
-[#396](https://bitbucket.org/cessda/cessda.cvs.two/issues/396)	Usage information was not saved
-[#391](https://bitbucket.org/cessda/cessda.cvs.two/issues/391)	SL_Admin was not able to publish CVs
-[#375](https://bitbucket.org/cessda/cessda.cvs.two/issues/375)	Language tags were not in alphabetical order
-[#374](https://bitbucket.org/cessda/cessda.cvs.two/issues/374)	Password reset email used wrong field to salute user
-[#363](https://bitbucket.org/cessda/cessda.cvs.two/issues/363)	CESSDA Topic Classification CV opened slowly in Editor
-[#329](https://bitbucket.org/cessda/cessda.cvs.two/issues/329)	Add missing space to citation text
-[#316](https://bitbucket.org/cessda/cessda.cvs.two/issues/316)	Unable to read CVS file with multiline content inside quotes for import
+
+[#396](https://bitbucket.org/cessda/cessda.cvs.two/issues/396) Usage information was not saved
+[#391](https://bitbucket.org/cessda/cessda.cvs.two/issues/391) SL_Admin was not able to publish CVs
+[#375](https://bitbucket.org/cessda/cessda.cvs.two/issues/375) Language tags were not in alphabetical order
+[#374](https://bitbucket.org/cessda/cessda.cvs.two/issues/374) Password reset email used wrong field to salute user
+[#363](https://bitbucket.org/cessda/cessda.cvs.two/issues/363) CESSDA Topic Classification CV opened slowly in Editor
+[#329](https://bitbucket.org/cessda/cessda.cvs.two/issues/329) Add missing space to citation text
+[#316](https://bitbucket.org/cessda/cessda.cvs.two/issues/316) Unable to read CVS file with multiline content inside quotes for import
 
 ### Security
 
@@ -91,45 +114,60 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - None
 
 ## [2.0.6-Alpha] - 2021-04-19
-- Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update) Export/download table does not update, change cache control to no-store
-- Fix [#302](https://bitbucket.org/cessda/cessda.cvs.two/issues/302/bug-in-skos-export-script) Fix incorrect Thymeleaf template to generate RDF
+
+- Fix [#294](https://bitbucket.org/cessda/cessda.cvs.two/issues/294/export-download-table-does-not-update)
+  Export/download table does not update, change cache control to no-store
+- Fix [#302](https://bitbucket.org/cessda/cessda.cvs.two/issues/302/bug-in-skos-export-script)
+  Fix incorrect Thymeleaf template to generate RDF
 
 ## [2.0.5-Alpha] - 2021-04-12
-- Fix [#300](https://bitbucket.org/cessda/cessda.cvs.two/issues/300/fix-incorrect-http-headers-related-to) Fix incorrect HTTP headers related to cache-control and content-type for JSON files
+
+- Fix [#300](https://bitbucket.org/cessda/cessda.cvs.two/issues/300/fix-incorrect-http-headers-related-to)
+  Fix incorrect HTTP headers related to cache-control and content-type for JSON files
 
 ## [2.0.4-Alpha] - 2021-03-25
+
 - Upgraded new styling from Open Concept SA
-- Fix [#296](https://bitbucket.org/cessda/cessda.cvs.two/issues/296/new-agency-vocabulary-term-addition) New agency vocabulary term addition erratic
-- Add more testing on the rest APIs  [#283](https://bitbucket.org/cessda/cessda.cvs.two/issues/283/improve-code-quality-phase-2-80-test)
+- Fix [#296](https://bitbucket.org/cessda/cessda.cvs.two/issues/296/new-agency-vocabulary-term-addition)
+  New agency vocabulary term addition erratic
+- Add more testing on the rest APIs
+  [#283](https://bitbucket.org/cessda/cessda.cvs.two/issues/283/improve-code-quality-phase-2-80-test)
 
 ## [2.0.3-Alpha] - 2021-02-17
-- Add standard CESSDA header to the source-code [#289](https://bitbucket.org/cessda/cessda.cvs.two/issues/289/ensure-source-code-files-contain-standard)
+
+- Add standard CESSDA header to the source-code
+  [#289](https://bitbucket.org/cessda/cessda.cvs.two/issues/289/ensure-source-code-files-contain-standard)
 - Improve Api-usage, About and User-guide pages editing functionality which derived from one component
 - Improve Quill Rich-TextArea by including table and image plug-ins and fixing missing style
 - Further improving code quality by reuse components [#283](https://bitbucket.org/cessda/cessda.cvs.two/issues/283/improve-code-quality-phase-2-80-test)
 - Completely removed unused V1 API [#287](https://bitbucket.org/cessda/cessda.cvs.two/issues/287/upgrade-api-calls-from-v1-to-v2-within-the)
 
-
 ## [2.0.2-Alpha] - 2020-12-15
-- Improve code quality by improving testing coverage, remove duplications and fix code smells [#254](https://bitbucket.org/cessda/cessda.cvs.two/issues/254/improve-cvs-2-code-quality) based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
-- Fix [#280](https://bitbucket.org/cessda/cessda.cvs.two/issues/280/usage-information-to-be-copied-from-sl-to): Usage information to be copied from SL to TLs
+
+- Improve code quality by improving testing coverage, remove duplications and fix code smells
+  [#254](https://bitbucket.org/cessda/cessda.cvs.two/issues/254/improve-cvs-2-code-quality)
+  based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
+- Fix [#280](https://bitbucket.org/cessda/cessda.cvs.two/issues/280/usage-information-to-be-copied-from-sl-to):
+  Usage information to be copied from SL to TLs
 - Fix [#281](https://bitbucket.org/cessda/cessda.cvs.two/issues/281/unable-to-visit-previous-version): Unable to visit previous CV versions
 - Fix [#279](https://bitbucket.org/cessda/cessda.cvs.two/issues/279/usage-information-not-shown-in-home): Related to issue in the generation of JSON files for published CVs
 
-
-
 ## [2.0.1-Alpha] - 2020-12-9
+
 - Fix and finalize the /v2 REST APIs [#251](https://bitbucket.org/cessda/cessda.cvs.two/issues/251/api-requirements-read-only-mode-api)
-    - Add search CV Codes REST API that produces JSON-LD based on Skosmos [#178](https://bitbucket.org/cessda/cessda.cvs.two/issues/178/dataverse-having-problems-consuming-api)
-    - Add search Vocabularies & Codes that produces JSON & JSON-LD formats
-    - Add export Vocabulary that produces HTML, DOCX, PDF, JSON & JSON-LD formats
-- Add application maintenance page, which includes functions to generating JSON for published CVs, indexing for Agency, Vocabularies, Statistics and checking for incorrect CVs.[#272](https://bitbucket.org/cessda/cessda.cvs.two/issues/272/create-a-maintenance-page)
-- Provide a configurable URI for Vocabulary versions and Codes. [#256](https://bitbucket.org/cessda/cessda.cvs.two/issues/256/cvs-urls-api-issue), [#271](https://bitbucket.org/cessda/cessda.cvs.two/issues/271/make-agency-uri-configurable-and-link)
-- Improve code quality and fix bugs and vulnerabilities [#254](https://bitbucket.org/cessda/cessda.cvs.two/issues/254/improve-cvs-2-code-quality) based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs) 
+- Add search CV Codes REST API that produces JSON-LD based on Skosmos [#178](https://bitbucket.org/cessda/cessda.cvs.two/issues/178/dataverse-having-problems-consuming-api)
+- Add search Vocabularies & Codes that produces JSON & JSON-LD formats
+- Add export Vocabulary that produces HTML, DOCX, PDF, JSON & JSON-LD formats
+- Add application maintenance page, which includes functions to generating JSON for published CVs, indexing for Agency, Vocabularies,
+  Statistics and checking for incorrect CVs.[#272](https://bitbucket.org/cessda/cessda.cvs.two/issues/272/create-a-maintenance-page)
+- Provide a configurable URI for Vocabulary versions and Codes. [#256](https://bitbucket.org/cessda/cessda.cvs.two/issues/256/cvs-urls-api-issue),
+  [#271](https://bitbucket.org/cessda/cessda.cvs.two/issues/271/make-agency-uri-configurable-and-link)
+- Improve code quality and fix bugs and vulnerabilities [#254](https://bitbucket.org/cessda/cessda.cvs.two/issues/254/improve-cvs-2-code-quality)
+  based on [SonarCube](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
 - Fix user agency role issue [#269](https://bitbucket.org/cessda/cessda.cvs.two/issues/269/editing-cv-notes-not-working-for)
 - Add Matomo tracking [#266](https://bitbucket.org/cessda/cessda.cvs.two/issues/266/add-matomo-tracking-code)
-- Other issues fixing [#277](https://bitbucket.org/cessda/cessda.cvs.two/issues/277/inccorrect-missing-syling-between-ngx), and [#261](https://bitbucket.org/cessda/cessda.cvs.two/issues/261/incorrect-tool-name-in-tab)
-
+- Other issues fixing [#277](https://bitbucket.org/cessda/cessda.cvs.two/issues/277/inccorrect-missing-syling-between-ngx),
+  and [#261](https://bitbucket.org/cessda/cessda.cvs.two/issues/261/incorrect-tool-name-in-tab)
 
 ## [2.0.0-Alpha] - 2020-11-02
 
@@ -142,7 +180,11 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Responsive web design
 - Improved styling and looks-and-feels
 - JSON Web Token (JWT) authentication, a stateless security mechanism. In order to improve scalability.
-- Support for 28 Controlled-Vocabularies (CVs) languages (Albanian (sq), Bosnian (bs), Bulgarian (bg), Croatian (hr), Czech (cs), Danish (da), Dutch (nl), English (en), Estonian (et), Finnish (fi), French (fr), German (de), Greek (el), Hungarian (hu), Italian (it), Japanese (ja), Lithuanian (lt), Macedonian (mk), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Serbian (sr), Slovak (sk), Slovenian (sl), Spanish (es), Swedish (sv))
+- Support for 28 Controlled-Vocabularies (CVs) languages (Albanian (sq), Bosnian (bs), Bulgarian (bg),
+  Croatian (hr), Czech (cs), Danish (da), Dutch (nl), English (en), Estonian (et), Finnish (fi),
+  French (fr), German (de), Greek (el), Hungarian (hu), Italian (it), Japanese (ja), Lithuanian (lt),
+  Macedonian (mk), Norwegian (no), Polish (pl), Portuguese (pt), Romanian (ro), Russian (ru), Serbian (sr),
+  Slovak (sk), Slovenian (sl), Spanish (es), Swedish (sv))
 - Fixed corrupted CVs from the version 1
 - Fixed and improved Vocabulary workflow
 - Fixed vocabulary cloning and versioning
@@ -153,7 +195,8 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - New redesign Search UI, search Vocabulary based on specific language
 - Search filters (e.g based on Agency) with [ngx-chips](https://www.npmjs.com/package/ngx-chips) component.
 - Optimized and fixed searching functionality from version 1
-- Compare vocabulary versions with [ngx-text-diff](https://www.npmjs.com/package/ngx-text-diff) component, which based on `google diff match patch` library.
+- Compare vocabulary versions with [ngx-text-diff](https://www.npmjs.com/package/ngx-text-diff) component,
+  which based on `google diff match patch` library.
 - Responsive Tree component adapts screen-size, to show the Vocabulary codes hierarchical structure.
 - Vocabulary version comments functionality.
 - Rich-Textarea with [ngx-quill](https://www.npmjs.com/package/ngx-quill) component.

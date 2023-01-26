@@ -148,7 +148,7 @@
                             </a>
                             <div id="action-code-panel" class="acc-body" [ngbCollapse]="isCodeActionCollapse">
                                 <div *ngIf="version!.itemType === 'SL'">
-                                    <div *ngIf="!(version!.status === 'READY_TO_PUBLISH' || version!.status === 'READY_TO_TRANSLATE')">
+                                    <div *ngIf="!(version!.status === 'READY_TO_PUBLISH' || version!.status === 'READY_TO_TRANSLATE' || version!.status === 'PUBLISHED')">
                                         <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CODE', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT'], language:version!.language}"
                                                 class="btn sk-select-min sk-input-f mtop10" (click)="openAddCodePopup()">
                                             <fa-icon [icon]="'plus'"></fa-icon>
