@@ -126,6 +126,9 @@ class EditorResourceIT {
     private static final String INIT_DDI_USAGE = "AAAAAAAAAA";
     private static final String EDIT_DDI_USAGE = "BBBBBBBBBB";
 
+    private static final String INIT_DISCUSSION_NOTES = "AAAAAAAAAA";
+    private static final String EDIT_DISCUSSIONNOTES = "BBBBBBBBBB";
+
     public static final String INIT_TITLE_EN = "AAAAAAAAAA";
     private static final String EDIT_TITLE_EN = "BBBBBBBBBB";
 
@@ -871,6 +874,7 @@ class EditorResourceIT {
             .andExpect(status().isOk());
         vocabularySnippetForEnSl.setActionType( ActionType.EDIT_DDI_CV );
         vocabularySnippetForEnSl.setDdiUsage(INIT_DDI_USAGE);
+        vocabularySnippetForEnSl.setDiscussionNotes(INIT_DISCUSSION_NOTES);
         restMockMvc.perform(put("/api/editors/vocabularies")
             .header("Authorization", jwt)
             .contentType(MediaType.APPLICATION_JSON)
@@ -881,6 +885,7 @@ class EditorResourceIT {
         final Version testVersion = testVocabulary.getVersions().iterator().next();
         assertThat(testVersion.getNotes()).isEqualTo(EDIT_NOTES);
         assertThat(testVersion.getDdiUsage()).isEqualTo(INIT_DDI_USAGE);
+        assertThat(testVersion.getDiscussionNotes()).isEqualTo(INIT_DISCUSSION_NOTES);
     }
 
     private void deleteCodeTest(Concept slConcept, Concept slConcept2) throws Exception {
