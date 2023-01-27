@@ -168,7 +168,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
             return 0;
         if (other == null)
             return 1;
-        int cmp = ((majorNumber == null || other.majorNumber == null)) ? 0 : majorNumber.compareTo(other.majorNumber);
+        int cmp = (majorNumber == null || other.majorNumber == null) ? 0 : majorNumber.compareTo(other.majorNumber);
         if (cmp != 0)
             return cmp;
         cmp = (minorNumber == null || other.minorNumber == null) ? 0 : minorNumber.compareTo(other.minorNumber);
