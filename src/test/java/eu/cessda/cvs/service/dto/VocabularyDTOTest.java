@@ -22,6 +22,8 @@ import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
+import antlr.Version;
+
 import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -156,5 +158,17 @@ class VocabularyDTOTest {
         vocabularySnippet.setItemType(ItemType.TL);
         VocabularyDTO vocabularyDTO2 = new VocabularyDTO(vocabularySnippet);
         assertThat(vocabularyDTO2.getSourceLanguage()).isNotEqualTo(vocabularySnippet.getLanguage());
+    }
+
+    @Test
+    void setGetVersionNumberAsString() {
+        VocabularyDTO vocabularyDTO = new VocabularyDTO();
+        
+        vocabularyDTO.setVersionNumber((String) null);
+        assertThat(vocabularyDTO.getVersionNumberAsString()).isNull();
+
+        String versionNumber = "9.9.9";
+        vocabularyDTO.setVersionNumber(versionNumber);
+        assertThat(vocabularyDTO.getVersionNumberAsString()).isEqualTo(versionNumber);
     }
 }
