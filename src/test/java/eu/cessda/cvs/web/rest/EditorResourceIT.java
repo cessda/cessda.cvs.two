@@ -126,6 +126,9 @@ class EditorResourceIT {
     private static final String INIT_DDI_USAGE = "AAAAAAAAAA";
     private static final String EDIT_DDI_USAGE = "BBBBBBBBBB";
 
+    private static final String INIT_DISCUSSION_NOTES = "AAAAAAAAAA";
+    private static final String EDIT_DISCUSSION_NOTES = "BBBBBBBBBB";
+
     public static final String INIT_TITLE_EN = "AAAAAAAAAA";
     private static final String EDIT_TITLE_EN = "BBBBBBBBBB";
 

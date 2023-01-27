@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -162,19 +163,20 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return versionNumber != null ? versionNumber.toString() : null;
     }
 
+    private static Comparator<Integer> nullSafeIntegerComparator = Comparator.nullsFirst(Integer::compareTo); 
+
+    private static Comparator<VersionNumber> versionNumberComparator = Comparator
+        .comparing(
+            VersionNumber::getMajorNumber, nullSafeIntegerComparator
+        ).thenComparing(
+            VersionNumber::getMinorNumber, nullSafeIntegerComparator
+        ).thenComparing(
+            VersionNumber::getPatchNumber, nullSafeIntegerComparator
+        );
+
     @Override
     public int compareTo(VersionNumber other) {
-        if (this == other)
-            return 0;
-        if (other == null)
-            return 1;
-        int cmp = ((majorNumber == null || other.majorNumber == null)) ? 0 : majorNumber.compareTo(other.majorNumber);
-        if (cmp != 0)
-            return cmp;
-        cmp = (minorNumber == null || other.minorNumber == null) ? 0 : minorNumber.compareTo(other.minorNumber);
-        if (cmp != 0)
-            return cmp;
-        return (patchNumber == null || other.patchNumber == null) ? 0 : patchNumber.compareTo(other.patchNumber);
+        return versionNumberComparator.compare(this, other);
     }
 
     public boolean equalMinorVersionNumber(VersionNumber other) {
@@ -217,38 +219,19 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         if (this == obj) {
             return true;
         }
+
         if (obj == null) {
             return false;
         }
+
         if (obj.getClass() == String.class) {
             return this.equals(VersionNumber.fromString((String) obj));
         }
+
         if (getClass() != obj.getClass()) {
             return false;
         }
 
-        VersionNumber other = (VersionNumber) obj;
-
-        if ((majorNumber == null || other.majorNumber == null) && majorNumber != other.majorNumber) {
-            return false;
-        }
-        if ((minorNumber == null || other.minorNumber == null) && minorNumber != other.minorNumber) {
-            return false;
-        }
-        if ((patchNumber == null || other.patchNumber == null) && patchNumber != other.patchNumber) {
-            return false;
-        }
-
-        if (!majorNumber.equals(other.majorNumber)) {
-            return false;
-        }
-        if (!minorNumber.equals(other.minorNumber)) {
-            return false;
-        }
-        if (!patchNumber.equals(other.patchNumber)) {
-            return false;
-        }
-
-        return true;
+        return compareTo((VersionNumber) obj) == 0;
     }
 }

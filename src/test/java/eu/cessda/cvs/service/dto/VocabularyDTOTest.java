@@ -15,11 +15,18 @@
  */
 package eu.cessda.cvs.service.dto;
 
+import eu.cessda.cvs.domain.VocabularySnippet;
+import eu.cessda.cvs.domain.enumeration.ItemType;
 import eu.cessda.cvs.domain.enumeration.Language;
+import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.web.rest.TestUtil;
 import org.junit.jupiter.api.Test;
 
+import antlr.Version;
+
+import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -114,5 +121,54 @@ class VocabularyDTOTest {
         assertThat(vocabularyDTO1).isNotEqualTo(vocabularyDTO2);
         vocabularyDTO1.setId(null);
         assertThat(vocabularyDTO1).isNotEqualTo(vocabularyDTO2);
+    }
+
+    @Test
+    void contentByVocabularySnippet() {
+        VocabularyDTO vocabularyDTO1 = new VocabularyDTO();
+        VocabularySnippet vocabularySnippet1 = new VocabularySnippet();
+        vocabularySnippet1.setLanguage(Language.ENGLISH.getIso());
+        vocabularySnippet1.setVersionNumber(new VersionNumber(1,0,0));
+        vocabularyDTO1.setContentByVocabularySnippet(vocabularySnippet1);
+        assertThat(vocabularyDTO1.getVersionEn()).isEqualTo(vocabularySnippet1.getVersionNumber().toString());
+
+        VocabularyDTO vocabularyDTO2 = new VocabularyDTO();
+        VocabularySnippet vocabularySnippet2 = new VocabularySnippet();
+        vocabularySnippet2.setLanguage(Language.ENGLISH.getIso());
+        vocabularyDTO2.setContentByVocabularySnippet(vocabularySnippet2);
+        assertThat(vocabularyDTO2.getVersionEn()).isNull();
+    }
+
+    @Test
+    void constructFromSnippet() {
+
+        Language lang = Language.SLOVAK;
+
+        assertThat(new VocabularyDTO().getSourceLanguage()).isNotEqualTo(lang.getIso());
+
+        VocabularySnippet vocabularySnippet = new VocabularySnippet();
+        vocabularySnippet.setLanguage(lang.getIso());
+
+        // snippet is SL
+        vocabularySnippet.setItemType(ItemType.SL);
+        VocabularyDTO vocabularyDTO1 = new VocabularyDTO(vocabularySnippet);
+        assertThat(vocabularyDTO1.getSourceLanguage()).isEqualTo(vocabularySnippet.getLanguage());
+
+        // snippet is TL
+        vocabularySnippet.setItemType(ItemType.TL);
+        VocabularyDTO vocabularyDTO2 = new VocabularyDTO(vocabularySnippet);
+        assertThat(vocabularyDTO2.getSourceLanguage()).isNotEqualTo(vocabularySnippet.getLanguage());
+    }
+
+    @Test
+    void setGetVersionNumberAsString() {
+        VocabularyDTO vocabularyDTO = new VocabularyDTO();
+        
+        vocabularyDTO.setVersionNumber((String) null);
+        assertThat(vocabularyDTO.getVersionNumberAsString()).isNull();
+
+        String versionNumber = "9.9.9";
+        vocabularyDTO.setVersionNumber(versionNumber);
+        assertThat(vocabularyDTO.getVersionNumberAsString()).isEqualTo(versionNumber);
     }
 }
