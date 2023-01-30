@@ -116,7 +116,7 @@ export class HomeDetailComponent implements OnInit {
     this.eventManager.broadcast({ name: 'closeComparison', content: true });
   }
 
-  getLatestVersionNumber(): String {
+  getLatestVersionNumber(): string {
     const lang = this.vocabulary!.sourceLanguage!;
     return String(VocabularyUtil.getVersionNumberByLangIso(this.vocabulary!, lang));
   }
@@ -281,7 +281,7 @@ export class HomeDetailComponent implements OnInit {
       }
 
       this.newerVersionNumber = (this.vocabulary!.status === 'PUBLISHED') ?
-      this.vocabulary!.versionNumber! : this.getLatestVersionNumber().toString();
+      this.vocabulary!.versionNumber! : this.getLatestVersionNumber();
       if (VocabularyUtil.compareVersionNumbers(
         this.newerVersionNumber,
         this.vocabulary!.versions![0].number!

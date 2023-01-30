@@ -280,9 +280,6 @@ export class EditorDetailCvForwardStatusDialogComponent implements OnInit {
     this.isSaving = true;
     const vocabularySnippet = this.createFromForm();
     if (!this.  isVersionInvalid && this.missingTranslations.length === 0) {
-      // for (const vocabularySnippetTemp of vocabularySnippet) {
-      //   this.subscribeToSaveResponse(this.editorService.forwardStatusVocabulary(vocabularySnippetTemp));
-      // }
       this.subscribeToSaveResponse(this.editorService.forwardStatusVocabulary(vocabularySnippet));
     } else {
       this.isSaving = false;
