@@ -1963,12 +1963,9 @@ public class VocabularyServiceImpl implements VocabularyService
 
 		Licence licence = null;
 		Agency agency = null;
-		// probably we don't need to do it for publish, but only for ready to translate and ready to publish!!!
-		// no we need it for both, for READY_TO_PUBLISH we need to save it to the DB and for PUBLISH we need to retrieve it
-		if ( /*vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_PUBLISH ) ||
-				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_PUBLISH )*/
-				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE ) ||
-				vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH ) )
+		// get license information only when we are publishing the vocabularies
+		if ( vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_SL_STATUS_READY_TO_TRANSLATE ) || 
+		vocabularySnippet.getActionType().equals( ActionType.FORWARD_CV_TL_STATUS_READY_TO_PUBLISH ) )
 		{
 			licence = licenceRepository.getOne( vocabularySnippet.getLicenseId() );
 			agency = agencyRepository.getOne( vocabularySnippet.getAgencyId() );

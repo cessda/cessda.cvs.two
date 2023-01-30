@@ -251,7 +251,9 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
               this.save();
             }
           })
-          .catch(err => {});
+          .catch(err => {
+            throw err;
+          });
       } else {
         this.save();
       }
