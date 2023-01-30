@@ -26,13 +26,6 @@
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
         <span>Are you sure you want to create a new version of SL {{versionParam.itemType}} {{versionParam.language! | vocabularyLanguageFromKey}} <strong>{{vocabularyParam.notation}}</strong> {{versionParam.number}}?</span>
-        <!--br/><br/>
-        <div *ngIf="versionParam.itemType === 'SL' && vocabularyParam.versions && vocabularyParam.versions!.length > 1">
-            The following TLs will also be cloned as DRAFT after this new SL version is published:
-            <div *ngFor="let version of vocabularyParam.versions">
-                <span *ngIf="version.itemType === 'TL'">- TL {{version.language! | vocabularyLanguageFromKey}} {{version.number!}}-{{version.status!}}<br/></span>
-            </div>
-        </div-->
         <br/>
         <div *ngIf="unPublishedTls && unPublishedTls !== ''" class="alert alert-danger" role="alert">
             <fa-icon style="font-size:200%" [icon]="'exclamation-triangle'"></fa-icon>
@@ -45,10 +38,6 @@
             </span>
             <span>Current TL content for the SL:</span><br/>
             <span [innerHTML]="allTls"></span><br/><br/>
-            <!--span>When you create a new SL version, these unpublished TLs will be:</span><br/>
-            <span>- Cloned as TL drafts to the new SL version.</span><br/>
-            <span>- They will be treated by the system as the first ever version of the TL. There will no change log or comparison table to previous version.</span><br/>
-            <span>- TL version history and comparison tables of any previous versions are retained.</span><br/><br/-->
             <span>If you are unsure how to proceed, please contact the CVS Service Owner.</span><br/><br/>
             <div class="form-check">
                 <label class="form-check-label" for="agreeNewVersion">
