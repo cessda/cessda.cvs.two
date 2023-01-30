@@ -215,11 +215,8 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
     this.noOfComments = this.version.comments!.length;
 
-    if (this.version.status === 'REVIEW') {
-      this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'ADMIN_CONTENT'];
-    } else {
-      this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'ADMIN_CONTENT'];
-    }
+    this.codeTlActionRoles = ['ADMIN', 'ADMIN_TL', 'ADMIN_CONTENT'];
+
     // make sure that version TL concepts follows the version SL concept in structure and some properties
     if (this.version.itemType === 'TL') {
       this.enableAddTl = false;
