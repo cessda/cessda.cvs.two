@@ -14,21 +14,67 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
-## [3.0.0] - UNRELEASED
+## [3.1.0] - UNRELEASED
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.xxxx.svg)](https://doi.org/10.5281/zenodo.xxxx)
+- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.xxxx.svg)](https://doi.org/10.5281/zenodo.xxxx)
 
 ### Additions
 
-[#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+- [#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
 
 ### Changes
 
-[#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+- [#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
 
 ### Fixes
 
-[#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+- [#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+
+### Security
+
+- [#xxx](https://bitbucket.org/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+
+## [3.0.0] - 2023-01-31
+
+- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7473085.svg)](https://doi.org/10.5281/zenodo.7473085)
+
+### Additions
+
+- [#440](https://bitbucket.org/cessda/cessda.cvs.two/issues/440) Added code deprecation button for SL Admin role
+- [#99](https://bitbucket.org/cessda/cessda.cvs.two/issues/99) Content Editor Guide is now available online to authorised users
+- [#430](https://bitbucket.org/cessda/cessda.cvs.two/issues/430) When new codes are added to SL, they are copied to TL drafts.
+  When codes are deprecated in SL, they are removed from TL drafts
+- [#409](https://bitbucket.org/cessda/cessda.cvs.two/issues/409) Added link to CESSDA Data Catalogue in About page
+- [#393](https://bitbucket.org/cessda/cessda.cvs.two/issues/393) Pop-up warning is displayed when a code value is changed
+- [#385](https://bitbucket.org/cessda/cessda.cvs.two/issues/385) Added workflow for deprecating codes
+
+### Changes
+
+- [#465](https://bitbucket.org/cessda/cessda.cvs.two/issues/465) Updated copyright statement for 2023
+- [#463](https://bitbucket.org/cessda/cessda.cvs.two/issues/465) Updated About page to reflect the User facing changes in this version
+- [#461](https://bitbucket.org/cessda/cessda.cvs.two/issues/461) Updated User guide to reflect the User facing changes in this version
+- [#441](https://bitbucket.org/cessda/cessda.cvs.two/issues/441) Modified text in 'Create new SL version' pop-up
+- [#437](https://bitbucket.org/cessda/cessda.cvs.two/issues/437) Changed label of Publish CV button
+- [#436](https://bitbucket.org/cessda/cessda.cvs.two/issues/436) 'Contributor SL' and 'Contributor TL' roles have been removed
+- [#423](https://bitbucket.org/cessda/cessda.cvs.two/issues/423) Deprecated codes info is now visible in TL pop-up
+- [#422](https://bitbucket.org/cessda/cessda.cvs.two/issues/422) Deprecated terms in search results are indicated by the postfix '(DEPRECATED TERM)'
+- [#421](https://bitbucket.org/cessda/cessda.cvs.two/issues/421) Deprecated terms are marked as such in CV exports (all formats)
+- [#420](https://bitbucket.org/cessda/cessda.cvs.two/issues/420) Code definitions are now visible in the details table, prior to publication
+- [#419](https://bitbucket.org/cessda/cessda.cvs.two/issues/419) The pop-up shown when transitioning a CV from draft to review status
+  no longer contains the comparison table and change logs
+- [#418](https://bitbucket.org/cessda/cessda.cvs.two/issues/418) Modified text in deprecation pop-up
+- [#398](https://bitbucket.org/cessda/cessda.cvs.two/issues/398) CVs now use 3 digit versioning
+- [#394](https://bitbucket.org/cessda/cessda.cvs.two/issues/394) CV editing workflow now contains READY TO BE TRANSLATED and PUBLISHED statuses
+- [#386](https://bitbucket.org/cessda/cessda.cvs.two/issues/386) Updated Content Editors' guide to reflect the User facing changes in this version
+
+### Fixes
+
+- [#468](https://bitbucket.org/cessda/cessda.cvs.two/issues/468) Unable to create new SL version
+- [#462](https://bitbucket.org/cessda/cessda.cvs.two/issues/462) Unable to add codes to existing vocabulary
+- [#446](https://bitbucket.org/cessda/cessda.cvs.two/issues/446) Some CVs had spurious 'newer version' information
+- [#457](https://bitbucket.org/cessda/cessda.cvs.two/issues/457) Missing action buttons have been restored for various Admin roles
+- [#424](https://bitbucket.org/cessda/cessda.cvs.two/issues/424) Corrected alphabetical ordering for vocabulary search results list
+- [#329](https://bitbucket.org/cessda/cessda.cvs.two/issues/329) Missing space in citation - corrected
 
 ### Security
 
@@ -36,34 +82,34 @@ _For each release, use the following sub-sections:_
 
 ## [2.2.0] - 2022-06-30
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6598225.svg)](https://doi.org/10.5281/zenodo.6598225)
+- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6598225.svg)](https://doi.org/10.5281/zenodo.6598225)
 
 ### Additions
 
-[#390](https://bitbucket.org/cessda/cessda.cvs.two/issues/390) Add Lithuanian and Estonian to target languages
-[#381](https://bitbucket.org/cessda/cessda.cvs.two/issues/381) Add Japanese to PDF and SKOS exports
-[#380](https://bitbucket.org/cessda/cessda.cvs.two/issues/380) Add Japanese to target languages
-[#306](https://bitbucket.org/cessda/cessda.cvs.two/issues/306) Add Matomo Cloud tracking code
-[#274](https://bitbucket.org/cessda/cessda.cvs.two/issues/274) Structured logs are ingested into EFK system
-[#263](https://bitbucket.org/cessda/cessda.cvs.two/issues/263) Add Swagger validator badge to API documentation page
+- [#390](https://bitbucket.org/cessda/cessda.cvs.two/issues/390) Add Lithuanian and Estonian to target languages
+- [#381](https://bitbucket.org/cessda/cessda.cvs.two/issues/381) Add Japanese to PDF and SKOS exports
+- [#380](https://bitbucket.org/cessda/cessda.cvs.two/issues/380) Add Japanese to target languages
+- [#306](https://bitbucket.org/cessda/cessda.cvs.two/issues/306) Add Matomo Cloud tracking code
+- [#274](https://bitbucket.org/cessda/cessda.cvs.two/issues/274) Structured logs are ingested into EFK system
+- [#263](https://bitbucket.org/cessda/cessda.cvs.two/issues/263) Add Swagger validator badge to API documentation page
 
 ### Changes
 
-[#406](https://bitbucket.org/cessda/cessda.cvs.two/issues/406) Updated versions of images referenced in Docker Compose files
-[#392](https://bitbucket.org/cessda/cessda.cvs.two/issues/392) Documentation updates for current release
-[#389](https://bitbucket.org/cessda/cessda.cvs.two/issues/389) Update usage text for Rest APIs
-[#388](https://bitbucket.org/cessda/cessda.cvs.two/issues/388) Change label and target of REST API link
-[#360](https://bitbucket.org/cessda/cessda.cvs.two/issues/360) Remove term ‘CVS’ from User-facing materials
+- [#406](https://bitbucket.org/cessda/cessda.cvs.two/issues/406) Updated versions of images referenced in Docker Compose files
+- [#392](https://bitbucket.org/cessda/cessda.cvs.two/issues/392) Documentation updates for current release
+- [#389](https://bitbucket.org/cessda/cessda.cvs.two/issues/389) Update usage text for Rest APIs
+- [#388](https://bitbucket.org/cessda/cessda.cvs.two/issues/388) Change label and target of REST API link
+- [#360](https://bitbucket.org/cessda/cessda.cvs.two/issues/360) Remove term ‘CVS’ from User-facing materials
 
 ### Fixes
 
-[#396](https://bitbucket.org/cessda/cessda.cvs.two/issues/396) Usage information was not saved
-[#391](https://bitbucket.org/cessda/cessda.cvs.two/issues/391) SL_Admin was not able to publish CVs
-[#375](https://bitbucket.org/cessda/cessda.cvs.two/issues/375) Language tags were not in alphabetical order
-[#374](https://bitbucket.org/cessda/cessda.cvs.two/issues/374) Password reset email used wrong field to salute user
-[#363](https://bitbucket.org/cessda/cessda.cvs.two/issues/363) CESSDA Topic Classification CV opened slowly in Editor
-[#329](https://bitbucket.org/cessda/cessda.cvs.two/issues/329) Add missing space to citation text
-[#316](https://bitbucket.org/cessda/cessda.cvs.two/issues/316) Unable to read CVS file with multiline content inside quotes for import
+- [#396](https://bitbucket.org/cessda/cessda.cvs.two/issues/396) Usage information was not saved
+- [#391](https://bitbucket.org/cessda/cessda.cvs.two/issues/391) SL_Admin was not able to publish CVs
+- [#375](https://bitbucket.org/cessda/cessda.cvs.two/issues/375) Language tags were not in alphabetical order
+- [#374](https://bitbucket.org/cessda/cessda.cvs.two/issues/374) Password reset email used wrong field to salute user
+- [#363](https://bitbucket.org/cessda/cessda.cvs.two/issues/363) CESSDA Topic Classification CV opened slowly in Editor
+- [#329](https://bitbucket.org/cessda/cessda.cvs.two/issues/329) Add missing space to citation text
+- [#316](https://bitbucket.org/cessda/cessda.cvs.two/issues/316) Unable to read CVS file with multiline content inside quotes for import
 
 ### Security
 
@@ -71,7 +117,7 @@ _For each release, use the following sub-sections:_
 
 ## [2.1.0] - 2022-03-03
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6092399.svg)](https://doi.org/10.5281/zenodo.6092399)
+- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6092399.svg)](https://doi.org/10.5281/zenodo.6092399)
 
 ### Additions
 
@@ -159,7 +205,7 @@ _For each release, use the following sub-sections:_
 - Add search Vocabularies & Codes that produces JSON & JSON-LD formats
 - Add export Vocabulary that produces HTML, DOCX, PDF, JSON & JSON-LD formats
 - Add application maintenance page, which includes functions to generating JSON for published CVs, indexing for Agency, Vocabularies,
-  Statistics and checking for incorrect CVs.[#272](https://bitbucket.org/cessda/cessda.cvs.two/issues/272/create-a-maintenance-page)
+  Statistics and checking for incorrect CVs. [#272](https://bitbucket.org/cessda/cessda.cvs.two/issues/272/create-a-maintenance-page)
 - Provide a configurable URI for Vocabulary versions and Codes. [#256](https://bitbucket.org/cessda/cessda.cvs.two/issues/256/cvs-urls-api-issue),
   [#271](https://bitbucket.org/cessda/cessda.cvs.two/issues/271/make-agency-uri-configurable-and-link)
 - Improve code quality and fix bugs and vulnerabilities [#254](https://bitbucket.org/cessda/cessda.cvs.two/issues/254/improve-cvs-2-code-quality)
@@ -171,7 +217,7 @@ _For each release, use the following sub-sections:_
 
 ## [2.0.0-Alpha] - 2020-11-02
 
-The first version of CESSDA Vocabulary Service 2, which was re-developed from scratch based on the deprecated version 1 application.  
+The first version of CESSDA Vocabulary Service 2, which was re-developed from scratch based on the deprecated version 1 application.
 The project uses new architecture Spring-Boot framework for the back-end and Angular for the front-end, instead of Vaadin like in version 1.
 
 - Back-end uses Spring-Boot v 2.2.5.RELEASE.
