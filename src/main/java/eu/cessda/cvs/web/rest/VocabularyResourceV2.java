@@ -421,7 +421,13 @@ public class VocabularyResourceV2 {
     ) {
         try {
             log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
-            return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
+            VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
+            if (vocabularyDTO.getVersions().isEmpty()) {
+                log.error( "Error vocabulary with {} SL version number and/or vocabulary with notation {} does not exist", versionNumberSl, vocabulary );
+                throw new EntityNotFoundException( UNABLE_FIND_VERSION + " SL version number and/or vocabulary with notation " + vocabulary );
+            } else {
+                return ResponseEntity.ok().body(vocabularyDTO);
+            }
         } catch(Exception e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
@@ -861,12 +867,7 @@ public class VocabularyResourceV2 {
     private VocabularyDTO getVocabularyDTOAndFilterVersions(String vocabulary, String versionNumberSl, String languageVersion) {
         VocabularyDTO vocabularyDTO = vocabularyService.getVocabularyByNotationAndVersion(vocabulary, versionNumberSl, true);
         vocabularyDTO.setVersions(vocabularyService.filterOutVocabularyVersions(languageVersion, vocabularyDTO));
-        if (vocabularyDTO.getVersions().isEmpty()) {
-            log.error( "Error vocabulary with {} SL version number and/or vocabulary with notation {} does not exist", versionNumberSl, vocabulary );
-			throw new EntityNotFoundException( UNABLE_FIND_VERSION + " SL version number " + " and/or vocabulary with notation " + vocabulary );
-        } else {
-            return vocabularyDTO;
-        }
+        return vocabularyDTO;
     }
 
     /**
