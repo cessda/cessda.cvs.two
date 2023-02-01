@@ -45,6 +45,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
@@ -61,6 +62,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/v2")
 public class VocabularyResourceV2 {
 
+    public static final String UNABLE_FIND_VERSION = "Unable to find version with Id ";
     public static final String ATTACHMENT_FILENAME = "attachment; filename=";
     public static final String LANGUAGE = "@language";
     public static final String VALUE = "@value";
@@ -859,7 +861,12 @@ public class VocabularyResourceV2 {
     private VocabularyDTO getVocabularyDTOAndFilterVersions(String vocabulary, String versionNumberSl, String languageVersion) {
         VocabularyDTO vocabularyDTO = vocabularyService.getVocabularyByNotationAndVersion(vocabulary, versionNumberSl, true);
         vocabularyDTO.setVersions(vocabularyService.filterOutVocabularyVersions(languageVersion, vocabularyDTO));
-        return vocabularyDTO;
+        if (vocabularyDTO.getVersions().isEmpty()) {
+            log.error( "Error vocabulary with {} SL version number and/or vocabulary with notation {} does not exist", versionNumberSl, vocabulary );
+			throw new EntityNotFoundException( UNABLE_FIND_VERSION + " SL version number " + " and/or vocabulary with notation " + vocabulary );
+        } else {
+            return vocabularyDTO;
+        }
     }
 
     /**
