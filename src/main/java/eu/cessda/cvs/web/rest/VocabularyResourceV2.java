@@ -394,7 +394,7 @@ public class VocabularyResourceV2 {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation( value = "Get a Vocabulary in JSON format" )
-    public ResponseEntity<VocabularyDTO> getVocabularyJson(
+    public ResponseEntity<?> getVocabularyJson(
         HttpServletRequest request,
         @ApiParam(
             name = "vocabulary",
@@ -417,12 +417,16 @@ public class VocabularyResourceV2 {
             example = "en-4.0"
         ) @RequestParam( required = false )  String languageVersion
     ) {
-        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
-        return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
+        try {
+            log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
+            return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     /**
-     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl/:language} : Get Vocabulary
      *
      * @param request
      * @param vocabulary
