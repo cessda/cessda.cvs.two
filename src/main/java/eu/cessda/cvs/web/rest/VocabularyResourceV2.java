@@ -29,6 +29,7 @@ import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.domain.CvResult;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
+import eu.cessda.cvs.web.rest.errors.ResourceNotFoundException;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -62,7 +63,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/v2")
 public class VocabularyResourceV2 {
 
-    public static final String UNABLE_FIND_VERSION = "Unable to find version with Id ";
     public static final String ATTACHMENT_FILENAME = "attachment; filename=";
     public static final String LANGUAGE = "@language";
     public static final String VALUE = "@value";
@@ -419,17 +419,13 @@ public class VocabularyResourceV2 {
             example = "en-4.0"
         ) @RequestParam( required = false )  String languageVersion
     ) {
-        try {
-            log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
-            VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
-            if (vocabularyDTO.getVersions().isEmpty()) {
-                log.error( "Error vocabulary with {} SL version number and/or vocabulary with notation {} does not exist", versionNumberSl, vocabulary );
-                throw new EntityNotFoundException( UNABLE_FIND_VERSION + " SL version number and/or vocabulary with notation " + vocabulary );
-            } else {
-                return ResponseEntity.ok().body(vocabularyDTO);
-            }
-        } catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
+        VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
+        if (vocabularyDTO.getVersions().isEmpty()) {
+            log.error( "Error vocabulary with {} SL version number and/or vocabulary with notation {} does not exist", versionNumberSl, vocabulary );
+            throw new ResourceNotFoundException( "Unable to find a vocabulary with " + versionNumberSl + " SL version number and/or notation " + vocabulary,  vocabulary, "404");
+        } else {
+            return ResponseEntity.ok().body(vocabularyDTO);
         }
     }
 

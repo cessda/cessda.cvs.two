@@ -161,4 +161,10 @@ public class ExceptionTranslator implements ProblemHandling, SecurityAdviceTrait
             .build();
         return create(ex, problem, request);
     }
+
+    @ExceptionHandler
+    public ResponseEntity<Problem> handleNonExistentVocabulary(javax.persistence.EntityNotFoundException ex, NativeWebRequest request) {
+        return null;
+        // return create(new EntityNotFoundException("" ex.getMessage()"", request));
+    }
 }

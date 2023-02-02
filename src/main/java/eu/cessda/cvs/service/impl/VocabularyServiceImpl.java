@@ -45,6 +45,7 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VersionNumber;
 import eu.cessda.cvs.utils.VocabularyUtils;
+import eu.cessda.cvs.web.rest.errors.ResourceNotFoundException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.lucene.search.join.ScoreMode;
@@ -781,7 +782,7 @@ public class VocabularyServiceImpl implements VocabularyService
 		if ( vocabularies.isEmpty() )
 		{
 			log.error( "Error vocabulary with notation {} does not exist", notation );
-			throw new EntityNotFoundException( UNABLE_FIND_VOCABULARY + "or notation " + notation );
+			throw new ResourceNotFoundException( UNABLE_FIND_VOCABULARY + "or notation " + notation,  notation, "404");
 		}
 		return vocabularyMapper.toDto( vocabularies.get( 0 ) );
 	}
