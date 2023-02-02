@@ -13,9 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package eu.cessda.cvs.web.rest.errors;
-
-import org.springframework.http.HttpStatus;
+package eu.cessda.cvs.service;
 
 import org.zalando.problem.AbstractThrowableProblem;
 import org.zalando.problem.Status;
@@ -27,14 +25,14 @@ import java.util.Map;
 @SuppressWarnings("squid:S110") // since AbstractThrowableProblem already has 5 parents
 public class ResourceNotFoundException extends AbstractThrowableProblem {
 
+    public static final String PROBLEM_BASE_URL = "https://vocabularies.cessda.eu/problem";
+    public static final URI RESOURCE_NOT_FOUND = URI.create(PROBLEM_BASE_URL + "/resource-not-found");
     private static final long serialVersionUID = 1L;
-
     private final String errorKey;
-
     private final String entityName;
 
     public ResourceNotFoundException(String defaultMessage, String entityName, String errorKey) {
-        this(ErrorConstants.RESOURCE_NOT_FOUND, defaultMessage, entityName, errorKey);
+        this(RESOURCE_NOT_FOUND, defaultMessage, entityName, errorKey);
     }
 
     public ResourceNotFoundException(URI type, String defaultMessage, String entityName, String errorKey) {
