@@ -111,13 +111,16 @@ export class EditorDetailCvAddEditDialogComponent implements OnInit {
     this.fillForm();
   }
 
-  private fillForm(): void {
-    if (this.languages && this.languages.length > 0) {
-      const pos = this.languages.indexOf(this.vocabularyParam!.sourceLanguage!);
-      this.selectedLanguage = this.languages[pos < 0 ? 0 : pos];
-    } else {
-      this.selectedLanguage = '';
+  private selectLanguage(languages: string[], sourceLanguage: string): string {
+    if (languages && languages.length > 0) {
+      const pos = languages.indexOf(sourceLanguage);
+      return languages[pos < 0 ? 0 : pos];
     }
+    return '';
+  }
+
+  private fillForm(): void {
+    this.selectedLanguage = this.selectLanguage(this.languages, this.vocabularyParam!.sourceLanguage!);
     if (this.isSlForm) {
       this.cvAddEditForm.removeControl('translateAgency');
       this.cvAddEditForm.removeControl('translateAgencyLink');
