@@ -18,6 +18,7 @@ package eu.cessda.cvs.web.rest;
 import eu.cessda.cvs.domain.Vocabulary;
 import eu.cessda.cvs.domain.enumeration.Status;
 import eu.cessda.cvs.service.ExportService;
+import eu.cessda.cvs.service.ResourceNotFoundException;
 import eu.cessda.cvs.service.VocabularyService;
 import eu.cessda.cvs.service.dto.CodeDTO;
 import eu.cessda.cvs.service.dto.ConceptDTO;
@@ -394,7 +395,7 @@ public class VocabularyResourceV2 {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ApiOperation( value = "Get a Vocabulary in JSON format" )
-    public ResponseEntity<VocabularyDTO> getVocabularyJson(
+    public ResponseEntity<?> getVocabularyJson(
         HttpServletRequest request,
         @ApiParam(
             name = "vocabulary",
@@ -418,11 +419,17 @@ public class VocabularyResourceV2 {
         ) @RequestParam( required = false )  String languageVersion
     ) {
         log.debug(VERSION_WITH_INCLUDED_VERSIONS, vocabulary, versionNumberSl, languageVersion);
-        return ResponseEntity.ok().body(getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion));
+        VocabularyDTO vocabularyDTO = getVocabularyDTOAndFilterVersions(vocabulary, versionNumberSl, languageVersion);
+        if (vocabularyDTO.getVersions().isEmpty()) {
+            log.error( "Error vocabulary with {} SL version number and/or vocabulary with notation {} does not exist", versionNumberSl, vocabulary );
+            throw new ResourceNotFoundException( "Unable to find a vocabulary with " + versionNumberSl + " SL version number and/or notation " + vocabulary,  vocabulary, "404");
+        } else {
+            return ResponseEntity.ok().body(vocabularyDTO);
+        }
     }
 
     /**
-     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl} : Get Vocabulary
+     * {@code GET  /vocabularies/:vocabulary/:versionNumberSl/:language} : Get Vocabulary
      *
      * @param request
      * @param vocabulary

@@ -781,7 +781,7 @@ public class VocabularyServiceImpl implements VocabularyService
 		if ( vocabularies.isEmpty() )
 		{
 			log.error( "Error vocabulary with notation {} does not exist", notation );
-			throw new EntityNotFoundException( UNABLE_FIND_VOCABULARY + "or notation " + notation );
+			throw new ResourceNotFoundException( UNABLE_FIND_VOCABULARY + "or notation " + notation,  notation, "404" );
 		}
 		return vocabularyMapper.toDto( vocabularies.get( 0 ) );
 	}
