@@ -64,7 +64,7 @@ public class UrnResolver {
         else
             headers = getVersionByUrnStartWith(baseUrl, urn);
         if (headers != null) return headers;
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "CV with URN: " + urn + " is not found" );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body( "URN: " + urn + " is not found" );
     }
 
     private ResponseEntity<String> getVersionByUrnStartWith(String baseUrl, String urn) {
