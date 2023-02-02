@@ -34,7 +34,7 @@ public class ResourceNotFoundException extends AbstractThrowableProblem {
     private final String entityName;
 
     public ResourceNotFoundException(String defaultMessage, String entityName, String errorKey) {
-        this(ErrorConstants.RESOURCENOTFOUND, defaultMessage, entityName, errorKey);
+        this(ErrorConstants.RESOURCE_NOT_FOUND, defaultMessage, entityName, errorKey);
     }
 
     public ResourceNotFoundException(URI type, String defaultMessage, String entityName, String errorKey) {

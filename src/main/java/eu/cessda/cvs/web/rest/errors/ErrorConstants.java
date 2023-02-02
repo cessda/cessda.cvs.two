@@ -30,7 +30,7 @@ public final class ErrorConstants {
     public static final URI VOCABULARY_NOT_FOUND_TYPE = URI.create(PROBLEM_BASE_URL + "/vocabulary-not-found-exist");
     public static final URI CODE_ALREADY_EXIST_TYPE = URI.create(PROBLEM_BASE_URL + "/code-already-exist");
     public static final URI INSUFFICIENT_VOCABULARY_AUTHORITY_TYPE = URI.create(PROBLEM_BASE_URL + "/insufficient-vocabulary-authority");
-    public static final URI RESOURCENOTFOUND = URI.create(PROBLEM_BASE_URL + "/resource-not-found");
+    public static final URI RESOURCE_NOT_FOUND = URI.create(PROBLEM_BASE_URL + "/resource-not-found");
     private ErrorConstants() {
     }
 }
