@@ -55,13 +55,14 @@
                             <span>Cv Actions</span>
                         </a>
                         <div id="action-panel" class="acc-body" [ngbCollapse]="isCvActionCollapse">
-                            <div *ngIf="!(version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH')">
+                            <!--Not needed anymore as we are not creating the CV here only adding new SL, TL versions
+                                div *ngIf="!(version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH')">
                                 <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true , true)">
                                     <fa-icon [icon]="'plus'"></fa-icon>
                                     <span>Add Cv</span>
                                 </button>
-                            </div>   
+                            </div-->   
                             <div *ngIf="(enableAddTl && !(version!.status === 'READY_TO_PUBLISH' || version!.status === 'PUBLISHED'))">
                                 <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:tlLanguageStatus}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true, false )">
@@ -121,10 +122,6 @@
                                         <span>Ready to Publish {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
-                                <!--probably we don't need create new TL version functionality in the frontend as the workflow will be that 
-                                    only through SL publication the TLs will be published too
-                                    Question: If there is already published SL and some TLs and we want to publish new TL, how-to do it???
-                                -->
                                 <div *ngIf="version!.status === 'PUBLISHED'">
                                     <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_NEW_CV_TL_VERSION', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openCreateNewCvVersionPopup()">
