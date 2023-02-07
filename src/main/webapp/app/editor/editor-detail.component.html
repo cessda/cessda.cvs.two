@@ -656,6 +656,40 @@
                                     </a>
                                 </div>
                             </div>
+                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_IDENTITY_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
+                                <a *ngIf="!isIdentityEdit && version!.itemType === 'TL'" class="btn btn-primary btn-sm" ngbTooltip="edit translation-agency" href="javascript:void(0);" (click)="isIdentityEdit = !isIdentityEdit">
+                                    <fa-icon icon="edit"></fa-icon> <span> Edit</span>
+                                </a>
+                            </div>
+
+                            <div *ngIf="isIdentityEdit" id="quill-translate">
+                                <div class="label-column-input">
+                                    <span><b>Translator agency</b></span>
+                                </div>
+                                <div class="detail-column">
+                                    <input type="text" class="form-control" id="field_translateAgency" name="translateAgency" formControlName="translateAgency"/>
+                                </div>
+                                <div class="label-column-input">
+                                    <span><b>Translator agency link</b></span>
+                                </div>
+                                <div class="detail-column">
+                                    <input type="text" class="form-control" id="field_translateAgencyLink" name="translateAgencyLink" formControlName="translateAgencyLink"/>
+                                    <div *ngIf="editorDetailForm.get('translateAgencyLink')!.invalid && (editorDetailForm.get('translateAgencyLink')!.dirty || editorDetailForm.get('translateAgencyLink')!.touched)">
+                                        <small class="form-text text-danger"
+                                               *ngIf="editorDetailForm.get('translateAgencyLink')?.errors?.pattern || editorDetailForm.get('translateAgencyLink')?.errors?.required">
+                                            Not a valid URL.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="isIdentityEdit" class="ql-editor-buttons">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTranslateIdentity()">
+                                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+                                </button>
+                                <button type="button" id="save-translate-identity" (click)="saveTranslateIdentity()" class="btn btn-primary">
+                                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                                </button>
+                            </div>
                         </div>
 
                         <a class="acc-header2 option-label col-12 panel-toggle btn-primary" href="javascript:void(0);" (click)="toggleUsageEPanel()">&nbsp;

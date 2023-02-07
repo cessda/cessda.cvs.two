@@ -250,6 +250,14 @@ public class VocabularyServiceImpl implements VocabularyService
 
 				versionDTO.setDdiUsage( vocabularySnippet.getDdiUsage() );
 			}
+			else if ( vocabularySnippet.getActionType().equals( ActionType.EDIT_IDENTITY_CV ) )
+			{
+				SecurityUtils.checkResourceAuthorization( ActionType.EDIT_IDENTITY_CV,
+						vocabularySnippet.getAgencyId(), vocabularySnippet.getLanguage() );
+
+				versionDTO.setTranslateAgency( vocabularySnippet.getTranslateAgency() );
+				versionDTO.setTranslateAgencyLink( vocabularySnippet.getTranslateAgencyLink() );
+			}
 			else if ( vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV ) )
 			{
 				SecurityUtils.checkResourceAuthorization( ActionType.EDIT_VERSION_INFO_CV,
