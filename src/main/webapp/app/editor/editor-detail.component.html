@@ -55,13 +55,14 @@
                             <span>Cv Actions</span>
                         </a>
                         <div id="action-panel" class="acc-body" [ngbCollapse]="isCvActionCollapse">
-                            <div *ngIf="!(version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH')">
+                            <!--Not needed anymore as we are not creating the CV here only adding new SL, TL versions
+                                div *ngIf="!(version!.status === 'READY_TO_TRANSLATE' || version!.status === 'READY_TO_PUBLISH')">
                                 <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_SL','ADMIN_CONTENT']}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true , true)">
                                     <fa-icon [icon]="'plus'"></fa-icon>
                                     <span>Add Cv</span>
                                 </button>
-                            </div>   
+                            </div-->   
                             <div *ngIf="(enableAddTl && !(version!.status === 'READY_TO_PUBLISH' || version!.status === 'PUBLISHED'))">
                                 <button *jhiHasAnyAgencyAuthority="{actionType:'ADD_TL_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:tlLanguageStatus}"
                                         class="btn sk-select-min sk-input-f mtop10" (click)="openAddEditCvPopup( true, false )">
@@ -121,10 +122,6 @@
                                         <span>Ready to Publish {{version!.itemType}} {{version!.language}}</span>
                                     </button>
                                 </div>
-                                <!--probably we don't need create new TL version functionality in the frontend as the workflow will be that 
-                                    only through SL publication the TLs will be published too
-                                    Question: If there is already published SL and some TLs and we want to publish new TL, how-to do it???
-                                -->
                                 <div *ngIf="version!.status === 'PUBLISHED'">
                                     <button *jhiHasAnyAgencyAuthority="{actionType:'CREATE_NEW_CV_TL_VERSION', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN','ADMIN_TL','ADMIN_CONTENT'], language:version!.language}"
                                             class="btn sk-select-min sk-input-f mtop10" (click)="openCreateNewCvVersionPopup()">
@@ -658,6 +655,40 @@
                                         <fa-icon icon="external-link-alt"></fa-icon>
                                     </a>
                                 </div>
+                            </div>
+                            <div *jhiHasAnyAgencyAuthority="{actionType:'EDIT_IDENTITY_CV', agencyId:vocabulary!.agencyId, agencyRoles:['ADMIN_TL','ADMIN_CONTENT'], language:version!.language}">
+                                <a *ngIf="!isIdentityEdit && version!.itemType === 'TL'" class="btn btn-primary btn-sm" ngbTooltip="edit translation-agency" href="javascript:void(0);" (click)="isIdentityEdit = !isIdentityEdit">
+                                    <fa-icon icon="edit"></fa-icon> <span> Edit</span>
+                                </a>
+                            </div>
+
+                            <div *ngIf="isIdentityEdit" id="quill-translate">
+                                <div class="label-column-input">
+                                    <span><b>Translator agency</b></span>
+                                </div>
+                                <div class="detail-column">
+                                    <input type="text" class="form-control" id="field_translateAgency" name="translateAgency" formControlName="translateAgency"/>
+                                </div>
+                                <div class="label-column-input">
+                                    <span><b>Translator agency link</b></span>
+                                </div>
+                                <div class="detail-column">
+                                    <input type="text" class="form-control" id="field_translateAgencyLink" name="translateAgencyLink" formControlName="translateAgencyLink"/>
+                                    <div *ngIf="editorDetailForm.get('translateAgencyLink')!.invalid && (editorDetailForm.get('translateAgencyLink')!.dirty || editorDetailForm.get('translateAgencyLink')!.touched)">
+                                        <small class="form-text text-danger"
+                                               *ngIf="editorDetailForm.get('translateAgencyLink')?.errors?.pattern || editorDetailForm.get('translateAgencyLink')?.errors?.required">
+                                            Not a valid URL.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="isIdentityEdit" class="ql-editor-buttons">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="closeTranslateIdentity()">
+                                    <fa-icon [icon]="'ban'"></fa-icon>&nbsp;<span>Close</span>
+                                </button>
+                                <button type="button" id="save-translate-identity" (click)="saveTranslateIdentity()" class="btn btn-primary">
+                                    <fa-icon [icon]="'save'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                                </button>
                             </div>
                         </div>
 

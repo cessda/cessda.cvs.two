@@ -21,7 +21,7 @@ import { IVocabulary } from 'app/shared/model/vocabulary.model';
 import { IVersion } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { EditorService } from 'app/editor/editor.service';
 import { RouteEventsService } from 'app/shared';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
@@ -94,6 +94,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
 
   isCurrentVersionInfoEdit = false;
   isDdiUsageEdit = false;
+  isIdentityEdit = false;
   isNotesEdit = false;
 
   isShowingDeprecatedCodes = false;
@@ -123,6 +124,16 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       docxItems: [],
     }),
     ddiUsage: [],
+    translateAgency: [],
+    translateAgencyLink: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(
+          '(https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|www\\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\\.[^\\s]{2,}|https?:\\/\\/(?:www\\.|(?!www))[a-zA-Z0-9]+\\.[^\\s]{2,}|www\\.[a-zA-Z0-9]+\\.[^\\s]{2,})'
+        ),
+      ],
+    ],
     notes: [],
     versionNotes: [],
     versionChanges: [],
@@ -134,7 +145,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   public versionChangesEditor: Quill;
   // @ts-ignore
   public ddiUsageEditor: Quill;
-
+  
   constructor(
     private accountService: AccountService,
     protected dataUtils: JhiDataUtils,
@@ -206,8 +217,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.closeNotes();
     this.closeCurrentVersionInfo();
     this.closeDdiUsage();
+    this.closeTranslateIdentity();
+
     this.editorDetailForm.patchValue({
       ddiUsage: this.version.ddiUsage,
+      translateAgency: this.version.translateAgency,
+      translateAgencyLink: this.version.translateAgencyLink,
       notes: this.version.notes,
       versionNotes: this.version.versionNotes,
       versionChanges: this.version.versionChanges,
@@ -601,6 +616,24 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
   }
 
+  saveTranslateIdentity(): void {
+    const vocabSnippet = {
+      ...new VocabularySnippet(),
+      actionType: 'EDIT_IDENTITY_CV',
+      agencyId: this.vocabulary!.agencyId,
+      vocabularyId: this.vocabulary!.id,
+      versionId: this.version!.id,
+      language: this.version!.language,
+      itemType: this.version!.itemType,
+      translateAgency: this.editorDetailForm.get(['translateAgency'])!.value,
+      translateAgencyLink: this.editorDetailForm.get(['translateAgencyLink'])!.value,
+    };
+
+    if (this.editorDetailForm.valid) {
+      this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
+    }
+  }
+  
   saveNotes(): void {
     const vocabSnippet = {
       ...new VocabularySnippet(),
@@ -635,6 +668,10 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       if (vocabSnippet.actionType === 'EDIT_DDI_CV') {
         this.isDdiUsageEdit = !this.isDdiUsageEdit;
         this.version!.ddiUsage = vocabSnippet.ddiUsage;
+      } else if (vocabSnippet.actionType === 'EDIT_IDENTITY_CV') {
+        this.isIdentityEdit = !this.isIdentityEdit;
+        this.version!.translateAgency = vocabSnippet.translateAgency;
+        this.version!.translateAgencyLink = vocabSnippet.translateAgencyLink;
       } else if (vocabSnippet.actionType === 'EDIT_NOTE_CV') {
         this.isNotesEdit = !this.isNotesEdit;
         this.version!.notes = vocabSnippet.notes;
@@ -649,6 +686,12 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   closeDdiUsage(): void {
     this.isDdiUsageEdit = false;
     this.editorDetailForm.patchValue({ ddiUsage: this.version!.ddiUsage });
+  }
+
+  closeTranslateIdentity(): void {
+    this.isIdentityEdit = false;
+    this.editorDetailForm.patchValue({ translateAgency: this.version!.translateAgency });
+    this.editorDetailForm.patchValue({ translateAgencyLink: this.version!.translateAgencyLink });
   }
 
   closeNotes(): void {

@@ -186,6 +186,7 @@ public class EditorResource {
         if(
             !(vocabularySnippet.getActionType().equals( ActionType.EDIT_CV ) ||
                 vocabularySnippet.getActionType().equals( ActionType.EDIT_DDI_CV) ||
+                vocabularySnippet.getActionType().equals( ActionType.EDIT_IDENTITY_CV) ||
                 vocabularySnippet.getActionType().equals( ActionType.EDIT_VERSION_INFO_CV) ||
                 vocabularySnippet.getActionType().equals( ActionType.EDIT_NOTE_CV))
         ) {

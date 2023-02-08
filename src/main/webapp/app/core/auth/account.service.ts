@@ -80,6 +80,7 @@ export class AccountService {
       case 'CREATE_CV':
       case 'EDIT_CV':
       case 'EDIT_DDI_CV':
+      case 'EDIT_IDENTITY_CV':
       case 'EDIT_NOTE_CV':
       case 'EDIT_VERSION_INFO_CV':
       case 'DELETE_CV':

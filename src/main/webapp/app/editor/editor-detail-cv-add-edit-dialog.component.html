@@ -160,16 +160,16 @@
                     <span>{{versionParam!.notesSl}}</span>
                 </div>
             </div>
-            <div *ngIf="!isSlForm && versionParam!.notes" class="row-detail form-group">
+            <!--div *ngIf="!isSlForm && versionParam!.notes" class="row-detail form-group">
                 <div class="label-column-input">
                     <span>CV Notes {{selectedLanguage !== '' ? '(' + selectedLanguage + ')':''}}</span>
                 </div>
                 <div class="detail-column">
                     <textarea class="form-control" name="notes" id="field_notes" formControlName="notes" rows="5"></textarea>
                 </div>
-            </div>
+            </div
 
-            <div *ngIf="!isSlForm" class="row-detail form-group">
+            div *ngIf="!isSlForm" class="row-detail form-group">
                 <div class="label-column-input">
                     <span>Translator agency</span>
                 </div>
@@ -191,7 +191,7 @@
                         </small>
                     </div>
                 </div>
-            </div>
+            </div-->
 
             <div *ngIf="cvAddEditForm.get('changeType')" class="card bg-light w-100">
                 <div class="card-header">
@@ -208,7 +208,7 @@
                                 <option value="CV name changed">CV name changed</option>
                                 <option value="CV definition amended with meaning change">CV definition amended with meaning change</option>
                                 <option value="CV definition rephrased">CV definition rephrased</option>
-                                <option *ngIf="!isSlForm" value="Translator agency and/or link edited">Translator agency and/or link edited</option>
+                                <!--option *ngIf="!isSlForm" value="Translator agency and/or link edited">Translator agency and/or link edited</option-->
                             </select>
                             <div *ngIf="cvAddEditForm.get('changeType')!.invalid && (cvAddEditForm.get('changeType')!.dirty || cvAddEditForm.get('changeType')!.touched) || isSubmitting">
                                 <small class="form-text text-danger"
