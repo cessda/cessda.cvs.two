@@ -13,22 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import {EditorService} from 'app/editor/editor.service';
-import {IVersion} from 'app/shared/model/version.model';
-import {JhiEventManager} from 'ng-jhipster';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Account} from 'app/core/user/account.model';
-import {IComment} from 'app/shared/model/comment.model';
-import * as moment from 'moment';
-import {Moment} from 'moment';
-import {Observable} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
+import { EditorService } from 'app/editor/editor.service';
+import { IVersion } from 'app/shared/model/version.model';
+import { JhiEventManager } from 'ng-jhipster';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Account } from 'app/core/user/account.model';
+import { IComment } from 'app/shared/model/comment.model';
+import moment from 'moment';
+import { Moment } from 'moment';
+import { Observable } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'jhi-comment-item',
-  templateUrl: './editor-detail-cv-comment-item.component.html'
+  templateUrl: './editor-detail-cv-comment-item.component.html',
 })
 export class EditorDetailCvCommentItemComponent {
   @Input() account?: Account;
@@ -38,11 +38,11 @@ export class EditorDetailCvCommentItemComponent {
   isWriteComment = false;
 
   quillModules: any = {
-    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']]
+    toolbar: [['bold', 'italic', 'underline', 'strike'], ['blockquote'], [{ list: 'ordered' }, { list: 'bullet' }], ['link'], ['clean']],
   };
 
   commentForm = this.fb.group({
-    content: ['', [Validators.required]]
+    content: ['', [Validators.required]],
   });
 
   constructor(protected editorService: EditorService, protected eventManager: JhiEventManager, private fb: FormBuilder) {

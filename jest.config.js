@@ -69,8 +69,14 @@ module.exports = {
         [ 'jest-junit', { outputDirectory: './target/test-results/', outputName: 'TESTS-results-jest.xml' } ]
     ],
     transform: {
-      '^.+\\.(ts|js|html)$': 'jest-preset-angular',
-      '^.+\\.mjs$': 'babel-jest'
+      '^.+\\.(ts|html)$': 'jest-preset-angular',
+      '^.+\\.m?js$': ['babel-jest', {
+        'babelrc': false,
+        'compact': false,
+        'plugins': [
+          '@babel/plugin-transform-modules-commonjs'
+        ]
+      }]
     },
     transformIgnorePatterns: [
       'node_modules/',

@@ -17,7 +17,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { DATE_FORMAT } from 'app/shared/constants/input.constants';
 import { SERVER_API_URL } from 'app/app.constants';
@@ -74,7 +74,7 @@ export class VocabularyChangeService {
 
   protected convertDateFromClient(vocabularyChange: IVocabularyChange): IVocabularyChange {
     const copy: IVocabularyChange = Object.assign({}, vocabularyChange, {
-      date: vocabularyChange.date && vocabularyChange.date.isValid() ? vocabularyChange.date.format(DATE_FORMAT) : undefined
+      date: vocabularyChange.date && vocabularyChange.date.isValid() ? vocabularyChange.date.format(DATE_FORMAT) : undefined,
     });
     return copy;
   }
