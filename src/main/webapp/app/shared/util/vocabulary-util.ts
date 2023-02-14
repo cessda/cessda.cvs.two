@@ -161,7 +161,8 @@ export default class VocabularyUtil {
     const matches = regex.exec(vnumber);
     if (matches) {
         return {
-          'sl': matches[1] + '.' + matches[2] + '.' + '0',
+          //'sl': matches[1] + '.' + matches[2] + '.' + '0',
+          'sl': matches[1] + '.' + matches[2] + '.' + matches[3],
           'sl-major': Number(matches[1]),
           'sl-minor': Number(matches[2]),
           'tl': Number(matches[3])
