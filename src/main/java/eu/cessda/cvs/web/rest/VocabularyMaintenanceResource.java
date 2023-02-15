@@ -88,12 +88,4 @@ public class VocabularyMaintenanceResource {
         Maintenance maintenanceOut = new Maintenance("Done indexing Agency", "INDEX_AGENCY");
         return ResponseEntity.ok().body(maintenanceOut);
     }
-
-    @PostMapping("/task/398")
-    public ResponseEntity<Maintenance> task398() {
-        log.debug("REST request to index Vocabularies in editor");
-        vocabularyService.task398();
-        Maintenance maintenanceOut = new Maintenance("Done migration of versioning system.", "TASK_398");
-        return ResponseEntity.ok().body(maintenanceOut);
-    }
 }

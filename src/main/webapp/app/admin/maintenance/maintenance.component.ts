@@ -28,14 +28,12 @@ export class MaintenanceComponent {
   isIndexingAgencyStat: boolean;
   isIndexingVocabularyPublish: boolean;
   isIndexingVocabularyEditor: boolean;
-  isTask398: boolean;
   isCheckingTls: boolean;
   generatingJsonOutput: string | null;
   indexingAgencyOutput: string | null;
   indexingAgencyStatOutput: string | null;
   indexingVocabularyPublishOutput: string | null;
   indexingVocabularyEditorOutput: string | null;
-  task398Output: string | null;
 
   constructor(protected maintenanceService: MaintenanceService) {
     this.isGeneratingJson = false;
@@ -43,14 +41,12 @@ export class MaintenanceComponent {
     this.isIndexingAgencyStat = false;
     this.isIndexingVocabularyPublish = false;
     this.isIndexingVocabularyEditor = false;
-    this.isTask398 = false;
     this.isCheckingTls = false;
     this.generatingJsonOutput = '';
     this.indexingAgencyOutput = '';
     this.indexingAgencyStatOutput = '';
     this.indexingVocabularyPublishOutput = '';
     this.indexingVocabularyEditorOutput = '';
-    this.task398Output = '';
   }
 
   performGeneratingJson(): void {
@@ -98,15 +94,6 @@ export class MaintenanceComponent {
     );
   }
 
-  performTask398(): void {
-    this.isTask398 = true;
-    this.task398Output = 'migrating...';
-    this.maintenanceService.task398().subscribe(
-      (res: HttpResponse<Maintenance>) => this.onSuccess(res.body, 'TASK_398'),
-      () => this.onError('TASK_398')
-    );
-  }
-
   private onSuccess(data: Maintenance | null, type: string): void {
     if (type === 'GENERATE_JSON') {
       this.isGeneratingJson = false;
@@ -123,9 +110,6 @@ export class MaintenanceComponent {
     } else if (type === 'INDEX_CV_EDITOR') {
       this.isIndexingVocabularyEditor = false;
       this.indexingVocabularyEditorOutput = data!.output;
-    } else if (type === 'TASK_398') {
-      this.isTask398 = false;
-      this.task398Output = data!.output;
     }
   }
 
@@ -145,9 +129,6 @@ export class MaintenanceComponent {
     } else if (type === 'INDEX_CV_EDITOR') {
       this.isIndexingVocabularyEditor = false;
       this.indexingVocabularyEditorOutput = 'Error...';
-    } else if (type === 'TASK_398') {
-      this.isTask398 = false;
-      this.task398Output = 'Error...';
     }
   }
 }
