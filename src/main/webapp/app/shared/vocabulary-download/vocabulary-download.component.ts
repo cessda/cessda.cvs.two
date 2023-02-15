@@ -144,8 +144,8 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     return selectedVersion;
   }
 
-  updateCheckboxValue(i: number, lang: string, versionNimber: string): void {
-    this.downloadCheckboxes[i] = lang + '_' + versionNimber;
+  updateCheckboxValue(i: number, lang: string, versionNumber: string): void {
+    this.downloadCheckboxes[i] = lang + '-' + versionNumber;
   }
 
   downloadDocx(): void {

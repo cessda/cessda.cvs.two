@@ -340,7 +340,9 @@ public class VersionDTO implements Serializable
 
 		String formattedUrn = removeLanguageInformation( canonicalUri );
 		// format any TL URN to SL
+		// this doesn't make sense anymore!!! in 3 digits version, or we are not interested in patch number???
 		int index = canonicalUri.lastIndexOf( ':' );
+		// this looks like it is from previous 2 digit version, probably this should be deleted!!!
 		if ( formattedUrn.substring( index + 1 ).chars().filter( ch -> ch == '.' ).count() == 2L )
 		{
 			// remove last dot
