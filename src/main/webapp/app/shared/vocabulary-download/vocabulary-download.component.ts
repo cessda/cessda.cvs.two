@@ -21,6 +21,7 @@ import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
 import {IVersion} from 'app/shared/model/version.model';
 import {FormGroup} from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-vocabulary-download',
@@ -41,6 +42,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   docxSelected: boolean[];
 
   constructor(
+    private router: Router,
     private homeService: HomeService,
     private editorService: EditorService,
     protected eventManager: JhiEventManager,
@@ -51,10 +53,10 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     this.pdfSelected = [];
     this.htmlSelected = [];
     this.docxSelected = [];
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
   }
 
   ngOnInit(): void {
-
     // initialize download checkbox
     const languages: string[] = this.getUniqueVersionLangs();
     for (let i = 0; i < languages.length; i++) {

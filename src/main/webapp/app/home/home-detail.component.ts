@@ -70,6 +70,7 @@ export class HomeDetailComponent implements OnInit {
   detailForm = this.fb.group({
     tabSelected: [],
     downloadFormGroup: this.fb.group({
+      downloadCheckboxes: [],
       skosItems: [],
       pdfItems: [],
       htmlItems: [],
