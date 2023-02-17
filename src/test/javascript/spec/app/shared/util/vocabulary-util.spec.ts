@@ -160,9 +160,9 @@ describe('Vocabulary Util Tests', () => {
     });
 
     it('should compare version numbers', () => {
-      expect(VocabularyUtil.compareVersionNumbers('1.0.0', '1.0.1')).toBe(-1);
-      expect(VocabularyUtil.compareVersionNumbers('1.0.0', '1.0.0')).toBe(0);
-      expect(VocabularyUtil.compareVersionNumbers('1.0.1', '1.0.0')).toBe(1);
+      expect(VocabularyUtil.compareVersionNumbers('1.0', '1.1')).toBe(-1);
+      expect(VocabularyUtil.compareVersionNumbers('1.0', '1.0')).toBe(0);
+      expect(VocabularyUtil.compareVersionNumbers('1.1', '1.0')).toBe(1);
     });
   });
 });
