@@ -165,7 +165,7 @@ export default class VocabularyUtil {
           'sl': matches[1] + '.' + matches[2] + '.' + matches[3],
           'sl-major': Number(matches[1]),
           'sl-minor': Number(matches[2]),
-          'tl': Number(matches[3])
+          'patch': Number(matches[3])
         };
     }
     throw new Error('Invalid version number format');
@@ -189,7 +189,7 @@ export default class VocabularyUtil {
   }
 
   static getTlVersionNumber(vnumber: string): number {
-    return this.parseVersionNumber(vnumber)['tl'];
+    return this.parseVersionNumber(vnumber)['patch'];
   }
 
   static getSlVersionNumberOfVocabulary(vocab: IVocabulary): string {
@@ -275,12 +275,12 @@ export default class VocabularyUtil {
     if (cmpResult !== 0) {
       return cmpResult;
     }
-    if (v1['tl'] === 0 || v2['tl'] === 0) {
+    if (v1['patch'] === 0 || v2['patch'] === 0) {
       return 0;
     }
     return this.compareArrays(
-      [v1['tl']],
-      [v2['tl']]
+      [v1['patch']],
+      [v2['patch']]
     );
   }
 
