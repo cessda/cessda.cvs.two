@@ -42,7 +42,10 @@ function mapTypescriptAliasToJestAlias(alias = {}) {
           aliases[key] = value;
           return aliases;
       }, jestAliases);
-  return jestAliases;
+  return {
+    ...jestAliases,
+    'ngx-chips': '<rootDir>/src/test/javascript/ngx-chips.mock.ts'
+  };
 }
 
 /** @type {import('@jest/types').Config.InitialOptions} */
@@ -63,7 +66,7 @@ module.exports = {
         '<rootDir>/src/test/javascript'
     ],
     moduleNameMapper: mapTypescriptAliasToJestAlias(),
-    moduleFileExtensions: ['ts', 'html', 'js', 'mjs', 'json'],
+    moduleFileExtensions: ['ts', 'html', 'js', 'cjs', 'mjs', 'json', 'node'],
     reporters: [
         'default',
         [ 'jest-junit', { outputDirectory: './target/test-results/', outputName: 'TESTS-results-jest.xml' } ]
@@ -79,9 +82,7 @@ module.exports = {
       }]
     },
     transformIgnorePatterns: [
-      'node_modules/',
-      'node_modules/(?!tslib)',
-      'node_modules/(?!.*\\.mjs$)',
+      'node_modules/(?!(tslib|.*\\.mjs))$',
       '\\.pnp\\.[^\\/]+$'
     ],
     testEnvironment: 'jsdom',
