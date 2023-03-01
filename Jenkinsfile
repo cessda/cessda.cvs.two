@@ -21,7 +21,7 @@ pipeline {
     }
 
     stages {
-        // Building on master
+        // Building on main
         stage('Pull SDK Docker Image') {
             agent {
                 docker {
@@ -36,16 +36,16 @@ pipeline {
                             sh "./mvnw clean install -Pprod"
                         }
                     }
-                    when { branch 'master' }
+                    when { branch 'main' }
                 }
-                // Not running on master - test only (for PRs and integration branches)
+                // Not running on main - test only (for PRs and integration branches)
                 stage('Test Project') {
                     steps {
                         withMaven {
                             sh './mvnw clean verify -Pprod'
                         }
                     }
-                    when { not { branch 'master' } }
+                    when { not { branch 'main' } }
                 }
                 stage('Record Issues') {
                     steps {
@@ -69,7 +69,7 @@ pipeline {
                     }
                 }
             }
-            when { branch 'master' }
+            when { branch 'main' }
         }
         stage("Get Sonar Quality Gate") {
             steps {
@@ -77,7 +77,7 @@ pipeline {
                     waitForQualityGate abortPipeline: false
                 }
             }
-            when { branch 'master' }
+            when { branch 'main' }
         }
         stage('Build and Push Docker Image') {
             steps {
@@ -87,13 +87,13 @@ pipeline {
                 }
                 sh "gcloud container images add-tag ${IMAGE_TAG} ${docker_repo}/${productName}-${componentName}:${env.BRANCH_NAME}-latest"
             }
-            when { branch 'master' }
+            when { branch 'main' }
         }
         stage('Deploy CVS') {
             steps {
-                build job: 'cessda.cvs.deploy/master', parameters: [string(name: 'frontend_image_tag', value: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}")], wait: false
+                build job: 'cessda.cvs.deploy/main', parameters: [string(name: 'frontend_image_tag', value: "${env.BRANCH_NAME}-${env.BUILD_NUMBER}")], wait: false
             }
-            when { branch 'master' }
+            when { branch 'main' }
         }
     }
 }

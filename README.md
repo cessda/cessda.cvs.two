@@ -1,6 +1,6 @@
 [![SQAaaS badge](https://github.com/EOSC-synergy/SQAaaS/raw/master/badges/badges_150x116/badge_software_silver.png)](https://api.eu.badgr.io/public/assertions/4nWcBFSBRZ2rvczQL3gCqA 'SQAaaS silver badge achieved')
 
-[![Build Status](https://jenkins.cessda.eu/buildStatus/icon?job=cessda.cvs.two%2Fmaster)](https://jenkins.cessda.eu/job/cessda.cvs.two/job/master/)
+[![Build Status](https://jenkins.cessda.eu/buildStatus/icon?job=cessda.cvs.two%main)](https://jenkins.cessda.eu/job/cessda.cvs.two/job/main/)
 [![Bugs](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=bugs)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
 [![Code Smells](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=code_smells)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
 [![Coverage](https://sonarqube.cessda.eu/api/project_badges/measure?project=eu.cessda.cvs%3Acvs&metric=coverage)](https://sonarqube.cessda.eu/dashboard?id=eu.cessda.cvs%3Acvs)
