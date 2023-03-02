@@ -809,9 +809,22 @@ public class VersionDTO implements Serializable
 		this.publicationDate = LocalDate.now();
 		this.licenseId = licence.getId();
 		this.license = licence.getName();
-		this.uri = VocabularyUtils.generateUri( agency.getUri(), true, this, null );
-		this.canonicalUri = agency.getCanonicalUri() + this.notation + ":" + this.number;
-		this.concepts.forEach( c -> c.setUri( VocabularyUtils.generateUri( agency.getUriCode(), false, this, c ) ) );
+		this.updateUri(agency);
+		this.updateCanonicalUri(agency);
+		this.concepts.forEach( c -> c.setUri( VocabularyUtils.generateUri( agency != null ? agency.getUriCode() : "", false, this, c ) ) );
+	}
+
+	public void updateUri(Agency agency) {
+		this.uri = VocabularyUtils.generateUri(
+			agency != null ? agency.getUri() : "",
+			true,
+			this,
+			null
+		);
+	}
+
+	public void updateCanonicalUri(Agency agency) {
+		this.canonicalUri = (agency != null ? agency.getCanonicalUri() : "") + this.notation + ":" + this.number;
 	}
 
 	/**
