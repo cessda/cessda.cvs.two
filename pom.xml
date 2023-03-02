@@ -85,7 +85,7 @@
         <javassist.version>3.24.0-GA</javassist.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <jaxb-runtime.version>2.3.6</jaxb-runtime.version>
-        <archunit-junit5.version>0.22.0</archunit-junit5.version>
+        <archunit-junit5.version>1.0.1</archunit-junit5.version>
         <log4j2-mock.version>0.0.2</log4j2-mock.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <!-- Plugin versions -->
