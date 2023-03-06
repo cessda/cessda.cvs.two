@@ -24,10 +24,7 @@ module.exports = {
     globals: {
         'ts-jest': {
             stringifyContentPathRegex: '\\.html$',
-            tsconfig: '<rootDir>/tsconfig.json',
-            astTransformers: {
-              before: ['jest-preset-angular/build/InlineFilesTransformer', 'jest-preset-angular/build/StripStylesTransformer']
-            }
+            tsconfig: '<rootDir>/tsconfig.json'
         }
     },
     coveragePathIgnorePatterns: [
@@ -39,8 +36,9 @@ module.exports = {
         [ 'jest-junit', { outputDirectory: './target/test-results/', outputName: 'TESTS-results-jest.xml' } ]
     ],
     testResultsProcessor: 'jest-sonar-reporter',
-    transformIgnorePatterns: ['node_modules/'],
+    transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
     testMatch: ['<rootDir>/src/test/javascript/spec/**/@(*.)@(spec.ts)'],
+    testRunner: 'jasmine2',
     rootDir: '../../../',
     testURL: 'http://localhost/'
 };
