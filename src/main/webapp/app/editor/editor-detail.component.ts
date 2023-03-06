@@ -145,7 +145,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
   public versionChangesEditor: Quill;
   // @ts-ignore
   public ddiUsageEditor: Quill;
-  
+
   constructor(
     private accountService: AccountService,
     protected dataUtils: JhiDataUtils,
@@ -414,7 +414,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
           this.setActiveVersion(this.vocabulary!.sourceLanguage!);
         } else {
-          this.setActiveVersion(this.initialLangSelect!);
+          this.setActiveVersion(this.initialLangSelect);
         }
       } else {
         this.setActiveVersion(this.vocabulary!.selectedLang!);
@@ -633,7 +633,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       this.subscribeToSaveResponse(this.editorService.updateVocabulary(vocabSnippet), vocabSnippet);
     }
   }
-  
+
   saveNotes(): void {
     const vocabSnippet = {
       ...new VocabularySnippet(),

@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {AfterViewInit, Component, Input, NgZone, OnInit} from '@angular/core';
-import {HomeService} from 'app/home/home.service';
-import {EditorService} from 'app/editor/editor.service';
-import {JhiEventManager} from 'ng-jhipster';
-import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
-import {IVersion} from 'app/shared/model/version.model';
-import {FormGroup} from '@angular/forms';
+import { AfterViewInit, Component, Input, NgZone, OnInit } from '@angular/core';
+import { HomeService } from 'app/home/home.service';
+import { EditorService } from 'app/editor/editor.service';
+import { JhiEventManager } from 'ng-jhipster';
+import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
+import { IVersion } from 'app/shared/model/version.model';
+import { FormGroup } from '@angular/forms';
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'jhi-vocabulary-download',
-  templateUrl: './vocabulary-download.component.html'
+  templateUrl: './vocabulary-download.component.html',
 })
 export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   @Input() appScope!: AppScope;
@@ -71,7 +71,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
       skosItems: this.skosSelected,
       pdfItems: this.pdfSelected,
       htmlItems: this.htmlSelected,
-      docxItems: this.docxSelected
+      docxItems: this.docxSelected,
     });
   }
 
@@ -88,7 +88,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     this.docxSelected.fill(false);
   }
 
-  getUniqueVersionLangs(): string[]{
+  getUniqueVersionLangs(): string[] {
     return VocabularyUtil.getUniqueVersionLangs(this.versions, this.appScope);
   }
 
@@ -162,7 +162,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     if (this.appScope === AppScope.EDITOR) {
       this.editorService
         .downloadVocabularyFile(this.notation, this.slVersionNumber, fileFormat, {
-          lv: checkedItems
+          lv: checkedItems,
         })
         .subscribe((res: Blob) => {
           this.generateDownloadFile(res, mimeType, checkedItems, fileFormat);
@@ -170,7 +170,7 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     } else {
       this.homeService
         .downloadVocabularyFile(this.notation, this.slVersionNumber, fileFormat, {
-          languageVersion: checkedItems
+          languageVersion: checkedItems,
         })
         .subscribe((res: Blob) => {
           this.generateDownloadFile(res, mimeType, checkedItems, fileFormat);
@@ -179,16 +179,16 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
   }
 
   private generateDownloadFile(res: Blob, mimeType: string, checkedItems: string, fileFormat: string): void {
-    const newBlob = new Blob([res], {type: mimeType});
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(newBlob);
+    const newBlob = new Blob([res], { type: mimeType });
+    if (window.navigator && (window.navigator as any).msSaveOrOpenBlob) {
+      (window.navigator as any).msSaveOrOpenBlob(newBlob);
       return;
     }
     const data = window.URL.createObjectURL(newBlob);
     const link = document.createElement('a');
     link.href = data;
     link.download = this.notation + '-' + this.slVersionNumber + '_' + checkedItems + '.' + fileFormat;
-    link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true, view: window}));
+    link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
     setTimeout(function (): void {
       window.URL.revokeObjectURL(data);
       link.remove();
