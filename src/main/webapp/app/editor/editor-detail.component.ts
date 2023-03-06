@@ -414,7 +414,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
           this.setActiveVersion(this.vocabulary!.sourceLanguage!);
         } else {
-          this.setActiveVersion(this.initialLangSelect);
+          this.setActiveVersion(this.initialLangSelect!);
         }
       } else {
         this.setActiveVersion(this.vocabulary!.selectedLang!);

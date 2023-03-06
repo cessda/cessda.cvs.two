@@ -257,7 +257,7 @@ export class HomeDetailComponent implements OnInit {
         if (!this.vocabulary!.versions!.some(v => v.language === this.initialLangSelect)) {
           this.vocabulary!.selectedLang = this.vocabulary!.sourceLanguage!;
         } else {
-          this.vocabulary!.selectedLang = this.initialLangSelect;
+          this.vocabulary!.selectedLang = this.initialLangSelect!;
         }
       }
 
