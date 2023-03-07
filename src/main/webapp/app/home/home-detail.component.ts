@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, ElementRef, NgZone, OnInit, ViewChild} from '@angular/core';
-import {ActivatedRoute, NavigationEnd, Router} from '@angular/router';
-import {JhiDataUtils, JhiEventManager} from 'ng-jhipster';
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { JhiDataUtils, JhiEventManager } from 'ng-jhipster';
 
-import {IConcept} from 'app/shared/model/concept.model';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {IVersion} from 'app/shared/model/version.model';
+import { IConcept } from 'app/shared/model/concept.model';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { IVersion } from 'app/shared/model/version.model';
 
 import VocabularyUtil from 'app/shared/util/vocabulary-util';
-import {FormBuilder} from '@angular/forms';
-import {HomeService} from 'app/home/home.service';
-import {RouteEventsService, VocabularyLanguageFromKeyPipe} from 'app/shared';
-import {DiffContent} from 'ngx-text-diff/lib/ngx-text-diff.model';
-import {Observable, Subject} from 'rxjs';
-import {AppScope} from 'app/shared/model/enumerations/app-scope.model';
+import { FormBuilder } from '@angular/forms';
+import { HomeService } from 'app/home/home.service';
+import { RouteEventsService, VocabularyLanguageFromKeyPipe } from 'app/shared';
+import { DiffContent } from 'ngx-text-diff/lib/ngx-text-diff.model';
+import { Observable, Subject } from 'rxjs';
+import { AppScope } from 'app/shared/model/enumerations/app-scope.model';
 
 @Component({
   selector: 'jhi-home-detail',
-  templateUrl: './home-detail.component.html'
+  templateUrl: './home-detail.component.html',
 })
 export class HomeDetailComponent implements OnInit {
   @ViewChild('detailPanel', { static: true }) detailPanel!: ElementRef;
@@ -74,8 +74,8 @@ export class HomeDetailComponent implements OnInit {
       skosItems: [],
       pdfItems: [],
       htmlItems: [],
-      docxItems: []
-    })
+      docxItems: [],
+    }),
   });
   constructor(
     protected dataUtils: JhiDataUtils,
@@ -130,7 +130,7 @@ export class HomeDetailComponent implements OnInit {
     if (vnumber) {
       return VocabularyUtil.getSlVersionNumber(vnumber);
     } else {
-      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);  
+      return VocabularyUtil.getSlVersionNumberOfVocabulary(this.vocabulary!);
     }
   }
 
@@ -281,18 +281,14 @@ export class HomeDetailComponent implements OnInit {
         });
       }
 
-      this.newerVersionNumber = (this.vocabulary!.status === 'PUBLISHED') ?
-      this.vocabulary!.versionNumber! : this.getLatestVersionNumber();
-      if (VocabularyUtil.compareVersionNumbers(
-        this.newerVersionNumber,
-        this.vocabulary!.versions![0].number!
-      ) <= 0) {
+      this.newerVersionNumber = this.vocabulary!.status === 'PUBLISHED' ? this.vocabulary!.versionNumber! : this.getLatestVersionNumber();
+      if (VocabularyUtil.compareVersionNumbers(this.newerVersionNumber, this.vocabulary!.versions![0].number!) <= 0) {
         this.newerVersionNumber = null;
       }
     });
 
     this.detailForm.patchValue({
-      tabSelected: this.initialTabSelected
+      tabSelected: this.initialTabSelected,
     });
   }
 
@@ -311,20 +307,16 @@ export class HomeDetailComponent implements OnInit {
 
   getMissingTlVersion(version: string): string {
     if (VocabularyUtil.compareVersionNumbers(version, this.getSlVersion().number!) === 0) {
-      return VocabularyUtil.getSlMajorMinorVersionNumber(
-        this.getSlVersion().versionHistories![0].version!
-       ) + '.x';
+      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories![0].version!) + '.x';
     }
     let i = 0;
-    this.getSlVersion().versionHistories!.forEach(function(vhSl, index): void {
+    this.getSlVersion().versionHistories!.forEach(function (vhSl, index): void {
       if (VocabularyUtil.compareVersionNumbers(version, vhSl.version!) === 0) {
         i = index + 1;
       }
     });
     if (i > 0) {
-      return VocabularyUtil.getSlMajorMinorVersionNumber(
-        this.getSlVersion().versionHistories![i].version!
-       ) + '.x';
+      return VocabularyUtil.getSlMajorMinorVersionNumber(this.getSlVersion().versionHistories![i].version!) + '.x';
     }
     return '';
   }
