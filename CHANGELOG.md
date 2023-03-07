@@ -14,25 +14,30 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
-## [3.1.0] - UNRELEASED
-
-- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.xxxx.svg)](https://doi.org/10.5281/zenodo.xxxx)
+## [3.0.1] - 2023-03-07
 
 ### Additions
 
-- [#xxx](https://github.com/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+- [#482](https://github.com/cessda/cessda.cvs.two/issues/482) Added the Maven Release Plugin to the POM
 
 ### Changes
 
-- [#xxx](https://github.com/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+-[#464](https://github.com/cessda/cessda.cvs.two/issues/464) Database changes for v3.0.0
 
 ### Fixes
 
-- [#xxx](https://github.com/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+- [#484](https://github.com/cessda/cessda.cvs.two/issues/484) Fixed CVs showing the wrong "Available from" link and canonical URI
+- [#487](https://github.com/cessda/cessda.cvs.two/issues/487) Fixed CV export not working for older versions of CVs
+- [#489](https://github.com/cessda/cessda.cvs.two/issues/489) Fixed `null` values being present in the SKOS export
+- [#491](https://github.com/cessda/cessda.cvs.two/issues/491) Fixed a discrepency in the breadcrumb version number
+
+### Removals
+
+- [#479](https://github.com/cessda/cessda.cvs.two/issues/479) Removed the database migration button from the UI
 
 ### Security
 
-- [#xxx](https://github.com/cessda/cessda.cvs.two/issues/xxx) DESCRIPTION
+- [#554](https://github.com/cessda/cessda.cvs.two/issues/554) Applied security fixes suggested by Dependabot and `npm audit`
 
 ## [3.0.0] - 2023-01-31
 
