@@ -16,8 +16,6 @@ _For each release, use the following sub-sections:_
 
 ## [3.0.1] - 2023-03-07
 
-- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.xxxx.svg)](https://doi.org/10.5281/zenodo.xxxx)
-
 ### Additions
 
 - [#482](https://github.com/cessda/cessda.cvs.two/issues/482) Add the Maven Release Plugin to the POM
