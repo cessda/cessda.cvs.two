@@ -13,28 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
-import {NgbActiveModal, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
-import {AgencyService} from 'app/agency/agency.service';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {IAgency} from 'app/shared/model/agency.model';
-import {AccountService} from 'app/core/auth/account.service';
-import {VocabularyService} from 'app/entities/vocabulary/vocabulary.service';
-import {FormBuilder, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
-import {IVocabulary} from 'app/shared/model/vocabulary.model';
-import {Account} from 'app/core/user/account.model';
-import {LanguageIso} from 'app/shared/model/enumerations/language-iso.model';
-import {VOCABULARY_ALREADY_EXIST_TYPE} from 'app/shared';
-import {EditorService} from 'app/editor/editor.service';
-import {IVocabularySnippet, VocabularySnippet} from 'app/shared/model/vocabulary-snippet.model';
+import { NgbActiveModal, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
+import { AgencyService } from 'app/agency/agency.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { IAgency } from 'app/shared/model/agency.model';
+import { AccountService } from 'app/core/auth/account.service';
+import { VocabularyService } from 'app/entities/vocabulary/vocabulary.service';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { IVocabulary } from 'app/shared/model/vocabulary.model';
+import { Account } from 'app/core/user/account.model';
+import { LanguageIso } from 'app/shared/model/enumerations/language-iso.model';
+import { VOCABULARY_ALREADY_EXIST_TYPE } from 'app/shared';
+import { EditorService } from 'app/editor/editor.service';
+import { IVocabularySnippet, VocabularySnippet } from 'app/shared/model/vocabulary-snippet.model';
 
 @Component({
   selector: 'jhi-editor-cv-add-dialog',
-  templateUrl: './editor-cv-add-dialog.component.html'
+  templateUrl: './editor-cv-add-dialog.component.html',
 })
 export class EditorCvAddDialogComponent implements OnInit {
   isSaving: boolean;
@@ -46,10 +46,10 @@ export class EditorCvAddDialogComponent implements OnInit {
   cvAddForm = this.fb.group({
     agency: [],
     sourceLanguage: [],
-    notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[_+A-Za-z0-9-]*$')]],
+    notation: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(240), Validators.pattern('^[+A-Za-z0-9-]*$')]],
     title: ['', [Validators.required]],
     definition: ['', [Validators.required]],
-    notes: []
+    notes: [],
   });
 
   constructor(
@@ -70,7 +70,7 @@ export class EditorCvAddDialogComponent implements OnInit {
       .query({
         page: 0,
         size: 1000,
-        sort: ['name,asc']
+        sort: ['name,asc'],
       })
       .subscribe((res: HttpResponse<IAgency[]>) => {
         this.agencies = res.body ? this.filterAgencies(res.body) : [];
@@ -145,7 +145,7 @@ export class EditorCvAddDialogComponent implements OnInit {
       status: 'DRAFT',
       title: this.cvAddForm.get(['title'])!.value,
       definition: this.cvAddForm.get(['definition'])!.value,
-      notes: this.cvAddForm.get(['notes'])!.value
+      notes: this.cvAddForm.get(['notes'])!.value,
     };
   }
 
@@ -183,7 +183,7 @@ export class EditorCvAddDialogComponent implements OnInit {
 
 @Component({
   selector: 'jhi-editor-cv-add-popup',
-  template: ''
+  template: '',
 })
 export class EditorCvAddPopupComponent implements OnInit, OnDestroy {
   protected ngbModalRef?: NgbModalRef | null;
