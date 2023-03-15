@@ -61,6 +61,9 @@ export class VocabularyDownloadComponent implements OnInit, AfterViewInit {
     const languages: string[] = this.getUniqueVersionLangs();
     for (let i = 0; i < languages.length; i++) {
       const versions: IVersion[] = this.getVersionsByLang(languages[i]);
+      if (!versions[0].number!.startsWith(this.getSlMajorMinorVersionNumber(this.slVersionNumber))) {
+        continue;
+      }
       this.downloadCheckboxes[i] = languages[i] + '-' + versions[0].number;
       this.skosSelected[i] = true;
       this.pdfSelected[i] = true;
