@@ -45,7 +45,7 @@ public class UserDetails extends org.springframework.security.core.userdetails.U
         if (!(o instanceof UserDetails)) {
             return false;
         }
-        return user != null && user.getId().equals(((UserDTO) o).getId());
+        return user != null && user.getId().equals(((UserDetails) o).user.getId());
     }
 
     @Override
