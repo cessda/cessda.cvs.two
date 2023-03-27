@@ -87,7 +87,7 @@
     "mocha": "10.2.0",
     "moment-locales-webpack-plugin": "1.2.0",
     "optimize-css-assets-webpack-plugin": "6.0.1",
-    "postcss": "8.4.6",
+    "postcss": "8.4.21",
     "postcss-loader": "4.3.0",
     "prettier": "2.4.1",
     "protractor": "7.0.0",
