@@ -22,8 +22,8 @@ management:
         include: ['configprops', 'env', 'health', 'info', 'jhimetrics', 'logfile', 'loggers', 'prometheus', 'threaddump']
   endpoint:
     health:
-      show-details: when_authorized
-      roles: 'ROLE_ADMIN'
+      show-details: WHEN_AUTHORIZED
+      roles: ['ROLE_ADMIN', 'ROLE_ADMIN_TECHNICAL']
     jhimetrics:
       enabled: true
   info:

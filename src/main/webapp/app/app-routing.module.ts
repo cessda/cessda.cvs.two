@@ -39,7 +39,7 @@ const routerOptions: ExtraOptions = {
         {
           path: 'admin',
           data: {
-            authorities: [Authority.ADMIN, Authority.ADMIN_CONTENT],
+            authorities: [Authority.ADMIN, Authority.ADMIN_CONTENT, Authority.ADMIN_TECHNICAL],
           },
           canActivate: [UserRouteAccessService],
           loadChildren: () => import('./admin/admin-routing.module').then(m => m.AdminRoutingModule),
