@@ -14,6 +14,27 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.1.0] - 2023-04-04
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7795784.svg)](https://doi.org/10.5281/zenodo.7795784)
+
+## Changes
+
+- [#459](https://github.com/cessda/cessda.cvs.two/issues/459)/[PR-570](https://github.com/cessda/cessda.cvs.two/pull/570)
+  Renamed "License and Citation" to "Licence and citation"
+- [#472](https://github.com/cessda/cessda.cvs.two/issues/472)/[PR-583](https://github.com/cessda/cessda.cvs.two/pull/583)
+  Correct the rights for different roles
+- [PR-572](https://github.com/cessda/cessda.cvs.two/pull/572) Set the root logging level to WARN for the `prod` profile
+
+## Fixes
+
+- [#571](https://github.com/cessda/cessda.cvs.two/issues/571)/[PR-573](https://github.com/cessda/cessda.cvs.two/pull/573)
+  Fixed names of SKOS exported file including languages not included in that version
+- [PR-569](https://github.com/cessda/cessda.cvs.two/pull/569) Disable logging for `com.itextpdf` for anything below "
+  ERROR"
+- [PR-572](https://github.com/cessda/cessda.cvs.two/pull/572) Fixed `UserDetails.equals()` always
+  throwing `ClassCastException`
+
 ## [3.0.1] - 2023-03-07
 
 ### Additions
@@ -22,14 +43,14 @@ _For each release, use the following sub-sections:_
 
 ### Changes
 
--[#464](https://github.com/cessda/cessda.cvs.two/issues/464) Database changes for v3.0.0
+- [#464](https://github.com/cessda/cessda.cvs.two/issues/464) Database changes for v3.0.0
 
 ### Fixes
 
 - [#484](https://github.com/cessda/cessda.cvs.two/issues/484) Fixed CVs showing the wrong "Available from" link and canonical URI
 - [#487](https://github.com/cessda/cessda.cvs.two/issues/487) Fixed CV export not working for older versions of CVs
 - [#489](https://github.com/cessda/cessda.cvs.two/issues/489) Fixed `null` values being present in the SKOS export
-- [#491](https://github.com/cessda/cessda.cvs.two/issues/491) Fixed a discrepency in the breadcrumb version number
+- [#491](https://github.com/cessda/cessda.cvs.two/issues/491) Fixed a discrepancy in the breadcrumb version number
 
 ### Removals
 
@@ -41,7 +62,7 @@ _For each release, use the following sub-sections:_
 
 ## [3.0.0] - 2023-01-31
 
-- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7473085.svg)](https://doi.org/10.5281/zenodo.7473085)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7473085.svg)](https://doi.org/10.5281/zenodo.7473085)
 
 ### Additions
 
@@ -87,7 +108,7 @@ _For each release, use the following sub-sections:_
 
 ## [2.2.0] - 2022-06-30
 
-- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6598225.svg)](https://doi.org/10.5281/zenodo.6598225)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6598225.svg)](https://doi.org/10.5281/zenodo.6598225)
 
 ### Additions
 
@@ -122,7 +143,7 @@ _For each release, use the following sub-sections:_
 
 ## [2.1.0] - 2022-03-03
 
-- [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6092399.svg)](https://doi.org/10.5281/zenodo.6092399)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.6092399.svg)](https://doi.org/10.5281/zenodo.6092399)
 
 ### Additions
 
@@ -257,3 +278,16 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Application technical tools and matrices such as JVM-Metrics, App Health Checks, Configuration, Logs Audit.
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
+
+[3.1.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.1.0
+[3.0.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.0.1
+[3.0.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.0.0
+[2.2.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/v2.2.0
+[2.1.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/v2.1.0
+[2.0.6-alpha]: https://github.com/cessda/cessda.cvs.two/releases/tag/v2.0.6
+[2.0.5-alpha]: https://github.com/cessda/cessda.cvs.two/releases/tag/v2.0.5
+[2.0.4-alpha]: https://github.com/cessda/cessda.cvs.two/releases/tag/v2.0.4
+[2.0.3-alpha]: https://github.com/cessda/cessda.cvs.two/releases/tag/v2.0.3
+[2.0.2-alpha]: https://github.com/cessda/cessda.cvs.two/releases/tag/v2.0.2
+[2.0.1-alpha]: https://github.com/cessda/cessda.cvs.two/releases/tag/v2.0.1
+[2.0.0-alpha]: https://github.com/cessda/cessda.cvs.two/releases/tag/v2.0.0
