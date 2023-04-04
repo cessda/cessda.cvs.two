@@ -40,7 +40,7 @@
     "rxjs": "6.6.7",
     "swagger-ui-dist": "4.18.1",
     "tslib": "2.5.0",
-    "zone.js": "0.12.0"
+    "zone.js": "0.10.3"
   },
   "devDependencies": {
     "@angular/cli": "10.2.4",
@@ -141,9 +141,6 @@
     "prepare": "husky install"
   },
   "overrides": {
-    "@angular/core": {
-      "zone.js": ">=0.10.3"
-    },
     "eslint-config-jhipster": {
       "@typescript-eslint/parser": ">=2.0.0",
       "@typescript-eslint/eslint-plugin": ">=2.0.0",
