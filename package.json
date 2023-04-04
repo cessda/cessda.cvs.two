@@ -114,9 +114,6 @@
     "workbox-webpack-plugin": "6.5.4",
     "write-file-webpack-plugin": "4.5.1"
   },
-  "engines": {
-    "node": ">=12.16.1"
-  },
   "scripts": {
     "prettier:format": "prettier --write \"{,src/**/}*.{md,json,ts,css,scss,yml}\"",
     "lint": "eslint . --ext .js,.ts",
