@@ -20,7 +20,7 @@ import java.io.ByteArrayOutputStream;
 /**
  * This class implements an output stream in which the data is written into a byte array.
  * The buffer automatically grows as data is written to it.
- * The data can be retrieved using toByteArray(), getBuffer and toString().
+ * The data can be retrieved using toByteArray(), getBuffer() and toString().
  */
 public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
     /**
