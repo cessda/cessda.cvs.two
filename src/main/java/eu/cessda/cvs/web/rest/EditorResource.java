@@ -30,7 +30,7 @@ import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.domain.CvResult;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
-import eu.cessda.cvs.web.rest.utils.AccesibleByteArrayOutputStream;
+import eu.cessda.cvs.web.rest.utils.AccessibleByteArrayOutputStream;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -867,7 +867,7 @@ public class EditorResource {
     ) {
         log.debug("Editor REST request to get a SKOS-RDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
-        AccesibleByteArrayOutputStream outputStream = new AccesibleByteArrayOutputStream();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.SKOS, ResourceUtils.getURLWithContextPath(request), outputStream );
 
         ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
@@ -893,7 +893,7 @@ public class EditorResource {
     ) {
         log.debug("Editor REST request to get a PDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
-        AccesibleByteArrayOutputStream outputStream = new AccesibleByteArrayOutputStream();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.PDF, ResourceUtils.getURLWithContextPath(request), outputStream );
 
         ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
@@ -919,7 +919,7 @@ public class EditorResource {
     ) {
         log.debug("Editor REST request to get a HTML file of vocabulary {} with version {} with included versions {}", cv, v, lv);
 
-        AccesibleByteArrayOutputStream outputStream = new AccesibleByteArrayOutputStream();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.HTML, ResourceUtils.getURLWithContextPath(request), outputStream );
 
         ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());

@@ -557,6 +557,7 @@
                         <exclude>node_modules/**</exclude>
                         <exclude>.npm/**</exclude>
                         <exclude>.husky/**</exclude>
+                        <exclude>**/?/**</exclude>
                     </excludes>
                     <mapping>
                         <java>PHP</java>

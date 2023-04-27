@@ -29,7 +29,7 @@ import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VersionUtils;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.domain.CvResult;
-import eu.cessda.cvs.web.rest.utils.AccesibleByteArrayOutputStream;
+import eu.cessda.cvs.web.rest.utils.AccessibleByteArrayOutputStream;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.swagger.annotations.ApiOperation;
@@ -778,7 +778,7 @@ public class VocabularyResourceV2 {
         @RequestParam @ApiParam(name = "languageVersion", type = "String", value = "included language version, e.g. en-1.0_de-1.0.1, separated by _", example = "en-1.0", required = false) String languageVersion) {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
-        AccesibleByteArrayOutputStream outputStream = new AccesibleByteArrayOutputStream();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyPublishFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.HTML, requestURL, outputStream);
 
         ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
@@ -806,7 +806,7 @@ public class VocabularyResourceV2 {
         @RequestParam(name = "languageVersion", required = false) @ApiParam("included language version, e.g. en-1.0_de-1.0.1, separated by _") String languageVersion) {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
-        AccesibleByteArrayOutputStream outputStream = new AccesibleByteArrayOutputStream();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyPublishFileDownload(vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.PDF, requestURL, outputStream );
 
         ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
@@ -824,7 +824,7 @@ public class VocabularyResourceV2 {
         @RequestParam(name = "languageVersion", required = false) @ApiParam("included language version, e.g. en-1.0_de-1.0.1, separated by _") String languageVersion) {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
-        AccesibleByteArrayOutputStream outputStream = new AccesibleByteArrayOutputStream();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.WORD, requestURL, outputStream );
 
         ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
@@ -840,7 +840,7 @@ public class VocabularyResourceV2 {
         @RequestParam(name = "languageVersion", required = false) @ApiParam("included language version, e.g. en-1.0_de-1.0.1, separated by _") String languageVersion) {
         String requestURL = ResourceUtils.getURLWithContextPath( request );
 
-        AccesibleByteArrayOutputStream outputStream = new AccesibleByteArrayOutputStream();
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
         String fileName = vocabularyService.generateVocabularyPublishFileDownload( vocabulary, versionNumberSl, languageVersion, ExportService.DownloadType.SKOS, requestURL, outputStream );
 
         ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
