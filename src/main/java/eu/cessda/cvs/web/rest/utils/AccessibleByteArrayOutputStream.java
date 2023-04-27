@@ -26,7 +26,7 @@ public class AccessibleByteArrayOutputStream extends ByteArrayOutputStream {
     /**
      * Returns the byte array backing this output stream.
      */
-    public synchronized byte[] getBuffer() {
+    public byte[] getBuffer() {
         return buf;
     }
 }
