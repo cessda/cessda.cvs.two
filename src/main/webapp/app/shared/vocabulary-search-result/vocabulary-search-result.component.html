@@ -187,7 +187,8 @@
                                         'source-lang': lang === vocabulary.sourceLanguage,
                                         'status-draft': isVersionContains( vocabulary, lang, 'DRAFT'),
                                         'status-review': isVersionContains( vocabulary, lang, 'REVIEW'),
-                                        'status-ready': isVersionContains( vocabulary, lang, 'READY_TO_TRANSLATE') || isVersionContains( vocabulary, lang, 'READY_TO_PUBLISH')}"
+                                        'status-ready': isVersionContains( vocabulary, lang, 'READY_TO_TRANSLATE') || isVersionContains( vocabulary, lang, 'READY_TO_PUBLISH'),
+                                        'de-emphasize': !isLangVersionInBundle( vocabulary, lang ) }"
                                         ngbTooltip="{{getFormattedLangIso(vocabulary, lang, vocabulary.sourceLanguage)}}">
                                     {{lang}}
                                 </button>

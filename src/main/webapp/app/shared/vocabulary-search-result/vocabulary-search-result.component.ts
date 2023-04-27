@@ -161,6 +161,13 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
     return VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2].includes(versionType);
   }
 
+  isLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
+    if (bundle === undefined) {
+      bundle = vocab.versionNumber;
+    }
+    return bundle === VocabularyUtil.getVersionNumberByLangIso(vocab, lang);
+  }
+
   getTitleByLang(vocab: IVocabulary): string {
     return VocabularyUtil.getTitleDefByLangIso(vocab, vocab.selectedLang!)[0];
   }
@@ -380,10 +387,12 @@ export class VocabularySearchResultComponent implements OnInit, OnDestroy {
   getFormattedLangIso(vocab: IVocabulary, lang: string, sourceLang: string): string {
     const statusInfo = VocabularyUtil.getTitleDefByLangIso(vocab, lang)[2];
     const indexOf = statusInfo.indexOf('_');
+    const langVersion = VocabularyUtil.getVersionNumberByLangIso(vocab, lang);
     return (
       this.vocabLangPipeKey.transform(lang) +
       (lang === sourceLang ? ' SOURCE' : '') +
-      (indexOf > 0 ? ' (' + statusInfo.substr(indexOf + 1) + ')' : '')
+      (indexOf > 0 ? ' (' + statusInfo.substr(indexOf + 1) + ')' : '') +
+      ' ' + langVersion
     );
   }
 
