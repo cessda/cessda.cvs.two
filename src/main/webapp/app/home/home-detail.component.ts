@@ -172,6 +172,14 @@ export class HomeDetailComponent implements OnInit {
     return window.location.origin;
   }
 
+  isAnyLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
+    if (bundle === undefined) {
+      bundle = vocab.versionNumber;
+    }
+    const versions = this.getVersionsByLanguage(lang);
+    return VocabularyUtil.isAnyVersionInBundle(versions, bundle!);
+  }
+
   hasDeprecatedConcepts(concepts: IConcept[] | undefined): boolean {
     return VocabularyUtil.hasDeprecatedConcepts(concepts);
   }
@@ -258,6 +266,11 @@ export class HomeDetailComponent implements OnInit {
           this.vocabulary!.selectedLang = this.vocabulary!.sourceLanguage!;
         } else {
           this.vocabulary!.selectedLang = this.initialLangSelect!;
+        }
+      }
+      if (this.vocabulary!.selectedVersion == null) {
+        if (this.vocabulary!.selectedLang !== null) {
+          this.vocabulary!.selectedVersion = VocabularyUtil.getVersionByLang(this.vocabulary!).number;
         }
       }
 

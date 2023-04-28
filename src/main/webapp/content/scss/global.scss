@@ -669,6 +669,14 @@ Main page styles
     color: #fff;
     border: 1px solid transparent;
   }
+  .de-emphasize {
+    color: gray;
+    background-color: lightgray;
+  }
+  .de-emphasize.active {
+    color: #333;
+    background-color: orange;
+  }
   .source-lang {
     font-weight: bold;
   }
