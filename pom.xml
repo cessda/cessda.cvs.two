@@ -83,7 +83,7 @@
         <jaxb-runtime.version>4.0.2</jaxb-runtime.version>
         <archunit-junit5.version>1.0.1</archunit-junit5.version>
         <log4j2-mock.version>0.0.2</log4j2-mock.version>
-        <mapstruct.version>1.5.3.Final</mapstruct.version>
+        <mapstruct.version>1.5.5.Final</mapstruct.version>
         <!-- Plugin versions -->
         <maven-clean-plugin.version>3.2.0</maven-clean-plugin.version>
         <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
