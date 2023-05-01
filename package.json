@@ -38,7 +38,7 @@
     "quill-better-table": "1.2.10",
     "quill-blot-formatter": "1.0.5",
     "rxjs": "6.6.7",
-    "swagger-ui-dist": "4.18.1",
+    "swagger-ui-dist": "4.18.3",
     "tslib": "2.5.0",
     "zone.js": "0.12.0"
   },
