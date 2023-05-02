@@ -315,6 +315,14 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     return version.status === versionType;
   }
 
+  isAnyLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
+    if (bundle === undefined) {
+      bundle = vocab.versionNumber;
+    }
+    const versions = this.getVersionsByLanguage(lang);
+    return VocabularyUtil.isAnyVersionInBundle(versions, bundle!);
+  }
+
   hasDeprecatedConcepts(concepts: IConcept[]): boolean {
     return VocabularyUtil.hasDeprecatedConcepts(concepts);
   }
@@ -418,6 +426,11 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
         }
       } else {
         this.setActiveVersion(this.vocabulary!.selectedLang!);
+      }
+      if (this.vocabulary!.selectedVersion == null) {
+        if (this.vocabulary!.selectedLang !== null) {
+          this.vocabulary!.selectedVersion = VocabularyUtil.getVersionByLang(this.vocabulary!).number;
+        }
       }
 
       // open popup, based on query param
