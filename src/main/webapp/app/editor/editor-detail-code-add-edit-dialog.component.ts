@@ -99,9 +99,7 @@ export class EditorDetailCodeAddEditDialogComponent implements OnInit {
     if (
       this.isNew ||
       !this.versionParam.initialVersion ||
-      (this.versionParam.initialVersion && this.versionParam.initialVersion === this.versionParam.id) ||
-      this.conceptParam!.previousConcept === undefined ||
-      this.conceptParam!.previousConcept === null
+      (this.versionParam.initialVersion && this.versionParam.initialVersion === this.versionParam.id)
     ) {
       this.codeAddEditForm.removeControl('changeType');
       this.codeAddEditForm.removeControl('changeDesc');
