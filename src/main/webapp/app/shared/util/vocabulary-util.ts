@@ -387,4 +387,22 @@ export default class VocabularyUtil {
       });
     }
   }
+
+  /**
+   * Returns true if there's at least one version among versions which belongs to the bundle. False otherwise.
+   * 
+   * @param vocab 
+   * @param lang 
+   * @param versions 
+   * @param bundle 
+   * @returns 
+   */
+  static isAnyVersionInBundle(versions: IVersion[], bundle: string): boolean {
+    for (var version of versions) {
+      if (version.number === bundle) {
+        return true
+      }
+    }
+    return false;
+  }
 }
