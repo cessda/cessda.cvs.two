@@ -30,6 +30,7 @@ import eu.cessda.cvs.service.search.SearchScope;
 import eu.cessda.cvs.utils.VocabularyUtils;
 import eu.cessda.cvs.web.rest.domain.CvResult;
 import eu.cessda.cvs.web.rest.errors.BadRequestAlertException;
+import eu.cessda.cvs.web.rest.utils.AccessibleByteArrayOutputStream;
 import eu.cessda.cvs.web.rest.utils.ResourceUtils;
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -49,11 +50,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.nio.file.Files;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -156,7 +155,7 @@ public class EditorResource {
      * {@code POST  /editors/vocabularies/new-version/{id}} : Create a new vocabulary version from existing version Rest API.
      *
      * @param id the ID of version to be cloned/add new version
-     * @return
+     * @return the created vocabulary version
      */
     @PostMapping("/editors/vocabularies/new-version/{id}")
     public ResponseEntity<VersionDTO> createNewVocabularyVersion(@PathVariable Long id){
@@ -271,7 +270,7 @@ public class EditorResource {
                 // delete version SL and related TLs
                 VersionDTO finalVersionDTO = versionDTO;
                 List<VersionDTO> versionDTOs = vocabularyDTO.getVersions().stream().filter(v -> v.getNumber().equalMinorVersionNumber(finalVersionDTO.getNumber())).collect(Collectors.toList());
-                vocabularyDTO.getVersions().removeAll(versionDTOs);
+                versionDTOs.forEach(vocabularyDTO.getVersions()::remove);
                 // change vocabulary version id to the previous version number
                 vocabularyDTO.clearContent();
 
@@ -510,10 +509,8 @@ public class EditorResource {
             .orElseThrow(() -> new EntityNotFoundException(UNABLE_TO_FIND_CONCEPT + codeSnippet.getReplacedById() + AS_A_REPLACING_CONCEPT));
         }
 
-        Iterator<ConceptDTO> conceptIterator = versionDTO.getConcepts().iterator();
-        while ( conceptIterator.hasNext() ) {
-            ConceptDTO conceptNext = conceptIterator.next();
-            if( conceptNext.equals( conceptDTO )) {
+        for (ConceptDTO conceptNext : versionDTO.getConcepts()) {
+            if (conceptNext.equals(conceptDTO)) {
                 conceptNext.setDeprecated(true);
                 conceptNext.setReplacedById(codeSnippet.getReplacedById());
 
@@ -521,7 +518,7 @@ public class EditorResource {
                 recordCodeDeprecatedAction(conceptNext, versionDTO, replacingConceptDTO);
             }
             // deprecate any child if exist
-            if( conceptNext.getParent() != null && conceptNext.getParent().startsWith( conceptDTO.getNotation()) ){
+            if (conceptNext.getParent() != null && conceptNext.getParent().startsWith(conceptDTO.getNotation())) {
                 conceptNext.setDeprecated(true);
 
                 // store changes if not initial version
@@ -862,20 +859,20 @@ public class EditorResource {
      * @param cv controlled vocabulary
      * @param v controlled vocabulary version
      * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
-     * @throws IOException
      */
     @GetMapping("/editors/download/rdf/{cv}/{v}")
     public ResponseEntity<Resource> getVocabularyInSkos(
         HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
         @RequestParam(name = "lv", required = true) String lv
-    ) throws IOException {
+    ) {
         log.debug("Editor REST request to get a SKOS-RDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-        File rdfFile = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.SKOS, request );
 
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(rdfFile.toPath()) );
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.SKOS, ResourceUtils.getURLWithContextPath(request), outputStream );
+
+        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + rdfFile.getName() );
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
             .headers(headers)
             .contentType(MediaType.parseMediaType("text/xml"))
@@ -888,20 +885,20 @@ public class EditorResource {
      * @param cv controlled vocabulary
      * @param v controlled vocabulary version
      * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
-     * @throws IOException
      */
     @GetMapping("/editors/download/pdf/{cv}/{v}")
     public ResponseEntity<Resource> getVocabularyInPdf(
         HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
         @RequestParam(name = "lv", required = true) String lv
-    ) throws IOException {
+    ) {
         log.debug("Editor REST request to get a PDF file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-        File pdfFile = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.PDF, request );
 
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(pdfFile.toPath()) );
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.PDF, ResourceUtils.getURLWithContextPath(request), outputStream );
+
+        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + pdfFile.getName() );
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
             .headers(headers)
             .contentType(MediaType.parseMediaType("application/pdf"))
@@ -914,20 +911,20 @@ public class EditorResource {
      * @param cv controlled vocabulary
      * @param v controlled vocabulary version
      * @param lv included version to be exported with format language_version e.g en-1.0_de-1.0.1
-     * @return
-     * @throws IOException
      */
     @GetMapping("/editors/download/html/{cv}/{v}")
     public ResponseEntity<Resource> getVocabularyInHtml(
         HttpServletRequest request, @PathVariable String cv, @PathVariable String v,
         @RequestParam(name = "lv", required = true) String lv
-    ) throws IOException {
+    ) {
         log.debug("Editor REST request to get a HTML file of vocabulary {} with version {} with included versions {}", cv, v, lv);
-        File htmlFile = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.HTML, request );
 
-        ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(htmlFile.toPath()) );
+        AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
+        String fileName = vocabularyService.generateVocabularyEditorFileDownload( cv, v, lv, ExportService.DownloadType.HTML, ResourceUtils.getURLWithContextPath(request), outputStream );
+
+        ByteArrayResource resource = new ByteArrayResource(outputStream.getBuffer());
         HttpHeaders headers = new HttpHeaders();
-        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + htmlFile.getName() );
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, ATTACHMENT_FILENAME + fileName);
         return ResponseEntity.ok()
             .headers(headers)
             .contentType(MediaType.parseMediaType("text/html"))
