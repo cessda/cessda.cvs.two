@@ -24,9 +24,8 @@ import eu.cessda.cvs.service.search.EsQueryResultDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Optional;
@@ -236,6 +235,15 @@ public interface VocabularyService {
     String generateJsonVocabularyPublish( VocabularyDTO... vocabularies ) throws IOException;
 
     /**
+     * Filter-out vocabularyDTO.versions based on versionList e.g. (en-1.0, fr-1.0.1). Includes all if versionList is null
+     * @param versionList
+     * @param vocabularyDTO
+     * @return
+     */
+    Set<VersionDTO> filterOutVocabularyVersions(String versionList, VocabularyDTO vocabularyDTO);
+
+
+    /**
      * Generate files to be exported for specific vocabulary
      *
      * @param vocabularyNotation the vocabulary notation
@@ -243,9 +251,15 @@ public interface VocabularyService {
      * @param languageVersion combination of language anf version number. e.g en_1.0
      * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
      * @param request HttpServletRequest for statistical purpose
-     * @return the generated file
+     * @return the generated file name
      */
-    File generateVocabularyPublishFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
+    String generateVocabularyPublishFileDownload(
+        String vocabularyNotation,
+        String versionSl,
+        String versionList,
+        ExportService.DownloadType downloadType,
+        String requestURL,
+        OutputStream outputStream);
 
     /**
      * Generate files to be exported for specific vocabulary from the editor
@@ -255,18 +269,15 @@ public interface VocabularyService {
      * @param languageVersion combination of language anf version number. e.g en_1.0
      * @param downloadType one of the following file types PDF, DOCX, HTML, RDF
      * @param request HttpServletRequest for statistical purpose
-     * @return the generated file
+     * @return the generated file name
      */
-    File generateVocabularyEditorFileDownload(String vocabularyNotation, String versionSl, String languageVersion, ExportService.DownloadType downloadType, HttpServletRequest request);
-
-    /**
-     * Filter-out vocabularyDTO.versions based on versionList e.g. (en-1.0, fr-1.0.1). Includes all if versionList is null
-     * @param versionList
-     * @param vocabularyDTO
-     * @return
-     */
-    Set<VersionDTO> filterOutVocabularyVersions(String versionList, VocabularyDTO vocabularyDTO);
-
+    String generateVocabularyEditorFileDownload(
+        String vocabularyNotation,
+        String versionSl,
+        String versionList,
+        ExportService.DownloadType downloadType,
+        String requestURL,
+        OutputStream outputStream);
 
     /**
      *
