@@ -42,8 +42,8 @@ import org.springframework.data.domain.Sort;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -155,15 +155,8 @@ public final class VocabularyUtils
 
 	public static void prepareActiveFilters( String f, EsQueryResultDetail esq, SearchScope searchScope )
 	{
-		try
-		{
-			f = URLDecoder.decode( f, "UTF-8" );
-		}
-		catch (UnsupportedEncodingException e)
-		{
-			log.error( e.getMessage() );
-		}
-		if ( f != null && !f.isEmpty() )
+        f = URLDecoder.decode( f, StandardCharsets.UTF_8);
+        if ( f != null && !f.isEmpty() )
 		{
 			for ( String filterChunk : f.split( ";" ) )
 			{

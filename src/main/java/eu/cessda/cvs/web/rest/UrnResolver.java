@@ -56,7 +56,7 @@ public class UrnResolver {
     public ResponseEntity<String> findUrnResolver(HttpServletRequest request,
           @PathVariable String urn, @RequestParam(name = "lang", required = false) String lang) {
         log.debug("REST request to get Resolver by URI: {}", urn);
-        ResponseEntity<String> headers = null;
+        ResponseEntity<String> headers;
         String baseUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 
         if( Character.isDigit( urn.charAt( urn.length() - 1) ))

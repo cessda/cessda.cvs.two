@@ -92,7 +92,7 @@ public class AccountResource {
     @GetMapping("/activate")
     public void activateAccount(@RequestParam(value = "key") String key) {
         Optional<User> user = userService.activateRegistration(key);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("No user was found for this activation key");
         }
     }
@@ -137,7 +137,7 @@ public class AccountResource {
             throw new EmailAlreadyUsedException();
         }
         Optional<User> user = userRepository.findOneByLogin(userLogin);
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("User could not be found");
         }
         userService.updateUser(userDTO.getFirstName(), userDTO.getLastName(), userDTO.getEmail(),
@@ -190,7 +190,7 @@ public class AccountResource {
         Optional<User> user =
             userService.completePasswordReset(keyAndPassword.getNewPassword(), keyAndPassword.getKey());
 
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             throw new AccountResourceException("No user was found for this reset key");
         }
     }

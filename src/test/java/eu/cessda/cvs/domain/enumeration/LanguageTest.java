@@ -17,6 +17,7 @@ package eu.cessda.cvs.domain.enumeration;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,7 +38,7 @@ public class LanguageTest {
         String langToBeFiltered = "en";
         Set<String> langFiltered = new HashSet<>();
         langFiltered.add(langToBeFiltered);
-        List<Language> filteredLanguage = Language.getFilteredLanguage( new HashSet<>( Language.getMap().values()), langFiltered);
+        List<Language> filteredLanguage = Language.getFilteredLanguage(EnumSet.allOf(Language.class), langFiltered);
         assertThat(filteredLanguage.size()).isEqualTo( Language.values().length - 1);
 
         Set<String> capitalizedIsos = Language.getCapitalizedIsos();

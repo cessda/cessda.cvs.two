@@ -47,7 +47,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * REST controller for managing users.
@@ -212,7 +211,7 @@ public class UserResource {
         Optional<User> userOpt = userService.getUserWithAuthoritiesByLogin(login);
         if( userOpt.isPresent() ){
             user = userOpt.get();
-            user.setUserAgencies( userAgencyRepository.findByUser(user.getId()).stream().collect(Collectors.toSet()));
+            user.setUserAgencies(new HashSet<>(userAgencyRepository.findByUser(user.getId())));
         }
         return ResponseUtil.wrapOrNotFound(
             Optional.ofNullable(user).map(UserDTO::new));

@@ -128,11 +128,8 @@ public class AgencyStat implements Serializable {
     }
 
     public void deleteVocabStat(String cvNotation) {
-        VocabStat vocabStat = this.vocabStats.stream().filter(v -> v.getNotation().equals( cvNotation ))
-            .findFirst().orElse(null);
-        if( vocabStat != null ) {
-            this.vocabStats.remove(vocabStat);
-        }
+        this.vocabStats.stream().filter(v -> v.getNotation().equals(cvNotation))
+            .findFirst().ifPresent(vocabStat -> this.vocabStats.remove(vocabStat));
     }
 
     public AgencyStat updateVocabStat(VocabularyDTO vocabularyDTO) {

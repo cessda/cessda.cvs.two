@@ -386,9 +386,6 @@ public class VocabularyResourceIT {
     private static final String DEFAULT_LOGOPATH = "AAAAAAAAAA";
     private static final String UPDATED_LOGOPATH = "BBBBBBBBBB";
 
-    private static final String DEFAULT_COPYRIGHT = "AAAAAAAAAA";
-    private static final String UPDATED_COPYRIGHT = "BBBBBBBBBB";
-
     private static final String DEFAULT_LICENSE = "AAAAAAAAAA";
     private static final String UPDATED_LICENSE = "BBBBBBBBBB";
 
@@ -397,9 +394,6 @@ public class VocabularyResourceIT {
 
     private static final String DEFAULT_CANONICAL_URI = "AAAAAAAAAA";
     private static final String UPDATED_CANONICAL_URI = "BBBBBBBBBB";
-
-    private static final String DEFAULT_LOGO = "AAAAAAAAAA";
-    private static final String UPDATED_LOGO = "BBBBBBBBBB";
 
     @Autowired
     private AgencyMapper agencyMapper;
@@ -446,8 +440,6 @@ public class VocabularyResourceIT {
     private Vocabulary vocabulary;
 
     private Agency agency;
-
-    private String jwt;
 
     /**
      * Create an entity for this test.
@@ -725,7 +717,7 @@ public class VocabularyResourceIT {
             new UsernamePasswordAuthenticationToken(user.getLogin(), "test");
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        jwt = tokenProvider.createToken(authentication, false);
+        String jwt = tokenProvider.createToken(authentication, false);
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 

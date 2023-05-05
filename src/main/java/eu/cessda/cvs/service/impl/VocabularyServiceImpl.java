@@ -167,7 +167,7 @@ public class VocabularyServiceImpl implements VocabularyService
     }
 
     public static QueryBuilder generateMainAndNestedQuery( String term, List<String> languageFields, int innerHitSize ) {
-        if ( term != null && !term.isEmpty() && term.length() > 1 ) {
+        if (term != null && term.length() > 1) {
             return QueryBuilders.boolQuery().should( generateMainQuery( term, languageFields ) )
                 .should( generateNestedQuery( term, languageFields, innerHitSize ) );
         } else
@@ -400,7 +400,7 @@ public class VocabularyServiceImpl implements VocabularyService
                 UNABLE_FIND_VERSION + "SL version number " + vocabularyDTO.getVersionNumber()
             ));
 
-        VersionDTO newVersion = null;
+        VersionDTO newVersion;
         if (prevVersionDTO.getItemType().equals(ItemType.SL.toString())){
             // check if user authorized to create new SL version
             SecurityUtils.checkResourceAuthorization(
@@ -1024,7 +1024,7 @@ public class VocabularyServiceImpl implements VocabularyService
         // get latest version
         final VersionDTO maxSlVersion = vocabulary.getVersions().stream()
             .filter( v -> v.getItemType().equals( ItemType.SL.toString() ) )
-            .max( ( v1, v2 ) -> v1.getNumber().compareTo(v2.getNumber()) )
+            .max(Comparator.comparing(VersionDTO::getNumber))
             .orElse( null );
 
         if ( maxSlVersion == null )
@@ -1072,7 +1072,7 @@ public class VocabularyServiceImpl implements VocabularyService
 
     @Override
     public Path getPublishedCvPath( String notation, String versionNumber ) {
-        Path path = null;
+        Path path;
         if ( versionNumber == null ) {
             path = Paths.get( applicationProperties.getVocabJsonPath() + notation + File.separator + notation + JSON_FORMAT );
         } else {
@@ -1186,7 +1186,7 @@ public class VocabularyServiceImpl implements VocabularyService
             .withPageable( esQueryResultDetail.getPage() );
 
         // add highlighter after 2nd character typed
-        boolean isSearchWithKeyword = searchTerm != null && !searchTerm.isEmpty() && searchTerm.length() > 2;
+        boolean isSearchWithKeyword = searchTerm != null && searchTerm.length() > 2;
         if ( isSearchWithKeyword )
             searchQueryBuilder.withHighlightFields( generateHighlightBuilderMain( languageFields ) );
 

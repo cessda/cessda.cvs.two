@@ -543,9 +543,9 @@ class EditorResourceIT {
         // test with null version number and license id, should not change the licence and version number
         vocabularySnippetForEnSl.setLicenseId( null );
         vocabularySnippetForEnSl.setVersionNumberFromString(null);
-        versionUpdated = updateVersionInfoTest(version);
-        assertThat(versionUpdated.getLicenseId()).isEqualTo(license.getId());
-        assertThat(versionUpdated.getNumber()).isEqualTo(versionUpdated.getNumber());
+        Version versionUpdatedAfterUpdate = updateVersionInfoTest(version);
+        assertThat(versionUpdatedAfterUpdate.getLicenseId()).isEqualTo(license.getId());
+        assertThat(versionUpdatedAfterUpdate.getNumber()).isEqualTo(version.getNumber());
     }
 
     private Version updateVersionInfoTest(Version version) throws Exception {
@@ -556,8 +556,7 @@ class EditorResourceIT {
             .andExpect(status().isOk());
         Vocabulary testVocabulary = vocabularyRepository.findAllByNotation( version.getNotation() ).stream().findFirst().orElse(null);
         assertThat(testVocabulary).isNotNull();
-        final Version versionUpdated = getLatestVersionByNotationAndLang(vocabularyRepository.findAll(), version.getNotation(), version.getLanguage());
-        return versionUpdated;
+        return getLatestVersionByNotationAndLang(vocabularyRepository.findAll(), version.getNotation(), version.getLanguage());
     }
 
     private void compareVersionTest(Version slVersion, Version newSlVersion) throws Exception {
@@ -774,7 +773,7 @@ class EditorResourceIT {
         CodeSnippet codeSnippetForDeTl = new CodeSnippet();
         codeSnippetForDeTl.setActionType( ActionType.ADD_TL_CODE );
         Concept tlConcept = tlVersion.getConcepts().stream().filter(c -> c.getNotation().equals(slConcept.getNotation()))
-            .findFirst().orElse(null);
+            .findFirst().orElseThrow();
         assertThat(tlVersion).isNotNull();
         codeSnippetForDeTl.setVersionId( tlVersion.getId() );
         codeSnippetForDeTl.setConceptId( tlConcept.getId() );
@@ -1019,7 +1018,7 @@ class EditorResourceIT {
         List<Vocabulary> vocabularyList = vocabularyRepository.findAll();
         slVersion = getLatestVersionByNotationAndLang(vocabularyList, slVersion.getNotation(), slVersion.getLanguage());
         final Concept slConcept = slVersion.getConcepts().stream().filter(c -> c.getNotation()
-            .equals(isSecondRootConcept ? INIT_CODE4_NOTATION: INIT_CODE_NOTATION)).findFirst().orElse(null);
+            .equals(isSecondRootConcept ? INIT_CODE4_NOTATION: INIT_CODE_NOTATION)).findFirst().orElseThrow();
         assertThat(slConcept.getParent()).isNull();
         assertThat(slConcept.getPreviousConcept()).isNull();
         assertThat(slConcept.getPosition()).isEqualTo(isSecondRootConcept ? CODE4_POSITION : CODE_POSITION);

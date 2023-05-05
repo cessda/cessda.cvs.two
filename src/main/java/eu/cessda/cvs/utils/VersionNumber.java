@@ -39,30 +39,7 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
 
     private static final Logger log = LoggerFactory.getLogger(VersionNumber.class);
 
-    public static class Deserializer extends StdDeserializer<VersionNumber> {
-
-        private static final long serialVersionUID = 1L;
-
-        public Deserializer() {
-            this(null);
-        }
-
-        public Deserializer(Class<VersionNumber> t) {
-            super(t);
-        }
-
-        @Override
-        public VersionNumber deserialize(JsonParser p, DeserializationContext ctxt)
-                throws IOException {
-            try { 
-                return VersionNumber.fromString(p.getText()); 
-            } 
-            catch (Exception e) { 
-                log.error("Error deserializing version number", e);
-            }
-            return null;
-        }
-    }
+    private static final Comparator<Integer> nullSafeIntegerComparator = Comparator.nullsFirst(Integer::compareTo);
 
     public static class Serializer extends StdSerializer<VersionNumber> {
 
@@ -84,9 +61,9 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
     }
 
     private static final long serialVersionUID = 1L;
-    
+
     public static final Pattern parsePattern = Pattern.compile("^[^0-9]*([0-9]+)\\.([0-9]+)(?:\\.([0-9]+))?.*$");
-    
+
     public static VersionNumber fromString(String str) {
         if (str == null) {
             return null;
@@ -163,9 +140,31 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return versionNumber != null ? versionNumber.toString() : null;
     }
 
-    private static Comparator<Integer> nullSafeIntegerComparator = Comparator.nullsFirst(Integer::compareTo); 
+    public static class Deserializer extends StdDeserializer<VersionNumber> {
 
-    private static Comparator<VersionNumber> versionNumberComparator = Comparator
+        private static final long serialVersionUID = 1L;
+
+        public Deserializer() {
+            this(null);
+        }
+
+        public Deserializer(Class<VersionNumber> t) {
+            super(t);
+        }
+
+        @Override
+        public VersionNumber deserialize(JsonParser p, DeserializationContext ctxt) {
+            try {
+                return VersionNumber.fromString(p.getText());
+            }
+            catch (IOException e) {
+                log.error("Error deserializing version number", e);
+            }
+            return null;
+        }
+    }
+
+    private static final Comparator<VersionNumber> versionNumberComparator = Comparator
         .comparing(
             VersionNumber::getMajorNumber, nullSafeIntegerComparator
         ).thenComparing(
