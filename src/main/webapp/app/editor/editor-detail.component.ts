@@ -314,7 +314,7 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     const version = this.getVersionsByLanguage(lang)[0];
     return version.status === versionType;
   }
-  
+
   isAnyLangVersionInBundle(vocab: IVocabulary, lang: string, bundle?: string): boolean {
     if (bundle === undefined) {
       bundle = vocab.versionNumber;
@@ -724,24 +724,17 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
       [this.escapeCsvContent(concept.notation), this.escapeCsvContent(concept.title), this.escapeCsvContent(concept.definition)].join(',')
     );
     csv.unshift(header.join(','));
-    const csvArray = csv.join('\r\n');
+
+    // #219 - applications such as Excel don't interpret CSVs as UTF-8 unless a byte order mark is present
+    const csvString = '\uFEFF' + csv.join('\r\n');
 
     const a = document.createElement('a');
-    const blob = new Blob([csvArray], { type: 'text/csv' });
+    const blob = new Blob([csvString], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
 
     a.href = url;
-    a.download =
-      this.version!.notation +
-      '_' +
-      this.version!.language +
-      '_' +
-      this.version!.number +
-      '(' +
-      this.version!.status +
-      ')_' +
-      moment().format('YYYY-MM-DD') +
-      '.csv';
+    a.download = `${this.version!.notation!}_${this.version!.language!}_${this.version!.number!}(${this.version!
+      .status!})_${moment().format('YYYY-MM-DD')}.csv`;
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
