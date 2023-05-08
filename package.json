@@ -33,7 +33,7 @@
     "ngx-infinite-scroll": "10.0.1",
     "ngx-quill": "12.0.1",
     "ngx-text-diff": "0.6.0",
-    "ngx-webstorage": "5.0.0",
+    "ngx-webstorage": "8.0.0",
     "quill": "2.0.0-dev.4",
     "quill-better-table": "1.2.10",
     "quill-blot-formatter": "1.0.5",
