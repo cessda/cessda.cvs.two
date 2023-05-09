@@ -21,7 +21,7 @@
 
     <groupId>eu.cessda.cvs</groupId>
     <artifactId>cvs</artifactId>
-    <version>3.2.0</version>
+    <version>3.2.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>CESSDA Vocabulary Service</name>
     <inceptionYear>2017</inceptionYear>
@@ -34,7 +34,7 @@
     <scm>
         <url>${scm.url}</url>
         <connection>scm:git:${scm.url}</connection>
-        <tag>3.2.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <issueManagement>
