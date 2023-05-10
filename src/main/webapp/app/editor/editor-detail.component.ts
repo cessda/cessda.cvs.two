@@ -733,8 +733,18 @@ export class EditorDetailComponent implements OnInit, OnDestroy {
     const url = window.URL.createObjectURL(blob);
 
     a.href = url;
-    a.download = `${this.version!.notation!}_${this.version!.language!}_${this.version!.number!}(${this.version!
-      .status!})_${moment().format('YYYY-MM-DD')}.csv`;
+    a.download =
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+      this.version!.notation +
+      '_' +
+      this.version!.language +
+      '_' +
+      this.version!.number +
+      '(' +
+      this.version!.status +
+      ')_' +
+      moment().format('YYYY-MM-DD') +
+      '.csv';
     a.click();
     window.URL.revokeObjectURL(url);
     a.remove();
