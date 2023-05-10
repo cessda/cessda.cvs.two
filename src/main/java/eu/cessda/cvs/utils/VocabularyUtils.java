@@ -106,7 +106,7 @@ public final class VocabularyUtils
 	public static VersionDTO getVersionByLangVersion( VocabularyDTO vocabularyDTO, String language, String versionNumber )
 	{
 		return vocabularyDTO.getVersions().stream()
-				.filter( v -> v.getLanguage().equals( language ) && v.getNumber().equals( versionNumber ) )
+				.filter( v -> v.getLanguage().equals( language ) && v.getNumber().equals( VersionNumber.fromString( versionNumber ) ) )
 				.findFirst().orElse( null );
 	}
 
@@ -284,12 +284,12 @@ public final class VocabularyUtils
 		return cvResult;
 	}
 
-	public static String generateUri( String uri, Boolean isVersionUri, Vocabulary vocabulary )
+	public static String generateUri(String uri, Vocabulary vocabulary )
 	{
 		return generateUri( uri, null, vocabulary.getNotation(), null, vocabulary.getSourceLanguage(), null, null );
 	}
 
-	public static String generateUri( String uri, Boolean isVersionUri, Vocabulary vocabulary, Version version, Concept concept )
+	public static String generateUri(String uri, Vocabulary vocabulary, Version version, Concept concept )
 	{
 		if ( concept == null )
 			return generateUri( uri, true, vocabulary.getNotation(), version.getNumber(),
@@ -299,7 +299,7 @@ public final class VocabularyUtils
 					vocabulary.getSourceLanguage(), concept.getNotation(), concept.getId() );
 	}
 
-	public static String generateUri( String uri, Boolean isVersionUri, VersionDTO version, ConceptDTO concept )
+	public static String generateUri(String uri, VersionDTO version, ConceptDTO concept )
 	{
 		if ( concept == null )
 			return generateUri( uri, true, version.getNotation(), version.getNumber(), version.getLanguage(), null, null );
