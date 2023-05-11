@@ -25,7 +25,7 @@ pipeline {
         stage('Pull SDK Docker Image') {
             agent {
                 docker {
-                    image 'maven:3-jdk-11'
+                    image 'eclipse-temurin:11'
                     reuseNode true
                 }
             }
@@ -49,7 +49,7 @@ pipeline {
                 }
                 stage('Record Issues') {
                     steps {
-                        recordIssues aggregatingResults: true, tools: [errorProne(), java()]
+                        recordIssues aggregatingResults: true, tools: [java()]
                     }
                 }
             }

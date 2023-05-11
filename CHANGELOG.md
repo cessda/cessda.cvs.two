@@ -14,6 +14,18 @@ _For each release, use the following sub-sections:_
 - _Fixed (for any bug fixes)_
 - _Security (in case of vulnerabilities)_
 
+## [3.2.0] - 2023-05-09
+
+## Changes
+
+- [#456](https://github.com/cessda/cessda.cvs.two/issues/456) Added "Code definition added" to the Edit SL/TL window
+- [#581](https://github.com/cessda/cessda.cvs.two/issues/581) De-emphasise out-of-bundle versions
+- [PR-619](https://github.com/cessda/cessda.cvs.two/pull/619) Clean up POM so that Spring Boot is imported correctly
+
+## Fixes
+
+- [#604](https://github.com/cessda/cessda.cvs.two/issues/604) Fix duplicate language entries in SKOS exports by filtering out versions that are not the latest version
+
 ## [3.1.0] - 2023-04-04
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7795784.svg)](https://doi.org/10.5281/zenodo.7795784)
@@ -279,6 +291,7 @@ The project uses new architecture Spring-Boot framework for the back-end and Ang
 - Swagger UI for the APIs.
 - New set of /v2 REST APIs for searching and exporting CVs to several formats (PDF, HTML, DOCX)
 
+[3.2.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.2.0
 [3.1.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.1.0
 [3.0.1]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.0.1
 [3.0.0]: https://github.com/cessda/cessda.cvs.two/releases/tag/3.0.0
