@@ -85,11 +85,10 @@ public class MetadataFieldResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static MetadataField createEntity(EntityManager em) {
-        MetadataField metadataField = new MetadataField()
+        return new MetadataField()
             .metadataKey(DEFAULT_METADATA_KEY)
             .description(DEFAULT_DESCRIPTION)
             .objectType(DEFAULT_OBJECT_TYPE);
-        return metadataField;
     }
     /**
      * Create an updated entity for this test.
@@ -98,11 +97,10 @@ public class MetadataFieldResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static MetadataField createUpdatedEntity(EntityManager em) {
-        MetadataField metadataField = new MetadataField()
+        return new MetadataField()
             .metadataKey(UPDATED_METADATA_KEY)
             .description(UPDATED_DESCRIPTION)
             .objectType(UPDATED_OBJECT_TYPE);
-        return metadataField;
     }
 
     @BeforeEach
@@ -112,7 +110,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void createMetadataField() throws Exception {
+    void createMetadataField() throws Exception {
         int databaseSizeBeforeCreate = metadataFieldRepository.findAll().size();
 
         // Create the MetadataField
@@ -133,7 +131,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void createMetadataFieldWithExistingId() throws Exception {
+    void createMetadataFieldWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = metadataFieldRepository.findAll().size();
 
         // Create the MetadataField with an existing ID
@@ -154,7 +152,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void checkMetadataKeyIsRequired() throws Exception {
+    void checkMetadataKeyIsRequired() throws Exception {
         int databaseSizeBeforeTest = metadataFieldRepository.findAll().size();
         // set the field null
         metadataField.setMetadataKey(null);
@@ -173,7 +171,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void getAllMetadataFields() throws Exception {
+    void getAllMetadataFields() throws Exception {
         // Initialize the database
         metadataFieldRepository.saveAndFlush(metadataField);
 
@@ -189,7 +187,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void getMetadataField() throws Exception {
+    void getMetadataField() throws Exception {
         // Initialize the database
         metadataFieldRepository.saveAndFlush(metadataField);
 
@@ -250,7 +248,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingMetadataKey() throws Exception {
+    void getNonExistingMetadataKey() throws Exception {
         // Get the metadataField
         restMetadataFieldMockMvc.perform(get("/api/metadata-fields/metadata-key/{metadataKey}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -258,7 +256,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingMetadataField() throws Exception {
+    void getNonExistingMetadataField() throws Exception {
         // Get the metadataField
         restMetadataFieldMockMvc.perform(get("/api/metadata-fields/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -266,14 +264,14 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void updateMetadataField() throws Exception {
+    void updateMetadataField() throws Exception {
         // Initialize the database
         metadataFieldRepository.saveAndFlush(metadataField);
 
         int databaseSizeBeforeUpdate = metadataFieldRepository.findAll().size();
 
         // Update the metadataField
-        MetadataField updatedMetadataField = metadataFieldRepository.findById(metadataField.getId()).get();
+        MetadataField updatedMetadataField = metadataFieldRepository.findById(metadataField.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedMetadataField are not directly saved in db
         em.detach(updatedMetadataField);
         updatedMetadataField
@@ -298,7 +296,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingMetadataField() throws Exception {
+    void updateNonExistingMetadataField() throws Exception {
         int databaseSizeBeforeUpdate = metadataFieldRepository.findAll().size();
 
         // Create the MetadataField
@@ -317,7 +315,7 @@ public class MetadataFieldResourceIT {
 
     @Test
     @Transactional
-    public void deleteMetadataField() throws Exception {
+    void deleteMetadataField() throws Exception {
         // Initialize the database
         metadataFieldRepository.saveAndFlush(metadataField);
 

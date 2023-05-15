@@ -86,12 +86,11 @@ public class LicenceResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Licence createEntity(EntityManager em) {
-        Licence licence = new Licence()
+        return new Licence()
             .name(DEFAULT_NAME)
             .link(DEFAULT_LINK)
             .logoLink(DEFAULT_LOGO_LINK)
             .abbr(DEFAULT_ABBR);
-        return licence;
     }
     /**
      * Create an updated entity for this test.
@@ -100,12 +99,11 @@ public class LicenceResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Licence createUpdatedEntity(EntityManager em) {
-        Licence licence = new Licence()
+        return new Licence()
             .name(UPDATED_NAME)
             .link(UPDATED_LINK)
             .logoLink(UPDATED_LOGO_LINK)
             .abbr(UPDATED_ABBR);
-        return licence;
     }
 
     @BeforeEach
@@ -115,7 +113,7 @@ public class LicenceResourceIT {
 
     @Test
     @Transactional
-    public void createLicence() throws Exception {
+    void createLicence() throws Exception {
         int databaseSizeBeforeCreate = licenceRepository.findAll().size();
 
         // Create the Licence
@@ -137,7 +135,7 @@ public class LicenceResourceIT {
 
     @Test
     @Transactional
-    public void createLicenceWithExistingId() throws Exception {
+    void createLicenceWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = licenceRepository.findAll().size();
 
         // Create the Licence with an existing ID
@@ -158,7 +156,7 @@ public class LicenceResourceIT {
 
     @Test
     @Transactional
-    public void checkNameIsRequired() throws Exception {
+    void checkNameIsRequired() throws Exception {
         int databaseSizeBeforeTest = licenceRepository.findAll().size();
         // set the field null
         licence.setName(null);
@@ -177,7 +175,7 @@ public class LicenceResourceIT {
 
     @Test
     @Transactional
-    public void getAllLicences() throws Exception {
+    void getAllLicences() throws Exception {
         // Initialize the database
         licenceRepository.saveAndFlush(licence);
 
@@ -194,7 +192,7 @@ public class LicenceResourceIT {
 
     @Test
     @Transactional
-    public void getLicence() throws Exception {
+    void getLicence() throws Exception {
         // Initialize the database
         licenceRepository.saveAndFlush(licence);
 
@@ -211,7 +209,7 @@ public class LicenceResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingLicence() throws Exception {
+    void getNonExistingLicence() throws Exception {
         // Get the licence
         restLicenceMockMvc.perform(get("/api/licences/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -219,14 +217,14 @@ public class LicenceResourceIT {
 
     @Test
     @Transactional
-    public void updateLicence() throws Exception {
+    void updateLicence() throws Exception {
         // Initialize the database
         licenceRepository.saveAndFlush(licence);
 
         int databaseSizeBeforeUpdate = licenceRepository.findAll().size();
 
         // Update the licence
-        Licence updatedLicence = licenceRepository.findById(licence.getId()).get();
+        Licence updatedLicence = licenceRepository.findById(licence.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedLicence are not directly saved in db
         em.detach(updatedLicence);
         updatedLicence
@@ -253,7 +251,7 @@ public class LicenceResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingLicence() throws Exception {
+    void updateNonExistingLicence() throws Exception {
         int databaseSizeBeforeUpdate = licenceRepository.findAll().size();
 
         // Create the Licence
@@ -272,7 +270,7 @@ public class LicenceResourceIT {
 
     @Test
     @Transactional
-    public void deleteLicence() throws Exception {
+    void deleteLicence() throws Exception {
         // Initialize the database
         licenceRepository.saveAndFlush(licence);
 

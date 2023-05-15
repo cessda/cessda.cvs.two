@@ -276,7 +276,7 @@ class EditorResourceIT {
     }
 
     public static Agency createAgencyEntity() {
-        Agency agency = new Agency()
+        return new Agency()
             .name(INIT_AGENCY_NAME)
             .link(INIT_LINK)
             .description(INIT_DESCRIPTION)
@@ -286,7 +286,6 @@ class EditorResourceIT {
             .uri(AGENCY_URI)
             .uriCode(AGENCY_URI_CODE)
             .canonicalUri(INIT_CANONICAL_URI);
-        return agency;
     }
 
     @BeforeEach
@@ -330,10 +329,8 @@ class EditorResourceIT {
     /**
      * Since the CVS workflow is quite complex and some of the test needs existing object, e,g. (Creating TL needs Published SL)
      * all of Integration Tests for SL and TL workflow are defined here.
-     *
-     * Each part of the test will be indicated by its ActionType
-     *
-     * @throws Exception
+     * <p>
+     * Each part of the test will be indicated by its ActionType.
      */
     @Test
     @Transactional
@@ -748,8 +745,8 @@ class EditorResourceIT {
             .content(TestUtil.convertObjectToJsonBytes(codeSnippetForDeTl)))
             .andExpect(status().isOk());
         tlConcept1 = getConceptFromVocabulary(slConceptRoot1);
-        assertThat(tlConcept1.getTitle()).isEqualTo(null);
-        assertThat(tlConcept1.getDefinition()).isEqualTo(null);
+        assertThat(tlConcept1.getTitle()).isNull();
+        assertThat(tlConcept1.getDefinition()).isNull();
     }
 
     private void editTlConceptTest(Concept slConceptRoot1, Version tlVersion, Concept tlConcept1) throws Exception {
@@ -1287,7 +1284,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void createVocabularyWithGivenIdTest() throws Exception {
+    void createVocabularyWithGivenIdTest() throws Exception {
         int databaseSizeBeforeUpdate = vocabularyRepository.findAll().size();
 
         vocabularySnippetForEnSl.setActionType( ActionType.CREATE_CV );
@@ -1307,7 +1304,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void updateVocabularyWithVersionIdNull() throws Exception {
+    void updateVocabularyWithVersionIdNull() throws Exception {
         vocabularySnippetForEnSl.setActionType( ActionType.EDIT_CV );
         // vocabularySnippet versionId is NULL
         restMockMvc.perform(put("/api/editors/vocabularies")
@@ -1319,7 +1316,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void createCodeWithExistedId() throws Exception {
+    void createCodeWithExistedId() throws Exception {
         CodeSnippet codeSnippet = new CodeSnippet();
         codeSnippet.setActionType( ActionType.CREATE_CODE );
         codeSnippet.setConceptId( 1L );
@@ -1333,7 +1330,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void forwardStatusWithVersionIdNull() throws Exception {
+    void forwardStatusWithVersionIdNull() throws Exception {
         // vocabularySnippet versionId is NULL
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
             .header("Authorization", jwt)
@@ -1344,7 +1341,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void forwardStatusWithActionNull() throws Exception {
+    void forwardStatusWithActionNull() throws Exception {
         // vocabularySnippet Action is NULL
         vocabularySnippetForEnSl.setVersionId(1L);
         restMockMvc.perform(put("/api/editors/vocabularies/forward-status")
@@ -1356,7 +1353,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void createCodeWithInvalidAction() throws Exception {
+    void createCodeWithInvalidAction() throws Exception {
         vocabularySnippetForEnSl.setActionType( ActionType.REORDER_CODE );
         restMockMvc.perform(post("/api/editors/vocabularies")
             .header("Authorization", jwt)
@@ -1367,7 +1364,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void reorderCodeWithInvalidAction() throws Exception {
+    void reorderCodeWithInvalidAction() throws Exception {
         CodeSnippet codeSnippetInvalidAction = new CodeSnippet();
         codeSnippetInvalidAction.setActionType( ActionType.CREATE_CODE );
         restMockMvc.perform(post("/api/editors/codes/reorder")
@@ -1379,7 +1376,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void putCodeWithInvalidAction() throws Exception {
+    void putCodeWithInvalidAction() throws Exception {
         CodeSnippet codeSnippetInvalidAction = new CodeSnippet();
         codeSnippetInvalidAction.setActionType( ActionType.CREATE_CODE );
         restMockMvc.perform(put("/api/editors/codes")
@@ -1391,7 +1388,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void createVocabularyActionNull() throws Exception {
+    void createVocabularyActionNull() throws Exception {
         // vocabularySnippet Action is NULL
         restMockMvc.perform(post("/api/editors/vocabularies")
             .header("Authorization", jwt)
@@ -1402,7 +1399,7 @@ class EditorResourceIT {
 
     @Test
     @Transactional
-    public void updateVocabularyActionIncorrectTest() throws Exception {
+    void updateVocabularyActionIncorrectTest() throws Exception {
         // vocabularySnippet Action is NULL
         vocabularySnippetForEnSl.setVocabularyId(1L);
         vocabularySnippetForEnSl.setActionType(ActionType.CREATE_CV);

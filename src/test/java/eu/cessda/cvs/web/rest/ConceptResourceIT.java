@@ -98,7 +98,7 @@ public class ConceptResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Concept createEntity(EntityManager em) {
-        Concept concept = new Concept()
+        return new Concept()
             .uri(DEFAULT_URI)
             .notation(DEFAULT_NOTATION)
             .title(DEFAULT_TITLE)
@@ -107,7 +107,6 @@ public class ConceptResourceIT {
             .slConcept(DEFAULT_SL_CONCEPT)
             .parent(DEFAULT_PARENT)
             .position(DEFAULT_POSITION);
-        return concept;
     }
     /**
      * Create an updated entity for this test.
@@ -116,7 +115,7 @@ public class ConceptResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Concept createUpdatedEntity(EntityManager em) {
-        Concept concept = new Concept()
+        return new Concept()
             .uri(UPDATED_URI)
             .notation(UPDATED_NOTATION)
             .title(UPDATED_TITLE)
@@ -125,7 +124,6 @@ public class ConceptResourceIT {
             .slConcept(UPDATED_SL_CONCEPT)
             .parent(UPDATED_PARENT)
             .position(UPDATED_POSITION);
-        return concept;
     }
 
     @BeforeEach
@@ -135,7 +133,7 @@ public class ConceptResourceIT {
 
     @Test
     @Transactional
-    public void createConcept() throws Exception {
+    void createConcept() throws Exception {
         int databaseSizeBeforeCreate = conceptRepository.findAll().size();
 
         // Create the Concept
@@ -161,7 +159,7 @@ public class ConceptResourceIT {
 
     @Test
     @Transactional
-    public void createConceptWithExistingId() throws Exception {
+    void createConceptWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = conceptRepository.findAll().size();
 
         // Create the Concept with an existing ID
@@ -181,7 +179,7 @@ public class ConceptResourceIT {
 
     @Test
     @Transactional
-    public void getAllConcepts() throws Exception {
+    void getAllConcepts() throws Exception {
         // Initialize the database
         conceptRepository.saveAndFlush(concept);
 
@@ -202,7 +200,7 @@ public class ConceptResourceIT {
 
     @Test
     @Transactional
-    public void getConcept() throws Exception {
+    void getConcept() throws Exception {
         // Initialize the database
         conceptRepository.saveAndFlush(concept);
 
@@ -223,7 +221,7 @@ public class ConceptResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingConcept() throws Exception {
+    void getNonExistingConcept() throws Exception {
         // Get the concept
         restConceptMockMvc.perform(get("/api/concepts/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -231,7 +229,7 @@ public class ConceptResourceIT {
 
     @Test
     @Transactional
-    public void updateConcept() throws Exception {
+    void updateConcept() throws Exception {
         // Initialize the database
         conceptRepository.saveAndFlush(concept);
 
@@ -273,7 +271,7 @@ public class ConceptResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingConcept() throws Exception {
+    void updateNonExistingConcept() throws Exception {
         int databaseSizeBeforeUpdate = conceptRepository.findAll().size();
 
         // Create the Concept
@@ -292,7 +290,7 @@ public class ConceptResourceIT {
 
     @Test
     @Transactional
-    public void deleteConcept() throws Exception {
+    void deleteConcept() throws Exception {
         // Initialize the database
         conceptRepository.saveAndFlush(concept);
 

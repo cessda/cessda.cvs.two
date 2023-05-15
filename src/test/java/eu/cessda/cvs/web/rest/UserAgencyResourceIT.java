@@ -80,10 +80,9 @@ public class UserAgencyResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UserAgency createEntity(EntityManager em) {
-        UserAgency userAgency = new UserAgency()
+        return new UserAgency()
             .agencyRole(DEFAULT_AGENCY_ROLE)
             .language(DEFAULT_LANGUAGE);
-        return userAgency;
     }
     /**
      * Create an updated entity for this test.
@@ -92,10 +91,9 @@ public class UserAgencyResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static UserAgency createUpdatedEntity(EntityManager em) {
-        UserAgency userAgency = new UserAgency()
+        return new UserAgency()
             .agencyRole(UPDATED_AGENCY_ROLE)
             .language(UPDATED_LANGUAGE);
-        return userAgency;
     }
 
     @BeforeEach
@@ -105,7 +103,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void createUserAgency() throws Exception {
+    void createUserAgency() throws Exception {
         int databaseSizeBeforeCreate = userAgencyRepository.findAll().size();
 
         // Create the UserAgency
@@ -125,7 +123,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void createUserAgencyWithExistingId() throws Exception {
+    void createUserAgencyWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = userAgencyRepository.findAll().size();
 
         // Create the UserAgency with an existing ID
@@ -146,7 +144,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void getAllUserAgencies() throws Exception {
+    void getAllUserAgencies() throws Exception {
         // Initialize the database
         userAgencyRepository.saveAndFlush(userAgency);
 
@@ -156,12 +154,12 @@ public class UserAgencyResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(userAgency.getId().intValue())))
             .andExpect(jsonPath("$.[*].agencyRole").value(hasItem(DEFAULT_AGENCY_ROLE.toString())))
-            .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE.toString())));
+            .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE)));
     }
 
     @Test
     @Transactional
-    public void getUserAgency() throws Exception {
+    void getUserAgency() throws Exception {
         // Initialize the database
         userAgencyRepository.saveAndFlush(userAgency);
 
@@ -171,12 +169,12 @@ public class UserAgencyResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(userAgency.getId().intValue()))
             .andExpect(jsonPath("$.agencyRole").value(DEFAULT_AGENCY_ROLE.toString()))
-            .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE.toString()));
+            .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE));
     }
 
     @Test
     @Transactional
-    public void getNonExistingUserAgency() throws Exception {
+    void getNonExistingUserAgency() throws Exception {
         // Get the userAgency
         restUserAgencyMockMvc.perform(get("/api/user-agencies/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -184,14 +182,14 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void updateUserAgency() throws Exception {
+    void updateUserAgency() throws Exception {
         // Initialize the database
         userAgencyRepository.saveAndFlush(userAgency);
 
         int databaseSizeBeforeUpdate = userAgencyRepository.findAll().size();
 
         // Update the userAgency
-        UserAgency updatedUserAgency = userAgencyRepository.findById(userAgency.getId()).get();
+        UserAgency updatedUserAgency = userAgencyRepository.findById(userAgency.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedUserAgency are not directly saved in db
         em.detach(updatedUserAgency);
         updatedUserAgency
@@ -214,7 +212,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingUserAgency() throws Exception {
+    void updateNonExistingUserAgency() throws Exception {
         int databaseSizeBeforeUpdate = userAgencyRepository.findAll().size();
 
         // Create the UserAgency
@@ -233,7 +231,7 @@ public class UserAgencyResourceIT {
 
     @Test
     @Transactional
-    public void deleteUserAgency() throws Exception {
+    void deleteUserAgency() throws Exception {
         // Initialize the database
         userAgencyRepository.saveAndFlush(userAgency);
 

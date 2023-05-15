@@ -669,7 +669,7 @@ public class VocabularyResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Agency createAgencyEntity() {
-        Agency agency = new Agency()
+        return new Agency()
             .name(DEFAULT_NAME)
             .link(DEFAULT_LINK)
             .description(DEFAULT_DESCRIPTION)
@@ -678,7 +678,6 @@ public class VocabularyResourceIT {
             .licenseId(DEFAULT_LICENSE_ID)
             .uri(DEFAULT_URI)
             .canonicalUri(DEFAULT_CANONICAL_URI);
-        return agency;
     }
 
     @BeforeEach
@@ -693,7 +692,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void createVocabulary() throws Exception {
+    void createVocabulary() throws Exception {
         int databaseSizeBeforeCreate = vocabularyRepository.findAll().size();
 
         // Mock user login
@@ -846,7 +845,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void createVocabularyWithExistingId() throws Exception {
+    void createVocabularyWithExistingId() throws Exception {
         int databaseSizeBeforeCreate = vocabularyRepository.findAll().size();
 
         // Create the Vocabulary with an existing ID
@@ -866,7 +865,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void getAllVocabularies() throws Exception {
+    void getAllVocabularies() throws Exception {
         // Initialize the database
         vocabularyRepository.saveAndFlush(vocabulary);
 
@@ -979,7 +978,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void getVocabulary() throws Exception {
+    void getVocabulary() throws Exception {
         // Initialize the database
         vocabularyRepository.saveAndFlush(vocabulary);
 
@@ -1092,7 +1091,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void getNonExistingVocabulary() throws Exception {
+    void getNonExistingVocabulary() throws Exception {
         // Get the vocabulary
         restVocabularyMockMvc.perform(get("/api/vocabularies/{id}", Long.MAX_VALUE))
             .andExpect(status().isNotFound());
@@ -1100,14 +1099,14 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void updateVocabulary() throws Exception {
+    void updateVocabulary() throws Exception {
         // Initialize the database
         vocabularyRepository.saveAndFlush(vocabulary);
 
         int databaseSizeBeforeUpdate = vocabularyRepository.findAll().size();
 
         // Update the vocabulary
-        Vocabulary updatedVocabulary = vocabularyRepository.findById(vocabulary.getId()).get();
+        Vocabulary updatedVocabulary = vocabularyRepository.findById(vocabulary.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedVocabulary are not directly saved in db
         em.detach(updatedVocabulary);
         updatedVocabulary
@@ -1334,7 +1333,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void updateNonExistingVocabulary() throws Exception {
+    void updateNonExistingVocabulary() throws Exception {
         int databaseSizeBeforeUpdate = vocabularyRepository.findAll().size();
 
         // Create the Vocabulary
@@ -1353,7 +1352,7 @@ public class VocabularyResourceIT {
 
     @Test
     @Transactional
-    public void deleteVocabulary() throws Exception {
+    void deleteVocabulary() throws Exception {
         // Initialize the database
         vocabularyRepository.saveAndFlush(vocabulary);
 
@@ -1377,7 +1376,7 @@ public class VocabularyResourceIT {
         vocabularyRepository.saveAndFlush(vocabulary);
 
         // Update the agency
-        Agency updatedAgency = agencyRepository.findById(agency.getId()).get();
+        Agency updatedAgency = agencyRepository.findById(agency.getId()).orElseThrow();
 
         // Disconnect from session so that the updates on updatedAgency are not directly saved in db
         em.detach(updatedAgency);
@@ -1398,7 +1397,7 @@ public class VocabularyResourceIT {
                 .andExpect(status().isOk());
 
         // Verify the vocabulary was updated.
-        Vocabulary vocabulary = vocabularyRepository.findAll().stream().findFirst().get();
+        Vocabulary vocabulary = vocabularyRepository.findAll().get(0);
         assertThat( vocabulary.getAgencyLogo() ).isEqualTo( UPDATED_AGENCY_LOGO );
         // FIXME - the agency name doesn't appear to get updated, is this intentional?
         //assertThat( vocabulary.getAgencyName() ).isEqualTo( UPDATED_AGENCY_NAME );
