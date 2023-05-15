@@ -761,15 +761,15 @@ public class VersionDTO implements Serializable
 		preparePublishing( vocabularySnippet, licence, agency );
 
 		StringBuilder citationSb = new StringBuilder();
-		citationSb.append( agency.getName() + ". " );
+		citationSb.append(agency.getName()).append(". ");
 		citationSb
-				.append( "(" + this.publicationDate.getYear() + "). " )
-				.append( this.title + " (Version " + this.number + ") [Controlled vocabulary]. " );
+            .append("(").append(this.publicationDate.getYear()).append("). ")
+            .append(this.title).append(" (Version ").append(this.number).append(") [Controlled vocabulary]. ");
 		if ( !agency.getName().toLowerCase().contains( "cessda" ) )
 		{
 			citationSb.append( "CESSDA. " );
 		}
-		citationSb.append( this.canonicalUri + ". " );
+		citationSb.append(this.canonicalUri).append(". ");
 		this.citation = citationSb.toString();
 	}
 
@@ -778,15 +778,15 @@ public class VersionDTO implements Serializable
 		preparePublishing( vocabularySnippet, licence, agency );
 
 		StringBuilder citationSb = new StringBuilder();
-		citationSb.append( agency.getName() + ". " );
+		citationSb.append(agency.getName()).append(". ");
 		citationSb
-				.append( "(" + this.publicationDate.getYear() + "). " )
-				.append( this.notation + " [" + this.title + "] (Version " + this.number + ") [Controlled vocabulary]. " );
+            .append("(").append(this.publicationDate.getYear()).append("). ")
+            .append(this.notation).append(" [").append(this.title).append("] (Version ").append(this.number).append(") [Controlled vocabulary]. ");
 		if ( !agency.getName().toLowerCase().contains( "cessda" ) )
 		{
 			citationSb.append( "CESSDA. " );
 		}
-		citationSb.append( this.canonicalUri + ". " );
+		citationSb.append(this.canonicalUri).append(". ");
 		this.citation = citationSb.toString();
 	}
 

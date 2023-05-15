@@ -81,9 +81,9 @@ public class VersionUtils {
     }
 
     public static void appendVersionToSb(StringBuilder sb, VersionDTO versionDTO) {
-        sb.append(CV_NAME + " " + versionDTO.getTitle() + "\n");
-        sb.append(CV_DEF + " " + versionDTO.getDefinition() + "\n");
-        sb.append(CV_NOTES + " " + (versionDTO.getNotes() == null ? "": versionDTO.getNotes()) + "\n\n\n");
+        sb.append(CV_NAME + " ").append(versionDTO.getTitle()).append("\n");
+        sb.append(CV_DEF + " ").append(versionDTO.getDefinition()).append("\n");
+        sb.append(CV_NOTES + " ").append(versionDTO.getNotes() == null ? "" : versionDTO.getNotes()).append("\n\n\n");
     }
 
     public static void appendConceptToSb(StringBuilder sb, ConceptDTO conceptDTO) {
@@ -92,9 +92,9 @@ public class VersionUtils {
             sb.append(CODE_TERM + " \n");
             sb.append(CODE_DEF + " \n\n");
         } else {
-            sb.append(CODE + " " + conceptDTO.getNotation() + (conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
-            sb.append(CODE_TERM + " " + conceptDTO.getTitle() + (conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n");
-            sb.append(CODE_DEF + " " + conceptDTO.getDefinition() + (conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "") + "\n\n");
+            sb.append(CODE + " ").append(conceptDTO.getNotation()).append(conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "").append("\n");
+            sb.append(CODE_TERM + " ").append(conceptDTO.getTitle()).append(conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "").append("\n");
+            sb.append(CODE_DEF + " ").append(conceptDTO.getDefinition()).append(conceptDTO.getDeprecated() ? DEPRECATED_SUFFIX : "").append("\n\n");
         }
     }
 

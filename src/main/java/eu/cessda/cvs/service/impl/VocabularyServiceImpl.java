@@ -16,7 +16,6 @@
 package eu.cessda.cvs.service.impl;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -74,7 +73,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityNotFoundException;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBException;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -847,7 +848,7 @@ public class VocabularyServiceImpl implements VocabularyService
                     .filter( c -> c.getNotation().equals( conceptSlDTO.getNotation() ) ).findFirst().orElse( null );
                 // if not found, try to find old notation from the previous SL concept
                 if ( prevConceptTl == null ) {
-                    prevConceptTl = getPrevTlConceptByPrevSlNotation( prevVersionSl, prevVersionTl, conceptSlDTO, prevConceptTl );
+                    prevConceptTl = getPrevTlConceptByPrevSlNotation( prevVersionSl, prevVersionTl, conceptSlDTO, null);
                 }
                 // assign title and definition if previous TL concept found
                 if ( prevConceptTl != null ) {
@@ -1068,25 +1069,6 @@ public class VocabularyServiceImpl implements VocabularyService
             agencyPublish.updateVocabStat( vocabulary );
             agencyStatSearchRepository.save( agencyPublish );
         } );
-    }
-
-    @Override
-    public Path getPublishedCvPath( String notation, String versionNumber ) {
-        Path path;
-        if ( versionNumber == null ) {
-            path = Paths.get( applicationProperties.getVocabJsonPath() + notation + File.separator + notation + JSON_FORMAT );
-        } else {
-            path = Paths.get( applicationProperties.getVocabJsonPath() + notation + File.separator +
-                versionNumber + File.separator + notation + "_" + versionNumber + JSON_FORMAT );
-        }
-        if ( path == null )
-            throw new VocabularyNotFoundException();
-        return path;
-    }
-
-    @Override
-    public Path getPublishedCvPath( String notation ) {
-        return getPublishedCvPath( notation, null );
     }
 
     @Override
@@ -1477,7 +1459,7 @@ public class VocabularyServiceImpl implements VocabularyService
             .collect( Collectors.toMap( Licence::getId, Function.identity() ) );
 
         for ( VocabularyDTO vocabulary : vocabularies ) {
-            output.append( "Generate JSON files for Vocabulary " + vocabulary.getNotation() + ".\n" );
+            output.append("Generate JSON files for Vocabulary ").append(vocabulary.getNotation()).append(".\n");
             // get all published versions (sorted by SL and number)
             List<VersionDTO> versions = versionService.findAllPublishedByVocabulary( vocabulary.getId() );
             // skip vocabulary without published version
@@ -1493,7 +1475,7 @@ public class VocabularyServiceImpl implements VocabularyService
             Set<String> latestVersionsLangs = new HashSet<>();
             slNumberVersionsMap.put( LATEST, latestVersionsAcrossSl );
             for ( VersionDTO version : versions ) {
-                output.append( "Generate JSON file for Vocabulary " + vocabulary.getNotation() + " Version" + version.getNumber() + ".\n" );
+                output.append("Generate JSON file for Vocabulary ").append(vocabulary.getNotation()).append(" Version").append(version.getNumber()).append(".\n");
                 prepareVersionAndConceptForJsonfy( licenceMap, vocabulary, slNumberVersionsMap, version, latestVersionsAcrossSl,
                     latestVersionsLangs );
             }
@@ -1601,43 +1583,37 @@ public class VocabularyServiceImpl implements VocabularyService
         version.setVersionHistories( olderVersionHistories );
     }
 
-    private void generateJsonFile( ObjectMapper mapper, VocabularyDTO vocabulary, Map<String, List<VersionDTO>> slNumberVersionsMap ) {
+    private void generateJsonFile(ObjectMapper mapper, VocabularyDTO vocabulary, Map<String, List<VersionDTO>> slNumberVersionsMap ) {
         for ( Map.Entry<String, List<VersionDTO>> entry : slNumberVersionsMap.entrySet() ) {
             String entryKey = entry.getKey();
             vocabulary.setVersions( new LinkedHashSet<>( entry.getValue() ) );
 
-            String jsonString;
             try {
-                jsonString = mapper.writerWithDefaultPrettyPrinter().writeValueAsString( vocabulary );
-                writeToFile( vocabulary.getNotation(), entryKey, jsonString, entryKey.equals( LATEST ) );
-            } catch (JsonProcessingException e) {
-                log.error( e.getMessage() );
+                var file = createDirectoryAndFileName(vocabulary.getNotation(), entryKey, entryKey.equals(LATEST));
+                try (var outputStream = Files.newOutputStream(file)) {
+                    mapper.writerWithDefaultPrettyPrinter().writeValue(outputStream, vocabulary);
+                }
+            } catch (IOException e) {
+                log.error( "Failed to generate JSON for {}", vocabulary.getNotation(), e );
             }
         }
     }
 
-    private void writeToFile( String notation, String versionNumber, String content, boolean isAllLatestVersion ) {
-        String path = applicationProperties.getVocabJsonPath() + notation + File.separator + versionNumber;
-        if ( isAllLatestVersion ) {
-            path = applicationProperties.getVocabJsonPath() + notation;
+    private Path createDirectoryAndFileName(String notation, String versionNumber, boolean isAllLatestVersion ) throws IOException {
+        Path dirPath = Path.of(applicationProperties.getVocabJsonPath() + notation);
+
+        if (!isAllLatestVersion) {
+            // Add the version number to the path
+            dirPath = dirPath.resolve(versionNumber);
         }
-        File dirPath = new File( path );
-        if ( !dirPath.isDirectory() ) {
-            dirPath.mkdirs();
-        }
-        File file;
+
+        // Create the destination directory, does nothing if the directory already exists
+        Files.createDirectories(dirPath);
+
         if ( isAllLatestVersion ) {
-            file = new File( path + File.separator + notation + JSON_FORMAT );
+            return dirPath.resolve(notation + JSON_FORMAT);
         } else {
-            file = new File( path + File.separator + notation + "_" + versionNumber + JSON_FORMAT );
-        }
-        try (
-            BufferedWriter bw = new BufferedWriter( new FileWriter( file ) ) ) {
-            bw.write( content );
-            bw.flush();
-            log.info( "Written to Temp file : {} ", file.getAbsolutePath() );
-        } catch (IOException e) {
-            log.error( e.getMessage() );
+            return dirPath.resolve(notation + "_" + versionNumber + JSON_FORMAT );
         }
     }
 
@@ -1805,7 +1781,7 @@ public class VocabularyServiceImpl implements VocabularyService
                     )
                     .values()
                     .stream()
-                    .map(Optional::get)
+                    .flatMap(Optional::stream)
                     .forEach(v -> {
                         // publish TL, if it's ready
                         if (v.getStatus().equals(Status.READY_TO_PUBLISH.toString())) {
@@ -1816,7 +1792,7 @@ public class VocabularyServiceImpl implements VocabularyService
                             v.updateUri(agencyFinal);
                             v.updateCanonicalUri(agencyFinal);
                             // update concept URIs
-                            v.getConcepts().forEach(c -> c.setUri(VocabularyUtils.generateUri( agencyFinal != null ? agencyFinal.getUriCode() : "", finalVersionDTO, c ) ));
+                            v.getConcepts().forEach(c -> c.setUri(VocabularyUtils.generateUri(agencyFinal.getUriCode(), finalVersionDTO, c ) ));
                             v.setLastStatusChangeDate(LocalDate.now());
                             finalVocabularyDTO.setVersionByLanguage(
                                 v.getLanguage(),
