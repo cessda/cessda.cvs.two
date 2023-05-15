@@ -139,7 +139,7 @@
         <!-- Exclude Resources, especially Thymeleaf template files that have same structure, but different styling -->
         <!-- Exclude Web app content, where static CVs in JSON files stored -->
         <sonar.exclusions>src/main/resources/**/*,src/main/webapp/content/**/*</sonar.exclusions>
-        <springfox.version>2.9.2</springfox.version>
+        <springfox.version>2.10.5</springfox.version>
         <jjwt.version>0.11.5</jjwt.version>
     </properties>
 
