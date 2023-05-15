@@ -59,7 +59,7 @@ public class VersionUtils {
     }
 
     /**
-     * Spit language version e.g. de-2.0.1 into several part
+     * Split language version e.g. de-2.0.1 into several part
      * @param languageVersion
      * @return array with 4 properties e.g. from example above "2.0", "2.0.2", "de", "TL"
      */

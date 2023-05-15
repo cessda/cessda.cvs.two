@@ -187,6 +187,15 @@ public class VersionNumber implements Comparable<VersionNumber>, Serializable {
         return false;
     }
 
+    public boolean equalPatchVersionNumber(VersionNumber other) {
+        if (other != null) {
+            return (majorNumber == null || other.majorNumber == null || majorNumber.equals(other.majorNumber))
+                && (minorNumber == null || other.minorNumber == null || minorNumber.equals(other.minorNumber))
+                && (patchNumber == null || other.patchNumber == null || patchNumber.equals(other.patchNumber));
+        }
+        return false;
+    }
+
     public VersionNumber increaseMinorNumber() {
         return new VersionNumber(majorNumber, minorNumber + 1, 0);
     }
